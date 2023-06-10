@@ -34,7 +34,7 @@ function Push() {
             try {
                 Write-Host "Attempt $($i)"
                 
-                & dotnet nuget push $pkg.FullName --source "DSE.Open" --api-key $($api_key) --skip-duplicate
+                & dotnet nuget push $pkg.FullName --source "dseinternational" --api-key $($api_key) --skip-duplicate
 
                 if ($LASTEXITCODE -ne 0) {
                     Write-Host    
