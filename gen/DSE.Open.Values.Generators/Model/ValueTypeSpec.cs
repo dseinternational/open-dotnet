@@ -72,7 +72,7 @@ internal abstract class ValueTypeSpec
 
     // ITryConvertibleFrom<TSelf, T>
 
-    public bool EmitEnsureIsValidValueMethod { get; set; } = true;
+    public bool EmitEnsureIsValidArgumentValueMethod { get; set; } = true;
 
     public bool EmitTryFromValueMethod { get; set; } = true;
 

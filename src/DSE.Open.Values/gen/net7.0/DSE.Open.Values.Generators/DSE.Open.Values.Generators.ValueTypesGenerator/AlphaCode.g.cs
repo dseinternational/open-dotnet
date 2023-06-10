@@ -17,12 +17,18 @@ public readonly partial struct AlphaCode
 
     private readonly AsciiCharSequence _value;
 
-    private AlphaCode(AsciiCharSequence value)
+    private AlphaCode(AsciiCharSequence value, bool skipValidation = false)
     {
+
+        if (!skipValidation)
+        {
+            EnsureIsValidArgumentValue(value);
+        }
+
         _value = value;
     }
 
-    private static void EnsureIsValidValue(AsciiCharSequence value)
+    private static void EnsureIsValidArgumentValue(AsciiCharSequence value)
     {
         if (!IsValidValue(value))
         {
@@ -45,8 +51,8 @@ public readonly partial struct AlphaCode
 
     public static AlphaCode FromValue(AsciiCharSequence value)
     {
-        EnsureIsValidValue(value);
-        return new(value);
+        EnsureIsValidArgumentValue(value);
+        return new(value, true);
     }
 
     public static explicit operator AlphaCode(AsciiCharSequence value)

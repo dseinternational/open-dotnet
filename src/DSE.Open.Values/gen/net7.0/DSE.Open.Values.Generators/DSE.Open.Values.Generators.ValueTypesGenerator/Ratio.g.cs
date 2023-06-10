@@ -17,12 +17,18 @@ public readonly partial struct Ratio
 
     private readonly Double _value;
 
-    private Ratio(Double value)
+    private Ratio(Double value, bool skipValidation = false)
     {
+
+        if (!skipValidation)
+        {
+            EnsureIsValidArgumentValue(value);
+        }
+
         _value = value;
     }
 
-    private static void EnsureIsValidValue(Double value)
+    private static void EnsureIsValidArgumentValue(Double value)
     {
         if (!IsValidValue(value))
         {
@@ -45,8 +51,8 @@ public readonly partial struct Ratio
 
     public static Ratio FromValue(Double value)
     {
-        EnsureIsValidValue(value);
-        return new(value);
+        EnsureIsValidArgumentValue(value);
+        return new(value, true);
     }
 
     public static explicit operator Ratio(Double value)

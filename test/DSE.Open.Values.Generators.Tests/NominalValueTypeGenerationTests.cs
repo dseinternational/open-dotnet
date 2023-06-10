@@ -129,7 +129,7 @@ public readonly partial struct MyOptions : INominalValue<MyOptions, long>
 
     public static bool IsValidValue(long value) => value is >= 0 and <= 2;
 
-    private MyOptions(long value)
+    private MyOptions(long value, bool skipValidation = false)
     {
         _value = value;
     }

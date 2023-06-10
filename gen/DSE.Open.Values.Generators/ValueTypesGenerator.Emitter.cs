@@ -94,10 +94,19 @@ public partial class ValueTypesGenerator
             if (spec.EmitConstructor)
             {
                 writer.WriteLine();
-                writer.WriteLine($"private {spec.ValueTypeName}({spec.ContainedValueTypeName} value)");
+                writer.WriteLine($"private {spec.ValueTypeName}({spec.ContainedValueTypeName} value, bool skipValidation = false)");
                 writer.WriteLine("{");
                 writer.Indentation++;
 
+                writer.WriteLine();
+                writer.WriteLine($$"""
+                        if (!skipValidation)
+                        {
+                            EnsureIsValidArgumentValue(value);
+                        }
+                        """);
+
+                writer.WriteLine();
                 if (spec.UseDefaultValueField)
                 {
                     writer.WriteLine($$"""
@@ -120,11 +129,11 @@ public partial class ValueTypesGenerator
                 writer.WriteLine("}");
             }
 
-            if (spec.EmitEnsureIsValidValueMethod)
+            if (spec.EmitEnsureIsValidArgumentValueMethod)
             {
                 writer.WriteLine();
                 writer.WriteLine($$"""
-                    private static void EnsureIsValidValue({{spec.ContainedValueTypeName}} value)
+                    private static void EnsureIsValidArgumentValue({{spec.ContainedValueTypeName}} value)
                     {
                         if (!IsValidValue(value))
                         {
@@ -171,8 +180,8 @@ public partial class ValueTypesGenerator
                 }
 
                 writer.WriteLine($$"""
-                        EnsureIsValidValue(value);
-                        return new(value);
+                        EnsureIsValidArgumentValue(value);
+                        return new(value, true);
                     }
                     """);
             }

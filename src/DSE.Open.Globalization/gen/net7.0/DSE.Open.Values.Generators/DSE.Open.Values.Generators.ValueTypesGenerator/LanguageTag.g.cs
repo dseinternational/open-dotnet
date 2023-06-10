@@ -17,8 +17,14 @@ public readonly partial struct LanguageTag
 
     private readonly AsciiCharSequence _value;
 
-    private LanguageTag(AsciiCharSequence value)
+    private LanguageTag(AsciiCharSequence value, bool skipValidation = false)
     {
+
+        if (!skipValidation)
+        {
+            EnsureIsValidArgumentValue(value);
+        }
+
         if (value == s_defaultValue)
         {
             _value = default;
@@ -29,7 +35,7 @@ public readonly partial struct LanguageTag
         }
     }
 
-    private static void EnsureIsValidValue(AsciiCharSequence value)
+    private static void EnsureIsValidArgumentValue(AsciiCharSequence value)
     {
         if (!IsValidValue(value))
         {
@@ -56,8 +62,8 @@ public readonly partial struct LanguageTag
         {
             return default;
         }
-        EnsureIsValidValue(value);
-        return new(value);
+        EnsureIsValidArgumentValue(value);
+        return new(value, true);
     }
 
     public static explicit operator LanguageTag(AsciiCharSequence value)

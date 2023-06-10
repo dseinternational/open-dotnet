@@ -17,12 +17,18 @@ public readonly partial struct CountryCode2
 
     private readonly AsciiChar2 _value;
 
-    private CountryCode2(AsciiChar2 value)
+    private CountryCode2(AsciiChar2 value, bool skipValidation = false)
     {
+
+        if (!skipValidation)
+        {
+            EnsureIsValidArgumentValue(value);
+        }
+
         _value = value;
     }
 
-    private static void EnsureIsValidValue(AsciiChar2 value)
+    private static void EnsureIsValidArgumentValue(AsciiChar2 value)
     {
         if (!IsValidValue(value))
         {
@@ -45,8 +51,8 @@ public readonly partial struct CountryCode2
 
     public static CountryCode2 FromValue(AsciiChar2 value)
     {
-        EnsureIsValidValue(value);
-        return new(value);
+        EnsureIsValidArgumentValue(value);
+        return new(value, true);
     }
 
     public static explicit operator CountryCode2(AsciiChar2 value)

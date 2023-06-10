@@ -2,10 +2,10 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Collections.Immutable;
+using DSE.Open.Values.Generators.Model;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using DSE.Open.Values.Generators.Model;
 
 namespace DSE.Open.Values.Generators;
 
@@ -272,25 +272,33 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
 
             // constructor?
 
-            var constructorsWithSingleParam = members
+            var constructorsWithTwoParams = members
                 .OfType<ConstructorDeclarationSyntax>()
-                .Where(s => s.ParameterList.Parameters.Count == 1
+                .Where(s => s.ParameterList.Parameters.Count == 2
                     && s.ParameterList.Parameters[0] is ParameterSyntax paramSyntax
                     && paramSyntax.Type is PredefinedTypeSyntax preDefSyntax)
                 .Where(s => semanticModel.GetDeclaredSymbol(s, ct) is IMethodSymbol methodSymbol)
                 .SingleOrDefault();
 
-            if (constructorsWithSingleParam is not null)
+            if (constructorsWithTwoParams is not null)
             {
-                var paramTypeSymbol = semanticModel.GetDeclaredSymbol(
-                    constructorsWithSingleParam.ParameterList.Parameters[0], cancellationToken: ct);
+                var param1TypeSymbol = semanticModel.GetDeclaredSymbol(
+                    constructorsWithTwoParams.ParameterList.Parameters[0], cancellationToken: ct);
 
-                var paramSymbolTypeName = paramTypeSymbol!.Type.Name;
+                var paramSymbolTypeName = param1TypeSymbol!.Type.Name;
 
                 if (paramSymbolTypeName == containedTypeName)
                 {
-                    // constructor defined
-                    emitConstructor = false;
+                    var param2TypeSymbol = semanticModel.GetDeclaredSymbol(
+                        constructorsWithTwoParams.ParameterList.Parameters[1], cancellationToken: ct);
+
+                    var param2SymbolTypeName = param2TypeSymbol!.Type.Name;
+
+                    if (param2SymbolTypeName == "Boolean")
+                    {
+                        // constructor defined
+                        emitConstructor = false;
+                    }
                 }
             }
 
