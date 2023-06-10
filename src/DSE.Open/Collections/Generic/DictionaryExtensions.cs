@@ -87,4 +87,49 @@ public static class DictionaryExtensions
     public static string? WriteToString<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> collection)
         where TKey : notnull
         => DictionaryWriter.WriteToString(collection);
+
+    public static TValue? GetValueOrDefault<TKey, TValue>(
+        this Dictionary<TKey, TValue> dictionary,
+        KeyValuePair<TKey, TValue> keyValuePair)
+        where TKey : notnull
+    {
+        Guard.IsNotNull(dictionary);
+
+        if (dictionary.TryGetValue(keyValuePair.Key, out var value))
+        {
+            return value;
+        }
+
+        return default;
+    }
+
+    public static TValue? GetValueOrDefault<TKey, TValue>(
+        this IDictionary<TKey, TValue> dictionary,
+        KeyValuePair<TKey, TValue> keyValuePair)
+        where TKey : notnull
+    {
+        Guard.IsNotNull(dictionary);
+
+        if (dictionary.TryGetValue(keyValuePair.Key, out var value))
+        {
+            return value;
+        }
+
+        return default;
+    }
+
+    public static TValue? GetValueOrDefault<TKey, TValue>(
+        this IReadOnlyDictionary<TKey, TValue> dictionary,
+        KeyValuePair<TKey, TValue> keyValuePair)
+        where TKey : notnull
+    {
+        Guard.IsNotNull(dictionary);
+
+        if (dictionary.TryGetValue(keyValuePair.Key, out var value))
+        {
+            return value;
+        }
+
+        return default;
+    }
 }
