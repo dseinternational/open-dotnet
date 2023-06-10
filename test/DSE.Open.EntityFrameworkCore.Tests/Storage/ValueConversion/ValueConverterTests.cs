@@ -15,7 +15,7 @@ public class ValueConverterTests : SqliteInMemoryTestBase<TestDbContext>
     [MemberData(nameof(CountryCodeStrings))]
     public void ConvertsToStoreType(CountryCode2 code, string expected)
     {
-        var converter = new ValueConverter<CountryCode2, AsciiChar2, string>();
+        var converter = new ValueTypeValueConverter<CountryCode2, AsciiChar2, string>();
         var convertTo = converter.ConvertToProviderExpression.Compile();
         var result = convertTo(code);
         Assert.Equal(expected, result);
@@ -25,7 +25,7 @@ public class ValueConverterTests : SqliteInMemoryTestBase<TestDbContext>
     [MemberData(nameof(CountryCodeStrings))]
     public void ConvertsFromStoreType(CountryCode2 expected, string code)
     {
-        var converter = new ValueConverter<CountryCode2, AsciiChar2, string>();
+        var converter = new ValueTypeValueConverter<CountryCode2, AsciiChar2, string>();
         var convertFrom = converter.ConvertFromProviderExpression.Compile();
         var result = convertFrom(code);
         Assert.Equal(expected, result);

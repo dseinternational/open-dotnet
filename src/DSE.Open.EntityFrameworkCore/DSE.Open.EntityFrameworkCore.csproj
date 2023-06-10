@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DSE.Open.Diagnostics.HealthChecks\DSE.Open.Diagnostics.HealthChecks.csproj" />
     <ProjectReference Include="..\DSE.Open.Geography\DSE.Open.Geography.csproj" />
   </ItemGroup>
 

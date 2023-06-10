@@ -23,7 +23,7 @@ public class TestDbContext : DbContext
 
         _ = modelBuilder.Entity<Country>()
             .Property(c => c.Code)
-            .HasConversion(new EntityFrameworkCore.Storage.ValueConversion.ValueConverter<CountryCode2, AsciiChar2, string>());
+            .HasConversion(new EntityFrameworkCore.Storage.ValueConversion.ValueTypeValueConverter<CountryCode2, AsciiChar2, string>());
     }
 
     public DbSet<Country> Countries { get; set; } = null!;

@@ -3,16 +3,16 @@
 
 using System.Diagnostics.CodeAnalysis;
 using DSE.Open.Values;
-using EfValueConversion = Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DSE.Open.EntityFrameworkCore.Storage.ValueConversion;
 
 [SuppressMessage("Design", "CA1005:Avoid excessive parameters on generic types", Justification = "<Pending>")]
-public class ValueConverter<TValue, T, TStore> : EfValueConversion.ValueConverter<TValue, TStore>
+public class ValueTypeValueConverter<TValue, T, TStore> : ValueConverter<TValue, TStore>
     where T : IEquatable<T>, IConvertibleTo<T, TStore>, ITryConvertibleFrom<T, TStore>
     where TValue : struct, IValue<TValue, T>
 {
-    public ValueConverter()
+    public ValueTypeValueConverter()
         : base((v) => ConvertToStoreType(v), v => ConvertFromStoreType(v), default)
     {
     }
@@ -22,11 +22,11 @@ public class ValueConverter<TValue, T, TStore> : EfValueConversion.ValueConverte
     private static TValue ConvertFromStoreType(TStore value) => (TValue)(T)value;
 }
 
-public class ValueConverter<TValue, T> : EfValueConversion.ValueConverter<TValue, T>
+public class ValueTypeValueConverter<TValue, T> : ValueConverter<TValue, T>
     where T : IEquatable<T>
     where TValue : struct, IValue<TValue, T>
 {
-    public ValueConverter()
+    public ValueTypeValueConverter()
         : base((v) => ConvertToStoreType(v), v => ConvertFromStoreType(v), default)
     {
     }

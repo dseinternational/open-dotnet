@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\DSE.Open.EntityFrameworkCore\DSE.Open.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\..\src\DSE.Open.Testing.Xunit\DSE.Open.Testing.Xunit.csproj" />
     <ProjectReference Include="..\DSE.Open.Values.TestValues\DSE.Open.Values.TestValues.csproj" />
   </ItemGroup>
 
