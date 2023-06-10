@@ -5,9 +5,9 @@ using System.Collections.Immutable;
 
 namespace DSE.Open.Values.Generators.Tests;
 
-public class RatioValueTypeGenerationTests : ValueTypeGenerationTests
+public class DivisibleValueTypeGenerationTests : ValueTypeGenerationTests
 {
-    public RatioValueTypeGenerationTests(ITestOutputHelper testOutput) : base(testOutput)
+    public DivisibleValueTypeGenerationTests(ITestOutputHelper testOutput) : base(testOutput)
     {
     }
 
@@ -22,8 +22,8 @@ namespace TestNamespace;
 
 #nullable enable
 
-[RatioValue]
-public readonly partial struct Percentage : IRatioValue<Percentage, int>
+[DivisibleValue]
+public readonly partial struct Percentage : IDivisibleValue<Percentage, int>
 {
     public static Percentage Zero { get; } = new(0);
 
@@ -32,8 +32,8 @@ public readonly partial struct Percentage : IRatioValue<Percentage, int>
     public static bool IsValidValue(int value) => value is >= 0 and <= 100;
 }
 
-[RatioValue]
-public readonly partial struct PercentageF : IRatioValue<PercentageF, float>
+[DivisibleValue]
+public readonly partial struct PercentageF : IDivisibleValue<PercentageF, float>
 {
     public static PercentageF Zero { get; } = new(0);
 

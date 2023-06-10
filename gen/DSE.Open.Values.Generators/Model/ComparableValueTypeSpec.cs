@@ -3,9 +3,9 @@
 
 namespace DSE.Open.Values.Generators.Model;
 
-internal class OrdinalValueTypeSpec : NominalValueTypeSpec
+internal class ComparableValueTypeSpec : EquatableValueTypeSpec
 {
-    public override ValueTypeKind ValueTypeKind => ValueTypeKind.Ordinal;
+    public override ValueTypeKind ValueTypeKind => ValueTypeKind.Comparable;
 
     public bool EmitCompareToMethod { get; set; } = true;
 

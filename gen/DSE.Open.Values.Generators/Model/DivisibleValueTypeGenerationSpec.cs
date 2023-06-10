@@ -3,9 +3,9 @@
 
 namespace DSE.Open.Values.Generators.Model;
 
-internal class RatioValueTypeGenerationSpec : IntervalValueTypeSpec
+internal class DivisibleValueTypeGenerationSpec : AddableValueTypeSpec
 {
-    public override ValueTypeKind ValueTypeKind => ValueTypeKind.Ratio;
+    public override ValueTypeKind ValueTypeKind => ValueTypeKind.Divisible;
 
     public bool EmitMultiplicationOperator { get; set; } = true;
 

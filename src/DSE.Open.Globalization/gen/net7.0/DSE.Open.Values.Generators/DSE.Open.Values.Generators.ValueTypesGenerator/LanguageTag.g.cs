@@ -12,7 +12,7 @@ namespace DSE.Open.Globalization;
 
 [TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<LanguageTag, AsciiCharSequence>))]
 public readonly partial struct LanguageTag
-    : global::DSE.Open.Values.IOrdinalValue<LanguageTag, AsciiCharSequence>
+    : global::DSE.Open.Values.IComparableValue<LanguageTag, AsciiCharSequence>
 {
 
     private readonly AsciiCharSequence _value;
@@ -77,11 +77,7 @@ public readonly partial struct LanguageTag
 
     // IEquatable<T>
 
-    public bool Equals(LanguageTag other) => _value.Equals(other._value);
-
     public override bool Equals(object? obj) => obj is LanguageTag other && Equals(other);
-
-    public override int GetHashCode() => HashCode.Combine(_value);
 
     public static bool operator ==(LanguageTag left, LanguageTag right) => left._value == right._value;
     
@@ -197,8 +193,6 @@ public readonly partial struct LanguageTag
 
     public static LanguageTag Parse(string s)
         => Parse(s, default);
-
-    public int CompareTo(LanguageTag other) => _value.CompareTo(other._value);
 
     public static bool operator <(LanguageTag left, LanguageTag right) => left._value < right._value;
     

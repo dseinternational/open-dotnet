@@ -63,7 +63,7 @@ public readonly partial struct AsciiChar
 
     public int CompareTo(AsciiChar other) => _c.CompareTo(other._c);
 
-    public int CompareToCaseInsensitive(AsciiChar other) => CompareToCaseInsenstive(_c, other._c);
+    public int CompareToCaseInsensitive(AsciiChar other) => CompareToCaseInsensitive(_c, other._c);
 
     public bool Equals(AsciiChar other) => _c == other._c;
 

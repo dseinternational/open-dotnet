@@ -6,9 +6,9 @@ using DSE.Open.Values.Text.Json.Serialization;
 
 namespace DSE.Open.Values.TestValues;
 
-[NominalValue]
+[EquatableValue]
 [JsonConverter(typeof(JsonInt32ValueConverter<BinaryInt32Value>))]
-public readonly partial struct BinaryInt32Value : INominalValue<BinaryInt32Value, int>
+public readonly partial struct BinaryInt32Value : IEquatableValue<BinaryInt32Value, int>
 {
     static int ISpanSerializable<BinaryInt32Value>.MaxSerializedCharLength { get; } = 128; // TODO
 

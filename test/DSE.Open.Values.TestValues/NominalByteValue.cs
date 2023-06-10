@@ -3,8 +3,8 @@
 
 namespace DSE.Open.Values.TestValues;
 
-[NominalValue]
-public readonly partial struct NominalByteValue : INominalValue<NominalByteValue, byte>
+[EquatableValue]
+public readonly partial struct NominalByteValue : IEquatableValue<NominalByteValue, byte>
 {
     static int ISpanSerializable<NominalByteValue>.MaxSerializedCharLength { get; } = 128; // TODO
 

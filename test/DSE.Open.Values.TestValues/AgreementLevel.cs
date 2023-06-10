@@ -6,9 +6,9 @@ using DSE.Open.Values.Text.Json.Serialization;
 
 namespace DSE.Open.Values.TestValues;
 
-[OrdinalValue]
+[ComparableValue]
 [JsonConverter(typeof(JsonInt32ValueConverter<AgreementLevel>))]
-public readonly partial struct AgreementLevel : IOrdinalValue<AgreementLevel, int>
+public readonly partial struct AgreementLevel : IComparableValue<AgreementLevel, int>
 {
     static int ISpanSerializable<AgreementLevel>.MaxSerializedCharLength { get; } = 128; // TODO
 

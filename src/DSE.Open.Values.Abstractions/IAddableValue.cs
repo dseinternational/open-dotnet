@@ -1,16 +1,18 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
-using DSE.Open.Numerics;
 
 namespace DSE.Open.Values;
 
-[SuppressMessage("Design", "CA1000:Do not declare static members on generic types", Justification = "Required for static interface methods")]
-public interface IRatioValue<TSelf, T>
-    : IIntervalValue<TSelf, T>,
-      IRatio<TSelf, T>
+public interface IAddableValue<TSelf, T>
+    : IComparableValue<TSelf, T>,
+      IAdditionOperators<TSelf, TSelf, TSelf>,
+      IDecrementOperators<TSelf>,
+      IIncrementOperators<TSelf>,
+      ISubtractionOperators<TSelf, TSelf, TSelf>,
+      IUnaryPlusOperators<TSelf, TSelf>,
+      IUnaryNegationOperators<TSelf, TSelf>
     where T
     : IAdditionOperators<T, T, T>,
       IDecrementOperators<T>,
@@ -24,7 +26,6 @@ public interface IRatioValue<TSelf, T>
       ISubtractionOperators<T, T, T>,
       IUnaryPlusOperators<T, T>,
       IUnaryNegationOperators<T, T>
-    where TSelf : struct, IRatioValue<TSelf, T>
+    where TSelf : struct, IAddableValue<TSelf, T>
 {
-    static abstract TSelf Zero { get; }
 }

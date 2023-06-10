@@ -12,7 +12,7 @@ namespace DSE.Open.Geography;
 
 [TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<CountryCode2, AsciiChar2>))]
 public readonly partial struct CountryCode2
-    : global::DSE.Open.Values.INominalValue<CountryCode2, AsciiChar2>
+    : global::DSE.Open.Values.IEquatableValue<CountryCode2, AsciiChar2>
 {
 
     private readonly AsciiChar2 _value;

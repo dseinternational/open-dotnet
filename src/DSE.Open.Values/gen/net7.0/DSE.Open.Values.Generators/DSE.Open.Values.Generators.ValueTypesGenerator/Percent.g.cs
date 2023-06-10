@@ -12,7 +12,7 @@ namespace DSE.Open.Values;
 
 [TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<Percent, Double>))]
 public readonly partial struct Percent
-    : global::DSE.Open.Values.IRatioValue<Percent, Double>
+    : global::DSE.Open.Values.IDivisibleValue<Percent, Double>
 {
 
     private readonly Double _value;

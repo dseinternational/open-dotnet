@@ -3,9 +3,9 @@
 
 namespace DSE.Open.Values.Generators.Model;
 
-internal class NominalValueTypeSpec : ValueTypeSpec
+internal class EquatableValueTypeSpec : ValueTypeSpec
 {
-    public override ValueTypeKind ValueTypeKind => ValueTypeKind.Nominal;
+    public override ValueTypeKind ValueTypeKind => ValueTypeKind.Equatable;
 
     // TODO: sets?
 }

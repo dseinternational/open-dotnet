@@ -23,10 +23,10 @@ internal abstract class ValueTypeSpec
 
     public string ImplementedInterface => ValueTypeKind switch
     {
-        ValueTypeKind.Nominal => $"{TypeNames.INominalValueInterfaceName}<{ValueTypeName}, {ContainedValueTypeName}>",
-        ValueTypeKind.Ordinal => $"{TypeNames.IOrdinalValueInterfaceName}<{ValueTypeName}, {ContainedValueTypeName}>",
-        ValueTypeKind.Interval => $"{TypeNames.IntervalValueInterfaceName}<{ValueTypeName}, {ContainedValueTypeName}>",
-        ValueTypeKind.Ratio => $"{TypeNames.IRatioValueInterfaceName}<{ValueTypeName}, {ContainedValueTypeName}>",
+        ValueTypeKind.Equatable => $"{TypeNames.IEquatableValueInterfaceName}<{ValueTypeName}, {ContainedValueTypeName}>",
+        ValueTypeKind.Comparable => $"{TypeNames.IComparableValueInterfaceName}<{ValueTypeName}, {ContainedValueTypeName}>",
+        ValueTypeKind.Addable => $"{TypeNames.AddableValueInterfaceName}<{ValueTypeName}, {ContainedValueTypeName}>",
+        ValueTypeKind.Divisible => $"{TypeNames.IDivisibleValueInterfaceName}<{ValueTypeName}, {ContainedValueTypeName}>",
         _ => throw new NotSupportedException(),
     };
 

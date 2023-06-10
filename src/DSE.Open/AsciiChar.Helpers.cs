@@ -10,7 +10,27 @@ namespace DSE.Open;
 
 public partial struct AsciiChar
 {
-    public static int CompareToCaseInsenstive(byte a, byte b) => (a | 0x20).CompareTo(b | 0x20);
+    public static bool EqualsCaseInsensitive(byte a, byte b) => (a | 0x20) == (b | 0x20);
+
+    public static int CompareToCaseInsensitive(byte a, byte b) => (a | 0x20).CompareTo(b | 0x20);
+
+    public static bool SequenceEqualsCaseInsenstive(ReadOnlySpan<byte> a, ReadOnlySpan<byte> b)
+    {
+        if (a.Length != b.Length)
+        {
+            return false;
+        }
+
+        for (var i = 0; i < a.Length; i++)
+        {
+            if (!EqualsCaseInsensitive(a[i], b[i]))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     /// <summary>Indicates whether an ASCII character is within the specified inclusive range.</summary>
     /// <param name="b">The character to evaluate.</param>

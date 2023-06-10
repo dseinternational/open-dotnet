@@ -60,10 +60,10 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
 
                 var fullName = attributeContainingTypeSymbol.ToDisplayString();
 
-                if (fullName is TypeNames.NominalValueAttributeFullName
-                    or TypeNames.IntervalValueAttributeFullName
-                    or TypeNames.OrdinalValueAttributeFullName
-                    or TypeNames.RatioValueAttributeFullName)
+                if (fullName is TypeNames.EquatableValueAttributeFullName
+                    or TypeNames.AddableValueAttributeFullName
+                    or TypeNames.ComparableValueAttributeFullName
+                    or TypeNames.DivisibleValueAttributeFullName)
                 {
                     return structDeclarationSyntax;
                 }
@@ -126,7 +126,7 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
     {
         var specs = new List<ValueTypeSpec>();
 
-        var nominalValueAttribute = compilation.GetTypeByMetadataName($"{TypeNames.NominalValueAttributeFullName}");
+        var nominalValueAttribute = compilation.GetTypeByMetadataName($"{TypeNames.EquatableValueAttributeFullName}");
 
         if (nominalValueAttribute == null)
         {
@@ -168,10 +168,10 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
 
                     var fullName = attributeContainingTypeSymbol.ToDisplayString();
 
-                    if (fullName is TypeNames.NominalValueAttributeFullName
-                        or TypeNames.IntervalValueAttributeFullName
-                        or TypeNames.OrdinalValueAttributeFullName
-                        or TypeNames.RatioValueAttributeFullName)
+                    if (fullName is TypeNames.EquatableValueAttributeFullName
+                        or TypeNames.AddableValueAttributeFullName
+                        or TypeNames.ComparableValueAttributeFullName
+                        or TypeNames.DivisibleValueAttributeFullName)
                     {
                         valueTypeAttributeSymbols.Add(attributeContainingTypeSymbol);
 
@@ -227,10 +227,10 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
 
             var valueTypeKind = valueTypeFullName switch
             {
-                TypeNames.NominalValueAttributeFullName => ValueTypeKind.Nominal,
-                TypeNames.IntervalValueAttributeFullName => ValueTypeKind.Interval,
-                TypeNames.OrdinalValueAttributeFullName => ValueTypeKind.Ordinal,
-                TypeNames.RatioValueAttributeFullName => ValueTypeKind.Ratio,
+                TypeNames.EquatableValueAttributeFullName => ValueTypeKind.Equatable,
+                TypeNames.AddableValueAttributeFullName => ValueTypeKind.Addable,
+                TypeNames.ComparableValueAttributeFullName => ValueTypeKind.Comparable,
+                TypeNames.DivisibleValueAttributeFullName => ValueTypeKind.Divisible,
                 _ => throw new InvalidOperationException()
             };
 
@@ -342,6 +342,45 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
                     && pds.Keyword.Text == "char");
             }
 
+            // Equals
+
+            var equalsMethods = instanceMethods.Where(s => s.Identifier.ValueText == "Equals").ToArray();
+
+            var emitEqualsMethod = true;
+
+            if (equalsMethods.Length > 0)
+            {
+                emitEqualsMethod = !equalsMethods.Any(s => s.ParameterList.Parameters.Count == 1
+                    && s.ParameterList.Parameters[0] is ParameterSyntax ps
+                    && ps.Type is IdentifierNameSyntax ins
+                    && ins.Identifier.Text == typeName);
+            }
+
+            // CompareTo
+
+            var compareToMethods = instanceMethods.Where(s => s.Identifier.ValueText == "CompareTo").ToArray();
+
+            var emitCompareToMethod = true;
+
+            if (compareToMethods.Length > 0)
+            {
+                emitCompareToMethod = !compareToMethods.Any(s => s.ParameterList.Parameters.Count == 1
+                    && s.ParameterList.Parameters[0] is ParameterSyntax ps
+                    && ps.Type is IdentifierNameSyntax ins
+                    && ins.Identifier.Text == typeName);
+            }
+
+            // GetHashCode
+
+            var getHashCodeMethods = instanceMethods.Where(s => s.Identifier.ValueText == "GetHashCode").ToArray();
+
+            var emitGetHashCodeMethod = true;
+
+            if (getHashCodeMethods.Length > 0)
+            {
+                emitGetHashCodeMethod = !getHashCodeMethods.Any(s => s.ParameterList.Parameters.Count == 0);
+            }
+
             var structMembers = namedTypeSymbol.GetMembers();
 
             var staticFieldSymbols = new List<string>(structMembers.Length);
@@ -358,17 +397,20 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
 
             var spec = valueTypeKind switch
             {
-                ValueTypeKind.Nominal => new NominalValueTypeSpec
+                ValueTypeKind.Equatable => new EquatableValueTypeSpec
                 {
                 },
-                ValueTypeKind.Ordinal => new OrdinalValueTypeSpec
+                ValueTypeKind.Comparable => new ComparableValueTypeSpec
                 {
+                    EmitCompareToMethod = emitCompareToMethod
                 },
-                ValueTypeKind.Interval => new IntervalValueTypeSpec
+                ValueTypeKind.Addable => new AddableValueTypeSpec
                 {
+                    EmitCompareToMethod = emitCompareToMethod
                 },
-                ValueTypeKind.Ratio => new RatioValueTypeGenerationSpec
+                ValueTypeKind.Divisible => new DivisibleValueTypeGenerationSpec
                 {
+                    EmitCompareToMethod = emitCompareToMethod
                 },
                 _ => throw new NotImplementedException()
             };
@@ -380,6 +422,8 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
             spec.ParentClass = parent;
             spec.Fields = staticFieldSymbols;
             spec.EmitConstructor = emitConstructor;
+            spec.EmitEqualsMethod = emitEqualsMethod;
+            spec.EmitGetHashCodeMethod = emitGetHashCodeMethod;
 
             spec.UseDefaultValueField = defaultValueField is not null;
             spec.UseGetString = useGetStringMethod;
@@ -399,10 +443,10 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
     private static bool IsValueTypeInterface(INamedTypeSymbol? interfaceSymbol)
     {
         return interfaceSymbol is not null
-            && (interfaceSymbol.Name == "INominalValue"
-                || interfaceSymbol.Name == "IOrdinalValue"
-                || interfaceSymbol.Name == "IIntervalValue"
-                || interfaceSymbol.Name == "IRatioValue");
+            && (interfaceSymbol.Name == "IEquatableValue"
+                || interfaceSymbol.Name == "IComparableValue"
+                || interfaceSymbol.Name == "IAddableValue"
+                || interfaceSymbol.Name == "IDivisibleValue");
     }
 
     private static string GetNamespace(BaseTypeDeclarationSyntax syntax)

@@ -5,9 +5,9 @@ using System.Collections.Immutable;
 
 namespace DSE.Open.Values.Generators.Tests;
 
-public class OrdinalValueTypeGenerationTests : ValueTypeGenerationTests
+public class ComparableValueTypeGenerationTests : ValueTypeGenerationTests
 {
-    public OrdinalValueTypeGenerationTests(ITestOutputHelper testOutput) : base(testOutput)
+    public ComparableValueTypeGenerationTests(ITestOutputHelper testOutput) : base(testOutput)
     {
     }
 
@@ -22,8 +22,8 @@ namespace TestNamespace;
 
 #nullable enable
 
-[OrdinalValue]
-public readonly partial struct MyOptions : IOrdinalValue<MyOptions, byte>
+[ComparableValue]
+public readonly partial struct MyOptions : IComparableValue<MyOptions, byte>
 {
     public static readonly MyOptions Option1;
     public static readonly MyOptions Option2 = new(1);

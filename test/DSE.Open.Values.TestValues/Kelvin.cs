@@ -3,14 +3,14 @@
 
 namespace DSE.Open.Values.TestValues;
 
-[RatioValue]
-public readonly partial struct Kelvin : IRatioValue<Kelvin, double>
+[DivisibleValue]
+public readonly partial struct Kelvin : IDivisibleValue<Kelvin, double>
 {
     static int ISpanSerializable<Kelvin>.MaxSerializedCharLength { get; } = 128; // TODO
 
     public static readonly Kelvin Zero;
 
-    static Kelvin IRatioValue<Kelvin, double>.Zero => Zero;
+    static Kelvin IDivisibleValue<Kelvin, double>.Zero => Zero;
 
     public static bool IsValidValue(double value) => value is >= 0 and <= 100;
 

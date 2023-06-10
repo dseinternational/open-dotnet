@@ -7,18 +7,18 @@ internal static class TypeNames
 {
     public const string ValueTypesNamespace = $"DSE.Open.Values";
 
-    public const string NominalValueAttributeName = "NominalValueAttribute";
-    public const string OrdinalValueAttributeName = "OrdinalValueAttribute";
-    public const string IntervalValueAttributeName = "IntervalValueAttribute";
-    public const string RatioValueAttributeName = "RatioValueAttribute";
+    public const string EquatableValueAttributeName = "EquatableValueAttribute";
+    public const string ComparableValueAttributeName = "ComparableValueAttribute";
+    public const string AddableValueAttributeName = "AddableValueAttribute";
+    public const string DivisibleValueAttributeName = "DivisibleValueAttribute";
 
-    public const string NominalValueAttributeFullName = $"DSE.Open.Values.{NominalValueAttributeName}";
-    public const string OrdinalValueAttributeFullName = $"DSE.Open.Values.{OrdinalValueAttributeName}";
-    public const string IntervalValueAttributeFullName = $"DSE.Open.Values.{IntervalValueAttributeName}";
-    public const string RatioValueAttributeFullName = $"DSE.Open.Values.{RatioValueAttributeName}";
+    public const string EquatableValueAttributeFullName = $"DSE.Open.Values.{EquatableValueAttributeName}";
+    public const string ComparableValueAttributeFullName = $"DSE.Open.Values.{ComparableValueAttributeName}";
+    public const string AddableValueAttributeFullName = $"DSE.Open.Values.{AddableValueAttributeName}";
+    public const string DivisibleValueAttributeFullName = $"DSE.Open.Values.{DivisibleValueAttributeName}";
 
-    public const string INominalValueInterfaceName = "INominalValue";
-    public const string IOrdinalValueInterfaceName = "IOrdinalValue";
-    public const string IntervalValueInterfaceName = "IIntervalValue";
-    public const string IRatioValueInterfaceName = "IRatioValue";
+    public const string IEquatableValueInterfaceName = "IEquatableValue";
+    public const string IComparableValueInterfaceName = "IComparableValue";
+    public const string AddableValueInterfaceName = "IAddableValue";
+    public const string IDivisibleValueInterfaceName = "IDivisibleValue";
 }

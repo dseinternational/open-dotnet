@@ -12,7 +12,7 @@ namespace DSE.Open.Values;
 
 [TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<AlphaCode, AsciiCharSequence>))]
 public readonly partial struct AlphaCode
-    : global::DSE.Open.Values.IOrdinalValue<AlphaCode, AsciiCharSequence>
+    : global::DSE.Open.Values.IComparableValue<AlphaCode, AsciiCharSequence>
 {
 
     private readonly AsciiCharSequence _value;

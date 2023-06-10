@@ -17,11 +17,11 @@ namespace DSE.Open.Globalization;
 /// <summary>
 /// A language tag as defined by <see href="https://www.rfc-editor.org/rfc/rfc5646.html">RFC5646</see>.
 /// </summary>
-[OrdinalValue]
+[ComparableValue]
 [JsonConverter(typeof(JsonSpanSerializableValueConverter<LanguageTag, AsciiCharSequence>))]
 [StructLayout(LayoutKind.Auto)]
 public readonly partial struct LanguageTag
-    : IOrdinalValue<LanguageTag, AsciiCharSequence>
+    : IComparableValue<LanguageTag, AsciiCharSequence>
 {
     /// <summary>
     /// Gets the maximum practical length to expect for a language code that is suitable for
@@ -70,20 +70,25 @@ public readonly partial struct LanguageTag
         // Most common case
         if (value.Length == 5 && value[2] == '-')
         {
-            return AsciiChar.IsLetter(value[0]) && AsciiChar.IsLetter(value[1])
-                && AsciiChar.IsLetter(value[3]) && AsciiChar.IsLetter(value[4]);
+            return AsciiChar.IsLetter(value[0])
+                && AsciiChar.IsLetter(value[1])
+                && AsciiChar.IsLetter(value[3])
+                && AsciiChar.IsLetter(value[4]);
         }
 
         // Two-character primary language subtag only
         if (value.Length == 2)
         {
-            return AsciiChar.IsLetter(value[0]) && AsciiChar.IsLetter(value[1]);
+            return AsciiChar.IsLetter(value[0])
+                && AsciiChar.IsLetter(value[1]);
         }
 
         // Three-character primary language subtag only
         if (value.Length == 3)
         {
-            return AsciiChar.IsLetter(value[0]) && AsciiChar.IsLetter(value[1]) && AsciiChar.IsLetter(value[2]);
+            return AsciiChar.IsLetter(value[0])
+                && AsciiChar.IsLetter(value[1])
+                && AsciiChar.IsLetter(value[2]);
         }
 
         // Fall back to regex
@@ -97,6 +102,29 @@ public readonly partial struct LanguageTag
         var chars = buffer;
 
         return s_regex.IsMatch(chars);
+    }
+
+    public bool Equals(LanguageTag other)
+        => (_value.IsEmpty && (other._value.IsEmpty || other._value.EqualsCaseInsensitive(s_defaultValue)))
+            || _value.EqualsCaseInsensitive(other._value);
+
+    public int CompareTo(LanguageTag other)
+    {
+        if (_value.IsEmpty)
+        {
+            return other._value.IsEmpty ? 0 : s_defaultValue.CompareToCaseInsensitive(other._value);
+        }
+
+        return other._value.IsEmpty ? 1 : _value.CompareToCaseInsensitive(other._value);
+    }
+
+    public override int GetHashCode()
+    {
+        if (_value.IsEmpty)
+        {
+            return AsciiCharSequenceComparer.CaseInsensitive.GetHashCode(s_defaultValue);
+        }
+        return AsciiCharSequenceComparer.CaseInsensitive.GetHashCode(_value);
     }
 
     private static string GetString(string s)
@@ -117,7 +145,8 @@ public readonly partial struct LanguageTag
         var span = _value.AsSpan();
         var index = span.IndexOf((byte)'-');
 
-        return otherLangPart.Length == index - 1 && span[..index].SequenceEqual(otherLangPart);
+        return otherLangPart.Length == index - 1
+            && AsciiChar.SequenceEqualsCaseInsenstive(span[..index], otherLangPart);
     }
 
     public ReadOnlySpan<byte> GetLanguagePartSpan()
@@ -132,7 +161,9 @@ public readonly partial struct LanguageTag
         return index < 0 ? span : span[..index];
     }
 
-    public LanguageTag GetLanguagePart() => _value.IsEmpty ? default : new(new AsciiCharSequence(GetLanguagePartSpan()));
+    public LanguageTag GetLanguagePart() => _value.IsEmpty
+        ? default
+        : new(new AsciiCharSequence(GetLanguagePartSpan()));
 
     [GeneratedRegex("^((?:(en-GB-oed|i-ami|i-bnn|i-default|i-enochian|i-hak|i-klingon|i-lux|i-mingo|i-navajo|i-pwn|i-tao|i-tay|i-tsu|sgn-BE-FR|sgn-BE-NL|sgn-CH-DE)|(art-lojban|cel-gaulish|no-bok|no-nyn|zh-guoyu|zh-hakka|zh-min|zh-min-nan|zh-xiang))|((?:([A-Za-z]{2,3}(-(?:[A-Za-z]{3}(-[A-Za-z]{3}){0,2}))?)|[A-Za-z]{4}|[A-Za-z]{5,8})(-(?:[A-Za-z]{4}))?(-(?:[A-Za-z]{2}|[0-9]{3}))?(-(?:[A-Za-z0-9]{5,8}|[0-9][A-Za-z0-9]{3}))*(-(?:[0-9A-WY-Za-wy-z](-[A-Za-z0-9]{2,8})+))*(-(?:x(-[A-Za-z0-9]{1,8})+))?)|(?:x(-[A-Za-z0-9]{1,8})+))$", RegexOptions.Compiled)]
     private static partial Regex GetValidationRegex();

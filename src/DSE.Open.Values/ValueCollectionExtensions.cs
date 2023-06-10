@@ -34,21 +34,21 @@ public static class ValueCollectionExtensions
 
     public static TValue Sum<TValue, T>(this IEnumerable<TValue> source)
         where T : struct, INumber<T>
-        where TValue : struct, IIntervalValue<TValue, T>
+        where TValue : struct, IAddableValue<TValue, T>
         => TValue.FromValue(source.SumPrimitives<TValue, T>());
 
     public static TValue Sum<TValue, T>(ReadOnlySpan<TValue> span)
         where T : struct, INumber<T>
-        where TValue : struct, IIntervalValue<TValue, T>
+        where TValue : struct, IAddableValue<TValue, T>
         => TValue.FromValue(SumPrimitives<TValue, T>(span));
 
     public static T SumPrimitives<TValue, T>(this IEnumerable<TValue> source)
         where T : struct, INumber<T>
-        where TValue : struct, IIntervalValue<TValue, T> => source.Select(TValue.ConvertTo).SumCore<T, T>();
+        where TValue : struct, IAddableValue<TValue, T> => source.Select(TValue.ConvertTo).SumCore<T, T>();
 
     public static T SumPrimitives<TValue, T>(ReadOnlySpan<TValue> span)
         where T : struct, INumber<T>
-        where TValue : struct, IIntervalValue<TValue, T>
+        where TValue : struct, IAddableValue<TValue, T>
     {
         var sum = T.Zero;
 
@@ -65,7 +65,7 @@ public static class ValueCollectionExtensions
 
     public static T AveragePrimitives<TValue, T, TAccumulator>(this IEnumerable<TValue> source)
         where T : struct, INumber<T>
-        where TValue : struct, IIntervalValue<TValue, T>
+        where TValue : struct, IAddableValue<TValue, T>
         where TAccumulator : struct, INumber<TAccumulator>
 
     {
@@ -101,7 +101,7 @@ public static class ValueCollectionExtensions
 
     public static T AveragePrimitives<TValue, T>(ReadOnlySpan<TValue> span)
         where T : struct, INumber<T>
-        where TValue : struct, IIntervalValue<TValue, T>
+        where TValue : struct, IAddableValue<TValue, T>
         => T.CreateChecked(SumPrimitives<TValue, T>(span) / T.CreateChecked(span.Length));
 
     // https://github.com/dotnet/runtime/blob/da1da02bbd2cb54490b7fc22f43ec32f5f302615/src/libraries/System.Linq/src/System/Linq/Average.cs#LL77C9-L77C9

@@ -4,6 +4,6 @@
 namespace DSE.Open.Values;
 
 [AttributeUsage(AttributeTargets.Struct)]
-public sealed class NominalValueAttribute : ValueAttribute
+public sealed class EquatableValueAttribute : ValueAttribute
 {
 }

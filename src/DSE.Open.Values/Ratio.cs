@@ -8,9 +8,9 @@ namespace DSE.Open.Values;
 /// <summary>
 /// A value that expresses a ratio as a signed value between 0 and 1 (values between -1 and 1).
 /// </summary>
-[RatioValue]
+[DivisibleValue]
 [StructLayout(LayoutKind.Auto)]
-public readonly partial struct Ratio : IRatioValue<Ratio, double>
+public readonly partial struct Ratio : IDivisibleValue<Ratio, double>
 {
     static int ISpanSerializable<Ratio>.MaxSerializedCharLength { get; } = 128; // TODO
 

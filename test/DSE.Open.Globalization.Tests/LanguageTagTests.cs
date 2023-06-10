@@ -1,7 +1,9 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Globalization;
 using System.Text.Json;
+using DSE.Open.Collections.Generic;
 using DSE.Open.Text.Json;
 
 namespace DSE.Open.Globalization.Tests;
@@ -15,7 +17,7 @@ public class LanguageTagTests
     public void TryFromValue_accepts_valid_language_tags(string tag)
     {
         Assert.True(AsciiCharSequence.TryParse(tag, default, out var asciiTag));
-        Assert.True(LanguageTag.TryFromValue(asciiTag, out var langTag));
+        Assert.True(LanguageTag.TryFromValue(asciiTag, out _));
     }
 
     [Theory]
@@ -106,10 +108,12 @@ public class LanguageTagTests
             {
                 result.Add(tag);
             }
+
             foreach (var tag in s_validLanguageCodes)
             {
                 result.Add(tag);
             }
+
             return result;
         }
     }
@@ -119,4 +123,185 @@ public class LanguageTagTests
         "de-DE-1901-1901",
     };
 
+    // ---------------------------
+
+    [Fact]
+    public void Parse_Valid_Codes()
+        => s_validLanguageCodes.ForEach(c => Assert.True(LanguageTag.Parse(c).ToString() == c, "Could not parse language code: " + c));
+
+    [Fact]
+    public void TryParse_Valid_Codes()
+        => s_validLanguageCodes.ForEach(c => Assert.True(LanguageTag.TryParse(c, out _), "Could not parse language code: " + c));
+
+    [Fact]
+    public void Parse_Valid_Alpha2Codes()
+        => s_2AlphaCodes.ForEach(c => Assert.True(LanguageTag.Parse(c).ToString() == c, "Could not parse language code: " + c));
+
+    [Fact]
+    public void TryParse_Valid_Alpha2Codes()
+        => s_2AlphaCodes.ForEach(c => Assert.True(LanguageTag.TryParse(c, out _), "Could not parse language code: " + c));
+
+    [Theory]
+    [MemberData(nameof(ValidLanguageTags))]
+    public void Equal_Equivalent_Languages(string tag)
+        => Assert.Equal(LanguageTag.Parse(tag), LanguageTag.Parse(tag));
+
+    [Theory]
+    [MemberData(nameof(ValidLanguageTags))]
+    public void Equal_Equivalent_Languages_case_different(string tag)
+        => Assert.Equal(LanguageTag.Parse(tag), LanguageTag.Parse(tag.ToUpperInvariant()));
+
+    [Fact]
+    public void Equal_NonEquivalent_Languages()
+    {
+        for (var i = 1; i < s_validLanguageCodes.Length; i++)
+        {
+            Assert.NotEqual(s_validLanguageCodes[i - 1], s_validLanguageCodes[i]);
+        }
+    }
+
+    [Theory]
+    [MemberData(nameof(ValidLanguageTags))]
+    public void GetHashCode_Equivalent_Languages(string tag)
+        => Assert.Equal(LanguageTag.Parse(tag).GetHashCode(), LanguageTag.Parse(tag).GetHashCode());
+
+    [Theory]
+    [MemberData(nameof(ValidLanguageTags))]
+    public void GetHashCode_Equivalent_Languages_case_different(string tag)
+        => Assert.Equal(LanguageTag.Parse(tag).GetHashCode(), LanguageTag.Parse(tag.ToUpperInvariant()).GetHashCode());
+
+    [Fact]
+    public void ToString_as_initialised()
+        => s_validLanguageCodes.ForEach(s => Assert.Equal(s, LanguageTag.Parse(s).ToString()));
+
+    [Fact]
+    public void Parse_WithNullString_ShouldThrowArgumentNull()
+    {
+        // Act
+        static void Parse()
+        {
+            _ = LanguageTag.Parse(null!);
+        }
+
+        // Assert
+        _ = Assert.Throws<ArgumentNullException>(Parse);
+    }
+
+    [Fact]
+    public void Parse_WithInvalidCode_ShouldThrowException()
+    {
+        // Arrange
+        const string code = "invalid1";
+
+        // Act
+        static void Parse()
+        {
+            _ = LanguageTag.Parse(code, null);
+        }
+
+        // Assert
+        _ = Assert.Throws<ArgumentOutOfRangeException>(Parse);
+    }
+
+    [Fact]
+    public void TryParse_WithInvalidCode_ShouldReturnFalse()
+    {
+        // Arrange
+        const string code = "invalid1";
+
+        // Act
+        var success = LanguageTag.TryParse(code, null, out var result);
+
+        // Assert
+        Assert.False(success);
+        Assert.Equal(LanguageTag.Default, result);
+    }
+
+    [Fact]
+    public void TryParse_WithEmptySpan_ShouldReturnFalseAndDefaultResult()
+    {
+        // Act
+        var success = LanguageTag.TryParse(Span<char>.Empty, null, out var result);
+
+        // Assert
+        Assert.False(success);
+        Assert.Equal(LanguageTag.Default, result);
+    }
+
+    [Fact]
+    public void TryParse_WithNullString_ShouldReturnFalseAndDefaultResult()
+    {
+        // Act
+        var success = LanguageTag.TryParse(null, out var result);
+
+        // Assert
+        Assert.False(success);
+        Assert.Equal(LanguageTag.Default, result);
+    }
+
+    [Fact]
+    public void TryFormat_WithInvalidBuffer_ShouldReturnFalse()
+    {
+        // Arrange
+        var countryCode = LanguageTag.EnglishUk;
+        Span<char> destination = stackalloc char[1];
+
+        // Act
+        var result = countryCode.TryFormat(destination, out var charsWritten, null, null);
+
+        // Assert
+        Assert.False(result);
+        Assert.Equal(0, charsWritten);
+    }
+
+    [Fact]
+    public void TryFormat_WithValidBuffer_ShouldFormatCorrectly()
+    {
+        // Arrange.
+        var code = LanguageTag.EnglishUk;
+        Span<char> buffer = stackalloc char[5];
+
+        // Act
+        var success = code.TryFormat(buffer, out var charsWritten, default, default);
+
+        // Assert
+        Assert.True(success);
+        Assert.Equal(5, charsWritten);
+        Assert.Equal("en-GB", buffer.ToString());
+    }
+
+    // https://www.rfc-editor.org/rfc/rfc5646.html#appendix-A
+    [Theory]
+    [InlineData("zh-cmn-Hans-CN")]
+    [InlineData("zh-Hans-CN")]
+    [InlineData("sl-rozaj-biske")]
+    [InlineData("de-CH-1901")]
+    [InlineData("sl-IT-nedis")]
+    [InlineData("de-CH-x-phonebk")]
+    [InlineData("az-Arab-x-AZE-derbend")]
+    [InlineData("qaa-Qaaa-QM-x-southern")]
+    public void ToStringFormatted_WithCodeWithManyParts_ShouldReturnCorrect(string expected)
+    {
+        // Arrange
+        var code = LanguageTag.Parse(expected);
+
+        // Act
+        var result = code.ToString();
+
+        // Assert
+        Assert.Equal(expected, result);
+    }
+
+    [Fact]
+    public void FromCultureInfo_WithValid_ShouldReturnCorrectCode()
+    {
+        // Arrange
+        var ci = new CultureInfo("en-IE");
+
+        // Act
+        var code = LanguageTag.FromCultureInfo(ci);
+
+        // Assert
+        Assert.Equal(LanguageTag.EnglishIreland, code);
+    }
 }

@@ -33,7 +33,7 @@ public static class CompilationHelper
             MetadataReference.CreateFromFile(typeof(ITryConvertibleFrom<,>).GetTypeInfo().Assembly.Location),
 
             // DSE.Open.ValueTypes.Abstractions
-            MetadataReference.CreateFromFile(typeof(RatioValueAttribute).GetTypeInfo().Assembly.Location),
+            MetadataReference.CreateFromFile(typeof(DivisibleValueAttribute).GetTypeInfo().Assembly.Location),
 
             // DSE.Open.ValueTypes
             MetadataReference.CreateFromFile(typeof(ValueFormatter).GetTypeInfo().Assembly.Location),

@@ -33,4 +33,13 @@ public class AsciiCharTests
         var c = ((AsciiChar)a).CompareToCaseInsensitive((AsciiChar)b);
         Assert.Equal(expected, c);
     }
+
+    [Fact]
+    public void SequenceEqualsCaseInsenstive()
+    {
+        var s1 = "abcdefgh"u8.ToArray();
+        var s2 = "ABCDEFGH"u8.ToArray();
+
+        Assert.True(AsciiChar.SequenceEqualsCaseInsenstive(s1, s2));
+    }
 }

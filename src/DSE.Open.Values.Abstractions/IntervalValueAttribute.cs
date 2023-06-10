@@ -4,6 +4,6 @@
 namespace DSE.Open.Values;
 
 [AttributeUsage(AttributeTargets.Struct)]
-public sealed class IntervalValueAttribute : ValueAttribute
+public sealed class AddableValueAttribute : ValueAttribute
 {
 }

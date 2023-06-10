@@ -11,10 +11,10 @@ namespace DSE.Open.Geography;
 /// <summary>
 /// An offically-assigned ISO 3166-1 alpha-3 country code.
 /// </summary>
-[NominalValue]
+[EquatableValue]
 [JsonConverter(typeof(JsonSpanSerializableValueConverter<CountryCode3, AsciiChar3>))]
 [StructLayout(LayoutKind.Auto)]
-public readonly partial struct CountryCode3 : INominalValue<CountryCode3, AsciiChar3>
+public readonly partial struct CountryCode3 : IEquatableValue<CountryCode3, AsciiChar3>
 {
     public static readonly CountryCode3 Australia = new((AsciiChar3)"AUS");
     public static readonly CountryCode3 Canada = new((AsciiChar3)"CAN");

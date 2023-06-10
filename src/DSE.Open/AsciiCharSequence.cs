@@ -138,12 +138,15 @@ public readonly struct AsciiCharSequence
     public int CompareTo(AsciiCharSequence other) => _value.Span.SequenceCompareTo(other._value.Span);
 
     public int CompareToCaseInsensitive(AsciiCharSequence other)
+        => CompareToCaseInsensitive(other._value.Span);
+
+    public int CompareToCaseInsensitive(ReadOnlySpan<byte> asciiBytes)
     {
-        var length = Math.Min(_value.Length, other._value.Length);
+        var length = Math.Min(_value.Length, asciiBytes.Length);
 
         for (var i = 0; i < length; i++)
         {
-            var c = AsciiChar.CompareToCaseInsenstive(_value.Span[i], other._value.Span[i]);
+            var c = AsciiChar.CompareToCaseInsensitive(_value.Span[i], asciiBytes[i]);
 
             if (c != 0)
             {
@@ -151,7 +154,7 @@ public readonly struct AsciiCharSequence
             }
         }
 
-        return _value.Length - other._value.Length;
+        return _value.Length - asciiBytes.Length;
     }
 
     public bool Equals(ReadOnlySpan<byte> other) => _value.Span.SequenceEqual(other);
@@ -160,9 +163,16 @@ public readonly struct AsciiCharSequence
 
     public bool Equals(AsciiCharSequence other) => Equals(other._value);
 
+    public bool EqualsCaseInsensitive(AsciiCharSequence other) => AsciiChar.SequenceEqualsCaseInsenstive(_value.Span, other._value.Span);
+
     public override bool Equals(object? obj) => obj is AsciiCharSequence other && Equals(other);
 
-    public override int GetHashCode() => base.GetHashCode(); // TODO
+    public override int GetHashCode()
+    {
+        var c = new HashCode();
+        c.AddBytes(_value.Span);
+        return c.ToHashCode();
+    }
 
     public override string ToString() => ToString(default, default);
 

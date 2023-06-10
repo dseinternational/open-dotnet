@@ -4,6 +4,6 @@
 namespace DSE.Open.Values;
 
 [AttributeUsage(AttributeTargets.Struct)]
-public sealed class RatioValueAttribute : ValueAttribute
+public sealed class DivisibleValueAttribute : ValueAttribute
 {
 }

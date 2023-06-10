@@ -3,8 +3,8 @@
 
 namespace DSE.Open.Values.TestValues;
 
-[RatioValue]
-public readonly partial struct Percentage : IRatioValue<Percentage, float>
+[DivisibleValue]
+public readonly partial struct Percentage : IDivisibleValue<Percentage, float>
 {
     static int ISpanSerializable<Percentage>.MaxSerializedCharLength { get; } = 128; // TODO
 

@@ -520,7 +520,7 @@ public partial class ValueTypesGenerator
                     """);
             }
 
-            if (spec is OrdinalValueTypeSpec ordinalSpec)
+            if (spec is ComparableValueTypeSpec ordinalSpec)
             {
                 if (ordinalSpec.EmitCompareToMethod)
                 {
@@ -555,7 +555,7 @@ public partial class ValueTypesGenerator
                 }
             }
 
-            if (spec is IntervalValueTypeSpec intervalSpec)
+            if (spec is AddableValueTypeSpec intervalSpec)
             {
                 if (intervalSpec.EmitAdditionOperator)
                 {
@@ -606,7 +606,7 @@ public partial class ValueTypesGenerator
                 }
             }
 
-            if (spec is RatioValueTypeGenerationSpec ratioSpec)
+            if (spec is DivisibleValueTypeGenerationSpec ratioSpec)
             {
                 if (ratioSpec.EmitMultiplicationOperator)
                 {

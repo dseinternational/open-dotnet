@@ -10,10 +10,10 @@ namespace DSE.Open.Values;
 
 // TODO
 
-[OrdinalValue]
+[ComparableValue]
 [JsonConverter(typeof(JsonSpanSerializableValueConverter<AlphaCode,AsciiCharSequence>))]
 [StructLayout(LayoutKind.Auto)]
-public readonly partial struct AlphaCode : IOrdinalValue<AlphaCode, AsciiCharSequence>
+public readonly partial struct AlphaCode : IComparableValue<AlphaCode, AsciiCharSequence>
 {
     public static readonly AlphaCode Empty;
 

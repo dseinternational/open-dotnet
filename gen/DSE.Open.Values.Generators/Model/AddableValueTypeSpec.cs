@@ -3,9 +3,9 @@
 
 namespace DSE.Open.Values.Generators.Model;
 
-internal class IntervalValueTypeSpec : OrdinalValueTypeSpec
+internal class AddableValueTypeSpec : ComparableValueTypeSpec
 {
-    public override ValueTypeKind ValueTypeKind => ValueTypeKind.Interval;
+    public override ValueTypeKind ValueTypeKind => ValueTypeKind.Addable;
 
     public bool EmitAdditionOperator { get; set; } = true;
 
