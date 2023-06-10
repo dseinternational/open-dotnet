@@ -8,8 +8,6 @@ namespace DSE.Open.Collections.Generic;
 public sealed class ValueCollection<T>
     : Collection<T>,
       IEquatable<ValueCollection<T>>
-    where T
-    : IEquatable<T>
 {
     public static readonly ValueCollection<T> Empty = new();
 

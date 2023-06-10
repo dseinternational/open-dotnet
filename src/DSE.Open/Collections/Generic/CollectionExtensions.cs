@@ -513,7 +513,6 @@ public static class CollectionExtensions
     }
 
     public static ReadOnlyValueCollection<T> ToReadOnlyValueCollection<T>(this IEnumerable<T> collection)
-        where T : IEquatable<T>
     {
         Guard.IsNotNull(collection);
 
@@ -521,7 +520,6 @@ public static class CollectionExtensions
     }
 
     public static ValueCollection<T> ToValueCollection<T>(this IEnumerable<T> collection)
-        where T : IEquatable<T>
     {
         Guard.IsNotNull(collection);
 

@@ -14,7 +14,7 @@ namespace DSE.Open.Collections.Generic;
 public sealed class ValueDictionary<TKey, TValue>
     : IDictionary<TKey, TValue>,
       IEquatable<ValueDictionary<TKey, TValue>>
-    where TKey : notnull, IEquatable<TKey>
+    where TKey : notnull
 {
     public static readonly ValueDictionary<TKey, TValue> Empty = new();
 

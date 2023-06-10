@@ -8,7 +8,7 @@ namespace DSE.Open.Collections.Generic;
 
 public class ReadOnlyKeyedCollection<TKey, TItem>
     : IKeyedCollection<TKey, TItem>
-    where TKey : notnull, IEquatable<TKey>
+    where TKey : notnull
 {
     private readonly KeyedCollection<TKey, TItem> _innerCollection;
 

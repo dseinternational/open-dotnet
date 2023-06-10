@@ -17,7 +17,7 @@ public sealed class ReadOnlyValueDictionary<TKey, TValue>
     : IReadOnlyDictionary<TKey, TValue>,
       IDictionary<TKey, TValue>,
       IEquatable<ReadOnlyValueDictionary<TKey, TValue>>
-    where TKey : notnull, IEquatable<TKey>
+    where TKey : notnull
 {
     public static readonly ReadOnlyValueDictionary<TKey, TValue> Empty = new();
 

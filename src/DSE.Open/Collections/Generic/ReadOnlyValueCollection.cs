@@ -15,8 +15,6 @@ public class ReadOnlyValueCollection<T>
     : IReadOnlyList<T>,
       ICollection<T>,
       IEquatable<ReadOnlyValueCollection<T>>
-    where T
-    : IEquatable<T>
 {
     public static readonly ReadOnlyValueCollection<T> Empty = new();
 

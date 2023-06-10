@@ -6,7 +6,7 @@ namespace DSE.Open.Collections.Generic;
 public class DictionaryEqualityComparer<TKey, TValue>
     : IEqualityComparer<IReadOnlyDictionary<TKey, TValue>>,
       IEqualityComparer<IDictionary<TKey, TValue>>
-    where TKey : notnull, IEquatable<TKey>
+    where TKey : notnull
 {
     public static readonly DictionaryEqualityComparer<TKey, TValue> Default = new();
 
