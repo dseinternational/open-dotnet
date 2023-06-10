@@ -10,7 +10,7 @@ using System.ComponentModel;
 
 namespace DSE.Open.Values;
 
-[TypeConverter(typeof(global::DSE.Open.Values.ValueConverter<AlphaCode, AsciiCharSequence>))]
+[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<AlphaCode, AsciiCharSequence>))]
 public readonly partial struct AlphaCode
     : global::DSE.Open.Values.IOrdinalValue<AlphaCode, AsciiCharSequence>
 {

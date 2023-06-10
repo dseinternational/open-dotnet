@@ -10,7 +10,7 @@ using System.ComponentModel;
 
 namespace DSE.Open.Globalization;
 
-[TypeConverter(typeof(global::DSE.Open.Values.ValueConverter<LanguageTag, AsciiCharSequence>))]
+[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<LanguageTag, AsciiCharSequence>))]
 public readonly partial struct LanguageTag
     : global::DSE.Open.Values.IOrdinalValue<LanguageTag, AsciiCharSequence>
 {

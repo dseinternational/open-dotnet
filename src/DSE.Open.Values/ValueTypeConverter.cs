@@ -6,7 +6,7 @@ using System.Globalization;
 
 namespace DSE.Open.Values;
 
-public class ValueConverter<TValue, T> : TypeConverter
+public class ValueTypeConverter<TValue, T> : TypeConverter
     where T : IEquatable<T>
     where TValue : struct, IValue<TValue, T>
 {

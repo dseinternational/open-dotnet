@@ -10,7 +10,7 @@ using System.ComponentModel;
 
 namespace DSE.Open.Values;
 
-[TypeConverter(typeof(global::DSE.Open.Values.ValueConverter<Percent, Double>))]
+[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<Percent, Double>))]
 public readonly partial struct Percent
     : global::DSE.Open.Values.IRatioValue<Percent, Double>
 {

@@ -69,7 +69,7 @@ public partial class ValueTypesGenerator
             }
 
             writer.WriteLine($"""
-                [TypeConverter(typeof({Namespaces.DseOpenValues}.ValueConverter<{spec.ValueTypeName}, {spec.ContainedValueTypeName}>))]
+                [TypeConverter(typeof({Namespaces.DseOpenValues}.ValueTypeConverter<{spec.ValueTypeName}, {spec.ContainedValueTypeName}>))]
                 """);
             writer.WriteLine($"""
                 {AccessibilityHelper.GetKeyword(spec.Accessibility)} readonly partial struct {spec.ValueTypeName}

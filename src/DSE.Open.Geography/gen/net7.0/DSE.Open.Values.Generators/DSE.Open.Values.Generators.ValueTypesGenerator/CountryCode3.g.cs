@@ -10,7 +10,7 @@ using System.ComponentModel;
 
 namespace DSE.Open.Geography;
 
-[TypeConverter(typeof(global::DSE.Open.Values.ValueConverter<CountryCode3, AsciiChar3>))]
+[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<CountryCode3, AsciiChar3>))]
 public readonly partial struct CountryCode3
     : global::DSE.Open.Values.INominalValue<CountryCode3, AsciiChar3>
 {

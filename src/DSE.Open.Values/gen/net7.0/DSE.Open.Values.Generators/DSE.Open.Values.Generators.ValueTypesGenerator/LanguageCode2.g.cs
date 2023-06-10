@@ -10,7 +10,7 @@ using System.ComponentModel;
 
 namespace DSE.Open.Globalization;
 
-[TypeConverter(typeof(global::DSE.Open.Values.ValueConverter<LanguageCode2, AsciiChar2>))]
+[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<LanguageCode2, AsciiChar2>))]
 public readonly partial struct LanguageCode2
     : global::DSE.Open.Values.IOrdinalValue<LanguageCode2, AsciiChar2>
 {
