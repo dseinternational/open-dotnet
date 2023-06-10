@@ -1,0 +1,63 @@
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Down Syndrome Education International and Contributors licence this file to you under the MIT license.
+
+using DSE.Open.Collections.Generic;
+
+namespace DSE.Open.Tests.Collections.Generic;
+
+public class CollectionExtensionsTests
+{
+    private static readonly int[] s_integersInOrder = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
+
+    [Fact]
+    public void ShuffledListHasNewOrder()
+    {
+        var list = new List<int>(s_integersInOrder);
+
+        list.Shuffle();
+        var inOrder = false;
+
+        for (var i = 1; i < list.Count; i++)
+        {
+            inOrder = list[i - 1] < list[i];
+            if (!inOrder)
+            {
+                break;
+            }
+        }
+
+        Assert.False(inOrder);
+    }
+
+    [Fact]
+    public void FindIndex_IList()
+    {
+        IList<int> list = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 14, 15 };
+
+        Assert.Equal(13, list.FindIndex(i => i == 14));
+    }
+
+    [Fact]
+    public void FindIndex_IReadOnlyList()
+    {
+        IReadOnlyList<int> list = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 14, 15 };
+
+        Assert.Equal(13, list.FindIndex(i => i == 14));
+    }
+
+    [Fact]
+    public void FindLastIndex_IList()
+    {
+        IList<int> list = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 14, 15 };
+
+        Assert.Equal(14, list.FindLastIndex(i => i == 14));
+    }
+
+    [Fact]
+    public void FindLastIndex_IReadOnlyList()
+    {
+        IReadOnlyList<int> list = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 14, 15 };
+
+        Assert.Equal(14, list.FindLastIndex(i => i == 14));
+    }
+}

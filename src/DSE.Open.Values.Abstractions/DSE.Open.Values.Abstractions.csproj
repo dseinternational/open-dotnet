@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <RootNamespace>DSE.Open.Values</RootNamespace>
+    <PackageDescription>Value type abstractions for DSE.Open.Values</PackageDescription>
+  </PropertyGroup>
+
+  <ItemGroup>
+
+    <ProjectReference Include="..\DSE.Open.Abstractions\DSE.Open.Abstractions.csproj" />
+
+    <ProjectReference Include="..\..\gen\DSE.Open.Values.Generators\DSE.Open.Values.Generators.csproj"
+                      ReferenceOutputAssembly="false"
+                      PackAsAnalyzer="true" />
+    
+  </ItemGroup>
+
+</Project>
