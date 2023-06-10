@@ -72,9 +72,9 @@ public readonly partial struct LanguageCode2
 
     public override int GetHashCode() => HashCode.Combine(_value);
 
-    public static bool operator ==(LanguageCode2 left, LanguageCode2 right) => left._value == right._value;
+    public static bool operator ==(LanguageCode2 left, LanguageCode2 right) => left.Equals(right);
     
-    public static bool operator !=(LanguageCode2 left, LanguageCode2 right) => left._value != right._value;
+    public static bool operator !=(LanguageCode2 left, LanguageCode2 right) => !(left == right);
 
     // ISpanFormattable
 

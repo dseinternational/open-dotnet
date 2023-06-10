@@ -244,9 +244,9 @@ public partial class ValueTypesGenerator
             {
                 writer.WriteLine();
                 writer.WriteLine($$"""
-                    public static bool operator ==({{spec.ValueTypeName}} left, {{spec.ValueTypeName}} right) => left._value == right._value;
+                    public static bool operator ==({{spec.ValueTypeName}} left, {{spec.ValueTypeName}} right) => left.Equals(right);
 
-                    public static bool operator !=({{spec.ValueTypeName}} left, {{spec.ValueTypeName}} right) => left._value != right._value;
+                    public static bool operator !=({{spec.ValueTypeName}} left, {{spec.ValueTypeName}} right) => !(left == right);
                     """);
             }
 

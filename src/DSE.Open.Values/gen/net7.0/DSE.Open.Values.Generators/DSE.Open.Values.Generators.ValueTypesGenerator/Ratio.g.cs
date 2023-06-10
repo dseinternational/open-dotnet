@@ -72,9 +72,9 @@ public readonly partial struct Ratio
 
     public override int GetHashCode() => HashCode.Combine(_value);
 
-    public static bool operator ==(Ratio left, Ratio right) => left._value == right._value;
+    public static bool operator ==(Ratio left, Ratio right) => left.Equals(right);
     
-    public static bool operator !=(Ratio left, Ratio right) => left._value != right._value;
+    public static bool operator !=(Ratio left, Ratio right) => !(left == right);
 
     // ISpanFormattable
 

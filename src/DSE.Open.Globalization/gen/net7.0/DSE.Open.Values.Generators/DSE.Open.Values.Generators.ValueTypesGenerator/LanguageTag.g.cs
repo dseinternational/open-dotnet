@@ -79,9 +79,9 @@ public readonly partial struct LanguageTag
 
     public override bool Equals(object? obj) => obj is LanguageTag other && Equals(other);
 
-    public static bool operator ==(LanguageTag left, LanguageTag right) => left._value == right._value;
+    public static bool operator ==(LanguageTag left, LanguageTag right) => left.Equals(right);
     
-    public static bool operator !=(LanguageTag left, LanguageTag right) => left._value != right._value;
+    public static bool operator !=(LanguageTag left, LanguageTag right) => !(left == right);
 
     // ISpanFormattable
 

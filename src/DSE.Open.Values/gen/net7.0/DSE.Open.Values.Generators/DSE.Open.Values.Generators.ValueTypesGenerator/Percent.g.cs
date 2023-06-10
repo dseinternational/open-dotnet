@@ -72,9 +72,9 @@ public readonly partial struct Percent
 
     public override int GetHashCode() => HashCode.Combine(_value);
 
-    public static bool operator ==(Percent left, Percent right) => left._value == right._value;
+    public static bool operator ==(Percent left, Percent right) => left.Equals(right);
     
-    public static bool operator !=(Percent left, Percent right) => left._value != right._value;
+    public static bool operator !=(Percent left, Percent right) => !(left == right);
 
     // ISpanFormattable
 

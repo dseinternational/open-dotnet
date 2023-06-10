@@ -10,8 +10,6 @@ namespace DSE.Open.Globalization.Tests;
 
 public class LanguageTagTests
 {
-    // TODO
-
     [Theory]
     [MemberData(nameof(ValidLanguageTags))]
     public void TryFromValue_accepts_valid_language_tags(string tag)
@@ -303,5 +301,13 @@ public class LanguageTagTests
 
         // Assert
         Assert.Equal(LanguageTag.EnglishIreland, code);
+    }
+
+    [Fact]
+    public void Equal_operator_when_case_different()
+    {
+        var t1 = LanguageTag.Parse("en-GB");
+        var t2 = LanguageTag.Parse("en-gb");
+        Assert.True(t1 == t2);
     }
 }

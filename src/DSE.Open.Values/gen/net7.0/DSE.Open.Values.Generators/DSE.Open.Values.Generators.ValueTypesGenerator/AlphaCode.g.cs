@@ -72,9 +72,9 @@ public readonly partial struct AlphaCode
 
     public override int GetHashCode() => HashCode.Combine(_value);
 
-    public static bool operator ==(AlphaCode left, AlphaCode right) => left._value == right._value;
+    public static bool operator ==(AlphaCode left, AlphaCode right) => left.Equals(right);
     
-    public static bool operator !=(AlphaCode left, AlphaCode right) => left._value != right._value;
+    public static bool operator !=(AlphaCode left, AlphaCode right) => !(left == right);
 
     // ISpanFormattable
 

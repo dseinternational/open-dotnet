@@ -72,9 +72,9 @@ public readonly partial struct CountryCode3
 
     public override int GetHashCode() => HashCode.Combine(_value);
 
-    public static bool operator ==(CountryCode3 left, CountryCode3 right) => left._value == right._value;
+    public static bool operator ==(CountryCode3 left, CountryCode3 right) => left.Equals(right);
     
-    public static bool operator !=(CountryCode3 left, CountryCode3 right) => left._value != right._value;
+    public static bool operator !=(CountryCode3 left, CountryCode3 right) => !(left == right);
 
     // ISpanFormattable
 
