@@ -7,10 +7,12 @@ using System.Text.Json.Serialization;
 
 namespace DSE.Open.Values.Text.Json.Serialization;
 
-public class JsonSpanSerializableValueConverter<TValue, T> : JsonConverter<TValue>
+public sealed class JsonSpanSerializableValueConverter<TValue, T> : JsonConverter<TValue>
     where T : IEquatable<T>, ISpanParsable<T>, ISpanFormattable
     where TValue : struct, IValue<TValue, T>, ISpanSerializable<TValue>
 {
+    public static readonly JsonSpanSerializableValueConverter<TValue, T> Default = new();
+
     public override TValue Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         var valueLength = reader.HasValueSequence
@@ -20,7 +22,7 @@ public class JsonSpanSerializableValueConverter<TValue, T> : JsonConverter<TValu
         char[]? rented = null;
 
         Span<char> buffer = valueLength <= JsonConstants.StackallocCharThreshold
-            ? stackalloc char[JsonConstants.StackallocCharThreshold]
+            ? stackalloc char[valueLength]
             : (rented = ArrayPool<char>.Shared.Rent(valueLength));
 
         try
