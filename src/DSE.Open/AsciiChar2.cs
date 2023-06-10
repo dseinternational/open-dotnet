@@ -12,7 +12,8 @@ namespace DSE.Open;
 /// An immutable sequence of two ASCII bytes.
 /// </summary>
 [StructLayout(LayoutKind.Auto)]
-public readonly struct AsciiChar2 :
+public readonly struct AsciiChar2
+    : IComparable<AsciiChar2>,
     IEquatable<AsciiChar2>,
     IEqualityOperators<AsciiChar2, AsciiChar2, bool>,
     ISpanFormattable,
@@ -93,6 +94,12 @@ public readonly struct AsciiChar2 :
     {
         c0 = _c0;
         c1 = _c1;
+    }
+
+    public int CompareTo(AsciiChar2 other)
+    {
+        var c = _c0.CompareTo(other._c0);
+        return c != 0 ? c : _c1.CompareTo(other._c1);
     }
 
     public bool Equals(AsciiChar2 other) => _c0 == other._c0 && _c1 == other._c1;
@@ -197,9 +204,16 @@ public readonly struct AsciiChar2 :
         [MaybeNullWhen(false)] out AsciiChar2 result)
         => TryParse(s.AsSpan(), provider, out result);
 
-
     static string IConvertibleTo<AsciiChar2, string>.ConvertTo(AsciiChar2 value) => value.ToString();
 
     static bool ITryConvertibleFrom<AsciiChar2, string>.TryFromValue(string value, out AsciiChar2 result)
         => TryParse(value, null, out result);
+
+    public static bool operator <(AsciiChar2 left, AsciiChar2 right) => left.CompareTo(right) < 0;
+
+    public static bool operator <=(AsciiChar2 left, AsciiChar2 right) => left.CompareTo(right) <= 0;
+
+    public static bool operator >(AsciiChar2 left, AsciiChar2 right) => left.CompareTo(right) > 0;
+
+    public static bool operator >=(AsciiChar2 left, AsciiChar2 right) => left.CompareTo(right) >= 0;
 }

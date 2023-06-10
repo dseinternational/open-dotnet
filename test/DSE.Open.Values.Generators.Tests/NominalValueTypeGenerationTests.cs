@@ -49,7 +49,7 @@ internal readonly partial struct MyOptions2 : INominalValue<MyOptions2, byte>
 #nullable disable
 ");
 
-        var result = CompilationHelper.RunValuesGenerators(inputCompilation);
+        var result = CompilationHelper.RunValuesSourceGenerator(inputCompilation);
 
         AssertDiagnosticsCount(0, result.Diagnostics);
 
@@ -95,7 +95,7 @@ public readonly partial struct MyOptions : INominalValue<MyOptions, long>
 #nullable disable
 ");
 
-        var result = CompilationHelper.RunValuesGenerators(inputCompilation);
+        var result = CompilationHelper.RunValuesSourceGenerator(inputCompilation);
 
         AssertDiagnosticsCount(0, result.Diagnostics);
 
@@ -138,7 +138,7 @@ public readonly partial struct MyOptions : INominalValue<MyOptions, long>
 #nullable disable
 ");
 
-        var result = CompilationHelper.RunValuesGenerators(inputCompilation);
+        var result = CompilationHelper.RunValuesSourceGenerator(inputCompilation);
 
         AssertDiagnosticsCount(0, result.Diagnostics);
 
@@ -181,7 +181,7 @@ public readonly partial struct MyOptions : INominalValue<MyOptions, long>
 #nullable disable
 ");
 
-        var result = CompilationHelper.RunValuesGenerators(inputCompilation);
+        var result = CompilationHelper.RunValuesSourceGenerator(inputCompilation);
 
         AssertDiagnosticsCount(0, result.Diagnostics);
 
@@ -229,7 +229,7 @@ public readonly partial struct MyOptions : INominalValue<MyOptions, long>
 #nullable disable
 ");
         
-        var result = CompilationHelper.RunValuesGenerators(inputCompilation);
+        var result = CompilationHelper.RunValuesSourceGenerator(inputCompilation);
 
         AssertDiagnosticsCount(0, result.Diagnostics);
 

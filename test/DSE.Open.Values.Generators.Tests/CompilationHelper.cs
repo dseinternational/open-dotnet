@@ -54,7 +54,7 @@ public static class CompilationHelper
             options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
     }
 
-    public static CSharpGeneratorDriver CreateValuesGeneratorsDriver(ValueTypesGenerator? generator = null)
+    public static CSharpGeneratorDriver CreateValuesSourceGeneratorDriver(ValueTypesGenerator? generator = null)
     {
         generator ??= new();
 
@@ -67,9 +67,9 @@ public static class CompilationHelper
             );
     }
 
-    public static SourceGenerationResult RunValuesGenerators(Compilation compilation)
+    public static SourceGenerationResult RunValuesSourceGenerator(Compilation compilation)
     {
-        var driver = CreateValuesGeneratorsDriver();
+        var driver = CreateValuesSourceGeneratorDriver();
 
         _ = driver.RunGeneratorsAndUpdateCompilation(compilation, out var outCompilation, out var diagnostics);
 

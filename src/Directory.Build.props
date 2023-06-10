@@ -29,8 +29,8 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <Description>Libraries and tools supporting DSE Open systems and technologies.</Description>
-    <PackageProjectUrl>https://github.com/dseinternational/dse-open</PackageProjectUrl>
+    <Description>Things we hope are useful and benefit others building on .NET Core.</Description>
+    <PackageProjectUrl>https://github.com/dseinternational/open-dotnet</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
     <PackageIcon>img\dse-open-icon.png</PackageIcon>

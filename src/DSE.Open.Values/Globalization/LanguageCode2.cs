@@ -10,9 +10,10 @@ namespace DSE.Open.Globalization;
 /// <summary>
 /// An offically-assigned ISO 639-1 language code.
 /// </summary>
-[NominalValue]
+[OrdinalValue]
 [JsonConverter(typeof(JsonSpanSerializableValueConverter<LanguageCode2, AsciiChar2>))]
-public readonly partial struct LanguageCode2 : INominalValue<LanguageCode2, AsciiChar2>
+public readonly partial struct LanguageCode2
+    : IOrdinalValue<LanguageCode2, AsciiChar2>
 {
     public static readonly LanguageCode2 English = new((AsciiChar2)"en");
 

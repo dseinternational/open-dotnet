@@ -12,7 +12,7 @@ namespace DSE.Open.Globalization;
 
 [TypeConverter(typeof(global::DSE.Open.Values.ValueConverter<LanguageCode2, AsciiChar2>))]
 public readonly partial struct LanguageCode2
-    : global::DSE.Open.Values.INominalValue<LanguageCode2, AsciiChar2>
+    : global::DSE.Open.Values.IOrdinalValue<LanguageCode2, AsciiChar2>
 {
 
     private readonly AsciiChar2 _value;
@@ -161,6 +161,22 @@ public readonly partial struct LanguageCode2
     public static LanguageCode2 Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
         => global::DSE.Open.Values.ValueParser.Parse<LanguageCode2, AsciiChar2>(s, provider);
 
+    public static LanguageCode2 Parse(ReadOnlySpan<char> s)
+        => Parse(s, default);
+
     public static LanguageCode2 Parse(string s, IFormatProvider? provider)
         => global::DSE.Open.Values.ValueParser.Parse<LanguageCode2, AsciiChar2>(s, provider);
+
+    public static LanguageCode2 Parse(string s)
+        => Parse(s, default);
+
+    public int CompareTo(LanguageCode2 other) => _value.CompareTo(other._value);
+
+    public static bool operator <(LanguageCode2 left, LanguageCode2 right) => left._value < right._value;
+    
+    public static bool operator >(LanguageCode2 left, LanguageCode2 right) => left._value > right._value;
+    
+    public static bool operator <=(LanguageCode2 left, LanguageCode2 right) => left._value <= right._value;
+    
+    public static bool operator >=(LanguageCode2 left, LanguageCode2 right) => left._value >= right._value;
 }

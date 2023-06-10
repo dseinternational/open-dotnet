@@ -7,6 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using DSE.Open.Text.Json.Serialization;
 
 namespace DSE.Open.Text.Json;
 

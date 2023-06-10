@@ -13,7 +13,8 @@ namespace DSE.Open;
 /// </summary>
 [StructLayout(LayoutKind.Auto)]
 public readonly partial struct AsciiChar
-    : IEquatable<AsciiChar>,
+    : IComparable<AsciiChar>,
+      IEquatable<AsciiChar>,
       IEqualityOperators<AsciiChar, AsciiChar, bool>,
       ISpanFormattable,
       ISpanParsable<AsciiChar>
@@ -59,6 +60,10 @@ public readonly partial struct AsciiChar
             ThrowHelper.ThrowArgumentOutOfRangeException(nameof(value));
         }
     }
+
+    public int CompareTo(AsciiChar other) => _c.CompareTo(other._c);
+
+    public int CompareToCaseInsensitive(AsciiChar other) => CompareToCaseInsenstive(_c, other._c);
 
     public bool Equals(AsciiChar other) => _c == other._c;
 
@@ -154,4 +159,12 @@ public readonly partial struct AsciiChar
         IFormatProvider? provider,
         [MaybeNullWhen(false)] out AsciiChar result)
         => TryParse(s.AsSpan(), provider, out result);
+
+    public static bool operator <(AsciiChar left, AsciiChar right) => left.CompareTo(right) < 0;
+
+    public static bool operator <=(AsciiChar left, AsciiChar right) => left.CompareTo(right) <= 0;
+
+    public static bool operator >(AsciiChar left, AsciiChar right) => left.CompareTo(right) > 0;
+
+    public static bool operator >=(AsciiChar left, AsciiChar right) => left.CompareTo(right) >= 0;
 }

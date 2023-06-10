@@ -45,7 +45,7 @@ public readonly partial struct PercentageF : IRatioValue<PercentageF, float>
 #nullable disable
 ");
 
-        var result = CompilationHelper.RunValuesGenerators(inputCompilation);
+        var result = CompilationHelper.RunValuesSourceGenerator(inputCompilation);
 
         AssertDiagnosticsCount(0, result.Diagnostics);
 

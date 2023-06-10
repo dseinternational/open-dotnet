@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace DSE.Open.Text.Json;
+namespace DSE.Open.Text.Json.Serialization;
 
 /// <summary>
 /// Deserializes <see cref="object"/> values by converting Json values to a corresponding .NET type.

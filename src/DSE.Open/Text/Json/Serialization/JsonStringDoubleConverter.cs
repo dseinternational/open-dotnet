@@ -6,33 +6,33 @@ using System.Buffers.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace DSE.Open.Text.Json;
+namespace DSE.Open.Text.Json.Serialization;
 
-public class JsonStringDecimalConverter : JsonConverter<decimal>
+public class JsonStringDoubleConverter : JsonConverter<double>
 {
-    public static readonly JsonStringDecimalConverter Default = new();
+    public static readonly JsonStringDoubleConverter Default = new();
 
-    public override decimal Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public override double Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         if (reader.TokenType == JsonTokenType.String)
         {
             var span = reader.HasValueSequence ? reader.ValueSequence.ToArray() : reader.ValueSpan;
 
-            if (Utf8Parser.TryParse(span, out decimal number, out var bytesConsumed) && span.Length == bytesConsumed)
+            if (Utf8Parser.TryParse(span, out double number, out var bytesConsumed) && span.Length == bytesConsumed)
             {
                 return number;
             }
 
-            if (decimal.TryParse(reader.GetString(), out number))
+            if (double.TryParse(reader.GetString(), out number))
             {
                 return number;
             }
         }
 
-        return reader.GetDecimal();
+        return reader.GetSingle();
     }
 
-    public override void Write(Utf8JsonWriter writer, decimal value, JsonSerializerOptions options)
+    public override void Write(Utf8JsonWriter writer, double value, JsonSerializerOptions options)
     {
         Guard.IsNotNull(writer);
         writer.WriteStringValue(value.ToStringInvariant());

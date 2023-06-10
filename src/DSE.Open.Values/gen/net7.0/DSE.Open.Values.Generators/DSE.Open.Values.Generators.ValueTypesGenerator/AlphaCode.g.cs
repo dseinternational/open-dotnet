@@ -12,7 +12,7 @@ namespace DSE.Open.Values;
 
 [TypeConverter(typeof(global::DSE.Open.Values.ValueConverter<AlphaCode, AsciiCharSequence>))]
 public readonly partial struct AlphaCode
-    : global::DSE.Open.Values.INominalValue<AlphaCode, AsciiCharSequence>
+    : global::DSE.Open.Values.IOrdinalValue<AlphaCode, AsciiCharSequence>
 {
 
     private readonly AsciiCharSequence _value;
@@ -161,6 +161,22 @@ public readonly partial struct AlphaCode
     public static AlphaCode Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
         => global::DSE.Open.Values.ValueParser.Parse<AlphaCode, AsciiCharSequence>(s, provider);
 
+    public static AlphaCode Parse(ReadOnlySpan<char> s)
+        => Parse(s, default);
+
     public static AlphaCode Parse(string s, IFormatProvider? provider)
         => global::DSE.Open.Values.ValueParser.Parse<AlphaCode, AsciiCharSequence>(s, provider);
+
+    public static AlphaCode Parse(string s)
+        => Parse(s, default);
+
+    public int CompareTo(AlphaCode other) => _value.CompareTo(other._value);
+
+    public static bool operator <(AlphaCode left, AlphaCode right) => left._value < right._value;
+    
+    public static bool operator >(AlphaCode left, AlphaCode right) => left._value > right._value;
+    
+    public static bool operator <=(AlphaCode left, AlphaCode right) => left._value <= right._value;
+    
+    public static bool operator >=(AlphaCode left, AlphaCode right) => left._value >= right._value;
 }

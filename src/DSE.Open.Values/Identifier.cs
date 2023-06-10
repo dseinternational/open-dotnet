@@ -17,8 +17,10 @@ namespace DSE.Open.Values;
 /// </summary>
 [StructLayout(LayoutKind.Auto)]
 [JsonConverter(typeof(JsonStringIdentifierConverter))]
-public readonly record struct Identifier : ISpanFormattable, ISpanParsable<Identifier>,
-    IEquatable<string>, IEquatable<ReadOnlyMemory<char>>
+public readonly record struct Identifier
+    : ISpanFormattable,
+      ISpanParsable<Identifier>,
+      IEquatable<Identifier>
 {
     public const int DefaultLength = 48;
 
@@ -138,15 +140,12 @@ public readonly record struct Identifier : ISpanFormattable, ISpanParsable<Ident
             && IsValidIdPart(id[(prefixEndIndex + 1)..]);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsValidIdPart(ReadOnlySpan<char> idPart)
         => idPart.Length is >= MinIdLength and <= MaxIdLength && idPart.All(IsAllowedIdentifierCharacter);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsValidPrefix(ReadOnlySpan<char> prefix)
         => prefix.Length is >= MinPrefixLength and <= MaxPrefixLength && prefix.All(IsPrefixAllowedCharacter);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsAllowedIdentifierCharacter(char c) => char.IsAsciiLetterOrDigit(c);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

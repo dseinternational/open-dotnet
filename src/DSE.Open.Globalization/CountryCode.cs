@@ -16,8 +16,11 @@ namespace DSE.Open.Globalization;
 [JsonConverter(typeof(JsonStringCountryCodeConverter))]
 [StructLayout(LayoutKind.Auto)]
 [SuppressMessage("Design", "CA1036:Override methods on comparable types", Justification = "Not necessary")]
-public readonly struct CountryCode : IComparable, IComparable<CountryCode>, IEquatable<CountryCode>,
-    ISpanParsable<CountryCode>, ISpanFormattable, IEquatable<string>, IEquatable<ReadOnlyMemory<char>>
+public readonly struct CountryCode
+    : IComparable<CountryCode>,
+      IEquatable<CountryCode>,
+      ISpanParsable<CountryCode>,
+      ISpanFormattable
 {
     private readonly char _c0;
     private readonly char _c1;
@@ -163,17 +166,7 @@ public readonly struct CountryCode : IComparable, IComparable<CountryCode>, IEqu
 
     public override int GetHashCode() => HashCode.Combine(_c0, _c1);
 
-    int IComparable.CompareTo(object? obj)
-    {
-        return obj switch
-        {
-            null => 1,
-            CountryCode code => CompareTo(code),
-            _ => throw new ArgumentException("Object must be an Alpha2RegionCode")
-        };
-    }
-
-    public int CompareTo(CountryCode obj) => Compare(this, obj);
+    public int CompareTo(CountryCode other) => Compare(this, other);
 
     public static int Compare(CountryCode code1, CountryCode code2)
         => code1._c0 == code2._c0

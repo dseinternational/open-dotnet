@@ -161,6 +161,12 @@ public readonly partial struct CountryCode2
     public static CountryCode2 Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
         => global::DSE.Open.Values.ValueParser.Parse<CountryCode2, AsciiChar2>(s, provider);
 
+    public static CountryCode2 Parse(ReadOnlySpan<char> s)
+        => Parse(s, default);
+
     public static CountryCode2 Parse(string s, IFormatProvider? provider)
         => global::DSE.Open.Values.ValueParser.Parse<CountryCode2, AsciiChar2>(s, provider);
+
+    public static CountryCode2 Parse(string s)
+        => Parse(s, default);
 }

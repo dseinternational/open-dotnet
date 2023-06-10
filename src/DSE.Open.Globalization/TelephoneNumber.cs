@@ -12,7 +12,9 @@ namespace DSE.Open.Globalization;
 
 [JsonConverter(typeof(JsonStringTelephoneNumberConverter))]
 [StructLayout(LayoutKind.Auto)]
-public readonly record struct TelephoneNumber : ISpanParsable<TelephoneNumber>, ISpanFormattable
+public readonly record struct TelephoneNumber
+    : ISpanParsable<TelephoneNumber>,
+      ISpanFormattable
 {
     public static readonly TelephoneNumber Empty;
 

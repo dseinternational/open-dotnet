@@ -3,7 +3,7 @@
 
 using DSE.Open.Diagnostics;
 
-namespace DSE.Open.Text.Json;
+namespace DSE.Open.Text.Json.Serialization;
 
 public class JsonStringDiagnosticCodeConverter : SpanParsableCharWritingJsonConverter<DiagnosticCode>
 {

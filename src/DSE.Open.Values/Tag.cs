@@ -22,8 +22,11 @@ namespace DSE.Open.Values;
 /// </remarks>
 [StructLayout(LayoutKind.Auto)]
 [JsonConverter(typeof(JsonStringTagConverter))]
-public readonly record struct Tag : IComparable<Tag>, ISpanFormattable, ISpanParsable<Tag>, // ISpanProvider<char>,
-    IEquatable<string>, IEquatable<ReadOnlyMemory<char>>
+public readonly record struct Tag
+    : IComparable<Tag>,
+      ISpanFormattable,
+      ISpanParsable<Tag>,
+      IEquatable<Tag>
 {
     public const int MinLength = 2;
     public const int MaxLength = 120;

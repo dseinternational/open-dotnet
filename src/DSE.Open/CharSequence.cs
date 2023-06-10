@@ -16,12 +16,13 @@ public readonly struct CharSequence
     : IEquatable<CharSequence>,
       IEquatable<ReadOnlyMemory<char>>,
       IEqualityOperators<CharSequence, CharSequence, bool>,
+      IComparable<CharSequence>,
       ISpanFormattable,
       ISpanParsable<CharSequence>
 {
     private readonly ReadOnlyMemory<char> _value;
 
-    public CharSequence(string value) : this (value.AsMemory()) { }
+    public CharSequence(string value) : this(value.AsMemory()) { }
 
     public CharSequence(ReadOnlySpan<char> value) : this((ReadOnlyMemory<char>)value.ToArray()) { }
 
@@ -47,6 +48,7 @@ public readonly struct CharSequence
         {
             return result;
         }
+
         ThrowHelper.ThrowInvalidOperationException(); // this should not be possible
         return default; // unreachable
     }
@@ -78,7 +80,7 @@ public readonly struct CharSequence
         [NotNullWhen(true)] string? s,
         out CharSequence result)
         => TryParse(s, default, out result);
-    
+
     public static bool TryParse(
         [NotNullWhen(true)] string? s,
         IFormatProvider? provider,
@@ -92,6 +94,8 @@ public readonly struct CharSequence
 
         return TryParse(s.AsSpan(), provider, out result);
     }
+
+    public int CompareTo(CharSequence other) => _value.Span.SequenceCompareTo(other._value.Span);
 
     public bool Equals(ReadOnlySpan<char> other) => _value.Span.SequenceEqual(other);
 
@@ -119,6 +123,7 @@ public readonly struct CharSequence
             charsWritten = _value.Length;
             return true;
         }
+
         charsWritten = 0;
         return false;
     }
@@ -132,4 +137,12 @@ public readonly struct CharSequence
     public static implicit operator CharSequence(string value) => Parse(value);
 
 #pragma warning restore CA2225 // Operator overloads have named alternates
+
+    public static bool operator <(CharSequence left, CharSequence right) => left.CompareTo(right) < 0;
+
+    public static bool operator <=(CharSequence left, CharSequence right) => left.CompareTo(right) <= 0;
+
+    public static bool operator >(CharSequence left, CharSequence right) => left.CompareTo(right) > 0;
+
+    public static bool operator >=(CharSequence left, CharSequence right) => left.CompareTo(right) >= 0;
 }

@@ -36,7 +36,7 @@ public readonly partial struct MyOptions : IOrdinalValue<MyOptions, byte>
 #nullable disable
 ");
 
-        var result = CompilationHelper.RunValuesGenerators(inputCompilation);
+        var result = CompilationHelper.RunValuesSourceGenerator(inputCompilation);
 
         AssertDiagnosticsCount(0, result.Diagnostics);
 

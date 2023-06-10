@@ -12,7 +12,8 @@ namespace DSE.Open;
 /// An immutable sequence of three ASCII bytes.
 /// </summary>
 [StructLayout(LayoutKind.Auto)]
-public readonly struct AsciiChar3 :
+public readonly struct AsciiChar3
+    : IComparable<AsciiChar3>,
     IEquatable<AsciiChar3>,
     IEqualityOperators<AsciiChar3, AsciiChar3, bool>,
     ISpanFormattable,
@@ -81,6 +82,20 @@ public readonly struct AsciiChar3 :
     }
 
     public bool Equals(AsciiChar3 other) => _c0 == other._c0 && _c1 == other._c1 && _c2 == other._c2;
+
+    public int CompareTo(AsciiChar3 other)
+    {
+        var c = _c0.CompareTo(other._c0);
+
+        if (c != 0)
+        {
+            return c;
+        }
+
+        c = _c1.CompareTo(other._c1);
+
+        return c != 0 ? c : _c2.CompareTo(other._c2);
+    }
 
     public override bool Equals(object? obj) => obj is AsciiChar3 other && Equals(other);
 
@@ -163,9 +178,16 @@ public readonly struct AsciiChar3 :
     public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, [MaybeNullWhen(false)] out AsciiChar3 result)
         => TryParse(s.AsSpan(), provider, out result);
 
-
     static string IConvertibleTo<AsciiChar3, string>.ConvertTo(AsciiChar3 value) => value.ToString();
 
     static bool ITryConvertibleFrom<AsciiChar3, string>.TryFromValue(string value, out AsciiChar3 result)
         => TryParse(value, null, out result);
+
+    public static bool operator <(AsciiChar3 left, AsciiChar3 right) => left.CompareTo(right) < 0;
+
+    public static bool operator <=(AsciiChar3 left, AsciiChar3 right) => left.CompareTo(right) <= 0;
+
+    public static bool operator >(AsciiChar3 left, AsciiChar3 right) => left.CompareTo(right) > 0;
+
+    public static bool operator >=(AsciiChar3 left, AsciiChar3 right) => left.CompareTo(right) >= 0;
 }

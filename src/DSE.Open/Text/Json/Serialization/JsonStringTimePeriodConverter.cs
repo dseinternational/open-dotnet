@@ -5,7 +5,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using DSE.Open.Time;
 
-namespace DSE.Open.Text.Json;
+namespace DSE.Open.Text.Json.Serialization;
 
 public class JsonStringTimePeriodConverter : JsonConverter<TimePeriod>
 {

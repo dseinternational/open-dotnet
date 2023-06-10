@@ -12,9 +12,9 @@ namespace DSE.Open.Values.Generators;
 // See:
 // - https://github.com/dotnet/runtime/tree/main/src/libraries/Microsoft.Extensions.Logging.Abstractions/gen
 // - https://andrewlock.net/series/creating-a-source-generator/
-// - https://github.com/dotnet/runtime/blob/main/src/libraries/System.Text.Json/gen/JsonGenerators.Emitter.cs
-// - https://github.com/CommunityToolkit/dotnet/tree/main/src/CommunityToolkit.Mvvm.Generatorss
-// - https://github.com/CommunityToolkit/dotnet/blob/main/src/CommunityToolkit.Mvvm.Generatorss/ComponentModel/ObservablePropertyGenerator.Execute.cs
+// - https://github.com/dotnet/runtime/blob/main/src/libraries/System.Text.Json/gen/JsonSourceGenerator.Emitter.cs
+// - https://github.com/CommunityToolkit/dotnet/tree/main/src/CommunityToolkit.Mvvm.SourceGenerators
+// - https://github.com/CommunityToolkit/dotnet/blob/main/src/CommunityToolkit.Mvvm.SourceGenerators/ComponentModel/ObservablePropertyGenerator.Execute.cs
 
 [Generator]
 public sealed partial class ValueTypesGenerator : IIncrementalGenerator

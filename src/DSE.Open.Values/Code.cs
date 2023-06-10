@@ -13,8 +13,11 @@ namespace DSE.Open.Values;
 /// </summary>
 [JsonConverter(typeof(JsonStringCodeConverter))]
 [StructLayout(LayoutKind.Auto)]
-public readonly record struct Code : IComparable<Code>, ISpanFormattable, ISpanParsable<Code>,
-    IEquatable<string>, IEquatable<ReadOnlyMemory<char>>
+public readonly record struct Code
+    : IComparable<Code>,
+      ISpanFormattable,
+      ISpanParsable<Code>,
+      IEquatable<Code>
 {
     public const int MaxLength = 32;
 

@@ -16,11 +16,16 @@ namespace DSE.Open;
 public readonly struct AsciiCharSequence
     : IEquatable<AsciiCharSequence>,
       IEquatable<ReadOnlyMemory<byte>>,
+      IComparable<AsciiCharSequence>,
       IEqualityOperators<AsciiCharSequence, AsciiCharSequence, bool>,
       ISpanFormattable,
       ISpanParsable<AsciiCharSequence>
 {
     private readonly ReadOnlyMemory<byte> _value;
+
+    public AsciiCharSequence(ReadOnlyMemory<char> value) : this(AsciiChar.ToByteSpan(value.Span)) { }
+
+    public AsciiCharSequence(ReadOnlySpan<char> value) : this(AsciiChar.ToByteSpan(value)) { }
 
     public AsciiCharSequence(ReadOnlySpan<byte> value) : this((ReadOnlyMemory<byte>)value.ToArray()) { }
 
@@ -57,7 +62,7 @@ public readonly struct AsciiCharSequence
             return result;
         }
 
-        ThrowHelper.ThrowInvalidOperationException(); // this should not be possible
+        ThrowHelper.ThrowFormatException($"'{s}' is not a valid {nameof(AsciiCharSequence)} value.");
         return default; // unreachable
     }
 
@@ -90,6 +95,12 @@ public readonly struct AsciiCharSequence
 
             for (var i = 0; i < s.Length; i++)
             {
+                var b = (byte)s[i];
+                if (!AsciiChar.IsAscii(b))
+                {
+                    result = default;
+                    return false;
+                }
                 buffer[i] = (byte)s[i];
             }
 
@@ -122,6 +133,25 @@ public readonly struct AsciiCharSequence
         }
 
         return TryParse(s.AsSpan(), provider, out result);
+    }
+
+    public int CompareTo(AsciiCharSequence other) => _value.Span.SequenceCompareTo(other._value.Span);
+
+    public int CompareToCaseInsensitive(AsciiCharSequence other)
+    {
+        var length = Math.Min(_value.Length, other._value.Length);
+
+        for (var i = 0; i < length; i++)
+        {
+            var c = AsciiChar.CompareToCaseInsenstive(_value.Span[i], other._value.Span[i]);
+
+            if (c != 0)
+            {
+                return c;
+            }
+        }
+
+        return _value.Length - other._value.Length;
     }
 
     public bool Equals(ReadOnlySpan<byte> other) => _value.Span.SequenceEqual(other);
@@ -189,5 +219,13 @@ public readonly struct AsciiCharSequence
     public static explicit operator AsciiCharSequence(string value) => Parse(value);
 
 #pragma warning restore CA2225 // Operator overloads have named alternates
+
+    public static bool operator <(AsciiCharSequence left, AsciiCharSequence right) => left.CompareTo(right) < 0;
+
+    public static bool operator <=(AsciiCharSequence left, AsciiCharSequence right) => left.CompareTo(right) <= 0;
+
+    public static bool operator >(AsciiCharSequence left, AsciiCharSequence right) => left.CompareTo(right) > 0;
+
+    public static bool operator >=(AsciiCharSequence left, AsciiCharSequence right) => left.CompareTo(right) >= 0;
 
 }

@@ -12,7 +12,7 @@ namespace DSE.Open.Globalization;
 
 [TypeConverter(typeof(global::DSE.Open.Values.ValueConverter<LanguageTag, AsciiCharSequence>))]
 public readonly partial struct LanguageTag
-    : global::DSE.Open.Values.INominalValue<LanguageTag, AsciiCharSequence>
+    : global::DSE.Open.Values.IOrdinalValue<LanguageTag, AsciiCharSequence>
 {
 
     private readonly AsciiCharSequence _value;
@@ -183,6 +183,22 @@ public readonly partial struct LanguageTag
     public static LanguageTag Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
         => global::DSE.Open.Values.ValueParser.Parse<LanguageTag, AsciiCharSequence>(s, provider);
 
+    public static LanguageTag Parse(ReadOnlySpan<char> s)
+        => Parse(s, default);
+
     public static LanguageTag Parse(string s, IFormatProvider? provider)
         => global::DSE.Open.Values.ValueParser.Parse<LanguageTag, AsciiCharSequence>(s, provider);
+
+    public static LanguageTag Parse(string s)
+        => Parse(s, default);
+
+    public int CompareTo(LanguageTag other) => _value.CompareTo(other._value);
+
+    public static bool operator <(LanguageTag left, LanguageTag right) => left._value < right._value;
+    
+    public static bool operator >(LanguageTag left, LanguageTag right) => left._value > right._value;
+    
+    public static bool operator <=(LanguageTag left, LanguageTag right) => left._value <= right._value;
+    
+    public static bool operator >=(LanguageTag left, LanguageTag right) => left._value >= right._value;
 }

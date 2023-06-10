@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text.Json.Serialization;
 
-namespace DSE.Open.Text.Json;
+namespace DSE.Open.Text.Json.Serialization;
 
 /// <summary>
 /// Base implementation for a <see cref="JsonConverter"/> that reads and writes values

@@ -161,12 +161,16 @@ public readonly partial struct Ratio
     public static Ratio Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
         => global::DSE.Open.Values.ValueParser.Parse<Ratio, Double>(s, provider);
 
+    public static Ratio Parse(ReadOnlySpan<char> s)
+        => Parse(s, default);
+
     public static Ratio Parse(string s, IFormatProvider? provider)
         => global::DSE.Open.Values.ValueParser.Parse<Ratio, Double>(s, provider);
 
-    public int CompareTo(Ratio other) => _value.CompareTo(other._value);
+    public static Ratio Parse(string s)
+        => Parse(s, default);
 
-    public int CompareTo(object? obj) => _value.CompareTo(obj);
+    public int CompareTo(Ratio other) => _value.CompareTo(other._value);
 
     public static bool operator <(Ratio left, Ratio right) => left._value < right._value;
     

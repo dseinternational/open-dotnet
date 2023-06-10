@@ -4,7 +4,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
-using DSE.Open.Text.Json;
+using DSE.Open.Text.Json.Serialization;
 
 namespace DSE.Open.Diagnostics;
 

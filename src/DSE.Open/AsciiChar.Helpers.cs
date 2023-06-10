@@ -10,6 +10,8 @@ namespace DSE.Open;
 
 public partial struct AsciiChar
 {
+    public static int CompareToCaseInsenstive(byte a, byte b) => (a | 0x20).CompareTo(b | 0x20);
+
     /// <summary>Indicates whether an ASCII character is within the specified inclusive range.</summary>
     /// <param name="b">The character to evaluate.</param>
     /// <param name="minInclusive">The lower bound, inclusive.</param>
@@ -271,6 +273,32 @@ public partial struct AsciiChar
             if (rented is not null)
             {
                 ArrayPool<char>.Shared.Return(rented);
+            }
+        }
+    }
+
+    public static ReadOnlySpan<byte> ToByteSpan(ReadOnlySpan<char> source)
+    {
+        byte[]? rented = null;
+
+        try
+        {
+            Span<byte> chars = source.Length <= StackallocThresholds.MaxByteLength
+                ? stackalloc byte[StackallocThresholds.MaxByteLength]
+                : (rented = ArrayPool<byte>.Shared.Rent(source.Length));
+
+            for (var i = 0; i < source.Length; i++)
+            {
+                chars[i] = (byte)source[i];
+            }
+
+            return chars[..source.Length].ToArray();
+        }
+        finally
+        {
+            if (rented is not null)
+            {
+                ArrayPool<byte>.Shared.Return(rented);
             }
         }
     }

@@ -15,8 +15,11 @@ namespace DSE.Open.Values;
 /// </summary>
 [StructLayout(LayoutKind.Auto)]
 [JsonConverter(typeof(JsonStringLabelConverter))]
-public readonly record struct Label : IComparable<Label>, ISpanFormattable, ISpanParsable<Label>, // ISpanProvider<char>,
-    IEquatable<string>, IEquatable<ReadOnlyMemory<char>>
+public readonly record struct Label
+    : IComparable<Label>,
+      ISpanFormattable,
+      ISpanParsable<Label>, // ISpanProvider<char>,
+      IEquatable<Label>
 {
     public const int MinLength = 2;
     public const int MaxLength = 120;

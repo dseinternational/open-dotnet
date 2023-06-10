@@ -16,10 +16,11 @@ namespace DSE.Open.Globalization;
 /// <summary>
 /// A language tag as defined by <see href="https://www.rfc-editor.org/rfc/rfc5646.html">RFC5646</see>.
 /// </summary>
-[NominalValue]
+[OrdinalValue]
 [JsonConverter(typeof(JsonSpanSerializableValueConverter<LanguageTag, AsciiCharSequence>))]
 [StructLayout(LayoutKind.Auto)]
-public readonly partial struct LanguageTag : INominalValue<LanguageTag, AsciiCharSequence>
+public readonly partial struct LanguageTag
+    : IOrdinalValue<LanguageTag, AsciiCharSequence>
 {
     /// <summary>
     /// Gets the maximum practical length to expect for a language code that is suitable for

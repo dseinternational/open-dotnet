@@ -9,7 +9,7 @@ namespace DSE.Open.Values.Generators;
 
 // Examples:
 // https://github.com/dotnet/runtime/blob/main/src/libraries/Microsoft.Extensions.Logging.Abstractions/gen/LoggerMessageGenerator.Emitter.cs
-// https://github.com/dotnet/runtime/blob/main/src/libraries/System.Text.Json/gen/JsonGenerators.Emitter.cs
+// https://github.com/dotnet/runtime/blob/main/src/libraries/System.Text.Json/gen/JsonSourceGenerator.Emitter.cs
 // https://github.com/dotnet/runtime/blob/main/src/libraries/System.Text.Json/gen/Helpers/SourceWriter.cs
 
 public partial class ValueTypesGenerator
@@ -470,6 +470,12 @@ public partial class ValueTypesGenerator
                     public static {{spec.ValueTypeName}} Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
                         => {{Namespaces.DseOpenValues}}.ValueParser.Parse<{{spec.ValueTypeName}}, {{spec.ContainedValueTypeName}}>(s, provider);
                     """);
+
+                writer.WriteLine();
+                writer.WriteLine($$"""
+                    public static {{spec.ValueTypeName}} Parse(ReadOnlySpan<char> s)
+                        => Parse(s, default);
+                    """);
             }
 
             if (spec.EmitParseStringMethod)
@@ -478,6 +484,12 @@ public partial class ValueTypesGenerator
                 writer.WriteLine($$"""
                     public static {{spec.ValueTypeName}} Parse(string s, IFormatProvider? provider)
                         => {{Namespaces.DseOpenValues}}.ValueParser.Parse<{{spec.ValueTypeName}}, {{spec.ContainedValueTypeName}}>(s, provider);
+                    """);
+
+                writer.WriteLine();
+                writer.WriteLine($$"""
+                    public static {{spec.ValueTypeName}} Parse(string s)
+                        => Parse(s, default);
                     """);
             }
 
@@ -509,6 +521,7 @@ public partial class ValueTypesGenerator
                         """);
                 }
 
+                /*
                 if (ordinalSpec.EmitCompareToObjectMethod)
                 {
                     writer.WriteLine();
@@ -516,6 +529,7 @@ public partial class ValueTypesGenerator
                         public int CompareTo(object? obj) => _value.CompareTo(obj);
                         """);
                 }
+                */
 
                 if (ordinalSpec.EmitComparisonOperators)
                 {

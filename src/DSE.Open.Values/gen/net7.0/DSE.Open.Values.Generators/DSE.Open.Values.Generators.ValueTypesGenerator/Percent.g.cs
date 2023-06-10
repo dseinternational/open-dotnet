@@ -161,12 +161,16 @@ public readonly partial struct Percent
     public static Percent Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
         => global::DSE.Open.Values.ValueParser.Parse<Percent, Double>(s, provider);
 
+    public static Percent Parse(ReadOnlySpan<char> s)
+        => Parse(s, default);
+
     public static Percent Parse(string s, IFormatProvider? provider)
         => global::DSE.Open.Values.ValueParser.Parse<Percent, Double>(s, provider);
 
-    public int CompareTo(Percent other) => _value.CompareTo(other._value);
+    public static Percent Parse(string s)
+        => Parse(s, default);
 
-    public int CompareTo(object? obj) => _value.CompareTo(obj);
+    public int CompareTo(Percent other) => _value.CompareTo(other._value);
 
     public static bool operator <(Percent left, Percent right) => left._value < right._value;
     
