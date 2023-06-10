@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
@@ -42,6 +43,22 @@ public readonly partial struct LanguageTag
     private static readonly Regex s_regex = GetValidationRegex();
 
     public static bool IsValidValue(AsciiCharSequence value) => IsValidValue(value.AsSpan());
+
+    public static LanguageTag FromCultureInfo(CultureInfo cultureInfo)
+    {
+        Guard.IsNotNull(cultureInfo);
+        return FromString(cultureInfo.Name);
+    }
+
+    public static LanguageTag FromString(string languageTag)
+    {
+        Guard.IsNotNull(languageTag);
+        return new(AsciiCharSequence.Parse(languageTag));
+    }
+
+    public static LanguageTag FromByteSpan(ReadOnlySpan<byte> languageTag) => new(new AsciiCharSequence(languageTag));
+
+    public static LanguageTag FromCharSpan(ReadOnlySpan<char> languageTag) => new(AsciiCharSequence.Parse(languageTag));
 
     public static bool IsValidValue(ReadOnlySpan<byte> value)
     {
@@ -88,10 +105,7 @@ public readonly partial struct LanguageTag
     public bool LanguagePartEquals(LanguageTag otherLangPart)
         => LanguagePartEquals(otherLangPart._value.AsSpan());
 
-    public ReadOnlySpan<char> ToSpanChar()
-    {
-        return _value.ToCharSpan();
-    }
+    public ReadOnlySpan<char> ToSpanChar() => _value.ToCharSpan();
 
     public bool LanguagePartEquals(ReadOnlySpan<byte> otherLangPart)
     {
