@@ -79,15 +79,7 @@ public readonly partial struct CountryCode
 
     // IEquatable<T>
 
-    public bool Equals(CountryCode other) => _value.Equals(other._value);
-
     public override bool Equals(object? obj) => obj is CountryCode other && Equals(other);
-
-    public override int GetHashCode()
-    {
-        EnsureInitialized();
-        return HashCode.Combine(_value);
-    }
 
     public static bool operator ==(CountryCode left, CountryCode right) => left.Equals(right);
     
@@ -194,12 +186,6 @@ public readonly partial struct CountryCode
 
     public static CountryCode Parse(string s)
         => Parse(s, default);
-
-    public int CompareTo(CountryCode other)
-    {
-        EnsureInitialized();
-        return _value.CompareTo(other._value);
-    }
 
     public static bool operator <(CountryCode left, CountryCode right) => left.CompareTo(right) < 0;
     

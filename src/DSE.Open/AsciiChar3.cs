@@ -23,9 +23,10 @@ public readonly struct AsciiChar3
 {
     private const int CharCount = 3;
 
-    private readonly AsciiChar _c0;
-    private readonly AsciiChar _c1;
-    private readonly AsciiChar _c2;
+    // internal for AsciiChar3Comparer
+    internal readonly AsciiChar _c0;
+    internal readonly AsciiChar _c1;
+    internal readonly AsciiChar _c2;
 
     public AsciiChar3(AsciiChar c0, AsciiChar c1, AsciiChar c2)
     {
@@ -90,6 +91,25 @@ public readonly struct AsciiChar3
     public bool Equals(ReadOnlySpan<char> other) => other.Length == CharCount && other[0] == _c0 && other[1] == _c1 && other[2] == _c2;
 
     public override bool Equals(object? obj) => obj is AsciiChar3 other && Equals(other);
+
+    public bool EqualsCaseInsensitive(AsciiChar3 other)
+        => AsciiChar.EqualsCaseInsensitive(_c0, other._c0)
+        && AsciiChar.EqualsCaseInsensitive(_c1, other._c1)
+        && AsciiChar.EqualsCaseInsensitive(_c2, other._c2);
+
+    public int CompareToCaseInsensitive(AsciiChar3 other)
+    {
+        var c = AsciiChar.CompareToCaseInsensitive(_c0, other._c0);
+
+        if (c != 0)
+        {
+            return c;
+        }
+
+        c = AsciiChar.CompareToCaseInsensitive(_c1, other._c1);
+
+        return c != 0 ? c : AsciiChar.CompareToCaseInsensitive(_c2, other._c2);
+    }
 
     public int CompareTo(AsciiChar3 other)
     {

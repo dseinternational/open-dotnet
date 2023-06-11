@@ -24,6 +24,12 @@ public readonly partial struct CountryCode : IComparableValue<CountryCode, Ascii
 
     static int ISpanSerializable<CountryCode>.MaxSerializedCharLength => Length;
 
+    public bool Equals(CountryCode other) => _value.EqualsCaseInsensitive(other._value);
+
+    public int CompareTo(CountryCode other) => _value.CompareToCaseInsensitive(other._value);
+
+    public override int GetHashCode() => AsciiChar2Comparer.CaseInsensitive.GetHashCode(this._value);
+
     public bool Equals(string other) => _value.Equals(other);
 
     public bool Equals(ReadOnlyMemory<char> other) => _value.Equals(other);

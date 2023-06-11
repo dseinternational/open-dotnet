@@ -179,10 +179,26 @@ public class CountryCodeTests
     }
 
     [Fact]
+    public void EqualValuesAreEqual_case_insensitive()
+    {
+        var v1 = CountryCode.Parse("GB");
+        var v2 = CountryCode.Parse(v1.ToString().ToLowerInvariant());
+        Assert.Equal(v1, v2);
+    }
+
+    [Fact]
     public void EqualValuesAsObjectsAreEqual()
     {
         var v1 = (object)CountryCode.Parse("GB");
         var v2 = (object)CountryCode.Parse(v1.ToString()!);
+        Assert.Equal(v1, v2);
+    }
+
+    [Fact]
+    public void EqualValuesAsObjectsAreEqual_case_insensitive()
+    {
+        var v1 = (object)CountryCode.Parse("gb");
+        var v2 = (object)CountryCode.Parse("GB");
         Assert.Equal(v1, v2);
     }
 

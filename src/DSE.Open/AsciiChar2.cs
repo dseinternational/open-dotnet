@@ -23,8 +23,9 @@ public readonly struct AsciiChar2
 {
     private const int CharCount = 2;
 
-    private readonly AsciiChar _c0;
-    private readonly AsciiChar _c1;
+    // internal for AsciiChar2Comparer
+    internal readonly AsciiChar _c0;
+    internal readonly AsciiChar _c1;
 
     public AsciiChar2(AsciiChar c0, AsciiChar c1)
     {
@@ -103,6 +104,16 @@ public readonly struct AsciiChar2
     }
 
     public bool Equals(AsciiChar2 other) => _c0 == other._c0 && _c1 == other._c1;
+
+    public bool EqualsCaseInsensitive(AsciiChar2 other)
+        => AsciiChar.EqualsCaseInsensitive(_c0, other._c0) && AsciiChar.EqualsCaseInsensitive(_c1, other._c1);
+
+    public int CompareToCaseInsensitive(AsciiChar2 other)
+    {
+        var c = AsciiChar.CompareToCaseInsensitive(_c0, other._c0);
+
+        return c != 0 ? c : AsciiChar.CompareToCaseInsensitive(_c1, other._c1);
+    }
 
     public bool Equals(string other) => Equals(other.AsSpan());
 
