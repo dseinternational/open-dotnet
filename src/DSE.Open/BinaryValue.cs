@@ -16,7 +16,7 @@ namespace DSE.Open;
 [JsonConverter(typeof(JsonStringBinaryValueBase64Converter))]
 public readonly record struct BinaryValue
 {
-    private readonly byte[]? _value;
+    private readonly ReadOnlyMemory<byte> _value;
 
     public static readonly BinaryValue Empty;
 
@@ -46,7 +46,7 @@ public readonly record struct BinaryValue
     /// <summary>
     /// Gets the number of bytes in the value.
     /// </summary>
-    public int Length => _value?.Length ?? 0;
+    public int Length => _value.Length;
 
     /// <summary>
     /// Gets the number of bits in the value.
@@ -55,7 +55,7 @@ public readonly record struct BinaryValue
 
     public ReadOnlyMemory<byte> AsMemory() => _value;
 
-    public ReadOnlySpan<byte> AsSpan() => _value.AsSpan();
+    public ReadOnlySpan<byte> AsSpan() => _value.Span;
 
     public static BinaryValue FromBase62EncodedString(string value)
         => FromEncodedString(value, BinaryStringEncoding.Base62);
@@ -131,10 +131,9 @@ public readonly record struct BinaryValue
     /// Returns a copy of the value as an array.
     /// </summary>
     /// <returns></returns>
-    public byte[] ToArray() => _value is null || _value.Length == 0 ? Array.Empty<byte>() : _value.ToArray();
+    public byte[] ToArray() => _value.ToArray();
 
-    public bool Equals(BinaryValue other)
-        => _value is null ? other._value is null : other._value is not null && _value.SequenceEqual(other._value);
+    public bool Equals(BinaryValue other) =>  _value.Span.SequenceEqual(other._value.Span);
 
     public bool TryFormat(Span<char> destination, out int charsWritten)
         => TryFormat(destination, out charsWritten, null, null);
@@ -145,7 +144,7 @@ public readonly record struct BinaryValue
         ReadOnlySpan<char> format,
         IFormatProvider? provider)
     {
-        if (_value is null || _value.Length == 0)
+        if (_value.Length == 0)
         {
             charsWritten = 0;
             return true;
@@ -168,27 +167,27 @@ public readonly record struct BinaryValue
 
     public string ToString(BinaryStringEncoding format)
     {
-        return _value is null || _value.Length == 0
+        return _value.Length == 0
             ? string.Empty
             : format switch
             {
                 BinaryStringEncoding.Base62 => ToBase62EncodedString(),
-                BinaryStringEncoding.HexUpper => Convert.ToHexString(_value),
+                BinaryStringEncoding.HexUpper => Convert.ToHexString(_value.Span),
                 _ => format == BinaryStringEncoding.HexLower
-                    ? Convert.ToHexString(_value).ToLowerInvariant()
+                    ? Convert.ToHexString(_value.Span).ToLowerInvariant()
                     : ToBase64EncodedString()
             };
     }
 
     public string ToBase62EncodedString()
-        => _value is null || _value.Length == 0 ? string.Empty : Base62Converter.ToBase62String(_value);
+        => _value.Length == 0 ? string.Empty : Base62Converter.ToBase62String(_value.Span);
 
     public string ToBase64EncodedString()
-        => _value is null || _value.Length == 0 ? string.Empty : Convert.ToBase64String(_value);
+        => _value.Length == 0 ? string.Empty : Convert.ToBase64String(_value.Span);
 
     public override int GetHashCode()
     {
-        var span = _value.AsSpan();
+        var span = _value.Span;
 
         unchecked
         {
@@ -229,7 +228,7 @@ public readonly record struct BinaryValue
 
     public static explicit operator ReadOnlyMemory<byte>(BinaryValue value) => value._value;
 
-    public static explicit operator ReadOnlySpan<byte>(BinaryValue value) => value._value;
+    public static explicit operator ReadOnlySpan<byte>(BinaryValue value) => value._value.Span;
 
 #pragma warning restore CA2225 // Operator overloads have named alternates
 

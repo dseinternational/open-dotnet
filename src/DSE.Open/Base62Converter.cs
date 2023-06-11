@@ -57,9 +57,9 @@ public static class Base62Converter
         }
     }
 
-    public static string ToBase62String(byte[] data)
+    public static string ToBase62String(ReadOnlySpan<byte> data)
     {
-        var arr = Array.ConvertAll(data, t => (int)t);
+        var arr = Array.ConvertAll(data.ToArray(), t => (int)t);
 
         var converted = Convert(arr, 256, 62);
 
