@@ -8,8 +8,6 @@ using DSE.Open.Values.Text.Json.Serialization;
 
 namespace DSE.Open.Values;
 
-// TODO
-
 [ComparableValue]
 [JsonConverter(typeof(JsonSpanSerializableValueConverter<AlphaCode,AsciiString>))]
 [StructLayout(LayoutKind.Auto)]

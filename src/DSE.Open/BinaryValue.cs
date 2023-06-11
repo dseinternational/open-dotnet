@@ -6,9 +6,9 @@ using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json.Serialization;
-using DSE.Open.Values.Text.Json.Serialization;
+using DSE.Open.Text.Json.Serialization;
 
-namespace DSE.Open.Values;
+namespace DSE.Open;
 
 /// <summary>
 /// An immutable binary data value.

@@ -4,7 +4,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace DSE.Open.Values.Text.Json.Serialization;
+namespace DSE.Open.Text.Json.Serialization;
 
 public sealed class JsonStringBinaryValueBase64Converter : JsonConverter<BinaryValue>
 {
