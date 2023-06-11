@@ -16,9 +16,9 @@ public class CountryCodeTests
 
     [Theory]
     [MemberData(nameof(UserAssignedAlpha2Codes))]
-    public static void TryFromValue_fails_for_user_assigned(AsciiChar2 code)
+    public static void TryFromValue_succeeds_for_user_assigned(AsciiChar2 code)
     {
-        Assert.False(CountryCode.TryFromValue(code, out _));
+        Assert.True(CountryCode.TryFromValue(code, out _));
     }
 
     [Fact]

@@ -7,6 +7,9 @@ namespace DSE.Open.Globalization;
 
 public static class IsoCountryCodes
 {
+    /// <summary>
+    /// Gets the set of officially assigned alpha-2 ASCII codes.
+    /// </summary>
     public static readonly IReadOnlySet<AsciiChar2> OfficiallyAssignedAlpha2Ascii
         = ImmutableHashSet.Create(new[]
     {
@@ -261,6 +264,9 @@ public static class IsoCountryCodes
         (AsciiChar2)"ZW",
     });
 
+    /// <summary>
+    /// Gets the set of user-assigned alpha-2 ASCII codes.
+    /// </summary>
     public static readonly IReadOnlySet<AsciiChar2> UserAssignedAlpha2Ascii
         = ImmutableHashSet.Create(new[]
     {
@@ -308,9 +314,15 @@ public static class IsoCountryCodes
         (AsciiChar2)"ZZ",
     });
 
+    /// <summary>
+    /// Gets the set of officially assigned and user-assigned alpha-2 ASCII codes.
+    /// </summary>
     public static readonly IReadOnlySet<AsciiChar2> AssignedAlpha2Ascii
         = ImmutableHashSet.Create(OfficiallyAssignedAlpha2Ascii.Concat(UserAssignedAlpha2Ascii).ToArray());
 
+    /// <summary>
+    /// Gets the set of officially assigned alpha-3 codes.
+    /// </summary>
     public static readonly IReadOnlySet<AsciiChar3> OfficiallyAssignedAlpha3Ascii
         = ImmutableHashSet.Create(new[]
     {
