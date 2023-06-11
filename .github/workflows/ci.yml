@@ -40,9 +40,6 @@ jobs:
       - name: Diagnostics
         run: "Get-ChildItem Env:"
         shell: pwsh
-  
-      - name: Restore
-        run: dotnet restore ./DSE.Open.sln --locked-mode
     
       - name: Build
         run: dotnet build ./DSE.Open.sln --configuration ${{ matrix.configuration }}
