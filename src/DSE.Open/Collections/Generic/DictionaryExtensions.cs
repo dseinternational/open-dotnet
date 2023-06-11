@@ -105,11 +105,11 @@ public static class DictionaryExtensions
 
     public static TValue? GetValueOrDefault<TKey, TValue>(
         this IDictionary<TKey, TValue> dictionary,
-        KeyValuePair<TKey, TValue> keyValuePair)
+        TKey key)
     {
         Guard.IsNotNull(dictionary);
 
-        if (dictionary.TryGetValue(keyValuePair.Key, out var value))
+        if (dictionary.TryGetValue(key, out var value))
         {
             return value;
         }
@@ -119,11 +119,11 @@ public static class DictionaryExtensions
 
     public static TValue? GetValueOrDefault<TKey, TValue>(
         this IReadOnlyDictionary<TKey, TValue> dictionary,
-        KeyValuePair<TKey, TValue> keyValuePair)
+        TKey key)
     {
         Guard.IsNotNull(dictionary);
 
-        if (dictionary.TryGetValue(keyValuePair.Key, out var value))
+        if (dictionary.TryGetValue(key, out var value))
         {
             return value;
         }
