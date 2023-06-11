@@ -102,13 +102,9 @@ public readonly partial struct LanguageTag
 
     public bool Equals(LanguageTag other) => _value.EqualsCaseInsensitive(other._value);
 
-    public int CompareTo(LanguageTag other)=>_value.CompareToCaseInsensitive(other._value);
+    public int CompareTo(LanguageTag other) => _value.CompareToCaseInsensitive(other._value);
 
-
-    public override int GetHashCode()
-    {
-        return AsciiStringComparer.CaseInsensitive.GetHashCode(_value);
-    }
+    public override int GetHashCode() => AsciiStringComparer.CaseInsensitive.GetHashCode(_value);
 
     private static string GetString(string s)
         => string.IsInterned(s) ?? LanguageTagStringPool.Shared.GetOrAdd(s);
@@ -117,6 +113,8 @@ public readonly partial struct LanguageTag
         => LanguagePartEquals(otherLangPart._value.AsSpan());
 
     public char[] ToCharArray() => _value.ToCharArray();
+
+    public CultureInfo GetCultureInfo() => CultureInfo.GetCultureInfo(_value.ToString());
 
     public bool LanguagePartEquals(ReadOnlySpan<byte> otherLangPart)
     {
@@ -144,10 +142,7 @@ public readonly partial struct LanguageTag
         return index < 0 ? span : span[..index];
     }
 
-public LanguageTag GetLanguagePart() {
-    // ensure initialized
-    return new(new AsciiString(GetLanguagePartSpan()));
-}
+    public LanguageTag GetLanguagePart() => new(new AsciiString(GetLanguagePartSpan()));
 
     [GeneratedRegex("^((?:(en-GB-oed|i-ami|i-bnn|i-default|i-enochian|i-hak|i-klingon|i-lux|i-mingo|i-navajo|i-pwn|i-tao|i-tay|i-tsu|sgn-BE-FR|sgn-BE-NL|sgn-CH-DE)|(art-lojban|cel-gaulish|no-bok|no-nyn|zh-guoyu|zh-hakka|zh-min|zh-min-nan|zh-xiang))|((?:([A-Za-z]{2,3}(-(?:[A-Za-z]{3}(-[A-Za-z]{3}){0,2}))?)|[A-Za-z]{4}|[A-Za-z]{5,8})(-(?:[A-Za-z]{4}))?(-(?:[A-Za-z]{2}|[0-9]{3}))?(-(?:[A-Za-z0-9]{5,8}|[0-9][A-Za-z0-9]{3}))*(-(?:[0-9A-WY-Za-wy-z](-[A-Za-z0-9]{2,8})+))*(-(?:x(-[A-Za-z0-9]{1,8})+))?)|(?:x(-[A-Za-z0-9]{1,8})+))$", RegexOptions.Compiled)]
     private static partial Regex GetValidationRegex();
@@ -178,4 +173,36 @@ public LanguageTag GetLanguagePart() {
 
     public static readonly LanguageTag EnglishSouthAfrica = FromValue((AsciiString)"en-ZA");
 
+    public static LanguageTag GetDefaultForCountry(CountryCode countryCode)
+    {
+        if (s_languageLookup.TryGetValue(countryCode, out var language))
+        {
+            return language;
+        }
+
+        var match = CultureInfo.GetCultures(CultureTypes.SpecificCultures)
+            .FirstOrDefault(ci => ci.Name.EndsWith(countryCode.ToStringInvariant(), StringComparison.OrdinalIgnoreCase));
+
+        return match is not null ? FromCultureInfo(match) : EnglishUs;
+    }
+
+    private static readonly Dictionary<CountryCode, LanguageTag> s_languageLookup = new()
+    {
+        { CountryCode.Australia, EnglishAustralia },
+        { CountryCode.Brazil, Parse("pt-BR") },
+        { CountryCode.Canada, EnglishCanada },
+        { CountryCode.China, Parse("zh-CN") },
+        { CountryCode.France, Parse("fr-FR") },
+        { CountryCode.Germany, Parse("de-DE") },
+        { CountryCode.India, EnglishIndia },
+        { CountryCode.Ireland, EnglishIreland },
+        { CountryCode.Italy, Parse("it-IT") },
+        { CountryCode.Mexico, Parse("es-MX") },
+        { CountryCode.NewZealand, EnglishNewZealand },
+        { CountryCode.Poland, Parse("pl-PL") },
+        { CountryCode.SouthAfrica, EnglishSouthAfrica },
+        { CountryCode.Spain, Parse("es-ES") },
+        { CountryCode.UnitedKingdom, EnglishUk },
+        { CountryCode.UnitedStates, EnglishUs },
+    };
 }
