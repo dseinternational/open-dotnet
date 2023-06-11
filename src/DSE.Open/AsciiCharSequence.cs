@@ -50,7 +50,7 @@ public readonly struct AsciiCharSequence
 
     public ReadOnlySpan<byte> AsSpan() => _value.Span;
 
-    public ReadOnlySpan<char> ToCharSpan() => AsciiChar.ToCharSpan(_value.Span);
+    public char[] ToCharArray() => AsciiChar.ToCharArray(_value.Span);
 
     public static AsciiCharSequence Parse(ReadOnlySpan<char> s)
         => Parse(s, default);

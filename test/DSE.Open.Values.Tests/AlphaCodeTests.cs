@@ -130,25 +130,21 @@ public sealed class AlphaCodeTests
         var code = (AlphaCode)codeStr;
 
         // Act
-        var span = code.ToCharSpan();
+        var span = code.ToCharArray().AsSpan();
 
         // Assert
         Assert.Equal(codeStr, span.ToString());
     }
 
     [Fact]
-    public void TryFormat_WithEmptyCode_ShouldReturnTrueWithNothingWritten()
+    public void TryFormat_WithEmptyCode_throws_UninitializedValueException()
     {
         // Arrange
         var code = AlphaCode.Empty;
         var buffer = new char[1];
 
         // Act
-        var success = code.TryFormat(buffer, out var charsWritten, default, default);
-
-        // Assert
-        Assert.True(success);
-        Assert.Equal(0, charsWritten);
+        Assert.Throws<UninitializedValueException<AlphaCode, AsciiCharSequence>>(() => code.TryFormat(buffer, out var charsWritten, default, default));
     }
 
     [Fact]

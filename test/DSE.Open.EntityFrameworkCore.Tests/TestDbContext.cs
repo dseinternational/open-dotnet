@@ -1,7 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using DSE.Open.Geography;
+using DSE.Open.Globalization;
 using Microsoft.EntityFrameworkCore;
 
 namespace DSE.Open.EntityFrameworkCore.Tests;
@@ -23,7 +23,7 @@ public class TestDbContext : DbContext
 
         _ = modelBuilder.Entity<Country>()
             .Property(c => c.Code)
-            .HasConversion(new EntityFrameworkCore.Storage.ValueConversion.ValueTypeValueConverter<CountryCode2, AsciiChar2, string>());
+            .HasConversion(new EntityFrameworkCore.Storage.ValueConversion.ValueTypeValueConverter<CountryCode, AsciiChar2, string>());
     }
 
     public DbSet<Country> Countries { get; set; } = null!;
@@ -31,5 +31,5 @@ public class TestDbContext : DbContext
 
 public class Country
 {
-    public CountryCode2 Code { get; set; }
+    public CountryCode Code { get; set; }
 }

@@ -11,15 +11,15 @@ using DSE.Open.Values;
 
 namespace DSE.Open.Globalization;
 
-[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<LanguageCode2, AsciiChar2>))]
-public readonly partial struct LanguageCode2
-    : global::DSE.Open.Values.IComparableValue<LanguageCode2, AsciiChar2>
+[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<CountryCode3, AsciiChar3>))]
+public readonly partial struct CountryCode3
+    : global::DSE.Open.Values.IEquatableValue<CountryCode3, AsciiChar3>
 {
 
-    private readonly AsciiChar2 _value;
+    private readonly AsciiChar3 _value;
     private readonly bool _initialized;
 
-    private LanguageCode2(AsciiChar2 value, bool skipValidation = false)
+    private CountryCode3(AsciiChar3 value, bool skipValidation = false)
     {
 
         if (!skipValidation)
@@ -33,25 +33,25 @@ public readonly partial struct LanguageCode2
 
     public bool IsInitialized => _initialized;
 
-    private static void EnsureIsValidArgumentValue(AsciiChar2 value)
+    private static void EnsureIsValidArgumentValue(AsciiChar3 value)
     {
         if (!IsValidValue(value))
         {
             throw new ArgumentOutOfRangeException(nameof(value), value,
-                $"'{value}' is not a valid {nameof(LanguageCode2)} value");
+                $"'{value}' is not a valid {nameof(CountryCode3)} value");
         }
     }
 
     private void EnsureInitialized()
     {
-        UninitializedValueException<LanguageCode2, AsciiChar2>.ThrowIfUninitialized(this);
+        UninitializedValueException<CountryCode3, AsciiChar3>.ThrowIfUninitialized(this);
     }
 
-    public static bool TryFromValue(AsciiChar2 value, out LanguageCode2 result)
+    public static bool TryFromValue(AsciiChar3 value, out CountryCode3 result)
     {
         if (IsValidValue(value))
         {
-            result = new LanguageCode2(value);
+            result = new CountryCode3(value);
             return true;
         }
         
@@ -59,19 +59,19 @@ public readonly partial struct LanguageCode2
         return false;
     }
 
-    public static LanguageCode2 FromValue(AsciiChar2 value)
+    public static CountryCode3 FromValue(AsciiChar3 value)
     {
         EnsureIsValidArgumentValue(value);
         return new(value, true);
     }
 
-    public static explicit operator LanguageCode2(AsciiChar2 value)
+    public static explicit operator CountryCode3(AsciiChar3 value)
         => FromValue(value);
 
-    static AsciiChar2 global::DSE.Open.IConvertibleTo<LanguageCode2, AsciiChar2>.ConvertTo(LanguageCode2 value)
-        => (AsciiChar2)value;
+    static AsciiChar3 global::DSE.Open.IConvertibleTo<CountryCode3, AsciiChar3>.ConvertTo(CountryCode3 value)
+        => (AsciiChar3)value;
 
-    public static explicit operator AsciiChar2(LanguageCode2 value)
+    public static explicit operator AsciiChar3(CountryCode3 value)
     {
         value.EnsureInitialized();
         return value._value;
@@ -79,9 +79,9 @@ public readonly partial struct LanguageCode2
 
     // IEquatable<T>
 
-    public bool Equals(LanguageCode2 other) => _value.Equals(other._value);
+    public bool Equals(CountryCode3 other) => _value.Equals(other._value);
 
-    public override bool Equals(object? obj) => obj is LanguageCode2 other && Equals(other);
+    public override bool Equals(object? obj) => obj is CountryCode3 other && Equals(other);
 
     public override int GetHashCode()
     {
@@ -89,9 +89,9 @@ public readonly partial struct LanguageCode2
         return HashCode.Combine(_value);
     }
 
-    public static bool operator ==(LanguageCode2 left, LanguageCode2 right) => left.Equals(right);
+    public static bool operator ==(CountryCode3 left, CountryCode3 right) => left.Equals(right);
     
-    public static bool operator !=(LanguageCode2 left, LanguageCode2 right) => !(left == right);
+    public static bool operator !=(CountryCode3 left, CountryCode3 right) => !(left == right);
 
     // ISpanFormattable
 
@@ -122,10 +122,10 @@ public readonly partial struct LanguageCode2
         => TryFormatInvariant(destination, out charsWritten, default);
 
     /// <summary>
-    /// Gets a representation of the LanguageCode2 value as a string with formatting options.
+    /// Gets a representation of the CountryCode3 value as a string with formatting options.
     /// </summary>
     /// <returns>
-    /// A representation of the LanguageCode2 value.
+    /// A representation of the CountryCode3 value.
     /// </returns>
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
@@ -142,10 +142,10 @@ public readonly partial struct LanguageCode2
         => ToStringInvariant(default);
 
     /// <summary>
-    /// Gets a representation of the LanguageCode2 value as a string with default formatting options.
+    /// Gets a representation of the CountryCode3 value as a string with default formatting options.
     /// </summary>
     /// <returns>
-    /// A representation of the LanguageCode2 value.
+    /// A representation of the CountryCode3 value.
     /// </returns>
     public override string ToString() => ToString(default, default);
 
@@ -154,58 +154,44 @@ public readonly partial struct LanguageCode2
     public static bool TryParse(
         ReadOnlySpan<char> s,
         IFormatProvider? provider,
-        out LanguageCode2 result)
-        => global::DSE.Open.Values.ValueParser.TryParse<LanguageCode2, AsciiChar2>(s, provider, out result);
+        out CountryCode3 result)
+        => global::DSE.Open.Values.ValueParser.TryParse<CountryCode3, AsciiChar3>(s, provider, out result);
 
     public static bool TryParse(
         ReadOnlySpan<char> s,
-        out LanguageCode2 result)
+        out CountryCode3 result)
         => TryParse(s, default, out result);
 
     public static bool TryParseInvariant(
         ReadOnlySpan<char> s,
-        out LanguageCode2 result)
+        out CountryCode3 result)
         => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
 
     public static bool TryParse(
         string? s,
         IFormatProvider? provider,
-        out LanguageCode2 result)
-        => global::DSE.Open.Values.ValueParser.TryParse<LanguageCode2, AsciiChar2>(s, provider, out result);
+        out CountryCode3 result)
+        => global::DSE.Open.Values.ValueParser.TryParse<CountryCode3, AsciiChar3>(s, provider, out result);
 
     public static bool TryParse(
         string? s,
-        out LanguageCode2 result)
+        out CountryCode3 result)
         => TryParse(s, default, out result);
 
     public static bool TryParseInvariant(
         string? s,
-        out LanguageCode2 result)
+        out CountryCode3 result)
         => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
 
-    public static LanguageCode2 Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<LanguageCode2, AsciiChar2>(s, provider);
+    public static CountryCode3 Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<CountryCode3, AsciiChar3>(s, provider);
 
-    public static LanguageCode2 Parse(ReadOnlySpan<char> s)
+    public static CountryCode3 Parse(ReadOnlySpan<char> s)
         => Parse(s, default);
 
-    public static LanguageCode2 Parse(string s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<LanguageCode2, AsciiChar2>(s, provider);
+    public static CountryCode3 Parse(string s, IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<CountryCode3, AsciiChar3>(s, provider);
 
-    public static LanguageCode2 Parse(string s)
+    public static CountryCode3 Parse(string s)
         => Parse(s, default);
-
-    public int CompareTo(LanguageCode2 other)
-    {
-        EnsureInitialized();
-        return _value.CompareTo(other._value);
-    }
-
-    public static bool operator <(LanguageCode2 left, LanguageCode2 right) => left.CompareTo(right) < 0;
-    
-    public static bool operator >(LanguageCode2 left, LanguageCode2 right) => left.CompareTo(right) > 0;
-    
-    public static bool operator <=(LanguageCode2 left, LanguageCode2 right) => left.CompareTo(right) <= 0;
-    
-    public static bool operator >=(LanguageCode2 left, LanguageCode2 right) => left.CompareTo(right) >= 0;
 }

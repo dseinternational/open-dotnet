@@ -1,10 +1,63 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Text.Json;
+
 namespace DSE.Open.Globalization.Tests;
 
 public class CountryCodeTests
 {
+    [Theory]
+    [MemberData(nameof(OfficiallyAssignedAlpha2Codes))]
+    public static void TryFromValue_succeeds_for_officially_assigned(AsciiChar2 code)
+    {
+        Assert.True(CountryCode.TryFromValue(code, out _));
+    }
+
+    [Theory]
+    [MemberData(nameof(UserAssignedAlpha2Codes))]
+    public static void TryFromValue_fails_for_user_assigned(AsciiChar2 code)
+    {
+        Assert.False(CountryCode.TryFromValue(code, out _));
+    }
+
+    [Fact]
+    public void Serialize_deserialize()
+    {
+        var v1 = CountryCode.Canada;
+        var json = JsonSerializer.Serialize(v1);
+        Assert.Equal("\"CA\"", json);
+        var v2 = JsonSerializer.Deserialize<CountryCode>(json);
+        Assert.Equal(v1, v2);
+    }
+
+    public static TheoryData<AsciiChar2> OfficiallyAssignedAlpha2Codes
+    {
+        get
+        {
+            var data = new TheoryData<AsciiChar2>();
+            foreach (var code in IsoCountryCodes.OfficiallyAssignedAlpha2Ascii)
+            {
+                data.Add(code);
+            }
+            return data;
+        }
+    }
+
+    public static TheoryData<AsciiChar2> UserAssignedAlpha2Codes
+    {
+        get
+        {
+            var data = new TheoryData<AsciiChar2>();
+            foreach (var code in IsoCountryCodes.UserAssignedAlpha2Ascii)
+            {
+                data.Add(code);
+            }
+            return data;
+        }
+    }
+
+
     [Fact]
     public void Valid_CountryCode_Parse()
     {
@@ -44,19 +97,6 @@ public class CountryCodeTests
         }
     }
 
-    [Theory]
-    [InlineData("GB-ENG")]
-    [InlineData("12")]
-    public void TryParse_WithInvalidCode_ShouldReturnFalse(string code)
-    {
-        // Act
-        var result = CountryCode.TryParse(code.AsSpan(), null, out var countryCode);
-
-        // Assert
-        Assert.False(result);
-        Assert.Equal(CountryCode.Unknown, countryCode);
-    }
-
     [Fact]
     public void TryFormat_WithValidCode_ShouldReturnTrue()
     {
@@ -72,7 +112,7 @@ public class CountryCodeTests
         Assert.Equal(2, charsWritten);
         Assert.Equal(countryCode.ToString(), new string(destination));
     }
-
+    /*
     [Fact]
     public void Parse_WithEmptySpan_ShouldReturnDefault()
     {
@@ -86,10 +126,11 @@ public class CountryCodeTests
         var a = CountryCode.Parse(string.Empty);
         Assert.Equal(CountryCode.Empty, a);
     }
-
+    */
     [Fact]
     public void Parse_WithNullString_ShouldThrowArgumentNull() => Assert.Throws<ArgumentNullException>(() => CountryCode.Parse(null!));
 
+    /*
     [Fact]
     public void TryParse_WithEmptySpan_ShouldReturnTrueAndDefaultResult()
     {
@@ -113,12 +154,12 @@ public class CountryCodeTests
         Assert.True(success);
         Assert.Equal(CountryCode.Empty, result);
     }
-
+    */
     [Fact]
     public void TryFormat_WithInvalidBuffer_ShouldReturnFalse()
     {
         // Arrange
-        var countryCode = CountryCode.Unknown;
+        var countryCode = CountryCode.Australia;
         Span<char> destination = stackalloc char[1];
 
         // Act

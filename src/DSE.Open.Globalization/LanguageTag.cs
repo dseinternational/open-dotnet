@@ -34,10 +34,6 @@ public readonly partial struct LanguageTag
     /// </remarks>
     public const int MaxLength = 35;
 
-    private static readonly AsciiCharSequence s_defaultValue = (AsciiCharSequence)"en";
-
-    public static readonly LanguageTag Default;
-
     static int ISpanSerializable<LanguageTag>.MaxSerializedCharLength { get; } = MaxLength;
 
     private static readonly Regex s_regex = GetValidationRegex();
@@ -104,26 +100,13 @@ public readonly partial struct LanguageTag
         return s_regex.IsMatch(chars);
     }
 
-    public bool Equals(LanguageTag other)
-        => (_value.IsEmpty && (other._value.IsEmpty || other._value.EqualsCaseInsensitive(s_defaultValue)))
-            || _value.EqualsCaseInsensitive(other._value);
+    public bool Equals(LanguageTag other) => _value.EqualsCaseInsensitive(other._value);
 
-    public int CompareTo(LanguageTag other)
-    {
-        if (_value.IsEmpty)
-        {
-            return other._value.IsEmpty ? 0 : s_defaultValue.CompareToCaseInsensitive(other._value);
-        }
+    public int CompareTo(LanguageTag other)=>_value.CompareToCaseInsensitive(other._value);
 
-        return other._value.IsEmpty ? 1 : _value.CompareToCaseInsensitive(other._value);
-    }
 
     public override int GetHashCode()
     {
-        if (_value.IsEmpty)
-        {
-            return AsciiCharSequenceComparer.CaseInsensitive.GetHashCode(s_defaultValue);
-        }
         return AsciiCharSequenceComparer.CaseInsensitive.GetHashCode(_value);
     }
 
@@ -133,7 +116,7 @@ public readonly partial struct LanguageTag
     public bool LanguagePartEquals(LanguageTag otherLangPart)
         => LanguagePartEquals(otherLangPart._value.AsSpan());
 
-    public ReadOnlySpan<char> ToSpanChar() => _value.ToCharSpan();
+    public char[] ToCharArray() => _value.ToCharArray();
 
     public bool LanguagePartEquals(ReadOnlySpan<byte> otherLangPart)
     {
@@ -161,9 +144,10 @@ public readonly partial struct LanguageTag
         return index < 0 ? span : span[..index];
     }
 
-    public LanguageTag GetLanguagePart() => _value.IsEmpty
-        ? default
-        : new(new AsciiCharSequence(GetLanguagePartSpan()));
+public LanguageTag GetLanguagePart() {
+    // ensure initialized
+    return new(new AsciiCharSequence(GetLanguagePartSpan()));
+}
 
     [GeneratedRegex("^((?:(en-GB-oed|i-ami|i-bnn|i-default|i-enochian|i-hak|i-klingon|i-lux|i-mingo|i-navajo|i-pwn|i-tao|i-tay|i-tsu|sgn-BE-FR|sgn-BE-NL|sgn-CH-DE)|(art-lojban|cel-gaulish|no-bok|no-nyn|zh-guoyu|zh-hakka|zh-min|zh-min-nan|zh-xiang))|((?:([A-Za-z]{2,3}(-(?:[A-Za-z]{3}(-[A-Za-z]{3}){0,2}))?)|[A-Za-z]{4}|[A-Za-z]{5,8})(-(?:[A-Za-z]{4}))?(-(?:[A-Za-z]{2}|[0-9]{3}))?(-(?:[A-Za-z0-9]{5,8}|[0-9][A-Za-z0-9]{3}))*(-(?:[0-9A-WY-Za-wy-z](-[A-Za-z0-9]{2,8})+))*(-(?:x(-[A-Za-z0-9]{1,8})+))?)|(?:x(-[A-Za-z0-9]{1,8})+))$", RegexOptions.Compiled)]
     private static partial Regex GetValidationRegex();

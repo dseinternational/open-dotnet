@@ -7,6 +7,7 @@
 
 using System;
 using System.ComponentModel;
+using DSE.Open.Values;
 
 namespace DSE.Open.Values;
 
@@ -16,6 +17,7 @@ public readonly partial struct Ratio
 {
 
     private readonly Double _value;
+    private readonly bool _initialized;
 
     private Ratio(Double value, bool skipValidation = false)
     {
@@ -26,7 +28,10 @@ public readonly partial struct Ratio
         }
 
         _value = value;
+        _initialized = true;
     }
+
+    public bool IsInitialized => _initialized;
 
     private static void EnsureIsValidArgumentValue(Double value)
     {
@@ -35,6 +40,11 @@ public readonly partial struct Ratio
             throw new ArgumentOutOfRangeException(nameof(value), value,
                 $"'{value}' is not a valid {nameof(Ratio)} value");
         }
+    }
+
+    private void EnsureInitialized()
+    {
+        UninitializedValueException<Ratio, Double>.ThrowIfUninitialized(this);
     }
 
     public static bool TryFromValue(Double value, out Ratio result)
@@ -62,7 +72,10 @@ public readonly partial struct Ratio
         => (Double)value;
 
     public static explicit operator Double(Ratio value)
-        => value._value;
+    {
+        value.EnsureInitialized();
+        return value._value;
+    }
 
     // IEquatable<T>
 
@@ -70,7 +83,11 @@ public readonly partial struct Ratio
 
     public override bool Equals(object? obj) => obj is Ratio other && Equals(other);
 
-    public override int GetHashCode() => HashCode.Combine(_value);
+    public override int GetHashCode()
+    {
+        EnsureInitialized();
+        return HashCode.Combine(_value);
+    }
 
     public static bool operator ==(Ratio left, Ratio right) => left.Equals(right);
     
@@ -84,6 +101,7 @@ public readonly partial struct Ratio
         ReadOnlySpan<char> format,
         IFormatProvider? provider)
         {
+            EnsureInitialized();
             return _value.TryFormat(destination, out charsWritten, format, provider);
         }
 
@@ -111,6 +129,7 @@ public readonly partial struct Ratio
     /// </returns>
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
+        EnsureInitialized();
         string returnValue;
         returnValue = _value.ToString(format, formatProvider);
         return returnValue;
@@ -176,15 +195,19 @@ public readonly partial struct Ratio
     public static Ratio Parse(string s)
         => Parse(s, default);
 
-    public int CompareTo(Ratio other) => _value.CompareTo(other._value);
+    public int CompareTo(Ratio other)
+    {
+        EnsureInitialized();
+        return _value.CompareTo(other._value);
+    }
 
-    public static bool operator <(Ratio left, Ratio right) => left._value < right._value;
+    public static bool operator <(Ratio left, Ratio right) => left.CompareTo(right) < 0;
     
-    public static bool operator >(Ratio left, Ratio right) => left._value > right._value;
+    public static bool operator >(Ratio left, Ratio right) => left.CompareTo(right) > 0;
     
-    public static bool operator <=(Ratio left, Ratio right) => left._value <= right._value;
+    public static bool operator <=(Ratio left, Ratio right) => left.CompareTo(right) <= 0;
     
-    public static bool operator >=(Ratio left, Ratio right) => left._value >= right._value;
+    public static bool operator >=(Ratio left, Ratio right) => left.CompareTo(right) >= 0;
 
     public static Ratio operator +(Ratio left, Ratio right) => (Ratio)(left._value + right._value);
 

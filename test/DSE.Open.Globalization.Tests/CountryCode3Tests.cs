@@ -2,9 +2,8 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Text.Json;
-using DSE.Open.Geography;
 
-namespace DSE.Open.Values.Tests.Geography;
+namespace DSE.Open.Globalization.Tests;
 
 public class CountryCode3Tests
 {

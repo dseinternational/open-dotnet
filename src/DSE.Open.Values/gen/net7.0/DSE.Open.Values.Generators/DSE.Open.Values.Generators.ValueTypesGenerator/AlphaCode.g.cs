@@ -7,6 +7,7 @@
 
 using System;
 using System.ComponentModel;
+using DSE.Open.Values;
 
 namespace DSE.Open.Values;
 
@@ -16,6 +17,7 @@ public readonly partial struct AlphaCode
 {
 
     private readonly AsciiCharSequence _value;
+    private readonly bool _initialized;
 
     private AlphaCode(AsciiCharSequence value, bool skipValidation = false)
     {
@@ -26,7 +28,10 @@ public readonly partial struct AlphaCode
         }
 
         _value = value;
+        _initialized = true;
     }
+
+    public bool IsInitialized => _initialized;
 
     private static void EnsureIsValidArgumentValue(AsciiCharSequence value)
     {
@@ -35,6 +40,11 @@ public readonly partial struct AlphaCode
             throw new ArgumentOutOfRangeException(nameof(value), value,
                 $"'{value}' is not a valid {nameof(AlphaCode)} value");
         }
+    }
+
+    private void EnsureInitialized()
+    {
+        UninitializedValueException<AlphaCode, AsciiCharSequence>.ThrowIfUninitialized(this);
     }
 
     public static bool TryFromValue(AsciiCharSequence value, out AlphaCode result)
@@ -62,7 +72,10 @@ public readonly partial struct AlphaCode
         => (AsciiCharSequence)value;
 
     public static explicit operator AsciiCharSequence(AlphaCode value)
-        => value._value;
+    {
+        value.EnsureInitialized();
+        return value._value;
+    }
 
     // IEquatable<T>
 
@@ -70,7 +83,11 @@ public readonly partial struct AlphaCode
 
     public override bool Equals(object? obj) => obj is AlphaCode other && Equals(other);
 
-    public override int GetHashCode() => HashCode.Combine(_value);
+    public override int GetHashCode()
+    {
+        EnsureInitialized();
+        return HashCode.Combine(_value);
+    }
 
     public static bool operator ==(AlphaCode left, AlphaCode right) => left.Equals(right);
     
@@ -84,6 +101,7 @@ public readonly partial struct AlphaCode
         ReadOnlySpan<char> format,
         IFormatProvider? provider)
         {
+            EnsureInitialized();
             return _value.TryFormat(destination, out charsWritten, format, provider);
         }
 
@@ -111,6 +129,7 @@ public readonly partial struct AlphaCode
     /// </returns>
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
+        EnsureInitialized();
         string returnValue;
         returnValue = _value.ToString(format, formatProvider);
         return returnValue;
@@ -176,13 +195,17 @@ public readonly partial struct AlphaCode
     public static AlphaCode Parse(string s)
         => Parse(s, default);
 
-    public int CompareTo(AlphaCode other) => _value.CompareTo(other._value);
+    public int CompareTo(AlphaCode other)
+    {
+        EnsureInitialized();
+        return _value.CompareTo(other._value);
+    }
 
-    public static bool operator <(AlphaCode left, AlphaCode right) => left._value < right._value;
+    public static bool operator <(AlphaCode left, AlphaCode right) => left.CompareTo(right) < 0;
     
-    public static bool operator >(AlphaCode left, AlphaCode right) => left._value > right._value;
+    public static bool operator >(AlphaCode left, AlphaCode right) => left.CompareTo(right) > 0;
     
-    public static bool operator <=(AlphaCode left, AlphaCode right) => left._value <= right._value;
+    public static bool operator <=(AlphaCode left, AlphaCode right) => left.CompareTo(right) <= 0;
     
-    public static bool operator >=(AlphaCode left, AlphaCode right) => left._value >= right._value;
+    public static bool operator >=(AlphaCode left, AlphaCode right) => left.CompareTo(right) >= 0;
 }

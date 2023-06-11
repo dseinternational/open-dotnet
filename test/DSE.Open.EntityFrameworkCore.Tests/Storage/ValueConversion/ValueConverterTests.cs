@@ -2,7 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using DSE.Open.EntityFrameworkCore.Storage.ValueConversion;
-using DSE.Open.Geography;
+using DSE.Open.Globalization;
 using Microsoft.EntityFrameworkCore;
 
 namespace DSE.Open.EntityFrameworkCore.Tests.Storage.ValueConversion;
@@ -13,9 +13,9 @@ public class ValueConverterTests : SqliteInMemoryTestBase<TestDbContext>
 
     [Theory]
     [MemberData(nameof(CountryCodeStrings))]
-    public void ConvertsToStoreType(CountryCode2 code, string expected)
+    public void ConvertsToStoreType(CountryCode code, string expected)
     {
-        var converter = new ValueTypeValueConverter<CountryCode2, AsciiChar2, string>();
+        var converter = new ValueTypeValueConverter<CountryCode, AsciiChar2, string>();
         var convertTo = converter.ConvertToProviderExpression.Compile();
         var result = convertTo(code);
         Assert.Equal(expected, result);
@@ -23,9 +23,9 @@ public class ValueConverterTests : SqliteInMemoryTestBase<TestDbContext>
 
     [Theory]
     [MemberData(nameof(CountryCodeStrings))]
-    public void ConvertsFromStoreType(CountryCode2 expected, string code)
+    public void ConvertsFromStoreType(CountryCode expected, string code)
     {
-        var converter = new ValueTypeValueConverter<CountryCode2, AsciiChar2, string>();
+        var converter = new ValueTypeValueConverter<CountryCode, AsciiChar2, string>();
         var convertFrom = converter.ConvertFromProviderExpression.Compile();
         var result = convertFrom(code);
         Assert.Equal(expected, result);
@@ -43,25 +43,25 @@ public class ValueConverterTests : SqliteInMemoryTestBase<TestDbContext>
     {
         using (var db = CreateContext())
         {
-            _ = db.Countries.Add(new Country { Code = CountryCode2.UnitedKingdom });
+            _ = db.Countries.Add(new Country { Code = CountryCode.UnitedKingdom });
             _ = await db.SaveChangesAsync();
         }
 
         using (var db = CreateContext())
         {
-            var c = await db.Countries.SingleAsync(c => c.Code == CountryCode2.UnitedKingdom);
-            Assert.Equal(CountryCode2.UnitedKingdom, c.Code);
+            var c = await db.Countries.SingleAsync(c => c.Code == CountryCode.UnitedKingdom);
+            Assert.Equal(CountryCode.UnitedKingdom, c.Code);
         }
     }
 
-    public static TheoryData<CountryCode2, string> CountryCodeStrings
+    public static TheoryData<CountryCode, string> CountryCodeStrings
     {
         get
         {
-            var data = new TheoryData<CountryCode2, string>();
+            var data = new TheoryData<CountryCode, string>();
             foreach (var countryCode in IsoCountryCodes.OfficiallyAssignedAlpha2)
             {
-                data.Add(countryCode, countryCode.ToString());
+                data.Add(countryCode, countryCode.ToString()!);
             }
 
             return data;

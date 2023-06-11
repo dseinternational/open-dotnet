@@ -313,10 +313,6 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
             var fields = members.OfType<FieldDeclarationSyntax>().ToArray();
             var staticFields = fields.Where(s => s.Modifiers.Any(SyntaxKind.StaticKeyword)).ToArray();
 
-            // Default value field?
-
-            var defaultValueField = staticFields.FirstOrDefault(s => s.Declaration.Variables.Any(v => v.Identifier.ValueText == "s_defaultValue"));
-
             var getStringMethods = staticMethods.Where(s => s.Identifier.ValueText == "GetString").ToArray();
 
             var useGetStringMethod = false;
@@ -425,7 +421,6 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
             spec.EmitEqualsMethod = emitEqualsMethod;
             spec.EmitGetHashCodeMethod = emitGetHashCodeMethod;
 
-            spec.UseDefaultValueField = defaultValueField is not null;
             spec.UseGetString = useGetStringMethod;
             spec.UseGetStringSpan = useGetStringSpanMethod;
 

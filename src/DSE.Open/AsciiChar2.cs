@@ -14,12 +14,12 @@ namespace DSE.Open;
 [StructLayout(LayoutKind.Auto)]
 public readonly struct AsciiChar2
     : IComparable<AsciiChar2>,
-    IEquatable<AsciiChar2>,
-    IEqualityOperators<AsciiChar2, AsciiChar2, bool>,
-    ISpanFormattable,
-    ISpanParsable<AsciiChar2>,
-    IConvertibleTo<AsciiChar2, string>,
-    ITryConvertibleFrom<AsciiChar2, string>
+      IEquatable<AsciiChar2>,
+      IEqualityOperators<AsciiChar2, AsciiChar2, bool>,
+      ISpanFormattable,
+      ISpanParsable<AsciiChar2>,
+      IConvertibleTo<AsciiChar2, string>,
+      ITryConvertibleFrom<AsciiChar2, string>
 {
     private const int CharCount = 2;
 
@@ -104,6 +104,12 @@ public readonly struct AsciiChar2
 
     public bool Equals(AsciiChar2 other) => _c0 == other._c0 && _c1 == other._c1;
 
+    public bool Equals(string other) => Equals(other.AsSpan());
+
+    public bool Equals(ReadOnlyMemory<char> other) => Equals(other.Span);
+
+    public bool Equals(ReadOnlySpan<char> other) => other.Length == CharCount && other[0] == _c0 && other[1] == _c1;
+
     public override bool Equals(object? obj) => obj is AsciiChar2 other && Equals(other);
 
     public override int GetHashCode() => HashCode.Combine(_c0, _c1);
@@ -111,6 +117,8 @@ public readonly struct AsciiChar2
     public override string ToString() => ToString(null, null);
 
     public Char2 ToChar2() => new((char)_c0, (char)_c1);
+
+    public char[] ToCharArray() => new[] { (char)_c0, _c1 };
 
     public static AsciiChar2 FromString(string value) => new(value.AsSpan());
 
@@ -160,11 +168,26 @@ public readonly struct AsciiChar2
         return false;
     }
 
-    public string ToString(string? format, IFormatProvider? formatProvider) => string.Create(CharCount, this, (span, char2) =>
-    {
-        span[0] = char2._c0;
-        span[1] = char2._c1;
-    });
+    public string ToString(string? format, IFormatProvider? formatProvider)
+        => string.Create(CharCount, this, (span, char2) =>
+        {
+            span[0] = char2._c0;
+            span[1] = char2._c1;
+        });
+
+    public string ToStringLower(string? format, IFormatProvider? formatProvider)
+        => string.Create(CharCount, this, (span, char2) =>
+        {
+            span[0] = char2._c0.ToLower();
+            span[1] = char2._c1.ToLower();
+        });
+
+    public string ToStringUpper(string? format, IFormatProvider? formatProvider)
+        => string.Create(CharCount, this, (span, char2) =>
+        {
+            span[0] = char2._c0.ToUpper();
+            span[1] = char2._c1.ToUpper();
+        });
 
     public static AsciiChar2 Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
     {

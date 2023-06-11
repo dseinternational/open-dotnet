@@ -12,7 +12,7 @@ public readonly partial struct BinaryInt32Value : IEquatableValue<BinaryInt32Val
 {
     static int ISpanSerializable<BinaryInt32Value>.MaxSerializedCharLength { get; } = 128; // TODO
 
-    public static readonly BinaryInt32Value False;
+    public static readonly BinaryInt32Value False = new(0);
 
     public static readonly BinaryInt32Value True = new(1);
 

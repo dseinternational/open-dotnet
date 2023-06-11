@@ -34,24 +34,6 @@ internal abstract class ValueTypeSpec
 
     public string ValueFieldName { get; set; } = "_value";
 
-    public string DefaultValueFieldName { get; set; } = "s_defaultValue";
-
-    /// <summary>
-    /// Indicates if the default value field should be used for equality, comparisons, formatting and
-    /// parsing. If enabled, a static readonly field with the name specified in
-    /// <see cref="DefaultValueFieldName"/> should be declared by the user and assigned an appropriate
-    /// value.
-    /// </summary>
-    /// <remarks>
-    /// <para>
-    /// When enabled, the value assigned will be:
-    /// • treated as equal to the value <c>(T)default</c> and its own value;
-    /// • used for formatting if the current value is <c>(T)default</c>
-    /// • recognised when parsing and result in the assignment of <c>(T)default</c>
-    /// </para>
-    /// </remarks>
-    public bool UseDefaultValueField { get; set; }
-
     /// <summary>
     /// Indicates if a <c>private static string GetString(string s)</c> method should be called from
     /// formatting methods to support interning and/or pooling of strings.

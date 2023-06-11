@@ -3,7 +3,7 @@
 
 using System.Collections.Immutable;
 
-namespace DSE.Open.Geography;
+namespace DSE.Open.Globalization;
 
 public static class IsoCountryCodes
 {
@@ -565,8 +565,8 @@ public static class IsoCountryCodes
         (AsciiChar3)"ZWE",
     });
 
-    public static readonly IReadOnlySet<CountryCode2> OfficiallyAssignedAlpha2
-        = ImmutableHashSet.Create(OfficiallyAssignedAlpha2Ascii.Select(CountryCode2.FromValue).ToArray());
+    public static readonly IReadOnlySet<CountryCode> OfficiallyAssignedAlpha2
+        = ImmutableHashSet.Create(OfficiallyAssignedAlpha2Ascii.Select(CountryCode.FromValue).ToArray());
 
     public static readonly IReadOnlySet<CountryCode3> OfficiallyAssignedAlpha3
         = ImmutableHashSet.Create(OfficiallyAssignedAlpha3Ascii.Select(CountryCode3.FromValue).ToArray());

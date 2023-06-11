@@ -275,7 +275,7 @@ public partial struct AsciiChar
         charsWritten = source.Length;
     }
 
-    public static ReadOnlySpan<char> ToCharSpan(ReadOnlySpan<byte> source)
+    public static char[] ToCharArray(ReadOnlySpan<byte> source)
     {
         char[]? rented = null;
 
