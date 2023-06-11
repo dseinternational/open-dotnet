@@ -19,27 +19,27 @@ public readonly partial struct AsciiChar
       ISpanFormattable,
       ISpanParsable<AsciiChar>
 {
-    private readonly byte _c;
+    private readonly byte _asciiByte;
 
-    public AsciiChar(byte c)
+    public AsciiChar(byte asciiByte)
     {
-        EnsureIsValidAsciiChar(c);
-        _c = c;
+        EnsureIsValidAsciiChar(asciiByte);
+        _asciiByte = asciiByte;
     }
 
-    public AsciiChar(char c)
+    public AsciiChar(char asciiChar)
     {
-        EnsureIsValidAsciiChar(c);
-        _c = (byte)c;
+        EnsureIsValidAsciiChar(asciiChar);
+        _asciiByte = (byte)asciiChar;
     }
 
-    public static bool IsAscii(byte value) => value <= 127;
+    public static bool IsAscii(byte b) => b <= 127;
 
-    public static bool IsAscii(char value) => value <= 127;
+    public static bool IsAscii(char c) => c <= 127;
 
-    public static bool IsLower(AsciiChar c) => IsLower(c._c);
+    public static bool IsLower(AsciiChar asciiChar) => IsLower(asciiChar._asciiByte);
 
-    public static bool IsUpper(AsciiChar c) => IsUpper(c._c);
+    public static bool IsUpper(AsciiChar asciiChar) => IsUpper(asciiChar._asciiByte);
 
     private static void EnsureIsValidAsciiChar(
         byte value,
@@ -61,27 +61,27 @@ public readonly partial struct AsciiChar
         }
     }
 
-    public int CompareTo(AsciiChar other) => _c.CompareTo(other._c);
+    public int CompareTo(AsciiChar other) => _asciiByte.CompareTo(other._asciiByte);
 
-    public int CompareToCaseInsensitive(AsciiChar other) => CompareToCaseInsensitive(_c, other._c);
+    public int CompareToCaseInsensitive(AsciiChar other) => CompareToCaseInsensitive(_asciiByte, other._asciiByte);
 
-    public bool Equals(AsciiChar other) => _c == other._c;
+    public bool Equals(AsciiChar other) => _asciiByte == other._asciiByte;
 
     public override bool Equals(object? obj) => obj is AsciiChar other && Equals(other);
 
-    public override int GetHashCode() => HashCode.Combine(_c);
+    public override int GetHashCode() => HashCode.Combine(_asciiByte);
 
-    public override string ToString() => new(new[] { (char)_c });
+    public override string ToString() => new(new[] { (char)_asciiByte });
 
     public static bool operator ==(AsciiChar left, AsciiChar right) => left.Equals(right);
 
     public static bool operator !=(AsciiChar left, AsciiChar right) => !left.Equals(right);
 
-    public byte ToByte() => _c;
+    public byte ToByte() => _asciiByte;
 
-    public char ToChar() => (char)_c;
+    public char ToChar() => (char)_asciiByte;
 
-    public int ToInt32() => _c;
+    public int ToInt32() => _asciiByte;
 
     public static AsciiChar FromByte(byte b) => new(b);
 
@@ -99,9 +99,9 @@ public readonly partial struct AsciiChar
 
     public static explicit operator AsciiChar(char c) => FromChar(c);
 
-    public AsciiChar ToUpper() => new(ToUpper(_c));
+    public AsciiChar ToUpper() => new(ToUpper(_asciiByte));
 
-    public AsciiChar ToLower() => new(ToLower(_c));
+    public AsciiChar ToLower() => new(ToLower(_asciiByte));
 
     public bool TryFormat(
         Span<char> destination,
@@ -111,7 +111,7 @@ public readonly partial struct AsciiChar
     {
         if (destination.Length >= 1)
         {
-            destination[0] = (char)_c;
+            destination[0] = (char)_asciiByte;
             charsWritten = 1;
             return true;
         }
