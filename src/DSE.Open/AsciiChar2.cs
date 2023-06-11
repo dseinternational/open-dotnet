@@ -216,7 +216,8 @@ public readonly struct AsciiChar2
         IFormatProvider? provider,
         [MaybeNullWhen(false)] out AsciiChar2 result)
     {
-        if (s.Length == CharCount)
+        if (s.Length >= CharCount && AsciiChar.IsAscii(s[0])
+            && AsciiChar.IsAscii(s[1]))
         {
             result = new AsciiChar2(s);
             return true;

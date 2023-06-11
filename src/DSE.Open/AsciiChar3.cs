@@ -201,9 +201,13 @@ public readonly struct AsciiChar3
         return default; // unreachable
     }
 
-    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, [MaybeNullWhen(false)] out AsciiChar3 result)
+    public static bool TryParse(
+        ReadOnlySpan<char> s,
+        IFormatProvider? provider,
+        [MaybeNullWhen(false)] out AsciiChar3 result)
     {
-        if (s.Length == CharCount)
+        if (s.Length >= CharCount && AsciiChar.IsAscii(s[0])
+            && AsciiChar.IsAscii(s[1]) && AsciiChar.IsAscii(s[2]))
         {
             result = new AsciiChar3(s);
             return true;

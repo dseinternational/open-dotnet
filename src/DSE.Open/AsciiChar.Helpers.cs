@@ -8,6 +8,21 @@ namespace DSE.Open;
 
 public partial struct AsciiChar
 {
+    public static bool IsAscii(byte b) => b <= 127;
+
+    public static bool IsAscii(sbyte b) => b is >= 0 and <= 127;
+
+    public static bool IsAscii(int b) => b is >= 0 and <= 127;
+
+    public static bool IsAscii(uint b) => b <= 127;
+
+    public static bool IsAscii(char c) => c <= 127;
+
+    public static bool IsLower(AsciiChar asciiChar) => IsLower(asciiChar._asciiByte);
+
+    public static bool IsUpper(AsciiChar asciiChar) => IsUpper(asciiChar._asciiByte);
+
+
     public static bool EqualsCaseInsensitive(byte asciiByte1, byte asciiByte2) => (asciiByte1 | 0x20) == (asciiByte2 | 0x20);
 
     public static int CompareToCaseInsensitive(byte asciiByte1, byte asciiByte2) => (asciiByte1 | 0x20).CompareTo(asciiByte2 | 0x20);

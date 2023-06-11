@@ -21,25 +21,33 @@ public readonly partial struct AsciiChar
 {
     private readonly byte _asciiByte;
 
-    public AsciiChar(byte asciiByte)
+    public AsciiChar(byte asciiByte) : this(asciiByte, false)
     {
-        EnsureIsValidAsciiChar(asciiByte);
+    }
+
+    public AsciiChar(char asciiChar) : this(asciiChar, false)
+    {
+    }
+
+    private AsciiChar(byte asciiByte, bool skipValidation)
+    {
+        if (!skipValidation)
+        {
+            EnsureIsValidAsciiChar(asciiByte);
+        }
+
         _asciiByte = asciiByte;
     }
 
-    public AsciiChar(char asciiChar)
+    private AsciiChar(char asciiChar, bool skipValidation)
     {
-        EnsureIsValidAsciiChar(asciiChar);
+        if (!skipValidation)
+        {
+            EnsureIsValidAsciiChar(asciiChar);
+        }
+
         _asciiByte = (byte)asciiChar;
     }
-
-    public static bool IsAscii(byte b) => b <= 127;
-
-    public static bool IsAscii(char c) => c <= 127;
-
-    public static bool IsLower(AsciiChar asciiChar) => IsLower(asciiChar._asciiByte);
-
-    public static bool IsUpper(AsciiChar asciiChar) => IsUpper(asciiChar._asciiByte);
 
     private static void EnsureIsValidAsciiChar(
         byte value,
@@ -138,9 +146,9 @@ public readonly partial struct AsciiChar
         IFormatProvider? provider,
         [MaybeNullWhen(false)] out AsciiChar result)
     {
-        if (s.Length == 1)
+        if (s.Length >= 1 && IsAscii(s[0]))
         {
-            result = new AsciiChar(s[0]);
+            result = new AsciiChar(s[0], true);
             return true;
         }
 
