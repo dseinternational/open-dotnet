@@ -106,7 +106,6 @@ public static class DictionaryExtensions
     public static TValue? GetValueOrDefault<TKey, TValue>(
         this IDictionary<TKey, TValue> dictionary,
         KeyValuePair<TKey, TValue> keyValuePair)
-        where TKey : notnull
     {
         Guard.IsNotNull(dictionary);
 
@@ -121,7 +120,6 @@ public static class DictionaryExtensions
     public static TValue? GetValueOrDefault<TKey, TValue>(
         this IReadOnlyDictionary<TKey, TValue> dictionary,
         KeyValuePair<TKey, TValue> keyValuePair)
-        where TKey : notnull
     {
         Guard.IsNotNull(dictionary);
 
