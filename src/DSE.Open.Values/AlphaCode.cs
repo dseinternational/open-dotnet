@@ -20,12 +20,11 @@ public readonly partial struct AlphaCode : IComparableValue<AlphaCode, AsciiStri
     public const int MaxLength = 32;
 
     public static bool IsValidValue(AsciiString value)
-        => value is { IsEmpty: false, Length: <= MaxLength }
-            && value.AsSpan().ContainsOnlyAsciiLetters();
+        => value is { IsEmpty: false, Length: <= MaxLength } && value.AsSpan().ContainsOnly(AsciiChar.IsLetter);
 
     public int CompareToCaseInsensitive(AlphaCode other) => _value.CompareToCaseInsensitive(other._value);
 
-    public ReadOnlySpan<byte> AsSpan() => _value.AsSpan();
+    public ReadOnlySpan<AsciiChar> AsSpan() => _value.AsSpan();
 
     public char[] ToCharArray() => _value.ToCharArray();
 

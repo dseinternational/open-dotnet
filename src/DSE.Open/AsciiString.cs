@@ -13,62 +13,26 @@ namespace DSE.Open;
 /// </summary>
 /// <remarks>
 /// Implements <see cref="ISpanFormattable"/> and <see cref="ISpanParsable{TSelf}"/> over
-/// a <see cref="ReadOnlyMemory{T}"/> of <see cref="byte"/>.
+/// a <see cref="ReadOnlyMemory{T}"/> of <see cref="AsciiChar"/>.
 /// </remarks>
 [StructLayout(LayoutKind.Auto)]
 public readonly partial struct AsciiString
     : IEquatable<AsciiString>,
-      IEquatable<ReadOnlyMemory<byte>>,
+      IEquatable<ReadOnlyMemory<AsciiChar>>,
       IComparable<AsciiString>,
       IEqualityOperators<AsciiString, AsciiString, bool>,
       ISpanFormattable,
       ISpanParsable<AsciiString>
 {
-    private readonly ReadOnlyMemory<byte> _value;
+    private readonly ReadOnlyMemory<AsciiChar> _value;
 
-    public AsciiString(ReadOnlyMemory<char> value) : this(ToByteSpan(value.Span)) { }
-
-    public AsciiString(ReadOnlySpan<char> value) : this(ToByteSpan(value)) { }
-
-    public AsciiString(ReadOnlySpan<byte> value) : this((ReadOnlyMemory<byte>)value.ToArray()) { }
-
-    public AsciiString(ReadOnlyMemory<byte> value) : this(value, false)
+    public AsciiString(ReadOnlySpan<AsciiChar> value) : this(value.ToArray())
     {
     }
 
-    private AsciiString(ReadOnlySpan<byte> value, bool skipValidation)
-        : this((ReadOnlyMemory<byte>)value.ToArray(), skipValidation)
+    public AsciiString(AsciiChar[] value)
     {
-    }
-
-    private AsciiString(ReadOnlyMemory<byte> value, bool skipValidation)
-    {
-        if (!skipValidation)
-        {
-            EnsureIsAscii(value.Span);
-        }
         _value = value;
-    }
-
-    public static bool IsAscii(ReadOnlySpan<byte> value)
-    {
-        for (var i = 0; i < value.Length; i++)
-        {
-            if (!AsciiChar.IsAscii(value[i]))
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private static void EnsureIsAscii(ReadOnlySpan<byte> value)
-    {
-        if (!IsAscii(value))
-        {
-            ThrowHelper.ThrowArgumentException("Value must be ASCII.");
-        }
     }
 
     public bool IsEmpty => _value.IsEmpty;
@@ -81,18 +45,49 @@ public readonly partial struct AsciiString
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    public int IndexOf(byte value) => _value.Span.IndexOf(value);
+    public int IndexOf(AsciiChar value) => _value.Span.IndexOf(value);
 
-    public ReadOnlyMemory<byte> AsMemory() => _value;
+    public ReadOnlyMemory<AsciiChar> AsMemory() => _value;
 
-    public ReadOnlySpan<byte> AsSpan() => _value.Span;
+    public ReadOnlySpan<AsciiChar> AsSpan() => _value.Span;
 
-    public byte[] ToByteArray() => _value.ToArray();
+    public AsciiChar[] ToArray() => _value.ToArray();
 
-    public char[] ToCharArray() => AsciiString.ToCharArray(_value.Span);
+    public byte[] ToByteArray()
+    {
+        if (_value.IsEmpty)
+        {
+            return Array.Empty<byte>();
+        }
 
-    public static AsciiString Parse(ReadOnlySpan<char> s)
-        => Parse(s, default);
+        var result = new byte[_value.Length];
+
+        for (var i = 0; i < _value.Length; i++)
+        {
+            result[i] = (byte)_value.Span[i];
+        }
+
+        return result;
+    }
+
+    public char[] ToCharArray()
+    {
+        if (_value.IsEmpty)
+        {
+            return Array.Empty<char>();
+        }
+
+        var result = new char[_value.Length];
+
+        for (var i = 0; i < _value.Length; i++)
+        {
+            result[i] = (char)_value.Span[i];
+        }
+
+        return result;
+    }
+
+    public static AsciiString Parse(ReadOnlySpan<char> s) => Parse(s, default);
 
     public static AsciiString Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
     {
@@ -105,8 +100,7 @@ public readonly partial struct AsciiString
         return default; // unreachable
     }
 
-    public static AsciiString Parse(string s)
-        => Parse(s, default);
+    public static AsciiString Parse(string s) => Parse(s, default);
 
     public static AsciiString Parse(string s, IFormatProvider? provider)
     {
@@ -124,13 +118,13 @@ public readonly partial struct AsciiString
         IFormatProvider? provider,
         out AsciiString result)
     {
-        byte[]? rented = null;
+        AsciiChar[]? rented = null;
 
         try
         {
-            Span<byte> buffer = s.Length <= 256
-                ? stackalloc byte[s.Length]
-                : (rented = ArrayPool<byte>.Shared.Rent(256));
+            Span<AsciiChar> buffer = s.Length <= 256
+                ? stackalloc AsciiChar[s.Length]
+                : (rented = ArrayPool<AsciiChar>.Shared.Rent(256));
 
             for (var i = 0; i < s.Length; i++)
             {
@@ -140,17 +134,18 @@ public readonly partial struct AsciiString
                     result = default;
                     return false;
                 }
-                buffer[i] = (byte)s[i];
+
+                buffer[i] = (AsciiChar)s[i];
             }
 
-            result = new(buffer[..s.Length], true);
+            result = new(buffer[..s.Length]);
             return true;
         }
         finally
         {
             if (rented is not null)
             {
-                ArrayPool<byte>.Shared.Return(rented);
+                ArrayPool<AsciiChar>.Shared.Return(rented);
             }
         }
     }
@@ -179,7 +174,7 @@ public readonly partial struct AsciiString
     public int CompareToCaseInsensitive(AsciiString other)
         => CompareToCaseInsensitive(other._value.Span);
 
-    public int CompareToCaseInsensitive(ReadOnlySpan<byte> asciiBytes)
+    public int CompareToCaseInsensitive(ReadOnlySpan<AsciiChar> asciiBytes)
     {
         var length = Math.Min(_value.Length, asciiBytes.Length);
 
@@ -196,9 +191,9 @@ public readonly partial struct AsciiString
         return _value.Length - asciiBytes.Length;
     }
 
-    public bool Equals(ReadOnlySpan<byte> other) => _value.Span.SequenceEqual(other);
+    public bool Equals(ReadOnlySpan<AsciiChar> other) => _value.Span.SequenceEqual(other);
 
-    public bool Equals(ReadOnlyMemory<byte> other) => Equals(other.Span);
+    public bool Equals(ReadOnlyMemory<AsciiChar> other) => Equals(other.Span);
 
     public bool Equals(AsciiString other) => Equals(other._value);
 
@@ -209,7 +204,7 @@ public readonly partial struct AsciiString
     public override int GetHashCode()
     {
         var c = new HashCode();
-        c.AddBytes(_value.Span);
+        c.AddBytes(MemoryMarshal.Cast<AsciiChar, byte>(_value.Span));
         return c.ToHashCode();
     }
 

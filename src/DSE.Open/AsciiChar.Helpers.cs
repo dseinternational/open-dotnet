@@ -35,6 +35,8 @@ public partial struct AsciiChar
     /// </remarks>
     public static bool IsDigit(byte b) => IsBetween(b, (byte)'0', (byte)'9');
 
+    public static bool IsDigit(AsciiChar b) => IsDigit(b._c);
+
     /// <summary>Indicates whether a character is categorized as an ASCII letter.</summary>
     /// <param name="b">The character to evaluate.</param>
     /// <returns>true if <paramref name="b"/> is an ASCII letter; otherwise, false.</returns>
@@ -44,6 +46,8 @@ public partial struct AsciiChar
     /// </remarks>
     public static bool IsLetter(byte b) => (uint)((b | 0x20) - 'a') <= 'z' - 'a';
 
+    public static bool IsLetter(AsciiChar b) => IsLetter(b._c);
+
     /// <summary>Indicates whether a character is categorized as a lowercase ASCII letter.</summary>
     /// <param name="c">The character to evaluate.</param>
     /// <returns>true if <paramref name="c"/> is a lowercase ASCII letter; otherwise, false.</returns>
@@ -52,6 +56,8 @@ public partial struct AsciiChar
     /// </remarks>
     public static bool IsLetterLower(byte c) => IsBetween(c, (byte)'a', (byte)'z');
 
+    public static bool IsLetterLower(AsciiChar b) => IsLetterLower(b._c);
+
     /// <summary>Indicates whether a character is categorized as an uppercase ASCII letter.</summary>
     /// <param name="c">The character to evaluate.</param>
     /// <returns>true if <paramref name="c"/> is a lowercase ASCII letter; otherwise, false.</returns>
@@ -59,6 +65,8 @@ public partial struct AsciiChar
     /// This determines whether the character is in the range 'a' through 'z', inclusive.
     /// </remarks>
     public static bool IsLetterUpper(byte c) => IsBetween(c, (byte)'A', (byte)'Z');
+
+    public static bool IsLetterUpper(AsciiChar b) => IsLetterUpper(b._c);
 
     /// <summary>Indicates whether a character is categorized as an ASCII letter or digit.</summary>
     /// <param name="b">The character to evaluate.</param>

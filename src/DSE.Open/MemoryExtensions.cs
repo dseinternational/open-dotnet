@@ -28,6 +28,34 @@ public static partial class MemoryExtensions
         return true;
     }
 
+    /// <summary>
+    /// Converts to the contents of a span to a <see cref="Memory{T}"/> using the specified converter.
+    /// </summary>
+    /// <typeparam name="TIn"></typeparam>
+    /// <typeparam name="TOut"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="converter"></param>
+    /// <returns></returns>
+    public static Memory<TOut> ConvertTo<TIn, TOut>(this ReadOnlySpan<TIn> source, Func<TIn, TOut> converter)
+    {
+        Guard.IsNotNull(converter);
+
+        if (source.IsEmpty)
+        {
+            return Array.Empty<TOut>();
+        }
+
+        var result = new TOut[source.Length];
+
+        for (var i = 0; i < source.Length; i++)
+        {
+            result[i] = converter(source[i]);
+        }
+
+        return result;
+    }
+
+
     public static bool TryCopyWhere<T>(this Span<T> span, Span<T> buffer, Func<T, bool> predicate, out int itemsCopied)
         => TryCopyWhere((ReadOnlySpan<T>)span, buffer, predicate, out itemsCopied);
 

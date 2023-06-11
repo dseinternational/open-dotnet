@@ -7,7 +7,64 @@ namespace DSE.Open;
 
 public partial struct AsciiString
 {
+    public static bool ContainsOnlyLetters(ReadOnlySpan<AsciiChar> value)
+    {
+        for (var i = 0; i < value.Length; i++)
+        {
+            if (!AsciiChar.IsLetter(value[i]))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static bool ContainsOnlyLetters(ReadOnlySpan<byte> value)
+    {
+        for (var i = 0; i < value.Length; i++)
+        {
+            if (!AsciiChar.IsLetter(value[i]))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static bool IsAscii(ReadOnlySpan<byte> value)
+    {
+        for (var i = 0; i < value.Length; i++)
+        {
+            if (!AsciiChar.IsAscii(value[i]))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public static bool SequenceEqualsCaseInsenstive(ReadOnlySpan<byte> a, ReadOnlySpan<byte> b)
+    {
+        if (a.Length != b.Length)
+        {
+            return false;
+        }
+
+        for (var i = 0; i < a.Length; i++)
+        {
+            if (!AsciiChar.EqualsCaseInsensitive(a[i], b[i]))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static bool SequenceEqualsCaseInsenstive(ReadOnlySpan<AsciiChar> a, ReadOnlySpan<AsciiChar> b)
     {
         if (a.Length != b.Length)
         {

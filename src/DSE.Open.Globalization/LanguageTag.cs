@@ -52,9 +52,14 @@ public readonly partial struct LanguageTag
         return new(AsciiString.Parse(languageTag));
     }
 
-    public static LanguageTag FromByteSpan(ReadOnlySpan<byte> languageTag) => new(new AsciiString(languageTag));
+    public static LanguageTag FromByteSpan(ReadOnlySpan<byte> languageTag)
+        => new(new AsciiString(MemoryMarshal.Cast<byte, AsciiChar>(languageTag)));
 
-    public static LanguageTag FromCharSpan(ReadOnlySpan<char> languageTag) => new(AsciiString.Parse(languageTag));
+    public static LanguageTag FromCharSpan(ReadOnlySpan<char> languageTag)
+        => new(AsciiString.Parse(languageTag));
+
+    public static bool IsValidValue(ReadOnlySpan<AsciiChar> value)
+        => IsValidValue(MemoryMarshal.Cast<AsciiChar, byte>(value));
 
     public static bool IsValidValue(ReadOnlySpan<byte> value)
     {
@@ -112,11 +117,27 @@ public readonly partial struct LanguageTag
     public bool LanguagePartEquals(LanguageTag otherLangPart)
         => LanguagePartEquals(otherLangPart._value.AsSpan());
 
+    public AsciiString ToAsciiString() => _value;
+
     public char[] ToCharArray() => _value.ToCharArray();
 
+    /// <summary>
+    /// Gets the <see cref="CultureInfo"/> represented by the current value.
+    /// </summary>
+    /// <returns></returns>
     public CultureInfo GetCultureInfo() => CultureInfo.GetCultureInfo(_value.ToString());
 
-    public bool LanguagePartEquals(ReadOnlySpan<byte> otherLangPart)
+    /// <summary>
+    /// Gets the <see cref="LanguageTag"/> for <see cref="CultureInfo.CurrentCulture"/>.
+    /// </summary>
+    public static LanguageTag CurrentCulture => FromCultureInfo(CultureInfo.CurrentCulture);
+
+    /// <summary>
+    /// Gets the <see cref="LanguageTag"/> for <see cref="CultureInfo.CurrentUICulture"/>.
+    /// </summary>
+    public static LanguageTag CurrentUICulture => FromCultureInfo(CultureInfo.CurrentUICulture);
+
+    public bool LanguagePartEquals(ReadOnlySpan<AsciiChar> otherLangPart)
     {
         if (_value.IsEmpty)
         {
@@ -124,13 +145,13 @@ public readonly partial struct LanguageTag
         }
 
         var span = _value.AsSpan();
-        var index = span.IndexOf((byte)'-');
+        var index = span.IndexOf((AsciiChar)'-');
 
         return otherLangPart.Length == index - 1
             && AsciiString.SequenceEqualsCaseInsenstive(span[..index], otherLangPart);
     }
 
-    public ReadOnlySpan<byte> GetLanguagePartSpan()
+    public ReadOnlySpan<AsciiChar> GetLanguagePartSpan()
     {
         if (_value.IsEmpty)
         {
@@ -138,7 +159,7 @@ public readonly partial struct LanguageTag
         }
 
         var span = _value.AsSpan();
-        var index = span.IndexOf((byte)'-');
+        var index = span.IndexOf((AsciiChar)'-');
         return index < 0 ? span : span[..index];
     }
 
