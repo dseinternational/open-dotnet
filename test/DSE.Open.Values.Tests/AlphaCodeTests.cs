@@ -140,7 +140,7 @@ public sealed class AlphaCodeTests
     public void TryFormat_WithEmptyCode_throws_UninitializedValueException()
     {
         // Arrange
-        var code = AlphaCode.Empty;
+        var code = (AlphaCode)default;
         var buffer = new char[1];
 
         // Act

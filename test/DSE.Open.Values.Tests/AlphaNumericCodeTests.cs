@@ -36,12 +36,12 @@ public sealed class AlphaNumericCodeTests
     }
 
     [Fact]
-    public void EmptyTest() => Assert.Equal(AlphaNumericCode.Empty, new AlphaNumericCode());
+    public void EmptyTest() => Assert.Equal(((AlphaNumericCode)default), new AlphaNumericCode());
 
     [Fact]
     public void EqualsStringOperatorTest()
     {
-        Assert.True(AlphaNumericCode.Empty == string.Empty);
+        Assert.True(((AlphaNumericCode)default) == string.Empty);
         Assert.True(new AlphaNumericCode("abC12") == "abC12");
         Assert.False((AlphaNumericCode)"abC33" == "abc33");
     }
@@ -49,7 +49,7 @@ public sealed class AlphaNumericCodeTests
     [Fact]
     public void NotEqualsStringOperatorTest()
     {
-        Assert.False(AlphaNumericCode.Empty != string.Empty);
+        Assert.False((AlphaNumericCode)default != string.Empty);
         Assert.False(new AlphaNumericCode("abC565") != "abC565");
         Assert.True(new AlphaNumericCode("abC565") != "abc565");
     }
@@ -157,7 +157,7 @@ public sealed class AlphaNumericCodeTests
     public void TryFormat_WithEmptyCode_ShouldReturnTrueWithNothingWritten()
     {
         // Arrange
-        var code = AlphaNumericCode.Empty;
+        var code = (AlphaNumericCode)default;
         var buffer = new char[1];
 
         // Act

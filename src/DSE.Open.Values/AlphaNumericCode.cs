@@ -22,8 +22,6 @@ public readonly record struct AlphaNumericCode : IComparable<AlphaNumericCode>, 
 {
     public const int MaxLength = 32;
 
-    public static readonly AlphaNumericCode Empty;
-
     /// <remarks>
     /// <c>null</c> if the code is empty.
     /// </remarks>
@@ -204,7 +202,7 @@ public readonly record struct AlphaNumericCode : IComparable<AlphaNumericCode>, 
             return true;
         }
 
-        result = Empty;
+        result = default;
         return false;
     }
 
