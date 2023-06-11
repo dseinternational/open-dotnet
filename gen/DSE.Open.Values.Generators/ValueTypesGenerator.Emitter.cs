@@ -1,9 +1,9 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using DSE.Open.Values.Generators.Model;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
-using DSE.Open.Values.Generators.Model;
 
 namespace DSE.Open.Values.Generators;
 
@@ -32,6 +32,7 @@ public partial class ValueTypesGenerator
 
             writer.WriteLine($"using System;");
             writer.WriteLine($"using System.ComponentModel;");
+            writer.WriteLine($"using DSE.Open.Values;");
 
             if (spec.EmitUsingSystemGlobalization)
             {
@@ -91,6 +92,8 @@ public partial class ValueTypesGenerator
                 writer.WriteLine($"private readonly {spec.ContainedValueTypeName} {spec.ValueFieldName};");
             }
 
+            writer.WriteLine($"private readonly bool _initialized;");
+
             if (spec.EmitConstructor)
             {
                 writer.WriteLine();
@@ -107,27 +110,17 @@ public partial class ValueTypesGenerator
                         """);
 
                 writer.WriteLine();
-                if (spec.UseDefaultValueField)
-                {
-                    writer.WriteLine($$"""
-                        if (value == s_defaultValue)
-                        {
-                            {{spec.ValueFieldName}} = default;
-                        }
-                        else
-                        {
-                            {{spec.ValueFieldName}} = value;
-                        }
-                        """);
-                }
-                else
-                {
-                    writer.WriteLine($"{spec.ValueFieldName} = value;");
-                }
+                writer.WriteLine($"{spec.ValueFieldName} = value;");
+                writer.WriteLine($"_initialized = true;");
 
                 writer.Indentation--;
                 writer.WriteLine("}");
             }
+
+            writer.WriteLine();
+            writer.WriteLine($$"""
+                public bool IsInitialized => _initialized;
+                """);
 
             if (spec.EmitEnsureIsValidArgumentValueMethod)
             {
@@ -143,6 +136,14 @@ public partial class ValueTypesGenerator
                     }
                     """);
             }
+
+            writer.WriteLine();
+            writer.WriteLine($$"""
+                private void EnsureInitialized()
+                {
+                    UninitializedValueException<{{spec.ValueTypeName}}, {{spec.ContainedValueTypeName}}>.ThrowIfUninitialized(this);
+                }
+                """);
 
             if (spec.EmitTryFromValueMethod)
             {
@@ -168,18 +169,6 @@ public partial class ValueTypesGenerator
                 writer.WriteLine($$"""
                     public static {{spec.ValueTypeName}} FromValue({{spec.ContainedValueTypeName}} value)
                     {
-                    """);
-                if (spec.UseDefaultValueField)
-                {
-                    writer.WriteLine($$"""
-                        if (value == s_defaultValue)
-                        {
-                            return default;
-                        }
-                    """);
-                }
-
-                writer.WriteLine($$"""
                         EnsureIsValidArgumentValue(value);
                         return new(value, true);
                     }
@@ -209,7 +198,10 @@ public partial class ValueTypesGenerator
                 writer.WriteLine();
                 writer.WriteLine($$"""
                     public static explicit operator {{spec.ContainedValueTypeName}}({{spec.ValueTypeName}} value)
-                        => value._value;
+                    {
+                        value.EnsureInitialized();
+                        return value._value;
+                    }
                     """);
             }
 
@@ -236,7 +228,11 @@ public partial class ValueTypesGenerator
             {
                 writer.WriteLine();
                 writer.WriteLine($$"""
-                    public override int GetHashCode() => HashCode.Combine(_value);
+                    public override int GetHashCode()
+                    {
+                        EnsureInitialized();
+                        return HashCode.Combine(_value);
+                    }
                     """);
             }
 
@@ -263,18 +259,7 @@ public partial class ValueTypesGenerator
                         ReadOnlySpan<char> format,
                         IFormatProvider? provider)
                         {
-                    """);
-                if (spec.UseDefaultValueField)
-                {
-                    writer.WriteLine($$"""
-                            if (_value == default)
-                            {
-                                return s_defaultValue.TryFormat(destination, out charsWritten, format, provider);
-                            }
-                    """);
-                }
-
-                writer.WriteLine($$"""
+                            EnsureInitialized();
                             return _value.TryFormat(destination, out charsWritten, format, provider);
                         }
                     """);
@@ -318,28 +303,11 @@ public partial class ValueTypesGenerator
                     /// </returns>
                     public string ToString(string? format, IFormatProvider? formatProvider)
                     {
+                        EnsureInitialized();
                         string returnValue;
-                    """);
-                if (spec.UseDefaultValueField)
-                {
-                    writer.WriteLine($$"""
-                        if (_value == default)
-                        {
-                            returnValue = s_defaultValue.ToString(format, formatProvider);
-                        }
-                        else
-                        {
-                            returnValue = _value.ToString(format, formatProvider);
-                        }
-                    """);
-                }
-                else
-                {
-                    writer.WriteLine($$"""
                         returnValue = _value.ToString(format, formatProvider);
                     """);
-
-                }
+            
 
                 if (spec.UseGetString)
                 {
@@ -526,7 +494,11 @@ public partial class ValueTypesGenerator
                 {
                     writer.WriteLine();
                     writer.WriteLine($$"""
-                        public int CompareTo({{spec.ValueTypeName}} other) => _value.CompareTo(other._value);
+                        public int CompareTo({{spec.ValueTypeName}} other)
+                        {
+                            EnsureInitialized();
+                            return _value.CompareTo(other._value);
+                        }
                         """);
                 }
 
@@ -544,13 +516,13 @@ public partial class ValueTypesGenerator
                 {
                     writer.WriteLine();
                     writer.WriteLine($$"""
-                        public static bool operator <({{spec.ValueTypeName}} left, {{spec.ValueTypeName}} right) => left._value < right._value;
+                        public static bool operator <({{spec.ValueTypeName}} left, {{spec.ValueTypeName}} right) => left.CompareTo(right) < 0;
                         
-                        public static bool operator >({{spec.ValueTypeName}} left, {{spec.ValueTypeName}} right) => left._value > right._value;
+                        public static bool operator >({{spec.ValueTypeName}} left, {{spec.ValueTypeName}} right) => left.CompareTo(right) > 0;
                         
-                        public static bool operator <=({{spec.ValueTypeName}} left, {{spec.ValueTypeName}} right) => left._value <= right._value;
+                        public static bool operator <=({{spec.ValueTypeName}} left, {{spec.ValueTypeName}} right) => left.CompareTo(right) <= 0;
                         
-                        public static bool operator >=({{spec.ValueTypeName}} left, {{spec.ValueTypeName}} right) => left._value >= right._value;
+                        public static bool operator >=({{spec.ValueTypeName}} left, {{spec.ValueTypeName}} right) => left.CompareTo(right) >= 0;
                         """);
                 }
             }

@@ -23,6 +23,8 @@ public interface IValue<TSelf, T> :
     where T : IEquatable<T>
     where TSelf : struct, IValue<TSelf, T>
 {
+    bool IsInitialized { get; }
+
     static abstract bool IsValidValue(T value);
 
     static virtual bool operator ==(TSelf left, TSelf right) => left.Equals(right);

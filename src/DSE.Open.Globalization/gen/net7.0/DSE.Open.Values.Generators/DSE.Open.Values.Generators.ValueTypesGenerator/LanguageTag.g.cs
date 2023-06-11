@@ -7,6 +7,7 @@
 
 using System;
 using System.ComponentModel;
+using DSE.Open.Values;
 
 namespace DSE.Open.Globalization;
 
@@ -16,6 +17,7 @@ public readonly partial struct LanguageTag
 {
 
     private readonly AsciiCharSequence _value;
+    private readonly bool _initialized;
 
     private LanguageTag(AsciiCharSequence value, bool skipValidation = false)
     {
@@ -25,15 +27,11 @@ public readonly partial struct LanguageTag
             EnsureIsValidArgumentValue(value);
         }
 
-        if (value == s_defaultValue)
-        {
-            _value = default;
-        }
-        else
-        {
-            _value = value;
-        }
+        _value = value;
+        _initialized = true;
     }
+
+    public bool IsInitialized => _initialized;
 
     private static void EnsureIsValidArgumentValue(AsciiCharSequence value)
     {
@@ -42,6 +40,11 @@ public readonly partial struct LanguageTag
             throw new ArgumentOutOfRangeException(nameof(value), value,
                 $"'{value}' is not a valid {nameof(LanguageTag)} value");
         }
+    }
+
+    private void EnsureInitialized()
+    {
+        UninitializedValueException<LanguageTag, AsciiCharSequence>.ThrowIfUninitialized(this);
     }
 
     public static bool TryFromValue(AsciiCharSequence value, out LanguageTag result)
@@ -58,10 +61,6 @@ public readonly partial struct LanguageTag
 
     public static LanguageTag FromValue(AsciiCharSequence value)
     {
-        if (value == s_defaultValue)
-        {
-            return default;
-        }
         EnsureIsValidArgumentValue(value);
         return new(value, true);
     }
@@ -73,7 +72,10 @@ public readonly partial struct LanguageTag
         => (AsciiCharSequence)value;
 
     public static explicit operator AsciiCharSequence(LanguageTag value)
-        => value._value;
+    {
+        value.EnsureInitialized();
+        return value._value;
+    }
 
     // IEquatable<T>
 
@@ -91,10 +93,7 @@ public readonly partial struct LanguageTag
         ReadOnlySpan<char> format,
         IFormatProvider? provider)
         {
-            if (_value == default)
-            {
-                return s_defaultValue.TryFormat(destination, out charsWritten, format, provider);
-            }
+            EnsureInitialized();
             return _value.TryFormat(destination, out charsWritten, format, provider);
         }
 
@@ -122,15 +121,9 @@ public readonly partial struct LanguageTag
     /// </returns>
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
+        EnsureInitialized();
         string returnValue;
-        if (_value == default)
-        {
-            returnValue = s_defaultValue.ToString(format, formatProvider);
-        }
-        else
-        {
-            returnValue = _value.ToString(format, formatProvider);
-        }
+        returnValue = _value.ToString(format, formatProvider);
         return GetString(returnValue);
     }
 
@@ -194,11 +187,11 @@ public readonly partial struct LanguageTag
     public static LanguageTag Parse(string s)
         => Parse(s, default);
 
-    public static bool operator <(LanguageTag left, LanguageTag right) => left._value < right._value;
+    public static bool operator <(LanguageTag left, LanguageTag right) => left.CompareTo(right) < 0;
     
-    public static bool operator >(LanguageTag left, LanguageTag right) => left._value > right._value;
+    public static bool operator >(LanguageTag left, LanguageTag right) => left.CompareTo(right) > 0;
     
-    public static bool operator <=(LanguageTag left, LanguageTag right) => left._value <= right._value;
+    public static bool operator <=(LanguageTag left, LanguageTag right) => left.CompareTo(right) <= 0;
     
-    public static bool operator >=(LanguageTag left, LanguageTag right) => left._value >= right._value;
+    public static bool operator >=(LanguageTag left, LanguageTag right) => left.CompareTo(right) >= 0;
 }

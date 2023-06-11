@@ -49,10 +49,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Abstractions", "sr
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "gen", "gen", "{A0556478-3601-4EE6-94DA-62EC721B5A28}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Geography", "src\DSE.Open.Geography\DSE.Open.Geography.csproj", "{428059C5-15FC-4937-94A3-0687299EA236}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Geography.Tests", "test\DSE.Open.Geography.Tests\DSE.Open.Geography.Tests.csproj", "{14177F65-3A53-42A3-B283-D5C7889CED10}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Globalization", "src\DSE.Open.Globalization\DSE.Open.Globalization.csproj", "{F8D9BC7D-41AB-4897-B02B-2DE4D9013BC8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Globalization.Tests", "test\DSE.Open.Globalization.Tests\DSE.Open.Globalization.Tests.csproj", "{DA7F5CCD-FD89-4127-8819-943DADB74B3A}"
@@ -77,13 +73,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Serialization.Data
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Serialization.Tests", "test\DSE.Open.Serialization.Tests\DSE.Open.Serialization.Tests.csproj", "{7555AAAA-DC3D-4AED-A2AF-477102403E52}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.Diagnostics.HealthChecks", "src\DSE.Open.Diagnostics.HealthChecks\DSE.Open.Diagnostics.HealthChecks.csproj", "{721E4250-A2ED-416C-BA4B-6E084192D684}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Diagnostics.HealthChecks", "src\DSE.Open.Diagnostics.HealthChecks\DSE.Open.Diagnostics.HealthChecks.csproj", "{721E4250-A2ED-416C-BA4B-6E084192D684}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.EntityFrameworkCore.Relational", "src\DSE.Open.EntityFrameworkCore.Relational\DSE.Open.EntityFrameworkCore.Relational.csproj", "{69F69015-86CF-42FE-B08B-ADE98E53CF74}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.EntityFrameworkCore.Relational", "src\DSE.Open.EntityFrameworkCore.Relational\DSE.Open.EntityFrameworkCore.Relational.csproj", "{69F69015-86CF-42FE-B08B-ADE98E53CF74}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.Testing", "src\DSE.Open.Testing\DSE.Open.Testing.csproj", "{35D6D30E-EE39-4322-A8A5-20A1569937C3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Testing", "src\DSE.Open.Testing\DSE.Open.Testing.csproj", "{35D6D30E-EE39-4322-A8A5-20A1569937C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.Testing.Xunit", "src\DSE.Open.Testing.Xunit\DSE.Open.Testing.Xunit.csproj", "{F8BA840C-A58D-4631-9AB8-00E33610AFC9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Testing.Xunit", "src\DSE.Open.Testing.Xunit\DSE.Open.Testing.Xunit.csproj", "{F8BA840C-A58D-4631-9AB8-00E33610AFC9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -135,14 +131,6 @@ Global
 		{449ED69E-30AA-4DC5-B33D-0C0597EC17A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{449ED69E-30AA-4DC5-B33D-0C0597EC17A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{449ED69E-30AA-4DC5-B33D-0C0597EC17A1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{428059C5-15FC-4937-94A3-0687299EA236}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{428059C5-15FC-4937-94A3-0687299EA236}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{428059C5-15FC-4937-94A3-0687299EA236}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{428059C5-15FC-4937-94A3-0687299EA236}.Release|Any CPU.Build.0 = Release|Any CPU
-		{14177F65-3A53-42A3-B283-D5C7889CED10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{14177F65-3A53-42A3-B283-D5C7889CED10}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{14177F65-3A53-42A3-B283-D5C7889CED10}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{14177F65-3A53-42A3-B283-D5C7889CED10}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F8D9BC7D-41AB-4897-B02B-2DE4D9013BC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F8D9BC7D-41AB-4897-B02B-2DE4D9013BC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8D9BC7D-41AB-4897-B02B-2DE4D9013BC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -219,8 +207,6 @@ Global
 		{D0CAF2C0-5DBD-4A86-9C78-899362EC37C1} = {850B3E2C-6172-4CF9-9E83-AD0997C57CA3}
 		{A0B7B6F5-F883-40EA-BC5E-2BB7A1E8361A} = {D2529453-80C3-4F06-BBD0-6B58EF65EF99}
 		{449ED69E-30AA-4DC5-B33D-0C0597EC17A1} = {D2529453-80C3-4F06-BBD0-6B58EF65EF99}
-		{428059C5-15FC-4937-94A3-0687299EA236} = {D2529453-80C3-4F06-BBD0-6B58EF65EF99}
-		{14177F65-3A53-42A3-B283-D5C7889CED10} = {850B3E2C-6172-4CF9-9E83-AD0997C57CA3}
 		{F8D9BC7D-41AB-4897-B02B-2DE4D9013BC8} = {D2529453-80C3-4F06-BBD0-6B58EF65EF99}
 		{DA7F5CCD-FD89-4127-8819-943DADB74B3A} = {850B3E2C-6172-4CF9-9E83-AD0997C57CA3}
 		{8D1E75FE-348A-4D65-9240-45F7340963E8} = {D2529453-80C3-4F06-BBD0-6B58EF65EF99}

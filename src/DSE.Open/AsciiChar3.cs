@@ -14,12 +14,12 @@ namespace DSE.Open;
 [StructLayout(LayoutKind.Auto)]
 public readonly struct AsciiChar3
     : IComparable<AsciiChar3>,
-    IEquatable<AsciiChar3>,
-    IEqualityOperators<AsciiChar3, AsciiChar3, bool>,
-    ISpanFormattable,
-    ISpanParsable<AsciiChar3>,
-    IConvertibleTo<AsciiChar3, string>,
-    ITryConvertibleFrom<AsciiChar3, string>
+      IEquatable<AsciiChar3>,
+      IEqualityOperators<AsciiChar3, AsciiChar3, bool>,
+      ISpanFormattable,
+      ISpanParsable<AsciiChar3>,
+      IConvertibleTo<AsciiChar3, string>,
+      ITryConvertibleFrom<AsciiChar3, string>
 {
     private const int CharCount = 3;
 
@@ -83,6 +83,14 @@ public readonly struct AsciiChar3
 
     public bool Equals(AsciiChar3 other) => _c0 == other._c0 && _c1 == other._c1 && _c2 == other._c2;
 
+    public bool Equals(string other) => Equals(other.AsSpan());
+
+    public bool Equals(ReadOnlyMemory<char> other) => Equals(other.Span);
+
+    public bool Equals(ReadOnlySpan<char> other) => other.Length == CharCount && other[0] == _c0 && other[1] == _c1 && other[2] == _c2;
+
+    public override bool Equals(object? obj) => obj is AsciiChar3 other && Equals(other);
+
     public int CompareTo(AsciiChar3 other)
     {
         var c = _c0.CompareTo(other._c0);
@@ -97,13 +105,13 @@ public readonly struct AsciiChar3
         return c != 0 ? c : _c2.CompareTo(other._c2);
     }
 
-    public override bool Equals(object? obj) => obj is AsciiChar3 other && Equals(other);
-
     public override int GetHashCode() => HashCode.Combine(_c0, _c1, _c2);
 
     public override string ToString() => ToString(null, null);
 
     public Char3 ToChar3() => new((char)_c0, (char)_c1, (char)_c2);
+
+    public char[] ToCharArray() => new[] { (char)_c0, _c1, _c2 };
 
     public static AsciiChar3 FromString(string value) => new(value.AsSpan());
 
@@ -144,6 +152,22 @@ public readonly struct AsciiChar3
             span[0] = value._c0;
             span[1] = value._c1;
             span[2] = value._c2;
+        });
+
+    public string ToStringLower(string? format, IFormatProvider? formatProvider)
+        => string.Create(CharCount, this, (span, value) =>
+        {
+            span[0] = value._c0.ToLower();
+            span[1] = value._c1.ToLower();
+            span[2] = value._c2.ToLower();
+        });
+
+    public string ToStringUpper(string? format, IFormatProvider? formatProvider)
+        => string.Create(CharCount, this, (span, value) =>
+        {
+            span[0] = value._c0.ToUpper();
+            span[1] = value._c1.ToUpper();
+            span[2] = value._c2.ToUpper();
         });
 
     public static AsciiChar3 Parse(ReadOnlySpan<char> s, IFormatProvider? provider)

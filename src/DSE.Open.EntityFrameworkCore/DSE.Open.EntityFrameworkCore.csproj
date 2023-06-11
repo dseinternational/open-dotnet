@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DSE.Open.Diagnostics.HealthChecks\DSE.Open.Diagnostics.HealthChecks.csproj" />
-    <ProjectReference Include="..\DSE.Open.Geography\DSE.Open.Geography.csproj" />
+    <ProjectReference Include="..\DSE.Open.Globalization\DSE.Open.Globalization.csproj" />
   </ItemGroup>
 
 </Project>

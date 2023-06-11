@@ -1,12 +1,13 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using DSE.Open.Values;
 using DSE.Open.Values.Text.Json.Serialization;
 
-namespace DSE.Open.Geography;
+namespace DSE.Open.Globalization;
 
 /// <summary>
 /// An offically-assigned ISO 3166-1 alpha-3 country code.
@@ -26,6 +27,8 @@ public readonly partial struct CountryCode3 : IEquatableValue<CountryCode3, Asci
     public static int MaxSerializedCharLength => 3;
 
     public static IEnumerable<CountryCode3> ValueSet => IsoCountryCodes.OfficiallyAssignedAlpha3;
+
+    static int ISpanSerializable<CountryCode3>.MaxSerializedCharLength => 3;
 
     public static bool IsValidValue(AsciiChar3 value) => IsValidValue(value, true);
 

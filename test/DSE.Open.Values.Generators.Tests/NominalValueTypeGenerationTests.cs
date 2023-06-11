@@ -89,6 +89,7 @@ public readonly partial struct MyOptions : IEquatableValue<MyOptions, long>
     private MyOptions(long value)
     {
         _value = value;
+        _initialized = true;
     }
 }
 
@@ -132,50 +133,8 @@ public readonly partial struct MyOptions : IEquatableValue<MyOptions, long>
     private MyOptions(long value, bool skipValidation = false)
     {
         _value = value;
+        _initialized = true;
     }
-}
-
-#nullable disable
-");
-
-        var result = CompilationHelper.RunValuesSourceGenerator(inputCompilation);
-
-        AssertDiagnosticsCount(0, result.Diagnostics);
-
-        var outputSyntaxTrees = result.NewCompilation.SyntaxTrees.ToImmutableArray();
-
-        Assert.Equal(2, outputSyntaxTrees.Length);
-
-        WriteSyntax(outputSyntaxTrees[1]);
-
-        var newCompilationDiagnostics = result.NewCompilation.GetDiagnostics();
-
-        AssertDiagnosticsCount(0, newCompilationDiagnostics);
-    }
-
-    [Fact]
-    public void Generates_type_with_custom_default_value()
-    {
-        var inputCompilation = CompilationHelper.CreateCompilation(@"
-using DSE.Open;
-using DSE.Open.Values;
-
-namespace TestNamespace;
-
-#nullable enable
-
-[EquatableValue]
-public readonly partial struct MyOptions : IEquatableValue<MyOptions, long>
-{
-    public static readonly MyOptions Option1;
-    public static readonly MyOptions Option2 = new(1);
-    public static readonly MyOptions Option3 = new(2);
-
-    private static readonly long s_defaultValue = 2;
-
-    static int ISpanSerializable<MyOptions>.MaxSerializedCharLength { get; } = 1;
-
-    public static bool IsValidValue(long value) => value is >= 0 and <= 2;
 }
 
 #nullable disable
@@ -214,8 +173,6 @@ public readonly partial struct MyOptions : IEquatableValue<MyOptions, long>
     public static readonly MyOptions Option1;
     public static readonly MyOptions Option2 = new(1);
     public static readonly MyOptions Option3 = new(2);
-
-    private static readonly long s_defaultValue = 2;
 
     static int ISpanSerializable<MyOptions>.MaxSerializedCharLength { get; } = 1;
 
@@ -264,8 +221,6 @@ public readonly partial struct MyOptions : IEquatableValue<MyOptions, long>
     public static readonly MyOptions Option2 = new(1);
     public static readonly MyOptions Option3 = new(2);
 
-    private static readonly long s_defaultValue = 2;
-
     static int ISpanSerializable<MyOptions>.MaxSerializedCharLength { get; } = 1;
 
     public static bool IsValidValue(long value) => value is >= 0 and <= 2;
@@ -309,8 +264,6 @@ public readonly partial struct MyOptions : IEquatableValue<MyOptions, long>
     public static readonly MyOptions Option1;
     public static readonly MyOptions Option2 = new(1);
     public static readonly MyOptions Option3 = new(2);
-
-    private static readonly long s_defaultValue = 2;
 
     static int ISpanSerializable<MyOptions>.MaxSerializedCharLength { get; } = 1;
 

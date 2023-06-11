@@ -168,7 +168,7 @@ public static class LocalizedCollectionExtensions
 
         var tagLangPart = tag.GetLanguagePart();
 
-        var baseLangMatch = list.SingleOrDefault(i => i.Key.AsSpan().SequenceEqual(tagLangPart.ToSpanChar()));
+        var baseLangMatch = list.SingleOrDefault(i => i.Key.AsSpan().SequenceEqual(tagLangPart.ToCharArray()));
 
         if (baseLangMatch.Key == tagStr)
         {

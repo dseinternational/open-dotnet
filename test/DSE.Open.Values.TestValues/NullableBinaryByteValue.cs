@@ -33,6 +33,8 @@ public readonly record struct NullableBinaryByteValue : INullableValue<NullableB
 
     public static int MaxSerializedCharLength => 128;
 
+    public bool IsInitialized => true;
+
     public static bool TryFromValue(byte value, out NullableBinaryByteValue result)
     {
         switch (value)

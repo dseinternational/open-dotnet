@@ -69,8 +69,6 @@ public readonly partial struct MyOptions : IAddableValue<MyOptions, long>
     public static readonly MyOptions Option2 = new(1);
     public static readonly MyOptions Option3 = new(2);
 
-    private static readonly long s_defaultValue = 2;
-
     static int ISpanSerializable<MyOptions>.MaxSerializedCharLength { get; } = 1;
 
     public static bool IsValidValue(long value) => value is >= 0 and <= 2;

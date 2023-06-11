@@ -29,7 +29,7 @@ public readonly partial struct AlphaCode : IComparableValue<AlphaCode, AsciiChar
 
     public ReadOnlySpan<byte> AsSpan() => _value.AsSpan();
 
-    public ReadOnlySpan<char> ToCharSpan() => _value.ToCharSpan();
+    public char[] ToCharArray() => _value.ToCharArray();
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
 

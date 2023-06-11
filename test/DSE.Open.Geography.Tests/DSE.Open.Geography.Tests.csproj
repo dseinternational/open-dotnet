@@ -6,8 +6,4 @@
     <IsTestProject>true</IsTestProject>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\DSE.Open.Geography\DSE.Open.Geography.csproj" />
-  </ItemGroup>
-
 </Project>
