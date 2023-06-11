@@ -9,29 +9,66 @@ using System.Runtime.InteropServices;
 namespace DSE.Open;
 
 /// <summary>
+/// An immutable sequence of ASCII bytes.
+/// </summary>
+/// <remarks>
 /// Implements <see cref="ISpanFormattable"/> and <see cref="ISpanParsable{TSelf}"/> over
 /// a <see cref="ReadOnlyMemory{T}"/> of <see cref="byte"/>.
-/// </summary>
+/// </remarks>
 [StructLayout(LayoutKind.Auto)]
-public readonly struct AsciiCharSequence
-    : IEquatable<AsciiCharSequence>,
+public readonly partial struct AsciiString
+    : IEquatable<AsciiString>,
       IEquatable<ReadOnlyMemory<byte>>,
-      IComparable<AsciiCharSequence>,
-      IEqualityOperators<AsciiCharSequence, AsciiCharSequence, bool>,
+      IComparable<AsciiString>,
+      IEqualityOperators<AsciiString, AsciiString, bool>,
       ISpanFormattable,
-      ISpanParsable<AsciiCharSequence>
+      ISpanParsable<AsciiString>
 {
     private readonly ReadOnlyMemory<byte> _value;
 
-    public AsciiCharSequence(ReadOnlyMemory<char> value) : this(AsciiChar.ToByteSpan(value.Span)) { }
+    public AsciiString(ReadOnlyMemory<char> value) : this(ToByteSpan(value.Span)) { }
 
-    public AsciiCharSequence(ReadOnlySpan<char> value) : this(AsciiChar.ToByteSpan(value)) { }
+    public AsciiString(ReadOnlySpan<char> value) : this(ToByteSpan(value)) { }
 
-    public AsciiCharSequence(ReadOnlySpan<byte> value) : this((ReadOnlyMemory<byte>)value.ToArray()) { }
+    public AsciiString(ReadOnlySpan<byte> value) : this((ReadOnlyMemory<byte>)value.ToArray()) { }
 
-    public AsciiCharSequence(ReadOnlyMemory<byte> value)
+    public AsciiString(ReadOnlyMemory<byte> value) : this(value, false)
     {
+    }
+
+    private AsciiString(ReadOnlySpan<byte> value, bool skipValidation)
+        : this((ReadOnlyMemory<byte>)value.ToArray(), skipValidation)
+    {
+    }
+
+    private AsciiString(ReadOnlyMemory<byte> value, bool skipValidation)
+    {
+        if (!skipValidation)
+        {
+            EnsureIsAscii(value.Span);
+        }
         _value = value;
+    }
+
+    public static bool IsAscii(ReadOnlySpan<byte> value)
+    {
+        for (var i = 0; i < value.Length; i++)
+        {
+            if (!AsciiChar.IsAscii(value[i]))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static void EnsureIsAscii(ReadOnlySpan<byte> value)
+    {
+        if (!IsAscii(value))
+        {
+            ThrowHelper.ThrowArgumentException("Value must be ASCII.");
+        }
     }
 
     public bool IsEmpty => _value.IsEmpty;
@@ -50,26 +87,28 @@ public readonly struct AsciiCharSequence
 
     public ReadOnlySpan<byte> AsSpan() => _value.Span;
 
-    public char[] ToCharArray() => AsciiChar.ToCharArray(_value.Span);
+    public byte[] ToByteArray() => _value.ToArray();
 
-    public static AsciiCharSequence Parse(ReadOnlySpan<char> s)
+    public char[] ToCharArray() => AsciiString.ToCharArray(_value.Span);
+
+    public static AsciiString Parse(ReadOnlySpan<char> s)
         => Parse(s, default);
 
-    public static AsciiCharSequence Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
+    public static AsciiString Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
     {
         if (TryParse(s, provider, out var result))
         {
             return result;
         }
 
-        ThrowHelper.ThrowFormatException($"'{s}' is not a valid {nameof(AsciiCharSequence)} value.");
+        ThrowHelper.ThrowFormatException($"'{s}' is not a valid {nameof(AsciiString)} value.");
         return default; // unreachable
     }
 
-    public static AsciiCharSequence Parse(string s)
+    public static AsciiString Parse(string s)
         => Parse(s, default);
 
-    public static AsciiCharSequence Parse(string s, IFormatProvider? provider)
+    public static AsciiString Parse(string s, IFormatProvider? provider)
     {
         Guard.IsNotNull(s);
         return Parse(s.AsSpan(), provider);
@@ -77,13 +116,13 @@ public readonly struct AsciiCharSequence
 
     public static bool TryParse(
         ReadOnlySpan<char> s,
-        out AsciiCharSequence result)
+        out AsciiString result)
         => TryParse(s, default, out result);
 
     public static bool TryParse(
         ReadOnlySpan<char> s,
         IFormatProvider? provider,
-        out AsciiCharSequence result)
+        out AsciiString result)
     {
         byte[]? rented = null;
 
@@ -104,7 +143,7 @@ public readonly struct AsciiCharSequence
                 buffer[i] = (byte)s[i];
             }
 
-            result = new(buffer[..s.Length]);
+            result = new(buffer[..s.Length], true);
             return true;
         }
         finally
@@ -118,13 +157,13 @@ public readonly struct AsciiCharSequence
 
     public static bool TryParse(
       [NotNullWhen(true)] string? s,
-      out AsciiCharSequence result)
+      out AsciiString result)
       => TryParse(s, default, out result);
 
     public static bool TryParse(
         [NotNullWhen(true)] string? s,
         IFormatProvider? provider,
-        out AsciiCharSequence result)
+        out AsciiString result)
     {
         if (s is null)
         {
@@ -135,9 +174,9 @@ public readonly struct AsciiCharSequence
         return TryParse(s.AsSpan(), provider, out result);
     }
 
-    public int CompareTo(AsciiCharSequence other) => _value.Span.SequenceCompareTo(other._value.Span);
+    public int CompareTo(AsciiString other) => _value.Span.SequenceCompareTo(other._value.Span);
 
-    public int CompareToCaseInsensitive(AsciiCharSequence other)
+    public int CompareToCaseInsensitive(AsciiString other)
         => CompareToCaseInsensitive(other._value.Span);
 
     public int CompareToCaseInsensitive(ReadOnlySpan<byte> asciiBytes)
@@ -161,11 +200,11 @@ public readonly struct AsciiCharSequence
 
     public bool Equals(ReadOnlyMemory<byte> other) => Equals(other.Span);
 
-    public bool Equals(AsciiCharSequence other) => Equals(other._value);
+    public bool Equals(AsciiString other) => Equals(other._value);
 
-    public bool EqualsCaseInsensitive(AsciiCharSequence other) => AsciiChar.SequenceEqualsCaseInsenstive(_value.Span, other._value.Span);
+    public bool EqualsCaseInsensitive(AsciiString other) => SequenceEqualsCaseInsenstive(_value.Span, other._value.Span);
 
-    public override bool Equals(object? obj) => obj is AsciiCharSequence other && Equals(other);
+    public override bool Equals(object? obj) => obj is AsciiString other && Equals(other);
 
     public override int GetHashCode()
     {
@@ -220,22 +259,22 @@ public readonly struct AsciiCharSequence
         return false;
     }
 
-    public static bool operator ==(AsciiCharSequence left, AsciiCharSequence right) => left.Equals(right);
+    public static bool operator ==(AsciiString left, AsciiString right) => left.Equals(right);
 
-    public static bool operator !=(AsciiCharSequence left, AsciiCharSequence right) => !(left == right);
+    public static bool operator !=(AsciiString left, AsciiString right) => !(left == right);
 
 #pragma warning disable CA2225 // Operator overloads have named alternates (Parse)
 
-    public static explicit operator AsciiCharSequence(string value) => Parse(value);
+    public static explicit operator AsciiString(string value) => Parse(value);
 
 #pragma warning restore CA2225 // Operator overloads have named alternates
 
-    public static bool operator <(AsciiCharSequence left, AsciiCharSequence right) => left.CompareTo(right) < 0;
+    public static bool operator <(AsciiString left, AsciiString right) => left.CompareTo(right) < 0;
 
-    public static bool operator <=(AsciiCharSequence left, AsciiCharSequence right) => left.CompareTo(right) <= 0;
+    public static bool operator <=(AsciiString left, AsciiString right) => left.CompareTo(right) <= 0;
 
-    public static bool operator >(AsciiCharSequence left, AsciiCharSequence right) => left.CompareTo(right) > 0;
+    public static bool operator >(AsciiString left, AsciiString right) => left.CompareTo(right) > 0;
 
-    public static bool operator >=(AsciiCharSequence left, AsciiCharSequence right) => left.CompareTo(right) >= 0;
+    public static bool operator >=(AsciiString left, AsciiString right) => left.CompareTo(right) >= 0;
 
 }

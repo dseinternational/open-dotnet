@@ -11,15 +11,15 @@ using DSE.Open.Values;
 
 namespace DSE.Open.Values;
 
-[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<AlphaCode, AsciiCharSequence>))]
+[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<AlphaCode, AsciiString>))]
 public readonly partial struct AlphaCode
-    : global::DSE.Open.Values.IComparableValue<AlphaCode, AsciiCharSequence>
+    : global::DSE.Open.Values.IComparableValue<AlphaCode, AsciiString>
 {
 
-    private readonly AsciiCharSequence _value;
+    private readonly AsciiString _value;
     private readonly bool _initialized;
 
-    private AlphaCode(AsciiCharSequence value, bool skipValidation = false)
+    private AlphaCode(AsciiString value, bool skipValidation = false)
     {
 
         if (!skipValidation)
@@ -33,7 +33,7 @@ public readonly partial struct AlphaCode
 
     public bool IsInitialized => _initialized;
 
-    private static void EnsureIsValidArgumentValue(AsciiCharSequence value)
+    private static void EnsureIsValidArgumentValue(AsciiString value)
     {
         if (!IsValidValue(value))
         {
@@ -44,10 +44,10 @@ public readonly partial struct AlphaCode
 
     private void EnsureInitialized()
     {
-        UninitializedValueException<AlphaCode, AsciiCharSequence>.ThrowIfUninitialized(this);
+        UninitializedValueException<AlphaCode, AsciiString>.ThrowIfUninitialized(this);
     }
 
-    public static bool TryFromValue(AsciiCharSequence value, out AlphaCode result)
+    public static bool TryFromValue(AsciiString value, out AlphaCode result)
     {
         if (IsValidValue(value))
         {
@@ -59,19 +59,19 @@ public readonly partial struct AlphaCode
         return false;
     }
 
-    public static AlphaCode FromValue(AsciiCharSequence value)
+    public static AlphaCode FromValue(AsciiString value)
     {
         EnsureIsValidArgumentValue(value);
         return new(value, true);
     }
 
-    public static explicit operator AlphaCode(AsciiCharSequence value)
+    public static explicit operator AlphaCode(AsciiString value)
         => FromValue(value);
 
-    static AsciiCharSequence global::DSE.Open.IConvertibleTo<AlphaCode, AsciiCharSequence>.ConvertTo(AlphaCode value)
-        => (AsciiCharSequence)value;
+    static AsciiString global::DSE.Open.IConvertibleTo<AlphaCode, AsciiString>.ConvertTo(AlphaCode value)
+        => (AsciiString)value;
 
-    public static explicit operator AsciiCharSequence(AlphaCode value)
+    public static explicit operator AsciiString(AlphaCode value)
     {
         value.EnsureInitialized();
         return value._value;
@@ -155,7 +155,7 @@ public readonly partial struct AlphaCode
         ReadOnlySpan<char> s,
         IFormatProvider? provider,
         out AlphaCode result)
-        => global::DSE.Open.Values.ValueParser.TryParse<AlphaCode, AsciiCharSequence>(s, provider, out result);
+        => global::DSE.Open.Values.ValueParser.TryParse<AlphaCode, AsciiString>(s, provider, out result);
 
     public static bool TryParse(
         ReadOnlySpan<char> s,
@@ -171,7 +171,7 @@ public readonly partial struct AlphaCode
         string? s,
         IFormatProvider? provider,
         out AlphaCode result)
-        => global::DSE.Open.Values.ValueParser.TryParse<AlphaCode, AsciiCharSequence>(s, provider, out result);
+        => global::DSE.Open.Values.ValueParser.TryParse<AlphaCode, AsciiString>(s, provider, out result);
 
     public static bool TryParse(
         string? s,
@@ -184,13 +184,13 @@ public readonly partial struct AlphaCode
         => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
 
     public static AlphaCode Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<AlphaCode, AsciiCharSequence>(s, provider);
+        => global::DSE.Open.Values.ValueParser.Parse<AlphaCode, AsciiString>(s, provider);
 
     public static AlphaCode Parse(ReadOnlySpan<char> s)
         => Parse(s, default);
 
     public static AlphaCode Parse(string s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<AlphaCode, AsciiCharSequence>(s, provider);
+        => global::DSE.Open.Values.ValueParser.Parse<AlphaCode, AsciiString>(s, provider);
 
     public static AlphaCode Parse(string s)
         => Parse(s, default);

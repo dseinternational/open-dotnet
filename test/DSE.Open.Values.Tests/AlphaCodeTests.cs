@@ -144,7 +144,7 @@ public sealed class AlphaCodeTests
         var buffer = new char[1];
 
         // Act
-        Assert.Throws<UninitializedValueException<AlphaCode, AsciiCharSequence>>(() => code.TryFormat(buffer, out var charsWritten, default, default));
+        Assert.Throws<UninitializedValueException<AlphaCode, AsciiString>>(() => code.TryFormat(buffer, out var charsWritten, default, default));
     }
 
     [Fact]

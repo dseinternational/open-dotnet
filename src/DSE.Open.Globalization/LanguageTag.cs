@@ -18,10 +18,10 @@ namespace DSE.Open.Globalization;
 /// A language tag as defined by <see href="https://www.rfc-editor.org/rfc/rfc5646.html">RFC5646</see>.
 /// </summary>
 [ComparableValue]
-[JsonConverter(typeof(JsonSpanSerializableValueConverter<LanguageTag, AsciiCharSequence>))]
+[JsonConverter(typeof(JsonSpanSerializableValueConverter<LanguageTag, AsciiString>))]
 [StructLayout(LayoutKind.Auto)]
 public readonly partial struct LanguageTag
-    : IComparableValue<LanguageTag, AsciiCharSequence>
+    : IComparableValue<LanguageTag, AsciiString>
 {
     /// <summary>
     /// Gets the maximum practical length to expect for a language code that is suitable for
@@ -38,7 +38,7 @@ public readonly partial struct LanguageTag
 
     private static readonly Regex s_regex = GetValidationRegex();
 
-    public static bool IsValidValue(AsciiCharSequence value) => IsValidValue(value.AsSpan());
+    public static bool IsValidValue(AsciiString value) => IsValidValue(value.AsSpan());
 
     public static LanguageTag FromCultureInfo(CultureInfo cultureInfo)
     {
@@ -49,12 +49,12 @@ public readonly partial struct LanguageTag
     public static LanguageTag FromString(string languageTag)
     {
         Guard.IsNotNull(languageTag);
-        return new(AsciiCharSequence.Parse(languageTag));
+        return new(AsciiString.Parse(languageTag));
     }
 
-    public static LanguageTag FromByteSpan(ReadOnlySpan<byte> languageTag) => new(new AsciiCharSequence(languageTag));
+    public static LanguageTag FromByteSpan(ReadOnlySpan<byte> languageTag) => new(new AsciiString(languageTag));
 
-    public static LanguageTag FromCharSpan(ReadOnlySpan<char> languageTag) => new(AsciiCharSequence.Parse(languageTag));
+    public static LanguageTag FromCharSpan(ReadOnlySpan<char> languageTag) => new(AsciiString.Parse(languageTag));
 
     public static bool IsValidValue(ReadOnlySpan<byte> value)
     {
@@ -107,7 +107,7 @@ public readonly partial struct LanguageTag
 
     public override int GetHashCode()
     {
-        return AsciiCharSequenceComparer.CaseInsensitive.GetHashCode(_value);
+        return AsciiStringComparer.CaseInsensitive.GetHashCode(_value);
     }
 
     private static string GetString(string s)
@@ -129,7 +129,7 @@ public readonly partial struct LanguageTag
         var index = span.IndexOf((byte)'-');
 
         return otherLangPart.Length == index - 1
-            && AsciiChar.SequenceEqualsCaseInsenstive(span[..index], otherLangPart);
+            && AsciiString.SequenceEqualsCaseInsenstive(span[..index], otherLangPart);
     }
 
     public ReadOnlySpan<byte> GetLanguagePartSpan()
@@ -146,7 +146,7 @@ public readonly partial struct LanguageTag
 
 public LanguageTag GetLanguagePart() {
     // ensure initialized
-    return new(new AsciiCharSequence(GetLanguagePartSpan()));
+    return new(new AsciiString(GetLanguagePartSpan()));
 }
 
     [GeneratedRegex("^((?:(en-GB-oed|i-ami|i-bnn|i-default|i-enochian|i-hak|i-klingon|i-lux|i-mingo|i-navajo|i-pwn|i-tao|i-tay|i-tsu|sgn-BE-FR|sgn-BE-NL|sgn-CH-DE)|(art-lojban|cel-gaulish|no-bok|no-nyn|zh-guoyu|zh-hakka|zh-min|zh-min-nan|zh-xiang))|((?:([A-Za-z]{2,3}(-(?:[A-Za-z]{3}(-[A-Za-z]{3}){0,2}))?)|[A-Za-z]{4}|[A-Za-z]{5,8})(-(?:[A-Za-z]{4}))?(-(?:[A-Za-z]{2}|[0-9]{3}))?(-(?:[A-Za-z0-9]{5,8}|[0-9][A-Za-z0-9]{3}))*(-(?:[0-9A-WY-Za-wy-z](-[A-Za-z0-9]{2,8})+))*(-(?:x(-[A-Za-z0-9]{1,8})+))?)|(?:x(-[A-Za-z0-9]{1,8})+))$", RegexOptions.Compiled)]
@@ -160,22 +160,22 @@ public LanguageTag GetLanguagePart() {
         public static readonly StringPool Shared = new(128);
     }
 
-    public static readonly LanguageTag English = FromValue((AsciiCharSequence)"en");
+    public static readonly LanguageTag English = FromValue((AsciiString)"en");
 
-    public static readonly LanguageTag EnglishUk = FromValue((AsciiCharSequence)"en-GB");
+    public static readonly LanguageTag EnglishUk = FromValue((AsciiString)"en-GB");
 
-    public static readonly LanguageTag EnglishUs = FromValue((AsciiCharSequence)"en-US");
+    public static readonly LanguageTag EnglishUs = FromValue((AsciiString)"en-US");
 
-    public static readonly LanguageTag EnglishAustralia = FromValue((AsciiCharSequence)"en-AU");
+    public static readonly LanguageTag EnglishAustralia = FromValue((AsciiString)"en-AU");
 
-    public static readonly LanguageTag EnglishCanada = FromValue((AsciiCharSequence)"en-CA");
+    public static readonly LanguageTag EnglishCanada = FromValue((AsciiString)"en-CA");
 
-    public static readonly LanguageTag EnglishIndia = FromValue((AsciiCharSequence)"en-IN");
+    public static readonly LanguageTag EnglishIndia = FromValue((AsciiString)"en-IN");
 
-    public static readonly LanguageTag EnglishIreland = FromValue((AsciiCharSequence)"en-IE");
+    public static readonly LanguageTag EnglishIreland = FromValue((AsciiString)"en-IE");
 
-    public static readonly LanguageTag EnglishNewZealand = FromValue((AsciiCharSequence)"en-NZ");
+    public static readonly LanguageTag EnglishNewZealand = FromValue((AsciiString)"en-NZ");
 
-    public static readonly LanguageTag EnglishSouthAfrica = FromValue((AsciiCharSequence)"en-ZA");
+    public static readonly LanguageTag EnglishSouthAfrica = FromValue((AsciiString)"en-ZA");
 
 }

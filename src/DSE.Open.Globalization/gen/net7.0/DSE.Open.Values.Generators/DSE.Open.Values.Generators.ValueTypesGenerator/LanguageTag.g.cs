@@ -11,15 +11,15 @@ using DSE.Open.Values;
 
 namespace DSE.Open.Globalization;
 
-[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<LanguageTag, AsciiCharSequence>))]
+[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<LanguageTag, AsciiString>))]
 public readonly partial struct LanguageTag
-    : global::DSE.Open.Values.IComparableValue<LanguageTag, AsciiCharSequence>
+    : global::DSE.Open.Values.IComparableValue<LanguageTag, AsciiString>
 {
 
-    private readonly AsciiCharSequence _value;
+    private readonly AsciiString _value;
     private readonly bool _initialized;
 
-    private LanguageTag(AsciiCharSequence value, bool skipValidation = false)
+    private LanguageTag(AsciiString value, bool skipValidation = false)
     {
 
         if (!skipValidation)
@@ -33,7 +33,7 @@ public readonly partial struct LanguageTag
 
     public bool IsInitialized => _initialized;
 
-    private static void EnsureIsValidArgumentValue(AsciiCharSequence value)
+    private static void EnsureIsValidArgumentValue(AsciiString value)
     {
         if (!IsValidValue(value))
         {
@@ -44,10 +44,10 @@ public readonly partial struct LanguageTag
 
     private void EnsureInitialized()
     {
-        UninitializedValueException<LanguageTag, AsciiCharSequence>.ThrowIfUninitialized(this);
+        UninitializedValueException<LanguageTag, AsciiString>.ThrowIfUninitialized(this);
     }
 
-    public static bool TryFromValue(AsciiCharSequence value, out LanguageTag result)
+    public static bool TryFromValue(AsciiString value, out LanguageTag result)
     {
         if (IsValidValue(value))
         {
@@ -59,19 +59,19 @@ public readonly partial struct LanguageTag
         return false;
     }
 
-    public static LanguageTag FromValue(AsciiCharSequence value)
+    public static LanguageTag FromValue(AsciiString value)
     {
         EnsureIsValidArgumentValue(value);
         return new(value, true);
     }
 
-    public static explicit operator LanguageTag(AsciiCharSequence value)
+    public static explicit operator LanguageTag(AsciiString value)
         => FromValue(value);
 
-    static AsciiCharSequence global::DSE.Open.IConvertibleTo<LanguageTag, AsciiCharSequence>.ConvertTo(LanguageTag value)
-        => (AsciiCharSequence)value;
+    static AsciiString global::DSE.Open.IConvertibleTo<LanguageTag, AsciiString>.ConvertTo(LanguageTag value)
+        => (AsciiString)value;
 
-    public static explicit operator AsciiCharSequence(LanguageTag value)
+    public static explicit operator AsciiString(LanguageTag value)
     {
         value.EnsureInitialized();
         return value._value;
@@ -147,7 +147,7 @@ public readonly partial struct LanguageTag
         ReadOnlySpan<char> s,
         IFormatProvider? provider,
         out LanguageTag result)
-        => global::DSE.Open.Values.ValueParser.TryParse<LanguageTag, AsciiCharSequence>(s, provider, out result);
+        => global::DSE.Open.Values.ValueParser.TryParse<LanguageTag, AsciiString>(s, provider, out result);
 
     public static bool TryParse(
         ReadOnlySpan<char> s,
@@ -163,7 +163,7 @@ public readonly partial struct LanguageTag
         string? s,
         IFormatProvider? provider,
         out LanguageTag result)
-        => global::DSE.Open.Values.ValueParser.TryParse<LanguageTag, AsciiCharSequence>(s, provider, out result);
+        => global::DSE.Open.Values.ValueParser.TryParse<LanguageTag, AsciiString>(s, provider, out result);
 
     public static bool TryParse(
         string? s,
@@ -176,13 +176,13 @@ public readonly partial struct LanguageTag
         => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
 
     public static LanguageTag Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<LanguageTag, AsciiCharSequence>(s, provider);
+        => global::DSE.Open.Values.ValueParser.Parse<LanguageTag, AsciiString>(s, provider);
 
     public static LanguageTag Parse(ReadOnlySpan<char> s)
         => Parse(s, default);
 
     public static LanguageTag Parse(string s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<LanguageTag, AsciiCharSequence>(s, provider);
+        => global::DSE.Open.Values.ValueParser.Parse<LanguageTag, AsciiString>(s, provider);
 
     public static LanguageTag Parse(string s)
         => Parse(s, default);

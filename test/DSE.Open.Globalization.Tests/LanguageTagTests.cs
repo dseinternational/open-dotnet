@@ -14,7 +14,7 @@ public class LanguageTagTests
     [MemberData(nameof(ValidLanguageTags))]
     public void TryFromValue_accepts_valid_language_tags(string tag)
     {
-        Assert.True(AsciiCharSequence.TryParse(tag, default, out var asciiTag));
+        Assert.True(AsciiString.TryParse(tag, default, out var asciiTag));
         Assert.True(LanguageTag.TryFromValue(asciiTag, out _));
     }
 

@@ -11,9 +11,9 @@ namespace DSE.Open.Values;
 // TODO
 
 [ComparableValue]
-[JsonConverter(typeof(JsonSpanSerializableValueConverter<AlphaCode,AsciiCharSequence>))]
+[JsonConverter(typeof(JsonSpanSerializableValueConverter<AlphaCode,AsciiString>))]
 [StructLayout(LayoutKind.Auto)]
-public readonly partial struct AlphaCode : IComparableValue<AlphaCode, AsciiCharSequence>
+public readonly partial struct AlphaCode : IComparableValue<AlphaCode, AsciiString>
 {
     public static readonly AlphaCode Empty;
 
@@ -21,7 +21,7 @@ public readonly partial struct AlphaCode : IComparableValue<AlphaCode, AsciiChar
 
     public const int MaxLength = 32;
 
-    public static bool IsValidValue(AsciiCharSequence value)
+    public static bool IsValidValue(AsciiString value)
         => value is { IsEmpty: false, Length: <= MaxLength }
             && value.AsSpan().ContainsOnlyAsciiLetters();
 

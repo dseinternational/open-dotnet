@@ -40,6 +40,6 @@ public class AsciiCharTests
         var s1 = "abcdefgh"u8.ToArray();
         var s2 = "ABCDEFGH"u8.ToArray();
 
-        Assert.True(AsciiChar.SequenceEqualsCaseInsenstive(s1, s2));
+        Assert.True(AsciiString.SequenceEqualsCaseInsenstive(s1, s2));
     }
 }

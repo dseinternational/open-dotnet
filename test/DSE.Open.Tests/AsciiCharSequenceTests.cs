@@ -9,7 +9,7 @@ public class AsciiCharSequenceTests
     [MemberData(nameof(AsciiTestData.ValidAsciiCharSequenceStrings), MemberType = typeof(AsciiTestData))]
     public void Cast_from_valid_value(string value)
     {
-        var v = (AsciiCharSequence)value;
+        var v = (AsciiString)value;
         Assert.Equal(value, v.ToString());
     }
 
@@ -30,7 +30,7 @@ public class AsciiCharSequenceTests
     [InlineData("\t", "\t", 0)]
     public void Compare_case_insensitive(string a, string b, int expected)
     {
-        var c = AsciiCharSequence.Parse(a).CompareToCaseInsensitive(AsciiCharSequence.Parse(b));
+        var c = AsciiString.Parse(a).CompareToCaseInsensitive(AsciiString.Parse(b));
         Assert.Equal(expected, c);
     }
 }
