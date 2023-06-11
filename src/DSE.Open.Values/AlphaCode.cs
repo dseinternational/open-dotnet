@@ -29,6 +29,10 @@ public readonly partial struct AlphaCode : IComparableValue<AlphaCode, AsciiStri
         _value = Parse(code, CultureInfo.InvariantCulture)._value;
     }
 
+    public AlphaCode(AsciiString code) : this(code, false)
+    {
+    }
+
     public static bool IsValidValue(AsciiString value)
         => value is { IsEmpty: false, Length: <= MaxLength } && value.AsSpan().ContainsOnly(AsciiChar.IsLetter);
 

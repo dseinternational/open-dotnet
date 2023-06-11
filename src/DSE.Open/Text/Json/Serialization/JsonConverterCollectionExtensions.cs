@@ -21,8 +21,21 @@ public static class JsonConverterCollectionExtensions
     {
         Guard.IsNotNull(converters);
 
+        converters.Add(JsonStringBinaryValueBase64Converter.Default);
         converters.Add(JsonStringDiagnosticCodeConverter.Default);
         converters.Add(JsonStringInt128Converter.Default);
+
+        converters.Add(JsonStringRangeConverter<byte>.Default);
+        converters.Add(JsonStringRangeConverter<short>.Default);
+        converters.Add(JsonStringRangeConverter<int>.Default);
+        converters.Add(JsonStringRangeConverter<long>.Default);
+        converters.Add(JsonStringRangeConverter<sbyte>.Default);
+        converters.Add(JsonStringRangeConverter<ushort>.Default);
+        converters.Add(JsonStringRangeConverter<uint>.Default);
+        converters.Add(JsonStringRangeConverter<ulong>.Default);
+
+        converters.Add(JsonStringSecureTokenConverter.Default);
+        converters.Add(JsonStringTimePeriodConverter.Default);
         converters.Add(JsonStringTimestampConverter.Default);
         converters.Add(JsonStringUInt128Converter.Default);
 
