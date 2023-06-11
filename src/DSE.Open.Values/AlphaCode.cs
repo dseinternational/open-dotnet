@@ -9,7 +9,7 @@ using DSE.Open.Values.Text.Json.Serialization;
 namespace DSE.Open.Values;
 
 [ComparableValue]
-[JsonConverter(typeof(JsonSpanSerializableValueConverter<AlphaCode,AsciiString>))]
+[JsonConverter(typeof(JsonSpanSerializableValueConverter<AlphaCode, AsciiString>))]
 [StructLayout(LayoutKind.Auto)]
 public readonly partial struct AlphaCode : IComparableValue<AlphaCode, AsciiString>
 {
@@ -18,6 +18,16 @@ public readonly partial struct AlphaCode : IComparableValue<AlphaCode, AsciiStri
     static int ISpanSerializable<AlphaCode>.MaxSerializedCharLength { get; } = MaxLength;
 
     public const int MaxLength = 32;
+
+    public AlphaCode(string code)
+    {
+        _value = Parse(code, CultureInfo.InvariantCulture)._value;
+    }
+
+    public AlphaCode(ReadOnlySpan<char> code)
+    {
+        _value = Parse(code, CultureInfo.InvariantCulture)._value;
+    }
 
     public static bool IsValidValue(AsciiString value)
         => value is { IsEmpty: false, Length: <= MaxLength } && value.AsSpan().ContainsOnly(AsciiChar.IsLetter);
