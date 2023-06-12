@@ -17,14 +17,12 @@ public readonly partial struct AlphaCode : IComparableValue<AlphaCode, AsciiStri
 
     public const int MaxLength = 32;
 
-    public AlphaCode(string code)
+    public AlphaCode(string code) : this(AsciiString.Parse(code, CultureInfo.InvariantCulture))
     {
-        _value = Parse(code, CultureInfo.InvariantCulture)._value;
     }
 
-    public AlphaCode(ReadOnlySpan<char> code)
+    public AlphaCode(ReadOnlySpan<char> code) : this(AsciiString.Parse(code, CultureInfo.InvariantCulture))
     {
-        _value = Parse(code, CultureInfo.InvariantCulture)._value;
     }
 
     public AlphaCode(AsciiString code) : this(code, false)
