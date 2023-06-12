@@ -91,6 +91,8 @@ public partial struct AsciiChar
     public static bool IsLetterOrDigit(byte asciiByte)
         => IsLetter(asciiByte) | IsBetween(asciiByte, (byte)'0', (byte)'9');
 
+    public static bool IsLetterOrDigit(AsciiChar asciiChar) => IsLetterOrDigit(asciiChar._asciiByte);
+
     /// <summary>
     /// Indicates if the value represents a lower case ASCII character.
     /// </summary>

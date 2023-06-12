@@ -11,15 +11,15 @@ using DSE.Open.Values;
 
 namespace DSE.Open.Values;
 
-[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<AlphaCode, AsciiString>))]
-public readonly partial struct AlphaCode
-    : global::DSE.Open.Values.IComparableValue<AlphaCode, AsciiString>
+[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<AlphaNumericCode2, AsciiString>))]
+public readonly partial struct AlphaNumericCode2
+    : global::DSE.Open.Values.IComparableValue<AlphaNumericCode2, AsciiString>
 {
 
     private readonly AsciiString _value;
     private readonly bool _initialized;
 
-    private AlphaCode(AsciiString value, bool skipValidation = false)
+    private AlphaNumericCode2(AsciiString value, bool skipValidation = false)
     {
 
         if (!skipValidation)
@@ -38,20 +38,20 @@ public readonly partial struct AlphaCode
         if (!IsValidValue(value))
         {
             throw new ArgumentOutOfRangeException(nameof(value), value,
-                $"'{value}' is not a valid {nameof(AlphaCode)} value");
+                $"'{value}' is not a valid {nameof(AlphaNumericCode2)} value");
         }
     }
 
     private void EnsureInitialized()
     {
-        UninitializedValueException<AlphaCode, AsciiString>.ThrowIfUninitialized(this);
+        UninitializedValueException<AlphaNumericCode2, AsciiString>.ThrowIfUninitialized(this);
     }
 
-    public static bool TryFromValue(AsciiString value, out AlphaCode result)
+    public static bool TryFromValue(AsciiString value, out AlphaNumericCode2 result)
     {
         if (IsValidValue(value))
         {
-            result = new AlphaCode(value);
+            result = new AlphaNumericCode2(value);
             return true;
         }
         
@@ -59,19 +59,19 @@ public readonly partial struct AlphaCode
         return false;
     }
 
-    public static AlphaCode FromValue(AsciiString value)
+    public static AlphaNumericCode2 FromValue(AsciiString value)
     {
         EnsureIsValidArgumentValue(value);
         return new(value, true);
     }
 
-    public static explicit operator AlphaCode(AsciiString value)
+    public static explicit operator AlphaNumericCode2(AsciiString value)
         => FromValue(value);
 
-    static AsciiString global::DSE.Open.IConvertibleTo<AlphaCode, AsciiString>.ConvertTo(AlphaCode value)
+    static AsciiString global::DSE.Open.IConvertibleTo<AlphaNumericCode2, AsciiString>.ConvertTo(AlphaNumericCode2 value)
         => (AsciiString)value;
 
-    public static explicit operator AsciiString(AlphaCode value)
+    public static explicit operator AsciiString(AlphaNumericCode2 value)
     {
         value.EnsureInitialized();
         return value._value;
@@ -79,9 +79,9 @@ public readonly partial struct AlphaCode
 
     // IEquatable<T>
 
-    public bool Equals(AlphaCode other) => _value.Equals(other._value);
+    public bool Equals(AlphaNumericCode2 other) => _value.Equals(other._value);
 
-    public override bool Equals(object? obj) => obj is AlphaCode other && Equals(other);
+    public override bool Equals(object? obj) => obj is AlphaNumericCode2 other && Equals(other);
 
     public override int GetHashCode()
     {
@@ -89,9 +89,9 @@ public readonly partial struct AlphaCode
         return HashCode.Combine(_value);
     }
 
-    public static bool operator ==(AlphaCode left, AlphaCode right) => left.Equals(right);
+    public static bool operator ==(AlphaNumericCode2 left, AlphaNumericCode2 right) => left.Equals(right);
     
-    public static bool operator !=(AlphaCode left, AlphaCode right) => !(left == right);
+    public static bool operator !=(AlphaNumericCode2 left, AlphaNumericCode2 right) => !(left == right);
 
     // ISpanFormattable
 
@@ -122,10 +122,10 @@ public readonly partial struct AlphaCode
         => TryFormatInvariant(destination, out charsWritten, default);
 
     /// <summary>
-    /// Gets a representation of the AlphaCode value as a string with formatting options.
+    /// Gets a representation of the AlphaNumericCode2 value as a string with formatting options.
     /// </summary>
     /// <returns>
-    /// A representation of the AlphaCode value.
+    /// A representation of the AlphaNumericCode2 value.
     /// </returns>
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
@@ -161,10 +161,10 @@ public readonly partial struct AlphaCode
         => ToStringInvariant(default);
 
     /// <summary>
-    /// Gets a representation of the AlphaCode value as a string with default formatting options.
+    /// Gets a representation of the AlphaNumericCode2 value as a string with default formatting options.
     /// </summary>
     /// <returns>
-    /// A representation of the AlphaCode value.
+    /// A representation of the AlphaNumericCode2 value.
     /// </returns>
     public override string ToString() => ToString(default, default);
 
@@ -173,58 +173,58 @@ public readonly partial struct AlphaCode
     public static bool TryParse(
         ReadOnlySpan<char> s,
         IFormatProvider? provider,
-        out AlphaCode result)
-        => global::DSE.Open.Values.ValueParser.TryParse<AlphaCode, AsciiString>(s, provider, out result);
+        out AlphaNumericCode2 result)
+        => global::DSE.Open.Values.ValueParser.TryParse<AlphaNumericCode2, AsciiString>(s, provider, out result);
 
     public static bool TryParse(
         ReadOnlySpan<char> s,
-        out AlphaCode result)
+        out AlphaNumericCode2 result)
         => TryParse(s, default, out result);
 
     public static bool TryParseInvariant(
         ReadOnlySpan<char> s,
-        out AlphaCode result)
+        out AlphaNumericCode2 result)
         => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
 
     public static bool TryParse(
         string? s,
         IFormatProvider? provider,
-        out AlphaCode result)
-        => global::DSE.Open.Values.ValueParser.TryParse<AlphaCode, AsciiString>(s, provider, out result);
+        out AlphaNumericCode2 result)
+        => global::DSE.Open.Values.ValueParser.TryParse<AlphaNumericCode2, AsciiString>(s, provider, out result);
 
     public static bool TryParse(
         string? s,
-        out AlphaCode result)
+        out AlphaNumericCode2 result)
         => TryParse(s, default, out result);
 
     public static bool TryParseInvariant(
         string? s,
-        out AlphaCode result)
+        out AlphaNumericCode2 result)
         => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
 
-    public static AlphaCode Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<AlphaCode, AsciiString>(s, provider);
+    public static AlphaNumericCode2 Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<AlphaNumericCode2, AsciiString>(s, provider);
 
-    public static AlphaCode Parse(ReadOnlySpan<char> s)
+    public static AlphaNumericCode2 Parse(ReadOnlySpan<char> s)
         => Parse(s, default);
 
-    public static AlphaCode Parse(string s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<AlphaCode, AsciiString>(s, provider);
+    public static AlphaNumericCode2 Parse(string s, IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<AlphaNumericCode2, AsciiString>(s, provider);
 
-    public static AlphaCode Parse(string s)
+    public static AlphaNumericCode2 Parse(string s)
         => Parse(s, default);
 
-    public int CompareTo(AlphaCode other)
+    public int CompareTo(AlphaNumericCode2 other)
     {
         EnsureInitialized();
         return _value.CompareTo(other._value);
     }
 
-    public static bool operator <(AlphaCode left, AlphaCode right) => left.CompareTo(right) < 0;
+    public static bool operator <(AlphaNumericCode2 left, AlphaNumericCode2 right) => left.CompareTo(right) < 0;
     
-    public static bool operator >(AlphaCode left, AlphaCode right) => left.CompareTo(right) > 0;
+    public static bool operator >(AlphaNumericCode2 left, AlphaNumericCode2 right) => left.CompareTo(right) > 0;
     
-    public static bool operator <=(AlphaCode left, AlphaCode right) => left.CompareTo(right) <= 0;
+    public static bool operator <=(AlphaNumericCode2 left, AlphaNumericCode2 right) => left.CompareTo(right) <= 0;
     
-    public static bool operator >=(AlphaCode left, AlphaCode right) => left.CompareTo(right) >= 0;
+    public static bool operator >=(AlphaNumericCode2 left, AlphaNumericCode2 right) => left.CompareTo(right) >= 0;
 }

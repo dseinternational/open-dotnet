@@ -201,6 +201,31 @@ public readonly partial struct AsciiString
 
     public bool Equals(AsciiString other) => Equals(other._value);
 
+    public bool Equals(ReadOnlySpan<char> other)
+    {
+        if (other.IsEmpty)
+        {
+            return _value.IsEmpty;
+        }
+
+        if (_value.Length != other.Length)
+        {
+            return false;
+        }
+
+        for (var i = 0; i < _value.Length; i++)
+        {
+            if ((char)_value.Span[i] != other[i])
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public bool Equals(string other) => Equals(other.AsSpan());
+
     public bool EqualsCaseInsensitive(AsciiString other) => SequenceEqualsCaseInsenstive(_value.Span, other._value.Span);
 
     public override bool Equals(object? obj) => obj is AsciiString other && Equals(other);
@@ -339,7 +364,7 @@ public readonly partial struct AsciiString
             return false;
         }
 
-        for (var i = prefix.Length -1; i > _value.Length; i--)
+        for (var i = prefix.Length - 1; i > _value.Length; i--)
         {
             if (_value.Span[i] != prefix[i])
             {
@@ -380,6 +405,10 @@ public readonly partial struct AsciiString
     public static bool operator ==(AsciiString left, AsciiString right) => left.Equals(right);
 
     public static bool operator !=(AsciiString left, AsciiString right) => !(left == right);
+
+    public static bool operator ==(AsciiString left, string right) => left.Equals(right);
+
+    public static bool operator !=(AsciiString left, string right) => !(left == right);
 
 #pragma warning disable CA2225 // Operator overloads have named alternates (Parse)
 

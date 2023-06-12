@@ -36,7 +36,7 @@ public sealed class AlphaNumericCodeTests
     }
 
     [Fact]
-    public void EmptyTest() => Assert.Equal(((AlphaNumericCode)default), new AlphaNumericCode());
+    public void EmptyTest() => Assert.Equal(default, new AlphaNumericCode());
 
     [Fact]
     public void EqualsStringOperatorTest()
@@ -140,32 +140,14 @@ public sealed class AlphaNumericCodeTests
     }
 
     [Fact]
-    public void Span_ShouldReturnSpan()
-    {
-        // Arrange
-        const string codeStr = "abc123";
-        var code = new AlphaNumericCode(codeStr);
-
-        // Act
-        var span = code.AsSpan();
-
-        // Assert
-        Assert.Equal(codeStr, span.ToString());
-    }
-
-    [Fact]
-    public void TryFormat_WithEmptyCode_ShouldReturnTrueWithNothingWritten()
+    public void TryFormat_WithEmptyCode_Should_throw()
     {
         // Arrange
         var code = (AlphaNumericCode)default;
         var buffer = new char[1];
 
-        // Act
-        var success = code.TryFormat(buffer, out var charsWritten, default, default);
-
-        // Assert
-        Assert.True(success);
-        Assert.Equal(0, charsWritten);
+        _ = Assert.Throws<UninitializedValueException<AlphaNumericCode, AsciiString>>(
+            () => code.TryFormat(buffer, out var charsWritten, default, default));
     }
 
     [Fact]

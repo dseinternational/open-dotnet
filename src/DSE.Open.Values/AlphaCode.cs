@@ -8,6 +8,9 @@ using DSE.Open.Values.Text.Json.Serialization;
 
 namespace DSE.Open.Values;
 
+/// <summary>
+/// An immutable series of (up to 32) ASCII letters used to identify something.
+/// </summary>
 [ComparableValue]
 [JsonConverter(typeof(JsonSpanSerializableValueConverter<AlphaCode, AsciiString>))]
 [StructLayout(LayoutKind.Auto)]
@@ -29,8 +32,16 @@ public readonly partial struct AlphaCode : IComparableValue<AlphaCode, AsciiStri
     {
     }
 
+    public int Length => _value.Length;
+
+    private static string GetString(ReadOnlySpan<char> s) => CodeStringPool.Shared.GetOrAdd(s);
+
     public static bool IsValidValue(AsciiString value)
         => value is { IsEmpty: false, Length: <= MaxLength } && value.AsSpan().ContainsOnly(AsciiChar.IsLetter);
+
+    public bool Equals(ReadOnlySpan<char> other) => _value.Equals(other);
+
+    public bool Equals(string other) => _value.Equals(other);
 
     public int CompareToCaseInsensitive(AlphaCode other) => _value.CompareToCaseInsensitive(other._value);
 
@@ -47,4 +58,9 @@ public readonly partial struct AlphaCode : IComparableValue<AlphaCode, AsciiStri
     public string ToStringLower() => _value.ToStringLower();
 
     public string ToStringUpper() => _value.ToStringUpper();
+
+
+    public static bool operator ==(AlphaCode left, string right) => left.Equals(right);
+
+    public static bool operator !=(AlphaCode left, string right) => !(left == right);
 }
