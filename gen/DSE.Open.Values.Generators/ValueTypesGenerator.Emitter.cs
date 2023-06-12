@@ -264,32 +264,32 @@ public partial class ValueTypesGenerator
                         }
                     """);
                 // TODO: number styles for int, long, etc.?
-
-                writer.WriteLine();
-                writer.WriteLine($$"""
-                    public bool TryFormat(
-                        Span<char> destination,
-                        out int charsWritten)
-                        => TryFormat(destination, out charsWritten, default, default);
-                    """);
-
-                writer.WriteLine();
-                writer.WriteLine($$"""
-                    public bool TryFormatInvariant(
-                        Span<char> destination,
-                        out int charsWritten,
-                        ReadOnlySpan<char> format)
-                        => TryFormat(destination, out charsWritten, format, System.Globalization.CultureInfo.InvariantCulture);
-                    """);
-
-                writer.WriteLine();
-                writer.WriteLine($$"""
-                    public bool TryFormatInvariant(
-                        Span<char> destination,
-                        out int charsWritten)
-                        => TryFormatInvariant(destination, out charsWritten, default);
-                    """);
             }
+
+            writer.WriteLine();
+            writer.WriteLine($$"""
+                public bool TryFormat(
+                    Span<char> destination,
+                    out int charsWritten)
+                    => TryFormat(destination, out charsWritten, default, default);
+                """);
+
+            writer.WriteLine();
+            writer.WriteLine($$"""
+                public bool TryFormatInvariant(
+                    Span<char> destination,
+                    out int charsWritten,
+                    ReadOnlySpan<char> format)
+                    => TryFormat(destination, out charsWritten, format, System.Globalization.CultureInfo.InvariantCulture);
+                """);
+
+            writer.WriteLine();
+            writer.WriteLine($$"""
+                public bool TryFormatInvariant(
+                    Span<char> destination,
+                    out int charsWritten)
+                    => TryFormatInvariant(destination, out charsWritten, default);
+                """);
 
             if (spec.EmitToStringFormatableMethod)
             {

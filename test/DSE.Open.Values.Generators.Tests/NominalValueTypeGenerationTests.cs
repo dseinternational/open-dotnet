@@ -284,5 +284,56 @@ public readonly partial struct MyOptions : IEquatableValue<MyOptions, long>
 
         AssertDiagnosticsCount(0, newCompilationDiagnostics);
     }
+
+
+    [Fact]
+    public void Generates_type_using_user_tryformat_method()
+    {
+        var inputCompilation = CompilationHelper.CreateCompilation(@"
+using System;
+using DSE.Open.Values;
+
+namespace TestNamespace;
+
+#nullable enable
+
+[EquatableValue]
+public readonly partial struct MyOptions : IEquatableValue<MyOptions, long>
+{
+    public static readonly MyOptions Option1;
+    public static readonly MyOptions Option2 = new(1);
+    public static readonly MyOptions Option3 = new(2);
+
+    public static int MaxSerializedCharLength { get; } = 1;
+
+    public static bool IsValidValue(long value) => value is >= 0 and <= 2;
+
+    public bool TryFormat(
+        Span<char> destination,
+        out int charsWritten,
+        ReadOnlySpan<char> format,
+        IFormatProvider? provider)
+    {
+        EnsureInitialized();
+        return _value.TryFormat(destination, out charsWritten, format, provider);
+    }}
+
+#nullable disable
+");
+
+        var result = CompilationHelper.RunValuesSourceGenerator(inputCompilation);
+
+        AssertDiagnosticsCount(0, result.Diagnostics);
+
+        var outputSyntaxTrees = result.NewCompilation.SyntaxTrees.ToImmutableArray();
+
+        Assert.Equal(2, outputSyntaxTrees.Length);
+
+        WriteSyntax(outputSyntaxTrees[1]);
+
+        var newCompilationDiagnostics = result.NewCompilation.GetDiagnostics();
+
+        AssertDiagnosticsCount(0, newCompilationDiagnostics);
+    }
 }
 

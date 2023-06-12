@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
@@ -39,6 +40,8 @@ public readonly partial struct LanguageTag
     private static readonly Regex s_regex = GetValidationRegex();
 
     public static bool IsValidValue(AsciiString value) => IsValidValue(value.AsSpan());
+
+    public int Length => _value.Length;
 
     public static LanguageTag FromCultureInfo(CultureInfo cultureInfo)
     {
@@ -122,9 +125,189 @@ public readonly partial struct LanguageTag
 
     public char[] ToCharArray() => _value.ToCharArray();
 
+    /// <summary>
+    /// Returns the language tag as a string, formatted as recommended in RFC5646.
+    /// </summary>
+    /// <returns>The language tag as a string, formatted as recommended in RFC5646.</returns>
+    public string ToStringNormalized() => ToString("N", CultureInfo.InvariantCulture);
+
     public string ToStringLower() => _value.ToStringLower();
 
     public string ToStringUpper() => _value.ToStringUpper();
+
+    public bool TryFormat(
+        Span<char> destination,
+        out int charsWritten,
+        ReadOnlySpan<char> format,
+        IFormatProvider? provider)
+    {
+        EnsureInitialized();
+
+        if (destination.Length < _value.Length)
+        {
+            charsWritten = 0;
+            return false;
+        }
+
+        // No formatting
+
+        if (format.IsEmpty)
+        {
+            _ = _value.TryFormat(destination, out charsWritten, format, provider);
+            return true;
+        }
+
+        FormatCustom(_value, destination, format);
+
+        charsWritten = _value.Length;
+        return true;
+
+        static void FormatCustom(AsciiString value, Span<char> destination, ReadOnlySpan<char> format)
+        {
+            // Normalized
+
+            if (format.Equals("N", StringComparison.OrdinalIgnoreCase))
+            {
+                FormatNormalized(value, destination);
+            }
+
+            // Lowercase
+
+            else if (format.Equals("L", StringComparison.OrdinalIgnoreCase))
+            {
+                FormatLower(value, destination);
+            }
+
+            // Uppercase
+
+            else if (format.Equals("U", StringComparison.OrdinalIgnoreCase))
+            {
+                FormatUpper(value, destination);
+            }
+
+            // Unrecognised format
+
+            else
+            {
+                ThrowHelper.ThrowArgumentOutOfRangeException(nameof(format), "Unsupported format.");
+            }
+        }
+
+        static void FormatNormalized(AsciiString value, Span<char> destination)
+        {
+            /*
+               An implementation can reproduce this format without accessing the
+               registry as follows.  All subtags, including extension and private
+               use subtags, use lowercase letters with two exceptions: two-letter
+               and four-letter subtags that neither appear at the start of the tag
+               nor occur after singletons.  Such two-letter subtags are all
+               uppercase (as in the tags "en-CA-x-ca" or "sgn-BE-FR") and four-
+               letter subtags are titlecase (as in the tag "az-Latn-x-latn").
+             */
+
+            var valueSpan = value.AsSpan();
+
+            var ti0 = valueSpan.IndexOf((AsciiChar)'-');
+
+            // only language tag - all lowercase and return...
+
+            if (ti0 < 0)
+            {
+                for (var i = 0; i < value.Length; i++)
+                {
+                    destination[i] = (char)value[i].ToLower();
+                }
+
+                return;
+            }
+
+            // language part to lower
+
+            for (var i = 0; i < ti0; i++)
+            {
+                destination[i] = (char)value[i].ToLower();
+            }
+
+            // from now on all subtags to lower except for 2 and 4 letter subtags,
+            // unless occuring after singletons            
+
+            var remaining = valueSpan[(ti0 + 1)..];
+            var previousSingleton = false;
+            var destIndex = ti0;
+
+            destination[ti0] = '-';
+            destIndex++;
+
+            int length;
+            var lastTag = false;
+
+            while (!remaining.IsEmpty)
+            {
+                length = remaining.IndexOf((AsciiChar)'-');
+
+                if (length < 0)
+                {
+                    length = remaining.Length;
+                    lastTag = true;
+                }
+
+                if (!previousSingleton && length is 2)
+                {
+                    for (var j = 0; j < length; j++)
+                    {
+                        destination[destIndex + j] = (char)remaining[j].ToUpper();
+                    }
+                }
+                else if (!previousSingleton && length is 4)
+                {
+                    destination[destIndex] = (char)remaining[0].ToUpper();
+
+                    for (var j = 1; j < length; j++)
+                    {
+                        destination[destIndex + j] = (char)remaining[j].ToLower();
+                    }
+                }
+                else
+                {
+                    for (var j = 0; j < length; j++)
+                    {
+                        destination[destIndex + j] = (char)remaining[j].ToLower();
+                    }
+                }
+
+                destIndex += length;
+
+                if (!lastTag)
+                {
+                    destination[destIndex] = '-';
+                    destIndex++;
+                    remaining = remaining[(length + 1)..];
+                    previousSingleton = length == 1;
+                }
+                else
+                {
+                    Debug.Assert(length == remaining.Length);
+                    remaining = default;
+                }
+            }
+        }
+
+        static void FormatLower(AsciiString value, Span<char> destination)
+        {
+            for (var i = 0; i < value.Length; i++)
+            {
+                destination[i] = value[i].ToUpper();
+            }
+        }
+
+        static void FormatUpper(AsciiString value, Span<char> destination)
+        {
+            for (var i = 0; i < value.Length; i++)
+            {
+                destination[i] = value[i].ToUpper();
+            }
+        }
+    }
 
     /// <summary>
     /// Gets the <see cref="CultureInfo"/> represented by the current value.
