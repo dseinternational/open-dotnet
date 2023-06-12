@@ -35,8 +35,16 @@ public class AsciiStringTests
     }
 
     [Theory]
+    [InlineData("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "ABCDEFGHIJKLMNOPQRSTUVWXYZ")]
+    public void ToString_returns_string(string value, string expected)
+    {
+        var c = AsciiString.Parse(value);
+        Assert.Equal(expected, c.ToString());
+    }
+
+    [Theory]
     [InlineData("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz")]
-    public void ToStringLower(string value, string expected)
+    public void ToStringLower_returns_lower_string(string value, string expected)
     {
         var c = AsciiString.Parse(value);
         Assert.Equal(expected, c.ToStringLower());
@@ -44,9 +52,73 @@ public class AsciiStringTests
 
     [Theory]
     [InlineData("abcdefghijklmnopqrstuvwxyz", "ABCDEFGHIJKLMNOPQRSTUVWXYZ")]
-    public void ToStringUpper(string value, string expected)
+    public void ToStringUpper_returns_upper_string(string value, string expected)
     {
         var c = AsciiString.Parse(value);
         Assert.Equal(expected, c.ToStringUpper());
+    }
+
+    [Theory]
+    [InlineData("abcdefghijklmnopqrstuvwxyz", "xyz")]
+    public void EndsWith(string value, string test)
+    {
+        var c = AsciiString.Parse(value);
+        Assert.True(c.EndsWith(AsciiString.Parse(test)));
+    }
+
+    [Theory]
+    [InlineData("abcdefghijklmnopqrstuvwxyz", "abc")]
+    public void StartsWith(string value, string test)
+    {
+        var c = AsciiString.Parse(value);
+        Assert.True(c.StartsWith(AsciiString.Parse(test)));
+    }
+
+    [Theory]
+    [InlineData("abcdefghijklmnopqrstuvwxyz", "z")]
+    [InlineData("abcdefghijklmnopqrstuvwxyz", "vwxyz")]
+    [InlineData("abcdefghijklmnopqrstuvwxyz", "bcdefghijklmnopqrstuvwxyz")]
+    [InlineData("abcdefghijklmnopqrstuvwxyz", "")]
+    [InlineData("abcdefghijklmnopqrstuvwxyz", "abcdefghijklmnopqrstuvwxyz")]
+    public void EndsWith_string(string value, string test)
+    {
+        var c = AsciiString.Parse(value);
+        Assert.True(c.EndsWith(test));
+    }
+
+    [Theory]
+    [InlineData("abcdefghijklmnopqrstuvwxyz", "abc")]
+    [InlineData("abcdefghijklmnopqrstuvwxyz", "")]
+    [InlineData("abcdefghijklmnopqrstuvwxyz", "abcdefghijklmnopqrstuvwxyz")]
+    public void StartsWith_string(string value, string test)
+    {
+        var c = AsciiString.Parse(value);
+        Assert.True(c.StartsWith(test));
+    }
+
+    [Theory]
+    [InlineData("abcdefghijklmnopqrstuvwxyz")]
+    public void Indexer_returns_indexed_asciichar(string value)
+    {
+        var c = AsciiString.Parse(value);
+
+        for (var i = 0; i < value.Length; i++)
+        {
+            Assert.Equal(value[i], c[i]);
+        }
+    }
+
+    [Theory]
+    [InlineData("abcdefghijklmnopqrstuvwxyz")]
+    public void GetEnumerator_returns_enumerator_that_enumerates(string value)
+    {
+        var c = AsciiString.Parse(value);
+
+        var i = 0;
+        foreach (var item in c)
+        {
+            Assert.Equal(value[i], item);
+            i++;
+        }
     }
 }

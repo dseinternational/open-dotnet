@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Buffers;
+using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using System.Runtime.InteropServices;
@@ -17,7 +18,8 @@ namespace DSE.Open;
 /// </remarks>
 [StructLayout(LayoutKind.Auto)]
 public readonly partial struct AsciiString
-    : IEquatable<AsciiString>,
+    : IEnumerable<AsciiChar>,
+      IEquatable<AsciiString>,
       IEquatable<ReadOnlyMemory<AsciiChar>>,
       IComparable<AsciiString>,
       IEqualityOperators<AsciiString, AsciiString, bool>,
@@ -34,6 +36,8 @@ public readonly partial struct AsciiString
     {
         _value = value;
     }
+
+    public AsciiChar this[int i] => _value.Span[i];
 
     public bool IsEmpty => _value.IsEmpty;
 
@@ -232,7 +236,16 @@ public readonly partial struct AsciiString
         return new AsciiString(result);
     }
 
-    public override string ToString() => ToString(default, default);
+    public override string ToString()
+    {
+        return string.Create(_value.Length, this, (c, a) =>
+        {
+            for (var i = 0; i < a._value.Length; i++)
+            {
+                c[i] = a._value.Span[i];
+            }
+        });
+    }
 
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
@@ -299,6 +312,70 @@ public readonly partial struct AsciiString
         charsWritten = 0;
         return false;
     }
+
+    public IEnumerator<AsciiChar> GetEnumerator()
+    {
+        for (var i = 0; i < _value.Length; i++)
+        {
+            yield return _value.Span[i];
+        }
+    }
+
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+    public bool EndsWith(AsciiString prefix) => _value.Span.EndsWith(prefix._value.Span);
+
+    public bool StartsWith(AsciiString prefix) => _value.Span.StartsWith(prefix._value.Span);
+
+    public bool EndsWith(ReadOnlySpan<char> prefix)
+    {
+        if (prefix.IsEmpty)
+        {
+            return true;
+        }
+
+        if (prefix.Length > _value.Length)
+        {
+            return false;
+        }
+
+        for (var i = prefix.Length -1; i > _value.Length; i--)
+        {
+            if (_value.Span[i] != prefix[i])
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public bool EndsWith(string prefix) => EndsWith(prefix.AsSpan());
+
+    public bool StartsWith(ReadOnlySpan<char> prefix)
+    {
+        if (prefix.IsEmpty)
+        {
+            return true;
+        }
+
+        if (prefix.Length > _value.Length)
+        {
+            return false;
+        }
+
+        for (var i = 0; i < prefix.Length; i++)
+        {
+            if (_value.Span[i] != prefix[i])
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public bool StartsWith(string prefix) => StartsWith(prefix.AsSpan());
 
     public static bool operator ==(AsciiString left, AsciiString right) => left.Equals(right);
 
