@@ -29,13 +29,13 @@ public class LanguageTagToStringBenchmarks
     [Benchmark]
     public void ToStringFormatted() => s_tags.ForEach(t =>
     {
-        t.ToString();
+        t.ToStringFormatted();
     });
 
     [Benchmark(Baseline = true)]
     public void ToStringUnformatted() => s_tags.ForEach(t =>
     {
-        t.ToStringUnformatted();
+        t.ToString();
     });
 
     [Benchmark]
