@@ -399,6 +399,17 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
                     && ps3.Type is NullableTypeSyntax nts3);
             }
 
+            // ToString
+
+            var toStringMethods = instanceMethods.Where(s => s.Identifier.ValueText == "ToString").ToArray();
+
+            var emitToStringOverrideMethod = true;
+
+            if (toStringMethods.Length > 0)
+            {
+                emitToStringOverrideMethod = !toStringMethods.Any(s => s.ParameterList.Parameters.Count == 0);
+            }
+
 
             var structMembers = namedTypeSymbol.GetMembers();
 
@@ -444,6 +455,7 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
             spec.EmitEqualsMethod = emitEqualsMethod;
             spec.EmitGetHashCodeMethod = emitGetHashCodeMethod;
             spec.EmitTryFormatMethod = emitTryFormatMethod;
+            spec.EmitToStringOverrideMethod = emitToStringOverrideMethod;
 
             spec.UseGetString = useGetStringMethod;
             spec.UseGetStringSpan = useGetStringSpanMethod;

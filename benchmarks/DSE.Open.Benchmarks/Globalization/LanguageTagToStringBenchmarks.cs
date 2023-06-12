@@ -1,17 +1,16 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Globalization;
 using BenchmarkDotNet.Attributes;
 using DSE.Open.Collections.Generic;
 using DSE.Open.Globalization;
-using DSE.Open.Values;
 
 namespace DSE.Open.Benchmarks.Globalization;
 
+#pragma warning disable CA1822 // Mark members as static
 
 [MemoryDiagnoser]
-public class LanguageTagTryFormatBenchmarks
+public class LanguageTagToStringBenchmarks
 {
     private static readonly LanguageTag[] s_tags = new[]
     {
@@ -28,31 +27,27 @@ public class LanguageTagTryFormatBenchmarks
     };
 
     [Benchmark]
-    public void TryFormatNormalized() => s_tags.ForEach(t =>
+    public void ToStringFormatted() => s_tags.ForEach(t =>
     {
-        Span<char> b = stackalloc char[t.Length];
-        _ = t.TryFormat(b, out var cw, "N".AsSpan(), CultureInfo.InvariantCulture);
-    });
-
-    [Benchmark]
-    public void TryFormatLowercase() => s_tags.ForEach(t =>
-    {
-        Span<char> b = stackalloc char[t.Length];
-        _ = t.TryFormat(b, out var cw, "L".AsSpan(), CultureInfo.InvariantCulture);
-    });
-
-    [Benchmark]
-    public void TryFormatUppercase() => s_tags.ForEach(t =>
-    {
-        Span<char> b = stackalloc char[t.Length];
-        _ = t.TryFormat(b, out var cw, "U".AsSpan(), CultureInfo.InvariantCulture);
+        t.ToString();
     });
 
     [Benchmark(Baseline = true)]
-    public void TryFormatDefault() => s_tags.ForEach(t =>
+    public void ToStringUnformatted() => s_tags.ForEach(t =>
     {
-        Span<char> b = stackalloc char[t.Length];
-        _ = t.TryFormat(b, out var cw, default, CultureInfo.InvariantCulture);
+        t.ToStringUnformatted();
+    });
+
+    [Benchmark]
+    public void ToStringLower() => s_tags.ForEach(t =>
+    {
+        t.ToStringLower();
+    });
+
+    [Benchmark]
+    public void ToStringUpper() => s_tags.ForEach(t =>
+    {
+        t.ToStringUpper();
     });
 }
 

@@ -51,3 +51,5 @@ public class StringHelperRemovePunctuationBenchmarks
     [Benchmark]
     public string RemovePunctuation_Small_Punctuation() => StringHelper.RemovePunctuation(SmallPunctuation);
 }
+
+#pragma warning restore CA1822 // Mark members as static

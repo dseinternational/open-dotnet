@@ -142,14 +142,6 @@ public readonly partial struct LanguageTag
     public string ToStringInvariant()
         => ToStringInvariant(default);
 
-    /// <summary>
-    /// Gets a representation of the LanguageTag value as a string with default formatting options.
-    /// </summary>
-    /// <returns>
-    /// A representation of the LanguageTag value.
-    /// </returns>
-    public override string ToString() => ToString(default, default);
-
     // ISpanParsable<T>
 
     public static bool TryParse(
