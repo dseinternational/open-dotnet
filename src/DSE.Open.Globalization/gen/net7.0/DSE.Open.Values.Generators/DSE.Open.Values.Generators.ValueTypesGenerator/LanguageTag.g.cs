@@ -89,16 +89,6 @@ public readonly partial struct LanguageTag
 
     public bool TryFormat(
         Span<char> destination,
-        out int charsWritten,
-        ReadOnlySpan<char> format,
-        IFormatProvider? provider)
-        {
-            EnsureInitialized();
-            return _value.TryFormat(destination, out charsWritten, format, provider);
-        }
-
-    public bool TryFormat(
-        Span<char> destination,
         out int charsWritten)
         => TryFormat(destination, out charsWritten, default, default);
 

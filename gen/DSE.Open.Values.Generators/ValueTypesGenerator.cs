@@ -377,6 +377,29 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
                 emitGetHashCodeMethod = !getHashCodeMethods.Any(s => s.ParameterList.Parameters.Count == 0);
             }
 
+            // TryFormat
+
+            var tryFormatMethods = instanceMethods.Where(s => s.Identifier.ValueText == "TryFormat").ToArray();
+
+            var emitTryFormatMethod = true;
+
+            if (tryFormatMethods.Length > 0)
+            {
+                emitTryFormatMethod = !tryFormatMethods.Any(s => s.ParameterList.Parameters.Count == 4
+                    && s.ParameterList.Parameters[0] is ParameterSyntax ps0
+                    && ps0.Type is GenericNameSyntax gns0
+                    && gns0.Identifier.Text == "Span"
+                    && s.ParameterList.Parameters[1] is ParameterSyntax ps1
+                    && ps1.Type is PredefinedTypeSyntax pts1
+                    && pts1.Keyword.Text == "int"
+                    && s.ParameterList.Parameters[2] is ParameterSyntax ps2
+                    && ps2.Type is GenericNameSyntax gns2
+                    && gns2.Identifier.Text == "ReadOnlySpan"
+                    && s.ParameterList.Parameters[3] is ParameterSyntax ps3
+                    && ps3.Type is NullableTypeSyntax nts3);
+            }
+
+
             var structMembers = namedTypeSymbol.GetMembers();
 
             var staticFieldSymbols = new List<string>(structMembers.Length);
@@ -420,6 +443,7 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
             spec.EmitConstructor = emitConstructor;
             spec.EmitEqualsMethod = emitEqualsMethod;
             spec.EmitGetHashCodeMethod = emitGetHashCodeMethod;
+            spec.EmitTryFormatMethod = emitTryFormatMethod;
 
             spec.UseGetString = useGetStringMethod;
             spec.UseGetStringSpan = useGetStringSpanMethod;

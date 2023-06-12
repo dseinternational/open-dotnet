@@ -12,6 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\src\DSE.Open.Globalization\DSE.Open.Globalization.csproj" />
       <ProjectReference Include="..\..\src\DSE.Open\DSE.Open.csproj" />
     </ItemGroup>
 
