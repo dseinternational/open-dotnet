@@ -13,7 +13,7 @@ namespace DSE.Open.Values;
 [StructLayout(LayoutKind.Auto)]
 public readonly partial struct AlphaCode : IComparableValue<AlphaCode, AsciiString>
 {
-    static int ISpanSerializable<AlphaCode>.MaxSerializedCharLength { get; } = MaxLength;
+    public static int MaxSerializedCharLength { get; } = MaxLength;
 
     public const int MaxLength = 32;
 

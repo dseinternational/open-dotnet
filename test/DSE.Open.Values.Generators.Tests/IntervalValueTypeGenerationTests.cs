@@ -15,7 +15,6 @@ public class AddableValueTypeGenerationTests : ValueTypeGenerationTests
     public void GeneratesValueType()
     {
         var inputCompilation = CompilationHelper.CreateCompilation(@"
-using DSE.Open;
 using DSE.Open.Values;
 
 namespace TestNamespace;
@@ -28,7 +27,7 @@ public readonly partial struct MyOptions : IAddableValue<MyOptions, byte>
     public static readonly MyOptions Option1;
     public static readonly MyOptions Option2 = new(1);
 
-    static int ISpanSerializable<MyOptions>.MaxSerializedCharLength { get; } = 1;
+    public static int MaxSerializedCharLength { get; } = 1;
 
     public static bool IsValidValue(byte value) => value is >= 0 and <= 1;
 }
@@ -55,7 +54,6 @@ public readonly partial struct MyOptions : IAddableValue<MyOptions, byte>
     public void Generates_type_using_user_compareto_method()
     {
         var inputCompilation = CompilationHelper.CreateCompilation(@"
-using DSE.Open;
 using DSE.Open.Values;
 
 namespace TestNamespace;
@@ -69,7 +67,7 @@ public readonly partial struct MyOptions : IAddableValue<MyOptions, long>
     public static readonly MyOptions Option2 = new(1);
     public static readonly MyOptions Option3 = new(2);
 
-    static int ISpanSerializable<MyOptions>.MaxSerializedCharLength { get; } = 1;
+    public static int MaxSerializedCharLength { get; } = 1;
 
     public static bool IsValidValue(long value) => value is >= 0 and <= 2;
 

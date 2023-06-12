@@ -6,7 +6,7 @@ namespace DSE.Open.Values.TestValues;
 [DivisibleValue]
 public readonly partial struct Kelvin : IDivisibleValue<Kelvin, double>
 {
-    static int ISpanSerializable<Kelvin>.MaxSerializedCharLength { get; } = 128; // TODO
+    public static int MaxSerializedCharLength { get; } = 128; // TODO
 
     public static readonly Kelvin Zero;
 

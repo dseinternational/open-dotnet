@@ -34,7 +34,7 @@ public readonly partial struct LanguageTag
     /// </remarks>
     public const int MaxLength = 35;
 
-    static int ISpanSerializable<LanguageTag>.MaxSerializedCharLength { get; } = MaxLength;
+    public static int MaxSerializedCharLength { get; } = MaxLength;
 
     private static readonly Regex s_regex = GetValidationRegex();
 
@@ -111,6 +111,7 @@ public readonly partial struct LanguageTag
 
     public override int GetHashCode() => AsciiStringComparer.CaseInsensitive.GetHashCode(_value);
 
+    // we know they will be interened - see IsoCountryCodes
     private static string GetString(string s)
         => string.IsInterned(s) ?? LanguageTagStringPool.Shared.GetOrAdd(s);
 
@@ -120,6 +121,10 @@ public readonly partial struct LanguageTag
     public AsciiString ToAsciiString() => _value;
 
     public char[] ToCharArray() => _value.ToCharArray();
+
+    public string ToStringLower() => _value.ToStringLower();
+
+    public string ToStringUpper() => _value.ToStringUpper();
 
     /// <summary>
     /// Gets the <see cref="CultureInfo"/> represented by the current value.

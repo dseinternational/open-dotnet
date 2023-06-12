@@ -6,7 +6,7 @@ namespace DSE.Open.Values.TestValues;
 [EquatableValue]
 public readonly partial struct NominalByteValue : IEquatableValue<NominalByteValue, byte>
 {
-    static int ISpanSerializable<NominalByteValue>.MaxSerializedCharLength { get; } = 128; // TODO
+    public static int MaxSerializedCharLength { get; } = 128; // TODO
 
     public static readonly NominalByteValue Value1;
     public static readonly NominalByteValue Value2 = new(1);

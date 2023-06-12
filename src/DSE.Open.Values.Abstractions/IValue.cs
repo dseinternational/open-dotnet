@@ -14,12 +14,12 @@ namespace DSE.Open.Values;
 /// <typeparam name="T">The type that the value that can be converted to.</typeparam>
 [SuppressMessage("Design", "CA1000:Do not declare static members on generic types", Justification = "Required for static interface methods")]
 [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates", Justification = "Cannot name from type parameter")]
-public interface IValue<TSelf, T> :
-    IConvertibleTo<TSelf, T>,
-    ITryConvertibleFrom<TSelf, T>,
-    IEquatable<TSelf>,
-    IEqualityOperators<TSelf, TSelf, bool>,
-    ISpanSerializable<TSelf>
+public interface IValue<TSelf, T>
+    : IConvertibleTo<TSelf, T>,
+      ITryConvertibleFrom<TSelf, T>,
+      IEquatable<TSelf>,
+      IEqualityOperators<TSelf, TSelf, bool>,
+      ISpanSerializable<TSelf>
     where T : IEquatable<T>
     where TSelf : struct, IValue<TSelf, T>
 {

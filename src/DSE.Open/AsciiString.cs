@@ -253,9 +253,9 @@ public readonly partial struct AsciiString
 
         try
         {
-            Span<char> buffer = _value.Length <= 128
+            Span<char> buffer = _value.Length <= StackallocThresholds.MaxCharLength
                 ? stackalloc char[_value.Length]
-                : (rented = ArrayPool<char>.Shared.Rent(128));
+                : (rented = ArrayPool<char>.Shared.Rent(_value.Length));
 
             _ = TryFormat(buffer, out var charsWritten, format, formatProvider);
 

@@ -22,7 +22,7 @@ public readonly partial struct CountryCode : IComparableValue<CountryCode, Ascii
 {
     public const int Length = 2;
 
-    static int ISpanSerializable<CountryCode>.MaxSerializedCharLength => Length;
+    public static int MaxSerializedCharLength => Length;
 
     public bool Equals(CountryCode other) => _value.EqualsCaseInsensitive(other._value);
 

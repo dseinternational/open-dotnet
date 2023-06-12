@@ -15,7 +15,6 @@ public class ComparableValueTypeGenerationTests : ValueTypeGenerationTests
     public void GeneratesValueType()
     {
         var inputCompilation = CompilationHelper.CreateCompilation(@"
-using DSE.Open;
 using DSE.Open.Values;
 
 namespace TestNamespace;
@@ -28,7 +27,7 @@ public readonly partial struct MyOptions : IComparableValue<MyOptions, byte>
     public static readonly MyOptions Option1;
     public static readonly MyOptions Option2 = new(1);
 
-    static int ISpanSerializable<MyOptions>.MaxSerializedCharLength { get; } = 1;
+    public static int MaxSerializedCharLength { get; } = 1;
 
     public static bool IsValidValue(byte value) => value is >= 0 and <= 1;
 }

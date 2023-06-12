@@ -83,7 +83,7 @@ public partial class ValueTypesGenerator
             if (spec.EmitMaxSerializedCharLength)
             {
                 writer.WriteLine();
-                writer.WriteLine($"static int {Namespaces.DseOpen}.ISpanSerializable<{spec.ValueTypeName}>.MaxSerializedCharLength {{ get; }} = {spec.MaxSerializedCharLength};");
+                writer.WriteLine($"public static int MaxSerializedCharLength {{ get; }} = {spec.MaxSerializedCharLength};");
             }
 
             if (spec.EmitValueField)
@@ -303,24 +303,53 @@ public partial class ValueTypesGenerator
                     /// </returns>
                     public string ToString(string? format, IFormatProvider? formatProvider)
                     {
-                        EnsureInitialized();
-                        string returnValue;
-                        returnValue = _value.ToString(format, formatProvider);
-                    """);
-            
+                        var maxCharLength = MaxSerializedCharLength;
 
-                if (spec.UseGetString)
+                        char[]? rented = null;
+
+                        try
+                        {
+                            Span<char> buffer = maxCharLength <= 128
+                                ? stackalloc char[maxCharLength]
+                                : (rented = System.Buffers.ArrayPool<char>.Shared.Rent(maxCharLength));
+
+                            _ = TryFormat(buffer, out var charsWritten, format, formatProvider);
+
+                            ReadOnlySpan<char> returnValue = buffer[..charsWritten];
+                    """);
+
+                if (spec.UseGetStringSpan)
                 {
                     writer.WriteLine($$"""
-                        return GetString(returnValue);
+                            return GetString(returnValue);
+                    """);
+                }
+                else if (spec.UseGetString)
+                {
+                    writer.WriteLine($$"""
+                            return GetString(new string(returnValue));
                     """);
                 }
                 else
                 {
                     writer.WriteLine($$"""
-                        return returnValue;
+                            return new string(returnValue);
                     """);
                 }
+
+                writer.WriteLine($$"""
+                        }
+                        finally
+                        {
+                            if (rented is not null)
+                            {
+                                System.Buffers.ArrayPool<char>.Shared.Return(rented);
+                            }
+                        }
+
+                    """);
+            
+
 
                 writer.WriteLine($$"""
                     }

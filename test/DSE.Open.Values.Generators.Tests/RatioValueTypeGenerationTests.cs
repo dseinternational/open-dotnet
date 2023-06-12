@@ -15,7 +15,6 @@ public class DivisibleValueTypeGenerationTests : ValueTypeGenerationTests
     public void GeneratesValueType()
     {
         var inputCompilation = CompilationHelper.CreateCompilation(@"
-using DSE.Open;
 using DSE.Open.Values;
 
 namespace TestNamespace;
@@ -27,7 +26,7 @@ public readonly partial struct Percentage : IDivisibleValue<Percentage, int>
 {
     public static Percentage Zero { get; } = new(0);
 
-    static int ISpanSerializable<Percentage>.MaxSerializedCharLength { get; } = 1;
+    public static int MaxSerializedCharLength { get; } = 1;
 
     public static bool IsValidValue(int value) => value is >= 0 and <= 100;
 }
@@ -37,7 +36,7 @@ public readonly partial struct PercentageF : IDivisibleValue<PercentageF, float>
 {
     public static PercentageF Zero { get; } = new(0);
 
-    static int ISpanSerializable<PercentageF>.MaxSerializedCharLength { get; } = 1;
+    public static int MaxSerializedCharLength { get; } = 1;
 
     public static bool IsValidValue(float value) => value is >= 0 and <= 100;
 }

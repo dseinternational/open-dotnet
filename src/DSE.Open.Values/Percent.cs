@@ -12,7 +12,7 @@ namespace DSE.Open.Values;
 [StructLayout(LayoutKind.Auto)]
 public readonly partial struct Percent : IDivisibleValue<Percent, double>
 {
-    static int ISpanSerializable<Percent>.MaxSerializedCharLength { get; } = 128; // TODO
+    public static int MaxSerializedCharLength { get; } = 128; // TODO
 
     public static Percent Zero { get; } = new(0);
 

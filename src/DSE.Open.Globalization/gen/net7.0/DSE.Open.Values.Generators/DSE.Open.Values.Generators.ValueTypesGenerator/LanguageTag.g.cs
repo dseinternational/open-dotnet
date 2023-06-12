@@ -121,10 +121,29 @@ public readonly partial struct LanguageTag
     /// </returns>
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
-        EnsureInitialized();
-        string returnValue;
-        returnValue = _value.ToString(format, formatProvider);
-        return GetString(returnValue);
+        var maxCharLength = MaxSerializedCharLength;
+    
+        char[]? rented = null;
+    
+        try
+        {
+            Span<char> buffer = maxCharLength <= 128
+                ? stackalloc char[maxCharLength]
+                : (rented = System.Buffers.ArrayPool<char>.Shared.Rent(maxCharLength));
+    
+            _ = TryFormat(buffer, out var charsWritten, format, formatProvider);
+    
+            ReadOnlySpan<char> returnValue = buffer[..charsWritten];
+            return GetString(new string(returnValue));
+        }
+        finally
+        {
+            if (rented is not null)
+            {
+                System.Buffers.ArrayPool<char>.Shared.Return(rented);
+            }
+        }
+    
     }
 
     public string ToStringInvariant(string? format)
