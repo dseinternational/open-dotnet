@@ -186,14 +186,14 @@ public readonly struct AsciiChar2
             span[1] = char2._c1;
         });
 
-    public string ToStringLower(string? format, IFormatProvider? formatProvider)
+    public string ToStringLower()
         => string.Create(CharCount, this, (span, char2) =>
         {
             span[0] = char2._c0.ToLower();
             span[1] = char2._c1.ToLower();
         });
 
-    public string ToStringUpper(string? format, IFormatProvider? formatProvider)
+    public string ToStringUpper()
         => string.Create(CharCount, this, (span, char2) =>
         {
             span[0] = char2._c0.ToUpper();
