@@ -39,22 +39,6 @@ public sealed class AlphaNumericCodeTests
     public void EmptyTest() => Assert.Equal(default, new AlphaNumericCode());
 
     [Fact]
-    public void EqualsStringOperatorTest()
-    {
-        Assert.True(((AlphaNumericCode)default) == string.Empty);
-        Assert.True(new AlphaNumericCode("abC12") == "abC12");
-        Assert.False((AlphaNumericCode)"abC33" == "abc33");
-    }
-
-    [Fact]
-    public void NotEqualsStringOperatorTest()
-    {
-        Assert.False((AlphaNumericCode)default != string.Empty);
-        Assert.False(new AlphaNumericCode("abC565") != "abC565");
-        Assert.True(new AlphaNumericCode("abC565") != "abc565");
-    }
-
-    [Fact]
     public void New_WithCodeLongerThanMaxLength_ShouldThrowArgumentException()
     {
         // Arrange

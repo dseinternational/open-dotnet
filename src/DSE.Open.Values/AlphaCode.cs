@@ -58,9 +58,4 @@ public readonly partial struct AlphaCode : IComparableValue<AlphaCode, AsciiStri
     public string ToStringLower() => _value.ToStringLower();
 
     public string ToStringUpper() => _value.ToStringUpper();
-
-
-    public static bool operator ==(AlphaCode left, string right) => left.Equals(right);
-
-    public static bool operator !=(AlphaCode left, string right) => !(left == right);
 }
