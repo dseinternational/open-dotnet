@@ -3,7 +3,7 @@
 
 namespace DSE.Open.Tests;
 
-public class AsciiCharSequenceTests
+public class AsciiStringTests
 {
     [Theory]
     [MemberData(nameof(AsciiTestData.ValidAsciiCharSequenceStrings), MemberType = typeof(AsciiTestData))]
@@ -32,5 +32,21 @@ public class AsciiCharSequenceTests
     {
         var c = AsciiString.Parse(a).CompareToCaseInsensitive(AsciiString.Parse(b));
         Assert.Equal(expected, c);
+    }
+
+    [Theory]
+    [InlineData("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz")]
+    public void ToStringLower(string value, string expected)
+    {
+        var c = AsciiString.Parse(value);
+        Assert.Equal(expected, c.ToStringLower());
+    }
+
+    [Theory]
+    [InlineData("abcdefghijklmnopqrstuvwxyz", "ABCDEFGHIJKLMNOPQRSTUVWXYZ")]
+    public void ToStringUpper(string value, string expected)
+    {
+        var c = AsciiString.Parse(value);
+        Assert.Equal(expected, c.ToStringUpper());
     }
 }

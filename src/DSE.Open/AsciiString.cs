@@ -208,6 +208,30 @@ public readonly partial struct AsciiString
         return c.ToHashCode();
     }
 
+    public AsciiString ToLower()
+    {
+        var result = new AsciiChar[_value.Length];
+
+        for (var i = 0; i < _value.Length; i++)
+        {
+            result[i] = _value.Span[i].ToLower();
+        }
+
+        return new AsciiString(result);
+    }
+
+    public AsciiString ToUpper()
+    {
+        var result = new AsciiChar[_value.Length];
+
+        for (var i = 0; i < _value.Length; i++)
+        {
+            result[i] = _value.Span[i].ToUpper();
+        }
+
+        return new AsciiString(result);
+    }
+
     public override string ToString() => ToString(default, default);
 
     public string ToString(string? format, IFormatProvider? formatProvider)
@@ -231,6 +255,28 @@ public readonly partial struct AsciiString
                 ArrayPool<char>.Shared.Return(rented);
             }
         }
+    }
+
+    public string ToStringLower()
+    {
+        return string.Create(_value.Length, this, (c, a) =>
+        {
+            for (var i = 0; i < a._value.Length; i++)
+            {
+                c[i] = a._value.Span[i].ToLower();
+            }
+        });
+    }
+
+    public string ToStringUpper()
+    {
+        return string.Create(_value.Length, this, (c, a) =>
+        {
+            for (var i = 0; i < a._value.Length; i++)
+            {
+                c[i] = a._value.Span[i].ToUpper();
+            }
+        });
     }
 
     public bool TryFormat(

@@ -45,4 +45,8 @@ public readonly partial struct AlphaCode : IComparableValue<AlphaCode, AsciiStri
     public static explicit operator AlphaCode(string value) => Parse(value, CultureInfo.InvariantCulture);
 
 #pragma warning restore CA2225 // Operator overloads have named alternates
+
+    public string ToStringLower() => _value.ToStringLower();
+
+    public string ToStringUpper() => _value.ToStringUpper();
 }
