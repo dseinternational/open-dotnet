@@ -91,21 +91,21 @@ public readonly partial struct AsciiChar
 
     public int ToInt32() => _asciiByte;
 
-    public static AsciiChar FromByte(byte b) => new(b);
+    public static AsciiChar FromByte(byte asciiByte) => new(asciiByte);
 
-    public static AsciiChar FromChar(char c) => new(c);
+    public static AsciiChar FromChar(char asciiUtf16Char) => new(asciiUtf16Char);
 
     public static explicit operator string(AsciiChar value) => value.ToString();
 
-    public static explicit operator AsciiChar(byte b) => FromByte(b);
+    public static explicit operator AsciiChar(byte asciiByte) => FromByte(asciiByte);
 
-    public static implicit operator byte(AsciiChar c) => c.ToByte();
+    public static explicit operator AsciiChar(char asciiUtf16Char) => FromChar(asciiUtf16Char);
 
-    public static implicit operator char(AsciiChar c) => c.ToChar();
+    public static implicit operator byte(AsciiChar asciiChar) => asciiChar.ToByte();
 
-    public static implicit operator int(AsciiChar c) => c.ToInt32();
+    public static implicit operator char(AsciiChar asciiChar) => asciiChar.ToChar();
 
-    public static explicit operator AsciiChar(char c) => FromChar(c);
+    public static implicit operator int(AsciiChar asciiChar) => asciiChar.ToInt32();
 
     public AsciiChar ToUpper() => new(ToUpper(_asciiByte));
 

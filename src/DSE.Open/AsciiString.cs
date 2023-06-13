@@ -132,8 +132,7 @@ public readonly partial struct AsciiString
 
             for (var i = 0; i < s.Length; i++)
             {
-                var b = (byte)s[i];
-                if (!AsciiChar.IsAscii(b))
+                if (!AsciiChar.IsAscii((uint)s[i]))
                 {
                     result = default;
                     return false;

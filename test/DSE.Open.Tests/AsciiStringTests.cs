@@ -14,6 +14,12 @@ public class AsciiStringTests
     }
 
     [Theory]
+    [InlineData("£")]
+    [InlineData("•")]
+    [InlineData("abcdedfgsdjnhgfdlui34987trglih¦")]
+    public void TryParse_returns_false_for_non_ascii_input(string value) => Assert.False(AsciiString.TryParse(value, out _));
+
+    [Theory]
     [InlineData("a", "A", 0)]
     [InlineData("abcdEFG", "ABCdefg", 0)]
     [InlineData("abcdEFGb", "ABCdefg", 1)]
