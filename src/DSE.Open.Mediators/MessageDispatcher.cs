@@ -85,6 +85,54 @@ public sealed partial class MessageDispatcher : IMessageDispatcher
         }
     }
 
+    public async Task PublishAsync<TMessage>(TMessage message, CancellationToken cancellationToken = default) where TMessage : IMessage
+    {
+        Guard.IsNotNull(message);
+
+        var handlers = _serviceProvider.GetServices<IMessageHandler<TMessage>>().ToArray();
+
+        var messageType = typeof(TMessage);
+
+        if (handlers.Length == 0)
+        {
+            Log.NoHandlersRegistered(_logger, messageType.Name);
+            return;
+        }
+
+        Log.SendingMessageToHandlers(_logger, messageType.Name, handlers.Length);
+
+        foreach (var handler in handlers)
+        {
+            await Task.Run(() =>
+            {
+                Task task;
+
+                try
+                {
+                    var result = handler.HandleAsync(message, cancellationToken);
+
+                    if (result is null)
+                    {
+                        ThrowHelper.ThrowInvalidOperationException($"HandleAsync is expected to return a non-null Task");
+                        return Task.CompletedTask; // unreachable
+                    }
+
+                    task = result;
+                }
+                catch (Exception e) when (e is not (StackOverflowException or OutOfMemoryException or OperationCanceledException))
+                {
+                    ThrowHelper.ThrowInvalidOperationException($"Error invoking {handler.GetType().Name} handler for {messageType.Name} message.", e);
+                    return Task.CompletedTask; // unreachable
+                }
+
+                return task;
+
+            }, cancellationToken).ConfigureAwait(false);
+
+            Log.SentMessageToHandler(_logger, handler.GetType().Name);
+        }
+    }
+
     private static partial class Log
     {
         [LoggerMessage(
