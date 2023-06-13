@@ -5,7 +5,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
-using DSE.Open.Text.Json.Serialization;
 
 namespace DSE.Open;
 

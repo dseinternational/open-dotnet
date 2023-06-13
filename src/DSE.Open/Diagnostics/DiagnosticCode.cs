@@ -10,8 +10,9 @@ namespace DSE.Open.Diagnostics;
 
 [StructLayout(LayoutKind.Auto)]
 [JsonConverter(typeof(JsonStringDiagnosticCodeConverter))]
-public readonly record struct DiagnosticCode
+public readonly struct DiagnosticCode
     : IComparable<DiagnosticCode>,
+      IEquatable<DiagnosticCode>,
       ISpanParsable<DiagnosticCode>,
       ISpanFormattable
 {
@@ -123,6 +124,8 @@ public readonly record struct DiagnosticCode
 
     public bool Equals(ReadOnlySpan<char> other) => Equals(this, other);
 
+    public override bool Equals(object? obj) => obj is DiagnosticCode other && Equals(other);
+
     public static bool operator ==(DiagnosticCode left, string right) => left.Equals(right);
 
     public static bool operator !=(DiagnosticCode left, string right) => !(left == right);
@@ -209,5 +212,4 @@ public readonly record struct DiagnosticCode
     public static bool operator >(DiagnosticCode left, DiagnosticCode right) => left.CompareTo(right) > 0;
 
     public static bool operator >=(DiagnosticCode left, DiagnosticCode right) => left.CompareTo(right) >= 0;
-
 }

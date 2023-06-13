@@ -61,6 +61,26 @@ public sealed class DiagnosticCodeTests
         }
     }
 
+    [Theory]
+    [InlineData("WWWW11111111", "WWWW11111111", true)]
+    [InlineData("ABC1234567", "ABC1234567", true)]
+    [InlineData("ABCD12345678", "ABCD1234567", false)]
+    [InlineData("ABCD12345678", "ABCD12345679", false)]
+    [InlineData("XBCD12345678", "ABCD12345678", false)]
+    public void GetHashCodeTest(string c1, string c2, bool eq)
+    {
+        var code1 = new DiagnosticCode(c1).GetHashCode();
+        var code2 = new DiagnosticCode(c2).GetHashCode();
+        if (eq)
+        {
+            Assert.Equal(code1, code2);
+        }
+        else
+        {
+            Assert.NotEqual(code1, code2);
+        }
+    }
+
     [Fact]
     public void EmptyTest() => Assert.Equal(DiagnosticCode.Empty, new DiagnosticCode());
 

@@ -5,7 +5,6 @@ using System.Globalization;
 using BenchmarkDotNet.Attributes;
 using DSE.Open.Collections.Generic;
 using DSE.Open.Globalization;
-using DSE.Open.Values;
 
 namespace DSE.Open.Benchmarks.Globalization;
 
