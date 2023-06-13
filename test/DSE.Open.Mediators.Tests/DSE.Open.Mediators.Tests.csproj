@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\DSE.Open.Mediators\DSE.Open.Mediators.csproj" />
+    <ProjectReference Include="..\..\src\DSE.Open.Testing.Xunit\DSE.Open.Testing.Xunit.csproj" />
+    <ProjectReference Include="..\..\src\DSE.Open.Values\DSE.Open.Values.csproj" />
+  </ItemGroup>
+
+</Project>
