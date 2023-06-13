@@ -168,9 +168,15 @@ public class LanguageTagTests
     public void GetHashCode_Equivalent_Languages_case_different(string tag)
         => Assert.Equal(LanguageTag.Parse(tag).GetHashCode(), LanguageTag.Parse(tag.ToUpperInvariant()).GetHashCode());
 
-    [Fact]
-    public void ToString_as_initialised()
-        => s_validLanguageCodes.ForEach(s => Assert.Equal(s, LanguageTag.Parse(s).ToString()));
+    [Theory]
+    [MemberData(nameof(ValidLanguageTags))]
+    public void ToString_as_initialised(string tag)
+        => Assert.Equal(tag.ToLowerInvariant(), LanguageTag.Parse(tag.ToLowerInvariant()).ToString());
+
+    [Theory]
+    [MemberData(nameof(ValidLanguageTags))]
+    public void ToString_formatted(string tag)
+        => Assert.Equal(tag, LanguageTag.Parse(tag.ToLowerInvariant()).ToStringFormatted());
 
     [Fact]
     public void Parse_WithNullString_ShouldThrowArgumentNull()
@@ -288,7 +294,7 @@ public class LanguageTagTests
         var code = LanguageTag.Parse(expected.ToLowerInvariant());
 
         // Act
-        var result = code.ToString();
+        var result = code.ToStringFormatted();
 
         // Assert
         Assert.Equal(expected, result);

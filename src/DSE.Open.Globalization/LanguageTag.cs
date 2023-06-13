@@ -129,13 +129,13 @@ public readonly partial struct LanguageTag
     /// Returns the language tag as a string, without any formatting applied.
     /// </summary>
     /// <returns></returns>
-    public override string ToString() => ToString("N", CultureInfo.InvariantCulture);
+    public override string ToString() => ToString(default, CultureInfo.InvariantCulture);
 
     /// <summary>
     /// Returns the language tag as a string, formatted as recommended in RFC5646.
     /// </summary>
     /// <returns>The language tag as a string, formatted as recommended in RFC5646.</returns>
-    public string ToStringFormatted() => _value.ToString("N", CultureInfo.InvariantCulture);
+    public string ToStringFormatted() => ToString("N", CultureInfo.InvariantCulture);
 
     public string ToStringLower() => _value.ToStringLower();
 
