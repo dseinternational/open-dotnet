@@ -28,7 +28,7 @@ public readonly partial struct CountryCode : IComparableValue<CountryCode, Ascii
 
     public int CompareTo(CountryCode other) => _value.CompareToCaseInsensitive(other._value);
 
-    public override int GetHashCode() => AsciiChar2Comparer.CaseInsensitive.GetHashCode(this._value);
+    public override int GetHashCode() => AsciiChar2Comparer.CaseInsensitive.GetHashCode(_value);
 
     public bool Equals(string other) => _value.Equals(other);
 
@@ -37,6 +37,10 @@ public readonly partial struct CountryCode : IComparableValue<CountryCode, Ascii
     public bool Equals(ReadOnlySpan<char> other) => _value.Equals(other);
 
     public char[] ToCharArray() => _value.ToCharArray();
+
+    public string ToStringLower() => _value.ToStringLower();
+
+    public string ToStringUpper() => _value.ToStringUpper();
 
     public static bool IsValidValue(AsciiChar2 value) => IsValidValue(value, true);
 
@@ -128,7 +132,7 @@ public readonly partial struct CountryCode : IComparableValue<CountryCode, Ascii
 
     public static bool IsEuroZoneCountry(CountryCode code) => s_euroZoneCodes.BinarySearch(code) > -1;
 
-    public static readonly CountryCode Andorra = new(new AsciiChar2('A', 'D'), true); // new(new AsciiChar2('A','D'), true);
+    public static readonly CountryCode Andorra = new(new AsciiChar2('A', 'D'), true);
     public static readonly CountryCode UnitedArabEmirates = new(new AsciiChar2('A', 'E'), true);
     public static readonly CountryCode Austria = new(new AsciiChar2('A', 'T'), true);
     public static readonly CountryCode Australia = new(new AsciiChar2('A', 'U'), true);
