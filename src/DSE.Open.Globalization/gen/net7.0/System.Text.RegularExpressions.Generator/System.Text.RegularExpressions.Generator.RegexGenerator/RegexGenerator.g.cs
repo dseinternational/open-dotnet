@@ -16,109 +16,234 @@ namespace DSE.Open.Globalization
         ///     ○ Match with 4 alternative expressions.<br/>
         ///         ○ 2nd capture group.<br/>
         ///             ○ Match with 3 alternative expressions.<br/>
-        ///                 ○ Match the string "en-GB-oed".<br/>
         ///                 ○ Match a sequence of expressions.<br/>
-        ///                     ○ Match the string "i-".<br/>
+        ///                     ○ Match a character in the set [Ee].<br/>
+        ///                     ○ Match a character in the set [Nn].<br/>
+        ///                     ○ Match '-'.<br/>
+        ///                     ○ Match a character in the set [Gg].<br/>
+        ///                     ○ Match a character in the set [Bb].<br/>
+        ///                     ○ Match '-'.<br/>
+        ///                     ○ Match a character in the set [Oo].<br/>
+        ///                     ○ Match a character in the set [Ee].<br/>
+        ///                     ○ Match a character in the set [Dd].<br/>
+        ///                 ○ Match a sequence of expressions.<br/>
+        ///                     ○ Match a character in the set [Ii].<br/>
+        ///                     ○ Match '-'.<br/>
         ///                     ○ Match with 11 alternative expressions.<br/>
-        ///                         ○ Match the string "ami".<br/>
-        ///                         ○ Match the string "bnn".<br/>
-        ///                         ○ Match the string "default".<br/>
-        ///                         ○ Match the string "enochian".<br/>
-        ///                         ○ Match the string "hak".<br/>
-        ///                         ○ Match the string "klingon".<br/>
-        ///                         ○ Match the string "lux".<br/>
-        ///                         ○ Match the string "mingo".<br/>
-        ///                         ○ Match the string "navajo".<br/>
-        ///                         ○ Match the string "pwn".<br/>
         ///                         ○ Match a sequence of expressions.<br/>
-        ///                             ○ Match 't'.<br/>
+        ///                             ○ Match a character in the set [Aa].<br/>
+        ///                             ○ Match a character in the set [Mm].<br/>
+        ///                             ○ Match a character in the set [Ii].<br/>
+        ///                         ○ Match a sequence of expressions.<br/>
+        ///                             ○ Match a character in the set [Bb].<br/>
+        ///                             ○ Match a character in the set [Nn] exactly 2 times.<br/>
+        ///                         ○ Match a sequence of expressions.<br/>
+        ///                             ○ Match a character in the set [Dd].<br/>
+        ///                             ○ Match a character in the set [Ee].<br/>
+        ///                             ○ Match a character in the set [Ff].<br/>
+        ///                             ○ Match a character in the set [Aa].<br/>
+        ///                             ○ Match a character in the set [Uu].<br/>
+        ///                             ○ Match a character in the set [Ll].<br/>
+        ///                             ○ Match a character in the set [Tt].<br/>
+        ///                         ○ Match a sequence of expressions.<br/>
+        ///                             ○ Match a character in the set [Ee].<br/>
+        ///                             ○ Match a character in the set [Nn].<br/>
+        ///                             ○ Match a character in the set [Oo].<br/>
+        ///                             ○ Match a character in the set [Cc].<br/>
+        ///                             ○ Match a character in the set [Hh].<br/>
+        ///                             ○ Match a character in the set [Ii].<br/>
+        ///                             ○ Match a character in the set [Aa].<br/>
+        ///                             ○ Match a character in the set [Nn].<br/>
+        ///                         ○ Match a sequence of expressions.<br/>
+        ///                             ○ Match a character in the set [Hh].<br/>
+        ///                             ○ Match a character in the set [Aa].<br/>
+        ///                             ○ Match a character in the set [Kk\u212A].<br/>
+        ///                         ○ Match a sequence of expressions.<br/>
+        ///                             ○ Match a character in the set [Kk\u212A].<br/>
+        ///                             ○ Match a character in the set [Ll].<br/>
+        ///                             ○ Match a character in the set [Ii].<br/>
+        ///                             ○ Match a character in the set [Nn].<br/>
+        ///                             ○ Match a character in the set [Gg].<br/>
+        ///                             ○ Match a character in the set [Oo].<br/>
+        ///                             ○ Match a character in the set [Nn].<br/>
+        ///                         ○ Match a sequence of expressions.<br/>
+        ///                             ○ Match a character in the set [Ll].<br/>
+        ///                             ○ Match a character in the set [Uu].<br/>
+        ///                             ○ Match a character in the set [Xx].<br/>
+        ///                         ○ Match a sequence of expressions.<br/>
+        ///                             ○ Match a character in the set [Mm].<br/>
+        ///                             ○ Match a character in the set [Ii].<br/>
+        ///                             ○ Match a character in the set [Nn].<br/>
+        ///                             ○ Match a character in the set [Gg].<br/>
+        ///                             ○ Match a character in the set [Oo].<br/>
+        ///                         ○ Match a sequence of expressions.<br/>
+        ///                             ○ Match a character in the set [Nn].<br/>
+        ///                             ○ Match a character in the set [Aa].<br/>
+        ///                             ○ Match a character in the set [Vv].<br/>
+        ///                             ○ Match a character in the set [Aa].<br/>
+        ///                             ○ Match a character in the set [Jj].<br/>
+        ///                             ○ Match a character in the set [Oo].<br/>
+        ///                         ○ Match a sequence of expressions.<br/>
+        ///                             ○ Match a character in the set [Pp].<br/>
+        ///                             ○ Match a character in the set [Ww].<br/>
+        ///                             ○ Match a character in the set [Nn].<br/>
+        ///                         ○ Match a sequence of expressions.<br/>
+        ///                             ○ Match a character in the set [Tt].<br/>
         ///                             ○ Match with 2 alternative expressions.<br/>
         ///                                 ○ Match a sequence of expressions.<br/>
-        ///                                     ○ Match 'a'.<br/>
-        ///                                     ○ Match a character in the set [oy].<br/>
-        ///                                 ○ Match the string "su".<br/>
+        ///                                     ○ Match a character in the set [Aa].<br/>
+        ///                                     ○ Match a character in the set [OYoy].<br/>
+        ///                                 ○ Match a sequence of expressions.<br/>
+        ///                                     ○ Match a character in the set [Ss].<br/>
+        ///                                     ○ Match a character in the set [Uu].<br/>
         ///                 ○ Match a sequence of expressions.<br/>
-        ///                     ○ Match the string "sgn-".<br/>
+        ///                     ○ Match a character in the set [Ss].<br/>
+        ///                     ○ Match a character in the set [Gg].<br/>
+        ///                     ○ Match a character in the set [Nn].<br/>
+        ///                     ○ Match '-'.<br/>
         ///                     ○ Match with 2 alternative expressions.<br/>
         ///                         ○ Match a sequence of expressions.<br/>
-        ///                             ○ Match the string "BE-".<br/>
+        ///                             ○ Match a character in the set [Bb].<br/>
+        ///                             ○ Match a character in the set [Ee].<br/>
+        ///                             ○ Match '-'.<br/>
         ///                             ○ Match with 2 alternative expressions.<br/>
-        ///                                 ○ Match the string "FR".<br/>
-        ///                                 ○ Match the string "NL".<br/>
-        ///                         ○ Match the string "CH-DE".<br/>
+        ///                                 ○ Match a sequence of expressions.<br/>
+        ///                                     ○ Match a character in the set [Ff].<br/>
+        ///                                     ○ Match a character in the set [Rr].<br/>
+        ///                                 ○ Match a sequence of expressions.<br/>
+        ///                                     ○ Match a character in the set [Nn].<br/>
+        ///                                     ○ Match a character in the set [Ll].<br/>
+        ///                         ○ Match a sequence of expressions.<br/>
+        ///                             ○ Match a character in the set [Cc].<br/>
+        ///                             ○ Match a character in the set [Hh].<br/>
+        ///                             ○ Match '-'.<br/>
+        ///                             ○ Match a character in the set [Dd].<br/>
+        ///                             ○ Match a character in the set [Ee].<br/>
         ///         ○ 3rd capture group.<br/>
         ///             ○ Match with 4 alternative expressions.<br/>
-        ///                 ○ Match the string "art-lojban".<br/>
-        ///                 ○ Match the string "cel-gaulish".<br/>
         ///                 ○ Match a sequence of expressions.<br/>
-        ///                     ○ Match the string "no-".<br/>
+        ///                     ○ Match a character in the set [Aa].<br/>
+        ///                     ○ Match a character in the set [Rr].<br/>
+        ///                     ○ Match a character in the set [Tt].<br/>
+        ///                     ○ Match '-'.<br/>
+        ///                     ○ Match a character in the set [Ll].<br/>
+        ///                     ○ Match a character in the set [Oo].<br/>
+        ///                     ○ Match a character in the set [Jj].<br/>
+        ///                     ○ Match a character in the set [Bb].<br/>
+        ///                     ○ Match a character in the set [Aa].<br/>
+        ///                     ○ Match a character in the set [Nn].<br/>
+        ///                 ○ Match a sequence of expressions.<br/>
+        ///                     ○ Match a character in the set [Cc].<br/>
+        ///                     ○ Match a character in the set [Ee].<br/>
+        ///                     ○ Match a character in the set [Ll].<br/>
+        ///                     ○ Match '-'.<br/>
+        ///                     ○ Match a character in the set [Gg].<br/>
+        ///                     ○ Match a character in the set [Aa].<br/>
+        ///                     ○ Match a character in the set [Uu].<br/>
+        ///                     ○ Match a character in the set [Ll].<br/>
+        ///                     ○ Match a character in the set [Ii].<br/>
+        ///                     ○ Match a character in the set [Ss].<br/>
+        ///                     ○ Match a character in the set [Hh].<br/>
+        ///                 ○ Match a sequence of expressions.<br/>
+        ///                     ○ Match a character in the set [Nn].<br/>
+        ///                     ○ Match a character in the set [Oo].<br/>
+        ///                     ○ Match '-'.<br/>
         ///                     ○ Match with 2 alternative expressions.<br/>
-        ///                         ○ Match the string "bok".<br/>
-        ///                         ○ Match the string "nyn".<br/>
-        ///                 ○ Match a sequence of expressions.<br/>
-        ///                     ○ Match the string "zh-".<br/>
-        ///                     ○ Match with 4 alternative expressions.<br/>
-        ///                         ○ Match the string "guoyu".<br/>
-        ///                         ○ Match the string "hakka".<br/>
         ///                         ○ Match a sequence of expressions.<br/>
-        ///                             ○ Match the string "min".<br/>
+        ///                             ○ Match a character in the set [Bb].<br/>
+        ///                             ○ Match a character in the set [Oo].<br/>
+        ///                             ○ Match a character in the set [Kk\u212A].<br/>
+        ///                         ○ Match a sequence of expressions.<br/>
+        ///                             ○ Match a character in the set [Nn].<br/>
+        ///                             ○ Match a character in the set [Yy].<br/>
+        ///                             ○ Match a character in the set [Nn].<br/>
+        ///                 ○ Match a sequence of expressions.<br/>
+        ///                     ○ Match a character in the set [Zz].<br/>
+        ///                     ○ Match a character in the set [Hh].<br/>
+        ///                     ○ Match '-'.<br/>
+        ///                     ○ Match with 4 alternative expressions.<br/>
+        ///                         ○ Match a sequence of expressions.<br/>
+        ///                             ○ Match a character in the set [Gg].<br/>
+        ///                             ○ Match a character in the set [Uu].<br/>
+        ///                             ○ Match a character in the set [Oo].<br/>
+        ///                             ○ Match a character in the set [Yy].<br/>
+        ///                             ○ Match a character in the set [Uu].<br/>
+        ///                         ○ Match a sequence of expressions.<br/>
+        ///                             ○ Match a character in the set [Hh].<br/>
+        ///                             ○ Match a character in the set [Aa].<br/>
+        ///                             ○ Match a character in the set [Kk\u212A] exactly 2 times.<br/>
+        ///                             ○ Match a character in the set [Aa].<br/>
+        ///                         ○ Match a sequence of expressions.<br/>
+        ///                             ○ Match a character in the set [Mm].<br/>
+        ///                             ○ Match a character in the set [Ii].<br/>
         ///                             ○ Match with 2 alternative expressions.<br/>
-        ///                                 ○ Match an empty string.<br/>
-        ///                                 ○ Match the string "-nan".<br/>
-        ///                         ○ Match the string "xiang".<br/>
+        ///                                 ○ Match a character in the set [Nn].<br/>
+        ///                                 ○ Match a sequence of expressions.<br/>
+        ///                                     ○ Match a character in the set [Nn].<br/>
+        ///                                     ○ Match '-'.<br/>
+        ///                                     ○ Match a character in the set [Nn].<br/>
+        ///                                     ○ Match a character in the set [Aa].<br/>
+        ///                                     ○ Match a character in the set [Nn].<br/>
+        ///                         ○ Match a sequence of expressions.<br/>
+        ///                             ○ Match a character in the set [Xx].<br/>
+        ///                             ○ Match a character in the set [Ii].<br/>
+        ///                             ○ Match a character in the set [Aa].<br/>
+        ///                             ○ Match a character in the set [Nn].<br/>
+        ///                             ○ Match a character in the set [Gg].<br/>
         ///         ○ 4th capture group.<br/>
         ///             ○ Match with 3 alternative expressions.<br/>
         ///                 ○ 5th capture group.<br/>
-        ///                     ○ Match a character in the set [A-Za-z] greedily at least 2 and at most 3 times.<br/>
+        ///                     ○ Match a character in the set [A-Za-z\u212A] greedily at least 2 and at most 3 times.<br/>
         ///                     ○ Optional (greedy).<br/>
         ///                         ○ 6th capture group.<br/>
         ///                             ○ Match '-'.<br/>
-        ///                             ○ Match a character in the set [A-Za-z] exactly 3 times.<br/>
+        ///                             ○ Match a character in the set [A-Za-z\u212A] exactly 3 times.<br/>
         ///                             ○ Loop greedily at most 2 times.<br/>
         ///                                 ○ 7th capture group.<br/>
         ///                                     ○ Match '-'.<br/>
-        ///                                     ○ Match a character in the set [A-Za-z] exactly 3 times.<br/>
-        ///                 ○ Match a character in the set [A-Za-z] exactly 4 times.<br/>
-        ///                 ○ Match a character in the set [A-Za-z] greedily at least 5 and at most 8 times.<br/>
+        ///                                     ○ Match a character in the set [A-Za-z\u212A] exactly 3 times.<br/>
+        ///                 ○ Match a character in the set [A-Za-z\u212A] exactly 4 times.<br/>
+        ///                 ○ Match a character in the set [A-Za-z\u212A] greedily at least 5 and at most 8 times.<br/>
         ///             ○ Optional (greedy).<br/>
         ///                 ○ 8th capture group.<br/>
         ///                     ○ Match '-'.<br/>
-        ///                     ○ Match a character in the set [A-Za-z] exactly 4 times.<br/>
+        ///                     ○ Match a character in the set [A-Za-z\u212A] exactly 4 times.<br/>
         ///             ○ Optional (greedy).<br/>
         ///                 ○ 9th capture group.<br/>
         ///                     ○ Match '-'.<br/>
         ///                     ○ Match with 2 alternative expressions.<br/>
-        ///                         ○ Match a character in the set [A-Za-z] exactly 2 times.<br/>
+        ///                         ○ Match a character in the set [A-Za-z\u212A] exactly 2 times.<br/>
         ///                         ○ Match '0' through '9' exactly 3 times.<br/>
         ///             ○ Loop greedily any number of times.<br/>
         ///                 ○ 10th capture group.<br/>
         ///                     ○ Match '-'.<br/>
         ///                     ○ Match with 2 alternative expressions.<br/>
-        ///                         ○ Match a character in the set [0-9A-Za-z] greedily at least 5 and at most 8 times.<br/>
+        ///                         ○ Match a character in the set [0-9A-Za-z\u212A] greedily at least 5 and at most 8 times.<br/>
         ///                         ○ Match a sequence of expressions.<br/>
         ///                             ○ Match '0' through '9'.<br/>
-        ///                             ○ Match a character in the set [0-9A-Za-z] exactly 3 times.<br/>
+        ///                             ○ Match a character in the set [0-9A-Za-z\u212A] exactly 3 times.<br/>
         ///             ○ Loop greedily any number of times.<br/>
         ///                 ○ 11th capture group.<br/>
         ///                     ○ Match '-'.<br/>
-        ///                     ○ Match a character in the set [0-9A-WYZa-wyz].<br/>
+        ///                     ○ Match a character in the set [0-9A-WYZa-wyz\u212A].<br/>
         ///                     ○ Loop greedily at least once.<br/>
         ///                         ○ 12th capture group.<br/>
         ///                             ○ Match '-'.<br/>
-        ///                             ○ Match a character in the set [0-9A-Za-z] greedily at least 2 and at most 8 times.<br/>
+        ///                             ○ Match a character in the set [0-9A-Za-z\u212A] greedily at least 2 and at most 8 times.<br/>
         ///             ○ Optional (greedy).<br/>
         ///                 ○ 13th capture group.<br/>
-        ///                     ○ Match the string "-x".<br/>
+        ///                     ○ Match '-'.<br/>
+        ///                     ○ Match a character in the set [Xx].<br/>
         ///                     ○ Loop greedily at least once.<br/>
         ///                         ○ 14th capture group.<br/>
         ///                             ○ Match '-'.<br/>
-        ///                             ○ Match a character in the set [0-9A-Za-z] greedily at least 1 and at most 8 times.<br/>
+        ///                             ○ Match a character in the set [0-9A-Za-z\u212A] greedily at least 1 and at most 8 times.<br/>
         ///         ○ Match a sequence of expressions.<br/>
-        ///             ○ Match 'x'.<br/>
+        ///             ○ Match a character in the set [Xx].<br/>
         ///             ○ Loop greedily at least once.<br/>
         ///                 ○ 15th capture group.<br/>
         ///                     ○ Match '-'.<br/>
-        ///                     ○ Match a character in the set [0-9A-Za-z] atomically at least 1 and at most 8 times.<br/>
+        ///                     ○ Match a character in the set [0-9A-Za-z\u212A] atomically at least 1 and at most 8 times.<br/>
         /// ○ Match if at the end of the string or if before an ending newline.<br/>
         /// </code>
         /// </remarks>
@@ -149,9 +274,8 @@ namespace System.Text.RegularExpressions.Generated
         private GetValidationRegex_0()
         {
             base.pattern = "^((?:(en-GB-oed|i-ami|i-bnn|i-default|i-enochian|i-hak|i-klingon|i-lux|i-mingo|i-navajo|i-pwn|i-tao|i-tay|i-tsu|sgn-BE-FR|sgn-BE-NL|sgn-CH-DE)|(art-lojban|cel-gaulish|no-bok|no-nyn|zh-guoyu|zh-hakka|zh-min|zh-min-nan|zh-xiang))|((?:([A-Za-z]{2,3}(-(?:[A-Za-z]{3}(-[A-Za-z]{3}){0,2}))?)|[A-Za-z]{4}|[A-Za-z]{5,8})(-(?:[A-Za-z]{4}))?(-(?:[A-Za-z]{2}|[0-9]{3}))?(-(?:[A-Za-z0-9]{5,8}|[0-9][A-Za-z0-9]{3}))*(-(?:[0-9A-WY-Za-wy-z](-[A-Za-z0-9]{2,8})+))*(-(?:x(-[A-Za-z0-9]{1,8})+))?)|(?:x(-[A-Za-z0-9]{1,8})+))$";
-            base.roptions = RegexOptions.Compiled;
-            ValidateMatchTimeout(Utilities.s_defaultTimeout);
-            base.internalMatchTimeout = Utilities.s_defaultTimeout;
+            base.roptions = RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant;
+            base.internalMatchTimeout = TimeSpan.FromMilliseconds(100);
             base.factory = new RunnerFactory();
             base.capsize = 16;
         }
@@ -253,6 +377,7 @@ namespace System.Text.RegularExpressions.Generated
                     int loop_iteration8 = 0;
                     int loop_iteration9 = 0;
                     int stackpos = 0;
+                    ulong charMinusLow;
                     ReadOnlySpan<char> slice = inputSpan.Slice(pos);
                     
                     // Match if at the beginning of the string.
@@ -284,8 +409,8 @@ namespace System.Text.RegularExpressions.Generated
                                         
                                         // Branch 0
                                         //{
-                                            // Match the string "en-GB-oed".
-                                            if (!slice.StartsWith("en-GB-oed"))
+                                            if ((uint)slice.Length < 9 ||
+                                                !slice.StartsWith("en-gb-oed", StringComparison.OrdinalIgnoreCase)) // Match the string "en-gb-oed" (ordinal case-insensitive)
                                             {
                                                 goto AlternationBranch1;
                                             }
@@ -303,8 +428,8 @@ namespace System.Text.RegularExpressions.Generated
                                         
                                         // Branch 1
                                         //{
-                                            // Match the string "i-".
-                                            if (!slice.StartsWith("i-"))
+                                            if ((uint)slice.Length < 2 ||
+                                                !slice.StartsWith("i-", StringComparison.OrdinalIgnoreCase)) // Match the string "i-" (ordinal case-insensitive)
                                             {
                                                 goto AlternationBranch2;
                                             }
@@ -316,8 +441,8 @@ namespace System.Text.RegularExpressions.Generated
                                                 
                                                 // Branch 0
                                                 //{
-                                                    // Match the string "ami".
-                                                    if (!slice.Slice(2).StartsWith("ami"))
+                                                    if ((uint)slice.Length < 5 ||
+                                                        !slice.Slice(2).StartsWith("ami", StringComparison.OrdinalIgnoreCase)) // Match the string "ami" (ordinal case-insensitive)
                                                     {
                                                         goto AlternationBranch3;
                                                     }
@@ -335,8 +460,8 @@ namespace System.Text.RegularExpressions.Generated
                                                 
                                                 // Branch 1
                                                 //{
-                                                    // Match the string "bnn".
-                                                    if (!slice.Slice(2).StartsWith("bnn"))
+                                                    if ((uint)slice.Length < 5 ||
+                                                        !slice.Slice(2).StartsWith("bnn", StringComparison.OrdinalIgnoreCase)) // Match the string "bnn" (ordinal case-insensitive)
                                                     {
                                                         goto AlternationBranch4;
                                                     }
@@ -354,8 +479,8 @@ namespace System.Text.RegularExpressions.Generated
                                                 
                                                 // Branch 2
                                                 //{
-                                                    // Match the string "default".
-                                                    if (!slice.Slice(2).StartsWith("default"))
+                                                    if ((uint)slice.Length < 9 ||
+                                                        !slice.Slice(2).StartsWith("default", StringComparison.OrdinalIgnoreCase)) // Match the string "default" (ordinal case-insensitive)
                                                     {
                                                         goto AlternationBranch5;
                                                     }
@@ -373,8 +498,8 @@ namespace System.Text.RegularExpressions.Generated
                                                 
                                                 // Branch 3
                                                 //{
-                                                    // Match the string "enochian".
-                                                    if (!slice.Slice(2).StartsWith("enochian"))
+                                                    if ((uint)slice.Length < 10 ||
+                                                        !slice.Slice(2).StartsWith("enochian", StringComparison.OrdinalIgnoreCase)) // Match the string "enochian" (ordinal case-insensitive)
                                                     {
                                                         goto AlternationBranch6;
                                                     }
@@ -392,8 +517,9 @@ namespace System.Text.RegularExpressions.Generated
                                                 
                                                 // Branch 4
                                                 //{
-                                                    // Match the string "hak".
-                                                    if (!slice.Slice(2).StartsWith("hak"))
+                                                    if ((uint)slice.Length < 5 ||
+                                                        !slice.Slice(2).StartsWith("ha", StringComparison.OrdinalIgnoreCase) || // Match the string "ha" (ordinal case-insensitive)
+                                                        ((((ch = slice[4]) | 0x20) != 'k') & (ch != 'K'))) // Match a character in the set [Kk\u212A].
                                                     {
                                                         goto AlternationBranch7;
                                                     }
@@ -411,8 +537,9 @@ namespace System.Text.RegularExpressions.Generated
                                                 
                                                 // Branch 5
                                                 //{
-                                                    // Match the string "klingon".
-                                                    if (!slice.Slice(2).StartsWith("klingon"))
+                                                    if ((uint)slice.Length < 9 ||
+                                                        ((((ch = slice[2]) | 0x20) != 'k') & (ch != 'K')) || // Match a character in the set [Kk\u212A].
+                                                        !slice.Slice(3).StartsWith("lingon", StringComparison.OrdinalIgnoreCase)) // Match the string "lingon" (ordinal case-insensitive)
                                                     {
                                                         goto AlternationBranch8;
                                                     }
@@ -430,8 +557,8 @@ namespace System.Text.RegularExpressions.Generated
                                                 
                                                 // Branch 6
                                                 //{
-                                                    // Match the string "lux".
-                                                    if (!slice.Slice(2).StartsWith("lux"))
+                                                    if ((uint)slice.Length < 5 ||
+                                                        !slice.Slice(2).StartsWith("lux", StringComparison.OrdinalIgnoreCase)) // Match the string "lux" (ordinal case-insensitive)
                                                     {
                                                         goto AlternationBranch9;
                                                     }
@@ -449,8 +576,8 @@ namespace System.Text.RegularExpressions.Generated
                                                 
                                                 // Branch 7
                                                 //{
-                                                    // Match the string "mingo".
-                                                    if (!slice.Slice(2).StartsWith("mingo"))
+                                                    if ((uint)slice.Length < 7 ||
+                                                        !slice.Slice(2).StartsWith("mingo", StringComparison.OrdinalIgnoreCase)) // Match the string "mingo" (ordinal case-insensitive)
                                                     {
                                                         goto AlternationBranch10;
                                                     }
@@ -468,8 +595,8 @@ namespace System.Text.RegularExpressions.Generated
                                                 
                                                 // Branch 8
                                                 //{
-                                                    // Match the string "navajo".
-                                                    if (!slice.Slice(2).StartsWith("navajo"))
+                                                    if ((uint)slice.Length < 8 ||
+                                                        !slice.Slice(2).StartsWith("navajo", StringComparison.OrdinalIgnoreCase)) // Match the string "navajo" (ordinal case-insensitive)
                                                     {
                                                         goto AlternationBranch11;
                                                     }
@@ -487,8 +614,8 @@ namespace System.Text.RegularExpressions.Generated
                                                 
                                                 // Branch 9
                                                 //{
-                                                    // Match the string "pwn".
-                                                    if (!slice.Slice(2).StartsWith("pwn"))
+                                                    if ((uint)slice.Length < 5 ||
+                                                        !slice.Slice(2).StartsWith("pwn", StringComparison.OrdinalIgnoreCase)) // Match the string "pwn" (ordinal case-insensitive)
                                                     {
                                                         goto AlternationBranch12;
                                                     }
@@ -506,8 +633,8 @@ namespace System.Text.RegularExpressions.Generated
                                                 
                                                 // Branch 10
                                                 //{
-                                                    // Match 't'.
-                                                    if ((uint)slice.Length < 3 || slice[2] != 't')
+                                                    // Match a character in the set [Tt].
+                                                    if ((uint)slice.Length < 3 || ((slice[2] | 0x20) != 't'))
                                                     {
                                                         goto AlternationBranch2;
                                                     }
@@ -521,9 +648,9 @@ namespace System.Text.RegularExpressions.Generated
                                                         
                                                         switch (slice[3])
                                                         {
-                                                            case 'a':
-                                                                // Match a character in the set [oy].
-                                                                if ((uint)slice.Length < 5 || (((ch = slice[4]) != 'o') & (ch != 'y')))
+                                                            case 'A' or 'a':
+                                                                // Match a character in the set [OYoy].
+                                                                if ((uint)slice.Length < 5 || ((long)((0x8020000080200000UL << (int)(charMinusLow = (uint)slice[4] - 'O')) & (charMinusLow - 64)) >= 0))
                                                                 {
                                                                     goto AlternationBranch2;
                                                                 }
@@ -532,9 +659,9 @@ namespace System.Text.RegularExpressions.Generated
                                                                 slice = inputSpan.Slice(pos);
                                                                 break;
                                                                 
-                                                            case 's':
-                                                                // Match 'u'.
-                                                                if ((uint)slice.Length < 5 || slice[4] != 'u')
+                                                            case 'S' or 's':
+                                                                // Match a character in the set [Uu].
+                                                                if ((uint)slice.Length < 5 || ((slice[4] | 0x20) != 'u'))
                                                                 {
                                                                     goto AlternationBranch2;
                                                                 }
@@ -553,10 +680,7 @@ namespace System.Text.RegularExpressions.Generated
                                                 //}
                                                 
                                                 AlternationBacktrack2:
-                                                if (Utilities.s_hasTimeout)
-                                                {
-                                                    base.CheckTimeout();
-                                                }
+                                                base.CheckTimeout();
                                                 
                                                 switch (alternation_branch2)
                                                 {
@@ -598,8 +722,8 @@ namespace System.Text.RegularExpressions.Generated
                                         
                                         // Branch 2
                                         //{
-                                            // Match the string "sgn-".
-                                            if (!slice.StartsWith("sgn-"))
+                                            if ((uint)slice.Length < 4 ||
+                                                !slice.StartsWith("sgn-", StringComparison.OrdinalIgnoreCase)) // Match the string "sgn-" (ordinal case-insensitive)
                                             {
                                                 goto AlternationBranch;
                                             }
@@ -611,8 +735,8 @@ namespace System.Text.RegularExpressions.Generated
                                                 
                                                 // Branch 0
                                                 //{
-                                                    // Match the string "BE-".
-                                                    if (!slice.Slice(4).StartsWith("BE-"))
+                                                    if ((uint)slice.Length < 7 ||
+                                                        !slice.Slice(4).StartsWith("be-", StringComparison.OrdinalIgnoreCase)) // Match the string "be-" (ordinal case-insensitive)
                                                     {
                                                         goto AlternationBranch13;
                                                     }
@@ -626,9 +750,9 @@ namespace System.Text.RegularExpressions.Generated
                                                         
                                                         switch (slice[7])
                                                         {
-                                                            case 'F':
-                                                                // Match 'R'.
-                                                                if ((uint)slice.Length < 9 || slice[8] != 'R')
+                                                            case 'F' or 'f':
+                                                                // Match a character in the set [Rr].
+                                                                if ((uint)slice.Length < 9 || ((slice[8] | 0x20) != 'r'))
                                                                 {
                                                                     goto AlternationBranch13;
                                                                 }
@@ -637,9 +761,9 @@ namespace System.Text.RegularExpressions.Generated
                                                                 slice = inputSpan.Slice(pos);
                                                                 break;
                                                                 
-                                                            case 'N':
-                                                                // Match 'L'.
-                                                                if ((uint)slice.Length < 9 || slice[8] != 'L')
+                                                            case 'N' or 'n':
+                                                                // Match a character in the set [Ll].
+                                                                if ((uint)slice.Length < 9 || ((slice[8] | 0x20) != 'l'))
                                                                 {
                                                                     goto AlternationBranch13;
                                                                 }
@@ -664,8 +788,8 @@ namespace System.Text.RegularExpressions.Generated
                                                 
                                                 // Branch 1
                                                 //{
-                                                    // Match the string "CH-DE".
-                                                    if (!slice.Slice(4).StartsWith("CH-DE"))
+                                                    if ((uint)slice.Length < 9 ||
+                                                        !slice.Slice(4).StartsWith("ch-de", StringComparison.OrdinalIgnoreCase)) // Match the string "ch-de" (ordinal case-insensitive)
                                                     {
                                                         goto AlternationBranch;
                                                     }
@@ -677,10 +801,7 @@ namespace System.Text.RegularExpressions.Generated
                                                 //}
                                                 
                                                 AlternationBacktrack3:
-                                                if (Utilities.s_hasTimeout)
-                                                {
-                                                    base.CheckTimeout();
-                                                }
+                                                base.CheckTimeout();
                                                 
                                                 switch (alternation_branch3)
                                                 {
@@ -698,10 +819,7 @@ namespace System.Text.RegularExpressions.Generated
                                         //}
                                         
                                         AlternationBacktrack1:
-                                        if (Utilities.s_hasTimeout)
-                                        {
-                                            base.CheckTimeout();
-                                        }
+                                        base.CheckTimeout();
                                         
                                         switch (alternation_branch1)
                                         {
@@ -748,8 +866,8 @@ namespace System.Text.RegularExpressions.Generated
                                         
                                         // Branch 0
                                         //{
-                                            // Match the string "art-lojban".
-                                            if (!slice.StartsWith("art-lojban"))
+                                            if ((uint)slice.Length < 10 ||
+                                                !slice.StartsWith("art-lojban", StringComparison.OrdinalIgnoreCase)) // Match the string "art-lojban" (ordinal case-insensitive)
                                             {
                                                 goto AlternationBranch15;
                                             }
@@ -767,8 +885,8 @@ namespace System.Text.RegularExpressions.Generated
                                         
                                         // Branch 1
                                         //{
-                                            // Match the string "cel-gaulish".
-                                            if (!slice.StartsWith("cel-gaulish"))
+                                            if ((uint)slice.Length < 11 ||
+                                                !slice.StartsWith("cel-gaulish", StringComparison.OrdinalIgnoreCase)) // Match the string "cel-gaulish" (ordinal case-insensitive)
                                             {
                                                 goto AlternationBranch16;
                                             }
@@ -786,8 +904,8 @@ namespace System.Text.RegularExpressions.Generated
                                         
                                         // Branch 2
                                         //{
-                                            // Match the string "no-".
-                                            if (!slice.StartsWith("no-"))
+                                            if ((uint)slice.Length < 3 ||
+                                                !slice.StartsWith("no-", StringComparison.OrdinalIgnoreCase)) // Match the string "no-" (ordinal case-insensitive)
                                             {
                                                 goto AlternationBranch17;
                                             }
@@ -801,9 +919,10 @@ namespace System.Text.RegularExpressions.Generated
                                                 
                                                 switch (slice[3])
                                                 {
-                                                    case 'b':
-                                                        // Match the string "ok".
-                                                        if (!slice.Slice(4).StartsWith("ok"))
+                                                    case 'B' or 'b':
+                                                        if ((uint)slice.Length < 6 ||
+                                                            ((slice[4] | 0x20) != 'o') || // Match a character in the set [Oo].
+                                                            ((((ch = slice[5]) | 0x20) != 'k') & (ch != 'K'))) // Match a character in the set [Kk\u212A].
                                                         {
                                                             goto AlternationBranch17;
                                                         }
@@ -812,9 +931,9 @@ namespace System.Text.RegularExpressions.Generated
                                                         slice = inputSpan.Slice(pos);
                                                         break;
                                                         
-                                                    case 'n':
-                                                        // Match the string "yn".
-                                                        if (!slice.Slice(4).StartsWith("yn"))
+                                                    case 'N' or 'n':
+                                                        if ((uint)slice.Length < 6 ||
+                                                            !slice.Slice(4).StartsWith("yn", StringComparison.OrdinalIgnoreCase)) // Match the string "yn" (ordinal case-insensitive)
                                                         {
                                                             goto AlternationBranch17;
                                                         }
@@ -839,8 +958,8 @@ namespace System.Text.RegularExpressions.Generated
                                         
                                         // Branch 3
                                         //{
-                                            // Match the string "zh-".
-                                            if (!slice.StartsWith("zh-"))
+                                            if ((uint)slice.Length < 3 ||
+                                                !slice.StartsWith("zh-", StringComparison.OrdinalIgnoreCase)) // Match the string "zh-" (ordinal case-insensitive)
                                             {
                                                 goto AlternationBranch14;
                                             }
@@ -852,8 +971,8 @@ namespace System.Text.RegularExpressions.Generated
                                                 
                                                 // Branch 0
                                                 //{
-                                                    // Match the string "guoyu".
-                                                    if (!slice.Slice(3).StartsWith("guoyu"))
+                                                    if ((uint)slice.Length < 8 ||
+                                                        !slice.Slice(3).StartsWith("guoyu", StringComparison.OrdinalIgnoreCase)) // Match the string "guoyu" (ordinal case-insensitive)
                                                     {
                                                         goto AlternationBranch18;
                                                     }
@@ -871,8 +990,11 @@ namespace System.Text.RegularExpressions.Generated
                                                 
                                                 // Branch 1
                                                 //{
-                                                    // Match the string "hakka".
-                                                    if (!slice.Slice(3).StartsWith("hakka"))
+                                                    if ((uint)slice.Length < 8 ||
+                                                        !slice.Slice(3).StartsWith("ha", StringComparison.OrdinalIgnoreCase) || // Match the string "ha" (ordinal case-insensitive)
+                                                        ((((ch = slice[5]) | 0x20) != 'k') & (ch != 'K')) || // Match a character in the set [Kk\u212A] exactly 2 times.
+                                                        ((((ch = slice[6]) | 0x20) != 'k') & (ch != 'K')) ||
+                                                        ((slice[7] | 0x20) != 'a')) // Match a character in the set [Aa].
                                                     {
                                                         goto AlternationBranch19;
                                                     }
@@ -890,8 +1012,8 @@ namespace System.Text.RegularExpressions.Generated
                                                 
                                                 // Branch 2
                                                 //{
-                                                    // Match the string "min".
-                                                    if (!slice.Slice(3).StartsWith("min"))
+                                                    if ((uint)slice.Length < 5 ||
+                                                        !slice.Slice(3).StartsWith("mi", StringComparison.OrdinalIgnoreCase)) // Match the string "mi" (ordinal case-insensitive)
                                                     {
                                                         goto AlternationBranch20;
                                                     }
@@ -903,6 +1025,11 @@ namespace System.Text.RegularExpressions.Generated
                                                         
                                                         // Branch 0
                                                         //{
+                                                            // Match a character in the set [Nn].
+                                                            if ((uint)slice.Length < 6 || ((slice[5] | 0x20) != 'n'))
+                                                            {
+                                                                goto AlternationBranch21;
+                                                            }
                                                             
                                                             alternation_branch6 = 0;
                                                             pos += 6;
@@ -917,8 +1044,8 @@ namespace System.Text.RegularExpressions.Generated
                                                         
                                                         // Branch 1
                                                         //{
-                                                            // Match the string "-nan".
-                                                            if (!slice.Slice(6).StartsWith("-nan"))
+                                                            if ((uint)slice.Length < 10 ||
+                                                                !slice.Slice(5).StartsWith("n-nan", StringComparison.OrdinalIgnoreCase)) // Match the string "n-nan" (ordinal case-insensitive)
                                                             {
                                                                 goto AlternationBranch20;
                                                             }
@@ -930,10 +1057,7 @@ namespace System.Text.RegularExpressions.Generated
                                                         //}
                                                         
                                                         AlternationBacktrack6:
-                                                        if (Utilities.s_hasTimeout)
-                                                        {
-                                                            base.CheckTimeout();
-                                                        }
+                                                        base.CheckTimeout();
                                                         
                                                         switch (alternation_branch6)
                                                         {
@@ -957,8 +1081,8 @@ namespace System.Text.RegularExpressions.Generated
                                                 
                                                 // Branch 3
                                                 //{
-                                                    // Match the string "xiang".
-                                                    if (!slice.Slice(3).StartsWith("xiang"))
+                                                    if ((uint)slice.Length < 8 ||
+                                                        !slice.Slice(3).StartsWith("xiang", StringComparison.OrdinalIgnoreCase)) // Match the string "xiang" (ordinal case-insensitive)
                                                     {
                                                         goto AlternationBranch14;
                                                     }
@@ -970,10 +1094,7 @@ namespace System.Text.RegularExpressions.Generated
                                                 //}
                                                 
                                                 AlternationBacktrack5:
-                                                if (Utilities.s_hasTimeout)
-                                                {
-                                                    base.CheckTimeout();
-                                                }
+                                                base.CheckTimeout();
                                                 
                                                 switch (alternation_branch5)
                                                 {
@@ -995,10 +1116,7 @@ namespace System.Text.RegularExpressions.Generated
                                         //}
                                         
                                         AlternationBacktrack4:
-                                        if (Utilities.s_hasTimeout)
-                                        {
-                                            base.CheckTimeout();
-                                        }
+                                        base.CheckTimeout();
                                         
                                         switch (alternation_branch4)
                                         {
@@ -1051,12 +1169,12 @@ namespace System.Text.RegularExpressions.Generated
                                             //{
                                                 capture_starting_pos4 = pos;
                                                 
-                                                // Match a character in the set [A-Za-z] greedily at least 2 and at most 3 times.
+                                                // Match a character in the set [A-Za-z\u212A] greedily at least 2 and at most 3 times.
                                                 //{
                                                     charloop_starting_pos = pos;
                                                     
                                                     int iteration = 0;
-                                                    while (iteration < 3 && (uint)iteration < (uint)slice.Length && char.IsAsciiLetter(slice[iteration]))
+                                                    while (iteration < 3 && (uint)iteration < (uint)slice.Length && ((ch = slice[iteration]) < 128 ? ("\0\0\0\0\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) != 0 : RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")))
                                                     {
                                                         iteration++;
                                                     }
@@ -1076,10 +1194,7 @@ namespace System.Text.RegularExpressions.Generated
                                                     CharLoopBacktrack:
                                                     UncaptureUntil(charloop_capture_pos);
                                                     
-                                                    if (Utilities.s_hasTimeout)
-                                                    {
-                                                        base.CheckTimeout();
-                                                    }
+                                                    base.CheckTimeout();
                                                     
                                                     if (charloop_starting_pos >= charloop_ending_pos)
                                                     {
@@ -1107,9 +1222,9 @@ namespace System.Text.RegularExpressions.Generated
                                                         
                                                         if ((uint)slice.Length < 4 ||
                                                             slice[0] != '-' || // Match '-'.
-                                                            !char.IsAsciiLetter(slice[1]) || // Match a character in the set [A-Za-z] exactly 3 times.
-                                                            !char.IsAsciiLetter(slice[2]) ||
-                                                            !char.IsAsciiLetter(slice[3]))
+                                                            ((ch = slice[1]) < 128 ? ("\0\0\0\0\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) || // Match a character in the set [A-Za-z\u212A] exactly 3 times.
+                                                            ((ch = slice[2]) < 128 ? ("\0\0\0\0\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) ||
+                                                            ((ch = slice[3]) < 128 ? ("\0\0\0\0\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")))
                                                         {
                                                             goto LoopIterationNoMatch;
                                                         }
@@ -1131,9 +1246,9 @@ namespace System.Text.RegularExpressions.Generated
                                                                 
                                                                 if ((uint)slice.Length < 4 ||
                                                                     slice[0] != '-' || // Match '-'.
-                                                                    !char.IsAsciiLetter(slice[1]) || // Match a character in the set [A-Za-z] exactly 3 times.
-                                                                    !char.IsAsciiLetter(slice[2]) ||
-                                                                    !char.IsAsciiLetter(slice[3]))
+                                                                    ((ch = slice[1]) < 128 ? ("\0\0\0\0\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) || // Match a character in the set [A-Za-z\u212A] exactly 3 times.
+                                                                    ((ch = slice[2]) < 128 ? ("\0\0\0\0\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) ||
+                                                                    ((ch = slice[3]) < 128 ? ("\0\0\0\0\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")))
                                                                 {
                                                                     goto LoopIterationNoMatch1;
                                                                 }
@@ -1168,10 +1283,7 @@ namespace System.Text.RegularExpressions.Generated
                                                             
                                                             LoopBacktrack:
                                                             loop_iteration1 = base.runstack![--stackpos];
-                                                            if (Utilities.s_hasTimeout)
-                                                            {
-                                                                base.CheckTimeout();
-                                                            }
+                                                            base.CheckTimeout();
                                                             
                                                             goto LoopIterationNoMatch1;
                                                             
@@ -1211,10 +1323,7 @@ namespace System.Text.RegularExpressions.Generated
                                                     goto LoopEnd;
                                                     
                                                     LoopBacktrack1:
-                                                    if (Utilities.s_hasTimeout)
-                                                    {
-                                                        base.CheckTimeout();
-                                                    }
+                                                    base.CheckTimeout();
                                                     
                                                     if (loop_iteration == 0)
                                                     {
@@ -1246,13 +1355,13 @@ namespace System.Text.RegularExpressions.Generated
                                         
                                         // Branch 1
                                         //{
-                                            // Match a character in the set [A-Za-z] exactly 4 times.
+                                            // Match a character in the set [A-Za-z\u212A] exactly 4 times.
                                             {
                                                 if ((uint)slice.Length < 4 ||
-                                                    !char.IsAsciiLetter(slice[0]) ||
-                                                    !char.IsAsciiLetter(slice[1]) ||
-                                                    !char.IsAsciiLetter(slice[2]) ||
-                                                    !char.IsAsciiLetter(slice[3]))
+                                                    ((ch = slice[0]) < 128 ? ("\0\0\0\0\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) ||
+                                                    ((ch = slice[1]) < 128 ? ("\0\0\0\0\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) ||
+                                                    ((ch = slice[2]) < 128 ? ("\0\0\0\0\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) ||
+                                                    ((ch = slice[3]) < 128 ? ("\0\0\0\0\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")))
                                                 {
                                                     goto AlternationBranch24;
                                                 }
@@ -1271,12 +1380,12 @@ namespace System.Text.RegularExpressions.Generated
                                         
                                         // Branch 2
                                         //{
-                                            // Match a character in the set [A-Za-z] greedily at least 5 and at most 8 times.
+                                            // Match a character in the set [A-Za-z\u212A] greedily at least 5 and at most 8 times.
                                             //{
                                                 charloop_starting_pos1 = pos;
                                                 
                                                 int iteration1 = 0;
-                                                while (iteration1 < 8 && (uint)iteration1 < (uint)slice.Length && char.IsAsciiLetter(slice[iteration1]))
+                                                while (iteration1 < 8 && (uint)iteration1 < (uint)slice.Length && ((ch = slice[iteration1]) < 128 ? ("\0\0\0\0\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) != 0 : RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")))
                                                 {
                                                     iteration1++;
                                                 }
@@ -1296,10 +1405,7 @@ namespace System.Text.RegularExpressions.Generated
                                                 CharLoopBacktrack1:
                                                 UncaptureUntil(charloop_capture_pos1);
                                                 
-                                                if (Utilities.s_hasTimeout)
-                                                {
-                                                    base.CheckTimeout();
-                                                }
+                                                base.CheckTimeout();
                                                 
                                                 if (charloop_starting_pos1 >= charloop_ending_pos1)
                                                 {
@@ -1317,10 +1423,7 @@ namespace System.Text.RegularExpressions.Generated
                                         //}
                                         
                                         AlternationBacktrack7:
-                                        if (Utilities.s_hasTimeout)
-                                        {
-                                            base.CheckTimeout();
-                                        }
+                                        base.CheckTimeout();
                                         
                                         switch (alternation_branch7)
                                         {
@@ -1350,10 +1453,10 @@ namespace System.Text.RegularExpressions.Generated
                                             
                                             if ((uint)slice.Length < 5 ||
                                                 slice[0] != '-' || // Match '-'.
-                                                !char.IsAsciiLetter(slice[1]) || // Match a character in the set [A-Za-z] exactly 4 times.
-                                                !char.IsAsciiLetter(slice[2]) ||
-                                                !char.IsAsciiLetter(slice[3]) ||
-                                                !char.IsAsciiLetter(slice[4]))
+                                                ((ch = slice[1]) < 128 ? ("\0\0\0\0\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) || // Match a character in the set [A-Za-z\u212A] exactly 4 times.
+                                                ((ch = slice[2]) < 128 ? ("\0\0\0\0\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) ||
+                                                ((ch = slice[3]) < 128 ? ("\0\0\0\0\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) ||
+                                                ((ch = slice[4]) < 128 ? ("\0\0\0\0\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")))
                                             {
                                                 goto LoopIterationNoMatch2;
                                             }
@@ -1410,11 +1513,11 @@ namespace System.Text.RegularExpressions.Generated
                                                 
                                                 // Branch 0
                                                 //{
-                                                    // Match a character in the set [A-Za-z] exactly 2 times.
+                                                    // Match a character in the set [A-Za-z\u212A] exactly 2 times.
                                                     {
                                                         if ((uint)slice.Length < 3 ||
-                                                            !char.IsAsciiLetter(slice[1]) ||
-                                                            !char.IsAsciiLetter(slice[2]))
+                                                            ((ch = slice[1]) < 128 ? ("\0\0\0\0\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) ||
+                                                            ((ch = slice[2]) < 128 ? ("\0\0\0\0\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")))
                                                         {
                                                             goto AlternationBranch25;
                                                         }
@@ -1451,10 +1554,7 @@ namespace System.Text.RegularExpressions.Generated
                                                 //}
                                                 
                                                 AlternationBacktrack8:
-                                                if (Utilities.s_hasTimeout)
-                                                {
-                                                    base.CheckTimeout();
-                                                }
+                                                base.CheckTimeout();
                                                 
                                                 Utilities.StackPop(base.runstack!, ref stackpos, out alternation_starting_capturepos8, out alternation_starting_pos8);
                                                 switch (base.runstack![--stackpos])
@@ -1501,10 +1601,7 @@ namespace System.Text.RegularExpressions.Generated
                                         goto LoopEnd3;
                                         
                                         LoopBacktrack2:
-                                        if (Utilities.s_hasTimeout)
-                                        {
-                                            base.CheckTimeout();
-                                        }
+                                        base.CheckTimeout();
                                         
                                         if (loop_iteration3 == 0)
                                         {
@@ -1541,14 +1638,14 @@ namespace System.Text.RegularExpressions.Generated
                                                 
                                                 // Branch 0
                                                 //{
-                                                    // Match a character in the set [0-9A-Za-z] greedily at least 5 and at most 8 times.
+                                                    // Match a character in the set [0-9A-Za-z\u212A] greedily at least 5 and at most 8 times.
                                                     //{
                                                         pos++;
                                                         slice = inputSpan.Slice(pos);
                                                         charloop_starting_pos2 = pos;
                                                         
                                                         int iteration2 = 0;
-                                                        while (iteration2 < 8 && (uint)iteration2 < (uint)slice.Length && char.IsAsciiLetterOrDigit(slice[iteration2]))
+                                                        while (iteration2 < 8 && (uint)iteration2 < (uint)slice.Length && ((ch = slice[iteration2]) < 128 ? ("\0\0\0Ͽ\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) != 0 : RegexRunner.CharInClass((char)ch, "\0\b\00:A[a{KÅ")))
                                                         {
                                                             iteration2++;
                                                         }
@@ -1569,10 +1666,7 @@ namespace System.Text.RegularExpressions.Generated
                                                         UncaptureUntil(base.runstack![--stackpos]);
                                                         Utilities.StackPop(base.runstack!, ref stackpos, out charloop_ending_pos2, out charloop_starting_pos2);
                                                         
-                                                        if (Utilities.s_hasTimeout)
-                                                        {
-                                                            base.CheckTimeout();
-                                                        }
+                                                        base.CheckTimeout();
                                                         
                                                         if (charloop_starting_pos2 >= charloop_ending_pos2)
                                                         {
@@ -1598,9 +1692,9 @@ namespace System.Text.RegularExpressions.Generated
                                                 //{
                                                     if ((uint)slice.Length < 5 ||
                                                         !char.IsAsciiDigit(slice[1]) || // Match '0' through '9'.
-                                                        !char.IsAsciiLetterOrDigit(slice[2]) || // Match a character in the set [0-9A-Za-z] exactly 3 times.
-                                                        !char.IsAsciiLetterOrDigit(slice[3]) ||
-                                                        !char.IsAsciiLetterOrDigit(slice[4]))
+                                                        ((ch = slice[2]) < 128 ? ("\0\0\0Ͽ\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\b\00:A[a{KÅ")) || // Match a character in the set [0-9A-Za-z\u212A] exactly 3 times.
+                                                        ((ch = slice[3]) < 128 ? ("\0\0\0Ͽ\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\b\00:A[a{KÅ")) ||
+                                                        ((ch = slice[4]) < 128 ? ("\0\0\0Ͽ\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\b\00:A[a{KÅ")))
                                                     {
                                                         goto LoopIterationNoMatch4;
                                                     }
@@ -1612,10 +1706,7 @@ namespace System.Text.RegularExpressions.Generated
                                                 //}
                                                 
                                                 AlternationBacktrack9:
-                                                if (Utilities.s_hasTimeout)
-                                                {
-                                                    base.CheckTimeout();
-                                                }
+                                                base.CheckTimeout();
                                                 
                                                 Utilities.StackPop(base.runstack!, ref stackpos, out alternation_starting_capturepos9, out alternation_starting_pos9);
                                                 switch (base.runstack![--stackpos])
@@ -1658,10 +1749,7 @@ namespace System.Text.RegularExpressions.Generated
                                         goto LoopEnd4;
                                         
                                         LoopBacktrack3:
-                                        if (Utilities.s_hasTimeout)
-                                        {
-                                            base.CheckTimeout();
-                                        }
+                                        base.CheckTimeout();
                                         
                                         if (loop_iteration4 == 0)
                                         {
@@ -1687,7 +1775,7 @@ namespace System.Text.RegularExpressions.Generated
                                             
                                             if ((uint)slice.Length < 2 ||
                                                 slice[0] != '-' || // Match '-'.
-                                                ((ch = slice[1]) >= '{' || ("\0\0\0Ͽ\ufffeۿ\ufffeۿ"[ch >> 4] & (1 << (ch & 0xF))) == 0)) // Match a character in the set [0-9A-WYZa-wyz].
+                                                ((ch = slice[1]) < 128 ? ("\0\0\0Ͽ\ufffeۿ\ufffeۿ"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\f\00:AXY[axy{KÅ"))) // Match a character in the set [0-9A-WYZa-wyz\u212A].
                                             {
                                                 goto LoopIterationNoMatch5;
                                             }
@@ -1713,14 +1801,14 @@ namespace System.Text.RegularExpressions.Generated
                                                         goto LoopIterationNoMatch6;
                                                     }
                                                     
-                                                    // Match a character in the set [0-9A-Za-z] greedily at least 2 and at most 8 times.
+                                                    // Match a character in the set [0-9A-Za-z\u212A] greedily at least 2 and at most 8 times.
                                                     //{
                                                         pos++;
                                                         slice = inputSpan.Slice(pos);
                                                         charloop_starting_pos3 = pos;
                                                         
                                                         int iteration3 = 0;
-                                                        while (iteration3 < 8 && (uint)iteration3 < (uint)slice.Length && char.IsAsciiLetterOrDigit(slice[iteration3]))
+                                                        while (iteration3 < 8 && (uint)iteration3 < (uint)slice.Length && ((ch = slice[iteration3]) < 128 ? ("\0\0\0Ͽ\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) != 0 : RegexRunner.CharInClass((char)ch, "\0\b\00:A[a{KÅ")))
                                                         {
                                                             iteration3++;
                                                         }
@@ -1741,10 +1829,7 @@ namespace System.Text.RegularExpressions.Generated
                                                         UncaptureUntil(base.runstack![--stackpos]);
                                                         Utilities.StackPop(base.runstack!, ref stackpos, out charloop_ending_pos3, out charloop_starting_pos3);
                                                         
-                                                        if (Utilities.s_hasTimeout)
-                                                        {
-                                                            base.CheckTimeout();
-                                                        }
+                                                        base.CheckTimeout();
                                                         
                                                         if (charloop_starting_pos3 >= charloop_ending_pos3)
                                                         {
@@ -1792,10 +1877,7 @@ namespace System.Text.RegularExpressions.Generated
                                                 goto LoopEnd6;
                                                 
                                                 LoopBacktrack4:
-                                                if (Utilities.s_hasTimeout)
-                                                {
-                                                    base.CheckTimeout();
-                                                }
+                                                base.CheckTimeout();
                                                 
                                                 if (loop_iteration6 == 0)
                                                 {
@@ -1810,10 +1892,7 @@ namespace System.Text.RegularExpressions.Generated
                                                 
                                                 LoopBacktrack5:
                                                 loop_iteration6 = base.runstack![--stackpos];
-                                                if (Utilities.s_hasTimeout)
-                                                {
-                                                    base.CheckTimeout();
-                                                }
+                                                base.CheckTimeout();
                                                 
                                                 goto LoopBacktrack4;
                                                 
@@ -1849,10 +1928,7 @@ namespace System.Text.RegularExpressions.Generated
                                         goto LoopEnd5;
                                         
                                         LoopBacktrack6:
-                                        if (Utilities.s_hasTimeout)
-                                        {
-                                            base.CheckTimeout();
-                                        }
+                                        base.CheckTimeout();
                                         
                                         if (loop_iteration5 == 0)
                                         {
@@ -1876,8 +1952,8 @@ namespace System.Text.RegularExpressions.Generated
                                         //{
                                             int capture_starting_pos12 = pos;
                                             
-                                            // Match the string "-x".
-                                            if (!slice.StartsWith("-x"))
+                                            if ((uint)slice.Length < 2 ||
+                                                !slice.StartsWith("-x", StringComparison.OrdinalIgnoreCase)) // Match the string "-x" (ordinal case-insensitive)
                                             {
                                                 goto LoopIterationNoMatch7;
                                             }
@@ -1903,14 +1979,14 @@ namespace System.Text.RegularExpressions.Generated
                                                         goto LoopIterationNoMatch8;
                                                     }
                                                     
-                                                    // Match a character in the set [0-9A-Za-z] greedily at least 1 and at most 8 times.
+                                                    // Match a character in the set [0-9A-Za-z\u212A] greedily at least 1 and at most 8 times.
                                                     //{
                                                         pos++;
                                                         slice = inputSpan.Slice(pos);
                                                         charloop_starting_pos4 = pos;
                                                         
                                                         int iteration4 = 0;
-                                                        while (iteration4 < 8 && (uint)iteration4 < (uint)slice.Length && char.IsAsciiLetterOrDigit(slice[iteration4]))
+                                                        while (iteration4 < 8 && (uint)iteration4 < (uint)slice.Length && ((ch = slice[iteration4]) < 128 ? ("\0\0\0Ͽ\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) != 0 : RegexRunner.CharInClass((char)ch, "\0\b\00:A[a{KÅ")))
                                                         {
                                                             iteration4++;
                                                         }
@@ -1931,10 +2007,7 @@ namespace System.Text.RegularExpressions.Generated
                                                         UncaptureUntil(base.runstack![--stackpos]);
                                                         Utilities.StackPop(base.runstack!, ref stackpos, out charloop_ending_pos4, out charloop_starting_pos4);
                                                         
-                                                        if (Utilities.s_hasTimeout)
-                                                        {
-                                                            base.CheckTimeout();
-                                                        }
+                                                        base.CheckTimeout();
                                                         
                                                         if (charloop_starting_pos4 >= charloop_ending_pos4)
                                                         {
@@ -1982,10 +2055,7 @@ namespace System.Text.RegularExpressions.Generated
                                                 goto LoopEnd8;
                                                 
                                                 LoopBacktrack7:
-                                                if (Utilities.s_hasTimeout)
-                                                {
-                                                    base.CheckTimeout();
-                                                }
+                                                base.CheckTimeout();
                                                 
                                                 if (loop_iteration8 == 0)
                                                 {
@@ -2000,10 +2070,7 @@ namespace System.Text.RegularExpressions.Generated
                                                 
                                                 LoopBacktrack8:
                                                 loop_iteration8 = base.runstack![--stackpos];
-                                                if (Utilities.s_hasTimeout)
-                                                {
-                                                    base.CheckTimeout();
-                                                }
+                                                base.CheckTimeout();
                                                 
                                                 goto LoopBacktrack7;
                                                 
@@ -2043,10 +2110,7 @@ namespace System.Text.RegularExpressions.Generated
                                         goto LoopEnd7;
                                         
                                         LoopBacktrack9:
-                                        if (Utilities.s_hasTimeout)
-                                        {
-                                            base.CheckTimeout();
-                                        }
+                                        base.CheckTimeout();
                                         
                                         if (loop_iteration7 == 0)
                                         {
@@ -2078,8 +2142,8 @@ namespace System.Text.RegularExpressions.Generated
                             
                             // Branch 3
                             //{
-                                // Match 'x'.
-                                if (slice.IsEmpty || slice[0] != 'x')
+                                // Match a character in the set [Xx].
+                                if (slice.IsEmpty || ((slice[0] | 0x20) != 'x'))
                                 {
                                     UncaptureUntil(0);
                                     return false; // The input didn't match.
@@ -2106,12 +2170,12 @@ namespace System.Text.RegularExpressions.Generated
                                             goto LoopIterationNoMatch9;
                                         }
                                         
-                                        // Match a character in the set [0-9A-Za-z] atomically at least 1 and at most 8 times.
+                                        // Match a character in the set [0-9A-Za-z\u212A] atomically at least 1 and at most 8 times.
                                         {
                                             pos++;
                                             slice = inputSpan.Slice(pos);
                                             int iteration5 = 0;
-                                            while (iteration5 < 8 && (uint)iteration5 < (uint)slice.Length && char.IsAsciiLetterOrDigit(slice[iteration5]))
+                                            while (iteration5 < 8 && (uint)iteration5 < (uint)slice.Length && ((ch = slice[iteration5]) < 128 ? ("\0\0\0Ͽ\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) != 0 : RegexRunner.CharInClass((char)ch, "\0\b\00:A[a{KÅ")))
                                             {
                                                 iteration5++;
                                             }
@@ -2158,10 +2222,7 @@ namespace System.Text.RegularExpressions.Generated
                             //}
                             
                             AlternationBacktrack:
-                            if (Utilities.s_hasTimeout)
-                            {
-                                base.CheckTimeout();
-                            }
+                            base.CheckTimeout();
                             
                             switch (alternation_branch)
                             {
@@ -2218,12 +2279,6 @@ namespace System.Text.RegularExpressions.Generated
     [GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "7.0.8.17405")]
     file static class Utilities
     {
-        /// <summary>Default timeout value set in <see cref="AppContext"/>, or <see cref="Regex.InfiniteMatchTimeout"/> if none was set.</summary>
-        internal static readonly TimeSpan s_defaultTimeout = AppContext.GetData("REGEX_DEFAULT_MATCH_TIMEOUT") is TimeSpan timeout ? timeout : Regex.InfiniteMatchTimeout;
-        
-        /// <summary>Whether <see cref="s_defaultTimeout"/> is non-infinite.</summary>
-        internal static readonly bool s_hasTimeout = s_defaultTimeout != Timeout.InfiniteTimeSpan;
-        
         /// <summary>Pushes 2 values onto the backtracking stack.</summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void StackPush(ref int[] stack, ref int pos, int arg0, int arg1)

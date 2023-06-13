@@ -285,7 +285,7 @@ public class LanguageTagTests
     public void ToStringFormatted_WithCodeWithManyParts_ShouldReturnCorrect(string expected)
     {
         // Arrange
-        var code = LanguageTag.Parse(expected);
+        var code = LanguageTag.Parse(expected.ToLowerInvariant());
 
         // Act
         var result = code.ToString();
