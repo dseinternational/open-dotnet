@@ -302,7 +302,7 @@ public readonly partial struct LanguageTag
         {
             for (var i = 0; i < value.Length; i++)
             {
-                destination[i] = value[i].ToUpper();
+                destination[i] = value[i].ToLower();
             }
         }
 
