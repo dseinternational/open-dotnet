@@ -247,7 +247,7 @@ namespace DSE.Open.Globalization
         /// ○ Match if at the end of the string or if before an ending newline.<br/>
         /// </code>
         /// </remarks>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "7.0.8.17405")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "7.0.8.27404")]
         private static partial global::System.Text.RegularExpressions.Regex GetValidationRegex() => global::System.Text.RegularExpressions.Generated.GetValidationRegex_0.Instance;
     }
 }
@@ -264,7 +264,7 @@ namespace System.Text.RegularExpressions.Generated
     using System.Threading;
 
     /// <summary>Custom <see cref="Regex"/>-derived type for the GetValidationRegex method.</summary>
-    [GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "7.0.8.17405")]
+    [GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "7.0.8.27404")]
     file sealed class GetValidationRegex_0 : Regex
     {
         /// <summary>Cached, thread-safe singleton instance.</summary>
@@ -2276,7 +2276,7 @@ namespace System.Text.RegularExpressions.Generated
     }
     
     /// <summary>Helper methods used by generated <see cref="Regex"/>-derived implementations.</summary>
-    [GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "7.0.8.17405")]
+    [GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "7.0.8.27404")]
     file static class Utilities
     {
         /// <summary>Pushes 2 values onto the backtracking stack.</summary>
