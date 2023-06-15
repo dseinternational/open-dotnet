@@ -6,5 +6,5 @@ namespace DSE.Open.Mediators;
 public interface IMessageHandler<in TMessage>
     where TMessage : IMessage
 {
-    Task HandleAsync(TMessage message, CancellationToken cancellationToken = default);
+    ValueTask HandleAsync(TMessage message, CancellationToken cancellationToken = default);
 }

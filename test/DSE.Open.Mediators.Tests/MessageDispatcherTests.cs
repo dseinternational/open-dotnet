@@ -26,6 +26,38 @@ public class MessageDispatcherTests : LoggedTestsBase
     }
 
     [Fact]
+    public async Task AllMessagesHandled()
+    {
+        var services = new ServiceCollection();
+
+        _ = services.AddLogging(ConfigureLogging);
+        _ = services.AddScoped<IMessageDispatcher, MessageDispatcher>();
+        _ = services.AddScoped<IMessageHandler<Message>, MessageHandler>();
+        _ = services.AddScoped<IMessageHandler<DerivedMessage>, DerivedMessageHandler>();
+
+        using var scope = services.BuildServiceProvider().GetRequiredService<IServiceScopeFactory>().CreateScope();
+
+        var messagesToSend = new List<IMessage>
+        {
+            new Message(),
+            new DerivedMessage()
+        };
+
+        var dispatcher = scope.ServiceProvider.GetRequiredService<IMessageDispatcher>();
+
+        foreach (var message in messagesToSend)
+        {
+            await dispatcher.PublishAsync(message);
+        }
+
+        foreach (var message in messagesToSend.OfType<Message>())
+        {
+            Assert.True(message.Handled);
+            Assert.Equal(1, message.HandledCount);
+        }
+    }
+
+    [Fact]
     public async Task SendsMessageTransientDispatcherTransientHandlers()
     {
         var services = new ServiceCollection();
@@ -116,7 +148,7 @@ public class MessageDispatcherTests : LoggedTestsBase
     }
 }
 
-public sealed class Message : IMessage
+public class Message : IMessage
 {
     public Identifier Id { get; } = Identifier.New();
 
@@ -127,12 +159,25 @@ public sealed class Message : IMessage
     public void SetHandled() => HandledCount++;
 }
 
+public sealed class DerivedMessage : Message
+{
+}
+
 public sealed class MessageHandler : IMessageHandler<Message>
 {
-    public Task HandleAsync(Message message, CancellationToken cancellationToken = default)
+    public ValueTask HandleAsync(Message message, CancellationToken cancellationToken = default)
     {
         message.SetHandled();
-        return Task.CompletedTask;
+        return ValueTask.CompletedTask;
+    }
+}
+
+public sealed class DerivedMessageHandler : IMessageHandler<DerivedMessage>
+{
+    public ValueTask HandleAsync(DerivedMessage message, CancellationToken cancellationToken = default)
+    {
+        message.SetHandled();
+        return ValueTask.CompletedTask;
     }
 }
 

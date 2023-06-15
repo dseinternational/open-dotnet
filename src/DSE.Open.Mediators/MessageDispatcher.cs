@@ -26,7 +26,7 @@ public sealed partial class MessageDispatcher : IMessageDispatcher
     }
 
     /// <inheritdoc />
-    public async Task PublishAsync(IMessage message, CancellationToken cancellationToken = default)
+    public async ValueTask PublishAsync(IMessage message, CancellationToken cancellationToken = default)
     {
         Guard.IsNotNull(message);
 
@@ -51,9 +51,9 @@ public sealed partial class MessageDispatcher : IMessageDispatcher
                 continue;
             }
 
-            await Task.Run(() =>
+            _ = await Task.Run(() =>
             {
-                Task task;
+                ValueTask task;
 
                 try
                 {
@@ -62,10 +62,10 @@ public sealed partial class MessageDispatcher : IMessageDispatcher
                         BindingFlags.InvokeMethod,
                         null, handler, new object[] { message, cancellationToken });
 
-                    if (result is not Task resultTask)
+                    if (result is not ValueTask resultTask)
                     {
-                        ThrowHelper.ThrowInvalidOperationException("Handler is expected to return Task.");
-                        return Task.CompletedTask; // unreachable
+                        ThrowHelper.ThrowInvalidOperationException("Handler is expected to return ValueTask.");
+                        return default; // unreachable
                     }
 
                     task = resultTask;
@@ -74,7 +74,7 @@ public sealed partial class MessageDispatcher : IMessageDispatcher
                 {
                     ThrowHelper.ThrowInvalidOperationException(
                         $"Error invoking {handler.GetType().Name} handler for {messageType.Name} message.", e);
-                    return Task.CompletedTask; // unreachable
+                    return default; // unreachable
                 }
 
                 return task;

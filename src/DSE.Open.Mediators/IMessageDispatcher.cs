@@ -17,5 +17,5 @@ public interface IMessageDispatcher
     /// <returns></returns>
     /// <exception cref="ArgumentNullException"><paramref name="message"/> is <see langword="null"/>.</exception>
     /// <exception cref="InvalidOperationException">No handlers are registered for the type of the message.</exception>
-    Task PublishAsync(IMessage message, CancellationToken cancellationToken = default);
+    ValueTask PublishAsync(IMessage message, CancellationToken cancellationToken = default);
 }
