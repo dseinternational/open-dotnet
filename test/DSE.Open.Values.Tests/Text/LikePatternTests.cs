@@ -1,4 +1,4 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Text.Json;
@@ -52,17 +52,16 @@ public class LikePatternTests
     public void Serializes_to_string_value()
     {
         var pattern = new LikePattern("[Pp]attern[s] %");
-        var seralized = JsonSerializer.Serialize(pattern);
-        Assert.Equal("\"[Pp]attern[s] %\"", seralized);
+        var serialized = JsonSerializer.Serialize(pattern);
+        Assert.Equal("\"[Pp]attern[s] %\"", serialized);
     }
 
     [Fact]
     public void Serialized_and_deserialized_values_are_equal()
     {
         var pattern = new LikePattern("[Pp]attern[s] %");
-        var seralized = JsonSerializer.Serialize(pattern);
-        var deserialized = JsonSerializer.Deserialize<LikePattern>(seralized);
+        var serialized = JsonSerializer.Serialize(pattern);
+        var deserialized = JsonSerializer.Deserialize<LikePattern>(serialized);
         Assert.Equal(pattern, deserialized);
     }
 }
-
