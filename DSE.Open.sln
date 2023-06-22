@@ -27,6 +27,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		LICENSE = LICENSE
 		NuGet.config = NuGet.config
 		README.md = README.md
+		version.json = version.json
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Values.TestValues", "test\DSE.Open.Values.TestValues\DSE.Open.Values.TestValues.csproj", "{AA7B453D-0AAF-40B9-AD98-72F0868425D8}"
@@ -81,13 +82,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Testing", "src\DSE
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Testing.Xunit", "src\DSE.Open.Testing.Xunit\DSE.Open.Testing.Xunit.csproj", "{F8BA840C-A58D-4631-9AB8-00E33610AFC9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.Mediators", "src\DSE.Open.Mediators\DSE.Open.Mediators.csproj", "{B4450416-C69C-439F-8927-052AC0E7521E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Mediators", "src\DSE.Open.Mediators\DSE.Open.Mediators.csproj", "{B4450416-C69C-439F-8927-052AC0E7521E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.Mediators.Tests", "test\DSE.Open.Mediators.Tests\DSE.Open.Mediators.Tests.csproj", "{2E4C81A1-0A19-4BE4-A90B-32B870D381E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Mediators.Tests", "test\DSE.Open.Mediators.Tests\DSE.Open.Mediators.Tests.csproj", "{2E4C81A1-0A19-4BE4-A90B-32B870D381E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.Notifications", "src\DSE.Open.Notifications\DSE.Open.Notifications.csproj", "{52651B80-5317-47F3-BA23-6F8153D66D62}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Notifications", "src\DSE.Open.Notifications\DSE.Open.Notifications.csproj", "{52651B80-5317-47F3-BA23-6F8153D66D62}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.Notifications.Tests", "test\DSE.Open.Notifications.Tests\DSE.Open.Notifications.Tests.csproj", "{E7835FD2-BFD0-432B-A1A7-9AECA1BA89B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Notifications.Tests", "test\DSE.Open.Notifications.Tests\DSE.Open.Notifications.Tests.csproj", "{E7835FD2-BFD0-432B-A1A7-9AECA1BA89B1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

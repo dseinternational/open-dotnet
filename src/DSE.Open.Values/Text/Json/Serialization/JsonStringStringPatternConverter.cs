@@ -5,6 +5,7 @@ using DSE.Open.Text.Json.Serialization;
 
 namespace DSE.Open.Values.Text.Json.Serialization;
 
+[Obsolete("Renamed LikePattern/JsonStringLikePatternConverter")]
 public class JsonStringStringPatternConverter : SpanParsableCharWritingJsonConverter<StringPattern>
 {
     public static readonly JsonStringLabelConverter Default = new();

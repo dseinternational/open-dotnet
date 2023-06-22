@@ -1,4 +1,4 @@
-// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Diagnostics;
@@ -32,23 +32,22 @@ namespace DSE.Open.Values.Text;
 /// </item>
 /// </list>
 /// </remarks>
-[Obsolete("Renamed LikePattern")]
-[JsonConverter(typeof(JsonStringStringPatternConverter))]
 [StructLayout(LayoutKind.Auto)]
-public readonly record struct StringPattern : IEquatable<string>, ISpanParsable<StringPattern>, ISpanFormattable
+[JsonConverter(typeof(JsonStringLikePatternConverter))]
+public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<LikePattern>, ISpanFormattable
 {
     public const int MaxLength = StackallocThresholds.MaxCharLength;
 
-    public static readonly StringPattern Empty;
+    public static readonly LikePattern Empty;
 
     /// <remarks>
     /// <c>null</c> if <cref cref="Empty"/>.
     /// </remarks>
     private readonly string? _pattern;
 
-    public StringPattern(string pattern) : this(pattern, true) { }
+    public LikePattern(string pattern) : this(pattern, true) { }
 
-    private StringPattern(string pattern, bool validate)
+    private LikePattern(string pattern, bool validate)
     {
         Debug.Assert(pattern is not null);
 
@@ -60,9 +59,9 @@ public readonly record struct StringPattern : IEquatable<string>, ISpanParsable<
         _pattern = pattern;
     }
 
-    public StringPattern(ReadOnlySpan<char> pattern) : this(pattern, true) { }
+    public LikePattern(ReadOnlySpan<char> pattern) : this(pattern, true) { }
 
-    private StringPattern(ReadOnlySpan<char> pattern, bool validate)
+    private LikePattern(ReadOnlySpan<char> pattern, bool validate)
     {
         Debug.Assert(pattern.Length > 0);
 
@@ -78,7 +77,7 @@ public readonly record struct StringPattern : IEquatable<string>, ISpanParsable<
     {
         if (!IsValid(pattern))
         {
-            ThrowHelper.ThrowArgumentOutOfRangeException(nameof(pattern), $"Invalid {nameof(StringPattern)}: {pattern}");
+            ThrowHelper.ThrowArgumentOutOfRangeException(nameof(pattern), $"Invalid {nameof(LikePattern)}: {pattern}");
         }
     }
 
@@ -89,9 +88,9 @@ public readonly record struct StringPattern : IEquatable<string>, ISpanParsable<
     public bool Equals(string? other, StringComparison comparison) => other is not null
         && ((_pattern is null && other.Length == 0) || string.Equals(_pattern, other, comparison));
 
-    public static bool TryParse(ReadOnlySpan<char> s, out StringPattern result) => TryParse(s, null, out result);
+    public static bool TryParse(ReadOnlySpan<char> s, out LikePattern result) => TryParse(s, null, out result);
 
-    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out StringPattern result)
+    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out LikePattern result)
     {
         if (s.IsEmpty)
         {
@@ -105,22 +104,22 @@ public readonly record struct StringPattern : IEquatable<string>, ISpanParsable<
             return false;
         }
 
-        result = new StringPattern(s, validate: false);
+        result = new LikePattern(s, validate: false);
         return true;
     }
 
-    public static StringPattern Parse(ReadOnlySpan<char> s) => Parse(s, null);
+    public static LikePattern Parse(ReadOnlySpan<char> s) => Parse(s, null);
 
-    public static StringPattern Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
+    public static LikePattern Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
     {
         return TryParse(s, provider, out var result)
             ? result
-            : ThrowHelper.ThrowFormatException<StringPattern>($"Could not parse {nameof(StringPattern)} with value: {s}");
+            : ThrowHelper.ThrowFormatException<LikePattern>($"Could not parse {nameof(LikePattern)} with value: {s}");
     }
 
-    public static bool TryParse(string? s, out StringPattern result) => TryParse(s, null, out result);
+    public static bool TryParse(string? s, out LikePattern result) => TryParse(s, null, out result);
 
-    public static bool TryParse(string? s, IFormatProvider? provider, out StringPattern result)
+    public static bool TryParse(string? s, IFormatProvider? provider, out LikePattern result)
     {
         if (s is null)
         {
@@ -131,9 +130,9 @@ public readonly record struct StringPattern : IEquatable<string>, ISpanParsable<
         return TryParse(s.AsSpan(), provider, out result);
     }
 
-    public static StringPattern Parse(string s) => Parse(s, null);
+    public static LikePattern Parse(string s) => Parse(s, null);
 
-    public static StringPattern Parse(string s, IFormatProvider? provider)
+    public static LikePattern Parse(string s, IFormatProvider? provider)
     {
         Guard.IsNotNull(s);
         return Parse(s.AsSpan(), provider);
@@ -339,5 +338,5 @@ public readonly record struct StringPattern : IEquatable<string>, ISpanParsable<
         return builder.ToString();
     }
 
-    public static explicit operator string(StringPattern pattern) => pattern.ToString();
+    public static explicit operator string(LikePattern pattern) => pattern.ToString();
 }

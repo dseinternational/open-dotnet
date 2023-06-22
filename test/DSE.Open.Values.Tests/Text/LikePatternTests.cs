@@ -1,4 +1,4 @@
-// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Text.Json;
@@ -6,8 +6,7 @@ using DSE.Open.Values.Text;
 
 namespace DSE.Open.Values.Tests.Text;
 
-[Obsolete("Renamed LikePattern")]
-public class StringPatternTests
+public class LikePatternTests
 {
     [Theory]
     [InlineData("", "")]
@@ -21,7 +20,7 @@ public class StringPatternTests
     [InlineData("a[abc]", "ac")]
     [InlineData("a[abc][abc]", "aca")]
     public void IsMatch_returns_true_for_matches(string pattern, string value)
-        => Assert.True(new StringPattern(pattern).IsMatch(value, StringComparison.Ordinal));
+        => Assert.True(new LikePattern(pattern).IsMatch(value, StringComparison.Ordinal));
 
     [Theory]
     [InlineData("", " ")]
@@ -35,7 +34,7 @@ public class StringPatternTests
     [InlineData("a[abc]", "ca")]
     [InlineData("a[abc][abc]", "acd")]
     public void IsNotMatch_returns_false_for_nonmatches(string pattern, string value)
-        => Assert.False(new StringPattern(pattern).IsMatch(value, StringComparison.Ordinal));
+        => Assert.False(new LikePattern(pattern).IsMatch(value, StringComparison.Ordinal));
 
     [Theory]
     [InlineData("", "")]
@@ -47,12 +46,12 @@ public class StringPatternTests
     [InlineData("abcd*", "abcd%")]
     [InlineData("a[abc]", "a[abc]")]
     public void ToSqlLikePattern_returns_expected_pattern(string pattern, string sqlLikePattern)
-        => Assert.Equal(new StringPattern(pattern).ToSqlLikePattern(), sqlLikePattern);
+        => Assert.Equal(new LikePattern(pattern).ToSqlLikePattern(), sqlLikePattern);
 
     [Fact]
     public void Serializes_to_string_value()
     {
-        var pattern = new StringPattern("[Pp]attern[s] %");
+        var pattern = new LikePattern("[Pp]attern[s] %");
         var seralized = JsonSerializer.Serialize(pattern);
         Assert.Equal("\"[Pp]attern[s] %\"", seralized);
     }
@@ -60,9 +59,9 @@ public class StringPatternTests
     [Fact]
     public void Serialized_and_deserialized_values_are_equal()
     {
-        var pattern = new StringPattern("[Pp]attern[s] %");
+        var pattern = new LikePattern("[Pp]attern[s] %");
         var seralized = JsonSerializer.Serialize(pattern);
-        var deserialized = JsonSerializer.Deserialize<StringPattern>(seralized);
+        var deserialized = JsonSerializer.Deserialize<LikePattern>(seralized);
         Assert.Equal(pattern, deserialized);
     }
 }
