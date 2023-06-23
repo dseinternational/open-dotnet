@@ -2,10 +2,10 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
-using DSE.Open.Text.Json.Serialization;
-using System.Text.Json.Serialization;
 using System.Runtime.InteropServices;
+using System.Text;
+using System.Text.Json.Serialization;
+using DSE.Open.Text.Json.Serialization;
 
 namespace DSE.Open;
 
@@ -21,6 +21,12 @@ public readonly struct Utf8String
       ISpanParsable<Utf8String>
 {
     private readonly ReadOnlyMemory<byte> _utf8;
+
+    public Utf8String(string value)
+    {
+        Guard.IsNotNull(value);
+        _utf8 = Encoding.UTF8.GetBytes(value);
+    }
 
     public Utf8String(ReadOnlyMemory<byte> utf8)
     {
@@ -56,6 +62,7 @@ public readonly struct Utf8String
         {
             return result;
         }
+
         ThrowHelper.ThrowFormatException();
         return default; // unreachable
     }
@@ -74,7 +81,7 @@ public readonly struct Utf8String
     public static Utf8String Parse(string s, IFormatProvider? provider)
     {
         Guard.IsNotNull(s);
-        return Parse(s.AsSpan(), provider);
+        return new Utf8String(s);
     }
 
     public static bool TryParse(
@@ -116,11 +123,7 @@ public readonly struct Utf8String
 
     public override string ToString() => ToString(null, null);
 
-    public string ToString(string? format, IFormatProvider? formatProvider)
-    {
-        // CONSIDER: caching in case called more than once?
-        return Encoding.UTF8.GetString(Span);
-    }
+    public string ToString(string? format, IFormatProvider? formatProvider) => Encoding.UTF8.GetString(Span);
 
     public static Utf8String FromString(string value) => Parse(value);
 
@@ -132,7 +135,7 @@ public readonly struct Utf8String
 
     public static explicit operator Utf8String(CharSequence value) => FromCharSequence(value);
 
-    public static Utf8String FromAsciiString(AsciiString value) => new(value.ToByteArray());
+    public static Utf8String FromAsciiString(AsciiString value) => new((ReadOnlyMemory<byte>)value.ToByteArray());
 
     public static explicit operator Utf8String(AsciiString value) => FromAsciiString(value);
 

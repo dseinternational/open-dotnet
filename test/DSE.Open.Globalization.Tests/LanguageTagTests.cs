@@ -19,6 +19,15 @@ public class LanguageTagTests
     }
 
     [Theory]
+    [InlineData("error/")]
+    [InlineData("en/gb")]
+    public void TryFromValue_fails_with_invalid_language_tags(string tag)
+    {
+        Assert.True(AsciiString.TryParse(tag, default, out var asciiTag));
+        Assert.False(LanguageTag.TryFromValue(asciiTag, out _));
+    }
+
+    [Theory]
     [MemberData(nameof(ValidLanguageTags))]
     public void Parse_succeeds_with_valid_language_tags(string tag)
     {
