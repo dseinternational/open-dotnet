@@ -6,6 +6,8 @@ using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using System.Runtime.InteropServices;
+using System.Text.Json.Serialization;
+using DSE.Open.Text.Json.Serialization;
 
 namespace DSE.Open;
 
@@ -16,6 +18,7 @@ namespace DSE.Open;
 /// Implements <see cref="ISpanFormattable"/> and <see cref="ISpanParsable{TSelf}"/> over
 /// a <see cref="ReadOnlyMemory{T}"/> of <see cref="AsciiChar"/>.
 /// </remarks>
+[JsonConverter(typeof(JsonStringAsciiStringConverter))]
 [StructLayout(LayoutKind.Auto)]
 public readonly partial struct AsciiString
     : IEnumerable<AsciiChar>,
@@ -53,7 +56,7 @@ public readonly partial struct AsciiString
 
     public ReadOnlyMemory<AsciiChar> AsMemory() => _value;
 
-    public ReadOnlySpan<AsciiChar> AsSpan() => _value.Span;
+    public ReadOnlySpan<AsciiChar> Span => _value.Span;
 
     public AsciiChar[] ToArray() => _value.ToArray();
 

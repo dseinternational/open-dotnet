@@ -39,7 +39,7 @@ public readonly partial struct LanguageTag
 
     private static readonly Regex s_regex = GetValidationRegex();
 
-    public static bool IsValidValue(AsciiString value) => IsValidValue(value.AsSpan());
+    public static bool IsValidValue(AsciiString value) => IsValidValue(value.Span);
 
     public int Length => _value.Length;
 
@@ -119,7 +119,7 @@ public readonly partial struct LanguageTag
         => string.IsInterned(s) ?? LanguageTagStringPool.Shared.GetOrAdd(s);
 
     public bool LanguagePartEquals(LanguageTag otherLangPart)
-        => LanguagePartEquals(otherLangPart._value.AsSpan());
+        => LanguagePartEquals(otherLangPart._value.Span);
 
     public AsciiString ToAsciiString() => _value;
 
@@ -211,7 +211,7 @@ public readonly partial struct LanguageTag
                letter subtags are titlecase (as in the tag "az-Latn-x-latn").
              */
 
-            var valueSpan = value.AsSpan();
+            var valueSpan = value.Span;
 
             var ti0 = valueSpan.IndexOf((AsciiChar)'-');
 
@@ -338,7 +338,7 @@ public readonly partial struct LanguageTag
             return otherLangPart.IsEmpty;
         }
 
-        var span = _value.AsSpan();
+        var span = _value.Span;
         var index = span.IndexOf((AsciiChar)'-');
 
         return otherLangPart.Length == index - 1
@@ -352,7 +352,7 @@ public readonly partial struct LanguageTag
             return default;
         }
 
-        var span = _value.AsSpan();
+        var span = _value.Span;
         var index = span.IndexOf((AsciiChar)'-');
         return index < 0 ? span : span[..index];
     }

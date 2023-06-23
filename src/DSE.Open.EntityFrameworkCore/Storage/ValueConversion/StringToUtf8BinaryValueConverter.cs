@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DSE.Open.EntityFrameworkCore.Storage.ValueConversion;
 
-public class StringToUtf8BinaryValueConverter : ValueConverter<string, byte[]>
+public class StringToBinaryValueConverter : ValueConverter<string, byte[]>
 {
-    public static readonly StringToUtf8BinaryValueConverter Default = new();
+    public static readonly StringToBinaryValueConverter Default = new();
 
-    public StringToUtf8BinaryValueConverter(ConverterMappingHints? mappingHints = null)
+    public StringToBinaryValueConverter(ConverterMappingHints? mappingHints = null)
         : base(ToBytes(), FromBytes(), mappingHints)
     {
     }

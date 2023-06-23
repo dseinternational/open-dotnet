@@ -37,7 +37,7 @@ public readonly partial struct AlphaNumericCode : IComparableValue<AlphaNumericC
     private static string GetString(ReadOnlySpan<char> s) => CodeStringPool.Shared.GetOrAdd(s);
 
     public static bool IsValidValue(AsciiString value)
-        => value is { IsEmpty: false, Length: <= MaxLength } && value.AsSpan().ContainsOnly(AsciiChar.IsLetterOrDigit);
+        => value is { IsEmpty: false, Length: <= MaxLength } && value.Span.ContainsOnly(AsciiChar.IsLetterOrDigit);
 
     public bool Equals(ReadOnlySpan<char> other) => _value.Equals(other);
 
@@ -45,7 +45,7 @@ public readonly partial struct AlphaNumericCode : IComparableValue<AlphaNumericC
 
     public int CompareToCaseInsensitive(AlphaNumericCode other) => _value.CompareToCaseInsensitive(other._value);
 
-    public ReadOnlySpan<AsciiChar> AsSpan() => _value.AsSpan();
+    public ReadOnlySpan<AsciiChar> AsSpan() => _value.Span;
 
     public char[] ToCharArray() => _value.ToCharArray();
 

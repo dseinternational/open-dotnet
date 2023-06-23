@@ -4,6 +4,8 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using System.Runtime.InteropServices;
+using System.Text.Json.Serialization;
+using DSE.Open.Text.Json.Serialization;
 
 namespace DSE.Open;
 
@@ -11,6 +13,7 @@ namespace DSE.Open;
 /// Implements <see cref="ISpanFormattable"/> and <see cref="ISpanParsable{TSelf}"/> over
 /// a <see cref="ReadOnlyMemory{T}"/> of <see cref="char"/>.
 /// </summary>
+[JsonConverter(typeof(JsonStringCharSequenceConverter))]
 [StructLayout(LayoutKind.Auto)]
 public readonly struct CharSequence
     : IEquatable<CharSequence>,
@@ -37,7 +40,7 @@ public readonly struct CharSequence
 
     public ReadOnlyMemory<char> AsMemory() => _value;
 
-    public ReadOnlySpan<char> AsSpan() => _value.Span;
+    public ReadOnlySpan<char> Span => _value.Span;
 
     public static CharSequence Parse(ReadOnlySpan<char> s)
         => Parse(s, default);

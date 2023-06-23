@@ -1,11 +1,11 @@
-// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using DSE.Open.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DSE.Open.EntityFrameworkCore.Tests.Storage.ValueConversion;
 
-public class StringToUtf8BinaryValueConverterTests
+public class Utf8ToBinaryValueConverterTests
 {
     private const string StringValue = "Les signes inférieur et supérieur qui entourent le nom de rubrique indiquent " +
         "qu'il s'agit d'une rubrique de fusion et que les données (dans le cas présent, le prénom de l'enregistrement) " +

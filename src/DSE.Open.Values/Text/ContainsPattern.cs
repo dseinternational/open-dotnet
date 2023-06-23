@@ -24,7 +24,7 @@ public readonly partial struct ContainsPattern : IEquatableValue<ContainsPattern
             return false;
         }
 
-        var chars = value.AsSpan();
+        var chars = value.Span;
 
         for (var i = 0; i < chars.Length; i++)
         {

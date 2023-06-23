@@ -41,7 +41,7 @@ public abstract class AsciiStringComparer : IComparer<AsciiString>, IEqualityCom
         {
             AsciiChar[]? rented = null;
 
-            var source = obj.AsSpan();
+            var source = obj.Span;
 
             try
             {
