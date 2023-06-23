@@ -1,10 +1,11 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using DSE.Open.Text.Json;
-using Microsoft.Data.SqlClient;
+using System.Data.SqlTypes;
 using System.Globalization;
 using System.Text.Json;
+using DSE.Open.Text.Json;
+using Microsoft.Data.SqlClient;
 
 namespace DSE.Open.Data.SqlClient;
 
@@ -32,6 +33,18 @@ public static class SqlDataReaderExtensions
     {
         Guard.IsNotNull(reader);
         return reader.IsDBNull(ordinal) ? null : reader.GetDateTimeOffset(ordinal);
+    }
+
+    public static decimal? GetNullableDecimal(this SqlDataReader reader, int ordinal)
+    {
+        Guard.IsNotNull(reader);
+        return reader.IsDBNull(ordinal) ? null : reader.GetDecimal(ordinal);
+    }
+
+    public static double? GetNullableDouble(this SqlDataReader reader, int ordinal)
+    {
+        Guard.IsNotNull(reader);
+        return reader.IsDBNull(ordinal) ? null : reader.GetDouble(ordinal);
     }
 
     public static float? GetNullableFloat(this SqlDataReader reader, int ordinal)
@@ -64,10 +77,36 @@ public static class SqlDataReaderExtensions
         return reader.IsDBNull(ordinal) ? null : reader.GetString(ordinal);
     }
 
-    public static double? GetNullableDouble(this SqlDataReader reader, int ordinal)
+    public static Utf8String GetUtf8String(this SqlDataReader reader, int ordinal)
     {
         Guard.IsNotNull(reader);
-        return reader.IsDBNull(ordinal) ? null : reader.GetDouble(ordinal);
+
+        var data = reader.GetSqlBytes(ordinal);
+
+        if (data.IsNull)
+        {
+            SqlExceptionHelper.ThrowSqlNullValueException();
+        }
+
+        return data.Storage != StorageState.Buffer
+            ? new Utf8String(data.Buffer.AsMemory()[..(int)data.Length])
+            : new Utf8String(data.Value);
+    }
+
+    public static Utf8String? GetNullableUtf8String(this SqlDataReader reader, int ordinal)
+    {
+        Guard.IsNotNull(reader);
+
+        var data = reader.GetSqlBytes(ordinal);
+
+        if (data.IsNull)
+        {
+            return null;
+        }
+
+        return data.Storage != StorageState.Buffer
+            ? new Utf8String(data.Buffer.AsMemory()[..(int)data.Length])
+            : new Utf8String(data.Value);
     }
 
     public static Guid? GetNullableGuid(this SqlDataReader reader, int ordinal)
