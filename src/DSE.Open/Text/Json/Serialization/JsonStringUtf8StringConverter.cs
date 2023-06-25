@@ -20,7 +20,15 @@ public sealed class JsonStringUtf8StringConverter : JsonConverter<Utf8String>
             JsonExceptionHelper.ThrowJsonException("Expected string value");
         }
 
-        return new(reader.ValueSpan.ToArray());
+        var valueLength = reader.HasValueSequence
+            ? checked((int)reader.ValueSequence.Length)
+            : reader.ValueSpan.Length;
+
+        var unencodedUtf = new byte[valueLength];
+
+        var bytesWritten = reader.CopyString(unencodedUtf);
+
+        return new(new ReadOnlyMemory<byte>(unencodedUtf,0,bytesWritten));
     }
 
     public override void Write(Utf8JsonWriter writer, Utf8String value, JsonSerializerOptions options)

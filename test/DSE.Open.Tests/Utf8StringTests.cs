@@ -73,7 +73,7 @@ public class Utf8StringTests
     {
         var value1 = new Utf8String(testUtf8String);
         var json = JsonSerializer.Serialize(value1, JsonSharedOptions.RelaxedJsonEscaping);
-        var expectedJson = "\"" + value1.ToString() + "\"";
+        var expectedJson = JsonSerializer.Serialize(value1.ToString(), JsonSharedOptions.RelaxedJsonEscaping);
         Assert.Equal(expectedJson, json);
         var value2 = JsonSerializer.Deserialize<Utf8String>(json, JsonSharedOptions.RelaxedJsonEscaping);
         Assert.False(value1 != value2);
@@ -97,12 +97,16 @@ public class Utf8StringTests
     private static readonly string[] s_testStrings =
     {
         "Test string.",
+        "Test \"string\".",
         "",
         "1",
         "£",
         "Faut-il combattre le moustique-tigre ou apprendre à vivre avec en France ? « Tous les humains n’attirent pas les " +
             "moustiques de la même manière : cela dépend des molécules, de l’acide lactique ou butyrique »",
         "In Charleston Harbor, where the initiating shots of the Civil War were fired — Fort Sumter is distantly visible — " +
-            "I’m on the site of a former shipping pier known as Gadsden’s Wharf."
+            "I’m on the site of a former shipping pier known as Gadsden’s Wharf.",
+        @"A
+multiline
+string."
     };
 }
