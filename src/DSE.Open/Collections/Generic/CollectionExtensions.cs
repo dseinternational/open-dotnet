@@ -25,13 +25,28 @@ public static class CollectionExtensions
         }
     }
 
+    public static void RemoveRange<T>(this ICollection<T> collection, IEnumerable<T>? values)
+    {
+        Guard.IsNotNull(collection);
+
+        if (values is null)
+        {
+            return;
+        }
+
+        foreach (var item in values)
+        {
+            _ = collection.Remove(item);
+        }
+    }
+
     public static IList<T> FindAll<T>(this IEnumerable<T> collection, Predicate<T> match)
     {
         Guard.IsNotNull(collection);
         Guard.IsNotNull(match);
 
         List<T> results = new();
-        
+
         foreach (var item in collection)
         {
             if (match(item))
@@ -39,7 +54,7 @@ public static class CollectionExtensions
                 results.Add(item);
             }
         }
-        
+
         return results;
     }
 
