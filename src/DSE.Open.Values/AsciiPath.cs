@@ -211,6 +211,69 @@ public readonly partial struct AsciiPath : IComparableValue<AsciiPath, AsciiStri
         return new AsciiPath(combined);
     }
 
+    public AsciiPath Append(AsciiPath path1, AsciiPath path2)
+    {
+        if (_value.IsEmpty)
+        {
+            return path1.Append(path2);
+        }
+
+        if (path1.IsEmpty)
+        {
+            return Append(path2);
+        }
+
+        if (path2.IsEmpty)
+        {
+            return Append(path1);
+        }
+
+        var combined = new AsciiChar[_value.Length + path1.Length + path2.Length + 2];
+
+        _value.Span.CopyTo(combined);
+        combined[_value.Length] = Separator;
+        path1._value.Span.CopyTo(combined.AsSpan(_value.Length + 1));
+        combined[_value.Length + path1.Length + 1] = Separator;
+        path2._value.Span.CopyTo(combined.AsSpan(_value.Length + path1.Length + 2));
+
+        return new AsciiPath(combined);
+    }
+
+    public AsciiPath Append(AsciiPath path1, AsciiPath path2, AsciiPath path3)
+    {
+        if (_value.IsEmpty)
+        {
+            return path1.Append(path2, path3);
+        }
+
+        if (path1.IsEmpty)
+        {
+            return Append(path2, path3);
+        }
+
+        if (path2.IsEmpty)
+        {
+            return Append(path1, path3);
+        }
+
+        if (path3.IsEmpty)
+        {
+            return Append(path1, path2);
+        }
+
+        var combined = new AsciiChar[_value.Length + path1.Length + path2.Length + path3.Length + 3];
+
+        _value.Span.CopyTo(combined);
+        combined[_value.Length] = Separator;
+        path1._value.Span.CopyTo(combined.AsSpan(_value.Length + 1));
+        combined[_value.Length + path1.Length + 1] = Separator;
+        path2._value.Span.CopyTo(combined.AsSpan(_value.Length + path1.Length + 2));
+        combined[_value.Length + path1.Length + path2.Length + 2] = Separator;
+        path3._value.Span.CopyTo(combined.AsSpan(_value.Length + path1.Length + path2.Length + 3));
+
+        return new AsciiPath(combined);
+    }
+
     public AsciiPath AppendSegment(string path) => Append(new AsciiPath(path));
 
     /// <summary>
