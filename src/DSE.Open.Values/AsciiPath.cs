@@ -108,7 +108,9 @@ public readonly partial struct AsciiPath : IComparableValue<AsciiPath, AsciiStri
 
     private static string GetString(ReadOnlySpan<char> s) => CodeStringPool.Shared.GetOrAdd(s);
 
-    public static bool IsValidValue(AsciiString value)
+    public static bool IsValidValue(AsciiString value) => IsValidValue(value, false);
+
+    public static bool IsValidValue(AsciiString value, bool ignoreLeadingTrailingSlashes)
     {
         if (value.IsEmpty)
         {
@@ -125,8 +127,12 @@ public readonly partial struct AsciiPath : IComparableValue<AsciiPath, AsciiStri
             return AsciiChar.IsLetterOrDigit(value[0]);
         }
 
-        if (value[0] == Separator || value[^1] == Separator
-            || value[0] == Dash || value[^1] == Dash)
+        if (!ignoreLeadingTrailingSlashes && (value[0] == Separator || value[^1] == Separator))
+        {
+            return false;
+        }
+
+        if (value[0] == Dash || value[^1] == Dash)
         {
             return false;
         }
@@ -134,7 +140,9 @@ public readonly partial struct AsciiPath : IComparableValue<AsciiPath, AsciiStri
         return !value.Span[1..^1].Any(a => !(AsciiChar.IsLetterOrDigit(a) || a == '-' || a == '/'));
     }
 
-    public static bool IsValidValue(ReadOnlySpan<char> value)
+    public static bool IsValidValue(ReadOnlySpan<char> value) => IsValidValue(value, false);
+
+    public static bool IsValidValue(ReadOnlySpan<char> value, bool ignoreLeadingTrailingSlashes)
     {
         if (value.IsEmpty)
         {
@@ -151,8 +159,12 @@ public readonly partial struct AsciiPath : IComparableValue<AsciiPath, AsciiStri
             return AsciiChar.IsLetterOrDigit(value[0]);
         }
 
-        if (value[0] == Separator || value[^1] == Separator
-            || value[0] == Dash || value[^1] == Dash)
+        if (!ignoreLeadingTrailingSlashes && (value[0] == Separator || value[^1] == Separator))
+        {
+            return false;
+        }
+
+        if (value[0] == Dash || value[^1] == Dash)
         {
             return false;
         }

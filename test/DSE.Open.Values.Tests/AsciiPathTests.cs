@@ -74,6 +74,26 @@ public class AsciiPathTests
     public void IsValidValueString_returns_true_for_valid_paths(string path) => Assert.True(AsciiPath.IsValidValue(path));
 
     [Theory]
+    [InlineData("")]
+    [InlineData("/a")]
+    [InlineData("home")]
+    [InlineData("/home/subdir/")]
+    [InlineData("/home-page/")]
+    [InlineData("root/child/grandchild/")]
+    [InlineData("a/b/c/d/e/f/g/h")]
+    public void IsValidValueString_returns_true_for_valid_paths_ignoring_slashes(string path) => Assert.True(AsciiPath.IsValidValue(path, true));
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("/a")]
+    [InlineData("home")]
+    [InlineData("/home/subdir/")]
+    [InlineData("/home-page/")]
+    [InlineData("root/child/grandchild/")]
+    [InlineData("a/b/c/d/e/f/g/h")]
+    public void IsValidValueAsciiString_returns_true_for_valid_paths_ignoring_slashes(string path) => Assert.True(AsciiPath.IsValidValue((AsciiString)path, true));
+
+    [Theory]
     [InlineData("/")]
     [InlineData("/home")]
     [InlineData("home/subdir/")]
