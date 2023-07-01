@@ -13,13 +13,13 @@ public class ValueTypeValueConverter<TValue, T, TStore> : ValueConverter<TValue,
     where TValue : struct, IValue<TValue, T>
 {
     public ValueTypeValueConverter()
-        : base((v) => ConvertToStoreType(v), v => ConvertFromStoreType(v), default)
+        : base((v) => ToStore(v), v => FromStore(v), default)
     {
     }
 
-    private static TStore ConvertToStoreType(TValue value) => (TStore)(T)value;
+    private static TStore ToStore(TValue value) => (TStore)(T)value;
 
-    private static TValue ConvertFromStoreType(TStore value) => (TValue)(T)value;
+    private static TValue FromStore(TStore value) => (TValue)(T)value;
 }
 
 public class ValueTypeValueConverter<TValue, T> : ValueConverter<TValue, T>
@@ -27,11 +27,11 @@ public class ValueTypeValueConverter<TValue, T> : ValueConverter<TValue, T>
     where TValue : struct, IValue<TValue, T>
 {
     public ValueTypeValueConverter()
-        : base((v) => ConvertToStoreType(v), v => ConvertFromStoreType(v), default)
+        : base((v) => ToStore(v), v => FromStore(v), default)
     {
     }
 
-    private static T ConvertToStoreType(TValue value) => (T)value;
+    private static T ToStore(TValue value) => (T)value;
 
-    private static TValue ConvertFromStoreType(T value) => (TValue)value;
+    private static TValue FromStore(T value) => (TValue)value;
 }

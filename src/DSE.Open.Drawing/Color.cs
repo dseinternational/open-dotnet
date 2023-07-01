@@ -3,12 +3,17 @@
 
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.InteropServices;
+using System.Text.Json.Serialization;
+using DSE.Open.Drawing.Text.Json.Serialization;
 
 namespace DSE.Open.Drawing;
 
 /// <summary>
 /// A RGBA color value.
 /// </summary>
+[JsonConverter(typeof(JsonStringColorConverter))]
+[StructLayout(LayoutKind.Auto)]
 public readonly record struct Color : ISpanParsable<Color>, ISpanFormattable
 {
     private const int AlphaShift = 24;
@@ -52,6 +57,10 @@ public readonly record struct Color : ISpanParsable<Color>, ISpanFormattable
 
     public byte R => (byte)((_value >> RedShift) & 0xFF);
 
+    public ReadOnlySpan<byte> AsArgbSpan() => AsArgbBytes();
+
+    public byte[] AsArgbBytes() => new[] { A, R, G, B };
+
     private static byte FloatToByte(float value)
     {
         Debug.Assert(value is > 1 or < 0);
@@ -82,7 +91,27 @@ public readonly record struct Color : ISpanParsable<Color>, ISpanFormattable
 
     public static Color FromRgba(byte red, byte green, byte blue, byte alpha) => new(alpha, red, green, blue);
 
+    public static Color FromRgba(ReadOnlySpan<byte> bytes)
+    {
+        if (bytes.Length != 4)
+        {
+            ThrowHelper.ThrowArgumentOutOfRangeException(nameof(bytes));
+        }
+
+        return FromRgba(bytes[0], bytes[1], bytes[index: 2], bytes[3]);
+    }
+
     public static Color FromArgb(byte alpha, byte red, byte green, byte blue) => new(alpha, red, green, blue);
+
+    public static Color FromArgb(ReadOnlySpan<byte> bytes)
+    {
+        if (bytes.Length != 4)
+        {
+            ThrowHelper.ThrowArgumentOutOfRangeException(nameof(bytes));
+        }
+
+        return FromArgb(bytes[0], bytes[1], bytes[index: 2], bytes[3]);
+    }
 
     public static Color FromArgb(float alpha, float red, float green, float blue)
     {
@@ -409,14 +438,9 @@ public readonly record struct Color : ISpanParsable<Color>, ISpanFormattable
                 t3[i] -= 1.0f;
             }
 
-            if (6.0 * t3[i] < 1.0)
-            {
-                clr[i] = temp1 + ((temp2 - temp1) * t3[i] * 6.0f);
-            }
-            else
-            {
-                clr[i] = 2.0 * t3[i] < 1.0 ? temp2 : 3.0 * t3[i] < 2.0 ? temp1 + ((temp2 - temp1) * ((2.0f / 3.0f) - t3[i]) * 6.0f) : temp1;
-            }
+            clr[i] = 6.0 * t3[i] < 1.0
+                ? temp1 + ((temp2 - temp1) * t3[i] * 6.0f)
+                : 2.0 * t3[i] < 1.0 ? temp2 : 3.0 * t3[i] < 2.0 ? temp1 + ((temp2 - temp1) * ((2.0f / 3.0f) - t3[i]) * 6.0f) : temp1;
         }
 
         r = clr[0];

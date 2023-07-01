@@ -71,6 +71,8 @@ public partial struct AsciiChar
 
     public static bool IsLetterLower(AsciiChar c) => IsLetterLower(c._asciiByte);
 
+    public static bool IsLetterLower(char c) => IsAscii(c) && IsLetterLower((byte)c);
+
     /// <summary>Indicates whether a character is categorized as an uppercase ASCII letter.</summary>
     /// <param name="asciiByte">The character to evaluate.</param>
     /// <returns>true if <paramref name="asciiByte"/> is a lowercase ASCII letter; otherwise, false.</returns>
@@ -80,6 +82,8 @@ public partial struct AsciiChar
     public static bool IsLetterUpper(byte asciiByte) => IsBetween(asciiByte, (byte)'A', (byte)'Z');
 
     public static bool IsLetterUpper(AsciiChar asciiChar) => IsLetterUpper(asciiChar._asciiByte);
+
+    public static bool IsLetterUpper(char c) => IsAscii(c) && IsLetterUpper((byte)c);
 
     /// <summary>Indicates whether a character is categorized as an ASCII letter or digit.</summary>
     /// <param name="asciiByte">The character to evaluate.</param>
@@ -92,6 +96,8 @@ public partial struct AsciiChar
         => IsLetter(asciiByte) | IsBetween(asciiByte, (byte)'0', (byte)'9');
 
     public static bool IsLetterOrDigit(AsciiChar asciiChar) => IsLetterOrDigit(asciiChar._asciiByte);
+
+    public static bool IsLetterOrDigit(char c) => IsAscii(c) && IsLetterOrDigit((byte)c);
 
     /// <summary>
     /// Indicates if the value represents a lower case ASCII character.

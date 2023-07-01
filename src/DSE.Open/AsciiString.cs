@@ -402,6 +402,8 @@ public readonly partial struct AsciiString
         return true;
     }
 
+    public int LastIndexOf(AsciiChar c) => Span.LastIndexOf(c);
+
     public bool StartsWith(string prefix) => StartsWith(prefix.AsSpan());
 
     public static bool operator ==(AsciiString left, AsciiString right) => left.Equals(right);
