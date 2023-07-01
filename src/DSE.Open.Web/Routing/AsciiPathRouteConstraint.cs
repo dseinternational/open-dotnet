@@ -22,7 +22,7 @@ public class AsciiPathRouteConstraint : IRouteConstraint, IParameterLiteralNodeM
         Guard.IsNotNull(routeKey);
         Guard.IsNotNull(values);
 
-        if (values.TryGetValue(routeKey, out var value) && value is not null)
+        if (values.TryGetValue(routeKey, out var value))
         {
             if (value is AsciiPath)
             {
