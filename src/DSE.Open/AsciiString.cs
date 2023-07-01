@@ -228,6 +228,27 @@ public readonly partial struct AsciiString
 
     public bool EqualsCaseInsensitive(AsciiString other) => SequenceEqualsCaseInsenstive(_value.Span, other._value.Span);
 
+    public bool EqualsCaseInsensitive(ReadOnlySpan<char> other)
+    {
+        if (Length != other.Length)
+        {
+            return false;
+        }
+
+        for (var i = 0; i < other.Length; i++)
+        {
+            if (!(AsciiChar.IsAscii(other[i])
+                && AsciiChar.EqualsCaseInsensitive((byte)other[i], _value.Span[i])))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public bool EqualsCaseInsensitive(string other) => EqualsCaseInsensitive(other.AsSpan());
+
     public override bool Equals(object? obj) => obj is AsciiString other && Equals(other);
 
     public override int GetHashCode()
