@@ -41,6 +41,8 @@ public readonly partial struct AsciiPath : IComparableValue<AsciiPath, AsciiStri
 
     public AsciiPath Slice(int start, int length) => new(_value.Slice(start, length));
 
+    public ReadOnlySpan<AsciiChar> Span => _value.Span;
+
     public bool IsEmpty => _value.IsEmpty;
 
     public int Length => _value.Length;
@@ -52,6 +54,12 @@ public readonly partial struct AsciiPath : IComparableValue<AsciiPath, AsciiStri
     public bool EndsWith(AsciiString value) => _value.EndsWith(value);
 
     public bool EndsWith(AsciiChar value) => !_value.IsEmpty && _value[_value.Length] == value;
+
+    public bool Equals(string value) => _value.Equals(value);
+
+    public bool Equals(ReadOnlySpan<char> value) => _value.Equals(value);
+
+    public bool Equals(ReadOnlySpan<AsciiChar> value) => _value.Equals(value);
 
     public bool EqualsCaseInsensitive(AsciiPath other) => _value.EqualsCaseInsensitive(other._value);
 
