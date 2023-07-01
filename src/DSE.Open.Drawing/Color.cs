@@ -61,6 +61,14 @@ public readonly record struct Color : ISpanParsable<Color>, ISpanFormattable
 
     public byte[] AsArgbBytes() => new[] { A, R, G, B };
 
+    public ReadOnlySpan<byte> AsRgbaSpan() => AsRrgbaBytes();
+
+    public byte[] AsRrgbaBytes() => new[] { R, G, B, A };
+
+    public ReadOnlySpan<byte> AsRgbSpan() => AsRrgbBytes();
+
+    public byte[] AsRrgbBytes() => new[] { R, G, B };
+
     private static byte FloatToByte(float value)
     {
         Debug.Assert(value is > 1 or < 0);

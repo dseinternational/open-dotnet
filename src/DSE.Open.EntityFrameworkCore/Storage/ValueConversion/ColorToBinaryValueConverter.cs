@@ -16,7 +16,7 @@ public class ColorToBinaryValueConverter : ValueConverter<Color, byte[]>
     {
     }
 
-    private static Expression<Func<Color, byte[]>> ToBytes() => value => value.AsArgbBytes();
+    private static Expression<Func<Color, byte[]>> ToBytes() => value => value.AsRrgbaBytes();
 
-    private static Expression<Func<byte[], Color>> FromBytes() => value => Color.FromArgb(value);
+    private static Expression<Func<byte[], Color>> FromBytes() => value => Color.FromRgba(value);
 }

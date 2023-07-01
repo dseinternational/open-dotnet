@@ -15,7 +15,7 @@ public class ColorToBinaryValueConverterTests
         var converter = new ColorToBinaryValueConverter();
         var converted = (byte[]?)converter.ConvertToProvider.Invoke(c);
         Assert.NotNull(converted);
-        Assert.True(converted.AsSpan().SequenceEqual(c.AsArgbSpan()));
+        Assert.True(converted.AsSpan().SequenceEqual(c.AsRgbaSpan()));
     }
 
     [Theory]
@@ -23,7 +23,7 @@ public class ColorToBinaryValueConverterTests
     public void ConvertsFrom(Color c)
     {
         var converter = new ColorToBinaryValueConverter();
-        var converted = (Color?)converter.ConvertFromProvider.Invoke(c.AsArgbBytes());
+        var converted = (Color?)converter.ConvertFromProvider.Invoke(c.AsRrgbaBytes());
         Assert.NotNull(converted);
         Assert.Equal(c, converted);
     }
