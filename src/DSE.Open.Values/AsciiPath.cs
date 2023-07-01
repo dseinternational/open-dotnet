@@ -52,6 +52,8 @@ public readonly partial struct AsciiPath : IComparableValue<AsciiPath, AsciiStri
 
     public bool EndsWith(string value) => _value.EndsWith(value);
 
+    public bool EndsWith(AsciiPath value) => _value.EndsWith(value._value);
+
     public bool EndsWith(AsciiString value) => _value.EndsWith(value);
 
     public bool EndsWith(AsciiChar value) => !_value.IsEmpty && _value[_value.Length] == value;
@@ -88,6 +90,8 @@ public readonly partial struct AsciiPath : IComparableValue<AsciiPath, AsciiStri
     public bool StartsWith(ReadOnlySpan<char> value) => _value.StartsWith(value);
 
     public bool StartsWith(string value) => _value.StartsWith(value);
+
+    public bool StartsWith(AsciiPath value) => _value.StartsWith(value._value);
 
     public bool StartsWith(AsciiString value) => _value.StartsWith(value);
 
