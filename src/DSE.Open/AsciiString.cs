@@ -31,16 +31,14 @@ public readonly partial struct AsciiString
 {
     private readonly ReadOnlyMemory<AsciiChar> _value;
 
-    public AsciiString(ReadOnlySpan<AsciiChar> value) : this(value.ToArray())
-    {
-    }
-
-    public AsciiString(AsciiChar[] value)
+    public AsciiString(ReadOnlyMemory<AsciiChar> value)
     {
         _value = value;
     }
 
     public AsciiChar this[int i] => _value.Span[i];
+
+    public AsciiString Slice(int start, int length) => new(_value.Slice(start, length));
 
     public bool IsEmpty => _value.IsEmpty;
 
@@ -144,7 +142,7 @@ public readonly partial struct AsciiString
                 buffer[i] = (AsciiChar)s[i];
             }
 
-            result = new(buffer[..s.Length]);
+            result = new(buffer[..s.Length].ToArray());
             return true;
         }
         finally

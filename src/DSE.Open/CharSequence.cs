@@ -27,12 +27,14 @@ public readonly struct CharSequence
 
     public CharSequence(string value) : this(value.AsMemory()) { }
 
-    public CharSequence(ReadOnlySpan<char> value) : this((ReadOnlyMemory<char>)value.ToArray()) { }
-
     public CharSequence(ReadOnlyMemory<char> value)
     {
         _value = value;
     }
+
+    public char this[int i] => _value.Span[i];
+
+    public CharSequence Slice(int start, int length) => new(_value.Slice(start, length));
 
     public bool IsEmpty => _value.IsEmpty;
 
@@ -75,7 +77,7 @@ public readonly struct CharSequence
         IFormatProvider? provider,
         out CharSequence result)
     {
-        result = new(s);
+        result = new(s.ToArray());
         return true;
     }
 

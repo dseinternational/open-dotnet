@@ -56,7 +56,7 @@ public readonly partial struct LanguageTag
     }
 
     public static LanguageTag FromByteSpan(ReadOnlySpan<byte> languageTag)
-        => new(new AsciiString(MemoryMarshal.Cast<byte, AsciiChar>(languageTag)));
+        => new(new AsciiString(MemoryMarshal.Cast<byte, AsciiChar>(languageTag).ToArray()));
 
     public static LanguageTag FromCharSpan(ReadOnlySpan<char> languageTag)
         => new(AsciiString.Parse(languageTag));
@@ -357,7 +357,7 @@ public readonly partial struct LanguageTag
         return index < 0 ? span : span[..index];
     }
 
-    public LanguageTag GetLanguagePart() => new(new AsciiString(GetLanguagePartSpan()));
+    public LanguageTag GetLanguagePart() => new(new AsciiString(GetLanguagePartSpan().ToArray()));
 
     [GeneratedRegex("^((?:(en-GB-oed|i-ami|i-bnn|i-default|i-enochian|i-hak|i-klingon|i-lux|i-mingo|i-navajo|i-pwn|i-tao|i-tay|i-tsu|sgn-BE-FR|sgn-BE-NL|sgn-CH-DE)|(art-lojban|cel-gaulish|no-bok|no-nyn|zh-guoyu|zh-hakka|zh-min|zh-min-nan|zh-xiang))|((?:([A-Za-z]{2,3}(-(?:[A-Za-z]{3}(-[A-Za-z]{3}){0,2}))?)|[A-Za-z]{4}|[A-Za-z]{5,8})(-(?:[A-Za-z]{4}))?(-(?:[A-Za-z]{2}|[0-9]{3}))?(-(?:[A-Za-z0-9]{5,8}|[0-9][A-Za-z0-9]{3}))*(-(?:[0-9A-WY-Za-wy-z](-[A-Za-z0-9]{2,8})+))*(-(?:x(-[A-Za-z0-9]{1,8})+))?)|(?:x(-[A-Za-z0-9]{1,8})+))$",
         RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant, 100, "")]

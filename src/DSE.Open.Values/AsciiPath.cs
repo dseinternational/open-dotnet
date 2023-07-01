@@ -33,9 +33,15 @@ public readonly partial struct AsciiPath : IComparableValue<AsciiPath, AsciiStri
     {
     }
 
-    public AsciiPath(ReadOnlySpan<AsciiChar> path) : this(new AsciiString(path), false)
+    public AsciiPath(ReadOnlyMemory<AsciiChar> path) : this(new AsciiString(path), false)
     {
     }
+
+    public AsciiChar this[int index] => _value[index];
+
+    public AsciiPath Slice(int start, int length) => new(_value.Slice(start, length));
+
+    public bool IsEmpty => _value.IsEmpty;
 
     public int Length => _value.Length;
 
@@ -49,6 +55,10 @@ public readonly partial struct AsciiPath : IComparableValue<AsciiPath, AsciiStri
 
     public bool EqualsCaseInsensitive(AsciiPath other) => _value.EqualsCaseInsensitive(other._value);
 
+    public int IndexOf(AsciiChar c) => _value.IndexOf(c);
+
+    public int LastIndexOf(AsciiChar c) => _value.LastIndexOf(c);
+
     public AsciiPath? GetParent()
     {
         if (!_value.IsEmpty)
@@ -57,7 +67,7 @@ public readonly partial struct AsciiPath : IComparableValue<AsciiPath, AsciiStri
 
             if (lastSlashIndex > 0)
             {
-                return new AsciiPath(_value.Span[..lastSlashIndex]);
+                return new AsciiPath(_value.Span[..lastSlashIndex].ToArray());
             }
         }
 
@@ -151,7 +161,7 @@ public readonly partial struct AsciiPath : IComparableValue<AsciiPath, AsciiStri
                 }
             }
 
-            value = new AsciiPath(span);
+            value = new AsciiPath(span.ToArray());
             return true;
         }
         finally
@@ -208,7 +218,7 @@ public readonly partial struct AsciiPath : IComparableValue<AsciiPath, AsciiStri
             sub = sub[1..];
         }
 
-        return new AsciiPath(new AsciiString(sub), true);
+        return new AsciiPath(new AsciiString(sub.ToArray()), true);
     }
 
     /// <summary>
