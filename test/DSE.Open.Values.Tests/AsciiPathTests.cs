@@ -9,17 +9,76 @@ public class AsciiPathTests
 {
     [Theory]
     [InlineData("")]
+    [InlineData("a")]
     [InlineData("home")]
     [InlineData("home/subdir")]
     [InlineData("home-page")]
-    public void IsValid_returns_true_for_valid_paths(string path) => Assert.True(AsciiPath.IsValidValue(path));
+    [InlineData("root/child/grandchild")]
+    [InlineData("a/b/c/d/e/f/g/h")]
+    public void CastStringWithValidStrings(string path)
+    {
+        var p = (AsciiPath)path;
+        Assert.Equal(path, p.ToString());
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("a")]
+    [InlineData("home")]
+    [InlineData("home/subdir")]
+    [InlineData("home-page")]
+    [InlineData("root/child/grandchild")]
+    [InlineData("a/b/c/d/e/f/g/h")]
+    public void CastAsciiStringWithValidStrings(string path)
+    {
+        var p = (AsciiPath)AsciiString.Parse(path);
+        Assert.Equal(path, p.ToString());
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("a")]
+    [InlineData("home")]
+    [InlineData("home/subdir")]
+    [InlineData("home-page")]
+    [InlineData("root/child/grandchild")]
+    [InlineData("a/b/c/d/e/f/g/h")]
+    public void ParseValidStrings(string path)
+    {
+        var p = AsciiPath.Parse(path);
+        Assert.Equal(path, p.ToString());
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("a")]
+    [InlineData("home")]
+    [InlineData("home/subdir")]
+    [InlineData("home-page")]
+    [InlineData("root/child/grandchild")]
+    [InlineData("a/b/c/d/e/f/g/h")]
+    public void FromValueValidAsciiStrings(string path)
+    {
+        var p = AsciiPath.FromValue(AsciiString.Parse(path));
+        Assert.Equal(path, p.ToString());
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("a")]
+    [InlineData("home")]
+    [InlineData("home/subdir")]
+    [InlineData("home-page")]
+    [InlineData("root/child/grandchild")]
+    [InlineData("a/b/c/d/e/f/g/h")]
+    public void IsValidValueString_returns_true_for_valid_paths(string path) => Assert.True(AsciiPath.IsValidValue(path));
 
     [Theory]
     [InlineData("/")]
     [InlineData("/home")]
     [InlineData("home/subdir/")]
     [InlineData("ungültig")]
-    public void IsValid_returns_false_for_invalid_paths(string path) => Assert.False(AsciiPath.IsValidValue(path));
+    public void IsValidValue_returns_false_for_invalid_paths(string path) => Assert.False(AsciiPath.IsValidValue(path));
 
     [Fact]
     public void Serializes_to_string_value()

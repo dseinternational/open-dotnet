@@ -19,8 +19,9 @@ namespace DSE.Open.Values;
 public readonly partial struct AsciiPath : IComparableValue<AsciiPath, AsciiString>
 {
     public static readonly AsciiChar Separator = (AsciiChar)'/';
+    public static readonly AsciiChar Dash = (AsciiChar)'-';
 
-    public static readonly AsciiPath Empty = new (default, true);
+    public static readonly AsciiPath Empty = new(default, true);
 
     public const int MaxLength = 256;
 
@@ -97,9 +98,9 @@ public readonly partial struct AsciiPath : IComparableValue<AsciiPath, AsciiStri
 
     public bool StartsWith(AsciiChar value) => !_value.IsEmpty && _value[0] == value;
 
-    public AsciiPath ToLower() => new (_value.ToLower(), false);
+    public AsciiPath ToLower() => new(_value.ToLower(), false);
 
-    public AsciiPath ToUpper() => new (_value.ToUpper(), false);
+    public AsciiPath ToUpper() => new(_value.ToUpper(), false);
 
     public string ToStringLower() => _value.ToStringLower();
 
@@ -109,24 +110,54 @@ public readonly partial struct AsciiPath : IComparableValue<AsciiPath, AsciiStri
 
     public static bool IsValidValue(AsciiString value)
     {
-        return value.IsEmpty
-            || (value.Length <= MaxLength
-                && value[0] != '/' && value[^1] != '/'
-                && !value.Span[1..^1].Any(a =>
-                    !(AsciiChar.IsLetterOrDigit(a)
-                        || a == '-'
-                        || a == '/')));
+        if (value.IsEmpty)
+        {
+            return true;
+        }
+
+        if (value.Length > MaxLength)
+        {
+            return false;
+        }
+
+        if (value.Length == 1)
+        {
+            return AsciiChar.IsLetterOrDigit(value[0]);
+        }
+
+        if (value[0] == Separator || value[^1] == Separator
+            || value[0] == Dash || value[^1] == Dash)
+        {
+            return false;
+        }
+
+        return !value.Span[1..^1].Any(a => !(AsciiChar.IsLetterOrDigit(a) || a == '-' || a == '/'));
     }
 
     public static bool IsValidValue(ReadOnlySpan<char> value)
     {
-        return value.IsEmpty
-            || (value.Length <= MaxLength
-                && value[0] != '/' && value[^1] != '/'
-                && !value[1..^1].Any(a =>
-                    !(AsciiChar.IsLetterOrDigit(a)
-                        || a == '-'
-                        || a == '/')));
+        if (value.IsEmpty)
+        {
+            return true;
+        }
+
+        if (value.Length > MaxLength)
+        {
+            return false;
+        }
+
+        if (value.Length == 1)
+        {
+            return AsciiChar.IsLetterOrDigit(value[0]);
+        }
+
+        if (value[0] == Separator || value[^1] == Separator
+            || value[0] == Dash || value[^1] == Dash)
+        {
+            return false;
+        }
+
+        return !value[1..^1].Any(a => !(AsciiChar.IsLetterOrDigit(a) || a == '-' || a == '/'));
     }
 
     public static bool IsValidValue(string value) => IsValidValue(value.AsSpan());
