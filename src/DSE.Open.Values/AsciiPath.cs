@@ -2,10 +2,10 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Buffers;
-using DSE.Open.Values.Text.Json.Serialization;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using CommunityToolkit.HighPerformance.Buffers;
+using DSE.Open.Values.Text.Json.Serialization;
 
 namespace DSE.Open.Values;
 
@@ -180,43 +180,34 @@ public readonly partial struct AsciiPath : IComparableValue<AsciiPath, AsciiStri
             s = s[..^1];
         }
 
-        if (s.Length > MaxLength)
+        if (s.Length <= MaxLength)
         {
-            value = default;
-            return false;
-        }
+            char[]? rentedBuffer = null;
 
-        AsciiChar[]? rentedBuffer = null;
-
-        try
-        {
-            Span<AsciiChar> span = s.Length <= 256
-                ? stackalloc AsciiChar[s.Length]
-                : rentedBuffer = ArrayPool<AsciiChar>.Shared.Rent(s.Length);
-
-            for (var i = 0; i < s.Length; i++)
+            try
             {
-                if (AsciiChar.IsAscii(s[i]))
+                Span<char> span = s.Length <= StackallocThresholds.MaxCharLength
+                    ? stackalloc char[s.Length]
+                    : rentedBuffer = ArrayPool<char>.Shared.Rent(s.Length);
+
+                var written = s.ToLowerInvariant(span);
+
+                if (written > -1)
                 {
-                    span[i] = AsciiChar.IsLetterUpper((byte)s[i]) ? ((AsciiChar)s[i]).ToLower() : (AsciiChar)s[i];
-                }
-                else
-                {
-                    value = default;
-                    return false;
+                    return TryParse(span, out value);
                 }
             }
-
-            value = new AsciiPath(span.ToArray());
-            return true;
-        }
-        finally
-        {
-            if (rentedBuffer is not null)
+            finally
             {
-                ArrayPool<AsciiChar>.Shared.Return(rentedBuffer);
+                if (rentedBuffer is not null)
+                {
+                    ArrayPool<char>.Shared.Return(rentedBuffer);
+                }
             }
         }
+
+        value = default;
+        return false;
     }
 
     public static bool TryParseSanitised(string? s, out AsciiPath value) => TryParseSanitised(s.AsSpan(), out value);

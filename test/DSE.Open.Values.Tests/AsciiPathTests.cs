@@ -125,16 +125,23 @@ public class AsciiPathTests
     [Theory]
     [InlineData("", "")]
     [InlineData("home", "home")]
-    [InlineData("home/sub", "home/sub")]
-    [InlineData("/home/", "home")]
-    [InlineData("/home/sub", "home/sub")]
-    [InlineData("/home/sub/", "home/sub")]
+    [InlineData("home/SUB", "home/sub")]
+    [InlineData("/HOME/", "home")]
+    [InlineData("/HOME/sub", "home/sub")]
+    [InlineData("/home/SUB/", "home/sub")]
     [InlineData("home/sub/", "home/sub")]
-    public void TryParseSanitised_WithHandleablePath_ShouldReturnTrue(string path, string expected = "")
+    public void TryParseSanitised_WithHandleablePath_ShouldReturnTrue(string path, string expected)
     {
         Assert.True(AsciiPath.TryParseSanitised(path, out var result));
         Assert.Equal(expected, result.ToString());
     }
+
+    [Theory]
+    [InlineData("-home")]
+    [InlineData("HOME-")]
+    [InlineData("home/SUB.html")]
+    public void TryParseSanitisedWithInvalidPathShouldReturnFalse(string path)
+        => Assert.False(AsciiPath.TryParseSanitised(path, out _));
 
     [Theory]
     [InlineData("", "", "")]
