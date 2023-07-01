@@ -5,6 +5,7 @@ using System.Buffers;
 using DSE.Open.Values.Text.Json.Serialization;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
+using CommunityToolkit.HighPerformance.Buffers;
 
 namespace DSE.Open.Values;
 
@@ -99,6 +100,8 @@ public readonly partial struct AsciiPath : IComparableValue<AsciiPath, AsciiStri
     public string ToStringLower() => _value.ToStringLower();
 
     public string ToStringUpper() => _value.ToStringUpper();
+
+    private static string GetString(ReadOnlySpan<char> s) => CodeStringPool.Shared.GetOrAdd(s);
 
     public static bool IsValidValue(AsciiString value)
     {
@@ -243,4 +246,8 @@ public readonly partial struct AsciiPath : IComparableValue<AsciiPath, AsciiStri
 
 #pragma warning restore CA2225 // Operator overloads have named alternates
 
+    private static class AsciiPathStringPool
+    {
+        public static readonly StringPool Shared = new(512);
+    }
 }

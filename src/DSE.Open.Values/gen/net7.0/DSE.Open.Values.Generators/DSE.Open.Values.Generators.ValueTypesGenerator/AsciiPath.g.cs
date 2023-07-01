@@ -142,7 +142,7 @@ public readonly partial struct AsciiPath
             _ = TryFormat(buffer, out var charsWritten, format, formatProvider);
     
             ReadOnlySpan<char> returnValue = buffer[..charsWritten];
-            return new string(returnValue);
+            return GetString(returnValue);
         }
         finally
         {
