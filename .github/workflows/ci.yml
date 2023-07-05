@@ -24,7 +24,7 @@ jobs:
       - name: Set .NET SDK version
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: "7.0.304"
+          dotnet-version: "7.0.305"
 
       - name: Set Versions
         id: nbgv
@@ -40,7 +40,7 @@ jobs:
       - name: Diagnostics
         run: "Get-ChildItem Env:"
         shell: pwsh
-    
+
       - name: Build
         run: dotnet build ./DSE.Open.sln --configuration ${{ matrix.configuration }}
 
@@ -56,7 +56,7 @@ jobs:
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         with:
-          token: ${{ secrets.CODECOV_TOKEN }} 
+          token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Pack source generators
         if: matrix.configuration == 'Release'
@@ -64,7 +64,7 @@ jobs:
           Get-ChildItem ./gen/**/*.csproj -Recurse | `
             ForEach-Object { dotnet pack $_.FullName --configuration Release --no-build }
         shell: pwsh
-      
+
       - name: Pack libraries
         if: matrix.configuration == 'Release'
         run: |
