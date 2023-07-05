@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DSE.Open.Globalization\DSE.Open.Globalization.csproj" />
     <ProjectReference Include="..\DSE.Open.Values\DSE.Open.Values.csproj" />
   </ItemGroup>
 
