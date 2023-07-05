@@ -146,6 +146,8 @@ public readonly record struct Color : ISpanParsable<Color>, ISpanFormattable
         return new Color(FloatToByte(alpha), FloatToByte(red), FloatToByte(green), FloatToByte(blue));
     }
 
+    public static Color FromSystemDrawingColor(System.Drawing.Color color) => new(color.A, color.R, color.G, color.B);
+
     public static Color Parse(string s) => Parse(s, null);
 
     public static Color Parse(string s, IFormatProvider? provider)
@@ -255,6 +257,8 @@ public readonly record struct Color : ISpanParsable<Color>, ISpanFormattable
 
     public string ToRgbaHexString() => ToString(RgbaHexFormat, null);
 
+    public System.Drawing.Color ToSystemDrawingColor() => System.Drawing.Color.FromArgb(A, R, G, B);
+
     public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider? provider)
     {
         if (format.IsEmpty)
@@ -359,7 +363,8 @@ public readonly record struct Color : ISpanParsable<Color>, ISpanFormattable
         }
     }
 
-    private static uint Encode(byte alpha, byte red, byte green, byte blue) => unchecked((uint)((red << RedShift) | (green << GreenShift) | (blue << BlueShift) | (alpha << AlphaShift))) & 0xffffffff;
+    private static uint Encode(byte alpha, byte red, byte green, byte blue)
+        => unchecked((uint)((red << RedShift) | (green << GreenShift) | (blue << BlueShift) | (alpha << AlphaShift))) & 0xffffffff;
 
     // Source: https://github.com/dotnet/maui/blob/main/src/Graphics/src/Graphics/Color.cs
 
@@ -455,4 +460,12 @@ public readonly record struct Color : ISpanParsable<Color>, ISpanFormattable
         g = clr[1];
         b = clr[2];
     }
+
+#pragma warning disable CA2225 // Operator overloads have named alternates
+
+    public static implicit operator System.Drawing.Color(Color color) => color.ToSystemDrawingColor();
+
+    public static implicit operator Color(System.Drawing.Color color) => FromSystemDrawingColor(color);
+
+#pragma warning restore CA2225 // Operator overloads have named alternates
 }
