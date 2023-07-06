@@ -46,7 +46,7 @@ public partial struct AsciiString
         return true;
     }
 
-    public static bool SequenceEqualsCaseInsenstive(ReadOnlySpan<byte> a, ReadOnlySpan<byte> b)
+    public static bool SequenceEqualsCaseInsensitive(ReadOnlySpan<byte> a, ReadOnlySpan<byte> b)
     {
         if (a.Length != b.Length)
         {
@@ -64,7 +64,7 @@ public partial struct AsciiString
         return true;
     }
 
-    public static bool SequenceEqualsCaseInsenstive(ReadOnlySpan<AsciiChar> a, ReadOnlySpan<AsciiChar> b)
+    public static bool SequenceEqualsCaseInsensitive(ReadOnlySpan<AsciiChar> a, ReadOnlySpan<AsciiChar> b)
     {
         if (a.Length != b.Length)
         {

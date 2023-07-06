@@ -35,11 +35,11 @@ public class AsciiCharTests
     }
 
     [Fact]
-    public void SequenceEqualsCaseInsenstive()
+    public void SequenceEqualsCaseInsensitive()
     {
         var s1 = "abcdefgh"u8.ToArray();
         var s2 = "ABCDEFGH"u8.ToArray();
 
-        Assert.True(AsciiString.SequenceEqualsCaseInsenstive(s1, s2));
+        Assert.True(AsciiString.SequenceEqualsCaseInsensitive(s1, s2));
     }
 }

@@ -235,7 +235,7 @@ public readonly partial struct LanguageTag
             }
 
             // from now on all subtags to lower except for 2 and 4 letter subtags,
-            // unless occuring after singletons            
+            // unless occuring after singletons
 
             var remaining = valueSpan[(ti0 + 1)..];
             var previousSingleton = false;
@@ -342,7 +342,7 @@ public readonly partial struct LanguageTag
         var index = span.IndexOf((AsciiChar)'-');
 
         return otherLangPart.Length == index - 1
-            && AsciiString.SequenceEqualsCaseInsenstive(span[..index], otherLangPart);
+            && AsciiString.SequenceEqualsCaseInsensitive(span[..index], otherLangPart);
     }
 
     public ReadOnlySpan<AsciiChar> GetLanguagePartSpan()
