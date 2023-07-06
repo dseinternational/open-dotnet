@@ -200,4 +200,32 @@ public class UriAsciiPathTests
         var appended = pathValue.Append(append1Value, append2Value, append3Value);
         Assert.Equal(expected, appended.ToString());
     }
+    
+    [Fact]
+    public void ToUriPath_WithEmpty_ShouldReturnEmptyUriPath()
+    {
+        // Arrange
+        var path = UriAsciiPath.Empty;
+
+        // Act
+        var uriPath = path.ToUriPath();
+
+        // Assert
+        Assert.Equal(UriPath.Empty, uriPath);
+    }
+    
+    [Theory]
+    [InlineData("home")]
+    [InlineData("home/sub")]
+    public void ToUriPath_WithValue_ShouldReturnUriPathWithValue(string value)
+    {
+        // Arrange
+        var path = UriAsciiPath.Parse(value);
+        
+        // Act
+        var uriPath = path.ToUriPath();
+
+        // Assert
+        Assert.Equal(UriPath.Parse(value), uriPath);
+    }
 }
