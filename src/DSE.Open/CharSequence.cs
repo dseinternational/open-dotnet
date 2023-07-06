@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using System.Runtime.InteropServices;
@@ -102,15 +103,45 @@ public readonly struct CharSequence
 
     public int CompareTo(CharSequence other) => _value.Span.SequenceCompareTo(other._value.Span);
 
-    public bool Equals(ReadOnlySpan<char> other) => _value.Span.SequenceEqual(other);
+    public bool EndsWith(ReadOnlySpan<char> value) => EndsWith(value, StringComparison.Ordinal);
 
-    public bool Equals(ReadOnlyMemory<char> other) => Equals(other.Span);
+    public bool EndsWith(ReadOnlySpan<char> value, StringComparison comparisonType) => _value.Span.EndsWith(value, comparisonType);
 
-    public bool Equals(CharSequence other) => Equals(other._value);
+    public bool EndsWith(CharSequence value) => EndsWith(value.Span, StringComparison.Ordinal);
 
-    public override bool Equals(object? obj) => obj is CharSequence other && Equals(other);
+    public bool EndsWith(CharSequence value, StringComparison comparisonType) => _value.Span.EndsWith(value.Span, comparisonType);
+
+    public bool StartsWith(ReadOnlySpan<char> value) => StartsWith(value, StringComparison.Ordinal);
+
+    public bool StartsWith(ReadOnlySpan<char> value, StringComparison comparisonType) => _value.Span.StartsWith(value, comparisonType);
+
+    public bool StartsWith(CharSequence value) => StartsWith(value.Span, StringComparison.Ordinal);
+
+    public bool StartsWith(CharSequence value, StringComparison comparisonType) => _value.Span.StartsWith(value.Span, comparisonType);
+
+    public bool Equals(string other) => Equals(other, StringComparison.Ordinal);
+
+    public bool Equals(string other, StringComparison comparisonType) => Equals(other.AsSpan(), comparisonType);
+
+    public bool Equals(ReadOnlySpan<char> other) => Equals(other, StringComparison.Ordinal);
+
+    public bool Equals(ReadOnlySpan<char> other, StringComparison comparisonType) => _value.Span.Equals(other, comparisonType);
+
+    public bool Equals(ReadOnlyMemory<char> other) => Equals(other, StringComparison.Ordinal);
+
+    public bool Equals(ReadOnlyMemory<char> other, StringComparison comparisonType) => Equals(other.Span, comparisonType);
+
+    public bool Equals(CharSequence other) => Equals(other, StringComparison.Ordinal);
+
+    public bool Equals(CharSequence other, StringComparison comparisonType) => Equals(other._value, comparisonType);
+
+    public override bool Equals(object? obj) => obj is CharSequence other && Equals(other, StringComparison.Ordinal);
 
     public override int GetHashCode() => string.GetHashCode(_value.Span, StringComparison.Ordinal);
+
+    public int IndexOf(char c) => _value.Span.IndexOf(c);
+
+    public int LastIndexOf(char c) => _value.Span.LastIndexOf(c);
 
     public override string ToString() => ToString(default, default);
 
@@ -133,7 +164,7 @@ public readonly struct CharSequence
         return false;
     }
 
-    public static bool operator ==(CharSequence left, CharSequence right) => left.Equals(right);
+    public static bool operator ==(CharSequence left, CharSequence right) => left.Equals(right, StringComparison.Ordinal);
 
     public static bool operator !=(CharSequence left, CharSequence right) => !(left == right);
 

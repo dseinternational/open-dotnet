@@ -6,7 +6,7 @@ using DSE.Open.Values;
 
 namespace DSE.Open.Web.Tests;
 
-public class AsciiPathExtensionsTests
+public class UriAsciiPathExtensionsTests
 {
     [Theory]
     [InlineData("", "")]
@@ -14,7 +14,7 @@ public class AsciiPathExtensionsTests
     [InlineData("a/b/c/d", "/a/b/c/d")]
     public void CanConvertToPathString(string pathStr, string expected)
     {
-        var asciiPath = new AsciiPath(pathStr);
+        var asciiPath = new UriAsciiPath(pathStr);
         var pathString = asciiPath.ToPathString();
         Assert.Equal(expected, pathString.Value);
     }
@@ -25,7 +25,7 @@ public class AsciiPathExtensionsTests
     [InlineData("a/b/c/d", "/en-us/a/b/c/d")]
     public void CanConvertToLanguagePrefixedPathString(string pathStr, string expected)
     {
-        var asciiPath = new AsciiPath(pathStr);
+        var asciiPath = new UriAsciiPath(pathStr);
         var pathString = asciiPath.ToLanguagePrefixedPathString(LanguageTag.EnglishUs);
         Assert.Equal(expected, pathString.Value);
     }

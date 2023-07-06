@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DSE.Open.EntityFrameworkCore.Storage.ValueConversion;
 
+[Obsolete("Use UriAsciiPathToLowerStringConverter")]
 public class AsciiPathToLowerStringConverter : ValueConverter<AsciiPath, string>
 {
     public static readonly AsciiPathToLowerStringConverter Default = new();
@@ -16,7 +17,9 @@ public class AsciiPathToLowerStringConverter : ValueConverter<AsciiPath, string>
     {
     }
 
+    [Obsolete]
     private static Expression<Func<AsciiPath, string>> ToStore() => value => value.ToStringLower();
 
+    [Obsolete]
     private static Expression<Func<string, AsciiPath>> FromStore() => value => new(value);
 }

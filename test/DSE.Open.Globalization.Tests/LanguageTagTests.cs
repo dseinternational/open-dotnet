@@ -227,7 +227,7 @@ public class LanguageTagTests
 
         // Assert
         Assert.False(success);
-        Assert.Equal((LanguageTag)default, result);
+        Assert.Equal(default, result);
     }
 
     [Fact]
@@ -238,7 +238,7 @@ public class LanguageTagTests
 
         // Assert
         Assert.False(success);
-        Assert.Equal((LanguageTag)default, result);
+        Assert.Equal(default, result);
     }
 
     [Fact]
@@ -249,7 +249,7 @@ public class LanguageTagTests
 
         // Assert
         Assert.False(success);
-        Assert.Equal((LanguageTag)default, result);
+        Assert.Equal(default, result);
     }
 
     [Fact]

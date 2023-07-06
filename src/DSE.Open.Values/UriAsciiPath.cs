@@ -8,36 +8,44 @@ using DSE.Open.Values.Text.Json.Serialization;
 
 namespace DSE.Open.Values;
 
-[Obsolete("Use UriAsciiPath instead.")]
+/// <summary>
+/// A path containing only <see href="https://datatracker.ietf.org/doc/html/rfc3986#section-2.3">
+/// Unreserved Characters</see> - ASCII letters, digits, '-', '.', '_' and '~'.
+/// Forward slashes ('/') are interpreted to define segments and may only occur at locations other
+/// than the first and last character.
+/// </summary>
 [ComparableValue]
-[JsonConverter(typeof(JsonSpanSerializableValueConverter<AsciiPath, AsciiString>))]
+[JsonConverter(typeof(JsonSpanSerializableValueConverter<UriAsciiPath, AsciiString>))]
 [StructLayout(LayoutKind.Auto)]
-public readonly partial struct AsciiPath : IComparableValue<AsciiPath, AsciiString>
+public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, AsciiString>
 {
     public static readonly AsciiChar Separator = (AsciiChar)'/';
     public static readonly AsciiChar Dash = (AsciiChar)'-';
+    public static readonly AsciiChar Stop = (AsciiChar)'.';
+    public static readonly AsciiChar Underscore = (AsciiChar)'_';
+    public static readonly AsciiChar Tilde = (AsciiChar)'~';
 
-    public static readonly AsciiPath Empty = new(default, true);
+    public static readonly UriAsciiPath Empty = new(default, true);
 
     public const int MaxLength = 256;
 
     public static int MaxSerializedCharLength => MaxLength;
 
-    public AsciiPath(AsciiString path) : this(path, false)
+    public UriAsciiPath(AsciiString path) : this(path, false)
     {
     }
 
-    public AsciiPath(string path) : this(AsciiString.Parse(path), false)
+    public UriAsciiPath(string path) : this(AsciiString.Parse(path), false)
     {
     }
 
-    public AsciiPath(ReadOnlyMemory<AsciiChar> path) : this(new AsciiString(path), false)
+    public UriAsciiPath(ReadOnlyMemory<AsciiChar> path) : this(new AsciiString(path), false)
     {
     }
 
     public AsciiChar this[int index] => _value[index];
 
-    public AsciiPath Slice(int start, int length) => new(_value.Slice(start, length));
+    public UriAsciiPath Slice(int start, int length) => new(_value.Slice(start, length));
 
     public ReadOnlySpan<AsciiChar> Span => _value.Span;
 
@@ -49,7 +57,7 @@ public readonly partial struct AsciiPath : IComparableValue<AsciiPath, AsciiStri
 
     public bool EndsWith(string value) => _value.EndsWith(value);
 
-    public bool EndsWith(AsciiPath value) => _value.EndsWith(value._value);
+    public bool EndsWith(UriAsciiPath value) => _value.EndsWith(value._value);
 
     public bool EndsWith(AsciiString value) => _value.EndsWith(value);
 
@@ -61,13 +69,13 @@ public readonly partial struct AsciiPath : IComparableValue<AsciiPath, AsciiStri
 
     public bool Equals(ReadOnlySpan<AsciiChar> value) => _value.Equals(value);
 
-    public bool EqualsCaseInsensitive(AsciiPath other) => _value.EqualsCaseInsensitive(other._value);
+    public bool EqualsCaseInsensitive(UriAsciiPath other) => _value.EqualsCaseInsensitive(other._value);
 
     public int IndexOf(AsciiChar c) => _value.IndexOf(c);
 
     public int LastIndexOf(AsciiChar c) => _value.LastIndexOf(c);
 
-    public AsciiPath? GetParent()
+    public UriAsciiPath? GetParent()
     {
         if (!_value.IsEmpty)
         {
@@ -75,7 +83,7 @@ public readonly partial struct AsciiPath : IComparableValue<AsciiPath, AsciiStri
 
             if (lastSlashIndex > 0)
             {
-                return new AsciiPath(_value.Span[..lastSlashIndex].ToArray());
+                return new UriAsciiPath(_value.Span[..lastSlashIndex].ToArray());
             }
         }
 
@@ -88,21 +96,33 @@ public readonly partial struct AsciiPath : IComparableValue<AsciiPath, AsciiStri
 
     public bool StartsWith(string value) => _value.StartsWith(value);
 
-    public bool StartsWith(AsciiPath value) => _value.StartsWith(value._value);
+    public bool StartsWith(UriAsciiPath value) => _value.StartsWith(value._value);
 
     public bool StartsWith(AsciiString value) => _value.StartsWith(value);
 
     public bool StartsWith(AsciiChar value) => !_value.IsEmpty && _value[0] == value;
 
-    public AsciiPath ToLower() => new(_value.ToLower(), false);
+    public UriAsciiPath ToLower() => new(_value.ToLower(), false);
 
-    public AsciiPath ToUpper() => new(_value.ToUpper(), false);
+    public UriAsciiPath ToUpper() => new(_value.ToUpper(), false);
 
     public string ToStringLower() => _value.ToStringLower();
 
     public string ToStringUpper() => _value.ToStringUpper();
 
     private static string GetString(ReadOnlySpan<char> s) => UriPathStringPool.Shared.GetOrAdd(s);
+
+    private static bool IsValidOuterChar(AsciiChar c)
+        => AsciiChar.IsLetterOrDigit(c) || c == Dash || c == Stop || c == Underscore || c == Tilde;
+
+    private static bool IsValidOuterChar(char c)
+        => AsciiChar.IsLetterOrDigit(c) || c == Dash || c == Stop || c == Underscore || c == Tilde;
+
+    private static bool IsValidInnerChar(AsciiChar c)
+        => IsValidOuterChar(c) || c == Separator;
+
+    private static bool IsValidInnerChar(char c)
+        => IsValidOuterChar(c) || c == Separator;
 
     public static bool IsValidValue(AsciiString value) => IsValidValue(value, false);
 
@@ -120,20 +140,22 @@ public readonly partial struct AsciiPath : IComparableValue<AsciiPath, AsciiStri
 
         if (value.Length == 1)
         {
-            return AsciiChar.IsLetterOrDigit(value[0]);
+            return IsValidOuterChar(value[0]);
         }
 
-        if (!ignoreLeadingTrailingSlashes && (value[0] == Separator || value[^1] == Separator))
+        if (!(IsValidOuterChar(value[0]) || (ignoreLeadingTrailingSlashes && value[0] == Separator)))
         {
             return false;
         }
 
-        if (value[0] == Dash || value[^1] == Dash)
+        if (!(IsValidOuterChar(value[^1]) || (ignoreLeadingTrailingSlashes && value[^1] == Separator)))
         {
             return false;
         }
 
-        return !value.Span[1..^1].Any(a => !(AsciiChar.IsLetterOrDigit(a) || a == '-' || a == '/'));
+        var inner = value[1..^1];
+
+        return inner.All(IsValidInnerChar);
     }
 
     public static bool IsValidValue(ReadOnlySpan<char> value) => IsValidValue(value, false);
@@ -152,25 +174,27 @@ public readonly partial struct AsciiPath : IComparableValue<AsciiPath, AsciiStri
 
         if (value.Length == 1)
         {
-            return AsciiChar.IsLetterOrDigit(value[0]);
+            return IsValidOuterChar(value[0]);
         }
 
-        if (!ignoreLeadingTrailingSlashes && (value[0] == Separator || value[^1] == Separator))
+        if (!(IsValidOuterChar(value[0]) || (ignoreLeadingTrailingSlashes && value[0] == Separator)))
         {
             return false;
         }
 
-        if (value[0] == Dash || value[^1] == Dash)
+        if (!(IsValidOuterChar(value[^1]) || (ignoreLeadingTrailingSlashes && value[^1] == Separator)))
         {
             return false;
         }
 
-        return !value[1..^1].Any(a => !(AsciiChar.IsLetterOrDigit(a) || a == '-' || a == '/'));
+        var inner = value[1..^1];
+
+        return inner.All(IsValidInnerChar);
     }
 
     public static bool IsValidValue(string value) => IsValidValue(value.AsSpan());
 
-    public static bool TryParseSanitised(ReadOnlySpan<char> s, out AsciiPath value)
+    public static bool TryParseSanitised(ReadOnlySpan<char> s, out UriAsciiPath value)
     {
         if (s.IsEmpty)
         {
@@ -211,14 +235,14 @@ public readonly partial struct AsciiPath : IComparableValue<AsciiPath, AsciiStri
         return false;
     }
 
-    public static bool TryParseSanitised(string? s, out AsciiPath value) => TryParseSanitised(s.AsSpan(), out value);
+    public static bool TryParseSanitised(string? s, out UriAsciiPath value) => TryParseSanitised(s.AsSpan(), out value);
 
     /// <summary>
-    /// Creates a new <see cref="AsciiPath"/> by appending the <paramref name="path"/> to the current path.
+    /// Creates a new <see cref="UriAsciiPath"/> by appending the <paramref name="path"/> to the current path.
     /// A <see cref="Separator"/> is placed between the two paths.
     /// </summary>
     /// <param name="path"></param>
-    public AsciiPath Append(AsciiPath path)
+    public UriAsciiPath Append(UriAsciiPath path)
     {
         if (_value.IsEmpty)
         {
@@ -231,10 +255,10 @@ public readonly partial struct AsciiPath : IComparableValue<AsciiPath, AsciiStri
         combined[_value.Length] = Separator;
         path._value.Span.CopyTo(combined.AsSpan(_value.Length + 1));
 
-        return new AsciiPath(combined);
+        return new UriAsciiPath(combined);
     }
 
-    public AsciiPath Append(AsciiPath path1, AsciiPath path2)
+    public UriAsciiPath Append(UriAsciiPath path1, UriAsciiPath path2)
     {
         if (_value.IsEmpty)
         {
@@ -259,10 +283,10 @@ public readonly partial struct AsciiPath : IComparableValue<AsciiPath, AsciiStri
         combined[_value.Length + path1.Length + 1] = Separator;
         path2._value.Span.CopyTo(combined.AsSpan(_value.Length + path1.Length + 2));
 
-        return new AsciiPath(combined);
+        return new UriAsciiPath(combined);
     }
 
-    public AsciiPath Append(AsciiPath path1, AsciiPath path2, AsciiPath path3)
+    public UriAsciiPath Append(UriAsciiPath path1, UriAsciiPath path2, UriAsciiPath path3)
     {
         if (_value.IsEmpty)
         {
@@ -294,10 +318,10 @@ public readonly partial struct AsciiPath : IComparableValue<AsciiPath, AsciiStri
         combined[_value.Length + path1.Length + path2.Length + 2] = Separator;
         path3._value.Span.CopyTo(combined.AsSpan(_value.Length + path1.Length + path2.Length + 3));
 
-        return new AsciiPath(combined);
+        return new UriAsciiPath(combined);
     }
 
-    public AsciiPath AppendSegment(string path) => Append(new AsciiPath(path));
+    public UriAsciiPath AppendSegment(string path) => Append(new UriAsciiPath(path));
 
     /// <summary>
     /// Returns a value representing the substring from the specified index to the end of the path.
@@ -305,7 +329,7 @@ public readonly partial struct AsciiPath : IComparableValue<AsciiPath, AsciiStri
     /// </summary>
     /// <param name="startIndex"></param>
     /// <returns></returns>
-    public AsciiPath Subpath(int startIndex)
+    public UriAsciiPath Subpath(int startIndex)
     {
         if (_value.IsEmpty)
         {
@@ -319,7 +343,7 @@ public readonly partial struct AsciiPath : IComparableValue<AsciiPath, AsciiStri
             sub = sub[1..];
         }
 
-        return new AsciiPath(new AsciiString(sub.ToArray()), true);
+        return new UriAsciiPath(new AsciiString(sub.ToArray()), true);
     }
 
     /// <summary>
@@ -332,7 +356,7 @@ public readonly partial struct AsciiPath : IComparableValue<AsciiPath, AsciiStri
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
-    public static explicit operator AsciiPath(string value) => Parse(value);
+    public static explicit operator UriAsciiPath(string value) => Parse(value);
 
 #pragma warning restore CA2225 // Operator overloads have named alternates
 

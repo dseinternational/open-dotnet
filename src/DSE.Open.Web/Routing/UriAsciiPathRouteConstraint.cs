@@ -1,4 +1,4 @@
-// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Globalization;
@@ -9,8 +9,7 @@ using Microsoft.AspNetCore.Routing.Matching;
 
 namespace DSE.Open.Web.Routing;
 
-[Obsolete("Use UriAsciiPath")]
-public class AsciiPathRouteConstraint : IRouteConstraint, IParameterLiteralNodeMatchingPolicy
+public class UriAsciiPathRouteConstraint : IRouteConstraint, IParameterLiteralNodeMatchingPolicy
 {
     /// <inheritdoc />
     public bool Match(
@@ -25,7 +24,7 @@ public class AsciiPathRouteConstraint : IRouteConstraint, IParameterLiteralNodeM
 
         if (values.TryGetValue(routeKey, out var value))
         {
-            if (value is AsciiPath)
+            if (value is UriAsciiPath)
             {
                 return true;
             }
@@ -38,7 +37,7 @@ public class AsciiPathRouteConstraint : IRouteConstraint, IParameterLiteralNodeM
     }
 
     private static bool CheckConstraintCore(string? valueString)
-        => string.IsNullOrEmpty(valueString) || AsciiPath.IsValidValue(valueString, true);
+        => string.IsNullOrEmpty(valueString) || UriAsciiPath.IsValidValue(valueString, true);
 
     public bool MatchesLiteral(string parameterName, string literal)
         => CheckConstraintCore(literal);
