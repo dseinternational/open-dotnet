@@ -47,6 +47,10 @@ internal abstract class ValueTypeSpec
     public bool UseGetStringSpan { get; set; }
 
     public bool EmitConstructor { get; set; } = true;
+    
+    public Accessibility ConstructorAccessibility { get; set; } = Accessibility.Internal;
+    
+    public string ConstructorAccessibilityValue => AccessibilityHelper.GetKeyword(ConstructorAccessibility);
 
     public bool EmitMaxSerializedCharLength => MaxSerializedCharLength > 0;
 

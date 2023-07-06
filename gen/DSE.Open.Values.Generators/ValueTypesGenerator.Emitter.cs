@@ -97,7 +97,7 @@ public partial class ValueTypesGenerator
             if (spec.EmitConstructor)
             {
                 writer.WriteLine();
-                writer.WriteLine($"private {spec.ValueTypeName}({spec.ContainedValueTypeName} value, bool skipValidation = false)");
+                writer.WriteLine($"{spec.ConstructorAccessibilityValue} {spec.ValueTypeName}({spec.ContainedValueTypeName} value, bool skipValidation = false)");
                 writer.WriteLine("{");
                 writer.Indentation++;
 
