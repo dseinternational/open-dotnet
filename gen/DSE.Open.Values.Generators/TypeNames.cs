@@ -5,7 +5,7 @@ namespace DSE.Open.Values.Generators;
 
 internal static class TypeNames
 {
-    public const string ValueTypesNamespace = $"DSE.Open.Values";
+    public const string ValueTypesNamespace = "DSE.Open.Values";
 
     public const string EquatableValueAttributeName = "EquatableValueAttribute";
     public const string ComparableValueAttributeName = "ComparableValueAttribute";
