@@ -19,7 +19,7 @@ public readonly partial struct Percent
     private readonly Double _value;
     private readonly bool _initialized;
 
-    internal Percent(Double value, bool skipValidation = false)
+    private Percent(Double value, bool skipValidation = false)
     {
 
         if (!skipValidation)

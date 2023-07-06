@@ -48,7 +48,7 @@ internal abstract class ValueTypeSpec
 
     public bool EmitConstructor { get; set; } = true;
     
-    public Accessibility ConstructorAccessibility { get; set; } = Accessibility.Internal;
+    public Accessibility ConstructorAccessibility { get; set; } = Accessibility.Private;
     
     public string ConstructorAccessibilityValue => AccessibilityHelper.GetKeyword(ConstructorAccessibility);
 

@@ -19,7 +19,7 @@ public readonly partial struct UriPath
     private readonly CharSequence _value;
     private readonly bool _initialized;
 
-    internal UriPath(CharSequence value, bool skipValidation = false)
+    private UriPath(CharSequence value, bool skipValidation = false)
     {
 
         if (!skipValidation)

@@ -19,7 +19,7 @@ public readonly partial struct CountryCode3
     private readonly AsciiChar3 _value;
     private readonly bool _initialized;
 
-    internal CountryCode3(AsciiChar3 value, bool skipValidation = false)
+    private CountryCode3(AsciiChar3 value, bool skipValidation = false)
     {
 
         if (!skipValidation)
