@@ -30,13 +30,13 @@ public partial class ValueTypesGenerator
 
                     """);
 
-            writer.WriteLine($"using System;");
-            writer.WriteLine($"using System.ComponentModel;");
-            writer.WriteLine($"using DSE.Open.Values;");
+            writer.WriteLine("using System;");
+            writer.WriteLine("using System.ComponentModel;");
+            writer.WriteLine("using DSE.Open.Values;");
 
             if (spec.EmitUsingSystemGlobalization)
             {
-                writer.WriteLine($"using System.Globalization;");
+                writer.WriteLine("using System.Globalization;");
             }
 
             writer.WriteLine();
@@ -57,7 +57,7 @@ public partial class ValueTypesGenerator
             {
                 var parentClass = spec.ParentClass;
 
-                // Loop through the full parent type hiearchy, starting with the outermost
+                // Loop through the full parent type hierarchy, starting with the outermost
                 while (parentClass is not null)
                 {
                     writer.WriteLine($"partial {parentClass.Keyword} {parentClass.Name} {parentClass.Constraints}");
@@ -92,7 +92,7 @@ public partial class ValueTypesGenerator
                 writer.WriteLine($"private readonly {spec.ContainedValueTypeName} {spec.ValueFieldName};");
             }
 
-            writer.WriteLine($"private readonly bool _initialized;");
+            writer.WriteLine("private readonly bool _initialized;");
 
             if (spec.EmitConstructor)
             {
@@ -102,7 +102,7 @@ public partial class ValueTypesGenerator
                 writer.Indentation++;
 
                 writer.WriteLine();
-                writer.WriteLine($$"""
+                writer.WriteLine("""
                         if (!skipValidation)
                         {
                             EnsureIsValidArgumentValue(value);
@@ -111,16 +111,14 @@ public partial class ValueTypesGenerator
 
                 writer.WriteLine();
                 writer.WriteLine($"{spec.ValueFieldName} = value;");
-                writer.WriteLine($"_initialized = true;");
+                writer.WriteLine("_initialized = true;");
 
                 writer.Indentation--;
                 writer.WriteLine("}");
             }
 
             writer.WriteLine();
-            writer.WriteLine($$"""
-                public bool IsInitialized => _initialized;
-                """);
+            writer.WriteLine("""public bool IsInitialized => _initialized;""");
 
             if (spec.EmitEnsureIsValidArgumentValueMethod)
             {
@@ -227,7 +225,7 @@ public partial class ValueTypesGenerator
             if (spec.EmitGetHashCodeMethod)
             {
                 writer.WriteLine();
-                writer.WriteLine($$"""
+                writer.WriteLine("""
                     public override int GetHashCode()
                     {
                         EnsureInitialized();
@@ -252,7 +250,7 @@ public partial class ValueTypesGenerator
             if (spec.EmitTryFormatMethod)
             {
                 writer.WriteLine();
-                writer.WriteLine($$"""
+                writer.WriteLine("""
                     public bool TryFormat(
                         Span<char> destination,
                         out int charsWritten,
@@ -267,7 +265,7 @@ public partial class ValueTypesGenerator
             }
 
             writer.WriteLine();
-            writer.WriteLine($$"""
+            writer.WriteLine("""
                 public bool TryFormat(
                     Span<char> destination,
                     out int charsWritten)
@@ -275,7 +273,7 @@ public partial class ValueTypesGenerator
                 """);
 
             writer.WriteLine();
-            writer.WriteLine($$"""
+            writer.WriteLine("""
                 public bool TryFormatInvariant(
                     Span<char> destination,
                     out int charsWritten,
@@ -284,7 +282,7 @@ public partial class ValueTypesGenerator
                 """);
 
             writer.WriteLine();
-            writer.WriteLine($$"""
+            writer.WriteLine("""
                 public bool TryFormatInvariant(
                     Span<char> destination,
                     out int charsWritten)
@@ -320,24 +318,18 @@ public partial class ValueTypesGenerator
 
                 if (spec.UseGetStringSpan)
                 {
-                    writer.WriteLine($$"""
-                            return GetString(returnValue);
-                    """);
+                    writer.WriteLine("""        return GetString(returnValue);""");
                 }
                 else if (spec.UseGetString)
                 {
-                    writer.WriteLine($$"""
-                            return GetString(new string(returnValue));
-                    """);
+                    writer.WriteLine("""        return GetString(new string(returnValue));""");
                 }
                 else
                 {
-                    writer.WriteLine($$"""
-                            return new string(returnValue);
-                    """);
+                    writer.WriteLine("""        return new string(returnValue);""");
                 }
 
-                writer.WriteLine($$"""
+                writer.WriteLine("""
                         }
                         finally
                         {
@@ -351,18 +343,16 @@ public partial class ValueTypesGenerator
             
 
 
-                writer.WriteLine($$"""
-                    }
-                    """);
+                writer.WriteLine("""}""");
 
                 writer.WriteLine();
-                writer.WriteLine($$"""
+                writer.WriteLine("""
                     public string ToStringInvariant(string? format)
                         => ToString(format, System.Globalization.CultureInfo.InvariantCulture);
                     """);
 
                 writer.WriteLine();
-                writer.WriteLine($$"""
+                writer.WriteLine("""
                     public string ToStringInvariant()
                         => ToStringInvariant(default);
                     """);
