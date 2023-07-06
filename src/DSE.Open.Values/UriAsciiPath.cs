@@ -360,4 +360,9 @@ public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, Asc
 
 #pragma warning restore CA2225 // Operator overloads have named alternates
 
+    /// <summary>
+    /// Creates a new <see cref="UriPath"/> from this <see cref="UriAsciiPath"/>.
+    /// </summary>
+    /// <returns></returns>
+    public UriPath ToUriPath() => new(_value.ToCharSequence(), skipValidation: true);
 }
