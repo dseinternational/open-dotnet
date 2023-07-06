@@ -19,7 +19,7 @@ public readonly partial struct LanguageCode2
     private readonly AsciiChar2 _value;
     private readonly bool _initialized;
 
-    private LanguageCode2(AsciiChar2 value, bool skipValidation = false)
+    internal LanguageCode2(AsciiChar2 value, bool skipValidation = false)
     {
 
         if (!skipValidation)

@@ -19,7 +19,7 @@ public readonly partial struct LanguageTag
     private readonly AsciiString _value;
     private readonly bool _initialized;
 
-    private LanguageTag(AsciiString value, bool skipValidation = false)
+    internal LanguageTag(AsciiString value, bool skipValidation = false)
     {
 
         if (!skipValidation)

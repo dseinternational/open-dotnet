@@ -19,7 +19,7 @@ public readonly partial struct Ratio
     private readonly Double _value;
     private readonly bool _initialized;
 
-    private Ratio(Double value, bool skipValidation = false)
+    internal Ratio(Double value, bool skipValidation = false)
     {
 
         if (!skipValidation)
