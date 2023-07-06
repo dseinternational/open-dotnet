@@ -181,4 +181,11 @@ public readonly struct CharSequence
     public static bool operator >(CharSequence left, CharSequence right) => left.CompareTo(right) > 0;
 
     public static bool operator >=(CharSequence left, CharSequence right) => left.CompareTo(right) >= 0;
+
+    /// <summary>
+    /// Converts the <paramref name="asciiString"/> to a <see cref="CharSequence"/>.
+    /// </summary>
+    /// <param name="asciiString"></param>
+    /// <returns>A new <see cref="CharSequence"/> instance.</returns>
+    public static CharSequence FromAsciiString(AsciiString asciiString) => new(asciiString.ToCharArray());
 }
