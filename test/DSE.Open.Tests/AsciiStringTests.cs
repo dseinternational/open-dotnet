@@ -127,4 +127,32 @@ public class AsciiStringTests
             i++;
         }
     }
+    
+    [Fact]
+    public void ToCharArray_ShouldReturnCorrectArray()
+    {
+        // Arrange
+        const string value = "abcdefghijklmnopqrstuvwxyz";
+        var asciiString = AsciiString.Parse(value);
+
+        // Act
+        var result = asciiString.ToCharArray();
+
+        // Assert
+        Assert.Equal(value.ToCharArray(), result);
+    }
+    
+    [Fact]
+    public void ToCharSequence_ShouldReturnCorrectSequence()
+    {
+        // Arrange
+        const string value = "abcdefghijklmnopqrstuvwxyz";
+        var asciiString = AsciiString.Parse(value);
+
+        // Act
+        var result = asciiString.ToCharSequence();
+
+        // Assert
+        Assert.Equal(value.ToCharArray(), result.Span.ToArray());
+    } 
 }
