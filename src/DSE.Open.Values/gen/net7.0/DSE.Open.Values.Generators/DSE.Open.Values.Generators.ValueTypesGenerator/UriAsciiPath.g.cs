@@ -19,7 +19,7 @@ public readonly partial struct UriAsciiPath
     private readonly AsciiString _value;
     private readonly bool _initialized;
 
-    internal UriAsciiPath(AsciiString value, bool skipValidation = false)
+    private UriAsciiPath(AsciiString value, bool skipValidation = false)
     {
 
         if (!skipValidation)

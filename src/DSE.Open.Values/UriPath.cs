@@ -341,4 +341,10 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
 
 #pragma warning restore CA2225 // Operator overloads have named alternates
 
+    /// <summary>
+    /// Converts the <paramref name="uriAsciiPath"/> to a <see cref="UriPath"/>.
+    /// </summary>
+    /// <param name="uriAsciiPath"></param>
+    /// <returns></returns>
+    public static UriPath FromUriAsciiPath(UriAsciiPath uriAsciiPath) => new(CharSequence.FromAsciiString((AsciiString)uriAsciiPath), skipValidation: true);
 }

@@ -364,5 +364,5 @@ public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, Asc
     /// Creates a new <see cref="UriPath"/> from this <see cref="UriAsciiPath"/>.
     /// </summary>
     /// <returns></returns>
-    public UriPath ToUriPath() => new(_value.ToCharSequence(), skipValidation: true);
+    public UriPath ToUriPath() => UriPath.FromUriAsciiPath(this);
 }

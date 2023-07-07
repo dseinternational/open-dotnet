@@ -447,5 +447,8 @@ public readonly partial struct AsciiString
 
     public static bool operator >=(AsciiString left, AsciiString right) => left.CompareTo(right) >= 0;
 
-    public CharSequence ToCharSequence() => new(ToCharArray());
+    /// <summary>
+    /// Converts the <see cref="AsciiString"/> to a <see cref="CharSequence"/>.
+    /// </summary>
+    public CharSequence ToCharSequence() => CharSequence.FromAsciiString(this);
 }

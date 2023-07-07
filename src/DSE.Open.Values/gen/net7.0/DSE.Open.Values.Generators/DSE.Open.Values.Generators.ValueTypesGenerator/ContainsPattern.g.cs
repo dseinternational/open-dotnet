@@ -19,7 +19,7 @@ public readonly partial struct ContainsPattern
     private readonly CharSequence _value;
     private readonly bool _initialized;
 
-    internal ContainsPattern(CharSequence value, bool skipValidation = false)
+    private ContainsPattern(CharSequence value, bool skipValidation = false)
     {
 
         if (!skipValidation)

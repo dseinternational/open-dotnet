@@ -19,7 +19,7 @@ public readonly partial struct AlphaCode
     private readonly AsciiString _value;
     private readonly bool _initialized;
 
-    internal AlphaCode(AsciiString value, bool skipValidation = false)
+    private AlphaCode(AsciiString value, bool skipValidation = false)
     {
 
         if (!skipValidation)
