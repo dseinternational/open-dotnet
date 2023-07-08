@@ -91,7 +91,8 @@ public class UriAsciiPathTests
     [InlineData("/home-page/")]
     [InlineData("root/child/grandchild/")]
     [InlineData("a/b/c/d/e/f/g/h")]
-    public void IsValidValueAsciiString_returns_true_for_valid_paths_ignoring_slashes(string path) => Assert.True(UriAsciiPath.IsValidValue((AsciiString)path, true));
+    public void IsValidValueAsciiString_returns_true_for_valid_paths_ignoring_slashes(string path) =>
+        Assert.True(UriAsciiPath.IsValidValue((AsciiString)path, true));
 
     [Theory]
     [InlineData("/")]
@@ -166,6 +167,7 @@ public class UriAsciiPathTests
 
     [Theory]
     [InlineData("", "", "")]
+    [InlineData("home", "", "home")]
     [InlineData("home", "sub", "home/sub")]
     [InlineData("home/sub", "sub", "home/sub/sub")]
     public void Append(string path, string append, string expected)
@@ -178,6 +180,7 @@ public class UriAsciiPathTests
 
     [Theory]
     [InlineData("", "", "", "")]
+    [InlineData("home", "", "", "home")]
     [InlineData("home", "sub", "sub", "home/sub/sub")]
     public void Append2(string path, string append1, string append2, string expected)
     {
@@ -190,6 +193,7 @@ public class UriAsciiPathTests
 
     [Theory]
     [InlineData("", "", "", "", "")]
+    [InlineData("home", "", "", "", "home")]
     [InlineData("home", "sub", "sub", "sub", "home/sub/sub/sub")]
     public void Append3(string path, string append1, string append2, string append3, string expected)
     {
@@ -200,7 +204,7 @@ public class UriAsciiPathTests
         var appended = pathValue.Append(append1Value, append2Value, append3Value);
         Assert.Equal(expected, appended.ToString());
     }
-    
+
     [Fact]
     public void ToUriPath_WithEmpty_ShouldReturnEmptyUriPath()
     {
@@ -213,7 +217,7 @@ public class UriAsciiPathTests
         // Assert
         Assert.Equal(UriPath.Empty, uriPath);
     }
-    
+
     [Theory]
     [InlineData("home")]
     [InlineData("home/sub")]
@@ -221,7 +225,7 @@ public class UriAsciiPathTests
     {
         // Arrange
         var path = UriAsciiPath.Parse(value);
-        
+
         // Act
         var uriPath = path.ToUriPath();
 
