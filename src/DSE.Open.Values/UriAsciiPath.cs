@@ -248,6 +248,11 @@ public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, Asc
         {
             return path;
         }
+        
+        if (path.IsEmpty)
+        {
+            return this;
+        }
 
         var combined = new AsciiChar[_value.Length + path.Length + 1];
 
