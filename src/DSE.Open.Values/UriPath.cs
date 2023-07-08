@@ -229,6 +229,11 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
         {
             return path;
         }
+        
+        if (path.IsEmpty)
+        {
+            return this;
+        }
 
         var combined = new char[_value.Length + path.Length + 1];
 
