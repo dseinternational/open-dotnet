@@ -8,7 +8,8 @@ namespace DSE.Open.Serialization;
 
 public static class JsonSerializableExtensions
 {
-    [RequiresUnreferencedCode("JSON serialization and deserialization might require types that cannot be statically analyzed.")]
+    [RequiresDynamicCode(WarningMessages.RequiresDynamicCode)]
+    [RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]
     public static string ToJsonString(this IJsonSerializable obj, JsonSerializerOptions? options = null)
     {
         Guard.IsNotNull(obj);

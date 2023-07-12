@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -26,6 +27,7 @@ public sealed partial class MessageDispatcher : IMessageDispatcher
     }
 
     /// <inheritdoc />
+    [RequiresDynamicCode("May break functionality when AOT compiling")]
     public async ValueTask PublishAsync(IMessage message, CancellationToken cancellationToken = default)
     {
         Guard.IsNotNull(message);

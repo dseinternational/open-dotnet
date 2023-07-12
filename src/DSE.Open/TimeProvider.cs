@@ -6,6 +6,8 @@ using DSE.Open.Threading;
 
 namespace DSE.Open;
 
+#if !NET8_0_OR_GREATER
+
 /// <summary>
 /// Provides an abstraction for time.
 /// </summary>
@@ -239,3 +241,5 @@ public abstract class TimeProvider
         }
     }
 }
+
+#endif

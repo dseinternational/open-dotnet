@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Data.SqlTypes;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text.Json;
 using DSE.Open.Text.Json;
@@ -140,6 +141,8 @@ public static class SqlDataReaderExtensions
         return T.Parse(value, provider);
     }
 
+    [RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]
+    [RequiresDynamicCode(WarningMessages.RequiresDynamicCode)]
     public static T? GetFromJson<T>(this SqlDataReader reader, int ordinal, JsonSerializerOptions? jsonOptions = default)
     {
         Guard.IsNotNull(reader);

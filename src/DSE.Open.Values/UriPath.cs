@@ -4,7 +4,9 @@
 using System.Buffers;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
+#if !NET8_0_OR_GREATER
 using CommunityToolkit.HighPerformance;
+#endif
 using DSE.Open.Values.Text.Json.Serialization;
 
 namespace DSE.Open.Values;

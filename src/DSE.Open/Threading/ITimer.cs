@@ -3,6 +3,8 @@
 
 namespace DSE.Open.Threading;
 
+#if !NET8_0_OR_GREATER
+
 /// <summary>Represents a timer that can have its due time and period changed.</summary>
 /// <remarks>
 /// Implementations of <see cref="Change"/>, <see cref="IDisposable.Dispose"/>, and <see cref="IAsyncDisposable.DisposeAsync"/>
@@ -27,3 +29,5 @@ public interface ITimer : IDisposable, IAsyncDisposable
     /// </remarks>
     bool Change(TimeSpan dueTime, TimeSpan period);
 }
+
+#endif

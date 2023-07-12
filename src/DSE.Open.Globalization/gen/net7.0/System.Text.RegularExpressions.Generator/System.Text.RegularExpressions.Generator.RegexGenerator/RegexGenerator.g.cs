@@ -1174,7 +1174,7 @@ namespace System.Text.RegularExpressions.Generated
                                                     charloop_starting_pos = pos;
                                                     
                                                     int iteration = 0;
-                                                    while (iteration < 3 && (uint)iteration < (uint)slice.Length && ((ch = slice[iteration]) < 128 ? ("\0\0\0\0\ufffe߿\ufffe߿"[ch >> 4] & (1 << (ch & 0xF))) != 0 : RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")))
+                                                    while (iteration < 3 && (uint)iteration < (uint)slice.Length && ((ch = slice[iteration]) < 128 ? ("\0\0\0\0\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) != 0 : RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")))
                                                     {
                                                         iteration++;
                                                     }
@@ -1222,9 +1222,9 @@ namespace System.Text.RegularExpressions.Generated
                                                         
                                                         if ((uint)slice.Length < 4 ||
                                                             slice[0] != '-' || // Match '-'.
-                                                            ((ch = slice[1]) < 128 ? ("\0\0\0\0\ufffe߿\ufffe߿"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) || // Match a character in the set [A-Za-z\u212A] exactly 3 times.
-                                                            ((ch = slice[2]) < 128 ? ("\0\0\0\0\ufffe߿\ufffe߿"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) ||
-                                                            ((ch = slice[3]) < 128 ? ("\0\0\0\0\ufffe߿\ufffe߿"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")))
+                                                            ((ch = slice[1]) < 128 ? ("\0\0\0\0\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) || // Match a character in the set [A-Za-z\u212A] exactly 3 times.
+                                                            ((ch = slice[2]) < 128 ? ("\0\0\0\0\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) ||
+                                                            ((ch = slice[3]) < 128 ? ("\0\0\0\0\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")))
                                                         {
                                                             goto LoopIterationNoMatch;
                                                         }
@@ -1246,9 +1246,9 @@ namespace System.Text.RegularExpressions.Generated
                                                                 
                                                                 if ((uint)slice.Length < 4 ||
                                                                     slice[0] != '-' || // Match '-'.
-                                                                    ((ch = slice[1]) < 128 ? ("\0\0\0\0\ufffe߿\ufffe߿"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) || // Match a character in the set [A-Za-z\u212A] exactly 3 times.
-                                                                    ((ch = slice[2]) < 128 ? ("\0\0\0\0\ufffe߿\ufffe߿"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) ||
-                                                                    ((ch = slice[3]) < 128 ? ("\0\0\0\0\ufffe߿\ufffe߿"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")))
+                                                                    ((ch = slice[1]) < 128 ? ("\0\0\0\0\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) || // Match a character in the set [A-Za-z\u212A] exactly 3 times.
+                                                                    ((ch = slice[2]) < 128 ? ("\0\0\0\0\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) ||
+                                                                    ((ch = slice[3]) < 128 ? ("\0\0\0\0\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")))
                                                                 {
                                                                     goto LoopIterationNoMatch1;
                                                                 }
@@ -1358,10 +1358,10 @@ namespace System.Text.RegularExpressions.Generated
                                             // Match a character in the set [A-Za-z\u212A] exactly 4 times.
                                             {
                                                 if ((uint)slice.Length < 4 ||
-                                                    ((ch = slice[0]) < 128 ? ("\0\0\0\0\ufffe߿\ufffe߿"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) ||
-                                                    ((ch = slice[1]) < 128 ? ("\0\0\0\0\ufffe߿\ufffe߿"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) ||
-                                                    ((ch = slice[2]) < 128 ? ("\0\0\0\0\ufffe߿\ufffe߿"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) ||
-                                                    ((ch = slice[3]) < 128 ? ("\0\0\0\0\ufffe߿\ufffe߿"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")))
+                                                    ((ch = slice[0]) < 128 ? ("\0\0\0\0\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) ||
+                                                    ((ch = slice[1]) < 128 ? ("\0\0\0\0\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) ||
+                                                    ((ch = slice[2]) < 128 ? ("\0\0\0\0\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) ||
+                                                    ((ch = slice[3]) < 128 ? ("\0\0\0\0\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")))
                                                 {
                                                     goto AlternationBranch24;
                                                 }
@@ -1385,7 +1385,7 @@ namespace System.Text.RegularExpressions.Generated
                                                 charloop_starting_pos1 = pos;
                                                 
                                                 int iteration1 = 0;
-                                                while (iteration1 < 8 && (uint)iteration1 < (uint)slice.Length && ((ch = slice[iteration1]) < 128 ? ("\0\0\0\0\ufffe߿\ufffe߿"[ch >> 4] & (1 << (ch & 0xF))) != 0 : RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")))
+                                                while (iteration1 < 8 && (uint)iteration1 < (uint)slice.Length && ((ch = slice[iteration1]) < 128 ? ("\0\0\0\0\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) != 0 : RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")))
                                                 {
                                                     iteration1++;
                                                 }
@@ -1453,10 +1453,10 @@ namespace System.Text.RegularExpressions.Generated
                                             
                                             if ((uint)slice.Length < 5 ||
                                                 slice[0] != '-' || // Match '-'.
-                                                ((ch = slice[1]) < 128 ? ("\0\0\0\0\ufffe߿\ufffe߿"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) || // Match a character in the set [A-Za-z\u212A] exactly 4 times.
-                                                ((ch = slice[2]) < 128 ? ("\0\0\0\0\ufffe߿\ufffe߿"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) ||
-                                                ((ch = slice[3]) < 128 ? ("\0\0\0\0\ufffe߿\ufffe߿"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) ||
-                                                ((ch = slice[4]) < 128 ? ("\0\0\0\0\ufffe߿\ufffe߿"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")))
+                                                ((ch = slice[1]) < 128 ? ("\0\0\0\0\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) || // Match a character in the set [A-Za-z\u212A] exactly 4 times.
+                                                ((ch = slice[2]) < 128 ? ("\0\0\0\0\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) ||
+                                                ((ch = slice[3]) < 128 ? ("\0\0\0\0\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) ||
+                                                ((ch = slice[4]) < 128 ? ("\0\0\0\0\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")))
                                             {
                                                 goto LoopIterationNoMatch2;
                                             }
@@ -1516,8 +1516,8 @@ namespace System.Text.RegularExpressions.Generated
                                                     // Match a character in the set [A-Za-z\u212A] exactly 2 times.
                                                     {
                                                         if ((uint)slice.Length < 3 ||
-                                                            ((ch = slice[1]) < 128 ? ("\0\0\0\0\ufffe߿\ufffe߿"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) ||
-                                                            ((ch = slice[2]) < 128 ? ("\0\0\0\0\ufffe߿\ufffe߿"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")))
+                                                            ((ch = slice[1]) < 128 ? ("\0\0\0\0\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) ||
+                                                            ((ch = slice[2]) < 128 ? ("\0\0\0\0\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")))
                                                         {
                                                             goto AlternationBranch25;
                                                         }
@@ -1645,7 +1645,7 @@ namespace System.Text.RegularExpressions.Generated
                                                         charloop_starting_pos2 = pos;
                                                         
                                                         int iteration2 = 0;
-                                                        while (iteration2 < 8 && (uint)iteration2 < (uint)slice.Length && ((ch = slice[iteration2]) < 128 ? ("\0\0\0Ͽ\ufffe߿\ufffe߿"[ch >> 4] & (1 << (ch & 0xF))) != 0 : RegexRunner.CharInClass((char)ch, "\0\b\00:A[a{KÅ")))
+                                                        while (iteration2 < 8 && (uint)iteration2 < (uint)slice.Length && ((ch = slice[iteration2]) < 128 ? ("\0\0\0Ͽ\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) != 0 : RegexRunner.CharInClass((char)ch, "\0\b\00:A[a{KÅ")))
                                                         {
                                                             iteration2++;
                                                         }
@@ -1692,9 +1692,9 @@ namespace System.Text.RegularExpressions.Generated
                                                 //{
                                                     if ((uint)slice.Length < 5 ||
                                                         !char.IsAsciiDigit(slice[1]) || // Match '0' through '9'.
-                                                        ((ch = slice[2]) < 128 ? ("\0\0\0Ͽ\ufffe߿\ufffe߿"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\b\00:A[a{KÅ")) || // Match a character in the set [0-9A-Za-z\u212A] exactly 3 times.
-                                                        ((ch = slice[3]) < 128 ? ("\0\0\0Ͽ\ufffe߿\ufffe߿"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\b\00:A[a{KÅ")) ||
-                                                        ((ch = slice[4]) < 128 ? ("\0\0\0Ͽ\ufffe߿\ufffe߿"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\b\00:A[a{KÅ")))
+                                                        ((ch = slice[2]) < 128 ? ("\0\0\0Ͽ\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\b\00:A[a{KÅ")) || // Match a character in the set [0-9A-Za-z\u212A] exactly 3 times.
+                                                        ((ch = slice[3]) < 128 ? ("\0\0\0Ͽ\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\b\00:A[a{KÅ")) ||
+                                                        ((ch = slice[4]) < 128 ? ("\0\0\0Ͽ\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\b\00:A[a{KÅ")))
                                                     {
                                                         goto LoopIterationNoMatch4;
                                                     }
@@ -1808,7 +1808,7 @@ namespace System.Text.RegularExpressions.Generated
                                                         charloop_starting_pos3 = pos;
                                                         
                                                         int iteration3 = 0;
-                                                        while (iteration3 < 8 && (uint)iteration3 < (uint)slice.Length && ((ch = slice[iteration3]) < 128 ? ("\0\0\0Ͽ\ufffe߿\ufffe߿"[ch >> 4] & (1 << (ch & 0xF))) != 0 : RegexRunner.CharInClass((char)ch, "\0\b\00:A[a{KÅ")))
+                                                        while (iteration3 < 8 && (uint)iteration3 < (uint)slice.Length && ((ch = slice[iteration3]) < 128 ? ("\0\0\0Ͽ\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) != 0 : RegexRunner.CharInClass((char)ch, "\0\b\00:A[a{KÅ")))
                                                         {
                                                             iteration3++;
                                                         }
@@ -1986,7 +1986,7 @@ namespace System.Text.RegularExpressions.Generated
                                                         charloop_starting_pos4 = pos;
                                                         
                                                         int iteration4 = 0;
-                                                        while (iteration4 < 8 && (uint)iteration4 < (uint)slice.Length && ((ch = slice[iteration4]) < 128 ? ("\0\0\0Ͽ\ufffe߿\ufffe߿"[ch >> 4] & (1 << (ch & 0xF))) != 0 : RegexRunner.CharInClass((char)ch, "\0\b\00:A[a{KÅ")))
+                                                        while (iteration4 < 8 && (uint)iteration4 < (uint)slice.Length && ((ch = slice[iteration4]) < 128 ? ("\0\0\0Ͽ\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) != 0 : RegexRunner.CharInClass((char)ch, "\0\b\00:A[a{KÅ")))
                                                         {
                                                             iteration4++;
                                                         }
@@ -2175,7 +2175,7 @@ namespace System.Text.RegularExpressions.Generated
                                             pos++;
                                             slice = inputSpan.Slice(pos);
                                             int iteration5 = 0;
-                                            while (iteration5 < 8 && (uint)iteration5 < (uint)slice.Length && ((ch = slice[iteration5]) < 128 ? ("\0\0\0Ͽ\ufffe߿\ufffe߿"[ch >> 4] & (1 << (ch & 0xF))) != 0 : RegexRunner.CharInClass((char)ch, "\0\b\00:A[a{KÅ")))
+                                            while (iteration5 < 8 && (uint)iteration5 < (uint)slice.Length && ((ch = slice[iteration5]) < 128 ? ("\0\0\0Ͽ\ufffe\u07ff\ufffe\u07ff"[ch >> 4] & (1 << (ch & 0xF))) != 0 : RegexRunner.CharInClass((char)ch, "\0\b\00:A[a{KÅ")))
                                             {
                                                 iteration5++;
                                             }
