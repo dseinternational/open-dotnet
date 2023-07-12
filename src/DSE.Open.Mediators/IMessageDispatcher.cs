@@ -1,6 +1,8 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Diagnostics.CodeAnalysis;
+
 namespace DSE.Open.Mediators;
 
 /// <summary>
@@ -17,5 +19,6 @@ public interface IMessageDispatcher
     /// <returns></returns>
     /// <exception cref="ArgumentNullException"><paramref name="message"/> is <see langword="null"/>.</exception>
     /// <exception cref="InvalidOperationException">No handlers are registered for the type of the message.</exception>
+    [RequiresDynamicCode("May break functionality when AOT compiling")]
     ValueTask PublishAsync(IMessage message, CancellationToken cancellationToken = default);
 }

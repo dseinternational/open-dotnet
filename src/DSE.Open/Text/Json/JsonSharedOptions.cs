@@ -38,8 +38,8 @@ public static class JsonSharedOptions
         return options;
     }
 
-    [RequiresUnreferencedCode("Including the JsonValueObjectConverter might require types " +
-        "that cannot be statically analyzed.")]
+    [RequiresDynamicCode(WarningMessages.RequiresDynamicCode)]
+    [RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]
     public static JsonSerializerOptions Create(
         bool writeIndented,
         bool addDefaultConverters,
@@ -69,7 +69,9 @@ public static class JsonSharedOptions
             addDefaultConverters);
 
     [UnconditionalSuppressMessage("Trimming", "IL2026",
-        Justification = "Calls ConfigureJsonOptions with includeJsonValueObjectConverter = false")]
+        Justification = "Calls AddDefaultConverters with includeJsonValueObjectConverter = false")]
+    [UnconditionalSuppressMessage("Trimming", "IL3050",
+        Justification = "Calls AddDseOpenCoreJsonConverters with includeJsonValueObjectConverter = false")]
     public static void ConfigureJsonOptions(
         JsonSerializerOptions options,
         JsonNamingPolicy commonNamingPolicy,
@@ -83,8 +85,8 @@ public static class JsonSharedOptions
             false,
             null);
 
-    [RequiresUnreferencedCode("Including the JsonValueObjectConverter might require types " +
-        "that cannot be statically analyzed.")]
+    [RequiresDynamicCode(WarningMessages.RequiresDynamicCode)]
+    [RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]
     public static void ConfigureJsonOptions(
         JsonSerializerOptions options,
         JsonNamingPolicy commonNamingPolicy,
@@ -114,11 +116,13 @@ public static class JsonSharedOptions
 
     [UnconditionalSuppressMessage("Trimming", "IL2026",
         Justification = "Calls AddDefaultConverters with includeJsonValueObjectConverter = false")]
+    [UnconditionalSuppressMessage("Trimming", "IL3050",
+        Justification = "Calls AddDseOpenCoreJsonConverters with includeJsonValueObjectConverter = false")]
     public static void AddDefaultConverters(IList<JsonConverter> converters)
         => AddDefaultConverters(converters, false);
 
-    [RequiresUnreferencedCode("Including the JsonValueObjectConverter might require types " +
-        "that cannot be statically analyzed.")]
+    [RequiresDynamicCode(WarningMessages.RequiresDynamicCode)]
+    [RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]
     public static void AddDefaultConverters(IList<JsonConverter> converters, bool includeJsonValueObjectConverter)
     {
         Guard.IsNotNull(converters);

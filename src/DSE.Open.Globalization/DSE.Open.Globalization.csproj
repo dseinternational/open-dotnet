@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFrameworks>net7.0;net8.0</TargetFrameworks>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -17,7 +17,7 @@
   <ItemGroup>
     <PackageReference Include="TimeZoneNames" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <ProjectReference Include="..\..\gen\DSE.Open.Values.Generators\DSE.Open.Values.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\DSE.Open.Values\DSE.Open.Values.csproj" />

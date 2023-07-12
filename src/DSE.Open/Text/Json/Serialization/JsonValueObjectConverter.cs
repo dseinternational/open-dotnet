@@ -18,8 +18,8 @@ namespace DSE.Open.Text.Json.Serialization;
 /// values, the underlying types of which correspond to basic .NET types - rather than the default
 /// behaviour, which is to deserialize such values as <see cref="JsonElement"/> values.
 /// </remarks>
-[RequiresUnreferencedCode("Writing values using the JsonValueObjectConverter might require types " +
-    "that cannot be statically analyzed.")]
+[RequiresDynamicCode(WarningMessages.RequiresDynamicCode)]
+[RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]
 public class JsonValueObjectConverter : JsonConverter<object>
 {
     public static readonly JsonValueObjectConverter Default = new();

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFrameworks>net7.0;net8.0</TargetFrameworks>
     <RootNamespace>DSE.Open.Values</RootNamespace>
     <PackageDescription>Value type abstractions for DSE.Open.Values</PackageDescription>
   </PropertyGroup>
@@ -13,7 +13,7 @@
     <ProjectReference Include="..\..\gen\DSE.Open.Values.Generators\DSE.Open.Values.Generators.csproj"
                       ReferenceOutputAssembly="false"
                       PackAsAnalyzer="true" />
-    
+
   </ItemGroup>
 
 </Project>

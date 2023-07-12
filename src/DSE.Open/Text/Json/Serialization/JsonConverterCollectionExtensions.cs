@@ -10,11 +10,13 @@ public static class JsonConverterCollectionExtensions
 {
     [UnconditionalSuppressMessage("Trimming", "IL2026",
         Justification = "Calls AddDseOpenCoreJsonConverters with includeJsonValueObjectConverter = false")]
+    [UnconditionalSuppressMessage("Trimming", "IL3050",
+        Justification = "Calls AddDseOpenCoreJsonConverters with includeJsonValueObjectConverter = false")]
     public static void AddDseOpenCoreJsonConverters(this ICollection<JsonConverter> converters)
         => converters.AddDseOpenCoreJsonConverters(false);
 
-    [RequiresUnreferencedCode("Including the JsonValueObjectConverter might require types " +
-        "that cannot be statically analyzed.")]
+    [RequiresDynamicCode(WarningMessages.RequiresDynamicCode)]
+    [RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]
     public static void AddDseOpenCoreJsonConverters(
         this ICollection<JsonConverter> converters,
         bool includeJsonValueObjectConverter)
