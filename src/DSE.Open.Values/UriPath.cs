@@ -342,7 +342,7 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
         char[]? rented = null;
         try
         {
-            var span = _value.Length < Open.StackallocThresholds.MaxCharLength - 2
+            var span = _value.Length < StackallocThresholds.MaxCharLength - 2
                 ? stackalloc char[_value.Length + 2]
                 : rented = ArrayPool<char>.Shared.Rent(_value.Length + 2);
 

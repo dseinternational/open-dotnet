@@ -2,11 +2,9 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Buffers;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json.Serialization;
-using CommunityToolkit.HighPerformance;
 using DSE.Open.Values.Text.Json.Serialization;
 
 namespace DSE.Open.Values;
@@ -362,7 +360,7 @@ public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, Asc
         AsciiChar[]? rented = null;
         try
         {
-            var span = _value.Length < Open.StackallocThresholds.MaxCharLength - 2
+            var span = _value.Length < StackallocThresholds.MaxCharLength - 2
                 ? stackalloc AsciiChar[_value.Length + 2]
                 : rented = ArrayPool<AsciiChar>.Shared.Rent(_value.Length + 2);
 
