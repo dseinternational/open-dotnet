@@ -366,6 +366,11 @@ public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, Asc
                 ? stackalloc AsciiChar[_value.Length + 2]
                 : rented = ArrayPool<AsciiChar>.Shared.Rent(_value.Length + 2);
 
+            if (rented is not null)
+            {
+                span = span[..(_value.Length + 2)];
+            }
+
             var separator = (AsciiChar)'/';
 
             span[0] = separator;

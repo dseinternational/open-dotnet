@@ -346,6 +346,11 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
                 ? stackalloc char[_value.Length + 2]
                 : rented = ArrayPool<char>.Shared.Rent(_value.Length + 2);
 
+            if (rented is not null)
+            {
+                span = span[..(_value.Length + 2)];
+            }
+
             span[0] = '/';
             _value.Span.CopyTo(span[1..]);
             span[^1] = '/';

@@ -80,4 +80,18 @@ public class UriPathTests
         // Assert
         Assert.Equal(expected, absolutePath);
     }
+    
+    [Fact]
+    public void ToAbsolutePath_WithLongInput_ShouldCorrectlyFormat()
+    {
+        // Arrange
+        var pathStr = string.Create(StackallocThresholds.MaxCharLength + 1, 'a', (span, value) => span.Fill(value));
+        var path = UriPath.Parse(pathStr);
+        
+        // Act
+        var absolutePath = path.ToAbsolutePath();
+
+        // Assert
+        Assert.Equal($"/{pathStr}/", absolutePath);
+    }
 }
