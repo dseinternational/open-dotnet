@@ -231,7 +231,7 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
         {
             return path;
         }
-        
+
         if (path.IsEmpty)
         {
             return this;
@@ -332,6 +332,33 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
         }
 
         return new UriPath(new CharSequence(sub.ToArray()), true);
+    }
+
+    /// <summary>
+    /// Creates an absolute path by prepending and appending '/' characters to the current path.
+    /// </summary>
+    public string ToAbsolutePath()
+    {
+        char[]? rented = null;
+        try
+        {
+            var span = _value.Length < Open.StackallocThresholds.MaxCharLength - 2
+                ? stackalloc char[_value.Length + 2]
+                : rented = ArrayPool<char>.Shared.Rent(_value.Length + 2);
+
+            span[0] = '/';
+            _value.Span.CopyTo(span[1..]);
+            span[^1] = '/';
+
+            return span.ToString();
+        }
+        finally
+        {
+            if (rented is not null)
+            {
+                ArrayPool<char>.Shared.Return(rented);
+            }
+        }
     }
 
     /// <summary>

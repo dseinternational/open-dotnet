@@ -65,4 +65,19 @@ public class UriPathTests
         var appended = pathValue.Append(append1Value, append2Value, append3Value);
         Assert.Equal(expected, appended.ToString());
     }
+    
+    [Theory]
+    [InlineData("home", "/home/")]
+    [InlineData("home/sub", "/home/sub/")]
+    public void ToAbsolutePath_ShouldCorrectlyFormat(string value, string expected)
+    {
+        // Arrange
+        var path = UriPath.Parse(value);
+
+        // Act
+        var absolutePath = path.ToAbsolutePath();
+
+        // Assert
+        Assert.Equal(expected, absolutePath);
+    }
 }

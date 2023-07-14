@@ -232,4 +232,19 @@ public class UriAsciiPathTests
         // Assert
         Assert.Equal(UriPath.Parse(value), uriPath);
     }
+
+    [Theory]
+    [InlineData("home", "/home/")]
+    [InlineData("home/sub", "/home/sub/")]
+    public void ToAbsolutePath_ShouldCorrectlyFormat(string value, string expected)
+    {
+        // Arrange
+        var path = UriAsciiPath.Parse(value);
+
+        // Act
+        var absolutePath = path.ToAbsolutePath();
+
+        // Assert
+        Assert.Equal(expected, absolutePath);
+    }
 }
