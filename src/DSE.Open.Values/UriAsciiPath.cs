@@ -3,6 +3,7 @@
 
 using System.Buffers;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Text.Json.Serialization;
 using DSE.Open.Values.Text.Json.Serialization;
 
@@ -248,7 +249,7 @@ public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, Asc
         {
             return path;
         }
-        
+
         if (path.IsEmpty)
         {
             return this;
@@ -349,6 +350,40 @@ public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, Asc
         }
 
         return new UriAsciiPath(new AsciiString(sub.ToArray()), true);
+    }
+
+    /// <summary>
+    /// Creates an absolute path by prepending and appending '/' characters to the current path.
+    /// </summary>
+    public string ToAbsolutePath()
+    {
+        AsciiChar[]? rented = null;
+        try
+        {
+            var span = _value.Length < StackallocThresholds.MaxCharLength - 2
+                ? stackalloc AsciiChar[_value.Length + 2]
+                : rented = ArrayPool<AsciiChar>.Shared.Rent(_value.Length + 2);
+
+            if (rented is not null)
+            {
+                span = span[..(_value.Length + 2)];
+            }
+
+            var separator = (AsciiChar)'/';
+
+            span[0] = separator;
+            _value.Span.CopyTo(span[1..]);
+            span[^1] = separator;
+
+            return Encoding.UTF8.GetString(MemoryMarshal.AsBytes(span));
+        }
+        finally
+        {
+            if (rented is not null)
+            {
+                ArrayPool<AsciiChar>.Shared.Return(rented);
+            }
+        }
     }
 
     /// <summary>
