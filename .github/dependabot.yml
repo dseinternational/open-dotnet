@@ -16,11 +16,31 @@ updates:
     registries: "*"
     directory: "/"
     schedule:
-      interval: "weekly"
-      day: "wednesday"
+      interval: "daily"
       time: "05:30"
       timezone: "Europe/London"
     open-pull-requests-limit: 20
+    groups:
+      CommunityToolkit:
+        patterns:
+          - "CommunityToolkit.*"
+      EntityFrameworkCore:
+        patterns:
+          - "Microsoft.EntityFrameworkCore*"
+      MicrosoftExtensions:
+        patterns:
+          - "Microsoft.Extensions.*"
+      NETTestSdk:
+        patterns:
+          - "Microsoft.CodeCoverage"
+          - "Microsoft.NET.Test.Sdk"
+      NodaTime:
+        patterns:
+          - "NodaTime*"
+      xunit:
+        patterns:
+          - "xunit"
+          - "xunit.runner.*"
     reviewers:
     - frankbuckley
     assignees:
