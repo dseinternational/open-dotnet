@@ -39,8 +39,7 @@ updates:
           - "NodaTime*"
       xunit:
         patterns:
-          - "xunit"
-          - "xunit.runner.*"
+          - "xunit*"
     reviewers:
     - frankbuckley
     assignees:
