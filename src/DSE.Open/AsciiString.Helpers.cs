@@ -82,26 +82,6 @@ public partial struct AsciiString
         return true;
     }
 
-    public static void ToLowerInPlace(Span<byte> span, out int bytesWritten)
-    {
-        System.Text.Ascii.ToLowerInPlace(span, out bytesWritten);
-    }
-
-    public static void ToLowerInPlace(Span<char> span, out int charsWritten)
-    {
-        System.Text.Ascii.ToLowerInPlace(span, out charsWritten);
-    }
-
-    public static void ToUpperInPlace(Span<byte> span, out int bytesWritten)
-    {
-        System.Text.Ascii.ToUpperInPlace(span, out bytesWritten);
-    }
-
-    public static void ToUpperInPlace(Span<char> span, out int charsWritten)
-    {
-        System.Text.Ascii.ToUpperInPlace(span, out charsWritten);
-    }
-
     public static void ConvertToChar(ReadOnlySpan<byte> source, Span<char> output, out int charsWritten)
     {
         if (source.Length > output.Length)
