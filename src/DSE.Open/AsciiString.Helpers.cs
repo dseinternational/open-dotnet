@@ -82,58 +82,6 @@ public partial struct AsciiString
         return true;
     }
 
-    public static void ToLowerInPlace(Span<byte> span, out int bytesWritten)
-    {
-#if NET8_0_OR_GREATER
-        System.Text.Ascii.ToLowerInPlace(span, out bytesWritten);
-#endif
-        for (var i = 0; i < span.Length; i++)
-        {
-            span[i] = AsciiChar.ToLower(span[i]);
-        }
-
-        bytesWritten = span.Length;
-    }
-
-    public static void ToLowerInPlace(Span<char> span, out int charsWritten)
-    {
-#if NET8_0_OR_GREATER
-        System.Text.Ascii.ToLowerInPlace(span, out charsWritten);
-#endif
-        for (var i = 0; i < span.Length; i++)
-        {
-            span[i] = AsciiChar.ToLower(span[i]);
-        }
-
-        charsWritten = span.Length;
-    }
-
-    public static void ToUpperInPlace(Span<byte> span, out int bytesWritten)
-    {
-#if NET8_0_OR_GREATER
-        System.Text.Ascii.ToUpperInPlace(span, out bytesWritten);
-#endif
-        for (var i = 0; i < span.Length; i++)
-        {
-            span[i] = AsciiChar.ToUpper(span[i]);
-        }
-
-        bytesWritten = span.Length;
-    }
-
-    public static void ToUpperInPlace(Span<char> span, out int charsWritten)
-    {
-#if NET8_0_OR_GREATER
-        System.Text.Ascii.ToUpperInPlace(span, out charsWritten);
-#endif
-        for (var i = 0; i < span.Length; i++)
-        {
-            span[i] = AsciiChar.ToUpper(span[i]);
-        }
-
-        charsWritten = span.Length;
-    }
-
     public static void ConvertToChar(ReadOnlySpan<byte> source, Span<char> output, out int charsWritten)
     {
         if (source.Length > output.Length)
