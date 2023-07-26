@@ -35,7 +35,7 @@
 
   <PropertyGroup>
     <Copyright>Copyright (c) 2023 Down Syndrome Education International and Contributors. All rights reserved.</Copyright>
-    <RepositoryUrl>https://github.com/dseinternational/dse-open</RepositoryUrl>
+    <RepositoryUrl>https://github.com/dseinternational/open-dotnet</RepositoryUrl>
   </PropertyGroup>
 
 </Project>

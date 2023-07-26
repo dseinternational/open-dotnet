@@ -74,5 +74,5 @@ jobs:
 
       - name: Publish
         if: matrix.configuration == 'Release'
-        run: ./eng/scripts/push.ps1 -api_key ${{ secrets.MYGET_API_KEY }}
+        run: ./eng/scripts/push.ps1 -api_key ${{ secrets.PACKAGES_TOKEN }}
         shell: pwsh
