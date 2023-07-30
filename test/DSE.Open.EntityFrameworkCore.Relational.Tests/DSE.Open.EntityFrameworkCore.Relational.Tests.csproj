@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\DSE.Open.EntityFrameworkCore.Relational\DSE.Open.EntityFrameworkCore.Relational.csproj" />
+    <ProjectReference Include="..\..\src\DSE.Open.Testing.Xunit.EntityFrameworkCore\DSE.Open.Testing.Xunit.EntityFrameworkCore.csproj" />
+  </ItemGroup>
+
+</Project>

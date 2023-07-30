@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DSE.Open.Diagnostics.HealthChecks\DSE.Open.Diagnostics.HealthChecks.csproj" />
+    <ProjectReference Include="..\DSE.Open.DomainModel\DSE.Open.DomainModel.csproj" />
     <ProjectReference Include="..\DSE.Open.Drawing\DSE.Open.Drawing.csproj" />
     <ProjectReference Include="..\DSE.Open.Globalization\DSE.Open.Globalization.csproj" />
   </ItemGroup>

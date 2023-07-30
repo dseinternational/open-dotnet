@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DSE.Open.EntityFrameworkCore.Sqlite\DSE.Open.EntityFrameworkCore.Sqlite.csproj" />
+    <ProjectReference Include="..\DSE.Open.EntityFrameworkCore.SqlServer\DSE.Open.EntityFrameworkCore.SqlServer.csproj" />
+    <ProjectReference Include="..\DSE.Open.EntityFrameworkCore\DSE.Open.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\DSE.Open.Testing.Xunit\DSE.Open.Testing.Xunit.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentAssertions" />
+  </ItemGroup>
+  
+</Project>

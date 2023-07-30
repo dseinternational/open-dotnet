@@ -18,7 +18,7 @@ public sealed class DiagnosticCodeToStringConverter : ValueConverter<Diagnostics
 
     private static Open.Diagnostics.DiagnosticCode ConvertFromString(string code)
     {
-        if (Open.Diagnostics.DiagnosticCode.TryParse(code, out var value))
+        if (Diagnostics.DiagnosticCode.TryParse(code, out var value))
         {
             return value;
         }

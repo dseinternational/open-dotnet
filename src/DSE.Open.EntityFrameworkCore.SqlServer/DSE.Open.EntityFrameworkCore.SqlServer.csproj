@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DSE.Open.Data.SqlClient\DSE.Open.Data.SqlClient.csproj" />
+    <ProjectReference Include="..\DSE.Open.EntityFrameworkCore.Relational\DSE.Open.EntityFrameworkCore.Relational.csproj" />
+    <ProjectReference Include="..\DSE.Open.Retries\DSE.Open.Retries.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.HierarchyId" />
+    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" />
+
+  </ItemGroup>
+
+</Project>
