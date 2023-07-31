@@ -18,7 +18,6 @@ public class LibraryDbContext : DbContext
         base.OnConfiguring(optionsBuilder);
 
         _ = optionsBuilder.ReplaceService<IConstructorBindingFactory, StrictMaterializationConstructorBindingFactory>();
-
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -26,10 +25,13 @@ public class LibraryDbContext : DbContext
         base.OnModelCreating(modelBuilder);
 
         _ = modelBuilder.ApplyConfiguration(new AuthorEntityTypeConfiguration());
+        _ = modelBuilder.ApplyConfiguration(new BookEntityTypeConfiguration());
 
         // must be last
         modelBuilder.ApplySnakeCaseConvention();
     }
 
     public DbSet<Author> Authors { get; set; } = default!;
+
+    public DbSet<Author> Books { get; set; } = default!;
 }

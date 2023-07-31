@@ -28,4 +28,6 @@ public class Author : UpdateTimesTrackedEventRaisingEntity<int>
     public required string GivenName { get; set; }
 
     public required string FamilyName { get; set; }
+
+    public ICollection<Book> Books { get; } = new List<Book>();
 }
