@@ -10,7 +10,7 @@
     <PackageVersion Include="CommunityToolkit.HighPerformance" Version="8.2.1" />
     <PackageVersion Include="coverlet.collector" Version="6.0.0" />
     <PackageVersion Include="FluentAssertions" Version="6.11.0" />
-    <PackageVersion Include="Microsoft.Data.SqlClient" Version="5.2.0-preview2.23159.1" />
+    <PackageVersion Include="Microsoft.Data.SqlClient" Version="5.2.0-preview3.23201.1" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.5-beta1.23320.2" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.6.0" />
     <PackageVersion Include="Microsoft.CodeCoverage" Version="17.6.3" />
