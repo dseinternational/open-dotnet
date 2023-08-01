@@ -126,6 +126,10 @@ public readonly struct DiagnosticCode
 
     public override bool Equals(object? obj) => obj is DiagnosticCode other && Equals(other);
 
+    public static bool operator ==(DiagnosticCode left, DiagnosticCode right) => Equals(left, right);
+
+    public static bool operator !=(DiagnosticCode left, DiagnosticCode right) => !(left == right);
+
     public static bool operator ==(DiagnosticCode left, string right) => left.Equals(right);
 
     public static bool operator !=(DiagnosticCode left, string right) => !(left == right);
