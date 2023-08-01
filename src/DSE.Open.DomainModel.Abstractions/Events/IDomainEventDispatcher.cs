@@ -2,8 +2,9 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Diagnostics.CodeAnalysis;
+using DSE.Open.DomainModel.Entities;
 
-namespace DSE.Open.DomainModel.Abstractions;
+namespace DSE.Open.DomainModel.Abstractions.Events;
 
 /// <summary>
 /// Dispatches domain events attached to entities.

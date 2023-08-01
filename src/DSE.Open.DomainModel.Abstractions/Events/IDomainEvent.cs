@@ -4,7 +4,7 @@
 using DSE.Open.Events.Abstractions;
 using DSE.Open.Mediators;
 
-namespace DSE.Open.DomainModel.Abstractions;
+namespace DSE.Open.DomainModel.Abstractions.Events;
 
 /// <summary>
 /// An object that describes something that happened in the domain that other parts of

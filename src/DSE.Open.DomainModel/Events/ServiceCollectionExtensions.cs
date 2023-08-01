@@ -2,7 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Diagnostics.CodeAnalysis;
-using DSE.Open.DomainModel.Abstractions;
+using DSE.Open.DomainModel.Abstractions.Events;
 using DSE.Open.Mediators;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;

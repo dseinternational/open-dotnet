@@ -1,10 +1,11 @@
 ﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-namespace DSE.Open.DomainModel.Abstractions;
+using DSE.Open.Mediators;
 
-public interface IUpdateUsersTracked : IUpdatesTracked
+namespace DSE.Open.DomainModel.Abstractions.Events;
+
+public interface IDomainEventMessageHandler<TEvent> : IMessageHandler<TEvent>
+    where TEvent : IDomainEvent
 {
-    string? CreatedUser { get; }
-    string? UpdatedUser { get; }
 }
