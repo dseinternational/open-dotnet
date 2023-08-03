@@ -3,7 +3,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 using DSE.Open.DomainModel.Entities;
-using DSE.Open.DomainModel.Abstractions.Events;
+using DSE.Open.DomainModel.Events;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Logging;
 

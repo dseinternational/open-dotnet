@@ -2,7 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using DSE.Open;
-using DSE.Open.DomainModel.Abstractions.Events;
+using DSE.Open.DomainModel.Events;
 
 namespace DSE.Open.DomainModel.Entities;
 

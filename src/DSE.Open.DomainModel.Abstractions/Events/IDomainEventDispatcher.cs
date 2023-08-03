@@ -4,7 +4,7 @@
 using System.Diagnostics.CodeAnalysis;
 using DSE.Open.DomainModel.Entities;
 
-namespace DSE.Open.DomainModel.Abstractions.Events;
+namespace DSE.Open.DomainModel.Events;
 
 /// <summary>
 /// Dispatches domain events attached to entities.

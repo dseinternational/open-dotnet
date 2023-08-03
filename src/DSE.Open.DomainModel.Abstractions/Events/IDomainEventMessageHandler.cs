@@ -3,7 +3,7 @@
 
 using DSE.Open.Mediators;
 
-namespace DSE.Open.DomainModel.Abstractions.Events;
+namespace DSE.Open.DomainModel.Events;
 
 public interface IDomainEventMessageHandler<TEvent> : IMessageHandler<TEvent>
     where TEvent : IDomainEvent

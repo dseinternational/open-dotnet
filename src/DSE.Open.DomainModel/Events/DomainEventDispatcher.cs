@@ -3,7 +3,6 @@
 
 using System.Diagnostics.CodeAnalysis;
 using DSE.Open.DomainModel.Entities;
-using DSE.Open.DomainModel.Abstractions.Events;
 using DSE.Open.Mediators;
 
 namespace DSE.Open.DomainModel.Events;
