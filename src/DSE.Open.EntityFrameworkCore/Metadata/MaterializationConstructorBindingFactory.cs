@@ -2,7 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Reflection;
-using DSE.Open.DomainModel.Abstractions;
+using DSE.Open.DomainModel.Entities;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
@@ -24,15 +24,16 @@ public class MaterializationConstructorBindingFactory : ConstructorBindingFactor
     {
     }
 
-    protected override void GetBindings(
-        IReadOnlyEntityType entityType,
-        Func<IParameterBindingFactory?, IReadOnlyEntityType, Type, string, ParameterBinding?> bind,
+    protected override void GetBindings<T>(
+        T type,
+        Func<IPropertyParameterBindingFactory, T, Type, string, ParameterBinding?> bindToProperty,
+        Func<IParameterBindingFactory?, T, Type, string, ParameterBinding?> bind,
         out InstantiationBinding constructorBinding,
         out InstantiationBinding? serviceOnlyBinding)
     {
-        Guard.IsNotNull(entityType);
+        Guard.IsNotNull(type);
 
-        var constructorsWithAttribute = entityType.ClrType.GetTypeInfo()
+        var constructorsWithAttribute = type.ClrType.GetTypeInfo()
             .DeclaredConstructors
             .Where(c => !c.IsStatic && c.GetCustomAttribute<MaterializationConstructorAttribute>() != null)
             .ToList();
@@ -40,13 +41,18 @@ public class MaterializationConstructorBindingFactory : ConstructorBindingFactor
         if (constructorsWithAttribute.Count > 1)
         {
             throw new InvalidOperationException("More than one constructor is marked with a " +
-                $"{nameof(MaterializationConstructorAttribute)} on entity type '{entityType.DisplayName()}'. " +
+                $"{nameof(MaterializationConstructorAttribute)} on entity type '{type.DisplayName()}'. " +
                 $"Only one constructor may be marked with a {nameof(MaterializationConstructorAttribute)}.");
         }
         else if (constructorsWithAttribute.Count == 1)
         {
-            if (TryBindConstructor(entityType, constructorsWithAttribute[0], bind,
-                out var binding, out _))
+            if (TryBindConstructor(
+                type,
+                constructorsWithAttribute[0],
+                bindToProperty,
+                bind,
+                out var binding,
+                out _))
             {
                 constructorBinding = binding;
                 serviceOnlyBinding = null;
@@ -55,10 +61,10 @@ public class MaterializationConstructorBindingFactory : ConstructorBindingFactor
             else
             {
                 throw new InvalidOperationException($"Failed to bind to a constructor marked with a " +
-                    $"{nameof(MaterializationConstructorAttribute)} on entity type '{entityType.DisplayName()}'.");
+                    $"{nameof(MaterializationConstructorAttribute)} on entity type '{type.DisplayName()}'.");
             }
         }
 
-        GetBindingsDefault(entityType, bind, out constructorBinding, out serviceOnlyBinding);
+        base.GetBindings(type, bindToProperty, bind, out constructorBinding, out serviceOnlyBinding);
     }
 }

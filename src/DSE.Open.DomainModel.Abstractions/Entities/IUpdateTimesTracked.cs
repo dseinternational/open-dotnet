@@ -3,7 +3,7 @@
 
 using System.ComponentModel;
 
-namespace DSE.Open.DomainModel.Abstractions;
+namespace DSE.Open.DomainModel.Entities;
 
 public interface IUpdateTimesTracked
 {

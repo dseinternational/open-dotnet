@@ -3,7 +3,7 @@
 
 using System.ComponentModel.DataAnnotations.Schema;
 using DSE.Open;
-using DSE.Open.DomainModel.Abstractions;
+using DSE.Open.DomainModel.Events;
 
 namespace DSE.Open.DomainModel.Entities;
 
