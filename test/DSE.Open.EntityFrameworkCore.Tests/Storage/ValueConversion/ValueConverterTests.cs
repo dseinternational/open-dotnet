@@ -43,7 +43,7 @@ public class ValueConverterTests : SqliteInMemoryTestBase<TestDbContext>
     {
         using (var db = CreateContext())
         {
-            _ = db.Countries.Add(new Country { Code = CountryCode.UnitedKingdom });
+            _ = await db.Countries.AddAsync(new Country { Code = CountryCode.UnitedKingdom });
             _ = await db.SaveChangesAsync();
         }
 

@@ -75,20 +75,16 @@ public abstract class ConstructorBindingFactoryBase : IConstructorBindingFactory
             out constructorBinding,
             out serviceOnlyBinding);
 
-    /*
-     * TODO: uncomment when later EF COre 8 builds available
-     * 
-        public virtual void GetBindings(
-            IReadOnlyComplexType complexType,
-            out InstantiationBinding constructorBinding,
-            out InstantiationBinding? serviceOnlyBinding)
-            => GetBindings(
-                complexType,
-                static (f, e, p, n) => f.FindParameter((IComplexType)e, p, n),
-                static (f, e, p, n) => null,
-                out constructorBinding,
-                out serviceOnlyBinding);
-    */
+    public virtual void GetBindings(
+        IReadOnlyComplexType complexType,
+        out InstantiationBinding constructorBinding,
+        out InstantiationBinding? serviceOnlyBinding)
+        => GetBindings(
+            complexType,
+            static (f, e, p, n) => f.FindParameter((IComplexType)e, p, n),
+            static (f, e, p, n) => null,
+            out constructorBinding,
+            out serviceOnlyBinding);
 
     protected virtual void GetBindings<T>(
         T type,

@@ -9,7 +9,11 @@ namespace DSE.Open.Globalization
     partial struct LanguageTag
     {
         /// <remarks>
-        /// Pattern explanation:<br/>
+        /// Pattern:<br/>
+        /// <code>^((?:(en-GB-oed|i-ami|i-bnn|i-default|i-enochian|i-hak|i-klingon|i-lux|i-mingo|i-navajo|i-pwn|i-tao|i-tay|i-tsu|sgn-BE-FR|sgn-BE-NL|sgn-CH-DE)|(art-lojban|cel-gaulish|no-bok|no-nyn|zh-guoyu|zh-hakka|zh-min|zh-min-nan|zh-xiang))|((?:([A-Za-z]{2,3}(-(?:[A-Za-z]{3}(-[A-Za-z]{3}){0,2}))?)|[A-Za-z]{4}|[A-Za-z]{5,8})(-(?:[A-Za-z]{4}))?(-(?:[A-Za-z]{2}|[0-9]{3}))?(-(?:[A-Za-z0-9]{5,8}|[0-9][A-Za-z0-9]{3}))*(-(?:[0-9A-WY-Za-wy-z](-[A-Za-z0-9]{2,8})+))*(-(?:x(-[A-Za-z0-9]{1,8})+))?)|(?:x(-[A-Za-z0-9]{1,8})+))$</code><br/>
+        /// Options:<br/>
+        /// <code>RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant</code><br/>
+        /// Explanation:<br/>
         /// <code>
         /// ○ Match if at the beginning of the string.<br/>
         /// ○ 1st capture group.<br/>
@@ -213,14 +217,14 @@ namespace DSE.Open.Globalization
         ///                     ○ Match '-'.<br/>
         ///                     ○ Match with 2 alternative expressions.<br/>
         ///                         ○ Match a character in the set [A-Za-z\u212A] exactly 2 times.<br/>
-        ///                         ○ Match '0' through '9' exactly 3 times.<br/>
+        ///                         ○ Match a character in the set [0-9] exactly 3 times.<br/>
         ///             ○ Loop greedily any number of times.<br/>
         ///                 ○ 10th capture group.<br/>
         ///                     ○ Match '-'.<br/>
         ///                     ○ Match with 2 alternative expressions.<br/>
         ///                         ○ Match a character in the set [0-9A-Za-z\u212A] greedily at least 5 and at most 8 times.<br/>
         ///                         ○ Match a sequence of expressions.<br/>
-        ///                             ○ Match '0' through '9'.<br/>
+        ///                             ○ Match a character in the set [0-9].<br/>
         ///                             ○ Match a character in the set [0-9A-Za-z\u212A] exactly 3 times.<br/>
         ///             ○ Loop greedily any number of times.<br/>
         ///                 ○ 11th capture group.<br/>
@@ -247,7 +251,7 @@ namespace DSE.Open.Globalization
         /// ○ Match if at the end of the string or if before an ending newline.<br/>
         /// </code>
         /// </remarks>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "8.0.8.32907")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "8.0.8.37506")]
         private static partial global::System.Text.RegularExpressions.Regex GetValidationRegex() => global::System.Text.RegularExpressions.Generated.GetValidationRegex_0.Instance;
     }
 }
@@ -265,7 +269,7 @@ namespace System.Text.RegularExpressions.Generated
     using System.Threading;
 
     /// <summary>Custom <see cref="Regex"/>-derived type for the GetValidationRegex method.</summary>
-    [GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "8.0.8.32907")]
+    [GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "8.0.8.37506")]
     file sealed class GetValidationRegex_0 : Regex
     {
         /// <summary>Cached, thread-safe singleton instance.</summary>
@@ -1537,7 +1541,7 @@ namespace System.Text.RegularExpressions.Generated
                                                 
                                                 // Branch 1
                                                 //{
-                                                    // Match '0' through '9' exactly 3 times.
+                                                    // Match a character in the set [0-9] exactly 3 times.
                                                     {
                                                         if ((uint)slice.Length < 4 ||
                                                             !char.IsAsciiDigit(slice[1]) ||
@@ -1692,7 +1696,7 @@ namespace System.Text.RegularExpressions.Generated
                                                 // Branch 1
                                                 //{
                                                     if ((uint)slice.Length < 5 ||
-                                                        !char.IsAsciiDigit(slice[1]) || // Match '0' through '9'.
+                                                        !char.IsAsciiDigit(slice[1]) || // Match a character in the set [0-9].
                                                         ((ch = slice[2]) < 128 ? !char.IsAsciiLetterOrDigit(ch) : !RegexRunner.CharInClass((char)ch, "\0\b\00:A[a{KÅ")) || // Match a character in the set [0-9A-Za-z\u212A] exactly 3 times.
                                                         ((ch = slice[3]) < 128 ? !char.IsAsciiLetterOrDigit(ch) : !RegexRunner.CharInClass((char)ch, "\0\b\00:A[a{KÅ")) ||
                                                         ((ch = slice[4]) < 128 ? !char.IsAsciiLetterOrDigit(ch) : !RegexRunner.CharInClass((char)ch, "\0\b\00:A[a{KÅ")))
@@ -2277,7 +2281,7 @@ namespace System.Text.RegularExpressions.Generated
     }
     
     /// <summary>Helper methods used by generated <see cref="Regex"/>-derived implementations.</summary>
-    [GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "8.0.8.32907")]
+    [GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "8.0.8.37506")]
     file static class Utilities
     {
         /// <summary>Pops 2 values from the backtracking stack.</summary>
