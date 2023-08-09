@@ -34,4 +34,60 @@ public class ReadOnlyValueCollectionTests
         var c2 = JsonSerializer.Deserialize<ReadOnlyValueCollection<int>>(json);
         Assert.Equal(c1, c2);
     }
+
+
+    [Fact]
+    public void CreateRange_WithIEnumerable_ShouldCreate()
+    {
+        // Arrange
+        IEnumerable<int> enumerable = new int[] { 0, 1 };
+
+        // Act
+        var collection = ReadOnlyValueCollection.CreateRange(enumerable);
+
+        // Assert
+        Assert.Equal(2, collection.Count);
+        Assert.Equal(0, collection[0]);
+        Assert.Equal(1, collection[1]);
+    }
+
+    [Fact]
+    public void CreateRange_WithRovc_ShouldCreate()
+    {
+        // Arrange
+        ReadOnlyValueCollection<int> initial = [3, 2];
+
+        // Act
+        var collection = ReadOnlyValueCollection.CreateRange(initial);
+
+        // Assert
+        Assert.Equal(2, initial.Count);
+        Assert.Equal(2, collection.Count);
+        Assert.Equal(3, collection[0]);
+        Assert.Equal(2, collection[1]);
+    }
+
+    [Fact]
+    public void Create_WithSpan_ShouldCreate()
+    {
+        // Act
+        var collection = ReadOnlyValueCollection.Create(stackalloc int[] { 0, 2 });
+
+        // Assert
+        Assert.Equal(0, collection[0]);
+        Assert.Equal(2, collection[1]);
+        Assert.Equal(2, collection.Count);
+    }
+
+    [Fact]
+    public void Create_WithCollectionLiteral_ShouldCreate()
+    {
+        // Act
+        ReadOnlyValueCollection<int> collection = [0, 1];
+
+        // Assert
+        Assert.Equal(0, collection[0]);
+        Assert.Equal(1, collection[1]);
+        Assert.Equal(2, collection.Count);
+    }
 }
