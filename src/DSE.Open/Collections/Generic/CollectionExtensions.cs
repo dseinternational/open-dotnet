@@ -530,8 +530,7 @@ public static class CollectionExtensions
     public static ReadOnlyValueCollection<T> ToReadOnlyValueCollection<T>(this IEnumerable<T> collection)
     {
         Guard.IsNotNull(collection);
-
-        return collection is ReadOnlyValueCollection<T> rovc ? rovc : new ReadOnlyValueCollection<T>(collection);
+        return ReadOnlyValueCollection.CreateRange(collection);
     }
 
     public static ValueCollection<T> ToValueCollection<T>(this IEnumerable<T> collection)
