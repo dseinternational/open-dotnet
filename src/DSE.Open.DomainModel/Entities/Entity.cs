@@ -20,10 +20,6 @@ public abstract class Entity<TId> : StoredObject, IEntity<TId>
         {
             EntityDataInitializationException.ThrowIf(id.Equals(default));
         }
-        else if (initialization == StoredObjectInitialization.Created)
-        {
-            EntityDataInitializationException.ThrowIf(!id.Equals(default));
-        }
 
         _id = id;
     }
