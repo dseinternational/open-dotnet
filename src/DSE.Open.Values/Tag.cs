@@ -2,7 +2,6 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using CommunityToolkit.HighPerformance.Buffers;
@@ -92,7 +91,6 @@ public readonly record struct Tag
             && tag.All(IsValidInnerChar);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static bool IsValidInnerChar(char c)
         => char.IsAsciiLetterOrDigit(c) || c == '-' || c == '/' || c == ':';
 

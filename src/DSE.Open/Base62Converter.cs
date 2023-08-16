@@ -2,7 +2,6 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace DSE.Open;
@@ -18,8 +17,6 @@ public static class Base62Converter
     // Z = 90  : 35
     // a = 97  : 36
     // z = 122 : 61
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static int GetIndex(char c)
     {
         switch (c)
@@ -37,7 +34,6 @@ public static class Base62Converter
         }
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static bool TryGetIndex(char c, out int value)
     {
         switch (c)

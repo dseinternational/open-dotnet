@@ -3,7 +3,6 @@
 
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text.Json.Serialization;
@@ -148,7 +147,6 @@ public readonly record struct Identifier
 
     public static bool IsAllowedIdentifierCharacter(char c) => char.IsAsciiLetterOrDigit(c);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsPrefixAllowedCharacter(char c) => char.IsAsciiLetterOrDigit(c) || c == PrefixDelimiter;
 
     public bool StartsWith(ReadOnlySpan<char> value) => _id.Span.StartsWith(value, StringComparison.Ordinal);
