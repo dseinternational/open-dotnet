@@ -7,7 +7,7 @@ $ErrorActionPreference="Stop"
 function Clean()
 {
     . (Join-Path $PSScriptRoot "utils.ps1")
-    Get-ChildItem $repo_dir -include bin,obj,AppPackages,BundleArtifacts,node_modules,TestResults,.tools,_temp -Recurse | ForEach-Object { Remove-Item $_.FullName -Force -Recurse }
+    Get-ChildItem $repo_dir -include bin,obj,AppPackages,BundleArtifacts,TestResults,.tools,_temp,node_modules,__publish -Recurse | ForEach-Object { Remove-Item $_.FullName -Force -Recurse }
 }
 
 try
