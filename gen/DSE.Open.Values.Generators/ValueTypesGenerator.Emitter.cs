@@ -258,7 +258,7 @@ public partial class ValueTypesGenerator
                         IFormatProvider? provider)
                         {
                             EnsureInitialized();
-                            return _value.TryFormat(destination, out charsWritten, format, provider);
+                            return ((ISpanFormattable)_value).TryFormat(destination, out charsWritten, format, provider);
                         }
                     """);
                 // TODO: number styles for int, long, etc.?

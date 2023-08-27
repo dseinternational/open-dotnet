@@ -102,7 +102,7 @@ public readonly partial struct Percent
         IFormatProvider? provider)
         {
             EnsureInitialized();
-            return _value.TryFormat(destination, out charsWritten, format, provider);
+            return ((ISpanFormattable)_value).TryFormat(destination, out charsWritten, format, provider);
         }
 
     public bool TryFormat(
