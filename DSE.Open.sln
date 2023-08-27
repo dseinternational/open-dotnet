@@ -98,23 +98,27 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Web", "src\DSE.Ope
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Web.Tests", "test\DSE.Open.Web.Tests\DSE.Open.Web.Tests.csproj", "{D321AE63-541D-43B7-A963-DC123CA25E3D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.DomainModel.Abstractions", "src\DSE.Open.DomainModel.Abstractions\DSE.Open.DomainModel.Abstractions.csproj", "{071C11E1-E66B-490F-A4C4-B4BC5D05A62F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.DomainModel.Abstractions", "src\DSE.Open.DomainModel.Abstractions\DSE.Open.DomainModel.Abstractions.csproj", "{071C11E1-E66B-490F-A4C4-B4BC5D05A62F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.DomainModel", "src\DSE.Open.DomainModel\DSE.Open.DomainModel.csproj", "{29919E0D-1619-4EE1-AC4F-3DC574FCFA86}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.DomainModel", "src\DSE.Open.DomainModel\DSE.Open.DomainModel.csproj", "{29919E0D-1619-4EE1-AC4F-3DC574FCFA86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.Events.Abstractions", "src\DSE.Open.Events.Abstractions\DSE.Open.Events.Abstractions.csproj", "{6D3FBD63-A381-445B-A269-043A45AB4861}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Events.Abstractions", "src\DSE.Open.Events.Abstractions\DSE.Open.Events.Abstractions.csproj", "{6D3FBD63-A381-445B-A269-043A45AB4861}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.DomainModel.Tests", "test\DSE.Open.DomainModel.Tests\DSE.Open.DomainModel.Tests.csproj", "{7E0AFC34-50A9-4742-8785-3E53F9C18277}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.DomainModel.Tests", "test\DSE.Open.DomainModel.Tests\DSE.Open.DomainModel.Tests.csproj", "{7E0AFC34-50A9-4742-8785-3E53F9C18277}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.EntityFrameworkCore.Relational.Tests", "test\DSE.Open.EntityFrameworkCore.Relational.Tests\DSE.Open.EntityFrameworkCore.Relational.Tests.csproj", "{967B2BB6-2820-4BDF-A3B1-4F184AD6B110}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.EntityFrameworkCore.Relational.Tests", "test\DSE.Open.EntityFrameworkCore.Relational.Tests\DSE.Open.EntityFrameworkCore.Relational.Tests.csproj", "{967B2BB6-2820-4BDF-A3B1-4F184AD6B110}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.Testing.Xunit.EntityFrameworkCore", "src\DSE.Open.Testing.Xunit.EntityFrameworkCore\DSE.Open.Testing.Xunit.EntityFrameworkCore.csproj", "{36F06F65-47FE-4FDE-BC48-204C89875057}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Testing.Xunit.EntityFrameworkCore", "src\DSE.Open.Testing.Xunit.EntityFrameworkCore\DSE.Open.Testing.Xunit.EntityFrameworkCore.csproj", "{36F06F65-47FE-4FDE-BC48-204C89875057}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.EntityFrameworkCore.SqlServer", "src\DSE.Open.EntityFrameworkCore.SqlServer\DSE.Open.EntityFrameworkCore.SqlServer.csproj", "{2E1553AC-E305-4894-8B73-C6B3D3D25570}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.EntityFrameworkCore.SqlServer", "src\DSE.Open.EntityFrameworkCore.SqlServer\DSE.Open.EntityFrameworkCore.SqlServer.csproj", "{2E1553AC-E305-4894-8B73-C6B3D3D25570}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.EntityFrameworkCore.Sqlite", "src\DSE.Open.EntityFrameworkCore.Sqlite\DSE.Open.EntityFrameworkCore.Sqlite.csproj", "{5EDC5C2F-4C0D-4B0E-8C25-31DACA651BAC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.EntityFrameworkCore.Sqlite", "src\DSE.Open.EntityFrameworkCore.Sqlite\DSE.Open.EntityFrameworkCore.Sqlite.csproj", "{5EDC5C2F-4C0D-4B0E-8C25-31DACA651BAC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.Retries", "src\DSE.Open.Retries\DSE.Open.Retries.csproj", "{48947C5F-A290-466D-AA5D-BB6EFD1DDD91}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Retries", "src\DSE.Open.Retries\DSE.Open.Retries.csproj", "{48947C5F-A290-466D-AA5D-BB6EFD1DDD91}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.Speech.Abstractions", "src\DSE.Open.Speech.Abstractions\DSE.Open.Speech.Abstractions.csproj", "{66770942-1657-4BA3-A7F9-44190715C229}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.Speech.Abstractions.Tests", "test\DSE.Open.Speech.Abstractions.Tests\DSE.Open.Speech.Abstractions.Tests.csproj", "{BB275793-3278-4B49-AEEA-1CBD0C60B99F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -294,6 +298,14 @@ Global
 		{48947C5F-A290-466D-AA5D-BB6EFD1DDD91}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48947C5F-A290-466D-AA5D-BB6EFD1DDD91}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{48947C5F-A290-466D-AA5D-BB6EFD1DDD91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66770942-1657-4BA3-A7F9-44190715C229}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66770942-1657-4BA3-A7F9-44190715C229}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66770942-1657-4BA3-A7F9-44190715C229}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66770942-1657-4BA3-A7F9-44190715C229}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB275793-3278-4B49-AEEA-1CBD0C60B99F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB275793-3278-4B49-AEEA-1CBD0C60B99F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB275793-3278-4B49-AEEA-1CBD0C60B99F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB275793-3278-4B49-AEEA-1CBD0C60B99F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -342,6 +354,8 @@ Global
 		{2E1553AC-E305-4894-8B73-C6B3D3D25570} = {D2529453-80C3-4F06-BBD0-6B58EF65EF99}
 		{5EDC5C2F-4C0D-4B0E-8C25-31DACA651BAC} = {D2529453-80C3-4F06-BBD0-6B58EF65EF99}
 		{48947C5F-A290-466D-AA5D-BB6EFD1DDD91} = {D2529453-80C3-4F06-BBD0-6B58EF65EF99}
+		{66770942-1657-4BA3-A7F9-44190715C229} = {D2529453-80C3-4F06-BBD0-6B58EF65EF99}
+		{BB275793-3278-4B49-AEEA-1CBD0C60B99F} = {850B3E2C-6172-4CF9-9E83-AD0997C57CA3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3D3BE91A-3636-45E3-A6BF-8C09D5A9782A}
