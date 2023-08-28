@@ -35,6 +35,24 @@ public class PhonemeTests
         Assert.Equal($"\"{p}\"", json);
     }
 
+    [Theory]
+    [MemberData(nameof(Phonemes))]
+    public void SerializeDeserialize(Phoneme p)
+    {
+        var json = JsonSerializer.Serialize(p);
+        var deserialized = JsonSerializer.Deserialize<Phoneme>(json);
+        Assert.Equal(p, deserialized);
+    }
+
+    [Theory]
+    [MemberData(nameof(Phonemes))]
+    public void SerializeDeserializeWithRelaxedJsonEscaping(Phoneme p)
+    {
+        var json = JsonSerializer.Serialize(p, JsonSharedOptions.RelaxedJsonEscaping);
+        var deserialized = JsonSerializer.Deserialize<Phoneme>(json);
+        Assert.Equal(p, deserialized);
+    }
+
     public static TheoryData<Phoneme> Phonemes
     {
         get

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Text.Json.Serialization;
@@ -28,5 +28,5 @@ public record PhoneticSymbol
     /// with underscores - for example, "_c_a_k_e" and "du_ck_" for /k/.
     /// </summary>
     [JsonPropertyName("examples")]
-    public ReadOnlyValueCollection<string> Examples { get; init; } = ReadOnlyValueCollection<string>.Empty;    
+    public ReadOnlyValueCollection<string> Examples { get; init; } = ReadOnlyValueCollection<string>.Empty;
 }
