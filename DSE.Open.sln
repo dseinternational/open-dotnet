@@ -116,9 +116,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.EntityFrameworkCor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Retries", "src\DSE.Open.Retries\DSE.Open.Retries.csproj", "{48947C5F-A290-466D-AA5D-BB6EFD1DDD91}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.Speech.Abstractions", "src\DSE.Open.Speech.Abstractions\DSE.Open.Speech.Abstractions.csproj", "{66770942-1657-4BA3-A7F9-44190715C229}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Speech.Abstractions", "src\DSE.Open.Speech.Abstractions\DSE.Open.Speech.Abstractions.csproj", "{66770942-1657-4BA3-A7F9-44190715C229}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.Speech.Abstractions.Tests", "test\DSE.Open.Speech.Abstractions.Tests\DSE.Open.Speech.Abstractions.Tests.csproj", "{BB275793-3278-4B49-AEEA-1CBD0C60B99F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Speech.Abstractions.Tests", "test\DSE.Open.Speech.Abstractions.Tests\DSE.Open.Speech.Abstractions.Tests.csproj", "{BB275793-3278-4B49-AEEA-1CBD0C60B99F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.Observations.Abstractions", "src\DSE.Open.Observations.Abstractions\DSE.Open.Observations.Abstractions.csproj", "{B2574566-3F20-470D-AEE7-AD1CFBFDA239}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.Observations.Abstractions.Tests", "test\DSE.Open.Observations.Abstractions.Tests\DSE.Open.Observations.Abstractions.Tests.csproj", "{4F8918BB-0943-4B37-9022-DC36A7E4AA60}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -306,6 +310,14 @@ Global
 		{BB275793-3278-4B49-AEEA-1CBD0C60B99F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB275793-3278-4B49-AEEA-1CBD0C60B99F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BB275793-3278-4B49-AEEA-1CBD0C60B99F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2574566-3F20-470D-AEE7-AD1CFBFDA239}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2574566-3F20-470D-AEE7-AD1CFBFDA239}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2574566-3F20-470D-AEE7-AD1CFBFDA239}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2574566-3F20-470D-AEE7-AD1CFBFDA239}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F8918BB-0943-4B37-9022-DC36A7E4AA60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F8918BB-0943-4B37-9022-DC36A7E4AA60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F8918BB-0943-4B37-9022-DC36A7E4AA60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F8918BB-0943-4B37-9022-DC36A7E4AA60}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -356,6 +368,8 @@ Global
 		{48947C5F-A290-466D-AA5D-BB6EFD1DDD91} = {D2529453-80C3-4F06-BBD0-6B58EF65EF99}
 		{66770942-1657-4BA3-A7F9-44190715C229} = {D2529453-80C3-4F06-BBD0-6B58EF65EF99}
 		{BB275793-3278-4B49-AEEA-1CBD0C60B99F} = {850B3E2C-6172-4CF9-9E83-AD0997C57CA3}
+		{B2574566-3F20-470D-AEE7-AD1CFBFDA239} = {D2529453-80C3-4F06-BBD0-6B58EF65EF99}
+		{4F8918BB-0943-4B37-9022-DC36A7E4AA60} = {850B3E2C-6172-4CF9-9E83-AD0997C57CA3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3D3BE91A-3636-45E3-A6BF-8C09D5A9782A}
