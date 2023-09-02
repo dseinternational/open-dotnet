@@ -3,13 +3,14 @@
 
 using System.Text.Json.Serialization;
 using DSE.Open.Collections.Generic;
+using DSE.Open.Globalization;
 
 namespace DSE.Open.Speech.Abstractions;
 
 /// <summary>
-/// Defines a symbol used to represent a phoneme.
+/// Defines a label used to represent a phoneme, together with example words.
 /// </summary>
-public record PhoneticSymbol
+public record PhonemeLabel
 {
     /// <summary>
     /// The phoneme represented.
@@ -18,10 +19,22 @@ public record PhoneticSymbol
     public required Phoneme Phoneme { get; init; }
 
     /// <summary>
-    /// The symbol used to represent the phoneme.
+    /// The label used to represent the phoneme.
     /// </summary>
-    [JsonPropertyName("symbol")]
-    public required string Symbol { get; init; }
+    [JsonPropertyName("label")]
+    public required string Label { get; init; }
+
+    /// <summary>
+    /// The language the <see cref="Description"/> and <see cref="Examples"/> are provided in.
+    /// </summary>
+    [JsonPropertyName("language")]
+    public required LanguageTag Language { get; init; }
+
+    /// <summary>
+    /// An optional description.
+    /// </summary>
+    [JsonPropertyName("description")]
+    public string? Description { get; init; }
 
     /// <summary>
     /// A collection of example words. The indicative parts should be surrounded

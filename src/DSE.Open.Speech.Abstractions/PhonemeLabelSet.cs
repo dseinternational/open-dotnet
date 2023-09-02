@@ -7,21 +7,21 @@ using System.Diagnostics.CodeAnalysis;
 namespace DSE.Open.Speech.Abstractions;
 
 /// <summary>
-/// A set of <see cref="PhoneticSymbol"/>s.
+/// A set of <see cref="PhonemeLabel"/>s.
 /// </summary>
-public abstract class PhoneticSymbolSet : IReadOnlyCollection<PhoneticSymbol>
+public abstract class PhonemeLabelSet : IReadOnlyCollection<PhonemeLabel>
 {
-    private readonly Dictionary<Phoneme, PhoneticSymbol> _phonemeLookup = new();
-    private readonly Dictionary<string, PhoneticSymbol> _symbolLookup = new();
+    private readonly Dictionary<Phoneme, PhonemeLabel> _phonemeLookup = new();
+    private readonly Dictionary<string, PhonemeLabel> _labelLookup = new();
 
-    protected PhoneticSymbolSet(IEnumerable<PhoneticSymbol> notations)
+    protected PhonemeLabelSet(IEnumerable<PhonemeLabel> notations)
     {
         Guard.IsNotNull(notations);
 
         foreach (var ps in notations)
         {
             _phonemeLookup.Add(ps.Phoneme, ps);
-            _symbolLookup.Add(ps.Symbol, ps);
+            _labelLookup.Add(ps.Label, ps);
         }
     }
 
@@ -29,19 +29,19 @@ public abstract class PhoneticSymbolSet : IReadOnlyCollection<PhoneticSymbol>
 
     public bool ContainsPhoneme(Phoneme phoneme) => _phonemeLookup.ContainsKey(phoneme);
 
-    public bool ContainsSymbol(string symbol) => _symbolLookup.ContainsKey(symbol);
+    public bool ContainsLabel(string label) => _labelLookup.ContainsKey(label);
 
-    public IEnumerator<PhoneticSymbol> GetEnumerator() => _phonemeLookup.Values.GetEnumerator();
+    public IEnumerator<PhonemeLabel> GetEnumerator() => _phonemeLookup.Values.GetEnumerator();
 
     public bool TryGetForPhoneme(
         Phoneme key,
-        [MaybeNullWhen(false)] out PhoneticSymbol value)
+        [MaybeNullWhen(false)] out PhonemeLabel value)
         => _phonemeLookup.TryGetValue(key, out value);
 
     public bool TryGetForSymbol(
         string key,
-        [MaybeNullWhen(false)] out PhoneticSymbol value)
-        => _symbolLookup.TryGetValue(key, out value);
+        [MaybeNullWhen(false)] out PhonemeLabel value)
+        => _labelLookup.TryGetValue(key, out value);
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }
