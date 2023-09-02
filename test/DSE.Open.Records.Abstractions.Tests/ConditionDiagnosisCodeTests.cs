@@ -3,7 +3,7 @@
 
 using System.Text.Json;
 
-namespace DSE.Open.Records.Abstractions.Tests;
+namespace DSE.Open.Records.Tests;
 
 public class ConditionDiagnosisCodeTests
 {

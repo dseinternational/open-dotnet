@@ -3,7 +3,7 @@
 
 using CommunityToolkit.HighPerformance.Buffers;
 
-namespace DSE.Open.Speech.Abstractions;
+namespace DSE.Open.Speech;
 
 internal static class PhonemeStringPool
 {

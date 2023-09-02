@@ -4,9 +4,9 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
-using DSE.Open.Speech.Abstractions.Text.Json.Serialization;
+using DSE.Open.Speech.Text.Json.Serialization;
 
-namespace DSE.Open.Speech.Abstractions;
+namespace DSE.Open.Speech;
 
 /// <summary>
 /// Identifies a phoneme, the smallest unit of sound in a language that distinguishes one

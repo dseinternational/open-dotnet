@@ -4,7 +4,7 @@
 using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 
-namespace DSE.Open.Speech.Abstractions;
+namespace DSE.Open.Speech;
 
 /// <summary>
 /// A set of <see cref="PhonemeLabel"/>s.

@@ -3,7 +3,7 @@
 
 using DSE.Open.Text.Json.Serialization;
 
-namespace DSE.Open.Speech.Abstractions.Text.Json.Serialization;
+namespace DSE.Open.Speech.Text.Json.Serialization;
 
 public class JsonStringPhonemeConverter : SpanParsableCharWritingJsonConverter<Phoneme>
 {

@@ -4,7 +4,7 @@
 using System.Resources;
 using DSE.Open.Labels;
 
-namespace DSE.Open.Records.Abstractions;
+namespace DSE.Open.Records;
 
 public sealed class ConditionDiagnosisCodeDescriptions : ResourceLabelDescriptionProvider<ConditionDiagnosisCode>
 {

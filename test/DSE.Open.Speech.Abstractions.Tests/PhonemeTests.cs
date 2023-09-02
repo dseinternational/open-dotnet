@@ -4,7 +4,7 @@
 using System.Text.Json;
 using DSE.Open.Text.Json;
 
-namespace DSE.Open.Speech.Abstractions.Tests;
+namespace DSE.Open.Speech.Tests;
 
 public class PhonemeTests
 {

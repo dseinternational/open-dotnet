@@ -9,7 +9,7 @@ using System;
 using System.ComponentModel;
 using DSE.Open.Values;
 
-namespace DSE.Open.Observations.Abstractions;
+namespace DSE.Open.Observations;
 
 [TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<YesNo, AsciiString>))]
 public readonly partial struct YesNo

@@ -9,7 +9,7 @@ using System;
 using System.ComponentModel;
 using DSE.Open.Values;
 
-namespace DSE.Open.Records.Abstractions;
+namespace DSE.Open.Records;
 
 [TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<ConditionDiagnosisCode, ClinicalConceptCode>))]
 public readonly partial struct ConditionDiagnosisCode

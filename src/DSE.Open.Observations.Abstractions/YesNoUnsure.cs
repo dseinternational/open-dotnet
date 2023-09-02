@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 using DSE.Open.Values;
 using DSE.Open.Values.Text.Json.Serialization;
 
-namespace DSE.Open.Observations.Abstractions;
+namespace DSE.Open.Observations;
 
 /// <summary>
 /// Represents the selection of a choice between "Yes", "No" and "Not sure"/"Unsure".

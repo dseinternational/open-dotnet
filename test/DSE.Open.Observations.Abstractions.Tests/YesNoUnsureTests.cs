@@ -4,7 +4,7 @@
 using System.Text.Json;
 using DSE.Open.Values;
 
-namespace DSE.Open.Observations.Abstractions.Tests;
+namespace DSE.Open.Observations.Tests;
 
 public class YesNoUnsureTests
 {

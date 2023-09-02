@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 using DSE.Open.Values;
 using DSE.Open.Values.Text.Json.Serialization;
 
-namespace DSE.Open.Records.Abstractions;
+namespace DSE.Open.Records;
 
 /// <summary>
 /// Codes used to record diagnoses of conditions in our systems.

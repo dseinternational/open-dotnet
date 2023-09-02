@@ -3,7 +3,7 @@
 
 using DSE.Open.Values;
 
-namespace DSE.Open.Events.Abstractions;
+namespace DSE.Open.Events;
 
 /// <summary>
 /// A common representation of an event, based on the CloudEvents specification.

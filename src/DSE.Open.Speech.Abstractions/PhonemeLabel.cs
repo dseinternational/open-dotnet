@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 using DSE.Open.Collections.Generic;
 using DSE.Open.Globalization;
 
-namespace DSE.Open.Speech.Abstractions;
+namespace DSE.Open.Speech;
 
 /// <summary>
 /// Defines a label used to represent a phoneme, together with example words.

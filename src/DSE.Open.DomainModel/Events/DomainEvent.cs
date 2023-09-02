@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using DSE.Open.Events.Abstractions;
+using DSE.Open.Events;
 using DSE.Open.Values;
 
 namespace DSE.Open.DomainModel.Events;

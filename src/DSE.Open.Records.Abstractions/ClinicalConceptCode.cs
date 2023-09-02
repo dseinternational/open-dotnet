@@ -6,7 +6,7 @@ using DSE.Open.Values;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 
-namespace DSE.Open.Records.Abstractions;
+namespace DSE.Open.Records;
 
 /// <summary>
 /// A SNOMED CT Concept ID.
