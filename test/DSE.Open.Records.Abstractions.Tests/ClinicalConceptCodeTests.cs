@@ -22,5 +22,4 @@ public class ClinicalConceptCodeTests
         (ClinicalConceptCode)35919005,
         (ClinicalConceptCode)229746007,
     };
-
 }

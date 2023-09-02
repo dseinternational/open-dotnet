@@ -117,11 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="15188001" xml:space="preserve">
+    <value>Hearing loss</value>
+  </data>
   <data name="205616004" xml:space="preserve">
     <value>Down syndrome (Mosaic)</value>
   </data>
   <data name="229746007" xml:space="preserve">
     <value>Specific Language Impairment (SLI)</value>
+  </data>
+  <data name="232256002" xml:space="preserve">
+    <value>Otitis media with effusion</value>
   </data>
   <data name="254264002" xml:space="preserve">
     <value>Down syndrome (Partial)</value>
@@ -138,10 +144,19 @@
   <data name="41040004" xml:space="preserve">
     <value>Down syndrome</value>
   </data>
+  <data name="60700002" xml:space="preserve">
+    <value>Sensorineural hearing loss</value>
+  </data>
   <data name="613003" xml:space="preserve">
     <value>Fragile X</value>
   </data>
   <data name="63247009" xml:space="preserve">
     <value>Williams Syndrome</value>
+  </data>
+  <data name="65363002" xml:space="preserve">
+    <value>Otitis media</value>
+  </data>
+  <data name="77507001" xml:space="preserve">
+    <value>Conductive and sensorineural (mixed) hearing loss</value>
   </data>
 </root>

@@ -16,6 +16,17 @@ public class ConditionDiagnosisCodeTests
         Assert.Equal(value, deserialized);
     }
 
+    [Fact]
+    public static void HaveCorrectConceptIds()
+    {
+        Assert.Equal(41040004, ConditionDiagnosisCode.DownSyndrome);
+        Assert.Equal(613003, ConditionDiagnosisCode.FragileX);
+        Assert.Equal(63247009, ConditionDiagnosisCode.WilliamsSyndrome);
+        Assert.Equal(35919005, ConditionDiagnosisCode.AutismSpectrumDisorder);
+        Assert.Equal(280032002, ConditionDiagnosisCode.DevelopmentalLanguageDisorder);
+        Assert.Equal(229746007, ConditionDiagnosisCode.SpecificLanguageImpairment);
+    }
+
     public static TheoryData<ConditionDiagnosisCode> Values { get; } = new TheoryData<ConditionDiagnosisCode>()
     {
         ConditionDiagnosisCode.DownSyndrome,
