@@ -38,10 +38,14 @@ namespace DSE.Open.EntityFrameworkCore.SqlServer;
 /// </remarks>
 public sealed partial class SqlServerNonBufferingRetryingExecutionStrategy : ExecutionStrategy
 {
-    // 6 + 2 + 4 + 8 + 16 + 32 + 64 + 128 = 260 seconds (+ actual time retrying)
+    // https://learn.microsoft.com/en-us/azure/azure-sql/database/troubleshoot-common-connectivity-issues?view=azuresql#interval-increase-between-retries
+
+    // 5 + 1 + 2 + 4 + 8 + 16 + 32 + 64 = 132 seconds (+ actual time retrying)
+
     public static new readonly int DefaultMaxRetryCount = 8;
-    public static readonly TimeSpan DefaultFirstRetryDelay = TimeSpan.FromMilliseconds(6000);
-    public static readonly TimeSpan DefaultMedianRetryDelay = TimeSpan.FromMilliseconds(2000);
+
+    public static readonly TimeSpan DefaultFirstRetryDelay = TimeSpan.FromMilliseconds(5000);
+    public static readonly TimeSpan DefaultMedianRetryDelay = TimeSpan.FromMilliseconds(1000);
 
     private readonly TimeSpan[] _retryDelays;
     private readonly ILogger _logger;
