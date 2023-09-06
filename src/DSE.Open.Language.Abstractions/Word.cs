@@ -1,0 +1,32 @@
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Down Syndrome Education International and Contributors licence this file to you under the MIT license.
+
+using System.Runtime.InteropServices;
+using System.Text.Json.Serialization;
+using DSE.Open.Values;
+using DSE.Open.Values.Text.Json.Serialization;
+
+namespace DSE.Open.Language;
+
+/// <summary>
+/// A single distinct meaningful element of speech or writing, used with others
+/// (or sometimes alone) to form a sentence and typically shown with a space on
+/// either side when written or printed.
+/// </summary>
+/// <remarks>
+/// This structure is simply the characters in the word. For tokens, see TokenizedWord.
+/// </remarks>
+[ComparableValue]
+[StructLayout(LayoutKind.Auto)]
+[JsonConverter(typeof(JsonSpanSerializableValueConverter<Word, CharSequence>))]
+public readonly partial struct Word : IComparableValue<Word, CharSequence>
+{
+    public static int MaxSerializedCharLength => 64;
+
+    public static bool IsValidValue(CharSequence value)
+    {
+        // TODO: better - allowed characters? punctuation? whitespace?
+        return !value.IsEmpty
+            && value.Length <= MaxSerializedCharLength;
+    }
+}
