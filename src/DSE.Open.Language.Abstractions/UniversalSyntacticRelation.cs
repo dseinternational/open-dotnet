@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Collections.Frozen;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using DSE.Open.Values;
@@ -21,7 +22,9 @@ public readonly partial struct UniversalSyntacticRelation : IEquatableValue<Univ
 
     public static bool IsValidValue(AsciiString value)
     {
-        return !value.IsEmpty || value.Length <= MaxSerializedCharLength;
+        return !value.IsEmpty
+            && value.Length <= MaxSerializedCharLength
+            && s_validValues.Contains(value);
     }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates - Parse
@@ -96,5 +99,71 @@ public readonly partial struct UniversalSyntacticRelation : IEquatableValue<Univ
     public static readonly UniversalSyntacticRelation Root = (UniversalSyntacticRelation)"root";
     public static readonly UniversalSyntacticRelation Vocative = (UniversalSyntacticRelation)"vocative";
     public static readonly UniversalSyntacticRelation OpenClausalComplement = (UniversalSyntacticRelation)"xcomp";
+
+    public static readonly IReadOnlySet<UniversalSyntacticRelation> All = FrozenSet.ToFrozenSet(new[]
+    {
+        AdjectivalModifier,
+        AdverbialModifier,
+        AgentModifier,
+        AppositionalModifier,
+        Auxiliary,
+        CaseMarking,
+        Classifier,
+        ClausalComplement,
+        ClausalPassiveSubject,
+        ClausalSubject,
+        Compound,
+        Conjunct,
+        CoordinatingConjunction,
+        Copula,
+        Determiner,
+        DiscourseElement,
+        DislocatedElements,
+        EmphasizingWord,
+        Expletive,
+        FixedMultiwordExpression,
+        FlatMultiwordExpression,
+        ForeignWords,
+        GoesWith,
+        ImpersonalExpletive,
+        IndirectObject,
+        LightVerbConstruction,
+        List,
+        LocativeAdverbialModifier,
+        LocativeModifier,
+        Marker,
+        Names,
+        NominalModifier,
+        NominalSubject,
+        NumericModifier,
+        NumericModifierGoverningNoun,
+        Object,
+        ObliqueArgument,
+        ObliqueNominal,
+        OpenClausalComplement,
+        Orphan,
+        OverriddenDisfluency,
+        Parataxis,
+        PassiveAuxiliary,
+        PassiveNominalSubject,
+        PhrasalVerbParticle,
+        PossessiveDeterminer,
+        PossessiveNominalModifier,
+        Preconjunct,
+        PronominalQuantifierAgreeing,
+        PronominalQuantifierGoverning,
+        Punctuation,
+        ReduplicatedCompounds,
+        ReflexiveCliticWithReflexiveverb,
+        ReflexivePronounReflexivePassive,
+        Root,
+        SerialVerbCompounds,
+        TemporalModifier,
+        TemporalModifier2,
+        UnspecifiedDependency,
+        Vocative,
+    });
+
+    private static readonly IReadOnlySet<AsciiString> s_validValues = FrozenSet.ToFrozenSet(All.Select(r => r._value));
 }
 

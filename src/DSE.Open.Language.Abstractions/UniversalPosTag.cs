@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Collections.Frozen;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using DSE.Open.Values;
@@ -25,7 +26,9 @@ public readonly partial struct UniversalPosTag : IEquatableValue<UniversalPosTag
 
     public static bool IsValidValue(AsciiString value)
     {
-        return !value.IsEmpty || value.Length <= MaxSerializedCharLength;
+        return !value.IsEmpty
+            && value.Length <= MaxSerializedCharLength
+            && s_validValues.Contains(value);
     }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates - Parse
@@ -70,5 +73,27 @@ public readonly partial struct UniversalPosTag : IEquatableValue<UniversalPosTag
 
     public static readonly UniversalPosTag Other = (UniversalPosTag)"X";
 
+    public static readonly IReadOnlySet<UniversalPosTag> All = FrozenSet.ToFrozenSet(new[]
+    {
+        Adjective,
+        Adposition,
+        Adverb,
+        Auxiliary,
+        CoordinatingConjunction,
+        Determiner,
+        Interjection,
+        Noun,
+        Numeral,
+        Particle,
+        Pronoun,
+        ProperNoun,
+        Punctuation,
+        SubordinatingConjunction,
+        Symbol,
+        Verb,
+        Other
+    });
+
+    private static readonly IReadOnlySet<AsciiString> s_validValues = FrozenSet.ToFrozenSet(All.Select(x => x._value));
 }
 

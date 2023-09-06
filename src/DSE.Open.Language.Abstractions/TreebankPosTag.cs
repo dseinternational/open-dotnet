@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Collections.Frozen;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using DSE.Open.Values;
@@ -23,7 +24,9 @@ public readonly partial struct TreebankPosTag : IEquatableValue<TreebankPosTag, 
 
     public static bool IsValidValue(AsciiString value)
     {
-        return !value.IsEmpty || value.Length <= MaxSerializedCharLength;
+        return !value.IsEmpty
+            && value.Length <= MaxSerializedCharLength
+            && s_validValues.Contains(value);
     }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates - Parse
@@ -143,4 +146,64 @@ public readonly partial struct TreebankPosTag : IEquatableValue<TreebankPosTag, 
 
     public static readonly TreebankPosTag OpeningQuotationMark = (TreebankPosTag)"``";
 
+    public static readonly IReadOnlySet<TreebankPosTag> All = new HashSet<TreebankPosTag>(new TreebankPosTag[]
+    {
+        AdditionalWordInMultiwordExpression,
+        Adjective,
+        AdjectiveComparative,
+        AdjectiveSuperlative,
+        Adverb,
+        AdverbComparative,
+        AdverbParticle,
+        AdverbSuperlative,
+        Affix,
+        AuxiliaryBe,
+        CardinalNumber,
+        ClosingQuotationMark,
+        ClosingQuotationMark2,
+        ConjunctionCoordinating,
+        ConjunctionSubordinatingOrPreposition,
+        Determiner,
+        Email,
+        ExistentialThere,
+        ForeignWord,
+        FormsOfHave,
+        InfinitivalTo,
+        Interjection,
+        LeftRoundBracket,
+        ListItemMarker,
+        MissingTag,
+        NounPlural,
+        NounProperPlural,
+        NounProperSingular,
+        NounSingularOrMass,
+        OpeningQuotationMark,
+        PossessiveEnding,
+        Predeterminer,
+        PronounPersonal,
+        PronounPossessive,
+        PunctuationMarkColonOrEllipsis,
+        PunctuationMarkComma,
+        PunctuationMarkHyphen,
+        PunctuationMarkSentenceCloser,
+        RightRoundBracket,
+        Space,
+        SuperfluousPunctuation,
+        SymbolCurrency,
+        SymbolNumberSign,
+        Unknown,
+        Verb3rdPersonSingularPresent,
+        VerbBaseForm,
+        VerbGerundOrPresentParticiple,
+        VerbModalAuxiliary,
+        VerbNon3rdPersonSingularPresent,
+        VerbPastParticiple,
+        VerbPastTense,
+        WhAdverb,
+        WhDeterminer,
+        WhPronounPersonal,
+        WhPronounPossessive,
+    });
+
+    private static readonly IReadOnlySet<AsciiString> s_validValues = FrozenSet.ToFrozenSet(All.Select(x => x._value));
 }
