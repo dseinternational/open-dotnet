@@ -6,4 +6,8 @@
     <IsTestProject>true</IsTestProject>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\DSE.Open.Language.Abstractions\DSE.Open.Language.Abstractions.csproj" />
+  </ItemGroup>
+
 </Project>
