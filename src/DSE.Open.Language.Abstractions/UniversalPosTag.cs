@@ -24,6 +24,10 @@ public readonly partial struct UniversalPosTag : IEquatableValue<UniversalPosTag
     {
     }
 
+    private UniversalPosTag(string value, bool skipValidation) : this((AsciiString)value, skipValidation)
+    {
+    }
+
     public static bool IsValidValue(AsciiString value)
     {
         return !value.IsEmpty
@@ -39,39 +43,39 @@ public readonly partial struct UniversalPosTag : IEquatableValue<UniversalPosTag
     }
 
 
-    public static readonly UniversalPosTag Adjective = (UniversalPosTag)"ADJ";
+    public static readonly UniversalPosTag Adjective = new("ADJ", true);
 
-    public static readonly UniversalPosTag Adposition = (UniversalPosTag)"ADP";
+    public static readonly UniversalPosTag Adposition = new("ADP", true);
 
-    public static readonly UniversalPosTag Adverb = (UniversalPosTag)"ADV";
+    public static readonly UniversalPosTag Adverb = new("ADV", true);
 
-    public static readonly UniversalPosTag Auxiliary = (UniversalPosTag)"AUX";
+    public static readonly UniversalPosTag Auxiliary = new("AUX", true);
 
-    public static readonly UniversalPosTag CoordinatingConjunction = (UniversalPosTag)"CCONJ";
+    public static readonly UniversalPosTag CoordinatingConjunction = new("CCONJ", true);
 
-    public static readonly UniversalPosTag Determiner = (UniversalPosTag)"DET";
+    public static readonly UniversalPosTag Determiner = new("DET", true);
 
-    public static readonly UniversalPosTag Interjection = (UniversalPosTag)"INTJ";
+    public static readonly UniversalPosTag Interjection = new("INTJ", true);
 
-    public static readonly UniversalPosTag Noun = (UniversalPosTag)"NOUN";
+    public static readonly UniversalPosTag Noun = new("NOUN", true);
 
-    public static readonly UniversalPosTag Numeral = (UniversalPosTag)"NUM";
+    public static readonly UniversalPosTag Numeral = new("NUM", true);
 
-    public static readonly UniversalPosTag Particle = (UniversalPosTag)"PART";
+    public static readonly UniversalPosTag Particle = new("PART", true);
 
-    public static readonly UniversalPosTag Pronoun = (UniversalPosTag)"PRON";
+    public static readonly UniversalPosTag Pronoun = new("PRON", true);
 
-    public static readonly UniversalPosTag ProperNoun = (UniversalPosTag)"PROPN";
+    public static readonly UniversalPosTag ProperNoun = new("PROPN", true);
 
-    public static readonly UniversalPosTag Punctuation = (UniversalPosTag)"PUNCT";
+    public static readonly UniversalPosTag Punctuation = new("PUNCT", true);
 
-    public static readonly UniversalPosTag SubordinatingConjunction = (UniversalPosTag)"SCONJ";
+    public static readonly UniversalPosTag SubordinatingConjunction = new("SCONJ", true);
 
-    public static readonly UniversalPosTag Symbol = (UniversalPosTag)"SYM";
+    public static readonly UniversalPosTag Symbol = new("SYM", true);
 
-    public static readonly UniversalPosTag Verb = (UniversalPosTag)"VERB";
+    public static readonly UniversalPosTag Verb = new("VERB", true);
 
-    public static readonly UniversalPosTag Other = (UniversalPosTag)"X";
+    public static readonly UniversalPosTag Other = new("X", true);
 
     public static readonly IReadOnlySet<UniversalPosTag> All = FrozenSet.ToFrozenSet(new[]
     {

@@ -22,6 +22,10 @@ public readonly partial struct TreebankPosTag : IEquatableValue<TreebankPosTag, 
     {
     }
 
+    private TreebankPosTag(string value, bool skipValidation) : this((AsciiString)value, skipValidation)
+    {
+    }
+
     public static bool IsValidValue(AsciiString value)
     {
         return !value.IsEmpty
@@ -36,115 +40,115 @@ public readonly partial struct TreebankPosTag : IEquatableValue<TreebankPosTag, 
         return new TreebankPosTag(value);
     }
 
-    public static readonly TreebankPosTag ClosingQuotationMark = (TreebankPosTag)"\"\"";
+    public static readonly TreebankPosTag ClosingQuotationMark = new("\"\"", true);
 
-    public static readonly TreebankPosTag SymbolNumberSign = (TreebankPosTag)"#";
+    public static readonly TreebankPosTag SymbolNumberSign = new("#", true);
 
-    public static readonly TreebankPosTag SymbolCurrency = (TreebankPosTag)"$";
+    public static readonly TreebankPosTag SymbolCurrency = new("$", true);
 
-    public static readonly TreebankPosTag ClosingQuotationMark2 = (TreebankPosTag)"''";
+    public static readonly TreebankPosTag ClosingQuotationMark2 = new("''", true);
 
-    public static readonly TreebankPosTag PunctuationMarkComma = (TreebankPosTag)",";
+    public static readonly TreebankPosTag PunctuationMarkComma = new(",", true);
 
-    public static readonly TreebankPosTag LeftRoundBracket = (TreebankPosTag)"-LRB-";
+    public static readonly TreebankPosTag LeftRoundBracket = new("-LRB-", true);
 
-    public static readonly TreebankPosTag RightRoundBracket = (TreebankPosTag)"-RRB-";
+    public static readonly TreebankPosTag RightRoundBracket = new("-RRB-", true);
 
-    public static readonly TreebankPosTag PunctuationMarkSentenceCloser = (TreebankPosTag)".";
+    public static readonly TreebankPosTag PunctuationMarkSentenceCloser = new(".", true);
 
-    public static readonly TreebankPosTag PunctuationMarkColonOrEllipsis = (TreebankPosTag)":";
+    public static readonly TreebankPosTag PunctuationMarkColonOrEllipsis = new(":", true);
 
-    public static readonly TreebankPosTag Email = (TreebankPosTag)"ADD";
+    public static readonly TreebankPosTag Email = new("ADD", true);
 
-    public static readonly TreebankPosTag Affix = (TreebankPosTag)"AFX";
+    public static readonly TreebankPosTag Affix = new("AFX", true);
 
-    public static readonly TreebankPosTag AuxiliaryBe = (TreebankPosTag)"BES";
+    public static readonly TreebankPosTag AuxiliaryBe = new("BES", true);
 
-    public static readonly TreebankPosTag ConjunctionCoordinating = (TreebankPosTag)"CC";
+    public static readonly TreebankPosTag ConjunctionCoordinating = new("CC", true);
 
-    public static readonly TreebankPosTag CardinalNumber = (TreebankPosTag)"CD";
+    public static readonly TreebankPosTag CardinalNumber = new("CD", true);
 
-    public static readonly TreebankPosTag Determiner = (TreebankPosTag)"DT";
+    public static readonly TreebankPosTag Determiner = new("DT", true);
 
-    public static readonly TreebankPosTag ExistentialThere = (TreebankPosTag)"EX";
+    public static readonly TreebankPosTag ExistentialThere = new("EX", true);
 
-    public static readonly TreebankPosTag ForeignWord = (TreebankPosTag)"FW";
+    public static readonly TreebankPosTag ForeignWord = new("FW", true);
 
-    public static readonly TreebankPosTag AdditionalWordInMultiwordExpression = (TreebankPosTag)"GW";
+    public static readonly TreebankPosTag AdditionalWordInMultiwordExpression = new("GW", true);
 
-    public static readonly TreebankPosTag FormsOfHave = (TreebankPosTag)"HVS";
+    public static readonly TreebankPosTag FormsOfHave = new("HVS", true);
 
-    public static readonly TreebankPosTag PunctuationMarkHyphen = (TreebankPosTag)"HYPH";
+    public static readonly TreebankPosTag PunctuationMarkHyphen = new("HYPH", true);
 
-    public static readonly TreebankPosTag ConjunctionSubordinatingOrPreposition = (TreebankPosTag)"IN";
+    public static readonly TreebankPosTag ConjunctionSubordinatingOrPreposition = new("IN", true);
 
-    public static readonly TreebankPosTag Adjective = (TreebankPosTag)"JJ";
+    public static readonly TreebankPosTag Adjective = new("JJ", true);
 
-    public static readonly TreebankPosTag AdjectiveComparative = (TreebankPosTag)"JJR";
+    public static readonly TreebankPosTag AdjectiveComparative = new("JJR", true);
 
-    public static readonly TreebankPosTag AdjectiveSuperlative = (TreebankPosTag)"JJS";
+    public static readonly TreebankPosTag AdjectiveSuperlative = new("JJS", true);
 
-    public static readonly TreebankPosTag ListItemMarker = (TreebankPosTag)"LS";
+    public static readonly TreebankPosTag ListItemMarker = new("LS", true);
 
-    public static readonly TreebankPosTag VerbModalAuxiliary = (TreebankPosTag)"MD";
+    public static readonly TreebankPosTag VerbModalAuxiliary = new("MD", true);
 
-    public static readonly TreebankPosTag SuperfluousPunctuation = (TreebankPosTag)"NFP";
+    public static readonly TreebankPosTag SuperfluousPunctuation = new("NFP", true);
 
-    public static readonly TreebankPosTag MissingTag = (TreebankPosTag)"NIL";
+    public static readonly TreebankPosTag MissingTag = new("NIL", true);
 
-    public static readonly TreebankPosTag NounSingularOrMass = (TreebankPosTag)"NN";
+    public static readonly TreebankPosTag NounSingularOrMass = new("NN", true);
 
-    public static readonly TreebankPosTag NounProperSingular = (TreebankPosTag)"NNP";
+    public static readonly TreebankPosTag NounProperSingular = new("NNP", true);
 
-    public static readonly TreebankPosTag NounProperPlural = (TreebankPosTag)"NNPS";
+    public static readonly TreebankPosTag NounProperPlural = new("NNPS", true);
 
-    public static readonly TreebankPosTag NounPlural = (TreebankPosTag)"NNS";
+    public static readonly TreebankPosTag NounPlural = new("NNS", true);
 
-    public static readonly TreebankPosTag Predeterminer = (TreebankPosTag)"PDT";
+    public static readonly TreebankPosTag Predeterminer = new("PDT", true);
 
-    public static readonly TreebankPosTag PossessiveEnding = (TreebankPosTag)"POS";
+    public static readonly TreebankPosTag PossessiveEnding = new("POS", true);
 
-    public static readonly TreebankPosTag PronounPersonal = (TreebankPosTag)"PRP";
+    public static readonly TreebankPosTag PronounPersonal = new("PRP", true);
 
-    public static readonly TreebankPosTag PronounPossessive = (TreebankPosTag)"PRP$";
+    public static readonly TreebankPosTag PronounPossessive = new("PRP$", true);
 
-    public static readonly TreebankPosTag Adverb = (TreebankPosTag)"RB";
+    public static readonly TreebankPosTag Adverb = new("RB", true);
 
-    public static readonly TreebankPosTag AdverbComparative = (TreebankPosTag)"RBR";
+    public static readonly TreebankPosTag AdverbComparative = new("RBR", true);
 
-    public static readonly TreebankPosTag AdverbSuperlative = (TreebankPosTag)"RBS";
+    public static readonly TreebankPosTag AdverbSuperlative = new("RBS", true);
 
-    public static readonly TreebankPosTag AdverbParticle = (TreebankPosTag)"RP";
+    public static readonly TreebankPosTag AdverbParticle = new("RP", true);
 
-    public static readonly TreebankPosTag Space = (TreebankPosTag)"SP";
+    public static readonly TreebankPosTag Space = new("SP", true);
 
-    public static readonly TreebankPosTag InfinitivalTo = (TreebankPosTag)"TO";
+    public static readonly TreebankPosTag InfinitivalTo = new("TO", true);
 
-    public static readonly TreebankPosTag Interjection = (TreebankPosTag)"UH";
+    public static readonly TreebankPosTag Interjection = new("UH", true);
 
-    public static readonly TreebankPosTag VerbBaseForm = (TreebankPosTag)"VB";
+    public static readonly TreebankPosTag VerbBaseForm = new("VB", true);
 
-    public static readonly TreebankPosTag VerbPastTense = (TreebankPosTag)"VBD";
+    public static readonly TreebankPosTag VerbPastTense = new("VBD", true);
 
-    public static readonly TreebankPosTag VerbGerundOrPresentParticiple = (TreebankPosTag)"VBG";
+    public static readonly TreebankPosTag VerbGerundOrPresentParticiple = new("VBG", true);
 
-    public static readonly TreebankPosTag VerbPastParticiple = (TreebankPosTag)"VBN";
+    public static readonly TreebankPosTag VerbPastParticiple = new("VBN", true);
 
-    public static readonly TreebankPosTag VerbNon3rdPersonSingularPresent = (TreebankPosTag)"VBP";
+    public static readonly TreebankPosTag VerbNon3rdPersonSingularPresent = new("VBP", true);
 
-    public static readonly TreebankPosTag Verb3rdPersonSingularPresent = (TreebankPosTag)"VBZ";
+    public static readonly TreebankPosTag Verb3rdPersonSingularPresent = new("VBZ", true);
 
-    public static readonly TreebankPosTag WhDeterminer = (TreebankPosTag)"WDT";
+    public static readonly TreebankPosTag WhDeterminer = new("WDT", true);
 
-    public static readonly TreebankPosTag WhPronounPersonal = (TreebankPosTag)"WP";
+    public static readonly TreebankPosTag WhPronounPersonal = new("WP", true);
 
-    public static readonly TreebankPosTag WhPronounPossessive = (TreebankPosTag)"WP$";
+    public static readonly TreebankPosTag WhPronounPossessive = new("WP$", true);
 
-    public static readonly TreebankPosTag WhAdverb = (TreebankPosTag)"WRB";
+    public static readonly TreebankPosTag WhAdverb = new("WRB", true);
 
-    public static readonly TreebankPosTag Unknown = (TreebankPosTag)"XX";
+    public static readonly TreebankPosTag Unknown = new("XX", true);
 
-    public static readonly TreebankPosTag OpeningQuotationMark = (TreebankPosTag)"``";
+    public static readonly TreebankPosTag OpeningQuotationMark = new("``", true);
 
     public static readonly IReadOnlySet<TreebankPosTag> All = new HashSet<TreebankPosTag>(new TreebankPosTag[]
     {
