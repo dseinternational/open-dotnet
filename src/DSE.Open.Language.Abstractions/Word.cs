@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Collections.Frozen;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using DSE.Open.Values;
@@ -25,8 +26,42 @@ public readonly partial struct Word : IComparableValue<Word, CharSequence>
 
     public static bool IsValidValue(CharSequence value)
     {
-        // TODO: better - allowed characters? punctuation? whitespace?
-        return !value.IsEmpty
-            && value.Length <= MaxSerializedCharLength;
+        if (value.IsEmpty || value.Length > MaxSerializedCharLength)
+        {
+            return false;
+        }
+
+        for (var i = 0; i < value.Length; i++)
+        {
+            var c = value[i];
+
+            if (char.IsLetter(c))
+            {
+                continue;
+            }
+
+            if (char.IsWhiteSpace(value[i])
+                && (i > 0 || i < value.Length - 1))
+            {
+                continue;
+            }
+
+            if (char.IsPunctuation(value[i]))
+            {
+                if (i > 0)
+                {
+                    if (c == '\''
+                        || c == '’'
+                        || (c == '-' && i < value.Length - 1))
+                    {
+                        continue;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        return true;
     }
 }
