@@ -30,12 +30,12 @@ public readonly record struct Sign : ISpanFormattable, ISpanParsable<Sign>
     /// <summary>
     /// The modality of the sign.
     /// </summary>
-    public SignModality Modality { get; }
+    public SignModality Modality { get; init; }
 
     /// <summary>
     /// A <see cref="Word"/> that identifies the meaning of the sign.
     /// </summary>
-    public Word Word { get; }
+    public Word Word { get; init; }
 
     public static Sign Parse(ReadOnlySpan<char> s) => Parse(s, null);
 
