@@ -122,6 +122,8 @@ public readonly partial struct TreebankPosTag : IEquatableValue<TreebankPosTag, 
 
     public static readonly TreebankPosTag Space = new("SP", true);
 
+    public static readonly TreebankPosTag Symbol = new("SYM", true);
+
     public static readonly TreebankPosTag InfinitivalTo = new("TO", true);
 
     public static readonly TreebankPosTag Interjection = new("UH", true);
@@ -193,6 +195,7 @@ public readonly partial struct TreebankPosTag : IEquatableValue<TreebankPosTag, 
         RightRoundBracket,
         Space,
         SuperfluousPunctuation,
+        Symbol,
         SymbolCurrency,
         SymbolNumberSign,
         Unknown,
