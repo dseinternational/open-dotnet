@@ -12,6 +12,24 @@ public class IdentifierTests
         Output = output;
     }
 
+    [Theory]
+    [InlineData("sg_YTRBuEVPtNac6vF")]
+    public void EqualsReturnsTrueForEqualValues(string id)
+    {
+        var id1 = Identifier.Parse(id);
+        var id2 = Identifier.Parse(id);
+        Assert.Equal(id1, id2);
+    }
+
+    [Theory]
+    [InlineData("sg_YTRBuEVPtNac6vF")]
+    public void GetHasCodeReturnsEqualValueForSameIdValues(string id)
+    {
+        var hash1 = Identifier.Parse(id).GetHashCode();
+        var hash2 = Identifier.Parse(id).GetHashCode();
+        Assert.Equal(hash1, hash2);
+    }
+
     [Fact]
     public void Generate()
     {

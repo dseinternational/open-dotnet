@@ -101,7 +101,7 @@ public readonly record struct Identifier
         {
             var f = BitConverter.ToUInt16(randomBuffer.Slice(i, 2));
             var c = f % s_idCharsLength;
-            id.Span[idStartIndex + i / 2] = s_idChars[c];
+            id.Span[idStartIndex + (i / 2)] = s_idChars[c];
         }
 
         return new Identifier(id);
@@ -179,7 +179,16 @@ public readonly record struct Identifier
 
     public bool Equals(Identifier other) => Equals(other._id.Span);
 
-    public override int GetHashCode() => HashCode.Combine(_id);
+    public override int GetHashCode()
+    {
+        var hash = new HashCode();
+        for (var i = 0; i < _id.Length; i++)
+        {
+            hash.Add(_id.Span[i]);
+        }
+
+        return hash.ToHashCode();
+    }
 
     public static Identifier Parse(string s) => Parse(s, null);
 
