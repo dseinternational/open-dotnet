@@ -154,5 +154,33 @@ public class AsciiStringTests
 
         // Assert
         Assert.Equal(value.ToCharArray(), result.Span.ToArray());
-    } 
+    }
+
+    [Fact]
+    public void EqualsReturnsTrueForEqualValues()
+    {
+        // Arrange
+        const string value = "abcdefghijklmnopqrstuvwxyz";
+        var asciiString1 = AsciiString.Parse(value);
+        var asciiString2 = AsciiString.Parse(value);
+
+        // Assert
+        Assert.Equal(asciiString1, asciiString2);
+    }
+
+    [Fact]
+    public void GetHashCodeReturnsSameValueForEqualValues()
+    {
+        // Arrange
+        const string value = "abcdefghijklmnopqrstuvwxyz";
+        var asciiString1 = AsciiString.Parse(value);
+        var asciiString2 = AsciiString.Parse(value);
+
+        // Act
+        var hashCode1 = asciiString1.GetHashCode();
+        var hashCode2 = asciiString2.GetHashCode();
+
+        // Assert
+        Assert.Equal(hashCode1, hashCode2);
+    }
 }

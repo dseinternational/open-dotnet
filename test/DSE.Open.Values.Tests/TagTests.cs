@@ -114,6 +114,14 @@ public class TagTests
     }
 
     [Fact]
+    public void GetHashCodeReturnsEqualValues()
+    {
+        var v1 = Tag.Parse("tag");
+        var v2 = Tag.Parse(v1.ToString());
+        Assert.Equal(v1.GetHashCode(), v2.GetHashCode());
+    }
+
+    [Fact]
     public void EqualValuesAsObjectsAreEqual()
     {
         var v1 = (object)Tag.Parse("tag");

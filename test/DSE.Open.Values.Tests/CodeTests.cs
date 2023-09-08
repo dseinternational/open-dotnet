@@ -26,6 +26,26 @@ public sealed class CodeTests
     }
 
     [Theory]
+    [InlineData("abc", "abc", true)]
+    [InlineData("abc", "xyz", false)]
+    [InlineData("abc", "ABC", false)]
+    [InlineData(".", ".", true)]
+    [InlineData("", "", true)]
+    public void GetHashCodeReturnsEqualValues(string c1, string c2, bool eq)
+    {
+        var code1 = new Code(c1);
+        var code2 = new Code(c2);
+        if (eq)
+        {
+            Assert.Equal(code1.GetHashCode(), code2.GetHashCode());
+        }
+        else
+        {
+            Assert.NotEqual(code1.GetHashCode(), code2.GetHashCode());
+        }
+    }
+
+    [Theory]
     [InlineData("abc")]
     [InlineData("ABC")]
     [InlineData("123")]
