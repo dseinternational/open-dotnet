@@ -1,6 +1,8 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Reflection.Emit;
+
 namespace DSE.Open.Values.Tests;
 
 public class LabelTests
@@ -67,6 +69,16 @@ public class LabelTests
         var v1 = Label.Parse("A Label: 1");
         var v2 = Label.Parse(v1.ToString());
         Assert.Equal(v1, v2);
+    }
+
+    [Fact]
+    public void EqualValueHashCodesAreEqual()
+    {
+        var v1 = Label.Parse("A Label: 1");
+        var v2 = Label.Parse(v1.ToString());
+        var h1 = v1.GetHashCode();
+        var h2 = v2.GetHashCode();
+        Assert.Equal(h1, h2);
     }
 
     [Fact]

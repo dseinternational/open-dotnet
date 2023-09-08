@@ -99,7 +99,7 @@ public readonly record struct Label
     public bool Equals(string? other) => Equals(other, StringComparison.Ordinal);
 
     public bool Equals(string? other, StringComparison comparison) => other is not null
-        && (_label is null && other.Length == 0 || string.Equals(_label, other, comparison));
+        && ((_label is null && other.Length == 0) || string.Equals(_label, other, comparison));
 
     public bool Equals(ReadOnlyMemory<char> other) => Equals(other.Span);
 
@@ -107,7 +107,7 @@ public readonly record struct Label
 
     public bool Equals(Label other) => Equals(other._label.AsSpan());
 
-    public override int GetHashCode() => string.GetHashCode(_label, StringComparison.Ordinal);
+    public override int GetHashCode() => string.GetHashCode(_label.AsSpan(), StringComparison.Ordinal);
 
     public static bool IsValidLabel(ReadOnlySpan<char> label)
     {
