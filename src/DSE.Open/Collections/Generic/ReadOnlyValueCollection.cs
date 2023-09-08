@@ -26,7 +26,6 @@ public static class ReadOnlyValueCollection
             return ReadOnlyValueCollection<T>.Empty;
         }
 
-
         return new ReadOnlyValueCollection<T>(items.ToArray());
     }
 
@@ -135,14 +134,14 @@ public class ReadOnlyValueCollection<T>
 
     public override int GetHashCode()
     {
-        var hashCode = -7291863;
+        var hash = new HashCode();
 
         foreach (var i in this)
         {
-            hashCode = HashCode.Combine(hashCode, i);
+            hash.Add(i);
         }
 
-        return hashCode;
+        return hash.ToHashCode();
     }
 
     public IEnumerator<T> GetEnumerator() => _items.GetEnumerator();
