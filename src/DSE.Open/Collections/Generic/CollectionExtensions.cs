@@ -503,18 +503,6 @@ public static class CollectionExtensions
         }
     }
 
-    public static HashSet<T> ToHashSet<T>(this IEnumerable<T> collection)
-    {
-        Guard.IsNotNull(collection);
-        return new HashSet<T>(collection);
-    }
-
-    public static HashSet<T> ToHashSet<T>(this IEnumerable<T> collection, IEqualityComparer<T>? equalityComparer)
-    {
-        Guard.IsNotNull(collection);
-        return new HashSet<T>(collection, equalityComparer);
-    }
-
     public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> collection)
     {
         Guard.IsNotNull(collection);
