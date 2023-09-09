@@ -26,4 +26,12 @@ public readonly partial struct YesNo : IEquatableValue<YesNo, AsciiString>
     public static readonly YesNo Yes = new((AsciiString)"yes", true);
 
     public static readonly YesNo No = new((AsciiString)"no", true);
+
+    public bool ToBoolean() => this == Yes;
+
+    public static YesNo FromBoolean(bool value) => value ? Yes : No;
+
+    public static implicit operator bool (YesNo value) => value.ToBoolean();
+
+    public static implicit operator YesNo (bool value) => FromBoolean(value);
 }

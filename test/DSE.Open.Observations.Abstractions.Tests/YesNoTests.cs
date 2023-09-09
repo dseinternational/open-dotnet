@@ -1,10 +1,10 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Text.Json;
 using DSE.Open.Values;
 
-namespace DSE.Open.Observations.Tests;
+namespace DSE.Open.Observations.Abstractions.Tests;
 
 public class YesNoTests
 {
@@ -21,7 +21,21 @@ public class YesNoTests
     public void MustBeInitialized()
     {
         YesNo value = default;
-        Assert.Throws<UninitializedValueException<YesNo, AsciiString>>(() => value.ToString());
+        _ = Assert.Throws<UninitializedValueException<YesNo, AsciiString>>(value.ToString);
+    }
+
+    [Fact]
+    public void ToBoolean()
+    {
+        Assert.True(YesNo.Yes.ToBoolean());
+        Assert.False(YesNo.No.ToBoolean());
+    }
+
+    [Fact]
+    public void FromBoolean()
+    {
+        Assert.Equal(YesNo.Yes, YesNo.FromBoolean(true));
+        Assert.Equal(YesNo.No, YesNo.FromBoolean(false));
     }
 
     public static TheoryData<YesNo> Values { get; } = new TheoryData<YesNo>() { YesNo.No, YesNo.Yes, };

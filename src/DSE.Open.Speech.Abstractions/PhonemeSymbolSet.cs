@@ -1,4 +1,4 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Diagnostics.CodeAnalysis;
@@ -56,7 +56,10 @@ public abstract class PhonemeSymbolSet : IReadOnlyCollection<PhonemeSymbol>
         LanguageTag language,
         [MaybeNullWhen(false)] out Dictionary<string, PhonemeSymbol> lookup)
     {
-        if (_languageLabelLookup.TryGetValue(language, out lookup)) return true;
+        if (_languageLabelLookup.TryGetValue(language, out lookup))
+        {
+            return true;
+        }
 
         lookup = default;
         return false;
@@ -68,7 +71,10 @@ public abstract class PhonemeSymbolSet : IReadOnlyCollection<PhonemeSymbol>
         [MaybeNullWhen(false)] out PhonemeSymbol value)
     {
         if (_languageLabelLookup.TryGetValue(language, out var lookup)
-            && lookup.TryGetValue(Symbol, out value)) return true;
+            && lookup.TryGetValue(Symbol, out value))
+        {
+            return true;
+        }
 
         value = default;
         return false;
