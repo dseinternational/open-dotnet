@@ -52,6 +52,9 @@ public abstract class DbContextTestsBase<[DynamicallyAccessedMembers(TrimmingHel
     protected virtual TContext GetDbContext()
         => GetDbContextAsync().GetAwaiter().GetResult();
 
+    [UnconditionalSuppressMessage("AOT",
+        "IL3050:Calling members annotated with 'RequiresDynamicCodeAttribute' may break functionality when AOT compiling.",
+        Justification = "Test that does not require Native AOT")]
     protected virtual async Task<TContext> GetDbContextAsync()
     {
         var context = ServiceProvider.GetRequiredService<TContext>();

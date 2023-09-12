@@ -35,8 +35,7 @@ public sealed record Notification : ImmutableDataTransferObject, INotification
 
     [JsonInclude]
     [JsonPropertyName("level")]
-    [JsonConverter(typeof(JsonStringEnumConverter))]
-    public NotificationLevel Level { get; }
+        public NotificationLevel Level { get; }
 
     [JsonInclude]
     [JsonPropertyName("messsage")]
