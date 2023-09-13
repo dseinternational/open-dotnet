@@ -377,7 +377,7 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
                 emitGetHashCodeMethod = !getHashCodeMethods.Any(s => s.ParameterList.Parameters.Count == 0);
             }
 
-            // TryFormat
+            // ISpanFormattable.TryFormat
 
             var tryFormatMethods = instanceMethods.Where(s => s.Identifier.ValueText == "TryFormat").ToArray();
 
@@ -389,6 +389,7 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
                     && s.ParameterList.Parameters[0] is ParameterSyntax ps0
                     && ps0.Type is GenericNameSyntax gns0
                     && gns0.Identifier.Text == "Span"
+                    && ps0.Identifier.ValueText == "destination"
                     && s.ParameterList.Parameters[1] is ParameterSyntax ps1
                     && ps1.Type is PredefinedTypeSyntax pts1
                     && pts1.Keyword.Text == "int"
