@@ -4,11 +4,20 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
-using CommunityToolkit.HighPerformance;
 using DSE.Open.Values.Text.Json.Serialization;
 
 namespace DSE.Open.Values;
 
+/// <summary>
+/// An email address with the following deviations from the RFC:
+/// <list type="bullet">
+/// <item>Quoted strings are not supported (e.g. <c>"john..doe"@example.org</c> is treated as invalid).</item>
+/// <item>Domains must contain one or more periods (e.g. <c>user@localhost</c> is treated as invalid).</item>
+/// <item>Domain literals are not supported (e.g. <c>user@[IPv6:2001:db8::1]</c>).</item>
+/// <item>Domains must contain at least one ASCII letter (e.g. <c>email@123.123.123.123</c> is treated as invalid).</item>
+/// <item>Top-level domains (TLDs) are not validated (e.g. <c>user@example.web</c> is treated as valid, although <c>.web</c> is not a valid TLD).</item>
+/// </list>
+/// </summary>
 [JsonConverter(typeof(JsonStringEmailAddressConverter))]
 [StructLayout(LayoutKind.Auto)]
 public readonly record struct EmailAddress : IComparable<EmailAddress>, ISpanParsable<EmailAddress>,
@@ -18,6 +27,8 @@ public readonly record struct EmailAddress : IComparable<EmailAddress>, ISpanPar
     private const string ATextSymbolChars = "!#$%&'*+-/=?^_`{|}~";
 
     public const int MaxLocalPartLength = 64;
+
+    public const int MaxDomainPartLength = MaxLength - MaxLocalPartLength - 1;
 
     public const char AtChar = '@';
 
@@ -70,21 +81,108 @@ public readonly record struct EmailAddress : IComparable<EmailAddress>, ISpanPar
 
         splitIndex = email.IndexOf(AtChar);
 
-        if (splitIndex is < 0 or > MaxLocalPartLength)
+        if (splitIndex is <= 0 or > MaxLocalPartLength)
         {
             return false;
         }
 
-        var localPart = email[..splitIndex];
+        return IsValidLocalPart(email[..splitIndex]) && IsValidDomainPart(email[(splitIndex + 1)..]);
+    }
+
+    // See https://datatracker.ietf.org/doc/html/rfc3696#section-3
+    private static bool IsValidLocalPart(ReadOnlySpan<char> localPart)
+    {
+        if (localPart[0] == '.' || localPart[^1] == '.')
+        {
+            return false;
+        }
 
         if (!AllAreValidDotAtomChars(localPart))
         {
             return false;
         }
 
-        var domain = email[(splitIndex + 1)..];
+        return !AnyConsecutiveDots(localPart);
+    }
 
-        return AllAreValidDotAtomChars(domain) && domain.IndexOf('.') >= 0;
+    private static bool IsValidDomainPart(ReadOnlySpan<char> domain)
+    {
+        // labels (words or strings separated by periods) that make up a domain name must consist of only the ASCII [ASCII] alphabetic and numeric characters,
+        // plus the hyphen. No other symbols or punctuation characters are permitted, nor is blank space.  If the hyphen is used, it is not permitted to appear
+        // at either the beginning or end of a label. There is an additional rule that essentially requires that top-level domain names not be all-numeric.
+        // https://datatracker.ietf.org/doc/html/rfc3696#section-2
+
+        if (domain.Length > MaxDomainPartLength)
+        {
+            return false;
+        }
+
+        Span<Range> labels = stackalloc Range[10];
+        var labelCount = domain.Split(labels, '.');
+        var anyAsciiLetters = false;
+
+        // We don't support domains with less than two labels (e.g. `fred@example`).
+        if (labelCount < 2)
+        {
+            return false;
+        }
+
+        for (var i = 0; i < labelCount; i++)
+        {
+            var label = domain[labels[i]];
+
+            if (label.Length < 1)
+            {
+                return false;
+            }
+
+            if (label[0] == '-' || label[^1] == '-')
+            {
+                return false;
+            }
+
+            foreach (var @char in label)
+            {
+                if (char.IsAsciiLetter(@char))
+                {
+                    anyAsciiLetters = true;
+                    continue;
+                }
+
+                if (char.IsAsciiDigit(@char) || @char == '-')
+                {
+                    continue;
+                }
+
+                return false;
+            }
+        }
+
+        if (!anyAsciiLetters)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    private static bool AnyConsecutiveDots(ReadOnlySpan<char> localPart)
+    {
+        var previous = localPart[0];
+
+        for (var i = 1; i < localPart.Length; i++)
+        {
+            var current = localPart[i];
+
+            if (previous == '.' && current == '.')
+            {
+                return true;
+            }
+
+            previous = current;
+        }
+
+        return false;
     }
 
     // https://datatracker.ietf.org/doc/html/rfc5322#section-3.2.3
@@ -247,6 +345,7 @@ public readonly record struct EmailAddress : IComparable<EmailAddress>, ISpanPar
         return false;
     }
 
+#pragma warning disable CA2225 // Operator overloads have named alternates - explicit conversion operators
     public static explicit operator EmailAddress(string value) => new(value);
 
     public static explicit operator string(EmailAddress value) => value.ToString();
@@ -254,6 +353,7 @@ public readonly record struct EmailAddress : IComparable<EmailAddress>, ISpanPar
     public static explicit operator ReadOnlySpan<char>(EmailAddress value) => value._value;
 
     public static explicit operator ReadOnlyMemory<char>(EmailAddress value) => value._value.AsMemory();
+#pragma warning restore CA2225 // Operator overloads have named alternates
 
     public static bool operator <(EmailAddress left, EmailAddress right) => left.CompareTo(right) < 0;
 
@@ -262,10 +362,4 @@ public readonly record struct EmailAddress : IComparable<EmailAddress>, ISpanPar
     public static bool operator >(EmailAddress left, EmailAddress right) => left.CompareTo(right) > 0;
 
     public static bool operator >=(EmailAddress left, EmailAddress right) => left.CompareTo(right) >= 0;
-
-    public static EmailAddress ToEmailAddress(EmailAddress left, EmailAddress right) => throw new NotImplementedException();
-
-    public static ReadOnlySpan<char> ToReadOnlySpan(EmailAddress left, EmailAddress right) => throw new NotImplementedException();
-
-    public static ReadOnlyMemory<char> ToReadOnlyMemory(EmailAddress left, EmailAddress right) => throw new NotImplementedException();
 }
