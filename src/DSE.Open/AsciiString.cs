@@ -235,7 +235,7 @@ public readonly partial struct AsciiString
 
     public bool Equals(ReadOnlySpan<char> other) => Ascii.Equals(ValuesMarshal.AsBytes(_value.Span), other);
 
-    public bool EqualsCaseInsensitive(AsciiString other) => SequenceEqualsCaseInsensitive(_value.Span, other._value.Span);
+    public bool EqualsCaseInsensitive(AsciiString other) => _value.Span.SequenceEqualsCaseInsensitive(other._value.Span);
 
     public bool EqualsCaseInsensitive(ReadOnlySpan<char> other) => Ascii.EqualsIgnoreCase(ValuesMarshal.AsBytes(_value.Span), other);
 
