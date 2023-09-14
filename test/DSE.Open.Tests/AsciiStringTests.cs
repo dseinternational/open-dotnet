@@ -127,7 +127,7 @@ public class AsciiStringTests
             i++;
         }
     }
-    
+
     [Fact]
     public void ToCharArray_ShouldReturnCorrectArray()
     {
@@ -141,7 +141,7 @@ public class AsciiStringTests
         // Assert
         Assert.Equal(value.ToCharArray(), result);
     }
-    
+
     [Fact]
     public void ToCharSequence_ShouldReturnCorrectSequence()
     {
@@ -182,5 +182,51 @@ public class AsciiStringTests
 
         // Assert
         Assert.Equal(hashCode1, hashCode2);
+    }
+
+    [Fact]
+    public void TryParse_Utf8_WithValidBytes_ShouldReturnTrue()
+    {
+        // Arrange
+        var bytes = "abcdefghijklmnopqrstuvwxyz"u8;
+
+        // Act
+        var result = AsciiString.TryParse(bytes, default, out var value);
+
+        // Assert
+        Assert.True(result);
+    }
+
+    [Fact]
+    public void TryFormat_Utf8_WithCorrectBuffer_ShouldReturnTrue()
+    {
+        // Arrange
+        var bytes = "abcdefghijklmnopqrstuvwxyz"u8;
+        var value = AsciiString.Parse(bytes, null);
+        Span<byte> buffer = stackalloc byte[bytes.Length];
+
+        // Act
+        var success = value.TryFormat(buffer, out var bytesWritten, default, default);
+
+        // Assert
+        Assert.True(success);
+        Assert.Equal(bytes.Length, bytesWritten);
+        Assert.True(buffer.SequenceEqual(bytes));
+    }
+
+    [Fact]
+    public void TryFormat_Utf8_WithIncorrectBuffer_ShouldReturnFalse()
+    {
+        // Arrange
+        var bytes = "abcdefghijklmnopqrstuvwxyz"u8;
+        var value = AsciiString.Parse(bytes, null);
+        Span<byte> buffer = stackalloc byte[bytes.Length - 1];
+
+        // Act
+        var success = value.TryFormat(buffer, out var bytesWritten, default, default);
+
+        // Assert
+        Assert.False(success);
+        Assert.Equal(0, bytesWritten);
     }
 }

@@ -6,7 +6,6 @@ using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
-using CommunityToolkit.HighPerformance;
 using CommunityToolkit.HighPerformance.Buffers;
 using DSE.Open.Values;
 using DSE.Open.Values.Text.Json.Serialization;
@@ -56,13 +55,13 @@ public readonly partial struct LanguageTag
     }
 
     public static LanguageTag FromByteSpan(ReadOnlySpan<byte> languageTag)
-        => new(new AsciiString(MemoryMarshal.Cast<byte, AsciiChar>(languageTag).ToArray()));
+        => new(AsciiString.Parse(languageTag, null));
 
     public static LanguageTag FromCharSpan(ReadOnlySpan<char> languageTag)
         => new(AsciiString.Parse(languageTag));
 
     public static bool IsValidValue(ReadOnlySpan<AsciiChar> value)
-        => IsValidValue(MemoryMarshal.Cast<AsciiChar, byte>(value));
+        => IsValidValue(ValuesMarshal.AsBytes(value));
 
     public static bool IsValidValue(ReadOnlySpan<byte> value)
     {

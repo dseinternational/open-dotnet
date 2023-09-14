@@ -28,7 +28,7 @@ public abstract class AsciiStringComparer : IComparer<AsciiString>, IEqualityCom
 
         public override bool Equals(AsciiString x, AsciiString y) => x.Equals(y);
 
-        public override int GetHashCode([DisallowNull] AsciiString obj) => obj.GetHashCode();
+        public override int GetHashCode(AsciiString obj) => obj.GetHashCode();
     }
 
     private sealed class AsciiCharSequenceComparerCaseInsensitive : AsciiStringComparer
@@ -37,7 +37,7 @@ public abstract class AsciiStringComparer : IComparer<AsciiString>, IEqualityCom
 
         public override bool Equals(AsciiString x, AsciiString y) => x.EqualsCaseInsensitive(y);
 
-        public override int GetHashCode([DisallowNull] AsciiString obj)
+        public override int GetHashCode(AsciiString obj)
         {
             AsciiChar[]? rented = null;
 
@@ -45,9 +45,9 @@ public abstract class AsciiStringComparer : IComparer<AsciiString>, IEqualityCom
 
             try
             {
-                Span<AsciiChar> buffer = source.Length > StackallocThresholds.MaxByteLength
-                    ? (rented = ArrayPool<AsciiChar>.Shared.Rent(StackallocThresholds.MaxByteLength))
-                    : stackalloc AsciiChar[source.Length];
+                Span<AsciiChar> buffer = source.Length <= StackallocThresholds.MaxByteLength
+                    ? stackalloc AsciiChar[source.Length]
+                    : rented = ArrayPool<AsciiChar>.Shared.Rent(source.Length);
 
                 for (var i = 0; i < source.Length; i++)
                 {
@@ -55,7 +55,7 @@ public abstract class AsciiStringComparer : IComparer<AsciiString>, IEqualityCom
                 }
 
                 var c = new HashCode();
-                c.AddBytes(MemoryMarshal.Cast<AsciiChar, byte>(buffer));
+                c.AddBytes(ValuesMarshal.AsBytes(buffer[..source.Length]));
                 return c.ToHashCode();
             }
             finally

@@ -1,7 +1,9 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Text;
 using System.Text.Json;
+using DSE.Open.Text.Json;
 
 namespace DSE.Open.Values.Tests;
 
@@ -49,6 +51,22 @@ public class UriAsciiPathTests
         Assert.Equal(path, p.ToString());
     }
 
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("a")]
+    [InlineData("home")]
+    [InlineData("home/subdir")]
+    [InlineData("home-page")]
+    [InlineData("root/child/grandchild")]
+    [InlineData("a/b/c/d/e/f/g/h")]
+    public void ParseValidBytes(string path)
+    {
+        var bytes = Encoding.UTF8.GetBytes(path);
+        var p = UriAsciiPath.Parse(bytes, null);
+        Assert.Equal(path, p.ToString());
+    }
+
     [Theory]
     [InlineData("")]
     [InlineData("a")]
@@ -72,27 +90,6 @@ public class UriAsciiPathTests
     [InlineData("root/child/grandchild")]
     [InlineData("a/b/c/d/e/f/g/h")]
     public void IsValidValueString_returns_true_for_valid_paths(string path) => Assert.True(UriAsciiPath.IsValidValue(path));
-
-    [Theory]
-    [InlineData("")]
-    [InlineData("/a")]
-    [InlineData("home")]
-    [InlineData("/home/subdir/")]
-    [InlineData("/home-page/")]
-    [InlineData("root/child/grandchild/")]
-    [InlineData("a/b/c/d/e/f/g/h")]
-    public void IsValidValueString_returns_true_for_valid_paths_ignoring_slashes(string path) => Assert.True(UriAsciiPath.IsValidValue(path, true));
-
-    [Theory]
-    [InlineData("")]
-    [InlineData("/a")]
-    [InlineData("home")]
-    [InlineData("/home/subdir/")]
-    [InlineData("/home-page/")]
-    [InlineData("root/child/grandchild/")]
-    [InlineData("a/b/c/d/e/f/g/h")]
-    public void IsValidValueAsciiString_returns_true_for_valid_paths_ignoring_slashes(string path) =>
-        Assert.True(UriAsciiPath.IsValidValue((AsciiString)path, true));
 
     [Theory]
     [InlineData("/")]
@@ -261,4 +258,54 @@ public class UriAsciiPathTests
         // Assert
         Assert.Equal($"/{pathStr}/", absolutePath);
     }
+
+    [Fact]
+    public void TryFormat_WithShortBuffer_ShouldReturnFalse()
+    {
+        // Arrange
+        var path = UriAsciiPath.Parse("home");
+        Span<char> buffer = stackalloc char[3];
+
+        // Act
+        var success = path.TryFormat(buffer, out var charsWritten, default, default);
+
+        // Assert
+        Assert.False(success);
+        Assert.Equal(0, charsWritten);
+    }
+
+    [Fact]
+    public void TryFormatUtf8_WithShortBuffer_ShouldReturnFalse()
+    {
+        // Arrange
+        var path = UriAsciiPath.Parse("home");
+        Span<byte> buffer = stackalloc byte[3];
+
+        // Act
+        var success = path.TryFormat(buffer, out var bytesWritten, default, default);
+
+        // Assert
+        Assert.False(success);
+        Assert.Equal(0, bytesWritten);
+    }
+
+
+    [Fact]
+    public void SerializeDeserialize()
+    {
+        const string value = "abcde";
+
+        var path = UriAsciiPath.Parse(value);
+
+        var json = JsonSerializer.Serialize(path, JsonSharedOptions.RelaxedJsonEscaping);
+        var result = JsonSerializer.Deserialize<UriAsciiPath>(json, JsonSharedOptions.RelaxedJsonEscaping);
+
+        Assert.Equal(path, result);
+    }
+
+    [Theory]
+    [InlineData("\"/123/\"")]
+    [InlineData("\"!abc!\"")]
+    public void Deserialize_WithInvalidCode_Throws(string code)
+        => Assert.Throws<FormatException>(() => JsonSerializer.Deserialize<UriAsciiPath>(code, JsonSharedOptions.RelaxedJsonEscaping));
 }
