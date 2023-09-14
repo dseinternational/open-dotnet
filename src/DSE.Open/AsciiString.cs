@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using System.Runtime.InteropServices;
+using System.Runtime.Intrinsics;
 using System.Text;
 using System.Text.Json.Serialization;
 using DSE.Open.Text.Json.Serialization;
@@ -252,22 +253,14 @@ public readonly partial struct AsciiString
     public AsciiString ToLower()
     {
         var result = new AsciiChar[_value.Length];
-
-        var status = Ascii.ToLower(ValuesMarshal.AsBytes(_value.Span), ValuesMarshal.AsBytes(result), out _);
-
-        Debug.Assert(status == OperationStatus.Done);
-
+        TryFormat(ValuesMarshal.AsBytes(result), out _, "L", default);
         return new AsciiString(result);
     }
 
     public AsciiString ToUpper()
     {
         var result = new AsciiChar[_value.Length];
-
-        var status = Ascii.ToUpper(ValuesMarshal.AsBytes(_value.Span), ValuesMarshal.AsBytes(result), out _);
-
-        Debug.Assert(status == OperationStatus.Done);
-
+        TryFormat(ValuesMarshal.AsBytes(result), out _, "U", default);
         return new AsciiString(result);
     }
 
@@ -275,48 +268,18 @@ public readonly partial struct AsciiString
 
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
-        char[]? rented = null;
-
-        try
+        if (_value.IsEmpty)
         {
-            Span<char> buffer = _value.Length <= StackallocThresholds.MaxCharLength
-                ? stackalloc char[_value.Length]
-                : (rented = ArrayPool<char>.Shared.Rent(_value.Length));
-
-            _ = TryFormat(buffer, out var charsWritten, format, formatProvider);
-
-            return new string(buffer[..charsWritten]);
+            return string.Empty;
         }
-        finally
-        {
-            if (rented is not null)
-            {
-                ArrayPool<char>.Shared.Return(rented);
-            }
-        }
+
+        return string.Create(_value.Length, (Value: this, format, formatProvider),
+            (buffer, state) => { state.Value.TryFormat(buffer, out _, state.format, state.formatProvider); });
     }
 
-    public string ToStringLower()
-    {
-        return string.Create(_value.Length, this, (c, a) =>
-        {
-            for (var i = 0; i < a._value.Length; i++)
-            {
-                c[i] = a._value.Span[i].ToLower();
-            }
-        });
-    }
+    public string ToStringLower() => ToString("L", null);
 
-    public string ToStringUpper()
-    {
-        return string.Create(_value.Length, this, (c, a) =>
-        {
-            for (var i = 0; i < a._value.Length; i++)
-            {
-                c[i] = a._value.Span[i].ToUpper();
-            }
-        });
-    }
+    public string ToStringUpper() => ToString("U", null);
 
     public bool TryFormat(
         Span<char> destination,
@@ -324,15 +287,24 @@ public readonly partial struct AsciiString
         ReadOnlySpan<char> format,
         IFormatProvider? provider)
     {
-        if (destination.Length >= _value.Length)
+        if (_value.IsEmpty)
         {
-            Ascii.ToUtf16(ValuesMarshal.AsBytes(_value.Span), destination, out charsWritten);
-            Debug.Assert(charsWritten == _value.Length);
+            charsWritten = 0;
             return true;
         }
 
-        charsWritten = 0;
-        return false;
+        if (_value.Length > destination.Length)
+        {
+            charsWritten = 0;
+            return false;
+        }
+
+        return format switch
+        {
+            "L" => Ascii.ToLower(ValuesMarshal.AsBytes(_value.Span), destination, out charsWritten),
+            "U" => Ascii.ToUpper(ValuesMarshal.AsBytes(_value.Span), destination, out charsWritten),
+            _ => Ascii.ToUtf16(ValuesMarshal.AsBytes(_value.Span), destination, out charsWritten),
+        } == OperationStatus.Done;
     }
 
     public bool TryFormat(
@@ -341,16 +313,28 @@ public readonly partial struct AsciiString
         ReadOnlySpan<char> format,
         IFormatProvider? provider)
     {
-        if (utf8Destination.Length >= _value.Length)
+        if (_value.IsEmpty)
         {
-            var bytes = ValuesMarshal.AsBytes(_value.Span);
-            bytes.CopyTo(utf8Destination);
-            bytesWritten = _value.Length;
+            bytesWritten = 0;
             return true;
         }
 
-        bytesWritten = 0;
-        return false;
+        if (_value.Length > utf8Destination.Length)
+        {
+            bytesWritten = 0;
+            return false;
+        }
+
+        switch (format)
+        {
+            case "L":
+                return Ascii.ToLower(ValuesMarshal.AsBytes(_value.Span), utf8Destination, out bytesWritten) == OperationStatus.Done;
+            case "U":
+                return Ascii.ToUpper(ValuesMarshal.AsBytes(_value.Span), utf8Destination, out bytesWritten) == OperationStatus.Done;
+            default:
+                bytesWritten = _value.Span.Length;
+                return ValuesMarshal.AsBytes(_value.Span).TryCopyTo(utf8Destination);
+        }
     }
 
     public IEnumerator<AsciiChar> GetEnumerator()
