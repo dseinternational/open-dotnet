@@ -17,4 +17,5 @@
       <ProjectReference Include="..\..\src\DSE.Open\DSE.Open.csproj" />
     </ItemGroup>
 
+
 </Project>
