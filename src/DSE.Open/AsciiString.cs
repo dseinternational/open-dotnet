@@ -3,9 +3,11 @@
 
 using System.Buffers;
 using System.Collections;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using System.Runtime.InteropServices;
+using System.Runtime.Intrinsics;
 using System.Text;
 using System.Text.Json.Serialization;
 using DSE.Open.Text.Json.Serialization;
@@ -70,10 +72,7 @@ public readonly partial struct AsciiString
 
         var result = new byte[_value.Length];
 
-        for (var i = 0; i < _value.Length; i++)
-        {
-            result[i] = (byte)_value.Span[i];
-        }
+        ValuesMarshal.AsBytes(_value.Span).CopyTo(result);
 
         return result;
     }
@@ -87,10 +86,9 @@ public readonly partial struct AsciiString
 
         var result = new char[_value.Length];
 
-        for (var i = 0; i < _value.Length; i++)
-        {
-            result[i] = (char)_value.Span[i];
-        }
+        var status = Ascii.ToUtf16(ValuesMarshal.AsBytes(_value.Span), result, out _);
+
+        Debug.Assert(status == OperationStatus.Done);
 
         return result;
     }
@@ -130,22 +128,21 @@ public readonly partial struct AsciiString
 
         try
         {
-            Span<AsciiChar> buffer = s.Length <= 256
+            Span<AsciiChar> buffer = s.Length <= StackallocThresholds.MaxCharLength
                 ? stackalloc AsciiChar[s.Length]
-                : (rented = ArrayPool<AsciiChar>.Shared.Rent(256));
+                : (rented = ArrayPool<AsciiChar>.Shared.Rent(s.Length));
 
-            for (var i = 0; i < s.Length; i++)
+            var status = Ascii.FromUtf16(s, ValuesMarshal.AsBytes(buffer), out var bytesWritten);
+
+            if (status == OperationStatus.InvalidData)
             {
-                if (!AsciiChar.IsAscii((uint)s[i]))
-                {
-                    result = default;
-                    return false;
-                }
-
-                buffer[i] = (AsciiChar)s[i];
+                result = default;
+                return false;
             }
 
-            result = new(buffer[..s.Length].ToArray());
+            Debug.Assert(status == OperationStatus.Done);
+
+            result = new AsciiString(buffer[..bytesWritten].ToArray());
             return true;
         }
         finally
@@ -183,10 +180,7 @@ public readonly partial struct AsciiString
             return result;
         }
 
-        ThrowHelper.ThrowFormatException(
-            $"'{utf8Text.ToArray()}' is not a valid {nameof(AsciiString)} value."
-        );
-
+        ThrowHelper.ThrowFormatException($"'{Encoding.UTF8.GetString(utf8Text)}' is not a valid {nameof(AsciiString)} value.");
         return default; // unreachable
     }
 
@@ -237,51 +231,13 @@ public readonly partial struct AsciiString
 
     public bool Equals(AsciiString other) => Equals(other._value);
 
-    public bool Equals(ReadOnlySpan<char> other)
-    {
-        if (other.IsEmpty)
-        {
-            return _value.IsEmpty;
-        }
-
-        if (_value.Length != other.Length)
-        {
-            return false;
-        }
-
-        for (var i = 0; i < _value.Length; i++)
-        {
-            if ((char)_value.Span[i] != other[i])
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     public bool Equals(string other) => Equals(other.AsSpan());
+
+    public bool Equals(ReadOnlySpan<char> other) => Ascii.Equals(ValuesMarshal.AsBytes(_value.Span), other);
 
     public bool EqualsCaseInsensitive(AsciiString other) => SequenceEqualsCaseInsensitive(_value.Span, other._value.Span);
 
-    public bool EqualsCaseInsensitive(ReadOnlySpan<char> other)
-    {
-        if (Length != other.Length)
-        {
-            return false;
-        }
-
-        for (var i = 0; i < other.Length; i++)
-        {
-            if (!(AsciiChar.IsAscii(other[i])
-                  && AsciiChar.EqualsCaseInsensitive((byte)other[i], _value.Span[i])))
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
+    public bool EqualsCaseInsensitive(ReadOnlySpan<char> other) => Ascii.EqualsIgnoreCase(ValuesMarshal.AsBytes(_value.Span), other);
 
     public bool EqualsCaseInsensitive(string other) => EqualsCaseInsensitive(other.AsSpan());
 
@@ -297,82 +253,33 @@ public readonly partial struct AsciiString
     public AsciiString ToLower()
     {
         var result = new AsciiChar[_value.Length];
-
-        for (var i = 0; i < _value.Length; i++)
-        {
-            result[i] = _value.Span[i].ToLower();
-        }
-
+        TryFormat(ValuesMarshal.AsBytes(result), out _, "L", default);
         return new AsciiString(result);
     }
 
     public AsciiString ToUpper()
     {
         var result = new AsciiChar[_value.Length];
-
-        for (var i = 0; i < _value.Length; i++)
-        {
-            result[i] = _value.Span[i].ToUpper();
-        }
-
+        TryFormat(ValuesMarshal.AsBytes(result), out _, "U", default);
         return new AsciiString(result);
     }
 
-    public override string ToString()
-    {
-        return string.Create(_value.Length, this, (c, a) =>
-        {
-            for (var i = 0; i < a._value.Length; i++)
-            {
-                c[i] = a._value.Span[i];
-            }
-        });
-    }
+    public override string ToString() => ToString(null, null);
 
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
-        char[]? rented = null;
-
-        try
+        if (_value.IsEmpty)
         {
-            Span<char> buffer = _value.Length <= StackallocThresholds.MaxCharLength
-                ? stackalloc char[_value.Length]
-                : (rented = ArrayPool<char>.Shared.Rent(_value.Length));
-
-            _ = TryFormat(buffer, out var charsWritten, format, formatProvider);
-
-            return new string(buffer[..charsWritten]);
+            return string.Empty;
         }
-        finally
-        {
-            if (rented is not null)
-            {
-                ArrayPool<char>.Shared.Return(rented);
-            }
-        }
+
+        return string.Create(_value.Length, (Value: this, format, formatProvider),
+            (buffer, state) => { state.Value.TryFormat(buffer, out _, state.format, state.formatProvider); });
     }
 
-    public string ToStringLower()
-    {
-        return string.Create(_value.Length, this, (c, a) =>
-        {
-            for (var i = 0; i < a._value.Length; i++)
-            {
-                c[i] = a._value.Span[i].ToLower();
-            }
-        });
-    }
+    public string ToStringLower() => ToString("L", null);
 
-    public string ToStringUpper()
-    {
-        return string.Create(_value.Length, this, (c, a) =>
-        {
-            for (var i = 0; i < a._value.Length; i++)
-            {
-                c[i] = a._value.Span[i].ToUpper();
-            }
-        });
-    }
+    public string ToStringUpper() => ToString("U", null);
 
     public bool TryFormat(
         Span<char> destination,
@@ -380,19 +287,24 @@ public readonly partial struct AsciiString
         ReadOnlySpan<char> format,
         IFormatProvider? provider)
     {
-        if (destination.Length >= _value.Length)
+        if (_value.IsEmpty)
         {
-            for (var i = 0; i < _value.Length; i++)
-            {
-                destination[i] = (char)_value.Span[i];
-            }
-
-            charsWritten = _value.Length;
+            charsWritten = 0;
             return true;
         }
 
-        charsWritten = 0;
-        return false;
+        if (_value.Length > destination.Length)
+        {
+            charsWritten = 0;
+            return false;
+        }
+
+        return format switch
+        {
+            "L" => Ascii.ToLower(ValuesMarshal.AsBytes(_value.Span), destination, out charsWritten),
+            "U" => Ascii.ToUpper(ValuesMarshal.AsBytes(_value.Span), destination, out charsWritten),
+            _ => Ascii.ToUtf16(ValuesMarshal.AsBytes(_value.Span), destination, out charsWritten),
+        } == OperationStatus.Done;
     }
 
     public bool TryFormat(
@@ -401,16 +313,28 @@ public readonly partial struct AsciiString
         ReadOnlySpan<char> format,
         IFormatProvider? provider)
     {
-        if (utf8Destination.Length >= _value.Length)
+        if (_value.IsEmpty)
         {
-            var bytes = ValuesMarshal.AsBytes(_value.Span);
-            bytes.CopyTo(utf8Destination);
-            bytesWritten = _value.Length;
+            bytesWritten = 0;
             return true;
         }
 
-        bytesWritten = 0;
-        return false;
+        if (_value.Length > utf8Destination.Length)
+        {
+            bytesWritten = 0;
+            return false;
+        }
+
+        switch (format)
+        {
+            case "L":
+                return Ascii.ToLower(ValuesMarshal.AsBytes(_value.Span), utf8Destination, out bytesWritten) == OperationStatus.Done;
+            case "U":
+                return Ascii.ToUpper(ValuesMarshal.AsBytes(_value.Span), utf8Destination, out bytesWritten) == OperationStatus.Done;
+            default:
+                bytesWritten = _value.Span.Length;
+                return ValuesMarshal.AsBytes(_value.Span).TryCopyTo(utf8Destination);
+        }
     }
 
     public IEnumerator<AsciiChar> GetEnumerator()

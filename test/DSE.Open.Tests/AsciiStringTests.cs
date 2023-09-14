@@ -57,6 +57,46 @@ public class AsciiStringTests
     }
 
     [Theory]
+    [InlineData(10)]
+    [InlineData(100)]
+    [InlineData(541)]
+    [InlineData(1000)]
+    [InlineData(3456)]
+    public void ToStringLower_ShouldReturnCorrectString(int length)
+    {
+        // Arrange
+        var chars = new char[length];
+        chars.AsSpan().Fill('A');
+
+        // Act
+        var result = AsciiString.Parse(chars).ToStringLower();
+
+        // Assert
+        Assert.Equal(length, result.Length);
+        Assert.True(result.All(c => c == 'a'));
+    }
+
+    [Theory]
+    [InlineData(100)]
+    [InlineData(541)]
+    [InlineData(1000)]
+    [InlineData(3456)]
+    public void ToStringUpper_ShouldReturnCorrectString(int length)
+    {
+        // Arrange
+        var chars = new char[length];
+        chars.AsSpan().Fill('a');
+
+        // Act
+        var result = AsciiString.Parse(chars).ToStringUpper();
+
+        // Assert
+        Assert.Equal(length, result.Length);
+        Assert.True(result.All(c => c == 'A'));
+    }
+
+
+    [Theory]
     [InlineData("abcdefghijklmnopqrstuvwxyz", "ABCDEFGHIJKLMNOPQRSTUVWXYZ")]
     public void ToStringUpper_returns_upper_string(string value, string expected)
     {
@@ -121,6 +161,7 @@ public class AsciiStringTests
         var c = AsciiString.Parse(value);
 
         var i = 0;
+
         foreach (var item in c)
         {
             Assert.Equal(value[i], item);
@@ -228,5 +269,20 @@ public class AsciiStringTests
         // Assert
         Assert.False(success);
         Assert.Equal(0, bytesWritten);
+    }
+
+    [Fact]
+    public void TryParse_WithLongInput_ShouldCorrectlyParse()
+    {
+        // Arrange
+        var chars = new char[1000];
+        chars.AsSpan().Fill('a');
+
+        // Act
+        var result = AsciiString.TryParse(chars, default, out var value);
+
+        // Assert
+        Assert.True(result);
+        Assert.Equal(1000, value.Length);
     }
 }
