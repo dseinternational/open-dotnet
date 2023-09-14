@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Buffers;
+using System.Runtime.Intrinsics;
 using System.Text;
 
 namespace DSE.Open;
@@ -37,22 +38,112 @@ public static partial class MemoryExtensions
         => ContainsOnlyAsciiLettersUpper((ReadOnlySpan<byte>)value);
 
     public static bool ContainsOnlyAsciiDigits(this ReadOnlySpan<byte> value)
-        => value.IndexOfAnyExceptInRange((byte)'0', (byte)'9') == -1;
+    {
+        if (Vector128.IsHardwareAccelerated && value.Length >= Vector128<byte>.Count)
+        {
+            return value.IndexOfAnyExceptInRange((byte)'0', (byte)'9') == -1;
+        }
+
+        for (var i = 0; i < value.Length; i++)
+        {
+            if (!AsciiChar.IsDigit(value[i]))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     public static bool ContainsOnlyAsciiLetters(this ReadOnlySpan<byte> value)
-        => value.IndexOfAnyExcept(SearchBytes.s_asciiLetters) == -1;
+    {
+        if (Vector128.IsHardwareAccelerated && value.Length >= Vector128<byte>.Count)
+        {
+            return value.IndexOfAnyExcept(SearchBytes.s_asciiLetters) == -1;
+        }
+
+        for (var i = 0; i < value.Length; i++)
+        {
+            if (!AsciiChar.IsLetter(value[i]))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     public static bool ContainsOnlyAsciiLettersOrDigits(this ReadOnlySpan<byte> value)
-        => value.IndexOfAnyExcept(SearchBytes.s_asciiLettersAndDigits) == -1;
+    {
+        if (Vector128.IsHardwareAccelerated && value.Length >= Vector128<byte>.Count)
+        {
+            return value.IndexOfAnyExcept(SearchBytes.s_asciiLettersAndDigits) == -1;
+        }
+
+        for (var i = 0; i < value.Length; i++)
+        {
+            if (!AsciiChar.IsLetterOrDigit(value[i]))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     public static bool ContainsOnlyAsciiUpperLettersOrDigits(this ReadOnlySpan<byte> value)
-        => value.IndexOfAnyExcept(SearchBytes.s_asciiUpperLettersAndDigits) == -1;
+    {
+        if (Vector128.IsHardwareAccelerated && value.Length >= Vector128<byte>.Count)
+        {
+            return value.IndexOfAnyExcept(SearchBytes.s_asciiUpperLettersAndDigits) == -1;
+        }
+
+        for (var i = 0; i < value.Length; i++)
+        {
+            if (!(AsciiChar.IsLetterUpper(value[i]) || AsciiChar.IsDigit(value[i])))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     public static bool ContainsOnlyAsciiLettersLower(this ReadOnlySpan<byte> value)
-        => value.IndexOfAnyExceptInRange((byte)'a', (byte)'z') == -1;
+    {
+        if (Vector128.IsHardwareAccelerated && value.Length >= Vector128<byte>.Count)
+        {
+            return value.IndexOfAnyExceptInRange((byte)'a', (byte)'z') == -1;
+        }
+
+        for (var i = 0; i < value.Length; i++)
+        {
+            if (!AsciiChar.IsLetterLower(value[i]))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     public static bool ContainsOnlyAsciiLettersUpper(this ReadOnlySpan<byte> value)
-        => value.IndexOfAnyExceptInRange((byte)'A', (byte)'Z') == -1;
+    {
+        if (Vector128.IsHardwareAccelerated && value.Length > Vector128<byte>.Count)
+        {
+            return value.IndexOfAnyExceptInRange((byte)'A', (byte)'Z') == -1;
+        }
+
+        for (var i = 0; i < value.Length; i++)
+        {
+            if (!AsciiChar.IsLetterUpper(value[i]))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
 
     public static bool TryCopyWhereNotWhitespace(this Span<byte> span, Span<byte> buffer, out int bytesWritten)
