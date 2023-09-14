@@ -3,9 +3,9 @@
 
 namespace DSE.Open.Text.Json.Serialization;
 
-public sealed class JsonStringAsciiStringConverter : SpanParsableCharWritingJsonConverter<AsciiString>
+public sealed class JsonStringAsciiStringConverter : SpanParsableByteWritingJsonConverter<AsciiString>
 {
     public static readonly JsonStringAsciiStringConverter Default = new();
 
-    protected override int GetMaxCharCountToWrite(AsciiString value) => value.Length;
+    protected override int GetMaxByteCountToWrite(AsciiString value) => value.Length;
 }

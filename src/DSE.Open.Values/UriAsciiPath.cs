@@ -16,9 +16,9 @@ namespace DSE.Open.Values;
 /// than the first and last character.
 /// </summary>
 [ComparableValue]
-[JsonConverter(typeof(JsonSpanSerializableValueConverter<UriAsciiPath, AsciiString>))]
+[JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<UriAsciiPath, AsciiString>))]
 [StructLayout(LayoutKind.Auto)]
-public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, AsciiString>
+public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, AsciiString>, IUtf8SpanSerializable<UriAsciiPath>
 {
     public static readonly AsciiChar Separator = (AsciiChar)'/';
     public static readonly AsciiChar Dash = (AsciiChar)'-';
@@ -29,6 +29,8 @@ public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, Asc
     public static readonly UriAsciiPath Empty = new(default, true);
 
     public const int MaxLength = 256;
+
+    public static int MaxSerializedByteLength => MaxLength;
 
     public static int MaxSerializedCharLength => MaxLength;
 
@@ -125,9 +127,9 @@ public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, Asc
     private static bool IsValidInnerChar(char c)
         => IsValidOuterChar(c) || c == Separator;
 
-    public static bool IsValidValue(AsciiString value) => IsValidValue(value, false);
+    public static bool IsValidValue(AsciiString value) => IsValidValue(value.Span);
 
-    public static bool IsValidValue(AsciiString value, bool ignoreLeadingTrailingSlashes)
+    public static bool IsValidValue(ReadOnlySpan<AsciiChar> value)
     {
         if (value.IsEmpty)
         {
@@ -144,12 +146,12 @@ public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, Asc
             return IsValidOuterChar(value[0]);
         }
 
-        if (!(IsValidOuterChar(value[0]) || (ignoreLeadingTrailingSlashes && value[0] == Separator)))
+        if (!IsValidOuterChar(value[0]))
         {
             return false;
         }
 
-        if (!(IsValidOuterChar(value[^1]) || (ignoreLeadingTrailingSlashes && value[^1] == Separator)))
+        if (!IsValidOuterChar(value[^1]))
         {
             return false;
         }
@@ -159,38 +161,54 @@ public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, Asc
         return inner.All(IsValidInnerChar);
     }
 
-    public static bool IsValidValue(ReadOnlySpan<char> value) => IsValidValue(value, false);
+    public static bool IsValidValue(ReadOnlySpan<char> value)
+    {
+        byte[]? rented = null;
 
-    public static bool IsValidValue(ReadOnlySpan<char> value, bool ignoreLeadingTrailingSlashes)
+        try
+        {
+            Span<byte> buffer = value.Length <= StackallocThresholds.MaxByteLength
+                ? stackalloc byte[value.Length]
+                : (rented = ArrayPool<byte>.Shared.Rent(value.Length));
+
+            if (NarrowUtf16ToAscii(value, buffer))
+            {
+                return IsValidValue(ValuesMarshal.AsAsciiChars(buffer));
+            }
+        }
+        finally
+        {
+            if (rented is not null)
+            {
+                ArrayPool<byte>.Shared.Return(rented);
+            }
+        }
+
+        return false;
+    }
+
+    private static bool NarrowUtf16ToAscii(ReadOnlySpan<char> value, Span<byte> destination)
     {
         if (value.IsEmpty)
         {
             return true;
         }
 
-        if (value.Length > MaxLength)
+        var length = value.Length;
+
+        for (var i = 0; i < length; i++)
         {
-            return false;
+            var c = value[i];
+
+            if (c > 127)
+            {
+                return false;
+            }
+
+            destination[i] = (byte)c;
         }
 
-        if (value.Length == 1)
-        {
-            return IsValidOuterChar(value[0]);
-        }
-
-        if (!(IsValidOuterChar(value[0]) || (ignoreLeadingTrailingSlashes && value[0] == Separator)))
-        {
-            return false;
-        }
-
-        if (!(IsValidOuterChar(value[^1]) || (ignoreLeadingTrailingSlashes && value[^1] == Separator)))
-        {
-            return false;
-        }
-
-        var inner = value[1..^1];
-
-        return inner.All(IsValidInnerChar);
+        return true;
     }
 
     public static bool IsValidValue(string value) => IsValidValue(value.AsSpan());
@@ -262,6 +280,49 @@ public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, Asc
         path._value.Span.CopyTo(combined.AsSpan(_value.Length + 1));
 
         return new UriAsciiPath(combined);
+    }
+
+    public bool TryFormat(Span<byte> utf8Destination, out int bytesWritten, ReadOnlySpan<char> format, IFormatProvider? provider)
+    {
+        if (utf8Destination.Length >= _value.Length)
+        {
+            var bytes = ValuesMarshal.AsBytes(_value.Span);
+            bytes.CopyTo(utf8Destination);
+            bytesWritten = bytes.Length;
+            return true;
+        }
+
+        bytesWritten = 0;
+        return false;
+    }
+
+    public static UriAsciiPath Parse(ReadOnlySpan<byte> utf8Text, IFormatProvider? provider)
+    {
+        if (TryParse(utf8Text, provider, out var result))
+        {
+            return result;
+        }
+
+        ThrowHelper.ThrowFormatException($"Cannot parse the value '{Encoding.UTF8.GetString(utf8Text)}' as a {nameof(UriAsciiPath)}");
+        return default; // unreachable
+    }
+
+    public static bool TryParse(ReadOnlySpan<byte> utf8Text, IFormatProvider? provider, out UriAsciiPath result)
+    {
+        if (!IsValidValue(ValuesMarshal.AsAsciiChars(utf8Text)))
+        {
+            result = default;
+            return false;
+        }
+
+        if (!AsciiString.TryParse(utf8Text, provider, out var asciiString))
+        {
+            result = default;
+            return false;
+        }
+
+        result = new UriAsciiPath(asciiString, skipValidation: true);
+        return true;
     }
 
     public UriAsciiPath Append(UriAsciiPath path1, UriAsciiPath path2)
@@ -358,6 +419,7 @@ public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, Asc
     public string ToAbsolutePath()
     {
         AsciiChar[]? rented = null;
+
         try
         {
             var span = _value.Length < StackallocThresholds.MaxCharLength - 2
@@ -393,9 +455,7 @@ public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, Asc
     /// <param name="startIndex"></param>
     /// <returns></returns>
     public string Substring(int startIndex) => Subpath(startIndex).ToString();
-
 #pragma warning disable CA2225 // Operator overloads have named alternates
-
     public static explicit operator UriAsciiPath(string value) => Parse(value);
 
 #pragma warning restore CA2225 // Operator overloads have named alternates

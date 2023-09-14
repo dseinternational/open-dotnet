@@ -14,10 +14,13 @@ namespace DSE.Open;
 [StructLayout(LayoutKind.Auto)]
 public readonly partial struct AsciiChar
     : IComparable<AsciiChar>,
-      IEquatable<AsciiChar>,
-      IEqualityOperators<AsciiChar, AsciiChar, bool>,
-      ISpanFormattable,
-      ISpanParsable<AsciiChar>
+        IEquatable<AsciiChar>,
+        IEqualityOperators<AsciiChar, AsciiChar, bool>,
+        ISpanFormattable,
+        ISpanParsable<AsciiChar>,
+        IUtf8SpanFormattable,
+        IUtf8SpanParsable<AsciiChar>
+
 {
     private readonly byte _asciiByte;
 
@@ -128,6 +131,19 @@ public readonly partial struct AsciiChar
         return false;
     }
 
+    public bool TryFormat(Span<byte> utf8Destination, out int bytesWritten, ReadOnlySpan<char> format, IFormatProvider? provider)
+    {
+        if (utf8Destination.Length >= 1)
+        {
+            utf8Destination[0] = _asciiByte;
+            bytesWritten = 1;
+            return true;
+        }
+
+        bytesWritten = 0;
+        return false;
+    }
+
     public string ToString(string? format, IFormatProvider? formatProvider) => ToString();
 
     public static AsciiChar Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
@@ -167,6 +183,30 @@ public readonly partial struct AsciiChar
         IFormatProvider? provider,
         [MaybeNullWhen(false)] out AsciiChar result)
         => TryParse(s.AsSpan(), provider, out result);
+
+
+    public static AsciiChar Parse(ReadOnlySpan<byte> utf8Text, IFormatProvider? provider)
+    {
+        if (TryParse(utf8Text, provider, out var result))
+        {
+            return result;
+        }
+
+        ThrowHelper.ThrowFormatException($"Cannot parse the value '{utf8Text.ToArray()}' as a {nameof(AsciiChar)}");
+        return default; // unreachable
+    }
+
+    public static bool TryParse(ReadOnlySpan<byte> utf8Text, IFormatProvider? provider, out AsciiChar result)
+    {
+        if (!utf8Text.IsEmpty && IsAscii(utf8Text[0]))
+        {
+            result = new AsciiChar(utf8Text[0], true);
+            return true;
+        }
+
+        result = default;
+        return false;
+    }
 
     public static bool operator <(AsciiChar left, AsciiChar right) => left.CompareTo(right) < 0;
 

@@ -6,6 +6,7 @@ using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Text.Json.Serialization;
 using DSE.Open.Text.Json.Serialization;
 
@@ -22,12 +23,14 @@ namespace DSE.Open;
 [StructLayout(LayoutKind.Auto)]
 public readonly partial struct AsciiString
     : IEnumerable<AsciiChar>,
-      IEquatable<AsciiString>,
-      IEquatable<ReadOnlyMemory<AsciiChar>>,
-      IComparable<AsciiString>,
-      IEqualityOperators<AsciiString, AsciiString, bool>,
-      ISpanFormattable,
-      ISpanParsable<AsciiString>
+        IEquatable<AsciiString>,
+        IEquatable<ReadOnlyMemory<AsciiChar>>,
+        IComparable<AsciiString>,
+        IEqualityOperators<AsciiString, AsciiString, bool>,
+        ISpanFormattable,
+        ISpanParsable<AsciiString>,
+        IUtf8SpanFormattable,
+        IUtf8SpanParsable<AsciiString>
 {
     private readonly ReadOnlyMemory<AsciiChar> _value;
 
@@ -155,9 +158,9 @@ public readonly partial struct AsciiString
     }
 
     public static bool TryParse(
-      [NotNullWhen(true)] string? s,
-      out AsciiString result)
-      => TryParse(s, default, out result);
+        [NotNullWhen(true)] string? s,
+        out AsciiString result)
+        => TryParse(s, default, out result);
 
     public static bool TryParse(
         [NotNullWhen(true)] string? s,
@@ -171,6 +174,39 @@ public readonly partial struct AsciiString
         }
 
         return TryParse(s.AsSpan(), provider, out result);
+    }
+
+    public static AsciiString Parse(ReadOnlySpan<byte> utf8Text, IFormatProvider? provider)
+    {
+        if (TryParse(utf8Text, provider, out var result))
+        {
+            return result;
+        }
+
+        ThrowHelper.ThrowFormatException(
+            $"'{utf8Text.ToArray()}' is not a valid {nameof(AsciiString)} value."
+        );
+
+        return default; // unreachable
+    }
+
+    public static bool TryParse(
+        ReadOnlySpan<byte> utf8Text,
+        IFormatProvider? provider,
+        out AsciiString result)
+    {
+        if (!Ascii.IsValid(utf8Text))
+        {
+            result = default;
+            return false;
+        }
+
+        var buffer = new AsciiChar[utf8Text.Length];
+
+        utf8Text.CopyTo(ValuesMarshal.AsBytes(buffer));
+
+        result = new AsciiString(buffer);
+        return true;
     }
 
     public int CompareTo(AsciiString other) => _value.Span.SequenceCompareTo(other._value.Span);
@@ -238,7 +274,7 @@ public readonly partial struct AsciiString
         for (var i = 0; i < other.Length; i++)
         {
             if (!(AsciiChar.IsAscii(other[i])
-                && AsciiChar.EqualsCaseInsensitive((byte)other[i], _value.Span[i])))
+                  && AsciiChar.EqualsCaseInsensitive((byte)other[i], _value.Span[i])))
             {
                 return false;
             }
@@ -254,7 +290,7 @@ public readonly partial struct AsciiString
     public override int GetHashCode()
     {
         var c = new HashCode();
-        c.AddBytes(MemoryMarshal.Cast<AsciiChar, byte>(_value.Span));
+        c.AddBytes(ValuesMarshal.AsBytes(_value.Span));
         return c.ToHashCode();
     }
 
@@ -356,6 +392,24 @@ public readonly partial struct AsciiString
         }
 
         charsWritten = 0;
+        return false;
+    }
+
+    public bool TryFormat(
+        Span<byte> utf8Destination,
+        out int bytesWritten,
+        ReadOnlySpan<char> format,
+        IFormatProvider? provider)
+    {
+        if (utf8Destination.Length >= _value.Length)
+        {
+            var bytes = ValuesMarshal.AsBytes(_value.Span);
+            bytes.CopyTo(utf8Destination);
+            bytesWritten = _value.Length;
+            return true;
+        }
+
+        bytesWritten = 0;
         return false;
     }
 

@@ -42,4 +42,62 @@ public class AsciiCharTests
 
         Assert.True(AsciiString.SequenceEqualsCaseInsensitive(s1, s2));
     }
+
+    [Fact]
+    public void TryParse_WithAsciiByte_ShouldReturnTrue()
+    {
+        // Arrange
+        var input = "a"u8.ToArray();
+
+        // Act
+        var result = AsciiChar.TryParse(input, default, out var value);
+
+        // Assert
+        Assert.True(result);
+        Assert.Equal('a', value);
+    }
+
+    [Fact]
+    public void TryParse_WithNonAsciiByte_ShouldReturnFalse()
+    {
+        // Arrange
+        var input = "ä"u8.ToArray();
+
+        // Act
+        var result = AsciiChar.TryParse(input, default, out var value);
+
+        // Assert
+        Assert.False(result);
+        Assert.Equal(default, value);
+    }
+
+    [Fact]
+    public void TryFormat_WithCorrectBuffer_ShouldReturnTrue()
+    {
+        // Arrange
+        var value = (AsciiChar)'a';
+        Span<char> buffer = stackalloc char[1];
+
+        // Act
+        var result = value.TryFormat(buffer, out var charsWritten, default, default);
+
+        // Assert
+        Assert.True(result);
+        Assert.Equal(1, charsWritten);
+    }
+
+    [Fact]
+    public void TryFormat_WithInvalidBuffer_ShouldReturnFalse()
+    {
+        // Arrange
+        var value = (AsciiChar)'a';
+        Span<char> buffer = stackalloc char[0];
+
+        // Act
+        var result = value.TryFormat(buffer, out var charsWritten, default, default);
+
+        // Assert
+        Assert.False(result);
+        Assert.Equal(0, charsWritten);
+    }
 }
