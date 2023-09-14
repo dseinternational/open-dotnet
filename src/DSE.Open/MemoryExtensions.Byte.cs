@@ -37,6 +37,9 @@ public static partial class MemoryExtensions
     public static bool ContainsOnlyAsciiLettersUpper(this Span<byte> value)
         => ContainsOnlyAsciiLettersUpper((ReadOnlySpan<byte>)value);
 
+    public static bool ContainsOnlyAsciiDigits(this ReadOnlySpan<AsciiChar> value)
+        => ValuesMarshal.AsBytes(value).ContainsOnlyAsciiDigits();
+
     public static bool ContainsOnlyAsciiDigits(this ReadOnlySpan<byte> value)
     {
         if (Vector128.IsHardwareAccelerated && value.Length >= Vector128<byte>.Count)
@@ -54,6 +57,9 @@ public static partial class MemoryExtensions
 
         return true;
     }
+
+    public static bool ContainsOnlyAsciiLetters(this ReadOnlySpan<AsciiChar> value)
+        => ValuesMarshal.AsBytes(value).ContainsOnlyAsciiLetters();
 
     public static bool ContainsOnlyAsciiLetters(this ReadOnlySpan<byte> value)
     {
@@ -73,6 +79,9 @@ public static partial class MemoryExtensions
         return true;
     }
 
+    public static bool ContainsOnlyAsciiLettersOrDigits(this ReadOnlySpan<AsciiChar> value)
+        => ValuesMarshal.AsBytes(value).ContainsOnlyAsciiLettersOrDigits();
+
     public static bool ContainsOnlyAsciiLettersOrDigits(this ReadOnlySpan<byte> value)
     {
         if (Vector128.IsHardwareAccelerated && value.Length >= Vector128<byte>.Count)
@@ -90,6 +99,9 @@ public static partial class MemoryExtensions
 
         return true;
     }
+
+    public static bool ContainsOnlyAsciiUpperLettersOrDigits(this ReadOnlySpan<AsciiChar> value)
+        => ValuesMarshal.AsBytes(value).ContainsOnlyAsciiUpperLettersOrDigits();
 
     public static bool ContainsOnlyAsciiUpperLettersOrDigits(this ReadOnlySpan<byte> value)
     {
@@ -109,6 +121,9 @@ public static partial class MemoryExtensions
         return true;
     }
 
+    public static bool ContainsOnlyAsciiLettersLower(this ReadOnlySpan<AsciiChar> value)
+        => ValuesMarshal.AsBytes(value).ContainsOnlyAsciiLettersLower();
+
     public static bool ContainsOnlyAsciiLettersLower(this ReadOnlySpan<byte> value)
     {
         if (Vector128.IsHardwareAccelerated && value.Length >= Vector128<byte>.Count)
@@ -126,6 +141,9 @@ public static partial class MemoryExtensions
 
         return true;
     }
+
+    public static bool ContainsOnlyAsciiLettersUpper(this ReadOnlySpan<AsciiChar> value)
+        => ValuesMarshal.AsBytes(value).ContainsOnlyAsciiLettersUpper();
 
     public static bool ContainsOnlyAsciiLettersUpper(this ReadOnlySpan<byte> value)
     {
@@ -215,14 +233,6 @@ public static partial class MemoryExtensions
             span[i] = AsciiChar.ToUpper(span[i]);
         }
     }
-
-    /// <summary>
-    /// Checks if the span contains only ASCII letters.
-    /// </summary>
-    /// <param name="value"></param>
-    /// <returns></returns>
-    public static bool ContainsOnlyLetters(this ReadOnlySpan<AsciiChar> value)
-        => ValuesMarshal.AsBytes(value).ContainsOnlyAsciiLetters();
 
     /// <summary>
     /// Checks if the span contains only valid ASCII bytes.
