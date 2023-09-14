@@ -121,6 +121,7 @@ public class AsciiStringTests
         var c = AsciiString.Parse(value);
 
         var i = 0;
+
         foreach (var item in c)
         {
             Assert.Equal(value[i], item);
@@ -228,5 +229,20 @@ public class AsciiStringTests
         // Assert
         Assert.False(success);
         Assert.Equal(0, bytesWritten);
+    }
+
+    [Fact]
+    public void TryParse_WithLongInput_ShouldCorrectlyParse()
+    {
+        // Arrange
+        var chars = new char[1000];
+        chars.AsSpan().Fill('a');
+
+        // Act
+        var result = AsciiString.TryParse(chars, default, out var value);
+
+        // Assert
+        Assert.True(result);
+        Assert.Equal(1000, value.Length);
     }
 }
