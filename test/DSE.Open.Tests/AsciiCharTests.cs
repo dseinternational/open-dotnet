@@ -35,15 +35,6 @@ public class AsciiCharTests
     }
 
     [Fact]
-    public void SequenceEqualsCaseInsensitive()
-    {
-        var s1 = "abcdefgh"u8.ToArray();
-        var s2 = "ABCDEFGH"u8.ToArray();
-
-        Assert.True(AsciiString.SequenceEqualsCaseInsensitive(s1, s2));
-    }
-
-    [Fact]
     public void TryParse_WithAsciiByte_ShouldReturnTrue()
     {
         // Arrange
