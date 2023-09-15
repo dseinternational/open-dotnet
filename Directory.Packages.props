@@ -12,7 +12,7 @@
     <PackageVersion Include="FluentAssertions" Version="6.12.0" />
     <PackageVersion Include="Microsoft.Data.SqlClient" Version="5.2.0-preview3.23201.1" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0-beta1.23420.2" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.7.0" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.8.0-1.final" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0-rc.1.23419.4" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="8.0.0-rc.1.23419.6" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.0-rc.1.23419.6" />
