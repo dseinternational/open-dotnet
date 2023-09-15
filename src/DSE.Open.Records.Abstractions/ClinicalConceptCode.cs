@@ -18,7 +18,8 @@ namespace DSE.Open.Records;
 [EquatableValue]
 [JsonConverter(typeof(JsonSpanSerializableValueConverter<ClinicalConceptCode, long>))]
 [StructLayout(LayoutKind.Auto)]
-public readonly partial struct ClinicalConceptCode : IEquatableValue<ClinicalConceptCode, long>, IClinicalConceptCode<ClinicalConceptCode>
+public readonly partial struct ClinicalConceptCode
+    : IEquatableValue<ClinicalConceptCode, long>, IClinicalConceptCode<ClinicalConceptCode>
 {
     public static int MaxSerializedCharLength => 8;
 
