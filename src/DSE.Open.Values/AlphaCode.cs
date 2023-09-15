@@ -37,7 +37,7 @@ public readonly partial struct AlphaCode : IComparableValue<AlphaCode, AsciiStri
     private static string GetString(ReadOnlySpan<char> s) => CodeStringPool.Shared.GetOrAdd(s);
 
     public static bool IsValidValue(AsciiString value)
-        => value is { IsEmpty: false, Length: <= MaxLength } && value.Span.ContainsOnly(AsciiChar.IsLetter);
+        => value is { IsEmpty: false, Length: <= MaxLength } && value.Span.ContainsOnlyAsciiLetters();
 
     public bool Equals(ReadOnlySpan<char> other) => _value.Equals(other);
 
