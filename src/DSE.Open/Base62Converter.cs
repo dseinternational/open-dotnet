@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace DSE.Open;
@@ -17,45 +18,39 @@ public static class Base62Converter
     // Z = 90  : 35
     // a = 97  : 36
     // z = 122 : 61
-    private static int GetIndex(char c)
-    {
-        switch (c)
-        {
-            case >= '0' and <= '9':
-                return c - 48;
-            case >= 'A' and <= 'Z':
-                return c - 55;
-            case >= 'a' and <= 'z':
-                return c - 61;
-            default:
-                ThrowHelper.ThrowFormatException("Invalid character in base 62 encoding: " + c);
 
-                return -1;
-        }
-    }
+    /// <summary>
+    /// Gets the index of the character in the base 62 character set. Returns -1 if the character is not valid.
+    /// </summary>
+    /// <param name="c"></param>
+    /// <returns></returns>
+    private static int GetIndex(char c) => c switch
+    {
+        >= '0' and <= '9' => c - 48,
+        >= 'A' and <= 'Z' => c - 55,
+        >= 'a' and <= 'z' => c - 61,
+        _ => -1
+    };
 
     private static bool TryGetIndex(char c, out int value)
     {
-        switch (c)
-        {
-            case >= '0' and <= '9':
-                value = c - 48;
-                return true;
-            case >= 'A' and <= 'Z':
-                value = c - 55;
-                return true;
-            case >= 'a' and <= 'z':
-                value = c - 61;
-                return true;
-            default:
-                value = -1;
-                return false;
-        }
+        value = GetIndex(c);
+        return value >= 0;
     }
 
     public static string ToBase62String(ReadOnlySpan<byte> data)
     {
-        var arr = Array.ConvertAll(data.ToArray(), t => (int)t);
+        if (data.IsEmpty)
+        {
+            return string.Empty;
+        }
+
+        var arr = new int[data.Length];
+
+        for (var i = 0; i < data.Length; i++)
+        {
+            arr[i] = data[i];
+        }
 
         var converted = Convert(arr, 256, 62);
 
@@ -69,34 +64,44 @@ public static class Base62Converter
         return builder.ToString();
     }
 
-    public static byte[] FromBase62(string base62Encoded)
+    /// <summary>
+    /// Converts a base 62 string to a byte array.
+    /// </summary>
+    /// <param name="base62"></param>
+    /// <returns></returns>
+    /// <exception cref="InvalidDataException">Thrown if the string is not a valid base 62 string.</exception>
+    public static byte[] FromBase62(string base62)
     {
-        Guard.IsNotNull(base62Encoded);
+        Guard.IsNotNull(base62);
 
-        var values = new int[base62Encoded.Length];
-
-        for (var i = 0; i < base62Encoded.Length; i++)
+        if (!TryFromBase62(base62, out var data))
         {
-            values[i] = GetIndex(base62Encoded[i]);
+            ThrowHelper.ThrowInvalidDataException("Invalid base 62 string");
         }
 
-        var converted = Convert(values, 62, 256);
-
-        return Array.ConvertAll(converted, System.Convert.ToByte);
+        return data;
     }
 
-    public static bool TryFromBase62(string base62Encoded, [NotNullWhen(true)] out byte[]? data)
+
+    /// <summary>
+    /// Converts base62 encoded chars to a byte array.
+    /// </summary>
+    /// <param name="base62"></param>
+    /// <param name="data"></param>
+    /// <returns></returns>
+    public static bool TryFromBase62Chars(ReadOnlySpan<char> base62, out byte[] data)
     {
-        if (string.IsNullOrWhiteSpace(base62Encoded))
+        if (base62.IsEmpty)
         {
-            return Failed(out data);
+            data = Array.Empty<byte>();
+            return true;
         }
 
-        var values = new int[base62Encoded.Length];
+        var values = new int[base62.Length];
 
-        for (var i = 0; i < base62Encoded.Length; i++)
+        for (var i = 0; i < base62.Length; i++)
         {
-            if (!TryGetIndex(base62Encoded[i], out var value))
+            if (!TryGetIndex(base62[i], out var value))
             {
                 return Failed(out data);
             }
@@ -110,11 +115,17 @@ public static class Base62Converter
 
         return true;
 
-        static bool Failed(out byte[]? d)
+        static bool Failed(out byte[] d)
         {
-            d = null;
+            d = Array.Empty<byte>();
             return false;
         }
+    }
+
+    public static bool TryFromBase62(string base62, out byte[] data)
+    {
+        Guard.IsNotNull(base62);
+        return TryFromBase62Chars(base62.AsSpan(), out data);
     }
 
     private static int[] Convert(int[] source, int sourceBase, int targetBase)
@@ -152,5 +163,37 @@ public static class Base62Converter
         result.InsertRange(0, Enumerable.Repeat(0, leadingZeroCount));
 
         return result.ToArray();
+    }
+
+    public static bool TryEncodeToBase62(ReadOnlySpan<byte> bytes, Span<char> destination, out int charsWritten)
+    {
+        if (bytes.IsEmpty)
+        {
+            charsWritten = 0;
+            return true;
+        }
+
+        var arr = new int[bytes.Length];
+
+        for (var i = 0; i < bytes.Length; i++)
+        {
+            arr[i] = bytes[i];
+        }
+
+        var converted = Convert(arr, 256, 62);
+
+        if (converted.Length > destination.Length)
+        {
+            charsWritten = 0;
+            return false;
+        }
+
+        for (var i = 0; i < converted.Length; i++)
+        {
+            destination[i] = CharacterSet[converted[i]];
+        }
+
+        charsWritten = converted.Length;
+        return true;
     }
 }

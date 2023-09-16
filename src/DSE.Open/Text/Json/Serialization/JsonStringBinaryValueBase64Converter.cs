@@ -12,17 +12,22 @@ public sealed class JsonStringBinaryValueBase64Converter : JsonConverter<BinaryV
 
     public override BinaryValue Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        if (reader.TokenType == JsonTokenType.String)
+        if (reader.TokenType != JsonTokenType.String)
         {
-            var value = reader.GetString();
-
-            if (value != null)
-            {
-                return value.Length == 0 ? BinaryValue.Empty : BinaryValue.FromBase64EncodedString(value);
-            }
+            throw new JsonException("Expected BinaryValue encoded as Base64 string.");
         }
 
-        throw new JsonException("Expected BinaryValue encoded as Base64 string.");
+        var isEmpty = reader.HasValueSequence
+            ? reader.ValueSequence.IsEmpty
+            : reader.ValueSpan.IsEmpty;
+
+        if (isEmpty)
+        {
+            return BinaryValue.Empty;
+        }
+
+        var bytes = reader.GetBytesFromBase64();
+        return BinaryValue.CreateUnsafe(bytes);
     }
 
     public override void Write(Utf8JsonWriter writer, BinaryValue value, JsonSerializerOptions options)
@@ -35,7 +40,7 @@ public sealed class JsonStringBinaryValueBase64Converter : JsonConverter<BinaryV
         }
         else
         {
-            writer.WriteStringValue(value.ToBase64EncodedString());
+            writer.WriteBase64StringValue(value.AsSpan());
         }
     }
 }
