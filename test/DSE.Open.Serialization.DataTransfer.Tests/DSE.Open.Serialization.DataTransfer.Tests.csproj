@@ -10,4 +10,10 @@
     <ProjectReference Include="..\..\src\DSE.Open.Serialization.DataTransfer\DSE.Open.Serialization.DataTransfer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="xunit.runner.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

@@ -10,4 +10,10 @@
     <ProjectReference Include="..\..\src\DSE.Open.Records.Abstractions\DSE.Open.Records.Abstractions.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="xunit.runner.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

@@ -10,4 +10,10 @@
     <ProjectReference Include="..\..\src\DSE.Open.Notifications\DSE.Open.Notifications.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="xunit.runner.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

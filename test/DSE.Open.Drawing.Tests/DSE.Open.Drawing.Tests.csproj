@@ -10,4 +10,10 @@
     <ProjectReference Include="..\..\src\DSE.Open.Drawing\DSE.Open.Drawing.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="xunit.runner.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

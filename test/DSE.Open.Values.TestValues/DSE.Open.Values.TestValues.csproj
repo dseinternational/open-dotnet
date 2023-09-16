@@ -6,12 +6,16 @@
 
   <ItemGroup>
 
-    <ProjectReference Include="..\..\gen\DSE.Open.Values.Generators\DSE.Open.Values.Generators.csproj"
-        OutputItemType="Analyzer"
-        ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\..\gen\DSE.Open.Values.Generators\DSE.Open.Values.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 
     <ProjectReference Include="..\..\src\DSE.Open.Values\DSE.Open.Values.csproj" />
 
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="xunit.runner.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 
