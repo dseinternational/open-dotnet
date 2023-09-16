@@ -15,5 +15,20 @@ public static class ReadOnlyValueSet
     /// <param name="items">The elements to store in the set.</param>
     /// <returns>A <see cref="ReadOnlyValueSet{T}"/> containing the specified items.</returns>
     public static ReadOnlyValueSet<T> Create<T>(ReadOnlySpan<T> items)
-        => items.IsEmpty ? ReadOnlyValueSet<T>.Empty : new ReadOnlyValueSet<T>(items.ToArray());
+    {
+        if (items.IsEmpty)
+        {
+            return ReadOnlyValueSet<T>.Empty;
+        }
+
+        var set = new HashSet<T>(items.Length);
+
+        foreach (var item in items)
+        {
+            _ = set.Add(item);
+        }
+
+        return new ReadOnlyValueSet<T>(set);
+    }
+
 }
