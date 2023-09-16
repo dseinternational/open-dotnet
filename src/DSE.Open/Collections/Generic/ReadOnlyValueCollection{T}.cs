@@ -4,6 +4,7 @@
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace DSE.Open.Collections.Generic;
@@ -42,6 +43,19 @@ public class ReadOnlyValueCollection<T>
     {
         _items = items;
     }
+
+    /// <summary>
+    /// Provides a method for derived types to directly set the backing store. <paramref name="noCopy"/> must be <c>true</c>.
+    /// </summary>
+    /// <param name="items">The list to use as the backing store.</param>
+    /// <param name="noCopy">Must be true.</param>
+#pragma warning disable CA1002 // Do not expose generic lists
+    protected ReadOnlyValueCollection(List<T> items, bool noCopy)
+    {
+        Debug.Assert(noCopy);
+        _items = items;
+    }
+#pragma warning restore CA1002 // Do not expose generic lists
 
     public int Count => _items.Count;
 
