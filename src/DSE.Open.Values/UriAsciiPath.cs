@@ -93,7 +93,7 @@ public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, Asc
         return null;
     }
 
-    public int GetSegmentCount() => Length == 0 ? 0 : _value!.Count(c => c == '/') + 1;
+    public int GetSegmentCount() => Length == 0 ? 0 : _value.Span.Count((AsciiChar)'/') + 1;
 
     public bool StartsWith(ReadOnlySpan<char> value) => _value.StartsWith(value);
 
