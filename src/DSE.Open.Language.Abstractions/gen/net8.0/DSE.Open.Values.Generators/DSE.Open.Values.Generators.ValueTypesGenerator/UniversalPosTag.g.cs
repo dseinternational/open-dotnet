@@ -13,7 +13,6 @@ namespace DSE.Open.Language;
 
 [TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<UniversalPosTag, AsciiString>))]
 public readonly partial struct UniversalPosTag
-    : global::DSE.Open.Values.IEquatableValue<UniversalPosTag, AsciiString>
 {
 
     private readonly AsciiString _value;
@@ -54,7 +53,7 @@ public readonly partial struct UniversalPosTag
             result = new UniversalPosTag(value);
             return true;
         }
-        
+    
         result = default;
         return false;
     }
@@ -213,4 +212,22 @@ public readonly partial struct UniversalPosTag
 
     public static UniversalPosTag Parse(string s)
         => Parse(s, default);
+
+    public bool TryFormat(
+        Span<byte> utf8Destination,
+        out int bytesWritten,
+        ReadOnlySpan<char> format,
+        IFormatProvider? provider)
+        => _value.TryFormat(utf8Destination, out bytesWritten, format, provider);
+
+    public static UniversalPosTag Parse(
+        ReadOnlySpan<byte> utf8Source,
+        IFormatProvider? provider)
+    => global::DSE.Open.Values.ValueParser.Parse<UniversalPosTag, AsciiString>(utf8Source, provider);
+
+    public static bool TryParse(
+        ReadOnlySpan<byte> utf8Source,
+        IFormatProvider? provider,
+        out UniversalPosTag result)
+        => global::DSE.Open.Values.ValueParser.TryParse<UniversalPosTag, AsciiString>(utf8Source, provider, out result);
 }

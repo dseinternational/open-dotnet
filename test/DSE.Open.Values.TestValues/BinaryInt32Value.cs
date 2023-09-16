@@ -10,7 +10,9 @@ namespace DSE.Open.Values.TestValues;
 [JsonConverter(typeof(JsonInt32ValueConverter<BinaryInt32Value>))]
 public readonly partial struct BinaryInt32Value : IEquatableValue<BinaryInt32Value, int>
 {
-    public static int MaxSerializedCharLength { get; } = 128; // TODO
+    public static int MaxSerializedCharLength => 128; // TODO
+
+    public static int MaxSerializedByteLength => 128; // TODO
 
     public static readonly BinaryInt32Value False = new(0);
 

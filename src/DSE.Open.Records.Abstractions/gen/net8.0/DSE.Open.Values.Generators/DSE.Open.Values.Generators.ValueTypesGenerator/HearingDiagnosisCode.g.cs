@@ -13,7 +13,6 @@ namespace DSE.Open.Records;
 
 [TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<HearingDiagnosisCode, ClinicalConceptCode>))]
 public readonly partial struct HearingDiagnosisCode
-    : global::DSE.Open.Values.IEquatableValue<HearingDiagnosisCode, ClinicalConceptCode>
 {
 
     private readonly ClinicalConceptCode _value;
@@ -54,7 +53,7 @@ public readonly partial struct HearingDiagnosisCode
             result = new HearingDiagnosisCode(value);
             return true;
         }
-        
+    
         result = default;
         return false;
     }
@@ -213,4 +212,22 @@ public readonly partial struct HearingDiagnosisCode
 
     public static HearingDiagnosisCode Parse(string s)
         => Parse(s, default);
+
+    public bool TryFormat(
+        Span<byte> utf8Destination,
+        out int bytesWritten,
+        ReadOnlySpan<char> format,
+        IFormatProvider? provider)
+        => _value.TryFormat(utf8Destination, out bytesWritten, format, provider);
+
+    public static HearingDiagnosisCode Parse(
+        ReadOnlySpan<byte> utf8Source,
+        IFormatProvider? provider)
+    => global::DSE.Open.Values.ValueParser.Parse<HearingDiagnosisCode, ClinicalConceptCode>(utf8Source, provider);
+
+    public static bool TryParse(
+        ReadOnlySpan<byte> utf8Source,
+        IFormatProvider? provider,
+        out HearingDiagnosisCode result)
+        => global::DSE.Open.Values.ValueParser.TryParse<HearingDiagnosisCode, ClinicalConceptCode>(utf8Source, provider, out result);
 }

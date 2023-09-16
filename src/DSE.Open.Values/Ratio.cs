@@ -10,9 +10,11 @@ namespace DSE.Open.Values;
 /// </summary>
 [DivisibleValue]
 [StructLayout(LayoutKind.Auto)]
-public readonly partial struct Ratio : IDivisibleValue<Ratio, double>
+public readonly partial struct Ratio : IDivisibleValue<Ratio, double>, IUtf8SpanSerializable<Ratio>
 {
-    public static int MaxSerializedCharLength { get; } = 128; // TODO
+    public static int MaxSerializedCharLength => 128; // TODO
+
+    public static int MaxSerializedByteLength => 128; // TODO
 
     public static Ratio Zero { get; } = new(0);
 

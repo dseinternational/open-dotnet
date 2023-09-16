@@ -13,7 +13,6 @@ namespace DSE.Open.Values;
 
 [TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<UriPath, CharSequence>))]
 public readonly partial struct UriPath
-    : global::DSE.Open.Values.IComparableValue<UriPath, CharSequence>
 {
 
     private readonly CharSequence _value;
@@ -54,7 +53,7 @@ public readonly partial struct UriPath
             result = new UriPath(value);
             return true;
         }
-        
+    
         result = default;
         return false;
     }

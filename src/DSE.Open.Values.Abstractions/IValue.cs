@@ -13,21 +13,16 @@ namespace DSE.Open.Values;
 /// <typeparam name="TSelf">The type that implements the interface.</typeparam>
 /// <typeparam name="T">The type that the value that can be converted to.</typeparam>
 [SuppressMessage("Design", "CA1000:Do not declare static members on generic types", Justification = "Required for static interface methods")]
-[SuppressMessage("Usage", "CA2225:Operator overloads have named alternates", Justification = "Cannot name from type parameter")]
 public interface IValue<TSelf, T>
     : IConvertibleTo<TSelf, T>,
-      ITryConvertibleFrom<TSelf, T>,
-      IEquatable<TSelf>,
-      IEqualityOperators<TSelf, TSelf, bool>,
-      ISpanSerializable<TSelf>
+        ITryConvertibleFrom<TSelf, T>,
+        IEquatable<TSelf>,
+        IEqualityOperators<TSelf, TSelf, bool>,
+        ISpanSerializable<TSelf>
     where T : IEquatable<T>
     where TSelf : struct, IValue<TSelf, T>
 {
     bool IsInitialized { get; }
 
     static abstract bool IsValidValue(T value);
-
-    static virtual bool operator ==(TSelf left, TSelf right) => left.Equals(right);
-
-    static virtual bool operator !=(TSelf left, TSelf right) => !left.Equals(right);
 }

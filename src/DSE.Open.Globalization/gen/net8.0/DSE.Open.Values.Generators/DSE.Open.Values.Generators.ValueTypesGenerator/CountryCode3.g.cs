@@ -13,7 +13,6 @@ namespace DSE.Open.Globalization;
 
 [TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<CountryCode3, AsciiChar3>))]
 public readonly partial struct CountryCode3
-    : global::DSE.Open.Values.IEquatableValue<CountryCode3, AsciiChar3>
 {
 
     private readonly AsciiChar3 _value;
@@ -54,7 +53,7 @@ public readonly partial struct CountryCode3
             result = new CountryCode3(value);
             return true;
         }
-        
+    
         result = default;
         return false;
     }

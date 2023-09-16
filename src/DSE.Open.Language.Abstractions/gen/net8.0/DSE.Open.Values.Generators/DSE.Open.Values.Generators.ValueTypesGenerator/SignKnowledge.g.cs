@@ -13,7 +13,6 @@ namespace DSE.Open.Language;
 
 [TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<SignKnowledge, CharSequence>))]
 public readonly partial struct SignKnowledge
-    : global::DSE.Open.Values.IEquatableValue<SignKnowledge, CharSequence>
 {
 
     private readonly CharSequence _value;
@@ -54,7 +53,7 @@ public readonly partial struct SignKnowledge
             result = new SignKnowledge(value);
             return true;
         }
-        
+    
         result = default;
         return false;
     }

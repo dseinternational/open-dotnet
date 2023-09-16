@@ -13,7 +13,6 @@ namespace DSE.Open.Language;
 
 [TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<SignModality, AsciiString>))]
 public readonly partial struct SignModality
-    : global::DSE.Open.Values.IEquatableValue<SignModality, AsciiString>
 {
 
     private readonly AsciiString _value;
@@ -54,7 +53,7 @@ public readonly partial struct SignModality
             result = new SignModality(value);
             return true;
         }
-        
+    
         result = default;
         return false;
     }
@@ -213,4 +212,22 @@ public readonly partial struct SignModality
 
     public static SignModality Parse(string s)
         => Parse(s, default);
+
+    public bool TryFormat(
+        Span<byte> utf8Destination,
+        out int bytesWritten,
+        ReadOnlySpan<char> format,
+        IFormatProvider? provider)
+        => _value.TryFormat(utf8Destination, out bytesWritten, format, provider);
+
+    public static SignModality Parse(
+        ReadOnlySpan<byte> utf8Source,
+        IFormatProvider? provider)
+    => global::DSE.Open.Values.ValueParser.Parse<SignModality, AsciiString>(utf8Source, provider);
+
+    public static bool TryParse(
+        ReadOnlySpan<byte> utf8Source,
+        IFormatProvider? provider,
+        out SignModality result)
+        => global::DSE.Open.Values.ValueParser.TryParse<SignModality, AsciiString>(utf8Source, provider, out result);
 }

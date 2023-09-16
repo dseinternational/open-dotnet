@@ -6,5 +6,6 @@ namespace DSE.Open.Values.Generators;
 internal static class Namespaces
 {
     public const string DseOpen = "global::DSE.Open";
+    
     public const string DseOpenValues = $"{DseOpen}.Values";
 }

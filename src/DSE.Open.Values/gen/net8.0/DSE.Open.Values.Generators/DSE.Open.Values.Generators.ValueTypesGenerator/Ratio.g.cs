@@ -13,7 +13,6 @@ namespace DSE.Open.Values;
 
 [TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<Ratio, Double>))]
 public readonly partial struct Ratio
-    : global::DSE.Open.Values.IDivisibleValue<Ratio, Double>
 {
 
     private readonly Double _value;
@@ -54,7 +53,7 @@ public readonly partial struct Ratio
             result = new Ratio(value);
             return true;
         }
-        
+    
         result = default;
         return false;
     }
@@ -213,6 +212,24 @@ public readonly partial struct Ratio
 
     public static Ratio Parse(string s)
         => Parse(s, default);
+
+    public bool TryFormat(
+        Span<byte> utf8Destination,
+        out int bytesWritten,
+        ReadOnlySpan<char> format,
+        IFormatProvider? provider)
+        => _value.TryFormat(utf8Destination, out bytesWritten, format, provider);
+
+    public static Ratio Parse(
+        ReadOnlySpan<byte> utf8Source,
+        IFormatProvider? provider)
+    => global::DSE.Open.Values.ValueParser.Parse<Ratio, Double>(utf8Source, provider);
+
+    public static bool TryParse(
+        ReadOnlySpan<byte> utf8Source,
+        IFormatProvider? provider,
+        out Ratio result)
+        => global::DSE.Open.Values.ValueParser.TryParse<Ratio, Double>(utf8Source, provider, out result);
 
     public int CompareTo(Ratio other)
     {

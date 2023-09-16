@@ -9,11 +9,13 @@ using DSE.Open.Values.Text.Json.Serialization;
 namespace DSE.Open.Records;
 
 [EquatableValue]
-[JsonConverter(typeof(JsonSpanSerializableValueConverter<Gender, AsciiString>))]
+[JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<Gender, AsciiString>))]
 [StructLayout(LayoutKind.Auto)]
-public readonly partial struct Gender : IEquatableValue<Gender, AsciiString>
+public readonly partial struct Gender : IEquatableValue<Gender, AsciiString>, IUtf8SpanSerializable<Gender>
 {
     public static int MaxSerializedCharLength => 6;
+
+    public static int MaxSerializedByteLength => 6;
 
     public static bool IsValidValue(AsciiString value)
         => value.Length > 1 && value.Length <= 6 && Lookup.ContainsKey(value);

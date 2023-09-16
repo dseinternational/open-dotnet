@@ -13,7 +13,6 @@ namespace DSE.Open.Values;
 
 [TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<UriAsciiPath, AsciiString>))]
 public readonly partial struct UriAsciiPath
-    : global::DSE.Open.Values.IComparableValue<UriAsciiPath, AsciiString>
 {
 
     private readonly AsciiString _value;
@@ -54,7 +53,7 @@ public readonly partial struct UriAsciiPath
             result = new UriAsciiPath(value);
             return true;
         }
-        
+    
         result = default;
         return false;
     }

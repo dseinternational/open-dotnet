@@ -13,7 +13,6 @@ namespace DSE.Open.Values;
 
 [TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<AlphaNumericCode, AsciiString>))]
 public readonly partial struct AlphaNumericCode
-    : global::DSE.Open.Values.IComparableValue<AlphaNumericCode, AsciiString>
 {
 
     private readonly AsciiString _value;
@@ -54,7 +53,7 @@ public readonly partial struct AlphaNumericCode
             result = new AlphaNumericCode(value);
             return true;
         }
-        
+    
         result = default;
         return false;
     }
@@ -213,6 +212,24 @@ public readonly partial struct AlphaNumericCode
 
     public static AlphaNumericCode Parse(string s)
         => Parse(s, default);
+
+    public bool TryFormat(
+        Span<byte> utf8Destination,
+        out int bytesWritten,
+        ReadOnlySpan<char> format,
+        IFormatProvider? provider)
+        => _value.TryFormat(utf8Destination, out bytesWritten, format, provider);
+
+    public static AlphaNumericCode Parse(
+        ReadOnlySpan<byte> utf8Source,
+        IFormatProvider? provider)
+    => global::DSE.Open.Values.ValueParser.Parse<AlphaNumericCode, AsciiString>(utf8Source, provider);
+
+    public static bool TryParse(
+        ReadOnlySpan<byte> utf8Source,
+        IFormatProvider? provider,
+        out AlphaNumericCode result)
+        => global::DSE.Open.Values.ValueParser.TryParse<AlphaNumericCode, AsciiString>(utf8Source, provider, out result);
 
     public int CompareTo(AlphaNumericCode other)
     {

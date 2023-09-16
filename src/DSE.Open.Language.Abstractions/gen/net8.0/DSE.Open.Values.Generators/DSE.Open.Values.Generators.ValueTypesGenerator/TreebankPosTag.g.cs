@@ -13,7 +13,6 @@ namespace DSE.Open.Language;
 
 [TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<TreebankPosTag, AsciiString>))]
 public readonly partial struct TreebankPosTag
-    : global::DSE.Open.Values.IEquatableValue<TreebankPosTag, AsciiString>
 {
 
     private readonly AsciiString _value;
@@ -54,7 +53,7 @@ public readonly partial struct TreebankPosTag
             result = new TreebankPosTag(value);
             return true;
         }
-        
+    
         result = default;
         return false;
     }
@@ -213,4 +212,22 @@ public readonly partial struct TreebankPosTag
 
     public static TreebankPosTag Parse(string s)
         => Parse(s, default);
+
+    public bool TryFormat(
+        Span<byte> utf8Destination,
+        out int bytesWritten,
+        ReadOnlySpan<char> format,
+        IFormatProvider? provider)
+        => _value.TryFormat(utf8Destination, out bytesWritten, format, provider);
+
+    public static TreebankPosTag Parse(
+        ReadOnlySpan<byte> utf8Source,
+        IFormatProvider? provider)
+    => global::DSE.Open.Values.ValueParser.Parse<TreebankPosTag, AsciiString>(utf8Source, provider);
+
+    public static bool TryParse(
+        ReadOnlySpan<byte> utf8Source,
+        IFormatProvider? provider,
+        out TreebankPosTag result)
+        => global::DSE.Open.Values.ValueParser.TryParse<TreebankPosTag, AsciiString>(utf8Source, provider, out result);
 }

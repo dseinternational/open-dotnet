@@ -13,7 +13,6 @@ namespace DSE.Open.Records;
 
 [TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<BiologicalSex, AsciiString>))]
 public readonly partial struct BiologicalSex
-    : global::DSE.Open.Values.IEquatableValue<BiologicalSex, AsciiString>
 {
 
     private readonly AsciiString _value;
@@ -54,7 +53,7 @@ public readonly partial struct BiologicalSex
             result = new BiologicalSex(value);
             return true;
         }
-        
+    
         result = default;
         return false;
     }
@@ -213,4 +212,22 @@ public readonly partial struct BiologicalSex
 
     public static BiologicalSex Parse(string s)
         => Parse(s, default);
+
+    public bool TryFormat(
+        Span<byte> utf8Destination,
+        out int bytesWritten,
+        ReadOnlySpan<char> format,
+        IFormatProvider? provider)
+        => _value.TryFormat(utf8Destination, out bytesWritten, format, provider);
+
+    public static BiologicalSex Parse(
+        ReadOnlySpan<byte> utf8Source,
+        IFormatProvider? provider)
+    => global::DSE.Open.Values.ValueParser.Parse<BiologicalSex, AsciiString>(utf8Source, provider);
+
+    public static bool TryParse(
+        ReadOnlySpan<byte> utf8Source,
+        IFormatProvider? provider,
+        out BiologicalSex result)
+        => global::DSE.Open.Values.ValueParser.TryParse<BiologicalSex, AsciiString>(utf8Source, provider, out result);
 }

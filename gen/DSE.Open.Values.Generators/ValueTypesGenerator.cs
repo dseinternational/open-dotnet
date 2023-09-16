@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Collections.Immutable;
+using DSE.Open.Values.Generators.Extensions;
 using DSE.Open.Values.Generators.Model;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -29,7 +30,7 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
             .CreateSyntaxProvider(
                 predicate: static (s, _) => IsSyntaxStructWithAttributes(s),
                 transform: static (ctx, _) => GetSemanticTargetForGeneration(ctx))
-            .Where(static m => m is not null)!;
+            .Where(static m => m is not null);
 
         IncrementalValueProvider<(Compilation, ImmutableArray<StructDeclarationSyntax?>)> compilationAndValueTypes
             = context.CompilationProvider.Combine(valueTypeDeclarations.Collect());
@@ -168,60 +169,64 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
 
                     var fullName = attributeContainingTypeSymbol.ToDisplayString();
 
-                    if (fullName is TypeNames.EquatableValueAttributeFullName
+                    if (fullName is not (TypeNames.EquatableValueAttributeFullName
                         or TypeNames.AddableValueAttributeFullName
                         or TypeNames.ComparableValueAttributeFullName
-                        or TypeNames.DivisibleValueAttributeFullName)
+                        or TypeNames.DivisibleValueAttributeFullName))
                     {
-                        valueTypeAttributeSymbols.Add(attributeContainingTypeSymbol);
+                        continue;
+                    }
 
-                        var attributeArgs = attributeSyntax.ArgumentList;
+                    valueTypeAttributeSymbols.Add(attributeContainingTypeSymbol);
 
-                        if (attributeArgs is not null)
+                    var attributeArgs = attributeSyntax.ArgumentList;
+
+                    if (attributeArgs is null)
+                    {
+                        continue;
+                    }
+
+                    var nameEquals = attributeArgs.Arguments.Where(a => a.NameEquals is not null).ToArray();
+
+                    if (nameEquals.Length == 0)
+                    {
+                        continue;
+                    }
+
+                    var maxSerializedCharLengthSyntax = nameEquals.FirstOrDefault(a =>
+                        a.NameEquals is not null
+                        && a.NameEquals.Name.Identifier.ValueText == "MaxSerializedCharLength");
+
+                    if (maxSerializedCharLengthSyntax is not null)
+                    {
+                        var maxSerializedCharLengthOpt = semanticModel.GetConstantValue(maxSerializedCharLengthSyntax.Expression, ct);
+
+                        if (maxSerializedCharLengthOpt is { HasValue: true, Value: not null })
                         {
-                            var nameEquals = attributeArgs.Arguments.Where(a => a.NameEquals is not null).ToArray();
+                            var maxSerializedCharLengthValue = (int)maxSerializedCharLengthOpt.Value;
 
-                            if (nameEquals.Any())
+                            if (maxSerializedCharLengthValue > 0)
                             {
-                                var maxSerializedCharLengthSyntax = nameEquals
-                                    .Where(a => a.NameEquals is not null
-                                        && a.NameEquals.Name.Identifier.ValueText == "MaxSerializedCharLength")
-                                    .FirstOrDefault();
-
-                                if (maxSerializedCharLengthSyntax is not null)
-                                {
-                                    var maxSerializedCharLengthOpt = semanticModel.GetConstantValue(maxSerializedCharLengthSyntax.Expression, ct);
-
-                                    if (maxSerializedCharLengthOpt.HasValue && maxSerializedCharLengthOpt.Value is not null)
-                                    {
-                                        var maxSerializedCharLengthValue = (int)maxSerializedCharLengthOpt.Value;
-
-                                        if (maxSerializedCharLengthValue > 0)
-                                        {
-                                            maxSerializedCharLength = maxSerializedCharLengthValue;
-                                        }
-                                    }
-                                }
+                                maxSerializedCharLength = maxSerializedCharLengthValue;
                             }
                         }
                     }
                 }
             }
 
-            INamedTypeSymbol? valueTypeAttributeSymbol = null;
-
             if (valueTypeAttributeSymbols.Count == 0)
             {
                 // TODO: diagnostics
                 throw new InvalidOperationException();
             }
-            else if (valueTypeAttributeSymbols.Count == 2)
+
+            if (valueTypeAttributeSymbols.Count == 2)
             {
                 // TODO: diagnostics
                 throw new InvalidOperationException();
             }
 
-            valueTypeAttributeSymbol = valueTypeAttributeSymbols[0];
+            var valueTypeAttributeSymbol = valueTypeAttributeSymbols[0];
 
             var valueTypeFullName = valueTypeAttributeSymbol.ToDisplayString();
 
@@ -236,8 +241,6 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
 
             ct.ThrowIfCancellationRequested();
 
-            var typeName = namedTypeSymbol.Name;
-
             var ns = GetNamespace(structDeclarationSyntax);
 
             var parent = GetParentClasses(structDeclarationSyntax);
@@ -245,6 +248,8 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
             var implementedInterfaces = namedTypeSymbol.Interfaces;
 
             var valueTypeInterface = implementedInterfaces.SingleOrDefault(IsValueTypeInterface);
+
+            var utf8SerializableInterface = implementedInterfaces.SingleOrDefault(i => i.Name == TargetNames.IUtf8SpanSerializableInterfaceName);
 
             ct.ThrowIfCancellationRequested();
 
@@ -254,7 +259,7 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
                 throw new InvalidOperationException();
             }
 
-            string? containedTypeName = null;
+            string? containedTypeName;
 
             if (valueTypeInterface.TypeArguments.Length == 2)
             {
@@ -266,6 +271,56 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
                 throw new InvalidOperationException();
             }
 
+            //if (containedTypeName == "ClinicalConceptCode")
+            //{
+            //    System.Diagnostics.Debugger.Launch();
+            //}
+
+            // what interfaces does the contained type implement?
+            var containedTypeSymbol = valueTypeInterface.TypeArguments[1];
+
+            var containedTypeInterfaces = containedTypeSymbol.Interfaces;
+
+            var emitTryParseUtf8SpanMethod = false;
+            var emitParseUtf8Method = false;
+            var emitTryFormatUtf8Method = false;
+            var emitUtf8SpanSerializableInterface = false;
+
+            // Only attempt to find UTF8 interfaces on contained type if `IUtf8SpanSerializable` interface is present
+            if (utf8SerializableInterface is not null)
+            {
+                foreach (var i in containedTypeInterfaces)
+                {
+                    if (i.Name == TargetNames.IUtf8SpanSerializableInterfaceName)
+                    {
+                        emitTryFormatUtf8Method = true;
+                        emitTryParseUtf8SpanMethod = true;
+                        emitParseUtf8Method = true;
+                        emitUtf8SpanSerializableInterface = true;
+                        break;
+                    }
+
+                    if (i.Name == TargetNames.IUtf8SpanFormattableInterfaceName)
+                    {
+                        emitTryFormatUtf8Method = true;
+                        continue;
+                    }
+
+                    if (i.Name == TargetNames.IUtf8SpanParsableInterfaceName)
+                    {
+                        emitTryParseUtf8SpanMethod = true;
+                        emitParseUtf8Method = true;
+                        continue;
+                    }
+                }
+
+                if (!emitUtf8SpanSerializableInterface)
+                {
+                    // If both `IUtf8SpanFormattable` and `IUtf8SpanParsable` are implemented, then we can emit the `IUtf8SpanSerializable` interface
+                    emitUtf8SpanSerializableInterface = emitTryFormatUtf8Method && emitTryParseUtf8SpanMethod && emitParseUtf8Method;
+                }
+            }
+
             // what members are defined?
 
             var members = structDeclarationSyntax.Members;
@@ -274,11 +329,11 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
 
             var constructorsWithTwoParams = members
                 .OfType<ConstructorDeclarationSyntax>()
-                .Where(s => s.ParameterList.Parameters.Count == 2
-                    && s.ParameterList.Parameters[0] is ParameterSyntax paramSyntax
-                    && paramSyntax.Type is PredefinedTypeSyntax preDefSyntax)
-                .Where(s => semanticModel.GetDeclaredSymbol(s, ct) is IMethodSymbol methodSymbol)
-                .SingleOrDefault();
+                .Where(s =>
+                    s.ParameterList.Parameters.Count == 2
+                    && s.ParameterList.Parameters[0] is { } paramSyntax
+                    && paramSyntax.Type is PredefinedTypeSyntax)
+                .SingleOrDefault(s => semanticModel.GetDeclaredSymbol(s, ct) != null);
 
             if (constructorsWithTwoParams is not null)
             {
@@ -306,109 +361,125 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
             var staticMethods = methods.Where(s => s.Modifiers.Any(SyntaxKind.StaticKeyword)).ToArray();
             var instanceMethods = methods.Where(s => !s.Modifiers.Any(SyntaxKind.StaticKeyword)).ToArray();
 
-            var properties = members.OfType<PropertyDeclarationSyntax>().ToArray();
-            var staticProperties = properties.Where(s => s.Modifiers.Any(SyntaxKind.StaticKeyword)).ToArray();
-            var instanceProperties = properties.Where(s => !s.Modifiers.Any(SyntaxKind.StaticKeyword)).ToArray();
+            // var properties = members.OfType<PropertyDeclarationSyntax>().ToArray();
+            // var staticProperties = properties.Where(s => s.Modifiers.Any(SyntaxKind.StaticKeyword)).ToArray();
+            // var instanceProperties = properties.Where(s => !s.Modifiers.Any(SyntaxKind.StaticKeyword)).ToArray();
 
-            var fields = members.OfType<FieldDeclarationSyntax>().ToArray();
-            var staticFields = fields.Where(s => s.Modifiers.Any(SyntaxKind.StaticKeyword)).ToArray();
-
-            var getStringMethods = staticMethods.Where(s => s.Identifier.ValueText == "GetString").ToArray();
+            // var fields = members.OfType<FieldDeclarationSyntax>().ToArray();
+            // var staticFields = fields.Where(s => s.Modifiers.Any(SyntaxKind.StaticKeyword)).ToArray();
 
             var useGetStringMethod = false;
             var useGetStringSpanMethod = false;
 
-            if (getStringMethods.Length > 0)
+            foreach (var method in staticMethods)
             {
-                // GetString(string)
+                if (!useGetStringMethod && method.Identifier.ValueText == TargetNames.GetStringMethodName)
+                {
+                    {
+                        useGetStringMethod = method.ParameterList.Parameters.Count == 1
+                            && method.ParameterList.Parameters[0] is ParameterSyntax ps
+                            && ps.Type is PredefinedTypeSyntax pds
+                            && pds.Keyword.Text == "string";
+                    }
 
-                useGetStringMethod = getStringMethods.Any(s => s.ParameterList.Parameters.Count == 1
-                    && s.ParameterList.Parameters[0] is ParameterSyntax ps
-                    && ps.Type is PredefinedTypeSyntax pds
-                    && pds.Keyword.Text == "string");
+                    {
+                        useGetStringSpanMethod = method.ParameterList.Parameters.Count == 1
+                            && method.ParameterList.Parameters[0] is ParameterSyntax ps
+                            && ps.Type is GenericNameSyntax gns
+                            && gns.Identifier.ValueText == "ReadOnlySpan"
+                            && gns.TypeArgumentList.Arguments.Count == 1
+                            && gns.TypeArgumentList.Arguments[0] is PredefinedTypeSyntax pds
+                            && pds.Keyword.Text == "char";
+                    }
+                }
 
-                // GetString(ReadOnlySpan<char>)
+                // IUtf8SpanParsable.TryParse
 
-                useGetStringSpanMethod = getStringMethods.Any(s => s.ParameterList.Parameters.Count == 1
-                    && s.ParameterList.Parameters[0] is ParameterSyntax ps
-                    && ps.Type is GenericNameSyntax gns
-                    && gns.Identifier.ValueText == "ReadOnlySpan"
-                    && gns.TypeArgumentList.Arguments.Count == 1
-                    && gns.TypeArgumentList.Arguments[0] is PredefinedTypeSyntax pds
-                    && pds.Keyword.Text == "char");
+                if (emitTryParseUtf8SpanMethod && method.Identifier.ValueText == TargetNames.TryParseMethodName)
+                {
+                    emitTryParseUtf8SpanMethod = !method.IsIUtf8SpanParseableTryParseMethod();
+                    continue;
+                }
+
+                // IUtf8SpanParsable.Parse
+
+                if (emitParseUtf8Method && method.Identifier.ValueText == TargetNames.ParseMethodName)
+                {
+                    emitParseUtf8Method = !method.IsIUtf8SpanParsableParseMethod();
+                    continue;
+                }
             }
-
-            // Equals
-
-            var equalsMethods = instanceMethods.Where(s => s.Identifier.ValueText == "Equals").ToArray();
 
             var emitEqualsMethod = true;
-
-            if (equalsMethods.Length > 0)
-            {
-                emitEqualsMethod = !equalsMethods.Any(s => s.ParameterList.Parameters.Count == 1
-                    && s.ParameterList.Parameters[0] is ParameterSyntax ps
-                    && ps.Type is IdentifierNameSyntax ins
-                    && ins.Identifier.Text == typeName);
-            }
-
-            // CompareTo
-
-            var compareToMethods = instanceMethods.Where(s => s.Identifier.ValueText == "CompareTo").ToArray();
-
             var emitCompareToMethod = true;
-
-            if (compareToMethods.Length > 0)
-            {
-                emitCompareToMethod = !compareToMethods.Any(s => s.ParameterList.Parameters.Count == 1
-                    && s.ParameterList.Parameters[0] is ParameterSyntax ps
-                    && ps.Type is IdentifierNameSyntax ins
-                    && ins.Identifier.Text == typeName);
-            }
-
-            // GetHashCode
-
-            var getHashCodeMethods = instanceMethods.Where(s => s.Identifier.ValueText == "GetHashCode").ToArray();
-
             var emitGetHashCodeMethod = true;
-
-            if (getHashCodeMethods.Length > 0)
-            {
-                emitGetHashCodeMethod = !getHashCodeMethods.Any(s => s.ParameterList.Parameters.Count == 0);
-            }
-
-            // ISpanFormattable.TryFormat
-
-            var tryFormatMethods = instanceMethods.Where(s => s.Identifier.ValueText == "TryFormat").ToArray();
-
             var emitTryFormatMethod = true;
-
-            if (tryFormatMethods.Length > 0)
-            {
-                emitTryFormatMethod = !tryFormatMethods.Any(s => s.ParameterList.Parameters.Count == 4
-                    && s.ParameterList.Parameters[0] is ParameterSyntax ps0
-                    && ps0.Type is GenericNameSyntax gns0
-                    && gns0.Identifier.Text == "Span"
-                    && ps0.Identifier.ValueText == "destination"
-                    && s.ParameterList.Parameters[1] is ParameterSyntax ps1
-                    && ps1.Type is PredefinedTypeSyntax pts1
-                    && pts1.Keyword.Text == "int"
-                    && s.ParameterList.Parameters[2] is ParameterSyntax ps2
-                    && ps2.Type is GenericNameSyntax gns2
-                    && gns2.Identifier.Text == "ReadOnlySpan"
-                    && s.ParameterList.Parameters[3] is ParameterSyntax ps3
-                    && ps3.Type is NullableTypeSyntax nts3);
-            }
-
-            // ToString
-
-            var toStringMethods = instanceMethods.Where(s => s.Identifier.ValueText == "ToString").ToArray();
-
             var emitToStringOverrideMethod = true;
 
-            if (toStringMethods.Length > 0)
+            foreach (var method in instanceMethods)
             {
-                emitToStringOverrideMethod = !toStringMethods.Any(s => s.ParameterList.Parameters.Count == 0);
+                // Equals
+                if (emitEqualsMethod && method.Identifier.ValueText == TargetNames.EqualsMethodName)
+                {
+                    emitEqualsMethod = !(
+                        method.ParameterList.Parameters.Count == 1
+                        && method.ParameterList.Parameters[0] is ParameterSyntax ps
+                        && ps.Type is IdentifierNameSyntax ins
+                        && ins.Identifier.Text == namedTypeSymbol.Name);
+
+                    continue;
+                }
+
+                // CompareTo
+                if (emitCompareToMethod && method.Identifier.ValueText == TargetNames.CompareToMethodName)
+                {
+                    emitCompareToMethod = !(
+                        method.ParameterList.Parameters.Count == 1
+                        && method.ParameterList.Parameters[0] is ParameterSyntax ps
+                        && ps.Type is IdentifierNameSyntax ins
+                        && ins.Identifier.Text == namedTypeSymbol.Name);
+
+                    continue;
+                }
+
+                if (emitGetHashCodeMethod && method.Identifier.ValueText == TargetNames.GetHashCodeMethodName)
+                {
+                    emitGetHashCodeMethod = method.ParameterList.Parameters.Count != 0;
+                    continue;
+                }
+
+                if (method.Identifier.ValueText == TargetNames.TryFormatMethodName)
+                {
+                    if (emitTryFormatMethod)
+                    {
+                        emitTryFormatMethod = !method.IsISpanFormattableTryFormatMethod();
+
+                        if (!emitTryFormatMethod)
+                        {
+                            continue;
+                        }
+                    }
+
+                    if (emitTryFormatUtf8Method)
+                    {
+                        emitTryFormatUtf8Method = !method.IsIUtf8SpanFormattableTryFormatMethod();
+
+                        if (!emitTryFormatUtf8Method)
+                        {
+                            continue;
+                        }
+                    }
+
+                    continue;
+                }
+
+                // ToString
+
+                if (emitToStringOverrideMethod && method.Identifier.ValueText == TargetNames.ToStringMethodName)
+                {
+                    emitToStringOverrideMethod = method.ParameterList.Parameters.Count != 0;
+                    continue;
+                }
             }
 
 
@@ -418,7 +489,7 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
 
             foreach (var member in structMembers)
             {
-                if (member is IFieldSymbol field && field.IsStatic)
+                if (member is IFieldSymbol { IsStatic: true })
                 {
                     staticFieldSymbols.Add(member.Name);
                 }
@@ -446,7 +517,7 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
                 _ => throw new NotImplementedException()
             };
 
-            spec.ValueTypeName = typeName;
+            spec.ValueTypeName = namedTypeSymbol.Name;
             spec.ContainedValueTypeName = containedTypeName;
             spec.Namespace = ns;
             spec.Accessibility = namedTypeSymbol.DeclaredAccessibility;
@@ -466,20 +537,19 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
                 spec.MaxSerializedCharLength = maxSerializedCharLength;
             }
 
+            spec.EmitUtf8SpanSerializableInterface = emitUtf8SpanSerializableInterface;
+            spec.EmitTryFormatUtf8Method = emitTryFormatUtf8Method;
+            spec.EmitParseUtf8Method = emitParseUtf8Method;
+            spec.EmitTryParseUtf8Method = emitTryParseUtf8SpanMethod;
+
             specs.Add(spec);
         }
 
         return specs;
     }
 
-    private static bool IsValueTypeInterface(INamedTypeSymbol? interfaceSymbol)
-    {
-        return interfaceSymbol is not null
-            && (interfaceSymbol.Name == "IEquatableValue"
-                || interfaceSymbol.Name == "IComparableValue"
-                || interfaceSymbol.Name == "IAddableValue"
-                || interfaceSymbol.Name == "IDivisibleValue");
-    }
+    private static bool IsValueTypeInterface(INamedTypeSymbol? interfaceSymbol) =>
+        interfaceSymbol?.Name is "IEquatableValue" or "IComparableValue" or "IAddableValue" or "IDivisibleValue";
 
     private static string GetNamespace(BaseTypeDeclarationSyntax syntax)
     {
@@ -490,30 +560,32 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
 
         // Keep moving "out" of nested classes etc until we get to a namespace or until we run out of parents
         while (potentialNamespaceParent is not null and
-                not NamespaceDeclarationSyntax
-                and not FileScopedNamespaceDeclarationSyntax)
+               not NamespaceDeclarationSyntax
+               and not FileScopedNamespaceDeclarationSyntax)
         {
             potentialNamespaceParent = potentialNamespaceParent.Parent;
         }
 
         // Build up the final namespace by looping until we no longer have a namespace declaration
-        if (potentialNamespaceParent is BaseNamespaceDeclarationSyntax namespaceParent)
+        if (potentialNamespaceParent is not BaseNamespaceDeclarationSyntax namespaceParent)
         {
-            // We have a namespace. Use that as the type
-            nameSpace = namespaceParent.Name.ToString();
+            return nameSpace;
+        }
 
-            // Keep moving "out" of the namespace declarations until we run out of nested namespace declarations
-            while (true)
+        // We have a namespace. Use that as the type
+        nameSpace = namespaceParent.Name.ToString();
+
+        // Keep moving "out" of the namespace declarations until we run out of nested namespace declarations
+        while (true)
+        {
+            if (namespaceParent.Parent is not NamespaceDeclarationSyntax parent)
             {
-                if (namespaceParent.Parent is not NamespaceDeclarationSyntax parent)
-                {
-                    break;
-                }
-
-                // Add the outer namespace as a prefix to the final namespace
-                nameSpace = $"{namespaceParent.Name}.{nameSpace}";
-                namespaceParent = parent;
+                break;
             }
+
+            // Add the outer namespace as a prefix to the final namespace
+            nameSpace = $"{namespaceParent.Name}.{nameSpace}";
+            namespaceParent = parent;
         }
 
         return nameSpace;
@@ -541,12 +613,11 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
 
         // return a link to the outermost parent type
         return parentClassInfo;
-
     }
 
     // We can only be nested in class/struct/record
     private static bool IsAllowedKind(SyntaxKind kind) =>
         kind is SyntaxKind.ClassDeclaration or
-        SyntaxKind.StructDeclaration or
-        SyntaxKind.RecordDeclaration;
+            SyntaxKind.StructDeclaration or
+            SyntaxKind.RecordDeclaration;
 }

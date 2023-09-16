@@ -13,7 +13,6 @@ namespace DSE.Open.Language;
 
 [TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<UniversalSyntacticRelation, AsciiString>))]
 public readonly partial struct UniversalSyntacticRelation
-    : global::DSE.Open.Values.IEquatableValue<UniversalSyntacticRelation, AsciiString>
 {
 
     private readonly AsciiString _value;
@@ -54,7 +53,7 @@ public readonly partial struct UniversalSyntacticRelation
             result = new UniversalSyntacticRelation(value);
             return true;
         }
-        
+    
         result = default;
         return false;
     }
@@ -213,4 +212,22 @@ public readonly partial struct UniversalSyntacticRelation
 
     public static UniversalSyntacticRelation Parse(string s)
         => Parse(s, default);
+
+    public bool TryFormat(
+        Span<byte> utf8Destination,
+        out int bytesWritten,
+        ReadOnlySpan<char> format,
+        IFormatProvider? provider)
+        => _value.TryFormat(utf8Destination, out bytesWritten, format, provider);
+
+    public static UniversalSyntacticRelation Parse(
+        ReadOnlySpan<byte> utf8Source,
+        IFormatProvider? provider)
+    => global::DSE.Open.Values.ValueParser.Parse<UniversalSyntacticRelation, AsciiString>(utf8Source, provider);
+
+    public static bool TryParse(
+        ReadOnlySpan<byte> utf8Source,
+        IFormatProvider? provider,
+        out UniversalSyntacticRelation result)
+        => global::DSE.Open.Values.ValueParser.TryParse<UniversalSyntacticRelation, AsciiString>(utf8Source, provider, out result);
 }

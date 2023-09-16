@@ -12,11 +12,13 @@ namespace DSE.Open.Values;
 /// An immutable series of (up to 32) ASCII letters or digits used to identify something.
 /// </summary>
 [ComparableValue]
-[JsonConverter(typeof(JsonSpanSerializableValueConverter<AlphaNumericCode, AsciiString>))]
+[JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<AlphaNumericCode, AsciiString>))]
 [StructLayout(LayoutKind.Auto)]
-public readonly partial struct AlphaNumericCode : IComparableValue<AlphaNumericCode, AsciiString>
+public readonly partial struct AlphaNumericCode : IComparableValue<AlphaNumericCode, AsciiString>, IUtf8SpanSerializable<AlphaNumericCode>
 {
-    public static int MaxSerializedCharLength { get; } = MaxLength;
+    public static int MaxSerializedCharLength => MaxLength;
+
+    public static int MaxSerializedByteLength => MaxLength;
 
     public const int MaxLength = 32;
 

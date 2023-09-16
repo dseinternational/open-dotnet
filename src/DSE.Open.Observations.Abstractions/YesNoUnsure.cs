@@ -13,11 +13,13 @@ namespace DSE.Open.Observations;
 /// To represent no response, use nullable.
 /// </summary>
 [EquatableValue]
-[JsonConverter(typeof(JsonSpanSerializableValueConverter<YesNoUnsure, AsciiString>))]
+[JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<YesNoUnsure, AsciiString>))]
 [StructLayout(LayoutKind.Auto)]
-public readonly partial struct YesNoUnsure : IEquatableValue<YesNoUnsure, AsciiString>
+public readonly partial struct YesNoUnsure : IEquatableValue<YesNoUnsure, AsciiString>, IUtf8SpanSerializable<YesNoUnsure>
 {
     public static int MaxSerializedCharLength => 6;
+
+    public static int MaxSerializedByteLength => 6;
 
     public static bool IsValidValue(AsciiString value)
     {

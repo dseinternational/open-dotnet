@@ -13,7 +13,6 @@ namespace DSE.Open.Values;
 
 [TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<AlphaCode, AsciiString>))]
 public readonly partial struct AlphaCode
-    : global::DSE.Open.Values.IComparableValue<AlphaCode, AsciiString>
 {
 
     private readonly AsciiString _value;
@@ -54,7 +53,7 @@ public readonly partial struct AlphaCode
             result = new AlphaCode(value);
             return true;
         }
-        
+    
         result = default;
         return false;
     }
@@ -213,6 +212,24 @@ public readonly partial struct AlphaCode
 
     public static AlphaCode Parse(string s)
         => Parse(s, default);
+
+    public bool TryFormat(
+        Span<byte> utf8Destination,
+        out int bytesWritten,
+        ReadOnlySpan<char> format,
+        IFormatProvider? provider)
+        => _value.TryFormat(utf8Destination, out bytesWritten, format, provider);
+
+    public static AlphaCode Parse(
+        ReadOnlySpan<byte> utf8Source,
+        IFormatProvider? provider)
+    => global::DSE.Open.Values.ValueParser.Parse<AlphaCode, AsciiString>(utf8Source, provider);
+
+    public static bool TryParse(
+        ReadOnlySpan<byte> utf8Source,
+        IFormatProvider? provider,
+        out AlphaCode result)
+        => global::DSE.Open.Values.ValueParser.TryParse<AlphaCode, AsciiString>(utf8Source, provider, out result);
 
     public int CompareTo(AlphaCode other)
     {

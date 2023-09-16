@@ -16,11 +16,13 @@ namespace DSE.Open.Records;
 /// JavaScript Number.MAX_SAFE_INTEGER and will be truncated via JSON.parse().
 /// </remarks>
 [EquatableValue]
-[JsonConverter(typeof(JsonSpanSerializableValueConverter<HearingDiagnosisCode, ClinicalConceptCode>))]
+[JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<HearingDiagnosisCode, ClinicalConceptCode>))]
 [StructLayout(LayoutKind.Auto)]
-public readonly partial struct HearingDiagnosisCode : IEquatableValue<HearingDiagnosisCode, ClinicalConceptCode>
+public readonly partial struct HearingDiagnosisCode : IEquatableValue<HearingDiagnosisCode, ClinicalConceptCode>, IUtf8SpanSerializable<HearingDiagnosisCode>
 {
     public static int MaxSerializedCharLength => ClinicalConceptCode.MaxSerializedCharLength;
+
+    public static int MaxSerializedByteLength => ClinicalConceptCode.MaxSerializedByteLength;
 
     public static bool IsValidValue(ClinicalConceptCode value)
     {

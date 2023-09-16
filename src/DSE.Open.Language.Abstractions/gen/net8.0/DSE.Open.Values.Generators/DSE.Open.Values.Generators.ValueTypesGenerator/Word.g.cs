@@ -13,7 +13,6 @@ namespace DSE.Open.Language;
 
 [TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<Word, CharSequence>))]
 public readonly partial struct Word
-    : global::DSE.Open.Values.IComparableValue<Word, CharSequence>
 {
 
     private readonly CharSequence _value;
@@ -54,7 +53,7 @@ public readonly partial struct Word
             result = new Word(value);
             return true;
         }
-        
+    
         result = default;
         return false;
     }

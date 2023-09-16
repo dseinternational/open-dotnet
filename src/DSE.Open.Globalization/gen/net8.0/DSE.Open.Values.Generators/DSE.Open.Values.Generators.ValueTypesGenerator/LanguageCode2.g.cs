@@ -13,7 +13,6 @@ namespace DSE.Open.Globalization;
 
 [TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<LanguageCode2, AsciiChar2>))]
 public readonly partial struct LanguageCode2
-    : global::DSE.Open.Values.IComparableValue<LanguageCode2, AsciiChar2>
 {
 
     private readonly AsciiChar2 _value;
@@ -54,7 +53,7 @@ public readonly partial struct LanguageCode2
             result = new LanguageCode2(value);
             return true;
         }
-        
+    
         result = default;
         return false;
     }
