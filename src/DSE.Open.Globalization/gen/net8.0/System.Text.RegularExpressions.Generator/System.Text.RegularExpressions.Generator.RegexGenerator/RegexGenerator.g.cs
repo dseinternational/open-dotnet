@@ -12,242 +12,227 @@ namespace DSE.Open.Globalization
         /// Pattern:<br/>
         /// <code>^((?:(en-GB-oed|i-ami|i-bnn|i-default|i-enochian|i-hak|i-klingon|i-lux|i-mingo|i-navajo|i-pwn|i-tao|i-tay|i-tsu|sgn-BE-FR|sgn-BE-NL|sgn-CH-DE)|(art-lojban|cel-gaulish|no-bok|no-nyn|zh-guoyu|zh-hakka|zh-min|zh-min-nan|zh-xiang))|((?:([A-Za-z]{2,3}(-(?:[A-Za-z]{3}(-[A-Za-z]{3}){0,2}))?)|[A-Za-z]{4}|[A-Za-z]{5,8})(-(?:[A-Za-z]{4}))?(-(?:[A-Za-z]{2}|[0-9]{3}))?(-(?:[A-Za-z0-9]{5,8}|[0-9][A-Za-z0-9]{3}))*(-(?:[0-9A-WY-Za-wy-z](-[A-Za-z0-9]{2,8})+))*(-(?:x(-[A-Za-z0-9]{1,8})+))?)|(?:x(-[A-Za-z0-9]{1,8})+))$</code><br/>
         /// Options:<br/>
-        /// <code>RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant</code><br/>
+        /// <code>RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture</code><br/>
         /// Explanation:<br/>
         /// <code>
         /// ○ Match if at the beginning of the string.<br/>
-        /// ○ 1st capture group.<br/>
-        ///     ○ Match with 4 alternative expressions.<br/>
-        ///         ○ 2nd capture group.<br/>
-        ///             ○ Match with 3 alternative expressions.<br/>
-        ///                 ○ Match a sequence of expressions.<br/>
-        ///                     ○ Match a character in the set [Ee].<br/>
+        /// ○ Match with 9 alternative expressions.<br/>
+        ///     ○ Match a sequence of expressions.<br/>
+        ///         ○ Match a character in the set [Ee].<br/>
+        ///         ○ Match a character in the set [Nn].<br/>
+        ///         ○ Match '-'.<br/>
+        ///         ○ Match a character in the set [Gg].<br/>
+        ///         ○ Match a character in the set [Bb].<br/>
+        ///         ○ Match '-'.<br/>
+        ///         ○ Match a character in the set [Oo].<br/>
+        ///         ○ Match a character in the set [Ee].<br/>
+        ///         ○ Match a character in the set [Dd].<br/>
+        ///     ○ Match a sequence of expressions.<br/>
+        ///         ○ Match a character in the set [Ii].<br/>
+        ///         ○ Match '-'.<br/>
+        ///         ○ Match with 11 alternative expressions.<br/>
+        ///             ○ Match a sequence of expressions.<br/>
+        ///                 ○ Match a character in the set [Aa].<br/>
+        ///                 ○ Match a character in the set [Mm].<br/>
+        ///                 ○ Match a character in the set [Ii].<br/>
+        ///             ○ Match a sequence of expressions.<br/>
+        ///                 ○ Match a character in the set [Bb].<br/>
+        ///                 ○ Match a character in the set [Nn] exactly 2 times.<br/>
+        ///             ○ Match a sequence of expressions.<br/>
+        ///                 ○ Match a character in the set [Dd].<br/>
+        ///                 ○ Match a character in the set [Ee].<br/>
+        ///                 ○ Match a character in the set [Ff].<br/>
+        ///                 ○ Match a character in the set [Aa].<br/>
+        ///                 ○ Match a character in the set [Uu].<br/>
+        ///                 ○ Match a character in the set [Ll].<br/>
+        ///                 ○ Match a character in the set [Tt].<br/>
+        ///             ○ Match a sequence of expressions.<br/>
+        ///                 ○ Match a character in the set [Ee].<br/>
+        ///                 ○ Match a character in the set [Nn].<br/>
+        ///                 ○ Match a character in the set [Oo].<br/>
+        ///                 ○ Match a character in the set [Cc].<br/>
+        ///                 ○ Match a character in the set [Hh].<br/>
+        ///                 ○ Match a character in the set [Ii].<br/>
+        ///                 ○ Match a character in the set [Aa].<br/>
+        ///                 ○ Match a character in the set [Nn].<br/>
+        ///             ○ Match a sequence of expressions.<br/>
+        ///                 ○ Match a character in the set [Hh].<br/>
+        ///                 ○ Match a character in the set [Aa].<br/>
+        ///                 ○ Match a character in the set [Kk\u212A].<br/>
+        ///             ○ Match a sequence of expressions.<br/>
+        ///                 ○ Match a character in the set [Kk\u212A].<br/>
+        ///                 ○ Match a character in the set [Ll].<br/>
+        ///                 ○ Match a character in the set [Ii].<br/>
+        ///                 ○ Match a character in the set [Nn].<br/>
+        ///                 ○ Match a character in the set [Gg].<br/>
+        ///                 ○ Match a character in the set [Oo].<br/>
+        ///                 ○ Match a character in the set [Nn].<br/>
+        ///             ○ Match a sequence of expressions.<br/>
+        ///                 ○ Match a character in the set [Ll].<br/>
+        ///                 ○ Match a character in the set [Uu].<br/>
+        ///                 ○ Match a character in the set [Xx].<br/>
+        ///             ○ Match a sequence of expressions.<br/>
+        ///                 ○ Match a character in the set [Mm].<br/>
+        ///                 ○ Match a character in the set [Ii].<br/>
+        ///                 ○ Match a character in the set [Nn].<br/>
+        ///                 ○ Match a character in the set [Gg].<br/>
+        ///                 ○ Match a character in the set [Oo].<br/>
+        ///             ○ Match a sequence of expressions.<br/>
+        ///                 ○ Match a character in the set [Nn].<br/>
+        ///                 ○ Match a character in the set [Aa].<br/>
+        ///                 ○ Match a character in the set [Vv].<br/>
+        ///                 ○ Match a character in the set [Aa].<br/>
+        ///                 ○ Match a character in the set [Jj].<br/>
+        ///                 ○ Match a character in the set [Oo].<br/>
+        ///             ○ Match a sequence of expressions.<br/>
+        ///                 ○ Match a character in the set [Pp].<br/>
+        ///                 ○ Match a character in the set [Ww].<br/>
+        ///                 ○ Match a character in the set [Nn].<br/>
+        ///             ○ Match a sequence of expressions.<br/>
+        ///                 ○ Match a character in the set [Tt].<br/>
+        ///                 ○ Match with 2 alternative expressions.<br/>
+        ///                     ○ Match a sequence of expressions.<br/>
+        ///                         ○ Match a character in the set [Aa].<br/>
+        ///                         ○ Match a character in the set [OYoy].<br/>
+        ///                     ○ Match a sequence of expressions.<br/>
+        ///                         ○ Match a character in the set [Ss].<br/>
+        ///                         ○ Match a character in the set [Uu].<br/>
+        ///     ○ Match a sequence of expressions.<br/>
+        ///         ○ Match a character in the set [Ss].<br/>
+        ///         ○ Match a character in the set [Gg].<br/>
+        ///         ○ Match a character in the set [Nn].<br/>
+        ///         ○ Match '-'.<br/>
+        ///         ○ Match with 2 alternative expressions.<br/>
+        ///             ○ Match a sequence of expressions.<br/>
+        ///                 ○ Match a character in the set [Bb].<br/>
+        ///                 ○ Match a character in the set [Ee].<br/>
+        ///                 ○ Match '-'.<br/>
+        ///                 ○ Match with 2 alternative expressions.<br/>
+        ///                     ○ Match a sequence of expressions.<br/>
+        ///                         ○ Match a character in the set [Ff].<br/>
+        ///                         ○ Match a character in the set [Rr].<br/>
+        ///                     ○ Match a sequence of expressions.<br/>
+        ///                         ○ Match a character in the set [Nn].<br/>
+        ///                         ○ Match a character in the set [Ll].<br/>
+        ///             ○ Match a sequence of expressions.<br/>
+        ///                 ○ Match a character in the set [Cc].<br/>
+        ///                 ○ Match a character in the set [Hh].<br/>
+        ///                 ○ Match '-'.<br/>
+        ///                 ○ Match a character in the set [Dd].<br/>
+        ///                 ○ Match a character in the set [Ee].<br/>
+        ///     ○ Match a sequence of expressions.<br/>
+        ///         ○ Match a character in the set [Aa].<br/>
+        ///         ○ Match a character in the set [Rr].<br/>
+        ///         ○ Match a character in the set [Tt].<br/>
+        ///         ○ Match '-'.<br/>
+        ///         ○ Match a character in the set [Ll].<br/>
+        ///         ○ Match a character in the set [Oo].<br/>
+        ///         ○ Match a character in the set [Jj].<br/>
+        ///         ○ Match a character in the set [Bb].<br/>
+        ///         ○ Match a character in the set [Aa].<br/>
+        ///         ○ Match a character in the set [Nn].<br/>
+        ///     ○ Match a sequence of expressions.<br/>
+        ///         ○ Match a character in the set [Cc].<br/>
+        ///         ○ Match a character in the set [Ee].<br/>
+        ///         ○ Match a character in the set [Ll].<br/>
+        ///         ○ Match '-'.<br/>
+        ///         ○ Match a character in the set [Gg].<br/>
+        ///         ○ Match a character in the set [Aa].<br/>
+        ///         ○ Match a character in the set [Uu].<br/>
+        ///         ○ Match a character in the set [Ll].<br/>
+        ///         ○ Match a character in the set [Ii].<br/>
+        ///         ○ Match a character in the set [Ss].<br/>
+        ///         ○ Match a character in the set [Hh].<br/>
+        ///     ○ Match a sequence of expressions.<br/>
+        ///         ○ Match a character in the set [Nn].<br/>
+        ///         ○ Match a character in the set [Oo].<br/>
+        ///         ○ Match '-'.<br/>
+        ///         ○ Match with 2 alternative expressions.<br/>
+        ///             ○ Match a sequence of expressions.<br/>
+        ///                 ○ Match a character in the set [Bb].<br/>
+        ///                 ○ Match a character in the set [Oo].<br/>
+        ///                 ○ Match a character in the set [Kk\u212A].<br/>
+        ///             ○ Match a sequence of expressions.<br/>
+        ///                 ○ Match a character in the set [Nn].<br/>
+        ///                 ○ Match a character in the set [Yy].<br/>
+        ///                 ○ Match a character in the set [Nn].<br/>
+        ///     ○ Match a sequence of expressions.<br/>
+        ///         ○ Match a character in the set [Zz].<br/>
+        ///         ○ Match a character in the set [Hh].<br/>
+        ///         ○ Match '-'.<br/>
+        ///         ○ Match with 4 alternative expressions.<br/>
+        ///             ○ Match a sequence of expressions.<br/>
+        ///                 ○ Match a character in the set [Gg].<br/>
+        ///                 ○ Match a character in the set [Uu].<br/>
+        ///                 ○ Match a character in the set [Oo].<br/>
+        ///                 ○ Match a character in the set [Yy].<br/>
+        ///                 ○ Match a character in the set [Uu].<br/>
+        ///             ○ Match a sequence of expressions.<br/>
+        ///                 ○ Match a character in the set [Hh].<br/>
+        ///                 ○ Match a character in the set [Aa].<br/>
+        ///                 ○ Match a character in the set [Kk\u212A] exactly 2 times.<br/>
+        ///                 ○ Match a character in the set [Aa].<br/>
+        ///             ○ Match a sequence of expressions.<br/>
+        ///                 ○ Match a character in the set [Mm].<br/>
+        ///                 ○ Match a character in the set [Ii].<br/>
+        ///                 ○ Match with 2 alternative expressions.<br/>
         ///                     ○ Match a character in the set [Nn].<br/>
+        ///                     ○ Match a sequence of expressions.<br/>
+        ///                         ○ Match a character in the set [Nn].<br/>
+        ///                         ○ Match '-'.<br/>
+        ///                         ○ Match a character in the set [Nn].<br/>
+        ///                         ○ Match a character in the set [Aa].<br/>
+        ///                         ○ Match a character in the set [Nn].<br/>
+        ///             ○ Match a sequence of expressions.<br/>
+        ///                 ○ Match a character in the set [Xx].<br/>
+        ///                 ○ Match a character in the set [Ii].<br/>
+        ///                 ○ Match a character in the set [Aa].<br/>
+        ///                 ○ Match a character in the set [Nn].<br/>
+        ///                 ○ Match a character in the set [Gg].<br/>
+        ///     ○ Match a sequence of expressions.<br/>
+        ///         ○ Match with 3 alternative expressions.<br/>
+        ///             ○ Match a sequence of expressions.<br/>
+        ///                 ○ Match a character in the set [A-Za-z\u212A] greedily at least 2 and at most 3 times.<br/>
+        ///                 ○ Optional (greedy).<br/>
         ///                     ○ Match '-'.<br/>
-        ///                     ○ Match a character in the set [Gg].<br/>
-        ///                     ○ Match a character in the set [Bb].<br/>
-        ///                     ○ Match '-'.<br/>
-        ///                     ○ Match a character in the set [Oo].<br/>
-        ///                     ○ Match a character in the set [Ee].<br/>
-        ///                     ○ Match a character in the set [Dd].<br/>
+        ///                     ○ Match a character in the set [A-Za-z\u212A] exactly 3 times.<br/>
+        ///                     ○ Loop greedily at most 2 times.<br/>
+        ///                         ○ Match '-'.<br/>
+        ///                         ○ Match a character in the set [A-Za-z\u212A] exactly 3 times.<br/>
+        ///             ○ Match a character in the set [A-Za-z\u212A] exactly 4 times.<br/>
+        ///             ○ Match a character in the set [A-Za-z\u212A] greedily at least 5 and at most 8 times.<br/>
+        ///         ○ Optional (greedy).<br/>
+        ///             ○ Match '-'.<br/>
+        ///             ○ Match a character in the set [A-Za-z\u212A] exactly 4 times.<br/>
+        ///         ○ Optional (greedy).<br/>
+        ///             ○ Match '-'.<br/>
+        ///             ○ Match with 2 alternative expressions.<br/>
+        ///                 ○ Match a character in the set [A-Za-z\u212A] exactly 2 times.<br/>
+        ///                 ○ Match a character in the set [0-9] exactly 3 times.<br/>
+        ///         ○ Loop greedily any number of times.<br/>
+        ///             ○ Match '-'.<br/>
+        ///             ○ Match with 2 alternative expressions.<br/>
+        ///                 ○ Match a character in the set [0-9A-Za-z\u212A] greedily at least 5 and at most 8 times.<br/>
         ///                 ○ Match a sequence of expressions.<br/>
-        ///                     ○ Match a character in the set [Ii].<br/>
-        ///                     ○ Match '-'.<br/>
-        ///                     ○ Match with 11 alternative expressions.<br/>
-        ///                         ○ Match a sequence of expressions.<br/>
-        ///                             ○ Match a character in the set [Aa].<br/>
-        ///                             ○ Match a character in the set [Mm].<br/>
-        ///                             ○ Match a character in the set [Ii].<br/>
-        ///                         ○ Match a sequence of expressions.<br/>
-        ///                             ○ Match a character in the set [Bb].<br/>
-        ///                             ○ Match a character in the set [Nn] exactly 2 times.<br/>
-        ///                         ○ Match a sequence of expressions.<br/>
-        ///                             ○ Match a character in the set [Dd].<br/>
-        ///                             ○ Match a character in the set [Ee].<br/>
-        ///                             ○ Match a character in the set [Ff].<br/>
-        ///                             ○ Match a character in the set [Aa].<br/>
-        ///                             ○ Match a character in the set [Uu].<br/>
-        ///                             ○ Match a character in the set [Ll].<br/>
-        ///                             ○ Match a character in the set [Tt].<br/>
-        ///                         ○ Match a sequence of expressions.<br/>
-        ///                             ○ Match a character in the set [Ee].<br/>
-        ///                             ○ Match a character in the set [Nn].<br/>
-        ///                             ○ Match a character in the set [Oo].<br/>
-        ///                             ○ Match a character in the set [Cc].<br/>
-        ///                             ○ Match a character in the set [Hh].<br/>
-        ///                             ○ Match a character in the set [Ii].<br/>
-        ///                             ○ Match a character in the set [Aa].<br/>
-        ///                             ○ Match a character in the set [Nn].<br/>
-        ///                         ○ Match a sequence of expressions.<br/>
-        ///                             ○ Match a character in the set [Hh].<br/>
-        ///                             ○ Match a character in the set [Aa].<br/>
-        ///                             ○ Match a character in the set [Kk\u212A].<br/>
-        ///                         ○ Match a sequence of expressions.<br/>
-        ///                             ○ Match a character in the set [Kk\u212A].<br/>
-        ///                             ○ Match a character in the set [Ll].<br/>
-        ///                             ○ Match a character in the set [Ii].<br/>
-        ///                             ○ Match a character in the set [Nn].<br/>
-        ///                             ○ Match a character in the set [Gg].<br/>
-        ///                             ○ Match a character in the set [Oo].<br/>
-        ///                             ○ Match a character in the set [Nn].<br/>
-        ///                         ○ Match a sequence of expressions.<br/>
-        ///                             ○ Match a character in the set [Ll].<br/>
-        ///                             ○ Match a character in the set [Uu].<br/>
-        ///                             ○ Match a character in the set [Xx].<br/>
-        ///                         ○ Match a sequence of expressions.<br/>
-        ///                             ○ Match a character in the set [Mm].<br/>
-        ///                             ○ Match a character in the set [Ii].<br/>
-        ///                             ○ Match a character in the set [Nn].<br/>
-        ///                             ○ Match a character in the set [Gg].<br/>
-        ///                             ○ Match a character in the set [Oo].<br/>
-        ///                         ○ Match a sequence of expressions.<br/>
-        ///                             ○ Match a character in the set [Nn].<br/>
-        ///                             ○ Match a character in the set [Aa].<br/>
-        ///                             ○ Match a character in the set [Vv].<br/>
-        ///                             ○ Match a character in the set [Aa].<br/>
-        ///                             ○ Match a character in the set [Jj].<br/>
-        ///                             ○ Match a character in the set [Oo].<br/>
-        ///                         ○ Match a sequence of expressions.<br/>
-        ///                             ○ Match a character in the set [Pp].<br/>
-        ///                             ○ Match a character in the set [Ww].<br/>
-        ///                             ○ Match a character in the set [Nn].<br/>
-        ///                         ○ Match a sequence of expressions.<br/>
-        ///                             ○ Match a character in the set [Tt].<br/>
-        ///                             ○ Match with 2 alternative expressions.<br/>
-        ///                                 ○ Match a sequence of expressions.<br/>
-        ///                                     ○ Match a character in the set [Aa].<br/>
-        ///                                     ○ Match a character in the set [OYoy].<br/>
-        ///                                 ○ Match a sequence of expressions.<br/>
-        ///                                     ○ Match a character in the set [Ss].<br/>
-        ///                                     ○ Match a character in the set [Uu].<br/>
-        ///                 ○ Match a sequence of expressions.<br/>
-        ///                     ○ Match a character in the set [Ss].<br/>
-        ///                     ○ Match a character in the set [Gg].<br/>
-        ///                     ○ Match a character in the set [Nn].<br/>
-        ///                     ○ Match '-'.<br/>
-        ///                     ○ Match with 2 alternative expressions.<br/>
-        ///                         ○ Match a sequence of expressions.<br/>
-        ///                             ○ Match a character in the set [Bb].<br/>
-        ///                             ○ Match a character in the set [Ee].<br/>
-        ///                             ○ Match '-'.<br/>
-        ///                             ○ Match with 2 alternative expressions.<br/>
-        ///                                 ○ Match a sequence of expressions.<br/>
-        ///                                     ○ Match a character in the set [Ff].<br/>
-        ///                                     ○ Match a character in the set [Rr].<br/>
-        ///                                 ○ Match a sequence of expressions.<br/>
-        ///                                     ○ Match a character in the set [Nn].<br/>
-        ///                                     ○ Match a character in the set [Ll].<br/>
-        ///                         ○ Match a sequence of expressions.<br/>
-        ///                             ○ Match a character in the set [Cc].<br/>
-        ///                             ○ Match a character in the set [Hh].<br/>
-        ///                             ○ Match '-'.<br/>
-        ///                             ○ Match a character in the set [Dd].<br/>
-        ///                             ○ Match a character in the set [Ee].<br/>
-        ///         ○ 3rd capture group.<br/>
-        ///             ○ Match with 4 alternative expressions.<br/>
-        ///                 ○ Match a sequence of expressions.<br/>
-        ///                     ○ Match a character in the set [Aa].<br/>
-        ///                     ○ Match a character in the set [Rr].<br/>
-        ///                     ○ Match a character in the set [Tt].<br/>
-        ///                     ○ Match '-'.<br/>
-        ///                     ○ Match a character in the set [Ll].<br/>
-        ///                     ○ Match a character in the set [Oo].<br/>
-        ///                     ○ Match a character in the set [Jj].<br/>
-        ///                     ○ Match a character in the set [Bb].<br/>
-        ///                     ○ Match a character in the set [Aa].<br/>
-        ///                     ○ Match a character in the set [Nn].<br/>
-        ///                 ○ Match a sequence of expressions.<br/>
-        ///                     ○ Match a character in the set [Cc].<br/>
-        ///                     ○ Match a character in the set [Ee].<br/>
-        ///                     ○ Match a character in the set [Ll].<br/>
-        ///                     ○ Match '-'.<br/>
-        ///                     ○ Match a character in the set [Gg].<br/>
-        ///                     ○ Match a character in the set [Aa].<br/>
-        ///                     ○ Match a character in the set [Uu].<br/>
-        ///                     ○ Match a character in the set [Ll].<br/>
-        ///                     ○ Match a character in the set [Ii].<br/>
-        ///                     ○ Match a character in the set [Ss].<br/>
-        ///                     ○ Match a character in the set [Hh].<br/>
-        ///                 ○ Match a sequence of expressions.<br/>
-        ///                     ○ Match a character in the set [Nn].<br/>
-        ///                     ○ Match a character in the set [Oo].<br/>
-        ///                     ○ Match '-'.<br/>
-        ///                     ○ Match with 2 alternative expressions.<br/>
-        ///                         ○ Match a sequence of expressions.<br/>
-        ///                             ○ Match a character in the set [Bb].<br/>
-        ///                             ○ Match a character in the set [Oo].<br/>
-        ///                             ○ Match a character in the set [Kk\u212A].<br/>
-        ///                         ○ Match a sequence of expressions.<br/>
-        ///                             ○ Match a character in the set [Nn].<br/>
-        ///                             ○ Match a character in the set [Yy].<br/>
-        ///                             ○ Match a character in the set [Nn].<br/>
-        ///                 ○ Match a sequence of expressions.<br/>
-        ///                     ○ Match a character in the set [Zz].<br/>
-        ///                     ○ Match a character in the set [Hh].<br/>
-        ///                     ○ Match '-'.<br/>
-        ///                     ○ Match with 4 alternative expressions.<br/>
-        ///                         ○ Match a sequence of expressions.<br/>
-        ///                             ○ Match a character in the set [Gg].<br/>
-        ///                             ○ Match a character in the set [Uu].<br/>
-        ///                             ○ Match a character in the set [Oo].<br/>
-        ///                             ○ Match a character in the set [Yy].<br/>
-        ///                             ○ Match a character in the set [Uu].<br/>
-        ///                         ○ Match a sequence of expressions.<br/>
-        ///                             ○ Match a character in the set [Hh].<br/>
-        ///                             ○ Match a character in the set [Aa].<br/>
-        ///                             ○ Match a character in the set [Kk\u212A] exactly 2 times.<br/>
-        ///                             ○ Match a character in the set [Aa].<br/>
-        ///                         ○ Match a sequence of expressions.<br/>
-        ///                             ○ Match a character in the set [Mm].<br/>
-        ///                             ○ Match a character in the set [Ii].<br/>
-        ///                             ○ Match with 2 alternative expressions.<br/>
-        ///                                 ○ Match a character in the set [Nn].<br/>
-        ///                                 ○ Match a sequence of expressions.<br/>
-        ///                                     ○ Match a character in the set [Nn].<br/>
-        ///                                     ○ Match '-'.<br/>
-        ///                                     ○ Match a character in the set [Nn].<br/>
-        ///                                     ○ Match a character in the set [Aa].<br/>
-        ///                                     ○ Match a character in the set [Nn].<br/>
-        ///                         ○ Match a sequence of expressions.<br/>
-        ///                             ○ Match a character in the set [Xx].<br/>
-        ///                             ○ Match a character in the set [Ii].<br/>
-        ///                             ○ Match a character in the set [Aa].<br/>
-        ///                             ○ Match a character in the set [Nn].<br/>
-        ///                             ○ Match a character in the set [Gg].<br/>
-        ///         ○ 4th capture group.<br/>
-        ///             ○ Match with 3 alternative expressions.<br/>
-        ///                 ○ 5th capture group.<br/>
-        ///                     ○ Match a character in the set [A-Za-z\u212A] greedily at least 2 and at most 3 times.<br/>
-        ///                     ○ Optional (greedy).<br/>
-        ///                         ○ 6th capture group.<br/>
-        ///                             ○ Match '-'.<br/>
-        ///                             ○ Match a character in the set [A-Za-z\u212A] exactly 3 times.<br/>
-        ///                             ○ Loop greedily at most 2 times.<br/>
-        ///                                 ○ 7th capture group.<br/>
-        ///                                     ○ Match '-'.<br/>
-        ///                                     ○ Match a character in the set [A-Za-z\u212A] exactly 3 times.<br/>
-        ///                 ○ Match a character in the set [A-Za-z\u212A] exactly 4 times.<br/>
-        ///                 ○ Match a character in the set [A-Za-z\u212A] greedily at least 5 and at most 8 times.<br/>
-        ///             ○ Optional (greedy).<br/>
-        ///                 ○ 8th capture group.<br/>
-        ///                     ○ Match '-'.<br/>
-        ///                     ○ Match a character in the set [A-Za-z\u212A] exactly 4 times.<br/>
-        ///             ○ Optional (greedy).<br/>
-        ///                 ○ 9th capture group.<br/>
-        ///                     ○ Match '-'.<br/>
-        ///                     ○ Match with 2 alternative expressions.<br/>
-        ///                         ○ Match a character in the set [A-Za-z\u212A] exactly 2 times.<br/>
-        ///                         ○ Match a character in the set [0-9] exactly 3 times.<br/>
-        ///             ○ Loop greedily any number of times.<br/>
-        ///                 ○ 10th capture group.<br/>
-        ///                     ○ Match '-'.<br/>
-        ///                     ○ Match with 2 alternative expressions.<br/>
-        ///                         ○ Match a character in the set [0-9A-Za-z\u212A] greedily at least 5 and at most 8 times.<br/>
-        ///                         ○ Match a sequence of expressions.<br/>
-        ///                             ○ Match a character in the set [0-9].<br/>
-        ///                             ○ Match a character in the set [0-9A-Za-z\u212A] exactly 3 times.<br/>
-        ///             ○ Loop greedily any number of times.<br/>
-        ///                 ○ 11th capture group.<br/>
-        ///                     ○ Match '-'.<br/>
-        ///                     ○ Match a character in the set [0-9A-WYZa-wyz\u212A].<br/>
-        ///                     ○ Loop greedily at least once.<br/>
-        ///                         ○ 12th capture group.<br/>
-        ///                             ○ Match '-'.<br/>
-        ///                             ○ Match a character in the set [0-9A-Za-z\u212A] greedily at least 2 and at most 8 times.<br/>
-        ///             ○ Optional (greedy).<br/>
-        ///                 ○ 13th capture group.<br/>
-        ///                     ○ Match '-'.<br/>
-        ///                     ○ Match a character in the set [Xx].<br/>
-        ///                     ○ Loop greedily at least once.<br/>
-        ///                         ○ 14th capture group.<br/>
-        ///                             ○ Match '-'.<br/>
-        ///                             ○ Match a character in the set [0-9A-Za-z\u212A] greedily at least 1 and at most 8 times.<br/>
-        ///         ○ Match a sequence of expressions.<br/>
+        ///                     ○ Match a character in the set [0-9].<br/>
+        ///                     ○ Match a character in the set [0-9A-Za-z\u212A] exactly 3 times.<br/>
+        ///         ○ Loop greedily any number of times.<br/>
+        ///             ○ Match '-'.<br/>
+        ///             ○ Match a character in the set [0-9A-WYZa-wyz\u212A].<br/>
+        ///             ○ Loop greedily at least once.<br/>
+        ///                 ○ Match '-'.<br/>
+        ///                 ○ Match a character in the set [0-9A-Za-z\u212A] greedily at least 2 and at most 8 times.<br/>
+        ///         ○ Optional (greedy).<br/>
+        ///             ○ Match '-'.<br/>
         ///             ○ Match a character in the set [Xx].<br/>
         ///             ○ Loop greedily at least once.<br/>
-        ///                 ○ 15th capture group.<br/>
-        ///                     ○ Match '-'.<br/>
-        ///                     ○ Match a character in the set [0-9A-Za-z\u212A] atomically at least 1 and at most 8 times.<br/>
+        ///                 ○ Match '-'.<br/>
+        ///                 ○ Match a character in the set [0-9A-Za-z\u212A] greedily at least 1 and at most 8 times.<br/>
+        ///     ○ Match a sequence of expressions.<br/>
+        ///         ○ Match a character in the set [Xx].<br/>
+        ///         ○ Loop greedily at least once.<br/>
+        ///             ○ Match '-'.<br/>
+        ///             ○ Match a character in the set [0-9A-Za-z\u212A] atomically at least 1 and at most 8 times.<br/>
         /// ○ Match if at the end of the string or if before an ending newline.<br/>
         /// </code>
         /// </remarks>
@@ -279,10 +264,10 @@ namespace System.Text.RegularExpressions.Generated
         private GetValidationRegex_0()
         {
             base.pattern = "^((?:(en-GB-oed|i-ami|i-bnn|i-default|i-enochian|i-hak|i-klingon|i-lux|i-mingo|i-navajo|i-pwn|i-tao|i-tay|i-tsu|sgn-BE-FR|sgn-BE-NL|sgn-CH-DE)|(art-lojban|cel-gaulish|no-bok|no-nyn|zh-guoyu|zh-hakka|zh-min|zh-min-nan|zh-xiang))|((?:([A-Za-z]{2,3}(-(?:[A-Za-z]{3}(-[A-Za-z]{3}){0,2}))?)|[A-Za-z]{4}|[A-Za-z]{5,8})(-(?:[A-Za-z]{4}))?(-(?:[A-Za-z]{2}|[0-9]{3}))?(-(?:[A-Za-z0-9]{5,8}|[0-9][A-Za-z0-9]{3}))*(-(?:[0-9A-WY-Za-wy-z](-[A-Za-z0-9]{2,8})+))*(-(?:x(-[A-Za-z0-9]{1,8})+))?)|(?:x(-[A-Za-z0-9]{1,8})+))$";
-            base.roptions = RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant;
+            base.roptions = RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture;
             base.internalMatchTimeout = TimeSpan.FromMilliseconds(150);
             base.factory = new RunnerFactory();
-            base.capsize = 16;
+            base.capsize = 1;
         }
     
         /// <summary>Provides a factory for creating <see cref="RegexRunner"/> instances to be used by methods on <see cref="Regex"/>.</summary>
@@ -341,31 +326,12 @@ namespace System.Text.RegularExpressions.Generated
                     int alternation_branch3 = 0;
                     int alternation_branch4 = 0;
                     int alternation_branch5 = 0;
-                    int alternation_branch6 = 0;
-                    int alternation_branch7 = 0;
-                    int alternation_starting_capturepos = 0;
-                    int alternation_starting_capturepos1 = 0;
-                    int alternation_starting_capturepos2 = 0;
-                    int alternation_starting_capturepos3 = 0;
-                    int alternation_starting_capturepos4 = 0;
-                    int alternation_starting_capturepos5 = 0;
-                    int alternation_starting_capturepos6 = 0;
-                    int alternation_starting_capturepos7 = 0;
                     int alternation_starting_pos = 0;
                     int alternation_starting_pos1 = 0;
                     int alternation_starting_pos2 = 0;
                     int alternation_starting_pos3 = 0;
                     int alternation_starting_pos4 = 0;
                     int alternation_starting_pos5 = 0;
-                    int alternation_starting_pos6 = 0;
-                    int alternation_starting_pos7 = 0;
-                    int capture_starting_pos = 0;
-                    int capture_starting_pos1 = 0;
-                    int capture_starting_pos2 = 0;
-                    int capture_starting_pos3 = 0;
-                    int capture_starting_pos4 = 0;
-                    int charloop_capture_pos = 0;
-                    int charloop_capture_pos1 = 0;
                     int charloop_starting_pos = 0, charloop_ending_pos = 0;
                     int charloop_starting_pos1 = 0, charloop_ending_pos1 = 0;
                     int charloop_starting_pos2 = 0, charloop_ending_pos2 = 0;
@@ -388,735 +354,594 @@ namespace System.Text.RegularExpressions.Generated
                     // Match if at the beginning of the string.
                     if (pos != 0)
                     {
-                        UncaptureUntil(0);
                         return false; // The input didn't match.
                     }
                     
-                    // 1st capture group.
+                    // Match with 9 alternative expressions.
                     //{
-                        capture_starting_pos = pos;
+                        alternation_starting_pos = pos;
                         
-                        // Match with 4 alternative expressions.
+                        // Branch 0
                         //{
-                            alternation_starting_pos = pos;
-                            alternation_starting_capturepos = base.Crawlpos();
+                            if ((uint)slice.Length < 9 ||
+                                !slice.StartsWith("en-gb-oed", StringComparison.OrdinalIgnoreCase)) // Match the string "en-gb-oed" (ordinal case-insensitive)
+                            {
+                                goto AlternationBranch;
+                            }
                             
-                            // Branch 0
+                            alternation_branch = 0;
+                            pos += 9;
+                            slice = inputSpan.Slice(pos);
+                            goto AlternationMatch;
+                            
+                            AlternationBranch:
+                            pos = alternation_starting_pos;
+                            slice = inputSpan.Slice(pos);
+                        //}
+                        
+                        // Branch 1
+                        //{
+                            if ((uint)slice.Length < 2 ||
+                                !slice.StartsWith("i-", StringComparison.OrdinalIgnoreCase)) // Match the string "i-" (ordinal case-insensitive)
+                            {
+                                goto AlternationBranch1;
+                            }
+                            
+                            // Match with 11 alternative expressions.
                             //{
-                                // 2nd capture group.
+                                alternation_starting_pos1 = pos;
+                                
+                                // Branch 0
                                 //{
-                                    capture_starting_pos1 = pos;
+                                    if ((uint)slice.Length < 5 ||
+                                        !slice.Slice(2).StartsWith("ami", StringComparison.OrdinalIgnoreCase)) // Match the string "ami" (ordinal case-insensitive)
+                                    {
+                                        goto AlternationBranch2;
+                                    }
                                     
-                                    // Match with 3 alternative expressions.
-                                    //{
-                                        alternation_starting_pos1 = pos;
-                                        alternation_starting_capturepos1 = base.Crawlpos();
-                                        
-                                        // Branch 0
-                                        //{
-                                            if ((uint)slice.Length < 9 ||
-                                                !slice.StartsWith("en-gb-oed", StringComparison.OrdinalIgnoreCase)) // Match the string "en-gb-oed" (ordinal case-insensitive)
-                                            {
-                                                goto AlternationBranch1;
-                                            }
-                                            
-                                            alternation_branch1 = 0;
-                                            pos += 9;
-                                            slice = inputSpan.Slice(pos);
-                                            goto AlternationMatch1;
-                                            
-                                            AlternationBranch1:
-                                            pos = alternation_starting_pos1;
-                                            slice = inputSpan.Slice(pos);
-                                            UncaptureUntil(alternation_starting_capturepos1);
-                                        //}
-                                        
-                                        // Branch 1
-                                        //{
-                                            if ((uint)slice.Length < 2 ||
-                                                !slice.StartsWith("i-", StringComparison.OrdinalIgnoreCase)) // Match the string "i-" (ordinal case-insensitive)
-                                            {
-                                                goto AlternationBranch2;
-                                            }
-                                            
-                                            // Match with 11 alternative expressions.
-                                            //{
-                                                alternation_starting_pos2 = pos;
-                                                alternation_starting_capturepos2 = base.Crawlpos();
-                                                
-                                                // Branch 0
-                                                //{
-                                                    if ((uint)slice.Length < 5 ||
-                                                        !slice.Slice(2).StartsWith("ami", StringComparison.OrdinalIgnoreCase)) // Match the string "ami" (ordinal case-insensitive)
-                                                    {
-                                                        goto AlternationBranch3;
-                                                    }
-                                                    
-                                                    alternation_branch2 = 0;
-                                                    pos += 5;
-                                                    slice = inputSpan.Slice(pos);
-                                                    goto AlternationMatch2;
-                                                    
-                                                    AlternationBranch3:
-                                                    pos = alternation_starting_pos2;
-                                                    slice = inputSpan.Slice(pos);
-                                                    UncaptureUntil(alternation_starting_capturepos2);
-                                                //}
-                                                
-                                                // Branch 1
-                                                //{
-                                                    if ((uint)slice.Length < 5 ||
-                                                        !slice.Slice(2).StartsWith("bnn", StringComparison.OrdinalIgnoreCase)) // Match the string "bnn" (ordinal case-insensitive)
-                                                    {
-                                                        goto AlternationBranch4;
-                                                    }
-                                                    
-                                                    alternation_branch2 = 1;
-                                                    pos += 5;
-                                                    slice = inputSpan.Slice(pos);
-                                                    goto AlternationMatch2;
-                                                    
-                                                    AlternationBranch4:
-                                                    pos = alternation_starting_pos2;
-                                                    slice = inputSpan.Slice(pos);
-                                                    UncaptureUntil(alternation_starting_capturepos2);
-                                                //}
-                                                
-                                                // Branch 2
-                                                //{
-                                                    if ((uint)slice.Length < 9 ||
-                                                        !slice.Slice(2).StartsWith("default", StringComparison.OrdinalIgnoreCase)) // Match the string "default" (ordinal case-insensitive)
-                                                    {
-                                                        goto AlternationBranch5;
-                                                    }
-                                                    
-                                                    alternation_branch2 = 2;
-                                                    pos += 9;
-                                                    slice = inputSpan.Slice(pos);
-                                                    goto AlternationMatch2;
-                                                    
-                                                    AlternationBranch5:
-                                                    pos = alternation_starting_pos2;
-                                                    slice = inputSpan.Slice(pos);
-                                                    UncaptureUntil(alternation_starting_capturepos2);
-                                                //}
-                                                
-                                                // Branch 3
-                                                //{
-                                                    if ((uint)slice.Length < 10 ||
-                                                        !slice.Slice(2).StartsWith("enochian", StringComparison.OrdinalIgnoreCase)) // Match the string "enochian" (ordinal case-insensitive)
-                                                    {
-                                                        goto AlternationBranch6;
-                                                    }
-                                                    
-                                                    alternation_branch2 = 3;
-                                                    pos += 10;
-                                                    slice = inputSpan.Slice(pos);
-                                                    goto AlternationMatch2;
-                                                    
-                                                    AlternationBranch6:
-                                                    pos = alternation_starting_pos2;
-                                                    slice = inputSpan.Slice(pos);
-                                                    UncaptureUntil(alternation_starting_capturepos2);
-                                                //}
-                                                
-                                                // Branch 4
-                                                //{
-                                                    if ((uint)slice.Length < 5 ||
-                                                        !slice.Slice(2).StartsWith("ha", StringComparison.OrdinalIgnoreCase) || // Match the string "ha" (ordinal case-insensitive)
-                                                        ((((ch = slice[4]) | 0x20) != 'k') & (ch != 'K'))) // Match a character in the set [Kk\u212A].
-                                                    {
-                                                        goto AlternationBranch7;
-                                                    }
-                                                    
-                                                    alternation_branch2 = 4;
-                                                    pos += 5;
-                                                    slice = inputSpan.Slice(pos);
-                                                    goto AlternationMatch2;
-                                                    
-                                                    AlternationBranch7:
-                                                    pos = alternation_starting_pos2;
-                                                    slice = inputSpan.Slice(pos);
-                                                    UncaptureUntil(alternation_starting_capturepos2);
-                                                //}
-                                                
-                                                // Branch 5
-                                                //{
-                                                    if ((uint)slice.Length < 9 ||
-                                                        ((((ch = slice[2]) | 0x20) != 'k') & (ch != 'K')) || // Match a character in the set [Kk\u212A].
-                                                        !slice.Slice(3).StartsWith("lingon", StringComparison.OrdinalIgnoreCase)) // Match the string "lingon" (ordinal case-insensitive)
-                                                    {
-                                                        goto AlternationBranch8;
-                                                    }
-                                                    
-                                                    alternation_branch2 = 5;
-                                                    pos += 9;
-                                                    slice = inputSpan.Slice(pos);
-                                                    goto AlternationMatch2;
-                                                    
-                                                    AlternationBranch8:
-                                                    pos = alternation_starting_pos2;
-                                                    slice = inputSpan.Slice(pos);
-                                                    UncaptureUntil(alternation_starting_capturepos2);
-                                                //}
-                                                
-                                                // Branch 6
-                                                //{
-                                                    if ((uint)slice.Length < 5 ||
-                                                        !slice.Slice(2).StartsWith("lux", StringComparison.OrdinalIgnoreCase)) // Match the string "lux" (ordinal case-insensitive)
-                                                    {
-                                                        goto AlternationBranch9;
-                                                    }
-                                                    
-                                                    alternation_branch2 = 6;
-                                                    pos += 5;
-                                                    slice = inputSpan.Slice(pos);
-                                                    goto AlternationMatch2;
-                                                    
-                                                    AlternationBranch9:
-                                                    pos = alternation_starting_pos2;
-                                                    slice = inputSpan.Slice(pos);
-                                                    UncaptureUntil(alternation_starting_capturepos2);
-                                                //}
-                                                
-                                                // Branch 7
-                                                //{
-                                                    if ((uint)slice.Length < 7 ||
-                                                        !slice.Slice(2).StartsWith("mingo", StringComparison.OrdinalIgnoreCase)) // Match the string "mingo" (ordinal case-insensitive)
-                                                    {
-                                                        goto AlternationBranch10;
-                                                    }
-                                                    
-                                                    alternation_branch2 = 7;
-                                                    pos += 7;
-                                                    slice = inputSpan.Slice(pos);
-                                                    goto AlternationMatch2;
-                                                    
-                                                    AlternationBranch10:
-                                                    pos = alternation_starting_pos2;
-                                                    slice = inputSpan.Slice(pos);
-                                                    UncaptureUntil(alternation_starting_capturepos2);
-                                                //}
-                                                
-                                                // Branch 8
-                                                //{
-                                                    if ((uint)slice.Length < 8 ||
-                                                        !slice.Slice(2).StartsWith("navajo", StringComparison.OrdinalIgnoreCase)) // Match the string "navajo" (ordinal case-insensitive)
-                                                    {
-                                                        goto AlternationBranch11;
-                                                    }
-                                                    
-                                                    alternation_branch2 = 8;
-                                                    pos += 8;
-                                                    slice = inputSpan.Slice(pos);
-                                                    goto AlternationMatch2;
-                                                    
-                                                    AlternationBranch11:
-                                                    pos = alternation_starting_pos2;
-                                                    slice = inputSpan.Slice(pos);
-                                                    UncaptureUntil(alternation_starting_capturepos2);
-                                                //}
-                                                
-                                                // Branch 9
-                                                //{
-                                                    if ((uint)slice.Length < 5 ||
-                                                        !slice.Slice(2).StartsWith("pwn", StringComparison.OrdinalIgnoreCase)) // Match the string "pwn" (ordinal case-insensitive)
-                                                    {
-                                                        goto AlternationBranch12;
-                                                    }
-                                                    
-                                                    alternation_branch2 = 9;
-                                                    pos += 5;
-                                                    slice = inputSpan.Slice(pos);
-                                                    goto AlternationMatch2;
-                                                    
-                                                    AlternationBranch12:
-                                                    pos = alternation_starting_pos2;
-                                                    slice = inputSpan.Slice(pos);
-                                                    UncaptureUntil(alternation_starting_capturepos2);
-                                                //}
-                                                
-                                                // Branch 10
-                                                //{
-                                                    // Match a character in the set [Tt].
-                                                    if ((uint)slice.Length < 3 || ((slice[2] | 0x20) != 't'))
-                                                    {
-                                                        goto AlternationBranch2;
-                                                    }
-                                                    
-                                                    // Match with 2 alternative expressions.
-                                                    //{
-                                                        if ((uint)slice.Length < 4)
-                                                        {
-                                                            goto AlternationBranch2;
-                                                        }
-                                                        
-                                                        switch (slice[3])
-                                                        {
-                                                            case 'A' or 'a':
-                                                                // Match a character in the set [OYoy].
-                                                                if ((uint)slice.Length < 5 || ((long)((0x8020000080200000UL << (int)(charMinusLowUInt64 = (uint)slice[4] - 'O')) & (charMinusLowUInt64 - 64)) >= 0))
-                                                                {
-                                                                    goto AlternationBranch2;
-                                                                }
-                                                                
-                                                                pos += 5;
-                                                                slice = inputSpan.Slice(pos);
-                                                                break;
-                                                                
-                                                            case 'S' or 's':
-                                                                // Match a character in the set [Uu].
-                                                                if ((uint)slice.Length < 5 || ((slice[4] | 0x20) != 'u'))
-                                                                {
-                                                                    goto AlternationBranch2;
-                                                                }
-                                                                
-                                                                pos += 5;
-                                                                slice = inputSpan.Slice(pos);
-                                                                break;
-                                                                
-                                                            default:
-                                                                goto AlternationBranch2;
-                                                        }
-                                                    //}
-                                                    
-                                                    alternation_branch2 = 10;
-                                                    goto AlternationMatch2;
-                                                //}
-                                                
-                                                AlternationBacktrack2:
-                                                base.CheckTimeout();
-                                                
-                                                switch (alternation_branch2)
-                                                {
-                                                    case 0:
-                                                        goto AlternationBranch3;
-                                                    case 1:
-                                                        goto AlternationBranch4;
-                                                    case 2:
-                                                        goto AlternationBranch5;
-                                                    case 3:
-                                                        goto AlternationBranch6;
-                                                    case 4:
-                                                        goto AlternationBranch7;
-                                                    case 5:
-                                                        goto AlternationBranch8;
-                                                    case 6:
-                                                        goto AlternationBranch9;
-                                                    case 7:
-                                                        goto AlternationBranch10;
-                                                    case 8:
-                                                        goto AlternationBranch11;
-                                                    case 9:
-                                                        goto AlternationBranch12;
-                                                    case 10:
-                                                        goto AlternationBranch2;
-                                                }
-                                                
-                                                AlternationMatch2:;
-                                            //}
-                                            
-                                            alternation_branch1 = 1;
-                                            goto AlternationMatch1;
-                                            
-                                            AlternationBranch2:
-                                            pos = alternation_starting_pos1;
-                                            slice = inputSpan.Slice(pos);
-                                            UncaptureUntil(alternation_starting_capturepos1);
-                                        //}
-                                        
-                                        // Branch 2
-                                        //{
-                                            if ((uint)slice.Length < 4 ||
-                                                !slice.StartsWith("sgn-", StringComparison.OrdinalIgnoreCase)) // Match the string "sgn-" (ordinal case-insensitive)
-                                            {
-                                                goto AlternationBranch;
-                                            }
-                                            
-                                            // Match with 2 alternative expressions.
-                                            //{
-                                                alternation_starting_pos3 = pos;
-                                                alternation_starting_capturepos3 = base.Crawlpos();
-                                                
-                                                // Branch 0
-                                                //{
-                                                    if ((uint)slice.Length < 7 ||
-                                                        !slice.Slice(4).StartsWith("be-", StringComparison.OrdinalIgnoreCase)) // Match the string "be-" (ordinal case-insensitive)
-                                                    {
-                                                        goto AlternationBranch13;
-                                                    }
-                                                    
-                                                    // Match with 2 alternative expressions.
-                                                    //{
-                                                        if ((uint)slice.Length < 8)
-                                                        {
-                                                            goto AlternationBranch13;
-                                                        }
-                                                        
-                                                        switch (slice[7])
-                                                        {
-                                                            case 'F' or 'f':
-                                                                // Match a character in the set [Rr].
-                                                                if ((uint)slice.Length < 9 || ((slice[8] | 0x20) != 'r'))
-                                                                {
-                                                                    goto AlternationBranch13;
-                                                                }
-                                                                
-                                                                pos += 9;
-                                                                slice = inputSpan.Slice(pos);
-                                                                break;
-                                                                
-                                                            case 'N' or 'n':
-                                                                // Match a character in the set [Ll].
-                                                                if ((uint)slice.Length < 9 || ((slice[8] | 0x20) != 'l'))
-                                                                {
-                                                                    goto AlternationBranch13;
-                                                                }
-                                                                
-                                                                pos += 9;
-                                                                slice = inputSpan.Slice(pos);
-                                                                break;
-                                                                
-                                                            default:
-                                                                goto AlternationBranch13;
-                                                        }
-                                                    //}
-                                                    
-                                                    alternation_branch3 = 0;
-                                                    goto AlternationMatch3;
-                                                    
-                                                    AlternationBranch13:
-                                                    pos = alternation_starting_pos3;
-                                                    slice = inputSpan.Slice(pos);
-                                                    UncaptureUntil(alternation_starting_capturepos3);
-                                                //}
-                                                
-                                                // Branch 1
-                                                //{
-                                                    if ((uint)slice.Length < 9 ||
-                                                        !slice.Slice(4).StartsWith("ch-de", StringComparison.OrdinalIgnoreCase)) // Match the string "ch-de" (ordinal case-insensitive)
-                                                    {
-                                                        goto AlternationBranch;
-                                                    }
-                                                    
-                                                    alternation_branch3 = 1;
-                                                    pos += 9;
-                                                    slice = inputSpan.Slice(pos);
-                                                    goto AlternationMatch3;
-                                                //}
-                                                
-                                                AlternationBacktrack3:
-                                                base.CheckTimeout();
-                                                
-                                                switch (alternation_branch3)
-                                                {
-                                                    case 0:
-                                                        goto AlternationBranch13;
-                                                    case 1:
-                                                        goto AlternationBranch;
-                                                }
-                                                
-                                                AlternationMatch3:;
-                                            //}
-                                            
-                                            alternation_branch1 = 2;
-                                            goto AlternationMatch1;
-                                        //}
-                                        
-                                        AlternationBacktrack1:
-                                        base.CheckTimeout();
-                                        
-                                        switch (alternation_branch1)
-                                        {
-                                            case 0:
-                                                goto AlternationBranch1;
-                                            case 1:
-                                                goto AlternationBacktrack2;
-                                            case 2:
-                                                goto AlternationBacktrack3;
-                                        }
-                                        
-                                        AlternationMatch1:;
-                                    //}
+                                    alternation_branch1 = 0;
+                                    pos += 5;
+                                    slice = inputSpan.Slice(pos);
+                                    goto AlternationMatch1;
                                     
-                                    base.Capture(2, capture_starting_pos1, pos);
-                                    
-                                    goto CaptureSkipBacktrack;
-                                    
-                                    CaptureBacktrack:
-                                    goto AlternationBacktrack1;
-                                    
-                                    CaptureSkipBacktrack:;
+                                    AlternationBranch2:
+                                    pos = alternation_starting_pos1;
+                                    slice = inputSpan.Slice(pos);
                                 //}
                                 
-                                alternation_branch = 0;
-                                goto AlternationMatch;
+                                // Branch 1
+                                //{
+                                    if ((uint)slice.Length < 5 ||
+                                        !slice.Slice(2).StartsWith("bnn", StringComparison.OrdinalIgnoreCase)) // Match the string "bnn" (ordinal case-insensitive)
+                                    {
+                                        goto AlternationBranch3;
+                                    }
+                                    
+                                    alternation_branch1 = 1;
+                                    pos += 5;
+                                    slice = inputSpan.Slice(pos);
+                                    goto AlternationMatch1;
+                                    
+                                    AlternationBranch3:
+                                    pos = alternation_starting_pos1;
+                                    slice = inputSpan.Slice(pos);
+                                //}
                                 
-                                AlternationBranch:
-                                pos = alternation_starting_pos;
-                                slice = inputSpan.Slice(pos);
-                                UncaptureUntil(alternation_starting_capturepos);
+                                // Branch 2
+                                //{
+                                    if ((uint)slice.Length < 9 ||
+                                        !slice.Slice(2).StartsWith("default", StringComparison.OrdinalIgnoreCase)) // Match the string "default" (ordinal case-insensitive)
+                                    {
+                                        goto AlternationBranch4;
+                                    }
+                                    
+                                    alternation_branch1 = 2;
+                                    pos += 9;
+                                    slice = inputSpan.Slice(pos);
+                                    goto AlternationMatch1;
+                                    
+                                    AlternationBranch4:
+                                    pos = alternation_starting_pos1;
+                                    slice = inputSpan.Slice(pos);
+                                //}
+                                
+                                // Branch 3
+                                //{
+                                    if ((uint)slice.Length < 10 ||
+                                        !slice.Slice(2).StartsWith("enochian", StringComparison.OrdinalIgnoreCase)) // Match the string "enochian" (ordinal case-insensitive)
+                                    {
+                                        goto AlternationBranch5;
+                                    }
+                                    
+                                    alternation_branch1 = 3;
+                                    pos += 10;
+                                    slice = inputSpan.Slice(pos);
+                                    goto AlternationMatch1;
+                                    
+                                    AlternationBranch5:
+                                    pos = alternation_starting_pos1;
+                                    slice = inputSpan.Slice(pos);
+                                //}
+                                
+                                // Branch 4
+                                //{
+                                    if ((uint)slice.Length < 5 ||
+                                        !slice.Slice(2).StartsWith("ha", StringComparison.OrdinalIgnoreCase) || // Match the string "ha" (ordinal case-insensitive)
+                                        ((((ch = slice[4]) | 0x20) != 'k') & (ch != 'K'))) // Match a character in the set [Kk\u212A].
+                                    {
+                                        goto AlternationBranch6;
+                                    }
+                                    
+                                    alternation_branch1 = 4;
+                                    pos += 5;
+                                    slice = inputSpan.Slice(pos);
+                                    goto AlternationMatch1;
+                                    
+                                    AlternationBranch6:
+                                    pos = alternation_starting_pos1;
+                                    slice = inputSpan.Slice(pos);
+                                //}
+                                
+                                // Branch 5
+                                //{
+                                    if ((uint)slice.Length < 9 ||
+                                        ((((ch = slice[2]) | 0x20) != 'k') & (ch != 'K')) || // Match a character in the set [Kk\u212A].
+                                        !slice.Slice(3).StartsWith("lingon", StringComparison.OrdinalIgnoreCase)) // Match the string "lingon" (ordinal case-insensitive)
+                                    {
+                                        goto AlternationBranch7;
+                                    }
+                                    
+                                    alternation_branch1 = 5;
+                                    pos += 9;
+                                    slice = inputSpan.Slice(pos);
+                                    goto AlternationMatch1;
+                                    
+                                    AlternationBranch7:
+                                    pos = alternation_starting_pos1;
+                                    slice = inputSpan.Slice(pos);
+                                //}
+                                
+                                // Branch 6
+                                //{
+                                    if ((uint)slice.Length < 5 ||
+                                        !slice.Slice(2).StartsWith("lux", StringComparison.OrdinalIgnoreCase)) // Match the string "lux" (ordinal case-insensitive)
+                                    {
+                                        goto AlternationBranch8;
+                                    }
+                                    
+                                    alternation_branch1 = 6;
+                                    pos += 5;
+                                    slice = inputSpan.Slice(pos);
+                                    goto AlternationMatch1;
+                                    
+                                    AlternationBranch8:
+                                    pos = alternation_starting_pos1;
+                                    slice = inputSpan.Slice(pos);
+                                //}
+                                
+                                // Branch 7
+                                //{
+                                    if ((uint)slice.Length < 7 ||
+                                        !slice.Slice(2).StartsWith("mingo", StringComparison.OrdinalIgnoreCase)) // Match the string "mingo" (ordinal case-insensitive)
+                                    {
+                                        goto AlternationBranch9;
+                                    }
+                                    
+                                    alternation_branch1 = 7;
+                                    pos += 7;
+                                    slice = inputSpan.Slice(pos);
+                                    goto AlternationMatch1;
+                                    
+                                    AlternationBranch9:
+                                    pos = alternation_starting_pos1;
+                                    slice = inputSpan.Slice(pos);
+                                //}
+                                
+                                // Branch 8
+                                //{
+                                    if ((uint)slice.Length < 8 ||
+                                        !slice.Slice(2).StartsWith("navajo", StringComparison.OrdinalIgnoreCase)) // Match the string "navajo" (ordinal case-insensitive)
+                                    {
+                                        goto AlternationBranch10;
+                                    }
+                                    
+                                    alternation_branch1 = 8;
+                                    pos += 8;
+                                    slice = inputSpan.Slice(pos);
+                                    goto AlternationMatch1;
+                                    
+                                    AlternationBranch10:
+                                    pos = alternation_starting_pos1;
+                                    slice = inputSpan.Slice(pos);
+                                //}
+                                
+                                // Branch 9
+                                //{
+                                    if ((uint)slice.Length < 5 ||
+                                        !slice.Slice(2).StartsWith("pwn", StringComparison.OrdinalIgnoreCase)) // Match the string "pwn" (ordinal case-insensitive)
+                                    {
+                                        goto AlternationBranch11;
+                                    }
+                                    
+                                    alternation_branch1 = 9;
+                                    pos += 5;
+                                    slice = inputSpan.Slice(pos);
+                                    goto AlternationMatch1;
+                                    
+                                    AlternationBranch11:
+                                    pos = alternation_starting_pos1;
+                                    slice = inputSpan.Slice(pos);
+                                //}
+                                
+                                // Branch 10
+                                //{
+                                    // Match a character in the set [Tt].
+                                    if ((uint)slice.Length < 3 || ((slice[2] | 0x20) != 't'))
+                                    {
+                                        goto AlternationBranch1;
+                                    }
+                                    
+                                    // Match with 2 alternative expressions.
+                                    //{
+                                        if ((uint)slice.Length < 4)
+                                        {
+                                            goto AlternationBranch1;
+                                        }
+                                        
+                                        switch (slice[3])
+                                        {
+                                            case 'A' or 'a':
+                                                // Match a character in the set [OYoy].
+                                                if ((uint)slice.Length < 5 || ((long)((0x8020000080200000UL << (int)(charMinusLowUInt64 = (uint)slice[4] - 'O')) & (charMinusLowUInt64 - 64)) >= 0))
+                                                {
+                                                    goto AlternationBranch1;
+                                                }
+                                                
+                                                pos += 5;
+                                                slice = inputSpan.Slice(pos);
+                                                break;
+                                                
+                                            case 'S' or 's':
+                                                // Match a character in the set [Uu].
+                                                if ((uint)slice.Length < 5 || ((slice[4] | 0x20) != 'u'))
+                                                {
+                                                    goto AlternationBranch1;
+                                                }
+                                                
+                                                pos += 5;
+                                                slice = inputSpan.Slice(pos);
+                                                break;
+                                                
+                                            default:
+                                                goto AlternationBranch1;
+                                        }
+                                    //}
+                                    
+                                    alternation_branch1 = 10;
+                                    goto AlternationMatch1;
+                                //}
+                                
+                                AlternationBacktrack1:
+                                base.CheckTimeout();
+                                
+                                switch (alternation_branch1)
+                                {
+                                    case 0:
+                                        goto AlternationBranch2;
+                                    case 1:
+                                        goto AlternationBranch3;
+                                    case 2:
+                                        goto AlternationBranch4;
+                                    case 3:
+                                        goto AlternationBranch5;
+                                    case 4:
+                                        goto AlternationBranch6;
+                                    case 5:
+                                        goto AlternationBranch7;
+                                    case 6:
+                                        goto AlternationBranch8;
+                                    case 7:
+                                        goto AlternationBranch9;
+                                    case 8:
+                                        goto AlternationBranch10;
+                                    case 9:
+                                        goto AlternationBranch11;
+                                    case 10:
+                                        goto AlternationBranch1;
+                                }
+                                
+                                AlternationMatch1:;
                             //}
                             
-                            // Branch 1
+                            alternation_branch = 1;
+                            goto AlternationMatch;
+                            
+                            AlternationBranch1:
+                            pos = alternation_starting_pos;
+                            slice = inputSpan.Slice(pos);
+                        //}
+                        
+                        // Branch 2
+                        //{
+                            if ((uint)slice.Length < 4 ||
+                                !slice.StartsWith("sgn-", StringComparison.OrdinalIgnoreCase)) // Match the string "sgn-" (ordinal case-insensitive)
+                            {
+                                goto AlternationBranch12;
+                            }
+                            
+                            // Match with 2 alternative expressions.
                             //{
-                                // 3rd capture group.
+                                alternation_starting_pos2 = pos;
+                                
+                                // Branch 0
                                 //{
-                                    capture_starting_pos2 = pos;
+                                    if ((uint)slice.Length < 7 ||
+                                        !slice.Slice(4).StartsWith("be-", StringComparison.OrdinalIgnoreCase)) // Match the string "be-" (ordinal case-insensitive)
+                                    {
+                                        goto AlternationBranch13;
+                                    }
                                     
-                                    // Match with 4 alternative expressions.
+                                    // Match with 2 alternative expressions.
+                                    //{
+                                        if ((uint)slice.Length < 8)
+                                        {
+                                            goto AlternationBranch13;
+                                        }
+                                        
+                                        switch (slice[7])
+                                        {
+                                            case 'F' or 'f':
+                                                // Match a character in the set [Rr].
+                                                if ((uint)slice.Length < 9 || ((slice[8] | 0x20) != 'r'))
+                                                {
+                                                    goto AlternationBranch13;
+                                                }
+                                                
+                                                pos += 9;
+                                                slice = inputSpan.Slice(pos);
+                                                break;
+                                                
+                                            case 'N' or 'n':
+                                                // Match a character in the set [Ll].
+                                                if ((uint)slice.Length < 9 || ((slice[8] | 0x20) != 'l'))
+                                                {
+                                                    goto AlternationBranch13;
+                                                }
+                                                
+                                                pos += 9;
+                                                slice = inputSpan.Slice(pos);
+                                                break;
+                                                
+                                            default:
+                                                goto AlternationBranch13;
+                                        }
+                                    //}
+                                    
+                                    alternation_branch2 = 0;
+                                    goto AlternationMatch2;
+                                    
+                                    AlternationBranch13:
+                                    pos = alternation_starting_pos2;
+                                    slice = inputSpan.Slice(pos);
+                                //}
+                                
+                                // Branch 1
+                                //{
+                                    if ((uint)slice.Length < 9 ||
+                                        !slice.Slice(4).StartsWith("ch-de", StringComparison.OrdinalIgnoreCase)) // Match the string "ch-de" (ordinal case-insensitive)
+                                    {
+                                        goto AlternationBranch12;
+                                    }
+                                    
+                                    alternation_branch2 = 1;
+                                    pos += 9;
+                                    slice = inputSpan.Slice(pos);
+                                    goto AlternationMatch2;
+                                //}
+                                
+                                AlternationBacktrack2:
+                                base.CheckTimeout();
+                                
+                                switch (alternation_branch2)
+                                {
+                                    case 0:
+                                        goto AlternationBranch13;
+                                    case 1:
+                                        goto AlternationBranch12;
+                                }
+                                
+                                AlternationMatch2:;
+                            //}
+                            
+                            alternation_branch = 2;
+                            goto AlternationMatch;
+                            
+                            AlternationBranch12:
+                            pos = alternation_starting_pos;
+                            slice = inputSpan.Slice(pos);
+                        //}
+                        
+                        // Branch 3
+                        //{
+                            if ((uint)slice.Length < 10 ||
+                                !slice.StartsWith("art-lojban", StringComparison.OrdinalIgnoreCase)) // Match the string "art-lojban" (ordinal case-insensitive)
+                            {
+                                goto AlternationBranch14;
+                            }
+                            
+                            alternation_branch = 3;
+                            pos += 10;
+                            slice = inputSpan.Slice(pos);
+                            goto AlternationMatch;
+                            
+                            AlternationBranch14:
+                            pos = alternation_starting_pos;
+                            slice = inputSpan.Slice(pos);
+                        //}
+                        
+                        // Branch 4
+                        //{
+                            if ((uint)slice.Length < 11 ||
+                                !slice.StartsWith("cel-gaulish", StringComparison.OrdinalIgnoreCase)) // Match the string "cel-gaulish" (ordinal case-insensitive)
+                            {
+                                goto AlternationBranch15;
+                            }
+                            
+                            alternation_branch = 4;
+                            pos += 11;
+                            slice = inputSpan.Slice(pos);
+                            goto AlternationMatch;
+                            
+                            AlternationBranch15:
+                            pos = alternation_starting_pos;
+                            slice = inputSpan.Slice(pos);
+                        //}
+                        
+                        // Branch 5
+                        //{
+                            if ((uint)slice.Length < 3 ||
+                                !slice.StartsWith("no-", StringComparison.OrdinalIgnoreCase)) // Match the string "no-" (ordinal case-insensitive)
+                            {
+                                goto AlternationBranch16;
+                            }
+                            
+                            // Match with 2 alternative expressions.
+                            //{
+                                if ((uint)slice.Length < 4)
+                                {
+                                    goto AlternationBranch16;
+                                }
+                                
+                                switch (slice[3])
+                                {
+                                    case 'B' or 'b':
+                                        if ((uint)slice.Length < 6 ||
+                                            ((slice[4] | 0x20) != 'o') || // Match a character in the set [Oo].
+                                            ((((ch = slice[5]) | 0x20) != 'k') & (ch != 'K'))) // Match a character in the set [Kk\u212A].
+                                        {
+                                            goto AlternationBranch16;
+                                        }
+                                        
+                                        pos += 6;
+                                        slice = inputSpan.Slice(pos);
+                                        break;
+                                        
+                                    case 'N' or 'n':
+                                        if ((uint)slice.Length < 6 ||
+                                            !slice.Slice(4).StartsWith("yn", StringComparison.OrdinalIgnoreCase)) // Match the string "yn" (ordinal case-insensitive)
+                                        {
+                                            goto AlternationBranch16;
+                                        }
+                                        
+                                        pos += 6;
+                                        slice = inputSpan.Slice(pos);
+                                        break;
+                                        
+                                    default:
+                                        goto AlternationBranch16;
+                                }
+                            //}
+                            
+                            alternation_branch = 5;
+                            goto AlternationMatch;
+                            
+                            AlternationBranch16:
+                            pos = alternation_starting_pos;
+                            slice = inputSpan.Slice(pos);
+                        //}
+                        
+                        // Branch 6
+                        //{
+                            if ((uint)slice.Length < 3 ||
+                                !slice.StartsWith("zh-", StringComparison.OrdinalIgnoreCase)) // Match the string "zh-" (ordinal case-insensitive)
+                            {
+                                goto AlternationBranch17;
+                            }
+                            
+                            // Match with 4 alternative expressions.
+                            //{
+                                alternation_starting_pos3 = pos;
+                                
+                                // Branch 0
+                                //{
+                                    if ((uint)slice.Length < 8 ||
+                                        !slice.Slice(3).StartsWith("guoyu", StringComparison.OrdinalIgnoreCase)) // Match the string "guoyu" (ordinal case-insensitive)
+                                    {
+                                        goto AlternationBranch18;
+                                    }
+                                    
+                                    alternation_branch3 = 0;
+                                    pos += 8;
+                                    slice = inputSpan.Slice(pos);
+                                    goto AlternationMatch3;
+                                    
+                                    AlternationBranch18:
+                                    pos = alternation_starting_pos3;
+                                    slice = inputSpan.Slice(pos);
+                                //}
+                                
+                                // Branch 1
+                                //{
+                                    if ((uint)slice.Length < 8 ||
+                                        !slice.Slice(3).StartsWith("ha", StringComparison.OrdinalIgnoreCase) || // Match the string "ha" (ordinal case-insensitive)
+                                        ((((ch = slice[5]) | 0x20) != 'k') & (ch != 'K')) || // Match a character in the set [Kk\u212A] exactly 2 times.
+                                        ((((ch = slice[6]) | 0x20) != 'k') & (ch != 'K')) ||
+                                        ((slice[7] | 0x20) != 'a')) // Match a character in the set [Aa].
+                                    {
+                                        goto AlternationBranch19;
+                                    }
+                                    
+                                    alternation_branch3 = 1;
+                                    pos += 8;
+                                    slice = inputSpan.Slice(pos);
+                                    goto AlternationMatch3;
+                                    
+                                    AlternationBranch19:
+                                    pos = alternation_starting_pos3;
+                                    slice = inputSpan.Slice(pos);
+                                //}
+                                
+                                // Branch 2
+                                //{
+                                    if ((uint)slice.Length < 5 ||
+                                        !slice.Slice(3).StartsWith("mi", StringComparison.OrdinalIgnoreCase)) // Match the string "mi" (ordinal case-insensitive)
+                                    {
+                                        goto AlternationBranch20;
+                                    }
+                                    
+                                    // Match with 2 alternative expressions.
                                     //{
                                         alternation_starting_pos4 = pos;
-                                        alternation_starting_capturepos4 = base.Crawlpos();
                                         
                                         // Branch 0
                                         //{
-                                            if ((uint)slice.Length < 10 ||
-                                                !slice.StartsWith("art-lojban", StringComparison.OrdinalIgnoreCase)) // Match the string "art-lojban" (ordinal case-insensitive)
+                                            // Match a character in the set [Nn].
+                                            if ((uint)slice.Length < 6 || ((slice[5] | 0x20) != 'n'))
                                             {
-                                                goto AlternationBranch15;
+                                                goto AlternationBranch21;
                                             }
                                             
                                             alternation_branch4 = 0;
-                                            pos += 10;
+                                            pos += 6;
                                             slice = inputSpan.Slice(pos);
                                             goto AlternationMatch4;
                                             
-                                            AlternationBranch15:
+                                            AlternationBranch21:
                                             pos = alternation_starting_pos4;
                                             slice = inputSpan.Slice(pos);
-                                            UncaptureUntil(alternation_starting_capturepos4);
                                         //}
                                         
                                         // Branch 1
                                         //{
-                                            if ((uint)slice.Length < 11 ||
-                                                !slice.StartsWith("cel-gaulish", StringComparison.OrdinalIgnoreCase)) // Match the string "cel-gaulish" (ordinal case-insensitive)
+                                            if ((uint)slice.Length < 10 ||
+                                                !slice.Slice(5).StartsWith("n-nan", StringComparison.OrdinalIgnoreCase)) // Match the string "n-nan" (ordinal case-insensitive)
                                             {
-                                                goto AlternationBranch16;
+                                                goto AlternationBranch20;
                                             }
                                             
                                             alternation_branch4 = 1;
-                                            pos += 11;
+                                            pos += 10;
                                             slice = inputSpan.Slice(pos);
-                                            goto AlternationMatch4;
-                                            
-                                            AlternationBranch16:
-                                            pos = alternation_starting_pos4;
-                                            slice = inputSpan.Slice(pos);
-                                            UncaptureUntil(alternation_starting_capturepos4);
-                                        //}
-                                        
-                                        // Branch 2
-                                        //{
-                                            if ((uint)slice.Length < 3 ||
-                                                !slice.StartsWith("no-", StringComparison.OrdinalIgnoreCase)) // Match the string "no-" (ordinal case-insensitive)
-                                            {
-                                                goto AlternationBranch17;
-                                            }
-                                            
-                                            // Match with 2 alternative expressions.
-                                            //{
-                                                if ((uint)slice.Length < 4)
-                                                {
-                                                    goto AlternationBranch17;
-                                                }
-                                                
-                                                switch (slice[3])
-                                                {
-                                                    case 'B' or 'b':
-                                                        if ((uint)slice.Length < 6 ||
-                                                            ((slice[4] | 0x20) != 'o') || // Match a character in the set [Oo].
-                                                            ((((ch = slice[5]) | 0x20) != 'k') & (ch != 'K'))) // Match a character in the set [Kk\u212A].
-                                                        {
-                                                            goto AlternationBranch17;
-                                                        }
-                                                        
-                                                        pos += 6;
-                                                        slice = inputSpan.Slice(pos);
-                                                        break;
-                                                        
-                                                    case 'N' or 'n':
-                                                        if ((uint)slice.Length < 6 ||
-                                                            !slice.Slice(4).StartsWith("yn", StringComparison.OrdinalIgnoreCase)) // Match the string "yn" (ordinal case-insensitive)
-                                                        {
-                                                            goto AlternationBranch17;
-                                                        }
-                                                        
-                                                        pos += 6;
-                                                        slice = inputSpan.Slice(pos);
-                                                        break;
-                                                        
-                                                    default:
-                                                        goto AlternationBranch17;
-                                                }
-                                            //}
-                                            
-                                            alternation_branch4 = 2;
-                                            goto AlternationMatch4;
-                                            
-                                            AlternationBranch17:
-                                            pos = alternation_starting_pos4;
-                                            slice = inputSpan.Slice(pos);
-                                            UncaptureUntil(alternation_starting_capturepos4);
-                                        //}
-                                        
-                                        // Branch 3
-                                        //{
-                                            if ((uint)slice.Length < 3 ||
-                                                !slice.StartsWith("zh-", StringComparison.OrdinalIgnoreCase)) // Match the string "zh-" (ordinal case-insensitive)
-                                            {
-                                                goto AlternationBranch14;
-                                            }
-                                            
-                                            // Match with 4 alternative expressions.
-                                            //{
-                                                alternation_starting_pos5 = pos;
-                                                alternation_starting_capturepos5 = base.Crawlpos();
-                                                
-                                                // Branch 0
-                                                //{
-                                                    if ((uint)slice.Length < 8 ||
-                                                        !slice.Slice(3).StartsWith("guoyu", StringComparison.OrdinalIgnoreCase)) // Match the string "guoyu" (ordinal case-insensitive)
-                                                    {
-                                                        goto AlternationBranch18;
-                                                    }
-                                                    
-                                                    alternation_branch5 = 0;
-                                                    pos += 8;
-                                                    slice = inputSpan.Slice(pos);
-                                                    goto AlternationMatch5;
-                                                    
-                                                    AlternationBranch18:
-                                                    pos = alternation_starting_pos5;
-                                                    slice = inputSpan.Slice(pos);
-                                                    UncaptureUntil(alternation_starting_capturepos5);
-                                                //}
-                                                
-                                                // Branch 1
-                                                //{
-                                                    if ((uint)slice.Length < 8 ||
-                                                        !slice.Slice(3).StartsWith("ha", StringComparison.OrdinalIgnoreCase) || // Match the string "ha" (ordinal case-insensitive)
-                                                        ((((ch = slice[5]) | 0x20) != 'k') & (ch != 'K')) || // Match a character in the set [Kk\u212A] exactly 2 times.
-                                                        ((((ch = slice[6]) | 0x20) != 'k') & (ch != 'K')) ||
-                                                        ((slice[7] | 0x20) != 'a')) // Match a character in the set [Aa].
-                                                    {
-                                                        goto AlternationBranch19;
-                                                    }
-                                                    
-                                                    alternation_branch5 = 1;
-                                                    pos += 8;
-                                                    slice = inputSpan.Slice(pos);
-                                                    goto AlternationMatch5;
-                                                    
-                                                    AlternationBranch19:
-                                                    pos = alternation_starting_pos5;
-                                                    slice = inputSpan.Slice(pos);
-                                                    UncaptureUntil(alternation_starting_capturepos5);
-                                                //}
-                                                
-                                                // Branch 2
-                                                //{
-                                                    if ((uint)slice.Length < 5 ||
-                                                        !slice.Slice(3).StartsWith("mi", StringComparison.OrdinalIgnoreCase)) // Match the string "mi" (ordinal case-insensitive)
-                                                    {
-                                                        goto AlternationBranch20;
-                                                    }
-                                                    
-                                                    // Match with 2 alternative expressions.
-                                                    //{
-                                                        alternation_starting_pos6 = pos;
-                                                        alternation_starting_capturepos6 = base.Crawlpos();
-                                                        
-                                                        // Branch 0
-                                                        //{
-                                                            // Match a character in the set [Nn].
-                                                            if ((uint)slice.Length < 6 || ((slice[5] | 0x20) != 'n'))
-                                                            {
-                                                                goto AlternationBranch21;
-                                                            }
-                                                            
-                                                            alternation_branch6 = 0;
-                                                            pos += 6;
-                                                            slice = inputSpan.Slice(pos);
-                                                            goto AlternationMatch6;
-                                                            
-                                                            AlternationBranch21:
-                                                            pos = alternation_starting_pos6;
-                                                            slice = inputSpan.Slice(pos);
-                                                            UncaptureUntil(alternation_starting_capturepos6);
-                                                        //}
-                                                        
-                                                        // Branch 1
-                                                        //{
-                                                            if ((uint)slice.Length < 10 ||
-                                                                !slice.Slice(5).StartsWith("n-nan", StringComparison.OrdinalIgnoreCase)) // Match the string "n-nan" (ordinal case-insensitive)
-                                                            {
-                                                                goto AlternationBranch20;
-                                                            }
-                                                            
-                                                            alternation_branch6 = 1;
-                                                            pos += 10;
-                                                            slice = inputSpan.Slice(pos);
-                                                            goto AlternationMatch6;
-                                                        //}
-                                                        
-                                                        AlternationBacktrack6:
-                                                        base.CheckTimeout();
-                                                        
-                                                        switch (alternation_branch6)
-                                                        {
-                                                            case 0:
-                                                                goto AlternationBranch21;
-                                                            case 1:
-                                                                goto AlternationBranch20;
-                                                        }
-                                                        
-                                                        AlternationMatch6:;
-                                                    //}
-                                                    
-                                                    alternation_branch5 = 2;
-                                                    goto AlternationMatch5;
-                                                    
-                                                    AlternationBranch20:
-                                                    pos = alternation_starting_pos5;
-                                                    slice = inputSpan.Slice(pos);
-                                                    UncaptureUntil(alternation_starting_capturepos5);
-                                                //}
-                                                
-                                                // Branch 3
-                                                //{
-                                                    if ((uint)slice.Length < 8 ||
-                                                        !slice.Slice(3).StartsWith("xiang", StringComparison.OrdinalIgnoreCase)) // Match the string "xiang" (ordinal case-insensitive)
-                                                    {
-                                                        goto AlternationBranch14;
-                                                    }
-                                                    
-                                                    alternation_branch5 = 3;
-                                                    pos += 8;
-                                                    slice = inputSpan.Slice(pos);
-                                                    goto AlternationMatch5;
-                                                //}
-                                                
-                                                AlternationBacktrack5:
-                                                base.CheckTimeout();
-                                                
-                                                switch (alternation_branch5)
-                                                {
-                                                    case 0:
-                                                        goto AlternationBranch18;
-                                                    case 1:
-                                                        goto AlternationBranch19;
-                                                    case 2:
-                                                        goto AlternationBacktrack6;
-                                                    case 3:
-                                                        goto AlternationBranch14;
-                                                }
-                                                
-                                                AlternationMatch5:;
-                                            //}
-                                            
-                                            alternation_branch4 = 3;
                                             goto AlternationMatch4;
                                         //}
                                         
@@ -1126,1154 +951,980 @@ namespace System.Text.RegularExpressions.Generated
                                         switch (alternation_branch4)
                                         {
                                             case 0:
-                                                goto AlternationBranch15;
+                                                goto AlternationBranch21;
                                             case 1:
-                                                goto AlternationBranch16;
-                                            case 2:
-                                                goto AlternationBranch17;
-                                            case 3:
-                                                goto AlternationBacktrack5;
+                                                goto AlternationBranch20;
                                         }
                                         
                                         AlternationMatch4:;
                                     //}
                                     
-                                    base.Capture(3, capture_starting_pos2, pos);
+                                    alternation_branch3 = 2;
+                                    goto AlternationMatch3;
                                     
-                                    goto CaptureSkipBacktrack1;
-                                    
-                                    CaptureBacktrack1:
-                                    goto AlternationBacktrack4;
-                                    
-                                    CaptureSkipBacktrack1:;
+                                    AlternationBranch20:
+                                    pos = alternation_starting_pos3;
+                                    slice = inputSpan.Slice(pos);
                                 //}
                                 
-                                alternation_branch = 1;
-                                goto AlternationMatch;
+                                // Branch 3
+                                //{
+                                    if ((uint)slice.Length < 8 ||
+                                        !slice.Slice(3).StartsWith("xiang", StringComparison.OrdinalIgnoreCase)) // Match the string "xiang" (ordinal case-insensitive)
+                                    {
+                                        goto AlternationBranch17;
+                                    }
+                                    
+                                    alternation_branch3 = 3;
+                                    pos += 8;
+                                    slice = inputSpan.Slice(pos);
+                                    goto AlternationMatch3;
+                                //}
                                 
-                                AlternationBranch14:
-                                pos = alternation_starting_pos;
-                                slice = inputSpan.Slice(pos);
-                                UncaptureUntil(alternation_starting_capturepos);
+                                AlternationBacktrack3:
+                                base.CheckTimeout();
+                                
+                                switch (alternation_branch3)
+                                {
+                                    case 0:
+                                        goto AlternationBranch18;
+                                    case 1:
+                                        goto AlternationBranch19;
+                                    case 2:
+                                        goto AlternationBacktrack4;
+                                    case 3:
+                                        goto AlternationBranch17;
+                                }
+                                
+                                AlternationMatch3:;
                             //}
                             
-                            // Branch 2
+                            alternation_branch = 6;
+                            goto AlternationMatch;
+                            
+                            AlternationBranch17:
+                            pos = alternation_starting_pos;
+                            slice = inputSpan.Slice(pos);
+                        //}
+                        
+                        // Branch 7
+                        //{
+                            // Match with 3 alternative expressions.
                             //{
-                                // 4th capture group.
+                                alternation_starting_pos5 = pos;
+                                
+                                // Branch 0
                                 //{
-                                    capture_starting_pos3 = pos;
-                                    
-                                    // Match with 3 alternative expressions.
+                                    // Match a character in the set [A-Za-z\u212A] greedily at least 2 and at most 3 times.
                                     //{
-                                        alternation_starting_pos7 = pos;
-                                        alternation_starting_capturepos7 = base.Crawlpos();
+                                        charloop_starting_pos = pos;
                                         
-                                        // Branch 0
-                                        //{
-                                            // 5th capture group.
-                                            //{
-                                                capture_starting_pos4 = pos;
-                                                
-                                                // Match a character in the set [A-Za-z\u212A] greedily at least 2 and at most 3 times.
-                                                //{
-                                                    charloop_starting_pos = pos;
-                                                    
-                                                    int iteration = 0;
-                                                    while (iteration < 3 && (uint)iteration < (uint)slice.Length && ((ch = slice[iteration]) < 128 ? char.IsAsciiLetter(ch) : RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")))
-                                                    {
-                                                        iteration++;
-                                                    }
-                                                    
-                                                    if (iteration < 2)
-                                                    {
-                                                        goto AlternationBranch23;
-                                                    }
-                                                    
-                                                    slice = slice.Slice(iteration);
-                                                    pos += iteration;
-                                                    
-                                                    charloop_ending_pos = pos;
-                                                    charloop_starting_pos += 2;
-                                                    goto CharLoopEnd;
-                                                    
-                                                    CharLoopBacktrack:
-                                                    UncaptureUntil(charloop_capture_pos);
-                                                    
-                                                    base.CheckTimeout();
-                                                    
-                                                    if (charloop_starting_pos >= charloop_ending_pos)
-                                                    {
-                                                        goto AlternationBranch23;
-                                                    }
-                                                    pos = --charloop_ending_pos;
-                                                    slice = inputSpan.Slice(pos);
-                                                    
-                                                    CharLoopEnd:
-                                                    charloop_capture_pos = base.Crawlpos();
-                                                //}
-                                                
-                                                // Optional (greedy).
-                                                //{
-                                                    loop_iteration = 0;
-                                                    
-                                                    LoopBody:
-                                                    Utilities.StackPush(ref base.runstack!, ref stackpos, base.Crawlpos(), pos);
-                                                    
-                                                    loop_iteration++;
-                                                    
-                                                    // 6th capture group.
-                                                    //{
-                                                        int capture_starting_pos5 = pos;
-                                                        
-                                                        if ((uint)slice.Length < 4 ||
-                                                            slice[0] != '-' || // Match '-'.
-                                                            ((ch = slice[1]) < 128 ? !char.IsAsciiLetter(ch) : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) || // Match a character in the set [A-Za-z\u212A] exactly 3 times.
-                                                            ((ch = slice[2]) < 128 ? !char.IsAsciiLetter(ch) : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) ||
-                                                            ((ch = slice[3]) < 128 ? !char.IsAsciiLetter(ch) : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")))
-                                                        {
-                                                            goto LoopIterationNoMatch;
-                                                        }
-                                                        
-                                                        // Loop greedily at most 2 times.
-                                                        //{
-                                                            pos += 4;
-                                                            slice = inputSpan.Slice(pos);
-                                                            loop_iteration1 = 0;
-                                                            
-                                                            LoopBody1:
-                                                            Utilities.StackPush(ref base.runstack!, ref stackpos, base.Crawlpos(), pos);
-                                                            
-                                                            loop_iteration1++;
-                                                            
-                                                            // 7th capture group.
-                                                            {
-                                                                int capture_starting_pos6 = pos;
-                                                                
-                                                                if ((uint)slice.Length < 4 ||
-                                                                    slice[0] != '-' || // Match '-'.
-                                                                    ((ch = slice[1]) < 128 ? !char.IsAsciiLetter(ch) : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) || // Match a character in the set [A-Za-z\u212A] exactly 3 times.
-                                                                    ((ch = slice[2]) < 128 ? !char.IsAsciiLetter(ch) : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) ||
-                                                                    ((ch = slice[3]) < 128 ? !char.IsAsciiLetter(ch) : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")))
-                                                                {
-                                                                    goto LoopIterationNoMatch1;
-                                                                }
-                                                                
-                                                                pos += 4;
-                                                                slice = inputSpan.Slice(pos);
-                                                                base.Capture(7, capture_starting_pos6, pos);
-                                                            }
-                                                            
-                                                            
-                                                            // The loop has an upper bound of 2. Continue iterating greedily if it hasn't yet been reached.
-                                                            if (loop_iteration1 < 2)
-                                                            {
-                                                                goto LoopBody1;
-                                                            }
-                                                            goto LoopEnd1;
-                                                            
-                                                            // The loop iteration failed. Put state back to the way it was before the iteration.
-                                                            LoopIterationNoMatch1:
-                                                            if (--loop_iteration1 < 0)
-                                                            {
-                                                                // Unable to match the remainder of the expression after exhausting the loop.
-                                                                goto LoopIterationNoMatch;
-                                                            }
-                                                            pos = base.runstack![--stackpos];
-                                                            UncaptureUntil(base.runstack![--stackpos]);
-                                                            slice = inputSpan.Slice(pos);
-                                                            LoopEnd1:
-                                                            
-                                                            Utilities.StackPush(ref base.runstack!, ref stackpos, loop_iteration1);
-                                                            goto LoopSkipBacktrack;
-                                                            
-                                                            LoopBacktrack:
-                                                            loop_iteration1 = base.runstack![--stackpos];
-                                                            base.CheckTimeout();
-                                                            
-                                                            goto LoopIterationNoMatch1;
-                                                            
-                                                            LoopSkipBacktrack:;
-                                                        //}
-                                                        
-                                                        base.Capture(6, capture_starting_pos5, pos);
-                                                        
-                                                        Utilities.StackPush(ref base.runstack!, ref stackpos, capture_starting_pos5);
-                                                        goto CaptureSkipBacktrack2;
-                                                        
-                                                        CaptureBacktrack2:
-                                                        capture_starting_pos5 = base.runstack![--stackpos];
-                                                        goto LoopBacktrack;
-                                                        
-                                                        CaptureSkipBacktrack2:;
-                                                    //}
-                                                    
-                                                    
-                                                    // The loop has an upper bound of 1. Continue iterating greedily if it hasn't yet been reached.
-                                                    if (loop_iteration == 0)
-                                                    {
-                                                        goto LoopBody;
-                                                    }
-                                                    goto LoopEnd;
-                                                    
-                                                    // The loop iteration failed. Put state back to the way it was before the iteration.
-                                                    LoopIterationNoMatch:
-                                                    if (--loop_iteration < 0)
-                                                    {
-                                                        // Unable to match the remainder of the expression after exhausting the loop.
-                                                        goto CharLoopBacktrack;
-                                                    }
-                                                    pos = base.runstack![--stackpos];
-                                                    UncaptureUntil(base.runstack![--stackpos]);
-                                                    slice = inputSpan.Slice(pos);
-                                                    goto LoopEnd;
-                                                    
-                                                    LoopBacktrack1:
-                                                    base.CheckTimeout();
-                                                    
-                                                    if (loop_iteration == 0)
-                                                    {
-                                                        // No iterations of the loop remain to backtrack into. Fail the loop.
-                                                        goto CharLoopBacktrack;
-                                                    }
-                                                    goto CaptureBacktrack2;
-                                                    LoopEnd:;
-                                                //}
-                                                
-                                                base.Capture(5, capture_starting_pos4, pos);
-                                                
-                                                goto CaptureSkipBacktrack3;
-                                                
-                                                CaptureBacktrack3:
-                                                goto LoopBacktrack1;
-                                                
-                                                CaptureSkipBacktrack3:;
-                                            //}
-                                            
-                                            alternation_branch7 = 0;
-                                            goto AlternationMatch7;
-                                            
-                                            AlternationBranch23:
-                                            pos = alternation_starting_pos7;
-                                            slice = inputSpan.Slice(pos);
-                                            UncaptureUntil(alternation_starting_capturepos7);
-                                        //}
-                                        
-                                        // Branch 1
-                                        //{
-                                            // Match a character in the set [A-Za-z\u212A] exactly 4 times.
-                                            {
-                                                if ((uint)slice.Length < 4 ||
-                                                    ((ch = slice[0]) < 128 ? !char.IsAsciiLetter(ch) : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) ||
-                                                    ((ch = slice[1]) < 128 ? !char.IsAsciiLetter(ch) : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) ||
-                                                    ((ch = slice[2]) < 128 ? !char.IsAsciiLetter(ch) : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) ||
-                                                    ((ch = slice[3]) < 128 ? !char.IsAsciiLetter(ch) : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")))
-                                                {
-                                                    goto AlternationBranch24;
-                                                }
-                                            }
-                                            
-                                            alternation_branch7 = 1;
-                                            pos += 4;
-                                            slice = inputSpan.Slice(pos);
-                                            goto AlternationMatch7;
-                                            
-                                            AlternationBranch24:
-                                            pos = alternation_starting_pos7;
-                                            slice = inputSpan.Slice(pos);
-                                            UncaptureUntil(alternation_starting_capturepos7);
-                                        //}
-                                        
-                                        // Branch 2
-                                        //{
-                                            // Match a character in the set [A-Za-z\u212A] greedily at least 5 and at most 8 times.
-                                            //{
-                                                charloop_starting_pos1 = pos;
-                                                
-                                                int iteration1 = 0;
-                                                while (iteration1 < 8 && (uint)iteration1 < (uint)slice.Length && ((ch = slice[iteration1]) < 128 ? char.IsAsciiLetter(ch) : RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")))
-                                                {
-                                                    iteration1++;
-                                                }
-                                                
-                                                if (iteration1 < 5)
-                                                {
-                                                    goto AlternationBranch22;
-                                                }
-                                                
-                                                slice = slice.Slice(iteration1);
-                                                pos += iteration1;
-                                                
-                                                charloop_ending_pos1 = pos;
-                                                charloop_starting_pos1 += 5;
-                                                goto CharLoopEnd1;
-                                                
-                                                CharLoopBacktrack1:
-                                                UncaptureUntil(charloop_capture_pos1);
-                                                
-                                                base.CheckTimeout();
-                                                
-                                                if (charloop_starting_pos1 >= charloop_ending_pos1)
-                                                {
-                                                    goto AlternationBranch22;
-                                                }
-                                                pos = --charloop_ending_pos1;
-                                                slice = inputSpan.Slice(pos);
-                                                
-                                                CharLoopEnd1:
-                                                charloop_capture_pos1 = base.Crawlpos();
-                                            //}
-                                            
-                                            alternation_branch7 = 2;
-                                            goto AlternationMatch7;
-                                        //}
-                                        
-                                        AlternationBacktrack7:
-                                        base.CheckTimeout();
-                                        
-                                        switch (alternation_branch7)
+                                        int iteration = 0;
+                                        while (iteration < 3 && (uint)iteration < (uint)slice.Length && ((ch = slice[iteration]) < 128 ? char.IsAsciiLetter(ch) : RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")))
                                         {
-                                            case 0:
-                                                goto CaptureBacktrack3;
-                                            case 1:
-                                                goto AlternationBranch24;
-                                            case 2:
-                                                goto CharLoopBacktrack1;
+                                            iteration++;
                                         }
                                         
-                                        AlternationMatch7:;
+                                        if (iteration < 2)
+                                        {
+                                            goto AlternationBranch23;
+                                        }
+                                        
+                                        slice = slice.Slice(iteration);
+                                        pos += iteration;
+                                        
+                                        charloop_ending_pos = pos;
+                                        charloop_starting_pos += 2;
+                                        goto CharLoopEnd;
+                                        
+                                        CharLoopBacktrack:
+                                        
+                                        base.CheckTimeout();
+                                        
+                                        if (charloop_starting_pos >= charloop_ending_pos)
+                                        {
+                                            goto AlternationBranch23;
+                                        }
+                                        pos = --charloop_ending_pos;
+                                        slice = inputSpan.Slice(pos);
+                                        
+                                        CharLoopEnd:
                                     //}
                                     
                                     // Optional (greedy).
                                     //{
-                                        loop_iteration2 = 0;
+                                        loop_iteration = 0;
                                         
-                                        LoopBody2:
-                                        Utilities.StackPush(ref base.runstack!, ref stackpos, base.Crawlpos(), pos);
+                                        LoopBody:
+                                        Utilities.StackPush(ref base.runstack!, ref stackpos, pos);
                                         
-                                        loop_iteration2++;
+                                        loop_iteration++;
                                         
-                                        // 8th capture group.
+                                        if ((uint)slice.Length < 4 ||
+                                            slice[0] != '-' || // Match '-'.
+                                            ((ch = slice[1]) < 128 ? !char.IsAsciiLetter(ch) : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) || // Match a character in the set [A-Za-z\u212A] exactly 3 times.
+                                            ((ch = slice[2]) < 128 ? !char.IsAsciiLetter(ch) : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) ||
+                                            ((ch = slice[3]) < 128 ? !char.IsAsciiLetter(ch) : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")))
                                         {
-                                            int capture_starting_pos7 = pos;
+                                            goto LoopIterationNoMatch;
+                                        }
+                                        
+                                        // Loop greedily at most 2 times.
+                                        //{
+                                            pos += 4;
+                                            slice = inputSpan.Slice(pos);
+                                            loop_iteration1 = 0;
                                             
-                                            if ((uint)slice.Length < 5 ||
+                                            LoopBody1:
+                                            Utilities.StackPush(ref base.runstack!, ref stackpos, pos);
+                                            
+                                            loop_iteration1++;
+                                            
+                                            if ((uint)slice.Length < 4 ||
                                                 slice[0] != '-' || // Match '-'.
-                                                ((ch = slice[1]) < 128 ? !char.IsAsciiLetter(ch) : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) || // Match a character in the set [A-Za-z\u212A] exactly 4 times.
+                                                ((ch = slice[1]) < 128 ? !char.IsAsciiLetter(ch) : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) || // Match a character in the set [A-Za-z\u212A] exactly 3 times.
                                                 ((ch = slice[2]) < 128 ? !char.IsAsciiLetter(ch) : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) ||
-                                                ((ch = slice[3]) < 128 ? !char.IsAsciiLetter(ch) : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) ||
-                                                ((ch = slice[4]) < 128 ? !char.IsAsciiLetter(ch) : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")))
+                                                ((ch = slice[3]) < 128 ? !char.IsAsciiLetter(ch) : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")))
                                             {
-                                                goto LoopIterationNoMatch2;
+                                                goto LoopIterationNoMatch1;
                                             }
                                             
-                                            pos += 5;
+                                            pos += 4;
                                             slice = inputSpan.Slice(pos);
-                                            base.Capture(8, capture_starting_pos7, pos);
-                                        }
+                                            
+                                            // The loop has an upper bound of 2. Continue iterating greedily if it hasn't yet been reached.
+                                            if (loop_iteration1 < 2)
+                                            {
+                                                goto LoopBody1;
+                                            }
+                                            goto LoopEnd1;
+                                            
+                                            // The loop iteration failed. Put state back to the way it was before the iteration.
+                                            LoopIterationNoMatch1:
+                                            if (--loop_iteration1 < 0)
+                                            {
+                                                // Unable to match the remainder of the expression after exhausting the loop.
+                                                goto LoopIterationNoMatch;
+                                            }
+                                            pos = base.runstack![--stackpos];
+                                            slice = inputSpan.Slice(pos);
+                                            LoopEnd1:
+                                            
+                                            Utilities.StackPush(ref base.runstack!, ref stackpos, loop_iteration1);
+                                            goto LoopSkipBacktrack;
+                                            
+                                            LoopBacktrack:
+                                            loop_iteration1 = base.runstack![--stackpos];
+                                            base.CheckTimeout();
+                                            
+                                            goto LoopIterationNoMatch1;
+                                            
+                                            LoopSkipBacktrack:;
+                                        //}
                                         
                                         
                                         // The loop has an upper bound of 1. Continue iterating greedily if it hasn't yet been reached.
-                                        if (loop_iteration2 == 0)
+                                        if (loop_iteration == 0)
                                         {
-                                            goto LoopBody2;
+                                            goto LoopBody;
                                         }
-                                        goto LoopEnd2;
+                                        goto LoopEnd;
                                         
                                         // The loop iteration failed. Put state back to the way it was before the iteration.
-                                        LoopIterationNoMatch2:
-                                        if (--loop_iteration2 < 0)
+                                        LoopIterationNoMatch:
+                                        if (--loop_iteration < 0)
                                         {
                                             // Unable to match the remainder of the expression after exhausting the loop.
-                                            goto AlternationBacktrack7;
+                                            goto CharLoopBacktrack;
                                         }
                                         pos = base.runstack![--stackpos];
-                                        UncaptureUntil(base.runstack![--stackpos]);
                                         slice = inputSpan.Slice(pos);
-                                        LoopEnd2:;
+                                        goto LoopEnd;
+                                        
+                                        LoopBacktrack1:
+                                        base.CheckTimeout();
+                                        
+                                        if (loop_iteration == 0)
+                                        {
+                                            // No iterations of the loop remain to backtrack into. Fail the loop.
+                                            goto CharLoopBacktrack;
+                                        }
+                                        goto LoopBacktrack;
+                                        LoopEnd:;
                                     //}
                                     
-                                    // Optional (greedy).
+                                    alternation_branch5 = 0;
+                                    goto AlternationMatch5;
+                                    
+                                    AlternationBranch23:
+                                    pos = alternation_starting_pos5;
+                                    slice = inputSpan.Slice(pos);
+                                //}
+                                
+                                // Branch 1
+                                //{
+                                    // Match a character in the set [A-Za-z\u212A] exactly 4 times.
+                                    {
+                                        if ((uint)slice.Length < 4 ||
+                                            ((ch = slice[0]) < 128 ? !char.IsAsciiLetter(ch) : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) ||
+                                            ((ch = slice[1]) < 128 ? !char.IsAsciiLetter(ch) : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) ||
+                                            ((ch = slice[2]) < 128 ? !char.IsAsciiLetter(ch) : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) ||
+                                            ((ch = slice[3]) < 128 ? !char.IsAsciiLetter(ch) : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")))
+                                        {
+                                            goto AlternationBranch24;
+                                        }
+                                    }
+                                    
+                                    alternation_branch5 = 1;
+                                    pos += 4;
+                                    slice = inputSpan.Slice(pos);
+                                    goto AlternationMatch5;
+                                    
+                                    AlternationBranch24:
+                                    pos = alternation_starting_pos5;
+                                    slice = inputSpan.Slice(pos);
+                                //}
+                                
+                                // Branch 2
+                                //{
+                                    // Match a character in the set [A-Za-z\u212A] greedily at least 5 and at most 8 times.
                                     //{
-                                        loop_iteration3 = 0;
+                                        charloop_starting_pos1 = pos;
                                         
-                                        LoopBody3:
-                                        Utilities.StackPush(ref base.runstack!, ref stackpos, base.Crawlpos(), pos);
+                                        int iteration1 = 0;
+                                        while (iteration1 < 8 && (uint)iteration1 < (uint)slice.Length && ((ch = slice[iteration1]) < 128 ? char.IsAsciiLetter(ch) : RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")))
+                                        {
+                                            iteration1++;
+                                        }
                                         
-                                        loop_iteration3++;
+                                        if (iteration1 < 5)
+                                        {
+                                            goto AlternationBranch22;
+                                        }
                                         
-                                        // 9th capture group.
-                                        //{
-                                            int capture_starting_pos8 = pos;
-                                            
-                                            // Match '-'.
-                                            if (slice.IsEmpty || slice[0] != '-')
+                                        slice = slice.Slice(iteration1);
+                                        pos += iteration1;
+                                        
+                                        charloop_ending_pos1 = pos;
+                                        charloop_starting_pos1 += 5;
+                                        goto CharLoopEnd1;
+                                        
+                                        CharLoopBacktrack1:
+                                        
+                                        base.CheckTimeout();
+                                        
+                                        if (charloop_starting_pos1 >= charloop_ending_pos1)
+                                        {
+                                            goto AlternationBranch22;
+                                        }
+                                        pos = --charloop_ending_pos1;
+                                        slice = inputSpan.Slice(pos);
+                                        
+                                        CharLoopEnd1:
+                                    //}
+                                    
+                                    alternation_branch5 = 2;
+                                    goto AlternationMatch5;
+                                //}
+                                
+                                AlternationBacktrack5:
+                                base.CheckTimeout();
+                                
+                                switch (alternation_branch5)
+                                {
+                                    case 0:
+                                        goto LoopBacktrack1;
+                                    case 1:
+                                        goto AlternationBranch24;
+                                    case 2:
+                                        goto CharLoopBacktrack1;
+                                }
+                                
+                                AlternationMatch5:;
+                            //}
+                            
+                            // Optional (greedy).
+                            //{
+                                loop_iteration2 = 0;
+                                
+                                LoopBody2:
+                                Utilities.StackPush(ref base.runstack!, ref stackpos, pos);
+                                
+                                loop_iteration2++;
+                                
+                                if ((uint)slice.Length < 5 ||
+                                    slice[0] != '-' || // Match '-'.
+                                    ((ch = slice[1]) < 128 ? !char.IsAsciiLetter(ch) : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) || // Match a character in the set [A-Za-z\u212A] exactly 4 times.
+                                    ((ch = slice[2]) < 128 ? !char.IsAsciiLetter(ch) : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) ||
+                                    ((ch = slice[3]) < 128 ? !char.IsAsciiLetter(ch) : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) ||
+                                    ((ch = slice[4]) < 128 ? !char.IsAsciiLetter(ch) : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")))
+                                {
+                                    goto LoopIterationNoMatch2;
+                                }
+                                
+                                pos += 5;
+                                slice = inputSpan.Slice(pos);
+                                
+                                // The loop has an upper bound of 1. Continue iterating greedily if it hasn't yet been reached.
+                                if (loop_iteration2 == 0)
+                                {
+                                    goto LoopBody2;
+                                }
+                                goto LoopEnd2;
+                                
+                                // The loop iteration failed. Put state back to the way it was before the iteration.
+                                LoopIterationNoMatch2:
+                                if (--loop_iteration2 < 0)
+                                {
+                                    // Unable to match the remainder of the expression after exhausting the loop.
+                                    goto AlternationBacktrack5;
+                                }
+                                pos = base.runstack![--stackpos];
+                                slice = inputSpan.Slice(pos);
+                                LoopEnd2:;
+                            //}
+                            
+                            // Optional (greedy).
+                            //{
+                                loop_iteration3 = 0;
+                                
+                                LoopBody3:
+                                Utilities.StackPush(ref base.runstack!, ref stackpos, pos);
+                                
+                                loop_iteration3++;
+                                
+                                // Match '-'.
+                                if (slice.IsEmpty || slice[0] != '-')
+                                {
+                                    goto LoopIterationNoMatch3;
+                                }
+                                
+                                // Match with 2 alternative expressions.
+                                //{
+                                    int alternation_starting_pos6 = pos;
+                                    
+                                    // Branch 0
+                                    //{
+                                        // Match a character in the set [A-Za-z\u212A] exactly 2 times.
+                                        {
+                                            if ((uint)slice.Length < 3 ||
+                                                ((ch = slice[1]) < 128 ? !char.IsAsciiLetter(ch) : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) ||
+                                                ((ch = slice[2]) < 128 ? !char.IsAsciiLetter(ch) : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")))
+                                            {
+                                                goto AlternationBranch25;
+                                            }
+                                        }
+                                        
+                                        Utilities.StackPush(ref base.runstack!, ref stackpos, 0, alternation_starting_pos6);
+                                        pos += 3;
+                                        slice = inputSpan.Slice(pos);
+                                        goto AlternationMatch6;
+                                        
+                                        AlternationBranch25:
+                                        pos = alternation_starting_pos6;
+                                        slice = inputSpan.Slice(pos);
+                                    //}
+                                    
+                                    // Branch 1
+                                    //{
+                                        // Match a character in the set [0-9] exactly 3 times.
+                                        {
+                                            if ((uint)slice.Length < 4 ||
+                                                !char.IsAsciiDigit(slice[1]) ||
+                                                !char.IsAsciiDigit(slice[2]) ||
+                                                !char.IsAsciiDigit(slice[3]))
                                             {
                                                 goto LoopIterationNoMatch3;
                                             }
-                                            
-                                            // Match with 2 alternative expressions.
-                                            //{
-                                                int alternation_starting_pos8 = pos;
-                                                int alternation_starting_capturepos8 = base.Crawlpos();
-                                                
-                                                // Branch 0
-                                                //{
-                                                    // Match a character in the set [A-Za-z\u212A] exactly 2 times.
-                                                    {
-                                                        if ((uint)slice.Length < 3 ||
-                                                            ((ch = slice[1]) < 128 ? !char.IsAsciiLetter(ch) : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) ||
-                                                            ((ch = slice[2]) < 128 ? !char.IsAsciiLetter(ch) : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")))
-                                                        {
-                                                            goto AlternationBranch25;
-                                                        }
-                                                    }
-                                                    
-                                                    Utilities.StackPush(ref base.runstack!, ref stackpos, 0, alternation_starting_pos8, alternation_starting_capturepos8);
-                                                    pos += 3;
-                                                    slice = inputSpan.Slice(pos);
-                                                    goto AlternationMatch8;
-                                                    
-                                                    AlternationBranch25:
-                                                    pos = alternation_starting_pos8;
-                                                    slice = inputSpan.Slice(pos);
-                                                    UncaptureUntil(alternation_starting_capturepos8);
-                                                //}
-                                                
-                                                // Branch 1
-                                                //{
-                                                    // Match a character in the set [0-9] exactly 3 times.
-                                                    {
-                                                        if ((uint)slice.Length < 4 ||
-                                                            !char.IsAsciiDigit(slice[1]) ||
-                                                            !char.IsAsciiDigit(slice[2]) ||
-                                                            !char.IsAsciiDigit(slice[3]))
-                                                        {
-                                                            goto LoopIterationNoMatch3;
-                                                        }
-                                                    }
-                                                    
-                                                    Utilities.StackPush(ref base.runstack!, ref stackpos, 1, alternation_starting_pos8, alternation_starting_capturepos8);
-                                                    pos += 4;
-                                                    slice = inputSpan.Slice(pos);
-                                                    goto AlternationMatch8;
-                                                //}
-                                                
-                                                AlternationBacktrack8:
-                                                base.CheckTimeout();
-                                                
-                                                Utilities.StackPop(base.runstack!, ref stackpos, out alternation_starting_capturepos8, out alternation_starting_pos8);
-                                                switch (base.runstack![--stackpos])
-                                                {
-                                                    case 0:
-                                                        goto AlternationBranch25;
-                                                    case 1:
-                                                        goto LoopIterationNoMatch3;
-                                                }
-                                                
-                                                AlternationMatch8:;
-                                            //}
-                                            
-                                            base.Capture(9, capture_starting_pos8, pos);
-                                            
-                                            Utilities.StackPush(ref base.runstack!, ref stackpos, capture_starting_pos8);
-                                            goto CaptureSkipBacktrack4;
-                                            
-                                            CaptureBacktrack4:
-                                            capture_starting_pos8 = base.runstack![--stackpos];
-                                            goto AlternationBacktrack8;
-                                            
-                                            CaptureSkipBacktrack4:;
-                                        //}
-                                        
-                                        
-                                        // The loop has an upper bound of 1. Continue iterating greedily if it hasn't yet been reached.
-                                        if (loop_iteration3 == 0)
-                                        {
-                                            goto LoopBody3;
                                         }
-                                        goto LoopEnd3;
                                         
-                                        // The loop iteration failed. Put state back to the way it was before the iteration.
-                                        LoopIterationNoMatch3:
-                                        if (--loop_iteration3 < 0)
-                                        {
-                                            // Unable to match the remainder of the expression after exhausting the loop.
-                                            goto LoopIterationNoMatch2;
-                                        }
-                                        pos = base.runstack![--stackpos];
-                                        UncaptureUntil(base.runstack![--stackpos]);
+                                        Utilities.StackPush(ref base.runstack!, ref stackpos, 1, alternation_starting_pos6);
+                                        pos += 4;
                                         slice = inputSpan.Slice(pos);
-                                        goto LoopEnd3;
-                                        
-                                        LoopBacktrack2:
-                                        base.CheckTimeout();
-                                        
-                                        if (loop_iteration3 == 0)
-                                        {
-                                            // No iterations of the loop remain to backtrack into. Fail the loop.
-                                            goto LoopIterationNoMatch2;
-                                        }
-                                        goto CaptureBacktrack4;
-                                        LoopEnd3:;
+                                        goto AlternationMatch6;
                                     //}
                                     
-                                    // Loop greedily any number of times.
-                                    //{
-                                        loop_iteration4 = 0;
-                                        
-                                        LoopBody4:
-                                        Utilities.StackPush(ref base.runstack!, ref stackpos, base.Crawlpos(), pos);
-                                        
-                                        loop_iteration4++;
-                                        
-                                        // 10th capture group.
-                                        //{
-                                            int capture_starting_pos9 = pos;
-                                            
-                                            // Match '-'.
-                                            if (slice.IsEmpty || slice[0] != '-')
-                                            {
-                                                goto LoopIterationNoMatch4;
-                                            }
-                                            
-                                            // Match with 2 alternative expressions.
-                                            //{
-                                                int alternation_starting_pos9 = pos;
-                                                int alternation_starting_capturepos9 = base.Crawlpos();
-                                                
-                                                // Branch 0
-                                                //{
-                                                    // Match a character in the set [0-9A-Za-z\u212A] greedily at least 5 and at most 8 times.
-                                                    //{
-                                                        pos++;
-                                                        slice = inputSpan.Slice(pos);
-                                                        charloop_starting_pos2 = pos;
-                                                        
-                                                        int iteration2 = 0;
-                                                        while (iteration2 < 8 && (uint)iteration2 < (uint)slice.Length && ((ch = slice[iteration2]) < 128 ? char.IsAsciiLetterOrDigit(ch) : RegexRunner.CharInClass((char)ch, "\0\b\00:A[a{KÅ")))
-                                                        {
-                                                            iteration2++;
-                                                        }
-                                                        
-                                                        if (iteration2 < 5)
-                                                        {
-                                                            goto AlternationBranch26;
-                                                        }
-                                                        
-                                                        slice = slice.Slice(iteration2);
-                                                        pos += iteration2;
-                                                        
-                                                        charloop_ending_pos2 = pos;
-                                                        charloop_starting_pos2 += 5;
-                                                        goto CharLoopEnd2;
-                                                        
-                                                        CharLoopBacktrack2:
-                                                        UncaptureUntil(base.runstack![--stackpos]);
-                                                        Utilities.StackPop(base.runstack!, ref stackpos, out charloop_ending_pos2, out charloop_starting_pos2);
-                                                        
-                                                        base.CheckTimeout();
-                                                        
-                                                        if (charloop_starting_pos2 >= charloop_ending_pos2)
-                                                        {
-                                                            goto AlternationBranch26;
-                                                        }
-                                                        pos = --charloop_ending_pos2;
-                                                        slice = inputSpan.Slice(pos);
-                                                        
-                                                        CharLoopEnd2:
-                                                        Utilities.StackPush(ref base.runstack!, ref stackpos, charloop_starting_pos2, charloop_ending_pos2, base.Crawlpos());
-                                                    //}
-                                                    
-                                                    Utilities.StackPush(ref base.runstack!, ref stackpos, 0, alternation_starting_pos9, alternation_starting_capturepos9);
-                                                    goto AlternationMatch9;
-                                                    
-                                                    AlternationBranch26:
-                                                    pos = alternation_starting_pos9;
-                                                    slice = inputSpan.Slice(pos);
-                                                    UncaptureUntil(alternation_starting_capturepos9);
-                                                //}
-                                                
-                                                // Branch 1
-                                                //{
-                                                    if ((uint)slice.Length < 5 ||
-                                                        !char.IsAsciiDigit(slice[1]) || // Match a character in the set [0-9].
-                                                        ((ch = slice[2]) < 128 ? !char.IsAsciiLetterOrDigit(ch) : !RegexRunner.CharInClass((char)ch, "\0\b\00:A[a{KÅ")) || // Match a character in the set [0-9A-Za-z\u212A] exactly 3 times.
-                                                        ((ch = slice[3]) < 128 ? !char.IsAsciiLetterOrDigit(ch) : !RegexRunner.CharInClass((char)ch, "\0\b\00:A[a{KÅ")) ||
-                                                        ((ch = slice[4]) < 128 ? !char.IsAsciiLetterOrDigit(ch) : !RegexRunner.CharInClass((char)ch, "\0\b\00:A[a{KÅ")))
-                                                    {
-                                                        goto LoopIterationNoMatch4;
-                                                    }
-                                                    
-                                                    Utilities.StackPush(ref base.runstack!, ref stackpos, 1, alternation_starting_pos9, alternation_starting_capturepos9);
-                                                    pos += 5;
-                                                    slice = inputSpan.Slice(pos);
-                                                    goto AlternationMatch9;
-                                                //}
-                                                
-                                                AlternationBacktrack9:
-                                                base.CheckTimeout();
-                                                
-                                                Utilities.StackPop(base.runstack!, ref stackpos, out alternation_starting_capturepos9, out alternation_starting_pos9);
-                                                switch (base.runstack![--stackpos])
-                                                {
-                                                    case 0:
-                                                        goto CharLoopBacktrack2;
-                                                    case 1:
-                                                        goto LoopIterationNoMatch4;
-                                                }
-                                                
-                                                AlternationMatch9:;
-                                            //}
-                                            
-                                            base.Capture(10, capture_starting_pos9, pos);
-                                            
-                                            Utilities.StackPush(ref base.runstack!, ref stackpos, capture_starting_pos9);
-                                            goto CaptureSkipBacktrack5;
-                                            
-                                            CaptureBacktrack5:
-                                            capture_starting_pos9 = base.runstack![--stackpos];
-                                            goto AlternationBacktrack9;
-                                            
-                                            CaptureSkipBacktrack5:;
-                                        //}
-                                        
-                                        
-                                        // The loop has no upper bound. Continue iterating greedily.
-                                        goto LoopBody4;
-                                        
-                                        // The loop iteration failed. Put state back to the way it was before the iteration.
-                                        LoopIterationNoMatch4:
-                                        if (--loop_iteration4 < 0)
-                                        {
-                                            // Unable to match the remainder of the expression after exhausting the loop.
-                                            goto LoopBacktrack2;
-                                        }
-                                        pos = base.runstack![--stackpos];
-                                        UncaptureUntil(base.runstack![--stackpos]);
-                                        slice = inputSpan.Slice(pos);
-                                        goto LoopEnd4;
-                                        
-                                        LoopBacktrack3:
-                                        base.CheckTimeout();
-                                        
-                                        if (loop_iteration4 == 0)
-                                        {
-                                            // No iterations of the loop remain to backtrack into. Fail the loop.
-                                            goto LoopBacktrack2;
-                                        }
-                                        goto CaptureBacktrack5;
-                                        LoopEnd4:;
-                                    //}
+                                    AlternationBacktrack6:
+                                    base.CheckTimeout();
                                     
-                                    // Loop greedily any number of times.
-                                    //{
-                                        loop_iteration5 = 0;
-                                        
-                                        LoopBody5:
-                                        Utilities.StackPush(ref base.runstack!, ref stackpos, base.Crawlpos(), pos);
-                                        
-                                        loop_iteration5++;
-                                        
-                                        // 11th capture group.
-                                        //{
-                                            int capture_starting_pos10 = pos;
-                                            
-                                            if ((uint)slice.Length < 2 ||
-                                                slice[0] != '-' || // Match '-'.
-                                                ((ch = slice[1]) < 128 ? ("\0\0\0Ͽ\ufffeۿ\ufffeۿ"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\f\00:AXY[axy{KÅ"))) // Match a character in the set [0-9A-WYZa-wyz\u212A].
-                                            {
-                                                goto LoopIterationNoMatch5;
-                                            }
-                                            
-                                            // Loop greedily at least once.
-                                            //{
-                                                pos += 2;
-                                                slice = inputSpan.Slice(pos);
-                                                loop_iteration6 = 0;
-                                                
-                                                LoopBody6:
-                                                Utilities.StackPush(ref base.runstack!, ref stackpos, base.Crawlpos(), pos);
-                                                
-                                                loop_iteration6++;
-                                                
-                                                // 12th capture group.
-                                                //{
-                                                    int capture_starting_pos11 = pos;
-                                                    
-                                                    // Match '-'.
-                                                    if (slice.IsEmpty || slice[0] != '-')
-                                                    {
-                                                        goto LoopIterationNoMatch6;
-                                                    }
-                                                    
-                                                    // Match a character in the set [0-9A-Za-z\u212A] greedily at least 2 and at most 8 times.
-                                                    //{
-                                                        pos++;
-                                                        slice = inputSpan.Slice(pos);
-                                                        charloop_starting_pos3 = pos;
-                                                        
-                                                        int iteration3 = 0;
-                                                        while (iteration3 < 8 && (uint)iteration3 < (uint)slice.Length && ((ch = slice[iteration3]) < 128 ? char.IsAsciiLetterOrDigit(ch) : RegexRunner.CharInClass((char)ch, "\0\b\00:A[a{KÅ")))
-                                                        {
-                                                            iteration3++;
-                                                        }
-                                                        
-                                                        if (iteration3 < 2)
-                                                        {
-                                                            goto LoopIterationNoMatch6;
-                                                        }
-                                                        
-                                                        slice = slice.Slice(iteration3);
-                                                        pos += iteration3;
-                                                        
-                                                        charloop_ending_pos3 = pos;
-                                                        charloop_starting_pos3 += 2;
-                                                        goto CharLoopEnd3;
-                                                        
-                                                        CharLoopBacktrack3:
-                                                        UncaptureUntil(base.runstack![--stackpos]);
-                                                        Utilities.StackPop(base.runstack!, ref stackpos, out charloop_ending_pos3, out charloop_starting_pos3);
-                                                        
-                                                        base.CheckTimeout();
-                                                        
-                                                        if (charloop_starting_pos3 >= charloop_ending_pos3)
-                                                        {
-                                                            goto LoopIterationNoMatch6;
-                                                        }
-                                                        pos = --charloop_ending_pos3;
-                                                        slice = inputSpan.Slice(pos);
-                                                        
-                                                        CharLoopEnd3:
-                                                        Utilities.StackPush(ref base.runstack!, ref stackpos, charloop_starting_pos3, charloop_ending_pos3, base.Crawlpos());
-                                                    //}
-                                                    
-                                                    base.Capture(12, capture_starting_pos11, pos);
-                                                    
-                                                    Utilities.StackPush(ref base.runstack!, ref stackpos, capture_starting_pos11);
-                                                    goto CaptureSkipBacktrack6;
-                                                    
-                                                    CaptureBacktrack6:
-                                                    capture_starting_pos11 = base.runstack![--stackpos];
-                                                    goto CharLoopBacktrack3;
-                                                    
-                                                    CaptureSkipBacktrack6:;
-                                                //}
-                                                
-                                                
-                                                // The loop has no upper bound. Continue iterating greedily.
-                                                goto LoopBody6;
-                                                
-                                                // The loop iteration failed. Put state back to the way it was before the iteration.
-                                                LoopIterationNoMatch6:
-                                                if (--loop_iteration6 < 0)
-                                                {
-                                                    // Unable to match the remainder of the expression after exhausting the loop.
-                                                    goto LoopIterationNoMatch5;
-                                                }
-                                                pos = base.runstack![--stackpos];
-                                                UncaptureUntil(base.runstack![--stackpos]);
-                                                slice = inputSpan.Slice(pos);
-                                                if (loop_iteration6 == 0)
-                                                {
-                                                    // No iterations have been matched to backtrack into. Fail the loop.
-                                                    goto LoopIterationNoMatch5;
-                                                }
-                                                
-                                                goto LoopEnd6;
-                                                
-                                                LoopBacktrack4:
-                                                base.CheckTimeout();
-                                                
-                                                if (loop_iteration6 == 0)
-                                                {
-                                                    // No iterations of the loop remain to backtrack into. Fail the loop.
-                                                    goto LoopIterationNoMatch5;
-                                                }
-                                                goto CaptureBacktrack6;
-                                                LoopEnd6:
-                                                
-                                                Utilities.StackPush(ref base.runstack!, ref stackpos, loop_iteration6);
-                                                goto LoopSkipBacktrack1;
-                                                
-                                                LoopBacktrack5:
-                                                loop_iteration6 = base.runstack![--stackpos];
-                                                base.CheckTimeout();
-                                                
-                                                goto LoopBacktrack4;
-                                                
-                                                LoopSkipBacktrack1:;
-                                            //}
-                                            
-                                            base.Capture(11, capture_starting_pos10, pos);
-                                            
-                                            Utilities.StackPush(ref base.runstack!, ref stackpos, capture_starting_pos10);
-                                            goto CaptureSkipBacktrack7;
-                                            
-                                            CaptureBacktrack7:
-                                            capture_starting_pos10 = base.runstack![--stackpos];
-                                            goto LoopBacktrack5;
-                                            
-                                            CaptureSkipBacktrack7:;
-                                        //}
-                                        
-                                        
-                                        // The loop has no upper bound. Continue iterating greedily.
-                                        goto LoopBody5;
-                                        
-                                        // The loop iteration failed. Put state back to the way it was before the iteration.
-                                        LoopIterationNoMatch5:
-                                        if (--loop_iteration5 < 0)
-                                        {
-                                            // Unable to match the remainder of the expression after exhausting the loop.
-                                            goto LoopBacktrack3;
-                                        }
-                                        pos = base.runstack![--stackpos];
-                                        UncaptureUntil(base.runstack![--stackpos]);
-                                        slice = inputSpan.Slice(pos);
-                                        goto LoopEnd5;
-                                        
-                                        LoopBacktrack6:
-                                        base.CheckTimeout();
-                                        
-                                        if (loop_iteration5 == 0)
-                                        {
-                                            // No iterations of the loop remain to backtrack into. Fail the loop.
-                                            goto LoopBacktrack3;
-                                        }
-                                        goto CaptureBacktrack7;
-                                        LoopEnd5:;
-                                    //}
+                                    alternation_starting_pos6 = base.runstack![--stackpos];
+                                    switch (base.runstack![--stackpos])
+                                    {
+                                        case 0:
+                                            goto AlternationBranch25;
+                                        case 1:
+                                            goto LoopIterationNoMatch3;
+                                    }
                                     
-                                    // Optional (greedy).
-                                    //{
-                                        loop_iteration7 = 0;
-                                        
-                                        LoopBody7:
-                                        Utilities.StackPush(ref base.runstack!, ref stackpos, base.Crawlpos(), pos);
-                                        
-                                        loop_iteration7++;
-                                        
-                                        // 13th capture group.
-                                        //{
-                                            int capture_starting_pos12 = pos;
-                                            
-                                            if ((uint)slice.Length < 2 ||
-                                                !slice.StartsWith("-x", StringComparison.OrdinalIgnoreCase)) // Match the string "-x" (ordinal case-insensitive)
-                                            {
-                                                goto LoopIterationNoMatch7;
-                                            }
-                                            
-                                            // Loop greedily at least once.
-                                            //{
-                                                pos += 2;
-                                                slice = inputSpan.Slice(pos);
-                                                loop_iteration8 = 0;
-                                                
-                                                LoopBody8:
-                                                Utilities.StackPush(ref base.runstack!, ref stackpos, base.Crawlpos(), pos);
-                                                
-                                                loop_iteration8++;
-                                                
-                                                // 14th capture group.
-                                                //{
-                                                    int capture_starting_pos13 = pos;
-                                                    
-                                                    // Match '-'.
-                                                    if (slice.IsEmpty || slice[0] != '-')
-                                                    {
-                                                        goto LoopIterationNoMatch8;
-                                                    }
-                                                    
-                                                    // Match a character in the set [0-9A-Za-z\u212A] greedily at least 1 and at most 8 times.
-                                                    //{
-                                                        pos++;
-                                                        slice = inputSpan.Slice(pos);
-                                                        charloop_starting_pos4 = pos;
-                                                        
-                                                        int iteration4 = 0;
-                                                        while (iteration4 < 8 && (uint)iteration4 < (uint)slice.Length && ((ch = slice[iteration4]) < 128 ? char.IsAsciiLetterOrDigit(ch) : RegexRunner.CharInClass((char)ch, "\0\b\00:A[a{KÅ")))
-                                                        {
-                                                            iteration4++;
-                                                        }
-                                                        
-                                                        if (iteration4 == 0)
-                                                        {
-                                                            goto LoopIterationNoMatch8;
-                                                        }
-                                                        
-                                                        slice = slice.Slice(iteration4);
-                                                        pos += iteration4;
-                                                        
-                                                        charloop_ending_pos4 = pos;
-                                                        charloop_starting_pos4++;
-                                                        goto CharLoopEnd4;
-                                                        
-                                                        CharLoopBacktrack4:
-                                                        UncaptureUntil(base.runstack![--stackpos]);
-                                                        Utilities.StackPop(base.runstack!, ref stackpos, out charloop_ending_pos4, out charloop_starting_pos4);
-                                                        
-                                                        base.CheckTimeout();
-                                                        
-                                                        if (charloop_starting_pos4 >= charloop_ending_pos4)
-                                                        {
-                                                            goto LoopIterationNoMatch8;
-                                                        }
-                                                        pos = --charloop_ending_pos4;
-                                                        slice = inputSpan.Slice(pos);
-                                                        
-                                                        CharLoopEnd4:
-                                                        Utilities.StackPush(ref base.runstack!, ref stackpos, charloop_starting_pos4, charloop_ending_pos4, base.Crawlpos());
-                                                    //}
-                                                    
-                                                    base.Capture(14, capture_starting_pos13, pos);
-                                                    
-                                                    Utilities.StackPush(ref base.runstack!, ref stackpos, capture_starting_pos13);
-                                                    goto CaptureSkipBacktrack8;
-                                                    
-                                                    CaptureBacktrack8:
-                                                    capture_starting_pos13 = base.runstack![--stackpos];
-                                                    goto CharLoopBacktrack4;
-                                                    
-                                                    CaptureSkipBacktrack8:;
-                                                //}
-                                                
-                                                
-                                                // The loop has no upper bound. Continue iterating greedily.
-                                                goto LoopBody8;
-                                                
-                                                // The loop iteration failed. Put state back to the way it was before the iteration.
-                                                LoopIterationNoMatch8:
-                                                if (--loop_iteration8 < 0)
-                                                {
-                                                    // Unable to match the remainder of the expression after exhausting the loop.
-                                                    goto LoopIterationNoMatch7;
-                                                }
-                                                pos = base.runstack![--stackpos];
-                                                UncaptureUntil(base.runstack![--stackpos]);
-                                                slice = inputSpan.Slice(pos);
-                                                if (loop_iteration8 == 0)
-                                                {
-                                                    // No iterations have been matched to backtrack into. Fail the loop.
-                                                    goto LoopIterationNoMatch7;
-                                                }
-                                                
-                                                goto LoopEnd8;
-                                                
-                                                LoopBacktrack7:
-                                                base.CheckTimeout();
-                                                
-                                                if (loop_iteration8 == 0)
-                                                {
-                                                    // No iterations of the loop remain to backtrack into. Fail the loop.
-                                                    goto LoopIterationNoMatch7;
-                                                }
-                                                goto CaptureBacktrack8;
-                                                LoopEnd8:
-                                                
-                                                Utilities.StackPush(ref base.runstack!, ref stackpos, loop_iteration8);
-                                                goto LoopSkipBacktrack2;
-                                                
-                                                LoopBacktrack8:
-                                                loop_iteration8 = base.runstack![--stackpos];
-                                                base.CheckTimeout();
-                                                
-                                                goto LoopBacktrack7;
-                                                
-                                                LoopSkipBacktrack2:;
-                                            //}
-                                            
-                                            base.Capture(13, capture_starting_pos12, pos);
-                                            
-                                            Utilities.StackPush(ref base.runstack!, ref stackpos, capture_starting_pos12);
-                                            goto CaptureSkipBacktrack9;
-                                            
-                                            CaptureBacktrack9:
-                                            capture_starting_pos12 = base.runstack![--stackpos];
-                                            goto LoopBacktrack8;
-                                            
-                                            CaptureSkipBacktrack9:;
-                                        //}
-                                        
-                                        
-                                        // The loop has an upper bound of 1. Continue iterating greedily if it hasn't yet been reached.
-                                        if (loop_iteration7 == 0)
-                                        {
-                                            goto LoopBody7;
-                                        }
-                                        goto LoopEnd7;
-                                        
-                                        // The loop iteration failed. Put state back to the way it was before the iteration.
-                                        LoopIterationNoMatch7:
-                                        if (--loop_iteration7 < 0)
-                                        {
-                                            // Unable to match the remainder of the expression after exhausting the loop.
-                                            goto LoopBacktrack6;
-                                        }
-                                        pos = base.runstack![--stackpos];
-                                        UncaptureUntil(base.runstack![--stackpos]);
-                                        slice = inputSpan.Slice(pos);
-                                        goto LoopEnd7;
-                                        
-                                        LoopBacktrack9:
-                                        base.CheckTimeout();
-                                        
-                                        if (loop_iteration7 == 0)
-                                        {
-                                            // No iterations of the loop remain to backtrack into. Fail the loop.
-                                            goto LoopBacktrack6;
-                                        }
-                                        goto CaptureBacktrack9;
-                                        LoopEnd7:;
-                                    //}
-                                    
-                                    base.Capture(4, capture_starting_pos3, pos);
-                                    
-                                    goto CaptureSkipBacktrack10;
-                                    
-                                    CaptureBacktrack10:
-                                    goto LoopBacktrack9;
-                                    
-                                    CaptureSkipBacktrack10:;
+                                    AlternationMatch6:;
                                 //}
                                 
-                                alternation_branch = 2;
-                                goto AlternationMatch;
                                 
-                                AlternationBranch22:
-                                pos = alternation_starting_pos;
+                                // The loop has an upper bound of 1. Continue iterating greedily if it hasn't yet been reached.
+                                if (loop_iteration3 == 0)
+                                {
+                                    goto LoopBody3;
+                                }
+                                goto LoopEnd3;
+                                
+                                // The loop iteration failed. Put state back to the way it was before the iteration.
+                                LoopIterationNoMatch3:
+                                if (--loop_iteration3 < 0)
+                                {
+                                    // Unable to match the remainder of the expression after exhausting the loop.
+                                    goto LoopIterationNoMatch2;
+                                }
+                                pos = base.runstack![--stackpos];
                                 slice = inputSpan.Slice(pos);
-                                UncaptureUntil(alternation_starting_capturepos);
+                                goto LoopEnd3;
+                                
+                                LoopBacktrack2:
+                                base.CheckTimeout();
+                                
+                                if (loop_iteration3 == 0)
+                                {
+                                    // No iterations of the loop remain to backtrack into. Fail the loop.
+                                    goto LoopIterationNoMatch2;
+                                }
+                                goto AlternationBacktrack6;
+                                LoopEnd3:;
                             //}
                             
-                            // Branch 3
+                            // Loop greedily any number of times.
                             //{
-                                // Match a character in the set [Xx].
-                                if (slice.IsEmpty || ((slice[0] | 0x20) != 'x'))
+                                loop_iteration4 = 0;
+                                
+                                LoopBody4:
+                                Utilities.StackPush(ref base.runstack!, ref stackpos, pos);
+                                
+                                loop_iteration4++;
+                                
+                                // Match '-'.
+                                if (slice.IsEmpty || slice[0] != '-')
                                 {
-                                    UncaptureUntil(0);
-                                    return false; // The input didn't match.
+                                    goto LoopIterationNoMatch4;
+                                }
+                                
+                                // Match with 2 alternative expressions.
+                                //{
+                                    int alternation_starting_pos7 = pos;
+                                    
+                                    // Branch 0
+                                    //{
+                                        // Match a character in the set [0-9A-Za-z\u212A] greedily at least 5 and at most 8 times.
+                                        //{
+                                            pos++;
+                                            slice = inputSpan.Slice(pos);
+                                            charloop_starting_pos2 = pos;
+                                            
+                                            int iteration2 = 0;
+                                            while (iteration2 < 8 && (uint)iteration2 < (uint)slice.Length && ((ch = slice[iteration2]) < 128 ? char.IsAsciiLetterOrDigit(ch) : RegexRunner.CharInClass((char)ch, "\0\b\00:A[a{KÅ")))
+                                            {
+                                                iteration2++;
+                                            }
+                                            
+                                            if (iteration2 < 5)
+                                            {
+                                                goto AlternationBranch26;
+                                            }
+                                            
+                                            slice = slice.Slice(iteration2);
+                                            pos += iteration2;
+                                            
+                                            charloop_ending_pos2 = pos;
+                                            charloop_starting_pos2 += 5;
+                                            goto CharLoopEnd2;
+                                            
+                                            CharLoopBacktrack2:
+                                            Utilities.StackPop(base.runstack!, ref stackpos, out charloop_ending_pos2, out charloop_starting_pos2);
+                                            
+                                            base.CheckTimeout();
+                                            
+                                            if (charloop_starting_pos2 >= charloop_ending_pos2)
+                                            {
+                                                goto AlternationBranch26;
+                                            }
+                                            pos = --charloop_ending_pos2;
+                                            slice = inputSpan.Slice(pos);
+                                            
+                                            CharLoopEnd2:
+                                            Utilities.StackPush(ref base.runstack!, ref stackpos, charloop_starting_pos2, charloop_ending_pos2);
+                                        //}
+                                        
+                                        Utilities.StackPush(ref base.runstack!, ref stackpos, 0, alternation_starting_pos7);
+                                        goto AlternationMatch7;
+                                        
+                                        AlternationBranch26:
+                                        pos = alternation_starting_pos7;
+                                        slice = inputSpan.Slice(pos);
+                                    //}
+                                    
+                                    // Branch 1
+                                    //{
+                                        if ((uint)slice.Length < 5 ||
+                                            !char.IsAsciiDigit(slice[1]) || // Match a character in the set [0-9].
+                                            ((ch = slice[2]) < 128 ? !char.IsAsciiLetterOrDigit(ch) : !RegexRunner.CharInClass((char)ch, "\0\b\00:A[a{KÅ")) || // Match a character in the set [0-9A-Za-z\u212A] exactly 3 times.
+                                            ((ch = slice[3]) < 128 ? !char.IsAsciiLetterOrDigit(ch) : !RegexRunner.CharInClass((char)ch, "\0\b\00:A[a{KÅ")) ||
+                                            ((ch = slice[4]) < 128 ? !char.IsAsciiLetterOrDigit(ch) : !RegexRunner.CharInClass((char)ch, "\0\b\00:A[a{KÅ")))
+                                        {
+                                            goto LoopIterationNoMatch4;
+                                        }
+                                        
+                                        Utilities.StackPush(ref base.runstack!, ref stackpos, 1, alternation_starting_pos7);
+                                        pos += 5;
+                                        slice = inputSpan.Slice(pos);
+                                        goto AlternationMatch7;
+                                    //}
+                                    
+                                    AlternationBacktrack7:
+                                    base.CheckTimeout();
+                                    
+                                    alternation_starting_pos7 = base.runstack![--stackpos];
+                                    switch (base.runstack![--stackpos])
+                                    {
+                                        case 0:
+                                            goto CharLoopBacktrack2;
+                                        case 1:
+                                            goto LoopIterationNoMatch4;
+                                    }
+                                    
+                                    AlternationMatch7:;
+                                //}
+                                
+                                
+                                // The loop has no upper bound. Continue iterating greedily.
+                                goto LoopBody4;
+                                
+                                // The loop iteration failed. Put state back to the way it was before the iteration.
+                                LoopIterationNoMatch4:
+                                if (--loop_iteration4 < 0)
+                                {
+                                    // Unable to match the remainder of the expression after exhausting the loop.
+                                    goto LoopBacktrack2;
+                                }
+                                pos = base.runstack![--stackpos];
+                                slice = inputSpan.Slice(pos);
+                                goto LoopEnd4;
+                                
+                                LoopBacktrack3:
+                                base.CheckTimeout();
+                                
+                                if (loop_iteration4 == 0)
+                                {
+                                    // No iterations of the loop remain to backtrack into. Fail the loop.
+                                    goto LoopBacktrack2;
+                                }
+                                goto AlternationBacktrack7;
+                                LoopEnd4:;
+                            //}
+                            
+                            // Loop greedily any number of times.
+                            //{
+                                loop_iteration5 = 0;
+                                
+                                LoopBody5:
+                                Utilities.StackPush(ref base.runstack!, ref stackpos, pos);
+                                
+                                loop_iteration5++;
+                                
+                                if ((uint)slice.Length < 2 ||
+                                    slice[0] != '-' || // Match '-'.
+                                    ((ch = slice[1]) < 128 ? ("\0\0\0Ͽ\ufffeۿ\ufffeۿ"[ch >> 4] & (1 << (ch & 0xF))) == 0 : !RegexRunner.CharInClass((char)ch, "\0\f\00:AXY[axy{KÅ"))) // Match a character in the set [0-9A-WYZa-wyz\u212A].
+                                {
+                                    goto LoopIterationNoMatch5;
                                 }
                                 
                                 // Loop greedily at least once.
                                 //{
-                                    pos++;
+                                    pos += 2;
                                     slice = inputSpan.Slice(pos);
-                                    loop_iteration9 = 0;
+                                    loop_iteration6 = 0;
                                     
-                                    LoopBody9:
-                                    Utilities.StackPush(ref base.runstack!, ref stackpos, base.Crawlpos(), pos);
+                                    LoopBody6:
+                                    Utilities.StackPush(ref base.runstack!, ref stackpos, pos);
                                     
-                                    loop_iteration9++;
+                                    loop_iteration6++;
                                     
-                                    // 15th capture group.
+                                    // Match '-'.
+                                    if (slice.IsEmpty || slice[0] != '-')
                                     {
-                                        int capture_starting_pos14 = pos;
-                                        
-                                        // Match '-'.
-                                        if (slice.IsEmpty || slice[0] != '-')
-                                        {
-                                            goto LoopIterationNoMatch9;
-                                        }
-                                        
-                                        // Match a character in the set [0-9A-Za-z\u212A] atomically at least 1 and at most 8 times.
-                                        {
-                                            pos++;
-                                            slice = inputSpan.Slice(pos);
-                                            int iteration5 = 0;
-                                            while (iteration5 < 8 && (uint)iteration5 < (uint)slice.Length && ((ch = slice[iteration5]) < 128 ? char.IsAsciiLetterOrDigit(ch) : RegexRunner.CharInClass((char)ch, "\0\b\00:A[a{KÅ")))
-                                            {
-                                                iteration5++;
-                                            }
-                                            
-                                            if (iteration5 == 0)
-                                            {
-                                                goto LoopIterationNoMatch9;
-                                            }
-                                            
-                                            slice = slice.Slice(iteration5);
-                                            pos += iteration5;
-                                        }
-                                        
-                                        base.Capture(15, capture_starting_pos14, pos);
+                                        goto LoopIterationNoMatch6;
                                     }
+                                    
+                                    // Match a character in the set [0-9A-Za-z\u212A] greedily at least 2 and at most 8 times.
+                                    //{
+                                        pos++;
+                                        slice = inputSpan.Slice(pos);
+                                        charloop_starting_pos3 = pos;
+                                        
+                                        int iteration3 = 0;
+                                        while (iteration3 < 8 && (uint)iteration3 < (uint)slice.Length && ((ch = slice[iteration3]) < 128 ? char.IsAsciiLetterOrDigit(ch) : RegexRunner.CharInClass((char)ch, "\0\b\00:A[a{KÅ")))
+                                        {
+                                            iteration3++;
+                                        }
+                                        
+                                        if (iteration3 < 2)
+                                        {
+                                            goto LoopIterationNoMatch6;
+                                        }
+                                        
+                                        slice = slice.Slice(iteration3);
+                                        pos += iteration3;
+                                        
+                                        charloop_ending_pos3 = pos;
+                                        charloop_starting_pos3 += 2;
+                                        goto CharLoopEnd3;
+                                        
+                                        CharLoopBacktrack3:
+                                        Utilities.StackPop(base.runstack!, ref stackpos, out charloop_ending_pos3, out charloop_starting_pos3);
+                                        
+                                        base.CheckTimeout();
+                                        
+                                        if (charloop_starting_pos3 >= charloop_ending_pos3)
+                                        {
+                                            goto LoopIterationNoMatch6;
+                                        }
+                                        pos = --charloop_ending_pos3;
+                                        slice = inputSpan.Slice(pos);
+                                        
+                                        CharLoopEnd3:
+                                        Utilities.StackPush(ref base.runstack!, ref stackpos, charloop_starting_pos3, charloop_ending_pos3);
+                                    //}
                                     
                                     
                                     // The loop has no upper bound. Continue iterating greedily.
-                                    goto LoopBody9;
+                                    goto LoopBody6;
                                     
                                     // The loop iteration failed. Put state back to the way it was before the iteration.
-                                    LoopIterationNoMatch9:
-                                    if (--loop_iteration9 < 0)
+                                    LoopIterationNoMatch6:
+                                    if (--loop_iteration6 < 0)
                                     {
                                         // Unable to match the remainder of the expression after exhausting the loop.
-                                        UncaptureUntil(0);
-                                        return false; // The input didn't match.
+                                        goto LoopIterationNoMatch5;
                                     }
                                     pos = base.runstack![--stackpos];
-                                    UncaptureUntil(base.runstack![--stackpos]);
                                     slice = inputSpan.Slice(pos);
-                                    if (loop_iteration9 == 0)
+                                    if (loop_iteration6 == 0)
                                     {
-                                        // All possible iterations have matched, but it's below the required minimum of 1. Fail the loop.
-                                        UncaptureUntil(0);
-                                        return false; // The input didn't match.
+                                        // No iterations have been matched to backtrack into. Fail the loop.
+                                        goto LoopIterationNoMatch5;
                                     }
                                     
-                                    LoopEnd9:;
+                                    goto LoopEnd6;
+                                    
+                                    LoopBacktrack4:
+                                    base.CheckTimeout();
+                                    
+                                    if (loop_iteration6 == 0)
+                                    {
+                                        // No iterations of the loop remain to backtrack into. Fail the loop.
+                                        goto LoopIterationNoMatch5;
+                                    }
+                                    goto CharLoopBacktrack3;
+                                    LoopEnd6:
+                                    
+                                    Utilities.StackPush(ref base.runstack!, ref stackpos, loop_iteration6);
+                                    goto LoopSkipBacktrack1;
+                                    
+                                    LoopBacktrack5:
+                                    loop_iteration6 = base.runstack![--stackpos];
+                                    base.CheckTimeout();
+                                    
+                                    goto LoopBacktrack4;
+                                    
+                                    LoopSkipBacktrack1:;
                                 //}
                                 
-                                alternation_branch = 3;
-                                goto AlternationMatch;
+                                
+                                // The loop has no upper bound. Continue iterating greedily.
+                                goto LoopBody5;
+                                
+                                // The loop iteration failed. Put state back to the way it was before the iteration.
+                                LoopIterationNoMatch5:
+                                if (--loop_iteration5 < 0)
+                                {
+                                    // Unable to match the remainder of the expression after exhausting the loop.
+                                    goto LoopBacktrack3;
+                                }
+                                pos = base.runstack![--stackpos];
+                                slice = inputSpan.Slice(pos);
+                                goto LoopEnd5;
+                                
+                                LoopBacktrack6:
+                                base.CheckTimeout();
+                                
+                                if (loop_iteration5 == 0)
+                                {
+                                    // No iterations of the loop remain to backtrack into. Fail the loop.
+                                    goto LoopBacktrack3;
+                                }
+                                goto LoopBacktrack5;
+                                LoopEnd5:;
                             //}
                             
-                            AlternationBacktrack:
-                            base.CheckTimeout();
+                            // Optional (greedy).
+                            //{
+                                loop_iteration7 = 0;
+                                
+                                LoopBody7:
+                                Utilities.StackPush(ref base.runstack!, ref stackpos, pos);
+                                
+                                loop_iteration7++;
+                                
+                                if ((uint)slice.Length < 2 ||
+                                    !slice.StartsWith("-x", StringComparison.OrdinalIgnoreCase)) // Match the string "-x" (ordinal case-insensitive)
+                                {
+                                    goto LoopIterationNoMatch7;
+                                }
+                                
+                                // Loop greedily at least once.
+                                //{
+                                    pos += 2;
+                                    slice = inputSpan.Slice(pos);
+                                    loop_iteration8 = 0;
+                                    
+                                    LoopBody8:
+                                    Utilities.StackPush(ref base.runstack!, ref stackpos, pos);
+                                    
+                                    loop_iteration8++;
+                                    
+                                    // Match '-'.
+                                    if (slice.IsEmpty || slice[0] != '-')
+                                    {
+                                        goto LoopIterationNoMatch8;
+                                    }
+                                    
+                                    // Match a character in the set [0-9A-Za-z\u212A] greedily at least 1 and at most 8 times.
+                                    //{
+                                        pos++;
+                                        slice = inputSpan.Slice(pos);
+                                        charloop_starting_pos4 = pos;
+                                        
+                                        int iteration4 = 0;
+                                        while (iteration4 < 8 && (uint)iteration4 < (uint)slice.Length && ((ch = slice[iteration4]) < 128 ? char.IsAsciiLetterOrDigit(ch) : RegexRunner.CharInClass((char)ch, "\0\b\00:A[a{KÅ")))
+                                        {
+                                            iteration4++;
+                                        }
+                                        
+                                        if (iteration4 == 0)
+                                        {
+                                            goto LoopIterationNoMatch8;
+                                        }
+                                        
+                                        slice = slice.Slice(iteration4);
+                                        pos += iteration4;
+                                        
+                                        charloop_ending_pos4 = pos;
+                                        charloop_starting_pos4++;
+                                        goto CharLoopEnd4;
+                                        
+                                        CharLoopBacktrack4:
+                                        Utilities.StackPop(base.runstack!, ref stackpos, out charloop_ending_pos4, out charloop_starting_pos4);
+                                        
+                                        base.CheckTimeout();
+                                        
+                                        if (charloop_starting_pos4 >= charloop_ending_pos4)
+                                        {
+                                            goto LoopIterationNoMatch8;
+                                        }
+                                        pos = --charloop_ending_pos4;
+                                        slice = inputSpan.Slice(pos);
+                                        
+                                        CharLoopEnd4:
+                                        Utilities.StackPush(ref base.runstack!, ref stackpos, charloop_starting_pos4, charloop_ending_pos4);
+                                    //}
+                                    
+                                    
+                                    // The loop has no upper bound. Continue iterating greedily.
+                                    goto LoopBody8;
+                                    
+                                    // The loop iteration failed. Put state back to the way it was before the iteration.
+                                    LoopIterationNoMatch8:
+                                    if (--loop_iteration8 < 0)
+                                    {
+                                        // Unable to match the remainder of the expression after exhausting the loop.
+                                        goto LoopIterationNoMatch7;
+                                    }
+                                    pos = base.runstack![--stackpos];
+                                    slice = inputSpan.Slice(pos);
+                                    if (loop_iteration8 == 0)
+                                    {
+                                        // No iterations have been matched to backtrack into. Fail the loop.
+                                        goto LoopIterationNoMatch7;
+                                    }
+                                    
+                                    goto LoopEnd8;
+                                    
+                                    LoopBacktrack7:
+                                    base.CheckTimeout();
+                                    
+                                    if (loop_iteration8 == 0)
+                                    {
+                                        // No iterations of the loop remain to backtrack into. Fail the loop.
+                                        goto LoopIterationNoMatch7;
+                                    }
+                                    goto CharLoopBacktrack4;
+                                    LoopEnd8:
+                                    
+                                    Utilities.StackPush(ref base.runstack!, ref stackpos, loop_iteration8);
+                                    goto LoopSkipBacktrack2;
+                                    
+                                    LoopBacktrack8:
+                                    loop_iteration8 = base.runstack![--stackpos];
+                                    base.CheckTimeout();
+                                    
+                                    goto LoopBacktrack7;
+                                    
+                                    LoopSkipBacktrack2:;
+                                //}
+                                
+                                
+                                // The loop has an upper bound of 1. Continue iterating greedily if it hasn't yet been reached.
+                                if (loop_iteration7 == 0)
+                                {
+                                    goto LoopBody7;
+                                }
+                                goto LoopEnd7;
+                                
+                                // The loop iteration failed. Put state back to the way it was before the iteration.
+                                LoopIterationNoMatch7:
+                                if (--loop_iteration7 < 0)
+                                {
+                                    // Unable to match the remainder of the expression after exhausting the loop.
+                                    goto LoopBacktrack6;
+                                }
+                                pos = base.runstack![--stackpos];
+                                slice = inputSpan.Slice(pos);
+                                goto LoopEnd7;
+                                
+                                LoopBacktrack9:
+                                base.CheckTimeout();
+                                
+                                if (loop_iteration7 == 0)
+                                {
+                                    // No iterations of the loop remain to backtrack into. Fail the loop.
+                                    goto LoopBacktrack6;
+                                }
+                                goto LoopBacktrack8;
+                                LoopEnd7:;
+                            //}
                             
-                            switch (alternation_branch)
-                            {
-                                case 0:
-                                    goto CaptureBacktrack;
-                                case 1:
-                                    goto CaptureBacktrack1;
-                                case 2:
-                                    goto CaptureBacktrack10;
-                                case 3:
-                                    goto LoopIterationNoMatch9;
-                            }
+                            alternation_branch = 7;
+                            goto AlternationMatch;
                             
-                            AlternationMatch:;
+                            AlternationBranch22:
+                            pos = alternation_starting_pos;
+                            slice = inputSpan.Slice(pos);
                         //}
                         
-                        base.Capture(1, capture_starting_pos, pos);
+                        // Branch 8
+                        //{
+                            // Match a character in the set [Xx].
+                            if (slice.IsEmpty || ((slice[0] | 0x20) != 'x'))
+                            {
+                                return false; // The input didn't match.
+                            }
+                            
+                            // Loop greedily at least once.
+                            //{
+                                pos++;
+                                slice = inputSpan.Slice(pos);
+                                loop_iteration9 = 0;
+                                
+                                LoopBody9:
+                                Utilities.StackPush(ref base.runstack!, ref stackpos, pos);
+                                
+                                loop_iteration9++;
+                                
+                                // Match '-'.
+                                if (slice.IsEmpty || slice[0] != '-')
+                                {
+                                    goto LoopIterationNoMatch9;
+                                }
+                                
+                                // Match a character in the set [0-9A-Za-z\u212A] atomically at least 1 and at most 8 times.
+                                {
+                                    pos++;
+                                    slice = inputSpan.Slice(pos);
+                                    int iteration5 = 0;
+                                    while (iteration5 < 8 && (uint)iteration5 < (uint)slice.Length && ((ch = slice[iteration5]) < 128 ? char.IsAsciiLetterOrDigit(ch) : RegexRunner.CharInClass((char)ch, "\0\b\00:A[a{KÅ")))
+                                    {
+                                        iteration5++;
+                                    }
+                                    
+                                    if (iteration5 == 0)
+                                    {
+                                        goto LoopIterationNoMatch9;
+                                    }
+                                    
+                                    slice = slice.Slice(iteration5);
+                                    pos += iteration5;
+                                }
+                                
+                                
+                                // The loop has no upper bound. Continue iterating greedily.
+                                goto LoopBody9;
+                                
+                                // The loop iteration failed. Put state back to the way it was before the iteration.
+                                LoopIterationNoMatch9:
+                                if (--loop_iteration9 < 0)
+                                {
+                                    // Unable to match the remainder of the expression after exhausting the loop.
+                                    return false; // The input didn't match.
+                                }
+                                pos = base.runstack![--stackpos];
+                                slice = inputSpan.Slice(pos);
+                                if (loop_iteration9 == 0)
+                                {
+                                    // All possible iterations have matched, but it's below the required minimum of 1. Fail the loop.
+                                    return false; // The input didn't match.
+                                }
+                                
+                                LoopEnd9:;
+                            //}
+                            
+                            alternation_branch = 8;
+                            goto AlternationMatch;
+                        //}
                         
-                        goto CaptureSkipBacktrack11;
+                        AlternationBacktrack:
+                        base.CheckTimeout();
                         
-                        CaptureBacktrack11:
-                        goto AlternationBacktrack;
+                        switch (alternation_branch)
+                        {
+                            case 0:
+                                goto AlternationBranch;
+                            case 1:
+                                goto AlternationBacktrack1;
+                            case 2:
+                                goto AlternationBacktrack2;
+                            case 3:
+                                goto AlternationBranch14;
+                            case 4:
+                                goto AlternationBranch15;
+                            case 5:
+                                goto AlternationBranch16;
+                            case 6:
+                                goto AlternationBacktrack3;
+                            case 7:
+                                goto LoopBacktrack9;
+                            case 8:
+                                goto LoopIterationNoMatch9;
+                        }
                         
-                        CaptureSkipBacktrack11:;
+                        AlternationMatch:;
                     //}
                     
                     // Match if at the end of the string or if before an ending newline.
                     if (pos < inputSpan.Length - 1 || ((uint)pos < (uint)inputSpan.Length && inputSpan[pos] != '\n'))
                     {
-                        goto CaptureBacktrack11;
+                        goto AlternationBacktrack;
                     }
                     
                     // The input matched.
                     base.runtextpos = pos;
                     base.Capture(0, matchStart, pos);
                     return true;
-                    
-                    // <summary>Undo captures until it reaches the specified capture position.</summary>
-                    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-                    void UncaptureUntil(int capturePosition)
-                    {
-                        while (base.Crawlpos() > capturePosition)
-                        {
-                            base.Uncapture();
-                        }
-                    }
                 }
             }
         }
@@ -2342,34 +1993,6 @@ namespace System.Text.RegularExpressions.Generated
             {
                 Array.Resize(ref stack, (pos + 1) * 2);
                 StackPush(ref stack, ref pos, arg0, arg1);
-            }
-        }
-        
-        /// <summary>Pushes 3 values onto the backtracking stack.</summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void StackPush(ref int[] stack, ref int pos, int arg0, int arg1, int arg2)
-        {
-            // If there's space available for all 3 values, store them.
-            int[] s = stack;
-            int p = pos;
-            if ((uint)(p + 2) < (uint)s.Length)
-            {
-                s[p] = arg0;
-                s[p + 1] = arg1;
-                s[p + 2] = arg2;
-                pos += 3;
-                return;
-            }
-        
-            // Otherwise, resize the stack to make room and try again.
-            WithResize(ref stack, ref pos, arg0, arg1, arg2);
-        
-            // <summary>Resize the backtracking stack array and push 3 values onto the stack.</summary>
-            [MethodImpl(MethodImplOptions.NoInlining)]
-            static void WithResize(ref int[] stack, ref int pos, int arg0, int arg1, int arg2)
-            {
-                Array.Resize(ref stack, (pos + 2) * 2);
-                StackPush(ref stack, ref pos, arg0, arg1, arg2);
             }
         }
     }
