@@ -39,6 +39,6 @@ public class WordTests
     [InlineData( "")]
     public void ParseFailsIfInvalid(string signValue)
     {
-        Assert.Throws<ArgumentOutOfRangeException>(() => Word.Parse(signValue));
+        Assert.Throws<FormatException>(() => Word.Parse(signValue));
     }
 }
