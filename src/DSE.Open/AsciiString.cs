@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System;
 using System.Buffers;
 using System.Collections;
 using System.Diagnostics;
@@ -347,61 +348,65 @@ public readonly partial struct AsciiString
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-    public bool EndsWith(AsciiString prefix) => _value.Span.EndsWith(prefix._value.Span);
+    public bool EndsWith(AsciiString value) => EndsWith(value._value.Span);
 
-    public bool StartsWith(AsciiString prefix) => _value.Span.StartsWith(prefix._value.Span);
+    public bool EndsWith(ReadOnlySpan<byte> value) => EndsWith(ValuesMarshal.AsAsciiChars(value));
 
-    public bool EndsWith(ReadOnlySpan<char> prefix)
+    public bool EndsWith(ReadOnlySpan<AsciiChar> value) => _value.Span.EndsWith(value);
+
+    public bool EndsWith(string value) => EndsWith(value.AsSpan());
+
+    public bool EndsWith(ReadOnlySpan<char> value)
     {
-        if (prefix.IsEmpty)
-        {
-            return true;
-        }
+        Span<AsciiChar> buffer = value.Length <= StackallocThresholds.MaxByteLength
+            ? stackalloc AsciiChar[value.Length]
+            : new AsciiChar[value.Length];
 
-        if (prefix.Length > _value.Length)
+        if (!TryToAsciiChars(value, buffer, out var bytesWritten))
         {
             return false;
         }
 
-        for (var i = prefix.Length - 1; i > _value.Length; i--)
+        return _value.Span.EndsWith(buffer[..bytesWritten]);
+    }
+
+    public bool StartsWith(AsciiString value) => StartsWith(value._value.Span);
+
+    public bool StartsWith(ReadOnlySpan<byte> value) => StartsWith(ValuesMarshal.AsAsciiChars(value));
+
+    public bool StartsWith(ReadOnlySpan<AsciiChar> value) => _value.Span.StartsWith(value);
+
+    public bool StartsWith(string value) => StartsWith(value.AsSpan());
+
+    public bool StartsWith(ReadOnlySpan<char> value)
+    {
+        Span<AsciiChar> buffer = value.Length <= StackallocThresholds.MaxByteLength
+            ? stackalloc AsciiChar[value.Length]
+            : new AsciiChar[value.Length];
+
+        if (!TryToAsciiChars(value, buffer, out var bytesWritten))
         {
-            if (_value.Span[i] != prefix[i])
-            {
-                return false;
-            }
+            return false;
+        }
+
+        return _value.Span.StartsWith(buffer[..bytesWritten]);
+    }
+
+    private static bool TryToAsciiChars(ReadOnlySpan<char> value, Span<AsciiChar> buffer, out int bytesWritten)
+    {
+        var status = Ascii.FromUtf16(value, ValuesMarshal.AsBytes(buffer), out bytesWritten);
+
+        if (status != OperationStatus.Done)
+        {
+            Debug.Assert(status == OperationStatus.InvalidData);
+            return false;
         }
 
         return true;
     }
 
-    public bool EndsWith(string prefix) => EndsWith(prefix.AsSpan());
-
-    public bool StartsWith(ReadOnlySpan<char> prefix)
-    {
-        if (prefix.IsEmpty)
-        {
-            return true;
-        }
-
-        if (prefix.Length > _value.Length)
-        {
-            return false;
-        }
-
-        for (var i = 0; i < prefix.Length; i++)
-        {
-            if (_value.Span[i] != prefix[i])
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
 
     public int LastIndexOf(AsciiChar c) => Span.LastIndexOf(c);
-
-    public bool StartsWith(string prefix) => StartsWith(prefix.AsSpan());
 
     public static bool operator ==(AsciiString left, AsciiString right) => left.Equals(right);
 
