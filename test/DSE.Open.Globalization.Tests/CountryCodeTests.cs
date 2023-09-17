@@ -128,7 +128,8 @@ public class CountryCodeTests
     }
     */
     [Fact]
-    public void Parse_WithNullString_ShouldThrowArgumentNull() => Assert.Throws<ArgumentNullException>(() => CountryCode.Parse(null!));
+    public void Parse_WithNullString_ShouldThrowArgumentException()
+        => Assert.Throws<ArgumentNullException>(() => CountryCode.Parse(null!));
 
     /*
     [Fact]

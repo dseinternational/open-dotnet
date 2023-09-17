@@ -36,23 +36,23 @@ public sealed class AlphaCodeTests
     }
 
     [Fact]
-    public void New_WithCodeLongerThanMaxLength_ShouldThrowArgumentException()
+    public void Parse_WithCodeLongerThanMaxLength_ShouldThrowFormatException()
     {
         // Arrange
         var code = new string('a', AlphaCode.MaxLength + 1);
 
         // Assert
-        _ = Assert.Throws<ArgumentOutOfRangeException>(() => (AlphaCode)code);
+        _ = Assert.Throws<FormatException>(() => AlphaCode.Parse(code));
     }
 
     [Fact]
-    public void New_WithCodeContainingInvalidCharacters_ShouldThrowArgumentException()
+    public void Parse_WithCodeContainingInvalidCharacters_ShouldThrowFormatException()
     {
         // Arrange
         const string code = "abc!";
 
         // Assert
-        _ = Assert.Throws<ArgumentOutOfRangeException>(() => (AlphaCode)code);
+        _ = Assert.Throws<FormatException>(() => AlphaCode.Parse(code));
     }
 
     [Fact]

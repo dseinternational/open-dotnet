@@ -17,7 +17,14 @@ public static class ValueParser
     public static TValue Parse<TValue, T>(ReadOnlySpan<char> s, IFormatProvider? provider)
         where T : IEquatable<T>, ISpanParsable<T>
         where TValue : struct, IValue<TValue, T>
-        => (TValue)T.Parse(s, provider);
+    {
+        if (TryParse<TValue, T>(s, provider, out var result))
+        {
+            return result;
+        }
+
+        return ThrowHelper.ThrowFormatException<TValue>($"Cannot parse '{s}' as {typeof(TValue).Name}.");
+    }
 
     public static bool TryParse<TValue, T>(
         ReadOnlySpan<char> s,
@@ -38,7 +45,16 @@ public static class ValueParser
     public static TValue Parse<TValue, T>(string s, IFormatProvider? provider)
         where T : IEquatable<T>, IParsable<T>
         where TValue : struct, IValue<TValue, T>
-        => (TValue)T.Parse(s, provider);
+    {
+        Guard.IsNotNull(s);
+
+        if (TValue.TryParse(s, provider, out var result))
+        {
+            return result;
+        }
+
+        return ThrowHelper.ThrowFormatException<TValue>($"Cannot parse '{s}' as {typeof(TValue).Name}.");
+    }
 
     public static bool TryParse<TValue, T>(
         ReadOnlySpan<byte> utf8Text,

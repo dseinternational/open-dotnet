@@ -201,7 +201,7 @@ public class LanguageTagTests
     }
 
     [Fact]
-    public void Parse_WithInvalidCode_ShouldThrowException()
+    public void Parse_WithInvalidCode_ShouldThrowFormatException()
     {
         // Arrange
         const string code = "invalid1";
@@ -213,7 +213,7 @@ public class LanguageTagTests
         }
 
         // Assert
-        _ = Assert.Throws<ArgumentOutOfRangeException>(Parse);
+        _ = Assert.Throws<FormatException>(Parse);
     }
 
     [Fact]
