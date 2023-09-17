@@ -13,13 +13,15 @@ namespace DSE.Open.Globalization;
 [ComparableValue]
 [JsonConverter(typeof(JsonSpanSerializableValueConverter<LanguageCode2, AsciiChar2>))]
 public readonly partial struct LanguageCode2
-    : IComparableValue<LanguageCode2, AsciiChar2>
+    : IComparableValue<LanguageCode2, AsciiChar2>, IUtf8SpanSerializable<LanguageCode2>
 {
     public static readonly LanguageCode2 English = new((AsciiChar2)"en");
 
     public static IEnumerable<LanguageCode2> ValueSet => IsoLanguageCodes.OfficiallyAssignedAlpha2;
 
     public static int MaxSerializedCharLength => 2;
+
+    public static int MaxSerializedByteLength => 2;
 
     public static bool IsValidValue(AsciiChar2 value) => IsValidValue(value, true);
 

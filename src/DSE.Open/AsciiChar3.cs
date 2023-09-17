@@ -5,23 +5,28 @@ using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using System.Runtime.InteropServices;
+using System.Text.Json.Serialization;
+using DSE.Open.Text.Json.Serialization;
 
 namespace DSE.Open;
 
 /// <summary>
 /// An immutable sequence of three ASCII bytes.
 /// </summary>
+[JsonConverter(typeof(JsonStringAsciiCharNConverter<AsciiChar3>))]
 [StructLayout(LayoutKind.Auto)]
 public readonly struct AsciiChar3
     : IComparable<AsciiChar3>,
-      IEquatable<AsciiChar3>,
-      IEqualityOperators<AsciiChar3, AsciiChar3, bool>,
-      ISpanFormattable,
-      ISpanParsable<AsciiChar3>,
-      IConvertibleTo<AsciiChar3, string>,
-      ITryConvertibleFrom<AsciiChar3, string>
+        IEquatable<AsciiChar3>,
+        IEqualityOperators<AsciiChar3, AsciiChar3, bool>,
+        ISpanFormattable,
+        ISpanParsable<AsciiChar3>,
+        IConvertibleTo<AsciiChar3, string>,
+        ITryConvertibleFrom<AsciiChar3, string>,
+        IUtf8SpanSerializable<AsciiChar3>
 {
     private const int CharCount = 3;
+    public static int MaxSerializedByteLength => 3;
 
     // internal for AsciiChar3Comparer
     internal readonly AsciiChar _c0;
@@ -230,6 +235,54 @@ public readonly struct AsciiChar3
 
     static bool ITryConvertibleFrom<AsciiChar3, string>.TryFromValue(string value, out AsciiChar3 result)
         => TryParse(value, null, out result);
+
+    public static AsciiChar3 Parse(ReadOnlySpan<byte> utf8Text, IFormatProvider? provider)
+    {
+        if (TryParse(utf8Text, provider, out var result))
+        {
+            return result;
+        }
+
+        ThrowHelper.ThrowFormatException($"Cannot parse the value '{utf8Text.ToArray()}' as a {nameof(AsciiChar3)}");
+        return default; // unreachable
+    }
+
+    public static bool TryParse(
+        ReadOnlySpan<byte> utf8Text,
+        IFormatProvider? provider,
+        [MaybeNullWhen(false)] out AsciiChar3 result)
+    {
+        if (utf8Text.Length != CharCount
+            || !AsciiChar.IsAscii(utf8Text[0])
+            || !AsciiChar.IsAscii(utf8Text[1])
+            || !AsciiChar.IsAscii(utf8Text[2]))
+        {
+            result = default;
+            return false;
+        }
+
+        result = new AsciiChar3((AsciiChar)utf8Text[0], (AsciiChar)utf8Text[1], (AsciiChar)utf8Text[2]);
+        return true;
+    }
+
+    public bool TryFormat(
+        Span<byte> utf8Destination,
+        out int bytesWritten,
+        ReadOnlySpan<char> format,
+        IFormatProvider? provider)
+    {
+        if (utf8Destination.Length < MaxSerializedByteLength)
+        {
+            bytesWritten = 0;
+            return false;
+        }
+
+        utf8Destination[0] = (byte)_c0;
+        utf8Destination[1] = (byte)_c1;
+        utf8Destination[2] = (byte)_c2;
+        bytesWritten = MaxSerializedByteLength;
+        return true;
+    }
 
     public static bool operator <(AsciiChar3 left, AsciiChar3 right) => left.CompareTo(right) < 0;
 

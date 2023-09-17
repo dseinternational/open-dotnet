@@ -212,4 +212,22 @@ public readonly partial struct CountryCode3
 
     public static CountryCode3 Parse(string s)
         => Parse(s, default);
+
+    public bool TryFormat(
+        Span<byte> utf8Destination,
+        out int bytesWritten,
+        ReadOnlySpan<char> format,
+        IFormatProvider? provider)
+        => _value.TryFormat(utf8Destination, out bytesWritten, format, provider);
+
+    public static CountryCode3 Parse(
+        ReadOnlySpan<byte> utf8Source,
+        IFormatProvider? provider)
+    => global::DSE.Open.Values.ValueParser.Parse<CountryCode3, AsciiChar3>(utf8Source, provider);
+
+    public static bool TryParse(
+        ReadOnlySpan<byte> utf8Source,
+        IFormatProvider? provider,
+        out CountryCode3 result)
+        => global::DSE.Open.Values.ValueParser.TryParse<CountryCode3, AsciiChar3>(utf8Source, provider, out result);
 }
