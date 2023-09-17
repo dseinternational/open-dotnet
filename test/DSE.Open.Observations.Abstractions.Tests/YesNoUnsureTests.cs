@@ -4,7 +4,7 @@
 using System.Text.Json;
 using DSE.Open.Values;
 
-namespace DSE.Open.Observations.Tests;
+namespace DSE.Open.Observations.Abstractions.Tests;
 
 public class YesNoUnsureTests
 {
@@ -21,7 +21,7 @@ public class YesNoUnsureTests
     public void MustBeInitialized()
     {
         YesNoUnsure value = default;
-        Assert.Throws<UninitializedValueException<YesNoUnsure, AsciiString>>(() => value.ToString());
+        _ = Assert.Throws<UninitializedValueException<YesNoUnsure, AsciiString>>(value.ToString);
     }
 
     public static TheoryData<YesNoUnsure> Values { get; } = new TheoryData<YesNoUnsure>() { YesNoUnsure.No, YesNoUnsure.Yes, YesNoUnsure.Unsure, };

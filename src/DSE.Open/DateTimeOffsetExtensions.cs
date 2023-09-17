@@ -30,4 +30,37 @@ public static class DateTimeOffsetExtensions
         Guard.IsNotNull(dateTimeZone);
         return value.ToInstant().InZone(dateTimeZone);
     }
+
+    /// <summary>
+    /// Determines if the date is within a specified number of months in the past from now.
+    /// </summary>
+    /// <param name="date"></param>
+    /// <param name="months"></param>
+    /// <returns><see langword="true"/> if the date and time is greater than or equal to the date and time
+    /// the specified number of <paramref name="months"/> ago, otherwise <see langword="false"/>.</returns>
+    public static bool IsWithinPastMonths(this DateTimeOffset date, int months)
+    {
+        var now = DateTimeOffset.UtcNow;
+        var past = now.AddMonths(-months);
+        return date >= past && date <= now;
+    }
+
+    /// <summary>
+    /// Determines if the date is within a specified number of months in the past from now,
+    /// or is <see langword="null"/>.
+    /// </summary>
+    /// <param name="date"></param>
+    /// <param name="months"></param>
+    /// <returns><see langword="true"/> if <paramref name="date"/> is <see langword="null"/> or
+    /// if the date and time is greater than or equal to the date and time the specified number of
+    /// <paramref name="months"/> ago, otherwise <see langword="false"/>.</returns>
+    public static bool IsWithinPastMonthsOrNull(this DateTimeOffset? date, int months)
+    {
+        if (date is null)
+        {
+            return true;
+        }
+
+        return IsWithinPastMonths(date.Value, months);
+    }
 }
