@@ -4,6 +4,7 @@
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace DSE.Open.Collections.Generic;
@@ -28,6 +29,17 @@ public class ReadOnlyValueSet<T> : IReadOnlySet<T>, IEquatable<ReadOnlyValueSet<
     [EditorBrowsable(EditorBrowsableState.Never)]
     internal ReadOnlyValueSet(HashSet<T> set)
     {
+        _set = set;
+    }
+
+    /// <summary>
+    /// Provides a method for derived types to directly set the backing store. <paramref name="noCopy"/> must be <c>true</c>.
+    /// </summary>
+    /// <param name="set">The set to use as the backing store.</param>
+    /// <param name="noCopy">Must be true.</param>
+    protected ReadOnlyValueSet(HashSet<T> set, bool noCopy)
+    {
+        Debug.Assert(noCopy);
         _set = set;
     }
 

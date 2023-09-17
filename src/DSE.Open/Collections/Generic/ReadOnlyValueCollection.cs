@@ -21,7 +21,10 @@ public static class ReadOnlyValueCollection
             return ReadOnlyValueCollection<T>.Empty;
         }
 
-        return new ReadOnlyValueCollection<T>(items.ToArray());
+        var list = new List<T>(items.Length);
+        list.AddRange(items);
+
+        return CreateUnsafe(list);
     }
 
     /// <summary>
