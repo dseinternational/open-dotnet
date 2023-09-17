@@ -213,6 +213,24 @@ public readonly partial struct LanguageCode2
     public static LanguageCode2 Parse(string s)
         => Parse(s, default);
 
+    public bool TryFormat(
+        Span<byte> utf8Destination,
+        out int bytesWritten,
+        ReadOnlySpan<char> format,
+        IFormatProvider? provider)
+        => _value.TryFormat(utf8Destination, out bytesWritten, format, provider);
+
+    public static LanguageCode2 Parse(
+        ReadOnlySpan<byte> utf8Source,
+        IFormatProvider? provider)
+    => global::DSE.Open.Values.ValueParser.Parse<LanguageCode2, AsciiChar2>(utf8Source, provider);
+
+    public static bool TryParse(
+        ReadOnlySpan<byte> utf8Source,
+        IFormatProvider? provider,
+        out LanguageCode2 result)
+        => global::DSE.Open.Values.ValueParser.TryParse<LanguageCode2, AsciiChar2>(utf8Source, provider, out result);
+
     public int CompareTo(LanguageCode2 other)
     {
         EnsureInitialized();

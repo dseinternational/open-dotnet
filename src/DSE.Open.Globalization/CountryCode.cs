@@ -18,11 +18,13 @@ namespace DSE.Open.Globalization;
 [JsonConverter(typeof(JsonStringCountryCodeConverter))]
 [StructLayout(LayoutKind.Auto)]
 [SuppressMessage("Design", "CA1036:Override methods on comparable types", Justification = "Not necessary")]
-public readonly partial struct CountryCode : IComparableValue<CountryCode, AsciiChar2>
+public readonly partial struct CountryCode : IComparableValue<CountryCode, AsciiChar2>, IUtf8SpanSerializable<CountryCode>
 {
     public const int Length = 2;
 
     public static int MaxSerializedCharLength => Length;
+
+    public static int MaxSerializedByteLength => Length;
 
     public bool Equals(CountryCode other) => _value.EqualsCaseInsensitive(other._value);
 

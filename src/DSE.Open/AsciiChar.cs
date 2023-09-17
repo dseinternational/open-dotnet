@@ -5,12 +5,15 @@ using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Text.Json.Serialization;
+using DSE.Open.Text.Json.Serialization;
 
 namespace DSE.Open;
 
 /// <summary>
 /// An ASCII character, stored as a byte.
 /// </summary>
+[JsonConverter(typeof(JsonStringAsciiCharNConverter<AsciiChar>))]
 [StructLayout(LayoutKind.Auto)]
 public readonly partial struct AsciiChar
     : IComparable<AsciiChar>,
@@ -18,11 +21,11 @@ public readonly partial struct AsciiChar
         IEqualityOperators<AsciiChar, AsciiChar, bool>,
         ISpanFormattable,
         ISpanParsable<AsciiChar>,
-        IUtf8SpanFormattable,
-        IUtf8SpanParsable<AsciiChar>
-
+        IUtf8SpanSerializable<AsciiChar>
 {
     private readonly byte _asciiByte;
+
+    public static int MaxSerializedByteLength => 1;
 
     public AsciiChar(byte asciiByte) : this(asciiByte, false)
     {

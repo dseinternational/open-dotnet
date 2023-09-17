@@ -9,12 +9,12 @@ using DSE.Open.Values.Text.Json.Serialization;
 namespace DSE.Open.Globalization;
 
 /// <summary>
-/// An offically-assigned ISO 3166-1 alpha-3 country code.
+/// An officially-assigned ISO 3166-1 alpha-3 country code.
 /// </summary>
 [EquatableValue]
-[JsonConverter(typeof(JsonSpanSerializableValueConverter<CountryCode3, AsciiChar3>))]
+[JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<CountryCode3, AsciiChar3>))]
 [StructLayout(LayoutKind.Auto)]
-public readonly partial struct CountryCode3 : IEquatableValue<CountryCode3, AsciiChar3>
+public readonly partial struct CountryCode3 : IEquatableValue<CountryCode3, AsciiChar3>, IUtf8SpanSerializable<CountryCode3>
 {
     public static readonly CountryCode3 Australia = new((AsciiChar3)"AUS");
     public static readonly CountryCode3 Canada = new((AsciiChar3)"CAN");
@@ -24,6 +24,8 @@ public readonly partial struct CountryCode3 : IEquatableValue<CountryCode3, Asci
     public static readonly CountryCode3 UnitedStates = new((AsciiChar3)"USA");
 
     public static int MaxSerializedCharLength => 3;
+
+    public static int MaxSerializedByteLength => 3;
 
     public static IEnumerable<CountryCode3> ValueSet => IsoCountryCodes.OfficiallyAssignedAlpha3;
 
