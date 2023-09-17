@@ -13,7 +13,6 @@ namespace DSE.Open.Records;
 
 [TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<Gender, AsciiString>))]
 public readonly partial struct Gender
-    : global::DSE.Open.Values.IEquatableValue<Gender, AsciiString>
 {
 
     private readonly AsciiString _value;
@@ -54,7 +53,7 @@ public readonly partial struct Gender
             result = new Gender(value);
             return true;
         }
-        
+    
         result = default;
         return false;
     }
@@ -213,4 +212,22 @@ public readonly partial struct Gender
 
     public static Gender Parse(string s)
         => Parse(s, default);
+
+    public bool TryFormat(
+        Span<byte> utf8Destination,
+        out int bytesWritten,
+        ReadOnlySpan<char> format,
+        IFormatProvider? provider)
+        => _value.TryFormat(utf8Destination, out bytesWritten, format, provider);
+
+    public static Gender Parse(
+        ReadOnlySpan<byte> utf8Source,
+        IFormatProvider? provider)
+    => global::DSE.Open.Values.ValueParser.Parse<Gender, AsciiString>(utf8Source, provider);
+
+    public static bool TryParse(
+        ReadOnlySpan<byte> utf8Source,
+        IFormatProvider? provider,
+        out Gender result)
+        => global::DSE.Open.Values.ValueParser.TryParse<Gender, AsciiString>(utf8Source, provider, out result);
 }

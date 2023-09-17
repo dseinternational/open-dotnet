@@ -13,7 +13,6 @@ namespace DSE.Open.Globalization;
 
 [TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<LanguageTag, AsciiString>))]
 public readonly partial struct LanguageTag
-    : global::DSE.Open.Values.IComparableValue<LanguageTag, AsciiString>
 {
 
     private readonly AsciiString _value;
@@ -54,7 +53,7 @@ public readonly partial struct LanguageTag
             result = new LanguageTag(value);
             return true;
         }
-        
+    
         result = default;
         return false;
     }
@@ -187,6 +186,24 @@ public readonly partial struct LanguageTag
 
     public static LanguageTag Parse(string s)
         => Parse(s, default);
+
+    public bool TryFormat(
+        Span<byte> utf8Destination,
+        out int bytesWritten,
+        ReadOnlySpan<char> format,
+        IFormatProvider? provider)
+        => _value.TryFormat(utf8Destination, out bytesWritten, format, provider);
+
+    public static LanguageTag Parse(
+        ReadOnlySpan<byte> utf8Source,
+        IFormatProvider? provider)
+    => global::DSE.Open.Values.ValueParser.Parse<LanguageTag, AsciiString>(utf8Source, provider);
+
+    public static bool TryParse(
+        ReadOnlySpan<byte> utf8Source,
+        IFormatProvider? provider,
+        out LanguageTag result)
+        => global::DSE.Open.Values.ValueParser.TryParse<LanguageTag, AsciiString>(utf8Source, provider, out result);
 
     public static bool operator <(LanguageTag left, LanguageTag right) => left.CompareTo(right) < 0;
     

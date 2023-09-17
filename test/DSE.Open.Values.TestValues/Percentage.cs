@@ -6,7 +6,9 @@ namespace DSE.Open.Values.TestValues;
 [DivisibleValue]
 public readonly partial struct Percentage : IDivisibleValue<Percentage, float>
 {
-    public static int MaxSerializedCharLength { get; } = 128; // TODO
+    public static int MaxSerializedCharLength => 128; // TODO
+
+    public static int MaxSerializedByteLength => 128; // TODO
 
     public static Percentage Zero { get; } = new(0);
 

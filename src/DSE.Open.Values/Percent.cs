@@ -10,9 +10,11 @@ namespace DSE.Open.Values;
 /// </summary>
 [DivisibleValue]
 [StructLayout(LayoutKind.Auto)]
-public readonly partial struct Percent : IDivisibleValue<Percent, double>
+public readonly partial struct Percent : IDivisibleValue<Percent, double>, IUtf8SpanSerializable<Percent>
 {
-    public static int MaxSerializedCharLength { get; } = 128; // TODO
+    public static int MaxSerializedCharLength => 128; // TODO
+
+    public static int MaxSerializedByteLength => 128; // TODO
 
     public static Percent Zero { get; } = new(0);
 

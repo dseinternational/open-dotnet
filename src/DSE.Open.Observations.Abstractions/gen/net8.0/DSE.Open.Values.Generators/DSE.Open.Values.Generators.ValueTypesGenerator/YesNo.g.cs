@@ -13,7 +13,6 @@ namespace DSE.Open.Observations;
 
 [TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<YesNo, AsciiString>))]
 public readonly partial struct YesNo
-    : global::DSE.Open.Values.IEquatableValue<YesNo, AsciiString>
 {
 
     private readonly AsciiString _value;
@@ -54,7 +53,7 @@ public readonly partial struct YesNo
             result = new YesNo(value);
             return true;
         }
-        
+    
         result = default;
         return false;
     }
@@ -213,4 +212,22 @@ public readonly partial struct YesNo
 
     public static YesNo Parse(string s)
         => Parse(s, default);
+
+    public bool TryFormat(
+        Span<byte> utf8Destination,
+        out int bytesWritten,
+        ReadOnlySpan<char> format,
+        IFormatProvider? provider)
+        => _value.TryFormat(utf8Destination, out bytesWritten, format, provider);
+
+    public static YesNo Parse(
+        ReadOnlySpan<byte> utf8Source,
+        IFormatProvider? provider)
+    => global::DSE.Open.Values.ValueParser.Parse<YesNo, AsciiString>(utf8Source, provider);
+
+    public static bool TryParse(
+        ReadOnlySpan<byte> utf8Source,
+        IFormatProvider? provider,
+        out YesNo result)
+        => global::DSE.Open.Values.ValueParser.TryParse<YesNo, AsciiString>(utf8Source, provider, out result);
 }

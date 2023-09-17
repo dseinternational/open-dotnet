@@ -4,21 +4,24 @@
 using System.Collections.Frozen;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
+using DSE.Open.Globalization;
 using DSE.Open.Values;
 using DSE.Open.Values.Text.Json.Serialization;
 
 namespace DSE.Open.Language;
 
 /// <summary>
-/// <see href="https://universaldependencies.org/u/pos/">Universal POS tags</see> mark the core 
-/// part-of-speech categories. 
+/// <see href="https://universaldependencies.org/u/pos/">Universal POS tags</see> mark the core
+/// part-of-speech categories.
 /// </summary>
 [EquatableValue]
 [StructLayout(LayoutKind.Auto)]
-[JsonConverter(typeof(JsonSpanSerializableValueConverter<UniversalPosTag, AsciiString>))]
-public readonly partial struct UniversalPosTag : IEquatableValue<UniversalPosTag, AsciiString>
+[JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<UniversalPosTag, AsciiString>))]
+public readonly partial struct UniversalPosTag : IEquatableValue<UniversalPosTag, AsciiString>, IUtf8SpanSerializable<UniversalPosTag>
 {
     public static int MaxSerializedCharLength => 5;
+
+    public static int MaxSerializedByteLength => 5;
 
     public UniversalPosTag(string value) : this((AsciiString)value)
     {

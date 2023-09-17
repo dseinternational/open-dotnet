@@ -4,6 +4,7 @@
 using System.Collections.Frozen;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
+using DSE.Open.Globalization;
 using DSE.Open.Values;
 using DSE.Open.Values.Text.Json.Serialization;
 
@@ -11,10 +12,12 @@ namespace DSE.Open.Language;
 
 [EquatableValue]
 [StructLayout(LayoutKind.Auto)]
-[JsonConverter(typeof(JsonSpanSerializableValueConverter<UniversalSyntacticRelation, AsciiString>))]
-public readonly partial struct UniversalSyntacticRelation : IEquatableValue<UniversalSyntacticRelation, AsciiString>
+[JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<UniversalSyntacticRelation, AsciiString>))]
+public readonly partial struct UniversalSyntacticRelation : IEquatableValue<UniversalSyntacticRelation, AsciiString>, IUtf8SpanSerializable<UniversalSyntacticRelation>
 {
     public static int MaxSerializedCharLength => 32;
+
+    public static int MaxSerializedByteLength => 32;
 
     public UniversalSyntacticRelation(string value) : this((AsciiString)value)
     {

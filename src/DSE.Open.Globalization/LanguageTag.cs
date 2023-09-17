@@ -18,10 +18,9 @@ namespace DSE.Open.Globalization;
 /// A language tag as defined by <see href="https://www.rfc-editor.org/rfc/rfc5646.html">RFC5646</see>.
 /// </summary>
 [ComparableValue]
-[JsonConverter(typeof(JsonSpanSerializableValueConverter<LanguageTag, AsciiString>))]
+[JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<LanguageTag, AsciiString>))]
 [StructLayout(LayoutKind.Auto)]
-public readonly partial struct LanguageTag
-    : IComparableValue<LanguageTag, AsciiString>
+public readonly partial struct LanguageTag : IComparableValue<LanguageTag, AsciiString>, IUtf8SpanSerializable<LanguageTag>
 {
     /// <summary>
     /// Gets the maximum practical length to expect for a language code that is suitable for
@@ -34,7 +33,9 @@ public readonly partial struct LanguageTag
     /// </remarks>
     public const int MaxLength = 35;
 
-    public static int MaxSerializedCharLength { get; } = MaxLength;
+    public static int MaxSerializedCharLength => MaxLength;
+
+    public static int MaxSerializedByteLength => MaxLength;
 
     private static readonly Regex s_regex = GetValidationRegex();
 

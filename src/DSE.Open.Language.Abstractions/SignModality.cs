@@ -3,6 +3,7 @@
 
 using System.Collections.Frozen;
 using System.Text.Json.Serialization;
+using DSE.Open.Globalization;
 using DSE.Open.Values;
 using DSE.Open.Values.Text.Json.Serialization;
 
@@ -12,10 +13,12 @@ namespace DSE.Open.Language;
 /// Indicates the modality of a <see cref="Sign"/>.
 /// </summary>
 [EquatableValue]
-[JsonConverter(typeof(JsonSpanSerializableValueConverter<SignModality, AsciiString>))]
-public readonly partial struct SignModality : IEquatableValue<SignModality, AsciiString>
+[JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<SignModality, AsciiString>))]
+public readonly partial struct SignModality : IEquatableValue<SignModality, AsciiString>, IUtf8SpanSerializable<SignModality>
 {
     public static int MaxSerializedCharLength => 16;
+
+    public static int MaxSerializedByteLength => 16;
 
     public static bool IsValidValue(AsciiString value)
     {

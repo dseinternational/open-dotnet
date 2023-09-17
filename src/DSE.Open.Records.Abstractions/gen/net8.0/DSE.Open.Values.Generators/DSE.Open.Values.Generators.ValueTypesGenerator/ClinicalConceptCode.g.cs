@@ -13,7 +13,6 @@ namespace DSE.Open.Records;
 
 [TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<ClinicalConceptCode, Int64>))]
 public readonly partial struct ClinicalConceptCode
-    : global::DSE.Open.Values.IEquatableValue<ClinicalConceptCode, Int64>
 {
 
     private readonly Int64 _value;
@@ -54,7 +53,7 @@ public readonly partial struct ClinicalConceptCode
             result = new ClinicalConceptCode(value);
             return true;
         }
-        
+    
         result = default;
         return false;
     }
@@ -213,4 +212,22 @@ public readonly partial struct ClinicalConceptCode
 
     public static ClinicalConceptCode Parse(string s)
         => Parse(s, default);
+
+    public bool TryFormat(
+        Span<byte> utf8Destination,
+        out int bytesWritten,
+        ReadOnlySpan<char> format,
+        IFormatProvider? provider)
+        => _value.TryFormat(utf8Destination, out bytesWritten, format, provider);
+
+    public static ClinicalConceptCode Parse(
+        ReadOnlySpan<byte> utf8Source,
+        IFormatProvider? provider)
+    => global::DSE.Open.Values.ValueParser.Parse<ClinicalConceptCode, Int64>(utf8Source, provider);
+
+    public static bool TryParse(
+        ReadOnlySpan<byte> utf8Source,
+        IFormatProvider? provider,
+        out ClinicalConceptCode result)
+        => global::DSE.Open.Values.ValueParser.TryParse<ClinicalConceptCode, Int64>(utf8Source, provider, out result);
 }

@@ -30,6 +30,8 @@ internal abstract class ValueTypeSpec
         _ => throw new NotSupportedException(),
     };
 
+    public bool EmitUtf8SpanSerializableInterface { get; set; }
+
     public bool EmitValueField { get; set; } = true;
 
     public string ValueFieldName { get; set; } = "_value";
@@ -47,9 +49,9 @@ internal abstract class ValueTypeSpec
     public bool UseGetStringSpan { get; set; }
 
     public bool EmitConstructor { get; set; } = true;
-    
+
     public Accessibility ConstructorAccessibility { get; set; } = Accessibility.Private;
-    
+
     public string ConstructorAccessibilityValue => AccessibilityHelper.GetKeyword(ConstructorAccessibility);
 
     public bool EmitMaxSerializedCharLength => MaxSerializedCharLength > 0;
@@ -109,6 +111,19 @@ internal abstract class ValueTypeSpec
     public bool EmitParseSpanNumberStylesMethod { get; set; }
 
     public bool EmitParseStringNumberStylesMethod { get; set; }
+
+
+    // IUtf8SpanFormattable
+
+    public bool EmitTryFormatUtf8Method { get; set; }
+
+    // IUtf8SpanParsable<T>
+
+    public bool EmitParseUtf8Method { get; set; }
+
+    public bool EmitTryParseUtf8Method { get; set; }
+
+
 
     public bool EmitUsingSystemGlobalization => EmitParseSpanNumberStylesMethod
         || EmitParseStringNumberStylesMethod

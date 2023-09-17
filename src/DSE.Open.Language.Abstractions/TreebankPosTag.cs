@@ -4,6 +4,7 @@
 using System.Collections.Frozen;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
+using DSE.Open.Globalization;
 using DSE.Open.Values;
 using DSE.Open.Values.Text.Json.Serialization;
 
@@ -13,10 +14,12 @@ namespace DSE.Open.Language;
 
 [EquatableValue]
 [StructLayout(LayoutKind.Auto)]
-[JsonConverter(typeof(JsonSpanSerializableValueConverter<TreebankPosTag, AsciiString>))]
-public readonly partial struct TreebankPosTag : IEquatableValue<TreebankPosTag, AsciiString>
+[JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<TreebankPosTag, AsciiString>))]
+public readonly partial struct TreebankPosTag : IEquatableValue<TreebankPosTag, AsciiString>, IUtf8SpanSerializable<TreebankPosTag>
 {
     public static int MaxSerializedCharLength => 5;
+
+    public static int MaxSerializedByteLength => 5;
 
     public TreebankPosTag(string value) : this((AsciiString)value)
     {

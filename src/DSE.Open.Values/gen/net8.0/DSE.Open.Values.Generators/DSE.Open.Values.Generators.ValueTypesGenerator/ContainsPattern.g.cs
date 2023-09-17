@@ -13,7 +13,6 @@ namespace DSE.Open.Values.Text;
 
 [TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<ContainsPattern, CharSequence>))]
 public readonly partial struct ContainsPattern
-    : global::DSE.Open.Values.IEquatableValue<ContainsPattern, CharSequence>
 {
 
     private readonly CharSequence _value;
@@ -54,7 +53,7 @@ public readonly partial struct ContainsPattern
             result = new ContainsPattern(value);
             return true;
         }
-        
+    
         result = default;
         return false;
     }
