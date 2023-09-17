@@ -1,25 +1,20 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Buffers;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
+using System.Text;
 using System.Text.Json.Serialization;
 using DSE.Open.Values.Text.Json.Serialization;
 
 namespace DSE.Open.Values;
 
-/// <summary>
-/// A randomly-generated sequence of digits and letters, with an optional prefix,
-/// used to identify something.
-/// </summary>
+[EquatableValue]
+[JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<Identifier, AsciiString>))]
 [StructLayout(LayoutKind.Auto)]
-[JsonConverter(typeof(JsonStringIdentifierConverter))]
-public readonly record struct Identifier
-    : ISpanFormattable,
-      ISpanParsable<Identifier>,
-      IEquatable<Identifier>
+public readonly partial struct Identifier : IEquatableValue<Identifier, AsciiString>, IUtf8SpanSerializable<Identifier>
 {
     public const int DefaultLength = 48;
 
@@ -45,52 +40,154 @@ public readonly record struct Identifier
 
     public const int MaxLength = MaxPrefixLength + MaxIdLength;
 
+    public static int MaxSerializedCharLength => MaxLength;
+
+    public static int MaxSerializedByteLength => MaxLength;
+
     public const char PrefixDelimiter = '_';
 
-    // This must be sorted (Unicode/ASCII code order) to use binary search
-    private static readonly char[] s_idChars
-        = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".ToCharArray();
+    private static ReadOnlySpan<byte> ValidIdBytes => "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"u8;
 
-    private static readonly int s_idCharsLength = s_idChars.Length;
-
-    private readonly ReadOnlyMemory<char> _id;
-
-    private Identifier(ReadOnlyMemory<char> id)
-    {
-        _id = id;
-    }
+    private static ReadOnlySpan<byte> ValidPrefixBytes => "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_"u8;
 
     public static readonly Identifier Empty;
 
+    private Identifier(ReadOnlyMemory<AsciiChar> value)
+    {
+        _value = new AsciiString(value);
+        _initialized = true;
+    }
+
+    public static bool IsValidValue(AsciiString value)
+    {
+        if (value.Length is < MinIdLength or > MaxLength)
+        {
+            return false;
+        }
+
+        var prefixEndIndex = value.Span.LastIndexOf((AsciiChar)PrefixDelimiter);
+
+        switch (prefixEndIndex)
+        {
+            case -1:
+                return value.Span.ContainsOnlyAsciiLettersOrDigits();
+            case 0:
+            case > MaxPrefixLength:
+                // '_' is not valid in id (beyond prefix) and cannot start with '_'
+                return false;
+        }
+
+        var prefix = value.Span[..prefixEndIndex];
+        var id = value.Span[(prefixEndIndex + 1)..];
+
+        return prefix[0] != (AsciiChar)PrefixDelimiter
+               && prefix.All(id => id == PrefixDelimiter || AsciiChar.IsLetterOrDigit(id))
+               && id.Length is >= MinIdLength and <= MaxIdLength
+               && id.ContainsOnlyAsciiLettersOrDigits();
+    }
+
+    public static bool IsValid(ReadOnlySpan<char> id)
+    {
+        if (!AsciiString.TryParse(id, out var value))
+        {
+            return false;
+        }
+
+        return IsValidValue(value);
+    }
+
+    public static (ReadOnlyMemory<char> prefix, ReadOnlyMemory<char> id) Split(ReadOnlyMemory<char> uid)
+    {
+        if (uid.IsEmpty)
+        {
+            return (null, uid);
+        }
+
+        var i = uid.Span.LastIndexOf(PrefixDelimiter);
+
+        if (i < 0)
+        {
+            return (null, uid);
+        }
+
+        return (prefix: uid[..i], id: uid[(i + 1)..]);
+    }
+
+    private static bool IsValidPrefix(ReadOnlySpan<byte> prefix)
+        => prefix.Length is >= MinPrefixLength and <= MaxPrefixLength && prefix.IndexOfAnyExcept(ValidPrefixBytes) < 0;
+
+    /// <summary>
+    /// Creates a new <see cref="Identifier"/> of default length with a random value.
+    /// </summary>
     public static Identifier New() => New(DefaultLength);
 
-    public static Identifier New(int length) => New(length, null);
+    /// <summary>
+    /// Creates a new <see cref="Identifier"/> of the specified length with a random value.
+    /// </summary>
+    /// <param name="length">The length of <see cref="Identifier"/> to create.</param>
+    public static Identifier New(int length) => New(length, ReadOnlySpan<byte>.Empty);
 
+    /// <summary>
+    /// Creates a new <see cref="Identifier"/> with the given prefix and a random value.
+    /// </summary>
+    /// <param name="prefix">The prefix to use.</param>
     public static Identifier New(ReadOnlySpan<char> prefix) => New(DefaultLength, prefix);
 
+    /// <summary>
+    /// Creates a new <see cref="Identifier"/> of the specified length with the given prefix and a random value
+    /// </summary>
+    /// <param name="idLength">The length of <see cref="Identifier"/> to create.</param>
+    /// <param name="prefix">The prefix to use.</param>
+    /// <returns>A new <see cref="Identifier"/> with the given prefix and a random value.</returns>
     public static Identifier New(int idLength, ReadOnlySpan<char> prefix)
     {
         Guard.IsBetweenOrEqualTo(idLength, MinIdLength, MaxIdLength);
 
-        if (!prefix.IsEmpty)
+        if (prefix.IsEmpty)
         {
-            if (!IsValidPrefix(prefix))
-            {
-                ThrowHelper.ThrowArgumentException(nameof(prefix),
-                    $"Invalid {nameof(Identifier)} value: {prefix}");
-            }
+            return New(idLength, ReadOnlySpan<byte>.Empty);
+        }
+
+        Span<byte> utf8 = stackalloc byte[prefix.Length];
+
+        var status = Ascii.FromUtf16(prefix, utf8, out var bytesWritten);
+
+        if (status is OperationStatus.Done)
+        {
+            Debug.Assert(bytesWritten == prefix.Length);
+            return New(idLength, utf8);
+        }
+
+        Debug.Assert(status is OperationStatus.InvalidData);
+
+        return ThrowHelper.ThrowArgumentException<Identifier>(nameof(prefix),
+            $"Invalid {nameof(Identifier)} prefix '{prefix.ToString()}'");
+    }
+
+    /// <summary>
+    /// Creates a new <see cref="Identifier"/> of the specified length with the given prefix and a random value
+    /// </summary>
+    /// <param name="idLength">The length of <see cref="Identifier"/> to create.</param>
+    /// <param name="prefix">The prefix to use.</param>
+    /// <returns>A new <see cref="Identifier"/> with the given prefix and a random value.</returns>
+    public static Identifier New(int idLength, ReadOnlySpan<byte> prefix)
+    {
+        Guard.IsBetweenOrEqualTo(idLength, MinIdLength, MaxIdLength);
+
+        if (!prefix.IsEmpty && !IsValidPrefix(prefix))
+        {
+            ThrowHelper.ThrowArgumentException(nameof(prefix),
+                $"Invalid {nameof(Identifier)} prefix '{Encoding.UTF8.GetString(prefix)}'");
         }
 
         var idStartIndex = prefix.IsEmpty ? 0 : prefix.Length + 1;
         var idAndPrefixLength = idStartIndex + idLength;
-
-        var id = new Memory<char>(new char[idAndPrefixLength]);
+        var id = new Memory<AsciiChar>(new AsciiChar[idAndPrefixLength]);
 
         if (idStartIndex > 0)
         {
-            Debug.Assert(prefix.Length == idStartIndex - 1);
-            prefix.CopyTo(id.Span);
-            id.Span[idStartIndex - 1] = '_';
+            prefix.CopyTo(ValuesMarshal.AsBytes(id.Span));
+            id.Span[idStartIndex - 1] = (AsciiChar)'_';
         }
 
         Span<byte> randomBuffer = stackalloc byte[idLength * 2];
@@ -100,179 +197,39 @@ public readonly record struct Identifier
         for (var i = 0; i < randomBuffer.Length; i += 2)
         {
             var f = BitConverter.ToUInt16(randomBuffer.Slice(i, 2));
-            var c = f % s_idCharsLength;
-            id.Span[idStartIndex + (i / 2)] = s_idChars[c];
+            var c = f % ValidIdBytes.Length;
+            id.Span[idStartIndex + (i / 2)] = (AsciiChar)ValidIdBytes[c];
         }
 
         return new Identifier(id);
     }
 
+
     /// <summary>
-    /// Verifies if the supplied value is a valid identifier - optionally including a prefix.
+    /// Determines whether this <see cref="Identifier"/> starts with the given sequence of characters.
     /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
-    public static bool IsValid(ReadOnlySpan<char> id)
-    {
-        if (id.Length is < MinIdLength or > MaxLength)
-        {
-            return false;
-        }
+    /// <param name="value">The characters to compare.</param>
+    /// <returns>True if the <see cref="Identifier"/> starts with the given sequence of characters; otherwise, false.</returns>
+    public bool StartsWith(ReadOnlySpan<char> value) => _value.StartsWith(value);
 
-        var prefixEndIndex = id.LastIndexOf(PrefixDelimiter);
+    /// <summary>
+    /// Determines whether this <see cref="Identifier"/> starts with the given sequence of bytes.
+    /// </summary>
+    /// <param name="value">The bytes to compare.</param>
+    /// <returns>True if the <see cref="Identifier"/> starts with the given sequence of bytes; otherwise, false.</returns>
+    public bool StartsWith(ReadOnlySpan<byte> value) => _value.StartsWith(value);
 
-        switch (prefixEndIndex)
-        {
-            case -1:
-                return id.All(IsAllowedIdentifierCharacter);
-            case 0:
-            case > MaxPrefixLength:
-                // '_' is not valid in id, beyond prefix
-                // and cannot start with '_'
-                return false;
-        }
+    /// <summary>
+    /// Determines whether this <see cref="Identifier"/> ends with the given sequence of characters.
+    /// </summary>
+    /// <param name="value">The characters to compare.</param>
+    /// <returns>True if the <see cref="Identifier"/> ends with the given sequence of characters; otherwise, false.</returns>
+    public bool EndsWith(ReadOnlySpan<char> value) => _value.EndsWith(value);
 
-        var prefix = id[..prefixEndIndex];
-
-        return prefix[0] != PrefixDelimiter
-            && prefix.All(IsPrefixAllowedCharacter)
-            && IsValidIdPart(id[(prefixEndIndex + 1)..]);
-    }
-
-    public static bool IsValidIdPart(ReadOnlySpan<char> idPart)
-        => idPart.Length is >= MinIdLength and <= MaxIdLength && idPart.All(IsAllowedIdentifierCharacter);
-
-    public static bool IsValidPrefix(ReadOnlySpan<char> prefix)
-        => prefix.Length is >= MinPrefixLength and <= MaxPrefixLength && prefix.All(IsPrefixAllowedCharacter);
-
-    public static bool IsAllowedIdentifierCharacter(char c) => char.IsAsciiLetterOrDigit(c);
-
-    public static bool IsPrefixAllowedCharacter(char c) => char.IsAsciiLetterOrDigit(c) || c == PrefixDelimiter;
-
-    public bool StartsWith(ReadOnlySpan<char> value) => _id.Span.StartsWith(value, StringComparison.Ordinal);
-
-    public static (ReadOnlyMemory<char> prefix, ReadOnlyMemory<char> id) Split(ReadOnlyMemory<char> uid)
-    {
-        if (uid.IsEmpty)
-        {
-            return (null, uid);
-        }
-
-        var i = uid.Span.LastIndexOf('_');
-
-        if (i < 0)
-        {
-            return (null, uid);
-        }
-
-        var prefix = uid[..i];
-        var id = uid[(i + 1)..];
-
-        return (prefix, id);
-    }
-
-    public bool Equals(string? other) => Equals(other.AsSpan());
-
-    public bool Equals(ReadOnlyMemory<char> other) => Equals(other.Span);
-
-    public bool Equals(ReadOnlySpan<char> other) => _id.Span.SequenceEqual(other);
-
-    public bool Equals(Identifier other) => Equals(other._id.Span);
-
-    public override int GetHashCode()
-    {
-        var hash = new HashCode();
-        for (var i = 0; i < _id.Length; i++)
-        {
-            hash.Add(_id.Span[i]);
-        }
-
-        return hash.ToHashCode();
-    }
-
-    public static Identifier Parse(string s) => Parse(s, null);
-
-    public static Identifier Parse(string s, IFormatProvider? provider) => Parse(s.AsSpan(), provider);
-
-    public static Identifier Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
-    {
-        if (TryParse(s, provider, out var result))
-        {
-            return result;
-        }
-
-        ThrowHelper.ThrowFormatException($"Failed to parse {nameof(Identifier)} value: {s}");
-        return default;
-    }
-
-    public static bool TryParse(ReadOnlySpan<char> s, out Identifier result) => TryParse(s, null, out result);
-
-    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out Identifier result)
-    {
-        if (s.IsEmpty)
-        {
-            result = Empty;
-            return true;
-        }
-
-        if (!IsValid(s))
-        {
-            result = default;
-            return false;
-        }
-
-        result = new Identifier(s.ToArray());
-        return true;
-    }
-
-    public static bool TryParse([NotNullWhen(true)] string? s, out Identifier result)
-    {
-        if (s is null)
-        {
-            result = default;
-            return false;
-        }
-
-        return TryParse(s, null, out result);
-    }
-
-    public static bool TryParse(
-        [NotNullWhen(true)] string? s,
-        IFormatProvider? provider,
-        out Identifier result)
-        => TryParse(s.AsSpan(), provider, out result);
-
-    public bool TryFormat(Span<char> destination, out int charsWritten)
-        => TryFormat(destination, out charsWritten, default, null);
-
-    public bool TryFormat(
-        Span<char> destination,
-        out int charsWritten,
-        ReadOnlySpan<char> format,
-        IFormatProvider? provider)
-    {
-        if (_id.Span.TryCopyTo(destination))
-        {
-            charsWritten = _id.Length;
-            return true;
-        }
-
-        charsWritten = 0;
-        return false;
-    }
-
-    public override string ToString() => ToString(null, null);
-
-    public string ToString(string? format, IFormatProvider? formatProvider)
-    {
-        Span<char> destination = stackalloc char[_id.Length];
-        _ = TryFormat(destination, out _, format, formatProvider);
-        return destination.ToString();
-    }
-
-    public static explicit operator string(Identifier identifier) => identifier.ToString();
-
-    public static explicit operator Identifier(string identifier) => FromString(identifier);
-
-    public static Identifier FromString(string identifier) => Parse(identifier);
+    /// <summary>
+    /// Determines whether this <see cref="Identifier"/> ends with the given sequence of bytes.
+    /// </summary>
+    /// <param name="value">The bytes to compare.</param>
+    /// <returns>True if the <see cref="Identifier"/> ends with the given sequence of bytes; otherwise, false.</returns>
+    public bool EndsWith(ReadOnlySpan<byte> value) => _value.EndsWith(value);
 }

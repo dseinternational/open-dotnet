@@ -212,35 +212,6 @@ public class IdentifierTests
     }
 
     [Fact]
-    public void TryFormat_WithEmptyCode_ShouldReturnTrueWithNothingWritten()
-    {
-        // Arrange
-        var code = Identifier.Empty;
-        var buffer = new char[1];
-
-        // Act
-        var success = code.TryFormat(buffer, out var charsWritten);
-
-        // Assert
-        Assert.True(success);
-        Assert.Equal(0, charsWritten);
-    }
-
-    [Fact]
-    public void TryParse_WithEmptyCode_ShouldReturnTrueWithEmptyCode()
-    {
-        // Arrange
-        const string code = "";
-
-        // Act
-        var success = Identifier.TryParse(code, null, out var parsedCode);
-
-        // Assert
-        Assert.True(success);
-        Assert.Equal(Identifier.Empty, parsedCode);
-    }
-
-    [Fact]
     public void New_WithIdLengthTooLong_ShouldThrowArgumentOutOfRangeException()
     {
         // Arrange
