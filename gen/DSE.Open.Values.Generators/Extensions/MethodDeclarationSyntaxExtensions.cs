@@ -18,6 +18,27 @@ internal static class MethodDeclarationSyntaxExtensions
         public const string Parse = "Parse";
     }
 
+    // public string ToString(string? format, IFormatProvider? provider);
+    public static bool IsIFormattableToStringMethod(this MethodDeclarationSyntax s)
+    {
+        if (s.Identifier.Text != "ToString")
+        {
+            return false;
+        }
+
+        return s.ParameterList.Parameters.Count == 2
+               && s.ParameterList.Parameters[0] is ParameterSyntax ps0
+               && ps0.Type is NullableTypeSyntax nts0
+               && nts0.ElementType is PredefinedTypeSyntax pts0
+               && pts0.Keyword.Text == "string"
+               && ps0.Identifier.ValueText == "format"
+               && s.ParameterList.Parameters[1] is ParameterSyntax ps1
+               && ps1.Type is NullableTypeSyntax nts1
+               && nts1.ElementType is IdentifierNameSyntax ins1
+               && ins1.Identifier.Text == "IFormatProvider"
+               && ps1.Identifier.ValueText == "provider";
+    }
+
     // public static bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider? provider);
     public static bool IsISpanFormattableTryFormatMethod(this MethodDeclarationSyntax s)
     {

@@ -121,10 +121,10 @@ public readonly partial struct AlphaCode
         => TryFormatInvariant(destination, out charsWritten, default);
 
     /// <summary>
-    /// Gets a representation of the AlphaCode value as a string with formatting options.
+    /// Gets a representation of the <see cref="AlphaCode"/> value as a string with formatting options.
     /// </summary>
     /// <returns>
-    /// A representation of the AlphaCode value.
+    /// A representation of the <see cref="AlphaCode"/> value.
     /// </returns>
     public string ToString(string? format, IFormatProvider? formatProvider)
     {

@@ -314,43 +314,46 @@ public partial class ValueTypesGenerator
                 writer.WriteLine();
 
                 writer.WriteLine($$"""
-                                   /// <summary>
-                                   /// Gets a representation of the {{spec.ValueTypeName}} value as a string with formatting options.
-                                   /// </summary>
-                                   /// <returns>
-                                   /// A representation of the {{spec.ValueTypeName}} value.
-                                   /// </returns>
-                                   public string ToString(string? format, IFormatProvider? formatProvider)
-                                   {
-                                       var maxCharLength = MaxSerializedCharLength;
+                    /// <summary>
+                    /// Gets a representation of the <see cref="{{spec.ValueTypeName}}"/> value as a string with formatting options.
+                    /// </summary>
+                    /// <returns>
+                    /// A representation of the <see cref="{{spec.ValueTypeName}}"/> value.
+                    /// </returns>
+                    public string ToString(string? format, IFormatProvider? formatProvider)
+                    {
+                    """);
 
-                                       char[]? rented = null;
-
-                                       try
-                                       {
-                                           Span<char> buffer = maxCharLength <= 128
-                                               ? stackalloc char[maxCharLength]
-                                               : (rented = System.Buffers.ArrayPool<char>.Shared.Rent(maxCharLength));
-
-                                           _ = TryFormat(buffer, out var charsWritten, format, formatProvider);
-
-                                           ReadOnlySpan<char> returnValue = buffer[..charsWritten];
-                                   """);
-
-                if (spec.UseGetStringSpan)
+                if (spec.UseGetStringSpan || spec.UseGetString)
                 {
-                    writer.WriteLine("""        return GetString(returnValue);""");
-                }
-                else if (spec.UseGetString)
-                {
-                    writer.WriteLine("""        return GetString(new string(returnValue));""");
-                }
-                else
-                {
-                    writer.WriteLine("""        return new string(returnValue);""");
-                }
 
-                writer.WriteLine("""
+                    writer.WriteLine("""
+                        var maxCharLength = MaxSerializedCharLength;
+
+                        char[]? rented = null;
+
+                        try
+                        {
+                            Span<char> buffer = maxCharLength <= 128
+                                ? stackalloc char[maxCharLength]
+                                : (rented = System.Buffers.ArrayPool<char>.Shared.Rent(maxCharLength));
+
+                            _ = TryFormat(buffer, out var charsWritten, format, formatProvider);
+
+                            ReadOnlySpan<char> returnValue = buffer[..charsWritten];
+                    """);
+
+                    if (spec.UseGetStringSpan)
+                    {
+                        writer.WriteLine("""        return GetString(returnValue);""");
+                    }
+                    else if (spec.UseGetString)
+                    {
+                        writer.WriteLine("""        return GetString(new string(returnValue));""");
+                    }
+
+
+                    writer.WriteLine("""
                                      }
                                      finally
                                      {
@@ -361,7 +364,15 @@ public partial class ValueTypesGenerator
                                      }
 
                                  """);
+                }
+                else
+                {
+                    writer.WriteLine("""
+                                        EnsureInitialized();    
+                                        return _value.ToString(format, formatProvider);
+                                    """);
 
+                }
 
                 writer.WriteLine("""}""");
 

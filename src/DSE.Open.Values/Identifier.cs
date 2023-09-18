@@ -204,7 +204,6 @@ public readonly partial struct Identifier : IEquatableValue<Identifier, AsciiStr
         return new Identifier(id);
     }
 
-
     /// <summary>
     /// Determines whether this <see cref="Identifier"/> starts with the given sequence of characters.
     /// </summary>

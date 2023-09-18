@@ -415,6 +415,7 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
             var emitGetHashCodeMethod = true;
             var emitTryFormatMethod = true;
             var emitToStringOverrideMethod = true;
+            var emitIFormattableToStringMethod = true;
 
             foreach (var method in instanceMethods)
             {
@@ -475,10 +476,27 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
 
                 // ToString
 
-                if (emitToStringOverrideMethod && method.Identifier.ValueText == TargetNames.ToStringMethodName)
+                if (method.Identifier.ValueText == TargetNames.ToStringMethodName)
                 {
-                    emitToStringOverrideMethod = method.ParameterList.Parameters.Count != 0;
-                    continue;
+                    if (emitToStringOverrideMethod)
+                    {
+                        emitToStringOverrideMethod = method.ParameterList.Parameters.Count != 0;
+
+                        if (!emitToStringOverrideMethod)
+                        {
+                            continue;
+                        }
+                    }
+
+                    if (emitIFormattableToStringMethod)
+                    {
+                        emitIFormattableToStringMethod = !method.IsIFormattableToStringMethod();
+
+                        if (!emitIFormattableToStringMethod)
+                        {
+                            continue;
+                        }
+                    }
                 }
             }
 
@@ -526,7 +544,11 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
             spec.EmitConstructor = emitConstructor;
             spec.EmitEqualsMethod = emitEqualsMethod;
             spec.EmitGetHashCodeMethod = emitGetHashCodeMethod;
+
+            // IFormattable
+            spec.EmitToStringFormatableMethod = emitIFormattableToStringMethod;
             spec.EmitTryFormatMethod = emitTryFormatMethod;
+
             spec.EmitToStringOverrideMethod = emitToStringOverrideMethod;
 
             spec.UseGetString = useGetStringMethod;
@@ -537,6 +559,7 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
                 spec.MaxSerializedCharLength = maxSerializedCharLength;
             }
 
+            // IUtf8SpanSerializable
             spec.EmitUtf8SpanSerializableInterface = emitUtf8SpanSerializableInterface;
             spec.EmitTryFormatUtf8Method = emitTryFormatUtf8Method;
             spec.EmitParseUtf8Method = emitParseUtf8Method;
