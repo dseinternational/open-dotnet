@@ -121,10 +121,10 @@ public readonly partial struct UriPath
         => TryFormatInvariant(destination, out charsWritten, default);
 
     /// <summary>
-    /// Gets a representation of the UriPath value as a string with formatting options.
+    /// Gets a representation of the <see cref="UriPath"/> value as a string with formatting options.
     /// </summary>
     /// <returns>
-    /// A representation of the UriPath value.
+    /// A representation of the <see cref="UriPath"/> value.
     /// </returns>
     public string ToString(string? format, IFormatProvider? formatProvider)
     {

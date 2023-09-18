@@ -103,10 +103,10 @@ public readonly partial struct LanguageTag
         => TryFormatInvariant(destination, out charsWritten, default);
 
     /// <summary>
-    /// Gets a representation of the LanguageTag value as a string with formatting options.
+    /// Gets a representation of the <see cref="LanguageTag"/> value as a string with formatting options.
     /// </summary>
     /// <returns>
-    /// A representation of the LanguageTag value.
+    /// A representation of the <see cref="LanguageTag"/> value.
     /// </returns>
     public string ToString(string? format, IFormatProvider? formatProvider)
     {

@@ -113,36 +113,15 @@ public readonly partial struct CountryCode
         => TryFormatInvariant(destination, out charsWritten, default);
 
     /// <summary>
-    /// Gets a representation of the CountryCode value as a string with formatting options.
+    /// Gets a representation of the <see cref="CountryCode"/> value as a string with formatting options.
     /// </summary>
     /// <returns>
-    /// A representation of the CountryCode value.
+    /// A representation of the <see cref="CountryCode"/> value.
     /// </returns>
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
-        var maxCharLength = MaxSerializedCharLength;
-    
-        char[]? rented = null;
-    
-        try
-        {
-            Span<char> buffer = maxCharLength <= 128
-                ? stackalloc char[maxCharLength]
-                : (rented = System.Buffers.ArrayPool<char>.Shared.Rent(maxCharLength));
-    
-            _ = TryFormat(buffer, out var charsWritten, format, formatProvider);
-    
-            ReadOnlySpan<char> returnValue = buffer[..charsWritten];
-            return new string(returnValue);
-        }
-        finally
-        {
-            if (rented is not null)
-            {
-                System.Buffers.ArrayPool<char>.Shared.Return(rented);
-            }
-        }
-    
+        EnsureInitialized();    
+        return _value.ToString(format, formatProvider);
     }
 
     public string ToStringInvariant(string? format)
