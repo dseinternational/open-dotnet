@@ -128,6 +128,7 @@ public readonly partial struct AlphaNumericCode
     /// </returns>
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
+        EnsureInitialized();
         var maxCharLength = MaxSerializedCharLength;
     
         char[]? rented = null;

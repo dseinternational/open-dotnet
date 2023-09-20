@@ -110,6 +110,7 @@ public readonly partial struct LanguageTag
     /// </returns>
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
+        EnsureInitialized();
         var maxCharLength = MaxSerializedCharLength;
     
         char[]? rented = null;

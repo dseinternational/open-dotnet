@@ -141,14 +141,17 @@ public partial class ValueTypesGenerator
                                    """);
             }
 
-            writer.WriteLine();
+            if (spec.EmitEnsureIntialised)
+            {
+                writer.WriteLine();
 
-            writer.WriteLine($$"""
+                writer.WriteLine($$"""
                                private void EnsureInitialized()
                                {
                                    UninitializedValueException<{{spec.ValueTypeName}}, {{spec.ContainedValueTypeName}}>.ThrowIfUninitialized(this);
                                }
                                """);
+            }
 
             if (spec.EmitTryFromValueMethod)
             {
@@ -209,7 +212,16 @@ public partial class ValueTypesGenerator
                 writer.WriteLine($$"""
                                    public static explicit operator {{spec.ContainedValueTypeName}}({{spec.ValueTypeName}} value)
                                    {
-                                       value.EnsureInitialized();
+                                   """);
+
+                if (spec.EmitEnsureIntialised)
+                {
+                    writer.WriteLine("""
+                                            value.EnsureInitialized();
+                                        """);
+                }
+
+                writer.WriteLine($$"""
                                        return value._value;
                                    }
                                    """);
@@ -243,7 +255,16 @@ public partial class ValueTypesGenerator
                 writer.WriteLine("""
                                  public override int GetHashCode()
                                  {
-                                     EnsureInitialized();
+                                 """);
+
+                if (spec.EmitEnsureIntialised)
+                {
+                    writer.WriteLine("""
+                                            EnsureInitialized();
+                                        """);
+                }
+
+                writer.WriteLine("""
                                      return HashCode.Combine(_value);
                                  }
                                  """);
@@ -274,7 +295,16 @@ public partial class ValueTypesGenerator
                                      ReadOnlySpan<char> format,
                                      IFormatProvider? provider)
                                      {
-                                         EnsureInitialized();
+                                 """);
+
+                if (spec.EmitEnsureIntialised)
+                {
+                    writer.WriteLine("""
+                                             EnsureInitialized();
+                                     """);
+                }
+
+                writer.WriteLine("""
                                          return ((ISpanFormattable)_value).TryFormat(destination, out charsWritten, format, provider);
                                      }
                                  """);
@@ -324,6 +354,13 @@ public partial class ValueTypesGenerator
                     {
                     """);
 
+                if (spec.EmitEnsureIntialised)
+                {
+                    writer.WriteLine("""
+                                EnsureInitialized();
+                            """);
+                }
+
                 if (spec.UseGetStringSpan || spec.UseGetString)
                 {
 
@@ -368,7 +405,6 @@ public partial class ValueTypesGenerator
                 else
                 {
                     writer.WriteLine("""
-                                        EnsureInitialized();    
                                         return _value.ToString(format, formatProvider);
                                     """);
 
@@ -605,7 +641,16 @@ public partial class ValueTypesGenerator
                     writer.WriteLine($$"""
                                        public int CompareTo({{spec.ValueTypeName}} other)
                                        {
-                                           EnsureInitialized();
+                                       """);
+
+                    if (spec.EmitEnsureIntialised)
+                    {
+                        writer.WriteLine("""
+                                EnsureInitialized();
+                            """);
+                    }
+
+                    writer.WriteLine($$"""
                                            return _value.CompareTo(other._value);
                                        }
                                        """);

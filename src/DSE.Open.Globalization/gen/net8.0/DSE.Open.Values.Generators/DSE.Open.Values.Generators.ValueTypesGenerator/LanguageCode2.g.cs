@@ -128,7 +128,7 @@ public readonly partial struct LanguageCode2
     /// </returns>
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
-        EnsureInitialized();    
+        EnsureInitialized();
         return _value.ToString(format, formatProvider);
     }
 
