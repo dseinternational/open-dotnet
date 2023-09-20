@@ -17,7 +17,7 @@ public readonly record struct AgeInMonths : ISpanFormattable, ISpanParsable<AgeI
 
     public static readonly AgeInMonths Zero;
 
-    public AgeInMonths(int years, int months) : this(years * 12 + months)
+    public AgeInMonths(int years, int months) : this((years * 12) + months)
     {
     }
 
@@ -44,11 +44,17 @@ public readonly record struct AgeInMonths : ISpanFormattable, ISpanParsable<AgeI
 
     public AgeInMonths AddMonths(int months) => new(TotalMonths + months);
 
-    public AgeInMonths AddYears(int years) => new(TotalMonths + years * 12);
+    public AgeInMonths AddYears(int years) => new(TotalMonths + (years * 12));
 
     public int CompareTo(AgeInMonths other) => TotalMonths.CompareTo(other.TotalMonths);
 
     public bool TryFormat(Span<char> destination, out int charsWritten) => TryFormat(destination, out charsWritten, default, default);
+
+    public bool TryFormat(
+        Span<char> destination,
+        out int charsWritten,
+        IFormatProvider? provider)
+        => TryFormat(destination, out charsWritten, default, provider);
 
     public bool TryFormat(
         Span<char> destination,
@@ -96,6 +102,11 @@ public readonly record struct AgeInMonths : ISpanFormattable, ISpanParsable<AgeI
         Guard.IsNotNull(s);
         return Parse(s.AsSpan(), provider);
     }
+
+    public static bool TryParse(
+        ReadOnlySpan<char> s,
+        out AgeInMonths result)
+        => TryParse(s, default, out result);
 
     public static bool TryParse(
         ReadOnlySpan<char> s,
