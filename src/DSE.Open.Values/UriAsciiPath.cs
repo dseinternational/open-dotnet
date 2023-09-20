@@ -64,6 +64,8 @@ public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, Asc
 
     public bool EndsWith(AsciiString value) => _value.EndsWith(value);
 
+    public bool EndsWith(ReadOnlySpan<byte> value) => _value.EndsWith(value);
+
     public bool EndsWith(AsciiChar value) => !_value.IsEmpty && _value[_value.Length] == value;
 
     public bool Equals(string value) => _value.Equals(value);
@@ -102,6 +104,8 @@ public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, Asc
     public bool StartsWith(UriAsciiPath value) => _value.StartsWith(value._value);
 
     public bool StartsWith(AsciiString value) => _value.StartsWith(value);
+    
+    public bool StartsWith(ReadOnlySpan<byte> value) => _value.StartsWith(value);
 
     public bool StartsWith(AsciiChar value) => !_value.IsEmpty && _value[0] == value;
 
