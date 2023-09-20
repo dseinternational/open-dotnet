@@ -12,7 +12,7 @@ namespace DSE.Open.Values;
 /// A path containing only lowercase ASCII letters and digits, hyphens ('-') and
 /// forward slashes ('/') at locations other than the first and last character.
 /// </summary>
-[ComparableValue(AllowEmpty = true)]
+[ComparableValue(AllowDefault = true)]
 [JsonConverter(typeof(JsonSpanSerializableValueConverter<UriPath, CharSequence>))]
 [StructLayout(LayoutKind.Auto)]
 public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>

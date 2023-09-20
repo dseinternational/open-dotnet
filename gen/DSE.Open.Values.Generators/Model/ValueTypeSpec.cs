@@ -21,7 +21,7 @@ internal abstract class ValueTypeSpec
 
     public string ContainedValueTypeName { get; set; } = default!;
 
-    public bool EmitEnsureIntialised { get; internal set; }
+    public bool EmitEnsureIntialised { get; set; }
 
     public string ImplementedInterface => ValueTypeKind switch
     {

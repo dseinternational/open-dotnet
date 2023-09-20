@@ -198,9 +198,9 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
                         a.NameEquals is not null
                         && a.NameEquals.Name.Identifier.ValueText == "MaxSerializedCharLength");
 
-                    var allowEmptySyntax = attributeArgNames.FirstOrDefault(a =>
+                    var allowDefaultSyntax = attributeArgNames.FirstOrDefault(a =>
                         a.NameEquals is not null
-                        && a.NameEquals.Name.Identifier.ValueText == "AllowEmpty");
+                        && a.NameEquals.Name.Identifier.ValueText == "AllowDefault");
 
                     if (maxSerializedCharLengthSyntax is not null)
                     {
@@ -217,15 +217,15 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
                         }
                     }
 
-                    if (allowEmptySyntax is not null)
+                    if (allowDefaultSyntax is not null)
                     {
-                        var allowEmptyOpt = semanticModel.GetConstantValue(allowEmptySyntax.Expression, ct);
+                        var allowDefaultOpt = semanticModel.GetConstantValue(allowDefaultSyntax.Expression, ct);
 
-                        if (allowEmptyOpt is { HasValue: true, Value: not null })
+                        if (allowDefaultOpt is { HasValue: true, Value: not null })
                         {
-                            var allowEmptyValue = (bool)allowEmptyOpt.Value;
+                            var allowDefaultValue = (bool)allowDefaultOpt.Value;
 
-                            if (allowEmptyValue)
+                            if (allowDefaultValue)
                             {
                                 emitEnsureInitialised = false;
                             }

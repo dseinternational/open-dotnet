@@ -12,7 +12,7 @@ public abstract class ValueAttribute : Attribute
     public int MaxSerializedCharLength { get; set; }
 
     /// <summary>
-    /// Defines whether it is valid for the type to be empty.
+    /// Defines whether it is valid for the type to be default.
     /// </summary>
-    public bool AllowEmpty { get; set; }
+    public bool AllowDefault { get; set; }
 }
