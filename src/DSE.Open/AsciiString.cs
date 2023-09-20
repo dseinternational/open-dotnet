@@ -1,14 +1,12 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System;
 using System.Buffers;
 using System.Collections;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using System.Runtime.InteropServices;
-using System.Runtime.Intrinsics;
 using System.Text;
 using System.Text.Json.Serialization;
 using DSE.Open.Text.Json.Serialization;
@@ -173,6 +171,8 @@ public readonly partial struct AsciiString
 
         return TryParse(s.AsSpan(), provider, out result);
     }
+
+    public static AsciiString Parse(ReadOnlySpan<byte> utf8Text) => Parse(utf8Text, default);
 
     public static AsciiString Parse(ReadOnlySpan<byte> utf8Text, IFormatProvider? provider)
     {
