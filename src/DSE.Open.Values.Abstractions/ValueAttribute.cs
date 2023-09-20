@@ -10,4 +10,9 @@ public abstract class ValueAttribute : Attribute
     /// property that returns the specified value. Otherwise, the property must be implemented.
     /// </summary>
     public int MaxSerializedCharLength { get; set; }
+
+    /// <summary>
+    /// Defines whether it is valid for the type to be empty.
+    /// </summary>
+    public bool AllowEmpty { get; set; }
 }

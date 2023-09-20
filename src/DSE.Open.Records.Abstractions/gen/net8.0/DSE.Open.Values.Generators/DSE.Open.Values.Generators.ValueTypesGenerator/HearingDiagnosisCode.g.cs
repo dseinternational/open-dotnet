@@ -128,7 +128,7 @@ public readonly partial struct HearingDiagnosisCode
     /// </returns>
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
-        EnsureInitialized();    
+        EnsureInitialized();
         return _value.ToString(format, formatProvider);
     }
 

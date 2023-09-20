@@ -41,11 +41,6 @@ public readonly partial struct UriAsciiPath
         }
     }
 
-    private void EnsureInitialized()
-    {
-        UninitializedValueException<UriAsciiPath, AsciiString>.ThrowIfUninitialized(this);
-    }
-
     public static bool TryFromValue(AsciiString value, out UriAsciiPath result)
     {
         if (IsValidValue(value))
@@ -72,7 +67,6 @@ public readonly partial struct UriAsciiPath
 
     public static explicit operator AsciiString(UriAsciiPath value)
     {
-        value.EnsureInitialized();
         return value._value;
     }
 
@@ -84,7 +78,6 @@ public readonly partial struct UriAsciiPath
 
     public override int GetHashCode()
     {
-        EnsureInitialized();
         return HashCode.Combine(_value);
     }
 
@@ -100,7 +93,6 @@ public readonly partial struct UriAsciiPath
         ReadOnlySpan<char> format,
         IFormatProvider? provider)
         {
-            EnsureInitialized();
             return ((ISpanFormattable)_value).TryFormat(destination, out charsWritten, format, provider);
         }
 
@@ -215,7 +207,6 @@ public readonly partial struct UriAsciiPath
 
     public int CompareTo(UriAsciiPath other)
     {
-        EnsureInitialized();
         return _value.CompareTo(other._value);
     }
 

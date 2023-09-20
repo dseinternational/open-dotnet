@@ -120,7 +120,7 @@ public readonly partial struct CountryCode
     /// </returns>
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
-        EnsureInitialized();    
+        EnsureInitialized();
         return _value.ToString(format, formatProvider);
     }
 

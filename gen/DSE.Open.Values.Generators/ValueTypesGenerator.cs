@@ -119,7 +119,7 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
         }
     }
 
-    private static List<ValueTypeSpec> GetValueTypeSpecs(
+    private static List<ValueTypeSpec>  GetValueTypeSpecs(
         Compilation compilation,
         IEnumerable<StructDeclarationSyntax> structs,
         Action<Diagnostic> reportDiagnostic,
@@ -138,6 +138,7 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
 
         var emitConstructor = true;
         var maxSerializedCharLength = 0;
+        var emitEnsureInitialised = true;
 
         foreach (var structDeclarationSyntax in structs)
         {
@@ -186,16 +187,20 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
                         continue;
                     }
 
-                    var nameEquals = attributeArgs.Arguments.Where(a => a.NameEquals is not null).ToArray();
+                    var attributeArgNames = attributeArgs.Arguments.Where(a => a.NameEquals is not null).ToArray();
 
-                    if (nameEquals.Length == 0)
+                    if (attributeArgNames.Length == 0)
                     {
                         continue;
                     }
 
-                    var maxSerializedCharLengthSyntax = nameEquals.FirstOrDefault(a =>
+                    var maxSerializedCharLengthSyntax = attributeArgNames.FirstOrDefault(a =>
                         a.NameEquals is not null
                         && a.NameEquals.Name.Identifier.ValueText == "MaxSerializedCharLength");
+
+                    var allowEmptySyntax = attributeArgNames.FirstOrDefault(a =>
+                        a.NameEquals is not null
+                        && a.NameEquals.Name.Identifier.ValueText == "AllowEmpty");
 
                     if (maxSerializedCharLengthSyntax is not null)
                     {
@@ -208,6 +213,21 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
                             if (maxSerializedCharLengthValue > 0)
                             {
                                 maxSerializedCharLength = maxSerializedCharLengthValue;
+                            }
+                        }
+                    }
+
+                    if (allowEmptySyntax is not null)
+                    {
+                        var allowEmptyOpt = semanticModel.GetConstantValue(allowEmptySyntax.Expression, ct);
+
+                        if (allowEmptyOpt is { HasValue: true, Value: not null })
+                        {
+                            var allowEmptyValue = (bool)allowEmptyOpt.Value;
+
+                            if (allowEmptyValue)
+                            {
+                                emitEnsureInitialised = false;
                             }
                         }
                     }
@@ -544,6 +564,7 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
             spec.EmitConstructor = emitConstructor;
             spec.EmitEqualsMethod = emitEqualsMethod;
             spec.EmitGetHashCodeMethod = emitGetHashCodeMethod;
+            spec.EmitEnsureIntialised = emitEnsureInitialised;
 
             // IFormattable
             spec.EmitToStringFormatableMethod = emitIFormattableToStringMethod;
