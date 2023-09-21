@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DSE.Open.EntityFrameworkCore.Storage.ValueConversion;
 
-public class StringToBinaryValueConverter : ValueConverter<string, byte[]>
+public sealed class StringToBinaryValueConverter : ValueConverter<string, byte[]>
 {
     public static readonly StringToBinaryValueConverter Default = new();
 

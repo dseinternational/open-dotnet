@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DSE.Open.EntityFrameworkCore.Storage.ValueConversion;
 
-public class ColorToBinaryValueConverter : ValueConverter<Color, byte[]>
+public sealed class ColorToBinaryValueConverter : ValueConverter<Color, byte[]>
 {
     public static readonly ColorToBinaryValueConverter Default = new();
 

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Linq.Expressions;
@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DSE.Open.EntityFrameworkCore.Storage.ValueConversion;
 
-public class Utf8StringToStringConverter : ValueConverter<Utf8String, string>
+public sealed class Utf8StringToStringConverter : ValueConverter<Utf8String, string>
 {
     public static readonly Utf8StringToStringConverter Default = new();
 

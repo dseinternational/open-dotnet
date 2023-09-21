@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DSE.Open.EntityFrameworkCore.Storage.ValueConversion;
 
 [SuppressMessage("Design", "CA1005:Avoid excessive parameters on generic types", Justification = "<Pending>")]
-public class ValueTypeValueConverter<TValue, T, TStore> : ValueConverter<TValue, TStore>
+public sealed class ValueTypeValueConverter<TValue, T, TStore> : ValueConverter<TValue, TStore>
     where T : IEquatable<T>, IConvertibleTo<T, TStore>, ITryConvertibleFrom<T, TStore>
     where TValue : struct, IValue<TValue, T>
 {
@@ -22,7 +22,7 @@ public class ValueTypeValueConverter<TValue, T, TStore> : ValueConverter<TValue,
     private static TValue FromStore(TStore value) => (TValue)(T)value;
 }
 
-public class ValueTypeValueConverter<TValue, T> : ValueConverter<TValue, T>
+public sealed class ValueTypeValueConverter<TValue, T> : ValueConverter<TValue, T>
     where T : IEquatable<T>
     where TValue : struct, IValue<TValue, T>
 {

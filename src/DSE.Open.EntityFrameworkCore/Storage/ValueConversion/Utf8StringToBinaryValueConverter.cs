@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DSE.Open.EntityFrameworkCore.Storage.ValueConversion;
 
-public class Utf8StringToBinaryValueConverter : ValueConverter<Utf8String, byte[]>
+public sealed class Utf8StringToBinaryValueConverter : ValueConverter<Utf8String, byte[]>
 {
     public static readonly Utf8StringToBinaryValueConverter Default = new();
 
