@@ -14,7 +14,7 @@ namespace DSE.Open.EntityFrameworkCore.Storage.ValueConversion;
 /// for example, <see cref="CollectionSequenceEqualValueComparer{T}"/></remarks>
 [RequiresDynamicCode(WarningMessages.RequiresDynamicCode)]
 [RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]
-public class CollectionToJsonStringValueConverter<TModel> : ObjectToJsonStringValueConverter<ICollection<TModel>, TModel[]>
+public class CollectionToJsonStringValueConverter<TModel> : ObjectToJsonStringValueConverter<ICollection<TModel>, List<TModel>>
 {
     public static new readonly CollectionToJsonStringValueConverter<TModel> Default = new();
 

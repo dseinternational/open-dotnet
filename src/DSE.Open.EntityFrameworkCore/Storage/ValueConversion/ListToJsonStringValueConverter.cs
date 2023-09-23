@@ -1,4 +1,4 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Diagnostics.CodeAnalysis;
@@ -14,7 +14,7 @@ namespace DSE.Open.EntityFrameworkCore.Storage.ValueConversion;
 /// for example, <see cref="ListSequenceEqualValueComparer{T}"/></remarks>
 [RequiresDynamicCode(WarningMessages.RequiresDynamicCode)]
 [RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]
-public class ListToJsonStringValueConverter<TModel> : ObjectToJsonStringValueConverter<IList<TModel>, TModel[]>
+public class ListToJsonStringValueConverter<TModel> : ObjectToJsonStringValueConverter<IList<TModel>, List<TModel>>
 {
     public static new readonly ListToJsonStringValueConverter<TModel> Default = new();
 
