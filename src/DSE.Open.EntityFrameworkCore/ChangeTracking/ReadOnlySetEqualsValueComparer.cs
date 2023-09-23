@@ -45,7 +45,7 @@ public class ReadOnlySetEqualsValueComparer<
     }
 }
 
-public class ReadOnlySetEqualsValueComparer<
+public sealed class ReadOnlySetEqualsValueComparer<
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods
         | DynamicallyAccessedMemberTypes.NonPublicMethods
         | DynamicallyAccessedMemberTypes.PublicProperties)]

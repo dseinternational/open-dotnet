@@ -45,7 +45,7 @@ public class SetEqualsValueComparer<
     }
 }
 
-public class SetEqualsValueComparer<
+public sealed class SetEqualsValueComparer<
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods
         | DynamicallyAccessedMemberTypes.NonPublicMethods
         | DynamicallyAccessedMemberTypes.PublicProperties)]

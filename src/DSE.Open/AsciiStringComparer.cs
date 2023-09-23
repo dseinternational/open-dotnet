@@ -3,7 +3,6 @@
 
 using System.Buffers;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.InteropServices;
 
 namespace DSE.Open;
 

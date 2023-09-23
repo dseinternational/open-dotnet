@@ -34,7 +34,7 @@ public class SequenceEqualValueComparer<
     }
 }
 
-public class SequenceEqualValueComparer<
+public sealed class SequenceEqualValueComparer<
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods
         | DynamicallyAccessedMemberTypes.NonPublicMethods
         | DynamicallyAccessedMemberTypes.PublicProperties)]
