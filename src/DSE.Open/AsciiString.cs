@@ -417,43 +417,7 @@ public readonly partial struct AsciiString
 
     public bool Contains(AsciiString value) => Contains(value._value.Span);
 
-    public bool Contains(ReadOnlySpan<AsciiChar> value)
-    {
-        if (value.IsEmpty)
-        {
-            return true;
-        }
-
-        var haystack = _value.Span;
-        var needle = value;
-
-        if (haystack.Length < needle.Length)
-        {
-            return false;
-        }
-
-        if (haystack.Length == needle.Length)
-        {
-            return haystack.SequenceEqual(needle);
-        }
-
-        while (true)
-        {
-            var i = haystack.IndexOf(needle[0]);
-
-            if (i < 0 || haystack.Length - i < needle.Length)
-            {
-                return false;
-            }
-
-            if (haystack[i..].StartsWith(needle))
-            {
-                return true;
-            }
-
-            haystack = haystack[(i + 1)..];
-        }
-    }
+    public bool Contains(ReadOnlySpan<AsciiChar> value) => _value.Span.IndexOf(value) >= 0;
 
     public bool Contains(ReadOnlySpan<byte> value) => Contains(ValuesMarshal.AsAsciiChars(value));
 
