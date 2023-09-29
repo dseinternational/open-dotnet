@@ -290,7 +290,12 @@ public class AsciiStringTests
     [InlineData("abcdefghijklmnopqrstuvwxyz", "abcdefghijklmnopqrstuvwxyz")]
     [InlineData("zyxwvutsrqponmlkjihgfedcba", "a")]
     [InlineData("a", "")]
-    public void Contains_True(AsciiString haystack, AsciiString needle) => Assert.True(haystack.Contains(needle));
+    public void Contains_True(string h, string n)
+    {
+        var haystack = AsciiString.Parse(h);
+        var needle = AsciiString.Parse(n);
+        Assert.True(haystack.Contains(needle));
+    }
 
     [Theory]
     [InlineData("abcdefghijklmnopqrstuvwxyz", " ")]
@@ -300,7 +305,15 @@ public class AsciiStringTests
     [InlineData("abcdefghijklmnopqrstuvwxyz", " abcdefghijklmnopqrstuvwxyz")]
     [InlineData("z", "abcdefghijklmnopqrstuvwxy")]
     [InlineData("", "a")]
-    public void Contains_False(AsciiString haystack, AsciiString needle) => Assert.False(haystack.Contains(needle));
+    public void Contains_False(string h, string n)
+    {
+        // Arrange
+        var haystack = AsciiString.Parse(h);
+        var needle = AsciiString.Parse(n);
+
+        // Assert
+        Assert.False(haystack.Contains(needle));
+    }
 
     [Fact]
     public void LastIndexOf_ShouldReturnLastIndex()
