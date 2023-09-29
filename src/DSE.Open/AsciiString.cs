@@ -292,12 +292,27 @@ public readonly partial struct AsciiString
             return false;
         }
 
-        return format switch
+        if (format.IsEmpty)
         {
-            "L" => Ascii.ToLower(ValuesMarshal.AsBytes(_value.Span), destination, out charsWritten),
-            "U" => Ascii.ToUpper(ValuesMarshal.AsBytes(_value.Span), destination, out charsWritten),
-            _ => Ascii.ToUtf16(ValuesMarshal.AsBytes(_value.Span), destination, out charsWritten),
-        } == OperationStatus.Done;
+            return Ascii.ToUtf16(ValuesMarshal.AsBytes(_value.Span), destination, out charsWritten) == OperationStatus.Done;
+        }
+
+        if (format.Length != 1)
+        {
+            ThrowHelper.ThrowFormatException($"The format '{format.ToString()}' is not supported.");
+        }
+
+        switch (format[0] | 0x20)
+        {
+            case 'l':
+                return Ascii.ToLower(ValuesMarshal.AsBytes(_value.Span), destination, out charsWritten) == OperationStatus.Done;
+            case 'u':
+                return Ascii.ToUpper(ValuesMarshal.AsBytes(_value.Span), destination, out charsWritten) == OperationStatus.Done;
+        }
+
+        ThrowHelper.ThrowFormatException($"The format '{format.ToString()}' is not supported.");
+        charsWritten = default;
+        return false;
     }
 
     public bool TryFormat(

@@ -163,7 +163,6 @@ public static partial class MemoryExtensions
         return true;
     }
 
-
     public static bool TryCopyWhereNotWhitespace(this Span<byte> span, Span<byte> buffer, out int bytesWritten)
         => TryCopyWhereNotWhitespace((ReadOnlySpan<byte>)span, buffer, out bytesWritten);
 
@@ -206,41 +205,12 @@ public static partial class MemoryExtensions
     public static Span<byte> RemoveNonAsciiLetterOrDigit(this Span<byte> span)
         => Remove(span, v => !AsciiChar.IsLetterOrDigit(v));
 
-    [Obsolete("Use `Ascii.ToLowerInPlace`")]
-    public static void ToLower(this Span<byte> span)
-    {
-        if (span.IsEmpty)
-        {
-            return;
-        }
-
-        for (var i = 0; i < span.Length; i++)
-        {
-            span[i] = AsciiChar.ToLower(span[i]);
-        }
-    }
-
-    [Obsolete("Use `Ascii.ToUpperInPlace`")]
-    public static void ToUpper(this Span<byte> span)
-    {
-        if (span.IsEmpty)
-        {
-            return;
-        }
-
-        for (var i = 0; i < span.Length; i++)
-        {
-            span[i] = AsciiChar.ToUpper(span[i]);
-        }
-    }
-
     /// <summary>
     /// Checks if the span contains only valid ASCII bytes.
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
     public static bool IsAscii(this ReadOnlySpan<byte> value) => Ascii.IsValid(value);
-
 
     /// <summary>
     /// Determines whether the specified spans of ASCII are equal, ignoring case.

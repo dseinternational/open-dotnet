@@ -120,20 +120,17 @@ public readonly partial struct UriAsciiPath
     /// </returns>
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
-        var maxCharLength = MaxSerializedCharLength;
-    
         char[]? rented = null;
     
         try
         {
-            Span<char> buffer = maxCharLength <= 128
-                ? stackalloc char[maxCharLength]
-                : (rented = System.Buffers.ArrayPool<char>.Shared.Rent(maxCharLength));
+            Span<char> buffer = MaxSerializedCharLength <= 128
+                ? stackalloc char[MaxSerializedCharLength]
+                : (rented = System.Buffers.ArrayPool<char>.Shared.Rent(MaxSerializedCharLength));
     
             _ = TryFormat(buffer, out var charsWritten, format, formatProvider);
     
-            ReadOnlySpan<char> returnValue = buffer[..charsWritten];
-            return GetString(returnValue);
+            return GetString(buffer[..charsWritten]);
         }
         finally
         {
@@ -142,7 +139,6 @@ public readonly partial struct UriAsciiPath
                 System.Buffers.ArrayPool<char>.Shared.Return(rented);
             }
         }
-    
     }
 
     public string ToStringInvariant(string? format)
