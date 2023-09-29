@@ -6,17 +6,23 @@ namespace DSE.Open.Values.Tests;
 public class TagTests
 {
     [Fact]
-    public void Parse_WithEmptySpan_ShouldReturnDefault()
+    public void Parse_WithEmptySpan_ShouldThrowFormatException()
     {
-        var a = Tag.Parse(Span<char>.Empty, null);
-        Assert.Equal(Tag.Empty, a);
+        // Act
+        static void Act() => Tag.Parse(Span<char>.Empty, null);
+
+        // Assert
+        _ = Assert.Throws<FormatException>(Act);
     }
 
     [Fact]
-    public void Parse_WithEmptyString_ShouldReturnDefault()
+    public void Parse_WithEmptyString_ShouldThrowFormatException()
     {
-        var a = Tag.Parse(string.Empty);
-        Assert.Equal(Tag.Empty, a);
+        // Act
+        static void Act() => Tag.Parse(string.Empty);
+
+        // Assert
+        _ = Assert.Throws<FormatException>(Act);
     }
 
     [Fact]
@@ -29,27 +35,30 @@ public class TagTests
         const string tag = "a";
 
         // Act
-        static void Parse()
-        {
-            _ = Tag.Parse(tag);
-        }
+        static void Parse() => _ = Tag.Parse(tag);
 
         // Assert
         _ = Assert.Throws<FormatException>(Parse);
     }
 
     [Fact]
-    public void TryParse_WithEmptySpan_ShouldReturnTrueAndDefaultResult()
+    public void TryParse_WithEmptySpan_ShouldReturnFalseAndDefaultResult()
     {
+        // Act
         var success = Tag.TryParse(Span<char>.Empty, null, out var result);
-        Assert.True(success);
+
+        // Assert
+        Assert.False(success);
         Assert.Equal(Tag.Empty, result);
     }
 
     [Fact]
     public void TryParse_WithNullString_ShouldReturnFalseAndDefaultResult()
     {
+        // Act
         var success = Tag.TryParse(null, out var result);
+
+        // Assert
         Assert.False(success);
         Assert.Equal(Tag.Empty, result);
     }
@@ -57,24 +66,26 @@ public class TagTests
     [Fact]
     public void TryParse_WithEmptyString_ShouldReturnTrueAndDefaultResult()
     {
+        // Act
         var success = Tag.TryParse(string.Empty, out var result);
-        Assert.True(success);
+
+        // Assert
+        Assert.False(success);
         Assert.Equal(Tag.Empty, result);
     }
 
     [Fact]
-    public void TryFormat_WithEmptyCode_ShouldReturnTrueWithNothingWritten()
+    public void TryFormat_WithEmptyCode_ShouldThrowUninitializedValueException()
     {
         // Arrange
         var code = Tag.Empty;
         var buffer = new char[1];
 
         // Act
-        var success = code.TryFormat(buffer, out var charsWritten, default, default);
+        void Act() => _ = code.TryFormat(buffer, out var charsWritten, default, default);
 
         // Assert
-        Assert.True(success);
-        Assert.Equal(0, charsWritten);
+        _ = Assert.Throws<UninitializedValueException<Tag, AsciiString>>(Act);
     }
 
     [Fact]
@@ -93,16 +104,16 @@ public class TagTests
     }
 
     [Fact]
-    public void ToString_WithEmptyTag_ShouldReturnEmptyString()
+    public void ToString_WithEmptyTag_ShouldThrowUninitializedValueException()
     {
         // Arrange
         var tag = Tag.Empty;
 
         // Act
-        var result = tag.ToString();
+        void Act() => tag.ToString();
 
         // Assert
-        Assert.Equal(string.Empty, result);
+        Assert.Throws<UninitializedValueException<Tag, AsciiString>>(Act);
     }
 
     [Fact]

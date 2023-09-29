@@ -101,8 +101,7 @@ public readonly partial struct LanguageTag : IComparableValue<LanguageTag, Ascii
     public override int GetHashCode() => AsciiStringComparer.CaseInsensitive.GetHashCode(_value);
 
     // we know they will be interned - see IsoCountryCodes
-    private static string GetString(string s)
-        => string.IsInterned(s) ?? LanguageTagStringPool.Shared.GetOrAdd(s);
+    private static string GetString(ReadOnlySpan<char> s) => LanguageTagStringPool.Shared.GetOrAdd(s);
 
     public bool LanguagePartEquals(LanguageTag otherLangPart)
         => LanguagePartEquals(otherLangPart._value.Span);
