@@ -50,7 +50,7 @@ public readonly partial struct Percent
     {
         if (IsValidValue(value))
         {
-            result = new Percent(value);
+            result = new Percent(value, true);
             return true;
         }
     

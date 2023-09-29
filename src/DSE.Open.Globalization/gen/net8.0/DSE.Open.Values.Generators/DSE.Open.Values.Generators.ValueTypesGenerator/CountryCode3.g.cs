@@ -50,7 +50,7 @@ public readonly partial struct CountryCode3
     {
         if (IsValidValue(value))
         {
-            result = new CountryCode3(value);
+            result = new CountryCode3(value, true);
             return true;
         }
     

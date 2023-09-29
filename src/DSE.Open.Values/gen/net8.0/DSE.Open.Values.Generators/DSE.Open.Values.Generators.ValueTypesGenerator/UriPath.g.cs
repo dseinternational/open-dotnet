@@ -45,7 +45,7 @@ public readonly partial struct UriPath
     {
         if (IsValidValue(value))
         {
-            result = new UriPath(value);
+            result = new UriPath(value, true);
             return true;
         }
     

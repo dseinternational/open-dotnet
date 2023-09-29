@@ -50,7 +50,7 @@ public readonly partial struct YesNo
     {
         if (IsValidValue(value))
         {
-            result = new YesNo(value);
+            result = new YesNo(value, true);
             return true;
         }
     

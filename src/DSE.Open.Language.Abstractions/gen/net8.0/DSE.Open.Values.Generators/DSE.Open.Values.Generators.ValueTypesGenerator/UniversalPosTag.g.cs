@@ -50,7 +50,7 @@ public readonly partial struct UniversalPosTag
     {
         if (IsValidValue(value))
         {
-            result = new UniversalPosTag(value);
+            result = new UniversalPosTag(value, true);
             return true;
         }
     

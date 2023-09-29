@@ -50,7 +50,7 @@ public readonly partial struct Tag
     {
         if (IsValidValue(value))
         {
-            result = new Tag(value);
+            result = new Tag(value, true);
             return true;
         }
     
