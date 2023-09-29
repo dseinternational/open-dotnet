@@ -48,14 +48,6 @@ public readonly partial struct AsciiString
 
     public int Length => _value.Length;
 
-    /// <summary>
-    /// Searches for the specified value and returns the index of its first occurrence. If not found,
-    /// returns -1. Values are compared using IEquatable{T}.Equals(T).
-    /// </summary>
-    /// <param name="value"></param>
-    /// <returns></returns>
-    public int IndexOf(AsciiChar value) => _value.Span.IndexOf(value);
-
     public ReadOnlyMemory<AsciiChar> AsMemory() => _value;
 
     public ReadOnlySpan<AsciiChar> Span => _value.Span;
@@ -405,8 +397,29 @@ public readonly partial struct AsciiString
         return true;
     }
 
+    /// <summary>
+    /// Searches for the specified value and returns the index of its first occurrence. If not found,
+    /// returns -1. Values are compared using <see cref="IEquatable{T}.Equals(T)"/>.
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public int IndexOf(AsciiChar value) => _value.Span.IndexOf(value);
 
-    public int LastIndexOf(AsciiChar c) => Span.LastIndexOf(c);
+    /// <summary>
+    /// Searches for the specified value and returns the index of its last occurrence. If not found,
+    /// returns -1. Values are compared using <see cref="IEquatable{T}.Equals(T)"/>.
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public int LastIndexOf(AsciiChar value) => _value.Span.LastIndexOf(value);
+
+    public bool Contains(AsciiChar value) => _value.Span.Contains(value);
+
+    public bool Contains(AsciiString value) => Contains(value._value.Span);
+
+    public bool Contains(ReadOnlySpan<AsciiChar> value) => _value.Span.IndexOf(value) >= 0;
+
+    public bool Contains(ReadOnlySpan<byte> value) => Contains(ValuesMarshal.AsAsciiChars(value));
 
     public static bool operator ==(AsciiString left, AsciiString right) => left.Equals(right);
 

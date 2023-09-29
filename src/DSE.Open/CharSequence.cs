@@ -118,6 +118,28 @@ public readonly struct CharSequence
 
     public bool StartsWith(CharSequence value, StringComparison comparisonType) => _value.Span.StartsWith(value.Span, comparisonType);
 
+    /// <summary>
+    /// Checks if the <paramref name="value"/> is contained within this <see cref="CharSequence"/>.
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public bool Contains(char value) => _value.Span.Contains(value);
+
+    /// <summary>
+    /// Checks if the <paramref name="value"/> is contained within this <see cref="CharSequence"/> using <see cref="StringComparison.Ordinal"/>.
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public bool Contains(ReadOnlySpan<char> value) => Contains(value, StringComparison.Ordinal);
+
+    /// <summary>
+    /// Checks if the <paramref name="value"/> is contained within this <see cref="CharSequence"/> using the specified <paramref name="comparisonType"/>.
+    /// </summary>
+    /// <param name="value"></param>
+    /// <param name="comparisonType"></param>
+    /// <returns></returns>
+    public bool Contains(ReadOnlySpan<char> value, StringComparison comparisonType) => _value.Span.Contains(value, comparisonType);
+
     public bool Equals(string other) => Equals(other, StringComparison.Ordinal);
 
     public bool Equals(string other, StringComparison comparisonType) => Equals(other.AsSpan(), comparisonType);
