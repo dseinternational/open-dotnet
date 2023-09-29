@@ -318,16 +318,23 @@ public readonly partial struct AsciiString
             return false;
         }
 
-        switch (format)
+        if (format.IsEmpty)
         {
-            case "L":
-                return Ascii.ToLower(ValuesMarshal.AsBytes(_value.Span), utf8Destination, out bytesWritten) == OperationStatus.Done;
-            case "U":
-                return Ascii.ToUpper(ValuesMarshal.AsBytes(_value.Span), utf8Destination, out bytesWritten) == OperationStatus.Done;
-            default:
-                bytesWritten = _value.Span.Length;
-                return ValuesMarshal.AsBytes(_value.Span).TryCopyTo(utf8Destination);
+            bytesWritten = _value.Span.Length;
+            return ValuesMarshal.AsBytes(_value.Span).TryCopyTo(utf8Destination);
         }
+
+        switch (format[0] | 0x20)
+        {
+            case 'l':
+                return Ascii.ToLower(ValuesMarshal.AsBytes(_value.Span), utf8Destination, out bytesWritten) == OperationStatus.Done;
+            case 'u':
+                return Ascii.ToUpper(ValuesMarshal.AsBytes(_value.Span), utf8Destination, out bytesWritten) == OperationStatus.Done;
+        }
+
+        ThrowHelper.ThrowFormatException($"The format '{format.ToString()}' is not supported.");
+        bytesWritten = default;
+        return false;
     }
 
     public IEnumerator<AsciiChar> GetEnumerator()
