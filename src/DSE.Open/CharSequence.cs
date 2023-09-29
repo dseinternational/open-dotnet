@@ -42,6 +42,8 @@ public readonly struct CharSequence
 
     public ReadOnlyMemory<char> AsMemory() => _value;
 
+    public ReadOnlySpan<char> AsSpan() => _value.Span;
+
     public ReadOnlySpan<char> Span => _value.Span;
 
     public static CharSequence Parse(ReadOnlySpan<char> s)
