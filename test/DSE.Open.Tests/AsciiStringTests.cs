@@ -285,4 +285,48 @@ public class AsciiStringTests
         Assert.True(result);
         Assert.Equal(1000, value.Length);
     }
+
+    [Theory]
+    [InlineData("abcdefghijklmnopqrstuvwxyz", "abcdefghijklmnopqrstuvwxyz")]
+    [InlineData("zyxwvutsrqponmlkjihgfedcba", "a")]
+    [InlineData("a", "")]
+    public void Contains_True(AsciiString haystack, AsciiString needle) => Assert.True(haystack.Contains(needle));
+
+    [Theory]
+    [InlineData("abcdefghijklmnopqrstuvwxyz", " ")]
+    [InlineData("abcdefghijklmnopqrstuvwxyz", "a ")]
+    [InlineData("abcdefghijklmnopqrstuvwxyz", "zyxwvutsrqponmlkjihgfedcb")]
+    [InlineData("abcdefghijklmnopqrstuvwxyz", "abcdefghijklmnopqrstuvwxyz ")]
+    [InlineData("abcdefghijklmnopqrstuvwxyz", " abcdefghijklmnopqrstuvwxyz")]
+    [InlineData("z", "abcdefghijklmnopqrstuvwxy")]
+    [InlineData("", "a")]
+    public void Contains_False(AsciiString haystack, AsciiString needle) => Assert.False(haystack.Contains(needle));
+
+    [Fact]
+    public void LastIndexOf_ShouldReturnLastIndex()
+    {
+        // Arrange
+        var value = AsciiString.Parse("abcdefghijklmnopqrstuvwxyza");
+        var needle = AsciiChar.FromChar('a');
+
+        // Act
+        var result = value.LastIndexOf(needle);
+
+        // Assert
+        Assert.Equal(value.Length - 1, result);
+    }
+
+    [Fact]
+    public void IndexOf_ShouldReturnFirstIndex()
+    {
+        // Arrange
+        var value = AsciiString.Parse("abcdefghijklmnopqrstuvwxyza");
+        var needle = AsciiChar.FromChar('a');
+
+        // Act
+        var result = value.IndexOf(needle);
+
+        // Assert
+        Assert.Equal(0, result);
+    }
 }
