@@ -50,7 +50,7 @@ public readonly partial struct SignKnowledge
     {
         if (IsValidValue(value))
         {
-            result = new SignKnowledge(value);
+            result = new SignKnowledge(value, true);
             return true;
         }
     

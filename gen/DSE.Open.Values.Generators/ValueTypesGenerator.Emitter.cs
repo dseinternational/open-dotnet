@@ -162,7 +162,7 @@ public partial class ValueTypesGenerator
                                    {
                                        if (IsValidValue(value))
                                        {
-                                           result = new {{spec.ValueTypeName}}(value);
+                                           result = new {{spec.ValueTypeName}}(value, true);
                                            return true;
                                        }
 

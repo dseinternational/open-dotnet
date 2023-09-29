@@ -50,7 +50,7 @@ public readonly partial struct LanguageCode2
     {
         if (IsValidValue(value))
         {
-            result = new LanguageCode2(value);
+            result = new LanguageCode2(value, true);
             return true;
         }
     

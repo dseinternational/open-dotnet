@@ -50,7 +50,7 @@ public readonly partial struct AlphaNumericCode
     {
         if (IsValidValue(value))
         {
-            result = new AlphaNumericCode(value);
+            result = new AlphaNumericCode(value, true);
             return true;
         }
     

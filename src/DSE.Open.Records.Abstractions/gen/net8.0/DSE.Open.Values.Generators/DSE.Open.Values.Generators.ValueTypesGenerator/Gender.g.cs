@@ -50,7 +50,7 @@ public readonly partial struct Gender
     {
         if (IsValidValue(value))
         {
-            result = new Gender(value);
+            result = new Gender(value, true);
             return true;
         }
     

@@ -50,7 +50,7 @@ public readonly partial struct LanguageTag
     {
         if (IsValidValue(value))
         {
-            result = new LanguageTag(value);
+            result = new LanguageTag(value, true);
             return true;
         }
     

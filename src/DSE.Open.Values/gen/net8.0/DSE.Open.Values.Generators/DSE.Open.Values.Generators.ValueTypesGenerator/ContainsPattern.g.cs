@@ -50,7 +50,7 @@ public readonly partial struct ContainsPattern
     {
         if (IsValidValue(value))
         {
-            result = new ContainsPattern(value);
+            result = new ContainsPattern(value, true);
             return true;
         }
     

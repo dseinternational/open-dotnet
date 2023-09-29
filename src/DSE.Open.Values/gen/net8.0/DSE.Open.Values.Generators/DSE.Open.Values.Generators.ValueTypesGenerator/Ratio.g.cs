@@ -50,7 +50,7 @@ public readonly partial struct Ratio
     {
         if (IsValidValue(value))
         {
-            result = new Ratio(value);
+            result = new Ratio(value, true);
             return true;
         }
     

@@ -50,7 +50,7 @@ public readonly partial struct TreebankPosTag
     {
         if (IsValidValue(value))
         {
-            result = new TreebankPosTag(value);
+            result = new TreebankPosTag(value, true);
             return true;
         }
     

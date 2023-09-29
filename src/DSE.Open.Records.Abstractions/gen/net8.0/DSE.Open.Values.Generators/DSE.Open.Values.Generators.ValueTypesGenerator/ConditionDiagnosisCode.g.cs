@@ -50,7 +50,7 @@ public readonly partial struct ConditionDiagnosisCode
     {
         if (IsValidValue(value))
         {
-            result = new ConditionDiagnosisCode(value);
+            result = new ConditionDiagnosisCode(value, true);
             return true;
         }
     

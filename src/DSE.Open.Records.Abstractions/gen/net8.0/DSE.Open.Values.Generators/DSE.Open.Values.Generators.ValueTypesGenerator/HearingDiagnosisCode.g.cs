@@ -50,7 +50,7 @@ public readonly partial struct HearingDiagnosisCode
     {
         if (IsValidValue(value))
         {
-            result = new HearingDiagnosisCode(value);
+            result = new HearingDiagnosisCode(value, true);
             return true;
         }
     

@@ -50,7 +50,7 @@ public readonly partial struct Word
     {
         if (IsValidValue(value))
         {
-            result = new Word(value);
+            result = new Word(value, true);
             return true;
         }
     
