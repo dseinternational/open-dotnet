@@ -372,16 +372,12 @@ public readonly partial struct AsciiString
 
     public bool EndsWith(ReadOnlySpan<char> value)
     {
-        Span<AsciiChar> buffer = value.Length <= StackallocThresholds.MaxByteLength
-            ? stackalloc AsciiChar[value.Length]
-            : new AsciiChar[value.Length];
-
-        if (!TryToAsciiChars(value, buffer, out var bytesWritten))
+        if (value.Length > _value.Length)
         {
             return false;
         }
 
-        return _value.Span.EndsWith(buffer[..bytesWritten]);
+        return Ascii.Equals(ValuesMarshal.AsBytes(_value.Span[(_value.Length - value.Length)..]), value);
     }
 
     public bool StartsWith(AsciiString value) => StartsWith(value._value.Span);
@@ -394,29 +390,12 @@ public readonly partial struct AsciiString
 
     public bool StartsWith(ReadOnlySpan<char> value)
     {
-        Span<AsciiChar> buffer = value.Length <= StackallocThresholds.MaxByteLength
-            ? stackalloc AsciiChar[value.Length]
-            : new AsciiChar[value.Length];
-
-        if (!TryToAsciiChars(value, buffer, out var bytesWritten))
+        if (value.Length > _value.Length)
         {
             return false;
         }
 
-        return _value.Span.StartsWith(buffer[..bytesWritten]);
-    }
-
-    private static bool TryToAsciiChars(ReadOnlySpan<char> value, Span<AsciiChar> buffer, out int bytesWritten)
-    {
-        var status = Ascii.FromUtf16(value, ValuesMarshal.AsBytes(buffer), out bytesWritten);
-
-        if (status != OperationStatus.Done)
-        {
-            Debug.Assert(status == OperationStatus.InvalidData);
-            return false;
-        }
-
-        return true;
+        return Ascii.Equals(ValuesMarshal.AsBytes(_value.Span[..value.Length]), value);
     }
 
     /// <summary>
