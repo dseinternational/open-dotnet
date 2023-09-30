@@ -112,12 +112,38 @@ public class AsciiStringTests
         Assert.True(c.EndsWith(AsciiString.Parse(test)));
     }
 
+    [Fact]
+    public void StartsWith_String_WithTooLongValue_ShouldReturnFalse()
+    {
+        // Arrange
+        var value = AsciiString.Parse("a");
+
+        // Act
+        var result = value.StartsWith("ab");
+
+        // Assert
+        Assert.False(result);
+    }
+
     [Theory]
     [InlineData("abcdefghijklmnopqrstuvwxyz", "abc")]
     public void StartsWith(string value, string test)
     {
         var c = AsciiString.Parse(value);
         Assert.True(c.StartsWith(AsciiString.Parse(test)));
+    }
+
+    [Fact]
+    public void EndsWith_String_WithTooLongValue_ShouldReturnFalse()
+    {
+        // Arrange
+        var value = AsciiString.Parse("a");
+
+        // Act
+        var result = value.EndsWith("ab");
+
+        // Assert
+        Assert.False(result);
     }
 
     [Theory]
