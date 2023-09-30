@@ -50,7 +50,7 @@ public readonly partial struct LanguageTag
     {
         if (IsValidValue(value))
         {
-            result = new LanguageTag(value);
+            result = new LanguageTag(value, true);
             return true;
         }
     
@@ -111,20 +111,17 @@ public readonly partial struct LanguageTag
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
         EnsureInitialized();
-        var maxCharLength = MaxSerializedCharLength;
-    
         char[]? rented = null;
     
         try
         {
-            Span<char> buffer = maxCharLength <= 128
-                ? stackalloc char[maxCharLength]
-                : (rented = System.Buffers.ArrayPool<char>.Shared.Rent(maxCharLength));
+            Span<char> buffer = MaxSerializedCharLength <= 128
+                ? stackalloc char[MaxSerializedCharLength]
+                : (rented = System.Buffers.ArrayPool<char>.Shared.Rent(MaxSerializedCharLength));
     
             _ = TryFormat(buffer, out var charsWritten, format, formatProvider);
     
-            ReadOnlySpan<char> returnValue = buffer[..charsWritten];
-            return GetString(new string(returnValue));
+            return GetString(buffer[..charsWritten]);
         }
         finally
         {
@@ -133,7 +130,6 @@ public readonly partial struct LanguageTag
                 System.Buffers.ArrayPool<char>.Shared.Return(rented);
             }
         }
-    
     }
 
     public string ToStringInvariant(string? format)

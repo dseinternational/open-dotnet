@@ -162,7 +162,7 @@ public partial class ValueTypesGenerator
                                    {
                                        if (IsValidValue(value))
                                        {
-                                           result = new {{spec.ValueTypeName}}(value);
+                                           result = new {{spec.ValueTypeName}}(value, true);
                                            return true;
                                        }
 
@@ -361,46 +361,53 @@ public partial class ValueTypesGenerator
                             """);
                 }
 
-                if (spec.UseGetStringSpan || spec.UseGetString)
+                if (spec.UseGetStringSpan)
                 {
-
                     writer.WriteLine("""
-                        var maxCharLength = MaxSerializedCharLength;
-
                         char[]? rented = null;
 
                         try
                         {
-                            Span<char> buffer = maxCharLength <= 128
-                                ? stackalloc char[maxCharLength]
-                                : (rented = System.Buffers.ArrayPool<char>.Shared.Rent(maxCharLength));
+                            Span<char> buffer = MaxSerializedCharLength <= 128
+                                ? stackalloc char[MaxSerializedCharLength]
+                                : (rented = System.Buffers.ArrayPool<char>.Shared.Rent(MaxSerializedCharLength));
 
                             _ = TryFormat(buffer, out var charsWritten, format, formatProvider);
 
-                            ReadOnlySpan<char> returnValue = buffer[..charsWritten];
+                            return GetString(buffer[..charsWritten]);
+                        }
+                        finally
+                        {
+                            if (rented is not null)
+                            {
+                                System.Buffers.ArrayPool<char>.Shared.Return(rented);
+                            }
+                        }
                     """);
-
-                    if (spec.UseGetStringSpan)
-                    {
-                        writer.WriteLine("""        return GetString(returnValue);""");
-                    }
-                    else if (spec.UseGetString)
-                    {
-                        writer.WriteLine("""        return GetString(new string(returnValue));""");
-                    }
-
-
+                }
+                else if (spec.UseGetString)
+                {
                     writer.WriteLine("""
-                                     }
-                                     finally
-                                     {
-                                         if (rented is not null)
-                                         {
-                                             System.Buffers.ArrayPool<char>.Shared.Return(rented);
-                                         }
-                                     }
+                        char[]? rented = null;
 
-                                 """);
+                        try
+                        {
+                            Span<char> buffer = MaxSerializedCharLength <= 128
+                                ? stackalloc char[MaxSerializedCharLength]
+                                : (rented = System.Buffers.ArrayPool<char>.Shared.Rent(MaxSerializedCharLength));
+
+                            _ = TryFormat(buffer, out var charsWritten, format, formatProvider);
+
+                            return GetString(new string(buffer[..charsWritten]));
+                        }
+                        finally
+                        {
+                            if (rented is not null)
+                            {
+                                System.Buffers.ArrayPool<char>.Shared.Return(rented);
+                            }
+                        }
+                    """);
                 }
                 else
                 {

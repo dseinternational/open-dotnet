@@ -50,7 +50,7 @@ public readonly partial struct SignModality
     {
         if (IsValidValue(value))
         {
-            result = new SignModality(value);
+            result = new SignModality(value, true);
             return true;
         }
     

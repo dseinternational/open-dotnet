@@ -6,59 +6,73 @@ namespace DSE.Open.Values.Tests;
 public class LabelTests
 {
     [Fact]
-    public void Parse_WithEmptySpan_ShouldReturnDefault()
+    public void Parse_WithEmptySpan_ShouldThrowFormatException()
     {
-        var a = Label.Parse(Span<char>.Empty, null);
-        Assert.Equal(Label.Empty, a);
+        // Act
+        static void Act() => _ = Label.Parse(Span<char>.Empty, null);
+
+        // Assert
+        Assert.Throws<FormatException>(Act);
     }
 
     [Fact]
-    public void Parse_WithEmptyString_ShouldReturnDefault()
+    public void Parse_WithEmptyString_ShouldThrowFormatException()
     {
-        var a = Label.Parse(string.Empty);
-        Assert.Equal(Label.Empty, a);
+        // Assert
+        Assert.Throws<FormatException>(Act);
+
+        // Act
+        static void Act() => Label.Parse(string.Empty);
     }
 
     [Fact]
-    public void Parse_WithNullString_ShouldThrowArgumentNull() => Assert.Throws<ArgumentNullException>(() => Label.Parse(null!));
+    public void Parse_WithNullString_ShouldThrowArgumentNull() => Assert.Throws<ArgumentNullException>(static () => _ = Label.Parse(null!));
 
     [Fact]
-    public void TryParse_WithEmptySpan_ShouldReturnTrueAndDefaultResult()
+    public void TryParse_WithEmptySpan_ShouldReturnFalseAndDefaultResult()
     {
+        // Act
         var success = Label.TryParse(Span<char>.Empty, null, out var result);
-        Assert.True(success);
+
+        // Assert
+        Assert.False(success);
         Assert.Equal(Label.Empty, result);
     }
 
     [Fact]
     public void TryParse_WithNullString_ShouldReturnFalseAndDefaultResult()
     {
+        // Act
         var success = Label.TryParse(null, out var result);
+
+        // Assert
         Assert.False(success);
         Assert.Equal(Label.Empty, result);
     }
 
     [Fact]
-    public void TryParse_WithEmptyString_ShouldReturnTrueAndDefaultResult()
+    public void TryParse_WithEmptyString_ShouldReturnFalseAndDefaultResult()
     {
+        // Act
         var success = Label.TryParse(string.Empty, out var result);
-        Assert.True(success);
+
+        // Assert
+        Assert.False(success);
         Assert.Equal(Label.Empty, result);
     }
 
     [Fact]
-    public void TryFormat_WithEmptyCode_ShouldReturnTrueWithNothingWritten()
+    public void TryFormat_WithEmptyCode_ShouldThrowUninitializedValueException()
     {
         // Arrange
         var code = Label.Empty;
         var buffer = new char[1];
 
         // Act
-        var success = code.TryFormat(buffer, out var charsWritten, default, default);
+        void Act() => _ = code.TryFormat(buffer, out _, default, default);
 
         // Assert
-        Assert.True(success);
-        Assert.Equal(0, charsWritten);
+        Assert.Throws<UninitializedValueException<Label, CharSequence>>(Act);
     }
 
     [Fact]
@@ -96,7 +110,7 @@ public class LabelTests
 
         Assert.True(l.HasPrefix);
 
-        var p = l.GetPrefix();
+        var p = l.GetPrefix().ToString();
 
         Assert.Equal(prefix, p);
     }

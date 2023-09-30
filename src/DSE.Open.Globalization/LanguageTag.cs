@@ -66,46 +66,32 @@ public readonly partial struct LanguageTag : IComparableValue<LanguageTag, Ascii
 
     public static bool IsValidValue(ReadOnlySpan<byte> value)
     {
-        if (value.Length is < 2 or > MaxLength)
+        switch (value.Length)
         {
-            return false;
-        }
-
-        // Most common case
-        if (value.Length == 5 && value[2] == '-')
-        {
-            return AsciiChar.IsLetter(value[0])
-                && AsciiChar.IsLetter(value[1])
-                && AsciiChar.IsLetter(value[3])
-                && AsciiChar.IsLetter(value[4]);
-        }
-
-        // Two-character primary language subtag only
-        if (value.Length == 2)
-        {
-            return AsciiChar.IsLetter(value[0])
-                && AsciiChar.IsLetter(value[1]);
-        }
-
-        // Three-character primary language subtag only
-        if (value.Length == 3)
-        {
-            return AsciiChar.IsLetter(value[0])
-                && AsciiChar.IsLetter(value[1])
-                && AsciiChar.IsLetter(value[2]);
+            case < 2 or > MaxLength:
+                return false;
+            case 5 when value[2] == '-': // Most common case
+                return AsciiChar.IsLetter(value[0])
+                    && AsciiChar.IsLetter(value[1])
+                    && AsciiChar.IsLetter(value[3])
+                    && AsciiChar.IsLetter(value[4]);
+            case 2: // Two-character primary language subtag only
+                return AsciiChar.IsLetter(value[0])
+                    && AsciiChar.IsLetter(value[1]);
+            case 3: // Three-character primary language subtag only
+                return AsciiChar.IsLetter(value[0])
+                    && AsciiChar.IsLetter(value[1])
+                    && AsciiChar.IsLetter(value[2]);
         }
 
         // Fall back to regex
-
         Span<char> buffer = stackalloc char[value.Length];
         for (var i = 0; i < value.Length; i++)
         {
             buffer[i] = (char)value[i];
         }
 
-        var chars = buffer;
-
-        return s_regex.IsMatch(chars);
+        return s_regex.IsMatch(buffer);
     }
 
     public bool Equals(LanguageTag other) => _value.EqualsCaseInsensitive(other._value);
@@ -114,9 +100,8 @@ public readonly partial struct LanguageTag : IComparableValue<LanguageTag, Ascii
 
     public override int GetHashCode() => AsciiStringComparer.CaseInsensitive.GetHashCode(_value);
 
-    // we know they will be interened - see IsoCountryCodes
-    private static string GetString(string s)
-        => string.IsInterned(s) ?? LanguageTagStringPool.Shared.GetOrAdd(s);
+    // we know they will be interned - see IsoCountryCodes
+    private static string GetString(ReadOnlySpan<char> s) => LanguageTagStringPool.Shared.GetOrAdd(s);
 
     public bool LanguagePartEquals(LanguageTag otherLangPart)
         => LanguagePartEquals(otherLangPart._value.Span);
@@ -156,48 +141,30 @@ public readonly partial struct LanguageTag : IComparableValue<LanguageTag, Ascii
         }
 
         // No formatting
-
         if (format.IsEmpty)
         {
-            _ = _value.TryFormat(destination, out charsWritten, format, provider);
-            return true;
+            return _value.TryFormat(destination, out charsWritten, format, provider);
         }
 
-        FormatCustom(_value, destination, format);
+        if (format.Length != 1)
+        {
+            ThrowHelper.ThrowFormatException($"Invalid format string '{format.ToString()}'");
+        }
+
+        switch (format[0] | 0x20)
+        {
+            case 'n':
+                FormatNormalized(_value, destination);
+                break;
+            case 'l' or 'u':
+                return _value.TryFormat(destination, out charsWritten, format, provider);
+            default:
+                ThrowHelper.ThrowFormatException($"Invalid format string '{format.ToString()}'");
+                break;
+        }
 
         charsWritten = _value.Length;
         return true;
-
-        static void FormatCustom(AsciiString value, Span<char> destination, ReadOnlySpan<char> format)
-        {
-            // Normalized
-
-            if (format.Equals("N", StringComparison.OrdinalIgnoreCase))
-            {
-                FormatNormalized(value, destination);
-            }
-
-            // Lowercase
-
-            else if (format.Equals("L", StringComparison.OrdinalIgnoreCase))
-            {
-                FormatLower(value, destination);
-            }
-
-            // Uppercase
-
-            else if (format.Equals("U", StringComparison.OrdinalIgnoreCase))
-            {
-                FormatUpper(value, destination);
-            }
-
-            // Unrecognised format
-
-            else
-            {
-                ThrowHelper.ThrowArgumentOutOfRangeException(nameof(format), "Unsupported format.");
-            }
-        }
 
         static void FormatNormalized(AsciiString value, Span<char> destination)
         {
@@ -244,12 +211,11 @@ public readonly partial struct LanguageTag : IComparableValue<LanguageTag, Ascii
             destination[ti0] = '-';
             destIndex++;
 
-            int length;
             var lastTag = false;
 
             while (!remaining.IsEmpty)
             {
-                length = remaining.IndexOf((AsciiChar)'-');
+                var length = remaining.IndexOf((AsciiChar)'-');
 
                 if (length < 0)
                 {
@@ -295,22 +261,6 @@ public readonly partial struct LanguageTag : IComparableValue<LanguageTag, Ascii
                     Debug.Assert(length == remaining.Length);
                     remaining = default;
                 }
-            }
-        }
-
-        static void FormatLower(AsciiString value, Span<char> destination)
-        {
-            for (var i = 0; i < value.Length; i++)
-            {
-                destination[i] = value[i].ToLower();
-            }
-        }
-
-        static void FormatUpper(AsciiString value, Span<char> destination)
-        {
-            for (var i = 0; i < value.Length; i++)
-            {
-                destination[i] = value[i].ToUpper();
             }
         }
     }

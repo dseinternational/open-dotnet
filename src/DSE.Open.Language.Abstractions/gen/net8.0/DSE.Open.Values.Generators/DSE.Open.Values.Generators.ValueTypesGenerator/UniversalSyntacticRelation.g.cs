@@ -50,7 +50,7 @@ public readonly partial struct UniversalSyntacticRelation
     {
         if (IsValidValue(value))
         {
-            result = new UniversalSyntacticRelation(value);
+            result = new UniversalSyntacticRelation(value, true);
             return true;
         }
     

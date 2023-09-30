@@ -11,14 +11,14 @@ using DSE.Open.Values;
 
 namespace DSE.Open.Values;
 
-[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<UriPath, CharSequence>))]
-public readonly partial struct UriPath
+[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<Label, CharSequence>))]
+public readonly partial struct Label
 {
 
     private readonly CharSequence _value;
     private readonly bool _initialized;
 
-    private UriPath(CharSequence value, bool skipValidation = false)
+    private Label(CharSequence value, bool skipValidation = false)
     {
 
         if (!skipValidation)
@@ -37,15 +37,20 @@ public readonly partial struct UriPath
         if (!IsValidValue(value))
         {
             throw new ArgumentOutOfRangeException(nameof(value), value,
-                $"'{value}' is not a valid {nameof(UriPath)} value");
+                $"'{value}' is not a valid {nameof(Label)} value");
         }
     }
 
-    public static bool TryFromValue(CharSequence value, out UriPath result)
+    private void EnsureInitialized()
+    {
+        UninitializedValueException<Label, CharSequence>.ThrowIfUninitialized(this);
+    }
+
+    public static bool TryFromValue(CharSequence value, out Label result)
     {
         if (IsValidValue(value))
         {
-            result = new UriPath(value, true);
+            result = new Label(value, true);
             return true;
         }
     
@@ -53,37 +58,39 @@ public readonly partial struct UriPath
         return false;
     }
 
-    public static UriPath FromValue(CharSequence value)
+    public static Label FromValue(CharSequence value)
     {
         EnsureIsValidArgumentValue(value);
         return new(value, true);
     }
 
-    public static explicit operator UriPath(CharSequence value)
+    public static explicit operator Label(CharSequence value)
         => FromValue(value);
 
-    static CharSequence global::DSE.Open.IConvertibleTo<UriPath, CharSequence>.ConvertTo(UriPath value)
+    static CharSequence global::DSE.Open.IConvertibleTo<Label, CharSequence>.ConvertTo(Label value)
         => (CharSequence)value;
 
-    public static explicit operator CharSequence(UriPath value)
+    public static explicit operator CharSequence(Label value)
     {
+        value.EnsureInitialized();
         return value._value;
     }
 
     // IEquatable<T>
 
-    public bool Equals(UriPath other) => _value.Equals(other._value);
+    public bool Equals(Label other) => _value.Equals(other._value);
 
-    public override bool Equals(object? obj) => obj is UriPath other && Equals(other);
+    public override bool Equals(object? obj) => obj is Label other && Equals(other);
 
     public override int GetHashCode()
     {
+        EnsureInitialized();
         return HashCode.Combine(_value);
     }
 
-    public static bool operator ==(UriPath left, UriPath right) => left.Equals(right);
+    public static bool operator ==(Label left, Label right) => left.Equals(right);
     
-    public static bool operator !=(UriPath left, UriPath right) => !(left == right);
+    public static bool operator !=(Label left, Label right) => !(left == right);
 
     // ISpanFormattable
 
@@ -93,6 +100,7 @@ public readonly partial struct UriPath
         ReadOnlySpan<char> format,
         IFormatProvider? provider)
         {
+            EnsureInitialized();
             return ((ISpanFormattable)_value).TryFormat(destination, out charsWritten, format, provider);
         }
 
@@ -113,13 +121,14 @@ public readonly partial struct UriPath
         => TryFormatInvariant(destination, out charsWritten, default);
 
     /// <summary>
-    /// Gets a representation of the <see cref="UriPath"/> value as a string with formatting options.
+    /// Gets a representation of the <see cref="Label"/> value as a string with formatting options.
     /// </summary>
     /// <returns>
-    /// A representation of the <see cref="UriPath"/> value.
+    /// A representation of the <see cref="Label"/> value.
     /// </returns>
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
+        EnsureInitialized();
         char[]? rented = null;
     
         try
@@ -148,10 +157,10 @@ public readonly partial struct UriPath
         => ToStringInvariant(default);
 
     /// <summary>
-    /// Gets a representation of the UriPath value as a string with default formatting options.
+    /// Gets a representation of the Label value as a string with default formatting options.
     /// </summary>
     /// <returns>
-    /// A representation of the UriPath value.
+    /// A representation of the Label value.
     /// </returns>
     public override string ToString() => ToString(default, default);
 
@@ -160,57 +169,58 @@ public readonly partial struct UriPath
     public static bool TryParse(
         ReadOnlySpan<char> s,
         IFormatProvider? provider,
-        out UriPath result)
-        => global::DSE.Open.Values.ValueParser.TryParse<UriPath, CharSequence>(s, provider, out result);
+        out Label result)
+        => global::DSE.Open.Values.ValueParser.TryParse<Label, CharSequence>(s, provider, out result);
 
     public static bool TryParse(
         ReadOnlySpan<char> s,
-        out UriPath result)
+        out Label result)
         => TryParse(s, default, out result);
 
     public static bool TryParseInvariant(
         ReadOnlySpan<char> s,
-        out UriPath result)
+        out Label result)
         => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
 
     public static bool TryParse(
         string? s,
         IFormatProvider? provider,
-        out UriPath result)
-        => global::DSE.Open.Values.ValueParser.TryParse<UriPath, CharSequence>(s, provider, out result);
+        out Label result)
+        => global::DSE.Open.Values.ValueParser.TryParse<Label, CharSequence>(s, provider, out result);
 
     public static bool TryParse(
         string? s,
-        out UriPath result)
+        out Label result)
         => TryParse(s, default, out result);
 
     public static bool TryParseInvariant(
         string? s,
-        out UriPath result)
+        out Label result)
         => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
 
-    public static UriPath Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<UriPath, CharSequence>(s, provider);
+    public static Label Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<Label, CharSequence>(s, provider);
 
-    public static UriPath Parse(ReadOnlySpan<char> s)
+    public static Label Parse(ReadOnlySpan<char> s)
         => Parse(s, default);
 
-    public static UriPath Parse(string s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<UriPath, CharSequence>(s, provider);
+    public static Label Parse(string s, IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<Label, CharSequence>(s, provider);
 
-    public static UriPath Parse(string s)
+    public static Label Parse(string s)
         => Parse(s, default);
 
-    public int CompareTo(UriPath other)
+    public int CompareTo(Label other)
     {
+        EnsureInitialized();
         return _value.CompareTo(other._value);
     }
 
-    public static bool operator <(UriPath left, UriPath right) => left.CompareTo(right) < 0;
+    public static bool operator <(Label left, Label right) => left.CompareTo(right) < 0;
     
-    public static bool operator >(UriPath left, UriPath right) => left.CompareTo(right) > 0;
+    public static bool operator >(Label left, Label right) => left.CompareTo(right) > 0;
     
-    public static bool operator <=(UriPath left, UriPath right) => left.CompareTo(right) <= 0;
+    public static bool operator <=(Label left, Label right) => left.CompareTo(right) <= 0;
     
-    public static bool operator >=(UriPath left, UriPath right) => left.CompareTo(right) >= 0;
+    public static bool operator >=(Label left, Label right) => left.CompareTo(right) >= 0;
 }

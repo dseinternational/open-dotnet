@@ -50,7 +50,7 @@ public readonly partial struct Identifier
     {
         if (IsValidValue(value))
         {
-            result = new Identifier(value);
+            result = new Identifier(value, true);
             return true;
         }
     

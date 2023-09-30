@@ -291,11 +291,6 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
                 throw new InvalidOperationException();
             }
 
-            //if (containedTypeName == "ClinicalConceptCode")
-            //{
-            //    System.Diagnostics.Debugger.Launch();
-            //}
-
             // what interfaces does the contained type implement?
             var containedTypeSymbol = valueTypeInterface.TypeArguments[1];
 

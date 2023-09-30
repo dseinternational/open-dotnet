@@ -48,14 +48,6 @@ public readonly partial struct AsciiString
 
     public int Length => _value.Length;
 
-    /// <summary>
-    /// Searches for the specified value and returns the index of its first occurrence. If not found,
-    /// returns -1. Values are compared using IEquatable{T}.Equals(T).
-    /// </summary>
-    /// <param name="value"></param>
-    /// <returns></returns>
-    public int IndexOf(AsciiChar value) => _value.Span.IndexOf(value);
-
     public ReadOnlyMemory<AsciiChar> AsMemory() => _value;
 
     public ReadOnlySpan<AsciiChar> Span => _value.Span;
@@ -300,12 +292,27 @@ public readonly partial struct AsciiString
             return false;
         }
 
-        return format switch
+        if (format.IsEmpty)
         {
-            "L" => Ascii.ToLower(ValuesMarshal.AsBytes(_value.Span), destination, out charsWritten),
-            "U" => Ascii.ToUpper(ValuesMarshal.AsBytes(_value.Span), destination, out charsWritten),
-            _ => Ascii.ToUtf16(ValuesMarshal.AsBytes(_value.Span), destination, out charsWritten),
-        } == OperationStatus.Done;
+            return Ascii.ToUtf16(ValuesMarshal.AsBytes(_value.Span), destination, out charsWritten) == OperationStatus.Done;
+        }
+
+        if (format.Length != 1)
+        {
+            ThrowHelper.ThrowFormatException($"The format '{format.ToString()}' is not supported.");
+        }
+
+        switch (format[0] | 0x20)
+        {
+            case 'l':
+                return Ascii.ToLower(ValuesMarshal.AsBytes(_value.Span), destination, out charsWritten) == OperationStatus.Done;
+            case 'u':
+                return Ascii.ToUpper(ValuesMarshal.AsBytes(_value.Span), destination, out charsWritten) == OperationStatus.Done;
+        }
+
+        ThrowHelper.ThrowFormatException($"The format '{format.ToString()}' is not supported.");
+        charsWritten = default;
+        return false;
     }
 
     public bool TryFormat(
@@ -326,16 +333,23 @@ public readonly partial struct AsciiString
             return false;
         }
 
-        switch (format)
+        if (format.IsEmpty)
         {
-            case "L":
-                return Ascii.ToLower(ValuesMarshal.AsBytes(_value.Span), utf8Destination, out bytesWritten) == OperationStatus.Done;
-            case "U":
-                return Ascii.ToUpper(ValuesMarshal.AsBytes(_value.Span), utf8Destination, out bytesWritten) == OperationStatus.Done;
-            default:
-                bytesWritten = _value.Span.Length;
-                return ValuesMarshal.AsBytes(_value.Span).TryCopyTo(utf8Destination);
+            bytesWritten = _value.Span.Length;
+            return ValuesMarshal.AsBytes(_value.Span).TryCopyTo(utf8Destination);
         }
+
+        switch (format[0] | 0x20)
+        {
+            case 'l':
+                return Ascii.ToLower(ValuesMarshal.AsBytes(_value.Span), utf8Destination, out bytesWritten) == OperationStatus.Done;
+            case 'u':
+                return Ascii.ToUpper(ValuesMarshal.AsBytes(_value.Span), utf8Destination, out bytesWritten) == OperationStatus.Done;
+        }
+
+        ThrowHelper.ThrowFormatException($"The format '{format.ToString()}' is not supported.");
+        bytesWritten = default;
+        return false;
     }
 
     public IEnumerator<AsciiChar> GetEnumerator()
@@ -405,8 +419,29 @@ public readonly partial struct AsciiString
         return true;
     }
 
+    /// <summary>
+    /// Searches for the specified value and returns the index of its first occurrence. If not found,
+    /// returns -1. Values are compared using <see cref="IEquatable{T}.Equals(T)"/>.
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public int IndexOf(AsciiChar value) => _value.Span.IndexOf(value);
 
-    public int LastIndexOf(AsciiChar c) => Span.LastIndexOf(c);
+    /// <summary>
+    /// Searches for the specified value and returns the index of its last occurrence. If not found,
+    /// returns -1. Values are compared using <see cref="IEquatable{T}.Equals(T)"/>.
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public int LastIndexOf(AsciiChar value) => _value.Span.LastIndexOf(value);
+
+    public bool Contains(AsciiChar value) => _value.Span.Contains(value);
+
+    public bool Contains(AsciiString value) => Contains(value._value.Span);
+
+    public bool Contains(ReadOnlySpan<AsciiChar> value) => _value.Span.IndexOf(value) >= 0;
+
+    public bool Contains(ReadOnlySpan<byte> value) => Contains(ValuesMarshal.AsAsciiChars(value));
 
     public static bool operator ==(AsciiString left, AsciiString right) => left.Equals(right);
 

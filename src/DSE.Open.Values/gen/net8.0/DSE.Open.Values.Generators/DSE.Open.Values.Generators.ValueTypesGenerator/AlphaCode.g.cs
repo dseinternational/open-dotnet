@@ -50,7 +50,7 @@ public readonly partial struct AlphaCode
     {
         if (IsValidValue(value))
         {
-            result = new AlphaCode(value);
+            result = new AlphaCode(value, true);
             return true;
         }
     
@@ -129,20 +129,17 @@ public readonly partial struct AlphaCode
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
         EnsureInitialized();
-        var maxCharLength = MaxSerializedCharLength;
-    
         char[]? rented = null;
     
         try
         {
-            Span<char> buffer = maxCharLength <= 128
-                ? stackalloc char[maxCharLength]
-                : (rented = System.Buffers.ArrayPool<char>.Shared.Rent(maxCharLength));
+            Span<char> buffer = MaxSerializedCharLength <= 128
+                ? stackalloc char[MaxSerializedCharLength]
+                : (rented = System.Buffers.ArrayPool<char>.Shared.Rent(MaxSerializedCharLength));
     
             _ = TryFormat(buffer, out var charsWritten, format, formatProvider);
     
-            ReadOnlySpan<char> returnValue = buffer[..charsWritten];
-            return GetString(returnValue);
+            return GetString(buffer[..charsWritten]);
         }
         finally
         {
@@ -151,7 +148,6 @@ public readonly partial struct AlphaCode
                 System.Buffers.ArrayPool<char>.Shared.Return(rented);
             }
         }
-    
     }
 
     public string ToStringInvariant(string? format)

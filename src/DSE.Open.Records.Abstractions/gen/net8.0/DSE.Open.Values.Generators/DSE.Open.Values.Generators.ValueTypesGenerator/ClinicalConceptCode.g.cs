@@ -50,7 +50,7 @@ public readonly partial struct ClinicalConceptCode
     {
         if (IsValidValue(value))
         {
-            result = new ClinicalConceptCode(value);
+            result = new ClinicalConceptCode(value, true);
             return true;
         }
     
