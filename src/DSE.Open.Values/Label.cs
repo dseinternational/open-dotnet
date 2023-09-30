@@ -42,6 +42,7 @@ public readonly partial struct Label : IComparableValue<Label, CharSequence>
         }
 
         _value = string.IsInterned(label) ?? LabelStringPool.Shared.GetOrAdd(label);
+        _initialized = true;
     }
 
     private Label(ReadOnlySpan<char> label, bool skipValidation)
