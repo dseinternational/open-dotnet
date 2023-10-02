@@ -12,7 +12,7 @@ namespace DSE.Open;
 /// An immutable binary data value.
 /// </summary>
 [JsonConverter(typeof(JsonStringBinaryValueBase64Converter))]
-public readonly partial record struct BinaryValue : ISpanFormattable, IUtf8SpanFormattable, IComparable<BinaryValue>
+public readonly partial record struct BinaryValue : ISpanFormattable, IUtf8SpanFormattable
 {
     private readonly ReadOnlyMemory<byte> _value;
 
@@ -62,8 +62,6 @@ public readonly partial record struct BinaryValue : ISpanFormattable, IUtf8SpanF
 
     public bool Equals(BinaryValue other) => _value.Span.SequenceEqual(other._value.Span);
 
-    public int CompareTo(BinaryValue other) => _value.Span.SequenceCompareTo(other._value.Span);
-
     public override int GetHashCode()
     {
         var span = _value.Span;
@@ -103,9 +101,13 @@ public readonly partial record struct BinaryValue : ISpanFormattable, IUtf8SpanF
         return new BinaryValue(buffer, true);
     }
 
+#pragma warning disable CA2225 // Operator overloads have named alternates
+
     public static explicit operator ReadOnlyMemory<byte>(BinaryValue value) => value.AsMemory();
 
     public static explicit operator ReadOnlySpan<byte>(BinaryValue value) => value.AsSpan();
+
+#pragma warning restore CA2225 // Operator overloads have named alternates
 
     internal static BinaryValue CreateUnsafe(byte[] bytes)
     {
@@ -119,28 +121,4 @@ public readonly partial record struct BinaryValue : ISpanFormattable, IUtf8SpanF
         return new BinaryValue(bytes, noCopy: true);
     }
 
-    public static ReadOnlyMemory<byte> ToReadOnlyMemory(BinaryValue left, BinaryValue right)
-    {
-        throw new NotImplementedException();
-    }
-
-    public static bool operator <(BinaryValue left, BinaryValue right)
-    {
-        return left.CompareTo(right) < 0;
-    }
-
-    public static bool operator <=(BinaryValue left, BinaryValue right)
-    {
-        return left.CompareTo(right) <= 0;
-    }
-
-    public static bool operator >(BinaryValue left, BinaryValue right)
-    {
-        return left.CompareTo(right) > 0;
-    }
-
-    public static bool operator >=(BinaryValue left, BinaryValue right)
-    {
-        return left.CompareTo(right) >= 0;
-    }
 }
