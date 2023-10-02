@@ -18,7 +18,7 @@ public static class Utf8StringFormattingExtensions
             return new Utf8String(buffer[..bytesWritten].ToArray());
         }
 
-        UnexpectedConditionException.Throw("Buffer too small");
+        Expect.Unreachable("Buffer too small");
         return default; // unreachable
     }
 
@@ -31,7 +31,7 @@ public static class Utf8StringFormattingExtensions
             return new Utf8String(buffer[..bytesWritten].ToArray());
         }
 
-        UnexpectedConditionException.Throw("Buffer too small");
+        Expect.Unreachable("Buffer too small");
         return default; // unreachable
     }
 
@@ -44,7 +44,7 @@ public static class Utf8StringFormattingExtensions
             return new Utf8String(buffer[..bytesWritten].ToArray());
         }
 
-        UnexpectedConditionException.Throw("Buffer too small");
+        Expect.Unreachable("Buffer too small");
         return default; // unreachable
     }
 
@@ -57,7 +57,7 @@ public static class Utf8StringFormattingExtensions
             return new Utf8String(buffer[..bytesWritten].ToArray());
         }
 
-        UnexpectedConditionException.Throw("Buffer too small");
+        Expect.Unreachable("Buffer too small");
         return default; // unreachable
     }
 
@@ -70,8 +70,7 @@ public static class Utf8StringFormattingExtensions
             return new Utf8String(buffer[..bytesWritten].ToArray());
         }
 
-        UnexpectedConditionException.Throw("Buffer too small");
+        Expect.Unreachable("Buffer too small");
         return default; // unreachable
     }
-
 }
