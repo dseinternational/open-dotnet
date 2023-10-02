@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
@@ -44,6 +45,6 @@ public static class Expect
     public static void NotEmpty<T>(IEnumerable<T> collection, [CallerArgumentExpression(nameof(collection))] string? collectionName = null)
         => UnexpectedConditionException.ThrowIfEmpty(collection, collectionName);
 
-    public static void Unreachable(string? message = null)
-        => UnreachableException.Throw(message);
+    [DoesNotReturn]
+    public static void Unreachable(string? message = null) => throw new UnreachableException(message);
 }
