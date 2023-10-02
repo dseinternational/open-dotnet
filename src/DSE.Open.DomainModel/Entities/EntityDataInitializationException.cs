@@ -42,7 +42,6 @@ public class EntityDataInitializationException : EntityDataException
 
     public ValidationResult? ValidationResult { get; }
 
-    [StackTraceHidden]
     public static void ThrowIf(
         [DoesNotReturnIf(true)] bool condition,
         [CallerArgumentExpression("condition")] string? parameterName = null)
@@ -60,7 +59,6 @@ public class EntityDataInitializationException : EntityDataException
     /// <param name="entity">The <see cref="StoredObject"/> to validate as non-null.</param>
     /// <param name="parameterName">The name of the property with which <paramref name="entity"/>
     /// corresponds.</param>
-    [StackTraceHidden]
     public static void ThrowIfNull([NotNull] StoredObject? entity, [CallerArgumentExpression("entity")] string? parameterName = null)
     {
         ThrowIf(entity is null, parameterName);

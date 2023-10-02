@@ -19,7 +19,6 @@ public class UnexpectedConditionException : Exception
 
     private static string EnsureMessage(string? message) => message ?? "Encountered an unexpected condition.";
 
-    [StackTraceHidden]
     public static void ThrowIf(bool condition, [CallerArgumentExpression(nameof(condition))] string? message = null)
     {
         if (condition)
@@ -28,7 +27,6 @@ public class UnexpectedConditionException : Exception
         }
     }
 
-    [StackTraceHidden]
     public static void ThrowIfNull([NotNull] object? value, [CallerArgumentExpression(nameof(value))] string? valueName = null)
     {
         if (value is null)
