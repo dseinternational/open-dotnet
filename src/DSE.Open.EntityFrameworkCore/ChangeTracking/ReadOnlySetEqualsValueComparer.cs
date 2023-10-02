@@ -11,11 +11,11 @@ public class ReadOnlySetEqualsValueComparer<
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods
         | DynamicallyAccessedMemberTypes.NonPublicMethods
         | DynamicallyAccessedMemberTypes.PublicProperties)]
-TItem,
+    TItem,
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods
         | DynamicallyAccessedMemberTypes.NonPublicMethods
         | DynamicallyAccessedMemberTypes.PublicProperties)]
-TCollection>
+    TCollection>
     : ValueComparer<TCollection>
     where TCollection : IReadOnlySet<TItem>
 {
@@ -49,7 +49,7 @@ public sealed class ReadOnlySetEqualsValueComparer<
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods
         | DynamicallyAccessedMemberTypes.NonPublicMethods
         | DynamicallyAccessedMemberTypes.PublicProperties)]
-T>
+    T>
     : ReadOnlySetEqualsValueComparer<T, IReadOnlySet<T>>
 {
     public static readonly ReadOnlySetEqualsValueComparer<T> Default = new();

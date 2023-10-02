@@ -11,11 +11,11 @@ public class SetEqualsValueComparer<
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods
         | DynamicallyAccessedMemberTypes.NonPublicMethods
         | DynamicallyAccessedMemberTypes.PublicProperties)]
-TItem,
+    TItem,
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods
         | DynamicallyAccessedMemberTypes.NonPublicMethods
         | DynamicallyAccessedMemberTypes.PublicProperties)]
-TCollection>
+    TCollection>
     : ValueComparer<TCollection>
     where TCollection : ISet<TItem>
 {
@@ -49,7 +49,7 @@ public sealed class SetEqualsValueComparer<
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods
         | DynamicallyAccessedMemberTypes.NonPublicMethods
         | DynamicallyAccessedMemberTypes.PublicProperties)]
-T>
+    T>
     : SetEqualsValueComparer<T, ISet<T>>
 {
     public static readonly SetEqualsValueComparer<T> Default = new();
