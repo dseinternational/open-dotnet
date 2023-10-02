@@ -33,7 +33,17 @@ public static class Expect
     /// <param name="value">The value to check.</param>
     /// <param name="valueName">The name of the value to include in the exception.</param>
     /// <exception cref="UnexpectedConditionException">Thrown when <paramref name="value"/> is null.</exception>
+    public static void NotNull([NotNull] object? value, [CallerArgumentExpression(nameof(value))] string? valueName = null)
+        => UnexpectedConditionException.ThrowIfNull(value, valueName);
+
+    /// <summary>
+    /// Throws an <see cref="UnexpectedConditionException"/> if <paramref name="value"/> is null.
+    /// </summary>
+    /// <param name="value">The value to check.</param>
+    /// <param name="valueName">The name of the value to include in the exception.</param>
+    /// <exception cref="UnexpectedConditionException">Thrown when <paramref name="value"/> is null.</exception>
     public static void NotNull<T>([NotNull] T? value, [CallerArgumentExpression(nameof(value))] string? valueName = null)
+        where T : struct
         => UnexpectedConditionException.ThrowIfNull(value, valueName);
 
     /// <summary>
