@@ -9,7 +9,11 @@ namespace DSE.Open.Diagnostics;
 
 public class UnexpectedConditionException : Exception
 {
-    public UnexpectedConditionException(string message) : base(EnsureMessage(message))
+    public UnexpectedConditionException() : base(EnsureMessage(null))
+    {
+    }
+
+    public UnexpectedConditionException(string? message) : base(EnsureMessage(message))
     {
     }
 
@@ -35,7 +39,15 @@ public class UnexpectedConditionException : Exception
         }
     }
 
-    [StackTraceHidden]
+    public static void ThrowIfNull<T>([NotNull] T? value, [CallerArgumentExpression(nameof(value))] string? valueName = null)
+        where T : struct
+    {
+        if (value is null)
+        {
+            Throw($"Encountered an unexpected condition: {valueName} was null.");
+        }
+    }
+
     public static void ThrowIfEmpty<T>(IEnumerable<T> collection, [CallerArgumentExpression(nameof(collection))] string? collectionName = null)
     {
         Guard.IsNotNull(collection);
@@ -48,5 +60,5 @@ public class UnexpectedConditionException : Exception
 
     [DoesNotReturn]
     [StackTraceHidden]
-    internal static void Throw(string message) => throw new UnexpectedConditionException(message);
+    private static void Throw(string message) => throw new UnexpectedConditionException(message);
 }
