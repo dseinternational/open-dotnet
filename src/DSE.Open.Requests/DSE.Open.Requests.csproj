@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DSE.Open.Globalization\DSE.Open.Globalization.csproj" />
+    <ProjectReference Include="..\DSE.Open.Serialization.DataTransfer\DSE.Open.Serialization.DataTransfer.csproj" />
+    <ProjectReference Include="..\DSE.Open.Sessions\DSE.Open.Sessions.csproj" />
+    <ProjectReference Include="..\DSE.Open.Values\DSE.Open.Values.csproj" />
+  </ItemGroup>
+
+</Project>

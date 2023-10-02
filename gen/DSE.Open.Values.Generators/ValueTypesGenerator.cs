@@ -119,7 +119,7 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
         }
     }
 
-    private static List<ValueTypeSpec>  GetValueTypeSpecs(
+    private static List<ValueTypeSpec> GetValueTypeSpecs(
         Compilation compilation,
         IEnumerable<StructDeclarationSyntax> structs,
         Action<Diagnostic> reportDiagnostic,

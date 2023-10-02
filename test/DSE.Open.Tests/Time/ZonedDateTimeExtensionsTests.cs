@@ -2,8 +2,8 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Globalization;
-using NodaTime;
 using DSE.Open.Time;
+using NodaTime;
 
 namespace DSE.Open.Tests.Time;
 

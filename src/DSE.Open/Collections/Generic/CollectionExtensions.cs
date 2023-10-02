@@ -19,6 +19,12 @@ public static class CollectionExtensions
             return;
         }
 
+        if (collection is List<T> list)
+        {
+            list.AddRange(values);
+            return;
+        }
+
         foreach (var item in values)
         {
             collection.Add(item);

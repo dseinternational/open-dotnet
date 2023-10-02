@@ -7,7 +7,7 @@ using DSE.Open.Values.Text.Json.Serialization;
 namespace DSE.Open.Values.Text;
 
 /// <summary>
-/// Represents a pattern that can be used to speciufy a string search. Can be translated to a SQL CONTAINS clause.
+/// Represents a pattern that can be used to specify a string search. Can be translated to a SQL CONTAINS clause.
 /// </summary>
 [EquatableValue]
 [JsonConverter(typeof(JsonSpanSerializableValueConverter<ContainsPattern, CharSequence>))]

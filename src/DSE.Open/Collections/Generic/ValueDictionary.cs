@@ -13,12 +13,13 @@ namespace DSE.Open.Collections.Generic;
 /// <typeparam name="TValue"></typeparam>
 public sealed class ValueDictionary<TKey, TValue>
     : IDictionary<TKey, TValue>,
+      IReadOnlyDictionary<TKey, TValue>,
       IEquatable<ValueDictionary<TKey, TValue>>
     where TKey : notnull
 {
     public static readonly ValueDictionary<TKey, TValue> Empty = new();
 
-    private readonly IDictionary<TKey, TValue> _inner;
+    private readonly Dictionary<TKey, TValue> _inner;
 
     public ValueDictionary() : this(Enumerable.Empty<KeyValuePair<TKey, TValue>>())
     {
@@ -44,13 +45,18 @@ public sealed class ValueDictionary<TKey, TValue>
 
     public ICollection<TValue> Values => _inner.Values;
 
+    IEnumerable<TKey> IReadOnlyDictionary<TKey, TValue>.Keys => Keys;
+
+    IEnumerable<TValue> IReadOnlyDictionary<TKey, TValue>.Values => Values;
+
     public int Count => _inner.Count;
 
-    public bool IsReadOnly => _inner.IsReadOnly;
+    public bool IsReadOnly => false;
 
     public void Add(TKey key, TValue value) => _inner.Add(key, value);
 
-    public void Add(KeyValuePair<TKey, TValue> item) => _inner.Add(item);
+    void ICollection<KeyValuePair<TKey, TValue>>.Add(KeyValuePair<TKey, TValue> item)
+        => ((IDictionary<TKey, TValue>)_inner).Add(item);
 
     public void Clear() => _inner.Clear();
 
@@ -58,29 +64,30 @@ public sealed class ValueDictionary<TKey, TValue>
 
     public bool ContainsKey(TKey key) => _inner.ContainsKey(key);
 
-    public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex) => _inner.CopyTo(array, arrayIndex);
+    void ICollection<KeyValuePair<TKey, TValue>>.CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
+        => ((ICollection<KeyValuePair<TKey, TValue>>)_inner).CopyTo(array, arrayIndex);
 
     public override bool Equals(object? obj) => Equals(this, obj as ValueDictionary<TKey, TValue>);
 
     public bool Equals(ValueDictionary<TKey, TValue>? other)
-        => DictionaryEqualityComparer<TKey, TValue>.Default.Equals(this, other);
+        => DictionaryEqualityComparer<TKey, TValue>.Default.Equals((IDictionary<TKey, TValue>)this, other);
 
     public static bool operator ==(ValueDictionary<TKey, TValue>? left, ValueDictionary<TKey, TValue>? right)
-        => DictionaryEqualityComparer<TKey, TValue>.Default.Equals(left, right);
+        => DictionaryEqualityComparer<TKey, TValue>.Default.Equals((IDictionary<TKey, TValue>?)left, right);
 
     public static bool operator !=(ValueDictionary<TKey, TValue>? left, ValueDictionary<TKey, TValue>? right)
-        => !DictionaryEqualityComparer<TKey, TValue>.Default.Equals(left, right);
+        => !DictionaryEqualityComparer<TKey, TValue>.Default.Equals((IDictionary<TKey, TValue>?)left, right);
 
     public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         => _inner.GetEnumerator();
 
     public override int GetHashCode()
-        => DictionaryEqualityComparer<TKey, TValue>.Default.GetHashCode(this);
+        => DictionaryEqualityComparer<TKey, TValue>.Default.GetHashCode((IDictionary<TKey, TValue>)this);
 
     public bool Remove(TKey key) => _inner.Remove(key);
 
-    public bool Remove(KeyValuePair<TKey, TValue> item)
-        => _inner.Remove(item);
+    bool ICollection<KeyValuePair<TKey, TValue>>.Remove(KeyValuePair<TKey, TValue> item)
+        => ((ICollection<KeyValuePair<TKey, TValue>>)_inner).Remove(item);
 
     public override string ToString() => DictionaryWriter.WriteToString(this)!; // Only null if `this` is null, which it isn't
 
@@ -88,4 +95,6 @@ public sealed class ValueDictionary<TKey, TValue>
         => _inner.TryGetValue(key, out value);
 
     IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)_inner).GetEnumerator();
+
+    public ReadOnlyValueDictionary<TKey, TValue> AsReadOnly() => new(this);
 }

@@ -54,7 +54,7 @@ public readonly struct Char3
         c1 = _c1;
         c2 = _c2;
     }
-    
+
     public bool Equals(Char3 other)
         => _c0 == other._c0
             && _c1 == other._c1

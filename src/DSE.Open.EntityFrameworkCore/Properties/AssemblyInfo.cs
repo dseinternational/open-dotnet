@@ -3,5 +3,5 @@
 
 using System.Runtime.CompilerServices;
 
-[assembly:InternalsVisibleTo("DSE.Open.EntityFrameworkCore.Relational")]
-[assembly:InternalsVisibleTo("DSE.Open.Testing.Xunit.EntityFrameworkCore")]
+[assembly: InternalsVisibleTo("DSE.Open.EntityFrameworkCore.Relational")]
+[assembly: InternalsVisibleTo("DSE.Open.Testing.Xunit.EntityFrameworkCore")]

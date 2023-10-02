@@ -37,7 +37,7 @@ public class ContainsPatternTests
     {
         get
         {
-            var values= new TheoryData<string>()
+            var values = new TheoryData<string>()
             {
                 "ball",
                 "bat AND ball",

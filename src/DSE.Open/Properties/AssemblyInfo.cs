@@ -3,8 +3,8 @@
 
 using System.Runtime.CompilerServices;
 
-[assembly:InternalsVisibleTo("DSE.Open.Values")]
-[assembly:InternalsVisibleTo("DSE.Open.Globalization")]
-[assembly:InternalsVisibleTo("DSE.Open.Language")]
+[assembly: InternalsVisibleTo("DSE.Open.Values")]
+[assembly: InternalsVisibleTo("DSE.Open.Globalization")]
+[assembly: InternalsVisibleTo("DSE.Open.Language")]
 
-[assembly:InternalsVisibleTo("DSE.Open.Tests")]
+[assembly: InternalsVisibleTo("DSE.Open.Tests")]

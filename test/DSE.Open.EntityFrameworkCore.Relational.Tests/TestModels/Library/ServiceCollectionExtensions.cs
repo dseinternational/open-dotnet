@@ -15,12 +15,12 @@ public static class ServiceCollectionExtensions
 
         _ = services.AddScoped<UpdateTimesTrackedSaveChangesInterceptor>();
 
-        var config = (IServiceProvider s, DbContextOptionsBuilder o) =>
+        void config(IServiceProvider s, DbContextOptionsBuilder o)
         {
             optionsAction(s, o);
 
             _ = o.AddInterceptors(s.GetRequiredService<UpdateTimesTrackedSaveChangesInterceptor>());
-        };
+        }
 
         _ = services.AddDbContext<LibraryDbContext>(config);
 

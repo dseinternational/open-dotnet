@@ -1,13 +1,13 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using NodaTime;
-using NodaTime.Serialization.SystemTextJson;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using DSE.Open.Text.Json.Serialization;
+using NodaTime;
+using NodaTime.Serialization.SystemTextJson;
 
 namespace DSE.Open.Text.Json;
 

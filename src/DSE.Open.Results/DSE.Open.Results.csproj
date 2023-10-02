@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Linq.Async" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DSE.Open.Notifications\DSE.Open.Notifications.csproj" />
+    <ProjectReference Include="..\DSE.Open.Sessions\DSE.Open.Sessions.csproj" />
+  </ItemGroup>
+
+</Project>

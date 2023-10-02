@@ -97,7 +97,7 @@ public class StringHelperTests
     private const string SmallPunctuation = "The cat is on the bed.";
     private const string SmallLeadingPunctuation = "...The cat is on the bed";
     private const string SmallNoLeadingPunctuation = "The cat is on the bed";
-    
+
     [Theory]
     [InlineData(LargePunctuation, LargeNoPunctuation)]
     [InlineData(SmallPunctuation, SmallNoPunctuation)]
@@ -108,7 +108,7 @@ public class StringHelperTests
     {
         // Act
         var actual = StringHelper.RemovePunctuation(input);
-        
+
         // Assert
         Assert.Equal(expected, actual);
     }

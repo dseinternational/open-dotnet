@@ -10,8 +10,6 @@ namespace DSE.Open.Notifications;
 
 public sealed record Notification : ImmutableDataTransferObject, INotification
 {
-    private DateTimeOffset _time;
-
     public Notification(string code, NotificationLevel level, string message)
         : this(new DiagnosticCode(code), level, message)
     {
@@ -25,7 +23,6 @@ public sealed record Notification : ImmutableDataTransferObject, INotification
         Code = code;
         Level = level;
         Message = message;
-        _time = DateTimeOffset.Now.Truncate(DateTimeTruncation.Millisecond);
     }
 
     [JsonInclude]
@@ -35,15 +32,11 @@ public sealed record Notification : ImmutableDataTransferObject, INotification
 
     [JsonInclude]
     [JsonPropertyName("level")]
-        public NotificationLevel Level { get; }
+    public NotificationLevel Level { get; }
 
     [JsonInclude]
-    [JsonPropertyName("messsage")]
+    [JsonPropertyName("message")]
     public string Message { get; }
-
-    [JsonInclude]
-    [JsonPropertyName("time")]
-    public DateTimeOffset Time { get => _time; init => _time = value.Truncate(DateTimeTruncation.Millisecond); }
 
     public override string ToString() => $"{Level} ({Code}): {Message}";
 

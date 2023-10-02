@@ -9,9 +9,9 @@ public class WordTests
 {
     [Theory]
     [InlineData("television")]
-    [InlineData( "ball")]
-    [InlineData( "bat")]
-    [InlineData( "a")]
+    [InlineData("ball")]
+    [InlineData("bat")]
+    [InlineData("a")]
     public void SerializeDeserialize(string signValue)
     {
         var sign = Word.Parse(signValue);
@@ -22,11 +22,11 @@ public class WordTests
 
     [Theory]
     [InlineData("television")]
-    [InlineData( "ball")]
-    [InlineData( "bat")]
-    [InlineData( "Emma's")]
-    [InlineData( "ice-cream")]
-    [InlineData( "teachers'")]
+    [InlineData("ball")]
+    [InlineData("bat")]
+    [InlineData("Emma's")]
+    [InlineData("ice-cream")]
+    [InlineData("teachers'")]
     public void ParseSucceedsIfValid(string signValue)
     {
         _ = Word.Parse(signValue);
@@ -34,9 +34,9 @@ public class WordTests
 
     [Theory]
     [InlineData("-television")]
-    [InlineData( "'ball")]
-    [InlineData( "b:at")]
-    [InlineData( "")]
+    [InlineData("'ball")]
+    [InlineData("b:at")]
+    [InlineData("")]
     public void ParseFailsIfInvalid(string signValue)
     {
         Assert.Throws<FormatException>(() => Word.Parse(signValue));

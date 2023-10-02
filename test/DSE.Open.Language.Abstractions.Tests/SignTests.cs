@@ -22,9 +22,9 @@ public class SignTests
 
     [Theory]
     [InlineData("spoken:ball")]
-    [InlineData( "written:ball")]
-    [InlineData( "gestured:ball")]
-    [InlineData( "pictured:ball")]
+    [InlineData("written:ball")]
+    [InlineData("gestured:ball")]
+    [InlineData("pictured:ball")]
     public void SerializeDeserialize(string signValue)
     {
         var sign = Sign.Parse(signValue);

@@ -182,7 +182,7 @@ public readonly partial struct MyOptions : IEquatableValue<MyOptions, long>
 
 #nullable disable
 ");
-        
+
         var result = CompilationHelper.RunValuesSourceGenerator(inputCompilation);
 
         AssertDiagnosticsCount(0, result.Diagnostics);

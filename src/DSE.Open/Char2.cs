@@ -49,7 +49,7 @@ public readonly struct Char2
         c0 = _c0;
         c1 = _c1;
     }
-    
+
     public bool Equals(Char2 other) => _c0 == other._c0 && _c1 == other._c1;
 
     public override bool Equals(object? obj) => obj is Char2 other && Equals(other);

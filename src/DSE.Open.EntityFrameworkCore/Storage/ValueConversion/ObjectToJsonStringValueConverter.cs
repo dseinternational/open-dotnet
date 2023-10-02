@@ -1,10 +1,10 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Text.Json;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using DSE.Open.Text.Json;
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using DSE.Open.Text.Json;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DSE.Open.EntityFrameworkCore.Storage.ValueConversion;
 

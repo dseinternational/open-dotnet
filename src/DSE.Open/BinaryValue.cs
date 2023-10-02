@@ -118,4 +118,29 @@ public readonly partial record struct BinaryValue : ISpanFormattable, IUtf8SpanF
 
         return new BinaryValue(bytes, noCopy: true);
     }
+
+    public static ReadOnlyMemory<byte> ToReadOnlyMemory(BinaryValue left, BinaryValue right)
+    {
+        throw new NotImplementedException();
+    }
+
+    public static bool operator <(BinaryValue left, BinaryValue right)
+    {
+        return left.CompareTo(right) < 0;
+    }
+
+    public static bool operator <=(BinaryValue left, BinaryValue right)
+    {
+        return left.CompareTo(right) <= 0;
+    }
+
+    public static bool operator >(BinaryValue left, BinaryValue right)
+    {
+        return left.CompareTo(right) > 0;
+    }
+
+    public static bool operator >=(BinaryValue left, BinaryValue right)
+    {
+        return left.CompareTo(right) >= 0;
+    }
 }
