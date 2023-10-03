@@ -38,9 +38,4 @@ public enum NotificationLevel
     /// failure that requires immediate attention.
     /// </summary>
     Critical = 5,
-
-    /// <summary>
-    /// Not used for reporting notifications. Specifies that a notification should not be reported.
-    /// </summary>
-    None = 6,
 }

@@ -47,7 +47,7 @@ public static class NotificationCollectionExtensions
     public static bool AnyCritical(this IEnumerable<Notification> notifications)
     {
         Guard.IsNotNull(notifications);
-        return notifications.Any(n => n.Level == NotificationLevel.Critical);
+        return notifications.Any(n => n.IsCritical());
     }
 
     /// <summary>
@@ -61,7 +61,7 @@ public static class NotificationCollectionExtensions
     public static bool AnyErrors(this IEnumerable<Notification> notifications)
     {
         Guard.IsNotNull(notifications);
-        return notifications.Any(n => n.Level is NotificationLevel.Error or NotificationLevel.Critical);
+        return notifications.Any(n => n.IsErrorOrAbove());
     }
 
     /// <summary>
@@ -74,7 +74,7 @@ public static class NotificationCollectionExtensions
     public static bool AnyWarnings(this IEnumerable<Notification> notifications)
     {
         Guard.IsNotNull(notifications);
-        return notifications.Any(n => n.Level is NotificationLevel.Warning or NotificationLevel.Error or NotificationLevel.Critical);
+        return notifications.Any(n => n.IsWarningOrAbove());
     }
 
     /// <summary>
@@ -145,4 +145,10 @@ public static class NotificationCollectionExtensions
         return new Result { Notifications = notifications };
     }
     */
+
+    public static IEnumerable<Notification> WhereErrorOrAbove(this IEnumerable<Notification> notifications)
+    {
+        Guard.IsNotNull(notifications);
+        return notifications.Where(n => n.IsErrorOrAbove());
+    }
 }
