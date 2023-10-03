@@ -33,6 +33,7 @@ public record Request : ImmutableDataTransferObject
     /// in <see cref="Sessions"/> with the key "default". For use-cases requiring
     /// multiple session contexts, use <see cref="Sessions"/> directly.
     /// </summary>
+    [Obsolete("To be removed and handled via RequestMetadata.")]
     [JsonIgnore]
     public SessionContext? Session
     {
@@ -58,6 +59,7 @@ public record Request : ImmutableDataTransferObject
         }
     }
 
+    [Obsolete("To be removed and handled via RequestMetadata.")]
     [JsonPropertyName("sessions")]
     public IReadOnlyDictionary<string, SessionContext> Sessions
     {

@@ -19,8 +19,10 @@ public class RequestTests
     [Fact]
     public void SessionSetsDefault()
     {
+#pragma warning disable CS0618 // Type or member is obsolete
         var request = new Request { Session = new SessionContext() };
         Assert.True(request.Sessions.ContainsKey("default"));
+#pragma warning restore CS0618 // Type or member is obsolete
     }
 
     [Fact]
