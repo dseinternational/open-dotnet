@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Collections.Concurrent;
 using System.Text.Json.Serialization;
 using DSE.Open.Values;
 
@@ -12,6 +13,7 @@ namespace DSE.Open.Sessions;
 /// </summary>
 public sealed class SessionContext
 {
+    private readonly ConcurrentDictionary<string, string> _storageTokens;
 
     /// <summary>
     /// Initialises a new instance using <see cref="TimeProvider.System"/>.
@@ -28,9 +30,12 @@ public sealed class SessionContext
     public SessionContext(TimeProvider timeProvider)
     {
         Guard.IsNotNull(timeProvider);
+
         Id = Identifier.New("sess");
+
         Created = timeProvider.GetUtcNow();
-        StorageTokens = new Dictionary<string, string>();
+
+        _storageTokens = new ConcurrentDictionary<string, string>();
     }
 
     [JsonConstructor]
@@ -38,7 +43,7 @@ public sealed class SessionContext
     {
         Id = id;
         Created = created;
-        StorageTokens = storageTokens;
+        _storageTokens = new ConcurrentDictionary<string, string>(storageTokens);
     }
 
     /// <summary>
@@ -78,7 +83,7 @@ public sealed class SessionContext
     }
 
     [JsonPropertyName("storage_tokens")]
-    public IDictionary<string, string> StorageTokens { get; }
+    public IDictionary<string, string> StorageTokens => _storageTokens;
 
     /// <summary>
     /// A token that can be used to ensure consistent access to persistent storage.
