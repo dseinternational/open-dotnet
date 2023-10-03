@@ -53,35 +53,6 @@ public sealed class SessionContext
     [JsonPropertyName("id")]
     public Identifier Id { get; }
 
-    /// <summary>
-    /// A token that can be used to ensure consistent access to persistent storage.
-    /// </summary>
-    [Obsolete("Use StorageTokens instead.")]
-    [JsonIgnore]
-    public string? StorageToken
-    {
-        get
-        {
-            if (StorageTokens.TryGetValue("default", out var token))
-            {
-                return token;
-            }
-
-            return null;
-        }
-        set
-        {
-            if (value is not null)
-            {
-                StorageTokens["default"] = value;
-            }
-            else
-            {
-                _ = StorageTokens.Remove("default");
-            }
-        }
-    }
-
     [JsonPropertyName("storage_tokens")]
     public IDictionary<string, string> StorageTokens => _storageTokens;
 
