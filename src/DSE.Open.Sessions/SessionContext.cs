@@ -61,4 +61,27 @@ public sealed class SessionContext
     /// </summary>
     [JsonPropertyName("created")]
     public DateTimeOffset Created { get; }
+
+    /// <summary>
+    /// Merges the data from the specified <paramref name="other"/> session context
+    /// into this instance.
+    /// </summary>
+    /// <param name="other"></param>
+    public void Merge(SessionContext? other)
+    {
+        if (other is null)
+        {
+            return;
+        }
+
+        if (other == this)
+        {
+            return;
+        }
+
+        foreach (var (key, value) in other.StorageTokens)
+        {
+            _storageTokens[key] = value;
+        }
+    }
 }
