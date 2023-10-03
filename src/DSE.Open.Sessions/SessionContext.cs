@@ -12,6 +12,7 @@ namespace DSE.Open.Sessions;
 /// </summary>
 public sealed class SessionContext
 {
+
     /// <summary>
     /// Initialises a new instance using <see cref="TimeProvider.System"/>.
     /// </summary>
@@ -29,14 +30,15 @@ public sealed class SessionContext
         Guard.IsNotNull(timeProvider);
         Id = Identifier.New("sess");
         Created = timeProvider.GetUtcNow();
+        StorageTokens = new Dictionary<string, string>();
     }
 
     [JsonConstructor]
-    public SessionContext(Identifier id, string? storageToken, DateTimeOffset created)
+    public SessionContext(Identifier id, DateTimeOffset created, IDictionary<string, string> storageTokens)
     {
         Id = id;
-        StorageToken = storageToken;
         Created = created;
+        StorageTokens = storageTokens;
     }
 
     /// <summary>
@@ -49,8 +51,34 @@ public sealed class SessionContext
     /// <summary>
     /// A token that can be used to ensure consistent access to persistent storage.
     /// </summary>
-    [JsonPropertyName("storage_token")]
-    public string? StorageToken { get; set; }
+    [Obsolete("Use StorageTokens instead.")]
+    [JsonIgnore]
+    public string? StorageToken
+    {
+        get
+        {
+            if (StorageTokens.TryGetValue("default", out var token))
+            {
+                return token;
+            }
+
+            return null;
+        }
+        set
+        {
+            if (value is not null)
+            {
+                StorageTokens["default"] = value;
+            }
+            else
+            {
+                _ = StorageTokens.Remove("default");
+            }
+        }
+    }
+
+    [JsonPropertyName("storage_tokens")]
+    public IDictionary<string, string> StorageTokens { get; }
 
     /// <summary>
     /// A token that can be used to ensure consistent access to persistent storage.

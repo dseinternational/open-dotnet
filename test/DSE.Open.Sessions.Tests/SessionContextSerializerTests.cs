@@ -10,7 +10,9 @@ public class SessionContextSerializerTests
     [Fact]
     public void SerializeDeserializeUtf8Json()
     {
-        var context = new SessionContext { StorageToken = "NbyaXkkUbDhmv6TSnPN1Himt5AukzZsAH22wsAISPXI74YhS8VKreWriNYAzAF80" };
+        var context = new SessionContext();
+        context.StorageTokens["test"] = "NbyaXkkUbDhmv6TSnPN1Himt5AukzZsAH22wsAISPXI74YhS8VKreWriNYAzAF80";
+
         var utf8Json = SessionContextSerializer.SerializeToUtf8Json(context);
         var deserialized = SessionContextSerializer.DeserializeFromUtf8Json(utf8Json.Span);
         _ = deserialized.Should().BeEquivalentTo(context);
