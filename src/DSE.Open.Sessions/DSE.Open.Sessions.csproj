@@ -5,7 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DSE.Open.Values\DSE.Open.Values.csproj" />
+    <ProjectReference Include="..\DSE.Open.Requests\DSE.Open.Requests.csproj" />
+    <ProjectReference Include="..\DSE.Open.Results\DSE.Open.Results.csproj" />
   </ItemGroup>
 
 </Project>

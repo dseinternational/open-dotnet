@@ -7,7 +7,6 @@
   <ItemGroup>
     <ProjectReference Include="..\DSE.Open.Requests\DSE.Open.Requests.csproj" />
     <ProjectReference Include="..\DSE.Open.Results\DSE.Open.Results.csproj" />
-    <ProjectReference Include="..\DSE.Open.Sessions\DSE.Open.Sessions.csproj" />
   </ItemGroup>
 
 </Project>
