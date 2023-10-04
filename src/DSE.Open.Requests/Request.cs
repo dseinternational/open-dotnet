@@ -2,10 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Text.Json.Serialization;
-using DSE.Open.Collections.Generic;
 using DSE.Open.Serialization.DataTransfer;
-using DSE.Open.Sessions;
-using DSE.Open.Values;
 
 namespace DSE.Open.Requests;
 
@@ -15,55 +12,14 @@ namespace DSE.Open.Requests;
 /// </summary>
 public record Request : ImmutableDataTransferObject
 {
-    private Identifier? _id;
-
-    private readonly ValueDictionary<string, SessionContext> _sessions = [];
+    private Guid? _id;
 
     protected virtual string IdPrefix => "dse_req";
 
-    [JsonPropertyName("request_id")]
-    public Identifier RequestId
+    [JsonPropertyName("id")]
+    public Guid Id
     {
-        get => _id ??= Identifier.New(24, IdPrefix);
+        get => _id ??= Guid.NewGuid();
         init => _id = value;
-    }
-
-    /// <summary>
-    /// Gets or initialises the default session context for this request - stored
-    /// in <see cref="Sessions"/> with the key "default". For use-cases requiring
-    /// multiple session contexts, use <see cref="Sessions"/> directly.
-    /// </summary>
-    [Obsolete("To be removed and handled via RequestMetadata.")]
-    [JsonIgnore]
-    public SessionContext? Session
-    {
-        get
-        {
-            if (Sessions.TryGetValue("default", out var session))
-            {
-                return session;
-            }
-
-            return null;
-        }
-        init
-        {
-            if (value is not null)
-            {
-                _sessions["default"] = value;
-            }
-            else
-            {
-                _ = _sessions.Remove("default");
-            }
-        }
-    }
-
-    [Obsolete("To be removed and handled via RequestMetadata.")]
-    [JsonPropertyName("sessions")]
-    public IReadOnlyDictionary<string, SessionContext> Sessions
-    {
-        get => _sessions;
-        init => _sessions.AddOrSetRange(value);
     }
 }

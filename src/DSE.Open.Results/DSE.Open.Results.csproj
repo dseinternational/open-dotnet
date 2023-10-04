@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DSE.Open.Notifications\DSE.Open.Notifications.csproj" />
-    <ProjectReference Include="..\DSE.Open.Sessions\DSE.Open.Sessions.csproj" />
   </ItemGroup>
 
 </Project>

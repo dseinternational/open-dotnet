@@ -42,6 +42,6 @@ public class CollectionValueAsyncResultTests
 
         _ = val2.Should().BeEquivalentTo(val1, config => config
             .ComparingByMembers<CollectionValueAsyncResult<string>>()
-            .Excluding(e => e.ResultId));
+            .Excluding(e => e.Id));
     }
 }

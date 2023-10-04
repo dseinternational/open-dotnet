@@ -24,7 +24,6 @@ public class ValueResultBuilder<TValue> : ValueResultBuilder<ValueResult<TValue>
         {
             Value = Value,
             Notifications = [.. Notifications],
-            Sessions = Sessions,
         };
     }
 }

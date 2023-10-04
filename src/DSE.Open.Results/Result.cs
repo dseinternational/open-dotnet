@@ -5,8 +5,6 @@ using System.Text.Json.Serialization;
 using DSE.Open.Collections.Generic;
 using DSE.Open.Notifications;
 using DSE.Open.Serialization.DataTransfer;
-using DSE.Open.Sessions;
-using DSE.Open.Values;
 
 namespace DSE.Open.Results;
 
@@ -19,16 +17,13 @@ public record Result : ImmutableDataTransferObject
 
     public static readonly Result? Null;
 
-    private Identifier? _id;
+    private Guid? _id;
     private ReadOnlyValueCollection<Notification>? _notifications;
-    private readonly ValueDictionary<string, SessionContext> _sessions = [];
-
-    protected virtual string IdPrefix => "dse_res";
 
     [JsonPropertyName("result_id")]
-    public Identifier ResultId
+    public Guid Id
     {
-        get => _id ??= Identifier.New(24, IdPrefix);
+        get => _id ??= Guid.NewGuid();
         init => _id = value;
     }
 
@@ -40,43 +35,6 @@ public record Result : ImmutableDataTransferObject
     {
         get => _notifications ??= [];
         init => _notifications = value;
-    }
-
-    /// <summary>
-    /// Gets or initialises the default session context for this result - stored
-    /// in <see cref="Sessions"/> with the key "default". For use-cases requiring
-    /// multiple session contexts, use <see cref="Sessions"/> directly.
-    /// </summary>
-    [JsonIgnore]
-    public SessionContext? Session
-    {
-        get
-        {
-            if (Sessions.TryGetValue("default", out var session))
-            {
-                return session;
-            }
-
-            return null;
-        }
-        init
-        {
-            if (value is not null)
-            {
-                _sessions["default"] = value;
-            }
-            else
-            {
-                _ = _sessions.Remove("default");
-            }
-        }
-    }
-
-    [JsonPropertyName("sessions")]
-    public IReadOnlyDictionary<string, SessionContext> Sessions
-    {
-        get => _sessions;
-        init => _sessions.AddOrSetRange(value);
     }
 
     [JsonIgnore]

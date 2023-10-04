@@ -40,7 +40,6 @@ public class PaginatedCollectionValueResultBuilder<TValue> : CollectionValueResu
             Value = [.. Items],
             Notifications = [.. Notifications],
             Pagination = Pagination,
-            Sessions = Sessions,
         };
     }
 }

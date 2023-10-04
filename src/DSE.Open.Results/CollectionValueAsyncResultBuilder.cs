@@ -30,6 +30,5 @@ public class CollectionValueAsyncResultBuilder<TValue>
         {
             Value = Value ?? AsyncEnumerable.Empty<TValue>(),
             Notifications = [.. Notifications],
-            Sessions = Sessions,
         };
 }

@@ -36,7 +36,6 @@ public class CollectionValueResultBuilder<TValue>
         {
             Value = [.. Items],
             Notifications = [.. Notifications],
-            Sessions = Sessions,
         };
     }
 }

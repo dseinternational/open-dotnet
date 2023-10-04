@@ -3,7 +3,6 @@
 
 using System.Text.Json;
 using DSE.Open.Notifications;
-using DSE.Open.Sessions;
 using FluentAssertions;
 
 namespace DSE.Open.Results.Tests;
@@ -33,13 +32,6 @@ public class ResultTests
     public void ResultIdIsNotDefault()
     {
         var request = new Result();
-        Assert.NotEqual(default, request.ResultId);
-    }
-
-    [Fact]
-    public void SessionSetsDefault()
-    {
-        var request = new Result { Session = new SessionContext() };
-        Assert.True(request.Sessions.ContainsKey("default"));
+        Assert.NotEqual(default, request.Id);
     }
 }

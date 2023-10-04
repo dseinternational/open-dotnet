@@ -3,15 +3,11 @@
 
 using System.Text.Json.Serialization;
 using DSE.Open.Serialization.DataTransfer;
-using DSE.Open.Sessions;
 
 namespace DSE.Open.Results;
 
 public record ResultMetadata : ImmutableDataTransferObject
 {
-    [JsonPropertyName("session")]
-    public SessionContext? Session { get; init; }
-
     [JsonPropertyName("properties")]
     public IDictionary<string, string> Properties { get; } = new Dictionary<string, string>();
 }

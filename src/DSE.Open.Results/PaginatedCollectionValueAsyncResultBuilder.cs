@@ -22,7 +22,6 @@ public class PaginatedCollectionValueAsyncResultBuilder<TValue> : PaginatedColle
                 Value = Value ?? AsyncEnumerable.Empty<TValue>(),
                 Notifications = [.. Notifications],
                 Pagination = Pagination,
-                Sessions = Sessions,
             };
     }
 }
