@@ -9,5 +9,5 @@ namespace DSE.Open.Results;
 public record ResultMetadata : ImmutableDataTransferObject
 {
     [JsonPropertyName("properties")]
-    public IDictionary<string, string> Properties { get; } = new Dictionary<string, string>();
+    public IDictionary<string, object> Properties { get; } = new Dictionary<string, object>();
 }
