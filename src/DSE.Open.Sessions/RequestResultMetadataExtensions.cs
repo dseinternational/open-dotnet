@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Diagnostics.CodeAnalysis;
 using DSE.Open.Requests;
 using DSE.Open.Results;
 
@@ -20,7 +21,9 @@ public static class RequestResultMetadataExtensions
         return (SessionContext)resultMetadata.Properties[SessionContextMetadataKeys.SessionContext];
     }
 
-    public static bool TryGetSessionContext(this RequestMetadata requestMetadata, out SessionContext? sessionContext)
+    public static bool TryGetSessionContext(
+        this RequestMetadata requestMetadata,
+        [NotNullWhen(true)] out SessionContext? sessionContext)
     {
         Guard.IsNotNull(requestMetadata);
 
@@ -35,7 +38,9 @@ public static class RequestResultMetadataExtensions
         return false;
     }
 
-    public static bool TryGetSessionContext(this ResultMetadata resultMetadata, out SessionContext? sessionContext)
+    public static bool TryGetSessionContext(
+        this ResultMetadata resultMetadata,
+        [NotNullWhen(true)] out SessionContext? sessionContext)
     {
         Guard.IsNotNull(resultMetadata);
 
