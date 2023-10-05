@@ -39,11 +39,14 @@ public sealed class SessionContext
     }
 
     [JsonConstructor]
-    public SessionContext(Identifier id, DateTimeOffset created, ConcurrentDictionary<string, string> storageTokens)
+    public SessionContext(
+        Identifier id,
+        DateTimeOffset created,
+        ConcurrentDictionary<string, string> storageTokens)
     {
         Id = id;
         Created = created;
-        _storageTokens = storageTokens;
+        _storageTokens = new ConcurrentDictionary<string, string>(storageTokens, StringComparer.InvariantCultureIgnoreCase);
     }
 
     /// <summary>
