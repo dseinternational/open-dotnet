@@ -14,8 +14,6 @@ public record Request : ImmutableDataTransferObject
 {
     private Guid? _id;
 
-    protected virtual string IdPrefix => "dse_req";
-
     [JsonPropertyName("id")]
     public Guid Id
     {
