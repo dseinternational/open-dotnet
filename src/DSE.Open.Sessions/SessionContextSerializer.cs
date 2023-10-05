@@ -27,4 +27,12 @@ public static class SessionContextSerializer
     [RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]
     public static SessionContext? DeserializeFromBase64Utf8Json(string base64)
         => JsonBinarySerializer.DeserializeFromBase64Utf8Json<SessionContext>(base64);
+
+    [RequiresDynamicCode(WarningMessages.RequiresDynamicCode)]
+    [RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]
+    public static bool TryDeserializeFromBase64Utf8Json(
+        string base64,
+        [NotNullWhen(true)] SessionContext? sessionContext)
+        => JsonBinarySerializer.TryDeserializeFromBase64Utf8Json(base64, out sessionContext)
+            && sessionContext is not null;
 }
