@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Collections.Concurrent;
 using DSE.Open.Requests;
 using DSE.Open.Results;
 
@@ -20,7 +21,7 @@ public interface IMetadataReader
     ValueTask ReadRequestMetadataAsync(
         RequestMetadata request,
         ResultMetadata result,
-        IDictionary<string, string> source,
+        ConcurrentDictionary<string, string> source,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -35,6 +36,6 @@ public interface IMetadataReader
     ValueTask ReadResultMetadataAsync(
         RequestMetadata request,
         ResultMetadata result,
-        IDictionary<string, string> source,
+        ConcurrentDictionary<string, string> source,
         CancellationToken cancellationToken = default);
 }
