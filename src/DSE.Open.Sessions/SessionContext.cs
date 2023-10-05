@@ -39,11 +39,11 @@ public sealed class SessionContext
     }
 
     [JsonConstructor]
-    public SessionContext(Identifier id, DateTimeOffset created, IDictionary<string, string> storageTokens)
+    public SessionContext(Identifier id, DateTimeOffset created, ConcurrentDictionary<string, string> storageTokens)
     {
         Id = id;
         Created = created;
-        _storageTokens = new ConcurrentDictionary<string, string>(storageTokens);
+        _storageTokens = storageTokens;
     }
 
     /// <summary>
@@ -54,7 +54,7 @@ public sealed class SessionContext
     public Identifier Id { get; }
 
     [JsonPropertyName("storage_tokens")]
-    public IDictionary<string, string> StorageTokens => _storageTokens;
+    public ConcurrentDictionary<string, string> StorageTokens => _storageTokens;
 
     /// <summary>
     /// A token that can be used to ensure consistent access to persistent storage.
