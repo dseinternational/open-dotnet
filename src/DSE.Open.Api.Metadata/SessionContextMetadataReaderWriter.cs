@@ -61,7 +61,8 @@ public sealed partial class SessionContextMetadataReaderWriter : IMetadataReader
             else
             {
                 Log.FailedToDeserializeSessionContextFromRequestMetadata(_logger, sessionContextValue);
-                sessionContext = new SessionContext();
+                ThrowHelper.ThrowInvalidOperationException($"Failed to deserialize {nameof(SessionContext)} from {nameof(RequestMetadata)}.");
+                return ValueTask.CompletedTask; // unreachable
             }
         }
         else
@@ -95,7 +96,7 @@ public sealed partial class SessionContextMetadataReaderWriter : IMetadataReader
 
         if (!context.Data.TryGetValue(SessionContextMetadataKeys.SessionContext, out var sessionContextValue))
         {
-            // No session context, so nothing to add
+            // Already added, and we don't have anything new so leave the existing value.
             return ValueTask.CompletedTask;
         }
 
@@ -110,7 +111,11 @@ public sealed partial class SessionContextMetadataReaderWriter : IMetadataReader
         }
         else
         {
+            // We're reading from result, but the base64 value is invalid. This
+            // is a bug in some using code.
             Log.FailedToDeserializeSessionContextFromResultMetadata(_logger, sessionContextValue);
+            ThrowHelper.ThrowInvalidOperationException($"Failed to deserialize {nameof(SessionContext)} from {nameof(ResultMetadata)}.");
+            return ValueTask.CompletedTask; // unreachable
         }
 
         return ValueTask.CompletedTask;

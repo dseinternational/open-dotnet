@@ -42,7 +42,7 @@ public class SessionContextMetadataReaderWriterTests
     }
 
     [Fact]
-    public async Task ReadRequestMetadataAsync_WithInvalidSessionJson_ShouldCreateNewSession()
+    public async Task ReadRequestMetadataAsync_WithInvalidSessionJson_ShouldThrowInvalidOperationException()
     {
         // Arrange
         var logger = new Mock<ILogger<SessionContextMetadataReaderWriter>>();
@@ -54,15 +54,14 @@ public class SessionContextMetadataReaderWriterTests
         context.Data.TryAdd(SessionContextMetadataKeys.SessionContext, "invalid json");
 
         // Act
-        await readerWriter.ReadRequestMetadataAsync(
+        async Task Act() => await readerWriter.ReadRequestMetadataAsync(
             requestMetadata,
             resultMetadata,
             context,
             CancellationToken.None);
 
         // Assert
-        var requestSessionContext = requestMetadata.Properties[SessionContextMetadataKeys.SessionContext] as SessionContext;
-        Assert.NotNull(requestSessionContext);
+        await Assert.ThrowsAsync<InvalidOperationException>(Act);
     }
 
     [Fact]
@@ -193,7 +192,7 @@ public class SessionContextMetadataReaderWriterTests
     }
 
     [Fact]
-    public async Task ReadResultMetadata_WithInvalidSession_ShouldNotCreateNew()
+    public async Task ReadResultMetadata_WithInvalidSession_ShouldThrowInvalidOperationException()
     {
         // Arrange
         var logger = new Mock<ILogger<SessionContextMetadataReaderWriter>>();
@@ -205,13 +204,14 @@ public class SessionContextMetadataReaderWriterTests
         context.Data.TryAdd(SessionContextMetadataKeys.SessionContext, "invalid json");
 
         // Act
-        await readerWriter.ReadResultMetadataAsync(
+        async Task Act() => await readerWriter.ReadResultMetadataAsync(
             requestMetadata,
             resultMetadata,
             context,
             CancellationToken.None);
 
         // Assert
+        await Assert.ThrowsAsync<InvalidOperationException>(Act);
         Assert.False(resultMetadata.Properties.TryGetValue(SessionContextMetadataKeys.SessionContext, out _));
         Assert.False(requestMetadata.Properties.TryGetValue(SessionContextMetadataKeys.SessionContext, out _));
     }
