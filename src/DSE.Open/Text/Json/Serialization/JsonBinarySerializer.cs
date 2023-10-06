@@ -4,6 +4,7 @@
 using System.Buffers;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
+using CommunityToolkit.HighPerformance;
 
 namespace DSE.Open.Text.Json.Serialization;
 
@@ -95,7 +96,7 @@ public static class JsonBinarySerializer
         {
             if (Convert.TryFromBase64String(base64, buffer, out var bytes))
             {
-                return TryDeserializeFromUtf8Json(buffer, jsonSerializerOptions, out value);
+                return TryDeserializeFromUtf8Json(buffer[..bytes], jsonSerializerOptions, out value);
             }
 
             value = default;
