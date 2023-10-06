@@ -1,7 +1,6 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
 using DSE.Open.Requests;
 using DSE.Open.Results;
@@ -41,16 +40,16 @@ public sealed partial class SessionContextMetadataReaderWriter : IMetadataReader
     public ValueTask ReadRequestMetadataAsync(
         RequestMetadata request,
         ResultMetadata result,
-        ConcurrentDictionary<string, string> source,
+        MetadataStorageContext context,
         CancellationToken cancellationToken = default)
     {
-        Guard.IsNotNull(source);
+        Guard.IsNotNull(context);
         Guard.IsNotNull(request);
         Guard.IsNotNull(result);
 
         SessionContext? sessionContext = null;
 
-        if (source.TryGetValue(SessionContextMetadataKeys.SessionContext, out var sessionContextValue))
+        if (context.Data.TryGetValue(SessionContextMetadataKeys.SessionContext, out var sessionContextValue))
         {
             if (SessionContextSerializer.TryDeserializeFromBase64Utf8Json(sessionContextValue, out sessionContext))
             {
@@ -86,16 +85,16 @@ public sealed partial class SessionContextMetadataReaderWriter : IMetadataReader
     public ValueTask ReadResultMetadataAsync(
         RequestMetadata request,
         ResultMetadata result,
-        ConcurrentDictionary<string, string> source,
+        MetadataStorageContext context,
         CancellationToken cancellationToken = default)
     {
-        Guard.IsNotNull(source);
+        Guard.IsNotNull(context);
         Guard.IsNotNull(request);
         Guard.IsNotNull(result);
 
         SessionContext? sessionContext = null;
 
-        if (source.TryGetValue(SessionContextMetadataKeys.SessionContext, out var sessionContextValue))
+        if (context.Data.TryGetValue(SessionContextMetadataKeys.SessionContext, out var sessionContextValue))
         {
             if (SessionContextSerializer.TryDeserializeFromBase64Utf8Json(sessionContextValue, out sessionContext))
             {
@@ -120,12 +119,12 @@ public sealed partial class SessionContextMetadataReaderWriter : IMetadataReader
     public ValueTask WriteRequestMetadataAsync(
         RequestMetadata request,
         ResultMetadata result,
-        ConcurrentDictionary<string, string> target,
+        MetadataStorageContext context,
         CancellationToken cancellationToken = default)
     {
         Guard.IsNotNull(request);
         Guard.IsNotNull(result);
-        Guard.IsNotNull(target);
+        Guard.IsNotNull(context);
 
         if (!request.Properties.TryGetValue(SessionContextMetadataKeys.SessionContext, out var sessionContextObj)
             || sessionContextObj is not SessionContext sessionContext)
@@ -135,7 +134,7 @@ public sealed partial class SessionContextMetadataReaderWriter : IMetadataReader
 
         var sessionContextValue = SessionContextSerializer.SerializeToBase64Utf8Json(sessionContext);
 
-        target[SessionContextMetadataKeys.SessionContext] = sessionContextValue;
+        context.Data[SessionContextMetadataKeys.SessionContext] = sessionContextValue;
 
         Log.SessionContextWrittenToRequestMetadata(_logger, sessionContext);
 
@@ -145,12 +144,12 @@ public sealed partial class SessionContextMetadataReaderWriter : IMetadataReader
     public ValueTask WriteResultMetadataAsync(
         RequestMetadata request,
         ResultMetadata result,
-        ConcurrentDictionary<string, string> target,
+        MetadataStorageContext context,
         CancellationToken cancellationToken = default)
     {
         Guard.IsNotNull(request);
         Guard.IsNotNull(result);
-        Guard.IsNotNull(target);
+        Guard.IsNotNull(context);
 
         if (!result.Properties.TryGetValue(SessionContextMetadataKeys.SessionContext, out var sessionContextObj)
             || sessionContextObj is not SessionContext sessionContext)
@@ -160,7 +159,7 @@ public sealed partial class SessionContextMetadataReaderWriter : IMetadataReader
 
         var sessionContextValue = SessionContextSerializer.SerializeToBase64Utf8Json(sessionContext);
 
-        target[SessionContextMetadataKeys.SessionContext] = sessionContextValue;
+        context.Data[SessionContextMetadataKeys.SessionContext] = sessionContextValue;
 
         Log.SessionContextWrittenToResponseMetadata(_logger, sessionContext);
 
