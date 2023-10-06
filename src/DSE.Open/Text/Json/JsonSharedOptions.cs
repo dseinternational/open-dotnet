@@ -11,8 +11,11 @@ using NodaTime.Serialization.SystemTextJson;
 
 namespace DSE.Open.Text.Json;
 
+[RequiresDynamicCode(WarningMessages.RequiresDynamicCode)]
+[RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]
 public static class JsonSharedOptions
 {
+    private static readonly JsonNamingPolicy s_defaultNamingPolicy = JsonNamingPolicy.SnakeCaseLower;
 
     /// <summary>
     /// A shared default instance of <see cref="JsonSerializerOptions"/> configured for serializing
@@ -25,8 +28,7 @@ public static class JsonSharedOptions
     /// and deserializing DSE.Open types with a snake casing naming policy and with the encoder set to
     /// <see cref="JavaScriptEncoders.RelaxedJsonEscaping"/>.
     /// </summary>
-    public static readonly JsonSerializerOptions RelaxedJsonEscaping
-        = Create(encoder: JavaScriptEncoders.RelaxedJsonEscaping);
+    public static readonly JsonSerializerOptions RelaxedJsonEscaping = Create(encoder: JavaScriptEncoders.RelaxedJsonEscaping);
 
     public static JsonSerializerOptions Create(
         bool writeIndented = false,
@@ -34,12 +36,18 @@ public static class JsonSharedOptions
         JavaScriptEncoder? encoder = null)
     {
         var options = new JsonSerializerOptions();
-        ConfigureJsonOptions(options, writeIndented, addDefaultConverters);
+
+        ConfigureJsonOptions(
+            options,
+            s_defaultNamingPolicy,
+            writeIndented,
+            addDefaultConverters,
+            false,
+            encoder);
+
         return options;
     }
 
-    [RequiresDynamicCode(WarningMessages.RequiresDynamicCode)]
-    [RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]
     public static JsonSerializerOptions Create(
         bool writeIndented,
         bool addDefaultConverters,
@@ -49,7 +57,7 @@ public static class JsonSharedOptions
 
         ConfigureJsonOptions(
             options,
-            JsonNamingPolicy.SnakeCaseLower,
+            s_defaultNamingPolicy,
             writeIndented,
             addDefaultConverters,
             includeJsonValueObjectConverter,
@@ -62,16 +70,8 @@ public static class JsonSharedOptions
         JsonSerializerOptions options,
         bool writeIndented = false,
         bool addDefaultConverters = true)
-        => ConfigureJsonOptions(
-            options,
-            JsonNamingPolicy.SnakeCaseLower,
-            writeIndented,
-            addDefaultConverters);
+        => ConfigureJsonOptions(options, s_defaultNamingPolicy, writeIndented, addDefaultConverters);
 
-    [UnconditionalSuppressMessage("Trimming", "IL2026",
-        Justification = "Calls AddDefaultConverters with includeJsonValueObjectConverter = false")]
-    [UnconditionalSuppressMessage("Trimming", "IL3050",
-        Justification = "Calls AddDseOpenCoreJsonConverters with includeJsonValueObjectConverter = false")]
     public static void ConfigureJsonOptions(
         JsonSerializerOptions options,
         JsonNamingPolicy commonNamingPolicy,
@@ -85,8 +85,6 @@ public static class JsonSharedOptions
             false,
             null);
 
-    [RequiresDynamicCode(WarningMessages.RequiresDynamicCode)]
-    [RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]
     public static void ConfigureJsonOptions(
         JsonSerializerOptions options,
         JsonNamingPolicy commonNamingPolicy,
@@ -100,9 +98,8 @@ public static class JsonSharedOptions
 
         options.Encoder = encoder ?? JavaScriptEncoders.UnicodeRangesAll;
 
-        options.PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower;
-
-        options.DictionaryKeyPolicy = JsonNamingPolicy.SnakeCaseLower;
+        options.PropertyNamingPolicy = commonNamingPolicy;
+        options.DictionaryKeyPolicy = commonNamingPolicy;
 
         if (addDefaultConverters)
         {
@@ -114,22 +111,13 @@ public static class JsonSharedOptions
         options.WriteIndented = writeIndented;
     }
 
-    [UnconditionalSuppressMessage("Trimming", "IL2026",
-        Justification = "Calls AddDefaultConverters with includeJsonValueObjectConverter = false")]
-    [UnconditionalSuppressMessage("Trimming", "IL3050",
-        Justification = "Calls AddDseOpenCoreJsonConverters with includeJsonValueObjectConverter = false")]
     public static void AddDefaultConverters(IList<JsonConverter> converters)
         => AddDefaultConverters(converters, false);
 
-    [RequiresDynamicCode(WarningMessages.RequiresDynamicCode)]
-    [RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]
     public static void AddDefaultConverters(IList<JsonConverter> converters, bool includeJsonValueObjectConverter)
     {
         Guard.IsNotNull(converters);
-
-        converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.SnakeCaseLower));
-
+        converters.Add(new JsonStringEnumConverter(s_defaultNamingPolicy));
         converters.AddDseOpenCoreJsonConverters(includeJsonValueObjectConverter);
     }
-
 }
