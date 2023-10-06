@@ -104,7 +104,7 @@ public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, Asc
     public bool StartsWith(UriAsciiPath value) => _value.StartsWith(value._value);
 
     public bool StartsWith(AsciiString value) => _value.StartsWith(value);
-    
+
     public bool StartsWith(ReadOnlySpan<byte> value) => _value.StartsWith(value);
 
     public bool StartsWith(AsciiChar value) => !_value.IsEmpty && _value[0] == value;
@@ -177,7 +177,7 @@ public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, Asc
 
             if (NarrowUtf16ToAscii(value, buffer))
             {
-                return IsValidValue(ValuesMarshal.AsAsciiChars(buffer));
+                return IsValidValue(ValuesMarshal.AsAsciiChars(buffer[..value.Length]));
             }
         }
         finally
@@ -234,15 +234,15 @@ public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, Asc
 
             try
             {
-                Span<char> span = s.Length <= StackallocThresholds.MaxCharLength
+                Span<char> buffer = s.Length <= StackallocThresholds.MaxCharLength
                     ? stackalloc char[s.Length]
                     : rentedBuffer = ArrayPool<char>.Shared.Rent(s.Length);
 
-                var written = s.ToLowerInvariant(span);
+                var written = s.ToLowerInvariant(buffer);
 
-                if (written > -1)
+                if (written >= 0)
                 {
-                    return TryParse(span, out value);
+                    return TryParse(buffer[..written], out value);
                 }
             }
             finally
@@ -423,16 +423,17 @@ public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, Asc
     public string ToAbsolutePath()
     {
         AsciiChar[]? rented = null;
+        var requiredLength = _value.Length + 2;
 
         try
         {
-            var span = _value.Length < StackallocThresholds.MaxCharLength - 2
-                ? stackalloc AsciiChar[_value.Length + 2]
-                : rented = ArrayPool<AsciiChar>.Shared.Rent(_value.Length + 2);
+            var span = requiredLength <= StackallocThresholds.MaxCharLength
+                ? stackalloc AsciiChar[requiredLength]
+                : rented = ArrayPool<AsciiChar>.Shared.Rent(requiredLength);
 
             if (rented is not null)
             {
-                span = span[..(_value.Length + 2)];
+                span = span[..requiredLength];
             }
 
             var separator = (AsciiChar)'/';

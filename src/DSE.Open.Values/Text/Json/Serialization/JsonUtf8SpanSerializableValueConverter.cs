@@ -14,39 +14,17 @@ public sealed class JsonUtf8SpanSerializableValueConverter<TValue, T> : JsonConv
 {
     public override TValue Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        var valueLength = reader.HasValueSequence
-            ? checked((int)reader.ValueSequence.Length)
-            : reader.ValueSpan.Length;
+        var bytes = reader.HasValueSequence
+            ? reader.ValueSequence.ToArray()
+            : reader.ValueSpan;
 
-        byte[]? rented = null;
-
-        Span<byte> buffer = valueLength <= JsonConstants.StackallocByteThreshold
-            ? stackalloc byte[valueLength]
-            : (rented = ArrayPool<byte>.Shared.Rent(valueLength));
-
-        try
+        if (TValue.TryParse(bytes, default, out var value))
         {
-            var bytes = reader.HasValueSequence
-                ? reader.ValueSequence.ToArray()
-                : reader.ValueSpan;
-
-            var success = TValue.TryParse(bytes, default, out var value);
-
-            if (success)
-            {
-                return value;
-            }
-
-            ThrowHelper.ThrowFormatException($"Could not convert {typeof(TValue).Name} value: {Encoding.UTF8.GetString(bytes)}");
-            return default; // unreachable
+            return value;
         }
-        finally
-        {
-            if (rented is not null)
-            {
-                ArrayPool<byte>.Shared.Return(rented, clearArray: true);
-            }
-        }
+
+        ThrowHelper.ThrowFormatException($"Could not convert {typeof(TValue).Name} value: {Encoding.UTF8.GetString(bytes)}");
+        return default; // unreachable
     }
 
     public override void Write(Utf8JsonWriter writer, TValue value, JsonSerializerOptions options)

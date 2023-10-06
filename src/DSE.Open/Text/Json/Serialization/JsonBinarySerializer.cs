@@ -89,14 +89,14 @@ public static class JsonBinarySerializer
 
         byte[]? rented = null;
 
-        Span<byte> buffer = byteLength <= 128
+        Span<byte> buffer = byteLength <= StackallocThresholds.MaxByteLength
             ? stackalloc byte[byteLength]
             : (rented = ArrayPool<byte>.Shared.Rent(byteLength));
         try
         {
-            if (Convert.TryFromBase64String(base64, buffer, out var bytes))
+            if (Convert.TryFromBase64String(base64, buffer, out var bytesWritten))
             {
-                return TryDeserializeFromUtf8Json(buffer[..bytes], jsonSerializerOptions, out value);
+                return TryDeserializeFromUtf8Json(buffer[..bytesWritten], jsonSerializerOptions, out value);
             }
 
             value = default;

@@ -128,9 +128,9 @@ public static class StringHelper
 
         try
         {
-            Span<char> buffer = text.Length >= StackallocThresholds.MaxCharLength
-                ? (rentedBuffer = ArrayPool<char>.Shared.Rent(text.Length))
-                : stackalloc char[text.Length];
+            Span<char> buffer = text.Length <= StackallocThresholds.MaxCharLength
+                ? stackalloc char[text.Length]
+                : (rentedBuffer = ArrayPool<char>.Shared.Rent(text.Length));
 
             var index = 0;
 
@@ -315,7 +315,9 @@ public static class StringHelper
         }
 
         char[]? rented = null;
-        var result = text.Length < StackallocThresholds.MaxCharLength ? stackalloc char[text.Length] : Span<char>.Empty;
+        var result = text.Length <= StackallocThresholds.MaxCharLength
+            ? stackalloc char[text.Length]
+            : Span<char>.Empty;
 
         var index = 0;
 
@@ -457,7 +459,7 @@ public static class StringHelper
             return name;
         }
 
-        var buffer = ArrayPool<char>.Shared.Rent(name.Length * 2 - 1);
+        var buffer = ArrayPool<char>.Shared.Rent((name.Length * 2) - 1);
         var pos = 0;
 
         var state = SeparatedCaseState.Start;
