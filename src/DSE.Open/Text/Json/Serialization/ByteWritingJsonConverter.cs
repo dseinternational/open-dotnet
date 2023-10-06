@@ -23,37 +23,17 @@ public abstract class ByteWritingJsonConverter<TValue> : JsonConverter<TValue>
 
     public override TValue Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        var valueLength = reader.HasValueSequence
-            ? checked((int)reader.ValueSequence.Length)
-            : reader.ValueSpan.Length;
+        var bytes = reader.HasValueSequence
+            ? reader.ValueSequence.ToArray()
+            : reader.ValueSpan;
 
-        byte[]? rented = null;
-
-        Span<byte> buffer = valueLength <= StackallocThresholds.MaxByteLength
-            ? stackalloc byte[valueLength]
-            : (rented = ArrayPool<byte>.Shared.Rent(valueLength));
-
-        try
+        if (TryParse(bytes, out var value))
         {
-            var bytes = reader.HasValueSequence
-                ? reader.ValueSequence.ToArray()
-                : reader.ValueSpan;
-
-            if (TryParse(bytes, out var value))
-            {
-                return value;
-            }
-
-            ThrowHelper.ThrowFormatException($"Could not convert {typeof(TValue).Name} value: {buffer.ToArray()}");
-            return default;
+            return value;
         }
-        finally
-        {
-            if (rented is not null)
-            {
-                ArrayPool<byte>.Shared.Return(rented, clearArray: true);
-            }
-        }
+
+        ThrowHelper.ThrowFormatException($"Could not convert {typeof(TValue).Name} value: {bytes.ToArray()}");
+        return default;
     }
 
     public override void Write(Utf8JsonWriter writer, TValue value, JsonSerializerOptions options)

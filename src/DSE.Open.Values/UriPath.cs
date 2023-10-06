@@ -337,15 +337,17 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
     public string ToAbsolutePath()
     {
         char[]? rented = null;
+        var requiredLength = _value.Length + 2;
+
         try
         {
-            var span = _value.Length < StackallocThresholds.MaxCharLength - 2
-                ? stackalloc char[_value.Length + 2]
-                : rented = ArrayPool<char>.Shared.Rent(_value.Length + 2);
+            var span = requiredLength <= StackallocThresholds.MaxCharLength
+                ? stackalloc char[requiredLength]
+                : rented = ArrayPool<char>.Shared.Rent(requiredLength);
 
             if (rented is not null)
             {
-                span = span[..(_value.Length + 2)];
+                span = span[..requiredLength];
             }
 
             span[0] = '/';
