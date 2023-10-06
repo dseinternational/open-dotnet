@@ -10,6 +10,22 @@ using Microsoft.Extensions.Logging;
 
 namespace DSE.Open.Api.Metadata;
 
+/*
+    This reader/writer handles reading/writing session context data from/to HTTP headers and HTTP cookies.
+
+    In client web applications, session context data is read from cookies when a user requests a page. The
+    session context data is then passed via HTTP request headers to backend APIs. Session context returned
+    from backend APIs is then read from HTTP response headers, and subsequently written to cookies in the
+    response to the user.
+
+    When a request is read, the session context object is added to both request and result metadata. This
+    ensures that any services writing to the result metadata write to the same session.
+
+    When result data is read, the session context object is simply added to result metadata. At this point,
+    the session in result metadata will no longer be the same instance. 
+
+*/
+
 [RequiresDynamicCode(WarningMessages.RequiresDynamicCode)]
 [RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]
 public sealed partial class SessionContextMetadataReaderWriter : IMetadataReader, IMetadataWriter
@@ -32,27 +48,37 @@ public sealed partial class SessionContextMetadataReaderWriter : IMetadataReader
         Guard.IsNotNull(request);
         Guard.IsNotNull(result);
 
-        if (!source.TryGetValue(SessionContextMetadataKeys.SessionContext, out var sessionContextValue))
+        SessionContext? sessionContext = null;
+
+        if (source.TryGetValue(SessionContextMetadataKeys.SessionContext, out var sessionContextValue))
         {
-            return ValueTask.CompletedTask;
+            if (SessionContextSerializer.TryDeserializeFromBase64Utf8Json(sessionContextValue, out sessionContext))
+            {
+                Log.SessionContextReadFromRequestMetadata(_logger, sessionContext);
+            }
+            else
+            {
+                _logger.LogWarning(
+                    "Failed to deserialize session context from request " +
+                    "metadata: {SessionContextValue}", sessionContextValue);
+            }
         }
 
-        if (!SessionContextSerializer.TryDeserializeFromBase64Utf8Json(sessionContextValue, out var sessionContext))
-        {
-            _logger.LogWarning("Failed to deserialize session context from request metadata: {SessionContextValue}", sessionContextValue);
-        }
+        // not read - create new session
 
-        if (sessionContext is not null)
-        {
-            Log.SessionContextReadFromRequestMetadata(_logger, sessionContext);
-        }
-        else
-        {
-            sessionContext = new SessionContext();
-            Log.NoSessionContextInRequestMetadata(_logger, sessionContext);
-        }
+        sessionContext ??= new SessionContext();
 
-        sessionContext = (SessionContext)request.Properties.AddOrUpdate(SessionContextMetadataKeys.SessionContext, sessionContext, (k, v) => sessionContext);
+        Log.NoSessionContextInRequestMetadata(_logger, sessionContext);
+
+        sessionContext = (SessionContext)request.Properties.AddOrUpdate(
+            SessionContextMetadataKeys.SessionContext,
+            sessionContext,
+            (k, v) => sessionContext);
+
+        _ = (SessionContext)result.Properties.AddOrUpdate(
+            SessionContextMetadataKeys.SessionContext,
+            sessionContext,
+            (k, v) => sessionContext);
 
         return ValueTask.CompletedTask;
     }
@@ -67,24 +93,26 @@ public sealed partial class SessionContextMetadataReaderWriter : IMetadataReader
         Guard.IsNotNull(request);
         Guard.IsNotNull(result);
 
-        if (!source.TryGetValue(SessionContextMetadataKeys.SessionContext, out var sessionContextValue))
-        {
-            return ValueTask.CompletedTask;
-        }
+        SessionContext? sessionContext = null;
 
-        var sessionContext = SessionContextSerializer.DeserializeFromBase64Utf8Json(sessionContextValue);
-
-        if (sessionContext is not null)
+        if (source.TryGetValue(SessionContextMetadataKeys.SessionContext, out var sessionContextValue))
         {
-            Log.SessionContextReadFromResultMetadata(_logger, sessionContext);
-        }
-        else
-        {
-            sessionContext = new SessionContext();
-            Log.NoSessionContextInRequestResult(_logger, sessionContext);
-        }
+            if (SessionContextSerializer.TryDeserializeFromBase64Utf8Json(sessionContextValue, out sessionContext))
+            {
+                Log.SessionContextReadFromResultMetadata(_logger, sessionContext);
 
-        _ = result.Properties.AddOrUpdate(SessionContextMetadataKeys.SessionContext, sessionContext, (k, v) => sessionContext);
+                sessionContext = (SessionContext)result.Properties.AddOrUpdate(
+                    SessionContextMetadataKeys.SessionContext,
+                    sessionContext,
+                    (k, v) => sessionContext);
+            }
+            else
+            {
+                _logger.LogWarning(
+                    "Failed to deserialize session context from result " +
+                    "metadata: {SessionContextValue}", sessionContextValue);
+            }
+        }
 
         return ValueTask.CompletedTask;
     }
@@ -160,16 +188,8 @@ public sealed partial class SessionContextMetadataReaderWriter : IMetadataReader
         [LoggerMessage(
             EventId = 3,
             Level = LogLevel.Debug,
-            Message = "Session context read from request result: {SessionContext}")]
+            Message = "Session context read from result metadata: {SessionContext}")]
         public static partial void SessionContextReadFromResultMetadata(
-            ILogger logger,
-            SessionContext sessionContext);
-
-        [LoggerMessage(
-            EventId = 4,
-            Level = LogLevel.Debug,
-            Message = "No session context in request result - created new context: {SessionContext}")]
-        public static partial void NoSessionContextInRequestResult(
             ILogger logger,
             SessionContext sessionContext);
 
@@ -189,17 +209,4 @@ public sealed partial class SessionContextMetadataReaderWriter : IMetadataReader
             ILogger logger,
             SessionContext sessionContext);
     }
-}
-
-internal static class WarningMessages
-{
-    public const string RequiresDynamicCode =
-        "JSON serialization and deserialization might require types that cannot be statically " +
-        "analyzed and might need runtime code generation. Use System.Text.Json source generation for " +
-        "native AOT applications.";
-
-    public const string RequiresUnreferencedCode =
-        "JSON serialization and deserialization might require types that cannot be " +
-        "statically analyzed. Use the overload that takes a JsonTypeInfo or JsonSerializerContext, or make " +
-        "sure all of the required types are preserved.";
 }
