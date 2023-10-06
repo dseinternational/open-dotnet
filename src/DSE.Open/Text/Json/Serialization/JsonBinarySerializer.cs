@@ -11,24 +11,25 @@ namespace DSE.Open.Text.Json.Serialization;
 /// <summary>
 /// Helpers for reading/writing Json serialized data to/from memory.
 /// </summary>
+[RequiresDynamicCode(WarningMessages.RequiresDynamicCode)]
+[RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]
 public static class JsonBinarySerializer
 {
+    private static readonly JsonSerializerOptions s_jsonSerializerOptions = JsonSharedOptions.RelaxedJsonEscaping;
+
     [RequiresDynamicCode(WarningMessages.RequiresDynamicCode)]
     [RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]
     public static ReadOnlyMemory<byte> SerializeToUtf8Json<T>(T value, JsonSerializerOptions? jsonSerializerOptions = null)
     {
-        jsonSerializerOptions ??= JsonSharedOptions.RelaxedJsonEscaping;
-        var bufferWriter = new ArrayBufferWriter<byte>();
-        using var jsonWriter = new Utf8JsonWriter(bufferWriter);
-        JsonSerializer.Serialize(jsonWriter, value, jsonSerializerOptions);
-        return bufferWriter.WrittenMemory;
+        jsonSerializerOptions ??= s_jsonSerializerOptions;
+        return JsonSerializer.SerializeToUtf8Bytes(value, jsonSerializerOptions);
     }
 
     [RequiresDynamicCode(WarningMessages.RequiresDynamicCode)]
     [RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]
     public static T? DeserializeFromUtf8Json<T>(ReadOnlySpan<byte> json, JsonSerializerOptions? jsonSerializerOptions = null)
     {
-        jsonSerializerOptions ??= JsonSharedOptions.RelaxedJsonEscaping;
+        jsonSerializerOptions ??= s_jsonSerializerOptions;
         return JsonSerializer.Deserialize<T>(json, jsonSerializerOptions);
     }
 
@@ -41,7 +42,7 @@ public static class JsonBinarySerializer
     [RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]
     public static bool TryDeserializeFromUtf8Json<T>(ReadOnlySpan<byte> json, JsonSerializerOptions? jsonSerializerOptions, out T? value)
     {
-        jsonSerializerOptions ??= JsonSharedOptions.RelaxedJsonEscaping;
+        jsonSerializerOptions ??= s_jsonSerializerOptions;
 
         try
         {
@@ -59,7 +60,7 @@ public static class JsonBinarySerializer
     [RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]
     public static string SerializeToBase64Utf8Json<T>(T value, JsonSerializerOptions? jsonSerializerOptions = null)
     {
-        jsonSerializerOptions ??= JsonSharedOptions.RelaxedJsonEscaping;
+        jsonSerializerOptions ??= s_jsonSerializerOptions;
         return Convert.ToBase64String(SerializeToUtf8Json(value, jsonSerializerOptions).Span);
     }
 
@@ -68,7 +69,7 @@ public static class JsonBinarySerializer
     public static T? DeserializeFromBase64Utf8Json<T>(string base64, JsonSerializerOptions? jsonSerializerOptions = null)
     {
         Guard.IsNotNull(base64);
-        jsonSerializerOptions ??= JsonSharedOptions.RelaxedJsonEscaping;
+        jsonSerializerOptions ??= s_jsonSerializerOptions;
         return DeserializeFromUtf8Json<T>(Convert.FromBase64String(base64), jsonSerializerOptions);
     }
 
@@ -83,7 +84,7 @@ public static class JsonBinarySerializer
     {
         Guard.IsNotNull(base64);
 
-        jsonSerializerOptions ??= JsonSharedOptions.RelaxedJsonEscaping;
+        jsonSerializerOptions ??= s_jsonSerializerOptions;
 
         var byteLength = (int)(3 * Math.Ceiling((double)base64.Length / 4));
 
@@ -92,6 +93,7 @@ public static class JsonBinarySerializer
         Span<byte> buffer = byteLength <= StackallocThresholds.MaxByteLength
             ? stackalloc byte[byteLength]
             : (rented = ArrayPool<byte>.Shared.Rent(byteLength));
+
         try
         {
             if (Convert.TryFromBase64String(base64, buffer, out var bytesWritten))
