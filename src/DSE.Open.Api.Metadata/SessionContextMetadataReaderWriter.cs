@@ -54,9 +54,6 @@ public sealed partial class SessionContextMetadataReaderWriter : IMetadataReader
 
         sessionContext = (SessionContext)request.Properties.AddOrUpdate(SessionContextMetadataKeys.SessionContext, sessionContext, (k, v) => sessionContext);
 
-        // add to result now to ensure it is returned to the client
-        _ = result.Properties.AddOrUpdate(SessionContextMetadataKeys.SessionContext, sessionContext, (k, v) => sessionContext);
-
         return ValueTask.CompletedTask;
     }
 
