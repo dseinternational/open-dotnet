@@ -9,22 +9,25 @@ using Microsoft.Extensions.Logging;
 
 namespace DSE.Open.Api.Metadata;
 
-/*
-    This reader/writer handles reading/writing session context data from/to HTTP headers and HTTP cookies.
-
-    In client web applications, session context data is read from cookies when a user requests a page. The
-    session context data is then passed via HTTP request headers to backend APIs. Session context returned
-    from backend APIs is then read from HTTP response headers, and subsequently written to cookies in the
-    response to the user.
-
-    When a request is read, the session context object is added to both request and result metadata. This
-    ensures that any services writing to the result metadata write to the same session.
-
-    When result data is read, the session context object is simply added to result metadata. At this point,
-    the session in result metadata will no longer be the same instance. 
-
-*/
-
+/// <summary>
+/// <para>
+/// This reader/writer handles reading/writing session context data from/to HTTP headers and HTTP cookies.
+/// </para>
+/// <para>
+/// In client web applications, session context data is read from cookies when a user requests a page. The
+/// session context data is then passed via HTTP request headers to backend APIs. Session context returned
+/// from backend APIs is then read from HTTP response headers, and subsequently written to cookies in the
+/// response to the user.
+/// </para>
+/// <para>
+/// When a request is read, the session context object is added to both request and result metadata. This
+/// ensures that any services writing to the result metadata write to the same session.
+/// </para>
+/// <para>
+/// When result data is read, the session context object is simply added to result metadata. At this point,
+/// the session in result metadata will no longer be the same instance.
+/// </para>
+/// </summary>
 [RequiresDynamicCode(WarningMessages.RequiresDynamicCode)]
 [RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]
 public sealed partial class SessionContextMetadataReaderWriter : IMetadataReader, IMetadataWriter
@@ -47,7 +50,7 @@ public sealed partial class SessionContextMetadataReaderWriter : IMetadataReader
         Guard.IsNotNull(request);
         Guard.IsNotNull(result);
 
-        SessionContext? sessionContext = null;
+        SessionContext? sessionContext;
 
         if (context.Data.TryGetValue(SessionContextMetadataKeys.SessionContext, out var sessionContextValue))
         {
@@ -57,27 +60,25 @@ public sealed partial class SessionContextMetadataReaderWriter : IMetadataReader
             }
             else
             {
-                _logger.LogWarning(
-                    "Failed to deserialize session context from request " +
-                    "metadata: {SessionContextValue}", sessionContextValue);
+                Log.FailedToDeserializeSessionContextFromRequestMetadata(_logger, sessionContextValue);
+                sessionContext = new SessionContext();
             }
         }
+        else
+        {
+            sessionContext = new SessionContext();
+            Log.NoSessionContextInRequestMetadata(_logger, sessionContext);
+        }
 
-        // not read - create new session
-
-        sessionContext ??= new SessionContext();
-
-        Log.NoSessionContextInRequestMetadata(_logger, sessionContext);
-
-        sessionContext = (SessionContext)request.Properties.AddOrUpdate(
+        request.Properties.AddOrUpdate(
             SessionContextMetadataKeys.SessionContext,
             sessionContext,
-            (k, v) => sessionContext);
+            (_, _) => sessionContext);
 
-        _ = (SessionContext)result.Properties.AddOrUpdate(
+        result.Properties.AddOrUpdate(
             SessionContextMetadataKeys.SessionContext,
             sessionContext,
-            (k, v) => sessionContext);
+            (_, _) => sessionContext);
 
         return ValueTask.CompletedTask;
     }
@@ -92,25 +93,24 @@ public sealed partial class SessionContextMetadataReaderWriter : IMetadataReader
         Guard.IsNotNull(request);
         Guard.IsNotNull(result);
 
-        SessionContext? sessionContext = null;
-
-        if (context.Data.TryGetValue(SessionContextMetadataKeys.SessionContext, out var sessionContextValue))
+        if (!context.Data.TryGetValue(SessionContextMetadataKeys.SessionContext, out var sessionContextValue))
         {
-            if (SessionContextSerializer.TryDeserializeFromBase64Utf8Json(sessionContextValue, out sessionContext))
-            {
-                Log.SessionContextReadFromResultMetadata(_logger, sessionContext);
+            // No session context, so nothing to add
+            return ValueTask.CompletedTask;
+        }
 
-                sessionContext = (SessionContext)result.Properties.AddOrUpdate(
-                    SessionContextMetadataKeys.SessionContext,
-                    sessionContext,
-                    (k, v) => sessionContext);
-            }
-            else
-            {
-                _logger.LogWarning(
-                    "Failed to deserialize session context from result " +
-                    "metadata: {SessionContextValue}", sessionContextValue);
-            }
+        if (SessionContextSerializer.TryDeserializeFromBase64Utf8Json(sessionContextValue, out var sessionContext))
+        {
+            Log.SessionContextReadFromResultMetadata(_logger, sessionContext);
+
+            result.Properties.AddOrUpdate(
+                SessionContextMetadataKeys.SessionContext,
+                sessionContext,
+                (_, _) => sessionContext);
+        }
+        else
+        {
+            Log.FailedToDeserializeSessionContextFromResultMetadata(_logger, sessionContextValue);
         }
 
         return ValueTask.CompletedTask;
@@ -207,5 +207,21 @@ public sealed partial class SessionContextMetadataReaderWriter : IMetadataReader
         public static partial void SessionContextWrittenToResponseMetadata(
             ILogger logger,
             SessionContext sessionContext);
+
+        [LoggerMessage(
+            EventId = 7,
+            Level = LogLevel.Warning,
+            Message = "Failed to deserialize session context from request metadata: {SessionContextValue}")]
+        public static partial void FailedToDeserializeSessionContextFromRequestMetadata(
+            ILogger logger,
+            string sessionContextValue);
+
+        [LoggerMessage(
+            EventId = 8,
+            Level = LogLevel.Warning,
+            Message = "Failed to deserialize session context from result metadata: {SessionContextValue}")]
+        public static partial void FailedToDeserializeSessionContextFromResultMetadata(
+            ILogger logger,
+            string sessionContextValue);
     }
 }
