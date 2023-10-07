@@ -208,7 +208,7 @@ csharp_style_prefer_method_group_conversion = true:suggestion
 csharp_style_prefer_top_level_statements = true:suggestion
 
 # Wrapping preferences
-csharp_preserve_single_line_blocks = true:suggestion
+csharp_preserve_single_line_blocks = false:suggestion
 csharp_preserve_single_line_statements = true:suggestion
 
 # Expression-level preferences
@@ -261,8 +261,8 @@ csharp_style_expression_bodied_constructors = false:suggestion
 csharp_style_expression_bodied_indexers = true:suggestion
 csharp_style_expression_bodied_lambdas = true:suggestion
 csharp_style_expression_bodied_local_functions = false:suggestion
-csharp_style_expression_bodied_methods = when_on_single_line:suggestion
-csharp_style_expression_bodied_operators = when_on_single_line:suggestion
+csharp_style_expression_bodied_methods = false:suggestion
+csharp_style_expression_bodied_operators = false:suggestion
 csharp_style_expression_bodied_properties = true:suggestion
 
 # Pattern matching preferences
