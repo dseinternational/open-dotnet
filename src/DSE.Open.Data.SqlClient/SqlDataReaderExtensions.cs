@@ -3,7 +3,6 @@
 
 using System.Data.SqlTypes;
 using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
 using System.Text.Json;
 using DSE.Open.Text.Json;
 using Microsoft.Data.SqlClient;

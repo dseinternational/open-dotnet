@@ -4,7 +4,6 @@
 using System.Buffers;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
-using CommunityToolkit.HighPerformance;
 
 namespace DSE.Open.Text.Json.Serialization;
 

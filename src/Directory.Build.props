@@ -12,8 +12,9 @@
 
   <ItemGroup>
     <Using Include="CommunityToolkit.Diagnostics" />
+    <Using Include="System.Globalization" />
   </ItemGroup>
-  
+
   <PropertyGroup>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);CS1591</NoWarn>
