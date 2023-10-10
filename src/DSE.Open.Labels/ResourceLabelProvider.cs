@@ -29,7 +29,7 @@ public abstract class ResourceLabelProvider<T> : LocalizedLabelProvider<T>, IStr
 #pragma warning restore CA1033 // Interface methods should be callable by child types
         {
             Guard.IsNotNull(name);
-            var value = ResourceManager.GetString(name);
+            var value = ResourceManager.GetString(name, null);
             return new LocalizedString(name, value ?? name, resourceNotFound: value is null, searchedLocation: ResourceManager.BaseName);
         }
     }
@@ -41,7 +41,7 @@ public abstract class ResourceLabelProvider<T> : LocalizedLabelProvider<T>, IStr
 #pragma warning restore CA1033 // Interface methods should be callable by child types
         {
             Guard.IsNotNull(name);
-            var format = ResourceManager.GetString(name);
+            var format = ResourceManager.GetString(name, null);
             var value = string.Format(CultureInfo.CurrentCulture, format ?? name, arguments);
             return new LocalizedString(name, value, resourceNotFound: format is null, searchedLocation: ResourceManager.BaseName);
         }

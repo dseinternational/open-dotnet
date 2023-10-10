@@ -1,6 +1,8 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Globalization;
+
 namespace DSE.Open.Values.Tests;
 
 public class LabelTests
@@ -9,24 +11,33 @@ public class LabelTests
     public void Parse_WithEmptySpan_ShouldThrowFormatException()
     {
         // Act
-        static void Act() => _ = Label.Parse(Span<char>.Empty, null);
+        static void Act()
+        {
+            _ = Label.Parse(Span<char>.Empty, null);
+        }
 
         // Assert
-        Assert.Throws<FormatException>(Act);
+        _ = Assert.Throws<FormatException>(Act);
     }
 
     [Fact]
     public void Parse_WithEmptyString_ShouldThrowFormatException()
     {
         // Assert
-        Assert.Throws<FormatException>(Act);
+        _ = Assert.Throws<FormatException>(Act);
 
         // Act
-        static void Act() => Label.Parse(string.Empty);
+        static void Act()
+        {
+            _ = Label.Parse(string.Empty, CultureInfo.InvariantCulture);
+        }
     }
 
     [Fact]
-    public void Parse_WithNullString_ShouldThrowArgumentNull() => Assert.Throws<ArgumentNullException>(static () => _ = Label.Parse(null!));
+    public void Parse_WithNullString_ShouldThrowArgumentNull()
+    {
+        _ = Assert.Throws<ArgumentNullException>(static () => _ = Label.Parse(null!, CultureInfo.InvariantCulture));
+    }
 
     [Fact]
     public void TryParse_WithEmptySpan_ShouldReturnFalseAndDefaultResult()
@@ -69,25 +80,28 @@ public class LabelTests
         var buffer = new char[1];
 
         // Act
-        void Act() => _ = code.TryFormat(buffer, out _, default, default);
+        void Act()
+        {
+            _ = code.TryFormat(buffer, out _, default, default);
+        }
 
         // Assert
-        Assert.Throws<UninitializedValueException<Label, CharSequence>>(Act);
+        _ = Assert.Throws<UninitializedValueException<Label, CharSequence>>(Act);
     }
 
     [Fact]
     public void EqualValuesAreEqual()
     {
-        var v1 = Label.Parse("A Label: 1");
-        var v2 = Label.Parse(v1.ToString());
+        var v1 = Label.Parse("A Label: 1", CultureInfo.InvariantCulture);
+        var v2 = Label.Parse(v1.ToString(), CultureInfo.InvariantCulture);
         Assert.Equal(v1, v2);
     }
 
     [Fact]
     public void EqualValueHashCodesAreEqual()
     {
-        var v1 = Label.Parse("A Label: 1");
-        var v2 = Label.Parse(v1.ToString());
+        var v1 = Label.Parse("A Label: 1", CultureInfo.InvariantCulture);
+        var v2 = Label.Parse(v1.ToString(), CultureInfo.InvariantCulture);
         var h1 = v1.GetHashCode();
         var h2 = v2.GetHashCode();
         Assert.Equal(h1, h2);
@@ -96,8 +110,8 @@ public class LabelTests
     [Fact]
     public void EqualValuesAsObjectsAreEqual()
     {
-        var v1 = (object)Label.Parse("A Label: 1");
-        var v2 = (object)Label.Parse(v1.ToString()!);
+        var v1 = (object)Label.Parse("A Label: 1", CultureInfo.InvariantCulture);
+        var v2 = (object)Label.Parse(v1.ToString()!, CultureInfo.InvariantCulture);
         Assert.Equal(v1, v2);
     }
 
@@ -106,7 +120,7 @@ public class LabelTests
     [InlineData("topic: Reading: Literacy", "topic")]
     public void GetPrefixReturnsPrefix(string label, string prefix)
     {
-        var l = Label.Parse(label);
+        var l = Label.Parse(label, CultureInfo.InvariantCulture);
 
         Assert.True(l.HasPrefix);
 

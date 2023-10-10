@@ -18,5 +18,8 @@ public sealed class CollectionSequenceEqualValueComparer<
     {
     }
 
-    private static ICollection<T> GenerateSnapshot(ICollection<T> values) => new List<T>(values);
+    private static List<T> GenerateSnapshot(ICollection<T> values)
+    {
+        return new(values);
+    }
 }

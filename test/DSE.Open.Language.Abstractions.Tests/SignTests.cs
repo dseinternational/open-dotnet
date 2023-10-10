@@ -1,9 +1,10 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Globalization;
 using System.Text.Json;
 
-namespace DSE.Open.Language.Tests;
+namespace DSE.Open.Language.Abstractions.Tests;
 
 public class SignTests
 {
@@ -14,8 +15,8 @@ public class SignTests
     [InlineData("pictured", "ball", "pictured:ball")]
     public void ToStringReturnsExpected(string modalityValue, string wordValue, string expected)
     {
-        var modality = SignModality.Parse(modalityValue);
-        var word = Word.Parse(wordValue);
+        var modality = SignModality.Parse(modalityValue, CultureInfo.InvariantCulture);
+        var word = Word.Parse(wordValue, CultureInfo.InvariantCulture);
         var sign = new Sign(modality, word);
         Assert.Equal(expected, sign.ToString());
     }
@@ -27,7 +28,7 @@ public class SignTests
     [InlineData("pictured:ball")]
     public void SerializeDeserialize(string signValue)
     {
-        var sign = Sign.Parse(signValue);
+        var sign = Sign.Parse(signValue, CultureInfo.InvariantCulture);
         var json = JsonSerializer.Serialize(sign);
         var deserialized = JsonSerializer.Deserialize<Sign>(json);
         Assert.Equal(sign, deserialized);

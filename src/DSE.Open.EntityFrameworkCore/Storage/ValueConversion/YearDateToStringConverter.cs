@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Globalization;
 using DSE.Open.Values;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
@@ -14,7 +15,13 @@ public sealed class YearDateToStringConverter : ValueConverter<YearDate, string>
     {
     }
 
-    private static string ConvertTo(YearDate value) => value.ToString();
+    private static string ConvertTo(YearDate value)
+    {
+        return value.ToString();
+    }
 
-    private static YearDate ConvertFrom(string value) => YearDate.Parse(value);
+    private static YearDate ConvertFrom(string value)
+    {
+        return YearDate.Parse(value, CultureInfo.InvariantCulture);
+    }
 }

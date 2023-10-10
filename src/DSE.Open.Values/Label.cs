@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using CommunityToolkit.HighPerformance.Buffers;
@@ -49,7 +50,7 @@ public readonly partial struct Label : IComparableValue<Label, CharSequence>
     {
         if (!skipValidation)
         {
-            EnsureIsValidArgumentValue(CharSequence.Parse(label));
+            EnsureIsValidArgumentValue(CharSequence.Parse(label, CultureInfo.InvariantCulture));
         }
 
         _value = LabelStringPool.Shared.GetOrAdd(label);
@@ -64,9 +65,15 @@ public readonly partial struct Label : IComparableValue<Label, CharSequence>
         }
     }
 
-    public ReadOnlySpan<char> AsSpan() => _value.AsSpan();
+    public ReadOnlySpan<char> AsSpan()
+    {
+        return _value.AsSpan();
+    }
 
-    public ReadOnlyMemory<char> AsMemory() => _value.AsMemory();
+    public ReadOnlyMemory<char> AsMemory()
+    {
+        return _value.AsMemory();
+    }
 
     public ReadOnlySpan<char> GetPrefix()
     {
@@ -87,7 +94,9 @@ public readonly partial struct Label : IComparableValue<Label, CharSequence>
     }
 
     public static bool IsValidLabel(ReadOnlySpan<char> label)
-        => CharSequence.TryParse(label, out var charSequence) && IsValidValue(charSequence);
+    {
+        return CharSequence.TryParse(label, out var charSequence) && IsValidValue(charSequence);
+    }
 
     public static bool IsValidValue(CharSequence value)
     {
@@ -121,19 +130,37 @@ public readonly partial struct Label : IComparableValue<Label, CharSequence>
         return false;
     }
 
-    public static string GetString(ReadOnlySpan<char> value) => LabelStringPool.Shared.GetOrAdd(value);
+    public static string GetString(ReadOnlySpan<char> value)
+    {
+        return LabelStringPool.Shared.GetOrAdd(value);
+    }
 
-    public static explicit operator Label(string label) => FromString(label);
+    public static explicit operator Label(string label)
+    {
+        return FromString(label);
+    }
 
-    public static Label FromString(string label) => new(label);
+    public static Label FromString(string label)
+    {
+        return new(label);
+    }
 
-    public static explicit operator string(Label label) => label.ToString();
+    public static explicit operator string(Label label)
+    {
+        return label.ToString();
+    }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
-    public static explicit operator ReadOnlyMemory<char>(Label label) => label._value.AsMemory();
+    public static explicit operator ReadOnlyMemory<char>(Label label)
+    {
+        return label._value.AsMemory();
+    }
 
-    public static explicit operator ReadOnlySpan<char>(Label label) => label._value.Span;
+    public static explicit operator ReadOnlySpan<char>(Label label)
+    {
+        return label._value.Span;
+    }
 
 #pragma warning restore CA2225 // Operator overloads have named alternates
 

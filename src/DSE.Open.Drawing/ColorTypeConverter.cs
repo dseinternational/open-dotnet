@@ -9,7 +9,7 @@ namespace DSE.Open.Drawing;
 public class ColorTypeConverter : TypeConverter
 {
     public override object ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object value)
-        => Color.Parse(value?.ToString()!); // Parse will throw on null
+        => Color.Parse(value?.ToString()!, culture); // Parse will throw on null
 
     public override object ConvertTo(ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
     {

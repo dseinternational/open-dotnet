@@ -8,6 +8,14 @@ namespace DSE.Open.Tests.Text.Json;
 
 public class JsonStringInt64ConverterTests
 {
+    private static readonly JsonSerializerOptions s_options = new()
+    {
+        Converters =
+        {
+            new JsonStringInt64Converter()
+        }
+    };
+
     [Theory]
     [InlineData(@"""0""", 0)]
     [InlineData(@"""1""", 1)]
@@ -15,9 +23,7 @@ public class JsonStringInt64ConverterTests
     [InlineData(@"""-9223372036854775808""", long.MinValue)]
     public void Deserialize(string data, long expected)
     {
-        var options = new JsonSerializerOptions();
-        options.Converters.Add(new JsonStringInt64Converter());
-        var result = JsonSerializer.Deserialize<long>(data, options);
+        var result = JsonSerializer.Deserialize<long>(data, s_options);
         Assert.Equal(expected, result);
     }
 }

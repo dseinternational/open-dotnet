@@ -1,6 +1,8 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Globalization;
+
 namespace DSE.Open.Tests;
 
 public class MemoryExtensionsTests
@@ -19,7 +21,7 @@ public class MemoryExtensionsTests
     [InlineData("99999999990", 9, false)]
     public void ContainsOnlyInt32(string source, int value, bool expected)
     {
-        Span<int> sourceSpan = source.Select(x => int.Parse(x.ToString())).ToArray();
+        Span<int> sourceSpan = source.Select(x => int.Parse(x.ToString(), CultureInfo.InvariantCulture)).ToArray();
 
         var result = sourceSpan.ContainsOnly(v => v == value);
         Assert.Equal(expected, result);
@@ -39,8 +41,8 @@ public class MemoryExtensionsTests
     [InlineData("01234567890123456789", 0, "123456789123456789")]
     public void RemoveInt32(string source, int value, string expected)
     {
-        Span<int> sourceSpan = source.Select(x => int.Parse(x.ToString())).ToArray();
-        Span<int> expectedSpan = expected.Select(x => int.Parse(x.ToString())).ToArray();
+        Span<int> sourceSpan = source.Select(x => int.Parse(x.ToString(), CultureInfo.InvariantCulture)).ToArray();
+        Span<int> expectedSpan = expected.Select(x => int.Parse(x.ToString(), CultureInfo.InvariantCulture)).ToArray();
 
         var result = sourceSpan.Remove(value);
         Assert.True(expectedSpan.SequenceEqual(result));

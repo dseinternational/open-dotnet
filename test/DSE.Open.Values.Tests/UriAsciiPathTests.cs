@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Globalization;
 using System.Text;
 using System.Text.Json;
 using DSE.Open.Text.Json;
@@ -33,7 +34,7 @@ public class UriAsciiPathTests
     [InlineData("a/b/c/d/e/f/g/h")]
     public void CastAsciiStringWithValidStrings(string path)
     {
-        var p = (UriAsciiPath)AsciiString.Parse(path);
+        var p = (UriAsciiPath)AsciiString.Parse(path, CultureInfo.InvariantCulture);
         Assert.Equal(path, p.ToString());
     }
 
@@ -47,10 +48,9 @@ public class UriAsciiPathTests
     [InlineData("a/b/c/d/e/f/g/h")]
     public void ParseValidStrings(string path)
     {
-        var p = UriAsciiPath.Parse(path);
+        var p = UriAsciiPath.Parse(path, CultureInfo.InvariantCulture);
         Assert.Equal(path, p.ToString());
     }
-
 
     [Theory]
     [InlineData("")]
@@ -77,7 +77,7 @@ public class UriAsciiPathTests
     [InlineData("a/b/c/d/e/f/g/h")]
     public void FromValueValidAsciiStrings(string path)
     {
-        var p = UriAsciiPath.FromValue(AsciiString.Parse(path));
+        var p = UriAsciiPath.FromValue(AsciiString.Parse(path, CultureInfo.InvariantCulture));
         Assert.Equal(path, p.ToString());
     }
 
@@ -89,7 +89,10 @@ public class UriAsciiPathTests
     [InlineData("home-page")]
     [InlineData("root/child/grandchild")]
     [InlineData("a/b/c/d/e/f/g/h")]
-    public void IsValidValueString_returns_true_for_valid_paths(string path) => Assert.True(UriAsciiPath.IsValidValue(path));
+    public void IsValidValueString_returns_true_for_valid_paths(string path)
+    {
+        Assert.True(UriAsciiPath.IsValidValue(path));
+    }
 
     [Theory]
     [InlineData("/")]
@@ -97,7 +100,10 @@ public class UriAsciiPathTests
     [InlineData("home/subdir/")]
     [InlineData("ungültig")]
     [InlineData("home/sub+dir")]
-    public void IsValidValue_returns_false_for_invalid_paths(string path) => Assert.False(UriAsciiPath.IsValidValue(path));
+    public void IsValidValue_returns_false_for_invalid_paths(string path)
+    {
+        Assert.False(UriAsciiPath.IsValidValue(path));
+    }
 
     [Fact]
     public void Serializes_to_string_value()
@@ -160,7 +166,9 @@ public class UriAsciiPathTests
     [InlineData("HOME?")]
     [InlineData("home/+SUB.html")]
     public void TryParseSanitisedWithInvalidPathShouldReturnFalse(string path)
-        => Assert.False(UriAsciiPath.TryParseSanitised(path, out _));
+    {
+        Assert.False(UriAsciiPath.TryParseSanitised(path, out _));
+    }
 
     [Theory]
     [InlineData("", "", "")]
@@ -221,13 +229,13 @@ public class UriAsciiPathTests
     public void ToUriPath_WithValue_ShouldReturnUriPathWithValue(string value)
     {
         // Arrange
-        var path = UriAsciiPath.Parse(value);
+        var path = UriAsciiPath.Parse(value, CultureInfo.InvariantCulture);
 
         // Act
         var uriPath = path.ToUriPath();
 
         // Assert
-        Assert.Equal(UriPath.Parse(value), uriPath);
+        Assert.Equal(UriPath.Parse(value, CultureInfo.InvariantCulture), uriPath);
     }
 
     [Theory]
@@ -236,7 +244,7 @@ public class UriAsciiPathTests
     public void ToAbsolutePath_ShouldCorrectlyFormat(string value, string expected)
     {
         // Arrange
-        var path = UriAsciiPath.Parse(value);
+        var path = UriAsciiPath.Parse(value, CultureInfo.InvariantCulture);
 
         // Act
         var absolutePath = path.ToAbsolutePath();
@@ -250,7 +258,7 @@ public class UriAsciiPathTests
     {
         // Arrange
         var pathStr = string.Create(StackallocThresholds.MaxCharLength + 1, 'a', (span, value) => span.Fill(value));
-        var path = UriAsciiPath.Parse(pathStr);
+        var path = UriAsciiPath.Parse(pathStr, CultureInfo.InvariantCulture);
 
         // Act
         var absolutePath = path.ToAbsolutePath();
@@ -263,7 +271,7 @@ public class UriAsciiPathTests
     public void TryFormat_WithShortBuffer_ShouldReturnFalse()
     {
         // Arrange
-        var path = UriAsciiPath.Parse("home");
+        var path = UriAsciiPath.Parse("home", CultureInfo.InvariantCulture);
         Span<char> buffer = stackalloc char[3];
 
         // Act
@@ -278,7 +286,7 @@ public class UriAsciiPathTests
     public void TryFormatUtf8_WithShortBuffer_ShouldReturnFalse()
     {
         // Arrange
-        var path = UriAsciiPath.Parse("home");
+        var path = UriAsciiPath.Parse("home", CultureInfo.InvariantCulture);
         Span<byte> buffer = stackalloc byte[3];
 
         // Act
@@ -289,13 +297,12 @@ public class UriAsciiPathTests
         Assert.Equal(0, bytesWritten);
     }
 
-
     [Fact]
     public void SerializeDeserialize()
     {
         const string value = "abcde";
 
-        var path = UriAsciiPath.Parse(value);
+        var path = UriAsciiPath.Parse(value, CultureInfo.InvariantCulture);
 
         var json = JsonSerializer.Serialize(path, JsonSharedOptions.RelaxedJsonEscaping);
         var result = JsonSerializer.Deserialize<UriAsciiPath>(json, JsonSharedOptions.RelaxedJsonEscaping);
@@ -307,5 +314,7 @@ public class UriAsciiPathTests
     [InlineData("\"/123/\"")]
     [InlineData("\"!abc!\"")]
     public void Deserialize_WithInvalidCode_Throws(string code)
-        => Assert.Throws<FormatException>(() => JsonSerializer.Deserialize<UriAsciiPath>(code, JsonSharedOptions.RelaxedJsonEscaping));
+    {
+        _ = Assert.Throws<FormatException>(() => JsonSerializer.Deserialize<UriAsciiPath>(code, JsonSharedOptions.RelaxedJsonEscaping));
+    }
 }

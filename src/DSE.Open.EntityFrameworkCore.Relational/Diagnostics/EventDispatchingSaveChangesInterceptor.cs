@@ -30,7 +30,9 @@ public sealed partial class EventDispatchingSaveChangesInterceptor : SaveChanges
     public override InterceptionResult<int> SavingChanges(
         DbContextEventData eventData,
         InterceptionResult<int> result)
-        => throw new NotImplementedException("Only async database operations are supported.");
+    {
+        throw new NotImplementedException("Only async database operations are supported.");
+    }
 
     public override async ValueTask<InterceptionResult<int>> SavingChangesAsync(
         DbContextEventData eventData,
@@ -49,7 +51,7 @@ public sealed partial class EventDispatchingSaveChangesInterceptor : SaveChanges
             .Where(e => e.HasBeforeSaveChangesEvents())
             .ToArray();
 
-        if (entitiesWithBeforeSaveEvents.Any())
+        if (entitiesWithBeforeSaveEvents.Length != 0)
         {
             Log.SavingChanges(_logger, entitiesWithBeforeSaveEvents.Length,
                 entitiesWithBeforeSaveEvents.Sum(e => e.Events.Count()));
@@ -63,7 +65,9 @@ public sealed partial class EventDispatchingSaveChangesInterceptor : SaveChanges
     }
 
     public override int SavedChanges(SaveChangesCompletedEventData eventData, int result)
-        => throw new NotImplementedException("Only async database operations are supported.");
+    {
+        throw new NotImplementedException("Only async database operations are supported.");
+    }
 
     public override async ValueTask<int> SavedChangesAsync(
         SaveChangesCompletedEventData eventData,
@@ -82,7 +86,7 @@ public sealed partial class EventDispatchingSaveChangesInterceptor : SaveChanges
             .Where(e => e.HasEvents)
             .ToArray();
 
-        if (!entitiesWithEvents.Any())
+        if (entitiesWithEvents.Length == 0)
         {
             return result;
         }

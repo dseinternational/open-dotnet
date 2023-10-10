@@ -25,7 +25,9 @@ public class ReadOnlySetEqualsValueComparer<
     }
 
     private static bool CompareEquality(TCollection? c1, TCollection? c2)
-        => c1 is null ? c2 is null : c2 is not null && c1.SetEquals(c2);
+    {
+        return c1 is null ? c2 is null : c2 is not null && c1.SetEquals(c2);
+    }
 
     private static int GenerateHash(TCollection values)
     {
@@ -49,7 +51,7 @@ public sealed class ReadOnlySetEqualsValueComparer<
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods
         | DynamicallyAccessedMemberTypes.NonPublicMethods
         | DynamicallyAccessedMemberTypes.PublicProperties)]
-    T>
+T>
     : ReadOnlySetEqualsValueComparer<T, IReadOnlySet<T>>
 {
     public static readonly ReadOnlySetEqualsValueComparer<T> Default = new();
@@ -58,5 +60,8 @@ public sealed class ReadOnlySetEqualsValueComparer<
     {
     }
 
-    private static IReadOnlySet<T> GenerateSnapshot(IReadOnlySet<T> values) => new HashSet<T>(values);
+    private static HashSet<T> GenerateSnapshot(IReadOnlySet<T> values)
+    {
+        return new(values);
+    }
 }

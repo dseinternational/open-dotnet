@@ -62,5 +62,5 @@ public readonly partial struct SignModality : IEquatableValue<SignModality, Asci
         Written,
     });
 
-    private static readonly IReadOnlySet<AsciiString> _validValues = FrozenSet.ToFrozenSet(All.Select(x => x._value));
+    private static readonly FrozenSet<AsciiString> _validValues = FrozenSet.ToFrozenSet(All.Select(x => x._value));
 }

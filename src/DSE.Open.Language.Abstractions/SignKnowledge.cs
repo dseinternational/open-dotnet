@@ -47,6 +47,6 @@ public readonly partial struct SignKnowledge : IEquatableValue<SignKnowledge, Ch
         Produces
     });
 
-    private static readonly IReadOnlySet<CharSequence> _validValues
+    private static readonly FrozenSet<CharSequence> _validValues
         = FrozenSet.ToFrozenSet(All.Select(x => x._value));
 }

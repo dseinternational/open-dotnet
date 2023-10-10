@@ -1,6 +1,8 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Globalization;
+
 namespace DSE.Open.Values.Tests;
 
 public class TagTests
@@ -9,7 +11,10 @@ public class TagTests
     public void Parse_WithEmptySpan_ShouldThrowFormatException()
     {
         // Act
-        static void Act() => Tag.Parse(Span<char>.Empty, null);
+        static void Act()
+        {
+            _ = Tag.Parse(Span<char>.Empty, null);
+        }
 
         // Assert
         _ = Assert.Throws<FormatException>(Act);
@@ -19,14 +24,20 @@ public class TagTests
     public void Parse_WithEmptyString_ShouldThrowFormatException()
     {
         // Act
-        static void Act() => Tag.Parse(string.Empty);
+        static void Act()
+        {
+            _ = Tag.Parse(string.Empty, CultureInfo.InvariantCulture);
+        }
 
         // Assert
         _ = Assert.Throws<FormatException>(Act);
     }
 
     [Fact]
-    public void Parse_WithNullString_ShouldThrowArgumentNull() => Assert.Throws<ArgumentNullException>(() => Tag.Parse(null!));
+    public void Parse_WithNullString_ShouldThrowArgumentNull()
+    {
+        _ = Assert.Throws<ArgumentNullException>(() => Tag.Parse((string)null!, CultureInfo.InvariantCulture));
+    }
 
     [Fact]
     public void Parse_WithInvalidTag_ShouldThrowFormatException()
@@ -35,7 +46,10 @@ public class TagTests
         const string tag = "a";
 
         // Act
-        static void Parse() => _ = Tag.Parse(tag);
+        static void Parse()
+        {
+            _ = Tag.Parse(tag, CultureInfo.InvariantCulture);
+        }
 
         // Assert
         _ = Assert.Throws<FormatException>(Parse);
@@ -82,7 +96,10 @@ public class TagTests
         var buffer = new char[1];
 
         // Act
-        void Act() => _ = code.TryFormat(buffer, out var charsWritten, default, default);
+        void Act()
+        {
+            _ = code.TryFormat(buffer, out var charsWritten, default, default);
+        }
 
         // Assert
         _ = Assert.Throws<UninitializedValueException<Tag, AsciiString>>(Act);
@@ -92,7 +109,7 @@ public class TagTests
     public void TryFormat_WithBufferTooSmall_ShouldReturnFalse()
     {
         // Arrange
-        var code = Tag.Parse("tag");
+        var code = Tag.Parse("tag", CultureInfo.InvariantCulture);
         var buffer = Span<char>.Empty;
 
         // Act
@@ -110,33 +127,36 @@ public class TagTests
         var tag = Tag.Empty;
 
         // Act
-        void Act() => tag.ToString();
+        void Act()
+        {
+            _ = tag.ToString();
+        }
 
         // Assert
-        Assert.Throws<UninitializedValueException<Tag, AsciiString>>(Act);
+        _ = Assert.Throws<UninitializedValueException<Tag, AsciiString>>(Act);
     }
 
     [Fact]
     public void EqualValuesAreEqual()
     {
-        var v1 = Tag.Parse("tag");
-        var v2 = Tag.Parse(v1.ToString());
+        var v1 = Tag.Parse("tag", CultureInfo.InvariantCulture);
+        var v2 = Tag.Parse(v1.ToString(), CultureInfo.InvariantCulture);
         Assert.Equal(v1, v2);
     }
 
     [Fact]
     public void GetHashCodeReturnsEqualValues()
     {
-        var v1 = Tag.Parse("tag");
-        var v2 = Tag.Parse(v1.ToString());
+        var v1 = Tag.Parse("tag", CultureInfo.InvariantCulture);
+        var v2 = Tag.Parse(v1.ToString(), CultureInfo.InvariantCulture);
         Assert.Equal(v1.GetHashCode(), v2.GetHashCode());
     }
 
     [Fact]
     public void EqualValuesAsObjectsAreEqual()
     {
-        var v1 = (object)Tag.Parse("tag");
-        var v2 = (object)Tag.Parse(v1.ToString()!);
+        var v1 = (object)Tag.Parse("tag", CultureInfo.InvariantCulture);
+        var v2 = (object)Tag.Parse(v1.ToString()!, CultureInfo.InvariantCulture);
         Assert.Equal(v1, v2);
     }
 

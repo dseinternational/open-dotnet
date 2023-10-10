@@ -42,7 +42,7 @@ public class AgeInMonthsTests
     [InlineData("-500:1", -5999)]
     public void Parse_parses_correctly(string value, int expectedTotalMonths)
     {
-        var age = AgeInMonths.Parse(value);
+        var age = AgeInMonths.Parse(value, null);
         Assert.Equal(expectedTotalMonths, age.TotalMonths);
     }
 

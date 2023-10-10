@@ -3,6 +3,7 @@
 
 using System.Text.Json;
 using DSE.Open.Notifications;
+using DSE.Open.Text.Json;
 using FluentAssertions;
 
 namespace DSE.Open.Results.Tests;
@@ -30,11 +31,11 @@ public class CollectionValueResultTests
             ]
         };
 
-        var json = JsonSerializer.Serialize(val, new JsonSerializerOptions { WriteIndented = true });
+        var json = JsonSerializer.Serialize(val, JsonSharedOptions.RelaxedJsonEscaping);
 
         Output.WriteLine(json);
 
-        var val2 = JsonSerializer.Deserialize<CollectionValueResult<string>>(json);
+        var val2 = JsonSerializer.Deserialize<CollectionValueResult<string>>(json, JsonSharedOptions.RelaxedJsonEscaping);
 
         Assert.NotNull(val2);
 
@@ -47,11 +48,11 @@ public class CollectionValueResultTests
     {
         var val = CollectionValueResult<string>.Empty;
 
-        var json = JsonSerializer.Serialize(val, new JsonSerializerOptions { WriteIndented = true });
+        var json = JsonSerializer.Serialize(val, JsonSharedOptions.RelaxedJsonEscaping);
 
         Output.WriteLine(json);
 
-        var val2 = JsonSerializer.Deserialize<CollectionValueResult<string>>(json);
+        var val2 = JsonSerializer.Deserialize<CollectionValueResult<string>>(json, JsonSharedOptions.RelaxedJsonEscaping);
 
         Assert.NotNull(val2);
 

@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Globalization;
 using DSE.Open.Values;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
@@ -15,7 +16,13 @@ public sealed class IdentifierToStringConverter : ValueConverter<Identifier, str
     {
     }
 
-    public static string ConvertToString(Identifier value) => value.ToString();
+    public static string ConvertToString(Identifier value)
+    {
+        return value.ToString();
+    }
 
-    public static Identifier ConvertFromString(string value) => Identifier.Parse(value);
+    public static Identifier ConvertFromString(string value)
+    {
+        return Identifier.Parse(value, CultureInfo.InvariantCulture);
+    }
 }

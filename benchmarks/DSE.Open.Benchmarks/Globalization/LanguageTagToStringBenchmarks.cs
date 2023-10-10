@@ -22,33 +22,33 @@ public class LanguageTagToStringBenchmarks
         LanguageTag.EnglishIreland,
         LanguageTag.EnglishNewZealand,
         LanguageTag.EnglishSouthAfrica,
-        LanguageTag.Parse("fr-FR"),
-        LanguageTag.Parse("en-CA-x-ca"),
+        LanguageTag.Parse("fr-FR", null),
+        LanguageTag.Parse("en-CA-x-ca", null),
     };
 
     [Benchmark]
-    public void ToStringFormatted() => s_tags.ForEach(t =>
+    public void ToStringFormatted()
     {
-        t.ToStringFormatted();
-    });
+        s_tags.ForEach(t => t.ToStringFormatted());
+    }
 
     [Benchmark(Baseline = true)]
-    public void ToStringUnformatted() => s_tags.ForEach(t =>
+    public void ToStringUnformatted()
     {
-        t.ToString();
-    });
+        s_tags.ForEach(t => t.ToString());
+    }
 
     [Benchmark]
-    public void ToStringLower() => s_tags.ForEach(t =>
+    public void ToStringLower()
     {
-        t.ToStringLower();
-    });
+        s_tags.ForEach(t => t.ToStringLower());
+    }
 
     [Benchmark]
-    public void ToStringUpper() => s_tags.ForEach(t =>
+    public void ToStringUpper()
     {
-        t.ToStringUpper();
-    });
+        s_tags.ForEach(t => t.ToStringUpper());
+    }
 }
 
 #pragma warning restore CA1822 // Mark members as static

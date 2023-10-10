@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Buffers;
+using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using DSE.Open.Values.Text.Json.Serialization;
@@ -30,7 +31,7 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
     {
     }
 
-    public UriPath(string path) : this(CharSequence.Parse(path), false)
+    public UriPath(string path) : this(CharSequence.Parse(path, CultureInfo.InvariantCulture), false)
     {
     }
 
@@ -40,7 +41,10 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
 
     public char this[int index] => _value[index];
 
-    public UriPath Slice(int start, int length) => new(_value.Slice(start, length));
+    public UriPath Slice(int start, int length)
+    {
+        return new(_value.Slice(start, length));
+    }
 
     public ReadOnlySpan<char> Span => _value.Span;
 
@@ -48,21 +52,45 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
 
     public int Length => _value.Length;
 
-    public bool EndsWith(ReadOnlySpan<char> value) => _value.EndsWith(value, StringComparison.Ordinal);
+    public bool EndsWith(ReadOnlySpan<char> value)
+    {
+        return _value.EndsWith(value, StringComparison.Ordinal);
+    }
 
-    public bool EndsWith(UriPath value) => _value.EndsWith(value._value, StringComparison.Ordinal);
+    public bool EndsWith(UriPath value)
+    {
+        return _value.EndsWith(value._value, StringComparison.Ordinal);
+    }
 
-    public bool EndsWith(CharSequence value) => _value.EndsWith(value, StringComparison.Ordinal);
+    public bool EndsWith(CharSequence value)
+    {
+        return _value.EndsWith(value, StringComparison.Ordinal);
+    }
 
-    public bool EndsWith(char value) => !_value.IsEmpty && _value[_value.Length] == value;
+    public bool EndsWith(char value)
+    {
+        return !_value.IsEmpty && _value[_value.Length] == value;
+    }
 
-    public bool Equals(string value) => _value.Equals(value, StringComparison.Ordinal);
+    public bool Equals(string value)
+    {
+        return _value.Equals(value, StringComparison.Ordinal);
+    }
 
-    public bool Equals(ReadOnlySpan<char> value) => _value.Equals(value, StringComparison.Ordinal);
+    public bool Equals(ReadOnlySpan<char> value)
+    {
+        return _value.Equals(value, StringComparison.Ordinal);
+    }
 
-    public int IndexOf(char c) => _value.IndexOf(c);
+    public int IndexOf(char c)
+    {
+        return _value.IndexOf(c);
+    }
 
-    public int LastIndexOf(char c) => _value.LastIndexOf(c);
+    public int LastIndexOf(char c)
+    {
+        return _value.LastIndexOf(c);
+    }
 
     public UriPath? GetParent()
     {
@@ -79,25 +107,52 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
         return null;
     }
 
-    public int GetSegmentCount() => Length == 0 ? 0 : _value.Span.Count('/') + 1;
+    public int GetSegmentCount()
+    {
+        return Length == 0 ? 0 : _value.Span.Count('/') + 1;
+    }
 
-    public bool StartsWith(ReadOnlySpan<char> value) => _value.StartsWith(value, StringComparison.Ordinal);
+    public bool StartsWith(ReadOnlySpan<char> value)
+    {
+        return _value.StartsWith(value, StringComparison.Ordinal);
+    }
 
-    public bool StartsWith(UriPath value) => _value.StartsWith(value._value, StringComparison.Ordinal);
+    public bool StartsWith(UriPath value)
+    {
+        return _value.StartsWith(value._value, StringComparison.Ordinal);
+    }
 
-    public bool StartsWith(CharSequence value) => _value.StartsWith(value, StringComparison.Ordinal);
+    public bool StartsWith(CharSequence value)
+    {
+        return _value.StartsWith(value, StringComparison.Ordinal);
+    }
 
-    public bool StartsWith(char value) => !_value.IsEmpty && _value[0] == value;
+    public bool StartsWith(char value)
+    {
+        return !_value.IsEmpty && _value[0] == value;
+    }
 
-    private static string GetString(ReadOnlySpan<char> s) => UriPathStringPool.Shared.GetOrAdd(s);
+    private static string GetString(ReadOnlySpan<char> s)
+    {
+        return UriPathStringPool.Shared.GetOrAdd(s);
+    }
 
     // TODO
-    private static bool IsValidOuterChar(char c) => c != Separator;
+    private static bool IsValidOuterChar(char c)
+    {
+        return c != Separator;
+    }
 
     // TODO
-    private static bool IsValidInnerChar(char c) => IsValidOuterChar(c) || c == Separator;
+    private static bool IsValidInnerChar(char c)
+    {
+        return IsValidOuterChar(c) || c == Separator;
+    }
 
-    public static bool IsValidValue(CharSequence value) => IsValidValue(value, false);
+    public static bool IsValidValue(CharSequence value)
+    {
+        return IsValidValue(value, false);
+    }
 
     public static bool IsValidValue(CharSequence value, bool ignoreLeadingTrailingSlashes)
     {
@@ -131,7 +186,10 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
         return inner.Span.All(IsValidInnerChar);
     }
 
-    public static bool IsValidValue(ReadOnlySpan<char> value) => IsValidValue(value, false);
+    public static bool IsValidValue(ReadOnlySpan<char> value)
+    {
+        return IsValidValue(value, false);
+    }
 
     public static bool IsValidValue(ReadOnlySpan<char> value, bool ignoreLeadingTrailingSlashes)
     {
@@ -165,7 +223,10 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
         return inner.All(IsValidInnerChar);
     }
 
-    public static bool IsValidValue(string value) => IsValidValue(value.AsSpan());
+    public static bool IsValidValue(string value)
+    {
+        return IsValidValue(value.AsSpan());
+    }
 
     public static bool TryParseSanitised(ReadOnlySpan<char> s, out UriPath value)
     {
@@ -215,7 +276,10 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
         return false;
     }
 
-    public static bool TryParseSanitised(string? s, out UriPath value) => TryParseSanitised(s.AsSpan(), out value);
+    public static bool TryParseSanitised(string? s, out UriPath value)
+    {
+        return TryParseSanitised(s.AsSpan(), out value);
+    }
 
     /// <summary>
     /// Creates a new <see cref="UriPath"/> by appending the <paramref name="path"/> to the current path.
@@ -306,7 +370,10 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
         return new UriPath(combined);
     }
 
-    public UriPath AppendSegment(string path) => Append(new UriPath(path));
+    public UriPath AppendSegment(string path)
+    {
+        return Append(new UriPath(path));
+    }
 
     /// <summary>
     /// Returns a value representing the substring from the specified index to the end of the path.
@@ -371,11 +438,17 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
     /// </summary>
     /// <param name="startIndex"></param>
     /// <returns></returns>
-    public string Substring(int startIndex) => Subpath(startIndex).ToString();
+    public string Substring(int startIndex)
+    {
+        return Subpath(startIndex).ToString();
+    }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
-    public static explicit operator UriPath(string value) => Parse(value);
+    public static explicit operator UriPath(string value)
+    {
+        return Parse(value, null);
+    }
 
 #pragma warning restore CA2225 // Operator overloads have named alternates
 
@@ -384,5 +457,8 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
     /// </summary>
     /// <param name="uriAsciiPath"></param>
     /// <returns></returns>
-    public static UriPath FromUriAsciiPath(UriAsciiPath uriAsciiPath) => new(CharSequence.FromAsciiString((AsciiString)uriAsciiPath), skipValidation: true);
+    public static UriPath FromUriAsciiPath(UriAsciiPath uriAsciiPath)
+    {
+        return new(CharSequence.FromAsciiString((AsciiString)uriAsciiPath), skipValidation: true);
+    }
 }

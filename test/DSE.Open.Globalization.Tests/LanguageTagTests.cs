@@ -58,7 +58,9 @@ public class LanguageTagTests
     [InlineData("zh", "zh")]
     [InlineData("uz-Latn-UZ", "uz")]
     public void GetLanguagePart(string code, string part)
-        => Assert.Equal(part, LanguageTag.Parse(code, default).GetLanguagePart().ToString());
+    {
+        Assert.Equal(part, LanguageTag.Parse(code, default).GetLanguagePart().ToString());
+    }
 
     private static readonly string[] s_validLanguageCodes =
     {
@@ -134,29 +136,41 @@ public class LanguageTagTests
 
     [Fact]
     public void Parse_Valid_Codes()
-        => s_validLanguageCodes.ForEach(c => Assert.True(LanguageTag.Parse(c).ToString() == c, "Could not parse language code: " + c));
+    {
+        s_validLanguageCodes.ForEach(c => Assert.True(LanguageTag.Parse(c, CultureInfo.InvariantCulture).ToString() == c, "Could not parse language code: " + c));
+    }
 
     [Fact]
     public void TryParse_Valid_Codes()
-        => s_validLanguageCodes.ForEach(c => Assert.True(LanguageTag.TryParse(c, out _), "Could not parse language code: " + c));
+    {
+        s_validLanguageCodes.ForEach(c => Assert.True(LanguageTag.TryParse(c, CultureInfo.InvariantCulture, out _), "Could not parse language code: " + c));
+    }
 
     [Fact]
     public void Parse_Valid_Alpha2Codes()
-        => s_2AlphaCodes.ForEach(c => Assert.True(LanguageTag.Parse(c).ToString() == c, "Could not parse language code: " + c));
+    {
+        s_2AlphaCodes.ForEach(c => Assert.True(LanguageTag.Parse(c, CultureInfo.InvariantCulture).ToString() == c, "Could not parse language code: " + c));
+    }
 
     [Fact]
     public void TryParse_Valid_Alpha2Codes()
-        => s_2AlphaCodes.ForEach(c => Assert.True(LanguageTag.TryParse(c, out _), "Could not parse language code: " + c));
+    {
+        s_2AlphaCodes.ForEach(c => Assert.True(LanguageTag.TryParse(c, CultureInfo.InvariantCulture, out _), "Could not parse language code: " + c));
+    }
 
     [Theory]
     [MemberData(nameof(ValidLanguageTags))]
     public void Equal_Equivalent_Languages(string tag)
-        => Assert.Equal(LanguageTag.Parse(tag), LanguageTag.Parse(tag));
+    {
+        Assert.Equal(LanguageTag.Parse(tag, CultureInfo.InvariantCulture), LanguageTag.Parse(tag, CultureInfo.InvariantCulture));
+    }
 
     [Theory]
     [MemberData(nameof(ValidLanguageTags))]
     public void Equal_Equivalent_Languages_case_different(string tag)
-        => Assert.Equal(LanguageTag.Parse(tag), LanguageTag.Parse(tag.ToUpperInvariant()));
+    {
+        Assert.Equal(LanguageTag.Parse(tag, CultureInfo.InvariantCulture), LanguageTag.Parse(tag.ToUpperInvariant(), CultureInfo.InvariantCulture));
+    }
 
     [Fact]
     public void Equal_NonEquivalent_Languages()
@@ -170,22 +184,30 @@ public class LanguageTagTests
     [Theory]
     [MemberData(nameof(ValidLanguageTags))]
     public void GetHashCode_Equivalent_Languages(string tag)
-        => Assert.Equal(LanguageTag.Parse(tag).GetHashCode(), LanguageTag.Parse(tag).GetHashCode());
+    {
+        Assert.Equal(LanguageTag.Parse(tag, CultureInfo.InvariantCulture).GetHashCode(), LanguageTag.Parse(tag, CultureInfo.InvariantCulture).GetHashCode());
+    }
 
     [Theory]
     [MemberData(nameof(ValidLanguageTags))]
     public void GetHashCode_Equivalent_Languages_case_different(string tag)
-        => Assert.Equal(LanguageTag.Parse(tag).GetHashCode(), LanguageTag.Parse(tag.ToUpperInvariant()).GetHashCode());
+    {
+        Assert.Equal(LanguageTag.Parse(tag, CultureInfo.InvariantCulture).GetHashCode(), LanguageTag.Parse(tag.ToUpperInvariant(), CultureInfo.InvariantCulture).GetHashCode());
+    }
 
     [Theory]
     [MemberData(nameof(ValidLanguageTags))]
     public void ToString_as_initialised(string tag)
-        => Assert.Equal(tag.ToLowerInvariant(), LanguageTag.Parse(tag.ToLowerInvariant()).ToString());
+    {
+        Assert.Equal(tag.ToLowerInvariant(), LanguageTag.Parse(tag.ToLowerInvariant(), CultureInfo.InvariantCulture).ToString());
+    }
 
     [Theory]
     [MemberData(nameof(ValidLanguageTags))]
     public void ToString_formatted(string tag)
-        => Assert.Equal(tag, LanguageTag.Parse(tag.ToLowerInvariant()).ToStringFormatted());
+    {
+        Assert.Equal(tag, LanguageTag.Parse(tag.ToLowerInvariant(), CultureInfo.InvariantCulture).ToStringFormatted());
+    }
 
     [Fact]
     public void Parse_WithNullString_ShouldThrowArgumentNull()
@@ -193,7 +215,7 @@ public class LanguageTagTests
         // Act
         static void Parse()
         {
-            _ = LanguageTag.Parse(null!);
+            _ = LanguageTag.Parse((string)null!, CultureInfo.InvariantCulture);
         }
 
         // Assert
@@ -300,7 +322,7 @@ public class LanguageTagTests
     public void ToStringFormatted_WithCodeWithManyParts_ShouldReturnCorrect(string expected)
     {
         // Arrange
-        var code = LanguageTag.Parse(expected.ToLowerInvariant());
+        var code = LanguageTag.Parse(expected.ToLowerInvariant(), CultureInfo.InvariantCulture);
 
         // Act
         var result = code.ToStringFormatted();
@@ -325,8 +347,8 @@ public class LanguageTagTests
     [Fact]
     public void Equal_operator_when_case_different()
     {
-        var t1 = LanguageTag.Parse("en-GB");
-        var t2 = LanguageTag.Parse("en-gb");
+        var t1 = LanguageTag.Parse("en-GB", CultureInfo.InvariantCulture);
+        var t2 = LanguageTag.Parse("en-gb", CultureInfo.InvariantCulture);
         Assert.True(t1 == t2);
     }
 }

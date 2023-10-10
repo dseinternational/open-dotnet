@@ -18,7 +18,7 @@ public class GroupingTests
     [Fact]
     public void Constructor_Group_Collection_Assigned()
     {
-        var grouping = new Grouping<string, string>("Test", new[] { "One", "Two" });
+        var grouping = new Grouping<string, string>("Test", ["One", "Two"]);
         Assert.Equal("Test", grouping.Group);
         Assert.Equal(2, grouping.Count);
         Assert.Equal("One", grouping[0]);

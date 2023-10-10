@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using CommunityToolkit.HighPerformance.Buffers;
@@ -52,7 +53,7 @@ public readonly partial struct Tag : IComparableValue<Tag, AsciiString>, IUtf8Sp
 
         if (!skipValidation)
         {
-            EnsureIsValidArgumentValue(AsciiString.Parse(tag));
+            EnsureIsValidArgumentValue(AsciiString.Parse(tag, CultureInfo.InvariantCulture));
         }
 
         _value = value;
@@ -86,7 +87,10 @@ public readonly partial struct Tag : IComparableValue<Tag, AsciiString>, IUtf8Sp
         return true;
     }
 
-    public static string GetString(ReadOnlySpan<char> chars) => TagStringPool.Shared.GetOrAdd(chars);
+    public static string GetString(ReadOnlySpan<char> chars)
+    {
+        return TagStringPool.Shared.GetOrAdd(chars);
+    }
 
     public static bool IsValidTag(ReadOnlySpan<char> tag)
     {
@@ -96,41 +100,89 @@ public readonly partial struct Tag : IComparableValue<Tag, AsciiString>, IUtf8Sp
             && tag.All((char c) => char.IsAsciiLetterOrDigit(c) || c == '-' || c == '/' || c == ':');
     }
 
-    public AsciiString AsAsciiString() => _value;
+    public AsciiString AsAsciiString()
+    {
+        return _value;
+    }
 
-    public ReadOnlySpan<byte> AsBytes() => ValuesMarshal.AsBytes(_value.Span);
+    public ReadOnlySpan<byte> AsBytes()
+    {
+        return ValuesMarshal.AsBytes(_value.Span);
+    }
 
-    public ReadOnlySpan<AsciiChar> AsAsciiChars() => _value.Span;
+    public ReadOnlySpan<AsciiChar> AsAsciiChars()
+    {
+        return _value.Span;
+    }
 
-    public bool StartsWith(AsciiString value) => _value.StartsWith(value);
+    public bool StartsWith(AsciiString value)
+    {
+        return _value.StartsWith(value);
+    }
 
-    public bool StartsWith(ReadOnlySpan<AsciiChar> value) => _value.StartsWith(value);
+    public bool StartsWith(ReadOnlySpan<AsciiChar> value)
+    {
+        return _value.StartsWith(value);
+    }
 
-    public bool StartsWith(ReadOnlySpan<byte> value) => _value.StartsWith(value);
+    public bool StartsWith(ReadOnlySpan<byte> value)
+    {
+        return _value.StartsWith(value);
+    }
 
     [Obsolete("Use StartsWith(ReadOnlySpan<AsciiChar>) instead.")]
-    public bool StartsWith(ReadOnlySpan<char> value) => _value.StartsWith(value);
+    public bool StartsWith(ReadOnlySpan<char> value)
+    {
+        return _value.StartsWith(value);
+    }
 
-    public bool EndsWith(AsciiString value) => _value.EndsWith(value);
+    public bool EndsWith(AsciiString value)
+    {
+        return _value.EndsWith(value);
+    }
 
-    public bool EndsWith(ReadOnlySpan<AsciiChar> value) => _value.EndsWith(value);
+    public bool EndsWith(ReadOnlySpan<AsciiChar> value)
+    {
+        return _value.EndsWith(value);
+    }
 
-    public bool EndsWith(ReadOnlySpan<byte> value) => _value.EndsWith(value);
+    public bool EndsWith(ReadOnlySpan<byte> value)
+    {
+        return _value.EndsWith(value);
+    }
 
     [Obsolete("Use EndsWith(ReadOnlySpan<AsciiChar>) instead.")]
-    public bool EndsWith(ReadOnlySpan<char> value) => _value.EndsWith(value);
+    public bool EndsWith(ReadOnlySpan<char> value)
+    {
+        return _value.EndsWith(value);
+    }
 
-    public bool Contains(AsciiString value) => _value.Contains(value);
+    public bool Contains(AsciiString value)
+    {
+        return _value.Contains(value);
+    }
 
-    public bool Contains(ReadOnlySpan<AsciiChar> value) => _value.Contains(value);
+    public bool Contains(ReadOnlySpan<AsciiChar> value)
+    {
+        return _value.Contains(value);
+    }
 
-    public bool Contains(ReadOnlySpan<byte> value) => _value.Contains(value);
+    public bool Contains(ReadOnlySpan<byte> value)
+    {
+        return _value.Contains(value);
+    }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
-    public static explicit operator Tag(string tag) => new(tag);
+    public static explicit operator Tag(string tag)
+    {
+        return new(tag);
+    }
 
-    public static explicit operator string(Tag tag) => tag.ToString();
+    public static explicit operator string(Tag tag)
+    {
+        return tag.ToString();
+    }
 
 #pragma warning restore CA2225 // Operator overloads have named alternates
 

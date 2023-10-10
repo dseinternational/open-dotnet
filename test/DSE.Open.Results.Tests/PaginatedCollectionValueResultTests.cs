@@ -3,6 +3,7 @@
 
 using System.Text.Json;
 using DSE.Open.Notifications;
+using DSE.Open.Text.Json;
 using FluentAssertions;
 
 namespace DSE.Open.Results.Tests;
@@ -31,11 +32,11 @@ public class PaginatedCollectionValueResultTests
             Pagination = new Pagination(13, 10, 2)
         };
 
-        var json = JsonSerializer.Serialize(val, new JsonSerializerOptions { WriteIndented = true });
+        var json = JsonSerializer.Serialize(val, JsonSharedOptions.RelaxedJsonEscaping);
 
         Output.WriteLine(json);
 
-        var val2 = JsonSerializer.Deserialize<PaginatedCollectionValueResult<string>>(json);
+        var val2 = JsonSerializer.Deserialize<PaginatedCollectionValueResult<string>>(json, JsonSharedOptions.RelaxedJsonEscaping);
 
         Assert.NotNull(val2);
 

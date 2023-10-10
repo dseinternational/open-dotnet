@@ -1,6 +1,8 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Globalization;
+
 namespace DSE.Open.Values.Tests;
 
 public class IdentifierTests
@@ -16,8 +18,8 @@ public class IdentifierTests
     [InlineData("sg_YTRBuEVPtNac6vF")]
     public void EqualsReturnsTrueForEqualValues(string id)
     {
-        var id1 = Identifier.Parse(id);
-        var id2 = Identifier.Parse(id);
+        var id1 = Identifier.Parse(id, CultureInfo.InvariantCulture);
+        var id2 = Identifier.Parse(id, CultureInfo.InvariantCulture);
         Assert.Equal(id1, id2);
     }
 
@@ -25,8 +27,8 @@ public class IdentifierTests
     [InlineData("sg_YTRBuEVPtNac6vF")]
     public void GetHasCodeReturnsEqualValueForSameIdValues(string id)
     {
-        var hash1 = Identifier.Parse(id).GetHashCode();
-        var hash2 = Identifier.Parse(id).GetHashCode();
+        var hash1 = Identifier.Parse(id, CultureInfo.InvariantCulture).GetHashCode();
+        var hash2 = Identifier.Parse(id, CultureInfo.InvariantCulture).GetHashCode();
         Assert.Equal(hash1, hash2);
     }
 

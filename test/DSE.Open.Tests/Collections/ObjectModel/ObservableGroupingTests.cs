@@ -19,7 +19,7 @@ public class ObservableGroupingTests
     [Fact]
     public void Constructor_Group_Collection_Assigned()
     {
-        var grouping = new ObservableGrouping<string, string>("Test", new[] { "One", "Two" });
+        var grouping = new ObservableGrouping<string, string>("Test", ["One", "Two"]);
         Assert.Equal("Test", grouping.Group);
         Assert.Equal(2, grouping.Count);
         Assert.Equal("One", grouping[0]);
@@ -29,7 +29,7 @@ public class ObservableGroupingTests
     [Fact]
     public void Group_Set_Raises_PropertyChanged()
     {
-        var grouping = new ObservableGrouping<string, string>("Test", new[] { "One", "Two" });
+        var grouping = new ObservableGrouping<string, string>("Test", ["One", "Two"]);
         var eventCount = 0;
         ((INotifyPropertyChanged)grouping).PropertyChanged += (_, e) =>
         {

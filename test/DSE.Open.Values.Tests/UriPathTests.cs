@@ -1,6 +1,8 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Globalization;
+
 namespace DSE.Open.Values.Tests;
 
 public class UriPathTests
@@ -72,7 +74,7 @@ public class UriPathTests
     public void ToAbsolutePath_ShouldCorrectlyFormat(string value, string expected)
     {
         // Arrange
-        var path = UriPath.Parse(value);
+        var path = UriPath.Parse(value, CultureInfo.InvariantCulture);
 
         // Act
         var absolutePath = path.ToAbsolutePath();
@@ -86,7 +88,7 @@ public class UriPathTests
     {
         // Arrange
         var pathStr = string.Create(StackallocThresholds.MaxCharLength + 1, 'a', (span, value) => span.Fill(value));
-        var path = UriPath.Parse(pathStr);
+        var path = UriPath.Parse(pathStr, CultureInfo.InvariantCulture);
 
         // Act
         var absolutePath = path.ToAbsolutePath();

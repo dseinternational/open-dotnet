@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Globalization;
 using DSE.Open.Time;
 using NodaTime;
 
@@ -19,13 +20,13 @@ public class DateTimeZonesTests
     [InlineData("BE", TimeZoneIds.EuropeBrussels)]
     [InlineData("HK", TimeZoneIds.AsiaHongKong)]
     public void GetTimeZoneForCountryReturnsExpectedTimeZone(string countryCode, string timeZoneId)
-        => Assert.Equal(DateTimeZoneProviders.Tzdb[timeZoneId], DateTimeZones.GetTimeZoneForCountry(CountryCode.Parse(countryCode)));
+        => Assert.Equal(DateTimeZoneProviders.Tzdb[timeZoneId], DateTimeZones.GetTimeZoneForCountry(CountryCode.Parse(countryCode, CultureInfo.InvariantCulture)));
 
     [Theory]
     [InlineData("GB", "en-GB", "United Kingdom Time")]
     public void GetTimeZoneNamesForCountryReturnsExpectedNames(string countryCode, string languageCode, string generic)
     {
-        var names = DateTimeZones.GetTimeZoneNamesForCountry(CountryCode.Parse(countryCode), languageCode);
+        var names = DateTimeZones.GetTimeZoneNamesForCountry(CountryCode.Parse(countryCode, CultureInfo.InvariantCulture), languageCode);
         Assert.Equal(generic, names.Generic);
     }
 }

@@ -170,6 +170,6 @@ public readonly partial struct UniversalSyntacticRelation : IEquatableValue<Univ
         Vocative,
     });
 
-    private static readonly IReadOnlySet<AsciiString> s_validValues = FrozenSet.ToFrozenSet(All.Select(r => r._value));
+    private static readonly FrozenSet<AsciiString> s_validValues = FrozenSet.ToFrozenSet(All.Select(r => r._value));
 }
 

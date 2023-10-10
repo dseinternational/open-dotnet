@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Globalization;
 using System.Text.Json;
 
 namespace DSE.Open.Globalization.Tests;
@@ -40,6 +41,7 @@ public class CountryCodeTests
             {
                 data.Add(code);
             }
+
             return data;
         }
     }
@@ -53,17 +55,17 @@ public class CountryCodeTests
             {
                 data.Add(code);
             }
+
             return data;
         }
     }
-
 
     [Fact]
     public void Valid_CountryCode_Parse()
     {
         foreach (var code in s_validCountryCodes)
         {
-            var parsed = CountryCode.Parse(code);
+            var parsed = CountryCode.Parse(code, CultureInfo.InvariantCulture);
             Assert.Equal(code, parsed.ToString());
         }
     }
@@ -82,7 +84,7 @@ public class CountryCodeTests
     {
         foreach (var code in s_euMemberCountryCodes)
         {
-            var parsed = CountryCode.Parse(code);
+            var parsed = CountryCode.Parse(code, CultureInfo.InvariantCulture);
             Assert.True(CountryCode.IsEuMemberCountry(parsed));
         }
     }
@@ -92,7 +94,7 @@ public class CountryCodeTests
     {
         foreach (var code in s_euMemberCountryAndSubdivisionCodes)
         {
-            var parsed = CountryCode.Parse(code);
+            var parsed = CountryCode.Parse(code, CultureInfo.InvariantCulture);
             Assert.True(CountryCode.IsEuMemberCountryOrSubdivision(parsed), code);
         }
     }
@@ -129,7 +131,9 @@ public class CountryCodeTests
     */
     [Fact]
     public void Parse_WithNullString_ShouldThrowArgumentException()
-        => Assert.Throws<ArgumentNullException>(() => CountryCode.Parse(null!));
+    {
+        Assert.Throws<ArgumentNullException>(() => CountryCode.Parse((string?)null!, CultureInfo.InvariantCulture));
+    }
 
     /*
     [Fact]
@@ -174,32 +178,32 @@ public class CountryCodeTests
     [Fact]
     public void EqualValuesAreEqual()
     {
-        var v1 = CountryCode.Parse("GB");
-        var v2 = CountryCode.Parse(v1.ToString());
+        var v1 = CountryCode.Parse("GB", CultureInfo.InvariantCulture);
+        var v2 = CountryCode.Parse(v1.ToString(), CultureInfo.InvariantCulture);
         Assert.Equal(v1, v2);
     }
 
     [Fact]
     public void EqualValuesAreEqual_case_insensitive()
     {
-        var v1 = CountryCode.Parse("GB");
-        var v2 = CountryCode.Parse(v1.ToString().ToLowerInvariant());
+        var v1 = CountryCode.Parse("GB", CultureInfo.InvariantCulture);
+        var v2 = CountryCode.Parse(v1.ToString().ToLowerInvariant(), CultureInfo.InvariantCulture);
         Assert.Equal(v1, v2);
     }
 
     [Fact]
     public void EqualValuesAsObjectsAreEqual()
     {
-        var v1 = (object)CountryCode.Parse("GB");
-        var v2 = (object)CountryCode.Parse(v1.ToString()!);
+        var v1 = (object)CountryCode.Parse("GB", CultureInfo.InvariantCulture);
+        var v2 = (object)CountryCode.Parse(v1.ToString()!, CultureInfo.InvariantCulture);
         Assert.Equal(v1, v2);
     }
 
     [Fact]
     public void EqualValuesAsObjectsAreEqual_case_insensitive()
     {
-        var v1 = (object)CountryCode.Parse("gb");
-        var v2 = (object)CountryCode.Parse("GB");
+        var v1 = (object)CountryCode.Parse("gb", CultureInfo.InvariantCulture);
+        var v2 = (object)CountryCode.Parse("GB", CultureInfo.InvariantCulture);
         Assert.Equal(v1, v2);
     }
 

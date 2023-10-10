@@ -9,7 +9,7 @@ namespace DSE.Open.Testing.Xunit;
 
 public abstract class LoggedTestsBase : IDisposable
 {
-    private ILoggerFactory? _loggerFactory;
+    private LoggerFactory? _loggerFactory;
     private ILogger? _logger;
     private bool _disposed;
 
@@ -25,9 +25,15 @@ public abstract class LoggedTestsBase : IDisposable
         _ = builder.SetMinimumLevel(LogLevel.Debug);
     }
 
-    protected virtual ILoggerProvider GetLoggerProvider() => new XunitLoggerProvider(Output);
+    protected virtual ILoggerProvider GetLoggerProvider()
+    {
+        return new XunitLoggerProvider(Output);
+    }
 
-    protected virtual IEnumerable<ILoggerProvider> GetLoggerProviders() => new[] { new XunitLoggerProvider(Output) };
+    protected virtual IEnumerable<ILoggerProvider> GetLoggerProviders()
+    {
+        return new[] { new XunitLoggerProvider(Output) };
+    }
 
     public ILoggerFactory LoggerFactory => _loggerFactory ??= new LoggerFactory(GetLoggerProviders());
 

@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Globalization;
 using System.Text.Json;
 
 namespace DSE.Open.Language.Tests;
@@ -14,7 +15,7 @@ public class WordTests
     [InlineData("a")]
     public void SerializeDeserialize(string signValue)
     {
-        var sign = Word.Parse(signValue);
+        var sign = Word.Parse(signValue, CultureInfo.InvariantCulture);
         var json = JsonSerializer.Serialize(sign);
         var deserialized = JsonSerializer.Deserialize<Word>(json);
         Assert.Equal(sign, deserialized);
@@ -29,7 +30,7 @@ public class WordTests
     [InlineData("teachers'")]
     public void ParseSucceedsIfValid(string signValue)
     {
-        _ = Word.Parse(signValue);
+        _ = Word.Parse(signValue, CultureInfo.InvariantCulture);
     }
 
     [Theory]
@@ -39,6 +40,6 @@ public class WordTests
     [InlineData("")]
     public void ParseFailsIfInvalid(string signValue)
     {
-        Assert.Throws<FormatException>(() => Word.Parse(signValue));
+        Assert.Throws<FormatException>(() => Word.Parse(signValue, CultureInfo.InvariantCulture));
     }
 }

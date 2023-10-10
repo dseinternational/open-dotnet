@@ -31,7 +31,7 @@ public sealed class ListToFormattableStringCollectionConverter<T> : ValueConvert
         return set.Select(p => p.ToString(format, formatProvider) ?? string.Empty);
     }
 
-    private static IList<T> FromCollection(IEnumerable<string> collection, IFormatProvider? formatProvider)
+    private static List<T> FromCollection(IEnumerable<string> collection, IFormatProvider? formatProvider)
     {
         Guard.IsNotNull(collection);
         return collection.Select(s => T.Parse(s, formatProvider)).ToList();

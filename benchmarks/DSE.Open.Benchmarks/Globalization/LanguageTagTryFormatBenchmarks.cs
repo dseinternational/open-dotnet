@@ -8,7 +8,6 @@ using DSE.Open.Globalization;
 
 namespace DSE.Open.Benchmarks.Globalization;
 
-
 [MemoryDiagnoser]
 public class LanguageTagTryFormatBenchmarks
 {
@@ -22,37 +21,47 @@ public class LanguageTagTryFormatBenchmarks
         LanguageTag.EnglishIreland,
         LanguageTag.EnglishNewZealand,
         LanguageTag.EnglishSouthAfrica,
-        LanguageTag.Parse("fr-FR"),
-        LanguageTag.Parse("en-CA-x-ca"),
+        LanguageTag.Parse("fr-FR", null),
+        LanguageTag.Parse("en-CA-x-ca", null),
     };
 
     [Benchmark]
-    public void TryFormatNormalized() => s_tags.ForEach(t =>
+    public void TryFormatNormalized()
     {
-        Span<char> b = stackalloc char[t.Length];
-        _ = t.TryFormat(b, out var cw, "N".AsSpan(), CultureInfo.InvariantCulture);
-    });
+        s_tags.ForEach(t =>
+        {
+            Span<char> b = stackalloc char[t.Length];
+            _ = t.TryFormat(b, out var cw, "N".AsSpan(), CultureInfo.InvariantCulture);
+        });
+    }
 
     [Benchmark]
-    public void TryFormatLowercase() => s_tags.ForEach(t =>
+    public void TryFormatLowercase()
     {
-        Span<char> b = stackalloc char[t.Length];
-        _ = t.TryFormat(b, out var cw, "L".AsSpan(), CultureInfo.InvariantCulture);
-    });
+        s_tags.ForEach(t =>
+        {
+            Span<char> b = stackalloc char[t.Length];
+            _ = t.TryFormat(b, out var cw, "L".AsSpan(), CultureInfo.InvariantCulture);
+        });
+    }
 
     [Benchmark]
-    public void TryFormatUppercase() => s_tags.ForEach(t =>
+    public void TryFormatUppercase()
     {
-        Span<char> b = stackalloc char[t.Length];
-        _ = t.TryFormat(b, out var cw, "U".AsSpan(), CultureInfo.InvariantCulture);
-    });
+        s_tags.ForEach(t =>
+        {
+            Span<char> b = stackalloc char[t.Length];
+            _ = t.TryFormat(b, out var cw, "U".AsSpan(), CultureInfo.InvariantCulture);
+        });
+    }
 
     [Benchmark(Baseline = true)]
-    public void TryFormatDefault() => s_tags.ForEach(t =>
+    public void TryFormatDefault()
     {
-        Span<char> b = stackalloc char[t.Length];
-        _ = t.TryFormat(b, out var cw, default, CultureInfo.InvariantCulture);
-    });
+        s_tags.ForEach(t =>
+        {
+            Span<char> b = stackalloc char[t.Length];
+            _ = t.TryFormat(b, out var cw, default, CultureInfo.InvariantCulture);
+        });
+    }
 }
-
-#pragma warning restore CA1822 // Mark members as static

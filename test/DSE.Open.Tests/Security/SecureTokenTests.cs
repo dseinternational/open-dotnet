@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Globalization;
 using DSE.Open.Security;
 
 namespace DSE.Open.Tests.Security;
@@ -30,7 +31,7 @@ public class SecureTokenTests
         for (var i = 0; i < 50; i++)
         {
             var token = SecureToken.New();
-            var token2 = SecureToken.Parse(token.ToString());
+            var token2 = SecureToken.Parse(token.ToString(), CultureInfo.InvariantCulture);
             Assert.Equal(token, token2);
         }
     }
@@ -41,7 +42,7 @@ public class SecureTokenTests
         for (var i = 0; i < 50; i++)
         {
             var token = SecureToken.New();
-            Assert.Equal(token.GetHashCode(), SecureToken.Parse(token.ToString()).GetHashCode());
+            Assert.Equal(token.GetHashCode(), SecureToken.Parse(token.ToString(), CultureInfo.InvariantCulture).GetHashCode());
         }
     }
 
@@ -57,24 +58,27 @@ public class SecureTokenTests
     [Fact]
     public void Parse_WithEmptySpan_ShouldReturnDefault()
     {
-        var a = SecureToken.Parse(Span<char>.Empty, null);
+        var a = SecureToken.Parse(Span<char>.Empty, CultureInfo.InvariantCulture);
         Assert.Equal(SecureToken.Empty, a);
     }
 
     [Fact]
     public void Parse_WithEmptyString_ReturnsDefault()
     {
-        var a = SecureToken.Parse(string.Empty);
+        var a = SecureToken.Parse(string.Empty, CultureInfo.InvariantCulture);
         Assert.Equal(SecureToken.Empty, a);
     }
 
     [Fact]
-    public void Parse_WithNullString_ShouldThrowArgumentNull() => Assert.Throws<ArgumentNullException>(() => SecureToken.Parse(null!));
+    public void Parse_WithNullString_ShouldThrowArgumentNull()
+    {
+        _ = Assert.Throws<ArgumentNullException>(() => SecureToken.Parse(null!, CultureInfo.InvariantCulture));
+    }
 
     [Fact]
     public void TryParse_WithEmptySpan_ShouldReturnTrueAndDefaultResult()
     {
-        var success = SecureToken.TryParse(Span<char>.Empty, null, out var result);
+        var success = SecureToken.TryParse(Span<char>.Empty, CultureInfo.InvariantCulture, out var result);
         Assert.True(success);
         Assert.Equal(SecureToken.Empty, result);
     }
@@ -114,7 +118,7 @@ public class SecureTokenTests
     public void EqualValuesAreEqual()
     {
         var v1 = SecureToken.New();
-        var v2 = SecureToken.Parse(v1.ToString());
+        var v2 = SecureToken.Parse(v1.ToString(), CultureInfo.InvariantCulture);
         Assert.Equal(v1, v2);
     }
 
@@ -122,7 +126,7 @@ public class SecureTokenTests
     public void EqualValuesAsObjectsAreEqual()
     {
         var v1 = (object)SecureToken.New();
-        var v2 = (object)SecureToken.Parse(v1.ToString()!);
+        var v2 = (object)SecureToken.Parse(v1.ToString()!, CultureInfo.InvariantCulture);
         Assert.Equal(v1, v2);
     }
 }

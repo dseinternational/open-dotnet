@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Buffers;
+using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -38,7 +39,7 @@ public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, Asc
     {
     }
 
-    public UriAsciiPath(string path) : this(AsciiString.Parse(path), false)
+    public UriAsciiPath(string path) : this(AsciiString.Parse(path, null), false)
     {
     }
 
@@ -48,7 +49,10 @@ public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, Asc
 
     public AsciiChar this[int index] => _value[index];
 
-    public UriAsciiPath Slice(int start, int length) => new(_value.Slice(start, length));
+    public UriAsciiPath Slice(int start, int length)
+    {
+        return new(_value.Slice(start, length));
+    }
 
     public ReadOnlySpan<AsciiChar> Span => _value.Span;
 
@@ -56,29 +60,65 @@ public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, Asc
 
     public int Length => _value.Length;
 
-    public bool EndsWith(ReadOnlySpan<char> value) => _value.EndsWith(value);
+    public bool EndsWith(ReadOnlySpan<char> value)
+    {
+        return _value.EndsWith(value);
+    }
 
-    public bool EndsWith(string value) => _value.EndsWith(value);
+    public bool EndsWith(string value)
+    {
+        return _value.EndsWith(value);
+    }
 
-    public bool EndsWith(UriAsciiPath value) => _value.EndsWith(value._value);
+    public bool EndsWith(UriAsciiPath value)
+    {
+        return _value.EndsWith(value._value);
+    }
 
-    public bool EndsWith(AsciiString value) => _value.EndsWith(value);
+    public bool EndsWith(AsciiString value)
+    {
+        return _value.EndsWith(value);
+    }
 
-    public bool EndsWith(ReadOnlySpan<byte> value) => _value.EndsWith(value);
+    public bool EndsWith(ReadOnlySpan<byte> value)
+    {
+        return _value.EndsWith(value);
+    }
 
-    public bool EndsWith(AsciiChar value) => !_value.IsEmpty && _value[_value.Length] == value;
+    public bool EndsWith(AsciiChar value)
+    {
+        return !_value.IsEmpty && _value[_value.Length] == value;
+    }
 
-    public bool Equals(string value) => _value.Equals(value);
+    public bool Equals(string value)
+    {
+        return _value.Equals(value);
+    }
 
-    public bool Equals(ReadOnlySpan<char> value) => _value.Equals(value);
+    public bool Equals(ReadOnlySpan<char> value)
+    {
+        return _value.Equals(value);
+    }
 
-    public bool Equals(ReadOnlySpan<AsciiChar> value) => _value.Equals(value);
+    public bool Equals(ReadOnlySpan<AsciiChar> value)
+    {
+        return _value.Equals(value);
+    }
 
-    public bool EqualsCaseInsensitive(UriAsciiPath other) => _value.EqualsCaseInsensitive(other._value);
+    public bool EqualsCaseInsensitive(UriAsciiPath other)
+    {
+        return _value.EqualsCaseInsensitive(other._value);
+    }
 
-    public int IndexOf(AsciiChar c) => _value.IndexOf(c);
+    public int IndexOf(AsciiChar c)
+    {
+        return _value.IndexOf(c);
+    }
 
-    public int LastIndexOf(AsciiChar c) => _value.LastIndexOf(c);
+    public int LastIndexOf(AsciiChar c)
+    {
+        return _value.LastIndexOf(c);
+    }
 
     public UriAsciiPath? GetParent()
     {
@@ -95,43 +135,90 @@ public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, Asc
         return null;
     }
 
-    public int GetSegmentCount() => Length == 0 ? 0 : _value.Span.Count((AsciiChar)'/') + 1;
+    public int GetSegmentCount()
+    {
+        return Length == 0 ? 0 : _value.Span.Count((AsciiChar)'/') + 1;
+    }
 
-    public bool StartsWith(ReadOnlySpan<char> value) => _value.StartsWith(value);
+    public bool StartsWith(ReadOnlySpan<char> value)
+    {
+        return _value.StartsWith(value);
+    }
 
-    public bool StartsWith(string value) => _value.StartsWith(value);
+    public bool StartsWith(string value)
+    {
+        return _value.StartsWith(value);
+    }
 
-    public bool StartsWith(UriAsciiPath value) => _value.StartsWith(value._value);
+    public bool StartsWith(UriAsciiPath value)
+    {
+        return _value.StartsWith(value._value);
+    }
 
-    public bool StartsWith(AsciiString value) => _value.StartsWith(value);
+    public bool StartsWith(AsciiString value)
+    {
+        return _value.StartsWith(value);
+    }
 
-    public bool StartsWith(ReadOnlySpan<byte> value) => _value.StartsWith(value);
+    public bool StartsWith(ReadOnlySpan<byte> value)
+    {
+        return _value.StartsWith(value);
+    }
 
-    public bool StartsWith(AsciiChar value) => !_value.IsEmpty && _value[0] == value;
+    public bool StartsWith(AsciiChar value)
+    {
+        return !_value.IsEmpty && _value[0] == value;
+    }
 
-    public UriAsciiPath ToLower() => new(_value.ToLower(), false);
+    public UriAsciiPath ToLower()
+    {
+        return new(_value.ToLower(), false);
+    }
 
-    public UriAsciiPath ToUpper() => new(_value.ToUpper(), false);
+    public UriAsciiPath ToUpper()
+    {
+        return new(_value.ToUpper(), false);
+    }
 
-    public string ToStringLower() => _value.ToStringLower();
+    public string ToStringLower()
+    {
+        return _value.ToStringLower();
+    }
 
-    public string ToStringUpper() => _value.ToStringUpper();
+    public string ToStringUpper()
+    {
+        return _value.ToStringUpper();
+    }
 
-    private static string GetString(ReadOnlySpan<char> s) => UriPathStringPool.Shared.GetOrAdd(s);
+    private static string GetString(ReadOnlySpan<char> s)
+    {
+        return UriPathStringPool.Shared.GetOrAdd(s);
+    }
 
     private static bool IsValidOuterChar(AsciiChar c)
-        => AsciiChar.IsLetterOrDigit(c) || c == Dash || c == Stop || c == Underscore || c == Tilde;
+    {
+        return AsciiChar.IsLetterOrDigit(c) || c == Dash || c == Stop || c == Underscore || c == Tilde;
+    }
 
     private static bool IsValidOuterChar(char c)
-        => AsciiChar.IsLetterOrDigit(c) || c == Dash || c == Stop || c == Underscore || c == Tilde;
+    {
+        return AsciiChar.IsLetterOrDigit(c) || c == Dash || c == Stop || c == Underscore || c == Tilde;
+    }
 
     private static bool IsValidInnerChar(AsciiChar c)
-        => IsValidOuterChar(c) || c == Separator;
+    {
+        return IsValidOuterChar(c) || c == Separator;
+    }
 
     private static bool IsValidInnerChar(char c)
-        => IsValidOuterChar(c) || c == Separator;
+    {
+        return IsValidOuterChar(c) || c == Separator;
+    }
 
-    public static bool IsValidValue(AsciiString value) => IsValidValue(value.Span);
+    public static bool IsValidValue(AsciiString value)
+    {
+        return IsValidValue(value.Span);
+    }
 
     public static bool IsValidValue(ReadOnlySpan<AsciiChar> value)
     {
@@ -215,7 +302,10 @@ public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, Asc
         return true;
     }
 
-    public static bool IsValidValue(string value) => IsValidValue(value.AsSpan());
+    public static bool IsValidValue(string value)
+    {
+        return IsValidValue(value.AsSpan());
+    }
 
     public static bool TryParseSanitised(ReadOnlySpan<char> s, out UriAsciiPath value)
     {
@@ -258,7 +348,10 @@ public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, Asc
         return false;
     }
 
-    public static bool TryParseSanitised(string? s, out UriAsciiPath value) => TryParseSanitised(s.AsSpan(), out value);
+    public static bool TryParseSanitised(string? s, out UriAsciiPath value)
+    {
+        return TryParseSanitised(s.AsSpan(), out value);
+    }
 
     /// <summary>
     /// Creates a new <see cref="UriAsciiPath"/> by appending the <paramref name="path"/> to the current path.
@@ -286,7 +379,11 @@ public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, Asc
         return new UriAsciiPath(combined);
     }
 
-    public bool TryFormat(Span<byte> utf8Destination, out int bytesWritten, ReadOnlySpan<char> format, IFormatProvider? provider)
+    public bool TryFormat(
+        Span<byte> utf8Destination,
+        out int bytesWritten,
+        ReadOnlySpan<char> format,
+        IFormatProvider? provider)
     {
         if (utf8Destination.Length >= _value.Length)
         {
@@ -392,7 +489,10 @@ public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, Asc
         return new UriAsciiPath(combined);
     }
 
-    public UriAsciiPath AppendSegment(string path) => Append(new UriAsciiPath(path));
+    public UriAsciiPath AppendSegment(string path)
+    {
+        return Append(new UriAsciiPath(path));
+    }
 
     /// <summary>
     /// Returns a value representing the substring from the specified index to the end of the path.
@@ -459,9 +559,17 @@ public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, Asc
     /// </summary>
     /// <param name="startIndex"></param>
     /// <returns></returns>
-    public string Substring(int startIndex) => Subpath(startIndex).ToString();
+    public string Substring(int startIndex)
+    {
+        return Subpath(startIndex).ToString();
+    }
+
 #pragma warning disable CA2225 // Operator overloads have named alternates
-    public static explicit operator UriAsciiPath(string value) => Parse(value);
+
+    public static explicit operator UriAsciiPath(string value)
+    {
+        return Parse(value, CultureInfo.InvariantCulture);
+    }
 
 #pragma warning restore CA2225 // Operator overloads have named alternates
 
@@ -469,5 +577,8 @@ public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, Asc
     /// Creates a new <see cref="UriPath"/> from this <see cref="UriAsciiPath"/>.
     /// </summary>
     /// <returns></returns>
-    public UriPath ToUriPath() => UriPath.FromUriAsciiPath(this);
+    public UriPath ToUriPath()
+    {
+        return UriPath.FromUriAsciiPath(this);
+    }
 }

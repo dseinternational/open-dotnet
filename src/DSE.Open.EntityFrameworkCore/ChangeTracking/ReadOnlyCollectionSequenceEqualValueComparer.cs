@@ -18,5 +18,8 @@ public sealed class ReadOnlyCollectionSequenceEqualValueComparer<
     {
     }
 
-    private static IReadOnlyCollection<T> GenerateSnapshot(IReadOnlyCollection<T> values) => new List<T>(values);
+    private static List<T> GenerateSnapshot(IReadOnlyCollection<T> values)
+    {
+        return new(values);
+    }
 }

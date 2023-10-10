@@ -25,7 +25,9 @@ public class SetEqualsValueComparer<
     }
 
     private static bool CompareEquality(TCollection? c1, TCollection? c2)
-        => c1 is null ? c2 is null : c2 is not null && c1.SetEquals(c2);
+    {
+        return c1 is null ? c2 is null : c2 is not null && c1.SetEquals(c2);
+    }
 
     private static int GenerateHash(TCollection values)
     {
@@ -58,5 +60,8 @@ public sealed class SetEqualsValueComparer<
     {
     }
 
-    private static ISet<T> GenerateSnapshot(ISet<T> values) => new HashSet<T>(values);
+    private static HashSet<T> GenerateSnapshot(ISet<T> values)
+    {
+        return new(values);
+    }
 }

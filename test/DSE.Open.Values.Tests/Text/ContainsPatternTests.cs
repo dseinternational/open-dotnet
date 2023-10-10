@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Globalization;
 using System.Text.Json;
 using DSE.Open.Values.Text;
 
@@ -12,14 +13,14 @@ public class ContainsPatternTests
     [MemberData(nameof(ValidValues))]
     public void ParseParsesValidValues(string value)
     {
-        var pattern = ContainsPattern.Parse(value);
+        var pattern = ContainsPattern.Parse(value, CultureInfo.InvariantCulture);
         Assert.Equal(value, pattern.ToString());
     }
 
     [Fact]
     public void Serializes_to_string_value()
     {
-        var pattern = ContainsPattern.Parse("flower* AND petal*");
+        var pattern = ContainsPattern.Parse("flower* AND petal*", CultureInfo.InvariantCulture);
         var serialized = JsonSerializer.Serialize(pattern);
         Assert.Equal("\"flower* AND petal*\"", serialized);
     }
@@ -27,7 +28,7 @@ public class ContainsPatternTests
     [Fact]
     public void Serialized_and_deserialized_values_are_equal()
     {
-        var pattern = ContainsPattern.Parse("flower* AND petal*");
+        var pattern = ContainsPattern.Parse("flower* AND petal*", CultureInfo.InvariantCulture);
         var serialized = JsonSerializer.Serialize(pattern);
         var deserialized = JsonSerializer.Deserialize<ContainsPattern>(serialized);
         Assert.Equal(pattern, deserialized);

@@ -50,6 +50,8 @@ public readonly partial struct Identifier : IEquatableValue<Identifier, AsciiStr
 
     private static ReadOnlySpan<byte> ValidPrefixBytes => "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_"u8;
 
+    private static readonly SearchValues<byte> s_validPrefixBytes = SearchValues.Create(ValidPrefixBytes);
+
     public static readonly Identifier Empty;
 
     private Identifier(ReadOnlyMemory<AsciiChar> value)
@@ -114,24 +116,35 @@ public readonly partial struct Identifier : IEquatableValue<Identifier, AsciiStr
     }
 
     private static bool IsValidPrefix(ReadOnlySpan<byte> prefix)
-        => prefix.Length is >= MinPrefixLength and <= MaxPrefixLength && prefix.IndexOfAnyExcept(ValidPrefixBytes) < 0;
+    {
+        return prefix.Length is >= MinPrefixLength and <= MaxPrefixLength && prefix.IndexOfAnyExcept(s_validPrefixBytes) < 0;
+    }
 
     /// <summary>
     /// Creates a new <see cref="Identifier"/> of default length with a random value.
     /// </summary>
-    public static Identifier New() => New(DefaultLength);
+    public static Identifier New()
+    {
+        return New(DefaultLength);
+    }
 
     /// <summary>
     /// Creates a new <see cref="Identifier"/> of the specified length with a random value.
     /// </summary>
     /// <param name="length">The length of <see cref="Identifier"/> to create.</param>
-    public static Identifier New(int length) => New(length, ReadOnlySpan<byte>.Empty);
+    public static Identifier New(int length)
+    {
+        return New(length, ReadOnlySpan<byte>.Empty);
+    }
 
     /// <summary>
     /// Creates a new <see cref="Identifier"/> with the given prefix and a random value.
     /// </summary>
     /// <param name="prefix">The prefix to use.</param>
-    public static Identifier New(ReadOnlySpan<char> prefix) => New(DefaultLength, prefix);
+    public static Identifier New(ReadOnlySpan<char> prefix)
+    {
+        return New(DefaultLength, prefix);
+    }
 
     /// <summary>
     /// Creates a new <see cref="Identifier"/> of the specified length with the given prefix and a random value
@@ -209,26 +222,38 @@ public readonly partial struct Identifier : IEquatableValue<Identifier, AsciiStr
     /// </summary>
     /// <param name="value">The characters to compare.</param>
     /// <returns>True if the <see cref="Identifier"/> starts with the given sequence of characters; otherwise, false.</returns>
-    public bool StartsWith(ReadOnlySpan<char> value) => _value.StartsWith(value);
+    public bool StartsWith(ReadOnlySpan<char> value)
+    {
+        return _value.StartsWith(value);
+    }
 
     /// <summary>
     /// Determines whether this <see cref="Identifier"/> starts with the given sequence of bytes.
     /// </summary>
     /// <param name="value">The bytes to compare.</param>
     /// <returns>True if the <see cref="Identifier"/> starts with the given sequence of bytes; otherwise, false.</returns>
-    public bool StartsWith(ReadOnlySpan<byte> value) => _value.StartsWith(value);
+    public bool StartsWith(ReadOnlySpan<byte> value)
+    {
+        return _value.StartsWith(value);
+    }
 
     /// <summary>
     /// Determines whether this <see cref="Identifier"/> ends with the given sequence of characters.
     /// </summary>
     /// <param name="value">The characters to compare.</param>
     /// <returns>True if the <see cref="Identifier"/> ends with the given sequence of characters; otherwise, false.</returns>
-    public bool EndsWith(ReadOnlySpan<char> value) => _value.EndsWith(value);
+    public bool EndsWith(ReadOnlySpan<char> value)
+    {
+        return _value.EndsWith(value);
+    }
 
     /// <summary>
     /// Determines whether this <see cref="Identifier"/> ends with the given sequence of bytes.
     /// </summary>
     /// <param name="value">The bytes to compare.</param>
     /// <returns>True if the <see cref="Identifier"/> ends with the given sequence of bytes; otherwise, false.</returns>
-    public bool EndsWith(ReadOnlySpan<byte> value) => _value.EndsWith(value);
+    public bool EndsWith(ReadOnlySpan<byte> value)
+    {
+        return _value.EndsWith(value);
+    }
 }

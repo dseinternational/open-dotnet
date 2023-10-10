@@ -122,7 +122,7 @@ public class ObservableList<T> : IObservableList<T>
 
         var collectionAsList = collection as List<T> ?? new List<T>(collection);
 
-        if (!collectionAsList.Any())
+        if (collectionAsList.Count == 0)
         {
             return;
         }
@@ -319,7 +319,7 @@ public class ObservableList<T> : IObservableList<T>
 
         var collectionAsList = collection as List<T> ?? new List<T>(collection);
 
-        if (!collectionAsList.Any())
+        if (collectionAsList.Count == 0)
         {
             return;
         }

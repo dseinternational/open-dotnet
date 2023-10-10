@@ -214,5 +214,5 @@ public readonly partial struct TreebankPosTag : IEquatableValue<TreebankPosTag, 
         WhPronounPossessive,
     });
 
-    private static readonly IReadOnlySet<AsciiString> s_validValues = FrozenSet.ToFrozenSet(All.Select(x => x._value));
+    private static readonly FrozenSet<AsciiString> s_validValues = FrozenSet.ToFrozenSet(All.Select(x => x._value));
 }

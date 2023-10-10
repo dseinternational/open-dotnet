@@ -15,12 +15,14 @@ public class CollectionValueAsyncResultTests
 
     public ITestOutputHelper Output { get; }
 
+    private static readonly string[] s_sourceArray = ["Test1", "Test2", "Test3"];
+
     [Fact]
     public void Equality()
     {
         var val1 = new CollectionValueAsyncResult<string>
         {
-            Value = (new[] { "Test1", "Test2", "Test3" }).ToAsyncEnumerable(),
+            Value = s_sourceArray.ToAsyncEnumerable(),
             Notifications =
             [
                 Notification.Information("NTF123456", "Information"),
@@ -31,7 +33,7 @@ public class CollectionValueAsyncResultTests
 
         var val2 = new CollectionValueAsyncResult<string>
         {
-            Value = (new[] { "Test1", "Test2", "Test3" }).ToAsyncEnumerable(),
+            Value = s_sourceArray.ToAsyncEnumerable(),
             Notifications =
             [
                 Notification.Information("NTF123456", "Information"),

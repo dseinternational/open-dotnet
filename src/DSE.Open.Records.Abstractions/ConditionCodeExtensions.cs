@@ -7,7 +7,7 @@ public static class ConditionCodeExtensions
 {
     public static string GetLabel(this ConditionDiagnosisCode value)
     {
-        return ConditionDiagnosisCodeDescriptions.Default.GetLabel(value) ?? value.ToString();
+        return ConditionDiagnosisCodeDescriptions.Default.GetLabel(value, null) ?? value.ToString();
     }
 
     /// <summary>

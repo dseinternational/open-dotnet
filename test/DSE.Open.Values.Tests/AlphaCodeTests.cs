@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Globalization;
 using System.Text.Json;
 using DSE.Open.Text.Json;
 
@@ -14,8 +15,8 @@ public sealed class AlphaCodeTests
     [InlineData("abc", "ABC", false)]
     public void EqualsTest(string c1, string c2, bool eq)
     {
-        var code1 = AlphaCode.Parse(c1);
-        var code2 = AlphaCode.Parse(c2);
+        var code1 = AlphaCode.Parse(c1, null);
+        var code2 = AlphaCode.Parse(c2, null);
         if (eq)
         {
             Assert.Equal(code1, code2);
@@ -31,7 +32,7 @@ public sealed class AlphaCodeTests
     [InlineData("ABC")]
     public void ToStringTest(string code)
     {
-        var str = AlphaCode.Parse(code).ToString();
+        var str = AlphaCode.Parse(code, null).ToString();
         Assert.Equal(code, str);
     }
 
@@ -42,7 +43,7 @@ public sealed class AlphaCodeTests
         var code = new string('a', AlphaCode.MaxLength + 1);
 
         // Assert
-        _ = Assert.Throws<FormatException>(() => AlphaCode.Parse(code));
+        _ = Assert.Throws<FormatException>(() => AlphaCode.Parse(code, null));
     }
 
     [Fact]
@@ -52,7 +53,7 @@ public sealed class AlphaCodeTests
         const string code = "abc!";
 
         // Assert
-        _ = Assert.Throws<FormatException>(() => AlphaCode.Parse(code));
+        _ = Assert.Throws<FormatException>(() => AlphaCode.Parse(code, null));
     }
 
     [Fact]
@@ -168,7 +169,7 @@ public sealed class AlphaCodeTests
     {
         const string value = "abcde";
 
-        var code = AlphaCode.Parse(value);
+        var code = AlphaCode.Parse(value, CultureInfo.InvariantCulture);
 
         var json = JsonSerializer.Serialize(code, JsonSharedOptions.RelaxedJsonEscaping);
         var result = JsonSerializer.Deserialize<AlphaCode>(json, JsonSharedOptions.RelaxedJsonEscaping);

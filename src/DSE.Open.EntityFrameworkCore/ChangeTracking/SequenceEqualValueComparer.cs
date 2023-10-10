@@ -25,7 +25,9 @@ public class SequenceEqualValueComparer<
     }
 
     private static bool CompareEquality(TCollection? c1, TCollection? c2)
-        => c1 is null ? c2 is null : c2 is not null && c1.SequenceEqual(c2);
+    {
+        return c1 is null ? c2 is null : c2 is not null && c1.SequenceEqual(c2);
+    }
 
     private static int GenerateHash(TCollection values)
     {
@@ -46,6 +48,9 @@ public sealed class SequenceEqualValueComparer<
     public SequenceEqualValueComparer() : base(c => GenerateSnapshot(c))
     {
     }
-    private static IEnumerable<T> GenerateSnapshot(IEnumerable<T> values) => new List<T>(values);
+    private static List<T> GenerateSnapshot(IEnumerable<T> values)
+    {
+        return new(values);
+    }
 }
 

@@ -25,7 +25,7 @@ public class PointTypeConverter : TypeConverter
             return p;
         }
 
-        throw new InvalidOperationException(string.Format("Cannot convert \"{0}\" into {1}", value, typeof(Point)));
+        throw new InvalidOperationException($"Cannot convert \"{value}\" into {nameof(Point)}");
     }
 
     public override object ConvertTo(ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
