@@ -43,4 +43,13 @@
     <RepositoryUrl>https://github.com/dseinternational/open-dotnet</RepositoryUrl>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Diagnostics" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="CommunityToolkit.Diagnostics" />
+    <Using Include="System.Globalization" />
+  </ItemGroup>
+
 </Project>
