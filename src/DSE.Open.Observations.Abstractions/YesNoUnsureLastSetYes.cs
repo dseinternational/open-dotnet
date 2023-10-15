@@ -28,5 +28,12 @@ public readonly record struct YesNoUnsureLastSetYes(
         };
     }
 
-    public static explicit operator YesNoUnsureLastSetYes(YesNoUnsure value) => FromYesNoUnsure(value);
+    public static explicit operator YesNoUnsureLastSetYes(YesNoUnsure value)
+    {
+        return FromYesNoUnsure(value);
+    }
+
+    public static YesNoUnsureLastSetYes YesNow => new() { Value = YesNoUnsure.Yes, LastSetYes = DateTimeOffset.Now };
+
+    public static YesNoUnsureLastSetYes NoNow => new() { Value = YesNoUnsure.No, LastSetYes = DateTimeOffset.Now };
 }
