@@ -115,15 +115,15 @@ public readonly partial struct AsciiString
         IFormatProvider? provider,
         out AsciiString result)
     {
-        AsciiChar[]? rented = null;
+        byte[]? rented = null;
 
         try
         {
-            Span<AsciiChar> buffer = s.Length <= StackallocThresholds.MaxCharLength
-                ? stackalloc AsciiChar[s.Length]
-                : (rented = ArrayPool<AsciiChar>.Shared.Rent(s.Length));
+            Span<byte> buffer = s.Length <= StackallocThresholds.MaxByteLength
+                ? stackalloc byte[s.Length]
+                : (rented = ArrayPool<byte>.Shared.Rent(s.Length));
 
-            var status = Ascii.FromUtf16(s, ValuesMarshal.AsBytes(buffer), out var bytesWritten);
+            var status = Ascii.FromUtf16(s, buffer, out var bytesWritten);
 
             if (status == OperationStatus.InvalidData)
             {
@@ -133,14 +133,14 @@ public readonly partial struct AsciiString
 
             Debug.Assert(status == OperationStatus.Done);
 
-            result = new AsciiString(buffer[..bytesWritten].ToArray());
+            result = new AsciiString(ValuesMarshal.AsAsciiChars(buffer[..bytesWritten]).ToArray());
             return true;
         }
         finally
         {
             if (rented is not null)
             {
-                ArrayPool<AsciiChar>.Shared.Return(rented);
+                ArrayPool<byte>.Shared.Return(rented);
             }
         }
     }
