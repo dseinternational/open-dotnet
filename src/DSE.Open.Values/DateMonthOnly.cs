@@ -65,6 +65,11 @@ public readonly record struct DateMonthOnly : ISpanFormattable, ISpanParsable<Da
 
     public static DateMonthOnly FromDateTime(DateTime date) => new(DateOnly.FromDateTime(date.Date));
 
+    public static DateMonthOnly FromDateTimeOffset(DateTimeOffset date)
+    {
+        return new DateMonthOnly(new DateOnly(date.Year, date.Month, 1));
+    }
+
     public static DateMonthOnly Parse(ReadOnlySpan<char> s) => Parse(s, null);
 
     public static DateMonthOnly Parse(ReadOnlySpan<char> s, IFormatProvider? provider) => new(DateOnly.Parse(s, provider));
