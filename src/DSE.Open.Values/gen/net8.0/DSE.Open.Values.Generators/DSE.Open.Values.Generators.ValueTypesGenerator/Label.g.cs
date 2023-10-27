@@ -204,11 +204,17 @@ public readonly partial struct Label
     public static Label Parse(ReadOnlySpan<char> s)
         => Parse(s, default);
 
+    public static Label ParseInvariant(ReadOnlySpan<char> s)
+        => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
+
     public static Label Parse(string s, IFormatProvider? provider)
         => global::DSE.Open.Values.ValueParser.Parse<Label, CharSequence>(s, provider);
 
     public static Label Parse(string s)
         => Parse(s, default);
+
+    public static Label ParseInvariant(string s)
+        => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
 
     public int CompareTo(Label other)
     {

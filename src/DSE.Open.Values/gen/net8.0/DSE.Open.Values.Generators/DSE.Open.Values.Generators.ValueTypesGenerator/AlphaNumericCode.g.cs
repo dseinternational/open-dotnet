@@ -204,11 +204,17 @@ public readonly partial struct AlphaNumericCode
     public static AlphaNumericCode Parse(ReadOnlySpan<char> s)
         => Parse(s, default);
 
+    public static AlphaNumericCode ParseInvariant(ReadOnlySpan<char> s)
+        => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
+
     public static AlphaNumericCode Parse(string s, IFormatProvider? provider)
         => global::DSE.Open.Values.ValueParser.Parse<AlphaNumericCode, AsciiString>(s, provider);
 
     public static AlphaNumericCode Parse(string s)
         => Parse(s, default);
+
+    public static AlphaNumericCode ParseInvariant(string s)
+        => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
 
     public bool TryFormat(
         Span<byte> utf8Destination,
@@ -217,10 +223,20 @@ public readonly partial struct AlphaNumericCode
         IFormatProvider? provider)
         => _value.TryFormat(utf8Destination, out bytesWritten, format, provider);
 
+    public bool TryFormatInvariant(
+        Span<byte> utf8Destination,
+        out int bytesWritten,
+        ReadOnlySpan<char> format)
+        => _value.TryFormat(utf8Destination, out bytesWritten, format, System.Globalization.CultureInfo.InvariantCulture);
+
     public static AlphaNumericCode Parse(
         ReadOnlySpan<byte> utf8Source,
         IFormatProvider? provider)
     => global::DSE.Open.Values.ValueParser.Parse<AlphaNumericCode, AsciiString>(utf8Source, provider);
+
+    public static AlphaNumericCode ParseInvariant(
+        ReadOnlySpan<byte> utf8Source)
+    => global::DSE.Open.Values.ValueParser.Parse<AlphaNumericCode, AsciiString>(utf8Source, System.Globalization.CultureInfo.InvariantCulture);
 
     public static bool TryParse(
         ReadOnlySpan<byte> utf8Source,

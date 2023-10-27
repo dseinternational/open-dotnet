@@ -186,11 +186,17 @@ public readonly partial struct LanguageCode2
     public static LanguageCode2 Parse(ReadOnlySpan<char> s)
         => Parse(s, default);
 
+    public static LanguageCode2 ParseInvariant(ReadOnlySpan<char> s)
+        => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
+
     public static LanguageCode2 Parse(string s, IFormatProvider? provider)
         => global::DSE.Open.Values.ValueParser.Parse<LanguageCode2, AsciiChar2>(s, provider);
 
     public static LanguageCode2 Parse(string s)
         => Parse(s, default);
+
+    public static LanguageCode2 ParseInvariant(string s)
+        => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
 
     public bool TryFormat(
         Span<byte> utf8Destination,
@@ -199,10 +205,20 @@ public readonly partial struct LanguageCode2
         IFormatProvider? provider)
         => _value.TryFormat(utf8Destination, out bytesWritten, format, provider);
 
+    public bool TryFormatInvariant(
+        Span<byte> utf8Destination,
+        out int bytesWritten,
+        ReadOnlySpan<char> format)
+        => _value.TryFormat(utf8Destination, out bytesWritten, format, System.Globalization.CultureInfo.InvariantCulture);
+
     public static LanguageCode2 Parse(
         ReadOnlySpan<byte> utf8Source,
         IFormatProvider? provider)
     => global::DSE.Open.Values.ValueParser.Parse<LanguageCode2, AsciiChar2>(utf8Source, provider);
+
+    public static LanguageCode2 ParseInvariant(
+        ReadOnlySpan<byte> utf8Source)
+    => global::DSE.Open.Values.ValueParser.Parse<LanguageCode2, AsciiChar2>(utf8Source, System.Globalization.CultureInfo.InvariantCulture);
 
     public static bool TryParse(
         ReadOnlySpan<byte> utf8Source,

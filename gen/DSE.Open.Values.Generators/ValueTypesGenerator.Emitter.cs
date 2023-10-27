@@ -559,6 +559,13 @@ public partial class ValueTypesGenerator
                                    public static {{spec.ValueTypeName}} Parse(ReadOnlySpan<char> s)
                                        => Parse(s, default);
                                    """);
+
+                writer.WriteLine();
+
+                writer.WriteLine($$"""
+                                   public static {{spec.ValueTypeName}} ParseInvariant(ReadOnlySpan<char> s)
+                                       => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
+                                   """);
             }
 
             if (spec.EmitParseStringMethod)
@@ -575,6 +582,13 @@ public partial class ValueTypesGenerator
                 writer.WriteLine($$"""
                                    public static {{spec.ValueTypeName}} Parse(string s)
                                        => Parse(s, default);
+                                   """);
+
+                writer.WriteLine();
+
+                writer.WriteLine($$"""
+                                   public static {{spec.ValueTypeName}} ParseInvariant(string s)
+                                       => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
                                    """);
             }
 
@@ -611,6 +625,16 @@ public partial class ValueTypesGenerator
                                       IFormatProvider? provider)
                                       => _value.TryFormat(utf8Destination, out bytesWritten, format, provider);
                                   """);
+
+                writer.WriteLine();
+
+                writer.WriteLine($"""
+                                  public bool TryFormatInvariant(
+                                      Span<byte> utf8Destination,
+                                      out int bytesWritten,
+                                      ReadOnlySpan<char> format)
+                                      => _value.TryFormat(utf8Destination, out bytesWritten, format, System.Globalization.CultureInfo.InvariantCulture);
+                                  """);
             }
 
             if (spec.EmitParseUtf8Method)
@@ -622,6 +646,14 @@ public partial class ValueTypesGenerator
                                        ReadOnlySpan<byte> utf8Source,
                                        IFormatProvider? provider)
                                    => {{Namespaces.DseOpenValues}}.ValueParser.Parse<{{spec.ValueTypeName}}, {{spec.ContainedValueTypeName}}>(utf8Source, provider);
+                                   """);
+
+                writer.WriteLine();
+
+                writer.WriteLine($$"""
+                                   public static {{spec.ValueTypeName}} ParseInvariant(
+                                       ReadOnlySpan<byte> utf8Source)
+                                   => {{Namespaces.DseOpenValues}}.ValueParser.Parse<{{spec.ValueTypeName}}, {{spec.ContainedValueTypeName}}>(utf8Source, System.Globalization.CultureInfo.InvariantCulture);
                                    """);
             }
 

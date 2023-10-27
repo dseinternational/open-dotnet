@@ -195,11 +195,17 @@ public readonly partial struct UriAsciiPath
     public static UriAsciiPath Parse(ReadOnlySpan<char> s)
         => Parse(s, default);
 
+    public static UriAsciiPath ParseInvariant(ReadOnlySpan<char> s)
+        => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
+
     public static UriAsciiPath Parse(string s, IFormatProvider? provider)
         => global::DSE.Open.Values.ValueParser.Parse<UriAsciiPath, AsciiString>(s, provider);
 
     public static UriAsciiPath Parse(string s)
         => Parse(s, default);
+
+    public static UriAsciiPath ParseInvariant(string s)
+        => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
 
     public int CompareTo(UriAsciiPath other)
     {

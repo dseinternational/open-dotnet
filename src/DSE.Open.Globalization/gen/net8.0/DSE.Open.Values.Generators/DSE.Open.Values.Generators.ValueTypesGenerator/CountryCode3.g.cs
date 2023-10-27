@@ -186,11 +186,17 @@ public readonly partial struct CountryCode3
     public static CountryCode3 Parse(ReadOnlySpan<char> s)
         => Parse(s, default);
 
+    public static CountryCode3 ParseInvariant(ReadOnlySpan<char> s)
+        => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
+
     public static CountryCode3 Parse(string s, IFormatProvider? provider)
         => global::DSE.Open.Values.ValueParser.Parse<CountryCode3, AsciiChar3>(s, provider);
 
     public static CountryCode3 Parse(string s)
         => Parse(s, default);
+
+    public static CountryCode3 ParseInvariant(string s)
+        => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
 
     public bool TryFormat(
         Span<byte> utf8Destination,
@@ -199,10 +205,20 @@ public readonly partial struct CountryCode3
         IFormatProvider? provider)
         => _value.TryFormat(utf8Destination, out bytesWritten, format, provider);
 
+    public bool TryFormatInvariant(
+        Span<byte> utf8Destination,
+        out int bytesWritten,
+        ReadOnlySpan<char> format)
+        => _value.TryFormat(utf8Destination, out bytesWritten, format, System.Globalization.CultureInfo.InvariantCulture);
+
     public static CountryCode3 Parse(
         ReadOnlySpan<byte> utf8Source,
         IFormatProvider? provider)
     => global::DSE.Open.Values.ValueParser.Parse<CountryCode3, AsciiChar3>(utf8Source, provider);
+
+    public static CountryCode3 ParseInvariant(
+        ReadOnlySpan<byte> utf8Source)
+    => global::DSE.Open.Values.ValueParser.Parse<CountryCode3, AsciiChar3>(utf8Source, System.Globalization.CultureInfo.InvariantCulture);
 
     public static bool TryParse(
         ReadOnlySpan<byte> utf8Source,

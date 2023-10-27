@@ -5,47 +5,27 @@ namespace DSE.Open;
 
 public static class FormattableExtensions
 {
-    public static string ToString<T>(this T formattable, string format)
-        where T : IFormattable
+    public static string ToString(this IFormattable formattable, string? format)
     {
         Guard.IsNotNull(formattable);
         return formattable.ToString(format, null);
     }
 
-    public static string ToString<T>(this T formattable, IFormatProvider formatProvider)
-        where T : IFormattable
+    public static string ToString(this IFormattable formattable, IFormatProvider formatProvider)
     {
         Guard.IsNotNull(formattable);
         return formattable.ToString(null, formatProvider);
     }
 
-    public static string ToString<T>(this T? formattable, string format)
-        where T : struct, IFormattable
-        => formattable?.ToString(format, null) ?? string.Empty;
-
-    public static string ToString<T>(this T? formattable, IFormatProvider formatProvider)
-        where T : struct, IFormattable
-        => formattable?.ToString(null, formatProvider) ?? string.Empty;
-
-    public static string ToStringInvariant<T>(this T formattable)
-        where T : IFormattable
+    public static string ToStringInvariant(this IFormattable formattable)
     {
         Guard.IsNotNull(formattable);
-        return formattable.ToString(null, CultureInfo.InvariantCulture);
+        return formattable.ToStringInvariant();
     }
 
-    public static string ToStringInvariant<T>(this T formattable, string? format)
-        where T : IFormattable
+    public static string ToStringInvariant(this IFormattable formattable, string? format)
     {
         Guard.IsNotNull(formattable);
         return formattable.ToString(format, CultureInfo.InvariantCulture);
     }
-
-    public static string ToStringInvariant<T>(this T? formattable)
-        where T : struct, IFormattable
-        => formattable?.ToString(null, CultureInfo.InvariantCulture) ?? string.Empty;
-
-    public static string ToStringInvariant<T>(this T? formattable, string format)
-        where T : struct, IFormattable
-        => formattable?.ToString(format, CultureInfo.InvariantCulture) ?? string.Empty;
 }

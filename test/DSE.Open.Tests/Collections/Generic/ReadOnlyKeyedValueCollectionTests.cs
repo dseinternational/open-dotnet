@@ -47,5 +47,5 @@ public sealed class TestReadOnlyKeyedValueCollection : ReadOnlyKeyedValueCollect
     {
     }
 
-    protected override string GetKeyForItem(int item) => item.ToString(CultureInfo.InvariantCulture);
+    protected override string GetKeyForItem(int item) => item.ToStringInvariant();
 }

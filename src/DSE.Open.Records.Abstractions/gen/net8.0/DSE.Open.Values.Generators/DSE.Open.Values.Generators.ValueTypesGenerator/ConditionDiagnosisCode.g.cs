@@ -186,11 +186,17 @@ public readonly partial struct ConditionDiagnosisCode
     public static ConditionDiagnosisCode Parse(ReadOnlySpan<char> s)
         => Parse(s, default);
 
+    public static ConditionDiagnosisCode ParseInvariant(ReadOnlySpan<char> s)
+        => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
+
     public static ConditionDiagnosisCode Parse(string s, IFormatProvider? provider)
         => global::DSE.Open.Values.ValueParser.Parse<ConditionDiagnosisCode, ClinicalConceptCode>(s, provider);
 
     public static ConditionDiagnosisCode Parse(string s)
         => Parse(s, default);
+
+    public static ConditionDiagnosisCode ParseInvariant(string s)
+        => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
 
     public bool TryFormat(
         Span<byte> utf8Destination,
@@ -199,10 +205,20 @@ public readonly partial struct ConditionDiagnosisCode
         IFormatProvider? provider)
         => _value.TryFormat(utf8Destination, out bytesWritten, format, provider);
 
+    public bool TryFormatInvariant(
+        Span<byte> utf8Destination,
+        out int bytesWritten,
+        ReadOnlySpan<char> format)
+        => _value.TryFormat(utf8Destination, out bytesWritten, format, System.Globalization.CultureInfo.InvariantCulture);
+
     public static ConditionDiagnosisCode Parse(
         ReadOnlySpan<byte> utf8Source,
         IFormatProvider? provider)
     => global::DSE.Open.Values.ValueParser.Parse<ConditionDiagnosisCode, ClinicalConceptCode>(utf8Source, provider);
+
+    public static ConditionDiagnosisCode ParseInvariant(
+        ReadOnlySpan<byte> utf8Source)
+    => global::DSE.Open.Values.ValueParser.Parse<ConditionDiagnosisCode, ClinicalConceptCode>(utf8Source, System.Globalization.CultureInfo.InvariantCulture);
 
     public static bool TryParse(
         ReadOnlySpan<byte> utf8Source,

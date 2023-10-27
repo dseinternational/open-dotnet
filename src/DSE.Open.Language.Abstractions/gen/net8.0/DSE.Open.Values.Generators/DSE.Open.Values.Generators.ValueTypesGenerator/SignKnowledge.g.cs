@@ -186,9 +186,15 @@ public readonly partial struct SignKnowledge
     public static SignKnowledge Parse(ReadOnlySpan<char> s)
         => Parse(s, default);
 
+    public static SignKnowledge ParseInvariant(ReadOnlySpan<char> s)
+        => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
+
     public static SignKnowledge Parse(string s, IFormatProvider? provider)
         => global::DSE.Open.Values.ValueParser.Parse<SignKnowledge, CharSequence>(s, provider);
 
     public static SignKnowledge Parse(string s)
         => Parse(s, default);
+
+    public static SignKnowledge ParseInvariant(string s)
+        => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
 }

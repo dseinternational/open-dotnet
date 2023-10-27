@@ -178,9 +178,15 @@ public readonly partial struct ContainsPattern
     public static ContainsPattern Parse(ReadOnlySpan<char> s)
         => Parse(s, default);
 
+    public static ContainsPattern ParseInvariant(ReadOnlySpan<char> s)
+        => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
+
     public static ContainsPattern Parse(string s, IFormatProvider? provider)
         => global::DSE.Open.Values.ValueParser.Parse<ContainsPattern, CharSequence>(s, provider);
 
     public static ContainsPattern Parse(string s)
         => Parse(s, default);
+
+    public static ContainsPattern ParseInvariant(string s)
+        => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
 }

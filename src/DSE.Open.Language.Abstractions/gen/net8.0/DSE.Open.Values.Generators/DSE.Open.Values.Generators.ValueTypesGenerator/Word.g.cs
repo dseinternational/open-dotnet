@@ -186,11 +186,17 @@ public readonly partial struct Word
     public static Word Parse(ReadOnlySpan<char> s)
         => Parse(s, default);
 
+    public static Word ParseInvariant(ReadOnlySpan<char> s)
+        => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
+
     public static Word Parse(string s, IFormatProvider? provider)
         => global::DSE.Open.Values.ValueParser.Parse<Word, CharSequence>(s, provider);
 
     public static Word Parse(string s)
         => Parse(s, default);
+
+    public static Word ParseInvariant(string s)
+        => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
 
     public int CompareTo(Word other)
     {

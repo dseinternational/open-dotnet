@@ -182,7 +182,7 @@ public sealed class CodeTests
         var result = (Code)code;
 
         // Assert
-        Assert.Equal(code.ToString(CultureInfo.InvariantCulture), result.ToString(CultureInfo.InvariantCulture));
+        Assert.Equal(code.ToStringInvariant(), result.ToStringInvariant());
     }
 
     [Fact]
