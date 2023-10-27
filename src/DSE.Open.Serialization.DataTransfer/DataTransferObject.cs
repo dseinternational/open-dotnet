@@ -14,6 +14,7 @@ public abstract record DataTransferObject : IJsonSerializable, IExtensionData
 {
     private ValueDictionary<string, object>? _extensionData;
 
+    [JsonIgnore]
     public ValueDictionary<string, object> ExtensionData => ExtensionDataCore;
 
     IDictionary<string, object> IExtensionData.ExtensionData
