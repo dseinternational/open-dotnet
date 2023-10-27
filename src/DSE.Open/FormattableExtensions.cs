@@ -20,7 +20,7 @@ public static class FormattableExtensions
     public static string ToStringInvariant(this IFormattable formattable)
     {
         Guard.IsNotNull(formattable);
-        return formattable.ToStringInvariant();
+        return formattable.ToString(null, CultureInfo.InvariantCulture);
     }
 
     public static string ToStringInvariant(this IFormattable formattable, string? format)
