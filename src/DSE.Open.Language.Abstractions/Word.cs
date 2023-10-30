@@ -23,6 +23,10 @@ public readonly partial struct Word : IComparableValue<Word, CharSequence>
 {
     public static int MaxSerializedCharLength => 64;
 
+    public Word(string word) : this((CharSequence)word)
+    {
+    }
+
     public static bool IsValidValue(CharSequence value)
     {
         if (value.IsEmpty || value.Length > MaxSerializedCharLength)
@@ -63,4 +67,14 @@ public readonly partial struct Word : IComparableValue<Word, CharSequence>
 
         return true;
     }
+
+#pragma warning disable CA2225 // Operator overloads have named alternates
+
+    public static explicit operator Word(string word)
+    {
+        return new(word);
+    }
+
+#pragma warning restore CA2225 // Operator overloads have named alternates
+
 }
