@@ -102,4 +102,3 @@ public readonly partial struct UniversalPosTag : IEquatableValue<UniversalPosTag
 
     private static readonly FrozenSet<AsciiString> s_validValues = FrozenSet.ToFrozenSet(All.Select(x => x._value));
 }
-
