@@ -15,7 +15,7 @@ namespace DSE.Open.Speech;
 /// </summary>
 [JsonConverter(typeof(JsonStringPhonemeConverter))]
 [StructLayout(LayoutKind.Auto)]
-public readonly struct Phoneme : IEquatable<Phoneme>, ISpanFormattable, ISpanParsable<Phoneme>
+public readonly partial struct Phoneme : IEquatable<Phoneme>, ISpanFormattable, ISpanParsable<Phoneme>
 {
     private readonly string _value;
     private readonly bool _initialized;
@@ -66,7 +66,7 @@ public readonly struct Phoneme : IEquatable<Phoneme>, ISpanFormattable, ISpanPar
         return value.Length > 0 && value.Length < MaxLength;
     }
 
-    static void EnsureValidValue(ReadOnlySpan<char> value)
+    private static void EnsureValidValue(ReadOnlySpan<char> value)
     {
         if (!IsValidValue(value))
         {
@@ -76,6 +76,15 @@ public readonly struct Phoneme : IEquatable<Phoneme>, ISpanFormattable, ISpanPar
     }
 
     public int Length => _value.Length;
+
+    public bool IsConsonant => PhonemeInfo.IsConsonant(_value);
+
+    public bool IsVowel => PhonemeInfo.IsVowel(_value);
+
+    public bool IsSpeechSoundType(SpeechSoundType speechSoundType)
+    {
+        return PhonemeInfo.IsSpeechSoundType(_value, speechSoundType);
+    }
 
     public override bool Equals(object? obj)
     {
@@ -92,7 +101,10 @@ public readonly struct Phoneme : IEquatable<Phoneme>, ISpanFormattable, ISpanPar
         return string.GetHashCode(_value, StringComparison.Ordinal);
     }
 
-    public override string ToString() => _value;
+    public override string ToString()
+    {
+        return _value;
+    }
 
     // TODO: formatting options: escaped Unicode? binary format?
 

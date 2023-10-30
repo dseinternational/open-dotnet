@@ -37,7 +37,10 @@ public readonly record struct Sign : ISpanFormattable, ISpanParsable<Sign>
     /// </summary>
     public Word Word { get; init; }
 
-    public static Sign Parse(ReadOnlySpan<char> s) => Parse(s, null);
+    public static Sign Parse(ReadOnlySpan<char> s)
+    {
+        return Parse(s, null);
+    }
 
     public static Sign Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
     {
@@ -49,7 +52,10 @@ public readonly record struct Sign : ISpanFormattable, ISpanParsable<Sign>
         return result;
     }
 
-    public static Sign Parse(string s) => Parse(s, null);
+    public static Sign Parse(string s)
+    {
+        return Parse(s, null);
+    }
 
     public static Sign Parse(string s, IFormatProvider? provider)
     {
@@ -66,7 +72,9 @@ public readonly record struct Sign : ISpanFormattable, ISpanParsable<Sign>
     public static bool TryParse(
         ReadOnlySpan<char> s,
         [MaybeNullWhen(false)] out Sign result)
-        => TryParse(s, null, out result);
+    {
+        return TryParse(s, null, out result);
+    }
 
     public static bool TryParse(
         ReadOnlySpan<char> s,
@@ -94,7 +102,9 @@ public readonly record struct Sign : ISpanFormattable, ISpanParsable<Sign>
     public static bool TryParse(
         [NotNullWhen(true)] string? s,
         [MaybeNullWhen(false)] out Sign result)
-        => TryParse(s, null, out result);
+    {
+        return TryParse(s, null, out result);
+    }
 
     public static bool TryParse(
         [NotNullWhen(true)] string? s,
@@ -104,7 +114,10 @@ public readonly record struct Sign : ISpanFormattable, ISpanParsable<Sign>
         return TryParse(s.AsSpan(), provider, out result);
     }
 
-    public override string ToString() => ToString(null, null);
+    public override string ToString()
+    {
+        return ToString(null, null);
+    }
 
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
@@ -122,7 +135,9 @@ public readonly record struct Sign : ISpanFormattable, ISpanParsable<Sign>
     public bool TryFormat(
         Span<char> destination,
         out int charsWritten)
-        => TryFormat(destination, out charsWritten, null, null);
+    {
+        return TryFormat(destination, out charsWritten, null, null);
+    }
 
     public bool TryFormat(
         Span<char> destination,
@@ -140,6 +155,7 @@ public readonly record struct Sign : ISpanFormattable, ISpanParsable<Sign>
                 return true;
             }
         }
+
         return false;
     }
 }
