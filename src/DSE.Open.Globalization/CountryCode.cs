@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Collections.Frozen;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
@@ -25,25 +26,55 @@ public readonly partial struct CountryCode : IComparableValue<CountryCode, Ascii
 
     public static int MaxSerializedByteLength => Length;
 
-    public bool Equals(CountryCode other) => _value.EqualsCaseInsensitive(other._value);
+    public bool Equals(CountryCode other)
+    {
+        return _value.EqualsCaseInsensitive(other._value);
+    }
 
-    public int CompareTo(CountryCode other) => _value.CompareToCaseInsensitive(other._value);
+    public int CompareTo(CountryCode other)
+    {
+        return _value.CompareToCaseInsensitive(other._value);
+    }
 
-    public override int GetHashCode() => AsciiChar2Comparer.CaseInsensitive.GetHashCode(_value);
+    public override int GetHashCode()
+    {
+        return AsciiChar2Comparer.CaseInsensitive.GetHashCode(_value);
+    }
 
-    public bool Equals(string other) => _value.Equals(other);
+    public bool Equals(string other)
+    {
+        return _value.Equals(other);
+    }
 
-    public bool Equals(ReadOnlyMemory<char> other) => _value.Equals(other);
+    public bool Equals(ReadOnlyMemory<char> other)
+    {
+        return _value.Equals(other);
+    }
 
-    public bool Equals(ReadOnlySpan<char> other) => _value.Equals(other);
+    public bool Equals(ReadOnlySpan<char> other)
+    {
+        return _value.Equals(other);
+    }
 
-    public char[] ToCharArray() => _value.ToCharArray();
+    public char[] ToCharArray()
+    {
+        return _value.ToCharArray();
+    }
 
-    public string ToStringLower() => _value.ToStringLower();
+    public string ToStringLower()
+    {
+        return _value.ToStringLower();
+    }
 
-    public string ToStringUpper() => _value.ToStringUpper();
+    public string ToStringUpper()
+    {
+        return _value.ToStringUpper();
+    }
 
-    public static bool IsValidValue(AsciiChar2 value) => IsValidValue(value, true);
+    public static bool IsValidValue(AsciiChar2 value)
+    {
+        return IsValidValue(value, true);
+    }
 
     private static bool IsValidValue(AsciiChar2 value, bool normalize)
     {
@@ -55,15 +86,27 @@ public readonly partial struct CountryCode : IComparableValue<CountryCode, Ascii
         return IsoCountryCodes.AssignedAlpha2Ascii.Contains(value);
     }
 
-    public AsciiChar2 ToAsciiChar2() => _value;
+    public AsciiChar2 ToAsciiChar2()
+    {
+        return _value;
+    }
 
-    public static CountryCode FromAsciiChar2(AsciiChar2 value) => value.CastToValue<CountryCode, AsciiChar2>();
+    public static CountryCode FromAsciiChar2(AsciiChar2 value)
+    {
+        return value.CastToValue<CountryCode, AsciiChar2>();
+    }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
-    public static explicit operator CountryCode(string code) => Parse(code);
+    public static explicit operator CountryCode(string code)
+    {
+        return Parse(code, CultureInfo.InvariantCulture);
+    }
 
-    public static explicit operator string(CountryCode code) => code.ToString();
+    public static explicit operator string(CountryCode code)
+    {
+        return code.ToString();
+    }
 
 #pragma warning restore CA2225 // Operator overloads have named alternates
 
@@ -72,7 +115,10 @@ public readonly partial struct CountryCode : IComparableValue<CountryCode, Ascii
     /// </summary>
     /// <param name="code"></param>
     /// <returns></returns>
-    public static bool IsEuMemberCountry(CountryCode code) => s_euMemberCountryCodes.BinarySearch(code) > -1;
+    public static bool IsEuMemberCountry(CountryCode code)
+    {
+        return s_euMemberCountryCodes.Contains(code);
+    }
 
     /// <summary>
     /// Indicates if a given ISO country code references a member country of the EU.
@@ -80,9 +126,11 @@ public readonly partial struct CountryCode : IComparableValue<CountryCode, Ascii
     /// <param name="code"></param>
     /// <returns></returns>
     public static bool IsEuMemberCountry(string code)
-        => code is null
-        ? throw new ArgumentNullException(nameof(code))
-        : IsEuMemberCountry(Parse(code.ToUpperInvariant()));
+    {
+        return code is null
+            ? throw new ArgumentNullException(nameof(code))
+            : IsEuMemberCountry(Parse(code.ToUpperInvariant(), CultureInfo.InvariantCulture));
+    }
 
     /// <summary>
     /// Indicates if a given ISO country code references a member country of the EU or an
@@ -91,7 +139,9 @@ public readonly partial struct CountryCode : IComparableValue<CountryCode, Ascii
     /// <param name="code"></param>
     /// <returns></returns>
     public static bool IsEuMemberCountryOrSubdivision(CountryCode code)
-        => s_euMemberCountryAndSubdivisionCodes.BinarySearch(code) > -1;
+    {
+        return s_euMemberCountryAndSubdivisionCodes.Contains(code);
+    }
 
     /// <summary>
     /// Indicates if a given ISO country code references a member country of the EU or an
@@ -100,9 +150,11 @@ public readonly partial struct CountryCode : IComparableValue<CountryCode, Ascii
     /// <param name="code"></param>
     /// <returns></returns>
     public static bool IsEuMemberCountryOrSubdivision(string code)
-        => code is null
-        ? throw new ArgumentNullException(nameof(code))
-        : IsEuMemberCountryOrSubdivision(Parse(code.ToUpperInvariant()));
+    {
+        return code is null
+            ? throw new ArgumentNullException(nameof(code))
+            : IsEuMemberCountryOrSubdivision(Parse(code.ToUpperInvariant(), CultureInfo.InvariantCulture));
+    }
 
     /// <summary>
     /// Indicates if a given ISO country code references a member country of the EU VAT Area or an
@@ -111,7 +163,9 @@ public readonly partial struct CountryCode : IComparableValue<CountryCode, Ascii
     /// <param name="code"></param>
     /// <returns></returns>
     public static bool IsEuVatAreaCountryOrSubdivision(CountryCode code)
-        => s_euVatAreaCountryAndSubdivisionCodes.BinarySearch(code) > -1;
+    {
+        return s_euVatAreaCountryAndSubdivisionCodes.Contains(code);
+    }
 
     /// <summary>
     /// Indicates if a given ISO country code references a member country of the EU VAT Area or an
@@ -123,15 +177,20 @@ public readonly partial struct CountryCode : IComparableValue<CountryCode, Ascii
     {
         return code is null
             ? throw new ArgumentNullException(nameof(code))
-            : IsEuVatAreaCountryOrSubdivision(Parse(code.ToUpperInvariant()));
+            : IsEuVatAreaCountryOrSubdivision(Parse(code.ToUpperInvariant(), CultureInfo.InvariantCulture));
     }
 
     public static bool IsEuroZoneCountry(string code)
-        => code is null
-        ? throw new ArgumentNullException(nameof(code))
-        : IsEuroZoneCountry(Parse(code.ToUpperInvariant()));
+    {
+        return code is null
+            ? throw new ArgumentNullException(nameof(code))
+            : IsEuroZoneCountry(Parse(code.ToUpperInvariant(), CultureInfo.InvariantCulture));
+    }
 
-    public static bool IsEuroZoneCountry(CountryCode code) => s_euroZoneCodes.BinarySearch(code) > -1;
+    public static bool IsEuroZoneCountry(CountryCode code)
+    {
+        return s_euroZoneCodes.Contains(code);
+    }
 
     public static readonly CountryCode Andorra = new(new AsciiChar2('A', 'D'), true);
     public static readonly CountryCode UnitedArabEmirates = new(new AsciiChar2('A', 'E'), true);
@@ -193,12 +252,14 @@ public readonly partial struct CountryCode : IComparableValue<CountryCode, Ascii
     public static readonly CountryCode SouthAfrica = new(new AsciiChar2('Z', 'A'), true);
 
     public static CountryCode FromRegionInfo(RegionInfo regionInfo)
-        => regionInfo is null
-        ? throw new ArgumentNullException(nameof(regionInfo))
-        : Parse(regionInfo.TwoLetterISORegionName);
-
-    private static readonly List<CountryCode> s_euMemberCountryCodes = new()
     {
+        return regionInfo is null
+            ? throw new ArgumentNullException(nameof(regionInfo))
+            : Parse(regionInfo.TwoLetterISORegionName, CultureInfo.InvariantCulture);
+    }
+
+    private static readonly FrozenSet<CountryCode> s_euMemberCountryCodes = FrozenSet.ToFrozenSet(
+    [
         Austria,
         Belgium,
         Bulgaria,
@@ -226,12 +287,12 @@ public readonly partial struct CountryCode : IComparableValue<CountryCode, Ascii
         Sweden,
         Slovenia,
         Slovakia,
-    };
+    ]);
 
     // https://en.wikipedia.org/wiki/Member_state_of_the_European_Union
     //
-    private static readonly List<CountryCode> s_euMemberCountryAndSubdivisionCodes = new()
-    {
+    private static readonly FrozenSet<CountryCode> s_euMemberCountryAndSubdivisionCodes = FrozenSet.ToFrozenSet(
+    [
         Austria,
         new CountryCode((AsciiChar2)"AX"), // Åland Islands (Finland)
         Belgium,
@@ -266,13 +327,13 @@ public readonly partial struct CountryCode : IComparableValue<CountryCode, Ascii
         Slovenia,
         Slovakia,
         new CountryCode((AsciiChar2)"YT"), // Mayotte (France)
-    };
+    ]);
 
     // https://www.gov.uk/guidance/vat-eu-country-codes-vat-numbers-and-vat-in-other-languages
     // https://en.wikipedia.org/wiki/European_Union_value_added_tax#EU_VAT_area
     // Note: Akrotiri and Dhekelia does not have ISO code.
-    private static readonly List<CountryCode> s_euVatAreaCountryAndSubdivisionCodes = new()
-    {
+    private static readonly FrozenSet<CountryCode> s_euVatAreaCountryAndSubdivisionCodes = FrozenSet.ToFrozenSet(
+    [
         Austria,
         Belgium,
         Bulgaria,
@@ -302,10 +363,10 @@ public readonly partial struct CountryCode : IComparableValue<CountryCode, Ascii
         Sweden,
         Slovenia,
         Slovakia
-    };
+    ]);
 
-    private static readonly List<CountryCode> s_euroZoneCodes = new()
-    {
+    private static readonly FrozenSet<CountryCode> s_euroZoneCodes = FrozenSet.ToFrozenSet(
+    [
         Austria,
         Belgium,
         Cyprus,
@@ -325,6 +386,5 @@ public readonly partial struct CountryCode : IComparableValue<CountryCode, Ascii
         Slovakia,
         Slovenia,
         Spain
-    };
-
+    ]);
 }

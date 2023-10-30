@@ -154,8 +154,8 @@ public readonly partial struct TreebankPosTag : IEquatableValue<TreebankPosTag, 
 
     public static readonly TreebankPosTag OpeningQuotationMark = new("``", true);
 
-    public static readonly IReadOnlySet<TreebankPosTag> All = new HashSet<TreebankPosTag>(new TreebankPosTag[]
-    {
+    public static readonly FrozenSet<TreebankPosTag> All = FrozenSet.ToFrozenSet(
+    [
         AdditionalWordInMultiwordExpression,
         Adjective,
         AdjectiveComparative,
@@ -212,7 +212,7 @@ public readonly partial struct TreebankPosTag : IEquatableValue<TreebankPosTag, 
         WhDeterminer,
         WhPronounPersonal,
         WhPronounPossessive,
-    });
+    ]);
 
     private static readonly FrozenSet<AsciiString> s_validValues = FrozenSet.ToFrozenSet(All.Select(x => x._value));
 }

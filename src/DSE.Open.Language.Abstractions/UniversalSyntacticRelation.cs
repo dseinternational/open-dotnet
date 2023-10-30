@@ -106,8 +106,8 @@ public readonly partial struct UniversalSyntacticRelation : IEquatableValue<Univ
     public static readonly UniversalSyntacticRelation Vocative = new("vocative", true);
     public static readonly UniversalSyntacticRelation OpenClausalComplement = new("xcomp", true);
 
-    public static readonly IReadOnlySet<UniversalSyntacticRelation> All = FrozenSet.ToFrozenSet(new[]
-    {
+    public static readonly FrozenSet<UniversalSyntacticRelation> All = FrozenSet.ToFrozenSet(
+    [
         AdjectivalModifier,
         AdverbialModifier,
         AgentModifier,
@@ -168,7 +168,7 @@ public readonly partial struct UniversalSyntacticRelation : IEquatableValue<Univ
         TemporalModifier2,
         UnspecifiedDependency,
         Vocative,
-    });
+    ]);
 
     private static readonly FrozenSet<AsciiString> s_validValues = FrozenSet.ToFrozenSet(All.Select(r => r._value));
 }

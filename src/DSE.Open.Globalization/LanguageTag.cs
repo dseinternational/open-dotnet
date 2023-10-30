@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Collections.Frozen;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
@@ -38,7 +39,10 @@ public readonly partial struct LanguageTag : IComparableValue<LanguageTag, Ascii
 
     private static readonly Regex s_regex = GetValidationRegex();
 
-    public static bool IsValidValue(AsciiString value) => IsValidValue(value.Span);
+    public static bool IsValidValue(AsciiString value)
+    {
+        return IsValidValue(value.Span);
+    }
 
     public int Length => _value.Length;
 
@@ -55,13 +59,19 @@ public readonly partial struct LanguageTag : IComparableValue<LanguageTag, Ascii
     }
 
     public static LanguageTag FromByteSpan(ReadOnlySpan<byte> languageTag)
-        => new(AsciiString.Parse(languageTag, null));
+    {
+        return new(AsciiString.Parse(languageTag, null));
+    }
 
     public static LanguageTag FromCharSpan(ReadOnlySpan<char> languageTag)
-        => new(AsciiString.Parse(languageTag));
+    {
+        return new(AsciiString.Parse(languageTag));
+    }
 
     public static bool IsValidValue(ReadOnlySpan<AsciiChar> value)
-        => IsValidValue(ValuesMarshal.AsBytes(value));
+    {
+        return IsValidValue(ValuesMarshal.AsBytes(value));
+    }
 
     public static bool IsValidValue(ReadOnlySpan<byte> value)
     {
@@ -93,37 +103,69 @@ public readonly partial struct LanguageTag : IComparableValue<LanguageTag, Ascii
         return s_regex.IsMatch(buffer);
     }
 
-    public bool Equals(LanguageTag other) => _value.EqualsCaseInsensitive(other._value);
+    public bool Equals(LanguageTag other)
+    {
+        return _value.EqualsCaseInsensitive(other._value);
+    }
 
-    public int CompareTo(LanguageTag other) => _value.CompareToCaseInsensitive(other._value);
+    public int CompareTo(LanguageTag other)
+    {
+        return _value.CompareToCaseInsensitive(other._value);
+    }
 
-    public override int GetHashCode() => AsciiStringComparer.CaseInsensitive.GetHashCode(_value);
+    public override int GetHashCode()
+    {
+        return AsciiStringComparer.CaseInsensitive.GetHashCode(_value);
+    }
 
     // we know they will be interned - see IsoCountryCodes
-    private static string GetString(ReadOnlySpan<char> s) => LanguageTagStringPool.Shared.GetOrAdd(s);
+    private static string GetString(ReadOnlySpan<char> s)
+    {
+        return LanguageTagStringPool.Shared.GetOrAdd(s);
+    }
 
     public bool LanguagePartEquals(LanguageTag otherLangPart)
-        => LanguagePartEquals(otherLangPart._value.Span);
+    {
+        return LanguagePartEquals(otherLangPart._value.Span);
+    }
 
-    public AsciiString ToAsciiString() => _value;
+    public AsciiString ToAsciiString()
+    {
+        return _value;
+    }
 
-    public char[] ToCharArray() => _value.ToCharArray();
+    public char[] ToCharArray()
+    {
+        return _value.ToCharArray();
+    }
 
     /// <summary>
     /// Returns the language tag as a string, without any formatting applied.
     /// </summary>
     /// <returns></returns>
-    public override string ToString() => ToString(default, CultureInfo.InvariantCulture);
+    public override string ToString()
+    {
+        return ToString(default, CultureInfo.InvariantCulture);
+    }
 
     /// <summary>
     /// Returns the language tag as a string, formatted as recommended in RFC5646.
     /// </summary>
     /// <returns>The language tag as a string, formatted as recommended in RFC5646.</returns>
-    public string ToStringFormatted() => ToString("N", CultureInfo.InvariantCulture);
+    public string ToStringFormatted()
+    {
+        return ToString("N", CultureInfo.InvariantCulture);
+    }
 
-    public string ToStringLower() => _value.ToStringLower();
+    public string ToStringLower()
+    {
+        return _value.ToStringLower();
+    }
 
-    public string ToStringUpper() => _value.ToStringUpper();
+    public string ToStringUpper()
+    {
+        return _value.ToStringUpper();
+    }
 
     public bool TryFormat(
         Span<char> destination,
@@ -268,7 +310,10 @@ public readonly partial struct LanguageTag : IComparableValue<LanguageTag, Ascii
     /// Gets the <see cref="CultureInfo"/> represented by the current value.
     /// </summary>
     /// <returns></returns>
-    public CultureInfo GetCultureInfo() => CultureInfo.GetCultureInfo(_value.ToString());
+    public CultureInfo GetCultureInfo()
+    {
+        return CultureInfo.GetCultureInfo(_value.ToString());
+    }
 
     /// <summary>
     /// Gets the <see cref="LanguageTag"/> for <see cref="CultureInfo.CurrentCulture"/>.
@@ -306,7 +351,10 @@ public readonly partial struct LanguageTag : IComparableValue<LanguageTag, Ascii
         return index < 0 ? span : span[..index];
     }
 
-    public LanguageTag GetLanguagePart() => new(new AsciiString(GetLanguagePartSpan().ToArray()));
+    public LanguageTag GetLanguagePart()
+    {
+        return new(new AsciiString(GetLanguagePartSpan().ToArray()));
+    }
 
     [GeneratedRegex(
         "^((?:(en-GB-oed|i-ami|i-bnn|i-default|i-enochian|i-hak|i-klingon|i-lux|i-mingo|i-navajo|i-pwn|i-tao|i-tay|i-tsu|sgn-BE-FR|sgn-BE-NL|sgn-CH-DE)|(art-lojban|cel-gaulish|no-bok|no-nyn|zh-guoyu|zh-hakka|zh-min|zh-min-nan|zh-xiang))|((?:([A-Za-z]{2,3}(-(?:[A-Za-z]{3}(-[A-Za-z]{3}){0,2}))?)|[A-Za-z]{4}|[A-Za-z]{5,8})(-(?:[A-Za-z]{4}))?(-(?:[A-Za-z]{2}|[0-9]{3}))?(-(?:[A-Za-z0-9]{5,8}|[0-9][A-Za-z0-9]{3}))*(-(?:[0-9A-WY-Za-wy-z](-[A-Za-z0-9]{2,8})+))*(-(?:x(-[A-Za-z0-9]{1,8})+))?)|(?:x(-[A-Za-z0-9]{1,8})+))$",
@@ -354,23 +402,24 @@ public readonly partial struct LanguageTag : IComparableValue<LanguageTag, Ascii
         return match is not null ? FromCultureInfo(match) : EnglishUs;
     }
 
-    private static readonly Dictionary<CountryCode, LanguageTag> s_languageLookup = new()
+    private static readonly FrozenDictionary<CountryCode, LanguageTag> s_languageLookup = new Dictionary<CountryCode, LanguageTag>
     {
         { CountryCode.Australia, EnglishAustralia },
-        { CountryCode.Brazil, Parse("pt-BR") },
+        { CountryCode.Brazil, Parse("pt-BR", CultureInfo.InvariantCulture) },
         { CountryCode.Canada, EnglishCanada },
-        { CountryCode.China, Parse("zh-CN") },
-        { CountryCode.France, Parse("fr-FR") },
-        { CountryCode.Germany, Parse("de-DE") },
+        { CountryCode.China, Parse("zh-CN", CultureInfo.InvariantCulture) },
+        { CountryCode.France, Parse("fr-FR", CultureInfo.InvariantCulture) },
+        { CountryCode.Germany, Parse("de-DE", CultureInfo.InvariantCulture) },
         { CountryCode.India, EnglishIndia },
         { CountryCode.Ireland, EnglishIreland },
-        { CountryCode.Italy, Parse("it-IT") },
-        { CountryCode.Mexico, Parse("es-MX") },
+        { CountryCode.Italy, Parse("it-IT", CultureInfo.InvariantCulture) },
+        { CountryCode.Mexico, Parse("es-MX", CultureInfo.InvariantCulture) },
         { CountryCode.NewZealand, EnglishNewZealand },
-        { CountryCode.Poland, Parse("pl-PL") },
+        { CountryCode.Poland, Parse("pl-PL", CultureInfo.InvariantCulture) },
         { CountryCode.SouthAfrica, EnglishSouthAfrica },
-        { CountryCode.Spain, Parse("es-ES") },
+        { CountryCode.Spain, Parse("es-ES", CultureInfo.InvariantCulture) },
         { CountryCode.UnitedKingdom, EnglishUk },
         { CountryCode.UnitedStates, EnglishUs },
-    };
+
+    }.ToFrozenDictionary();
 }

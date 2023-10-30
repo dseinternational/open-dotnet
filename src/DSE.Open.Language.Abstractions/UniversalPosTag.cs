@@ -79,8 +79,8 @@ public readonly partial struct UniversalPosTag : IEquatableValue<UniversalPosTag
 
     public static readonly UniversalPosTag Other = new("X", true);
 
-    public static readonly IReadOnlySet<UniversalPosTag> All = FrozenSet.ToFrozenSet(new[]
-    {
+    public static readonly FrozenSet<UniversalPosTag> All = FrozenSet.ToFrozenSet(
+    [
         Adjective,
         Adposition,
         Adverb,
@@ -98,7 +98,7 @@ public readonly partial struct UniversalPosTag : IEquatableValue<UniversalPosTag
         Symbol,
         Verb,
         Other
-    });
+    ]);
 
     private static readonly FrozenSet<AsciiString> s_validValues = FrozenSet.ToFrozenSet(All.Select(x => x._value));
 }
