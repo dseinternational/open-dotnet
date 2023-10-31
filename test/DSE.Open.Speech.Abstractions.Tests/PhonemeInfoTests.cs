@@ -173,7 +173,7 @@ public class PhonemeInfoTests
 
         // Velars
         "k", // voiceless velar plosive
-        "g", // voiced velar plosive
+        "ɡ", // voiced velar plosive
         "ŋ", // velar nasal
         "x", // voiceless velar fricative
         "ɣ", // voiced velar fricative

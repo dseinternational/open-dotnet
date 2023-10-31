@@ -194,7 +194,8 @@ public static class PhonemeInfo
     public static readonly FrozenSet<char> Velars = FrozenSet.ToFrozenSet(
     [
         'k', // voiceless velar plosive
-        'g', // voiced velar plosive
+        'ɡ', // voiced velar plosive (U+0261)
+        // 'g', // ... U+0067 is not supported
         'ŋ', // velar nasal
         'x', // voiceless velar fricative
         'ɣ', // voiced velar fricative

@@ -284,5 +284,4 @@ public readonly partial struct Phoneme : IEquatable<Phoneme>, ISpanFormattable, 
     public static readonly Phoneme OpenMidBackRoundedVowel = new("ɔ");
     public static readonly Phoneme OpenBackUnroundedVowel = new("ɑ");
     public static readonly Phoneme OpenBackRoundedVowel = new("ɒ");
-
 }
