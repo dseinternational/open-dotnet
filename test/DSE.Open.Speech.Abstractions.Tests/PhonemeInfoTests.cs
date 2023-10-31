@@ -97,7 +97,24 @@ public class PhonemeInfoTests
         "ɶ", // open front rounded vowel
         "ä", // open central unrounded vowel
         "ɑ", // open back unrounded vowel
-        "ɒ"  // open back rounded vowel
+        "ɒ", // open back rounded vowel
+
+        // Vowels - Diphthongs
+        "aɪ",
+        "aʊ",
+        "ɔɪ",
+        "eɪ",
+        "əʊ",
+        "ɪə",
+        "eə",
+        "ʊə",
+
+        // Vowels - Monophthongs (not above)
+        "iː",
+        "ɜː",
+        "uː",
+        "ɔː",
+        "ɑː",
     ];
 
     private static readonly string[] s_consonants =
@@ -178,6 +195,10 @@ public class PhonemeInfoTests
         // Glottals
         "ʔ", // glottal plosive
         "h", // voiceless glottal fricative
-        "ɦ"  // voiced glottal fricative
+        "ɦ",  // voiced glottal fricative
+
+
+        "tʃ",
+        "dʒ",
     ];
 }
