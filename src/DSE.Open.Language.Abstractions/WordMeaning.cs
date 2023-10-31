@@ -1,92 +1,49 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 using DSE.Open.Diagnostics;
 using DSE.Open.Globalization;
+using DSE.Open.Language.Text.Json.Serialization;
 
 namespace DSE.Open.Language;
 
 /// <summary>
 /// Associates a linguistic sign with a meaning.
 /// </summary>
-public sealed class WordMeaning : IEquatable<WordMeaning>
+[JsonConverter(typeof(JsonStringWordMeaningConverter))]
+public sealed class WordMeaning : IEquatable<WordMeaning>, ISpanFormattable, ISpanParsable<WordMeaning>, ISpanSerializable<WordMeaning>
 {
-    private string? _key;
+    private string? _serialized;
+
+    public static int MaxSerializedCharLength => 128;
 
     /// <summary>
     /// The sign with the meaning.
     /// </summary>
-    [JsonPropertyName("sign")]
-    [JsonPropertyOrder(-10000)]
     public required Sign Sign { get; init; }
 
     /// <summary>
     /// The language in which the word is presented.
     /// </summary>
-    [JsonPropertyName("language")]
-    [JsonPropertyOrder(-8900)]
     public required LanguageTag Language { get; init; }
 
     /// <summary>
     /// A Universal POS tag for the word used in a context with the intended meaning.
     /// </summary>
-    [JsonPropertyName("universal_pos_tag")]
-    [JsonPropertyOrder(-8850)]
     public required UniversalPosTag PosTag { get; init; }
 
     /// <summary>
     /// A Treebank POS tag for the word used in a context with the intended meaning.
     /// </summary>
-    [JsonPropertyName("treebank_pos_tag")]
-    [JsonPropertyOrder(-8840)]
     public required TreebankPosTag PosDetailedTag { get; init; }
 
     /// <summary>
     /// Gets a value that identifies the word meaning.
     /// </summary>
     [JsonIgnore]
-    public string Key
-    {
-        get
-        {
-            if (_key is not null)
-            {
-                return _key;
-            }
-
-            Span<char> k = stackalloc char[128];
-
-            if (Sign.TryFormat(k, out var charsWritten))
-            {
-                k[charsWritten++] = '|';
-
-                if (Language.TryFormat(k[charsWritten..], out var langChars))
-                {
-                    charsWritten += langChars;
-                    k[charsWritten++] = '|';
-
-                    if (PosTag.TryFormat(k[charsWritten..], out var posChars))
-                    {
-                        charsWritten += posChars;
-                        k[charsWritten++] = '|';
-                    }
-
-                    if (PosDetailedTag.TryFormat(k[charsWritten..], out var posDetailedChars))
-                    {
-                        charsWritten += posDetailedChars;
-
-                        _key = k[..charsWritten].ToString();
-
-                        return _key;
-                    }
-                }
-            }
-
-            Expect.Unreachable();
-            return null!;
-        }
-    }
+    public string Key => ToString();
 
     public bool Equals(WordMeaning? other)
     {
@@ -118,7 +75,125 @@ public sealed class WordMeaning : IEquatable<WordMeaning>
 
     public override string ToString()
     {
-        return Key;
+        return ToString(default, default);
+    }
+
+    public string ToString(string? format, IFormatProvider? formatProvider)
+    {
+        if (_serialized is not null)
+        {
+            return _serialized;
+        }
+
+        Span<char> k = stackalloc char[MaxSerializedCharLength];
+
+        if (TryFormat(k, out var charsWritten))
+        {
+            _serialized = k[..charsWritten].ToString();
+
+            return _serialized;
+        }
+
+        Expect.Unreachable();
+        return null!;
+    }
+
+    public bool TryFormat(Span<char> destination, out int charsWritten)
+    {
+        return TryFormat(destination, out charsWritten, default, default);
+    }
+
+    public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider? provider)
+    {
+        if (Sign.TryFormat(destination, out charsWritten))
+        {
+            destination[charsWritten++] = '|';
+
+            if (Language.TryFormat(destination[charsWritten..], out var langChars))
+            {
+                charsWritten += langChars;
+                destination[charsWritten++] = '|';
+
+                if (PosTag.TryFormat(destination[charsWritten..], out var posChars))
+                {
+                    charsWritten += posChars;
+                    destination[charsWritten++] = '|';
+                }
+
+                if (PosDetailedTag.TryFormat(destination[charsWritten..], out var posDetailedChars))
+                {
+                    charsWritten += posDetailedChars;
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public static WordMeaning Parse(ReadOnlySpan<char> s)
+    {
+        return Parse(s, default);
+    }
+
+    public static WordMeaning Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
+    {
+        if (TryParse(s, provider, out var wordMeaning))
+        {
+            return wordMeaning;
+        }
+
+        ThrowHelper.ThrowFormatException($"Failed to parse {nameof(wordMeaning)} value: '{s}'");
+        return null!; // unreachable
+    }
+
+    public static WordMeaning Parse(string s)
+    {
+        return Parse(s, null);
+    }
+
+    public static WordMeaning Parse(string s, IFormatProvider? provider)
+    {
+        Guard.IsNotNull(s);
+        return Parse(s.AsSpan(), provider);
+    }
+
+    public static bool TryParse(ReadOnlySpan<char> s, [MaybeNullWhen(false)] out WordMeaning result)
+    {
+        return TryParse(s, default, out result);
+    }
+
+    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, [MaybeNullWhen(false)] out WordMeaning result)
+    {
+        Span<Range> ranges = stackalloc Range[4];
+
+        var count = s.Split(ranges, '|');
+
+        if (count < 4)
+        {
+            result = default;
+            return false;
+        }
+
+        var sign = Sign.Parse(s[ranges[0]], provider);
+        var language = LanguageTag.Parse(s[ranges[1]], provider);
+        var posTag = UniversalPosTag.Parse(s[ranges[2]], provider);
+        var posDetailedTag = TreebankPosTag.Parse(s[ranges[3]], provider);
+
+        result = new WordMeaning
+        {
+            Sign = sign,
+            Language = language,
+            PosTag = posTag,
+            PosDetailedTag = posDetailedTag,
+        };
+
+        return true;
+    }
+
+    public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, [MaybeNullWhen(false)] out WordMeaning result)
+    {
+        throw new NotImplementedException();
     }
 
     public static bool operator ==(WordMeaning? wm1, WordMeaning? wm2)

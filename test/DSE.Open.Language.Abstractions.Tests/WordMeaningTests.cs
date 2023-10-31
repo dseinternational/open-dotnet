@@ -10,6 +10,19 @@ namespace DSE.Open.Language.Abstractions.Tests;
 public class WordMeaningTests
 {
     [Fact]
+    public void FormatParse()
+    {
+        foreach (var m in s_meanings)
+        {
+            var str = m.ToString();
+            var parsed = WordMeaning.Parse(str, CultureInfo.InvariantCulture);
+
+            Assert.NotNull(parsed);
+            Assert.Equal(m, parsed);
+        }
+    }
+
+    [Fact]
     public void SerializeDeserialize()
     {
         foreach (var m in s_meanings)
@@ -19,8 +32,6 @@ public class WordMeaningTests
 
             Assert.NotNull(deserialized);
             Assert.Equal(m, deserialized);
-            Assert.Equal(m.Sign, deserialized.Sign);
-            Assert.Equal(m.Language, deserialized.Language);
         }
     }
 

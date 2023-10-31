@@ -5,12 +5,12 @@ using DSE.Open.Text.Json.Serialization;
 
 namespace DSE.Open.Language.Text.Json.Serialization;
 
-public class JsonStringSignConverter : SpanParsableCharWritingJsonConverter<Sign>
+public class JsonStringWordMeaningConverter : SpanParsableCharWritingJsonConverter<WordMeaning>
 {
     public static readonly JsonStringSignConverter Default = new();
 
-    protected override int GetMaxCharCountToWrite(Sign value)
+    protected override int GetMaxCharCountToWrite(WordMeaning value)
     {
-        return Sign.MaxSerializedCharLength;
+        return WordMeaning.MaxSerializedCharLength;
     }
 }
