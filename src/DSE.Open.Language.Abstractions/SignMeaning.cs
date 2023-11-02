@@ -126,7 +126,11 @@ public sealed class SignMeaning
         return TryFormat(destination, out charsWritten, default, default);
     }
 
-    public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider? provider)
+    public bool TryFormat(
+        Span<char> destination,
+        out int charsWritten,
+        ReadOnlySpan<char> format,
+        IFormatProvider? provider)
     {
         if (Sign.TryFormat(destination, out charsWritten))
         {
@@ -159,6 +163,11 @@ public sealed class SignMeaning
         return Parse(s, default);
     }
 
+    public static SignMeaning ParseInvariant(ReadOnlySpan<char> s)
+    {
+        return Parse(s, CultureInfo.InvariantCulture);
+    }
+
     public static SignMeaning Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
     {
         if (TryParse(s, provider, out var wordMeaning))
@@ -175,18 +184,35 @@ public sealed class SignMeaning
         return Parse(s, null);
     }
 
+    public static SignMeaning ParseInvariant(string s)
+    {
+        return Parse(s, CultureInfo.InvariantCulture);
+    }
+
     public static SignMeaning Parse(string s, IFormatProvider? provider)
     {
         Guard.IsNotNull(s);
         return Parse(s.AsSpan(), provider);
     }
 
-    public static bool TryParse(ReadOnlySpan<char> s, [MaybeNullWhen(false)] out SignMeaning result)
+    public static bool TryParse(
+        ReadOnlySpan<char> s,
+        [MaybeNullWhen(false)] out SignMeaning result)
     {
         return TryParse(s, default, out result);
     }
 
-    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, [MaybeNullWhen(false)] out SignMeaning result)
+    public static bool TryParseInvariant(
+        ReadOnlySpan<char> s,
+        [MaybeNullWhen(false)] out SignMeaning result)
+    {
+        return TryParse(s, CultureInfo.InvariantCulture, out result);
+    }
+
+    public static bool TryParse(
+        ReadOnlySpan<char> s,
+        IFormatProvider? provider,
+        [MaybeNullWhen(false)] out SignMeaning result)
     {
         Span<Range> ranges = stackalloc Range[4];
 
@@ -214,7 +240,18 @@ public sealed class SignMeaning
         return true;
     }
 
-    public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, [MaybeNullWhen(false)] out SignMeaning result)
+    public static bool TryParseInvariant(
+        [NotNullWhen(true)] string? s,
+        IFormatProvider? provider,
+        [MaybeNullWhen(false)] out SignMeaning result)
+    {
+        return TryParse(s, CultureInfo.InvariantCulture, out result);
+    }
+
+    public static bool TryParse(
+        [NotNullWhen(true)] string? s,
+        IFormatProvider? provider,
+        [MaybeNullWhen(false)] out SignMeaning result)
     {
         if (TryParse(s.AsSpan(), provider, out result))
         {
