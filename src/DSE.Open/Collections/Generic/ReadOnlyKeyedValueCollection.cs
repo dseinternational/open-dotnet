@@ -20,7 +20,7 @@ public abstract class ReadOnlyKeyedValueCollection<TKey, TValue>
 
     protected ReadOnlyKeyedValueCollection()
     {
-        _dictionary = new Dictionary<TKey, TValue>();
+        _dictionary = [];
     }
 
     protected ReadOnlyKeyedValueCollection(IEnumerable<TValue> list)
@@ -50,9 +50,15 @@ public abstract class ReadOnlyKeyedValueCollection<TKey, TValue>
 
     bool ICollection<TValue>.IsReadOnly => false; // JsonSerialization
 
-    void ICollection<TValue>.Add(TValue item) => _dictionary.Add(GetKeyForItem(item), item); // JsonSerialization
+    void ICollection<TValue>.Add(TValue item)
+    {
+        _dictionary.Add(GetKeyForItem(item), item); // JsonSerialization
+    }
 
-    void ICollection<TValue>.Clear() => _dictionary.Clear(); // JsonSerialization
+    void ICollection<TValue>.Clear()
+    {
+        _dictionary.Clear(); // JsonSerialization
+    }
 
     bool ICollection<TValue>.Remove(TValue item)
     {
@@ -62,7 +68,10 @@ public abstract class ReadOnlyKeyedValueCollection<TKey, TValue>
 
 #pragma warning restore CA1033 // Interface methods should be callable by child types
 
-    public bool Contains(TValue item) => ContainsKey(GetKeyForItem(item));
+    public bool Contains(TValue item)
+    {
+        return ContainsKey(GetKeyForItem(item));
+    }
 
     public bool ContainsKey(TKey key)
     {
@@ -70,16 +79,22 @@ public abstract class ReadOnlyKeyedValueCollection<TKey, TValue>
         return _dictionary.ContainsKey(key);
     }
 
-    public void CopyTo(TValue[] array, int arrayIndex) => _dictionary.Values.CopyTo(array, arrayIndex);
+    public void CopyTo(TValue[] array, int arrayIndex)
+    {
+        _dictionary.Values.CopyTo(array, arrayIndex);
+    }
 
-    public bool Equals(ReadOnlyKeyedValueCollection<TKey, TValue>? other)
+    public virtual bool Equals(ReadOnlyKeyedValueCollection<TKey, TValue>? other)
     {
         return other is not null
             && (ReferenceEquals(this, other)
-            || (Count == other.Count && this.SequenceEqual(other)));
+                || (Count == other.Count && this.SequenceEqual(other)));
     }
 
-    public override bool Equals(object? obj) => Equals(obj as ReadOnlyKeyedValueCollection<TKey, TValue>);
+    public override bool Equals(object? obj)
+    {
+        return Equals(obj as ReadOnlyKeyedValueCollection<TKey, TValue>);
+    }
 
     public override int GetHashCode()
     {
@@ -93,13 +108,22 @@ public abstract class ReadOnlyKeyedValueCollection<TKey, TValue>
         return hash.ToHashCode();
     }
 
-    public IEnumerator<TValue> GetEnumerator() => _dictionary.Values.GetEnumerator();
+    public IEnumerator<TValue> GetEnumerator()
+    {
+        return _dictionary.Values.GetEnumerator();
+    }
 
-    IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)_dictionary.Values).GetEnumerator();
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return ((IEnumerable)_dictionary.Values).GetEnumerator();
+    }
 
     /// <summary>
     /// Creates a mutable copy of the dictionary.
     /// </summary>
     /// <returns></returns>
-    public Dictionary<TKey, TValue> ToDictionary() => new(_dictionary);
+    public Dictionary<TKey, TValue> ToDictionary()
+    {
+        return new(_dictionary);
+    }
 }

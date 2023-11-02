@@ -26,7 +26,7 @@ public class ReadOnlyValueCollection<T>
 
     public ReadOnlyValueCollection()
     {
-        _items = new List<T>();
+        _items = [];
     }
 
     public ReadOnlyValueCollection(IEnumerable<T> list)
@@ -65,9 +65,15 @@ public class ReadOnlyValueCollection<T>
 
     bool ICollection<T>.IsReadOnly => false; // JsonSerialization
 
-    void ICollection<T>.Add(T item) => _items.Add(item); // JsonSerialization
+    void ICollection<T>.Add(T item)
+    {
+        _items.Add(item); // JsonSerialization
+    }
 
-    void ICollection<T>.Clear() => _items.Clear(); // JsonSerialization
+    void ICollection<T>.Clear()
+    {
+        _items.Clear(); // JsonSerialization
+    }
 
     bool ICollection<T>.Remove(T item)
     {
@@ -77,16 +83,27 @@ public class ReadOnlyValueCollection<T>
 
 #pragma warning restore CA1033 // Interface methods should be callable by child types
 
-    public bool Contains(T item) => _items.Contains(item);
+    public bool Contains(T item)
+    {
+        return _items.Contains(item);
+    }
 
     public void CopyTo(T[] array, int arrayIndex)
-        => _items.CopyTo(array, arrayIndex);
+    {
+        _items.CopyTo(array, arrayIndex);
+    }
 
-    public bool Equals(ReadOnlyValueCollection<T>? other)
-        => other is not null
-            && (ReferenceEquals(this, other) || (Count == other.Count && this.SequenceEqual(other)));
+    public virtual bool Equals(ReadOnlyValueCollection<T>? other)
+    {
+        return other is not null
+            && (ReferenceEquals(this, other)
+                || (Count == other.Count && this.SequenceEqual(other)));
+    }
 
-    public override bool Equals(object? obj) => Equals(obj as ReadOnlyValueCollection<T>);
+    public override bool Equals(object? obj)
+    {
+        return Equals(obj as ReadOnlyValueCollection<T>);
+    }
 
     public override int GetHashCode()
     {
@@ -100,19 +117,37 @@ public class ReadOnlyValueCollection<T>
         return hash.ToHashCode();
     }
 
-    public IEnumerator<T> GetEnumerator() => _items.GetEnumerator();
+    public IEnumerator<T> GetEnumerator()
+    {
+        return _items.GetEnumerator();
+    }
 
-    IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)_items).GetEnumerator();
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return ((IEnumerable)_items).GetEnumerator();
+    }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
-    public static explicit operator ReadOnlyValueCollection<T>(T[] collection) => new(collection);
+    public static explicit operator ReadOnlyValueCollection<T>(T[] collection)
+    {
+        return new(collection);
+    }
 
-    public static explicit operator ReadOnlyValueCollection<T>(ReadOnlyCollection<T> collection) => new(collection);
+    public static explicit operator ReadOnlyValueCollection<T>(ReadOnlyCollection<T> collection)
+    {
+        return new(collection);
+    }
 
-    public static explicit operator ReadOnlyValueCollection<T>(Collection<T> collection) => new(collection);
+    public static explicit operator ReadOnlyValueCollection<T>(Collection<T> collection)
+    {
+        return new(collection);
+    }
 
-    public static explicit operator ReadOnlyValueCollection<T>(HashSet<T> collection) => new(collection);
+    public static explicit operator ReadOnlyValueCollection<T>(HashSet<T> collection)
+    {
+        return new(collection);
+    }
 
 #pragma warning restore CA2225 // Operator overloads have named alternates
 }

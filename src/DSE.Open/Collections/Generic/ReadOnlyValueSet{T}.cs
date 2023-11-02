@@ -23,7 +23,7 @@ public class ReadOnlyValueSet<T> : IReadOnlySet<T>, IEquatable<ReadOnlyValueSet<
 
     public ReadOnlyValueSet()
     {
-        _set = new HashSet<T>();
+        _set = [];
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -135,7 +135,7 @@ public class ReadOnlyValueSet<T> : IReadOnlySet<T>, IEquatable<ReadOnlyValueSet<
         return hash.ToHashCode();
     }
 
-    public bool Equals(ReadOnlyValueSet<T>? other)
+    public virtual bool Equals(ReadOnlyValueSet<T>? other)
     {
         return other is not null && SetEquals(other);
     }
@@ -147,13 +147,25 @@ public class ReadOnlyValueSet<T> : IReadOnlySet<T>, IEquatable<ReadOnlyValueSet<
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
-    public static explicit operator ReadOnlyValueSet<T>(T[] collection) => new(collection);
+    public static explicit operator ReadOnlyValueSet<T>(T[] collection)
+    {
+        return new(collection);
+    }
 
-    public static explicit operator ReadOnlyValueSet<T>(ReadOnlyCollection<T> collection) => new(collection);
+    public static explicit operator ReadOnlyValueSet<T>(ReadOnlyCollection<T> collection)
+    {
+        return new(collection);
+    }
 
-    public static explicit operator ReadOnlyValueSet<T>(Collection<T> collection) => new(collection);
+    public static explicit operator ReadOnlyValueSet<T>(Collection<T> collection)
+    {
+        return new(collection);
+    }
 
-    public static explicit operator ReadOnlyValueSet<T>(HashSet<T> collection) => new((IEnumerable<T>)collection);
+    public static explicit operator ReadOnlyValueSet<T>(HashSet<T> collection)
+    {
+        return new((IEnumerable<T>)collection);
+    }
 
 #pragma warning restore CA2225 // Operator overloads have named alternates
 }
