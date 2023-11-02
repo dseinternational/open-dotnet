@@ -19,7 +19,9 @@ namespace DSE.Open.Language;
 [ComparableValue]
 [StructLayout(LayoutKind.Auto)]
 [JsonConverter(typeof(JsonSpanSerializableValueConverter<Word, CharSequence>))]
-public readonly partial struct Word : IComparableValue<Word, CharSequence>
+public readonly partial struct Word
+    : IComparableValue<Word, CharSequence>,
+      ISpanSerializableValue<Word, CharSequence>
 {
     public static int MaxSerializedCharLength => 64;
 

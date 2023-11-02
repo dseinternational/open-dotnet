@@ -23,7 +23,7 @@ public readonly partial struct SignModality : IEquatableValue<SignModality, Asci
     {
         return !value.IsEmpty
             && value.Length <= MaxSerializedCharLength
-            && _validValues.Contains(value);
+            && s_validValues.Contains(value);
     }
 
     public SignModality(string value) : this((AsciiString)value)
@@ -62,5 +62,5 @@ public readonly partial struct SignModality : IEquatableValue<SignModality, Asci
         Written,
     });
 
-    private static readonly FrozenSet<AsciiString> _validValues = FrozenSet.ToFrozenSet(All.Select(x => x._value));
+    private static readonly FrozenSet<AsciiString> s_validValues = FrozenSet.ToFrozenSet(All.Select(x => x._value));
 }

@@ -18,7 +18,7 @@ public readonly partial struct SignKnowledge : IEquatableValue<SignKnowledge, Ch
     {
         return !value.IsEmpty
             && value.Length < MaxSerializedCharLength
-            && _validValues.Contains(value);
+            && s_validValues.Contains(value);
     }
 
     /// <summary>
@@ -47,6 +47,6 @@ public readonly partial struct SignKnowledge : IEquatableValue<SignKnowledge, Ch
         Produces
     });
 
-    private static readonly FrozenSet<CharSequence> _validValues
+    private static readonly FrozenSet<CharSequence> s_validValues
         = FrozenSet.ToFrozenSet(All.Select(x => x._value));
 }

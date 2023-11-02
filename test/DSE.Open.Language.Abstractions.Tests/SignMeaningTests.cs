@@ -7,7 +7,7 @@ using DSE.Open.Text.Json;
 
 namespace DSE.Open.Language.Abstractions.Tests;
 
-public class WordMeaningTests
+public class SignMeaningTests
 {
     [Fact]
     public void FormatParse()
@@ -15,7 +15,7 @@ public class WordMeaningTests
         foreach (var m in s_meanings)
         {
             var str = m.ToString();
-            var parsed = WordMeaning.Parse(str, CultureInfo.InvariantCulture);
+            var parsed = SignMeaning.Parse(str, CultureInfo.InvariantCulture);
 
             Assert.NotNull(parsed);
             Assert.Equal(m, parsed);
@@ -28,7 +28,7 @@ public class WordMeaningTests
         foreach (var m in s_meanings)
         {
             var json = JsonSerializer.Serialize(m, JsonSharedOptions.RelaxedJsonEscaping);
-            var deserialized = JsonSerializer.Deserialize<WordMeaning>(json, JsonSharedOptions.RelaxedJsonEscaping);
+            var deserialized = JsonSerializer.Deserialize<SignMeaning>(json, JsonSharedOptions.RelaxedJsonEscaping);
 
             Assert.NotNull(deserialized);
             Assert.Equal(m, deserialized);
@@ -46,23 +46,23 @@ public class WordMeaningTests
         }
     }
 
-    private static readonly WordMeaning[] s_meanings =
+    private static readonly SignMeaning[] s_meanings =
     [
-        new WordMeaning
+        new SignMeaning
         {
             Sign = new Sign { Modality = SignModality.Spoken, Word = new Word("shoes") },
             Language = LanguageTag.EnglishUk,
             PosTag = UniversalPosTag.Noun,
             PosDetailedTag = TreebankPosTag.NounProperPlural,
         },
-        new WordMeaning
+        new SignMeaning
         {
             Sign = new Sign { Modality = SignModality.Spoken, Word = new Word("elephant") },
             Language = LanguageTag.EnglishUk,
             PosTag = UniversalPosTag.Noun,
             PosDetailedTag = TreebankPosTag.NounProperSingular,
         },
-        new WordMeaning
+        new SignMeaning
         {
             Sign = new Sign { Modality = SignModality.Spoken, Word = new Word("butterfly") },
             Language = LanguageTag.EnglishUs,

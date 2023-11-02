@@ -17,21 +17,24 @@ public static class FixedHashCode
         // Source:
         // https://andrewlock.net/why-is-string-gethashcode-different-each-time-i-run-my-program-in-net-core/
 
-        var hash1 = (5381 << 16) + 5381;
-        var hash2 = hash1;
-
-        for (var i = 0; i < value.Length; i += 2)
+        unchecked
         {
-            hash1 = (hash1 << 5) + hash1 ^ value[i];
+            var hash1 = (5381 << 16) + 5381;
+            var hash2 = hash1;
 
-            if (i == value.Length - 1)
+            for (var i = 0; i < value.Length; i += 2)
             {
-                break;
+                hash1 = ((hash1 << 5) + hash1) ^ value[i];
+
+                if (i == value.Length - 1)
+                {
+                    break;
+                }
+
+                hash2 = ((hash2 << 5) + hash2) ^ value[i + 1];
             }
 
-            hash2 = (hash2 << 5) + hash2 ^ value[i + 1];
+            return hash1 + (hash2 * 1566083941);
         }
-
-        return hash1 + hash2 * 1566083941;
     }
 }

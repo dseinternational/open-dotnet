@@ -12,10 +12,15 @@ namespace DSE.Open.Language;
 /// <summary>
 /// Associates a linguistic sign with a meaning.
 /// </summary>
-[JsonConverter(typeof(JsonStringWordMeaningConverter))]
-public sealed class WordMeaning : IEquatable<WordMeaning>, ISpanFormattable, ISpanParsable<WordMeaning>, ISpanSerializable<WordMeaning>
+[JsonConverter(typeof(JsonStringSignMeaningConverter))]
+public sealed class SignMeaning
+    : IEquatable<SignMeaning>,
+      ISpanFormattable,
+      ISpanParsable<SignMeaning>,
+      ISpanSerializable<SignMeaning>
 {
     private string? _serialized;
+    private int? _token;
 
     public static int MaxSerializedCharLength => 128;
 
@@ -25,27 +30,45 @@ public sealed class WordMeaning : IEquatable<WordMeaning>, ISpanFormattable, ISp
     public required Sign Sign { get; init; }
 
     /// <summary>
-    /// The language in which the word is presented.
+    /// The language in which the sign is presented.
     /// </summary>
     public required LanguageTag Language { get; init; }
 
     /// <summary>
-    /// A Universal POS tag for the word used in a context with the intended meaning.
+    /// A Universal POS tag for the sign used in a context with the intended meaning.
     /// </summary>
     public required UniversalPosTag PosTag { get; init; }
 
     /// <summary>
-    /// A Treebank POS tag for the word used in a context with the intended meaning.
+    /// A Treebank POS tag for the sign used in a context with the intended meaning.
     /// </summary>
     public required TreebankPosTag PosDetailedTag { get; init; }
 
     /// <summary>
-    /// Gets a value that identifies the word meaning.
+    /// Gets a string value that identifies this value.
     /// </summary>
     [JsonIgnore]
     public string Key => ToString();
 
-    public bool Equals(WordMeaning? other)
+    /// <summary>
+    /// Gets a numeric value that identifies this value.
+    /// </summary>
+    [JsonIgnore]
+    public int Token
+    {
+        get
+        {
+            if (_token is not null)
+            {
+                return _token.Value;
+            }
+
+            _token = FixedHashCode.GetFixedHashCode(Key.AsSpan());
+            return _token.Value;
+        }
+    }
+
+    public bool Equals(SignMeaning? other)
     {
         if (other is null)
         {
@@ -65,7 +88,7 @@ public sealed class WordMeaning : IEquatable<WordMeaning>, ISpanFormattable, ISp
 
     public override bool Equals(object? obj)
     {
-        return Equals(obj as WordMeaning);
+        return Equals(obj as SignMeaning);
     }
 
     public override int GetHashCode()
@@ -131,12 +154,12 @@ public sealed class WordMeaning : IEquatable<WordMeaning>, ISpanFormattable, ISp
         return false;
     }
 
-    public static WordMeaning Parse(ReadOnlySpan<char> s)
+    public static SignMeaning Parse(ReadOnlySpan<char> s)
     {
         return Parse(s, default);
     }
 
-    public static WordMeaning Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
+    public static SignMeaning Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
     {
         if (TryParse(s, provider, out var wordMeaning))
         {
@@ -147,23 +170,23 @@ public sealed class WordMeaning : IEquatable<WordMeaning>, ISpanFormattable, ISp
         return null!; // unreachable
     }
 
-    public static WordMeaning Parse(string s)
+    public static SignMeaning Parse(string s)
     {
         return Parse(s, null);
     }
 
-    public static WordMeaning Parse(string s, IFormatProvider? provider)
+    public static SignMeaning Parse(string s, IFormatProvider? provider)
     {
         Guard.IsNotNull(s);
         return Parse(s.AsSpan(), provider);
     }
 
-    public static bool TryParse(ReadOnlySpan<char> s, [MaybeNullWhen(false)] out WordMeaning result)
+    public static bool TryParse(ReadOnlySpan<char> s, [MaybeNullWhen(false)] out SignMeaning result)
     {
         return TryParse(s, default, out result);
     }
 
-    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, [MaybeNullWhen(false)] out WordMeaning result)
+    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, [MaybeNullWhen(false)] out SignMeaning result)
     {
         Span<Range> ranges = stackalloc Range[4];
 
@@ -180,7 +203,7 @@ public sealed class WordMeaning : IEquatable<WordMeaning>, ISpanFormattable, ISp
         var posTag = UniversalPosTag.Parse(s[ranges[2]], provider);
         var posDetailedTag = TreebankPosTag.Parse(s[ranges[3]], provider);
 
-        result = new WordMeaning
+        result = new SignMeaning
         {
             Sign = sign,
             Language = language,
@@ -191,12 +214,17 @@ public sealed class WordMeaning : IEquatable<WordMeaning>, ISpanFormattable, ISp
         return true;
     }
 
-    public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, [MaybeNullWhen(false)] out WordMeaning result)
+    public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, [MaybeNullWhen(false)] out SignMeaning result)
     {
-        throw new NotImplementedException();
+        if (TryParse(s.AsSpan(), provider, out result))
+        {
+            return true;
+        }
+
+        return false;
     }
 
-    public static bool operator ==(WordMeaning? wm1, WordMeaning? wm2)
+    public static bool operator ==(SignMeaning? wm1, SignMeaning? wm2)
     {
         if (wm1 is null)
         {
@@ -211,7 +239,7 @@ public sealed class WordMeaning : IEquatable<WordMeaning>, ISpanFormattable, ISp
         return wm1.Equals(wm2);
     }
 
-    public static bool operator !=(WordMeaning? wm1, WordMeaning? wm2)
+    public static bool operator !=(SignMeaning? wm1, SignMeaning? wm2)
     {
         return !(wm1 == wm2);
     }

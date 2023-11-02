@@ -34,20 +34,31 @@ public readonly struct CharSequence
 
     public char this[int i] => _value.Span[i];
 
-    public CharSequence Slice(int start, int length) => new(_value.Slice(start, length));
+    public CharSequence Slice(int start, int length)
+    {
+        return new(_value.Slice(start, length));
+    }
 
     public bool IsEmpty => _value.IsEmpty;
 
     public int Length => _value.Length;
 
-    public ReadOnlyMemory<char> AsMemory() => _value;
+    public ReadOnlyMemory<char> AsMemory()
+    {
+        return _value;
+    }
 
-    public ReadOnlySpan<char> AsSpan() => _value.Span;
+    public ReadOnlySpan<char> AsSpan()
+    {
+        return _value.Span;
+    }
 
     public ReadOnlySpan<char> Span => _value.Span;
 
     public static CharSequence Parse(ReadOnlySpan<char> s)
-        => Parse(s, default);
+    {
+        return Parse(s, default);
+    }
 
     public static CharSequence Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
     {
@@ -61,7 +72,9 @@ public readonly struct CharSequence
     }
 
     public static CharSequence Parse(string s)
-        => Parse(s, default);
+    {
+        return Parse(s, default);
+    }
 
     public static CharSequence Parse(string s, IFormatProvider? provider)
     {
@@ -72,7 +85,9 @@ public readonly struct CharSequence
     public static bool TryParse(
         ReadOnlySpan<char> s,
         out CharSequence result)
-        => TryParse(s, default, out result);
+    {
+        return TryParse(s, default, out result);
+    }
 
     public static bool TryParse(
         ReadOnlySpan<char> s,
@@ -86,7 +101,9 @@ public readonly struct CharSequence
     public static bool TryParse(
         [NotNullWhen(true)] string? s,
         out CharSequence result)
-        => TryParse(s, default, out result);
+    {
+        return TryParse(s, default, out result);
+    }
 
     public static bool TryParse(
         [NotNullWhen(true)] string? s,
@@ -102,37 +119,70 @@ public readonly struct CharSequence
         return TryParse(s.AsSpan(), provider, out result);
     }
 
-    public int CompareTo(CharSequence other) => _value.Span.SequenceCompareTo(other._value.Span);
+    public int CompareTo(CharSequence other)
+    {
+        return _value.Span.SequenceCompareTo(other._value.Span);
+    }
 
-    public bool EndsWith(ReadOnlySpan<char> value) => EndsWith(value, StringComparison.Ordinal);
+    public bool EndsWith(ReadOnlySpan<char> value)
+    {
+        return EndsWith(value, StringComparison.Ordinal);
+    }
 
-    public bool EndsWith(ReadOnlySpan<char> value, StringComparison comparisonType) => _value.Span.EndsWith(value, comparisonType);
+    public bool EndsWith(ReadOnlySpan<char> value, StringComparison comparisonType)
+    {
+        return _value.Span.EndsWith(value, comparisonType);
+    }
 
-    public bool EndsWith(CharSequence value) => EndsWith(value.Span, StringComparison.Ordinal);
+    public bool EndsWith(CharSequence value)
+    {
+        return EndsWith(value.Span, StringComparison.Ordinal);
+    }
 
-    public bool EndsWith(CharSequence value, StringComparison comparisonType) => _value.Span.EndsWith(value.Span, comparisonType);
+    public bool EndsWith(CharSequence value, StringComparison comparisonType)
+    {
+        return _value.Span.EndsWith(value.Span, comparisonType);
+    }
 
-    public bool StartsWith(ReadOnlySpan<char> value) => StartsWith(value, StringComparison.Ordinal);
+    public bool StartsWith(ReadOnlySpan<char> value)
+    {
+        return StartsWith(value, StringComparison.Ordinal);
+    }
 
-    public bool StartsWith(ReadOnlySpan<char> value, StringComparison comparisonType) => _value.Span.StartsWith(value, comparisonType);
+    public bool StartsWith(ReadOnlySpan<char> value, StringComparison comparisonType)
+    {
+        return _value.Span.StartsWith(value, comparisonType);
+    }
 
-    public bool StartsWith(CharSequence value) => StartsWith(value.Span, StringComparison.Ordinal);
+    public bool StartsWith(CharSequence value)
+    {
+        return StartsWith(value.Span, StringComparison.Ordinal);
+    }
 
-    public bool StartsWith(CharSequence value, StringComparison comparisonType) => _value.Span.StartsWith(value.Span, comparisonType);
+    public bool StartsWith(CharSequence value, StringComparison comparisonType)
+    {
+        return _value.Span.StartsWith(value.Span, comparisonType);
+    }
 
     /// <summary>
     /// Checks if the <paramref name="value"/> is contained within this <see cref="CharSequence"/>.
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    public bool Contains(char value) => _value.Span.Contains(value);
+    public bool Contains(char value)
+    {
+        return _value.Span.Contains(value);
+    }
 
     /// <summary>
     /// Checks if the <paramref name="value"/> is contained within this <see cref="CharSequence"/> using <see cref="StringComparison.Ordinal"/>.
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    public bool Contains(ReadOnlySpan<char> value) => Contains(value, StringComparison.Ordinal);
+    public bool Contains(ReadOnlySpan<char> value)
+    {
+        return Contains(value, StringComparison.Ordinal);
+    }
 
     /// <summary>
     /// Checks if the <paramref name="value"/> is contained within this <see cref="CharSequence"/> using the specified <paramref name="comparisonType"/>.
@@ -140,35 +190,80 @@ public readonly struct CharSequence
     /// <param name="value"></param>
     /// <param name="comparisonType"></param>
     /// <returns></returns>
-    public bool Contains(ReadOnlySpan<char> value, StringComparison comparisonType) => _value.Span.Contains(value, comparisonType);
+    public bool Contains(ReadOnlySpan<char> value, StringComparison comparisonType)
+    {
+        return _value.Span.Contains(value, comparisonType);
+    }
 
-    public bool Equals(string other) => Equals(other, StringComparison.Ordinal);
+    public bool Equals(string other)
+    {
+        return Equals(other, StringComparison.Ordinal);
+    }
 
-    public bool Equals(string other, StringComparison comparisonType) => Equals(other.AsSpan(), comparisonType);
+    public bool Equals(string other, StringComparison comparisonType)
+    {
+        return Equals(other.AsSpan(), comparisonType);
+    }
 
-    public bool Equals(ReadOnlySpan<char> other) => Equals(other, StringComparison.Ordinal);
+    public bool Equals(ReadOnlySpan<char> other)
+    {
+        return Equals(other, StringComparison.Ordinal);
+    }
 
-    public bool Equals(ReadOnlySpan<char> other, StringComparison comparisonType) => _value.Span.Equals(other, comparisonType);
+    public bool Equals(ReadOnlySpan<char> other, StringComparison comparisonType)
+    {
+        return _value.Span.Equals(other, comparisonType);
+    }
 
-    public bool Equals(ReadOnlyMemory<char> other) => Equals(other, StringComparison.Ordinal);
+    public bool Equals(ReadOnlyMemory<char> other)
+    {
+        return Equals(other, StringComparison.Ordinal);
+    }
 
-    public bool Equals(ReadOnlyMemory<char> other, StringComparison comparisonType) => Equals(other.Span, comparisonType);
+    public bool Equals(ReadOnlyMemory<char> other, StringComparison comparisonType)
+    {
+        return Equals(other.Span, comparisonType);
+    }
 
-    public bool Equals(CharSequence other) => Equals(other, StringComparison.Ordinal);
+    public bool Equals(CharSequence other)
+    {
+        return Equals(other, StringComparison.Ordinal);
+    }
 
-    public bool Equals(CharSequence other, StringComparison comparisonType) => Equals(other._value, comparisonType);
+    public bool Equals(CharSequence other, StringComparison comparisonType)
+    {
+        return Equals(other._value, comparisonType);
+    }
 
-    public override bool Equals(object? obj) => obj is CharSequence other && Equals(other, StringComparison.Ordinal);
+    public override bool Equals(object? obj)
+    {
+        return obj is CharSequence other && Equals(other, StringComparison.Ordinal);
+    }
 
-    public override int GetHashCode() => string.GetHashCode(_value.Span, StringComparison.Ordinal);
+    public override int GetHashCode()
+    {
+        return string.GetHashCode(_value.Span, StringComparison.Ordinal);
+    }
 
-    public int IndexOf(char c) => _value.Span.IndexOf(c);
+    public int IndexOf(char c)
+    {
+        return _value.Span.IndexOf(c);
+    }
 
-    public int LastIndexOf(char c) => _value.Span.LastIndexOf(c);
+    public int LastIndexOf(char c)
+    {
+        return _value.Span.LastIndexOf(c);
+    }
 
-    public override string ToString() => ToString(default, default);
+    public override string ToString()
+    {
+        return ToString(default, default);
+    }
 
-    public string ToString(string? format, IFormatProvider? formatProvider) => new(_value.Span);
+    public string ToString(string? format, IFormatProvider? formatProvider)
+    {
+        return new(_value.Span);
+    }
 
     public bool TryFormat(
         Span<char> destination,
@@ -187,28 +282,52 @@ public readonly struct CharSequence
         return false;
     }
 
-    public static bool operator ==(CharSequence left, CharSequence right) => left.Equals(right, StringComparison.Ordinal);
+    public static bool operator ==(CharSequence left, CharSequence right)
+    {
+        return left.Equals(right, StringComparison.Ordinal);
+    }
 
-    public static bool operator !=(CharSequence left, CharSequence right) => !(left == right);
+    public static bool operator !=(CharSequence left, CharSequence right)
+    {
+        return !(left == right);
+    }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates (Parse)
 
-    public static implicit operator CharSequence(string value) => Parse(value);
+    public static implicit operator CharSequence(string value)
+    {
+        return Parse(value, null);
+    }
 
 #pragma warning restore CA2225 // Operator overloads have named alternates
 
-    public static bool operator <(CharSequence left, CharSequence right) => left.CompareTo(right) < 0;
+    public static bool operator <(CharSequence left, CharSequence right)
+    {
+        return left.CompareTo(right) < 0;
+    }
 
-    public static bool operator <=(CharSequence left, CharSequence right) => left.CompareTo(right) <= 0;
+    public static bool operator <=(CharSequence left, CharSequence right)
+    {
+        return left.CompareTo(right) <= 0;
+    }
 
-    public static bool operator >(CharSequence left, CharSequence right) => left.CompareTo(right) > 0;
+    public static bool operator >(CharSequence left, CharSequence right)
+    {
+        return left.CompareTo(right) > 0;
+    }
 
-    public static bool operator >=(CharSequence left, CharSequence right) => left.CompareTo(right) >= 0;
+    public static bool operator >=(CharSequence left, CharSequence right)
+    {
+        return left.CompareTo(right) >= 0;
+    }
 
     /// <summary>
     /// Converts the <paramref name="asciiString"/> to a <see cref="CharSequence"/>.
     /// </summary>
     /// <param name="asciiString"></param>
     /// <returns>A new <see cref="CharSequence"/> instance.</returns>
-    public static CharSequence FromAsciiString(AsciiString asciiString) => new(asciiString.ToCharArray());
+    public static CharSequence FromAsciiString(AsciiString asciiString)
+    {
+        return new(asciiString.ToCharArray());
+    }
 }

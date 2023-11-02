@@ -4,6 +4,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
+using DSE.Open.Diagnostics;
 using DSE.Open.Language.Text.Json.Serialization;
 
 namespace DSE.Open.Language;
@@ -33,7 +34,7 @@ public readonly record struct Sign : ISpanFormattable, ISpanParsable<Sign>
     public SignModality Modality { get; init; }
 
     /// <summary>
-    /// A <see cref="Word"/> that identifies the meaning of the sign.
+    /// A <see cref="Word"/> that identifies the sign.
     /// </summary>
     public Word Word { get; init; }
 
@@ -46,7 +47,7 @@ public readonly record struct Sign : ISpanFormattable, ISpanParsable<Sign>
     {
         if (!TryParse(s, provider, out var result))
         {
-            ThrowHelper.ThrowFormatException("Invalid sign format");
+            ThrowHelper.ThrowFormatException($"Invalid sign format: '{s}'");
         }
 
         return result;
@@ -63,7 +64,7 @@ public readonly record struct Sign : ISpanFormattable, ISpanParsable<Sign>
 
         if (!TryParse(s, provider, out var result))
         {
-            ThrowHelper.ThrowFormatException("Invalid sign format");
+            ThrowHelper.ThrowFormatException($"Invalid sign format: '{s}'");
         }
 
         return result;
@@ -128,7 +129,7 @@ public readonly record struct Sign : ISpanFormattable, ISpanParsable<Sign>
             return buffer[..charsWritten].ToString();
         }
 
-        ThrowHelper.ThrowInvalidOperationException("Should be unreachable");
+        Expect.Unreachable();
         return string.Empty; // unreachable
     }
 

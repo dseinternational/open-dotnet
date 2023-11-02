@@ -24,14 +24,14 @@ namespace DSE.Open;
 [StructLayout(LayoutKind.Auto)]
 public readonly partial struct AsciiString
     : IEnumerable<AsciiChar>,
-        IEquatable<AsciiString>,
-        IEquatable<ReadOnlyMemory<AsciiChar>>,
-        IComparable<AsciiString>,
-        IEqualityOperators<AsciiString, AsciiString, bool>,
-        ISpanFormattable,
-        ISpanParsable<AsciiString>,
-        IUtf8SpanFormattable,
-        IUtf8SpanParsable<AsciiString>
+      IEquatable<AsciiString>,
+      IEquatable<ReadOnlyMemory<AsciiChar>>,
+      IComparable<AsciiString>,
+      IEqualityOperators<AsciiString, AsciiString, bool>,
+      ISpanFormattable,
+      ISpanParsable<AsciiString>,
+      IUtf8SpanFormattable,
+      IUtf8SpanParsable<AsciiString>
 {
     private readonly ReadOnlyMemory<AsciiChar> _value;
 
@@ -42,17 +42,26 @@ public readonly partial struct AsciiString
 
     public AsciiChar this[int i] => _value.Span[i];
 
-    public AsciiString Slice(int start, int length) => new(_value.Slice(start, length));
+    public AsciiString Slice(int start, int length)
+    {
+        return new(_value.Slice(start, length));
+    }
 
     public bool IsEmpty => _value.IsEmpty;
 
     public int Length => _value.Length;
 
-    public ReadOnlyMemory<AsciiChar> AsMemory() => _value;
+    public ReadOnlyMemory<AsciiChar> AsMemory()
+    {
+        return _value;
+    }
 
     public ReadOnlySpan<AsciiChar> Span => _value.Span;
 
-    public AsciiChar[] ToArray() => _value.ToArray();
+    public AsciiChar[] ToArray()
+    {
+        return _value.ToArray();
+    }
 
     public byte[] ToByteArray()
     {
@@ -84,7 +93,10 @@ public readonly partial struct AsciiString
         return result;
     }
 
-    public static AsciiString Parse(ReadOnlySpan<char> s) => Parse(s, default);
+    public static AsciiString Parse(ReadOnlySpan<char> s)
+    {
+        return Parse(s, default);
+    }
 
     public static AsciiString Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
     {
@@ -97,7 +109,10 @@ public readonly partial struct AsciiString
         return default; // unreachable
     }
 
-    public static AsciiString Parse(string s) => Parse(s, default);
+    public static AsciiString Parse(string s)
+    {
+        return Parse(s, default);
+    }
 
     public static AsciiString Parse(string s, IFormatProvider? provider)
     {
@@ -108,7 +123,9 @@ public readonly partial struct AsciiString
     public static bool TryParse(
         ReadOnlySpan<char> s,
         out AsciiString result)
-        => TryParse(s, default, out result);
+    {
+        return TryParse(s, default, out result);
+    }
 
     public static bool TryParse(
         ReadOnlySpan<char> s,
@@ -148,7 +165,9 @@ public readonly partial struct AsciiString
     public static bool TryParse(
         [NotNullWhen(true)] string? s,
         out AsciiString result)
-        => TryParse(s, default, out result);
+    {
+        return TryParse(s, default, out result);
+    }
 
     public static bool TryParse(
         [NotNullWhen(true)] string? s,
@@ -164,7 +183,10 @@ public readonly partial struct AsciiString
         return TryParse(s.AsSpan(), provider, out result);
     }
 
-    public static AsciiString Parse(ReadOnlySpan<byte> utf8Text) => Parse(utf8Text, default);
+    public static AsciiString Parse(ReadOnlySpan<byte> utf8Text)
+    {
+        return Parse(utf8Text, default);
+    }
 
     public static AsciiString Parse(ReadOnlySpan<byte> utf8Text, IFormatProvider? provider)
     {
@@ -196,10 +218,15 @@ public readonly partial struct AsciiString
         return true;
     }
 
-    public int CompareTo(AsciiString other) => _value.Span.SequenceCompareTo(other._value.Span);
+    public int CompareTo(AsciiString other)
+    {
+        return _value.Span.SequenceCompareTo(other._value.Span);
+    }
 
     public int CompareToCaseInsensitive(AsciiString other)
-        => CompareToCaseInsensitive(other._value.Span);
+    {
+        return CompareToCaseInsensitive(other._value.Span);
+    }
 
     public int CompareToCaseInsensitive(ReadOnlySpan<AsciiChar> asciiBytes)
     {
@@ -218,23 +245,50 @@ public readonly partial struct AsciiString
         return _value.Length - asciiBytes.Length;
     }
 
-    public bool Equals(ReadOnlySpan<AsciiChar> other) => _value.Span.SequenceEqual(other);
+    public bool Equals(ReadOnlySpan<AsciiChar> other)
+    {
+        return _value.Span.SequenceEqual(other);
+    }
 
-    public bool Equals(ReadOnlyMemory<AsciiChar> other) => Equals(other.Span);
+    public bool Equals(ReadOnlyMemory<AsciiChar> other)
+    {
+        return Equals(other.Span);
+    }
 
-    public bool Equals(AsciiString other) => Equals(other._value);
+    public bool Equals(AsciiString other)
+    {
+        return Equals(other._value);
+    }
 
-    public bool Equals(string other) => Equals(other.AsSpan());
+    public bool Equals(string other)
+    {
+        return Equals(other.AsSpan());
+    }
 
-    public bool Equals(ReadOnlySpan<char> other) => Ascii.Equals(ValuesMarshal.AsBytes(_value.Span), other);
+    public bool Equals(ReadOnlySpan<char> other)
+    {
+        return Ascii.Equals(ValuesMarshal.AsBytes(_value.Span), other);
+    }
 
-    public bool EqualsCaseInsensitive(AsciiString other) => _value.Span.SequenceEqualsCaseInsensitive(other._value.Span);
+    public bool EqualsCaseInsensitive(AsciiString other)
+    {
+        return _value.Span.SequenceEqualsCaseInsensitive(other._value.Span);
+    }
 
-    public bool EqualsCaseInsensitive(ReadOnlySpan<char> other) => Ascii.EqualsIgnoreCase(ValuesMarshal.AsBytes(_value.Span), other);
+    public bool EqualsCaseInsensitive(ReadOnlySpan<char> other)
+    {
+        return Ascii.EqualsIgnoreCase(ValuesMarshal.AsBytes(_value.Span), other);
+    }
 
-    public bool EqualsCaseInsensitive(string other) => EqualsCaseInsensitive(other.AsSpan());
+    public bool EqualsCaseInsensitive(string other)
+    {
+        return EqualsCaseInsensitive(other.AsSpan());
+    }
 
-    public override bool Equals(object? obj) => obj is AsciiString other && Equals(other);
+    public override bool Equals(object? obj)
+    {
+        return obj is AsciiString other && Equals(other);
+    }
 
     public override int GetHashCode()
     {
@@ -246,18 +300,21 @@ public readonly partial struct AsciiString
     public AsciiString ToLower()
     {
         var result = new AsciiChar[_value.Length];
-        TryFormat(ValuesMarshal.AsBytes(result), out _, "L", default);
+        _ = TryFormat(ValuesMarshal.AsBytes(result), out _, "L", default);
         return new AsciiString(result);
     }
 
     public AsciiString ToUpper()
     {
         var result = new AsciiChar[_value.Length];
-        TryFormat(ValuesMarshal.AsBytes(result), out _, "U", default);
+        _ = TryFormat(ValuesMarshal.AsBytes(result), out _, "U", default);
         return new AsciiString(result);
     }
 
-    public override string ToString() => ToString(null, null);
+    public override string ToString()
+    {
+        return ToString(null, null);
+    }
 
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
@@ -267,12 +324,18 @@ public readonly partial struct AsciiString
         }
 
         return string.Create(_value.Length, (Value: this, format, formatProvider),
-            (buffer, state) => { state.Value.TryFormat(buffer, out _, state.format, state.formatProvider); });
+            (buffer, state) => state.Value.TryFormat(buffer, out _, state.format, state.formatProvider));
     }
 
-    public string ToStringLower() => ToString("L", null);
+    public string ToStringLower()
+    {
+        return ToString("L", null);
+    }
 
-    public string ToStringUpper() => ToString("U", null);
+    public string ToStringUpper()
+    {
+        return ToString("U", null);
+    }
 
     public bool TryFormat(
         Span<char> destination,
@@ -360,15 +423,30 @@ public readonly partial struct AsciiString
         }
     }
 
-    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
 
-    public bool EndsWith(AsciiString value) => EndsWith(value._value.Span);
+    public bool EndsWith(AsciiString value)
+    {
+        return EndsWith(value._value.Span);
+    }
 
-    public bool EndsWith(ReadOnlySpan<byte> value) => EndsWith(ValuesMarshal.AsAsciiChars(value));
+    public bool EndsWith(ReadOnlySpan<byte> value)
+    {
+        return EndsWith(ValuesMarshal.AsAsciiChars(value));
+    }
 
-    public bool EndsWith(ReadOnlySpan<AsciiChar> value) => _value.Span.EndsWith(value);
+    public bool EndsWith(ReadOnlySpan<AsciiChar> value)
+    {
+        return _value.Span.EndsWith(value);
+    }
 
-    public bool EndsWith(string value) => EndsWith(value.AsSpan());
+    public bool EndsWith(string value)
+    {
+        return EndsWith(value.AsSpan());
+    }
 
     public bool EndsWith(ReadOnlySpan<char> value)
     {
@@ -380,13 +458,25 @@ public readonly partial struct AsciiString
         return Ascii.Equals(ValuesMarshal.AsBytes(_value.Span[(_value.Length - value.Length)..]), value);
     }
 
-    public bool StartsWith(AsciiString value) => StartsWith(value._value.Span);
+    public bool StartsWith(AsciiString value)
+    {
+        return StartsWith(value._value.Span);
+    }
 
-    public bool StartsWith(ReadOnlySpan<byte> value) => StartsWith(ValuesMarshal.AsAsciiChars(value));
+    public bool StartsWith(ReadOnlySpan<byte> value)
+    {
+        return StartsWith(ValuesMarshal.AsAsciiChars(value));
+    }
 
-    public bool StartsWith(ReadOnlySpan<AsciiChar> value) => _value.Span.StartsWith(value);
+    public bool StartsWith(ReadOnlySpan<AsciiChar> value)
+    {
+        return _value.Span.StartsWith(value);
+    }
 
-    public bool StartsWith(string value) => StartsWith(value.AsSpan());
+    public bool StartsWith(string value)
+    {
+        return StartsWith(value.AsSpan());
+    }
 
     public bool StartsWith(ReadOnlySpan<char> value)
     {
@@ -404,7 +494,10 @@ public readonly partial struct AsciiString
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    public int IndexOf(AsciiChar value) => _value.Span.IndexOf(value);
+    public int IndexOf(AsciiChar value)
+    {
+        return _value.Span.IndexOf(value);
+    }
 
     /// <summary>
     /// Searches for the specified value and returns the index of its last occurrence. If not found,
@@ -412,40 +505,85 @@ public readonly partial struct AsciiString
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    public int LastIndexOf(AsciiChar value) => _value.Span.LastIndexOf(value);
+    public int LastIndexOf(AsciiChar value)
+    {
+        return _value.Span.LastIndexOf(value);
+    }
 
-    public bool Contains(AsciiChar value) => _value.Span.Contains(value);
+    public bool Contains(AsciiChar value)
+    {
+        return _value.Span.Contains(value);
+    }
 
-    public bool Contains(AsciiString value) => Contains(value._value.Span);
+    public bool Contains(AsciiString value)
+    {
+        return Contains(value._value.Span);
+    }
 
-    public bool Contains(ReadOnlySpan<AsciiChar> value) => _value.Span.IndexOf(value) >= 0;
+    public bool Contains(ReadOnlySpan<AsciiChar> value)
+    {
+        return _value.Span.IndexOf(value) >= 0;
+    }
 
-    public bool Contains(ReadOnlySpan<byte> value) => Contains(ValuesMarshal.AsAsciiChars(value));
+    public bool Contains(ReadOnlySpan<byte> value)
+    {
+        return Contains(ValuesMarshal.AsAsciiChars(value));
+    }
 
-    public static bool operator ==(AsciiString left, AsciiString right) => left.Equals(right);
+    public static bool operator ==(AsciiString left, AsciiString right)
+    {
+        return left.Equals(right);
+    }
 
-    public static bool operator !=(AsciiString left, AsciiString right) => !(left == right);
+    public static bool operator !=(AsciiString left, AsciiString right)
+    {
+        return !(left == right);
+    }
 
-    public static bool operator ==(AsciiString left, string right) => left.Equals(right);
+    public static bool operator ==(AsciiString left, string right)
+    {
+        return left.Equals(right);
+    }
 
-    public static bool operator !=(AsciiString left, string right) => !(left == right);
+    public static bool operator !=(AsciiString left, string right)
+    {
+        return !(left == right);
+    }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates (Parse)
 
-    public static explicit operator AsciiString(string value) => Parse(value);
+    public static explicit operator AsciiString(string value)
+    {
+        return Parse(value);
+    }
 
 #pragma warning restore CA2225 // Operator overloads have named alternates
 
-    public static bool operator <(AsciiString left, AsciiString right) => left.CompareTo(right) < 0;
+    public static bool operator <(AsciiString left, AsciiString right)
+    {
+        return left.CompareTo(right) < 0;
+    }
 
-    public static bool operator <=(AsciiString left, AsciiString right) => left.CompareTo(right) <= 0;
+    public static bool operator <=(AsciiString left, AsciiString right)
+    {
+        return left.CompareTo(right) <= 0;
+    }
 
-    public static bool operator >(AsciiString left, AsciiString right) => left.CompareTo(right) > 0;
+    public static bool operator >(AsciiString left, AsciiString right)
+    {
+        return left.CompareTo(right) > 0;
+    }
 
-    public static bool operator >=(AsciiString left, AsciiString right) => left.CompareTo(right) >= 0;
+    public static bool operator >=(AsciiString left, AsciiString right)
+    {
+        return left.CompareTo(right) >= 0;
+    }
 
     /// <summary>
     /// Converts the <see cref="AsciiString"/> to a <see cref="CharSequence"/>.
     /// </summary>
-    public CharSequence ToCharSequence() => CharSequence.FromAsciiString(this);
+    public CharSequence ToCharSequence()
+    {
+        return CharSequence.FromAsciiString(this);
+    }
 }
