@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using System.Text.Json.Serialization;
 using DSE.Open.Diagnostics;
 using DSE.Open.Globalization;
@@ -13,7 +14,7 @@ namespace DSE.Open.Language;
 /// Associates a linguistic sign with a meaning.
 /// </summary>
 [JsonConverter(typeof(JsonStringSignMeaningConverter))]
-public sealed class SignMeaning
+public sealed record SignMeaning
     : IEquatable<SignMeaning>,
       ISpanFormattable,
       ISpanParsable<SignMeaning>,
@@ -21,6 +22,18 @@ public sealed class SignMeaning
 {
     private string? _serialized;
     private int? _token;
+
+    public SignMeaning()
+    {
+    }
+
+    private SignMeaning(SignMeaning original)
+    {
+        Sign = original.Sign;
+        Language = original.Language;
+        PosTag = original.PosTag;
+        PosDetailedTag = original.PosDetailedTag;
+    }
 
     public static int MaxSerializedCharLength => 128;
 
@@ -86,11 +99,6 @@ public sealed class SignMeaning
             && PosDetailedTag == other.PosDetailedTag;
     }
 
-    public override bool Equals(object? obj)
-    {
-        return Equals(obj as SignMeaning);
-    }
-
     public override int GetHashCode()
     {
         return HashCode.Combine(Sign, Language, PosTag, PosDetailedTag);
@@ -119,6 +127,16 @@ public sealed class SignMeaning
 
         Expect.Unreachable();
         return null!;
+    }
+
+    // not currently used, but stops compiler emitting version including key and token
+    private bool PrintMembers(StringBuilder builder)
+    {
+        _ = builder.Append(CultureInfo.InvariantCulture,
+            $"{nameof(Sign)} = {Sign}, {nameof(Language)} = {Language}, " +
+            $"{nameof(PosTag)} = {PosTag}, {nameof(PosDetailedTag)} = {PosDetailedTag}");
+
+        return true;
     }
 
     public bool TryFormat(Span<char> destination, out int charsWritten)
@@ -259,25 +277,5 @@ public sealed class SignMeaning
         }
 
         return false;
-    }
-
-    public static bool operator ==(SignMeaning? wm1, SignMeaning? wm2)
-    {
-        if (wm1 is null)
-        {
-            if (wm2 is null)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        return wm1.Equals(wm2);
-    }
-
-    public static bool operator !=(SignMeaning? wm1, SignMeaning? wm2)
-    {
-        return !(wm1 == wm2);
     }
 }

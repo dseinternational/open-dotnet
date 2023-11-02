@@ -46,6 +46,32 @@ public class SignMeaningTests
         }
     }
 
+    [Fact]
+    public void GeneratesToken()
+    {        
+        foreach (var m in s_meanings)
+        {
+            var t1 = m.Token;
+            var t2 = m.Token;
+            Assert.Equal(t1, t2);
+        }
+    }
+
+    [Fact]
+    public void Clone()
+    {        
+        foreach (var m in s_meanings)
+        {
+            var m2 = m with { Language = LanguageTag.EnglishNewZealand };
+            Assert.Equal(m.Sign, m2.Sign);
+            Assert.Equal(LanguageTag.EnglishNewZealand, m2.Language);
+            Assert.Equal(m.PosTag, m2.PosTag);
+            Assert.Equal(m.PosDetailedTag, m2.PosDetailedTag);
+            Assert.NotEqual(m.Key, m2.Key);
+            Assert.NotEqual(m.Token, m2.Token);
+        }
+    }
+
     private static readonly SignMeaning[] s_meanings =
     [
         new SignMeaning
