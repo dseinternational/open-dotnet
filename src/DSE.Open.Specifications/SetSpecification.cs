@@ -11,7 +11,7 @@ namespace DSE.Open.Specifications;
 /// a comparison to another specified set of values.
 /// </summary>
 /// <typeparam name="TValue"></typeparam>
-public class SetSpecification<TValue> : ISpecification<IEnumerable<TValue>>
+public class SetSpecification<TValue> : ICollectionSpecification<TValue>
 {
     /// <summary>
     /// Initializes a new instance using the specified collection and comparison, with either a
