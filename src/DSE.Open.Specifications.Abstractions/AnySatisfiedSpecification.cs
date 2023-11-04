@@ -5,12 +5,17 @@ namespace DSE.Open.Specifications;
 
 internal sealed class AnySatisfiedSpecification<T> : AggregateSpecification<T>
 {
-    public AnySatisfiedSpecification(IEnumerable<ISpecification<T>> specifications): base(specifications)
+    private readonly bool _asParallel;
+
+    public AnySatisfiedSpecification(IEnumerable<ISpecification<T>> specifications, bool asParallel = false) : base(specifications)
     {
+        _asParallel = asParallel;
     }
 
     public override bool IsSatisfiedBy(T candidate)
     {
-        return Specifications.Any(s => s.IsSatisfiedBy(candidate));
+        var enumerable = _asParallel ? Specifications.AsParallel() : Specifications.AsEnumerable();
+
+        return enumerable.Any(s => s.IsSatisfiedBy(candidate));
     }
 }

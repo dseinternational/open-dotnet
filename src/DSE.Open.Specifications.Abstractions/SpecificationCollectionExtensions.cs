@@ -6,24 +6,30 @@ namespace DSE.Open.Specifications;
 public static class SpecificationCollectionExtensions
 {
     /// <summary>
-    /// Returns a specification that is satisfied if all of the specifications in the collection are satisfied.
+    /// Creates a specification that is satisfied if all of the specifications in the collection are satisfied.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="specifications"></param>
-    /// <returns></returns>
-    public static ISpecification<T> AsAllSatisfied<T>(this IEnumerable<ISpecification<T>> specifications)
+    /// <typeparam name="T">The type of the candidate evaluated by the specifications.</typeparam>
+    /// <param name="specifications">The specifications to include.</param>
+    /// <param name="evaluateInParallel">Specifies if evaluation of the specifications should be in parallel.</param>
+    /// <returns>A specification that is satisfied if all of the specifications in the collection are satisfied.</returns>
+    public static ISpecification<T> AsAllSatisfied<T>(
+        this IEnumerable<ISpecification<T>> specifications,
+        bool evaluateInParallel = false)
     {
-        return new AllSatisfiedSpecification<T>(specifications);
+        return new AllSatisfiedSpecification<T>(specifications, evaluateInParallel);
     }
 
     /// <summary>
-    /// Returns a specification that is satisfied if any of the specifications in the collection are satisfied.
+    /// Creates a specification that is satisfied if any of the specifications in the collection are satisfied.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="specifications"></param>
-    /// <returns></returns>
-    public static ISpecification<T> AsAnySatisfied<T>(this IEnumerable<ISpecification<T>> specifications)
+    /// <typeparam name="T">The type of the candidate evaluated by the specifications.</typeparam>
+    /// <param name="specifications">The specifications to include.</param>
+    /// <param name="evaluateInParallel">Specifies if evaluation of the specifications should be in parallel.</param>
+    /// <returns>A specification that is satisfied if any of the specifications in the collection are satisfied</returns>
+    public static ISpecification<T> AsAnySatisfied<T>(
+        this IEnumerable<ISpecification<T>> specifications,
+        bool evaluateInParallel = false)
     {
-        return new AnySatisfiedSpecification<T>(specifications);
+        return new AnySatisfiedSpecification<T>(specifications, evaluateInParallel);
     }
 }
