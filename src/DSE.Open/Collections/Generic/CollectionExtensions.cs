@@ -382,6 +382,30 @@ public static class CollectionExtensions
         return -1;
     }
 
+    public static bool AllTrue(this IEnumerable<bool> collection)
+    {
+        Guard.IsNotNull(collection);
+        return collection.All(c => c);
+    }
+
+    public static bool AllFalse(this IEnumerable<bool> collection)
+    {
+        Guard.IsNotNull(collection);
+        return collection.All(c => !c);
+    }
+
+    public static bool AnyTrue(this IEnumerable<bool> collection)
+    {
+        Guard.IsNotNull(collection);
+        return collection.Any(c => c);
+    }
+
+    public static bool AnyFalse(this IEnumerable<bool> collection)
+    {
+        Guard.IsNotNull(collection);
+        return collection.Any(c => !c);
+    }
+
     public static void ForEach<T>(this IEnumerable<T> collection, Action<T> action)
     {
         Guard.IsNotNull(collection);

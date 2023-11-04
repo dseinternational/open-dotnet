@@ -6,16 +6,17 @@ namespace DSE.Open.Specifications;
 public class PredicateSpecificationTests
 {
     [Fact]
-    public void IsSatisfiedIfPredicateReturnsTrue()
+    public async Task IsSatisfiedIfPredicateReturnsTrue()
     {
         var spec = new PredicateSpecification<bool>((c) => true);
-        Assert.True(spec.IsSatisfiedBy(true));
+        Assert.True(await spec.IsSatisfiedByAsync(true));
     }
 
     [Fact]
-    public void IsNotSatisfiedIfPredicateReturnsFalse()
+    public async Task IsNotSatisfiedIfPredicateReturnsFalse()
     {
         var spec = new PredicateSpecification<bool>((c) => false);
-        Assert.False(spec.IsSatisfiedBy(true));
+        Assert.False(await spec.IsSatisfiedByAsync(true));
     }
 }
+

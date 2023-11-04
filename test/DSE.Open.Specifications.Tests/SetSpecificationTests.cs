@@ -6,44 +6,44 @@ namespace DSE.Open.Specifications;
 public class SetSpecificationTests
 {
     [Fact]
-    public void SetComparisonEqualIsSatisfiedByEqualSets()
+    public async Task SetComparisonEqualIsSatisfiedByEqualSets()
     {
         var spec = new SetSpecification<int>([1, 2, 3, 4, 5, 6, 7, 8, 9], Collections.SetComparison.Equal);
-        Assert.True(spec.IsSatisfiedBy([1, 2, 3, 4, 5, 6, 7, 8, 9]));
+        Assert.True(await spec.IsSatisfiedByAsync([1, 2, 3, 4, 5, 6, 7, 8, 9]));
     }
 
     [Fact]
-    public void SetComparisonEqualIsNotSatisfiedByUnequalSets()
+    public async Task SetComparisonEqualIsNotSatisfiedByUnequalSets()
     {
         var spec = new SetSpecification<int>([1, 2, 3, 4, 5, 6, 7, 8, 9], Collections.SetComparison.Equal);
-        Assert.False(spec.IsSatisfiedBy([1, 2, 3, 4, 5, 6, 7, 8, 0]));
+        Assert.False(await spec.IsSatisfiedByAsync([1, 2, 3, 4, 5, 6, 7, 8, 0]));
     }
 
     [Fact]
-    public void SetComparisonNotEqualIsNotSatisfiedByEqualSets()
+    public async Task SetComparisonNotEqualIsNotSatisfiedByEqualSets()
     {
         var spec = new SetSpecification<int>([1, 2, 3, 4, 5, 6, 7, 8, 9], Collections.SetComparison.NotEqual);
-        Assert.False(spec.IsSatisfiedBy([1, 2, 3, 4, 5, 6, 7, 8, 9]));
+        Assert.False(await spec.IsSatisfiedByAsync([1, 2, 3, 4, 5, 6, 7, 8, 9]));
     }
 
     [Fact]
-    public void SetComparisonNotEqualIsSatisfiedByUnequalSets()
+    public async Task SetComparisonNotEqualIsSatisfiedByUnequalSets()
     {
         var spec = new SetSpecification<int>([1, 2, 3, 4, 5, 6, 7, 8, 9], Collections.SetComparison.NotEqual);
-        Assert.True(spec.IsSatisfiedBy([1, 2, 3, 4, 5, 6, 7, 8, 0]));
+        Assert.True(await spec.IsSatisfiedByAsync([1, 2, 3, 4, 5, 6, 7, 8, 0]));
     }
 
     [Fact]
-    public void SetComparisonSubsetIsSatisfiedBySubset()
+    public async Task SetComparisonSubsetIsSatisfiedBySubset()
     {
         var spec = new SetSpecification<int>([1, 2, 3, 4, 5, 6, 7, 8, 9], Collections.SetComparison.Subset);
-        Assert.True(spec.IsSatisfiedBy([1, 2, 3, 4, 5, 6, 7, 8]));
+        Assert.True(await spec.IsSatisfiedByAsync([1, 2, 3, 4, 5, 6, 7, 8]));
     }
 
     [Fact]
-    public void SetComparisonSubsetNotSatisfiedByDisjointSet()
+    public async Task SetComparisonSubsetNotSatisfiedByDisjointSet()
     {
         var spec = new SetSpecification<int>([1, 2, 3, 4, 5, 6, 7, 8, 9], Collections.SetComparison.Equal);
-        Assert.False(spec.IsSatisfiedBy([10, 11, 12]));
+        Assert.False(await spec.IsSatisfiedByAsync([10, 11, 12]));
     }
 }

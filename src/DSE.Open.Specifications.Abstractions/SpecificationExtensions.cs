@@ -1,8 +1,6 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using DSE.Open.Specifications.Abstractions;
-
 namespace DSE.Open.Specifications;
 
 public static class SpecificationExtensions
@@ -20,7 +18,8 @@ public static class SpecificationExtensions
     }
 
     /// <summary>
-    /// Returns a specification that is satisfied if a candidate satisfies either specification.
+    /// Returns a specification that is satisfied if a candidate satisfies one or more
+    /// of the given specifications.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="left"></param>

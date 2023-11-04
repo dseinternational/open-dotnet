@@ -7,8 +7,8 @@ public sealed class IsTrueSpecification : ISpecification<bool>
 {
     public static readonly IsTrueSpecification Instance = new();
 
-    public bool IsSatisfiedBy(bool candidate)
+    public ValueTask<bool> IsSatisfiedByAsync(bool candidate, CancellationToken cancellationToken = default)
     {
-        return candidate;
+        return ValueTask.FromResult(candidate);
     }
 }
