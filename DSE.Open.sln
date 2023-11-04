@@ -146,7 +146,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Requests.Tests", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Api.Metadata", "src\DSE.Open.Api.Metadata\DSE.Open.Api.Metadata.csproj", "{90D8E3D8-989F-446A-A6B9-57ED16645EF8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.Api.Metadata.Tests", "test\DSE.Open.Api.Metadata.Tests\DSE.Open.Api.Metadata.Tests.csproj", "{BDA19890-FA28-4E2B-8F2D-8BF181A28EAB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Api.Metadata.Tests", "test\DSE.Open.Api.Metadata.Tests\DSE.Open.Api.Metadata.Tests.csproj", "{BDA19890-FA28-4E2B-8F2D-8BF181A28EAB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.Specifications", "src\DSE.Open.Specifications\DSE.Open.Specifications.csproj", "{71D35A63-0A17-48ED-B032-95477987F2A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.Specifications.Abstractions", "src\DSE.Open.Specifications.Abstractions\DSE.Open.Specifications.Abstractions.csproj", "{E63CE2FF-7079-4DB1-A6EB-F8CC3FCF1211}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.Specifications.Abstractions.Tests", "test\DSE.Open.Specifications.Abstractions.Tests\DSE.Open.Specifications.Abstractions.Tests.csproj", "{EF74B96B-203D-4FBA-ACE5-DD1639478B53}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.Specifications.Tests", "test\DSE.Open.Specifications.Tests\DSE.Open.Specifications.Tests.csproj", "{9FB14414-8E83-4033-8FC8-D93BA9EA4A03}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -390,6 +398,22 @@ Global
 		{BDA19890-FA28-4E2B-8F2D-8BF181A28EAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BDA19890-FA28-4E2B-8F2D-8BF181A28EAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BDA19890-FA28-4E2B-8F2D-8BF181A28EAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71D35A63-0A17-48ED-B032-95477987F2A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71D35A63-0A17-48ED-B032-95477987F2A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71D35A63-0A17-48ED-B032-95477987F2A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71D35A63-0A17-48ED-B032-95477987F2A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E63CE2FF-7079-4DB1-A6EB-F8CC3FCF1211}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E63CE2FF-7079-4DB1-A6EB-F8CC3FCF1211}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E63CE2FF-7079-4DB1-A6EB-F8CC3FCF1211}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E63CE2FF-7079-4DB1-A6EB-F8CC3FCF1211}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF74B96B-203D-4FBA-ACE5-DD1639478B53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF74B96B-203D-4FBA-ACE5-DD1639478B53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF74B96B-203D-4FBA-ACE5-DD1639478B53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF74B96B-203D-4FBA-ACE5-DD1639478B53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FB14414-8E83-4033-8FC8-D93BA9EA4A03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FB14414-8E83-4033-8FC8-D93BA9EA4A03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FB14414-8E83-4033-8FC8-D93BA9EA4A03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FB14414-8E83-4033-8FC8-D93BA9EA4A03}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -454,6 +478,10 @@ Global
 		{2224BB3C-6074-4029-93DB-0A0955DC2BCB} = {850B3E2C-6172-4CF9-9E83-AD0997C57CA3}
 		{90D8E3D8-989F-446A-A6B9-57ED16645EF8} = {D2529453-80C3-4F06-BBD0-6B58EF65EF99}
 		{BDA19890-FA28-4E2B-8F2D-8BF181A28EAB} = {850B3E2C-6172-4CF9-9E83-AD0997C57CA3}
+		{71D35A63-0A17-48ED-B032-95477987F2A1} = {D2529453-80C3-4F06-BBD0-6B58EF65EF99}
+		{E63CE2FF-7079-4DB1-A6EB-F8CC3FCF1211} = {D2529453-80C3-4F06-BBD0-6B58EF65EF99}
+		{EF74B96B-203D-4FBA-ACE5-DD1639478B53} = {850B3E2C-6172-4CF9-9E83-AD0997C57CA3}
+		{9FB14414-8E83-4033-8FC8-D93BA9EA4A03} = {850B3E2C-6172-4CF9-9E83-AD0997C57CA3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3D3BE91A-3636-45E3-A6BF-8C09D5A9782A}
