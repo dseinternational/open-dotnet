@@ -20,8 +20,7 @@ public sealed record SignMeaning
       ISpanParsable<SignMeaning>,
       ISpanSerializable<SignMeaning>
 {
-    private string? _serialized;
-    private int? _token;
+    private string? _string;
 
     public SignMeaning()
     {
@@ -57,30 +56,6 @@ public sealed record SignMeaning
     /// </summary>
     public required TreebankPosTag PosDetailedTag { get; init; }
 
-    /// <summary>
-    /// Gets a string value that identifies this value.
-    /// </summary>
-    [JsonIgnore]
-    public string Key => ToString();
-
-    /// <summary>
-    /// Gets a numeric value that identifies this value.
-    /// </summary>
-    [JsonIgnore]
-    public int Token
-    {
-        get
-        {
-            if (_token is not null)
-            {
-                return _token.Value;
-            }
-
-            _token = FixedHashCode.GetFixedHashCode(Key.AsSpan());
-            return _token.Value;
-        }
-    }
-
     public bool Equals(SignMeaning? other)
     {
         if (other is null)
@@ -111,18 +86,18 @@ public sealed record SignMeaning
 
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
-        if (_serialized is not null)
+        if (_string is not null)
         {
-            return _serialized;
+            return _string;
         }
 
         Span<char> k = stackalloc char[MaxSerializedCharLength];
 
         if (TryFormat(k, out var charsWritten))
         {
-            _serialized = k[..charsWritten].ToString();
+            _string = k[..charsWritten].ToString();
 
-            return _serialized;
+            return _string;
         }
 
         Expect.Unreachable();

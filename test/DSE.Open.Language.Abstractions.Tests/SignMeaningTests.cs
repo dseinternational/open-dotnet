@@ -36,23 +36,23 @@ public class SignMeaningTests
     }
 
     [Fact]
-    public void GeneratesKey()
+    public void ToStringGeneratesExpectedKey()
     {
         foreach (var m in s_meanings)
         {
-            var key = m.Key;
+            var key = m.ToString();
             var expected = $"{m.Sign}|{m.Language}|{m.PosTag}|{m.PosDetailedTag}";
             Assert.Equal(expected, key);
         }
     }
 
     [Fact]
-    public void GeneratesToken()
+    public void GeneratesHashCodes()
     {        
         foreach (var m in s_meanings)
         {
-            var t1 = m.Token;
-            var t2 = m.Token;
+            var t1 = m.GetHashCode();
+            var t2 = m.GetHashCode();
             Assert.Equal(t1, t2);
         }
     }
@@ -67,8 +67,8 @@ public class SignMeaningTests
             Assert.Equal(LanguageTag.EnglishNewZealand, m2.Language);
             Assert.Equal(m.PosTag, m2.PosTag);
             Assert.Equal(m.PosDetailedTag, m2.PosDetailedTag);
-            Assert.NotEqual(m.Key, m2.Key);
-            Assert.NotEqual(m.Token, m2.Token);
+            Assert.NotEqual(m.ToString(), m2.ToString());
+            Assert.NotEqual(m.GetHashCode(), m2.GetHashCode());
         }
     }
 
