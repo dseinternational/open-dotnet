@@ -3,19 +3,59 @@
 
 namespace DSE.Open.Specifications;
 
-internal sealed class AnySatisfiedSpecification<T> : AggregateSpecification<T>
+internal sealed class AnySatisfiedSpecification<T> : AggregateSpecification<T>, IParallelizableSpecification<T>
 {
-    private readonly bool _asParallel;
-
-    public AnySatisfiedSpecification(IEnumerable<ISpecification<T>> specifications, bool asParallel = false) : base(specifications)
+    public AnySatisfiedSpecification(IEnumerable<ISpecification<T>> specifications)
+        : base(specifications)
     {
-        _asParallel = asParallel;
     }
 
     public override bool IsSatisfiedBy(T candidate)
     {
-        var enumerable = _asParallel ? Specifications.AsParallel() : Specifications.AsEnumerable();
+        return Specifications.Any(s => s.IsSatisfiedBy(candidate));
+    }
 
-        return enumerable.Any(s => s.IsSatisfiedBy(candidate));
+    public bool IsSatisfiedBy(T candidate, CancellationToken cancellationToken = default)
+    {
+        return Specifications.Any(s =>
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            if (s is ICancellableSpecification<T> cancellable)
+            {
+                return cancellable.IsSatisfiedBy(candidate, cancellationToken);
+            }
+
+            return s.IsSatisfiedBy(candidate);
+        });
+    }
+
+    public bool IsSatisfiedBy(
+        T candidate,
+        int maxDegreeOfParallelism,
+        ParallelExecutionMode executionMode = ParallelExecutionMode.Default,
+        ParallelMergeOptions mergeOptions = ParallelMergeOptions.Default,
+        CancellationToken cancellationToken = default)
+    {
+        if (maxDegreeOfParallelism < 2)
+        {
+            return IsSatisfiedBy(candidate, cancellationToken);
+        }
+
+        var enumerable = maxDegreeOfParallelism > 1
+            ? cancellationToken != CancellationToken.None
+                ? Specifications.AsParallel().WithDegreeOfParallelism(maxDegreeOfParallelism).WithCancellation(cancellationToken)
+                : (IEnumerable<ISpecification<T>>)Specifications.AsParallel().WithDegreeOfParallelism(maxDegreeOfParallelism)
+            : Specifications.AsEnumerable();
+
+        return enumerable.Any(s =>
+        {
+            if (s is ICancellableSpecification<T> cancellable)
+            {
+                return cancellable.IsSatisfiedBy(candidate, cancellationToken);
+            }
+
+            return s.IsSatisfiedBy(candidate);
+        });
     }
 }

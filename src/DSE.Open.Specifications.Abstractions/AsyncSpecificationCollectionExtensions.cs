@@ -3,7 +3,7 @@
 
 namespace DSE.Open.Specifications;
 
-public static class SpecificationCollectionExtensions
+public static class AsyncSpecificationCollectionExtensions
 {
     /// <summary>
     /// Creates a specification that is satisfied if all of the specifications in the collection are satisfied.
@@ -11,10 +11,10 @@ public static class SpecificationCollectionExtensions
     /// <typeparam name="T">The type of the candidate evaluated by the specifications.</typeparam>
     /// <param name="specifications">The specifications to include.</param>
     /// <returns>A specification that is satisfied if all of the specifications in the collection are satisfied.</returns>
-    public static IParallelizableSpecification<T> AsAllSatisfied<T>(
-        this IEnumerable<ISpecification<T>> specifications)
+    public static IAsyncSpecification<T> AsAllSatisfied<T>(
+        this IEnumerable<IAsyncSpecification<T>> specifications)
     {
-        return new AllSatisfiedSpecification<T>(specifications);
+        return new AllSatisfiedAsyncSpecification<T>(specifications);
     }
 
     /// <summary>
@@ -23,9 +23,9 @@ public static class SpecificationCollectionExtensions
     /// <typeparam name="T">The type of the candidate evaluated by the specifications.</typeparam>
     /// <param name="specifications">The specifications to include.</param>
     /// <returns>A specification that is satisfied if any of the specifications in the collection are satisfied</returns>
-    public static IParallelizableSpecification<T> AsAnySatisfied<T>(
-        this IEnumerable<ISpecification<T>> specifications)
+    public static IAsyncSpecification<T> AsAnySatisfied<T>(
+        this IEnumerable<IAsyncSpecification<T>> specifications)
     {
-        return new AnySatisfiedSpecification<T>(specifications);
+        return new AnySatisfiedAsyncSpecification<T>(specifications);
     }
 }

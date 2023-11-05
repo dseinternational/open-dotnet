@@ -17,8 +17,8 @@ public class AllSatisfiedSpecificationTests
     public void IsSatisfiedIfAllOfManySatisfiedParallel()
     {
         ISpecification<bool>[] specs = [.. Enumerable.Range(0, 100).Select(_ => new IsTrueSpecification())];
-        var all = specs.AsAllSatisfied(true);
-        Assert.True(all.IsSatisfiedBy(true));
+        var all = specs.AsAllSatisfied();
+        Assert.True(all.IsSatisfiedBy(true, Environment.ProcessorCount));
     }
 
     [Fact]
@@ -33,7 +33,7 @@ public class AllSatisfiedSpecificationTests
     public void IsNotSatisfiedIfOneOfManySatisfiedParallel()
     {
         ISpecification<bool>[] specs = [new IsTrueSpecification(), .. Enumerable.Range(0, 100).Select(_ => new IsFalseSpecification())];
-        var all = specs.AsAllSatisfied(true);
-        Assert.False(all.IsSatisfiedBy(true));
+        var all = specs.AsAllSatisfied();
+        Assert.False(all.IsSatisfiedBy(true, Environment.ProcessorCount));
     }
 }
