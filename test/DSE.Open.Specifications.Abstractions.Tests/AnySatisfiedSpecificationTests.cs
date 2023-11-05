@@ -6,18 +6,34 @@ namespace DSE.Open.Specifications;
 public class AnySatisfiedSpecificationTests
 {
     [Fact]
-    public async Task IsSatisfiedIfAllOfManySatisfied()
+    public void IsSatisfiedIfAllOfManySatisfied()
     {
         ISpecification<bool>[] specs = [new IsTrueSpecification(), new IsTrueSpecification(), new IsTrueSpecification()];
         var any = specs.AsAnySatisfied();
-        Assert.True(await any.IsSatisfiedByAsync(true));
+        Assert.True(any.IsSatisfiedBy(true));
     }
 
     [Fact]
-    public async Task IsSatisfiedIfOneOfManySatisfied()
+    public void IsSatisfiedIfAllOfManySatisfiedParallel()
+    {
+        ISpecification<bool>[] specs = [new IsTrueSpecification(), new IsTrueSpecification(), new IsTrueSpecification()];
+        var any = specs.AsAnySatisfied(true);
+        Assert.True(any.IsSatisfiedBy(true));
+    }
+
+    [Fact]
+    public void IsSatisfiedIfOneOfManySatisfied()
     {
         ISpecification<bool>[] specs = [new IsTrueSpecification(), new IsFalseSpecification(), new IsFalseSpecification()];
         var any = specs.AsAnySatisfied();
-        Assert.True(await any.IsSatisfiedByAsync(true));
+        Assert.True(any.IsSatisfiedBy(true));
+    }
+
+    [Fact]
+    public void IsSatisfiedIfOneOfManySatisfiedParallel()
+    {
+        ISpecification<bool>[] specs = [new IsTrueSpecification(), new IsFalseSpecification(), new IsFalseSpecification()];
+        var any = specs.AsAnySatisfied(true);
+        Assert.True(any.IsSatisfiedBy(true));
     }
 }

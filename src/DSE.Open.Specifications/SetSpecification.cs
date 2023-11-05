@@ -41,14 +41,14 @@ public class SetSpecification<TValue> : ICollectionSpecification<TValue>
 
     public SetComparison SetComparison { get; }
 
-    public ValueTask<bool> IsSatisfiedByAsync(IEnumerable<TValue> candidate, CancellationToken cancellationToken = default)
+    public bool IsSatisfiedBy(IEnumerable<TValue> candidate)
     {
         if (candidate is FrozenSet<TValue> frozenSet)
         {
-            return ValueTask.FromResult(IsSatisfiedBy(frozenSet));
+            return IsSatisfiedBy(frozenSet);
         }
 
-        return ValueTask.FromResult(IsSatisfiedBy(candidate.ToHashSet()));
+        return IsSatisfiedBy(candidate.ToHashSet());
     }
 
     private bool IsSatisfiedBy(HashSet<TValue> value)

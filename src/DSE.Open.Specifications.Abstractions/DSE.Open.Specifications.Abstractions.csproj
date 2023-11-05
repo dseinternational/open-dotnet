@@ -5,8 +5,4 @@
     <RootNamespace>DSE.Open.Specifications</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\DSE.Open\DSE.Open.csproj" />
-  </ItemGroup>
-
 </Project>

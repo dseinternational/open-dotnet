@@ -5,31 +5,17 @@ namespace DSE.Open.Specifications;
 
 internal sealed class AnySatisfiedSpecification<T> : AggregateSpecification<T>
 {
-    public AnySatisfiedSpecification(IEnumerable<ISpecification<T>> specifications) : base(specifications)
+    private readonly bool _asParallel;
+
+    public AnySatisfiedSpecification(IEnumerable<ISpecification<T>> specifications, bool asParallel = false) : base(specifications)
     {
+        _asParallel = asParallel;
     }
 
-    public override async ValueTask<bool> IsSatisfiedByAsync(T candidate, CancellationToken cancellationToken = default)
+    public override bool IsSatisfiedBy(T candidate)
     {
-        using var cancellationSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        var enumerable = _asParallel ? Specifications.AsParallel() : Specifications.AsEnumerable();
 
-        var coll = Specifications.Select(s => s.IsSatisfiedByAsync(candidate, cancellationSource.Token).AsTask()).ToList();
-
-        while (coll.Count != 0)
-        {
-            var next = await Task.WhenAny(coll).ConfigureAwait(false);
-
-#pragma warning disable CA1849 // Call async methods when in an async method
-            if (next.Result)
-#pragma warning restore CA1849 // Call async methods when in an async method
-            {
-                await cancellationSource.CancelAsync().ConfigureAwait(false);
-                return true;
-            }
-
-            _ = coll.Remove(next);
-        }
-
-        return false;
+        return enumerable.Any(s => s.IsSatisfiedBy(candidate));
     }
 }

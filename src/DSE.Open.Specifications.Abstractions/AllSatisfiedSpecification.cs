@@ -5,15 +5,17 @@ namespace DSE.Open.Specifications;
 
 internal sealed class AllSatisfiedSpecification<T> : AggregateSpecification<T>
 {
-    public AllSatisfiedSpecification(IEnumerable<ISpecification<T>> specifications) : base(specifications)
+    private readonly bool _asParallel;
+
+    public AllSatisfiedSpecification(IEnumerable<ISpecification<T>> specifications, bool asParallel = false) : base(specifications)
     {
+        _asParallel = asParallel;
     }
 
-    public override async ValueTask<bool> IsSatisfiedByAsync(T candidate, CancellationToken cancellationToken = default)
+    public override bool IsSatisfiedBy(T candidate)
     {
-        return (await Task.WhenAll(Specifications
-            .Select(s => s.IsSatisfiedByAsync(candidate, cancellationToken).AsTask()))
-            .ConfigureAwait(false))
-            .All(r => r);
+        var enumerable = _asParallel ? Specifications.AsParallel() : Specifications.AsEnumerable();
+
+        return enumerable.All(s => s.IsSatisfiedBy(candidate));
     }
 }

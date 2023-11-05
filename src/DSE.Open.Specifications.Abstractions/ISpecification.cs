@@ -13,8 +13,7 @@ public interface ISpecification<in TValue>
     /// Determines if the specified value satisfies the specification.
     /// </summary>
     /// <param name="candidate">The value to evaluate.</param>
-    /// <param name="cancellationToken">A token that can signal cancellation of the operation.</param>
     /// <returns><see langword="true"/> if the value satisfies the specification,
     /// otherwise <see langword="false"/>.</returns>
-    ValueTask<bool> IsSatisfiedByAsync(TValue candidate, CancellationToken cancellationToken = default);
+    bool IsSatisfiedBy(TValue candidate);
 }

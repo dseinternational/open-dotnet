@@ -1,4 +1,4 @@
-// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 namespace DSE.Open.Specifications;
@@ -12,5 +12,5 @@ internal abstract class AggregateSpecification<T> : ISpecification<T>
 
     protected IReadOnlyList<ISpecification<T>> Specifications { get; }
 
-    public abstract ValueTask<bool> IsSatisfiedByAsync(T candidate, CancellationToken cancellationToken = default);
+    public abstract bool IsSatisfiedBy(T candidate);
 }

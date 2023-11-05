@@ -6,26 +6,26 @@ namespace DSE.Open.Specifications;
 public class AndSpecificationTests
 {
     [Fact]
-    public async Task BothSatisfiedReturnsSatisfied()
+    public void BothSatisfiedReturnsSatisfied()
     {
-        Assert.True(await new IsTrueSpecification().And(new IsTrueSpecification()).IsSatisfiedByAsync(true));
+        Assert.True(new IsTrueSpecification().And(new IsTrueSpecification()).IsSatisfiedBy(true));
     }
 
     [Fact]
-    public async Task LeftSatisfiedReturnsNotSatisfied()
+    public void LeftSatisfiedReturnsNotSatisfied()
     {
-        Assert.False(await new IsTrueSpecification().And(new IsFalseSpecification()).IsSatisfiedByAsync(true));
+        Assert.False(new IsTrueSpecification().And(new IsFalseSpecification()).IsSatisfiedBy(true));
     }
 
     [Fact]
-    public async Task RightSatisfiedReturnsNotSatisfied()
+    public void RightSatisfiedReturnsNotSatisfied()
     {
-        Assert.False(await new IsFalseSpecification().And(new IsTrueSpecification()).IsSatisfiedByAsync(true));
+        Assert.False(new IsFalseSpecification().And(new IsTrueSpecification()).IsSatisfiedBy(true));
     }
 
     [Fact]
-    public async Task NeitherSatisfiedReturnsNotSatisfied()
+    public void NeitherSatisfiedReturnsNotSatisfied()
     {
-        Assert.False(await new IsFalseSpecification().And(new IsFalseSpecification()).IsSatisfiedByAsync(true));
+        Assert.False(new IsFalseSpecification().And(new IsFalseSpecification()).IsSatisfiedBy(true));
     }
 }

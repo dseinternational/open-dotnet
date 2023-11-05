@@ -13,8 +13,8 @@ public sealed class PredicateSpecification<T> : ISpecification<T>
         _predicate = predicate;
     }
 
-    public ValueTask<bool> IsSatisfiedByAsync(T candidate, CancellationToken cancellationToken = default)
+    public bool IsSatisfiedBy(T candidate)
     {
-        return ValueTask.FromResult(_predicate(candidate));
+        return _predicate(candidate);
     }
 }
