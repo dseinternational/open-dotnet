@@ -1,4 +1,4 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 namespace DSE.Open.Threading.Tasks;
@@ -16,9 +16,14 @@ public static class CachedTasks
         return EmptyTasks<T>.Default;
     }
 
-    public static Task<ICollection<T>> EmptyCollection<T>()
+    internal static Task<T[]> EmptyArray<T>()
     {
-        return EmptyTasks<T>.EmptyCollection;
+        return EmptyTasks<T>.EmptyArray;
+    }
+
+    internal static Task<IEnumerable<T>> EmptyArrayEnumerable<T>()
+    {
+        return EmptyTasks<T>.EmptyArrayEnumerable;
     }
 
     public static Task<IEnumerable<T>> EmptyEnumerable<T>()
@@ -40,7 +45,9 @@ public static class CachedTasks
     {
         public static readonly Task<T> Default = Task.FromResult(default(T))!;
 
-        public static readonly Task<ICollection<T>> EmptyCollection = Task.FromResult<ICollection<T>>(Array.Empty<T>());
+        public static readonly Task<T[]> EmptyArray = Task.FromResult(Array.Empty<T>());
+
+        public static readonly Task<IEnumerable<T>> EmptyArrayEnumerable = Task.FromResult((IEnumerable<T>)Array.Empty<T>());
 
         public static readonly Task<IEnumerable<T>> EmptyEnumerable = Task.FromResult(Enumerable.Empty<T>());
 
