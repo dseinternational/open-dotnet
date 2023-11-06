@@ -13,6 +13,7 @@ namespace DSE.Open.Collections.Generic;
 /// <typeparam name="TKey"></typeparam>
 /// <typeparam name="TValue"></typeparam>
 /// <remarks><see cref="IDictionary{TKey,TValue}"/> is implemented explicitly to support deserialization.</remarks>
+[SuppressMessage("Design", "CA1033:Interface methods should be callable by child types", Justification = "Required")]
 public class ReadOnlyValueDictionary<TKey, TValue>
     : IReadOnlyDictionary<TKey, TValue>,
       IDictionary<TKey, TValue>,
@@ -27,14 +28,20 @@ public class ReadOnlyValueDictionary<TKey, TValue>
     {
     }
 
-    public ReadOnlyValueDictionary(IEnumerable<KeyValuePair<TKey, TValue>> collection)
+    public ReadOnlyValueDictionary(IEnumerable<KeyValuePair<TKey, TValue>> collection, IEqualityComparer<TKey>? comparer = null)
     {
-        _inner = new Dictionary<TKey, TValue>(collection);
+        _inner = collection is ReadOnlyValueDictionary<TKey, TValue> other
+            && (comparer is null || other._inner.Comparer == comparer)
+            ? other._inner
+            : new Dictionary<TKey, TValue>(collection);
     }
 
-    public ReadOnlyValueDictionary(IDictionary<TKey, TValue> source)
+    public ReadOnlyValueDictionary(IDictionary<TKey, TValue> source, IEqualityComparer<TKey>? comparer = null)
     {
-        _inner = new Dictionary<TKey, TValue>(source);
+        _inner = source is ReadOnlyValueDictionary<TKey, TValue> other
+            && (comparer is null || other._inner.Comparer == comparer)
+            ? other._inner
+            : new Dictionary<TKey, TValue>(source, comparer);
     }
 
     public TValue this[TKey key] => _inner[key];
@@ -51,12 +58,8 @@ public class ReadOnlyValueDictionary<TKey, TValue>
 
     ICollection<TValue> IDictionary<TKey, TValue>.Values => _inner.Values;
 
-#pragma warning disable CA1033 // Interface methods should be callable by child types
-
     bool ICollection<KeyValuePair<TKey, TValue>>.IsReadOnly
         => ((ICollection<KeyValuePair<TKey, TValue>>)_inner).IsReadOnly;
-
-#pragma warning restore CA1033 // Interface methods should be callable by child types
 
     public bool ContainsKey(TKey key)
     {

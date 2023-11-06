@@ -40,31 +40,28 @@ public static class CollectionExtensions
             return;
         }
 
+        if (collection is List<T> list)
+        {
+            list.RemoveRange(values);
+            return;
+        }
+
         foreach (var item in values)
         {
             _ = collection.Remove(item);
         }
     }
 
+    [Obsolete("Use collection.Where().ToList()")]
     public static IList<T> FindAll<T>(this IEnumerable<T> collection, Predicate<T> match)
     {
-        Guard.IsNotNull(collection);
-        Guard.IsNotNull(match);
-
-        List<T> results = new();
-
-        foreach (var item in collection)
-        {
-            if (match(item))
-            {
-                results.Add(item);
-            }
-        }
-
-        return results;
+        return collection.Where(i => match(i)).ToList();
     }
 
-    public static int FindIndex<T>(this T[] collection, Predicate<T> match) => collection.FindIndex(0, match);
+    public static int FindIndex<T>(this T[] collection, Predicate<T> match)
+    {
+        return collection.FindIndex(0, match);
+    }
 
     public static int FindIndex<T>(this T[] collection, int startIndex, Predicate<T> match)
     {
@@ -95,7 +92,7 @@ public static class CollectionExtensions
     {
         Guard.IsNotNull(collection);
         Guard.IsNotNull(match);
-
+        
         for (var i = startIndex; i < count; i++)
         {
             if (match(collection[i]))
@@ -107,7 +104,10 @@ public static class CollectionExtensions
         return -1;
     }
 
-    public static int FindIndex<T>(this IList<T> collection, Predicate<T> match) => collection.FindIndex(0, match);
+    public static int FindIndex<T>(this IList<T> collection, Predicate<T> match)
+    {
+        return collection.FindIndex(0, match);
+    }
 
     public static int FindIndex<T>(this IList<T> collection, int startIndex, Predicate<T> match)
     {
@@ -150,7 +150,10 @@ public static class CollectionExtensions
         return -1;
     }
 
-    public static int FindIndex<T>(this IReadOnlyList<T> collection, Predicate<T> match) => collection.FindIndex(0, match);
+    public static int FindIndex<T>(this IReadOnlyList<T> collection, Predicate<T> match)
+    {
+        return collection.FindIndex(0, match);
+    }
 
     public static int FindIndex<T>(this IReadOnlyList<T> collection, int startIndex, Predicate<T> match)
     {
@@ -517,22 +520,33 @@ public static class CollectionExtensions
 
     public static ObservableCollection<T> ToObservableCollection<T>(this List<T> list)
     {
-        Guard.IsNotNull(list);
         return new ObservableCollection<T>(list);
     }
 
     public static ReadOnlyValueCollection<T> ToReadOnlyValueCollection<T>(this IEnumerable<T> collection)
     {
-        Guard.IsNotNull(collection);
-        return ReadOnlyValueCollection.CreateRange(collection);
+        return [.. collection];
+    }
+
+    public static ReadOnlyValueDictionary<TKey, TValue> ToReadOnlyValueDictionary<TKey, TValue>(
+        this IEnumerable<KeyValuePair<TKey, TValue>> collection)
+        where TKey : notnull
+    {
+        return new ReadOnlyValueDictionary<TKey, TValue>(collection);
+    }
+
+    public static ReadOnlyValueSet<T> ToReadOnlyValueSet<T>(this IEnumerable<T> collection)
+    {
+        return [.. collection];
     }
 
     public static ValueCollection<T> ToValueCollection<T>(this IEnumerable<T> collection)
     {
-        Guard.IsNotNull(collection);
-
-        return collection is ValueCollection<T> vc ? vc : new ValueCollection<T>(collection);
+        return [.. collection];
     }
 
-    public static string? WriteToString<T>(this IEnumerable<T>? collection) => CollectionWriter.WriteToString(collection);
+    public static string? WriteToString<T>(this IEnumerable<T>? collection)
+    {
+        return CollectionWriter.WriteToString(collection);
+    }
 }

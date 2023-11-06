@@ -46,6 +46,12 @@ public class ReadOnlyValueSet<T> : IReadOnlySet<T>, IEquatable<ReadOnlyValueSet<
     public ReadOnlyValueSet(IEnumerable<T> set)
     {
         Guard.IsNotNull(set);
+
+        if (set is ReadOnlyValueSet<T> other)
+        {
+            _set = other._set;
+        }
+
         _set = new HashSet<T>(set);
     }
 
