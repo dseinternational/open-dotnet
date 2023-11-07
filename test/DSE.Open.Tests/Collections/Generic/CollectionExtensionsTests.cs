@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Collections;
 using DSE.Open.Collections.Generic;
 
 namespace DSE.Open.Tests.Collections.Generic;
@@ -20,6 +21,7 @@ public class CollectionExtensionsTests
         for (var i = 1; i < list.Count; i++)
         {
             inOrder = list[i - 1] < list[i];
+
             if (!inOrder)
             {
                 break;
@@ -59,5 +61,33 @@ public class CollectionExtensionsTests
         IReadOnlyList<int> list = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 14, 15 };
 
         Assert.Equal(14, list.FindLastIndex(i => i == 14));
+    }
+
+    [Fact]
+    public void FindIndex_WithIListStartAndCount_ShouldReturnCorrectIndex()
+    {
+        // Arrange
+        List<int> list = new() { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+        const int target = 6;
+
+        // Act
+        var index = ((IList<int>)list).FindIndex(startIndex: 5, count: 2, i => i == target);
+
+        // Assert
+        Assert.Equal(target, index);
+    }
+
+    [Fact]
+    public void FindIndex_WithIReadOnlyListStartAndCount_ShouldReturnCorrectIndex()
+    {
+        // Arrange
+        List<int> list = new() { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+        const int target = 6;
+
+        // Act
+        var index = ((IReadOnlyList<int>)list).FindIndex(startIndex: 5, count: 2, i => i == target);
+
+        // Assert
+        Assert.Equal(target, index);
     }
 }
