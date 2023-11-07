@@ -74,7 +74,7 @@ public static class CollectionExtensions
             return -1; // unreachable
         }
 
-        return collection.FindIndex(startIndex, collection.Length, match);
+        return Array.FindIndex(collection, startIndex, match);
     }
 
     /// <summary>
@@ -92,7 +92,7 @@ public static class CollectionExtensions
     {
         Guard.IsNotNull(collection);
         Guard.IsNotNull(match);
-        
+
         for (var i = startIndex; i < count; i++)
         {
             if (match(collection[i]))
@@ -139,7 +139,9 @@ public static class CollectionExtensions
         Guard.IsNotNull(collection);
         Guard.IsNotNull(match);
 
-        for (var i = startIndex; i < count; i++)
+        var upperBound = startIndex + count;
+
+        for (var i = startIndex; i < upperBound; i++)
         {
             if (match(collection[i]))
             {
@@ -185,7 +187,9 @@ public static class CollectionExtensions
         Guard.IsNotNull(collection);
         Guard.IsNotNull(match);
 
-        for (var i = startIndex; i < count; i++)
+        var upperBound = startIndex + count;
+
+        for (var i = startIndex; i < upperBound; i++)
         {
             if (match(collection[i]))
             {
