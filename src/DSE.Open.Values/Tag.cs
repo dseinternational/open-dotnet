@@ -129,7 +129,6 @@ public readonly partial struct Tag : IComparableValue<Tag, AsciiString>, IUtf8Sp
         return _value.StartsWith(value);
     }
 
-    [Obsolete("Use StartsWith(ReadOnlySpan<AsciiChar>) instead.")]
     public bool StartsWith(ReadOnlySpan<char> value)
     {
         return _value.StartsWith(value);
@@ -150,7 +149,6 @@ public readonly partial struct Tag : IComparableValue<Tag, AsciiString>, IUtf8Sp
         return _value.EndsWith(value);
     }
 
-    [Obsolete("Use EndsWith(ReadOnlySpan<AsciiChar>) instead.")]
     public bool EndsWith(ReadOnlySpan<char> value)
     {
         return _value.EndsWith(value);
