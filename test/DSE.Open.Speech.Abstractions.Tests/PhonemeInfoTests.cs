@@ -115,6 +115,8 @@ public class PhonemeInfoTests
         "uː",
         "ɔː",
         "ɑː",
+        "ɑːr",
+        "æ",
     ];
 
     private static readonly string[] s_consonants =
