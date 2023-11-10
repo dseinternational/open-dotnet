@@ -27,6 +27,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		LICENSE = LICENSE
 		NuGet.config = NuGet.config
 		README.md = README.md
+		THIRD-PARTY-NOTICES.md = THIRD-PARTY-NOTICES.md
 		version.json = version.json
 	EndProjectSection
 EndProject
@@ -148,13 +149,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Api.Metadata", "sr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Api.Metadata.Tests", "test\DSE.Open.Api.Metadata.Tests\DSE.Open.Api.Metadata.Tests.csproj", "{BDA19890-FA28-4E2B-8F2D-8BF181A28EAB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.Specifications", "src\DSE.Open.Specifications\DSE.Open.Specifications.csproj", "{71D35A63-0A17-48ED-B032-95477987F2A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Specifications", "src\DSE.Open.Specifications\DSE.Open.Specifications.csproj", "{71D35A63-0A17-48ED-B032-95477987F2A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.Specifications.Abstractions", "src\DSE.Open.Specifications.Abstractions\DSE.Open.Specifications.Abstractions.csproj", "{E63CE2FF-7079-4DB1-A6EB-F8CC3FCF1211}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Specifications.Abstractions", "src\DSE.Open.Specifications.Abstractions\DSE.Open.Specifications.Abstractions.csproj", "{E63CE2FF-7079-4DB1-A6EB-F8CC3FCF1211}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.Specifications.Abstractions.Tests", "test\DSE.Open.Specifications.Abstractions.Tests\DSE.Open.Specifications.Abstractions.Tests.csproj", "{EF74B96B-203D-4FBA-ACE5-DD1639478B53}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Specifications.Abstractions.Tests", "test\DSE.Open.Specifications.Abstractions.Tests\DSE.Open.Specifications.Abstractions.Tests.csproj", "{EF74B96B-203D-4FBA-ACE5-DD1639478B53}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.Specifications.Tests", "test\DSE.Open.Specifications.Tests\DSE.Open.Specifications.Tests.csproj", "{9FB14414-8E83-4033-8FC8-D93BA9EA4A03}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Specifications.Tests", "test\DSE.Open.Specifications.Tests\DSE.Open.Specifications.Tests.csproj", "{9FB14414-8E83-4033-8FC8-D93BA9EA4A03}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
