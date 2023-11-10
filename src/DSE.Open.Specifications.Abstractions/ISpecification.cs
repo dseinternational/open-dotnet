@@ -17,3 +17,4 @@ public interface ISpecification<in TValue>
     /// otherwise <see langword="false"/>.</returns>
     bool IsSatisfiedBy(TValue candidate);
 }
+
