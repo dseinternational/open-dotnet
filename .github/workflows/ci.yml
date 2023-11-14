@@ -24,7 +24,7 @@ jobs:
       - name: Set .NET SDK version
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: "8.0.100-rc.2.23502.2"
+          dotnet-version: "8.0.100"
 
       - name: Set Versions
         id: nbgv
