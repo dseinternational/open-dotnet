@@ -38,6 +38,9 @@ jobs:
         run: "Get-ChildItem Env:"
         shell: pwsh
 
+      - name: Restore
+        run: dotnet restore ./DSE.Open.sln --configuration ${{ matrix.configuration }}
+
       - name: Build
         run: dotnet build ./DSE.Open.sln --configuration ${{ matrix.configuration }}
 
