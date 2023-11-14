@@ -39,7 +39,7 @@ jobs:
         shell: pwsh
 
       - name: Restore
-        run: dotnet restore ./DSE.Open.sln --configuration ${{ matrix.configuration }}
+        run: dotnet restore ./DSE.Open.sln
 
       - name: Build
         run: dotnet build ./DSE.Open.sln --configuration ${{ matrix.configuration }}
