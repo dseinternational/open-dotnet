@@ -8,7 +8,7 @@ registries:
     type: nuget-feed
     url: https://www.myget.org/F/dseinternational/api/v3/index.json
     username: frankbuckley
-    password: ${{secrets.MYGET_API_KEY}}
+    password: ${{secrets.PACKAGES_TOKEN}}
 
 updates:
 
