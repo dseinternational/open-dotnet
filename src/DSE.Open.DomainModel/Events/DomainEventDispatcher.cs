@@ -76,7 +76,9 @@ public class DomainEventDispatcher : IDomainEventDispatcher
 
         // dispatch in parallel...
 
-        var backgroundTasks = backgroundEvents.Select(e => _dispatcher.PublishAsync(e).AsTask()).ToArray();
+        var backgroundTasks = backgroundEvents.Select(e =>
+            Task.Run(async () => await _dispatcher.PublishAsync(e).ConfigureAwait(false)))
+            .ToArray();
 
         // dispatch consecutively...
 
