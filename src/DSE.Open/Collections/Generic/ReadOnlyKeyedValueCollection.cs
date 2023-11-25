@@ -13,6 +13,7 @@ namespace DSE.Open.Collections.Generic;
 /// <typeparam name="TValue"></typeparam>
 public abstract class ReadOnlyKeyedValueCollection<TKey, TValue>
     : ICollection<TValue>,
+      IReadOnlyCollection<TValue>,
       IEquatable<ReadOnlyKeyedValueCollection<TKey, TValue>>
     where TKey : notnull
 {
