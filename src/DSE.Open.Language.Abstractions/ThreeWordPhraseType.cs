@@ -12,7 +12,9 @@ namespace DSE.Open.Language;
 [EquatableValue]
 [StructLayout(LayoutKind.Auto)]
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<ThreeWordPhraseType, AsciiString>))]
-public readonly partial struct ThreeWordPhraseType : IEquatableValue<ThreeWordPhraseType, AsciiString>, IUtf8SpanSerializable<ThreeWordPhraseType>
+public readonly partial struct ThreeWordPhraseType
+    : IEquatableValue<ThreeWordPhraseType, AsciiString>,
+      IUtf8SpanSerializable<ThreeWordPhraseType>
 {
     public static int MaxSerializedCharLength => 32;
 
@@ -47,7 +49,20 @@ public readonly partial struct ThreeWordPhraseType : IEquatableValue<ThreeWordPh
     /// </summary>
     public static readonly ThreeWordPhraseType AgentActionObject = new("agent-action-object", true);
 
-    public static readonly ThreeWordPhraseType AgentActionLocative = new("agent-action-object", true);
+    /// <summary>
+    /// TODO
+    /// </summary>
+    public static readonly ThreeWordPhraseType AgentActionLocative = new("agent-action-locative", true);
+
+    /// <summary>
+    /// TODO
+    /// </summary>
+    public static readonly ThreeWordPhraseType AgentObjectLocative = new("agent-object-locative", true);
+
+    /// <summary>
+    /// <c>[NOUN+ADP+NOUN|VERB+ADP+NOUN]</c> "toy in box", "hide under bed"
+    /// </summary>
+    public static readonly ThreeWordPhraseType Preposition = new("preposition", true);
 
     // TODO: complete
 
