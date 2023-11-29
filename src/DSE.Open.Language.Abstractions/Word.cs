@@ -11,7 +11,8 @@ namespace DSE.Open.Language;
 /// <summary>
 /// A single distinct meaningful element of speech or writing, used with others
 /// (or sometimes alone) to form a sentence and typically shown with a space on
-/// either side when written or printed.
+/// either side when written or printed. Includes compound words, which may be
+/// hyphenated, space-separated or not separated.
 /// </summary>
 /// <remarks>
 /// This structure is simply the characters in the word. For tokens, see TokenizedWord.
@@ -46,7 +47,8 @@ public readonly partial struct Word
             }
 
             if (char.IsWhiteSpace(value[i])
-                && (i > 0 || i < value.Length - 1))
+                && i > 0
+                && i < value.Length - 1)
             {
                 continue;
             }

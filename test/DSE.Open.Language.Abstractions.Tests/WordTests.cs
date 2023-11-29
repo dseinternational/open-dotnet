@@ -26,6 +26,7 @@ public class WordTests
     [InlineData("bat")]
     [InlineData("Emma's")]
     [InlineData("ice-cream")]
+    [InlineData("ice cream")]
     [InlineData("teachers'")]
     public void ParseSucceedsIfValid(string signValue)
     {
@@ -34,6 +35,9 @@ public class WordTests
 
     [Theory]
     [InlineData("-television")]
+    [InlineData("television ")]
+    [InlineData(" television ")]
+    [InlineData(" television")]
     [InlineData("'ball")]
     [InlineData("b:at")]
     [InlineData("")]
