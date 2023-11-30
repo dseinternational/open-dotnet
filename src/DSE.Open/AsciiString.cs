@@ -554,7 +554,7 @@ public readonly partial struct AsciiString
 
     public static explicit operator AsciiString(string value)
     {
-        return Parse(value);
+        return Parse(value, CultureInfo.InvariantCulture);
     }
 
 #pragma warning restore CA2225 // Operator overloads have named alternates
