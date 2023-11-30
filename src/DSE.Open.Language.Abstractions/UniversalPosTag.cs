@@ -30,6 +30,8 @@ public readonly partial struct UniversalPosTag : IEquatableValue<UniversalPosTag
     {
     }
 
+    public AsciiString Value => _value;
+
     public static bool IsValidValue(AsciiString value)
     {
         return !value.IsEmpty

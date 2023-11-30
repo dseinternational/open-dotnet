@@ -14,7 +14,9 @@ namespace DSE.Open.Language;
 [EquatableValue]
 [StructLayout(LayoutKind.Auto)]
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<TreebankPosTag, AsciiString>))]
-public readonly partial struct TreebankPosTag : IEquatableValue<TreebankPosTag, AsciiString>, IUtf8SpanSerializable<TreebankPosTag>
+public readonly partial struct TreebankPosTag
+    : IEquatableValue<TreebankPosTag, AsciiString>,
+      IUtf8SpanSerializable<TreebankPosTag>
 {
     public static int MaxSerializedCharLength => 5;
 
@@ -27,6 +29,8 @@ public readonly partial struct TreebankPosTag : IEquatableValue<TreebankPosTag, 
     private TreebankPosTag(string value, bool skipValidation) : this((AsciiString)value, skipValidation)
     {
     }
+
+    public AsciiString Value => _value;
 
     public static bool IsValidValue(AsciiString value)
     {

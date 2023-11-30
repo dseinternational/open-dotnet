@@ -12,7 +12,9 @@ namespace DSE.Open.Language;
 [EquatableValue]
 [StructLayout(LayoutKind.Auto)]
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<UniversalSyntacticRelation, AsciiString>))]
-public readonly partial struct UniversalSyntacticRelation : IEquatableValue<UniversalSyntacticRelation, AsciiString>, IUtf8SpanSerializable<UniversalSyntacticRelation>
+public readonly partial struct UniversalSyntacticRelation
+    : IEquatableValue<UniversalSyntacticRelation, AsciiString>,
+      IUtf8SpanSerializable<UniversalSyntacticRelation>
 {
     public static int MaxSerializedCharLength => 32;
 
@@ -25,6 +27,8 @@ public readonly partial struct UniversalSyntacticRelation : IEquatableValue<Univ
     private UniversalSyntacticRelation(string value, bool skipValidation) : this((AsciiString)value, skipValidation)
     {
     }
+
+    public AsciiString Value => _value;
 
     public static bool IsValidValue(AsciiString value)
     {
