@@ -11,14 +11,14 @@ using DSE.Open.Values;
 
 namespace DSE.Open.Language;
 
-[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<UniversalSyntacticRelation, AsciiString>))]
-public readonly partial struct UniversalSyntacticRelation
+[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<UniversalSyntacticRelationTag, AsciiString>))]
+public readonly partial struct UniversalSyntacticRelationTag
 {
 
     private readonly AsciiString _value;
     private readonly bool _initialized;
 
-    private UniversalSyntacticRelation(AsciiString value, bool skipValidation = false)
+    private UniversalSyntacticRelationTag(AsciiString value, bool skipValidation = false)
     {
 
         if (!skipValidation)
@@ -37,20 +37,20 @@ public readonly partial struct UniversalSyntacticRelation
         if (!IsValidValue(value))
         {
             throw new ArgumentOutOfRangeException(nameof(value), value,
-                $"'{value}' is not a valid {nameof(UniversalSyntacticRelation)} value");
+                $"'{value}' is not a valid {nameof(UniversalSyntacticRelationTag)} value");
         }
     }
 
     private void EnsureInitialized()
     {
-        UninitializedValueException<UniversalSyntacticRelation, AsciiString>.ThrowIfUninitialized(this);
+        UninitializedValueException<UniversalSyntacticRelationTag, AsciiString>.ThrowIfUninitialized(this);
     }
 
-    public static bool TryFromValue(AsciiString value, out UniversalSyntacticRelation result)
+    public static bool TryFromValue(AsciiString value, out UniversalSyntacticRelationTag result)
     {
         if (IsValidValue(value))
         {
-            result = new UniversalSyntacticRelation(value, true);
+            result = new UniversalSyntacticRelationTag(value, true);
             return true;
         }
     
@@ -58,19 +58,19 @@ public readonly partial struct UniversalSyntacticRelation
         return false;
     }
 
-    public static UniversalSyntacticRelation FromValue(AsciiString value)
+    public static UniversalSyntacticRelationTag FromValue(AsciiString value)
     {
         EnsureIsValidArgumentValue(value);
         return new(value, true);
     }
 
-    public static explicit operator UniversalSyntacticRelation(AsciiString value)
+    public static explicit operator UniversalSyntacticRelationTag(AsciiString value)
         => FromValue(value);
 
-    static AsciiString global::DSE.Open.IConvertibleTo<UniversalSyntacticRelation, AsciiString>.ConvertTo(UniversalSyntacticRelation value)
+    static AsciiString global::DSE.Open.IConvertibleTo<UniversalSyntacticRelationTag, AsciiString>.ConvertTo(UniversalSyntacticRelationTag value)
         => (AsciiString)value;
 
-    public static explicit operator AsciiString(UniversalSyntacticRelation value)
+    public static explicit operator AsciiString(UniversalSyntacticRelationTag value)
     {
         value.EnsureInitialized();
         return value._value;
@@ -78,9 +78,9 @@ public readonly partial struct UniversalSyntacticRelation
 
     // IEquatable<T>
 
-    public bool Equals(UniversalSyntacticRelation other) => _value.Equals(other._value);
+    public bool Equals(UniversalSyntacticRelationTag other) => _value.Equals(other._value);
 
-    public override bool Equals(object? obj) => obj is UniversalSyntacticRelation other && Equals(other);
+    public override bool Equals(object? obj) => obj is UniversalSyntacticRelationTag other && Equals(other);
 
     public override int GetHashCode()
     {
@@ -88,9 +88,9 @@ public readonly partial struct UniversalSyntacticRelation
         return HashCode.Combine(_value);
     }
 
-    public static bool operator ==(UniversalSyntacticRelation left, UniversalSyntacticRelation right) => left.Equals(right);
+    public static bool operator ==(UniversalSyntacticRelationTag left, UniversalSyntacticRelationTag right) => left.Equals(right);
     
-    public static bool operator !=(UniversalSyntacticRelation left, UniversalSyntacticRelation right) => !(left == right);
+    public static bool operator !=(UniversalSyntacticRelationTag left, UniversalSyntacticRelationTag right) => !(left == right);
 
     // ISpanFormattable
 
@@ -121,10 +121,10 @@ public readonly partial struct UniversalSyntacticRelation
         => TryFormatInvariant(destination, out charsWritten, default);
 
     /// <summary>
-    /// Gets a representation of the <see cref="UniversalSyntacticRelation"/> value as a string with formatting options.
+    /// Gets a representation of the <see cref="UniversalSyntacticRelationTag"/> value as a string with formatting options.
     /// </summary>
     /// <returns>
-    /// A representation of the <see cref="UniversalSyntacticRelation"/> value.
+    /// A representation of the <see cref="UniversalSyntacticRelationTag"/> value.
     /// </returns>
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
@@ -139,10 +139,10 @@ public readonly partial struct UniversalSyntacticRelation
         => ToStringInvariant(default);
 
     /// <summary>
-    /// Gets a representation of the UniversalSyntacticRelation value as a string with default formatting options.
+    /// Gets a representation of the UniversalSyntacticRelationTag value as a string with default formatting options.
     /// </summary>
     /// <returns>
-    /// A representation of the UniversalSyntacticRelation value.
+    /// A representation of the UniversalSyntacticRelationTag value.
     /// </returns>
     public override string ToString() => ToString(default, default);
 
@@ -151,51 +151,51 @@ public readonly partial struct UniversalSyntacticRelation
     public static bool TryParse(
         ReadOnlySpan<char> s,
         IFormatProvider? provider,
-        out UniversalSyntacticRelation result)
-        => global::DSE.Open.Values.ValueParser.TryParse<UniversalSyntacticRelation, AsciiString>(s, provider, out result);
+        out UniversalSyntacticRelationTag result)
+        => global::DSE.Open.Values.ValueParser.TryParse<UniversalSyntacticRelationTag, AsciiString>(s, provider, out result);
 
     public static bool TryParse(
         ReadOnlySpan<char> s,
-        out UniversalSyntacticRelation result)
+        out UniversalSyntacticRelationTag result)
         => TryParse(s, default, out result);
 
     public static bool TryParseInvariant(
         ReadOnlySpan<char> s,
-        out UniversalSyntacticRelation result)
+        out UniversalSyntacticRelationTag result)
         => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
 
     public static bool TryParse(
         string? s,
         IFormatProvider? provider,
-        out UniversalSyntacticRelation result)
-        => global::DSE.Open.Values.ValueParser.TryParse<UniversalSyntacticRelation, AsciiString>(s, provider, out result);
+        out UniversalSyntacticRelationTag result)
+        => global::DSE.Open.Values.ValueParser.TryParse<UniversalSyntacticRelationTag, AsciiString>(s, provider, out result);
 
     public static bool TryParse(
         string? s,
-        out UniversalSyntacticRelation result)
+        out UniversalSyntacticRelationTag result)
         => TryParse(s, default, out result);
 
     public static bool TryParseInvariant(
         string? s,
-        out UniversalSyntacticRelation result)
+        out UniversalSyntacticRelationTag result)
         => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
 
-    public static UniversalSyntacticRelation Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<UniversalSyntacticRelation, AsciiString>(s, provider);
+    public static UniversalSyntacticRelationTag Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<UniversalSyntacticRelationTag, AsciiString>(s, provider);
 
-    public static UniversalSyntacticRelation Parse(ReadOnlySpan<char> s)
+    public static UniversalSyntacticRelationTag Parse(ReadOnlySpan<char> s)
         => Parse(s, default);
 
-    public static UniversalSyntacticRelation ParseInvariant(ReadOnlySpan<char> s)
+    public static UniversalSyntacticRelationTag ParseInvariant(ReadOnlySpan<char> s)
         => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
 
-    public static UniversalSyntacticRelation Parse(string s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<UniversalSyntacticRelation, AsciiString>(s, provider);
+    public static UniversalSyntacticRelationTag Parse(string s, IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<UniversalSyntacticRelationTag, AsciiString>(s, provider);
 
-    public static UniversalSyntacticRelation Parse(string s)
+    public static UniversalSyntacticRelationTag Parse(string s)
         => Parse(s, default);
 
-    public static UniversalSyntacticRelation ParseInvariant(string s)
+    public static UniversalSyntacticRelationTag ParseInvariant(string s)
         => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
 
     public bool TryFormat(
@@ -211,18 +211,18 @@ public readonly partial struct UniversalSyntacticRelation
         ReadOnlySpan<char> format)
         => _value.TryFormat(utf8Destination, out bytesWritten, format, System.Globalization.CultureInfo.InvariantCulture);
 
-    public static UniversalSyntacticRelation Parse(
+    public static UniversalSyntacticRelationTag Parse(
         ReadOnlySpan<byte> utf8Source,
         IFormatProvider? provider)
-    => global::DSE.Open.Values.ValueParser.Parse<UniversalSyntacticRelation, AsciiString>(utf8Source, provider);
+    => global::DSE.Open.Values.ValueParser.Parse<UniversalSyntacticRelationTag, AsciiString>(utf8Source, provider);
 
-    public static UniversalSyntacticRelation ParseInvariant(
+    public static UniversalSyntacticRelationTag ParseInvariant(
         ReadOnlySpan<byte> utf8Source)
-    => global::DSE.Open.Values.ValueParser.Parse<UniversalSyntacticRelation, AsciiString>(utf8Source, System.Globalization.CultureInfo.InvariantCulture);
+    => global::DSE.Open.Values.ValueParser.Parse<UniversalSyntacticRelationTag, AsciiString>(utf8Source, System.Globalization.CultureInfo.InvariantCulture);
 
     public static bool TryParse(
         ReadOnlySpan<byte> utf8Source,
         IFormatProvider? provider,
-        out UniversalSyntacticRelation result)
-        => global::DSE.Open.Values.ValueParser.TryParse<UniversalSyntacticRelation, AsciiString>(utf8Source, provider, out result);
+        out UniversalSyntacticRelationTag result)
+        => global::DSE.Open.Values.ValueParser.TryParse<UniversalSyntacticRelationTag, AsciiString>(utf8Source, provider, out result);
 }
