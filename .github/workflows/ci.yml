@@ -44,6 +44,9 @@ jobs:
       - name: Restore
         run: dotnet restore ./DSE.Open.sln
 
+      - name: Build DSE.Open.Values.Generators
+        run: dotnet build ./gen/DSE.Open.Values.Generators/DSE.Open.Values.Generators.csproj --configuration ${{ matrix.configuration }}
+
       - name: Build
         run: dotnet build ./DSE.Open.sln --configuration ${{ matrix.configuration }}
 
