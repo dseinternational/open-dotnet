@@ -11,14 +11,14 @@ using DSE.Open.Values;
 
 namespace DSE.Open.Language;
 
-[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<SignKnowledge, CharSequence>))]
-public readonly partial struct SignKnowledge
+[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<PosTag, AsciiString>))]
+public readonly partial struct PosTag
 {
 
-    private readonly CharSequence _value;
+    private readonly AsciiString _value;
     private readonly bool _initialized;
 
-    private SignKnowledge(CharSequence value, bool skipValidation = false)
+    private PosTag(AsciiString value, bool skipValidation = false)
     {
 
         if (!skipValidation)
@@ -32,25 +32,25 @@ public readonly partial struct SignKnowledge
 
     public bool IsInitialized => _initialized;
 
-    private static void EnsureIsValidArgumentValue(CharSequence value)
+    private static void EnsureIsValidArgumentValue(AsciiString value)
     {
         if (!IsValidValue(value))
         {
             throw new ArgumentOutOfRangeException(nameof(value), value,
-                $"'{value}' is not a valid {nameof(SignKnowledge)} value");
+                $"'{value}' is not a valid {nameof(PosTag)} value");
         }
     }
 
     private void EnsureInitialized()
     {
-        UninitializedValueException<SignKnowledge, CharSequence>.ThrowIfUninitialized(this);
+        UninitializedValueException<PosTag, AsciiString>.ThrowIfUninitialized(this);
     }
 
-    public static bool TryFromValue(CharSequence value, out SignKnowledge result)
+    public static bool TryFromValue(AsciiString value, out PosTag result)
     {
         if (IsValidValue(value))
         {
-            result = new SignKnowledge(value, true);
+            result = new PosTag(value, true);
             return true;
         }
     
@@ -58,19 +58,19 @@ public readonly partial struct SignKnowledge
         return false;
     }
 
-    public static SignKnowledge FromValue(CharSequence value)
+    public static PosTag FromValue(AsciiString value)
     {
         EnsureIsValidArgumentValue(value);
         return new(value, true);
     }
 
-    public static explicit operator SignKnowledge(CharSequence value)
+    public static explicit operator PosTag(AsciiString value)
         => FromValue(value);
 
-    static CharSequence global::DSE.Open.IConvertibleTo<SignKnowledge, CharSequence>.ConvertTo(SignKnowledge value)
-        => (CharSequence)value;
+    static AsciiString global::DSE.Open.IConvertibleTo<PosTag, AsciiString>.ConvertTo(PosTag value)
+        => (AsciiString)value;
 
-    public static explicit operator CharSequence(SignKnowledge value)
+    public static explicit operator AsciiString(PosTag value)
     {
         value.EnsureInitialized();
         return value._value;
@@ -78,9 +78,9 @@ public readonly partial struct SignKnowledge
 
     // IEquatable<T>
 
-    public bool Equals(SignKnowledge other) => _value.Equals(other._value);
+    public bool Equals(PosTag other) => _value.Equals(other._value);
 
-    public override bool Equals(object? obj) => obj is SignKnowledge other && Equals(other);
+    public override bool Equals(object? obj) => obj is PosTag other && Equals(other);
 
     public override int GetHashCode()
     {
@@ -88,9 +88,9 @@ public readonly partial struct SignKnowledge
         return HashCode.Combine(_value);
     }
 
-    public static bool operator ==(SignKnowledge left, SignKnowledge right) => left.Equals(right);
+    public static bool operator ==(PosTag left, PosTag right) => left.Equals(right);
     
-    public static bool operator !=(SignKnowledge left, SignKnowledge right) => !(left == right);
+    public static bool operator !=(PosTag left, PosTag right) => !(left == right);
 
     // ISpanFormattable
 
@@ -121,10 +121,10 @@ public readonly partial struct SignKnowledge
         => TryFormatInvariant(destination, out charsWritten, default);
 
     /// <summary>
-    /// Gets a representation of the <see cref="SignKnowledge"/> value as a string with formatting options.
+    /// Gets a representation of the <see cref="PosTag"/> value as a string with formatting options.
     /// </summary>
     /// <returns>
-    /// A representation of the <see cref="SignKnowledge"/> value.
+    /// A representation of the <see cref="PosTag"/> value.
     /// </returns>
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
@@ -139,10 +139,10 @@ public readonly partial struct SignKnowledge
         => ToStringInvariant(default);
 
     /// <summary>
-    /// Gets a representation of the SignKnowledge value as a string with default formatting options.
+    /// Gets a representation of the PosTag value as a string with default formatting options.
     /// </summary>
     /// <returns>
-    /// A representation of the SignKnowledge value.
+    /// A representation of the PosTag value.
     /// </returns>
     public override string ToString() => ToString(default, default);
 
@@ -151,50 +151,78 @@ public readonly partial struct SignKnowledge
     public static bool TryParse(
         ReadOnlySpan<char> s,
         IFormatProvider? provider,
-        out SignKnowledge result)
-        => global::DSE.Open.Values.ValueParser.TryParse<SignKnowledge, CharSequence>(s, provider, out result);
+        out PosTag result)
+        => global::DSE.Open.Values.ValueParser.TryParse<PosTag, AsciiString>(s, provider, out result);
 
     public static bool TryParse(
         ReadOnlySpan<char> s,
-        out SignKnowledge result)
+        out PosTag result)
         => TryParse(s, default, out result);
 
     public static bool TryParseInvariant(
         ReadOnlySpan<char> s,
-        out SignKnowledge result)
+        out PosTag result)
         => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
 
     public static bool TryParse(
         string? s,
         IFormatProvider? provider,
-        out SignKnowledge result)
-        => global::DSE.Open.Values.ValueParser.TryParse<SignKnowledge, CharSequence>(s, provider, out result);
+        out PosTag result)
+        => global::DSE.Open.Values.ValueParser.TryParse<PosTag, AsciiString>(s, provider, out result);
 
     public static bool TryParse(
         string? s,
-        out SignKnowledge result)
+        out PosTag result)
         => TryParse(s, default, out result);
 
     public static bool TryParseInvariant(
         string? s,
-        out SignKnowledge result)
+        out PosTag result)
         => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
 
-    public static SignKnowledge Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<SignKnowledge, CharSequence>(s, provider);
+    public static PosTag Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<PosTag, AsciiString>(s, provider);
 
-    public static SignKnowledge Parse(ReadOnlySpan<char> s)
+    public static PosTag Parse(ReadOnlySpan<char> s)
         => Parse(s, default);
 
-    public static SignKnowledge ParseInvariant(ReadOnlySpan<char> s)
+    public static PosTag ParseInvariant(ReadOnlySpan<char> s)
         => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
 
-    public static SignKnowledge Parse(string s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<SignKnowledge, CharSequence>(s, provider);
+    public static PosTag Parse(string s, IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<PosTag, AsciiString>(s, provider);
 
-    public static SignKnowledge Parse(string s)
+    public static PosTag Parse(string s)
         => Parse(s, default);
 
-    public static SignKnowledge ParseInvariant(string s)
+    public static PosTag ParseInvariant(string s)
         => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
+
+    public bool TryFormat(
+        Span<byte> utf8Destination,
+        out int bytesWritten,
+        ReadOnlySpan<char> format,
+        IFormatProvider? provider)
+        => _value.TryFormat(utf8Destination, out bytesWritten, format, provider);
+
+    public bool TryFormatInvariant(
+        Span<byte> utf8Destination,
+        out int bytesWritten,
+        ReadOnlySpan<char> format)
+        => _value.TryFormat(utf8Destination, out bytesWritten, format, System.Globalization.CultureInfo.InvariantCulture);
+
+    public static PosTag Parse(
+        ReadOnlySpan<byte> utf8Source,
+        IFormatProvider? provider)
+    => global::DSE.Open.Values.ValueParser.Parse<PosTag, AsciiString>(utf8Source, provider);
+
+    public static PosTag ParseInvariant(
+        ReadOnlySpan<byte> utf8Source)
+    => global::DSE.Open.Values.ValueParser.Parse<PosTag, AsciiString>(utf8Source, System.Globalization.CultureInfo.InvariantCulture);
+
+    public static bool TryParse(
+        ReadOnlySpan<byte> utf8Source,
+        IFormatProvider? provider,
+        out PosTag result)
+        => global::DSE.Open.Values.ValueParser.TryParse<PosTag, AsciiString>(utf8Source, provider, out result);
 }
