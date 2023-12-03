@@ -9,5 +9,8 @@ public class JsonStringAgeInMonthsConverter : SpanParsableCharWritingJsonConvert
 {
     public static readonly JsonStringAgeInMonthsConverter Default = new();
 
-    protected override int GetMaxCharCountToWrite(AgeInMonths value) => 12;
+    protected override int GetMaxCharCountToWrite(AgeInMonths value)
+    {
+        return 12;
+    }
 }

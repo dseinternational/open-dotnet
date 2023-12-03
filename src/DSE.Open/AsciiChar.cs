@@ -75,47 +75,115 @@ public readonly partial struct AsciiChar
         }
     }
 
-    public int CompareTo(AsciiChar other) => _asciiByte.CompareTo(other._asciiByte);
+    public int CompareTo(AsciiChar other)
+    {
+        return _asciiByte.CompareTo(other._asciiByte);
+    }
 
-    public int CompareToCaseInsensitive(AsciiChar other) => CompareToCaseInsensitive(_asciiByte, other._asciiByte);
+    public int CompareToCaseInsensitive(AsciiChar other)
+    {
+        return CompareToCaseInsensitive(_asciiByte, other._asciiByte);
+    }
 
-    public bool Equals(AsciiChar other) => _asciiByte == other._asciiByte;
+    public bool Equals(AsciiChar other)
+    {
+        return _asciiByte == other._asciiByte;
+    }
 
-    public override bool Equals(object? obj) => obj is AsciiChar other && Equals(other);
+    public bool Equals(byte other)
+    {
+        return _asciiByte == other;
+    }
 
-    public override int GetHashCode() => HashCode.Combine(_asciiByte);
+    public override bool Equals(object? obj)
+    {
+        return obj is AsciiChar other && Equals(other);
+    }
 
-    public override string ToString() => new(new[] { (char)_asciiByte });
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(_asciiByte);
+    }
 
-    public static bool operator ==(AsciiChar left, AsciiChar right) => left.Equals(right);
+    public override string ToString()
+    {
+        return new(new[] { (char)_asciiByte });
+    }
 
-    public static bool operator !=(AsciiChar left, AsciiChar right) => !left.Equals(right);
+    public static bool operator ==(AsciiChar left, AsciiChar right)
+    {
+        return left.Equals(right);
+    }
 
-    public byte ToByte() => _asciiByte;
+    public static bool operator !=(AsciiChar left, AsciiChar right)
+    {
+        return !left.Equals(right);
+    }
 
-    public char ToChar() => (char)_asciiByte;
+    public byte ToByte()
+    {
+        return _asciiByte;
+    }
 
-    public int ToInt32() => _asciiByte;
+    public char ToChar()
+    {
+        return (char)_asciiByte;
+    }
 
-    public static AsciiChar FromByte(byte asciiByte) => new(asciiByte);
+    public int ToInt32()
+    {
+        return _asciiByte;
+    }
 
-    public static AsciiChar FromChar(char asciiUtf16Char) => new(asciiUtf16Char);
+    public static AsciiChar FromByte(byte asciiByte)
+    {
+        return new(asciiByte);
+    }
 
-    public static explicit operator string(AsciiChar value) => value.ToString();
+    public static AsciiChar FromChar(char asciiUtf16Char)
+    {
+        return new(asciiUtf16Char);
+    }
 
-    public static explicit operator AsciiChar(byte asciiByte) => FromByte(asciiByte);
+    public static explicit operator string(AsciiChar value)
+    {
+        return value.ToString();
+    }
 
-    public static explicit operator AsciiChar(char asciiUtf16Char) => FromChar(asciiUtf16Char);
+    public static explicit operator AsciiChar(byte asciiByte)
+    {
+        return FromByte(asciiByte);
+    }
 
-    public static implicit operator byte(AsciiChar asciiChar) => asciiChar.ToByte();
+    public static explicit operator AsciiChar(char asciiUtf16Char)
+    {
+        return FromChar(asciiUtf16Char);
+    }
 
-    public static implicit operator char(AsciiChar asciiChar) => asciiChar.ToChar();
+    public static implicit operator byte(AsciiChar asciiChar)
+    {
+        return asciiChar.ToByte();
+    }
 
-    public static implicit operator int(AsciiChar asciiChar) => asciiChar.ToInt32();
+    public static implicit operator char(AsciiChar asciiChar)
+    {
+        return asciiChar.ToChar();
+    }
 
-    public AsciiChar ToUpper() => new(ToUpper(_asciiByte));
+    public static implicit operator int(AsciiChar asciiChar)
+    {
+        return asciiChar.ToInt32();
+    }
 
-    public AsciiChar ToLower() => new(ToLower(_asciiByte));
+    public AsciiChar ToUpper()
+    {
+        return new(ToUpper(_asciiByte));
+    }
+
+    public AsciiChar ToLower()
+    {
+        return new(ToLower(_asciiByte));
+    }
 
     public bool TryFormat(
         Span<char> destination,
@@ -147,7 +215,10 @@ public readonly partial struct AsciiChar
         return false;
     }
 
-    public string ToString(string? format, IFormatProvider? formatProvider) => ToString();
+    public string ToString(string? format, IFormatProvider? formatProvider)
+    {
+        return ToString();
+    }
 
     public static AsciiChar Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
     {
@@ -185,8 +256,9 @@ public readonly partial struct AsciiChar
         [NotNullWhen(true)] string? s,
         IFormatProvider? provider,
         [MaybeNullWhen(false)] out AsciiChar result)
-        => TryParse(s.AsSpan(), provider, out result);
-
+    {
+        return TryParse(s.AsSpan(), provider, out result);
+    }
 
     public static AsciiChar Parse(ReadOnlySpan<byte> utf8Text, IFormatProvider? provider)
     {
@@ -211,11 +283,23 @@ public readonly partial struct AsciiChar
         return false;
     }
 
-    public static bool operator <(AsciiChar left, AsciiChar right) => left.CompareTo(right) < 0;
+    public static bool operator <(AsciiChar left, AsciiChar right)
+    {
+        return left.CompareTo(right) < 0;
+    }
 
-    public static bool operator <=(AsciiChar left, AsciiChar right) => left.CompareTo(right) <= 0;
+    public static bool operator <=(AsciiChar left, AsciiChar right)
+    {
+        return left.CompareTo(right) <= 0;
+    }
 
-    public static bool operator >(AsciiChar left, AsciiChar right) => left.CompareTo(right) > 0;
+    public static bool operator >(AsciiChar left, AsciiChar right)
+    {
+        return left.CompareTo(right) > 0;
+    }
 
-    public static bool operator >=(AsciiChar left, AsciiChar right) => left.CompareTo(right) >= 0;
+    public static bool operator >=(AsciiChar left, AsciiChar right)
+    {
+        return left.CompareTo(right) >= 0;
+    }
 }

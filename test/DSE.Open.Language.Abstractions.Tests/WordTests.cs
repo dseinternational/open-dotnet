@@ -3,7 +3,7 @@
 
 using System.Text.Json;
 
-namespace DSE.Open.Language.Tests;
+namespace DSE.Open.Language.Abstractions.Tests;
 
 public class WordTests
 {
@@ -12,12 +12,12 @@ public class WordTests
     [InlineData("ball")]
     [InlineData("bat")]
     [InlineData("a")]
-    public void SerializeDeserialize(string signValue)
+    public void SerializeDeserialize(string wordValue)
     {
-        var sign = Word.Parse(signValue, CultureInfo.InvariantCulture);
-        var json = JsonSerializer.Serialize(sign);
+        var word = Word.Parse(wordValue, CultureInfo.InvariantCulture);
+        var json = JsonSerializer.Serialize(word);
         var deserialized = JsonSerializer.Deserialize<Word>(json);
-        Assert.Equal(sign, deserialized);
+        Assert.Equal(word, deserialized);
     }
 
     [Theory]
@@ -30,9 +30,9 @@ public class WordTests
     [InlineData("teachers'")]
     [InlineData("{{ child_name }}")]
     [InlineData("{{child_name}}")]
-    public void ParseSucceedsIfValid(string signValue)
+    public void ParseSucceedsIfValid(string wordValue)
     {
-        _ = Word.Parse(signValue, CultureInfo.InvariantCulture);
+        _ = Word.Parse(wordValue, CultureInfo.InvariantCulture);
     }
 
     [Theory]
@@ -45,17 +45,17 @@ public class WordTests
     [InlineData("")]
     [InlineData("{{  child_name  }}")]
     [InlineData("{{CHILD_NAME}}")]
-    public void ParseFailsIfInvalid(string signValue)
+    public void ParseFailsIfInvalid(string wordValue)
     {
-        Assert.Throws<FormatException>(() => Word.Parse(signValue, CultureInfo.InvariantCulture));
+        _ = Assert.Throws<FormatException>(() => Word.Parse(wordValue, CultureInfo.InvariantCulture));
     }
 
     [Theory]
     [InlineData("{{ child_name }}")]
     [InlineData("{{child_name}}")]
-    public void TemplatesAreIdentifiedAsTemplates(string signValue)
+    public void TemplatesAreIdentifiedAsTemplates(string wordValue)
     {
-        var w = Word.Parse(signValue, CultureInfo.InvariantCulture);
+        var w = Word.Parse(wordValue, CultureInfo.InvariantCulture);
         Assert.True(w.IsTemplate);
     }
 
@@ -67,10 +67,9 @@ public class WordTests
     [InlineData("ice-cream")]
     [InlineData("ice cream")]
     [InlineData("teachers'")]
-    public void NonTemplatesAreNotIdentifiedAsTemplates(string signValue)
+    public void NonTemplatesAreNotIdentifiedAsTemplates(string wordValue)
     {
-        var w = Word.Parse(signValue, CultureInfo.InvariantCulture);
+        var w = Word.Parse(wordValue, CultureInfo.InvariantCulture);
         Assert.False(w.IsTemplate);
     }
-
 }

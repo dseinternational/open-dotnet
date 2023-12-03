@@ -35,28 +35,57 @@ public readonly partial struct AlphaNumericCode : IComparableValue<AlphaNumericC
 
     public int Length => _value.Length;
 
-    private static string GetString(ReadOnlySpan<char> s) => CodeStringPool.Shared.GetOrAdd(s);
+    private static string GetString(ReadOnlySpan<char> s)
+    {
+        return CodeStringPool.Shared.GetOrAdd(s);
+    }
 
     public static bool IsValidValue(AsciiString value)
-        => value is { IsEmpty: false, Length: <= MaxLength } && value.Span.ContainsOnlyAsciiLettersOrDigits();
+    {
+        return value is { IsEmpty: false, Length: <= MaxLength } && value.Span.ContainsOnlyAsciiLettersOrDigits();
+    }
 
-    public bool Equals(ReadOnlySpan<char> other) => _value.Equals(other);
+    public bool Equals(ReadOnlySpan<char> other)
+    {
+        return _value.Equals(other);
+    }
 
-    public bool Equals(string other) => _value.Equals(other);
+    public bool Equals(string other)
+    {
+        return _value.Equals(other);
+    }
 
-    public int CompareToCaseInsensitive(AlphaNumericCode other) => _value.CompareToCaseInsensitive(other._value);
+    public int CompareToCaseInsensitive(AlphaNumericCode other)
+    {
+        return _value.CompareToCaseInsensitive(other._value);
+    }
 
-    public ReadOnlySpan<AsciiChar> AsSpan() => _value.Span;
+    public ReadOnlySpan<AsciiChar> AsSpan()
+    {
+        return _value.Span;
+    }
 
-    public char[] ToCharArray() => _value.ToCharArray();
+    public char[] ToCharArray()
+    {
+        return _value.ToCharArray();
+    }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
-    public static explicit operator AlphaNumericCode(string value) => Parse(value, CultureInfo.InvariantCulture);
+    public static explicit operator AlphaNumericCode(string value)
+    {
+        return Parse(value, CultureInfo.InvariantCulture);
+    }
 
 #pragma warning restore CA2225 // Operator overloads have named alternates
 
-    public string ToStringLower() => _value.ToStringLower();
+    public string ToStringLower()
+    {
+        return _value.ToStringLower();
+    }
 
-    public string ToStringUpper() => _value.ToStringUpper();
+    public string ToStringUpper()
+    {
+        return _value.ToStringUpper();
+    }
 }
