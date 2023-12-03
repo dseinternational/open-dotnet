@@ -22,6 +22,10 @@ public readonly partial struct TreebankPosTag
 
     public static int MaxSerializedByteLength => 5;
 
+    public TreebankPosTag(AsciiString value) : this(value, false)
+    {
+    }
+
     public TreebankPosTag(string value) : this((AsciiString)value)
     {
     }
@@ -44,6 +48,13 @@ public readonly partial struct TreebankPosTag
 #pragma warning restore CA2225 // Operator overloads have named alternates
     {
         return new TreebankPosTag(value);
+    }
+
+#pragma warning disable CA2225 // Operator overloads have named alternates
+    public static explicit operator PosTag(TreebankPosTag value)
+#pragma warning restore CA2225 // Operator overloads have named alternates
+    {
+        return new PosTag(value._value);
     }
 
     public static readonly TreebankPosTag ClosingQuotationMark = new("\"\"", true);

@@ -13,7 +13,9 @@ namespace DSE.Open.Values;
 [ComparableValue]
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<AlphaCode, AsciiString>))]
 [StructLayout(LayoutKind.Auto)]
-public readonly partial struct AlphaCode : IComparableValue<AlphaCode, AsciiString>, IUtf8SpanSerializable<AlphaCode>
+public readonly partial struct AlphaCode
+    : IComparableValue<AlphaCode, AsciiString>,
+      IUtf8SpanSerializable<AlphaCode>
 {
     public static int MaxSerializedCharLength => MaxLength;
 
@@ -21,42 +23,74 @@ public readonly partial struct AlphaCode : IComparableValue<AlphaCode, AsciiStri
 
     public const int MaxLength = 32;
 
-    public AlphaCode(string code) : this(AsciiString.Parse(code, CultureInfo.InvariantCulture))
+    public AlphaCode(string code)
+        : this(AsciiString.Parse(code, CultureInfo.InvariantCulture))
     {
     }
 
-    public AlphaCode(ReadOnlySpan<char> code) : this(AsciiString.Parse(code, CultureInfo.InvariantCulture))
+    public AlphaCode(ReadOnlySpan<char> code)
+        : this(AsciiString.Parse(code, CultureInfo.InvariantCulture))
     {
     }
 
-    public AlphaCode(AsciiString code) : this(code, false)
+    public AlphaCode(AsciiString code)
+        : this(code, false)
     {
     }
 
     public int Length => _value.Length;
 
-    private static string GetString(ReadOnlySpan<char> s) => CodeStringPool.Shared.GetOrAdd(s);
+    private static string GetString(ReadOnlySpan<char> s)
+    {
+        return CodeStringPool.Shared.GetOrAdd(s);
+    }
 
     public static bool IsValidValue(AsciiString value)
-        => value is { IsEmpty: false, Length: <= MaxLength } && value.Span.ContainsOnlyAsciiLetters();
+    {
+        return value is { IsEmpty: false, Length: <= MaxLength } && value.Span.ContainsOnlyAsciiLetters();
+    }
 
-    public bool Equals(ReadOnlySpan<char> other) => _value.Equals(other);
+    public bool Equals(ReadOnlySpan<char> other)
+    {
+        return _value.Equals(other);
+    }
 
-    public bool Equals(string other) => _value.Equals(other);
+    public bool Equals(string other)
+    {
+        return _value.Equals(other);
+    }
 
-    public int CompareToCaseInsensitive(AlphaCode other) => _value.CompareToCaseInsensitive(other._value);
+    public int CompareToCaseInsensitive(AlphaCode other)
+    {
+        return _value.CompareToCaseInsensitive(other._value);
+    }
 
-    public ReadOnlySpan<AsciiChar> AsSpan() => _value.Span;
+    public ReadOnlySpan<AsciiChar> AsSpan()
+    {
+        return _value.Span;
+    }
 
-    public char[] ToCharArray() => _value.ToCharArray();
+    public char[] ToCharArray()
+    {
+        return _value.ToCharArray();
+    }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
-    public static explicit operator AlphaCode(string value) => Parse(value, CultureInfo.InvariantCulture);
+    public static explicit operator AlphaCode(string value)
+    {
+        return Parse(value, CultureInfo.InvariantCulture);
+    }
 
 #pragma warning restore CA2225 // Operator overloads have named alternates
 
-    public string ToStringLower() => _value.ToStringLower();
+    public string ToStringLower()
+    {
+        return _value.ToStringLower();
+    }
 
-    public string ToStringUpper() => _value.ToStringUpper();
+    public string ToStringUpper()
+    {
+        return _value.ToStringUpper();
+    }
 }

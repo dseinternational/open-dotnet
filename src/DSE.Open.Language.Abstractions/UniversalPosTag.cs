@@ -22,6 +22,10 @@ public readonly partial struct UniversalPosTag : IEquatableValue<UniversalPosTag
 
     public static int MaxSerializedByteLength => 5;
 
+    public UniversalPosTag(AsciiString value) : this(value, false)
+    {
+    }
+
     public UniversalPosTag(string value) : this((AsciiString)value)
     {
     }
@@ -46,6 +50,12 @@ public readonly partial struct UniversalPosTag : IEquatableValue<UniversalPosTag
         return new UniversalPosTag(value);
     }
 
+#pragma warning disable CA2225 // Operator overloads have named alternates
+    public static explicit operator PosTag(UniversalPosTag value)
+#pragma warning restore CA2225 // Operator overloads have named alternates
+    {
+        return new PosTag(value._value);
+    }
 
     public static readonly UniversalPosTag Adjective = new("ADJ", true);
 
