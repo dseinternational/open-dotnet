@@ -24,7 +24,7 @@ public class TokenTests
     {
         var token = new Token
         {
-            Id = new TokenIndex(1),
+            Index = new TokenIndex(1),
             Form = (Word)"He",
             Lemma = (Word)"he",
             Pos = UniversalPosTag.Pronoun,
@@ -50,7 +50,7 @@ public class TokenTests
     {
         var token = new Token
         {
-            Id = new TokenIndex(1),
+            Index = new TokenIndex(1),
             Form = (Word)"He",
             Lemma = (Word)"he",
             Pos = UniversalPosTag.Pronoun,

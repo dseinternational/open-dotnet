@@ -34,7 +34,7 @@ public sealed record class Token
     /// multiword tokens; may be a decimal number for empty nodes (decimal numbers can be
     /// lower than 1 but must be greater than 0).</remarks>
     [JsonPropertyName("id")]
-    public required TokenIndex Id { get; init; }
+    public required TokenIndex Index { get; init; }
 
     [JsonPropertyName("form")]
     public required TokenText Form { get; init; }
@@ -66,7 +66,7 @@ public sealed record class Token
     public ReadOnlyWordFeatureValueCollection Features { get; init; } = [];
 
     /// <summary>
-    /// Head of the current word, which is either a value of <see cref="Id"/> or zero (0).
+    /// Head of the current word, which is either a value of <see cref="Index"/> or zero (0).
     /// </summary>
     [JsonPropertyName("head")]
     public int? HeadIndex { get; init; }
@@ -87,10 +87,10 @@ public sealed record class Token
     public ReadOnlyWordAttributeValueCollection Attributes { get; init; } = [];
 
     [JsonIgnore]
-    public bool IsMultiwordToken => Id.IsMultiwordIndex;
+    public bool IsMultiwordToken => Index.IsMultiwordIndex;
 
     [JsonIgnore]
-    public bool IsEmptyNode => Id.IsEmptyNode;
+    public bool IsEmptyNode => Index.IsEmptyNode;
 
     public static Token Parse(ReadOnlySpan<char> s)
     {
@@ -138,7 +138,7 @@ public sealed record class Token
             goto Fail;
         }
 
-        if (!(TokenIndex.TryParse(s[fields[IdIndex]], provider, out var id)
+        if (!(TokenIndex.TryParse(s[fields[IdIndex]], provider, out var index)
             && TokenText.TryParse(s[fields[FormIndex]], provider, out var word)))
         {
             goto Fail;
@@ -290,7 +290,7 @@ public sealed record class Token
 
         result = new Token
         {
-            Id = id,
+            Index = index,
             Form = word,
             Lemma = lemma,
             Pos = pos,
@@ -346,7 +346,7 @@ public sealed record class Token
     {
         // ID
 
-        if (!Id.TryFormat(destination, out charsWritten, format, provider))
+        if (!Index.TryFormat(destination, out charsWritten, format, provider))
         {
             return false;
         }
