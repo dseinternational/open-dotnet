@@ -15,7 +15,7 @@ internal sealed class AllSatisfiedSpecification<T> : AggregateSpecification<T>, 
         return Specifications.All(s => s.IsSatisfiedBy(candidate));
     }
 
-    public bool IsSatisfiedBy(T candidate, CancellationToken cancellationToken = default)
+    public bool IsSatisfiedBy(T candidate, CancellationToken cancellationToken)
     {
         return Specifications.All(s =>
         {
