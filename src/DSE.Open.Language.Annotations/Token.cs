@@ -126,7 +126,7 @@ public sealed record class Token
     {
         if (s.Length < 20)
         {
-            goto Fail;
+            return Fail(out result);
         }
 
         Span<Range> fields = stackalloc Range[10];
@@ -135,13 +135,13 @@ public sealed record class Token
 
         if (count != 10)
         {
-            goto Fail;
+            return Fail(out result);
         }
 
         if (!(TokenIndex.TryParse(s[fields[IdIndex]], provider, out var index)
             && TokenText.TryParse(s[fields[FormIndex]], provider, out var word)))
         {
-            goto Fail;
+            return Fail(out result);
         }
 
         TokenText? lemma;
@@ -159,7 +159,7 @@ public sealed record class Token
             }
             else
             {
-                goto Fail;
+                return Fail(out result);
             }
         }
 
@@ -178,7 +178,7 @@ public sealed record class Token
             }
             else
             {
-                goto Fail;
+                return Fail(out result);
             }
         }
 
@@ -197,7 +197,7 @@ public sealed record class Token
             }
             else
             {
-                goto Fail;
+                return Fail(out result);
             }
         }
 
@@ -216,7 +216,7 @@ public sealed record class Token
             }
             else
             {
-                goto Fail;
+                return Fail(out result);
             }
         }
 
@@ -235,7 +235,7 @@ public sealed record class Token
             }
             else
             {
-                goto Fail;
+                return Fail(out result);
             }
         }
 
@@ -262,7 +262,7 @@ public sealed record class Token
             }
             else
             {
-                goto Fail;
+                return Fail(out result);
             }
         }
 
@@ -284,7 +284,7 @@ public sealed record class Token
             }
             else
             {
-                goto Fail;
+                return Fail(out result);
             }
         }
 
@@ -303,9 +303,11 @@ public sealed record class Token
 
         return true;
 
-    Fail:
-        result = default;
-        return false;
+        static bool Fail(out Token? result)
+        {
+            result = default;
+            return false;
+        }
     }
 
     public static bool TryParse(
