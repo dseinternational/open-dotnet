@@ -81,10 +81,10 @@ public sealed record class Token
     // TODO: DEPS: list of head-deprel pairs
 
     /// <summary>
-    /// Gets or sets other annotations.
+    /// Gets or sets misc annotations/aatributes associated with the token.
     /// </summary>
     [JsonPropertyName("misc")]
-    public ReadOnlyWordFeatureValueCollection Annotations { get; init; } = [];
+    public ReadOnlyWordAttributeValueCollection Attributes { get; init; } = [];
 
     [JsonIgnore]
     public bool IsMultiwordToken => Id.IsMultiwordIndex;
@@ -270,7 +270,7 @@ public sealed record class Token
 
 
         var miscSpan = s[fields[MiscIndex]];
-        ReadOnlyWordFeatureValueCollection misc;
+        ReadOnlyWordAttributeValueCollection misc;
 
         if (miscSpan.Length == 1 && miscSpan[0] == '_')
         {
@@ -278,7 +278,7 @@ public sealed record class Token
         }
         else
         {
-            if (ReadOnlyWordFeatureValueCollection.TryParse(miscSpan, provider, out var miscValue))
+            if (ReadOnlyWordAttributeValueCollection.TryParse(miscSpan, provider, out var miscValue))
             {
                 misc = miscValue;
             }
@@ -298,7 +298,7 @@ public sealed record class Token
             HeadIndex = head,
             Features = features,
             Relation = relation,
-            Annotations = misc,
+            Attributes = misc,
         };
 
         return true;
@@ -325,7 +325,7 @@ public sealed record class Token
     {
         char[]? rented = null;
 
-        Span<char> buffer = Features.Count + Annotations.Count > 2
+        Span<char> buffer = Features.Count + Attributes.Count > 2
             ? (rented = ArrayPool<char>.Shared.Rent(512))
             : stackalloc char[128];
 
@@ -592,9 +592,9 @@ public sealed record class Token
 
         // MISC
 
-        if (Annotations.Count > 0)
+        if (Attributes.Count > 0)
         {
-            if (!Annotations.TryFormat(destination[charsWritten..], out var cwAnnotations, format, provider))
+            if (!Attributes.TryFormat(destination[charsWritten..], out var cwAnnotations, format, provider))
             {
                 return false;
             }
