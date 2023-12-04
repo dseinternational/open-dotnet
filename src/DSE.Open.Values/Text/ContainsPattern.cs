@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Buffers;
 using System.Text.Json.Serialization;
 using DSE.Open.Values.Text.Json.Serialization;
 
@@ -13,7 +14,7 @@ namespace DSE.Open.Values.Text;
 [JsonConverter(typeof(JsonSpanSerializableValueConverter<ContainsPattern, CharSequence>))]
 public readonly partial struct ContainsPattern : IEquatableValue<ContainsPattern, CharSequence>
 {
-    private static readonly char[] s_validSymbols = new char[] { '*', '(', ')', '"', '&', '!', '|' };
+    private static readonly SearchValues<char> s_validSymbols = SearchValues.Create(['*', '(', ')', '"', '&', '!', '|']);
 
     public static int MaxSerializedCharLength => 128;
 
@@ -24,20 +25,21 @@ public readonly partial struct ContainsPattern : IEquatableValue<ContainsPattern
             return false;
         }
 
-        var chars = value.Span;
-
-        for (var i = 0; i < chars.Length; i++)
+        foreach (var c in value.Span)
         {
-            var c = chars[i];
-
-            if (!(char.IsLetterOrDigit(c) || char.IsWhiteSpace(c) || s_validSymbols.AsSpan().Contains(c)))
+            if (char.IsLetterOrDigit(c) || char.IsWhiteSpace(c) || s_validSymbols.Contains(c))
             {
-                return false;
+                continue;
             }
+
+            return false;
         }
 
         return true;
     }
 
-    public override string ToString() => _value.ToString();
+    public override string ToString()
+    {
+        return _value.ToString();
+    }
 }
