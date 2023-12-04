@@ -37,13 +37,13 @@ public sealed record class Token
     public required TokenIndex Id { get; init; }
 
     [JsonPropertyName("form")]
-    public required Word Form { get; init; }
+    public required TokenText Form { get; init; }
 
     /// <summary>
     /// The canonical or base form of the word, which is the form typically found in dictionaries.
     /// </summary>
     [JsonPropertyName("lemma")]
-    public Word? Lemma { get; init; }
+    public TokenText? Lemma { get; init; }
 
     /// <summary>
     /// The universal POS tag (<see href="https://universaldependencies.org/u/pos/index.html"/>).
@@ -139,12 +139,12 @@ public sealed record class Token
         }
 
         if (!(TokenIndex.TryParse(s[fields[IdIndex]], provider, out var id)
-            && Word.TryParse(s[fields[FormIndex]], provider, out var word)))
+            && TokenText.TryParse(s[fields[FormIndex]], provider, out var word)))
         {
             goto Fail;
         }
 
-        Word? lemma;
+        TokenText? lemma;
         var lemmaSpan = s[fields[LemmaIndex]];
 
         if (lemmaSpan.Length == 1 && lemmaSpan[0] == '_')
@@ -153,7 +153,7 @@ public sealed record class Token
         }
         else
         {
-            if (Word.TryParse(lemmaSpan, provider, out var lemmaValue))
+            if (TokenText.TryParse(lemmaSpan, provider, out var lemmaValue))
             {
                 lemma = lemmaValue;
             }

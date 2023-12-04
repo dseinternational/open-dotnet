@@ -11,6 +11,8 @@ public class TokenTests
     [InlineData("1\tHe\the\tPRON\tPRP\tCase=Nom|Gender=Masc|Number=Sing|Person=3|PronType=Prs\t2\tnsubj\t_\t_")]
     [InlineData("3\tbrushing\tbrush\tVERB\tVBG\tAspect=Prog|Tense=Pres|VerbForm=Part\t0\tROOT\t_\t_")]
     [InlineData("4\ta\ta\tDET\tDT\tDefinite=Ind|PronType=Art\t5\tdet\t_\t_")]
+    [InlineData("5\tdog\tdog\tNOUN\tNN\tNumber=Sing\t3\tdobj\t_\tSpaceAfter=No")]
+    [InlineData("6\t.\t.\tPUNCT\t.\tPunctType=Peri\t3\tpunct\t_\tSpaceAfter=No")]
     public void Parse(string value)
     {
         var token = Token.Parse(value, CultureInfo.InvariantCulture);

@@ -106,6 +106,8 @@ public readonly partial struct UniversalRelationTag
 
     public static readonly UniversalRelationTag DislocatedElements = new("dislocated", true);
 
+    public static readonly UniversalRelationTag DirectObject = new("dobj", true);
+
     public static readonly UniversalRelationTag Expletive = new("expl", true);
 
     public static readonly UniversalRelationTag ImpersonalExpletive = new("expl:impers", true);
@@ -198,6 +200,7 @@ public readonly partial struct UniversalRelationTag
         Determiner,
         DiscourseElement,
         DislocatedElements,
+        DirectObject,
         EmphasizingWord,
         Expletive,
         FixedMultiwordExpression,
