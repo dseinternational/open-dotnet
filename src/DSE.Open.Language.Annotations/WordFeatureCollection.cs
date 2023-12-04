@@ -28,39 +28,9 @@ public class WordFeatureCollection
     {
         Guard.IsNotNull(features);
 
-        if (features is WordFeatureCollection wfc)
-        {
-            _features = new List<WordFeature>(wfc._features);
-        }
-        else
-        {
-            _features = [];
-
-            foreach (var feature in features)
-            {
-                Add(feature);
-            }
-        }
+        _features = new List<WordFeature>(features);
     }
 
-    public WordFeatureCollection(IReadOnlyCollection<WordFeature> features)
-    {
-        Guard.IsNotNull(features);
-
-        if (features is WordFeatureCollection wfc)
-        {
-            _features = new List<WordFeature>(wfc._features);
-        }
-        else
-        {
-            _features = new List<WordFeature>(features.Count);
-
-            foreach (var feature in features)
-            {
-                Add(feature);
-            }
-        }
-    }
     public static WordFeatureCollection Create(ReadOnlySpan<WordFeature> items)
     {
         var list = new List<WordFeature>(items.Length);
