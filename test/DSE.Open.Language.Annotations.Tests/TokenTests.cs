@@ -7,6 +7,16 @@ namespace DSE.Open.Language.Annotations;
 
 public class TokenTests
 {
+    [Theory]
+    [InlineData("1\tHe\the\tPRON\tPRP\tCase=Nom|Gender=Masc|Number=Sing|Person=3|PronType=Prs\t2\tnsubj\t_\t_")]
+    [InlineData("3\tbrushing\tbrush\tVERB\tVBG\tAspect=Prog|Tense=Pres|VerbForm=Part\t0\tROOT\t_\t_")]
+    [InlineData("4\ta\ta\tDET\tDT\tDefinite=Ind|PronType=Art\t5\tdet\t_\t_")]
+    public void Parse(string value)
+    {
+        var token = Token.Parse(value, CultureInfo.InvariantCulture);
+        Assert.NotNull(token);
+    }
+
     [Fact]
     public void FormatToStringAndParse()
     {

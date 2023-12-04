@@ -72,7 +72,7 @@ public sealed record class Token
     public int? HeadIndex { get; init; }
 
     /// <summary>
-    /// Universal dependency relation to the HEAD (root iff HEAD = 0) or a defined language-specific
+    /// Universal dependency relation to the HEAD (root if HEAD = 0) or a defined language-specific
     /// subtype of one.
     /// </summary>
     [JsonPropertyName("deprel")]
@@ -243,6 +243,14 @@ public sealed record class Token
         var relationSpan = s[fields[RelationIndex]];
 
         if (relationSpan.Length == 1 && relationSpan[0] == '_')
+        {
+            relation = null;
+        }
+        else if (relationSpan.Length == 4
+            && relationSpan[0] == 'R'
+            && relationSpan[1] == 'O'
+            && relationSpan[2] == 'O'
+            && relationSpan[3] == 'T')
         {
             relation = null;
         }
