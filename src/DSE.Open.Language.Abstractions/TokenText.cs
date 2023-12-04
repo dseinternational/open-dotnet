@@ -1,4 +1,4 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Runtime.InteropServices;
@@ -21,9 +21,15 @@ public readonly partial struct TokenText
     {
     }
 
+    public TokenText(ReadOnlyMemory<char> word) : this(new CharSequence(word))
+    {
+    }
+
     public CharSequence Value => _value;
 
-    public bool IsTemplate => !_value.IsEmpty && _value[0] == '{';
+    public bool IsPunctuation => _value.Length == 1 && char.IsPunctuation(_value[0]);
+
+    public bool IsWord => !IsPunctuation;
 
     public static bool IsValidValue(CharSequence value)
     {
@@ -46,10 +52,6 @@ public readonly partial struct TokenText
     {
         return new(word);
     }
-
-#pragma warning restore CA2225 // Operator overloads have named alternates
-
-#pragma warning disable CA2225 // Operator overloads have named alternates
 
     public static implicit operator TokenText(Word word)
     {

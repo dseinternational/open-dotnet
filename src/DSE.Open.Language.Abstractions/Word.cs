@@ -33,6 +33,10 @@ public readonly partial struct Word
     {
     }
 
+    public Word(ReadOnlyMemory<char> word) : this(new CharSequence(word))
+    {
+    }
+
     public CharSequence Value => _value;
 
     public bool IsTemplate => !_value.IsEmpty && _value[0] == '{';
@@ -131,6 +135,11 @@ public readonly partial struct Word
     public static explicit operator Word(string word)
     {
         return new(word);
+    }
+
+    public static explicit operator Word(TokenText word)
+    {
+        return new((CharSequence)word);
     }
 
 #pragma warning restore CA2225 // Operator overloads have named alternates
