@@ -8,7 +8,7 @@ namespace DSE.Open.Language.Annotations;
 public class TokenTests
 {
     [Fact]
-    public void FormatToString()
+    public void FormatToStringAndParse()
     {
         var token = new Token
         {
@@ -27,6 +27,10 @@ public class TokenTests
         const string expected = "1\tHe\the\tPRON\tPRP\tCase=Nom|Gender=Masc|Number=Sing|Person=3|PronType=Prs\t2\tnsubj\t_\t_";
 
         Assert.Equal(expected, str);
+
+        var parsed = Token.Parse(str, CultureInfo.InvariantCulture);
+
+        Assert.Equal(token, parsed);
     }
 
     [Fact]

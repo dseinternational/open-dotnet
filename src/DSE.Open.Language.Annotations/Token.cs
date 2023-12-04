@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Buffers;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 
 namespace DSE.Open.Language.Annotations;
@@ -10,8 +11,22 @@ namespace DSE.Open.Language.Annotations;
 /// Carries data about a token in a sentence. Can be serialized to and from JSON
 /// and CoNLL-U Format (<see href="https://universaldependencies.org/format.html"/>).
 /// </summary>
-public sealed record class Token : ISpanFormattable
+public sealed record class Token
+    : ISpanFormattable,
+      ISpanParsable<Token>
 {
+    private const int IdIndex = 0;
+    private const int FormIndex = 1;
+    private const int LemmaIndex = 2;
+    private const int PosIndex = 3;
+    private const int AltPosIndex = 4;
+    private const int FeaturesIndex = 5;
+    private const int HeadIndexIndex = 6;
+    private const int RelationIndex = 7;
+    //private const int DepsIndex = 8;
+    private const int MiscIndex = 9;
+
+
     /// <summary>
     /// Index of the token in the sentence.
     /// </summary>
@@ -76,6 +91,222 @@ public sealed record class Token : ISpanFormattable
 
     [JsonIgnore]
     public bool IsEmptyNode => Id.IsEmptyNode;
+
+    public static Token Parse(ReadOnlySpan<char> s)
+    {
+        return Parse(s, default);
+    }
+
+    public static Token Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
+    {
+        if (TryParse(s, provider, out var token))
+        {
+            return token;
+        }
+
+        return ThrowHelper.ThrowFormatException<Token>(
+            $"Failed to parse {s} as Token.");
+    }
+
+    public static Token Parse(string s)
+    {
+        return Parse(s, default);
+    }
+
+    public static Token Parse(string s, IFormatProvider? provider)
+    {
+        Guard.IsNotNull(s);
+        return Parse(s.AsSpan(), provider);
+    }
+
+    public static bool TryParse(
+        ReadOnlySpan<char> s,
+        IFormatProvider? provider,
+        [MaybeNullWhen(false)] out Token result)
+    {
+        if (s.Length < 20)
+        {
+            goto Fail;
+        }
+
+        Span<Range> fields = stackalloc Range[10];
+
+        var count = s.Split(fields, '\t', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+        if (count != 10)
+        {
+            goto Fail;
+        }
+
+        if (!(TokenIndex.TryParse(s[fields[IdIndex]], provider, out var id)
+            && Word.TryParse(s[fields[FormIndex]], provider, out var word)))
+        {
+            goto Fail;
+        }
+
+        Word? lemma;
+        var lemmaSpan = s[fields[LemmaIndex]];
+
+        if (lemmaSpan.Length == 1 && lemmaSpan[0] == '_')
+        {
+            lemma = null;
+        }
+        else
+        {
+            if (Word.TryParse(lemmaSpan, provider, out var lemmaValue))
+            {
+                lemma = lemmaValue;
+            }
+            else
+            {
+                goto Fail;
+            }
+        }
+
+        UniversalPosTag? pos;
+        var posSpan = s[fields[PosIndex]];
+
+        if (posSpan.Length == 1 && posSpan[0] == '_')
+        {
+            pos = null;
+        }
+        else
+        {
+            if (UniversalPosTag.TryParse(posSpan, provider, out var posValue))
+            {
+                pos = posValue;
+            }
+            else
+            {
+                goto Fail;
+            }
+        }
+
+        PosTag? xpos;
+        var xposSpan = s[fields[AltPosIndex]];
+
+        if (xposSpan.Length == 1 && xposSpan[0] == '_')
+        {
+            xpos = null;
+        }
+        else
+        {
+            if (PosTag.TryParse(xposSpan, provider, out var xposValue))
+            {
+                xpos = xposValue;
+            }
+            else
+            {
+                goto Fail;
+            }
+        }
+
+        var featuresSpan = s[fields[FeaturesIndex]];
+        ReadOnlyWordFeatureValueCollection features;
+
+        if (featuresSpan.Length == 1 && featuresSpan[0] == '_')
+        {
+            features = [];
+        }
+        else
+        {
+            if (ReadOnlyWordFeatureValueCollection.TryParse(featuresSpan, provider, out var featuresValue))
+            {
+                features = featuresValue;
+            }
+            else
+            {
+                goto Fail;
+            }
+        }
+
+        int? head;
+        var headSpan = s[fields[HeadIndexIndex]];
+
+        if (headSpan.Length == 1 && headSpan[0] == '_')
+        {
+            head = null;
+        }
+        else
+        {
+            if (int.TryParse(headSpan, provider, out var headValue))
+            {
+                head = headValue;
+            }
+            else
+            {
+                goto Fail;
+            }
+        }
+
+        UniversalRelationTag? relation;
+        var relationSpan = s[fields[RelationIndex]];
+
+        if (relationSpan.Length == 1 && relationSpan[0] == '_')
+        {
+            relation = null;
+        }
+        else
+        {
+            if (UniversalRelationTag.TryParse(relationSpan, provider, out var relationValue))
+            {
+                relation = relationValue;
+            }
+            else
+            {
+                goto Fail;
+            }
+        }
+
+        // TODO: DEPS
+
+
+        var miscSpan = s[fields[MiscIndex]];
+        ReadOnlyWordFeatureValueCollection misc;
+
+        if (miscSpan.Length == 1 && miscSpan[0] == '_')
+        {
+            misc = [];
+        }
+        else
+        {
+            if (ReadOnlyWordFeatureValueCollection.TryParse(miscSpan, provider, out var miscValue))
+            {
+                misc = miscValue;
+            }
+            else
+            {
+                goto Fail;
+            }
+        }
+
+        result = new Token
+        {
+            Id = id,
+            Form = word,
+            Lemma = lemma,
+            Pos = pos,
+            AltPos = xpos,
+            HeadIndex = head,
+            Features = features,
+            Relation = relation,
+            Annotations = misc,
+        };
+
+        return true;
+
+    Fail:
+        result = default;
+        return false;
+    }
+
+    public static bool TryParse(
+        [NotNullWhen(true)] string? s,
+        IFormatProvider? provider,
+        [MaybeNullWhen(false)] out Token result)
+    {
+        throw new NotImplementedException();
+    }
 
     public override string ToString()
     {
