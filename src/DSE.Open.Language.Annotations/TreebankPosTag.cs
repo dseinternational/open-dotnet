@@ -51,7 +51,7 @@ public readonly partial struct TreebankPosTag
     }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
-    public static explicit operator PosTag(TreebankPosTag value)
+    public static implicit operator PosTag(TreebankPosTag value)
 #pragma warning restore CA2225 // Operator overloads have named alternates
     {
         return new PosTag(value._value);

@@ -51,7 +51,7 @@ public readonly partial struct UniversalPosTag : IEquatableValue<UniversalPosTag
     }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
-    public static explicit operator PosTag(UniversalPosTag value)
+    public static implicit operator PosTag(UniversalPosTag value)
 #pragma warning restore CA2225 // Operator overloads have named alternates
     {
         return new PosTag(value._value);

@@ -3,24 +3,52 @@
 
 using System.Collections;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
-using DSE.Open.Language.Annotations.Text.Json.Serialization;
+using DSE.Open.Collections.Generic;
+using DSE.Open.Language.Annotations.Serialization;
 
 namespace DSE.Open.Language.Annotations;
 
 [JsonConverter(typeof(JsonStringReadOnlyWordFeatureCollectionConverter))]
+[CollectionBuilder(typeof(ReadOnlyWordFeatureCollection), nameof(Create))]
 public class ReadOnlyWordFeatureCollection
     : IReadOnlyList<WordFeature>,
       ISpanParsable<ReadOnlyWordFeatureCollection>,
       ISpanFormattable
 {
+    public static readonly ReadOnlyWordFeatureCollection Empty = new();
 
     private readonly WordFeatureCollection _features;
+
+    private ReadOnlyWordFeatureCollection()
+    {
+        _features = [];
+    }
 
     public ReadOnlyWordFeatureCollection(IEnumerable<WordFeature> features)
     {
         Guard.IsNotNull(features);
         _features = new WordFeatureCollection(features);
+    }
+
+    public static ReadOnlyWordFeatureCollection Create(ReadOnlySpan<WordFeature> items)
+    {
+        if (items.IsEmpty)
+        {
+            return Empty;
+        }
+
+        var list = new List<WordFeature>(items.Length);
+
+        list.AddRange(items);
+
+        return new ReadOnlyWordFeatureCollection(list);
+    }
+
+    public static ReadOnlyWordFeatureCollection Create(Span<WordFeature> items)
+    {
+        return Create((ReadOnlySpan<WordFeature>)items);
     }
 
     public int Count => _features.Count;
@@ -36,6 +64,7 @@ public class ReadOnlyWordFeatureCollection
     {
         return _features.GetEnumerator();
     }
+
     public override string ToString()
     {
         return WordFeatureSerializer.SerializeToString(this);

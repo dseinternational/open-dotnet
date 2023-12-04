@@ -3,19 +3,26 @@
 
 using System.Collections;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
-using DSE.Open.Language.Annotations.Text.Json.Serialization;
+using DSE.Open.Language.Annotations.Serialization;
 using DSE.Open.Values;
 
 namespace DSE.Open.Language.Annotations;
 
 [JsonConverter(typeof(JsonStringWordFeatureCollectionConverter))]
+[CollectionBuilder(typeof(WordFeatureCollection), nameof(Create))]
 public class WordFeatureCollection
     : IList<WordFeature>,
       ISpanParsable<WordFeatureCollection>,
       ISpanFormattable
 {
     private readonly List<WordFeature> _features;
+
+    public WordFeatureCollection()
+    {
+        _features = [];
+    }
 
     public WordFeatureCollection(IEnumerable<WordFeature> features)
     {
@@ -53,6 +60,19 @@ public class WordFeatureCollection
                 Add(feature);
             }
         }
+    }
+    public static WordFeatureCollection Create(ReadOnlySpan<WordFeature> items)
+    {
+        var list = new List<WordFeature>(items.Length);
+
+        list.AddRange(items);
+
+        return new WordFeatureCollection(list);
+    }
+
+    public static WordFeatureCollection Create(Span<WordFeature> items)
+    {
+        return Create((ReadOnlySpan<WordFeature>)items);
     }
 
     public int Count => _features.Count;

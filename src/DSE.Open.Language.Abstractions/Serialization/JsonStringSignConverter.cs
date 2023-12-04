@@ -3,7 +3,7 @@
 
 using DSE.Open.Text.Json.Serialization;
 
-namespace DSE.Open.Language.Text.Json.Serialization;
+namespace DSE.Open.Language.Serialization;
 
 public class JsonStringSignConverter : SpanParsableCharWritingJsonConverter<Sign>
 {

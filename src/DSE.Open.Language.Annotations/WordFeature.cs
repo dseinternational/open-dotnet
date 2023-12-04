@@ -4,7 +4,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 using DSE.Open.Collections.Generic;
-using DSE.Open.Language.Annotations.Text.Json.Serialization;
+using DSE.Open.Language.Annotations.Serialization;
 using DSE.Open.Values;
 
 namespace DSE.Open.Language.Annotations;
