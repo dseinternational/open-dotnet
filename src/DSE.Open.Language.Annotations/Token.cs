@@ -315,7 +315,13 @@ public sealed record class Token
         IFormatProvider? provider,
         [MaybeNullWhen(false)] out Token result)
     {
-        throw new NotImplementedException();
+        if (s is null)
+        {
+            result = default;
+            return false;
+        }
+
+        return TryParse(s.AsSpan(), provider, out result);
     }
 
     public override string ToString()
