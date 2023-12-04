@@ -329,9 +329,19 @@ public sealed record class Token
             ? (rented = ArrayPool<char>.Shared.Rent(512))
             : stackalloc char[128];
 
-        if (TryFormat(buffer, out var charsWritten, format, formatProvider))
+        try
         {
-            return buffer[..charsWritten].ToString();
+            if (TryFormat(buffer, out var charsWritten, format, formatProvider))
+            {
+                return buffer[..charsWritten].ToString();
+            }
+        }
+        finally
+        {
+            if (rented is not null)
+            {
+                ArrayPool<char>.Shared.Return(rented);
+            }
         }
 
         ThrowHelper.ThrowFormatException("Failed to format Token to string.");
