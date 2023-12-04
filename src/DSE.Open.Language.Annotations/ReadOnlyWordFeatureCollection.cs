@@ -4,9 +4,9 @@
 using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
-using DSE.Open.Language.Text.Json.Serialization;
+using DSE.Open.Language.Annotations.Text.Json.Serialization;
 
-namespace DSE.Open.Language;
+namespace DSE.Open.Language.Annotations;
 
 [JsonConverter(typeof(JsonStringReadOnlyWordFeatureCollectionConverter))]
 public class ReadOnlyWordFeatureCollection

@@ -18,7 +18,7 @@ namespace DSE.Open.Language;
 /// is from 4 to 26 lowercase ASCII characters or underscores ('_').</para>
 /// </summary>
 /// <remarks>
-/// This structure is simply the characters in the word or template. For tokens, see TokenizedWord.
+/// This structure is simply the characters in the word or template.
 /// </remarks>
 [ComparableValue]
 [StructLayout(LayoutKind.Auto)]

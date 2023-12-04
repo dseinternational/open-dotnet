@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 using DSE.Open.Values;
 using DSE.Open.Values.Text.Json.Serialization;
 
-namespace DSE.Open.Language;
+namespace DSE.Open.Language.Annotations;
 
 // https://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html
 

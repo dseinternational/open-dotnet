@@ -3,15 +3,15 @@
 
 using System.Text.Json;
 
-namespace DSE.Open.Language.Tests;
+namespace DSE.Open.Language.Annotations;
 
-public class UniversalFeatureTests
+public class UniversalPosTagTests
 {
     [Theory]
     [MemberData(nameof(Tags))]
     public void Parse_valid_tags(string tagStr)
     {
-        var tag = UniversalFeatureName.ParseInvariant(tagStr);
+        var tag = UniversalPosTag.Parse(tagStr, CultureInfo.InvariantCulture);
         Assert.NotEqual(default, tag);
     }
 
@@ -19,18 +19,30 @@ public class UniversalFeatureTests
     [MemberData(nameof(Tags))]
     public void Serialize_deserialize(string tagStr)
     {
-        var tag = UniversalFeatureName.Parse(tagStr, CultureInfo.InvariantCulture);
+        var tag = UniversalPosTag.Parse(tagStr, CultureInfo.InvariantCulture);
         var json = JsonSerializer.Serialize(tag);
-        var deserialized = JsonSerializer.Deserialize<UniversalFeatureName>(json);
+        var deserialized = JsonSerializer.Deserialize<UniversalPosTag>(json);
         Assert.Equal(tag, deserialized);
     }
 
     public static readonly TheoryData<string> Tags = new()
     {
-        "PronType",
-        "PronType",
-        "PronType",
-        "PronType",
+        "ADJ",
+        "ADP",
+        "ADV",
+        "AUX",
+        "CCONJ",
+        "DET",
+        "INTJ",
+        "NOUN",
+        "NUM",
+        "PART",
+        "PRON",
+        "PROPN",
+        "PUNCT",
+        "SCONJ",
+        "SYM",
+        "VERB",
+        "X"
     };
-
 }

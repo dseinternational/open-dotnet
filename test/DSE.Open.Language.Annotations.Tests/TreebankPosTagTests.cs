@@ -3,7 +3,7 @@
 
 using System.Text.Json;
 
-namespace DSE.Open.Language.Abstractions.Tests;
+namespace DSE.Open.Language.Annotations;
 
 public class TreebankPosTagTests
 {

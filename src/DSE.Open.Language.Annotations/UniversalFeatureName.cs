@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 using DSE.Open.Values;
 using DSE.Open.Values.Text.Json.Serialization;
 
-namespace DSE.Open.Language;
+namespace DSE.Open.Language.Annotations;
 
 /// <summary>
 /// Names of universal features (<see href="https://universaldependencies.org/u/feat/index.html"/>).

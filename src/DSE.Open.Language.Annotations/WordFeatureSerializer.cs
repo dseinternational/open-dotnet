@@ -3,7 +3,7 @@
 
 using System.Buffers;
 
-namespace DSE.Open.Language;
+namespace DSE.Open.Language.Annotations;
 
 public static class WordFeatureSerializer
 {

@@ -4,10 +4,10 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 using DSE.Open.Collections.Generic;
-using DSE.Open.Language.Text.Json.Serialization;
+using DSE.Open.Language.Annotations.Text.Json.Serialization;
 using DSE.Open.Values;
 
-namespace DSE.Open.Language;
+namespace DSE.Open.Language.Annotations;
 
 /// <summary>
 /// Features are additional pieces of information about the word, its part of speech and morphosyntactic
@@ -52,7 +52,7 @@ public sealed record WordFeature
       ISpanParsable<WordFeature>,
       ISpanSerializable<WordFeature>
 {
-    public static int MaxSerializedCharLength { get; } = (AlphaNumericCode.MaxSerializedCharLength * 2) + 1;
+    public static int MaxSerializedCharLength { get; } = AlphaNumericCode.MaxSerializedCharLength * 2 + 1;
 
     private readonly ReadOnlyValueCollection<AlphaNumericCode> _values;
 
