@@ -40,7 +40,7 @@ public readonly record struct DateMonthOnly : ISpanFormattable, ISpanParsable<Da
 
     public int Month => StartOfMonth.Month;
 
-    public int TotalMonths => Year * 12 + StartOfMonth.Month;
+    public int TotalMonths => (Year * 12) + StartOfMonth.Month;
 
     public DayOfWeek DayOfWeek => StartOfMonth.DayOfWeek;
 
