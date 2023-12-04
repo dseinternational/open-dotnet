@@ -52,7 +52,7 @@ public sealed record WordFeature
       ISpanParsable<WordFeature>,
       ISpanSerializable<WordFeature>
 {
-    public static int MaxSerializedCharLength { get; } = AlphaNumericCode.MaxSerializedCharLength * 2 + 1;
+    public static int MaxSerializedCharLength { get; } = (AlphaNumericCode.MaxSerializedCharLength * 2) + 1;
 
     private readonly ReadOnlyValueCollection<AlphaNumericCode> _values;
 
