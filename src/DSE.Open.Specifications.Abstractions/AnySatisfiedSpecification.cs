@@ -15,7 +15,7 @@ internal sealed class AnySatisfiedSpecification<T> : AggregateSpecification<T>, 
         return Specifications.Any(s => s.IsSatisfiedBy(candidate));
     }
 
-    public bool IsSatisfiedBy(T candidate, CancellationToken cancellationToken = default)
+    public bool IsSatisfiedBy(T candidate, CancellationToken cancellationToken)
     {
         return Specifications.Any(s =>
         {
@@ -30,6 +30,10 @@ internal sealed class AnySatisfiedSpecification<T> : AggregateSpecification<T>, 
         });
     }
 
+    /// <summary>
+    /// Determines whether the specified candidate is satisfied by any of the specifications in this aggregate.
+    /// </summary>
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="maxDegreeOfParallelism"/> is less than 1.</exception>
     public bool IsSatisfiedBy(
         T candidate,
         int maxDegreeOfParallelism,
@@ -37,16 +41,17 @@ internal sealed class AnySatisfiedSpecification<T> : AggregateSpecification<T>, 
         ParallelMergeOptions mergeOptions = ParallelMergeOptions.Default,
         CancellationToken cancellationToken = default)
     {
+        ArgumentOutOfRangeException.ThrowIfEqual(maxDegreeOfParallelism, 0);
+        ArgumentOutOfRangeException.ThrowIfNegative(maxDegreeOfParallelism);
+
         if (maxDegreeOfParallelism < 2)
         {
             return IsSatisfiedBy(candidate, cancellationToken);
         }
 
-        var enumerable = maxDegreeOfParallelism > 1
-            ? cancellationToken != CancellationToken.None
-                ? Specifications.AsParallel().WithDegreeOfParallelism(maxDegreeOfParallelism).WithCancellation(cancellationToken)
-                : (IEnumerable<ISpecification<T>>)Specifications.AsParallel().WithDegreeOfParallelism(maxDegreeOfParallelism)
-            : Specifications.AsEnumerable();
+        var enumerable = cancellationToken != CancellationToken.None
+            ? Specifications.AsParallel().WithDegreeOfParallelism(maxDegreeOfParallelism).WithCancellation(cancellationToken)
+            : Specifications.AsParallel().WithDegreeOfParallelism(maxDegreeOfParallelism);
 
         return enumerable.Any(s =>
         {
