@@ -247,10 +247,10 @@ public sealed record class Token
             relation = null;
         }
         else if (relationSpan.Length == 4
-            && relationSpan[0] == 'R'
-            && relationSpan[1] == 'O'
-            && relationSpan[2] == 'O'
-            && relationSpan[3] == 'T')
+            && (relationSpan[0] == 'R' || relationSpan[0] == 'r')
+            && (relationSpan[1] == 'O' || relationSpan[1] == 'o')
+            && (relationSpan[2] == 'O' || relationSpan[2] == 'o')
+            && (relationSpan[3] == 'T' || relationSpan[3] == 't'))
         {
             relation = null;
         }

@@ -13,6 +13,7 @@ public class TokenTests
     [InlineData("4\ta\ta\tDET\tDT\tDefinite=Ind|PronType=Art\t5\tdet\t_\t_")]
     [InlineData("5\tdog\tdog\tNOUN\tNN\tNumber=Sing\t3\tdobj\t_\tSpaceAfter=No")]
     [InlineData("6\t.\t.\tPUNCT\t.\tPunctType=Peri\t3\tpunct\t_\tSpaceAfter=No")]
+    [InlineData("2\tate\teat\tVERB\tVBD\tMood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin\t0\troot\t_\t_")]
     public void Parse(string value)
     {
         var token = Token.Parse(value, CultureInfo.InvariantCulture);
