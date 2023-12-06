@@ -15,7 +15,7 @@ public class SignTests
     public void ToStringReturnsExpected(string modalityValue, string wordValue, string expected)
     {
         var modality = SignModality.Parse(modalityValue, CultureInfo.InvariantCulture);
-        var word = Word.Parse(wordValue, CultureInfo.InvariantCulture);
+        var word = WordText.Parse(wordValue, CultureInfo.InvariantCulture);
         var sign = new Sign(modality, word);
         Assert.Equal(expected, sign.ToString());
     }

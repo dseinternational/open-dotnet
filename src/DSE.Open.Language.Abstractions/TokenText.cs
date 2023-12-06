@@ -43,7 +43,7 @@ public readonly partial struct TokenText
             return true;
         }
 
-        return Word.IsValidValue(value);
+        return WordText.IsValidValue(value);
     }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
@@ -53,7 +53,7 @@ public readonly partial struct TokenText
         return new(word);
     }
 
-    public static implicit operator TokenText(Word word)
+    public static implicit operator TokenText(WordText word)
     {
         return new((CharSequence)word);
     }

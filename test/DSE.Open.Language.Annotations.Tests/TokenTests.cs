@@ -26,8 +26,8 @@ public class TokenTests
         var token = new Token
         {
             Index = new TokenIndex(1),
-            Form = (Word)"He",
-            Lemma = (Word)"he",
+            Form = (WordText)"He",
+            Lemma = (WordText)"he",
             Pos = UniversalPosTag.Pronoun,
             AltPos = TreebankPosTag.PronounPersonal,
             Features = ReadOnlyWordFeatureValueCollection.ParseInvariant("Case=Nom|Gender=Masc|Number=Sing|Person=3|PronType=Prs"),
@@ -52,8 +52,8 @@ public class TokenTests
         var token = new Token
         {
             Index = new TokenIndex(1),
-            Form = (Word)"He",
-            Lemma = (Word)"he",
+            Form = (WordText)"He",
+            Lemma = (WordText)"he",
             Pos = UniversalPosTag.Pronoun,
             AltPos = TreebankPosTag.PronounPersonal,
             Features = ReadOnlyWordFeatureValueCollection.ParseInvariant("Case=Nom|Gender=Masc|Number=Sing|Person=3|PronType=Prs"),

@@ -9,10 +9,11 @@ using DSE.Open.Values.Text.Json.Serialization;
 namespace DSE.Open.Language;
 
 /// <summary>
-/// A single distinct meaningful element of speech or writing, used with others
-/// (or sometimes alone) to form a sentence and typically shown with a space on
-/// either side when written or printed. Includes compound words, which may be
-/// hyphenated, space-separated or not separated.
+/// Text that represents a word - single distinct meaningful element of speech
+/// or writing, used with others (or sometimes alone) to form a sentence and
+/// typically shown with a space on either side when written or printed.
+/// Includes compound words, which may be hyphenated, space-separated or not
+/// separated.
 /// <para>May also be template - for example, as a placeholder for a proper
 /// noun. Templates are in the format <c>{{ template_id }}</c> where <c>template_id</c>
 /// is from 4 to 26 lowercase ASCII characters or underscores ('_').</para>
@@ -22,18 +23,18 @@ namespace DSE.Open.Language;
 /// </remarks>
 [ComparableValue]
 [StructLayout(LayoutKind.Auto)]
-[JsonConverter(typeof(JsonSpanSerializableValueConverter<Word, CharSequence>))]
-public readonly partial struct Word
-    : IComparableValue<Word, CharSequence>,
-      ISpanSerializableValue<Word, CharSequence>
+[JsonConverter(typeof(JsonSpanSerializableValueConverter<WordText, CharSequence>))]
+public readonly partial struct WordText
+    : IComparableValue<WordText, CharSequence>,
+      ISpanSerializableValue<WordText, CharSequence>
 {
     public static int MaxSerializedCharLength => 32;
 
-    public Word(string word) : this((CharSequence)word)
+    public WordText(string word) : this((CharSequence)word)
     {
     }
 
-    public Word(ReadOnlyMemory<char> word) : this(new CharSequence(word))
+    public WordText(ReadOnlyMemory<char> word) : this(new CharSequence(word))
     {
     }
 
@@ -132,12 +133,12 @@ public readonly partial struct Word
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
-    public static explicit operator Word(string word)
+    public static explicit operator WordText(string word)
     {
         return new(word);
     }
 
-    public static explicit operator Word(TokenText word)
+    public static explicit operator WordText(TokenText word)
     {
         return new((CharSequence)word);
     }

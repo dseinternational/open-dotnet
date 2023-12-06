@@ -14,9 +14,9 @@ public class WordTests
     [InlineData("a")]
     public void SerializeDeserialize(string wordValue)
     {
-        var word = Word.Parse(wordValue, CultureInfo.InvariantCulture);
+        var word = WordText.Parse(wordValue, CultureInfo.InvariantCulture);
         var json = JsonSerializer.Serialize(word);
-        var deserialized = JsonSerializer.Deserialize<Word>(json);
+        var deserialized = JsonSerializer.Deserialize<WordText>(json);
         Assert.Equal(word, deserialized);
     }
 
@@ -32,7 +32,7 @@ public class WordTests
     [InlineData("{{child_name}}")]
     public void ParseSucceedsIfValid(string wordValue)
     {
-        _ = Word.Parse(wordValue, CultureInfo.InvariantCulture);
+        _ = WordText.Parse(wordValue, CultureInfo.InvariantCulture);
     }
 
     [Theory]
@@ -47,7 +47,7 @@ public class WordTests
     [InlineData("{{CHILD_NAME}}")]
     public void ParseFailsIfInvalid(string wordValue)
     {
-        _ = Assert.Throws<FormatException>(() => Word.Parse(wordValue, CultureInfo.InvariantCulture));
+        _ = Assert.Throws<FormatException>(() => WordText.Parse(wordValue, CultureInfo.InvariantCulture));
     }
 
     [Theory]
@@ -55,7 +55,7 @@ public class WordTests
     [InlineData("{{child_name}}")]
     public void TemplatesAreIdentifiedAsTemplates(string wordValue)
     {
-        var w = Word.Parse(wordValue, CultureInfo.InvariantCulture);
+        var w = WordText.Parse(wordValue, CultureInfo.InvariantCulture);
         Assert.True(w.IsTemplate);
     }
 
@@ -69,7 +69,7 @@ public class WordTests
     [InlineData("teachers'")]
     public void NonTemplatesAreNotIdentifiedAsTemplates(string wordValue)
     {
-        var w = Word.Parse(wordValue, CultureInfo.InvariantCulture);
+        var w = WordText.Parse(wordValue, CultureInfo.InvariantCulture);
         Assert.False(w.IsTemplate);
     }
 }

@@ -18,11 +18,11 @@ namespace DSE.Open.Language;
 public readonly record struct Sign : ISpanFormattable, ISpanParsable<Sign>
 {
     public static readonly int MaxSerializedCharLength
-        = SignModality.MaxSerializedCharLength + 1 + Word.MaxSerializedCharLength;
+        = SignModality.MaxSerializedCharLength + 1 + WordText.MaxSerializedCharLength;
 
     public static readonly Sign Empty;
 
-    public Sign(SignModality modality, Word word)
+    public Sign(SignModality modality, WordText word)
     {
         Modality = modality;
         Word = word;
@@ -36,7 +36,7 @@ public readonly record struct Sign : ISpanFormattable, ISpanParsable<Sign>
     /// <summary>
     /// A <see cref="Word"/> that identifies the sign.
     /// </summary>
-    public Word Word { get; init; }
+    public WordText Word { get; init; }
 
     public static Sign Parse(ReadOnlySpan<char> s)
     {
@@ -88,7 +88,7 @@ public readonly record struct Sign : ISpanFormattable, ISpanParsable<Sign>
         {
             if (SignModality.TryParse(s[..i], provider, out var modality))
             {
-                if (Word.TryParse(s[(i + 1)..], provider, out var word))
+                if (WordText.TryParse(s[(i + 1)..], provider, out var word))
                 {
                     result = new Sign(modality, word);
                     return true;
@@ -122,7 +122,7 @@ public readonly record struct Sign : ISpanFormattable, ISpanParsable<Sign>
 
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
-        Span<char> buffer = stackalloc char[SignModality.MaxSerializedCharLength + 2 + Word.MaxSerializedCharLength];
+        Span<char> buffer = stackalloc char[SignModality.MaxSerializedCharLength + 2 + WordText.MaxSerializedCharLength];
 
         if (TryFormat(buffer, out var charsWritten, format, formatProvider))
         {
