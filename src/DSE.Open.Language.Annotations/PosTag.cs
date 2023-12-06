@@ -34,6 +34,8 @@ public readonly partial struct PosTag
     {
     }
 
+    public int Length => _value.Length;
+
     public AsciiString Value => _value;
 
     public bool IsValidUniversalPosTag => UniversalPosTag.IsValidValue(_value);

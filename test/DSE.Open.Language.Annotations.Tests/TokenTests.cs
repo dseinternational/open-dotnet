@@ -16,7 +16,7 @@ public class TokenTests
     [InlineData("2\tate\teat\tVERB\tVBD\tMood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin\t0\troot\t_\t_")]
     public void Parse(string value)
     {
-        var token = Token.Parse(value, CultureInfo.InvariantCulture);
+        var token = Word.Parse(value, CultureInfo.InvariantCulture);
         Assert.NotNull(token);
     }
 
@@ -26,13 +26,21 @@ public class TokenTests
         var token = new Token
         {
             Index = new TokenIndex(1),
-            Form = (WordText)"He",
-            Lemma = (WordText)"he",
-            Pos = UniversalPosTag.Pronoun,
-            AltPos = TreebankPosTag.PronounPersonal,
-            Features = ReadOnlyWordFeatureValueCollection.ParseInvariant("Case=Nom|Gender=Masc|Number=Sing|Person=3|PronType=Prs"),
-            HeadIndex = 2,
-            Relation = UniversalRelationTag.NominalSubject,
+            Text = (TokenText)"He",
+            Words =
+            [
+                new Word
+                {
+                    Index = 1,
+                    Form = (WordText)"He",
+                    Lemma = (WordText)"he",
+                    Pos = UniversalPosTag.Pronoun,
+                    AltPos = TreebankPosTag.PronounPersonal,
+                    Features = ReadOnlyWordFeatureValueCollection.ParseInvariant("Case=Nom|Gender=Masc|Number=Sing|Person=3|PronType=Prs"),
+                    HeadIndex = 2,
+                    Relation = UniversalRelationTag.NominalSubject,
+                }
+            ]
         };
 
         var str = token.ToString();
@@ -52,13 +60,21 @@ public class TokenTests
         var token = new Token
         {
             Index = new TokenIndex(1),
-            Form = (WordText)"He",
-            Lemma = (WordText)"he",
-            Pos = UniversalPosTag.Pronoun,
-            AltPos = TreebankPosTag.PronounPersonal,
-            Features = ReadOnlyWordFeatureValueCollection.ParseInvariant("Case=Nom|Gender=Masc|Number=Sing|Person=3|PronType=Prs"),
-            HeadIndex = 2,
-            Relation = UniversalRelationTag.NominalSubject,
+            Text = (TokenText)"He",
+            Words =
+            [
+                new Word
+                {
+                    Index = 1,
+                    Form = (WordText)"He",
+                    Lemma = (WordText)"he",
+                    Pos = UniversalPosTag.Pronoun,
+                    AltPos = TreebankPosTag.PronounPersonal,
+                    Features = ReadOnlyWordFeatureValueCollection.ParseInvariant("Case=Nom|Gender=Masc|Number=Sing|Person=3|PronType=Prs"),
+                    HeadIndex = 2,
+                    Relation = UniversalRelationTag.NominalSubject,
+                }
+            ]
         };
 
         var json = JsonSerializer.Serialize(token);

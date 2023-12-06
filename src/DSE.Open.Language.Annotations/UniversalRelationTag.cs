@@ -28,6 +28,8 @@ public readonly partial struct UniversalRelationTag
     {
     }
 
+    public int Length => _value.Length;
+
     public AsciiString Value => _value;
 
     public static bool IsValidValue(AsciiString value)

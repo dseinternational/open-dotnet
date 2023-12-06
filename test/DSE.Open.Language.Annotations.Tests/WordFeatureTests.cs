@@ -13,7 +13,7 @@ public class WordFeatureTests
     {
         var f = WordFeature.ParseInvariant(feature);
         Assert.Equal(name, f.Name.ToStringInvariant());
-        Assert.Equal(value, f.Value.ToStringInvariant());
+        Assert.Equal(value, f.FirstValue.ToStringInvariant());
     }
 
     [Theory]
@@ -22,7 +22,7 @@ public class WordFeatureTests
     {
         var f = WordFeature.ParseInvariant(feature);
         Assert.Equal(name, f.Name.ToStringInvariant());
-        Assert.Equal(value0, f.Value.ToStringInvariant());
+        Assert.Equal(value0, f.FirstValue.ToStringInvariant());
         Assert.Equal(value0, f.Values[0].ToStringInvariant());
         Assert.Equal(value1, f.Values[1].ToStringInvariant());
     }

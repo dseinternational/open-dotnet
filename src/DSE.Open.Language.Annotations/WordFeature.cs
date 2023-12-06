@@ -84,12 +84,17 @@ public sealed record WordFeature
     /// Gets the value specified for the feature. If more than one value is specified, this only
     /// returns the first value.
     /// </summary>
-    public AlphaNumericCode Value => _values[0];
+    public AlphaNumericCode FirstValue => _values[0];
 
     /// <summary>
     /// Get the values specified for the feature.
     /// </summary>
     public ReadOnlyValueCollection<AlphaNumericCode> Values => _values;
+
+    internal int GetCharCount()
+    {
+        return Name.Length + _values.Sum(v => v.Length + 1); // no -1 to accommodate = sign
+    }
 
     public override string ToString()
     {
@@ -105,7 +110,7 @@ public sealed record WordFeature
 
     public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider? provider)
     {
-        var charCount = Name.Length + _values.Sum(v => v.Length + 1); // no -1 to accommodate = sign
+        var charCount = GetCharCount();
 
         if (destination.Length >= charCount
             && Name.TryFormat(destination, out charsWritten, format, provider))

@@ -19,5 +19,5 @@ public sealed record Sentence
     public required string Text { get; init; }
 
     [JsonPropertyName("tokens")]
-    public required ReadOnlyValueCollection<Token> Tokens { get; init; } = [];
+    public required ReadOnlyValueCollection<Word> Tokens { get; init; } = [];
 }

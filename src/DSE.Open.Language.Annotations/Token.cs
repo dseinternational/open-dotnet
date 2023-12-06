@@ -4,6 +4,7 @@
 using System.Buffers;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
+using DSE.Open.Collections.Generic;
 
 namespace DSE.Open.Language.Annotations;
 
@@ -11,22 +12,14 @@ namespace DSE.Open.Language.Annotations;
 /// Carries data about a token in a sentence. Can be serialized to and from JSON
 /// and CoNLL-U Format (<see href="https://universaldependencies.org/format.html"/>).
 /// </summary>
+/// <remarks>
+/// Out token/word model is based on the CoNLL-U format and Stanza NLP
+/// data objects (<see href="https://stanfordnlp.github.io/stanza/data_objects.html#token"/>.
+/// </remarks>
 public sealed record class Token
     : ISpanFormattable,
       ISpanParsable<Token>
 {
-    private const int IdIndex = 0;
-    private const int FormIndex = 1;
-    private const int LemmaIndex = 2;
-    private const int PosIndex = 3;
-    private const int AltPosIndex = 4;
-    private const int FeaturesIndex = 5;
-    private const int HeadIndexIndex = 6;
-    private const int RelationIndex = 7;
-    //private const int DepsIndex = 8;
-    private const int MiscIndex = 9;
-
-
     /// <summary>
     /// Index of the token in the sentence.
     /// </summary>
@@ -36,55 +29,8 @@ public sealed record class Token
     [JsonPropertyName("id")]
     public required TokenIndex Index { get; init; }
 
-    [JsonPropertyName("form")]
-    public required TokenText Form { get; init; }
-
-    /// <summary>
-    /// The canonical or base form of the word, which is the form typically found in dictionaries.
-    /// </summary>
-    [JsonPropertyName("lemma")]
-    public TokenText? Lemma { get; init; }
-
-    /// <summary>
-    /// The universal POS tag (<see href="https://universaldependencies.org/u/pos/index.html"/>).
-    /// </summary>
-    [JsonPropertyName("upos")]
-    public UniversalPosTag? Pos { get; init; }
-
-    /// <summary>
-    /// An optional additional POS tag. May be a <see cref="TreebankPosTag"/>
-    /// (<see href="https://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html"/>)
-    /// </summary>
-    [JsonPropertyName("xpos")]
-    public PosTag? AltPos { get; init; }
-
-    /// <summary>
-    /// List of morphological features from the universal feature inventory or from a defined
-    /// language-specific extension.
-    /// </summary>
-    [JsonPropertyName("feats")]
-    public ReadOnlyWordFeatureValueCollection Features { get; init; } = [];
-
-    /// <summary>
-    /// Head of the current word, which is either a value of <see cref="Index"/> or zero (0).
-    /// </summary>
-    [JsonPropertyName("head")]
-    public int? HeadIndex { get; init; }
-
-    /// <summary>
-    /// Universal dependency relation to the HEAD (root if HEAD = 0) or a defined language-specific
-    /// subtype of one.
-    /// </summary>
-    [JsonPropertyName("deprel")]
-    public UniversalRelationTag? Relation { get; init; }
-
-    // TODO: DEPS: list of head-deprel pairs
-
-    /// <summary>
-    /// Gets or sets misc annotations/aatributes associated with the token.
-    /// </summary>
-    [JsonPropertyName("misc")]
-    public ReadOnlyWordAttributeValueCollection Attributes { get; init; } = [];
+    [JsonPropertyName("text")]
+    public required TokenText Text { get; init; }
 
     [JsonIgnore]
     public bool IsMultiwordToken => Index.IsMultiwordIndex;
@@ -92,9 +38,17 @@ public sealed record class Token
     [JsonIgnore]
     public bool IsEmptyNode => Index.IsEmptyNode;
 
+    [JsonPropertyName("words")]
+    public ReadOnlyValueCollection<Word> Words { get; init; } = [];
+
     public static Token Parse(ReadOnlySpan<char> s)
     {
         return Parse(s, default);
+    }
+
+    public static Token ParseInvariant(ReadOnlySpan<char> s)
+    {
+        return Parse(s, CultureInfo.InvariantCulture);
     }
 
     public static Token Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
@@ -104,8 +58,8 @@ public sealed record class Token
             return token;
         }
 
-        return ThrowHelper.ThrowFormatException<Token>(
-            $"Failed to parse {s} as Token.");
+        ThrowHelper.ThrowFormatException($"Failed to parse {nameof(Token)}.");
+        return null; // unreachable
     }
 
     public static Token Parse(string s)
@@ -113,10 +67,22 @@ public sealed record class Token
         return Parse(s, default);
     }
 
+    public static Token ParseInvariant(string s)
+    {
+        return Parse(s, CultureInfo.InvariantCulture);
+    }
+
     public static Token Parse(string s, IFormatProvider? provider)
     {
-        Guard.IsNotNull(s);
-        return Parse(s.AsSpan(), provider);
+        ArgumentNullException.ThrowIfNull(s);
+
+        if (TryParse(s, provider, out var token))
+        {
+            return token;
+        }
+
+        ThrowHelper.ThrowFormatException($"Failed to parse {nameof(Token)}.");
+        return null; // unreachable
     }
 
     public static bool TryParse(
@@ -124,190 +90,38 @@ public sealed record class Token
         IFormatProvider? provider,
         [MaybeNullWhen(false)] out Token result)
     {
-        if (s.Length < 20)
+        // TODO: handle multi-word tokens
+        // https://universaldependencies.org/u/overview/tokenization.html
+        // https://universaldependencies.org/format.html
+
+        var words = new List<Word>(2);
+
+        foreach (var line in s.EnumerateLines())
         {
-            return Fail(out result);
-        }
-
-        Span<Range> fields = stackalloc Range[10];
-
-        var count = s.Split(fields, '\t', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-
-        if (count != 10)
-        {
-            return Fail(out result);
-        }
-
-        if (!(TokenIndex.TryParse(s[fields[IdIndex]], provider, out var index)
-            && TokenText.TryParse(s[fields[FormIndex]], provider, out var word)))
-        {
-            return Fail(out result);
-        }
-
-        TokenText? lemma;
-        var lemmaSpan = s[fields[LemmaIndex]];
-
-        if (lemmaSpan.Length == 1 && lemmaSpan[0] == '_')
-        {
-            lemma = null;
-        }
-        else
-        {
-            if (TokenText.TryParse(lemmaSpan, provider, out var lemmaValue))
+            if (Word.TryParse(line, provider, out var word))
             {
-                lemma = lemmaValue;
+                words.Add(word);
             }
             else
             {
-                return Fail(out result);
+                result = default;
+                return false;
             }
         }
 
-        UniversalPosTag? pos;
-        var posSpan = s[fields[PosIndex]];
-
-        if (posSpan.Length == 1 && posSpan[0] == '_')
+        if (words.Count > 0)
         {
-            pos = null;
-        }
-        else
-        {
-            if (UniversalPosTag.TryParse(posSpan, provider, out var posValue))
+            result = new Token
             {
-                pos = posValue;
-            }
-            else
-            {
-                return Fail(out result);
-            }
+                Index = new TokenIndex(words[0].Index), // TODO: multiword support
+                Text = words[0].Form,
+                Words = [.. words]
+            };
+            return true;
         }
 
-        PosTag? xpos;
-        var xposSpan = s[fields[AltPosIndex]];
-
-        if (xposSpan.Length == 1 && xposSpan[0] == '_')
-        {
-            xpos = null;
-        }
-        else
-        {
-            if (PosTag.TryParse(xposSpan, provider, out var xposValue))
-            {
-                xpos = xposValue;
-            }
-            else
-            {
-                return Fail(out result);
-            }
-        }
-
-        var featuresSpan = s[fields[FeaturesIndex]];
-        ReadOnlyWordFeatureValueCollection features;
-
-        if (featuresSpan.Length == 1 && featuresSpan[0] == '_')
-        {
-            features = [];
-        }
-        else
-        {
-            if (ReadOnlyWordFeatureValueCollection.TryParse(featuresSpan, provider, out var featuresValue))
-            {
-                features = featuresValue;
-            }
-            else
-            {
-                return Fail(out result);
-            }
-        }
-
-        int? head;
-        var headSpan = s[fields[HeadIndexIndex]];
-
-        if (headSpan.Length == 1 && headSpan[0] == '_')
-        {
-            head = null;
-        }
-        else
-        {
-            if (int.TryParse(headSpan, provider, out var headValue))
-            {
-                head = headValue;
-            }
-            else
-            {
-                return Fail(out result);
-            }
-        }
-
-        UniversalRelationTag? relation;
-        var relationSpan = s[fields[RelationIndex]];
-
-        if (relationSpan.Length == 1 && relationSpan[0] == '_')
-        {
-            relation = null;
-        }
-        else if (relationSpan.Length == 4
-            && (relationSpan[0] == 'R' || relationSpan[0] == 'r')
-            && (relationSpan[1] == 'O' || relationSpan[1] == 'o')
-            && (relationSpan[2] == 'O' || relationSpan[2] == 'o')
-            && (relationSpan[3] == 'T' || relationSpan[3] == 't'))
-        {
-            relation = null;
-        }
-        else
-        {
-            if (UniversalRelationTag.TryParse(relationSpan, provider, out var relationValue))
-            {
-                relation = relationValue;
-            }
-            else
-            {
-                return Fail(out result);
-            }
-        }
-
-        // TODO: DEPS
-
-
-        var miscSpan = s[fields[MiscIndex]];
-        ReadOnlyWordAttributeValueCollection misc;
-
-        if (miscSpan.Length == 1 && miscSpan[0] == '_')
-        {
-            misc = [];
-        }
-        else
-        {
-            if (ReadOnlyWordAttributeValueCollection.TryParse(miscSpan, provider, out var miscValue))
-            {
-                misc = miscValue;
-            }
-            else
-            {
-                return Fail(out result);
-            }
-        }
-
-        result = new Token
-        {
-            Index = index,
-            Form = word,
-            Lemma = lemma,
-            Pos = pos,
-            AltPos = xpos,
-            HeadIndex = head,
-            Features = features,
-            Relation = relation,
-            Attributes = misc,
-        };
-
-        return true;
-
-        static bool Fail(out Token? result)
-        {
-            result = default;
-            return false;
-        }
+        result = default;
+        return false;
     }
 
     public static bool TryParse(
@@ -315,12 +129,6 @@ public sealed record class Token
         IFormatProvider? provider,
         [MaybeNullWhen(false)] out Token result)
     {
-        if (s is null)
-        {
-            result = default;
-            return false;
-        }
-
         return TryParse(s.AsSpan(), provider, out result);
     }
 
@@ -329,12 +137,19 @@ public sealed record class Token
         return ToString(default, default);
     }
 
+    public string ToStringInvariant()
+    {
+        return ToString(default, CultureInfo.InvariantCulture);
+    }
+
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
+        var charCount = Words.Sum(w => w.GetCharCount());
+
         char[]? rented = null;
 
-        Span<char> buffer = Features.Count + Attributes.Count > 2
-            ? (rented = ArrayPool<char>.Shared.Rent(512))
+        Span<char> buffer = charCount > 128
+            ? (rented = ArrayPool<char>.Shared.Rent(charCount))
             : stackalloc char[128];
 
         try
@@ -352,278 +167,28 @@ public sealed record class Token
             }
         }
 
-        ThrowHelper.ThrowFormatException("Failed to format Token to string.");
+        ThrowHelper.ThrowFormatException($"Failed to format {nameof(Token)} to string.");
         return null!; // unreachable
     }
 
-    public bool TryFormat(
-        Span<char> destination,
-        out int charsWritten,
-        ReadOnlySpan<char> format,
-        IFormatProvider? provider)
+    public bool TryFormat(Span<char> destination, out int charsWritten)
     {
-        // ID
+        return TryFormat(destination, out charsWritten, default, default);
+    }
 
-        if (!Index.TryFormat(destination, out charsWritten, format, provider))
+    public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider? provider)
+    {
+        charsWritten = 0;
+
+        // TODO: handle multi-word tokens
+        // https://universaldependencies.org/u/overview/tokenization.html
+        // https://universaldependencies.org/format.html
+
+        foreach (var word in Words)
         {
-            return false;
-        }
-
-        if (destination.Length > charsWritten)
-        {
-            destination[charsWritten++] = '\t';
-        }
-        else
-        {
-            return false;
-        }
-
-        // FORM
-
-        if (!Form.TryFormat(destination[charsWritten..], out var cwForm, format, provider))
-        {
-            return false;
-        }
-
-        charsWritten += cwForm;
-
-        if (destination.Length > charsWritten)
-        {
-            destination[charsWritten++] = '\t';
-        }
-        else
-        {
-            return false;
-        }
-
-        // LEMMA
-
-        if (Lemma is not null)
-        {
-            if (!Lemma.Value.TryFormat(destination[charsWritten..], out var cwLemma, format, provider))
+            if (word.TryFormat(destination, out var wordChars, format, provider))
             {
-                return false;
-            }
-
-            charsWritten += cwLemma;
-        }
-        else
-        {
-            if (destination.Length > charsWritten)
-            {
-                destination[charsWritten++] = '_';
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        if (destination.Length > charsWritten)
-        {
-            destination[charsWritten++] = '\t';
-        }
-        else
-        {
-            return false;
-        }
-
-        // UPOS
-
-        if (Pos is not null)
-        {
-            if (!Pos.Value.TryFormat(destination[charsWritten..], out var cwUpos, format, provider))
-            {
-                return false;
-            }
-
-            charsWritten += cwUpos;
-        }
-        else
-        {
-            if (destination.Length > charsWritten)
-            {
-                destination[charsWritten++] = '_';
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        if (destination.Length > charsWritten)
-        {
-            destination[charsWritten++] = '\t';
-        }
-        else
-        {
-            return false;
-        }
-
-        // XPOS
-
-        if (AltPos is not null)
-        {
-            if (!AltPos.Value.TryFormat(destination[charsWritten..], out var cwAltPos, format, provider))
-            {
-                return false;
-            }
-
-            charsWritten += cwAltPos;
-        }
-        else
-        {
-            if (destination.Length > charsWritten)
-            {
-                destination[charsWritten++] = '_';
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        if (destination.Length > charsWritten)
-        {
-            destination[charsWritten++] = '\t';
-        }
-        else
-        {
-            return false;
-        }
-
-        // FEATS
-
-        if (Features.Count > 0)
-        {
-            if (!Features.TryFormat(destination[charsWritten..], out var cwFeats, format, provider))
-            {
-                return false;
-            }
-
-            charsWritten += cwFeats;
-        }
-        else
-        {
-            if (destination.Length > charsWritten)
-            {
-                destination[charsWritten++] = '_';
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        if (destination.Length > charsWritten)
-        {
-            destination[charsWritten++] = '\t';
-        }
-        else
-        {
-            return false;
-        }
-
-        // HEAD
-
-        if (HeadIndex is not null)
-        {
-            if (!HeadIndex.Value.TryFormat(destination[charsWritten..], out var cwHead, format, provider))
-            {
-                return false;
-            }
-
-            charsWritten += cwHead;
-        }
-        else
-        {
-            if (destination.Length > charsWritten)
-            {
-                destination[charsWritten++] = '_';
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        if (destination.Length > charsWritten)
-        {
-            destination[charsWritten++] = '\t';
-        }
-        else
-        {
-            return false;
-        }
-
-        // DEPREL
-
-        if (Relation is not null)
-        {
-            if (!Relation.Value.TryFormat(destination[charsWritten..], out var cwRelation, format, provider))
-            {
-                return false;
-            }
-
-            charsWritten += cwRelation;
-        }
-        else
-        {
-            if (destination.Length > charsWritten)
-            {
-                destination[charsWritten++] = '_';
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        if (destination.Length > charsWritten)
-        {
-            destination[charsWritten++] = '\t';
-        }
-        else
-        {
-            return false;
-        }
-
-        // DEPS (TODO)
-
-        if (destination.Length > charsWritten)
-        {
-            destination[charsWritten++] = '_';
-        }
-        else
-        {
-            return false;
-        }
-
-        if (destination.Length > charsWritten)
-        {
-            destination[charsWritten++] = '\t';
-        }
-        else
-        {
-            return false;
-        }
-
-        // MISC
-
-        if (Attributes.Count > 0)
-        {
-            if (!Attributes.TryFormat(destination[charsWritten..], out var cwAnnotations, format, provider))
-            {
-                return false;
-            }
-
-            charsWritten += cwAnnotations;
-        }
-        else
-        {
-            if (destination.Length > charsWritten)
-            {
-                destination[charsWritten++] = '_';
+                charsWritten += wordChars;
             }
             else
             {

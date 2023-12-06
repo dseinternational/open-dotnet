@@ -54,6 +54,11 @@ public sealed record WordAttribute
     /// </summary>
     public ReadOnlyValueCollection<CharSequence> Values => _values;
 
+    internal int GetCharCount()
+    {
+        return Name.Length + _values.Sum(v => v.Length + 1); // no -1 to accommodate = sign
+    }
+
     public override string ToString()
     {
         return ToString(null, CultureInfo.InvariantCulture);
@@ -68,7 +73,7 @@ public sealed record WordAttribute
 
     public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider? provider)
     {
-        var charCount = Name.Length + _values.Sum(v => v.Length + 1); // no -1 to accommodate = sign
+        var charCount = GetCharCount();
 
         if (destination.Length >= charCount
             && Name.TryFormat(destination, out charsWritten, format, provider))

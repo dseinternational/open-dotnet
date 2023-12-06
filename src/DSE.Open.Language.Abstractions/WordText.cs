@@ -38,6 +38,8 @@ public readonly partial struct WordText
     {
     }
 
+    public int Length => _value.Length;
+
     public CharSequence Value => _value;
 
     public bool IsTemplate => !_value.IsEmpty && _value[0] == '{';

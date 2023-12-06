@@ -25,6 +25,8 @@ public readonly partial struct TokenText
     {
     }
 
+    public int Length => _value.Length;
+
     public CharSequence Value => _value;
 
     public bool IsPunctuation => _value.Length == 1 && char.IsPunctuation(_value[0]);
