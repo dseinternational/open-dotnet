@@ -5,24 +5,10 @@
     <RootNamespace>DSE.Open.Records</RootNamespace>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
-    <GeneratedFolder>gen</GeneratedFolder>
-    <CompilerGeneratedFilesOutputPath>$(GeneratedFolder)\$(TargetFramework)</CompilerGeneratedFilesOutputPath>
-  </PropertyGroup>
-
   <ItemGroup>
-    <Compile Remove="$(GeneratedFolder)/**/*.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-
     <ProjectReference Include="..\..\gen\DSE.Open.Values.Generators\DSE.Open.Values.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-
     <ProjectReference Include="..\DSE.Open.Labels\DSE.Open.Labels.csproj" />
-
     <ProjectReference Include="..\DSE.Open.Values\DSE.Open.Values.csproj" />
-
   </ItemGroup>
 
 </Project>
