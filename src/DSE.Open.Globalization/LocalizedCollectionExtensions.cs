@@ -27,8 +27,8 @@ public static class LocalizedCollectionExtensions
         LanguageTag tag,
         IEnumerable<LanguageTag> fallbacks)
     {
-        Guard.IsNotNull(dictionary);
-        Guard.IsNotNull(fallbacks);
+        ArgumentNullException.ThrowIfNull(dictionary);
+        ArgumentNullException.ThrowIfNull(fallbacks);
 
         var tagStr = tag.ToString();
 
@@ -75,8 +75,8 @@ public static class LocalizedCollectionExtensions
         LanguageTag tag,
         IEnumerable<LanguageTag> fallbacks)
     {
-        Guard.IsNotNull(dictionary);
-        Guard.IsNotNull(fallbacks);
+        ArgumentNullException.ThrowIfNull(dictionary);
+        ArgumentNullException.ThrowIfNull(fallbacks);
 
         var tagStr = tag.ToString();
 
@@ -134,8 +134,8 @@ public static class LocalizedCollectionExtensions
         LanguageTag tag,
         IEnumerable<LanguageTag> fallbacks)
     {
-        Guard.IsNotNull(localizedCollection);
-        Guard.IsNotNull(fallbacks);
+        ArgumentNullException.ThrowIfNull(localizedCollection);
+        ArgumentNullException.ThrowIfNull(fallbacks);
 
         var tagStr = tag.ToString();
 
@@ -213,8 +213,8 @@ public static class LocalizedCollectionExtensions
         LanguageTag tag,
         IEnumerable<LanguageTag> fallbacks)
     {
-        Guard.IsNotNull(dictionary);
-        Guard.IsNotNull(fallbacks);
+        ArgumentNullException.ThrowIfNull(dictionary);
+        ArgumentNullException.ThrowIfNull(fallbacks);
 
         if (dictionary.Count == 0)
         {
@@ -276,8 +276,8 @@ public static class LocalizedCollectionExtensions
         LanguageTag tag,
         IEnumerable<LanguageTag> fallbacks)
     {
-        Guard.IsNotNull(localizedCollection);
-        Guard.IsNotNull(fallbacks);
+        ArgumentNullException.ThrowIfNull(localizedCollection);
+        ArgumentNullException.ThrowIfNull(fallbacks);
 
         if (localizedCollection is Dictionary<LanguageTag, T> dictionary)
         {
@@ -365,8 +365,8 @@ public static class LocalizedCollectionExtensions
         IEnumerable<LanguageTag> fallbacks)
         where T : ILocalized
     {
-        Guard.IsNotNull(localizedCollection);
-        Guard.IsNotNull(fallbacks);
+        ArgumentNullException.ThrowIfNull(localizedCollection);
+        ArgumentNullException.ThrowIfNull(fallbacks);
 
         var list = localizedCollection.ToList();
 

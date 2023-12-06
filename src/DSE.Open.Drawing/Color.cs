@@ -152,7 +152,7 @@ public readonly record struct Color : ISpanParsable<Color>, ISpanFormattable
 
     public static Color Parse(string s, IFormatProvider? provider)
     {
-        Guard.IsNotNull(s);
+        ArgumentNullException.ThrowIfNull(s);
         return Parse(s.AsSpan(), provider);
     }
 

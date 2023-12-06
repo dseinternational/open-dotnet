@@ -70,7 +70,7 @@ public static class Base62Converter
     /// <exception cref="InvalidDataException">Thrown if the string is not a valid base 62 string.</exception>
     public static byte[] FromBase62(string base62)
     {
-        Guard.IsNotNull(base62);
+        ArgumentNullException.ThrowIfNull(base62);
 
         if (!TryFromBase62(base62, out var data))
         {
@@ -122,7 +122,7 @@ public static class Base62Converter
 
     public static bool TryFromBase62(string base62, out byte[] data)
     {
-        Guard.IsNotNull(base62);
+        ArgumentNullException.ThrowIfNull(base62);
         return TryFromBase62Chars(base62.AsSpan(), out data);
     }
 

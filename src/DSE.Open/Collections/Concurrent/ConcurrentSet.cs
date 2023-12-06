@@ -187,7 +187,7 @@ public class ConcurrentSet<T> : IReadOnlyCollection<T>, ICollection<T>
     public ConcurrentSet(IEnumerable<T> collection, IEqualityComparer<T>? comparer)
         : this(comparer)
     {
-        Guard.IsNotNull(collection);
+        ArgumentNullException.ThrowIfNull(collection);
 
         InitializeFromCollection(collection);
     }
@@ -213,7 +213,7 @@ public class ConcurrentSet<T> : IReadOnlyCollection<T>, ICollection<T>
     public ConcurrentSet(int concurrencyLevel, IEnumerable<T> collection, IEqualityComparer<T>? comparer)
         : this(concurrencyLevel, DefaultCapacity, false, comparer)
     {
-        Guard.IsNotNull(collection);
+        ArgumentNullException.ThrowIfNull(collection);
 
         InitializeFromCollection(collection);
     }
@@ -279,7 +279,7 @@ public class ConcurrentSet<T> : IReadOnlyCollection<T>, ICollection<T>
     /// contains too many items.</exception>
     public bool Add(T item)
     {
-        Guard.IsNotNull(item);
+        ArgumentNullException.ThrowIfNull(item);
         return AddInternal(item, _comparer.GetHashCode(item), true);
     }
 
@@ -336,7 +336,7 @@ public class ConcurrentSet<T> : IReadOnlyCollection<T>, ICollection<T>
     /// </remarks>
     public bool TryGetValue(T equalValue, [MaybeNullWhen(false)] out T actualValue)
     {
-        Guard.IsNotNull(equalValue);
+        ArgumentNullException.ThrowIfNull(equalValue);
 
         var hashCode = _comparer.GetHashCode(equalValue);
 
@@ -373,7 +373,7 @@ public class ConcurrentSet<T> : IReadOnlyCollection<T>, ICollection<T>
     /// <returns>true if an item was removed successfully; otherwise, false.</returns>
     public bool TryRemove(T item)
     {
-        Guard.IsNotNull(item);
+        ArgumentNullException.ThrowIfNull(item);
 
         var hashCode = _comparer.GetHashCode(item);
 
@@ -571,7 +571,7 @@ public class ConcurrentSet<T> : IReadOnlyCollection<T>, ICollection<T>
 
     protected virtual void CopyTo(T[] array, int arrayIndex)
     {
-        Guard.IsNotNull(array);
+        ArgumentNullException.ThrowIfNull(array);
         ArgumentOutOfRangeException.ThrowIfNegative(arrayIndex);
 
         var locksAcquired = 0;

@@ -235,7 +235,7 @@ public readonly struct AsciiChar2
 
     public static AsciiChar2 Parse(string s, IFormatProvider? provider)
     {
-        Guard.IsNotNull(s);
+        ArgumentNullException.ThrowIfNull(s);
         return Parse(s.AsSpan(), provider);
     }
 

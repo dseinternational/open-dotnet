@@ -49,7 +49,7 @@ public static class SqlHelper
     /// <exception cref="InvalidSqlException"><paramref name="identifier"/> is not a valid Transact-SQL regular identifier.</exception>
     public static void EnsureValidRegularIdentifier(string identifier)
     {
-        Guard.IsNotNullOrEmpty(identifier);
+        ArgumentException.ThrowIfNullOrEmpty(identifier);
 
         if (!IsValidRegularIdentifier(identifier))
         {

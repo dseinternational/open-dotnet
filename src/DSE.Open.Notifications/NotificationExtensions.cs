@@ -7,19 +7,19 @@ public static class NotificationExtensions
 {
     public static bool IsCritical(this Notification notification)
     {
-        Guard.IsNotNull(notification);
+        ArgumentNullException.ThrowIfNull(notification);
         return notification.Level == NotificationLevel.Critical;
     }
 
     public static bool IsErrorOrAbove(this Notification notification)
     {
-        Guard.IsNotNull(notification);
+        ArgumentNullException.ThrowIfNull(notification);
         return notification.Level >= NotificationLevel.Error;
     }
 
     public static bool IsWarningOrAbove(this Notification notification)
     {
-        Guard.IsNotNull(notification);
+        ArgumentNullException.ThrowIfNull(notification);
         return notification.Level >= NotificationLevel.Warning;
     }
 }

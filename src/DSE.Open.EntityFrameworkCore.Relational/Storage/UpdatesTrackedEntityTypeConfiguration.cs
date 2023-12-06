@@ -14,7 +14,7 @@ public abstract class UpdatesTrackedEntityTypeConfiguration<[DynamicallyAccessed
 {
     public override void Configure(EntityTypeBuilder<TEntity> builder)
     {
-        Guard.IsNotNull(builder);
+        ArgumentNullException.ThrowIfNull(builder);
 
         base.Configure(builder);
 

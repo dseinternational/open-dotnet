@@ -21,7 +21,7 @@ public static class JsonConverterCollectionExtensions
         this ICollection<JsonConverter> converters,
         bool includeJsonValueObjectConverter)
     {
-        Guard.IsNotNull(converters);
+        ArgumentNullException.ThrowIfNull(converters);
 
         converters.Add(JsonStringBinaryValueBase64Converter.Default);
         converters.Add(JsonStringDiagnosticCodeConverter.Default);

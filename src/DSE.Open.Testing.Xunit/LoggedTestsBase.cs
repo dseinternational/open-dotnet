@@ -15,7 +15,7 @@ public abstract class LoggedTestsBase : IDisposable
 
     protected LoggedTestsBase(ITestOutputHelper output)
     {
-        Guard.IsNotNull(output);
+        ArgumentNullException.ThrowIfNull(output);
         Output = output;
     }
 

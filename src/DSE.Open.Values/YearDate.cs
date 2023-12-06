@@ -113,7 +113,7 @@ public readonly record struct YearDate : IComparable<YearDate>, ISpanParsable<Ye
 
     public static YearDate Parse(string s, IFormatProvider? provider)
     {
-        Guard.IsNotNull(s);
+        ArgumentNullException.ThrowIfNull(s);
         return Parse(s.AsSpan(), provider);
     }
 

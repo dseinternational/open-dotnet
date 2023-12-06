@@ -19,7 +19,7 @@ public static class JsonConverterCollectionExtensions
         this ICollection<JsonConverter> converters,
         bool includeJsonValueObjectConverter)
     {
-        Guard.IsNotNull(converters);
+        ArgumentNullException.ThrowIfNull(converters);
 
         converters.AddDseOpenValuesJsonConverters(includeJsonValueObjectConverter);
 

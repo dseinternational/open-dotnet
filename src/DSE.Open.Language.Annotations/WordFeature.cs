@@ -63,7 +63,7 @@ public sealed record WordFeature
 
     public WordFeature(AlphaNumericCode name, ReadOnlyValueCollection<AlphaNumericCode> values)
     {
-        Guard.IsNotNull(values);
+        ArgumentNullException.ThrowIfNull(values);
 
         Name = name;
 
@@ -234,7 +234,7 @@ public sealed record WordFeature
 
     public static WordFeature Parse(string s, IFormatProvider? provider)
     {
-        Guard.IsNotNull(s);
+        ArgumentNullException.ThrowIfNull(s);
         return Parse(s.AsSpan(), provider);
     }
 

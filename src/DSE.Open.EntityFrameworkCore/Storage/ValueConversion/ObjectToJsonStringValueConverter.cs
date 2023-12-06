@@ -26,7 +26,7 @@ public class ObjectToJsonStringValueConverter<TModel, TSerialized> : ValueConver
 
     private static string ConvertTo(TModel model, JsonSerializerOptions? jsonSerializerOptions)
     {
-        Guard.IsNotNull(model);
+        ArgumentNullException.ThrowIfNull(model);
 
         jsonSerializerOptions ??= JsonSharedOptions.RelaxedJsonEscaping;
 
@@ -35,7 +35,7 @@ public class ObjectToJsonStringValueConverter<TModel, TSerialized> : ValueConver
 
     private static TModel ConvertFrom(string providerValue, JsonSerializerOptions? jsonSerializerOptions)
     {
-        Guard.IsNotNull(providerValue);
+        ArgumentNullException.ThrowIfNull(providerValue);
 
         jsonSerializerOptions ??= JsonSharedOptions.RelaxedJsonEscaping;
 

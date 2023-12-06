@@ -9,7 +9,7 @@ public static class MemoryQueryExtensions
 
     public static bool All<T>(this ReadOnlySpan<T> values, Func<T, bool> predicate)
     {
-        Guard.IsNotNull(predicate);
+        ArgumentNullException.ThrowIfNull(predicate);
 
         foreach (var value in values)
         {
@@ -26,7 +26,7 @@ public static class MemoryQueryExtensions
 
     public static bool Any<T>(this ReadOnlySpan<T> values, Func<T, bool> predicate)
     {
-        Guard.IsNotNull(predicate);
+        ArgumentNullException.ThrowIfNull(predicate);
 
         foreach (var value in values)
         {
@@ -73,7 +73,7 @@ public static class MemoryQueryExtensions
     /// <exception cref="ArgumentNullException"><paramref name="predicate"/> is <see langword="null"/></exception>
     public static int Count<T>(ReadOnlySpan<T> items, Func<T, bool> predicate)
     {
-        Guard.IsNotNull(predicate);
+        ArgumentNullException.ThrowIfNull(predicate);
 
         var count = 0;
 

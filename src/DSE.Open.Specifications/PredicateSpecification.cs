@@ -9,7 +9,7 @@ public sealed class PredicateSpecification<T> : ISpecification<T>
 
     public PredicateSpecification(Func<T, bool> predicate)
     {
-        Guard.IsNotNull(predicate);
+        ArgumentNullException.ThrowIfNull(predicate);
         _predicate = predicate;
     }
 

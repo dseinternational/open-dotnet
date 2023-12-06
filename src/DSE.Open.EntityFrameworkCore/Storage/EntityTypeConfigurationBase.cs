@@ -17,7 +17,7 @@ public abstract class EntityTypeConfigurationBase<[DynamicallyAccessedMembers(Tr
 
     public virtual void Configure(EntityTypeBuilder<TEntity> builder)
     {
-        Guard.IsNotNull(builder);
+        ArgumentNullException.ThrowIfNull(builder);
 
         if (builder.Metadata.BaseType == null)
         {

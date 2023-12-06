@@ -26,7 +26,7 @@ public sealed record WordAttribute
 
     public WordAttribute(AlphaNumericCode name, ReadOnlyValueCollection<CharSequence> values)
     {
-        Guard.IsNotNull(values);
+        ArgumentNullException.ThrowIfNull(values);
 
         Name = name;
 
@@ -197,7 +197,7 @@ public sealed record WordAttribute
 
     public static WordAttribute Parse(string s, IFormatProvider? provider)
     {
-        Guard.IsNotNull(s);
+        ArgumentNullException.ThrowIfNull(s);
         return Parse(s.AsSpan(), provider);
     }
 

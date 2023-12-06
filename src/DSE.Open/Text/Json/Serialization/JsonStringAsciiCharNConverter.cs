@@ -29,7 +29,7 @@ public sealed class JsonStringAsciiCharNConverter<T> : JsonConverter<T> where T 
 
     public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
     {
-        Guard.IsNotNull(writer);
+        ArgumentNullException.ThrowIfNull(writer);
         Debug.Assert(T.MaxSerializedByteLength <= 8);
 
         Span<byte> buffer = stackalloc byte[T.MaxSerializedByteLength];

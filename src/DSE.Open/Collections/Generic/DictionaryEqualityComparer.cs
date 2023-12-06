@@ -118,7 +118,7 @@ public class DictionaryEqualityComparer<TKey, TValue>
 
     public int GetHashCode(ReadOnlyValueDictionary<TKey, TValue> obj)
     {
-        Guard.IsNotNull(obj);
+        ArgumentNullException.ThrowIfNull(obj);
 
         var hashCode = -7291863;
 
@@ -137,7 +137,7 @@ public class DictionaryEqualityComparer<TKey, TValue>
 
     public int GetHashCode(IReadOnlyDictionary<TKey, TValue> obj)
     {
-        Guard.IsNotNull(obj);
+        ArgumentNullException.ThrowIfNull(obj);
 
         var hashCode = -7291863;
 
@@ -156,7 +156,7 @@ public class DictionaryEqualityComparer<TKey, TValue>
 
     public int GetHashCode(IDictionary<TKey, TValue> obj)
     {
-        Guard.IsNotNull(obj);
+        ArgumentNullException.ThrowIfNull(obj);
 
         var hashCode = -7291863;
 

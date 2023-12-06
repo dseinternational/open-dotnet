@@ -50,7 +50,7 @@ public class UnexpectedConditionException : Exception
 
     public static void ThrowIfEmpty<T>(IEnumerable<T> collection, [CallerArgumentExpression(nameof(collection))] string? collectionName = null)
     {
-        Guard.IsNotNull(collection);
+        ArgumentNullException.ThrowIfNull(collection);
 
         if (!collection.Any())
         {

@@ -18,7 +18,7 @@ public sealed record Notification : ImmutableDataTransferObject, INotification
     [JsonConstructor]
     public Notification(DiagnosticCode code, NotificationLevel level, string message)
     {
-        Guard.IsNotNullOrEmpty(message);
+        ArgumentException.ThrowIfNullOrEmpty(message);
 
         Code = code;
         Level = level;

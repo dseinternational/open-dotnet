@@ -16,7 +16,7 @@ public abstract class DomainEvent<TData> : IDomainEvent<TData>
 
     protected DomainEvent(TData data)
     {
-        Guard.IsNotNull(data);
+        ArgumentNullException.ThrowIfNull(data);
 
         Source = EventSourceConfiguration.GetEventSource(GetType()) ??
             throw new InvalidOperationException("Source must be provided.");

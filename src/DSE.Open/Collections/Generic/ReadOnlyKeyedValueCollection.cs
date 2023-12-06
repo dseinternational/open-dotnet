@@ -26,7 +26,7 @@ public abstract class ReadOnlyKeyedValueCollection<TKey, TValue>
 
     protected ReadOnlyKeyedValueCollection(IEnumerable<TValue> list)
     {
-        Guard.IsNotNull(list);
+        ArgumentNullException.ThrowIfNull(list);
 
         _dictionary = list is ReadOnlyKeyedValueCollection<TKey, TValue> other
             ? other._dictionary
@@ -43,7 +43,7 @@ public abstract class ReadOnlyKeyedValueCollection<TKey, TValue>
 
     public bool TryGetValue(TKey key, [MaybeNullWhen(false)] out TValue item)
     {
-        Guard.IsNotNull(key);
+        ArgumentNullException.ThrowIfNull(key);
         return _dictionary.TryGetValue(key, out item!);
     }
 
@@ -76,7 +76,7 @@ public abstract class ReadOnlyKeyedValueCollection<TKey, TValue>
 
     public bool ContainsKey(TKey key)
     {
-        Guard.IsNotNull(key);
+        ArgumentNullException.ThrowIfNull(key);
         return _dictionary.ContainsKey(key);
     }
 

@@ -35,14 +35,14 @@ public abstract class DbContextTestsBase<[DynamicallyAccessedMembers(TrimmingHel
 
     protected virtual void AddDbContext(IServiceCollection services)
     {
-        Guard.IsNotNull(services);
+        ArgumentNullException.ThrowIfNull(services);
 
         _ = services.AddDbContext<TContext>(ConfigureDbContext, ServiceLifetime.Transient);
     }
 
     protected virtual void ConfigureDbContext(IServiceProvider services, DbContextOptionsBuilder options)
     {
-        Guard.IsNotNull(options);
+        ArgumentNullException.ThrowIfNull(options);
 
         _ = options
             .EnableDetailedErrors()

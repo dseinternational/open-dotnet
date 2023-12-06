@@ -16,7 +16,7 @@ public abstract class PhonemeSymbolSet : IReadOnlyCollection<PhonemeSymbol>
 
     protected PhonemeSymbolSet(IEnumerable<PhonemeSymbol> symbols)
     {
-        Guard.IsNotNull(symbols);
+        ArgumentNullException.ThrowIfNull(symbols);
 
         foreach (var ps in symbols)
         {

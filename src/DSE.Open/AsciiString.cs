@@ -116,7 +116,7 @@ public readonly partial struct AsciiString
 
     public static AsciiString Parse(string s, IFormatProvider? provider)
     {
-        Guard.IsNotNull(s);
+        ArgumentNullException.ThrowIfNull(s);
         return Parse(s.AsSpan(), provider);
     }
 

@@ -10,7 +10,7 @@ public static partial class MemoryExtensions
 
     public static bool ContainsOnly<T>(this ReadOnlySpan<T> values, Func<T, bool> predicate)
     {
-        Guard.IsNotNull(predicate);
+        ArgumentNullException.ThrowIfNull(predicate);
 
         if (values.IsEmpty)
         {
@@ -38,7 +38,7 @@ public static partial class MemoryExtensions
     /// <returns></returns>
     public static Memory<TOut> ConvertTo<TIn, TOut>(this ReadOnlySpan<TIn> source, Func<TIn, TOut> converter)
     {
-        Guard.IsNotNull(converter);
+        ArgumentNullException.ThrowIfNull(converter);
 
         if (source.IsEmpty)
         {
@@ -73,7 +73,7 @@ public static partial class MemoryExtensions
         Func<T, bool> predicate,
         out int itemsCopied)
     {
-        Guard.IsNotNull(predicate);
+        ArgumentNullException.ThrowIfNull(predicate);
 
         var bufferIndex = 0;
 
@@ -196,7 +196,7 @@ public static partial class MemoryExtensions
     public static Span<T> Remove<T>(this Span<T> span, Func<T, bool> predicate)
         where T : IEquatable<T>
     {
-        Guard.IsNotNull(predicate);
+        ArgumentNullException.ThrowIfNull(predicate);
 
         if (span.IsEmpty)
         {
@@ -224,7 +224,7 @@ public static partial class MemoryExtensions
     public static int Replace<T>(this Span<T> span, Func<T, bool> predicate, T replacement)
         where T : IEquatable<T>
     {
-        Guard.IsNotNull(predicate);
+        ArgumentNullException.ThrowIfNull(predicate);
 
         if (span.IsEmpty)
         {

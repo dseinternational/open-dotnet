@@ -68,7 +68,7 @@ public abstract class SqliteStoredObjectPersistenceTestsBase<
     /// <returns></returns>
     protected virtual IQueryable<TEntity> GetEntityQuery(TDbContext dataContext)
     {
-        Guard.IsNotNull(dataContext);
+        ArgumentNullException.ThrowIfNull(dataContext);
         return dataContext.Set<TEntity>();
     }
 

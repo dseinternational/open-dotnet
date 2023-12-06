@@ -21,7 +21,7 @@ public static class StreamReaderExtensions
     /// <param name="origin"></param>
     public static void SetPosition(this StreamReader reader, long position, SeekOrigin origin)
     {
-        Guard.IsNotNull(reader);
+        ArgumentNullException.ThrowIfNull(reader);
         reader.DiscardBufferedData();
         _ = reader.BaseStream.Seek(position, origin);
     }

@@ -14,8 +14,8 @@ internal sealed class AndAsyncSpecification<T> : IAsyncSpecification<T>
 
     public AndAsyncSpecification(IAsyncSpecification<T> left, IAsyncSpecification<T> right)
     {
-        Guard.IsNotNull(left);
-        Guard.IsNotNull(right);
+        ArgumentNullException.ThrowIfNull(left);
+        ArgumentNullException.ThrowIfNull(right);
 
         _left = left;
         _right = right;

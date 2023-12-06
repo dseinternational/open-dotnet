@@ -111,7 +111,7 @@ public readonly partial record struct BinaryValue : ISpanFormattable, IUtf8SpanF
 
     internal static BinaryValue CreateUnsafe(byte[] bytes)
     {
-        Guard.IsNotNull(bytes);
+        ArgumentNullException.ThrowIfNull(bytes);
 
         if (bytes.Length == 0)
         {

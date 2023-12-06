@@ -7,7 +7,7 @@ public static class TimestampedExtensions
 {
     public static bool IsPersisted(this ITimestamped timestamped)
     {
-        Guard.IsNotNull(timestamped);
+        ArgumentNullException.ThrowIfNull(timestamped);
         return timestamped.Timestamp.HasValue;
     }
 }

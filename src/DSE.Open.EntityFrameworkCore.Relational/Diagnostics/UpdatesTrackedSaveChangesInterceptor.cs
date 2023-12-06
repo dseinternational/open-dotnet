@@ -17,8 +17,8 @@ public sealed partial class UpdateTimesTrackedSaveChangesInterceptor : SaveChang
         TimeProvider timeProvider,
         ILogger<UpdateTimesTrackedSaveChangesInterceptor> logger)
     {
-        Guard.IsNotNull(timeProvider);
-        Guard.IsNotNull(logger);
+        ArgumentNullException.ThrowIfNull(timeProvider);
+        ArgumentNullException.ThrowIfNull(logger);
 
         _timeProvider = timeProvider;
         _logger = logger;
@@ -34,7 +34,7 @@ public sealed partial class UpdateTimesTrackedSaveChangesInterceptor : SaveChang
         InterceptionResult<int> result,
         CancellationToken cancellationToken = default)
     {
-        Guard.IsNotNull(eventData);
+        ArgumentNullException.ThrowIfNull(eventData);
 
         if (eventData.Context is null)
         {

@@ -13,7 +13,7 @@ public abstract class ResultBuilder<TResult>
 
     public virtual void MergeNotifications(Result result)
     {
-        Guard.IsNotNull(result);
+        ArgumentNullException.ThrowIfNull(result);
 
         if (result.HasNotifications)
         {

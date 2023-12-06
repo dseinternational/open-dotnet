@@ -49,7 +49,7 @@ public readonly partial struct Phoneme : IEquatable<Phoneme>, ISpanFormattable, 
 
     private Phoneme(string value, bool skipValidation)
     {
-        Guard.IsNotNullOrWhiteSpace(value);
+        ArgumentException.ThrowIfNullOrWhiteSpace(value);
 
         if (!skipValidation)
         {
@@ -165,7 +165,7 @@ public readonly partial struct Phoneme : IEquatable<Phoneme>, ISpanFormattable, 
 
     public static Phoneme Parse(string s, IFormatProvider? provider)
     {
-        Guard.IsNotNull(s);
+        ArgumentNullException.ThrowIfNull(s);
         return Parse(s.AsSpan(), provider);
     }
 

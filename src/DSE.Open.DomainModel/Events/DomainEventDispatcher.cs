@@ -17,7 +17,7 @@ public class DomainEventDispatcher : IDomainEventDispatcher
 
     public DomainEventDispatcher(IMessageDispatcher dispatcher)
     {
-        Guard.IsNotNull(dispatcher);
+        ArgumentNullException.ThrowIfNull(dispatcher);
 
         _dispatcher = dispatcher;
     }
@@ -28,7 +28,7 @@ public class DomainEventDispatcher : IDomainEventDispatcher
         IEnumerable<IEventRaisingEntity> entities,
         CancellationToken cancellationToken = default)
     {
-        Guard.IsNotNull(entities);
+        ArgumentNullException.ThrowIfNull(entities);
 
         foreach (var entity in entities)
         {
@@ -50,7 +50,7 @@ public class DomainEventDispatcher : IDomainEventDispatcher
         IEnumerable<IEventRaisingEntity> entities,
         CancellationToken cancellationToken = default)
     {
-        Guard.IsNotNull(entities);
+        ArgumentNullException.ThrowIfNull(entities);
 
         var consecutiveEvents = new List<IDomainEvent>();
         var backgroundEvents = new List<IBackgroundDomainEvent>();

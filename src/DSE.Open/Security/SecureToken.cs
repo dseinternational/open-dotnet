@@ -107,7 +107,7 @@ public readonly record struct SecureToken : ISpanParsable<SecureToken>, ISpanFor
 
     public static SecureToken Parse(string s, IFormatProvider? provider)
     {
-        Guard.IsNotNull(s);
+        ArgumentNullException.ThrowIfNull(s);
         return Parse(s.AsSpan(), provider);
     }
 

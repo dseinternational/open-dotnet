@@ -15,7 +15,7 @@ public class TestDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        Guard.IsNotNull(modelBuilder);
+        ArgumentNullException.ThrowIfNull(modelBuilder);
 
         _ = modelBuilder.Entity<Country>().ToTable("countries");
 

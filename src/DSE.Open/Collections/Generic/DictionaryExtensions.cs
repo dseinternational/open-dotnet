@@ -11,7 +11,7 @@ public static class DictionaryExtensions
         this IEnumerable<KeyValuePair<TKey, TValue>> dictionary)
         where TKey : notnull
     {
-        Guard.IsNotNull(dictionary);
+        ArgumentNullException.ThrowIfNull(dictionary);
         return ImmutableDictionary.CreateRange(dictionary);
     }
 
@@ -19,7 +19,7 @@ public static class DictionaryExtensions
         this IEnumerable<KeyValuePair<TKey, TValue>> dictionary)
         where TKey : notnull, IEquatable<TKey>
     {
-        Guard.IsNotNull(dictionary);
+        ArgumentNullException.ThrowIfNull(dictionary);
         return new ReadOnlyValueDictionary<TKey, TValue>(dictionary);
     }
 
@@ -27,7 +27,7 @@ public static class DictionaryExtensions
         this IEnumerable<KeyValuePair<TKey, TValue>> dictionary)
         where TKey : notnull, IEquatable<TKey>
     {
-        Guard.IsNotNull(dictionary);
+        ArgumentNullException.ThrowIfNull(dictionary);
         return new ValueDictionary<TKey, TValue>(dictionary);
     }
 
@@ -36,7 +36,7 @@ public static class DictionaryExtensions
         KeyValuePair<TKey, TValue> keyValuePair)
         where TKey : notnull
     {
-        Guard.IsNotNull(dictionary);
+        ArgumentNullException.ThrowIfNull(dictionary);
         dictionary.AddOrSet(keyValuePair.Key, keyValuePair.Value);
     }
 
@@ -46,7 +46,7 @@ public static class DictionaryExtensions
         TValue value)
         where TKey : notnull
     {
-        Guard.IsNotNull(dictionary);
+        ArgumentNullException.ThrowIfNull(dictionary);
         dictionary[key] = value;
     }
 
@@ -55,8 +55,8 @@ public static class DictionaryExtensions
         IEnumerable<KeyValuePair<TKey, TValue>> keyValuePairs)
         where TKey : notnull
     {
-        Guard.IsNotNull(dictionary);
-        Guard.IsNotNull(keyValuePairs);
+        ArgumentNullException.ThrowIfNull(dictionary);
+        ArgumentNullException.ThrowIfNull(keyValuePairs);
 
         foreach (var item in keyValuePairs)
         {
@@ -75,8 +75,8 @@ public static class DictionaryExtensions
     /// <exception cref="KeyNotFoundException">A key was specified that did not match the key of any element in the collection.</exception>
     public static IEnumerable<TItem> GetAll<TKey, TItem>(this IDictionary<TKey, TItem> dictionary, IEnumerable<TKey> keys) where TKey : notnull
     {
-        Guard.IsNotNull(dictionary);
-        Guard.IsNotNull(keys);
+        ArgumentNullException.ThrowIfNull(dictionary);
+        ArgumentNullException.ThrowIfNull(keys);
 
         foreach (var k in keys)
         {
@@ -93,7 +93,7 @@ public static class DictionaryExtensions
         KeyValuePair<TKey, TValue> keyValuePair)
         where TKey : notnull
     {
-        Guard.IsNotNull(dictionary);
+        ArgumentNullException.ThrowIfNull(dictionary);
 
         if (dictionary.TryGetValue(keyValuePair.Key, out var value))
         {
@@ -107,7 +107,7 @@ public static class DictionaryExtensions
         this IDictionary<TKey, TValue> dictionary,
         TKey key)
     {
-        Guard.IsNotNull(dictionary);
+        ArgumentNullException.ThrowIfNull(dictionary);
 
         if (dictionary.TryGetValue(key, out var value))
         {
@@ -121,7 +121,7 @@ public static class DictionaryExtensions
         this IReadOnlyDictionary<TKey, TValue> dictionary,
         TKey key)
     {
-        Guard.IsNotNull(dictionary);
+        ArgumentNullException.ThrowIfNull(dictionary);
 
         if (dictionary.TryGetValue(key, out var value))
         {

@@ -26,7 +26,7 @@ public readonly record struct Code
 
     public Code(string code)
     {
-        Guard.IsNotNull(code);
+        ArgumentNullException.ThrowIfNull(code);
 
         code = code.Trim();
 
@@ -140,7 +140,7 @@ public readonly record struct Code
 
     public static Code Parse(string s, IFormatProvider? provider)
     {
-        Guard.IsNotNull(s);
+        ArgumentNullException.ThrowIfNull(s);
         return Parse(s.AsSpan(), provider);
     }
 

@@ -29,7 +29,7 @@ public sealed class JsonUtf8SpanSerializableValueConverter<TValue, T> : JsonConv
 
     public override void Write(Utf8JsonWriter writer, TValue value, JsonSerializerOptions options)
     {
-        Guard.IsNotNull(writer);
+        ArgumentNullException.ThrowIfNull(writer);
 
         byte[]? rented = null;
 

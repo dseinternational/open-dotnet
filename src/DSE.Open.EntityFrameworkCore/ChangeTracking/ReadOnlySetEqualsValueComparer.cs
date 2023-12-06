@@ -31,7 +31,7 @@ public class ReadOnlySetEqualsValueComparer<
 
     private static int GenerateHash(TCollection values)
     {
-        Guard.IsNotNull(values);
+        ArgumentNullException.ThrowIfNull(values);
 
         var hash = 0;
 

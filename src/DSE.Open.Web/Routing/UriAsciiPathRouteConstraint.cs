@@ -18,8 +18,8 @@ public class UriAsciiPathRouteConstraint : IRouteConstraint, IParameterLiteralNo
         RouteValueDictionary values,
         RouteDirection routeDirection)
     {
-        Guard.IsNotNull(routeKey);
-        Guard.IsNotNull(values);
+        ArgumentNullException.ThrowIfNull(routeKey);
+        ArgumentNullException.ThrowIfNull(values);
 
         if (values.TryGetValue(routeKey, out var value))
         {

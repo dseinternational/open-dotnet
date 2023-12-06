@@ -60,7 +60,7 @@ public readonly record struct Sign : ISpanFormattable, ISpanParsable<Sign>
 
     public static Sign Parse(string s, IFormatProvider? provider)
     {
-        Guard.IsNotNull(s);
+        ArgumentNullException.ThrowIfNull(s);
 
         if (!TryParse(s, provider, out var result))
         {
@@ -95,7 +95,7 @@ public readonly record struct Sign : ISpanFormattable, ISpanParsable<Sign>
                 }
             }
         }
-
+        
         result = default;
         return false;
     }

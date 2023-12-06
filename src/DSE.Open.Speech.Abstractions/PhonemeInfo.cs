@@ -17,7 +17,7 @@ public static class PhonemeInfo
     /// <exception cref="ArgumentException"><paramref name="sound"/> contains only whitespace</exception>
     public static bool IsConsonant(string sound)
     {
-        Guard.IsNotNullOrWhiteSpace(sound);
+        ArgumentException.ThrowIfNullOrWhiteSpace(sound);
         return Consonants.Contains(sound[0]);
     }
 
@@ -31,7 +31,7 @@ public static class PhonemeInfo
     /// <exception cref="ArgumentException"><paramref name="sound"/> contains only whitespace</exception>
     public static bool IsVowel(string sound)
     {
-        Guard.IsNotNullOrWhiteSpace(sound);
+        ArgumentException.ThrowIfNullOrWhiteSpace(sound);
         return Vowels.Contains(sound[0]);
     }
 
@@ -46,7 +46,7 @@ public static class PhonemeInfo
     /// <exception cref="ArgumentException"><paramref name="sound"/> contains only whitespace</exception>
     public static bool IsSpeechSoundType(string sound, SpeechSoundType speechSoundType)
     {
-        Guard.IsNotNullOrWhiteSpace(sound);
+        ArgumentException.ThrowIfNullOrWhiteSpace(sound);
 
         switch (speechSoundType)
         {

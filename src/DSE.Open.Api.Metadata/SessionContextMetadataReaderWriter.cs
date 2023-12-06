@@ -36,7 +36,7 @@ public sealed partial class SessionContextMetadataReaderWriter : IMetadataReader
 
     public SessionContextMetadataReaderWriter(ILogger<SessionContextMetadataReaderWriter> logger)
     {
-        Guard.IsNotNull(logger);
+        ArgumentNullException.ThrowIfNull(logger);
         _logger = logger;
     }
 
@@ -46,9 +46,9 @@ public sealed partial class SessionContextMetadataReaderWriter : IMetadataReader
         MetadataStorageContext context,
         CancellationToken cancellationToken = default)
     {
-        Guard.IsNotNull(context);
-        Guard.IsNotNull(request);
-        Guard.IsNotNull(result);
+        ArgumentNullException.ThrowIfNull(context);
+        ArgumentNullException.ThrowIfNull(request);
+        ArgumentNullException.ThrowIfNull(result);
 
         SessionContext? sessionContext;
 
@@ -90,9 +90,9 @@ public sealed partial class SessionContextMetadataReaderWriter : IMetadataReader
         MetadataStorageContext context,
         CancellationToken cancellationToken = default)
     {
-        Guard.IsNotNull(context);
-        Guard.IsNotNull(request);
-        Guard.IsNotNull(result);
+        ArgumentNullException.ThrowIfNull(context);
+        ArgumentNullException.ThrowIfNull(request);
+        ArgumentNullException.ThrowIfNull(result);
 
         if (!context.Data.TryGetValue(SessionContextMetadataKeys.SessionContext, out var sessionContextValue))
         {
@@ -127,9 +127,9 @@ public sealed partial class SessionContextMetadataReaderWriter : IMetadataReader
         MetadataStorageContext context,
         CancellationToken cancellationToken = default)
     {
-        Guard.IsNotNull(request);
-        Guard.IsNotNull(result);
-        Guard.IsNotNull(context);
+        ArgumentNullException.ThrowIfNull(request);
+        ArgumentNullException.ThrowIfNull(result);
+        ArgumentNullException.ThrowIfNull(context);
 
         if (!request.Properties.TryGetValue(SessionContextMetadataKeys.SessionContext, out var sessionContextObj)
             || sessionContextObj is not SessionContext sessionContext)
@@ -152,9 +152,9 @@ public sealed partial class SessionContextMetadataReaderWriter : IMetadataReader
         MetadataStorageContext context,
         CancellationToken cancellationToken = default)
     {
-        Guard.IsNotNull(request);
-        Guard.IsNotNull(result);
-        Guard.IsNotNull(context);
+        ArgumentNullException.ThrowIfNull(request);
+        ArgumentNullException.ThrowIfNull(result);
+        ArgumentNullException.ThrowIfNull(context);
 
         if (!result.Properties.TryGetValue(SessionContextMetadataKeys.SessionContext, out var sessionContextObj)
             || sessionContextObj is not SessionContext sessionContext)

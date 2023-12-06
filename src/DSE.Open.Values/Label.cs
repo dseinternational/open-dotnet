@@ -34,7 +34,7 @@ public readonly partial struct Label : IComparableValue<Label, CharSequence>
 
     private Label(string label, bool skipValidation)
     {
-        Guard.IsNotNullOrWhiteSpace(label);
+        ArgumentException.ThrowIfNullOrWhiteSpace(label);
 
         if (!skipValidation)
         {

@@ -34,7 +34,7 @@ public class JsonStringInt64Converter : JsonConverter<long>
 
     public override void Write(Utf8JsonWriter writer, long value, JsonSerializerOptions options)
     {
-        Guard.IsNotNull(writer);
+        ArgumentNullException.ThrowIfNull(writer);
         writer.WriteStringValue(value.ToStringInvariant());
     }
 }

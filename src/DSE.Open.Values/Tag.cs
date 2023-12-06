@@ -34,7 +34,7 @@ public readonly partial struct Tag : IComparableValue<Tag, AsciiString>, IUtf8Sp
 
     public Tag(string tag) : this(tag, false)
     {
-        Guard.IsNotNull(tag);
+        ArgumentNullException.ThrowIfNull(tag);
     }
 
     public Tag(ReadOnlySpan<char> tag) : this(tag, false)

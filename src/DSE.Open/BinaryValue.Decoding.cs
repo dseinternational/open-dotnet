@@ -46,19 +46,19 @@ public readonly partial record struct BinaryValue
 
     public static bool TryFromBase62EncodedString(string value, out BinaryValue binaryValue)
     {
-        Guard.IsNotNull(value);
+        ArgumentNullException.ThrowIfNull(value);
         return TryFromEncodedString(value, BinaryStringEncoding.Base62, out binaryValue);
     }
 
     public static bool TryFromBase64EncodedString(string value, out BinaryValue binaryValue)
     {
-        Guard.IsNotNull(value);
+        ArgumentNullException.ThrowIfNull(value);
         return TryFromEncodedString(value, BinaryStringEncoding.Base64, out binaryValue);
     }
 
     public static bool TryFromEncodedString(string value, BinaryStringEncoding encoding, out BinaryValue binaryValue)
     {
-        Guard.IsNotNull(value);
+        ArgumentNullException.ThrowIfNull(value);
         return TryFromEncodedChars(value.AsSpan(), encoding, out binaryValue);
     }
 

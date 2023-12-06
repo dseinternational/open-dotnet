@@ -56,7 +56,7 @@ public readonly record struct EmailAddress : IComparable<EmailAddress>, ISpanPar
 
     public EmailAddress(string email)
     {
-        Guard.IsNotNullOrWhiteSpace(email);
+        ArgumentException.ThrowIfNullOrWhiteSpace(email);
 
         email = email.Trim();
 
@@ -221,7 +221,7 @@ public readonly record struct EmailAddress : IComparable<EmailAddress>, ISpanPar
     /// <returns></returns>
     public bool Contains(string value, StringComparison comparisonType)
     {
-        Guard.IsNotNull(value);
+        ArgumentNullException.ThrowIfNull(value);
         return Contains(value.AsSpan(), comparisonType);
     }
 
@@ -257,7 +257,7 @@ public readonly record struct EmailAddress : IComparable<EmailAddress>, ISpanPar
 
     public static EmailAddress Parse(string s, IFormatProvider? provider)
     {
-        Guard.IsNotNull(s);
+        ArgumentNullException.ThrowIfNull(s);
         return Parse(s.AsSpan(), provider);
     }
 

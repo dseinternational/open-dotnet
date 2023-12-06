@@ -28,7 +28,7 @@ public class ReadOnlyWordFeatureCollection
 
     public ReadOnlyWordFeatureCollection(IEnumerable<WordFeature> features)
     {
-        Guard.IsNotNull(features);
+        ArgumentNullException.ThrowIfNull(features);
         _features = new WordFeatureCollection(features);
     }
 
@@ -113,7 +113,7 @@ public class ReadOnlyWordFeatureCollection
 
     public static ReadOnlyWordFeatureCollection Parse(string s, IFormatProvider? provider)
     {
-        Guard.IsNotNull(s, nameof(s));
+        ArgumentNullException.ThrowIfNull(s, nameof(s));
         return Parse(s.AsSpan(), provider);
     }
 

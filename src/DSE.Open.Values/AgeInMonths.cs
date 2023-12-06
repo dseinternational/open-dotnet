@@ -98,7 +98,7 @@ public readonly record struct AgeInMonths : ISpanFormattable, ISpanParsable<AgeI
 
     public static AgeInMonths Parse(string s, IFormatProvider? provider)
     {
-        Guard.IsNotNull(s);
+        ArgumentNullException.ThrowIfNull(s);
         return Parse(s.AsSpan(), provider);
     }
 

@@ -15,7 +15,7 @@ public static class RandomValueGenerator
     public static string GetStringValue(int length, string validCharacters)
     {
         Guard.IsGreaterThan(length, 0);
-        Guard.IsNotNullOrWhiteSpace(validCharacters);
+        ArgumentException.ThrowIfNullOrWhiteSpace(validCharacters);
         Guard.IsGreaterThan(validCharacters.Length, 8);
 
         var data = RandomNumberGenerator.GetBytes(length * 2);

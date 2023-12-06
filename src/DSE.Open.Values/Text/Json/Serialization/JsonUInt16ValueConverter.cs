@@ -14,7 +14,7 @@ public class JsonUInt16ValueConverter<TValue> : JsonConverter<TValue>
 
     public override void Write(Utf8JsonWriter writer, TValue value, JsonSerializerOptions options)
     {
-        Guard.IsNotNull(writer);
+        ArgumentNullException.ThrowIfNull(writer);
         writer.WriteNumberValue((ushort)value);
     }
 }
