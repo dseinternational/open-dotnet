@@ -6,16 +6,6 @@
     <RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
-    <GeneratedFolder>gen</GeneratedFolder>
-    <CompilerGeneratedFilesOutputPath>$(GeneratedFolder)\$(TargetFramework)</CompilerGeneratedFilesOutputPath>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="$(GeneratedFolder)/**/*.cs" />
-  </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="TimeZoneNames" />
   </ItemGroup>
