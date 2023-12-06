@@ -101,13 +101,12 @@ public static class StreamExtensions
 
     public static Task<string> ReadToEndAsStringAsync(this Stream stream)
     {
-        using var reader = new StreamReader(stream);
-        return reader.ReadToEndAsync();
+        return ReadToEndAsStringAsync(stream, Encoding.UTF8);
     }
 
-    public static Task<string> ReadToEndAsStringAsync(this Stream stream, Encoding encoding)
+    public static async Task<string> ReadToEndAsStringAsync(this Stream stream, Encoding encoding)
     {
         using var reader = new StreamReader(stream, encoding);
-        return reader.ReadToEndAsync();
+        return await reader.ReadToEndAsync().ConfigureAwait(false);
     }
 }
