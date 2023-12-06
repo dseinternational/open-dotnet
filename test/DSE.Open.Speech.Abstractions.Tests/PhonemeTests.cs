@@ -8,7 +8,6 @@ namespace DSE.Open.Speech.Tests;
 
 public class PhonemeTests
 {
-
     [Theory]
     [MemberData(nameof(Phonemes))]
     public void Equality(Phoneme p)

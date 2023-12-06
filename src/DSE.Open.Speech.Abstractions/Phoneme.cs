@@ -4,7 +4,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
-using DSE.Open.Speech.Text.Json.Serialization;
+using DSE.Open.Speech.Serialization;
 
 namespace DSE.Open.Speech;
 
@@ -152,11 +152,8 @@ public readonly partial struct Phoneme : IEquatable<Phoneme>, ISpanFormattable, 
 
         if (s.Length > MaxLength)
         {
-            if (s.Length > MaxLength)
-            {
-                result = default;
-                return false;
-            }
+            result = default;
+            return false;
         }
 
         result = new Phoneme(s, true);
@@ -169,7 +166,10 @@ public readonly partial struct Phoneme : IEquatable<Phoneme>, ISpanFormattable, 
         return Parse(s.AsSpan(), provider);
     }
 
-    public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, [MaybeNullWhen(false)] out Phoneme result)
+    public static bool TryParse(
+        [NotNullWhen(true)] string? s,
+        IFormatProvider? provider,
+        [MaybeNullWhen(false)] out Phoneme result)
     {
         if (s is null)
         {

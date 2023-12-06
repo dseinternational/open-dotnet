@@ -3,11 +3,14 @@
 
 using DSE.Open.Text.Json.Serialization;
 
-namespace DSE.Open.Speech.Text.Json.Serialization;
+namespace DSE.Open.Speech.Serialization;
 
 public class JsonStringPhonemeConverter : SpanParsableCharWritingJsonConverter<Phoneme>
 {
     public static readonly JsonStringPhonemeConverter Default = new();
 
-    protected override int GetMaxCharCountToWrite(Phoneme value) => Phoneme.MaxLength;
+    protected override int GetMaxCharCountToWrite(Phoneme value)
+    {
+        return Phoneme.MaxLength;
+    }
 }
