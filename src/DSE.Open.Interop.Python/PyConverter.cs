@@ -1,12 +1,11 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using DSE.Language.Annotations.Stanza.Interop;
 using Python.Runtime;
 
-namespace DSE.Open.Language.Annotations.Nlp.Stanza.Interop;
+namespace DSE.Open.Interop.Python;
 
-internal static class PyConverter
+public static class PyConverter
 {
     public static bool GetBool(dynamic pyBool)
     {
@@ -162,7 +161,7 @@ internal static class PyConverter
         return T.FromPyObject(pyObj);
     }
 
-    public static List<T> GetList<T>(dynamic pyList)
+    public static IList<T> GetList<T>(dynamic pyList)
         where T : IPyObjectWrapper<T>
     {
         ArgumentNullException.ThrowIfNull((object?)pyList);
@@ -185,7 +184,7 @@ internal static class PyConverter
 
                 if (item is null)
                 {
-                    throw new StanzaException($"Failed to create {typeof(T).Name} object.");
+                    throw new PythonInteropException($"Failed to create {typeof(T).Name} object.");
                 }
 
                 list.Add(item);
@@ -195,9 +194,7 @@ internal static class PyConverter
         }
     }
 
-    public delegate T ItemFactory<T>(dynamic pyObj);
-
-    public static List<T> GetList<T>(dynamic pyList, ItemFactory<T> factory)
+    public static IList<T> GetList<T>(dynamic pyList, PyWrapperFactory<T> factory)
     {
         ArgumentNullException.ThrowIfNull((object?)pyList);
 
@@ -224,7 +221,7 @@ internal static class PyConverter
 
                 if (item is null)
                 {
-                    throw new StanzaException($"Failed to create {typeof(T).Name} object.");
+                    throw new PythonInteropException($"Failed to create {typeof(T).Name} object.");
                 }
 
                 list.Add(item);

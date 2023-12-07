@@ -1,7 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using DSE.Open.Language.Annotations.Nlp.Stanza.Interop;
+using DSE.Open.Interop.Python;
 
 namespace DSE.Open.Language.Annotations.Nlp.Stanza;
 
@@ -28,7 +28,7 @@ public class Document
 
         _sentences = new(() =>
         {
-            return PyConverter.GetList<Sentence>(_doc.sentences, (PyConverter.ItemFactory<Sentence>)del);
+            return PyConverter.GetList<Sentence>(_doc.sentences, (PyWrapperFactory<Sentence>)del);
 
             Sentence del(dynamic s)
             {
@@ -38,7 +38,7 @@ public class Document
 
         _entities = new(() =>
         {
-            return PyConverter.GetList<Span>(_doc.entities, (PyConverter.ItemFactory<Span>)del);
+            return PyConverter.GetList<Span>(_doc.entities, (PyWrapperFactory<Span>)del);
 
             Span del(dynamic s)
             {

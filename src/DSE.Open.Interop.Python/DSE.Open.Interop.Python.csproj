@@ -9,9 +9,4 @@
     <PackageReference Include="pythonnet" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\DSE.Open.Interop.Python\DSE.Open.Interop.Python.csproj" />
-    <ProjectReference Include="..\DSE.Open.Language.Annotations.Books\DSE.Open.Language.Annotations.Books.csproj" />
-  </ItemGroup>
-
 </Project>

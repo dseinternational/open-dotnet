@@ -1,8 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using DSE.Language.Annotations.Stanza.Interop;
-using DSE.Open.Language.Annotations.Nlp.Stanza.Interop;
+using DSE.Open.Interop.Python;
 using Python.Runtime;
 
 namespace DSE.Open.Language.Annotations.Nlp.Stanza;
@@ -31,7 +30,7 @@ public class Token : IPyObjectWrapper<Token>
 
         _words = new Lazy<List<Word>>(() =>
         {
-            return PyConverter.GetList<Word>(_token.words, (PyConverter.ItemFactory<Word>)del);
+            return PyConverter.GetList<Word>(_token.words, (PyWrapperFactory<Word>)del);
 
             Word del(dynamic w)
             {
