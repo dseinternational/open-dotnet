@@ -157,9 +157,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Specifications.Abs
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Specifications.Tests", "test\DSE.Open.Specifications.Tests\DSE.Open.Specifications.Tests.csproj", "{9FB14414-8E83-4033-8FC8-D93BA9EA4A03}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.Language.Annotations", "src\DSE.Open.Language.Annotations\DSE.Open.Language.Annotations.csproj", "{B46FABAE-CA9F-444A-BF43-F39EDFF42A02}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Language.Annotations", "src\DSE.Open.Language.Annotations\DSE.Open.Language.Annotations.csproj", "{B46FABAE-CA9F-444A-BF43-F39EDFF42A02}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.Language.Annotations.Tests", "test\DSE.Open.Language.Annotations.Tests\DSE.Open.Language.Annotations.Tests.csproj", "{5526D4EA-2DCC-4344-A5F5-98B1482372D3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Language.Annotations.Tests", "test\DSE.Open.Language.Annotations.Tests\DSE.Open.Language.Annotations.Tests.csproj", "{5526D4EA-2DCC-4344-A5F5-98B1482372D3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.Language.Annotations.Books", "src\DSE.Open.Language.Annotations.Books\DSE.Open.Language.Annotations.Books.csproj", "{F8A9D12C-064B-4D7D-B5A6-A15A734408E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.Language.Readability", "src\DSE.Open.Language.Readability\DSE.Open.Language.Readability.csproj", "{49B9380E-3926-4626-99AC-352A45CD0698}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.Language.Annotations.Nlp.Stanza", "src\DSE.Open.Language.Annotations.Nlp.Stanza\DSE.Open.Language.Annotations.Nlp.Stanza.csproj", "{987C490D-F944-432C-81FE-62EA6716435C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.Language.Annotations.Nlp.Stanza.Tests", "test\DSE.Open.Language.Annotations.Nlp.Stanza.Tests\DSE.Open.Language.Annotations.Nlp.Stanza.Tests.csproj", "{7614D3CF-82A9-4EBB-A028-618BC9ECF907}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -427,6 +435,22 @@ Global
 		{5526D4EA-2DCC-4344-A5F5-98B1482372D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5526D4EA-2DCC-4344-A5F5-98B1482372D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5526D4EA-2DCC-4344-A5F5-98B1482372D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8A9D12C-064B-4D7D-B5A6-A15A734408E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8A9D12C-064B-4D7D-B5A6-A15A734408E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8A9D12C-064B-4D7D-B5A6-A15A734408E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8A9D12C-064B-4D7D-B5A6-A15A734408E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49B9380E-3926-4626-99AC-352A45CD0698}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49B9380E-3926-4626-99AC-352A45CD0698}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49B9380E-3926-4626-99AC-352A45CD0698}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49B9380E-3926-4626-99AC-352A45CD0698}.Release|Any CPU.Build.0 = Release|Any CPU
+		{987C490D-F944-432C-81FE-62EA6716435C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{987C490D-F944-432C-81FE-62EA6716435C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{987C490D-F944-432C-81FE-62EA6716435C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{987C490D-F944-432C-81FE-62EA6716435C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7614D3CF-82A9-4EBB-A028-618BC9ECF907}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7614D3CF-82A9-4EBB-A028-618BC9ECF907}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7614D3CF-82A9-4EBB-A028-618BC9ECF907}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7614D3CF-82A9-4EBB-A028-618BC9ECF907}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -497,6 +521,10 @@ Global
 		{9FB14414-8E83-4033-8FC8-D93BA9EA4A03} = {850B3E2C-6172-4CF9-9E83-AD0997C57CA3}
 		{B46FABAE-CA9F-444A-BF43-F39EDFF42A02} = {D2529453-80C3-4F06-BBD0-6B58EF65EF99}
 		{5526D4EA-2DCC-4344-A5F5-98B1482372D3} = {850B3E2C-6172-4CF9-9E83-AD0997C57CA3}
+		{F8A9D12C-064B-4D7D-B5A6-A15A734408E4} = {D2529453-80C3-4F06-BBD0-6B58EF65EF99}
+		{49B9380E-3926-4626-99AC-352A45CD0698} = {D2529453-80C3-4F06-BBD0-6B58EF65EF99}
+		{987C490D-F944-432C-81FE-62EA6716435C} = {D2529453-80C3-4F06-BBD0-6B58EF65EF99}
+		{7614D3CF-82A9-4EBB-A028-618BC9ECF907} = {850B3E2C-6172-4CF9-9E83-AD0997C57CA3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3D3BE91A-3636-45E3-A6BF-8C09D5A9782A}
