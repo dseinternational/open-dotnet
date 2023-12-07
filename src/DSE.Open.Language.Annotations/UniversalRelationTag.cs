@@ -187,6 +187,7 @@ public readonly partial struct UniversalRelationTag
     [
         AdjectivalModifier,
         AdverbialModifier,
+        AdverbialClauseModifier,        
         AgentModifier,
         AppositionalModifier,
         Auxiliary,
