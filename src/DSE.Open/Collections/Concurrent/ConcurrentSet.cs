@@ -36,7 +36,7 @@ public class ConcurrentSet<T> : IReadOnlyCollection<T>, ICollection<T>
     /// that is used to determine equality for the values in the set.
     /// </summary>
     /// <value>
-    /// The <see cref="IEqualityComparer{T}" /> generic interface implementation that is used to 
+    /// The <see cref="IEqualityComparer{T}" /> generic interface implementation that is used to
     /// provide hash values and determine equality for the values in the current <see cref="ConcurrentSet{T}" />.
     /// </value>
     /// <remarks>
@@ -193,16 +193,16 @@ public class ConcurrentSet<T> : IReadOnlyCollection<T>, ICollection<T>
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="ConcurrentSet{T}"/> 
-    /// class that contains elements copied from the specified <see cref="IEnumerable"/>, 
-    /// has the specified concurrency level, has the specified initial capacity, and uses the specified 
+    /// Initializes a new instance of the <see cref="ConcurrentSet{T}"/>
+    /// class that contains elements copied from the specified <see cref="IEnumerable"/>,
+    /// has the specified concurrency level, has the specified initial capacity, and uses the specified
     /// <see cref="IEqualityComparer{T}"/>.
     /// </summary>
-    /// <param name="concurrencyLevel">The estimated number of threads that will update the 
+    /// <param name="concurrencyLevel">The estimated number of threads that will update the
     /// <see cref="ConcurrentSet{T}"/> concurrently.</param>
-    /// <param name="collection">The <see cref="IEnumerable{T}"/> whose elements are copied to the new 
+    /// <param name="collection">The <see cref="IEnumerable{T}"/> whose elements are copied to the new
     /// <see cref="ConcurrentSet{T}"/>.</param>
-    /// <param name="comparer">The <see cref="IEqualityComparer{T}"/> implementation to use 
+    /// <param name="comparer">The <see cref="IEqualityComparer{T}"/> implementation to use
     /// when comparing items.</param>
     /// <exception cref="ArgumentNullException">
     /// <paramref name="collection"/> is a null reference.
@@ -822,7 +822,7 @@ public class ConcurrentSet<T> : IReadOnlyCollection<T>, ICollection<T>
                 // We want to make sure that GrowTable will not be called again, since table is at the maximum size.
                 // To achieve that, we set the budget to int.MaxValue.
                 //
-                // (There is one special case that would allow GrowTable() to be called in the future: 
+                // (There is one special case that would allow GrowTable() to be called in the future:
                 // calling Clear() on the ConcurrentHashSet will shrink the table and lower the budget.)
                 _budget = int.MaxValue;
             }

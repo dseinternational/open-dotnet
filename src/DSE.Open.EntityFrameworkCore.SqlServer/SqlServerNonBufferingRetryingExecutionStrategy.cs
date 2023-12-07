@@ -18,7 +18,7 @@ namespace DSE.Open.EntityFrameworkCore.SqlServer;
 /// </summary>
 /// <remarks>
 ///     <para>
-///         By default, EF buffers results when an execution strategy retries on failures. This 
+///         By default, EF buffers results when an execution strategy retries on failures. This
 ///         increases memory load where results would otherwise be streamed. For resultsets with
 ///         many rows, or very large rows, this can substantially increase memory load.
 ///     </para>

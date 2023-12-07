@@ -136,9 +136,9 @@ public static class NotificationCollectionExtensions
     }
 
     /*
-     * 
+     *
      * TODO: Move to DSE.Open.Results assembly
-     * 
+     *
     public static Result ToResult(this IEnumerable<Notification> notifications)
     {
         ArgumentNullException.ThrowIfNull(notifications);
