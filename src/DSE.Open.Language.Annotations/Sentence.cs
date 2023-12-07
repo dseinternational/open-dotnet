@@ -15,7 +15,10 @@ public sealed record Sentence
     public int Index { get; init; } = 1;
 
     [JsonPropertyName("sent_id")]
-    public string? Id { get; init; } = string.Empty;
+    public string? Id { get; init; }
+
+    [JsonPropertyName("doc_id")]
+    public string? DocumentId { get; init; }
 
     [JsonPropertyName("language")]
     public LanguageTag? Language { get; init; }
@@ -28,4 +31,7 @@ public sealed record Sentence
 
     [JsonIgnore]
     public ReadOnlyValueCollection<Word> Words => _words ??= [.. Tokens.SelectMany(t => t.Words)];
+
+    [JsonPropertyName("comments")]
+    public required ReadOnlyValueCollection<string> Comments { get; init; } = [];
 }
