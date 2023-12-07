@@ -9,6 +9,9 @@ namespace DSE.Open.Language.Annotations;
 
 public sealed record Sentence
 {
+    [JsonPropertyName("index")]
+    public int Index { get; init; } = 1;
+
     [JsonPropertyName("sent_id")]
     public string? Id { get; init; } = string.Empty;
 
@@ -19,5 +22,5 @@ public sealed record Sentence
     public required string Text { get; init; }
 
     [JsonPropertyName("tokens")]
-    public required ReadOnlyValueCollection<Word> Tokens { get; init; } = [];
+    public required ReadOnlyValueCollection<Token> Tokens { get; init; } = [];
 }
