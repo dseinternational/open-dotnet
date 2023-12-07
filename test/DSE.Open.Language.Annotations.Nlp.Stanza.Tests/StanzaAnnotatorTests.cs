@@ -1,26 +1,18 @@
-// Copyright (c) Down Syndrome Education Enterprises CIC. All Rights Reserved.
-// Information contained herein is PROPRIETARY AND CONFIDENTIAL.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using DSE.Open.Globalization;
-using DSE.Open.Testing.Xunit;
 using DSE.Open.Testing.Xunit.Stanza;
 
 namespace DSE.Open.Language.Annotations.Nlp.Stanza;
 
 [Collection(nameof(StanzaContextCollection))]
-public class StanzaAnnotatorTests : LoggedTestsBase
+public class StanzaAnnotatorTests : StanzaContextTestsBase
 {
-    public StanzaAnnotatorTests(StanzaContextFixture fixture, ITestOutputHelper output) : base(output)
+    public StanzaAnnotatorTests(StanzaContextFixture fixture, ITestOutputHelper output)
+        : base(fixture, output)
     {
-        ArgumentNullException.ThrowIfNull(fixture);
-
-        PythonContext = fixture.PythonContext;
-        StanzaContext = fixture.StanzaContext;
     }
-
-    public PythonContext PythonContext { get; }
-
-    public StanzaContext StanzaContext { get; }
 
     [StanzaNlpFact("en")]
     public async Task CanAnnotateText()

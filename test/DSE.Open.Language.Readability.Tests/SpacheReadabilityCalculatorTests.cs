@@ -2,24 +2,16 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using DSE.Open.Language.Annotations.Nlp.Stanza;
-using DSE.Open.Testing.Xunit;
 
 namespace DSE.Open.Language.Readability;
 
 [Collection(nameof(StanzaContextCollection))]
-public class SpacheReadabilityCalculatorTests : LoggedTestsBase
+public class SpacheReadabilityCalculatorTests : StanzaContextTestsBase
 {
-    public SpacheReadabilityCalculatorTests(StanzaContextFixture fixture, ITestOutputHelper output) : base(output)
+    public SpacheReadabilityCalculatorTests(StanzaContextFixture fixture, ITestOutputHelper output)
+        : base(fixture, output)
     {
-        ArgumentNullException.ThrowIfNull(fixture);
-
-        PythonContext = fixture.PythonContext;
-        StanzaContext = fixture.StanzaContext;
     }
-
-    public PythonContext PythonContext { get; }
-
-    public StanzaContext StanzaContext { get; }
 
     [Theory]
     [InlineData(2, 30, 6, 4.114)]
