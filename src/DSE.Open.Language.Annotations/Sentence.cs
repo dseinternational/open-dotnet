@@ -7,7 +7,7 @@ using DSE.Open.Globalization;
 
 namespace DSE.Open.Language.Annotations;
 
-public sealed record Sentence
+public record Sentence
 {
     private ReadOnlyValueCollection<Word>? _words;
 

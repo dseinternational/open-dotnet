@@ -9,7 +9,7 @@ using DSE.Open.Values;
 namespace DSE.Open.Language.Annotations;
 
 [CollectionBuilder(typeof(ReadOnlyWordFeatureValueCollection), nameof(Create))]
-public class ReadOnlyWordFeatureValueCollection
+public sealed class ReadOnlyWordFeatureValueCollection
     : ReadOnlyKeyedValueCollection<AlphaNumericCode, WordFeature>,
       ISpanParsable<ReadOnlyWordFeatureValueCollection>,
       ISpanFormattable

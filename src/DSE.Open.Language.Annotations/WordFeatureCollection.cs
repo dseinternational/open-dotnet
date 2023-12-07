@@ -12,7 +12,7 @@ namespace DSE.Open.Language.Annotations;
 
 [JsonConverter(typeof(JsonStringWordFeatureCollectionConverter))]
 [CollectionBuilder(typeof(WordFeatureCollection), nameof(Create))]
-public class WordFeatureCollection
+public sealed class WordFeatureCollection
     : IList<WordFeature>,
       ISpanParsable<WordFeatureCollection>,
       ISpanFormattable

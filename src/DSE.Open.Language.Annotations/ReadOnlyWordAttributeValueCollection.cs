@@ -1,4 +1,4 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Diagnostics.CodeAnalysis;
@@ -9,7 +9,7 @@ using DSE.Open.Values;
 namespace DSE.Open.Language.Annotations;
 
 [CollectionBuilder(typeof(ReadOnlyWordAttributeValueCollection), nameof(Create))]
-public class ReadOnlyWordAttributeValueCollection
+public sealed class ReadOnlyWordAttributeValueCollection
     : ReadOnlyKeyedValueCollection<AlphaNumericCode, WordAttribute>,
       ISpanParsable<ReadOnlyWordAttributeValueCollection>,
       ISpanFormattable

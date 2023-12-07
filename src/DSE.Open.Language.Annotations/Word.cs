@@ -14,7 +14,7 @@ namespace DSE.Open.Language.Annotations;
 /// Out token/word model is based on the CoNLL-U format and Stanza NLP
 /// data objects (<see href="https://stanfordnlp.github.io/stanza/data_objects.html#token"/>.
 /// </remarks>
-public sealed record class Word
+public record class Word
     : ISpanFormattable,
       ISpanParsable<Word>
 {

@@ -7,7 +7,7 @@ using DSE.Open.Globalization;
 
 namespace DSE.Open.Language.Annotations;
 
-public sealed record Document
+public record Document
 {
     [JsonPropertyName("doc_id")]
     public string? Id { get; init; }
