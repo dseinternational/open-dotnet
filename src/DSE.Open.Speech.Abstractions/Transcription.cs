@@ -97,7 +97,7 @@ public readonly partial struct Transcription
                 || (value[0] == Slash && value[^1] == Slash)
                 || (value[0] == LeftBrace && value[^1] == RightBrace)
             )
-            && AllAreInAlphabet(value[1..^2]);
+            && AllAreInAlphabet(value[1..^1]);
     }
 
     private static bool AllAreInAlphabet(ReadOnlySpan<char> value)
@@ -106,7 +106,6 @@ public readonly partial struct Transcription
         {
             if (!Alphabet.Contains(c))
             {
-                Debugger.Break();
                 return false;
             }
         }
@@ -177,27 +176,31 @@ public readonly partial struct Transcription
             : ThrowHelper.ThrowFormatException<Transcription>($"Could not parse {nameof(Transcription)}");
     }
 
-    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, [MaybeNullWhen(false)] out Transcription result)
+    public static bool TryParse(
+        ReadOnlySpan<char> s,
+        IFormatProvider? provider,
+        [MaybeNullWhen(false)] out Transcription result)
     {
         s = s.Trim();
 
         if (s.Length < 3
+            || s.Length > MaxLength
             || !((s[0] == LeftSquareBracket && s[^1] == RightSquareBracket)
                 || (s[0] == Slash && s[^1] == Slash)
                 || (s[0] == LeftBrace && s[^1] == RightBrace)))
         {
             result = default;
-            return true;
-        }
-
-        if (s.Length > MaxLength)
-        {
-            result = default;
             return false;
         }
 
-        result = new Transcription(s, true);
-        return true;
+        if (AllAreInAlphabet(s[1..^1]))
+        {
+            result = new Transcription(s, true);
+            return true;
+        }
+
+        result = default;
+        return false;
     }
 
     public static Transcription Parse(string s, IFormatProvider? provider)
