@@ -13,7 +13,7 @@ public class LanguageTagTryParseBenchmarks
 {
     // Best guess at a set of valid language tags which hit the regex
     private static readonly string[] s_validRegexHits =
-    {
+    [
         "az-Cyrl", "az-Cyrl-AZ", "az-Latn", "az-Latn-AZ", "bs-Cyrl", "bs-Cyrl-BA", "bs-Latn", "bs-Latn-BA",
         "zh-Hans", "zh-Hant", "en-029", "ha-Latn", "ha-Latn-NG", "iu-Latn", "iu-Latn-CA", "iu-Cans", "iu-Cans-CA",
         "kok-IN", "dsb-DE", "arn-CL", "mn-Cyrl", "mn-Mong-CN", "quz-BO", "quz-EC", "quz-PE", "smn-FI", "smj-NO",
@@ -21,11 +21,11 @@ public class LanguageTagTryParseBenchmarks
         "sr-Cyrl-CS", "sr-Cyrl-RS", "sr-Latn", "sr-Latn-BA", "sr-Latn-ME", "sr-Latn-CS", "sr-Latn-RS", "nso-ZA",
         "tg-Cyrl-TJ", "tzm-Latn", "tzm-Latn-DZ", "uz-Cyrl", "uz-Cyrl-UZ", "uz-Latn", "uz-Latn-UZ", "sah-RU",
         "az-Arab", "az-Cyrl", "az-Latn", "sr-Cyrl", "sr-Latn", "uz-Cyrl", "uz-Latn", "zh-Hans", "zh-Hant"
-    };
+    ];
 
     // Best guess at a set of invalid language tags which hit the regex
     private static readonly string[] s_invalidRegexHits =
-    {
+    [
         "az-Cyrl-AZ-BA", "az-Latn-AZ-BA", "bs-Cyrl-BA-BA", "bs-Latn-BA-BA", "zh-Hans-Hans", "zh-Hant-Hant",
         "en-029-029", "ha-Latn-NG-NG", "iu-Latn-CA-CA", "iu-Cans-CA-CA", "kok-IN-IN", "dsb-DE-DE", "arn-CL-CL",
         "mn-Cyrl-CN-CN", "mn-Mong-CN-CN", "quz-BO-BO", "quz-EC-EC", "quz-PE-PE", "smn-FI-FI", "smj-NO-NO",
@@ -34,7 +34,7 @@ public class LanguageTagTryParseBenchmarks
         "sr-Latn-RS-RS", "nso-ZA-ZA", "tg-Cyrl-TJ-TJ", "tzm-Latn-DZ-DZ", "uz-Cyrl-UZ-UZ", "uz-Latn-UZ-UZ",
         "sah-RU-RU", "az-Arab-Arab", "az-Cyrl-Cyrl", "az-Latn-Latn", "sr-Cyrl-Cyrl", "sr-Latn-Latn", "uz-Cyrl-Cyrl",
         "uz-Latn-Latn", "zh-Hans-Hans", "zh-Hant-Hant"
-    };
+    ];
 
     [Benchmark]
     public void TryParse_Valid()

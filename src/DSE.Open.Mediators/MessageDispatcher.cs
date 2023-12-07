@@ -62,7 +62,7 @@ public sealed partial class MessageDispatcher : IMessageDispatcher
                     var result = handlerType.InvokeMember(
                         nameof(IMessageHandler<IMessage>.HandleAsync),
                         BindingFlags.InvokeMethod,
-                        null, handler, new object[] { message, cancellationToken }, null);
+                        null, handler, [message, cancellationToken], null);
 
                     if (result is not ValueTask resultTask)
                     {

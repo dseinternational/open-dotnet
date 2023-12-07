@@ -10,13 +10,13 @@ namespace DSE.Open.Data.SqlClient;
 /// </summary>
 public static class SqlServerTransientConnectionExceptionDetector
 {
-    private static readonly string[] s_messages = new[]
-    {
+    private static readonly string[] s_messages =
+    [
         "TCP Provider, error: 40",
         "TCP Provider, error: 35",
         "Execution Timeout Expired",
         "Please retry the connection later"
-    };
+    ];
 
     public static bool ShouldRetryOn(Exception? ex)
     {

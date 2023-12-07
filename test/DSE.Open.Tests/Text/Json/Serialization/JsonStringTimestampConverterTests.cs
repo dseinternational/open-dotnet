@@ -54,7 +54,7 @@ public class JsonStringTimestampConverterTests
     public void Deserialize_WithEmptyValue_ShouldReturnEmptyTimestamp()
     {
         // Arrange
-        var t1 = new Timestamp(new byte[] { 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 });
+        var t1 = new Timestamp([0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0]);
 
         // Act
         var t2 = JsonSerializer.Deserialize<Timestamp>("\"\"", s_options.Value);

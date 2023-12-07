@@ -50,8 +50,8 @@ public sealed class CountryCallingCodeInfo
     private static readonly object s_cacheLock = new();
 
     // internal for testing
-    internal static readonly CountryCallingCodeInfo[] CachedInfo = new[]
-    {
+    internal static readonly CountryCallingCodeInfo[] CachedInfo =
+    [
         new CountryCallingCodeInfo(1, "American Samoa"),
         new CountryCallingCodeInfo(1, "Anguilla"),
         new CountryCallingCodeInfo(1, "Antigua and Barbuda"),
@@ -291,7 +291,7 @@ public sealed class CountryCallingCodeInfo
         new CountryCallingCodeInfo(995, "Georgia"),
         new CountryCallingCodeInfo(996, "Kyrgyz Republic"),
         new CountryCallingCodeInfo(998, "Uzbekistan"),
-    };
+    ];
 
     // internal for testing
     internal static readonly uint[] AssignedCodes = CachedInfo.Select(c => c.Code).Distinct().Order().ToArray();

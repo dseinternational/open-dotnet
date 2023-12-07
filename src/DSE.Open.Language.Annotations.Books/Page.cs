@@ -17,4 +17,10 @@ public sealed record Page
 
     [JsonPropertyName("paragraphs")]
     public required ReadOnlyValueCollection<Paragraph> Paragraphs { get; init; } = [];
+
+    [JsonIgnore]
+    public IEnumerable<Word> Words => Paragraphs.SelectMany(p => p.Words);
+
+    [JsonIgnore]
+    public IEnumerable<Sentence> Sentences => Paragraphs.SelectMany(p => p.Sentences);
 }

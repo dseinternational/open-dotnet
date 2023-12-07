@@ -2,6 +2,7 @@
 // Information contained herein is PROPRIETARY AND CONFIDENTIAL.
 
 using DSE.Open.Testing.Xunit;
+using DSE.Open.Testing.Xunit.Stanza;
 
 namespace DSE.Open.Language.Annotations.Nlp.Stanza;
 

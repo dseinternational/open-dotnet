@@ -136,7 +136,7 @@ public readonly struct AsciiChar3
 
     public Char3 ToChar3() => new((char)_c0, (char)_c1, (char)_c2);
 
-    public char[] ToCharArray() => new[] { (char)_c0, _c1, _c2 };
+    public char[] ToCharArray() => [(char)_c0, _c1, _c2];
 
     public static AsciiChar3 FromString(string value) => new(value.AsSpan());
 

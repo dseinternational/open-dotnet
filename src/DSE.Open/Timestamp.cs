@@ -43,7 +43,7 @@ public readonly record struct Timestamp : IComparable<Timestamp>, ISpanFormattab
         _b7 = timestamp[7];
     }
 
-    public byte[] GetBytes() => new[] { _b0, _b1, _b2, _b3, _b4, _b5, _b6, _b7 };
+    public byte[] GetBytes() => [_b0, _b1, _b2, _b3, _b4, _b5, _b6, _b7];
 
     public int CompareTo(Timestamp other)
     {

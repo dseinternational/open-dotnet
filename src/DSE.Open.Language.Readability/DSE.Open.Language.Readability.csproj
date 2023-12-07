@@ -7,6 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="syllable-counts.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="syllable-counts.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\DSE.Open.Language.Annotations.Books\DSE.Open.Language.Annotations.Books.csproj" />
   </ItemGroup>
 

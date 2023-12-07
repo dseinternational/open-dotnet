@@ -5,11 +5,11 @@ namespace DSE.Open.Globalization;
 
 public static class LocalizedCollectionOptions
 {
-    private static LanguageTag[] s_defaultFallbacks = {
+    private static LanguageTag[] s_defaultFallbacks = [
         LanguageTag.EnglishUk,
         LanguageTag.EnglishUs,
         LanguageTag.English
-    };
+    ];
 
     public static IList<LanguageTag> DefaultFallbacks => s_defaultFallbacks;
 

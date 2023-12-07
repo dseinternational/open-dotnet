@@ -14,7 +14,7 @@ public abstract class ConstructorBindingFactoryBase : IConstructorBindingFactory
     private readonly IPropertyParameterBindingFactory _propertyFactory;
     private readonly IParameterBindingFactories _factories;
     private static readonly MethodInfo _createInstance =
-        typeof(Activator).GetMethod(nameof(Activator.CreateInstance), BindingFlags.Public | BindingFlags.Static, new[] { typeof(Type) })!;
+        typeof(Activator).GetMethod(nameof(Activator.CreateInstance), BindingFlags.Public | BindingFlags.Static, [typeof(Type)])!;
 
     protected ConstructorBindingFactoryBase(IPropertyParameterBindingFactory propertyFactory, IParameterBindingFactories factories)
     {

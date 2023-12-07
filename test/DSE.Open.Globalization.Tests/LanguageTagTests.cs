@@ -62,7 +62,7 @@ public class LanguageTagTests
     }
 
     private static readonly string[] s_validLanguageCodes =
-    {
+    [
             "af", "af-ZA", "sq", "sq-AL", "gsw", "gsw-FR", "am",
             "am-ET", "ar", "ar-DZ", "ar-BH", "ar-EG", "ar-IQ", "ar-JO", "ar-KW", "ar-LB", "ar-LY", "ar-MA", "ar-OM",
             "ar-QA", "ar-SA", "ar-SY", "ar-TN", "ar-AE", "ar-YE", "hy", "hy-AM", "as", "as-IN", "az", "az-Cyrl",
@@ -93,10 +93,10 @@ public class LanguageTagTests
             "uz-Cyrl", "uz-Cyrl-UZ", "uz", "uz-Latn", "uz-Latn-UZ", "vi", "vi-VN", "cy", "cy-GB", "wo", "wo-SN", "sah",
             "sah-RU", "ii", "ii-CN", "yo", "yo-NG", "az-Arab", "az-Cyrl", "az-Latn", "sr-Cyrl", "sr-Latn",
             "uz-Cyrl", "uz-Latn", "zh-Hans", "zh-Hant" //, "zh-Hans_HK"
-        };
+        ];
 
     private static readonly string[] s_2AlphaCodes =
-    {
+    [
         "af", "am", "ar", "as", "az", "ba", "be", "bg", "bn", "bo", "br", "bs", "ca", "co", "cs", "cy", "da",
         "de", "dv", "el", "en", "es", "et", "eu", "fa", "ff", "fi", "fo", "fr", "fy", "ga", "gd", "gl",
         "gn", "gu", "ha", "he", "hi", "hr", "hu", "hy", "id", "ig", "ii", "is", "it", "iu", "ja", "jv", "ka",
@@ -105,7 +105,7 @@ public class LanguageTagTests
         "ru", "rw", "sa", "sd", "se", "si", "sk", "sl", "sn", "so", "sq", "sr", "st", "sv", "sw", "ta",
         "te", "tg", "th", "ti", "tk", "tn", "tr", "ts", "tt", "ug", "uk", "ur", "uz", "vi", "wo", "xh", "yo",
         "zh", "zu"
-    };
+    ];
 
     public static TheoryData<string> ValidLanguageTags
     {

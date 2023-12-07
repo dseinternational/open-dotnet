@@ -59,15 +59,15 @@ public readonly record struct Color : ISpanParsable<Color>, ISpanFormattable
 
     public ReadOnlySpan<byte> AsArgbSpan() => AsArgbBytes();
 
-    public byte[] AsArgbBytes() => new[] { A, R, G, B };
+    public byte[] AsArgbBytes() => [A, R, G, B];
 
     public ReadOnlySpan<byte> AsRgbaSpan() => AsRrgbaBytes();
 
-    public byte[] AsRrgbaBytes() => new[] { R, G, B, A };
+    public byte[] AsRrgbaBytes() => [R, G, B, A];
 
     public ReadOnlySpan<byte> AsRgbSpan() => AsRrgbBytes();
 
-    public byte[] AsRrgbBytes() => new[] { R, G, B };
+    public byte[] AsRrgbBytes() => [R, G, B];
 
     private static byte FloatToByte(float value)
     {

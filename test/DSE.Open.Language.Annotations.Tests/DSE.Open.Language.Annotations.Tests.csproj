@@ -11,4 +11,10 @@
     <ProjectReference Include="..\..\src\DSE.Open.Language.Annotations\DSE.Open.Language.Annotations.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="xunit.runner.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

@@ -155,7 +155,7 @@ public class ValueResultTests
     [Fact]
     public void Create_2()
     {
-        var val1 = new ValueResult<string> { Value = "Test", Notifications = (Collections.Generic.ReadOnlyValueCollection<Notification>)(new[] { Notification.Information("NTF123456", "Test") }) };
+        var val1 = new ValueResult<string> { Value = "Test", Notifications = (Collections.Generic.ReadOnlyValueCollection<Notification>)([Notification.Information("NTF123456", "Test")]) };
         var val2 = ValueResult.Create("Test", new[] { Notification.Information("NTF123456", "Test") });
 
         Assert.Equal("Test", val1.Value);

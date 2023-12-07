@@ -10,8 +10,8 @@ namespace DSE.Open.Benchmarks.Globalization;
 [MemoryDiagnoser]
 public class LanguageTagTryFormatBenchmarks
 {
-    private static readonly LanguageTag[] s_tags = new[]
-    {
+    private static readonly LanguageTag[] s_tags =
+    [
         LanguageTag.EnglishAustralia,
         LanguageTag.EnglishCanada,
         LanguageTag.EnglishUk,
@@ -22,7 +22,7 @@ public class LanguageTagTryFormatBenchmarks
         LanguageTag.EnglishSouthAfrica,
         LanguageTag.Parse("fr-FR", null),
         LanguageTag.Parse("en-CA-x-ca", null),
-    };
+    ];
 
     [Benchmark]
     public void TryFormatNormalized()

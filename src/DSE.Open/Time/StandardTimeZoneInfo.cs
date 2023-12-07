@@ -55,8 +55,8 @@ public class StandardTimeZoneInfo
     public static IEnumerable<StandardTimeZoneInfo> GetAll() => s_standardTimeZones;
 #pragma warning restore CA1024 // Use properties where appropriate
 
-    private static readonly StandardTimeZoneInfo[] s_standardTimeZones = new[]
-    {
+    private static readonly StandardTimeZoneInfo[] s_standardTimeZones =
+    [
         new StandardTimeZoneInfo("Dateline Standard Time", "(UTC-12:00) International Date Line West", "Dateline Standard Time", "Dateline Summer Time", "-12:00:00", false),
         new StandardTimeZoneInfo("UTC-11", "(UTC-11:00) Co-ordinated Universal Time-11", "UTC-11", "UTC-11", "-11:00:00", false),
         new StandardTimeZoneInfo("Aleutian Standard Time", "(UTC-10:00) Aleutian Islands", "Aleutian Standard Time", "Aleutian Summer Time", "-10:00:00", true),
@@ -198,5 +198,5 @@ public class StandardTimeZoneInfo
         new StandardTimeZoneInfo("Tonga Standard Time", "(UTC+13:00) Nuku'alofa", "Tonga Standard Time", "Tonga Summer Time", "13:00:00", true),
         new StandardTimeZoneInfo("Samoa Standard Time", "(UTC+13:00) Samoa", "Samoa Standard Time", "Samoa Summer Time", "13:00:00", true),
         new StandardTimeZoneInfo("Line Islands Standard Time", "(UTC+14:00) Kiritimati Island", "Line Islands Standard Time", "Line Islands Summer Time", "14:00:00", false),
-    };
+    ];
 }

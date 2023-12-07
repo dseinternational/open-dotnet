@@ -169,7 +169,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Language.Annotatio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Language.Annotations.Nlp.Stanza.Tests", "test\DSE.Open.Language.Annotations.Nlp.Stanza.Tests\DSE.Open.Language.Annotations.Nlp.Stanza.Tests.csproj", "{7614D3CF-82A9-4EBB-A028-618BC9ECF907}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.Interop.Python", "src\DSE.Open.Interop.Python\DSE.Open.Interop.Python.csproj", "{F4DA0EC1-1559-4A8A-A5A3-DD45A8CA7D85}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Interop.Python", "src\DSE.Open.Interop.Python\DSE.Open.Interop.Python.csproj", "{F4DA0EC1-1559-4A8A-A5A3-DD45A8CA7D85}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Language.Readability.Tests", "test\DSE.Open.Language.Readability.Tests\DSE.Open.Language.Readability.Tests.csproj", "{D2D29B7B-536C-4374-9FA7-84BB1EBE9144}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.Testing.Xunit.Stanza", "src\DSE.Open.Testing.Xunit.Stanza\DSE.Open.Testing.Xunit.Stanza.csproj", "{99ECA521-DBF8-4963-92F1-91BC6D944C75}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -457,6 +461,14 @@ Global
 		{F4DA0EC1-1559-4A8A-A5A3-DD45A8CA7D85}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F4DA0EC1-1559-4A8A-A5A3-DD45A8CA7D85}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F4DA0EC1-1559-4A8A-A5A3-DD45A8CA7D85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2D29B7B-536C-4374-9FA7-84BB1EBE9144}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2D29B7B-536C-4374-9FA7-84BB1EBE9144}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2D29B7B-536C-4374-9FA7-84BB1EBE9144}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2D29B7B-536C-4374-9FA7-84BB1EBE9144}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99ECA521-DBF8-4963-92F1-91BC6D944C75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99ECA521-DBF8-4963-92F1-91BC6D944C75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99ECA521-DBF8-4963-92F1-91BC6D944C75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99ECA521-DBF8-4963-92F1-91BC6D944C75}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -532,6 +544,8 @@ Global
 		{987C490D-F944-432C-81FE-62EA6716435C} = {D2529453-80C3-4F06-BBD0-6B58EF65EF99}
 		{7614D3CF-82A9-4EBB-A028-618BC9ECF907} = {850B3E2C-6172-4CF9-9E83-AD0997C57CA3}
 		{F4DA0EC1-1559-4A8A-A5A3-DD45A8CA7D85} = {D2529453-80C3-4F06-BBD0-6B58EF65EF99}
+		{D2D29B7B-536C-4374-9FA7-84BB1EBE9144} = {850B3E2C-6172-4CF9-9E83-AD0997C57CA3}
+		{99ECA521-DBF8-4963-92F1-91BC6D944C75} = {D2529453-80C3-4F06-BBD0-6B58EF65EF99}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3D3BE91A-3636-45E3-A6BF-8C09D5A9782A}

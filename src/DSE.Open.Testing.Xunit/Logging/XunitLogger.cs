@@ -10,7 +10,7 @@ public class XunitLogger : ILogger
 {
     private const string TimestampFormat = "yyyy-MM-dd HH:mm:ss.fffff";
 
-    private static readonly string[] s_newLineChars = { Environment.NewLine };
+    private static readonly string[] s_newLineChars = [Environment.NewLine];
     private static readonly string s_additionalLinePrefix = new(' ', TimestampFormat.Length + 1);
 
     private readonly string _category;

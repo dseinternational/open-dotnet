@@ -1,11 +1,14 @@
-// Copyright (c) Down Syndrome Education Enterprises CIC. All Rights Reserved.
-// Information contained herein is PROPRIETARY AND CONFIDENTIAL.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-namespace DSE.Open.Language.Annotations.Nlp.Stanza;
+using DSE.Open;
+using Xunit;
 
-public sealed class StanzaNlpFactAttribute : FactAttribute
+namespace DSE.Open.Testing.Xunit.Stanza;
+
+public sealed class StanzaNlpTheoryAttribute : TheoryAttribute
 {
-    public StanzaNlpFactAttribute(params string[] languages)
+    public StanzaNlpTheoryAttribute(params string[] languages)
     {
         Languages = languages;
 

@@ -64,7 +64,7 @@ public sealed partial class CommandDispatcher : ICommandDispatcher
                 var result = handlerType.InvokeMember(
                     nameof(ICommandHandler<ICommand, object>.HandleAsync),
                     BindingFlags.InvokeMethod,
-                    null, handler, new object[] { command, cancellation }, null);
+                    null, handler, [command, cancellation], null);
 
                 if (result is null)
                 {

@@ -9,12 +9,18 @@ namespace DSE.Open.Language.Annotations.Books;
 
 public sealed record Paragraph
 {
-    [JsonPropertyName("id")]
-    public string? Id { get; init; }
+    [JsonPropertyName("para_id")]
+    public string? Id { get; init; } = string.Empty;
 
     [JsonPropertyName("language")]
     public LanguageTag? Language { get; init; }
 
+    [JsonPropertyName("text")]
+    public required string Text { get; init; }
+
     [JsonPropertyName("sentences")]
     public required ReadOnlyValueCollection<Sentence> Sentences { get; init; } = [];
+
+    [JsonIgnore]
+    public IEnumerable<Word> Words => Sentences.SelectMany(t => t.Words);
 }

@@ -206,7 +206,7 @@ public class CountryCodeTests
         Assert.Equal(v1, v2);
     }
 
-    internal static readonly string[] s_validCountryCodes = {
+    internal static readonly string[] s_validCountryCodes = [
             "AE",
             "AF",
             "AG",
@@ -455,9 +455,9 @@ public class CountryCodeTests
             "ZA",
             "ZM",
             "ZW"
-    };
+    ];
 
-    internal static readonly string[] s_euMemberCountryCodes = {
+    internal static readonly string[] s_euMemberCountryCodes = [
             "AT",
             "BE",
             "BG",
@@ -485,11 +485,11 @@ public class CountryCodeTests
             "SE",
             "SI",
             "SK"
-    };
+    ];
 
     // https://en.wikipedia.org/wiki/Member_state_of_the_European_Union
     //
-    private static readonly string[] s_euMemberCountryAndSubdivisionCodes = {
+    private static readonly string[] s_euMemberCountryAndSubdivisionCodes = [
             "AT",
             "AX", // Åland Islands (Finland)
             "BE",
@@ -524,5 +524,5 @@ public class CountryCodeTests
             "SI",
             "SK",
             "YT" // Mayotte (France)
-    };
+    ];
 }

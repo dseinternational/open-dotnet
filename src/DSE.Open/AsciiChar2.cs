@@ -135,7 +135,7 @@ public readonly struct AsciiChar2
 
     public Char2 ToChar2() => new((char)_c0, (char)_c1);
 
-    public char[] ToCharArray() => new[] { (char)_c0, _c1 };
+    public char[] ToCharArray() => [(char)_c0, _c1];
 
     public static AsciiChar2 FromString(string value) => new(value.AsSpan());
 

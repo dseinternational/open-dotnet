@@ -95,7 +95,7 @@ public class Utf8StringTests
     }
 
     private static readonly string[] s_testStrings =
-    {
+    [
         "Test string.",
         "Test \"string\".",
         "",
@@ -108,5 +108,5 @@ public class Utf8StringTests
         @"A
 multiline
 string."
-    };
+    ];
 }
