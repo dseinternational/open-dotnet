@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <RootNamespace>DSE.Open.Language.Annotations.Nlp.Stanza</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\DSE.Open.Language.Annotations.Nlp.Stanza\DSE.Open.Language.Annotations.Nlp.Stanza.csproj" />
+    <ProjectReference Include="..\..\src\DSE.Open.Testing.Xunit\DSE.Open.Testing.Xunit.csproj" />
+  </ItemGroup>
+
+</Project>

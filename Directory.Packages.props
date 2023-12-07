@@ -32,6 +32,7 @@
     <PackageVersion Include="Polly" Version="8.2.0" />
     <PackageVersion Include="Polly.Contrib.WaitAndRetry" Version="1.1.1" />
     <PackageVersion Include="Polly.Extensions.Http" Version="3.0.0" />
+    <PackageVersion Include="pythonnet" Version="3.0.3" />
     <PackageVersion Include="System.Linq.Async" Version="6.0.1" />
     <PackageVersion Include="System.Text.Json" Version="8.0.0" />
     <PackageVersion Include="TimeZoneNames" Version="6.0.0" />
