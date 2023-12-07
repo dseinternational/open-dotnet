@@ -9,6 +9,8 @@ namespace DSE.Open.Language.Annotations;
 
 public sealed record Sentence
 {
+    private ReadOnlyValueCollection<Word>? _words;
+
     [JsonPropertyName("index")]
     public int Index { get; init; } = 1;
 
@@ -23,4 +25,7 @@ public sealed record Sentence
 
     [JsonPropertyName("tokens")]
     public required ReadOnlyValueCollection<Token> Tokens { get; init; } = [];
+
+    [JsonIgnore]
+    public ReadOnlyValueCollection<Word> Words => _words ??= [.. Tokens.SelectMany(t => t.Words)];
 }
