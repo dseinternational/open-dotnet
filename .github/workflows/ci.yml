@@ -21,6 +21,19 @@ jobs:
         with:
           fetch-depth: 0 # avoid shallow clone
 
+      - name: Cache Stanza downloads
+        id: cache-stanza-downloads
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-stanza-downloads
+        with:
+          path: ~/stanza_resources
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/*.zip') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
       - name: Set Python version
         uses: actions/setup-python@v5
         with:
