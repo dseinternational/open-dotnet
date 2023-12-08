@@ -38,7 +38,6 @@ public class StanzaAnnotator : IAnnotator
                 Text = s.Text,
                 Tokens = [.. s.Tokens.Select(t => new OpenToken
                 {
-                    Index = new TokenIndex(t.Id.Item1, t.Id.Item2),
                     Text = (TokenText)t.Text,
                     Words = [..t.Words.Select(MapWord)]
                 })],

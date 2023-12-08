@@ -31,7 +31,6 @@ public class TokenTests
     {
         var token = new Token
         {
-            Index = new TokenIndex(1),
             Text = (TokenText)"He",
             Words =
             [
@@ -65,7 +64,6 @@ public class TokenTests
     {
         var token = new Token
         {
-            Index = new TokenIndex(1),
             Text = (TokenText)"He",
             Words =
             [
@@ -88,5 +86,52 @@ public class TokenTests
         var deserialized = JsonSerializer.Deserialize<Token>(json);
 
         Assert.Equal(token, deserialized);
+    }
+
+    [Fact]
+    public void FormatMultiwordToStringAndParse()
+    {
+        var token = new Token
+        {
+            Text = (TokenText)"cat's",
+            Words =
+            [
+                new Word
+                {
+                    Index = 1,
+                    Form = (TokenText)"cat",
+                    Lemma = (TokenText)"cat",
+                    Pos = UniversalPosTag.Noun,
+                    AltPos = TreebankPosTag.NounSingularOrMass,
+                    Features = [],
+                    HeadIndex = 0,
+                    Relation = UniversalRelationTag.PossessiveNominalModifier,
+                },
+                new Word
+                {
+                    Index = 2,
+                    Form = (TokenText)"'s",
+                    Lemma = (TokenText)"'s",
+                    Pos = UniversalPosTag.Particle,
+                    AltPos = TreebankPosTag.PossessiveEnding,
+                    Features = [],
+                    HeadIndex = 0,
+                    Relation = UniversalRelationTag.CaseMarking,
+                }
+            ]
+        };
+
+        var str = token.ToString();
+
+        const string expected =
+            "1-2\tcat's\t_\t_\t_\t_\t_\t_\t_\t_\n" +
+            "1\tcat\tcat\tNOUN\tNN\t_\t0\tnmod:poss\t_\t_\n" +
+            "2\t's\t's\tPART\tPOS\t_\t0\tcase\t_\t_";
+
+        Assert.Equal(expected, str);
+
+        var parsed = Token.Parse(str, CultureInfo.InvariantCulture);
+
+        Assert.Equal(token, parsed);
     }
 }

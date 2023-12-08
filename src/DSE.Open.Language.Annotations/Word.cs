@@ -18,18 +18,6 @@ public record class Word
     : ISpanFormattable,
       ISpanParsable<Word>
 {
-    private const int IdIndex = 0;
-    private const int FormIndex = 1;
-    private const int LemmaIndex = 2;
-    private const int PosIndex = 3;
-    private const int AltPosIndex = 4;
-    private const int FeaturesIndex = 5;
-    private const int HeadIndexIndex = 6;
-    private const int RelationIndex = 7;
-    //private const int DepsIndex = 8;
-    private const int MiscIndex = 9;
-
-
     /// <summary>
     /// Index of the token in the sentence.
     /// </summary>
@@ -146,14 +134,14 @@ public record class Word
             return Fail(out result);
         }
 
-        if (!(int.TryParse(s[fields[IdIndex]], provider, out var index)
-            && TokenText.TryParse(s[fields[FormIndex]], provider, out var word)))
+        if (!(int.TryParse(s[fields[ConlluFieldIndex.Id]], provider, out var index)
+            && TokenText.TryParse(s[fields[ConlluFieldIndex.Form]], provider, out var word)))
         {
             return Fail(out result);
         }
 
         TokenText? lemma;
-        var lemmaSpan = s[fields[LemmaIndex]];
+        var lemmaSpan = s[fields[ConlluFieldIndex.Lemma]];
 
         if (lemmaSpan.Length == 1 && lemmaSpan[0] == '_')
         {
@@ -172,7 +160,7 @@ public record class Word
         }
 
         UniversalPosTag? pos;
-        var posSpan = s[fields[PosIndex]];
+        var posSpan = s[fields[ConlluFieldIndex.Pos]];
 
         if (posSpan.Length == 1 && posSpan[0] == '_')
         {
@@ -191,7 +179,7 @@ public record class Word
         }
 
         PosTag? xpos;
-        var xposSpan = s[fields[AltPosIndex]];
+        var xposSpan = s[fields[ConlluFieldIndex.AltPos]];
 
         if (xposSpan.Length == 1 && xposSpan[0] == '_')
         {
@@ -209,7 +197,7 @@ public record class Word
             }
         }
 
-        var featuresSpan = s[fields[FeaturesIndex]];
+        var featuresSpan = s[fields[ConlluFieldIndex.Features]];
         ReadOnlyWordFeatureValueCollection features;
 
         if (featuresSpan.Length == 1 && featuresSpan[0] == '_')
@@ -229,7 +217,7 @@ public record class Word
         }
 
         int? head;
-        var headSpan = s[fields[HeadIndexIndex]];
+        var headSpan = s[fields[ConlluFieldIndex.Head]];
 
         if (headSpan.Length == 1 && headSpan[0] == '_')
         {
@@ -248,7 +236,7 @@ public record class Word
         }
 
         UniversalRelationTag? relation;
-        var relationSpan = s[fields[RelationIndex]];
+        var relationSpan = s[fields[ConlluFieldIndex.Relation]];
 
         if (relationSpan.Length == 1 && relationSpan[0] == '_')
         {
@@ -277,7 +265,7 @@ public record class Word
         // TODO: DEPS
 
 
-        var miscSpan = s[fields[MiscIndex]];
+        var miscSpan = s[fields[ConlluFieldIndex.Misc]];
         ReadOnlyAttributeValueCollection misc;
 
         if (miscSpan.Length == 1 && miscSpan[0] == '_')
