@@ -142,9 +142,14 @@ public record class Token
         return ToString(default, CultureInfo.InvariantCulture);
     }
 
+    internal int GetCharCount()
+    {
+        return Words.Sum(w => w.GetCharCount());
+    }
+
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
-        var charCount = Words.Sum(w => w.GetCharCount());
+        var charCount = GetCharCount();
 
         char[]? rented = null;
 

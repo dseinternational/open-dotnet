@@ -14,6 +14,12 @@ public class TokenTests
     [InlineData("5\tdog\tdog\tNOUN\tNN\tNumber=Sing\t3\tdobj\t_\tSpaceAfter=No")]
     [InlineData("6\t.\t.\tPUNCT\t.\tPunctType=Peri\t3\tpunct\t_\tSpaceAfter=No")]
     [InlineData("2\tate\teat\tVERB\tVBD\tMood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin\t0\troot\t_\t_")]
+    [InlineData("1\tThe\tthe\tDET\tDT\tDefinite=Def|PronType=Art\t2\tdet\t_\t_")]
+    [InlineData("2\tcat\tcat\tNOUN\tNN\tNumber=Sing\t4\tnsubj\t_\t_")]
+    [InlineData("3\tis\tbe\tAUX\tVBZ\tMood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin\t4\taux\t_\t_")]
+    [InlineData("4\tdrinking\tdrink\tVERB\tVBG\tTense=Pres|VerbForm=Part\t0\troot\t_\t_")]
+    [InlineData("5\tmilk\tmilk\tNOUN\tNN\tNumber=Sing\t4\tobj\t_\t_")]
+    [InlineData("6\t.\t.\tPUNCT\t.\t_\t4\tpunct\t_\t_")]
     public void Parse(string value)
     {
         var token = Word.Parse(value, CultureInfo.InvariantCulture);

@@ -12,15 +12,15 @@ using DSE.Open.Values.Text.Json.Serialization;
 
 namespace DSE.Open.Globalization;
 
-// TODO
-
 /// <summary>
 /// A language tag as defined by <see href="https://www.rfc-editor.org/rfc/rfc5646.html">RFC5646</see>.
 /// </summary>
 [ComparableValue]
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<LanguageTag, AsciiString>))]
 [StructLayout(LayoutKind.Auto)]
-public readonly partial struct LanguageTag : IComparableValue<LanguageTag, AsciiString>, IUtf8SpanSerializable<LanguageTag>
+public readonly partial struct LanguageTag
+    : IComparableValue<LanguageTag, AsciiString>,
+      IUtf8SpanSerializable<LanguageTag>
 {
     /// <summary>
     /// Gets the maximum practical length to expect for a language code that is suitable for
@@ -55,7 +55,7 @@ public readonly partial struct LanguageTag : IComparableValue<LanguageTag, Ascii
     public static LanguageTag FromString(string languageTag)
     {
         ArgumentNullException.ThrowIfNull(languageTag);
-        return new(AsciiString.Parse(languageTag));
+        return new(AsciiString.Parse(languageTag, CultureInfo.InvariantCulture));
     }
 
     public static LanguageTag FromByteSpan(ReadOnlySpan<byte> languageTag)
@@ -65,7 +65,7 @@ public readonly partial struct LanguageTag : IComparableValue<LanguageTag, Ascii
 
     public static LanguageTag FromCharSpan(ReadOnlySpan<char> languageTag)
     {
-        return new(AsciiString.Parse(languageTag));
+        return new(AsciiString.Parse(languageTag, CultureInfo.InvariantCulture));
     }
 
     public static bool IsValidValue(ReadOnlySpan<AsciiChar> value)
