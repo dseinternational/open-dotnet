@@ -5,11 +5,11 @@ using System.Buffers;
 
 namespace DSE.Open.Language.Annotations;
 
-public static class AttributeSerializer
+public static class AttributeValueSerializer
 {
     public static bool TrySerialize(
         Span<char> destination,
-        IEnumerable<Attribute> features,
+        IEnumerable<AttributeValue> features,
         out int charsWritten)
     {
         ArgumentNullException.ThrowIfNull(features);
@@ -18,7 +18,7 @@ public static class AttributeSerializer
 
     public static bool TrySerialize(
         Span<char> destination,
-        IReadOnlyList<Attribute> features,
+        IReadOnlyList<AttributeValue> features,
         out int charsWritten)
     {
         ArgumentNullException.ThrowIfNull(features);
@@ -50,7 +50,7 @@ public static class AttributeSerializer
         return true;
     }
 
-    public static string SerializeToString(IEnumerable<Attribute> features)
+    public static string SerializeToString(IEnumerable<AttributeValue> features)
     {
         ArgumentNullException.ThrowIfNull(features);
 
@@ -82,16 +82,16 @@ public static class AttributeSerializer
     }
 
     /// <summary>
-    /// Parses a collection of <see cref="Attribute"/>s from a pipe-delimited sequence of characters.
+    /// Parses a collection of <see cref="AttributeValue"/>s from a pipe-delimited sequence of characters.
     /// </summary>
     /// <param name="values"></param>
     /// <param name="features"></param>
     /// <returns></returns>
-    public static bool TryDeserialize(ReadOnlySpan<char> values, out IEnumerable<Attribute> features)
+    public static bool TryDeserialize(ReadOnlySpan<char> values, out IEnumerable<AttributeValue> features)
     {
         if (values.IsEmpty)
         {
-            features = Enumerable.Empty<Attribute>();
+            features = Enumerable.Empty<AttributeValue>();
             return true;
         }
 
@@ -100,19 +100,19 @@ public static class AttributeSerializer
         var l = values.Split(ranges, '|',
             StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
-        var results = new Attribute[l];
+        var results = new AttributeValue[l];
 
         for (var r = 0; r < l; r++)
         {
             var v = values[ranges[r].Start.Value..ranges[r].End.Value];
 
-            if (Attribute.TryParse(v, CultureInfo.InvariantCulture, out var value))
+            if (AttributeValue.TryParse(v, CultureInfo.InvariantCulture, out var value))
             {
                 results[r] = value;
             }
             else
             {
-                features = Enumerable.Empty<Attribute>();
+                features = Enumerable.Empty<AttributeValue>();
                 return false;
             }
         }
@@ -121,7 +121,7 @@ public static class AttributeSerializer
         return true;
     }
 
-    public static bool TryDeserialize(string? values, out IEnumerable<Attribute> features)
+    public static bool TryDeserialize(string? values, out IEnumerable<AttributeValue> features)
     {
         return TryDeserialize(values.AsSpan(), out features);
     }

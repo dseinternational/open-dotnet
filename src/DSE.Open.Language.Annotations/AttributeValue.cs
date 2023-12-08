@@ -9,22 +9,22 @@ using DSE.Open.Values;
 
 namespace DSE.Open.Language.Annotations;
 
-[JsonConverter(typeof(JsonStringAttributeConverter))]
-public sealed record Attribute
+[JsonConverter(typeof(JsonStringAttributeValueConverter))]
+public sealed record AttributeValue
     : ISpanFormattable,
-      ISpanParsable<Attribute>,
-      ISpanSerializable<Attribute>
+      ISpanParsable<AttributeValue>,
+      ISpanSerializable<AttributeValue>
 {
     public static int MaxSerializedCharLength { get; } = 512;
 
     private readonly ReadOnlyValueCollection<CharSequence> _values;
 
-    public Attribute(AlphaNumericCode name, IEnumerable<CharSequence> values)
+    public AttributeValue(AlphaNumericCode name, IEnumerable<CharSequence> values)
         : this(name, [.. values])
     {
     }
 
-    public Attribute(AlphaNumericCode name, ReadOnlyValueCollection<CharSequence> values)
+    public AttributeValue(AlphaNumericCode name, ReadOnlyValueCollection<CharSequence> values)
     {
         ArgumentNullException.ThrowIfNull(values);
 
@@ -103,24 +103,24 @@ public sealed record Attribute
         return false;
     }
 
-    public static Attribute Parse(ReadOnlySpan<char> s)
+    public static AttributeValue Parse(ReadOnlySpan<char> s)
     {
         return Parse(s, CultureInfo.InvariantCulture);
     }
 
-    public static Attribute Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
+    public static AttributeValue Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
     {
         if (TryParse(s, provider, out var value))
         {
             return value;
         }
 
-        return ThrowHelper.ThrowFormatException<Attribute>($"Cannot parse '{s}' as {typeof(Attribute).Name}.");
+        return ThrowHelper.ThrowFormatException<AttributeValue>($"Cannot parse '{s}' as {typeof(AttributeValue).Name}.");
     }
 
     public static bool TryParse(
         ReadOnlySpan<char> s,
-        [MaybeNullWhen(false)] out Attribute result)
+        [MaybeNullWhen(false)] out AttributeValue result)
     {
         return TryParse(s, CultureInfo.InvariantCulture, out result);
     }
@@ -128,7 +128,7 @@ public sealed record Attribute
     public static bool TryParse(
         ReadOnlySpan<char> s,
         IFormatProvider? provider,
-        [MaybeNullWhen(false)] out Attribute result)
+        [MaybeNullWhen(false)] out AttributeValue result)
     {
         if (s.Length >= 3)
         {
@@ -145,7 +145,7 @@ public sealed record Attribute
                 {
                     if (CharSequence.TryParse(valuesSpan, provider, out var value))
                     {
-                        result = new Attribute(name, [value]);
+                        result = new AttributeValue(name, [value]);
                         return true;
                     }
                     else
@@ -176,7 +176,7 @@ public sealed record Attribute
                     }
                 }
 
-                result = new Attribute(name, values);
+                result = new AttributeValue(name, values);
                 return true;
             }
         }
@@ -185,17 +185,17 @@ public sealed record Attribute
         return false;
     }
 
-    public static Attribute Parse(string s)
+    public static AttributeValue Parse(string s)
     {
         return Parse(s, CultureInfo.InvariantCulture);
     }
 
-    public static Attribute ParseInvariant(string s)
+    public static AttributeValue ParseInvariant(string s)
     {
         return Parse(s, CultureInfo.InvariantCulture);
     }
 
-    public static Attribute Parse(string s, IFormatProvider? provider)
+    public static AttributeValue Parse(string s, IFormatProvider? provider)
     {
         ArgumentNullException.ThrowIfNull(s);
         return Parse(s.AsSpan(), provider);
@@ -204,7 +204,7 @@ public sealed record Attribute
     public static bool TryParse(
         [NotNullWhen(true)] string? s,
         IFormatProvider? provider,
-        [MaybeNullWhen(false)] out Attribute result)
+        [MaybeNullWhen(false)] out AttributeValue result)
     {
         return TryParse(s.AsSpan(), provider, out result);
     }

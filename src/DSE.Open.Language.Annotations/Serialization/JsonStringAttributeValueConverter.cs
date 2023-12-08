@@ -5,12 +5,12 @@ using DSE.Open.Text.Json.Serialization;
 
 namespace DSE.Open.Language.Annotations.Serialization;
 
-public class JsonStringAttributeConverter : SpanParsableCharWritingJsonConverter<Attribute>
+public class JsonStringAttributeValueConverter : SpanParsableCharWritingJsonConverter<AttributeValue>
 {
-    public static readonly JsonStringAttributeConverter Default = new();
+    public static readonly JsonStringAttributeValueConverter Default = new();
 
-    protected override int GetMaxCharCountToWrite(Attribute value)
+    protected override int GetMaxCharCountToWrite(AttributeValue value)
     {
-        return Attribute.MaxSerializedCharLength;
+        return AttributeValue.MaxSerializedCharLength;
     }
 }

@@ -10,7 +10,7 @@ namespace DSE.Open.Language.Annotations;
 
 [CollectionBuilder(typeof(ReadOnlyAttributeValueCollection), nameof(Create))]
 public sealed class ReadOnlyAttributeValueCollection
-    : ReadOnlyKeyedValueCollection<AlphaNumericCode, Attribute>,
+    : ReadOnlyKeyedValueCollection<AlphaNumericCode, AttributeValue>,
       ISpanParsable<ReadOnlyAttributeValueCollection>,
       ISpanFormattable
 {
@@ -20,37 +20,37 @@ public sealed class ReadOnlyAttributeValueCollection
     {
     }
 
-    public ReadOnlyAttributeValueCollection(IEnumerable<Attribute> list) : base(list)
+    public ReadOnlyAttributeValueCollection(IEnumerable<AttributeValue> list) : base(list)
     {
     }
 
-    protected override AlphaNumericCode GetKeyForItem(Attribute item)
+    protected override AlphaNumericCode GetKeyForItem(AttributeValue item)
     {
         ArgumentNullException.ThrowIfNull(item);
         return item.Name;
     }
 
-    public static ReadOnlyAttributeValueCollection Create(ReadOnlySpan<Attribute> items)
+    public static ReadOnlyAttributeValueCollection Create(ReadOnlySpan<AttributeValue> items)
     {
         if (items.IsEmpty)
         {
             return Empty;
         }
 
-        var list = new List<Attribute>(items.Length);
+        var list = new List<AttributeValue>(items.Length);
 
         list.AddRange(items);
 
         return new ReadOnlyAttributeValueCollection(list);
     }
 
-    public static ReadOnlyAttributeValueCollection Create(Span<Attribute> items)
+    public static ReadOnlyAttributeValueCollection Create(Span<AttributeValue> items)
     {
-        return Create((ReadOnlySpan<Attribute>)items);
+        return Create((ReadOnlySpan<AttributeValue>)items);
     }
     public override string ToString()
     {
-        return AttributeSerializer.SerializeToString(this);
+        return AttributeValueSerializer.SerializeToString(this);
     }
 
     public static ReadOnlyAttributeValueCollection Parse(ReadOnlySpan<char> s)
@@ -74,7 +74,7 @@ public sealed class ReadOnlyAttributeValueCollection
         IFormatProvider? provider,
         [MaybeNullWhen(false)] out ReadOnlyAttributeValueCollection result)
     {
-        if (AttributeSerializer.TryDeserialize(s, out var features))
+        if (AttributeValueSerializer.TryDeserialize(s, out var features))
         {
             result = new ReadOnlyAttributeValueCollection(features);
             return true;
@@ -114,11 +114,11 @@ public sealed class ReadOnlyAttributeValueCollection
         ReadOnlySpan<char> format,
         IFormatProvider? provider)
     {
-        return AttributeSerializer.TrySerialize(destination, this, out charsWritten);
+        return AttributeValueSerializer.TrySerialize(destination, this, out charsWritten);
     }
 
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
-        return AttributeSerializer.SerializeToString(this);
+        return AttributeValueSerializer.SerializeToString(this);
     }
 }

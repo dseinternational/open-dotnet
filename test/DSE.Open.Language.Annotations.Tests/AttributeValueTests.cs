@@ -3,7 +3,7 @@
 
 namespace DSE.Open.Language.Annotations;
 
-public class AttributeTests
+public class AttributeValueTests
 {
     [Theory]
     [InlineData("CorrectForm=are", "CorrectForm", "are")]
@@ -11,7 +11,7 @@ public class AttributeTests
     [InlineData("Entity=(1-place-Tulsa)", "Entity", "(1-place-Tulsa)")]
     public void ParseNameAndValue(string feature, string name, string value)
     {
-        var f = Attribute.ParseInvariant(feature);
+        var f = AttributeValue.ParseInvariant(feature);
         Assert.Equal(name, f.Name.ToStringInvariant());
         Assert.Equal(value, f.Value.ToStringInvariant());
     }
@@ -20,7 +20,7 @@ public class AttributeTests
     [InlineData("Case=Acc,Dat", "Case", "Acc", "Dat")]
     public void ParseNameAndValues(string feature, string name, string value0, string value1)
     {
-        var f = Attribute.ParseInvariant(feature);
+        var f = AttributeValue.ParseInvariant(feature);
         Assert.Equal(name, f.Name.ToStringInvariant());
         Assert.Equal(value0, f.Value.ToStringInvariant());
         Assert.Equal(value0, f.Values[0].ToStringInvariant());
@@ -34,7 +34,7 @@ public class AttributeTests
     [InlineData("LNumValue=1000000000")]
     public void ParseAndFormat(string feature)
     {
-        var f = Attribute.ParseInvariant(feature);
+        var f = AttributeValue.ParseInvariant(feature);
         var s = f.ToStringInvariant();
         Assert.Equal(feature, s);
     }
