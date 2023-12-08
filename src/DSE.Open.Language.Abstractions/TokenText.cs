@@ -29,10 +29,6 @@ public readonly partial struct TokenText
 
     public CharSequence Value => _value;
 
-    public bool IsPunctuation => _value.Length == 1 && char.IsPunctuation(_value[0]);
-
-    public bool IsWord => !IsPunctuation;
-
     public static bool IsValidValue(CharSequence value)
     {
         if (value.IsEmpty || value.Length > MaxSerializedCharLength)
@@ -40,12 +36,7 @@ public readonly partial struct TokenText
             return false;
         }
 
-        if (value.Length == 1 && char.IsPunctuation(value[0]))
-        {
-            return true;
-        }
-
-        return WordText.IsValidValue(value);
+        return true;
     }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
