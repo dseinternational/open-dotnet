@@ -9,22 +9,22 @@ using DSE.Open.Values;
 
 namespace DSE.Open.Language.Annotations;
 
-[JsonConverter(typeof(JsonStringWordAttributeConverter))]
-public sealed record WordAttribute
+[JsonConverter(typeof(JsonStringAttributeConverter))]
+public sealed record Attribute
     : ISpanFormattable,
-      ISpanParsable<WordAttribute>,
-      ISpanSerializable<WordAttribute>
+      ISpanParsable<Attribute>,
+      ISpanSerializable<Attribute>
 {
     public static int MaxSerializedCharLength { get; } = 512;
 
     private readonly ReadOnlyValueCollection<CharSequence> _values;
 
-    public WordAttribute(AlphaNumericCode name, IEnumerable<CharSequence> values)
+    public Attribute(AlphaNumericCode name, IEnumerable<CharSequence> values)
         : this(name, [.. values])
     {
     }
 
-    public WordAttribute(AlphaNumericCode name, ReadOnlyValueCollection<CharSequence> values)
+    public Attribute(AlphaNumericCode name, ReadOnlyValueCollection<CharSequence> values)
     {
         ArgumentNullException.ThrowIfNull(values);
 
@@ -103,24 +103,24 @@ public sealed record WordAttribute
         return false;
     }
 
-    public static WordAttribute Parse(ReadOnlySpan<char> s)
+    public static Attribute Parse(ReadOnlySpan<char> s)
     {
         return Parse(s, CultureInfo.InvariantCulture);
     }
 
-    public static WordAttribute Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
+    public static Attribute Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
     {
         if (TryParse(s, provider, out var value))
         {
             return value;
         }
 
-        return ThrowHelper.ThrowFormatException<WordAttribute>($"Cannot parse '{s}' as {typeof(WordAttribute).Name}.");
+        return ThrowHelper.ThrowFormatException<Attribute>($"Cannot parse '{s}' as {typeof(Attribute).Name}.");
     }
 
     public static bool TryParse(
         ReadOnlySpan<char> s,
-        [MaybeNullWhen(false)] out WordAttribute result)
+        [MaybeNullWhen(false)] out Attribute result)
     {
         return TryParse(s, CultureInfo.InvariantCulture, out result);
     }
@@ -128,7 +128,7 @@ public sealed record WordAttribute
     public static bool TryParse(
         ReadOnlySpan<char> s,
         IFormatProvider? provider,
-        [MaybeNullWhen(false)] out WordAttribute result)
+        [MaybeNullWhen(false)] out Attribute result)
     {
         if (s.Length >= 3)
         {
@@ -145,7 +145,7 @@ public sealed record WordAttribute
                 {
                     if (CharSequence.TryParse(valuesSpan, provider, out var value))
                     {
-                        result = new WordAttribute(name, [value]);
+                        result = new Attribute(name, [value]);
                         return true;
                     }
                     else
@@ -176,7 +176,7 @@ public sealed record WordAttribute
                     }
                 }
 
-                result = new WordAttribute(name, values);
+                result = new Attribute(name, values);
                 return true;
             }
         }
@@ -185,17 +185,17 @@ public sealed record WordAttribute
         return false;
     }
 
-    public static WordAttribute Parse(string s)
+    public static Attribute Parse(string s)
     {
         return Parse(s, CultureInfo.InvariantCulture);
     }
 
-    public static WordAttribute ParseInvariant(string s)
+    public static Attribute ParseInvariant(string s)
     {
         return Parse(s, CultureInfo.InvariantCulture);
     }
 
-    public static WordAttribute Parse(string s, IFormatProvider? provider)
+    public static Attribute Parse(string s, IFormatProvider? provider)
     {
         ArgumentNullException.ThrowIfNull(s);
         return Parse(s.AsSpan(), provider);
@@ -204,7 +204,7 @@ public sealed record WordAttribute
     public static bool TryParse(
         [NotNullWhen(true)] string? s,
         IFormatProvider? provider,
-        [MaybeNullWhen(false)] out WordAttribute result)
+        [MaybeNullWhen(false)] out Attribute result)
     {
         return TryParse(s.AsSpan(), provider, out result);
     }

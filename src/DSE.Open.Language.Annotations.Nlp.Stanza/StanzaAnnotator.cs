@@ -79,7 +79,7 @@ public class StanzaAnnotator : IAnnotator
             throw new StanzaException($"Failed to parse relation '{w.Relation}'");
         }
 
-        if (!ReadOnlyWordAttributeValueCollection.TryParse(w.Attributes, default, out var attributes))
+        if (!ReadOnlyAttributeValueCollection.TryParse(w.Attributes, default, out var attributes))
         {
             throw new StanzaException($"Failed to parse features '{w.Features}'");
         }

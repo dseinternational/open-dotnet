@@ -1,15 +1,15 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Buffers;
 
 namespace DSE.Open.Language.Annotations;
 
-public static class WordAttributeSerializer
+public static class AttributeSerializer
 {
     public static bool TrySerialize(
         Span<char> destination,
-        IEnumerable<WordAttribute> features,
+        IEnumerable<Attribute> features,
         out int charsWritten)
     {
         ArgumentNullException.ThrowIfNull(features);
@@ -18,7 +18,7 @@ public static class WordAttributeSerializer
 
     public static bool TrySerialize(
         Span<char> destination,
-        IReadOnlyList<WordAttribute> features,
+        IReadOnlyList<Attribute> features,
         out int charsWritten)
     {
         ArgumentNullException.ThrowIfNull(features);
@@ -50,7 +50,7 @@ public static class WordAttributeSerializer
         return true;
     }
 
-    public static string SerializeToString(IEnumerable<WordAttribute> features)
+    public static string SerializeToString(IEnumerable<Attribute> features)
     {
         ArgumentNullException.ThrowIfNull(features);
 
@@ -82,16 +82,16 @@ public static class WordAttributeSerializer
     }
 
     /// <summary>
-    /// Parses a collection of <see cref="WordAttribute"/>s from a pipe-delimited sequence of characters.
+    /// Parses a collection of <see cref="Attribute"/>s from a pipe-delimited sequence of characters.
     /// </summary>
     /// <param name="values"></param>
     /// <param name="features"></param>
     /// <returns></returns>
-    public static bool TryDeserialize(ReadOnlySpan<char> values, out IEnumerable<WordAttribute> features)
+    public static bool TryDeserialize(ReadOnlySpan<char> values, out IEnumerable<Attribute> features)
     {
         if (values.IsEmpty)
         {
-            features = Enumerable.Empty<WordAttribute>();
+            features = Enumerable.Empty<Attribute>();
             return true;
         }
 
@@ -100,19 +100,19 @@ public static class WordAttributeSerializer
         var l = values.Split(ranges, '|',
             StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
-        var results = new WordAttribute[l];
+        var results = new Attribute[l];
 
         for (var r = 0; r < l; r++)
         {
             var v = values[ranges[r].Start.Value..ranges[r].End.Value];
 
-            if (WordAttribute.TryParse(v, CultureInfo.InvariantCulture, out var value))
+            if (Attribute.TryParse(v, CultureInfo.InvariantCulture, out var value))
             {
                 results[r] = value;
             }
             else
             {
-                features = Enumerable.Empty<WordAttribute>();
+                features = Enumerable.Empty<Attribute>();
                 return false;
             }
         }
@@ -121,7 +121,7 @@ public static class WordAttributeSerializer
         return true;
     }
 
-    public static bool TryDeserialize(string? values, out IEnumerable<WordAttribute> features)
+    public static bool TryDeserialize(string? values, out IEnumerable<Attribute> features)
     {
         return TryDeserialize(values.AsSpan(), out features);
     }

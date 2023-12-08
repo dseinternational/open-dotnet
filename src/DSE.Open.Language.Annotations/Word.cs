@@ -85,7 +85,7 @@ public record class Word
     /// Gets or sets misc annotations/attributes associated with the token.
     /// </summary>
     [JsonPropertyName("misc")]
-    public ReadOnlyWordAttributeValueCollection Attributes { get; init; } = [];
+    public ReadOnlyAttributeValueCollection Attributes { get; init; } = [];
 
     internal int GetCharCount()
     {
@@ -278,7 +278,7 @@ public record class Word
 
 
         var miscSpan = s[fields[MiscIndex]];
-        ReadOnlyWordAttributeValueCollection misc;
+        ReadOnlyAttributeValueCollection misc;
 
         if (miscSpan.Length == 1 && miscSpan[0] == '_')
         {
@@ -286,7 +286,7 @@ public record class Word
         }
         else
         {
-            if (ReadOnlyWordAttributeValueCollection.TryParse(miscSpan, provider, out var miscValue))
+            if (ReadOnlyAttributeValueCollection.TryParse(miscSpan, provider, out var miscValue))
             {
                 misc = miscValue;
             }
