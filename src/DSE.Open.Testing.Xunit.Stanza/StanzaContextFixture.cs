@@ -1,7 +1,9 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-namespace DSE.Open.Language.Annotations.Nlp.Stanza;
+using DSE.Open.Language.Annotations.Nlp.Stanza;
+
+namespace DSE.Open.Testing.Xunit.Stanza;
 
 public sealed class StanzaContextFixture : IDisposable
 {

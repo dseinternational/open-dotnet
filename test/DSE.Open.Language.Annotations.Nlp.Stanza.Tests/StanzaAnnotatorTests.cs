@@ -27,7 +27,7 @@ public class StanzaAnnotatorTests : StanzaContextTestsBase
 
             foreach (var w in sentence.Tokens.SelectMany(t => t.Words))
             {
-                Output.WriteLine($"{w.Index}\t{w.Form}\t{w.Lemma}\t{w.Pos}\t{w.AltPos?.ToString() ?? "_"}\t{w.Features?.ToString() ?? "_"}\t{w.Relation}\t_\t{w.Attributes?.ToString() ?? "_"}");
+                Output.WriteLine($"{w.Index}\t{w.Form}\t{w.Lemma}\t{w.Pos}\t{w.AltPos?.ToString() ?? "_"}\t{w.Features?.ToString() ?? "_"}\t{w.Relation}\t_\t{w.Attributes}");
             }
         }
     }

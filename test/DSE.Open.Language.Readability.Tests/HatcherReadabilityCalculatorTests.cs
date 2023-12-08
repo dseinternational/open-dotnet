@@ -1,7 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using DSE.Open.Language.Annotations.Nlp.Stanza;
+using DSE.Open.Testing.Xunit.Stanza;
 
 namespace DSE.Open.Language.Readability;
 

@@ -1,10 +1,10 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using DSE.Open.Testing.Xunit;
+using DSE.Open.Language.Annotations.Nlp.Stanza;
 using Xunit.Abstractions;
 
-namespace DSE.Open.Language.Annotations.Nlp.Stanza;
+namespace DSE.Open.Testing.Xunit.Stanza;
 
 public abstract class StanzaContextTestsBase : LoggedTestsBase
 {
