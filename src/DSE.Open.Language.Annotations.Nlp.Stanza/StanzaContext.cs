@@ -16,32 +16,27 @@ public class StanzaContext : IDisposable
     public StanzaContext(PythonContext pythonContext)
     {
         ArgumentNullException.ThrowIfNull(pythonContext);
+
         _pythonContext = pythonContext;
-    }
 
-    [MemberNotNullWhen(true, nameof(_stanza))]
-    public bool IsInitialized => _stanza is not null;
-
-    [MemberNotNull(nameof(_stanza))]
-    private void EnsureInitialized()
-    {
-        if (!IsInitialized)
-        {
-            throw new InvalidOperationException("Must be initialized.");
-        }
-    }
-
-    public void Initialize()
-    {
         using (Py.GIL())
         {
             _stanza = Py.Import("stanza");
         }
     }
 
+    [MemberNotNull(nameof(_stanza))]
+    private void EnsureNotDisposed()
+    {
+        if (_disposed || _stanza is null)
+        {
+            ThrowHelper.ThrowObjectDisposedException(nameof(StanzaContext));
+        }
+    }
+
     public void DownloadModel(string model)
     {
-        EnsureInitialized();
+        EnsureNotDisposed();
 
         using (Py.GIL())
         {
@@ -51,7 +46,7 @@ public class StanzaContext : IDisposable
 
     public Pipeline CreatePipeline(string model)
     {
-        EnsureInitialized();
+        EnsureNotDisposed();
 
         using (Py.GIL())
         {
@@ -72,7 +67,12 @@ public class StanzaContext : IDisposable
         {
             if (disposing)
             {
-                _pythonContext.Dispose();
+                _stanza = null;
+
+                using (Py.GIL())
+                {
+                    _ = Runtime.TryCollectingGarbage(3);
+                }
             }
 
             _disposed = true;

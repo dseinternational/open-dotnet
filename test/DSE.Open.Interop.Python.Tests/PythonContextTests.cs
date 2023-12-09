@@ -6,10 +6,12 @@ namespace DSE.Open.Interop.Python;
 public class PythonContextTests
 {
     [Fact]
-    public void CanCreateAndDispose()
+    public void CannotInitializeTwoInstances()
     {
-        var context = new PythonContext(new PythonContextConfiguration());
-
-        context.Dispose();
+        _ = Assert.Throws<InvalidOperationException>(() =>
+        {
+            var context1 = new PythonContext(new PythonContextConfiguration());
+            var context21 = new PythonContext(new PythonContextConfiguration());
+        });
     }
 }
