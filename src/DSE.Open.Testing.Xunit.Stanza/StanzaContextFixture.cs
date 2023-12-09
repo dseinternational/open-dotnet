@@ -9,22 +9,15 @@ public sealed class StanzaContextFixture : IDisposable
 {
     public StanzaContextFixture()
     {
-        PythonContext = new PythonContext(new PythonContextConfiguration());
-
-        StanzaContext = new StanzaContext(PythonContext);
-
-        StanzaContext.Initialize();
+        StanzaContext = new StanzaContext(TestingPythonContext.Instance);
 
         // assuming pre-downloaded models
     }
-
-    public PythonContext PythonContext { get; }
 
     public StanzaContext StanzaContext { get; }
 
     public void Dispose()
     {
         StanzaContext.Dispose();
-        PythonContext.Dispose();
     }
 }

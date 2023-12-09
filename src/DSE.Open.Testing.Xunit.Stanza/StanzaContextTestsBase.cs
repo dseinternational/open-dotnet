@@ -12,11 +12,8 @@ public abstract class StanzaContextTestsBase : LoggedTestsBase
     {
         ArgumentNullException.ThrowIfNull(fixture);
 
-        PythonContext = fixture.PythonContext;
         StanzaContext = fixture.StanzaContext;
     }
-
-    public PythonContext PythonContext { get; }
 
     public StanzaContext StanzaContext { get; }
 }
