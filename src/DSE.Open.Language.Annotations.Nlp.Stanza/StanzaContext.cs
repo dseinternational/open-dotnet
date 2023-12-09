@@ -40,7 +40,7 @@ public class StanzaContext : IDisposable
 
         using (Py.GIL())
         {
-            _stanza.download("en", logging_level: "WARN");
+            _stanza.download(model, logging_level: "WARN");
         }
     }
 
@@ -50,7 +50,7 @@ public class StanzaContext : IDisposable
 
         using (Py.GIL())
         {
-            var nlp = _stanza.Pipeline("en", logging_level: "WARN");
+            var nlp = _stanza.Pipeline(model, logging_level: "WARN");
 
             if (nlp is null)
             {
