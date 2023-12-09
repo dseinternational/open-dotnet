@@ -6,9 +6,9 @@ using DSE.Open.Testing.Xunit.Stanza;
 namespace DSE.Open.Language.Annotations.Nlp.Stanza;
 
 [Collection(nameof(StanzaContextCollection))]
-public class PythonContextTests : StanzaContextTestsBase
+public class StanzaContextTests : StanzaContextTestsBase
 {
-    public PythonContextTests(StanzaContextFixture fixture, ITestOutputHelper output)
+    public StanzaContextTests(StanzaContextFixture fixture, ITestOutputHelper output)
         : base(fixture, output)
     {
     }

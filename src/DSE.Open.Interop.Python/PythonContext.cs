@@ -3,7 +3,7 @@
 
 using Python.Runtime;
 
-namespace DSE.Open.Language.Annotations.Nlp.Stanza;
+namespace DSE.Open.Interop.Python;
 
 public sealed class PythonContext : IDisposable
 {
@@ -27,12 +27,11 @@ public sealed class PythonContext : IDisposable
         {
             if (disposing)
             {
+                PythonEngine.EndAllowThreads(_threadState);
+
+                // https://github.com/pythonnet/pythonnet/issues/2282
+                //PythonEngine.Shutdown();
             }
-
-            PythonEngine.EndAllowThreads(_threadState);
-
-            // https://github.com/pythonnet/pythonnet/issues/2282
-            //PythonEngine.Shutdown();
 
             _disposed = true;
         }

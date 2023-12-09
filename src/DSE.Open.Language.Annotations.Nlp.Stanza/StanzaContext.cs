@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Diagnostics.CodeAnalysis;
+using DSE.Open.Interop.Python;
 using Python.Runtime;
 
 namespace DSE.Open.Language.Annotations.Nlp.Stanza;

@@ -1,7 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-namespace DSE.Open.Language.Annotations.Nlp.Stanza;
+namespace DSE.Open.Interop.Python;
 
 public sealed class PythonContextConfiguration
 {
@@ -11,13 +11,11 @@ public sealed class PythonContextConfiguration
         {
             PythonDLL = "python311.dll";
         }
-        else if (OperatingSystem.IsLinux())
-        {
-            PythonDLL = "libpython3.11.so";
-        }
         else
         {
-            PythonDLL = OperatingSystem.IsMacOS() ? "libpython3.11.dylib" : throw new PlatformNotSupportedException();
+            PythonDLL = OperatingSystem.IsLinux()
+                ? "libpython3.11.so"
+                : OperatingSystem.IsMacOS() ? "libpython3.11.dylib" : throw new PlatformNotSupportedException();
         }
     }
 

@@ -175,6 +175,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Language.Readabili
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Testing.Xunit.Stanza", "src\DSE.Open.Testing.Xunit.Stanza\DSE.Open.Testing.Xunit.Stanza.csproj", "{CB7E68D0-9E4F-400C-B4C8-D5C3516945D2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.Interop.Python.Tests", "test\DSE.Open.Interop.Python.Tests\DSE.Open.Interop.Python.Tests.csproj", "{FD73E0B0-CAAD-48E0-99D6-B86A39213899}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -469,6 +471,10 @@ Global
 		{CB7E68D0-9E4F-400C-B4C8-D5C3516945D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CB7E68D0-9E4F-400C-B4C8-D5C3516945D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CB7E68D0-9E4F-400C-B4C8-D5C3516945D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD73E0B0-CAAD-48E0-99D6-B86A39213899}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD73E0B0-CAAD-48E0-99D6-B86A39213899}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD73E0B0-CAAD-48E0-99D6-B86A39213899}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD73E0B0-CAAD-48E0-99D6-B86A39213899}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -546,6 +552,7 @@ Global
 		{F4DA0EC1-1559-4A8A-A5A3-DD45A8CA7D85} = {D2529453-80C3-4F06-BBD0-6B58EF65EF99}
 		{D2D29B7B-536C-4374-9FA7-84BB1EBE9144} = {850B3E2C-6172-4CF9-9E83-AD0997C57CA3}
 		{CB7E68D0-9E4F-400C-B4C8-D5C3516945D2} = {D2529453-80C3-4F06-BBD0-6B58EF65EF99}
+		{FD73E0B0-CAAD-48E0-99D6-B86A39213899} = {850B3E2C-6172-4CF9-9E83-AD0997C57CA3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3D3BE91A-3636-45E3-A6BF-8C09D5A9782A}
