@@ -66,19 +66,29 @@ public readonly partial struct SemanticRelationTag
     /// Indicates a <b>noun + possessive + noun</b> <c>[NOUN+PART+NOUN]</c> (possessive)
     /// construction - for example "daddy car" (daddy's car), "dog bowl" (dog's bowl).
     /// </summary>
-    public static readonly SemanticRelationTag Possessive = new("possessive", true);
+    public static readonly SemanticRelationTag PossessorPossession = new("possessor-possession", true);
 
     /// <summary>
     /// Indicates an <b>adjective + noun</b> or <b>noun + adjective</b>
     /// <c>ADJ+NOUN|NOUN+ADJ</c> (descriptive) construction - for example
     /// "big truck", "blue ball", "dog wet", "shoe dirty".
     /// </summary>
-    public static readonly SemanticRelationTag Descriptive = new("descriptive", true);
+    public static readonly SemanticRelationTag AttributeEntity = new("attribute-entity", true);
 
     /// Indicates a <b>preposition + noun</b> or <b>noun + preposition</b>
-    /// <c>[ADP+NOUN]</c> (locative, position/place) construction - for example
+    /// <c>[ADP+NOUN]</c> (location, position/place) construction - for example
     /// "on chair", "in kitchen", "under table".
-    public static readonly SemanticRelationTag Locative = new("locative", true);
+    public static readonly SemanticRelationTag Location = new("location", true);
+
+    /// <summary>
+    /// e.g. "sit chair"
+    /// </summary>
+    public static readonly SemanticRelationTag ActionLocation = new("action-location", true);
+
+    /// <summary>
+    /// e.g. "bear bed"
+    /// </summary>
+    public static readonly SemanticRelationTag EntityLocation = new("entity-location", true);
 
     /// <summary>
     /// Indicates an <b>verb + adverb</b> <c>[VERB+ADV]</c> (temporal)
@@ -104,7 +114,7 @@ public readonly partial struct SemanticRelationTag
     /// Indicates a <b>determiner + noun</b> <c>DET+NOUN</c> (existence)
     /// construction  - for example, "that ball", "this toy".
     /// </summary>
-    public static readonly SemanticRelationTag Existence = new("existence", true);
+    public static readonly SemanticRelationTag DemonstrativeEntity = new("demonstrative-entity", true);
 
     /// <summary>
     /// Indicates a <b>adjective + noun</b> <c>[ADJ+NOUN]</c> (recurrence)
@@ -129,12 +139,12 @@ public readonly partial struct SemanticRelationTag
     /// <summary>
     /// TODO
     /// </summary>
-    public static readonly SemanticRelationTag AgentActionLocative = new("agent-action-locative", true);
+    public static readonly SemanticRelationTag AgentActionLocation = new("agent-action-location", true);
 
     /// <summary>
     /// TODO
     /// </summary>
-    public static readonly SemanticRelationTag AgentObjectLocative = new("agent-object-locative", true);
+    public static readonly SemanticRelationTag AgentObjectLocation = new("agent-object-location", true);
 
     /// <summary>
     /// <c>[NOUN+ADP+NOUN|VERB+ADP+NOUN]</c> "toy in box", "hide under bed"
@@ -150,18 +160,20 @@ public readonly partial struct SemanticRelationTag
         AgentObject,
         Conjunctive,
         Denial,
-        Descriptive,
-        Existence,
-        Locative,
+        AttributeEntity,
+        DemonstrativeEntity,
+        Location,
+        ActionLocation,
+        EntityLocation,        
         NonExistence,
-        Possessive,
+        PossessorPossession,
         Quantitative,
         Recurrence,
         Rejection,
         Temporal,
         AgentActionObject,
-        AgentActionLocative,
-        AgentObjectLocative,
+        AgentActionLocation,
+        AgentObjectLocation,
         Preposition,
     ]);
 
