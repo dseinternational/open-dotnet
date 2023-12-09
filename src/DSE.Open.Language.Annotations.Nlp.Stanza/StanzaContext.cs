@@ -68,11 +68,6 @@ public class StanzaContext : IDisposable
             if (disposing)
             {
                 _stanza = null;
-
-                using (Py.GIL())
-                {
-                    _ = Runtime.TryCollectingGarbage(3);
-                }
             }
 
             _disposed = true;
