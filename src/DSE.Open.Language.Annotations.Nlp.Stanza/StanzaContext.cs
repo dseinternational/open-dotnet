@@ -23,6 +23,11 @@ public class StanzaContext : IDisposable
         {
             _stanza = Py.Import("stanza");
         }
+
+        if (_stanza is null)
+        {
+            throw new InvalidOperationException("Failed to import stanza.");
+        }
     }
 
     [MemberNotNull(nameof(_stanza))]
