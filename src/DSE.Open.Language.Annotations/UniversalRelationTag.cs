@@ -194,6 +194,7 @@ public readonly partial struct UniversalRelationTag
         CaseMarking,
         Classifier,
         ClausalComplement,
+        ClausalModifierOfNoun,
         ClausalPassiveSubject,
         ClausalSubject,
         Compound,
