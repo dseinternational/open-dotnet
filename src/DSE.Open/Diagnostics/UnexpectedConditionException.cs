@@ -21,7 +21,10 @@ public class UnexpectedConditionException : Exception
     {
     }
 
-    private static string EnsureMessage(string? message) => message ?? "Encountered an unexpected condition.";
+    private static string EnsureMessage(string? message)
+    {
+        return message ?? "Encountered an unexpected condition.";
+    }
 
     public static void ThrowIf(bool condition, [CallerArgumentExpression(nameof(condition))] string? message = null)
     {
@@ -48,6 +51,24 @@ public class UnexpectedConditionException : Exception
         }
     }
 
+    public static void ThrowIfNullOrEmpty([NotNull] string? value, [CallerArgumentExpression(nameof(value))] string? valueName = null)
+    {
+        if (string.IsNullOrEmpty(value))
+        {
+            Throw($"Encountered an unexpected condition: {valueName} was null or empty.");
+        }
+    }
+
+    public static void ThrowIfEmpty<T>(ICollection<T> collection, [CallerArgumentExpression(nameof(collection))] string? collectionName = null)
+    {
+        ArgumentNullException.ThrowIfNull(collection);
+
+        if (collection.Count == 0)
+        {
+            Throw($"Encountered an unexpected condition: {collectionName} was empty.");
+        }
+    }
+
     public static void ThrowIfEmpty<T>(IEnumerable<T> collection, [CallerArgumentExpression(nameof(collection))] string? collectionName = null)
     {
         ArgumentNullException.ThrowIfNull(collection);
@@ -60,5 +81,8 @@ public class UnexpectedConditionException : Exception
 
     [DoesNotReturn]
     [StackTraceHidden]
-    private static void Throw(string message) => throw new UnexpectedConditionException(message);
+    private static void Throw(string message)
+    {
+        throw new UnexpectedConditionException(message);
+    }
 }
