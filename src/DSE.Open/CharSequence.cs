@@ -76,6 +76,11 @@ public readonly struct CharSequence
         return Parse(s, default);
     }
 
+    public static CharSequence ParseInvariant(string s)
+    {
+        return Parse(s, CultureInfo.InvariantCulture);
+    }
+
     public static CharSequence Parse(string s, IFormatProvider? provider)
     {
         ArgumentNullException.ThrowIfNull(s);
