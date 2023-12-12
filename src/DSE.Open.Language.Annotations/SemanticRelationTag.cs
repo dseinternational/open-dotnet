@@ -101,7 +101,7 @@ public readonly partial struct SemanticRelationTag
     /// Indicates a <b>number + noun</b> <c>[NUM+NOUN]</c> (quantitative)
     /// construction - for example "two balls", "three bags".
     /// </summary>
-    public static readonly SemanticRelationTag Quantitative = new("temporal", true);
+    public static readonly SemanticRelationTag Quantitative = new("quantitative", true);
 
     /// <summary>
     /// Indicates a <b>noun + noun</b> <c>[NOUN+NOUN]</c> construction where the
@@ -109,6 +109,12 @@ public readonly partial struct SemanticRelationTag
     /// with each other - for example "sock shoe", "bowl spoon".
     /// </summary>
     public static readonly SemanticRelationTag Conjunctive = new("conjunctive", true);
+
+
+    public static readonly SemanticRelationTag Declarative = new("declarative", true);
+
+
+    public static readonly SemanticRelationTag Imperative = new("imperative", true);
 
     /// <summary>
     /// Indicates a <b>determiner + noun</b> <c>DET+NOUN</c> (existence)
@@ -161,6 +167,8 @@ public readonly partial struct SemanticRelationTag
         Conjunctive,
         Denial,
         AttributeEntity,
+        Declarative,
+        Imperative,
         DemonstrativeEntity,
         Location,
         ActionLocation,
