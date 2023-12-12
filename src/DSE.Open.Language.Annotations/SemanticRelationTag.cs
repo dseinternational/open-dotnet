@@ -161,28 +161,28 @@ public readonly partial struct SemanticRelationTag
 
     public static readonly FrozenSet<SemanticRelationTag> All = FrozenSet.ToFrozenSet(
     [
+        ActionLocation,
         ActionObject,
         AgentAction,
+        AgentActionLocation,
+        AgentActionObject,
         AgentObject,
-        Conjunctive,
-        Denial,
+        AgentObjectLocation,
         AttributeEntity,
+        Conjunctive,
         Declarative,
-        Imperative,
         DemonstrativeEntity,
-        Location,
-        ActionLocation,
+        Denial,
         EntityLocation,        
+        Imperative,
+        Location,
         NonExistence,
         PossessorPossession,
+        Preposition,
         Quantitative,
         Recurrence,
         Rejection,
         Temporal,
-        AgentActionObject,
-        AgentActionLocation,
-        AgentObjectLocation,
-        Preposition,
     ]);
 
     private static readonly FrozenSet<AsciiString> s_validValues =
