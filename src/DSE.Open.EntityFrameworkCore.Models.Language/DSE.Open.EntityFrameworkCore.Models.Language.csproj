@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DSE.Open.EntityFrameworkCore\DSE.Open.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\DSE.Open.Language.Annotations\DSE.Open.Language.Annotations.csproj" />
+  </ItemGroup>
+
+</Project>
