@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using System.Runtime.CompilerServices;
@@ -55,23 +56,24 @@ public readonly partial struct AsciiChar
         _asciiByte = (byte)asciiChar;
     }
 
+    /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="value"/> is not an ASCII character.</exception>
     private static void EnsureIsValidAsciiChar(
         byte value,
-        [CallerArgumentExpression("value")] string? name = null)
+        [CallerArgumentExpression(nameof(value))]
+        string? name = null)
     {
-        if (!IsAscii(value))
-        {
-            ThrowHelper.ThrowArgumentOutOfRangeException(nameof(value));
-        }
+        EnsureIsValidAsciiChar((char)value, name);
     }
 
+    /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="value"/> is not an ASCII character.</exception>
     private static void EnsureIsValidAsciiChar(
         char value,
-        [CallerArgumentExpression("value")] string? name = null)
+        [CallerArgumentExpression(nameof(value))]
+        string? name = null)
     {
         if (!IsAscii(value))
         {
-            ThrowHelper.ThrowArgumentOutOfRangeException(nameof(value));
+            ThrowHelper.ThrowArgumentOutOfRangeException(name);
         }
     }
 
@@ -107,7 +109,7 @@ public readonly partial struct AsciiChar
 
     public override string ToString()
     {
-        return new(new[] { (char)_asciiByte });
+        return ToString(null, null);
     }
 
     public static bool operator ==(AsciiChar left, AsciiChar right)
@@ -137,12 +139,12 @@ public readonly partial struct AsciiChar
 
     public static AsciiChar FromByte(byte asciiByte)
     {
-        return new(asciiByte);
+        return new AsciiChar(asciiByte);
     }
 
     public static AsciiChar FromChar(char asciiUtf16Char)
     {
-        return new(asciiUtf16Char);
+        return new AsciiChar(asciiUtf16Char);
     }
 
     public static explicit operator string(AsciiChar value)
@@ -177,12 +179,12 @@ public readonly partial struct AsciiChar
 
     public AsciiChar ToUpper()
     {
-        return new(ToUpper(_asciiByte));
+        return new AsciiChar(ToUpper(_asciiByte));
     }
 
     public AsciiChar ToLower()
     {
-        return new(ToLower(_asciiByte));
+        return new AsciiChar(ToLower(_asciiByte));
     }
 
     public bool TryFormat(
@@ -193,7 +195,22 @@ public readonly partial struct AsciiChar
     {
         if (destination.Length >= 1)
         {
-            destination[0] = (char)_asciiByte;
+            switch (format)
+            {
+                case "":
+                    destination[0] = (char)_asciiByte;
+                    break;
+                case "U" or "u":
+                    destination[0] = (char)ToUpper(_asciiByte);
+                    break;
+                case "L" or "l":
+                    destination[0] = (char)ToLower(_asciiByte);
+                    break;
+                default:
+                    ThrowHelper.ThrowFormatException($"The format '{format}' is not supported for {nameof(AsciiChar)}");
+                    break;
+            }
+
             charsWritten = 1;
             return true;
         }
@@ -206,7 +223,22 @@ public readonly partial struct AsciiChar
     {
         if (utf8Destination.Length >= 1)
         {
-            utf8Destination[0] = _asciiByte;
+            switch (format)
+            {
+                case "":
+                    utf8Destination[0] = _asciiByte;
+                    break;
+                case "U" or "u":
+                    utf8Destination[0] = ToUpper(_asciiByte);
+                    break;
+                case "L" or "l":
+                    utf8Destination[0] = ToLower(_asciiByte);
+                    break;
+                default:
+                    ThrowHelper.ThrowFormatException($"The format '{format}' is not supported for {nameof(AsciiChar)}");
+                    break;
+            }
+
             bytesWritten = 1;
             return true;
         }
@@ -217,7 +249,13 @@ public readonly partial struct AsciiChar
 
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
-        return ToString();
+        return string.Create(1, (this, format, formatProvider), (span, state) =>
+        {
+            var (asciiChar, format, formatProvider) = state;
+            var result = asciiChar.TryFormat(span, out var charsWritten, format, formatProvider);
+            Debug.Assert(result);
+            Debug.Assert(charsWritten == 1);
+        });
     }
 
     public static AsciiChar Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
@@ -234,7 +272,7 @@ public readonly partial struct AsciiChar
     public static bool TryParse(
         ReadOnlySpan<char> s,
         IFormatProvider? provider,
-        [MaybeNullWhen(false)] out AsciiChar result)
+        out AsciiChar result)
     {
         if (s.Length >= 1 && IsAscii(s[0]))
         {
@@ -255,7 +293,7 @@ public readonly partial struct AsciiChar
     public static bool TryParse(
         [NotNullWhen(true)] string? s,
         IFormatProvider? provider,
-        [MaybeNullWhen(false)] out AsciiChar result)
+        out AsciiChar result)
     {
         return TryParse(s.AsSpan(), provider, out result);
     }
