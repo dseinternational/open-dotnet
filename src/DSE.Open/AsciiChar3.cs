@@ -87,20 +87,37 @@ public readonly struct AsciiChar3
         c2 = _c2;
     }
 
-    public bool Equals(AsciiChar3 other) => _c0 == other._c0 && _c1 == other._c1 && _c2 == other._c2;
+    public bool Equals(AsciiChar3 other)
+    {
+        return _c0 == other._c0 && _c1 == other._c1 && _c2 == other._c2;
+    }
 
-    public bool Equals(string other) => Equals(other.AsSpan());
+    public bool Equals(string other)
+    {
+        return Equals(other.AsSpan());
+    }
 
-    public bool Equals(ReadOnlyMemory<char> other) => Equals(other.Span);
+    public bool Equals(ReadOnlyMemory<char> other)
+    {
+        return Equals(other.Span);
+    }
 
-    public bool Equals(ReadOnlySpan<char> other) => other.Length == CharCount && other[0] == _c0 && other[1] == _c1 && other[2] == _c2;
+    public bool Equals(ReadOnlySpan<char> other)
+    {
+        return other.Length == CharCount && other[0] == _c0 && other[1] == _c1 && other[2] == _c2;
+    }
 
-    public override bool Equals(object? obj) => obj is AsciiChar3 other && Equals(other);
+    public override bool Equals(object? obj)
+    {
+        return obj is AsciiChar3 other && Equals(other);
+    }
 
     public bool EqualsCaseInsensitive(AsciiChar3 other)
-        => AsciiChar.EqualsCaseInsensitive(_c0, other._c0)
-        && AsciiChar.EqualsCaseInsensitive(_c1, other._c1)
-        && AsciiChar.EqualsCaseInsensitive(_c2, other._c2);
+    {
+        return AsciiChar.EqualsCaseInsensitive(_c0, other._c0)
+               && AsciiChar.EqualsCaseInsensitive(_c1, other._c1)
+               && AsciiChar.EqualsCaseInsensitive(_c2, other._c2);
+    }
 
     public int CompareToCaseInsensitive(AsciiChar3 other)
     {
@@ -130,39 +147,78 @@ public readonly struct AsciiChar3
         return c != 0 ? c : _c2.CompareTo(other._c2);
     }
 
-    public override int GetHashCode() => HashCode.Combine(_c0, _c1, _c2);
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(_c0, _c1, _c2);
+    }
 
-    public override string ToString() => ToString(null, null);
+    public override string ToString()
+    {
+        return ToString(null, null);
+    }
 
-    public Char3 ToChar3() => new((char)_c0, (char)_c1, (char)_c2);
+    public Char3 ToChar3()
+    {
+        return new Char3((char)_c0, (char)_c1, (char)_c2);
+    }
 
-    public char[] ToCharArray() => [(char)_c0, _c1, _c2];
+    public char[] ToCharArray()
+    {
+        return [(char)_c0, _c1, _c2];
+    }
 
-    public static AsciiChar3 FromString(string value) => new(value.AsSpan());
+    public static AsciiChar3 FromString(string value)
+    {
+        return new AsciiChar3(value.AsSpan());
+    }
 
-    public static AsciiChar3 FromSpan(ReadOnlySpan<AsciiChar> span) => new(span);
+    public static AsciiChar3 FromSpan(ReadOnlySpan<AsciiChar> span)
+    {
+        return new AsciiChar3(span);
+    }
 
-    public static bool operator ==(AsciiChar3 left, AsciiChar3 right) => left.Equals(right);
+    public static bool operator ==(AsciiChar3 left, AsciiChar3 right)
+    {
+        return left.Equals(right);
+    }
 
-    public static bool operator !=(AsciiChar3 left, AsciiChar3 right) => !left.Equals(right);
+    public static bool operator !=(AsciiChar3 left, AsciiChar3 right)
+    {
+        return !left.Equals(right);
+    }
 
-    public static implicit operator string(AsciiChar3 value) => value.ToString();
+    public static implicit operator string(AsciiChar3 value)
+    {
+        return value.ToString();
+    }
 
-    public static implicit operator Char3(AsciiChar3 value) => value.ToChar3();
+    public static implicit operator Char3(AsciiChar3 value)
+    {
+        return value.ToChar3();
+    }
 
-    public static explicit operator AsciiChar3(string value) => FromString(value);
+    public static explicit operator AsciiChar3(string value)
+    {
+        return FromString(value);
+    }
 
-    public AsciiChar3 ToUpper() => new(_c0.ToUpper(), _c1.ToUpper(), _c2.ToUpper());
+    public AsciiChar3 ToUpper()
+    {
+        return new AsciiChar3(_c0.ToUpper(), _c1.ToUpper(), _c2.ToUpper());
+    }
 
-    public AsciiChar3 ToLower() => new(_c0.ToLower(), _c1.ToLower(), _c2.ToLower());
+    public AsciiChar3 ToLower()
+    {
+        return new AsciiChar3(_c0.ToLower(), _c1.ToLower(), _c2.ToLower());
+    }
 
     public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider? provider)
     {
         if (destination.Length >= CharCount)
         {
-            destination[0] = _c0;
-            destination[1] = _c1;
-            destination[2] = _c2;
+            _c0.TryFormat(destination, out _, format, provider);
+            _c1.TryFormat(destination[1..], out _, format, provider);
+            _c2.TryFormat(destination[2..], out _, format, provider);
             charsWritten = CharCount;
             return true;
         }
@@ -172,28 +228,23 @@ public readonly struct AsciiChar3
     }
 
     public string ToString(string? format, IFormatProvider? formatProvider)
-        => string.Create(CharCount, this, (span, value) =>
+    {
+        return string.Create(CharCount, (this, format, formatProvider), (span, state) =>
         {
-            span[0] = value._c0;
-            span[1] = value._c1;
-            span[2] = value._c2;
+            var (value, format, formatProvider) = state;
+            value.TryFormat(span, out _, format, formatProvider);
         });
+    }
 
     public string ToStringLower()
-        => string.Create(CharCount, this, (span, value) =>
-        {
-            span[0] = value._c0.ToLower();
-            span[1] = value._c1.ToLower();
-            span[2] = value._c2.ToLower();
-        });
+    {
+        return ToString("L", null);
+    }
 
     public string ToStringUpper()
-        => string.Create(CharCount, this, (span, value) =>
-        {
-            span[0] = value._c0.ToUpper();
-            span[1] = value._c1.ToUpper();
-            span[2] = value._c2.ToUpper();
-        });
+    {
+        return ToString("U", null);
+    }
 
     public static AsciiChar3 Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
     {
@@ -209,10 +260,10 @@ public readonly struct AsciiChar3
     public static bool TryParse(
         ReadOnlySpan<char> s,
         IFormatProvider? provider,
-        [MaybeNullWhen(false)] out AsciiChar3 result)
+        out AsciiChar3 result)
     {
         if (s.Length == CharCount && AsciiChar.IsAscii(s[0])
-            && AsciiChar.IsAscii(s[1]) && AsciiChar.IsAscii(s[2]))
+                                  && AsciiChar.IsAscii(s[1]) && AsciiChar.IsAscii(s[2]))
         {
             result = new AsciiChar3(s);
             return true;
@@ -228,13 +279,20 @@ public readonly struct AsciiChar3
         return Parse(s.AsSpan(), provider);
     }
 
-    public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, [MaybeNullWhen(false)] out AsciiChar3 result)
-        => TryParse(s.AsSpan(), provider, out result);
+    public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, out AsciiChar3 result)
+    {
+        return TryParse(s.AsSpan(), provider, out result);
+    }
 
-    static string IConvertibleTo<AsciiChar3, string>.ConvertTo(AsciiChar3 value) => value.ToString();
+    static string IConvertibleTo<AsciiChar3, string>.ConvertTo(AsciiChar3 value)
+    {
+        return value.ToString();
+    }
 
     static bool ITryConvertibleFrom<AsciiChar3, string>.TryFromValue(string value, out AsciiChar3 result)
-        => TryParse(value, null, out result);
+    {
+        return TryParse(value, null, out result);
+    }
 
     public static AsciiChar3 Parse(ReadOnlySpan<byte> utf8Text, IFormatProvider? provider)
     {
@@ -250,7 +308,7 @@ public readonly struct AsciiChar3
     public static bool TryParse(
         ReadOnlySpan<byte> utf8Text,
         IFormatProvider? provider,
-        [MaybeNullWhen(false)] out AsciiChar3 result)
+        out AsciiChar3 result)
     {
         if (utf8Text.Length != CharCount
             || !AsciiChar.IsAscii(utf8Text[0])
@@ -271,24 +329,37 @@ public readonly struct AsciiChar3
         ReadOnlySpan<char> format,
         IFormatProvider? provider)
     {
-        if (utf8Destination.Length < MaxSerializedByteLength)
+        if (utf8Destination.Length >= CharCount)
         {
-            bytesWritten = 0;
-            return false;
+            _c0.TryFormat(utf8Destination, out _, format, provider);
+            _c1.TryFormat(utf8Destination[1..], out _, format, provider);
+            _c2.TryFormat(utf8Destination[2..], out _, format, provider);
+
+            bytesWritten = CharCount;
+            return true;
         }
 
-        utf8Destination[0] = (byte)_c0;
-        utf8Destination[1] = (byte)_c1;
-        utf8Destination[2] = (byte)_c2;
-        bytesWritten = MaxSerializedByteLength;
-        return true;
+        bytesWritten = 0;
+        return false;
     }
 
-    public static bool operator <(AsciiChar3 left, AsciiChar3 right) => left.CompareTo(right) < 0;
+    public static bool operator <(AsciiChar3 left, AsciiChar3 right)
+    {
+        return left.CompareTo(right) < 0;
+    }
 
-    public static bool operator <=(AsciiChar3 left, AsciiChar3 right) => left.CompareTo(right) <= 0;
+    public static bool operator <=(AsciiChar3 left, AsciiChar3 right)
+    {
+        return left.CompareTo(right) <= 0;
+    }
 
-    public static bool operator >(AsciiChar3 left, AsciiChar3 right) => left.CompareTo(right) > 0;
+    public static bool operator >(AsciiChar3 left, AsciiChar3 right)
+    {
+        return left.CompareTo(right) > 0;
+    }
 
-    public static bool operator >=(AsciiChar3 left, AsciiChar3 right) => left.CompareTo(right) >= 0;
+    public static bool operator >=(AsciiChar3 left, AsciiChar3 right)
+    {
+        return left.CompareTo(right) >= 0;
+    }
 }

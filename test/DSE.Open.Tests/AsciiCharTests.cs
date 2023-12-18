@@ -63,6 +63,75 @@ public class AsciiCharTests
     }
 
     [Fact]
+    public void TryFormatUtf8_WithCorrectBuffer_ShouldReturnTrue()
+    {
+        // Arrange
+        var value = (AsciiChar)'a';
+        Span<byte> buffer = stackalloc byte[1];
+
+        // Act
+        var result = value.TryFormat(buffer, out var charsWritten, default, default);
+
+        // Assert
+        Assert.True(result);
+        Assert.Equal(1, charsWritten);
+    }
+
+    [Fact]
+    public void TryFormatUtf8_WithInvalidBuffer_ShouldReturnFalse()
+    {
+        // Arrange
+        var value = (AsciiChar)'a';
+        Span<byte> buffer = stackalloc byte[0];
+
+        // Act
+        var result = value.TryFormat(buffer, out var charsWritten, default, default);
+
+        // Assert
+        Assert.False(result);
+        Assert.Equal(0, charsWritten);
+    }
+
+    [Theory]
+    [InlineData('a', "u", 'A')]
+    [InlineData('A', "u", 'A')]
+    [InlineData('a', "l", 'a')]
+    [InlineData('A', "l", 'a')]
+    [InlineData('a', "", 'a')]
+    [InlineData('A', "", 'A')]
+    public void TryFormatUtf8_CorrectBuffers(char value, string format, char expected)
+    {
+        // Arrange
+        var asciiChar = (AsciiChar)value;
+        Span<byte> buffer = stackalloc byte[1];
+
+        // Act
+        var result = asciiChar.TryFormat(buffer, out var charsWritten, format, default);
+
+        // Assert
+        Assert.True(result);
+        Assert.Equal(1, charsWritten);
+        Assert.Equal((byte)expected, buffer[0]);
+    }
+
+    [Theory]
+    [InlineData("x")]
+    [InlineData("AB")]
+    public void TryFormatUtf8_WithInvalidFormat_ShouldThrowFormatException(string format)
+    {
+        // Arrange
+        var value = (AsciiChar)'a';
+        var buffer = new byte[1];
+
+        // Act
+        void Act() => value.TryFormat(buffer, out _, format, default);
+
+        // Assert
+        _ = Assert.Throws<FormatException>(Act);
+    }
+
+
+    [Fact]
     public void TryFormat_WithCorrectBuffer_ShouldReturnTrue()
     {
         // Arrange
@@ -90,5 +159,66 @@ public class AsciiCharTests
         // Assert
         Assert.False(result);
         Assert.Equal(0, charsWritten);
+    }
+
+    [Theory]
+    [InlineData('a', "u", 'A')]
+    [InlineData('A', "u", 'A')]
+    [InlineData('a', "l", 'a')]
+    [InlineData('A', "l", 'a')]
+    [InlineData('a', "", 'a')]
+    [InlineData('A', "", 'A')]
+    public void TryFormat_CorrectBuffers(char value, string format, char expected)
+    {
+        // Arrange
+        var asciiChar = (AsciiChar)value;
+        Span<char> buffer = stackalloc char[1];
+
+        // Act
+        var result = asciiChar.TryFormat(buffer, out var charsWritten, format, default);
+
+        // Assert
+        Assert.True(result);
+        Assert.Equal(1, charsWritten);
+        Assert.Equal(expected, buffer[0]);
+    }
+
+    [Theory]
+    [InlineData("x")]
+    [InlineData("AB")]
+    public void TryFormat_WithInvalidFormat_ShouldThrowFormatException(string format)
+    {
+        // Arrange
+        var value = (AsciiChar)'a';
+        var buffer = new char[1];
+
+        // Act
+        void Act() => value.TryFormat(buffer, out _, format, default);
+
+        // Assert
+        _ = Assert.Throws<FormatException>(Act);
+    }
+
+    [Theory]
+    [InlineData('a', "u", "A")]
+    [InlineData('a', "U", "A")]
+    [InlineData('A', "u", "A")]
+    [InlineData('a', "l", "a")]
+    [InlineData('A', "l", "a")]
+    [InlineData('A', "U", "A")]
+    [InlineData('a', "L", "a")]
+    [InlineData('A', "L", "a")]
+    [InlineData('a', "", "a")]
+    [InlineData('A', "", "A")]
+    public void ToString_WithFormat(char value, string format, string expected)
+    {
+        // Arrange
+        var asciiChar = (AsciiChar)value;
+
+        // Act
+        var result = asciiChar.ToString(format, default);
+
+        // Assert
+        Assert.Equal(expected, result);
     }
 }
