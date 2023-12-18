@@ -272,7 +272,8 @@ public readonly struct AsciiChar2
         return string.Create(CharCount, (this, format, formatProvider), (span, state) =>
         {
             var (value, format, formatProvider) = state;
-            Debug.Assert(value.TryFormat(span, out _, format, formatProvider));
+            var result = value.TryFormat(span, out _, format, formatProvider);
+            Debug.Assert(result);
         });
     }
 
