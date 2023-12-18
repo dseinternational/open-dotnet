@@ -304,7 +304,7 @@ public readonly struct AsciiChar2
     {
         if (s.Length == CharCount && AsciiChar.IsAscii(s[0]) && AsciiChar.IsAscii(s[1]))
         {
-            result = new AsciiChar2(s);
+            result = new AsciiChar2(s[..2]);
             return true;
         }
 

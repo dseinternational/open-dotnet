@@ -33,4 +33,15 @@ public class AsciiChar2Tests
         Assert.False(result);
         Assert.Equal(default, value);
     }
+
+    [Fact]
+    public void TryParse_WithTooManyValidChars_ShouldReturnFalse()
+    {
+        // Act
+        var result = AsciiChar2.TryParse("abc"u8, default, out var value);
+
+        // Assert
+        Assert.False(result);
+        Assert.Equal(default, value);
+    }
 }
