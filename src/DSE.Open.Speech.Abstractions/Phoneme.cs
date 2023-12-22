@@ -106,6 +106,11 @@ public readonly partial struct Phoneme : IEquatable<Phoneme>, ISpanFormattable, 
         return _value;
     }
 
+    public string ToStringInvariant()
+    {
+        return _value;
+    }
+
     // TODO: formatting options: escaped Unicode? binary format?
 
     public bool TryFormat(
@@ -140,7 +145,10 @@ public readonly partial struct Phoneme : IEquatable<Phoneme>, ISpanFormattable, 
             : ThrowHelper.ThrowFormatException<Phoneme>($"Could not parse {nameof(Phoneme)}");
     }
 
-    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, [MaybeNullWhen(false)] out Phoneme result)
+    public static bool TryParse(
+        ReadOnlySpan<char> s,
+        IFormatProvider? provider,
+        [MaybeNullWhen(false)] out Phoneme result)
     {
         s = s.Trim();
 
@@ -158,6 +166,11 @@ public readonly partial struct Phoneme : IEquatable<Phoneme>, ISpanFormattable, 
 
         result = new Phoneme(s, true);
         return true;
+    }
+
+    public static Phoneme ParseInvariant(string s)
+    {
+        return Parse(s, CultureInfo.InvariantCulture);
     }
 
     public static Phoneme Parse(string s, IFormatProvider? provider)
