@@ -15,7 +15,7 @@ public interface IMetadataWriter
     /// <param name="request"></param>
     /// <param name="result"></param>
     /// <param name="context"></param>
-    /// <param name="cancellationToken"></param>
+    /// <param name="cancellationToken">A token that can be used to request cancellation.</param>
     /// <returns></returns>
     ValueTask WriteResultMetadataAsync(
         RequestMetadata request,
@@ -30,7 +30,7 @@ public interface IMetadataWriter
     /// <param name="request"></param>
     /// <param name="result"></param>
     /// <param name="context"></param>
-    /// <param name="cancellationToken"></param>
+    /// <param name="cancellationToken">A token that can be used to request cancellation.</param>
     /// <returns></returns>
     ValueTask WriteRequestMetadataAsync(
         RequestMetadata request,

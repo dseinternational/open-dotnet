@@ -17,7 +17,7 @@ public interface IDomainEventDispatcher
     /// Events are published consecutively.
     /// </summary>
     /// <param name="entities"></param>
-    /// <param name="cancellationToken"></param>
+    /// <param name="cancellationToken">A token that can be used to request cancellation.</param>
     /// <returns></returns>
     [RequiresDynamicCode("May break functionality when AOT compiling")]
     Task PublishBeforeSaveChangesEventsAsync(IEnumerable<IEventRaisingEntity> entities, CancellationToken cancellationToken = default);
@@ -29,7 +29,7 @@ public interface IDomainEventDispatcher
     /// other, consecutive event handlers are running.
     /// </summary>
     /// <param name="entities"></param>
-    /// <param name="cancellationToken"></param>
+    /// <param name="cancellationToken">A token that can be used to request cancellation.</param>
     /// <returns></returns>
     [RequiresDynamicCode("May break functionality when AOT compiling")]
     Task PublishEventsAsync(IEnumerable<IEventRaisingEntity> entities, CancellationToken cancellationToken = default);

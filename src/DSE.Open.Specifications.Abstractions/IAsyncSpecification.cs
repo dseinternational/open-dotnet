@@ -13,7 +13,7 @@ public interface IAsyncSpecification<in TValue>
     /// Determines if the specified value satisfies the specification.
     /// </summary>
     /// <param name="candidate">The value to evaluate.</param>
-    /// <param name="cancellationToken"></param>
+    /// <param name="cancellationToken">A token that can be used to request cancellation.</param>
     /// <returns><see langword="true"/> if the value satisfies the specification,
     /// otherwise <see langword="false"/>.</returns>
     Task<bool> IsSatisfiedByAsync(TValue candidate, CancellationToken cancellationToken = default);

@@ -15,7 +15,7 @@ public interface IMetadataReader
     /// <param name="request"></param>
     /// <param name="result"></param>
     /// <param name="context"></param>
-    /// <param name="cancellationToken"></param>
+    /// <param name="cancellationToken">A token that can be used to request cancellation.</param>
     /// <returns></returns>
     ValueTask ReadRequestMetadataAsync(
         RequestMetadata request,
@@ -30,7 +30,7 @@ public interface IMetadataReader
     /// <param name="request"></param>
     /// <param name="result"></param>
     /// <param name="context"></param>
-    /// <param name="cancellationToken"></param>
+    /// <param name="cancellationToken">A token that can be used to request cancellation.</param>
     /// <returns></returns>
     ValueTask ReadResultMetadataAsync(
         RequestMetadata request,
