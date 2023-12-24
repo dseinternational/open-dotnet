@@ -50,7 +50,7 @@ T>
     }
     private static List<T> GenerateSnapshot(IEnumerable<T> values)
     {
-        return new(values);
+        return [..values];
     }
 }
 

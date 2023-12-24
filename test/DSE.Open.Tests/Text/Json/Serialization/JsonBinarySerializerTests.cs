@@ -191,18 +191,18 @@ public class JsonBinarySerializerTests
 
     public static IEnumerable<object?[]> JsonSerializerOptionsData()
     {
-        yield return new object?[] { null };
-        yield return new object[] { JsonSerializerOptions.Default };
+        yield return [null];
+        yield return [JsonSerializerOptions.Default];
 
-        yield return new object[]
-        {
+        yield return
+        [
             new JsonSerializerOptions()
             {
                 Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
             }
-        };
+        ];
 
-        yield return new object[] { JsonSharedOptions.UnicodeRangesAll };
-        yield return new object[] { JsonSharedOptions.RelaxedJsonEscaping };
+        yield return [JsonSharedOptions.UnicodeRangesAll];
+        yield return [JsonSharedOptions.RelaxedJsonEscaping];
     }
 }
