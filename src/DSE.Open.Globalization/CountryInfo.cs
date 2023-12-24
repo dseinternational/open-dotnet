@@ -49,7 +49,7 @@ public sealed record CountryInfo
 
     public static CountryInfo? FromCountryCode(CountryCode code)
     {
-        return s_twoLetterCodeLookup.Value.TryGetValue(code.ToStringInvariant().ToUpperInvariant()!, out var value) ? value : null;
+        return s_twoLetterCodeLookup.Value.TryGetValue(code.ToStringInvariant().ToUpperInvariant(), out var value) ? value : null;
     }
 
     public static CountryInfo? FromTwoLetterCode(string code)

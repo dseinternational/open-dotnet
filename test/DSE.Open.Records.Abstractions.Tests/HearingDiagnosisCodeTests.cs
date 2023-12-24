@@ -25,7 +25,7 @@ public class HearingDiagnosisCodeTests
         Assert.Equal(77507001, HearingDiagnosisCode.ConductiveAndSensorineuralHearingLoss);
     }
 
-    public static TheoryData<HearingDiagnosisCode> Values { get; } = new TheoryData<HearingDiagnosisCode>()
+    public static TheoryData<HearingDiagnosisCode> Values { get; } = new()
     {
         HearingDiagnosisCode.HearingLoss,
         HearingDiagnosisCode.SensorineuralHearingLoss,

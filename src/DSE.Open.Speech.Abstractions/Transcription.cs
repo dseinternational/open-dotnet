@@ -41,12 +41,12 @@ public readonly partial struct Transcription
     }
 
     public Transcription(string value)
-        : this(value!, false)
+        : this(value, false)
     {
     }
 
     public Transcription(ReadOnlySpan<char> value)
-        : this(value!, false)
+        : this(value, false)
     {
     }
 
@@ -178,7 +178,7 @@ public readonly partial struct Transcription
     public static bool TryParse(
         ReadOnlySpan<char> s,
         IFormatProvider? provider,
-        [MaybeNullWhen(false)] out Transcription result)
+        out Transcription result)
     {
         s = s.Trim();
 
@@ -211,7 +211,7 @@ public readonly partial struct Transcription
     public static bool TryParse(
         [NotNullWhen(true)] string? s,
         IFormatProvider? provider,
-        [MaybeNullWhen(false)] out Transcription result)
+        out Transcription result)
     {
         if (s is null)
         {
@@ -236,37 +236,37 @@ public readonly partial struct Transcription
     public static Transcription operator +(Transcription left, Transcription right)
 #pragma warning restore CA2225 // Operator overloads have named alternates
     {
-        return new(left._value + right._value);
+        return new Transcription(left._value + right._value);
     }
 
-    public static readonly FrozenSet<char> Alphabet = FrozenSet.ToFrozenSet(new char[]
+    public static readonly FrozenSet<char> Alphabet = FrozenSet.ToFrozenSet(new[]
     {
         // Plosives
         'p', 'b', 't', 'd', 'ʈ', 'ɖ',
-        'c', 'ɟ', 'k', 'g', 'q', 'ɢ', 
+        'c', 'ɟ', 'k', 'g', 'q', 'ɢ',
 
         // Nasals
-        'm', 'ɱ', 'n', 'ɳ', 'ɲ', 'ŋ', 'ɴ', 
+        'm', 'ɱ', 'n', 'ɳ', 'ɲ', 'ŋ', 'ɴ',
 
         // Trills
-        'ʙ', 'r', 'ʀ', 
+        'ʙ', 'r', 'ʀ',
 
         // Taps or Flaps
-        'ɾ', 'ɽ', 
+        'ɾ', 'ɽ',
 
         // Fricatives
         'ɸ', 'β', 'f', 'v', 'θ', 'ð', 's', 'z',
         'ʃ', 'ʒ', 'ʂ', 'ʐ', 'ç', 'ʝ', 'x', 'ɣ',
-        'χ', 'ʁ', 'ħ', 'ʕ', 'h', 'ɦ', 
+        'χ', 'ʁ', 'ħ', 'ʕ', 'h', 'ɦ',
 
         // Lateral fricatives
-        'ɬ', 'ɮ', 
+        'ɬ', 'ɮ',
 
         // Approximants
-        'ʋ', 'ɹ', 'ɻ', 'j', 'ɰ', 
+        'ʋ', 'ɹ', 'ɻ', 'j', 'ɰ',
 
         // Laterals
-        'l', 'ɭ', 'ʎ', 'ʟ', 
+        'l', 'ɭ', 'ʎ', 'ʟ',
 
         // Vowels
         'i', 'y', 'ɨ', 'ʉ', 'ɯ', 'u',
@@ -280,7 +280,7 @@ public readonly partial struct Transcription
         // Diacritics and suprasegmentals
         'ˈ', 'ˌ', 'ː', 'ˑ', 'ʼ', 'ʴ',
         'ʵ', 'ʶ', 'ʰ', 'ʱ', 'ʲ', 'ʷ',
-        'ˠ', 'ˤ', 'ˁ', 
+        'ˠ', 'ˤ', 'ˁ',
 
         // TODO: review these
 
@@ -288,7 +288,7 @@ public readonly partial struct Transcription
         '̥', '̬', '̹', '̜', '̟', '̠',
         '̈', '̽', '̩', '̯', '̪', '̺',
         '̻', '̼', '̝', '̞', '̘', '̙',
-        '̆', '̊', 
+        '̆', '̊',
 
         // Tone letters and other notations
         '˥', '˦', '˧', '˨', '˩',

@@ -16,6 +16,4 @@ public interface IOrdinal<TSelf, T>
     : INominal<TSelf, T>,
       IComparable<TSelf>,
       IComparisonOperators<TSelf, TSelf, bool>
-    where TSelf : IOrdinal<TSelf, T>
-{
-}
+    where TSelf : IOrdinal<TSelf, T>;

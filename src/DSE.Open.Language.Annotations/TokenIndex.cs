@@ -3,7 +3,6 @@
 
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
-using CommunityToolkit.HighPerformance;
 using DSE.Open.Language.Annotations.Serialization;
 
 namespace DSE.Open.Language.Annotations;
@@ -244,7 +243,7 @@ public readonly struct TokenIndex
     public static bool TryParse(
         ReadOnlySpan<char> s,
         IFormatProvider? provider,
-        [MaybeNullWhen(false)] out TokenIndex result)
+        out TokenIndex result)
     {
         if (s.Contains(SpanSeparator))
         {
@@ -322,14 +321,14 @@ public readonly struct TokenIndex
     public static bool TryParse(
         [NotNullWhen(true)] string? s,
         IFormatProvider? provider,
-        [MaybeNullWhen(false)] out TokenIndex result)
+        out TokenIndex result)
     {
         throw new NotImplementedException();
     }
 
     public static TokenIndex FromInt32(int index)
     {
-        return new(index);
+        return new TokenIndex(index);
     }
 
     public static explicit operator TokenIndex(int index)

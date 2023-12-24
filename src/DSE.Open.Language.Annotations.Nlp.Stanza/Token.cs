@@ -22,11 +22,11 @@ public class Token : IPyObjectWrapper<Token>
     {
         _token = token;
 
-        _text = new(() => PyConverter.GetString(_token.text));
-        _misc = new(() => PyConverter.GetStringOrNull(_token.misc));
-        _start = new(() => PyConverter.GetInt32(_token.start_char));
-        _end = new(() => PyConverter.GetInt32(_token.end_char));
-        _ner = new(() => PyConverter.GetStringOrNull(_token.ner));
+        _text = new Lazy<string>(() => PyConverter.GetString(_token.text));
+        _misc = new Lazy<string?>(() => PyConverter.GetStringOrNull(_token.misc));
+        _start = new Lazy<int>(() => PyConverter.GetInt32(_token.start_char));
+        _end = new Lazy<int>(() => PyConverter.GetInt32(_token.end_char));
+        _ner = new Lazy<string?>(() => PyConverter.GetStringOrNull(_token.ner));
 
         _words = new Lazy<List<Word>>(() =>
         {

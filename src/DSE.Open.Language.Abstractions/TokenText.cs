@@ -78,12 +78,12 @@ public readonly partial struct TokenText
 
     public static explicit operator TokenText(string word)
     {
-        return new(word);
+        return new TokenText(word);
     }
 
     public static implicit operator TokenText(WordText word)
     {
-        return new((CharSequence)word);
+        return new TokenText((CharSequence)word);
     }
 
     public static bool operator ==(TokenText left, CharSequence right)

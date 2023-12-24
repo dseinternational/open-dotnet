@@ -4,6 +4,4 @@
 namespace DSE.Open.Values;
 
 [AttributeUsage(AttributeTargets.Struct)]
-public sealed class DivisibleValueAttribute : ValueAttribute
-{
-}
+public sealed class DivisibleValueAttribute : ValueAttribute;

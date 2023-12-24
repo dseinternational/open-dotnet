@@ -20,6 +20,4 @@ public interface IComparableValue<TSelf, T>
       IEqualityOperators<T, T, bool>,
       ISpanFormattable,
       ISpanParsable<T>
-    where TSelf : struct, IComparableValue<TSelf, T>
-{
-}
+    where TSelf : struct, IComparableValue<TSelf, T>;

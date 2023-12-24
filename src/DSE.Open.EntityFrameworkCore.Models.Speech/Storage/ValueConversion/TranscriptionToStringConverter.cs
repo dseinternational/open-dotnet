@@ -21,6 +21,6 @@ public sealed class TranscriptionToStringConverter : ValueConverter<Transcriptio
 
     private static Transcription ConvertFrom(string value)
     {
-        return new(value);
+        return new Transcription(value);
     }
 }

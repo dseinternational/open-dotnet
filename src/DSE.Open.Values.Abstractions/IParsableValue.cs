@@ -20,7 +20,7 @@ public interface IParsableValue<TSelf, T> : IValue<TSelf, T>, IParsable<TSelf>
         return (TSelf)T.Parse(s, provider);
     }
 
-    static new bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, [MaybeNullWhen(false)] out TSelf result)
+    static new bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, out TSelf result)
     {
         if (T.TryParse(s, provider, out var valueResult) && TSelf.TryFromValue(valueResult, out result))
         {

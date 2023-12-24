@@ -17,6 +17,6 @@ public readonly partial struct NominalByteValue : IEquatableValue<NominalByteVal
 
     public static bool IsValidValue(byte value)
     {
-        return value is >= 0 and <= 1;
+        return value <= 1;
     }
 }

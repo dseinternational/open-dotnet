@@ -162,9 +162,7 @@ public class Message : IMessage
     }
 }
 
-public sealed class DerivedMessage : Message
-{
-}
+public sealed class DerivedMessage : Message;
 
 public sealed class MessageHandler : IMessageHandler<Message>
 {

@@ -44,7 +44,7 @@ public readonly partial struct AsciiString
 
     public AsciiString Slice(int start, int length)
     {
-        return new(_value.Slice(start, length));
+        return new AsciiString(_value.Slice(start, length));
     }
 
     public bool IsEmpty => _value.IsEmpty;

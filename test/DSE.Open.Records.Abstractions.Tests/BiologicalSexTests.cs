@@ -16,7 +16,7 @@ public class BiologicalSexTests
         Assert.Equal(value, deserialized);
     }
 
-    public static TheoryData<BiologicalSex> Values { get; } = new TheoryData<BiologicalSex>()
+    public static TheoryData<BiologicalSex> Values { get; } = new()
     {
         BiologicalSex.Female,
         BiologicalSex.Male,

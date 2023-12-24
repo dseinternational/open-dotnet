@@ -4,6 +4,4 @@
 namespace DSE.Open.DomainModel.Entities;
 
 [AttributeUsage(AttributeTargets.Constructor)]
-public sealed class MaterializationConstructorAttribute : Attribute
-{
-}
+public sealed class MaterializationConstructorAttribute : Attribute;

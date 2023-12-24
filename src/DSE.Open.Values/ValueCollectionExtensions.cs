@@ -4,7 +4,6 @@
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using DSE.Open.Values;
 
 namespace DSE.Open.Values;
 

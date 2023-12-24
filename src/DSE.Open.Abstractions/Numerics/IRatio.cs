@@ -17,6 +17,4 @@ public interface IRatio<TSelf, T>
       IDivisionOperators<TSelf, TSelf, TSelf>,
       IModulusOperators<TSelf, TSelf, TSelf>,
       IMultiplyOperators<TSelf, TSelf, TSelf>
-    where TSelf : IRatio<TSelf, T>
-{
-}
+    where TSelf : IRatio<TSelf, T>;

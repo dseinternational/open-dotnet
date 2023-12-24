@@ -3,6 +3,4 @@
 
 namespace DSE.Open.DomainModel.Entities;
 
-public interface IUpdatesTracked : IUpdateTimesTracked, ITimestamped
-{
-}
+public interface IUpdatesTracked : IUpdateTimesTracked, ITimestamped;

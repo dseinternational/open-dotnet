@@ -3,11 +3,7 @@
 
 namespace DSE.Open.DomainModel.Entities;
 
-public interface IAggregateRoot : IEntity
-{
-}
+public interface IAggregateRoot : IEntity;
 
 public interface IAggregateRoot<TId> : IAggregateRoot, IEntity<TId>
-    where TId : struct, IEquatable<TId>
-{
-}
+    where TId : struct, IEquatable<TId>;

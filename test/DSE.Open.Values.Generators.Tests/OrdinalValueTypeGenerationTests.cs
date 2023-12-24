@@ -14,26 +14,28 @@ public class ComparableValueTypeGenerationTests : ValueTypeGenerationTests
     [Fact]
     public void GeneratesValueType()
     {
-        var inputCompilation = CompilationHelper.CreateCompilation(@"
-using DSE.Open.Values;
+        var inputCompilation = CompilationHelper.CreateCompilation("""
 
-namespace TestNamespace;
+                                                                   using DSE.Open.Values;
 
-#nullable enable
+                                                                   namespace TestNamespace;
 
-[ComparableValue]
-public readonly partial struct MyOptions : IComparableValue<MyOptions, byte>
-{
-    public static readonly MyOptions Option1;
-    public static readonly MyOptions Option2 = new(1);
+                                                                   #nullable enable
 
-    public static int MaxSerializedCharLength { get; } = 1;
+                                                                   [ComparableValue]
+                                                                   public readonly partial struct MyOptions : IComparableValue<MyOptions, byte>
+                                                                   {
+                                                                       public static readonly MyOptions Option1;
+                                                                       public static readonly MyOptions Option2 = new(1);
+                                                                   
+                                                                       public static int MaxSerializedCharLength { get; } = 1;
+                                                                   
+                                                                       public static bool IsValidValue(byte value) => value is >= 0 and <= 1;
+                                                                   }
 
-    public static bool IsValidValue(byte value) => value is >= 0 and <= 1;
-}
+                                                                   #nullable disable
 
-#nullable disable
-");
+                                                                   """);
 
         var result = CompilationHelper.RunValuesSourceGenerator(inputCompilation);
 

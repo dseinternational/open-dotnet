@@ -24,9 +24,9 @@ public class Document
 
         _doc = doc;
 
-        _lang = new(() => PyConverter.GetStringOrNull(doc.lang));
+        _lang = new Lazy<string?>(() => PyConverter.GetStringOrNull(doc.lang));
 
-        _sentences = new(() =>
+        _sentences = new Lazy<List<Sentence>>(() =>
         {
             return PyConverter.GetList<Sentence>(_doc.sentences, (PyWrapperFactory<Sentence>)del);
 
@@ -36,7 +36,7 @@ public class Document
             }
         });
 
-        _entities = new(() =>
+        _entities = new Lazy<List<Span>>(() =>
         {
             return PyConverter.GetList<Span>(_doc.entities, (PyWrapperFactory<Span>)del);
 

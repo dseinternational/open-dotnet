@@ -20,5 +20,5 @@ public record ResultMetadata : ImmutableDataTransferObject
 
     [JsonPropertyName("properties")]
     public ConcurrentDictionary<string, object> Properties { get; }
-        = new ConcurrentDictionary<string, object>(StringComparer.InvariantCultureIgnoreCase);
+        = new(StringComparer.InvariantCultureIgnoreCase);
 }

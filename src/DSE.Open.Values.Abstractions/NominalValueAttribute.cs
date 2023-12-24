@@ -4,6 +4,4 @@
 namespace DSE.Open.Values;
 
 [AttributeUsage(AttributeTargets.Struct)]
-public sealed class EquatableValueAttribute : ValueAttribute
-{
-}
+public sealed class EquatableValueAttribute : ValueAttribute;

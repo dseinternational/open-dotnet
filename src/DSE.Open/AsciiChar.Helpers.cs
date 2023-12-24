@@ -15,7 +15,7 @@ public partial struct AsciiChar
 
     public static bool IsAscii(sbyte b)
     {
-        return b is >= 0 and <= 127;
+        return b is >= 0;
     }
 
     public static bool IsAscii(int b)

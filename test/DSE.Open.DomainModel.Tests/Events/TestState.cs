@@ -3,6 +3,4 @@
 
 namespace DSE.Open.DomainModel.Tests.Events;
 
-public class TestState : Dictionary<string, object>
-{
-}
+public class TestState : Dictionary<string, object>;

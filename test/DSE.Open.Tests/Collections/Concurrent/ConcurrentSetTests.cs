@@ -15,7 +15,7 @@ public class ConcurrentSetTests
 
         var values = Enumerable.Range(0, 1000);
 
-        _ = Parallel.ForEach(values, (i) =>
+        _ = Parallel.ForEach(values, i =>
         {
             _ = set.Add(i);
             Assert.True(set.Contains(i), $"Failed added: {i}");
@@ -34,7 +34,7 @@ public class ConcurrentSetTests
 
         set.AddRange(values);
 
-        _ = Parallel.ForEach(values, (i) =>
+        _ = Parallel.ForEach(values, i =>
         {
             foreach (var value in set)
             {

@@ -23,6 +23,6 @@ public sealed class UriAsciiPathToLowerStringConverter : ValueConverter<UriAscii
 
     private static Expression<Func<string, UriAsciiPath>> FromStore()
     {
-        return value => new(value);
+        return value => new UriAsciiPath(value);
     }
 }

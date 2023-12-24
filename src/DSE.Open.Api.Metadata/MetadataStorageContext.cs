@@ -9,6 +9,5 @@ public class MetadataStorageContext
 {
     public MetadataStorage StorageType { get; init; }
 
-    public ConcurrentDictionary<string, string> Data { get; }
-        = new ConcurrentDictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
+    public ConcurrentDictionary<string, string> Data { get; } = new(StringComparer.InvariantCultureIgnoreCase);
 }

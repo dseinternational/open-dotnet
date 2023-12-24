@@ -10,21 +10,13 @@ namespace DSE.Open.Values;
 /// <typeparam name="TValue">The type of the value.</typeparam>
 public interface IValueSet<TValue, T> : ISet<TValue>
     where T : IEquatable<T>
-    where TValue : struct, IValue<TValue, T>
-{
-}
+    where TValue : struct, IValue<TValue, T>;
 public interface IReadOnlyValueSet<TValue, T> : IReadOnlySet<TValue>
     where T : IEquatable<T>
-    where TValue : struct, IValue<TValue, T>
-{
-}
+    where TValue : struct, IValue<TValue, T>;
 public interface IValueCollection<TValue, T> : ICollection<TValue>
     where T : IEquatable<T>
-    where TValue : struct, IValue<TValue, T>
-{
-}
+    where TValue : struct, IValue<TValue, T>;
 public interface IReadOnlyValueCollection<TValue, T> : IReadOnlyCollection<TValue>
     where T : IEquatable<T>
-    where TValue : struct, IValue<TValue, T>
-{
-}
+    where TValue : struct, IValue<TValue, T>;

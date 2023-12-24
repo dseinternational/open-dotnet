@@ -55,17 +55,17 @@ public readonly partial struct LanguageTag
     public static LanguageTag FromString(string languageTag)
     {
         ArgumentNullException.ThrowIfNull(languageTag);
-        return new(AsciiString.Parse(languageTag, CultureInfo.InvariantCulture));
+        return new LanguageTag(AsciiString.Parse(languageTag, CultureInfo.InvariantCulture));
     }
 
     public static LanguageTag FromByteSpan(ReadOnlySpan<byte> languageTag)
     {
-        return new(AsciiString.Parse(languageTag, null));
+        return new LanguageTag(AsciiString.Parse(languageTag, null));
     }
 
     public static LanguageTag FromCharSpan(ReadOnlySpan<char> languageTag)
     {
-        return new(AsciiString.Parse(languageTag, CultureInfo.InvariantCulture));
+        return new LanguageTag(AsciiString.Parse(languageTag, CultureInfo.InvariantCulture));
     }
 
     public static bool IsValidValue(ReadOnlySpan<AsciiChar> value)
@@ -353,7 +353,7 @@ public readonly partial struct LanguageTag
 
     public LanguageTag GetLanguagePart()
     {
-        return new(new AsciiString(GetLanguagePartSpan().ToArray()));
+        return new LanguageTag(new AsciiString(GetLanguagePartSpan().ToArray()));
     }
 
     [GeneratedRegex(

@@ -6,6 +6,4 @@ using DSE.Open.Values;
 namespace DSE.Open.Records;
 
 public interface IClinicalConceptCode<TSelf> : IEquatableValue<TSelf, long>
-    where TSelf : struct, IClinicalConceptCode<TSelf>
-{
-}
+    where TSelf : struct, IClinicalConceptCode<TSelf>;

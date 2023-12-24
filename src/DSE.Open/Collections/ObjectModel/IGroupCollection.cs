@@ -14,11 +14,7 @@ namespace DSE.Open.Collections.ObjectModel;
 [SuppressMessage("Design", "CA1005:Avoid excessive parameters on generic types", Justification = "By design")]
 public interface IGroupCollection<out TGroup, out TItem, TGrouping>
     : IList<TGrouping>
-    where TGrouping : IGrouping<TGroup, TItem>
-{
-}
+    where TGrouping : IGrouping<TGroup, TItem>;
 
 public interface IGroupCollection<TGroup, TItem>
-    : IList<IGrouping<TGroup, TItem>>
-{
-}
+    : IList<IGrouping<TGroup, TItem>>;

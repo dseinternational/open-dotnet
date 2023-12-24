@@ -9,6 +9,4 @@ namespace DSE.Open.Serialization;
 /// Indicates an object is designed to be serialized to Json.
 /// </summary>
 [SuppressMessage("Design", "CA1040:Avoid empty interfaces", Justification = "<Pending>")]
-public interface IJsonSerializable
-{
-}
+public interface IJsonSerializable;

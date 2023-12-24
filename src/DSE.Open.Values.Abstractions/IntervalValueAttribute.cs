@@ -4,6 +4,4 @@
 namespace DSE.Open.Values;
 
 [AttributeUsage(AttributeTargets.Struct)]
-public sealed class AddableValueAttribute : ValueAttribute
-{
-}
+public sealed class AddableValueAttribute : ValueAttribute;

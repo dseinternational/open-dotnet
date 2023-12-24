@@ -132,22 +132,22 @@ public class ReadOnlyValueCollection<T>
 
     public static explicit operator ReadOnlyValueCollection<T>(T[] collection)
     {
-        return new(collection);
+        return new ReadOnlyValueCollection<T>(collection);
     }
 
     public static explicit operator ReadOnlyValueCollection<T>(ReadOnlyCollection<T> collection)
     {
-        return new(collection);
+        return new ReadOnlyValueCollection<T>(collection);
     }
 
     public static explicit operator ReadOnlyValueCollection<T>(Collection<T> collection)
     {
-        return new(collection);
+        return new ReadOnlyValueCollection<T>(collection);
     }
 
     public static explicit operator ReadOnlyValueCollection<T>(HashSet<T> collection)
     {
-        return new(collection);
+        return new ReadOnlyValueCollection<T>(collection);
     }
 
 #pragma warning restore CA2225 // Operator overloads have named alternates

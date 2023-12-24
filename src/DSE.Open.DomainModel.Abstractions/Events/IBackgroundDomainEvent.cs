@@ -25,6 +25,4 @@ namespace DSE.Open.DomainModel.Events;
 ///         API calls in parallel.
 ///     </para>
 /// </remarks>
-public interface IBackgroundDomainEvent : IDomainEvent
-{
-}
+public interface IBackgroundDomainEvent : IDomainEvent;

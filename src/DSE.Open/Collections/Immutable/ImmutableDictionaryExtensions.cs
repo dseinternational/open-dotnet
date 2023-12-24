@@ -3,7 +3,6 @@
 
 using System.Collections.Immutable;
 using DSE.Open.Collections.Generic;
-using DSE.Open.Collections.Immutable;
 
 namespace DSE.Open.Collections.Immutable;
 

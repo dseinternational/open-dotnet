@@ -22,13 +22,13 @@ public class Span
 
         _span = span;
 
-        _text = new(() => PyConverter.GetString(_span.text));
-        _type = new(() => PyConverter.GetStringOrNull(_span.misc));
-        _start = new(() => PyConverter.GetInt32(_span.start_char));
-        _end = new(() => PyConverter.GetInt32(_span.end_char));
+        _text = new Lazy<string>(() => PyConverter.GetString(_span.text));
+        _type = new Lazy<string?>(() => PyConverter.GetStringOrNull(_span.misc));
+        _start = new Lazy<int>(() => PyConverter.GetInt32(_span.start_char));
+        _end = new Lazy<int>(() => PyConverter.GetInt32(_span.end_char));
 
-        _tokens = new(() => PyConverter.GetList<Token>(_span.tokens));
-        _words = new(() => Tokens.SelectMany(t => t.Words).ToList());
+        _tokens = new Lazy<List<Token>>(() => PyConverter.GetList<Token>(_span.tokens));
+        _words = new Lazy<List<Word>>(() => Tokens.SelectMany(t => t.Words).ToList());
     }
 
     public Document Document { get; }

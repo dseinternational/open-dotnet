@@ -8,6 +8,4 @@ using DSE.Open.Collections.Generic;
 namespace DSE.Open.Collections.ObjectModel;
 
 public interface IObservableKeyedCollection<TKey, TItem> : IKeyedCollection<TKey, TItem>, INotifyCollectionChanged, INotifyPropertyChanged
-    where TKey : notnull
-{
-}
+    where TKey : notnull;

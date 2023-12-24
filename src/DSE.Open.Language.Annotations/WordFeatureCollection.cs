@@ -108,7 +108,7 @@ public sealed class WordFeatureCollection
 
     public ReadOnlyWordFeatureCollection AsReadOnly()
     {
-        return new(this);
+        return new ReadOnlyWordFeatureCollection(this);
     }
 
     public IEnumerator<WordFeature> GetEnumerator()

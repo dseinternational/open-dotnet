@@ -77,6 +77,6 @@ public static partial class MemoryExtensions
             throw new InvalidOperationException();
         }
 
-        return new(buffer[..charsWritten]);
+        return new string(buffer[..charsWritten]);
     }
 }

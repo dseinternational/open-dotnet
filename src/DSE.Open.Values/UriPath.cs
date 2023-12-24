@@ -17,8 +17,8 @@ namespace DSE.Open.Values;
 [StructLayout(LayoutKind.Auto)]
 public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
 {
-    public static readonly char Separator = '/';
-    public static readonly char Dash = '-';
+    public const char Separator = '/';
+    public const char Dash = '-';
 
     public static readonly UriPath Empty = new(default, true);
 
@@ -42,7 +42,7 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
 
     public UriPath Slice(int start, int length)
     {
-        return new(_value.Slice(start, length));
+        return new UriPath(_value.Slice(start, length));
     }
 
     public ReadOnlySpan<char> Span => _value.Span;
@@ -458,6 +458,6 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
     /// <returns></returns>
     public static UriPath FromUriAsciiPath(UriAsciiPath uriAsciiPath)
     {
-        return new(CharSequence.FromAsciiString((AsciiString)uriAsciiPath), skipValidation: true);
+        return new UriPath(CharSequence.FromAsciiString((AsciiString)uriAsciiPath), skipValidation: true);
     }
 }

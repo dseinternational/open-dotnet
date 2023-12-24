@@ -8,14 +8,14 @@ public class PredicateSpecificationTests
     [Fact]
     public void IsSatisfiedIfPredicateReturnsTrue()
     {
-        var spec = new PredicateSpecification<bool>((c) => true);
+        var spec = new PredicateSpecification<bool>(c => true);
         Assert.True(spec.IsSatisfiedBy(true));
     }
 
     [Fact]
     public void IsNotSatisfiedIfPredicateReturnsFalse()
     {
-        var spec = new PredicateSpecification<bool>((c) => false);
+        var spec = new PredicateSpecification<bool>(c => false);
         Assert.False(spec.IsSatisfiedBy(true));
     }
 }
