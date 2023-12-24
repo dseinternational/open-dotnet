@@ -23,7 +23,7 @@ public readonly partial struct YesNoUnsure : IEquatableValue<YesNoUnsure, AsciiS
 
     public static bool IsValidValue(AsciiString value)
     {
-        return value.Length > 1 && value.Length <= 6 && Lookup.ContainsKey(value);
+        return value.Length is > 1 and <= 6 && Lookup.ContainsKey(value);
     }
 
     public static readonly YesNoUnsure Yes = new((AsciiString)"yes", true);

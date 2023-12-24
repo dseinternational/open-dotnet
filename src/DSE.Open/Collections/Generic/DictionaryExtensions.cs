@@ -17,7 +17,7 @@ public static class DictionaryExtensions
 
     public static ReadOnlyValueDictionary<TKey, TValue> AsReadOnlyValueDictionary<TKey, TValue>(
         this IEnumerable<KeyValuePair<TKey, TValue>> dictionary)
-        where TKey : notnull, IEquatable<TKey>
+        where TKey : IEquatable<TKey>
     {
         ArgumentNullException.ThrowIfNull(dictionary);
         return new ReadOnlyValueDictionary<TKey, TValue>(dictionary);
@@ -25,7 +25,7 @@ public static class DictionaryExtensions
 
     public static ValueDictionary<TKey, TValue> AsValueDictionary<TKey, TValue>(
         this IEnumerable<KeyValuePair<TKey, TValue>> dictionary)
-        where TKey : notnull, IEquatable<TKey>
+        where TKey : IEquatable<TKey>
     {
         ArgumentNullException.ThrowIfNull(dictionary);
         return new ValueDictionary<TKey, TValue>(dictionary);
@@ -90,19 +90,14 @@ public static class DictionaryExtensions
         return DictionaryWriter.WriteToString(collection);
     }
 
+    [Obsolete("Use System.Collections.Generic.CollectionExtensions.GetValueOrDefault instead.")]
     public static TValue? GetValueOrDefault<TKey, TValue>(
         this Dictionary<TKey, TValue> dictionary,
         KeyValuePair<TKey, TValue> keyValuePair)
         where TKey : notnull
     {
         ArgumentNullException.ThrowIfNull(dictionary);
-
-        if (dictionary.TryGetValue(keyValuePair.Key, out var value))
-        {
-            return value;
-        }
-
-        return default;
+        return System.Collections.Generic.CollectionExtensions.GetValueOrDefault(dictionary, keyValuePair.Key);
     }
 
     public static TValue? GetValueOrDefault<TKey, TValue>(
@@ -119,17 +114,12 @@ public static class DictionaryExtensions
         return default;
     }
 
+    [Obsolete("Use System.Collections.Generic.CollectionExtensions.GetValueOrDefault instead.")]
     public static TValue? GetValueOrDefault<TKey, TValue>(
         this IReadOnlyDictionary<TKey, TValue> dictionary,
         TKey key)
     {
         ArgumentNullException.ThrowIfNull(dictionary);
-
-        if (dictionary.TryGetValue(key, out var value))
-        {
-            return value;
-        }
-
-        return default;
+        return System.Collections.Generic.CollectionExtensions.GetValueOrDefault(dictionary, key);
     }
 }

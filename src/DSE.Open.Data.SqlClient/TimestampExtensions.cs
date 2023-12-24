@@ -14,6 +14,6 @@ public static class TimestampExtensions
 
     public static Timestamp? ToTimestamp(this SqlBinary value)
     {
-        return value.IsNull ? null : new DSE.Open.Timestamp(value.Value);
+        return value.IsNull ? null : new Timestamp(value.Value);
     }
 }

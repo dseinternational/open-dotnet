@@ -92,33 +92,33 @@ internal static class HexConverter
 
     internal static class SearchValuesCache
     {
-        internal static SearchValues<char> LowerCaseHexChars = SearchValues.Create("0123456789abcdef");
+        internal static readonly SearchValues<char> s_lowerCaseHexChars = SearchValues.Create("0123456789abcdef");
 
-        internal static SearchValues<char> UpperCaseHexChars = SearchValues.Create("0123456789ABCDEF");
+        internal static readonly SearchValues<char> s_upperCaseHexChars = SearchValues.Create("0123456789ABCDEF");
 
-        internal static SearchValues<byte> LowerCaseHexBytes = SearchValues.Create("0123456789abcdef"u8);
+        internal static readonly SearchValues<byte> s_lowerCaseHexBytes = SearchValues.Create("0123456789abcdef"u8);
 
-        internal static SearchValues<byte> UpperCaseHexBytes = SearchValues.Create("0123456789ABCDEF"u8);
+        internal static readonly SearchValues<byte> s_upperCaseHexBytes = SearchValues.Create("0123456789ABCDEF"u8);
     }
 
     internal static bool IsValidLowerHex(ReadOnlySpan<char> source)
     {
-        return !source.ContainsAnyExcept(SearchValuesCache.LowerCaseHexChars);
+        return !source.ContainsAnyExcept(SearchValuesCache.s_lowerCaseHexChars);
     }
 
     internal static bool IsValidUpperHex(ReadOnlySpan<char> source)
     {
-        return !source.ContainsAnyExcept(SearchValuesCache.UpperCaseHexChars);
+        return !source.ContainsAnyExcept(SearchValuesCache.s_upperCaseHexChars);
     }
 
     internal static bool IsValidLowerHex(ReadOnlySpan<byte> source)
     {
-        return !source.ContainsAnyExcept(SearchValuesCache.LowerCaseHexBytes);
+        return !source.ContainsAnyExcept(SearchValuesCache.s_lowerCaseHexBytes);
     }
 
     internal static bool IsValidUpperHex(ReadOnlySpan<byte> source)
     {
-        return !source.ContainsAnyExcept(SearchValuesCache.UpperCaseHexBytes);
+        return !source.ContainsAnyExcept(SearchValuesCache.s_upperCaseHexBytes);
     }
 
     public static bool TryConvertFromUtf8(ReadOnlySpan<byte> source, Span<byte> destination, out int bytesWritten)

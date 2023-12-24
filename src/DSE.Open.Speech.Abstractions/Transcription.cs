@@ -15,7 +15,7 @@ namespace DSE.Open.Speech;
 /// </summary>
 [JsonConverter(typeof(JsonStringTranscriptionConverter))]
 [StructLayout(LayoutKind.Auto)]
-public readonly partial struct Transcription
+public readonly struct Transcription
     : IEquatable<Transcription>,
       ISpanFormattable,
       ISpanParsable<Transcription>

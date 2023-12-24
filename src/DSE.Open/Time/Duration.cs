@@ -134,11 +134,14 @@ public readonly record struct Duration
 
     public override string ToString()
     {
-        return Period == TimePeriod.None
-            ? Period.ToString()
-            : Count is 1 or (-1)
-            ? Count.ToStringInvariant() + ' ' + Period.ToString()
-            : Count.ToStringInvariant() + ' ' + Period.ToString() + 's';
+        if (Period == TimePeriod.None)
+        {
+            return Period.ToString();
+        }
+
+        return Count is 1 or -1
+            ? Count.ToStringInvariant() + ' ' + Period
+            : Count.ToStringInvariant() + ' ' + Period + 's';
     }
 
     public static DateTimeOffset Add(Duration left, Duration right)

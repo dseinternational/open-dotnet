@@ -30,12 +30,7 @@ public static class SyllableCount
             }
         }
 
-        if (s_counts.TryGetValue(textWord, out var count))
-        {
-            return count;
-        }
-
-        return -1;
+        return s_counts.GetValueOrDefault(textWord, -1);
     }
 
     private static FrozenDictionary<string, int> ReadCounts()

@@ -81,7 +81,7 @@ public static class DbContextExtensions
         return result;
     }
 }
-public static partial class QueryableExtensions
+public static class QueryableExtensions
 {
     public static bool AnyWithId<T, TId>(this IQueryable<T> query, TId id)
         where T : class, IIdentified<TId>
