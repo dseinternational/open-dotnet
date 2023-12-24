@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Buffers;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
@@ -81,21 +82,24 @@ internal static class HexConverter
         buffer[startingIndex] = (char)(packedResult >> 8);
     }
 
-    private const string UpperCaseHexChars = "0123456789ABCDEF";
+    internal static class SearchValuesCache
+    {
+        internal static SearchValues<char> LowerCaseHexChars = SearchValues.Create("0123456789abcdef");
 
-    private static ReadOnlySpan<byte> UpperCaseHexBytes => "0123456789ABCDEF"u8;
+        internal static SearchValues<char> UpperCaseHexChars = SearchValues.Create("0123456789ABCDEF");
 
-    private const string LowerCaseHexChars = "0123456789abcdef";
+        internal static SearchValues<byte> LowerCaseHexBytes = SearchValues.Create("0123456789abcdef"u8);
 
-    private static ReadOnlySpan<byte> LowerCaseHexBytes => "0123456789abcdef"u8;
+        internal static SearchValues<byte> UpperCaseHexBytes = SearchValues.Create("0123456789ABCDEF"u8);
+    }
 
-    internal static bool IsValidLowerHex(ReadOnlySpan<char> source) => source.IndexOfAnyExcept(LowerCaseHexChars) < 0;
+    internal static bool IsValidLowerHex(ReadOnlySpan<char> source) => !source.ContainsAnyExcept(SearchValuesCache.LowerCaseHexChars);
 
-    internal static bool IsValidUpperHex(ReadOnlySpan<char> source) => source.IndexOfAnyExcept(UpperCaseHexChars) < 0;
+    internal static bool IsValidUpperHex(ReadOnlySpan<char> source) => !source.ContainsAnyExcept(SearchValuesCache.UpperCaseHexChars);
 
-    internal static bool IsValidLowerHex(ReadOnlySpan<byte> source) => source.IndexOfAnyExcept(LowerCaseHexBytes) < 0;
+    internal static bool IsValidLowerHex(ReadOnlySpan<byte> source) => !source.ContainsAnyExcept(SearchValuesCache.LowerCaseHexBytes);
 
-    internal static bool IsValidUpperHex(ReadOnlySpan<byte> source) => source.IndexOfAnyExcept(UpperCaseHexBytes) < 0;
+    internal static bool IsValidUpperHex(ReadOnlySpan<byte> source) => !source.ContainsAnyExcept(SearchValuesCache.UpperCaseHexBytes);
 
     public static bool TryConvertFromUtf8(ReadOnlySpan<byte> source, Span<byte> destination, out int bytesWritten)
     {

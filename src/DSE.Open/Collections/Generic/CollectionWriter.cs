@@ -22,9 +22,9 @@ public static class CollectionWriter
         {
             var item = array[i];
 
-            _ = sb.Append($"\"{item}\"");
+            _ = sb.Append(CultureInfo.CurrentCulture, $"\"{item}\"");
 
-            if (i < i - 1)
+            if (i < array.Length - 1)
             {
                 _ = sb.Append(", ");
             }

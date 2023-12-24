@@ -22,7 +22,7 @@ public static class DictionaryWriter
 
         foreach (var item in dict)
         {
-            _ = sb.Append($"{{ \"{item.Key}\": \"{item.Value}\" }}");
+            _ = sb.Append(CultureInfo.CurrentCulture, $"{{ \"{item.Key}\": \"{item.Value}\" }}");
 
             if (i < dict.Count - 1)
             {

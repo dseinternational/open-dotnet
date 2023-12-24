@@ -408,7 +408,7 @@ public static class StringHelper
 
         var ci = cultureInfo ?? CultureInfo.CurrentCulture;
 
-        if (text == text.ToUpper(ci))
+        if (text.All(char.IsUpper))
         {
             text = text.ToLower(ci);
             return char.ToLower(text[0], ci) + text.Remove(0, 1);
@@ -427,7 +427,7 @@ public static class StringHelper
 
         var ci = cultureInfo ?? CultureInfo.CurrentCulture;
 
-        if (text == text.ToUpper(ci))
+        if (text.All(char.IsUpper))
         {
             text = text.ToLower(ci);
             return char.ToUpper(text[0], ci) + text.Remove(0, 1);

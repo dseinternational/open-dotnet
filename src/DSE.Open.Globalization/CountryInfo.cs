@@ -24,7 +24,7 @@ public sealed record CountryInfo
         string name, byte isEuMemberState, byte isEuSpecialTerritory, byte isEuOutermostRegion,
         byte isUsOverseasTerritory, byte isGdprTerritory)
     {
-        return new CountryInfo(CountryCode.Parse(code), numericCode, threeLetterCode, name,
+        return new CountryInfo(CountryCode.Parse(code, default), numericCode, threeLetterCode, name,
             isEuMemberState == 1, isEuSpecialTerritory == 1, isEuOutermostRegion == 1,
             isUsOverseasTerritory == 1, isGdprTerritory == 1);
     }

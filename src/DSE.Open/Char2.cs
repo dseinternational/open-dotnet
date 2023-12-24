@@ -69,13 +69,13 @@ public readonly struct Char2
 
     public static explicit operator Char2(string value) => FromString(value);
 
-    public Char2 ToUpper() => new(char.ToUpper(_c0), char.ToUpper(_c1));
+    public Char2 ToUpper() => ToUpper(CultureInfo.CurrentCulture);
 
     public Char2 ToUpper(CultureInfo cultureInfo) => new(char.ToUpper(_c0, cultureInfo), char.ToUpper(_c1, cultureInfo));
 
     public Char2 ToUpperInvariant() => ToUpper(CultureInfo.InvariantCulture);
 
-    public Char2 ToLower() => new(char.ToLower(_c0), char.ToLower(_c1));
+    public Char2 ToLower() => ToLower(CultureInfo.CurrentCulture);
 
     public Char2 ToLower(CultureInfo cultureInfo) => new(char.ToLower(_c0, cultureInfo), char.ToLower(_c1, cultureInfo));
 
