@@ -49,22 +49,22 @@ public sealed record CountryInfo
 
     public static CountryInfo? FromCountryCode(CountryCode code)
     {
-        return s_twoLetterCodeLookup.Value.TryGetValue(code.ToStringInvariant().ToUpperInvariant(), out var value) ? value : null;
+        return s_twoLetterCodeLookup.Value.GetValueOrDefault(code.ToStringInvariant().ToUpperInvariant());
     }
 
     public static CountryInfo? FromTwoLetterCode(string code)
     {
-        return s_twoLetterCodeLookup.Value.TryGetValue(code, out var value) ? value : null;
+        return s_twoLetterCodeLookup.Value.GetValueOrDefault(code);
     }
 
     public static CountryInfo? FromThreeLetterCode(string code)
     {
-        return s_threeLetterCodeLookup.Value.TryGetValue(code, out var value) ? value : null;
+        return s_threeLetterCodeLookup.Value.GetValueOrDefault(code);
     }
 
     public static CountryInfo? FromNumericCode(int code)
     {
-        return s_numericCodeLookup.Value.TryGetValue(code, out var value) ? value : null;
+        return s_numericCodeLookup.Value.GetValueOrDefault(code);
     }
 
     private static readonly Lazy<Dictionary<string, CountryInfo>> s_twoLetterCodeLookup = new(InitTwoLetterCodeLookup);

@@ -31,7 +31,7 @@ public sealed class ValueCollection<T>
 
     public static bool operator ==(ValueCollection<T>? left, ValueCollection<T>? right)
     {
-        return left is null ? right is null : left.Equals(right);
+        return left?.Equals(right) ?? right is null;
     }
 
     public static bool operator !=(ValueCollection<T>? left, ValueCollection<T>? right)

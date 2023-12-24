@@ -249,11 +249,8 @@ public readonly record struct Code
 
         if (s.Length > MaxLength)
         {
-            if (s.Length > MaxLength)
-            {
-                result = default;
-                return false;
-            }
+            result = default;
+            return false;
         }
 
         result = new Code(s, true);

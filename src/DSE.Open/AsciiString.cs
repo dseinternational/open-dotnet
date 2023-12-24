@@ -22,7 +22,7 @@ namespace DSE.Open;
 /// </remarks>
 [JsonConverter(typeof(JsonStringAsciiStringConverter))]
 [StructLayout(LayoutKind.Auto)]
-public readonly partial struct AsciiString
+public readonly struct AsciiString
     : IEnumerable<AsciiChar>,
       IEquatable<AsciiString>,
       IEquatable<ReadOnlyMemory<AsciiChar>>,

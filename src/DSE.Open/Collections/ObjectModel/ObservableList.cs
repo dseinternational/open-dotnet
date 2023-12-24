@@ -785,7 +785,7 @@ public class ObservableList<T> : IObservableList<T>
 
     private static bool IsCompatibleObject(object? value)
     {
-        return value is T || value == null && default(T) == null;
+        return value is T || (value == null && default(T) == null);
     }
 
     private SimpleMonitor EnsureMonitorInitialized()

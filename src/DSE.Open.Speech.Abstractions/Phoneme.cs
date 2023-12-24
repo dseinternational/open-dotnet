@@ -15,7 +15,7 @@ namespace DSE.Open.Speech;
 /// </summary>
 [JsonConverter(typeof(JsonStringPhonemeConverter))]
 [StructLayout(LayoutKind.Auto)]
-public readonly partial struct Phoneme : IEquatable<Phoneme>, ISpanFormattable, ISpanParsable<Phoneme>
+public readonly struct Phoneme : IEquatable<Phoneme>, ISpanFormattable, ISpanParsable<Phoneme>
 {
     private readonly string _value;
     private readonly bool _initialized;

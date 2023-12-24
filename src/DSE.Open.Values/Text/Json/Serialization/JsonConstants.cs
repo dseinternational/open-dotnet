@@ -3,7 +3,7 @@
 
 namespace DSE.Open.Values.Text.Json.Serialization;
 
-internal static partial class JsonConstants
+internal static class JsonConstants
 {
     public const int StackallocByteThreshold = 256;
     public const int StackallocCharThreshold = StackallocByteThreshold / 2;

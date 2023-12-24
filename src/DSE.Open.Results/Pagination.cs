@@ -15,7 +15,7 @@ public readonly record struct Pagination
         Guard.IsGreaterThanOrEqualTo(totalItems, 0);
         Guard.IsGreaterThanOrEqualTo(pageSize, 1);
 
-        if (currentPage < 1 || totalItems > 0 && currentPage > (int)Math.Ceiling((double)totalItems / pageSize))
+        if (currentPage < 1 || (totalItems > 0 && currentPage > (int)Math.Ceiling((double)totalItems / pageSize)))
         {
             throw new ArgumentOutOfRangeException(nameof(currentPage));
         }

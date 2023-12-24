@@ -84,7 +84,7 @@ public class BookSourceMarkdownTextReader
                 {
                     headingEnded = true;
                 }
-                else if (!(line[i] == '#'))
+                else if (line[i] != '#')
                 {
                     throw new InvalidOperationException("Invalid heading character.");
                 }

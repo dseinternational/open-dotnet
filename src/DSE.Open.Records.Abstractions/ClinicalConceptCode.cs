@@ -24,10 +24,12 @@ public readonly partial struct ClinicalConceptCode : IEquatableValue<ClinicalCon
 
     public static int MaxSerializedByteLength => 8;
 
-    public ClinicalConceptCode(long code) : this(code, false) { }
+    public ClinicalConceptCode(long code) : this(code, false)
+    {
+    }
 
     public static bool IsValidValue(long value)
     {
-        return value >= 100000 && value <= 999999999999999999;
+        return value is >= 100000 and <= 999999999999999999;
     }
 }

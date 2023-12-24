@@ -94,7 +94,7 @@ public readonly struct DiagnosticCode
             && char.IsAsciiLetterUpper(code[0])
             && char.IsAsciiLetterUpper(code[1])
             && char.IsAsciiLetterUpper(code[2])
-            && (char.IsAsciiLetterUpper(code[3]) && code.Length >= MaxPrefixLength + MinDigitsLength || char.IsAsciiDigit(code[3]))
+            && ((char.IsAsciiLetterUpper(code[3]) && code.Length >= MaxPrefixLength + MinDigitsLength) || char.IsAsciiDigit(code[3]))
             && code[4..].ContainsOnlyAsciiDigits();
     }
 
