@@ -531,7 +531,7 @@ public class ConcurrentSet<T> : IReadOnlyCollection<T>, ICollection<T>
                     Debug.Assert(buckets != null);
 
                     var i = ++_i;
-                    if ((uint)i < (uint)buckets!.Length)
+                    if ((uint)i < (uint)buckets.Length)
                     {
                         // The Volatile.Read ensures that we have a copy of the reference to buckets[i]:
                         // this protects us from reading fields ('_key', '_value' and '_next') of different instances.

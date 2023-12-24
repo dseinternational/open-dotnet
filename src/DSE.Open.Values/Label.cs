@@ -141,7 +141,7 @@ public readonly partial struct Label : IComparableValue<Label, CharSequence>
 
     public static Label FromString(string label)
     {
-        return new(label);
+        return new Label(label);
     }
 
     public static explicit operator string(Label label)

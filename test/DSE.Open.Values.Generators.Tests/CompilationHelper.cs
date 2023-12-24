@@ -56,10 +56,10 @@ public static class CompilationHelper
 
     public static CSharpGeneratorDriver CreateValuesSourceGeneratorDriver(ValueTypesGenerator? generator = null)
     {
-        generator ??= new();
+        generator ??= new ValueTypesGenerator();
 
         return CSharpGeneratorDriver.Create(
-            generators: new ISourceGenerator[] { generator.AsSourceGenerator() },
+            generators: new[] { generator.AsSourceGenerator() },
             parseOptions: s_parseOptions,
             driverOptions: new GeneratorDriverOptions(
                 disabledOutputs: IncrementalGeneratorOutputKind.None,
@@ -73,7 +73,7 @@ public static class CompilationHelper
 
         _ = driver.RunGeneratorsAndUpdateCompilation(compilation, out var outCompilation, out var diagnostics);
 
-        return new()
+        return new SourceGenerationResult
         {
             NewCompilation = outCompilation,
             Diagnostics = diagnostics,

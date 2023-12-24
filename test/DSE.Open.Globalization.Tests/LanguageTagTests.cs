@@ -567,7 +567,7 @@ public class LanguageTagTests
         }
     }
 
-    public static TheoryData<string> InvalidLanguageTags { get; } = new TheoryData<string>
+    public static TheoryData<string> InvalidLanguageTags { get; } = new()
     {
         "de-DE-1901-1901",
     };

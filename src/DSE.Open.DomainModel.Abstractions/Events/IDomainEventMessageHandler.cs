@@ -6,6 +6,4 @@ using DSE.Open.Mediators;
 namespace DSE.Open.DomainModel.Events;
 
 public interface IDomainEventMessageHandler<TEvent> : IMessageHandler<TEvent>
-    where TEvent : IDomainEvent
-{
-}
+    where TEvent : IDomainEvent;

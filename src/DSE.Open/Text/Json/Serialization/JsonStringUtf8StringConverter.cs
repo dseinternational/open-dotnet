@@ -28,7 +28,7 @@ public sealed class JsonStringUtf8StringConverter : JsonConverter<Utf8String>
 
         var bytesWritten = reader.CopyString(unencodedUtf);
 
-        return new(new ReadOnlyMemory<byte>(unencodedUtf, 0, bytesWritten));
+        return new Utf8String(new ReadOnlyMemory<byte>(unencodedUtf, 0, bytesWritten));
     }
 
     public override void Write(Utf8JsonWriter writer, Utf8String value, JsonSerializerOptions options)

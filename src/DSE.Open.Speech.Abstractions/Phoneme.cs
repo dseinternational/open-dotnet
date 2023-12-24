@@ -28,11 +28,11 @@ public readonly partial struct Phoneme : IEquatable<Phoneme>, ISpanFormattable, 
     {
     }
 
-    public Phoneme(string value) : this(value!, false)
+    public Phoneme(string value) : this(value, false)
     {
     }
 
-    public Phoneme(ReadOnlySpan<char> value) : this(value!, false)
+    public Phoneme(ReadOnlySpan<char> value) : this(value, false)
     {
     }
 
@@ -148,7 +148,7 @@ public readonly partial struct Phoneme : IEquatable<Phoneme>, ISpanFormattable, 
     public static bool TryParse(
         ReadOnlySpan<char> s,
         IFormatProvider? provider,
-        [MaybeNullWhen(false)] out Phoneme result)
+        out Phoneme result)
     {
         s = s.Trim();
 
@@ -182,7 +182,7 @@ public readonly partial struct Phoneme : IEquatable<Phoneme>, ISpanFormattable, 
     public static bool TryParse(
         [NotNullWhen(true)] string? s,
         IFormatProvider? provider,
-        [MaybeNullWhen(false)] out Phoneme result)
+        out Phoneme result)
     {
         if (s is null)
         {
@@ -207,7 +207,7 @@ public readonly partial struct Phoneme : IEquatable<Phoneme>, ISpanFormattable, 
     public static Phoneme operator +(Phoneme left, Phoneme right)
 #pragma warning restore CA2225 // Operator overloads have named alternates
     {
-        return new(left._value + right._value);
+        return new Phoneme(left._value + right._value);
     }
 
     public static readonly Phoneme VoicelessBilabialPlosive = new("p");

@@ -50,7 +50,7 @@ public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, Asc
 
     public UriAsciiPath Slice(int start, int length)
     {
-        return new(_value.Slice(start, length));
+        return new UriAsciiPath(_value.Slice(start, length));
     }
 
     public ReadOnlySpan<AsciiChar> Span => _value.Span;
@@ -171,12 +171,12 @@ public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, Asc
 
     public UriAsciiPath ToLower()
     {
-        return new(_value.ToLower(), false);
+        return new UriAsciiPath(_value.ToLower(), false);
     }
 
     public UriAsciiPath ToUpper()
     {
-        return new(_value.ToUpper(), false);
+        return new UriAsciiPath(_value.ToUpper(), false);
     }
 
     public string ToStringLower()

@@ -5,7 +5,6 @@ using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
-using DSE.Open.Collections.Generic;
 using DSE.Open.Language.Annotations.Serialization;
 
 namespace DSE.Open.Language.Annotations;

@@ -2,7 +2,6 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Buffers;
-using System.Diagnostics.CodeAnalysis;
 
 namespace DSE.Open;
 
@@ -19,7 +18,7 @@ public abstract class AsciiStringComparer : IComparer<AsciiString>, IEqualityCom
 
     public abstract bool Equals(AsciiString x, AsciiString y);
 
-    public abstract int GetHashCode([DisallowNull] AsciiString obj);
+    public abstract int GetHashCode(AsciiString obj);
 
     private sealed class AsciiCharSequenceComparerCaseSensitive : AsciiStringComparer
     {

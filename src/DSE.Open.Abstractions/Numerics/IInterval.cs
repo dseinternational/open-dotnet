@@ -20,6 +20,4 @@ public interface IInterval<TSelf, T>
       ISubtractionOperators<TSelf, TSelf, TSelf>,
       IUnaryPlusOperators<TSelf, TSelf>,
       IUnaryNegationOperators<TSelf, TSelf>
-    where TSelf : IInterval<TSelf, T>
-{
-}
+    where TSelf : IInterval<TSelf, T>;

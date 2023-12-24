@@ -36,7 +36,7 @@ public readonly struct CharSequence
 
     public CharSequence Slice(int start, int length)
     {
-        return new(_value.Slice(start, length));
+        return new CharSequence(_value.Slice(start, length));
     }
 
     public bool IsEmpty => _value.IsEmpty;
@@ -99,7 +99,7 @@ public readonly struct CharSequence
         IFormatProvider? provider,
         out CharSequence result)
     {
-        result = new(s.ToArray());
+        result = new CharSequence(s.ToArray());
         return true;
     }
 
@@ -267,7 +267,7 @@ public readonly struct CharSequence
 
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
-        return new(_value.Span);
+        return new string(_value.Span);
     }
 
     public bool TryFormat(
@@ -333,6 +333,6 @@ public readonly struct CharSequence
     /// <returns>A new <see cref="CharSequence"/> instance.</returns>
     public static CharSequence FromAsciiString(AsciiString asciiString)
     {
-        return new(asciiString.ToCharArray());
+        return new CharSequence(asciiString.ToCharArray());
     }
 }

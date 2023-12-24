@@ -16,7 +16,7 @@ public class GenderTests
         Assert.Equal(value, deserialized);
     }
 
-    public static TheoryData<Gender> Values { get; } = new TheoryData<Gender>()
+    public static TheoryData<Gender> Values { get; } = new()
     {
         Gender.Female,
         Gender.Male,

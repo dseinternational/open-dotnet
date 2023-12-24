@@ -82,7 +82,7 @@ public readonly struct Utf8String
         return default; // unreachable
     }
 
-    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, [MaybeNullWhen(false)] out Utf8String result)
+    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out Utf8String result)
     {
         var byteCount = Encoding.UTF8.GetByteCount(s);
         var bytes = new byte[byteCount];
@@ -104,7 +104,7 @@ public readonly struct Utf8String
 
     public static bool TryParse(
         [NotNullWhen(true)] string? s,
-        [MaybeNullWhen(false)] out Utf8String result)
+        out Utf8String result)
     {
         return TryParse(s, null, out result);
     }
@@ -112,7 +112,7 @@ public readonly struct Utf8String
     public static bool TryParse(
         [NotNullWhen(true)] string? s,
         IFormatProvider? provider,
-        [MaybeNullWhen(false)] out Utf8String result)
+        out Utf8String result)
     {
         if (s is null)
         {

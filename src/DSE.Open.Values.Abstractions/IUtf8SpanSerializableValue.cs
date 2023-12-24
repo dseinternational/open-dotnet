@@ -10,6 +10,4 @@ namespace DSE.Open.Values;
 /// <typeparam name="T"></typeparam>
 public interface IUtf8SpanSerializableValue<TSelf, T> : IValue<TSelf, T>, IUtf8SpanParsableValue<TSelf, T>, IUtf8SpanFormattableValue<TSelf, T>
     where T : IEquatable<T>, IUtf8SpanParsable<T>, IUtf8SpanFormattable
-    where TSelf : struct, IUtf8SpanSerializableValue<TSelf, T>
-{
-}
+    where TSelf : struct, IUtf8SpanSerializableValue<TSelf, T>;

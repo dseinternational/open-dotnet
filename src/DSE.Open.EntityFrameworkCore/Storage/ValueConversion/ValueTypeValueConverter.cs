@@ -13,7 +13,7 @@ public sealed class ValueTypeValueConverter<TValue, T, TStore> : ValueConverter<
     where TValue : struct, IValue<TValue, T>
 {
     public ValueTypeValueConverter()
-        : base((v) => ToStore(v), v => FromStore(v), default)
+        : base(v => ToStore(v), v => FromStore(v), default)
     {
     }
 
@@ -33,7 +33,7 @@ public sealed class ValueTypeValueConverter<TValue, T> : ValueConverter<TValue, 
     where TValue : struct, IValue<TValue, T>
 {
     public ValueTypeValueConverter()
-        : base((v) => ToStore(v), v => FromStore(v), default)
+        : base(v => ToStore(v), v => FromStore(v), default)
     {
     }
 

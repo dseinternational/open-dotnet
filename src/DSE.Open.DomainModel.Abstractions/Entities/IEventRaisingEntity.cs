@@ -23,6 +23,4 @@ public interface IEventRaisingEntity : IEntity
 }
 
 public interface IEventRaisingEntity<TId> : IEventRaisingEntity, IEntity<TId>
-    where TId : struct, IEquatable<TId>
-{
-}
+    where TId : struct, IEquatable<TId>;

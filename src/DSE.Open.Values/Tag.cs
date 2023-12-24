@@ -173,7 +173,7 @@ public readonly partial struct Tag : IComparableValue<Tag, AsciiString>, IUtf8Sp
 
     public static explicit operator Tag(string tag)
     {
-        return new(tag);
+        return new Tag(tag);
     }
 
     public static explicit operator string(Tag tag)

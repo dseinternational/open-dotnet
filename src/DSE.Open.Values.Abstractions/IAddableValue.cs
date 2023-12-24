@@ -26,6 +26,4 @@ public interface IAddableValue<TSelf, T>
       ISubtractionOperators<T, T, T>,
       IUnaryPlusOperators<T, T>,
       IUnaryNegationOperators<T, T>
-    where TSelf : struct, IAddableValue<TSelf, T>
-{
-}
+    where TSelf : struct, IAddableValue<TSelf, T>;

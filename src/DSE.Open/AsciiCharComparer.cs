@@ -1,8 +1,6 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Diagnostics.CodeAnalysis;
-
 namespace DSE.Open;
 
 public abstract class AsciiCharComparer : IComparer<AsciiChar>, IEqualityComparer<AsciiChar>
@@ -16,7 +14,7 @@ public abstract class AsciiCharComparer : IComparer<AsciiChar>, IEqualityCompare
 
     public abstract int Compare(AsciiChar x, AsciiChar y);
     public abstract bool Equals(AsciiChar x, AsciiChar y);
-    public abstract int GetHashCode([DisallowNull] AsciiChar obj);
+    public abstract int GetHashCode(AsciiChar obj);
 
     private sealed class AsciiCharComparerCaseSensitive : AsciiCharComparer
     {
@@ -30,7 +28,7 @@ public abstract class AsciiCharComparer : IComparer<AsciiChar>, IEqualityCompare
             return x.Equals(y);
         }
 
-        public override int GetHashCode([DisallowNull] AsciiChar obj)
+        public override int GetHashCode(AsciiChar obj)
         {
             return obj.GetHashCode();
         }
@@ -47,7 +45,7 @@ public abstract class AsciiCharComparer : IComparer<AsciiChar>, IEqualityCompare
             return AsciiChar.EqualsCaseInsensitive(x, y);
         }
 
-        public override int GetHashCode([DisallowNull] AsciiChar obj)
+        public override int GetHashCode(AsciiChar obj)
         {
             return obj.GetHashCode();
         }

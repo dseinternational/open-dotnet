@@ -7,6 +7,4 @@ using System.ComponentModel;
 
 namespace DSE.Open.Collections.ObjectModel;
 
-public interface IObservableList<T> : IList<T>, IReadOnlyList<T>, IList, INotifyCollectionChanged, INotifyPropertyChanged
-{
-}
+public interface IObservableList<T> : IList<T>, IReadOnlyList<T>, IList, INotifyCollectionChanged, INotifyPropertyChanged;

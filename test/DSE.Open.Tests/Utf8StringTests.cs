@@ -105,8 +105,10 @@ public class Utf8StringTests
             "moustiques de la même manière : cela dépend des molécules, de l’acide lactique ou butyrique »",
         "In Charleston Harbor, where the initiating shots of the Civil War were fired — Fort Sumter is distantly visible — " +
             "I’m on the site of a former shipping pier known as Gadsden’s Wharf.",
-        @"A
-multiline
-string."
+        """
+        A
+        multiline
+        string.
+        """
     ];
 }

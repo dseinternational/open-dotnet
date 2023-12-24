@@ -16,8 +16,12 @@ public class JsonStringUInt128ConverterTests
     });
 
     [Theory]
-    [InlineData(@"""0""", 0u)]
-    [InlineData(@"""1""", 1u)]
+    [InlineData("""
+                "0"
+                """, 0u)]
+    [InlineData("""
+                "1"
+                """, 1u)]
     public void Deserialize(string data, ulong expected)
     {
         var result = JsonSerializer.Deserialize<UInt128>(data, s_options.Value);

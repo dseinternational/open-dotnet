@@ -64,7 +64,7 @@ public class ValueConverterTests : SqliteInMemoryTestBase<TestDbContext>
             var data = new TheoryData<CountryCode, string>();
             foreach (var countryCode in IsoCountryCodes.OfficiallyAssignedAlpha2)
             {
-                data.Add(countryCode, countryCode.ToString()!);
+                data.Add(countryCode, countryCode.ToString());
             }
 
             return data;

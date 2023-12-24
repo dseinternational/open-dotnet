@@ -150,17 +150,17 @@ public class ReadOnlyValueDictionary<TKey, TValue>
 
     public static explicit operator ReadOnlyValueDictionary<TKey, TValue>(KeyValuePair<TKey, TValue>[] value)
     {
-        return new(value);
+        return new ReadOnlyValueDictionary<TKey, TValue>(value);
     }
 
     public static explicit operator ReadOnlyValueDictionary<TKey, TValue>(Collection<KeyValuePair<TKey, TValue>> value)
     {
-        return new(value);
+        return new ReadOnlyValueDictionary<TKey, TValue>(value);
     }
 
     public static explicit operator ReadOnlyValueDictionary<TKey, TValue>(Dictionary<TKey, TValue> value)
     {
-        return new(value);
+        return new ReadOnlyValueDictionary<TKey, TValue>(value);
     }
 
 #pragma warning restore CA2225 // Operator overloads have named alternates

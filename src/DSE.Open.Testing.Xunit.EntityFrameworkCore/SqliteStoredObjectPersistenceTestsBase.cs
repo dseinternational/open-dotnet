@@ -36,12 +36,12 @@ public abstract class SqliteStoredObjectPersistenceTestsBase<
         {
             if (typeof(TEntity).IsAssignableTo(typeof(IUpdateTimesTracked)))
             {
-                config = config.Excluding((mi) => mi.Name == nameof(IUpdateTimesTracked.Created) || mi.Name == nameof(IUpdateTimesTracked.Updated));
+                config = config.Excluding(mi => mi.Name == nameof(IUpdateTimesTracked.Created) || mi.Name == nameof(IUpdateTimesTracked.Updated));
             }
 
             if (typeof(TEntity).IsAssignableTo(typeof(ITimestamped)))
             {
-                config = config.Excluding((mi) => mi.Name == nameof(ITimestamped.Timestamp));
+                config = config.Excluding(mi => mi.Name == nameof(ITimestamped.Timestamp));
             }
 
             return config.Excluding(o => o.Initialization);

@@ -14,39 +14,41 @@ public class EquatableValueTypeGenerationTests : ValueTypeGenerationTests
     [Fact]
     public void Generates_type_given_minimal_specification()
     {
-        var inputCompilation = CompilationHelper.CreateCompilation(@"
-using DSE.Open.Values;
+        var inputCompilation = CompilationHelper.CreateCompilation("""
 
-namespace TestNamespace;
+                                                                   using DSE.Open.Values;
 
-#nullable enable
+                                                                   namespace TestNamespace;
 
-[EquatableValue]
-public readonly partial struct MyOptions : IEquatableValue<MyOptions, byte>
-{
-    public static readonly MyOptions Option1;
-    public static readonly MyOptions Option2 = new(1);
+                                                                   #nullable enable
 
-    public static int MaxSerializedCharLength { get; } = 1;
+                                                                   [EquatableValue]
+                                                                   public readonly partial struct MyOptions : IEquatableValue<MyOptions, byte>
+                                                                   {
+                                                                       public static readonly MyOptions Option1;
+                                                                       public static readonly MyOptions Option2 = new(1);
+                                                                   
+                                                                       public static int MaxSerializedCharLength { get; } = 1;
+                                                                   
+                                                                       public static bool IsValidValue(byte value) => value is >= 0 and <= 1;
+                                                                   }
 
-    public static bool IsValidValue(byte value) => value is >= 0 and <= 1;
-}
+                                                                   [EquatableValue]
+                                                                   internal readonly partial struct MyOptions2 : IEquatableValue<MyOptions2, byte>
+                                                                   {
+                                                                   #pragma warning disable CS0649
+                                                                       public static readonly MyOptions2 Option1;
+                                                                   #pragma warning restore CS0649
+                                                                       public static readonly MyOptions2 Option2 = new(1);
+                                                                   
+                                                                       public static int MaxSerializedCharLength { get; } = 1;
+                                                                   
+                                                                       public static bool IsValidValue(byte value) => value is >= 0 and <= 1;
+                                                                   }
 
-[EquatableValue]
-internal readonly partial struct MyOptions2 : IEquatableValue<MyOptions2, byte>
-{
-#pragma warning disable CS0649
-    public static readonly MyOptions2 Option1;
-#pragma warning restore CS0649
-    public static readonly MyOptions2 Option2 = new(1);
+                                                                   #nullable disable
 
-    public static int MaxSerializedCharLength { get; } = 1;
-
-    public static bool IsValidValue(byte value) => value is >= 0 and <= 1;
-}
-
-#nullable disable
-");
+                                                                   """);
 
         var result = CompilationHelper.RunValuesSourceGenerator(inputCompilation);
 
@@ -66,33 +68,35 @@ internal readonly partial struct MyOptions2 : IEquatableValue<MyOptions2, byte>
     [Fact]
     public void Generates_type_given_user_defined_constructor()
     {
-        var inputCompilation = CompilationHelper.CreateCompilation(@"
-using DSE.Open.Values;
+        var inputCompilation = CompilationHelper.CreateCompilation("""
 
-namespace TestNamespace;
+                                                                   using DSE.Open.Values;
 
-#nullable enable
+                                                                   namespace TestNamespace;
 
-[EquatableValue]
-public readonly partial struct MyOptions : IEquatableValue<MyOptions, long>
-{
-    public static readonly MyOptions Option1;
-    public static readonly MyOptions Option2 = new(1);
-    public static readonly MyOptions Option3 = new(2);
+                                                                   #nullable enable
 
-    public static int MaxSerializedCharLength { get; } = 1;
+                                                                   [EquatableValue]
+                                                                   public readonly partial struct MyOptions : IEquatableValue<MyOptions, long>
+                                                                   {
+                                                                       public static readonly MyOptions Option1;
+                                                                       public static readonly MyOptions Option2 = new(1);
+                                                                       public static readonly MyOptions Option3 = new(2);
+                                                                   
+                                                                       public static int MaxSerializedCharLength { get; } = 1;
+                                                                   
+                                                                       public static bool IsValidValue(long value) => value is >= 0 and <= 2;
+                                                                   
+                                                                       private MyOptions(long value)
+                                                                       {
+                                                                           _value = value;
+                                                                           _initialized = true;
+                                                                       }
+                                                                   }
 
-    public static bool IsValidValue(long value) => value is >= 0 and <= 2;
+                                                                   #nullable disable
 
-    private MyOptions(long value)
-    {
-        _value = value;
-        _initialized = true;
-    }
-}
-
-#nullable disable
-");
+                                                                   """);
 
         var result = CompilationHelper.RunValuesSourceGenerator(inputCompilation);
 
@@ -112,31 +116,33 @@ public readonly partial struct MyOptions : IEquatableValue<MyOptions, long>
     [Fact]
     public void Generates_type_given_MaxSerializedCharLength()
     {
-        var inputCompilation = CompilationHelper.CreateCompilation(@"
-using DSE.Open.Values;
+        var inputCompilation = CompilationHelper.CreateCompilation("""
 
-namespace TestNamespace;
+                                                                   using DSE.Open.Values;
 
-#nullable enable
+                                                                   namespace TestNamespace;
 
-[EquatableValue(MaxSerializedCharLength = 1)]
-public readonly partial struct MyOptions : IEquatableValue<MyOptions, long>
-{
-    public static readonly MyOptions Option1;
-    public static readonly MyOptions Option2 = new(1);
-    public static readonly MyOptions Option3 = new(2);
+                                                                   #nullable enable
 
-    public static bool IsValidValue(long value) => value is >= 0 and <= 2;
+                                                                   [EquatableValue(MaxSerializedCharLength = 1)]
+                                                                   public readonly partial struct MyOptions : IEquatableValue<MyOptions, long>
+                                                                   {
+                                                                       public static readonly MyOptions Option1;
+                                                                       public static readonly MyOptions Option2 = new(1);
+                                                                       public static readonly MyOptions Option3 = new(2);
+                                                                   
+                                                                       public static bool IsValidValue(long value) => value is >= 0 and <= 2;
+                                                                   
+                                                                       private MyOptions(long value, bool skipValidation = false)
+                                                                       {
+                                                                           _value = value;
+                                                                           _initialized = true;
+                                                                       }
+                                                                   }
 
-    private MyOptions(long value, bool skipValidation = false)
-    {
-        _value = value;
-        _initialized = true;
-    }
-}
+                                                                   #nullable disable
 
-#nullable disable
-");
+                                                                   """);
 
         var result = CompilationHelper.RunValuesSourceGenerator(inputCompilation);
 
@@ -156,32 +162,34 @@ public readonly partial struct MyOptions : IEquatableValue<MyOptions, long>
     [Fact]
     public void Generates_type_using_getstring_methods()
     {
-        var inputCompilation = CompilationHelper.CreateCompilation(@"
-using System;
-using DSE.Open.Values;
+        var inputCompilation = CompilationHelper.CreateCompilation("""
 
-namespace TestNamespace;
+                                                                   using System;
+                                                                   using DSE.Open.Values;
 
-#nullable enable
+                                                                   namespace TestNamespace;
 
-[EquatableValue]
-public readonly partial struct MyOptions : IEquatableValue<MyOptions, long>
-{
-    public static readonly MyOptions Option1;
-    public static readonly MyOptions Option2 = new(1);
-    public static readonly MyOptions Option3 = new(2);
+                                                                   #nullable enable
 
-    public static int MaxSerializedCharLength { get; } = 1;
+                                                                   [EquatableValue]
+                                                                   public readonly partial struct MyOptions : IEquatableValue<MyOptions, long>
+                                                                   {
+                                                                       public static readonly MyOptions Option1;
+                                                                       public static readonly MyOptions Option2 = new(1);
+                                                                       public static readonly MyOptions Option3 = new(2);
+                                                                   
+                                                                       public static int MaxSerializedCharLength { get; } = 1;
+                                                                   
+                                                                       public static bool IsValidValue(long value) => value is >= 0 and <= 2;
+                                                                   
+                                                                       private static string GetString(string s) => string.IsInterned(s) ?? s;
+                                                                   
+                                                                       private static string GetString(ReadOnlySpan<char> s) => GetString(s.ToString());
+                                                                   }
 
-    public static bool IsValidValue(long value) => value is >= 0 and <= 2;
+                                                                   #nullable disable
 
-    private static string GetString(string s) => string.IsInterned(s) ?? s;
-
-    private static string GetString(ReadOnlySpan<char> s) => GetString(s.ToString());
-}
-
-#nullable disable
-");
+                                                                   """);
 
         var result = CompilationHelper.RunValuesSourceGenerator(inputCompilation);
 
@@ -203,29 +211,31 @@ public readonly partial struct MyOptions : IEquatableValue<MyOptions, long>
     [Fact]
     public void Generates_type_using_user_equals_method()
     {
-        var inputCompilation = CompilationHelper.CreateCompilation(@"
-using DSE.Open.Values;
+        var inputCompilation = CompilationHelper.CreateCompilation("""
 
-namespace TestNamespace;
+                                                                   using DSE.Open.Values;
 
-#nullable enable
+                                                                   namespace TestNamespace;
 
-[EquatableValue]
-public readonly partial struct MyOptions : IEquatableValue<MyOptions, long>
-{
-    public static readonly MyOptions Option1;
-    public static readonly MyOptions Option2 = new(1);
-    public static readonly MyOptions Option3 = new(2);
+                                                                   #nullable enable
 
-    public static int MaxSerializedCharLength { get; } = 1;
+                                                                   [EquatableValue]
+                                                                   public readonly partial struct MyOptions : IEquatableValue<MyOptions, long>
+                                                                   {
+                                                                       public static readonly MyOptions Option1;
+                                                                       public static readonly MyOptions Option2 = new(1);
+                                                                       public static readonly MyOptions Option3 = new(2);
+                                                                   
+                                                                       public static int MaxSerializedCharLength { get; } = 1;
+                                                                   
+                                                                       public static bool IsValidValue(long value) => value is >= 0 and <= 2;
+                                                                   
+                                                                       public bool Equals(MyOptions other) => _value == other._value;
+                                                                   }
 
-    public static bool IsValidValue(long value) => value is >= 0 and <= 2;
+                                                                   #nullable disable
 
-    public bool Equals(MyOptions other) => _value == other._value;
-}
-
-#nullable disable
-");
+                                                                   """);
 
         var result = CompilationHelper.RunValuesSourceGenerator(inputCompilation);
 
@@ -246,29 +256,31 @@ public readonly partial struct MyOptions : IEquatableValue<MyOptions, long>
     [Fact]
     public void Generates_type_using_user_gethashcode_method()
     {
-        var inputCompilation = CompilationHelper.CreateCompilation(@"
-using DSE.Open.Values;
+        var inputCompilation = CompilationHelper.CreateCompilation("""
 
-namespace TestNamespace;
+                                                                   using DSE.Open.Values;
 
-#nullable enable
+                                                                   namespace TestNamespace;
 
-[EquatableValue]
-public readonly partial struct MyOptions : IEquatableValue<MyOptions, long>
-{
-    public static readonly MyOptions Option1;
-    public static readonly MyOptions Option2 = new(1);
-    public static readonly MyOptions Option3 = new(2);
+                                                                   #nullable enable
 
-    public static int MaxSerializedCharLength { get; } = 1;
+                                                                   [EquatableValue]
+                                                                   public readonly partial struct MyOptions : IEquatableValue<MyOptions, long>
+                                                                   {
+                                                                       public static readonly MyOptions Option1;
+                                                                       public static readonly MyOptions Option2 = new(1);
+                                                                       public static readonly MyOptions Option3 = new(2);
+                                                                   
+                                                                       public static int MaxSerializedCharLength { get; } = 1;
+                                                                   
+                                                                       public static bool IsValidValue(long value) => value is >= 0 and <= 2;
+                                                                   
+                                                                       public override int GetHashCode() => _value.GetHashCode();
+                                                                   }
 
-    public static bool IsValidValue(long value) => value is >= 0 and <= 2;
+                                                                   #nullable disable
 
-    public override int GetHashCode() => _value.GetHashCode();
-}
-
-#nullable disable
-");
+                                                                   """);
 
         var result = CompilationHelper.RunValuesSourceGenerator(inputCompilation);
 
@@ -289,37 +301,39 @@ public readonly partial struct MyOptions : IEquatableValue<MyOptions, long>
     [Fact]
     public void Generates_type_using_user_tryformat_method()
     {
-        var inputCompilation = CompilationHelper.CreateCompilation(@"
-using System;
-using DSE.Open.Values;
+        var inputCompilation = CompilationHelper.CreateCompilation("""
 
-namespace TestNamespace;
+                                                                   using System;
+                                                                   using DSE.Open.Values;
 
-#nullable enable
+                                                                   namespace TestNamespace;
 
-[EquatableValue]
-public readonly partial struct MyOptions : IEquatableValue<MyOptions, long>
-{
-    public static readonly MyOptions Option1;
-    public static readonly MyOptions Option2 = new(1);
-    public static readonly MyOptions Option3 = new(2);
+                                                                   #nullable enable
 
-    public static int MaxSerializedCharLength { get; } = 1;
+                                                                   [EquatableValue]
+                                                                   public readonly partial struct MyOptions : IEquatableValue<MyOptions, long>
+                                                                   {
+                                                                       public static readonly MyOptions Option1;
+                                                                       public static readonly MyOptions Option2 = new(1);
+                                                                       public static readonly MyOptions Option3 = new(2);
+                                                                   
+                                                                       public static int MaxSerializedCharLength { get; } = 1;
+                                                                   
+                                                                       public static bool IsValidValue(long value) => value is >= 0 and <= 2;
+                                                                   
+                                                                       public bool TryFormat(
+                                                                           Span<char> destination,
+                                                                           out int charsWritten,
+                                                                           ReadOnlySpan<char> format,
+                                                                           IFormatProvider? provider)
+                                                                       {
+                                                                           EnsureInitialized();
+                                                                           return _value.TryFormat(destination, out charsWritten, format, provider);
+                                                                       }}
 
-    public static bool IsValidValue(long value) => value is >= 0 and <= 2;
+                                                                   #nullable disable
 
-    public bool TryFormat(
-        Span<char> destination,
-        out int charsWritten,
-        ReadOnlySpan<char> format,
-        IFormatProvider? provider)
-    {
-        EnsureInitialized();
-        return _value.TryFormat(destination, out charsWritten, format, provider);
-    }}
-
-#nullable disable
-");
+                                                                   """);
 
         var result = CompilationHelper.RunValuesSourceGenerator(inputCompilation);
 

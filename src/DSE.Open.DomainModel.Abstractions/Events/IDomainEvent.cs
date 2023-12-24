@@ -16,9 +16,7 @@ namespace DSE.Open.DomainModel.Events;
 /// an imminent change - to be sent <strong>before</strong> any changes in the current
 /// unit of work are committed - implement <see cref="IBeforeSaveChangesDomainEvent"/>.
 /// </remarks>
-public interface IDomainEvent : IEvent, IMessage
-{
-}
+public interface IDomainEvent : IEvent, IMessage;
 
 /// <summary>
 /// An object that describes something that happened in the domain that other parts of
@@ -30,6 +28,4 @@ public interface IDomainEvent : IEvent, IMessage
 /// an imminent change - to be sent <strong>before</strong> any changes in the current
 /// unit of work are committed - implement <see cref="IBeforeSaveChangesDomainEvent"/>.
 /// </remarks>
-public interface IDomainEvent<TData> : IDomainEvent, IEvent<TData>
-{
-}
+public interface IDomainEvent<TData> : IDomainEvent, IEvent<TData>;

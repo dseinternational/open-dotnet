@@ -14,6 +14,4 @@ public interface IEquatableValue<TSelf, T>
       IEqualityOperators<T, T, bool>,
       ISpanFormattable,
       ISpanParsable<T>
-    where TSelf : struct, IEquatableValue<TSelf, T>
-{
-}
+    where TSelf : struct, IEquatableValue<TSelf, T>;

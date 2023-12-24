@@ -7,6 +7,4 @@ namespace DSE.Open.Specifications;
 /// Determines if a candidate collection of values satisfies a condition.
 /// </summary>
 /// <typeparam name="TValue">The type of the value in the collection to be evaluated.</typeparam>
-public interface IAsyncCollectionSpecification<in TValue> : IAsyncSpecification<IEnumerable<TValue>>
-{
-}
+public interface IAsyncCollectionSpecification<in TValue> : IAsyncSpecification<IEnumerable<TValue>>;

@@ -21,6 +21,6 @@ public sealed class WordTextToStringConverter : ValueConverter<WordText, string>
 
     private static WordText ConvertFrom(string value)
     {
-        return new(value);
+        return new WordText(value);
     }
 }

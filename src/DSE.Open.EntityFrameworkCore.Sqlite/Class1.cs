@@ -3,7 +3,4 @@
 
 namespace DSE.Open.EntityFrameworkCore.Sqlite;
 
-public class Class1
-{
-
-}
+public class Class1;

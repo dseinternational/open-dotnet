@@ -3,11 +3,7 @@
 
 namespace DSE.Open.DomainModel.Entities;
 
-public interface IEntity : IStoredObject, IIdentified
-{
-}
+public interface IEntity : IStoredObject, IIdentified;
 
 public interface IEntity<TId> : IEntity, IIdentified<TId>
-    where TId : struct, IEquatable<TId>
-{
-}
+    where TId : struct, IEquatable<TId>;

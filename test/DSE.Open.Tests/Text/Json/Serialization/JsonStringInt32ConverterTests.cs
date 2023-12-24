@@ -17,10 +17,18 @@ public class JsonStringInt32ConverterTests
     };
 
     [Theory]
-    [InlineData(@"""0""", 0)]
-    [InlineData(@"""1""", 1)]
-    [InlineData(@"""2147483647""", int.MaxValue)]
-    [InlineData(@"""-2147483648""", int.MinValue)]
+    [InlineData("""
+                "0"
+                """, 0)]
+    [InlineData("""
+                "1"
+                """, 1)]
+    [InlineData("""
+                "2147483647"
+                """, int.MaxValue)]
+    [InlineData("""
+                "-2147483648"
+                """, int.MinValue)]
     public void Deserialize(string data, int expected)
     {
         var result = JsonSerializer.Deserialize<int>(data, s_options);

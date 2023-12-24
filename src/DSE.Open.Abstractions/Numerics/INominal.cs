@@ -17,6 +17,4 @@ namespace DSE.Open.Numerics;
 public interface INominal<TSelf, T>
     : IEquatable<TSelf>,
       IEqualityOperators<TSelf, TSelf, bool>
-    where TSelf : INominal<TSelf, T>
-{
-}
+    where TSelf : INominal<TSelf, T>;

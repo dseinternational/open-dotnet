@@ -14,26 +14,28 @@ public class AddableValueTypeGenerationTests : ValueTypeGenerationTests
     [Fact]
     public void GeneratesValueType()
     {
-        var inputCompilation = CompilationHelper.CreateCompilation(@"
-using DSE.Open.Values;
+        var inputCompilation = CompilationHelper.CreateCompilation("""
 
-namespace TestNamespace;
+                                                                   using DSE.Open.Values;
 
-#nullable enable
+                                                                   namespace TestNamespace;
 
-[AddableValue]
-public readonly partial struct MyOptions : IAddableValue<MyOptions, byte>
-{
-    public static readonly MyOptions Option1;
-    public static readonly MyOptions Option2 = new(1);
+                                                                   #nullable enable
 
-    public static int MaxSerializedCharLength { get; } = 1;
+                                                                   [AddableValue]
+                                                                   public readonly partial struct MyOptions : IAddableValue<MyOptions, byte>
+                                                                   {
+                                                                       public static readonly MyOptions Option1;
+                                                                       public static readonly MyOptions Option2 = new(1);
+                                                                   
+                                                                       public static int MaxSerializedCharLength { get; } = 1;
+                                                                   
+                                                                       public static bool IsValidValue(byte value) => value is >= 0 and <= 1;
+                                                                   }
 
-    public static bool IsValidValue(byte value) => value is >= 0 and <= 1;
-}
+                                                                   #nullable disable
 
-#nullable disable
-");
+                                                                   """);
 
         var result = CompilationHelper.RunValuesSourceGenerator(inputCompilation);
 
@@ -53,29 +55,31 @@ public readonly partial struct MyOptions : IAddableValue<MyOptions, byte>
     [Fact]
     public void Generates_type_using_user_compareto_method()
     {
-        var inputCompilation = CompilationHelper.CreateCompilation(@"
-using DSE.Open.Values;
+        var inputCompilation = CompilationHelper.CreateCompilation("""
 
-namespace TestNamespace;
+                                                                   using DSE.Open.Values;
 
-#nullable enable
+                                                                   namespace TestNamespace;
 
-[AddableValue]
-public readonly partial struct MyOptions : IAddableValue<MyOptions, long>
-{
-    public static readonly MyOptions Option1;
-    public static readonly MyOptions Option2 = new(1);
-    public static readonly MyOptions Option3 = new(2);
+                                                                   #nullable enable
 
-    public static int MaxSerializedCharLength { get; } = 1;
+                                                                   [AddableValue]
+                                                                   public readonly partial struct MyOptions : IAddableValue<MyOptions, long>
+                                                                   {
+                                                                       public static readonly MyOptions Option1;
+                                                                       public static readonly MyOptions Option2 = new(1);
+                                                                       public static readonly MyOptions Option3 = new(2);
+                                                                   
+                                                                       public static int MaxSerializedCharLength { get; } = 1;
+                                                                   
+                                                                       public static bool IsValidValue(long value) => value is >= 0 and <= 2;
+                                                                   
+                                                                       public int CompareTo(MyOptions other) => _value.CompareTo(other._value);
+                                                                   }
 
-    public static bool IsValidValue(long value) => value is >= 0 and <= 2;
+                                                                   #nullable disable
 
-    public int CompareTo(MyOptions other) => _value.CompareTo(other._value);
-}
-
-#nullable disable
-");
+                                                                   """);
 
         var result = CompilationHelper.RunValuesSourceGenerator(inputCompilation);
 

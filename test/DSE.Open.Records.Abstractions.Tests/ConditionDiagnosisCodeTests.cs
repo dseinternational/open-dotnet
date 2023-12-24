@@ -27,7 +27,7 @@ public class ConditionDiagnosisCodeTests
         Assert.Equal(229746007, ConditionDiagnosisCode.SpecificLanguageImpairment);
     }
 
-    public static TheoryData<ConditionDiagnosisCode> Values { get; } = new TheoryData<ConditionDiagnosisCode>()
+    public static TheoryData<ConditionDiagnosisCode> Values { get; } = new()
     {
         ConditionDiagnosisCode.DownSyndrome,
         ConditionDiagnosisCode.AutismSpectrumDisorder,

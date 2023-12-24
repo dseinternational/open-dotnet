@@ -17,10 +17,18 @@ public class JsonStringInt64ConverterTests
     };
 
     [Theory]
-    [InlineData(@"""0""", 0)]
-    [InlineData(@"""1""", 1)]
-    [InlineData(@"""9223372036854775807""", long.MaxValue)]
-    [InlineData(@"""-9223372036854775808""", long.MinValue)]
+    [InlineData("""
+                "0"
+                """, 0)]
+    [InlineData("""
+                "1"
+                """, 1)]
+    [InlineData("""
+                "9223372036854775807"
+                """, long.MaxValue)]
+    [InlineData("""
+                "-9223372036854775808"
+                """, long.MinValue)]
     public void Deserialize(string data, long expected)
     {
         var result = JsonSerializer.Deserialize<long>(data, s_options);

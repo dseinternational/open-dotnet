@@ -7,6 +7,4 @@ namespace DSE.Open.Results;
 /// A <see cref="ValueResult{T}"/> that provides a reference to an <see cref="IAsyncEnumerable{T}"/>.
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public record CollectionValueAsyncResult<T> : ValueResult<IAsyncEnumerable<T>>
-{
-}
+public record CollectionValueAsyncResult<T> : ValueResult<IAsyncEnumerable<T>>;

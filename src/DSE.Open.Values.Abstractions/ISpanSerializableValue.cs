@@ -16,6 +16,4 @@ public interface ISpanSerializableValue<TSelf, T>
     : IEquatable<T>,
       ISpanParsable<T>,
       ISpanFormattable
-    where TSelf : struct, ISpanSerializableValue<TSelf, T>
-{
-}
+    where TSelf : struct, ISpanSerializableValue<TSelf, T>;

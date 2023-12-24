@@ -8,6 +8,4 @@ namespace DSE.Open.DomainModel.Events;
 ///     <strong>before</strong> any changes in the current unit of work are
 ///     committed - for example, an EntitySavingEvent.
 /// </summary>
-public interface IBeforeSaveChangesDomainEvent : IDomainEvent
-{
-}
+public interface IBeforeSaveChangesDomainEvent : IDomainEvent;
