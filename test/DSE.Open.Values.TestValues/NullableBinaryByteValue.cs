@@ -25,7 +25,10 @@ public readonly record struct NullableBinaryByteValue : INullableValue<NullableB
         _value = value;
     }
 
-    public static bool IsValidValue(byte value) => throw new NotImplementedException();
+    public static bool IsValidValue(byte value)
+    {
+        throw new NotImplementedException();
+    }
 
     public byte Value => _value;
 
@@ -54,26 +57,58 @@ public readonly record struct NullableBinaryByteValue : INullableValue<NullableB
         }
     }
 
-    public static implicit operator byte(NullableBinaryByteValue value) => value.ToByte();
+    public static implicit operator byte(NullableBinaryByteValue value)
+    {
+        return value.ToByte();
+    }
 
-    public static explicit operator NullableBinaryByteValue(byte value) => FromByte(value);
+    public static explicit operator NullableBinaryByteValue(byte value)
+    {
+        return FromByte(value);
+    }
 
-    public byte ToByte() => _value;
+    public byte ToByte()
+    {
+        return _value;
+    }
 
-    public static NullableBinaryByteValue FromByte(byte value) => value.CastToValue<NullableBinaryByteValue, byte>();
+    public static NullableBinaryByteValue FromByte(byte value)
+    {
+        return value.CastToValue<NullableBinaryByteValue, byte>();
+    }
 
-    static byte IConvertibleTo<NullableBinaryByteValue, byte>.ConvertTo(NullableBinaryByteValue value) => value._value;
+    static byte IConvertibleTo<NullableBinaryByteValue, byte>.ConvertTo(NullableBinaryByteValue value)
+    {
+        return value._value;
+    }
 
     public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider? provider)
-        => _value.TryFormat(destination, out charsWritten, format, provider);
+    {
+        return _value.TryFormat(destination, out charsWritten, format, provider);
+    }
 
-    public string ToString(string? format, IFormatProvider? formatProvider) => throw new NotImplementedException();
+    public string ToString(string? format, IFormatProvider? formatProvider)
+    {
+        throw new NotImplementedException();
+    }
 
-    public static NullableBinaryByteValue Parse(ReadOnlySpan<char> s, IFormatProvider? provider) => throw new NotImplementedException();
+    public static NullableBinaryByteValue Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
+    {
+        throw new NotImplementedException();
+    }
 
-    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, [MaybeNullWhen(false)] out NullableBinaryByteValue result) => throw new NotImplementedException();
+    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, [MaybeNullWhen(false)] out NullableBinaryByteValue result)
+    {
+        throw new NotImplementedException();
+    }
 
-    public static NullableBinaryByteValue Parse(string s, IFormatProvider? provider) => throw new NotImplementedException();
+    public static NullableBinaryByteValue Parse(string s, IFormatProvider? provider)
+    {
+        throw new NotImplementedException();
+    }
 
-    public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, [MaybeNullWhen(false)] out NullableBinaryByteValue result) => throw new NotImplementedException();
+    public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, [MaybeNullWhen(false)] out NullableBinaryByteValue result)
+    {
+        throw new NotImplementedException();
+    }
 }

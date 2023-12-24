@@ -43,7 +43,10 @@ public readonly record struct Timestamp : IComparable<Timestamp>, ISpanFormattab
         _b7 = timestamp[7];
     }
 
-    public byte[] GetBytes() => [_b0, _b1, _b2, _b3, _b4, _b5, _b6, _b7];
+    public byte[] GetBytes()
+    {
+        return [_b0, _b1, _b2, _b3, _b4, _b5, _b6, _b7];
+    }
 
     public int CompareTo(Timestamp other)
     {
@@ -62,9 +65,15 @@ public readonly record struct Timestamp : IComparable<Timestamp>, ISpanFormattab
         return v1.SequenceCompareTo(v2);
     }
 
-    public override int GetHashCode() => HashCode.Combine(_b0, _b1, _b2, _b3, _b4, _b5, _b6, _b7);
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(_b0, _b1, _b2, _b3, _b4, _b5, _b6, _b7);
+    }
 
-    public override string ToString() => ToString(null, null);
+    public override string ToString()
+    {
+        return ToString(null, null);
+    }
 
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
@@ -98,9 +107,15 @@ public readonly record struct Timestamp : IComparable<Timestamp>, ISpanFormattab
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
-    public static explicit operator byte[](Timestamp timestamp) => timestamp.GetBytes();
+    public static explicit operator byte[](Timestamp timestamp)
+    {
+        return timestamp.GetBytes();
+    }
 
-    public static explicit operator Timestamp(byte[] data) => new(data);
+    public static explicit operator Timestamp(byte[] data)
+    {
+        return new Timestamp(data);
+    }
 
 #pragma warning restore CA2225 // Operator overloads have named alternates
 
@@ -169,11 +184,23 @@ public readonly record struct Timestamp : IComparable<Timestamp>, ISpanFormattab
         return true;
     }
 
-    public static bool operator <(Timestamp left, Timestamp right) => left.CompareTo(right) < 0;
+    public static bool operator <(Timestamp left, Timestamp right)
+    {
+        return left.CompareTo(right) < 0;
+    }
 
-    public static bool operator <=(Timestamp left, Timestamp right) => left.CompareTo(right) <= 0;
+    public static bool operator <=(Timestamp left, Timestamp right)
+    {
+        return left.CompareTo(right) <= 0;
+    }
 
-    public static bool operator >(Timestamp left, Timestamp right) => left.CompareTo(right) > 0;
+    public static bool operator >(Timestamp left, Timestamp right)
+    {
+        return left.CompareTo(right) > 0;
+    }
 
-    public static bool operator >=(Timestamp left, Timestamp right) => left.CompareTo(right) >= 0;
+    public static bool operator >=(Timestamp left, Timestamp right)
+    {
+        return left.CompareTo(right) >= 0;
+    }
 }

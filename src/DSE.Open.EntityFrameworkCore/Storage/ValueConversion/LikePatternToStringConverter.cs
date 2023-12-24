@@ -14,7 +14,13 @@ public sealed class LikePatternToStringConverter : ValueConverter<LikePattern, s
     {
     }
 
-    private static string ConvertTo(LikePattern value) => value.ToString();
+    private static string ConvertTo(LikePattern value)
+    {
+        return value.ToString();
+    }
 
-    private static LikePattern ConvertFrom(string value) => new(value);
+    private static LikePattern ConvertFrom(string value)
+    {
+        return new LikePattern(value);
+    }
 }

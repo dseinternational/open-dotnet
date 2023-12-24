@@ -14,7 +14,13 @@ public sealed class BooleanToCharConverter : ValueConverter<bool, char>
     {
     }
 
-    private static char ConvertToChar(bool value) => value ? 'Y' : 'N';
+    private static char ConvertToChar(bool value)
+    {
+        return value ? 'Y' : 'N';
+    }
 
-    private static bool ConvertToBoolean(char value) => value == 'Y';
+    private static bool ConvertToBoolean(char value)
+    {
+        return value == 'Y';
+    }
 }

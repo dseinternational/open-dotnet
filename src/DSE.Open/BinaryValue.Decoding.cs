@@ -11,10 +11,14 @@ namespace DSE.Open;
 public readonly partial record struct BinaryValue
 {
     public static BinaryValue FromBase62EncodedString(string value)
-        => FromEncodedString(value, BinaryStringEncoding.Base62);
+    {
+        return FromEncodedString(value, BinaryStringEncoding.Base62);
+    }
 
     public static BinaryValue FromBase64EncodedString(string value)
-        => FromEncodedString(value, BinaryStringEncoding.Base64);
+    {
+        return FromEncodedString(value, BinaryStringEncoding.Base64);
+    }
 
     public static BinaryValue FromEncodedString(string value, BinaryStringEncoding encoding)
     {
@@ -62,21 +66,27 @@ public readonly partial record struct BinaryValue
         return TryFromEncodedChars(value.AsSpan(), encoding, out binaryValue);
     }
 
-    public static bool TryFromEncodedChars(ReadOnlySpan<char> value, BinaryStringEncoding encoding, out BinaryValue binaryValue) => encoding switch
+    public static bool TryFromEncodedChars(ReadOnlySpan<char> value, BinaryStringEncoding encoding, out BinaryValue binaryValue)
     {
-        BinaryStringEncoding.Base62 => TryDecodeFromBase62(value, out binaryValue),
-        BinaryStringEncoding.HexLower => TryDecodeFromLowerHex(value, out binaryValue),
-        BinaryStringEncoding.HexUpper => TryDecodeFromUpperHex(value, out binaryValue),
-        _ => TryDecodeFromBase64(value, out binaryValue)
-    };
+        return encoding switch
+        {
+            BinaryStringEncoding.Base62 => TryDecodeFromBase62(value, out binaryValue),
+            BinaryStringEncoding.HexLower => TryDecodeFromLowerHex(value, out binaryValue),
+            BinaryStringEncoding.HexUpper => TryDecodeFromUpperHex(value, out binaryValue),
+            _ => TryDecodeFromBase64(value, out binaryValue)
+        };
+    }
 
-    public static bool TryFromEncodedBytes(ReadOnlySpan<byte> value, BinaryStringEncoding encoding, out BinaryValue binaryValue) => encoding switch
+    public static bool TryFromEncodedBytes(ReadOnlySpan<byte> value, BinaryStringEncoding encoding, out BinaryValue binaryValue)
     {
-        BinaryStringEncoding.Base62 => TryDecodeFromBase62(Encoding.UTF8.GetString(value), out binaryValue),
-        BinaryStringEncoding.HexLower => TryDecodeFromHex(value, out binaryValue),
-        BinaryStringEncoding.HexUpper => TryDecodeFromHex(value, out binaryValue),
-        _ => TryDecodeFromBase64(value, out binaryValue)
-    };
+        return encoding switch
+        {
+            BinaryStringEncoding.Base62 => TryDecodeFromBase62(Encoding.UTF8.GetString(value), out binaryValue),
+            BinaryStringEncoding.HexLower => TryDecodeFromHex(value, out binaryValue),
+            BinaryStringEncoding.HexUpper => TryDecodeFromHex(value, out binaryValue),
+            _ => TryDecodeFromBase64(value, out binaryValue)
+        };
+    }
 
     private static bool TryDecodeFromBase64(ReadOnlySpan<char> base64, out BinaryValue binaryValue)
     {

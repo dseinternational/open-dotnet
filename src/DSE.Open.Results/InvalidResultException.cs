@@ -69,5 +69,8 @@ public class InvalidResultException : InvalidResultException<Result>
 
     [DoesNotReturn]
     [StackTraceHidden]
-    private static void Throw(Result result) => throw new InvalidResultException(result);
+    private static void Throw(Result result)
+    {
+        throw new InvalidResultException(result);
+    }
 }

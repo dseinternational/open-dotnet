@@ -126,7 +126,9 @@ public static class DateTimeZones
     }
 
     public static TimeZoneValues GetTimeZoneNamesForCountry(CountryCode countryCode, LanguageTag languageTag)
-        => GetTimeZoneNamesForCountry(countryCode, languageTag.ToString());
+    {
+        return GetTimeZoneNamesForCountry(countryCode, languageTag.ToString());
+    }
 
     public static TimeZoneValues GetTimeZoneNamesForCountry(CountryCode countryCode, string languageTag)
     {

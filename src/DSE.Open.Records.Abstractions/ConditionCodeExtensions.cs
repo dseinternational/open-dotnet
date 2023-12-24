@@ -15,10 +15,11 @@ public static class ConditionCodeExtensions
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    public static bool IsDownSyndromeDiagnosis(this ConditionDiagnosisCode value) =>
-        value == ConditionDiagnosisCode.DownSyndrome
-        || value == ConditionDiagnosisCode.DownSyndromeTranslocation
-        || value == ConditionDiagnosisCode.DownSyndromeMosaic
-        || value == ConditionDiagnosisCode.DownSyndromePartial;
-
+    public static bool IsDownSyndromeDiagnosis(this ConditionDiagnosisCode value)
+    {
+        return value == ConditionDiagnosisCode.DownSyndrome
+               || value == ConditionDiagnosisCode.DownSyndromeTranslocation
+               || value == ConditionDiagnosisCode.DownSyndromeMosaic
+               || value == ConditionDiagnosisCode.DownSyndromePartial;
+    }
 }

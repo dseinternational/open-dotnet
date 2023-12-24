@@ -9,5 +9,8 @@ public sealed class JsonStringSecureTokenConverter : SpanParsableCharWritingJson
 {
     public static readonly JsonStringSecureTokenConverter Default = new();
 
-    protected override int GetMaxCharCountToWrite(SecureToken value) => SecureToken.MaxTokenLength;
+    protected override int GetMaxCharCountToWrite(SecureToken value)
+    {
+        return SecureToken.MaxTokenLength;
+    }
 }

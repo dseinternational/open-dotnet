@@ -7,11 +7,23 @@ namespace DSE.Open;
 
 internal static class ValuesMarshal
 {
-    public static ReadOnlySpan<AsciiChar> AsAsciiChars(ReadOnlySpan<byte> span) => MemoryMarshal.Cast<byte, AsciiChar>(span);
+    public static ReadOnlySpan<AsciiChar> AsAsciiChars(ReadOnlySpan<byte> span)
+    {
+        return MemoryMarshal.Cast<byte, AsciiChar>(span);
+    }
 
-    public static Span<AsciiChar> AsAsciiChars(Span<byte> span) => MemoryMarshal.Cast<byte, AsciiChar>(span);
+    public static Span<AsciiChar> AsAsciiChars(Span<byte> span)
+    {
+        return MemoryMarshal.Cast<byte, AsciiChar>(span);
+    }
 
-    public static ReadOnlySpan<byte> AsBytes(ReadOnlySpan<AsciiChar> span) => MemoryMarshal.AsBytes(span);
+    public static ReadOnlySpan<byte> AsBytes(ReadOnlySpan<AsciiChar> span)
+    {
+        return MemoryMarshal.AsBytes(span);
+    }
 
-    public static Span<byte> AsBytes(Span<AsciiChar> span) => MemoryMarshal.AsBytes(span);
+    public static Span<byte> AsBytes(Span<AsciiChar> span)
+    {
+        return MemoryMarshal.AsBytes(span);
+    }
 }

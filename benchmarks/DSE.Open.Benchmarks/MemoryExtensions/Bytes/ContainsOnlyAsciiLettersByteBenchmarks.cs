@@ -44,5 +44,7 @@ public class ContainsOnlyAsciiLettersByteBenchmarks
     [Benchmark]
     [ArgumentsSource(nameof(Params))]
     public bool ContainsOnlyAsciiLetters(byte[] arr)
-        => arr.AsSpan().ContainsOnlyAsciiLetters();
+    {
+        return arr.AsSpan().ContainsOnlyAsciiLetters();
+    }
 }

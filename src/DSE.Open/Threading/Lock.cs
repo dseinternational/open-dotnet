@@ -21,7 +21,10 @@ public sealed class Lock : IDisposable
 
     public bool IsAcquired => _semaphore.CurrentCount == 0;
 
-    public void Acquire() => AcquireAsync().Wait();
+    public void Acquire()
+    {
+        AcquireAsync().Wait();
+    }
 
     public Task<IDisposable?> AcquireAsync()
     {
@@ -41,8 +44,14 @@ public sealed class Lock : IDisposable
 
         internal Releaser(Lock toRelease) { _toRelease = toRelease; }
 
-        public void Dispose() => _ = _toRelease._semaphore.Release();
+        public void Dispose()
+        {
+            _ = _toRelease._semaphore.Release();
+        }
     }
 
-    public void Dispose() => _semaphore.Dispose();
+    public void Dispose()
+    {
+        _semaphore.Dispose();
+    }
 }

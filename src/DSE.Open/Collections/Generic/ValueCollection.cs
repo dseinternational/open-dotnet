@@ -20,15 +20,24 @@ public sealed class ValueCollection<T>
     }
 
     public bool Equals(ValueCollection<T>? other)
-        => other is not null && this.SequenceEqual(other);
+    {
+        return other is not null && this.SequenceEqual(other);
+    }
 
-    public override bool Equals(object? obj) => Equals(obj as ValueCollection<T>);
+    public override bool Equals(object? obj)
+    {
+        return Equals(obj as ValueCollection<T>);
+    }
 
     public static bool operator ==(ValueCollection<T>? left, ValueCollection<T>? right)
-        => left is null ? right is null : left.Equals(right);
+    {
+        return left is null ? right is null : left.Equals(right);
+    }
 
     public static bool operator !=(ValueCollection<T>? left, ValueCollection<T>? right)
-        => !(left == right);
+    {
+        return !(left == right);
+    }
 
     public override int GetHashCode()
     {

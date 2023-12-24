@@ -108,37 +108,85 @@ public readonly struct DiagnosticCode
 
     public int Length => _code?.Length ?? 0;
 
-    public ReadOnlySpan<char> AsSpan() => _code.AsSpan();
+    public ReadOnlySpan<char> AsSpan()
+    {
+        return _code.AsSpan();
+    }
 
-    public int CompareTo(DiagnosticCode other) => StringComparer.Ordinal.Compare(_code, other._code);
+    public int CompareTo(DiagnosticCode other)
+    {
+        return StringComparer.Ordinal.Compare(_code, other._code);
+    }
 
-    public static bool Equals(DiagnosticCode a, DiagnosticCode b) => Equals(a, b._code.AsSpan());
+    public static bool Equals(DiagnosticCode a, DiagnosticCode b)
+    {
+        return Equals(a, b._code.AsSpan());
+    }
 
-    public static bool Equals(DiagnosticCode a, string b) => Equals(a, b.AsSpan());
+    public static bool Equals(DiagnosticCode a, string b)
+    {
+        return Equals(a, b.AsSpan());
+    }
 
-    public static bool Equals(DiagnosticCode a, ReadOnlySpan<char> b) => a._code.AsSpan().SequenceEqual(b);
+    public static bool Equals(DiagnosticCode a, ReadOnlySpan<char> b)
+    {
+        return a._code.AsSpan().SequenceEqual(b);
+    }
 
-    public bool Equals(DiagnosticCode other) => Equals(this, other);
+    public bool Equals(DiagnosticCode other)
+    {
+        return Equals(this, other);
+    }
 
-    public bool Equals(string other) => Equals(this, other);
+    public bool Equals(string other)
+    {
+        return Equals(this, other);
+    }
 
-    public bool Equals(ReadOnlySpan<char> other) => Equals(this, other);
+    public bool Equals(ReadOnlySpan<char> other)
+    {
+        return Equals(this, other);
+    }
 
-    public override bool Equals(object? obj) => obj is DiagnosticCode other && Equals(other);
+    public override bool Equals(object? obj)
+    {
+        return obj is DiagnosticCode other && Equals(other);
+    }
 
-    public static bool operator ==(DiagnosticCode left, DiagnosticCode right) => Equals(left, right);
+    public static bool operator ==(DiagnosticCode left, DiagnosticCode right)
+    {
+        return Equals(left, right);
+    }
 
-    public static bool operator !=(DiagnosticCode left, DiagnosticCode right) => !(left == right);
+    public static bool operator !=(DiagnosticCode left, DiagnosticCode right)
+    {
+        return !(left == right);
+    }
 
-    public static bool operator ==(DiagnosticCode left, string right) => left.Equals(right);
+    public static bool operator ==(DiagnosticCode left, string right)
+    {
+        return left.Equals(right);
+    }
 
-    public static bool operator !=(DiagnosticCode left, string right) => !(left == right);
+    public static bool operator !=(DiagnosticCode left, string right)
+    {
+        return !(left == right);
+    }
 
-    public override int GetHashCode() => string.GetHashCode(_code.AsSpan(), StringComparison.Ordinal);
+    public override int GetHashCode()
+    {
+        return string.GetHashCode(_code.AsSpan(), StringComparison.Ordinal);
+    }
 
-    public override string ToString() => ToString(null, null);
+    public override string ToString()
+    {
+        return ToString(null, null);
+    }
 
-    public string ToString(string? format, IFormatProvider? formatProvider) => _code ?? string.Empty;
+    public string ToString(string? format, IFormatProvider? formatProvider)
+    {
+        return _code ?? string.Empty;
+    }
 
     public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider? provider)
     {
@@ -158,7 +206,10 @@ public readonly struct DiagnosticCode
         return false;
     }
 
-    public static DiagnosticCode Parse(string s) => Parse(s, null);
+    public static DiagnosticCode Parse(string s)
+    {
+        return Parse(s, null);
+    }
 
     public static DiagnosticCode Parse(string s, IFormatProvider? provider)
     {
@@ -166,7 +217,10 @@ public readonly struct DiagnosticCode
         return Parse(s.AsSpan(), provider);
     }
 
-    public static DiagnosticCode Parse(ReadOnlySpan<char> s) => Parse(s, null);
+    public static DiagnosticCode Parse(ReadOnlySpan<char> s)
+    {
+        return Parse(s, null);
+    }
 
     public static DiagnosticCode Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
     {
@@ -176,7 +230,9 @@ public readonly struct DiagnosticCode
     }
 
     public static bool TryParse([NotNullWhen(true)] string? s, out DiagnosticCode result)
-        => TryParse(s, null, out result);
+    {
+        return TryParse(s, null, out result);
+    }
 
     public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, out DiagnosticCode result)
     {
@@ -189,7 +245,10 @@ public readonly struct DiagnosticCode
         return TryParse(s.AsSpan(), provider, out result);
     }
 
-    public static bool TryParse(ReadOnlySpan<char> s, out DiagnosticCode result) => TryParse(s, null, out result);
+    public static bool TryParse(ReadOnlySpan<char> s, out DiagnosticCode result)
+    {
+        return TryParse(s, null, out result);
+    }
 
     public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out DiagnosticCode result)
     {
@@ -203,17 +262,38 @@ public readonly struct DiagnosticCode
         return false;
     }
 
-    public static implicit operator string(DiagnosticCode code) => code.ToString();
+    public static implicit operator string(DiagnosticCode code)
+    {
+        return code.ToString();
+    }
 
-    public static implicit operator DiagnosticCode(string code) => FromString(code);
+    public static implicit operator DiagnosticCode(string code)
+    {
+        return FromString(code);
+    }
 
-    public static DiagnosticCode FromString(string code) => new(code);
+    public static DiagnosticCode FromString(string code)
+    {
+        return new DiagnosticCode(code);
+    }
 
-    public static bool operator <(DiagnosticCode left, DiagnosticCode right) => left.CompareTo(right) < 0;
+    public static bool operator <(DiagnosticCode left, DiagnosticCode right)
+    {
+        return left.CompareTo(right) < 0;
+    }
 
-    public static bool operator <=(DiagnosticCode left, DiagnosticCode right) => left.CompareTo(right) <= 0;
+    public static bool operator <=(DiagnosticCode left, DiagnosticCode right)
+    {
+        return left.CompareTo(right) <= 0;
+    }
 
-    public static bool operator >(DiagnosticCode left, DiagnosticCode right) => left.CompareTo(right) > 0;
+    public static bool operator >(DiagnosticCode left, DiagnosticCode right)
+    {
+        return left.CompareTo(right) > 0;
+    }
 
-    public static bool operator >=(DiagnosticCode left, DiagnosticCode right) => left.CompareTo(right) >= 0;
+    public static bool operator >=(DiagnosticCode left, DiagnosticCode right)
+    {
+        return left.CompareTo(right) >= 0;
+    }
 }

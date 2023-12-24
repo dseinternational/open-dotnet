@@ -9,7 +9,7 @@ public sealed class ReadOnlyListSequenceEqualValueComparer<
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods
         | DynamicallyAccessedMemberTypes.NonPublicMethods
         | DynamicallyAccessedMemberTypes.PublicProperties)]
-    T>
+T>
     : SequenceEqualValueComparer<T, IList<T>>
 {
     public static readonly ReadOnlyListSequenceEqualValueComparer<T> Default = new();

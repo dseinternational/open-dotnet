@@ -9,5 +9,8 @@ public class JsonStringTagConverter : SpanParsableCharWritingJsonConverter<Tag>
 {
     public static readonly JsonStringTagConverter Default = new();
 
-    protected override int GetMaxCharCountToWrite(Tag value) => Tag.MaxLength;
+    protected override int GetMaxCharCountToWrite(Tag value)
+    {
+        return Tag.MaxLength;
+    }
 }

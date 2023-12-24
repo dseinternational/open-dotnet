@@ -14,6 +14,8 @@ public readonly partial struct Kelvin : IDivisibleValue<Kelvin, double>
 
     static Kelvin IDivisibleValue<Kelvin, double>.Zero => Zero;
 
-    public static bool IsValidValue(double value) => value is >= 0 and <= 100;
-
+    public static bool IsValidValue(double value)
+    {
+        return value is >= 0 and <= 100;
+    }
 }

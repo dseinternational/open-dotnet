@@ -35,15 +35,30 @@ public readonly record struct Duration
     [JsonPropertyName("count")]
     public int Count { get; }
 
-    public static Duration Minutes(int count) => new(TimePeriod.Minute, count);
+    public static Duration Minutes(int count)
+    {
+        return new Duration(TimePeriod.Minute, count);
+    }
 
-    public static Duration Hours(int count) => new(TimePeriod.Hour, count);
+    public static Duration Hours(int count)
+    {
+        return new Duration(TimePeriod.Hour, count);
+    }
 
-    public static Duration Days(int count) => new(TimePeriod.Day, count);
+    public static Duration Days(int count)
+    {
+        return new Duration(TimePeriod.Day, count);
+    }
 
-    public static Duration Months(int count) => new(TimePeriod.Month, count);
+    public static Duration Months(int count)
+    {
+        return new Duration(TimePeriod.Month, count);
+    }
 
-    public static Duration Years(int count) => new(TimePeriod.Year, count);
+    public static Duration Years(int count)
+    {
+        return new Duration(TimePeriod.Year, count);
+    }
 
     public DateTimeOffset AddTo(DateTimeOffset dateTime)
     {
@@ -107,9 +122,15 @@ public readonly record struct Duration
         return dateTime;
     }
 
-    public static DateTimeOffset operator +(DateTimeOffset dateTime, Duration duration) => duration.AddTo(dateTime);
+    public static DateTimeOffset operator +(DateTimeOffset dateTime, Duration duration)
+    {
+        return duration.AddTo(dateTime);
+    }
 
-    public static DateTime operator +(DateTime dateTime, Duration duration) => duration.AddTo(dateTime);
+    public static DateTime operator +(DateTime dateTime, Duration duration)
+    {
+        return duration.AddTo(dateTime);
+    }
 
     public override string ToString()
     {
@@ -120,5 +141,8 @@ public readonly record struct Duration
             : Count.ToStringInvariant() + ' ' + Period.ToString() + 's';
     }
 
-    public static DateTimeOffset Add(Duration left, Duration right) => throw new NotImplementedException();
+    public static DateTimeOffset Add(Duration left, Duration right)
+    {
+        throw new NotImplementedException();
+    }
 }

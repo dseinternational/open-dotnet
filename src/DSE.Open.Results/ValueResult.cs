@@ -9,12 +9,27 @@ namespace DSE.Open.Results;
 
 public static class ValueResult
 {
-    public static ValueResult<T> Create<T>() => ValueResult<T>.Empty;
+    public static ValueResult<T> Create<T>()
+    {
+        return ValueResult<T>.Empty;
+    }
 
-    public static ValueResult<T> Create<T>(T? value) => new() { Value = value };
+    public static ValueResult<T> Create<T>(T? value)
+    {
+        return new ValueResult<T>
+        {
+            Value = value
+        };
+    }
 
     public static ValueResult<T> Create<T>(T? value, IEnumerable<Notification> notifications)
-        => new() { Value = value, Notifications = [.. notifications] };
+    {
+        return new ValueResult<T>
+        {
+            Value = value,
+            Notifications = [.. notifications]
+        };
+    }
 }
 
 public record ValueResult<T> : Result
@@ -33,7 +48,10 @@ public record ValueResult<T> : Result
     public virtual bool HasValue => Value is not null;
 
     [MemberNotNullWhen(true, nameof(Value))]
-    public bool HasValueAndNoErrorNotifications() => HasValue && !HasAnyErrorNotifications();
+    public bool HasValueAndNoErrorNotifications()
+    {
+        return HasValue && !HasAnyErrorNotifications();
+    }
 
     public T RequiredValue()
     {

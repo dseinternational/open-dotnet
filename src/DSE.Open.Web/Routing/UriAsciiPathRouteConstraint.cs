@@ -36,8 +36,12 @@ public class UriAsciiPathRouteConstraint : IRouteConstraint, IParameterLiteralNo
     }
 
     private static bool CheckConstraintCore(string? valueString)
-        => string.IsNullOrEmpty(valueString) || UriAsciiPath.IsValidValue(valueString);
+    {
+        return string.IsNullOrEmpty(valueString) || UriAsciiPath.IsValidValue(valueString);
+    }
 
     public bool MatchesLiteral(string parameterName, string literal)
-        => CheckConstraintCore(literal);
+    {
+        return CheckConstraintCore(literal);
+    }
 }

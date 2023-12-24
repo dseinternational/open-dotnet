@@ -47,7 +47,10 @@ public readonly record struct Color : ISpanParsable<Color>, ISpanFormattable
         _value = value;
     }
 
-    internal static Color FromUint(uint value) => new(value);
+    internal static Color FromUint(uint value)
+    {
+        return new Color(value);
+    }
 
     public byte A => (byte)((_value >> AlphaShift) & 0xFF);
 
@@ -57,17 +60,35 @@ public readonly record struct Color : ISpanParsable<Color>, ISpanFormattable
 
     public byte R => (byte)((_value >> RedShift) & 0xFF);
 
-    public ReadOnlySpan<byte> AsArgbSpan() => AsArgbBytes();
+    public ReadOnlySpan<byte> AsArgbSpan()
+    {
+        return AsArgbBytes();
+    }
 
-    public byte[] AsArgbBytes() => [A, R, G, B];
+    public byte[] AsArgbBytes()
+    {
+        return [A, R, G, B];
+    }
 
-    public ReadOnlySpan<byte> AsRgbaSpan() => AsRrgbaBytes();
+    public ReadOnlySpan<byte> AsRgbaSpan()
+    {
+        return AsRrgbaBytes();
+    }
 
-    public byte[] AsRrgbaBytes() => [R, G, B, A];
+    public byte[] AsRrgbaBytes()
+    {
+        return [R, G, B, A];
+    }
 
-    public ReadOnlySpan<byte> AsRgbSpan() => AsRrgbBytes();
+    public ReadOnlySpan<byte> AsRgbSpan()
+    {
+        return AsRrgbBytes();
+    }
 
-    public byte[] AsRrgbBytes() => [R, G, B];
+    public byte[] AsRrgbBytes()
+    {
+        return [R, G, B];
+    }
 
     private static byte FloatToByte(float value)
     {
@@ -75,7 +96,10 @@ public readonly record struct Color : ISpanParsable<Color>, ISpanFormattable
         return (byte)(value * 255);
     }
 
-    public static Color FromRgb(byte red, byte green, byte blue) => new(byte.MaxValue, red, green, blue);
+    public static Color FromRgb(byte red, byte green, byte blue)
+    {
+        return new Color(byte.MaxValue, red, green, blue);
+    }
 
     public static Color FromRgb(float red, float green, float blue)
     {
@@ -97,7 +121,10 @@ public readonly record struct Color : ISpanParsable<Color>, ISpanFormattable
         return FromRgb(FloatToByte(red), FloatToByte(green), FloatToByte(blue));
     }
 
-    public static Color FromRgba(byte red, byte green, byte blue, byte alpha) => new(alpha, red, green, blue);
+    public static Color FromRgba(byte red, byte green, byte blue, byte alpha)
+    {
+        return new Color(alpha, red, green, blue);
+    }
 
     public static Color FromRgba(ReadOnlySpan<byte> bytes)
     {
@@ -109,7 +136,10 @@ public readonly record struct Color : ISpanParsable<Color>, ISpanFormattable
         return FromRgba(bytes[0], bytes[1], bytes[index: 2], bytes[3]);
     }
 
-    public static Color FromArgb(byte alpha, byte red, byte green, byte blue) => new(alpha, red, green, blue);
+    public static Color FromArgb(byte alpha, byte red, byte green, byte blue)
+    {
+        return new Color(alpha, red, green, blue);
+    }
 
     public static Color FromArgb(ReadOnlySpan<byte> bytes)
     {
@@ -146,9 +176,15 @@ public readonly record struct Color : ISpanParsable<Color>, ISpanFormattable
         return new Color(FloatToByte(alpha), FloatToByte(red), FloatToByte(green), FloatToByte(blue));
     }
 
-    public static Color FromSystemDrawingColor(System.Drawing.Color color) => new(color.A, color.R, color.G, color.B);
+    public static Color FromSystemDrawingColor(System.Drawing.Color color)
+    {
+        return new Color(color.A, color.R, color.G, color.B);
+    }
 
-    public static Color Parse(string s) => Parse(s, null);
+    public static Color Parse(string s)
+    {
+        return Parse(s, null);
+    }
 
     public static Color Parse(string s, IFormatProvider? provider)
     {
@@ -156,7 +192,10 @@ public readonly record struct Color : ISpanParsable<Color>, ISpanFormattable
         return Parse(s.AsSpan(), provider);
     }
 
-    public static Color Parse(ReadOnlySpan<char> s) => Parse(s, null);
+    public static Color Parse(ReadOnlySpan<char> s)
+    {
+        return Parse(s, null);
+    }
 
     public static Color Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
     {
@@ -165,7 +204,10 @@ public readonly record struct Color : ISpanParsable<Color>, ISpanFormattable
             : throw new FormatException($"'{s.ToString()}' is not a valid {nameof(Color)}.");
     }
 
-    public static bool TryParse([NotNullWhen(true)] string? s, out Color color) => TryParse(s, null, out color);
+    public static bool TryParse([NotNullWhen(true)] string? s, out Color color)
+    {
+        return TryParse(s, null, out color);
+    }
 
     public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, out Color result)
     {
@@ -178,7 +220,10 @@ public readonly record struct Color : ISpanParsable<Color>, ISpanFormattable
         return TryParse(s.AsSpan(), provider, out result);
     }
 
-    public static bool TryParse(ReadOnlySpan<char> value, out Color color) => TryParse(value, null, out color);
+    public static bool TryParse(ReadOnlySpan<char> value, out Color color)
+    {
+        return TryParse(value, null, out color);
+    }
 
     public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out Color result)
     {
@@ -242,7 +287,10 @@ public readonly record struct Color : ISpanParsable<Color>, ISpanFormattable
     /// If A &lt; 255, then returns a RGBA hex representation, otherwise returns a RGB hex representation.
     /// </summary>
     /// <returns></returns>
-    public override string ToString() => ToString(null, null);
+    public override string ToString()
+    {
+        return ToString(null, null);
+    }
 
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
@@ -251,13 +299,25 @@ public readonly record struct Color : ISpanParsable<Color>, ISpanFormattable
         return destination[..charsWritten].ToString();
     }
 
-    public string ToRgbHexString() => ToString(RgbHexFormat, null);
+    public string ToRgbHexString()
+    {
+        return ToString(RgbHexFormat, null);
+    }
 
-    public string ToArgbHexString() => ToString(ArgbHexFormat, null);
+    public string ToArgbHexString()
+    {
+        return ToString(ArgbHexFormat, null);
+    }
 
-    public string ToRgbaHexString() => ToString(RgbaHexFormat, null);
+    public string ToRgbaHexString()
+    {
+        return ToString(RgbaHexFormat, null);
+    }
 
-    public System.Drawing.Color ToSystemDrawingColor() => System.Drawing.Color.FromArgb(A, R, G, B);
+    public System.Drawing.Color ToSystemDrawingColor()
+    {
+        return System.Drawing.Color.FromArgb(A, R, G, B);
+    }
 
     public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider? provider)
     {
@@ -364,7 +424,9 @@ public readonly record struct Color : ISpanParsable<Color>, ISpanFormattable
     }
 
     private static uint Encode(byte alpha, byte red, byte green, byte blue)
-        => unchecked((uint)((red << RedShift) | (green << GreenShift) | (blue << BlueShift) | (alpha << AlphaShift))) & 0xffffffff;
+    {
+        return unchecked((uint)((red << RedShift) | (green << GreenShift) | (blue << BlueShift) | (alpha << AlphaShift))) & 0xffffffff;
+    }
 
     // Source: https://github.com/dotnet/maui/blob/main/src/Graphics/src/Graphics/Color.cs
 
@@ -463,9 +525,15 @@ public readonly record struct Color : ISpanParsable<Color>, ISpanFormattable
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
-    public static implicit operator System.Drawing.Color(Color color) => color.ToSystemDrawingColor();
+    public static implicit operator System.Drawing.Color(Color color)
+    {
+        return color.ToSystemDrawingColor();
+    }
 
-    public static implicit operator Color(System.Drawing.Color color) => FromSystemDrawingColor(color);
+    public static implicit operator Color(System.Drawing.Color color)
+    {
+        return FromSystemDrawingColor(color);
+    }
 
 #pragma warning restore CA2225 // Operator overloads have named alternates
 }

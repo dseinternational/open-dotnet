@@ -47,5 +47,8 @@ public sealed class TestReadOnlyKeyedValueCollection : ReadOnlyKeyedValueCollect
     {
     }
 
-    protected override string GetKeyForItem(int item) => item.ToStringInvariant();
+    protected override string GetKeyForItem(int item)
+    {
+        return item.ToStringInvariant();
+    }
 }

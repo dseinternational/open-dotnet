@@ -10,12 +10,18 @@ public class AsciiTests
     [InlineData('Z', 'z')]
     [InlineData('.', '.')]
     [InlineData('1', '1')]
-    public void ToLower(byte b, byte expected) => Assert.Equal(expected, AsciiChar.ToLower(b));
+    public void ToLower(byte b, byte expected)
+    {
+        Assert.Equal(expected, AsciiChar.ToLower(b));
+    }
 
     [Theory]
     [InlineData('a', 'A')]
     [InlineData('z', 'Z')]
     [InlineData('.', '.')]
     [InlineData('1', '1')]
-    public void ToUpper(byte b, byte expected) => Assert.Equal(expected, AsciiChar.ToUpper(b));
+    public void ToUpper(byte b, byte expected)
+    {
+        Assert.Equal(expected, AsciiChar.ToUpper(b));
+    }
 }

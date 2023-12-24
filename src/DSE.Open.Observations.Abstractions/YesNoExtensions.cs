@@ -5,7 +5,13 @@ namespace DSE.Open.Observations;
 
 public static class YesNoExtensions
 {
-    public static bool IsNo(this YesNo value) => value == YesNo.No;
+    public static bool IsNo(this YesNo value)
+    {
+        return value == YesNo.No;
+    }
 
-    public static bool IsYes(this YesNo value) => value == YesNo.Yes;
+    public static bool IsYes(this YesNo value)
+    {
+        return value == YesNo.Yes;
+    }
 }

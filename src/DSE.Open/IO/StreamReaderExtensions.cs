@@ -11,7 +11,9 @@ public static class StreamReaderExtensions
     /// <param name="reader"></param>
     /// <param name="position">The position in bytes</param>
     public static void SetPosition(this StreamReader reader, long position)
-        => reader.SetPosition(position, SeekOrigin.Begin);
+    {
+        reader.SetPosition(position, SeekOrigin.Begin);
+    }
 
     /// <summary>
     /// Sets the position of the stream reader to the specified position.

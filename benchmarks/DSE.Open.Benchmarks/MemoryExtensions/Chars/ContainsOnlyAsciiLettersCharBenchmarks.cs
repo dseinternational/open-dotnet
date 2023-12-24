@@ -42,5 +42,8 @@ public class ContainsOnlyAsciiLettersCharBenchmarks
 
     [Benchmark]
     [ArgumentsSource(nameof(Params))]
-    public bool ContainsOnlyAsciiLetters(string str) => str.AsSpan().ContainsOnlyAsciiLetters();
+    public bool ContainsOnlyAsciiLetters(string str)
+    {
+        return str.AsSpan().ContainsOnlyAsciiLetters();
+    }
 }

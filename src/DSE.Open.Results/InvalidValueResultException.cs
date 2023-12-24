@@ -63,5 +63,8 @@ public static class InvalidValueResultException
 
     [DoesNotReturn]
     [StackTraceHidden]
-    private static void Throw<T>(ValueResult<T> result) => throw new InvalidValueResultException<T>(result);
+    private static void Throw<T>(ValueResult<T> result)
+    {
+        throw new InvalidValueResultException<T>(result);
+    }
 }

@@ -14,7 +14,10 @@ public sealed class TimestampToBase64StringConverter : ValueConverter<Timestamp,
     {
     }
 
-    private static string ConvertToString(Timestamp value) => value.ToBase64String();
+    private static string ConvertToString(Timestamp value)
+    {
+        return value.ToBase64String();
+    }
 
     private static Timestamp ConvertFromString(string value)
     {

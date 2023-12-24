@@ -14,8 +14,16 @@ public class AuthorPersistenceTests : SqliteEntityPersistenceTestsBase<LibraryDb
     }
 
     protected override void AddDbContext(IServiceCollection services)
-        => services.AddLibraryDbContext(ConfigureDbContext);
+    {
+        services.AddLibraryDbContext(ConfigureDbContext);
+    }
 
     protected override Task<Author> CreateEntityAsync(LibraryDbContext dataContext)
-        => Task.FromResult(new Author { GivenName = "Fred", FamilyName = "Flintstone" });
+    {
+        return Task.FromResult(new Author
+        {
+            GivenName = "Fred",
+            FamilyName = "Flintstone"
+        });
+    }
 }

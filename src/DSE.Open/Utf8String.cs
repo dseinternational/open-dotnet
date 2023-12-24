@@ -37,13 +37,22 @@ public readonly struct Utf8String
 
     public int Length => _utf8.Length;
 
-    public ReadOnlyMemory<byte> AsMemory() => _utf8;
+    public ReadOnlyMemory<byte> AsMemory()
+    {
+        return _utf8;
+    }
 
     public ReadOnlySpan<byte> Span => _utf8.Span;
 
-    public bool Equals(Utf8String other) => Span.SequenceEqual(other.Span);
+    public bool Equals(Utf8String other)
+    {
+        return Span.SequenceEqual(other.Span);
+    }
 
-    public override bool Equals(object? obj) => obj is Utf8String other && Equals(other);
+    public override bool Equals(object? obj)
+    {
+        return obj is Utf8String other && Equals(other);
+    }
 
     public override int GetHashCode()
     {
@@ -52,9 +61,15 @@ public readonly struct Utf8String
         return h.ToHashCode();
     }
 
-    public byte[] ToByteArray() => _utf8.ToArray();
+    public byte[] ToByteArray()
+    {
+        return _utf8.ToArray();
+    }
 
-    public static Utf8String Parse(ReadOnlySpan<char> s) => Parse(s, null);
+    public static Utf8String Parse(ReadOnlySpan<char> s)
+    {
+        return Parse(s, null);
+    }
 
     public static Utf8String Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
     {
@@ -76,7 +91,10 @@ public readonly struct Utf8String
         return true;
     }
 
-    public static Utf8String Parse(string s) => Parse(s, null);
+    public static Utf8String Parse(string s)
+    {
+        return Parse(s, null);
+    }
 
     public static Utf8String Parse(string s, IFormatProvider? provider)
     {
@@ -87,7 +105,9 @@ public readonly struct Utf8String
     public static bool TryParse(
         [NotNullWhen(true)] string? s,
         [MaybeNullWhen(false)] out Utf8String result)
-        => TryParse(s, null, out result);
+    {
+        return TryParse(s, null, out result);
+    }
 
     public static bool TryParse(
         [NotNullWhen(true)] string? s,
@@ -121,25 +141,58 @@ public readonly struct Utf8String
         return true;
     }
 
-    public override string ToString() => ToString(null, null);
+    public override string ToString()
+    {
+        return ToString(null, null);
+    }
 
-    public string ToString(string? format, IFormatProvider? formatProvider) => Encoding.UTF8.GetString(Span);
+    public string ToString(string? format, IFormatProvider? formatProvider)
+    {
+        return Encoding.UTF8.GetString(Span);
+    }
 
-    public static Utf8String FromString(string value) => Parse(value, CultureInfo.CurrentCulture);
+    public static Utf8String FromString(string value)
+    {
+        return Parse(value, CultureInfo.CurrentCulture);
+    }
 
-    public static explicit operator Utf8String(string value) => FromString(value);
+    public static explicit operator Utf8String(string value)
+    {
+        return FromString(value);
+    }
 
-    public static explicit operator string(Utf8String value) => value.ToString();
+    public static explicit operator string(Utf8String value)
+    {
+        return value.ToString();
+    }
 
-    public static Utf8String FromCharSequence(CharSequence value) => Parse(value.Span, CultureInfo.CurrentCulture);
+    public static Utf8String FromCharSequence(CharSequence value)
+    {
+        return Parse(value.Span, CultureInfo.CurrentCulture);
+    }
 
-    public static explicit operator Utf8String(CharSequence value) => FromCharSequence(value);
+    public static explicit operator Utf8String(CharSequence value)
+    {
+        return FromCharSequence(value);
+    }
 
-    public static Utf8String FromAsciiString(AsciiString value) => new((ReadOnlyMemory<byte>)value.ToByteArray());
+    public static Utf8String FromAsciiString(AsciiString value)
+    {
+        return new Utf8String((ReadOnlyMemory<byte>)value.ToByteArray());
+    }
 
-    public static explicit operator Utf8String(AsciiString value) => FromAsciiString(value);
+    public static explicit operator Utf8String(AsciiString value)
+    {
+        return FromAsciiString(value);
+    }
 
-    public static bool operator ==(Utf8String left, Utf8String right) => left.Equals(right);
+    public static bool operator ==(Utf8String left, Utf8String right)
+    {
+        return left.Equals(right);
+    }
 
-    public static bool operator !=(Utf8String left, Utf8String right) => !(left == right);
+    public static bool operator !=(Utf8String left, Utf8String right)
+    {
+        return !(left == right);
+    }
 }

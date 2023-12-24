@@ -14,7 +14,13 @@ public sealed class BinaryValueToBase64StringConverter : ValueConverter<BinaryVa
     {
     }
 
-    private static string ConvertToString(BinaryValue value) => value.ToBase64EncodedString();
+    private static string ConvertToString(BinaryValue value)
+    {
+        return value.ToBase64EncodedString();
+    }
 
-    private static BinaryValue ConvertFromString(string value) => BinaryValue.FromBase64EncodedString(value);
+    private static BinaryValue ConvertFromString(string value)
+    {
+        return BinaryValue.FromBase64EncodedString(value);
+    }
 }

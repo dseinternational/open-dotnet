@@ -69,7 +69,10 @@ public readonly record struct EmailAddress : IComparable<EmailAddress>, ISpanPar
         _splitIndex = splitIndex;
     }
 
-    public static bool IsValid(ReadOnlySpan<char> email) => IsValid(email, out _);
+    public static bool IsValid(ReadOnlySpan<char> email)
+    {
+        return IsValid(email, out _);
+    }
 
     public static bool IsValid(ReadOnlySpan<char> email, out int splitIndex)
     {
@@ -202,7 +205,10 @@ public readonly record struct EmailAddress : IComparable<EmailAddress>, ISpanPar
         return true;
     }
 
-    public int CompareTo(EmailAddress other) => string.CompareOrdinal(_value, other._value);
+    public int CompareTo(EmailAddress other)
+    {
+        return string.CompareOrdinal(_value, other._value);
+    }
 
     /// <summary>
     /// Determines if the email address contains the specified sequence of characters. Compared
@@ -210,7 +216,10 @@ public readonly record struct EmailAddress : IComparable<EmailAddress>, ISpanPar
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    public bool Contains(string value) => Contains(value.AsSpan(), StringComparison.Ordinal);
+    public bool Contains(string value)
+    {
+        return Contains(value.AsSpan(), StringComparison.Ordinal);
+    }
 
     /// <summary>
     /// Determines if the email address contains the specified sequence of characters. Compared
@@ -231,7 +240,10 @@ public readonly record struct EmailAddress : IComparable<EmailAddress>, ISpanPar
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    public bool Contains(ReadOnlySpan<char> value) => Contains(value, StringComparison.InvariantCultureIgnoreCase);
+    public bool Contains(ReadOnlySpan<char> value)
+    {
+        return Contains(value, StringComparison.InvariantCultureIgnoreCase);
+    }
 
     /// <summary>
     /// Determines if the email address contains the specified sequence of characters. Compared
@@ -241,19 +253,39 @@ public readonly record struct EmailAddress : IComparable<EmailAddress>, ISpanPar
     /// <param name="comparisonType"></param>
     /// <returns></returns>
     public bool Contains(ReadOnlySpan<char> value, StringComparison comparisonType)
-        => _value.AsSpan().Contains(value, comparisonType);
+    {
+        return _value.AsSpan().Contains(value, comparisonType);
+    }
 
-    public bool Equals(EmailAddress other) => Equals(other._value.AsSpan());
+    public bool Equals(EmailAddress other)
+    {
+        return Equals(other._value.AsSpan());
+    }
 
-    public bool Equals(string? other) => Equals(other.AsSpan());
+    public bool Equals(string? other)
+    {
+        return Equals(other.AsSpan());
+    }
 
-    public bool Equals(ReadOnlyMemory<char> other) => Equals(other.Span);
+    public bool Equals(ReadOnlyMemory<char> other)
+    {
+        return Equals(other.Span);
+    }
 
-    public bool Equals(ReadOnlySpan<char> other) => _value.AsSpan().SequenceEqual(other);
+    public bool Equals(ReadOnlySpan<char> other)
+    {
+        return _value.AsSpan().SequenceEqual(other);
+    }
 
-    public override int GetHashCode() => string.GetHashCode(_value, StringComparison.Ordinal);
+    public override int GetHashCode()
+    {
+        return string.GetHashCode(_value, StringComparison.Ordinal);
+    }
 
-    public static EmailAddress Parse(string s) => Parse(s, null);
+    public static EmailAddress Parse(string s)
+    {
+        return Parse(s, null);
+    }
 
     public static EmailAddress Parse(string s, IFormatProvider? provider)
     {
@@ -261,7 +293,10 @@ public readonly record struct EmailAddress : IComparable<EmailAddress>, ISpanPar
         return Parse(s.AsSpan(), provider);
     }
 
-    public static EmailAddress Parse(ReadOnlySpan<char> s) => Parse(s, null);
+    public static EmailAddress Parse(ReadOnlySpan<char> s)
+    {
+        return Parse(s, null);
+    }
 
     public static EmailAddress Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
     {
@@ -273,7 +308,9 @@ public readonly record struct EmailAddress : IComparable<EmailAddress>, ISpanPar
     public static bool TryParse(
         [NotNullWhen(true)] string? s,
         out EmailAddress result)
-        => TryParse(s, null, out result);
+    {
+        return TryParse(s, null, out result);
+    }
 
     public static bool TryParse(
         [NotNullWhen(true)] string? s,
@@ -290,7 +327,9 @@ public readonly record struct EmailAddress : IComparable<EmailAddress>, ISpanPar
     }
 
     public static bool TryParse(ReadOnlySpan<char> s, out EmailAddress result)
-        => TryParse(s, null, out result);
+    {
+        return TryParse(s, null, out result);
+    }
 
     public static bool TryParse(
         ReadOnlySpan<char> s,
@@ -315,12 +354,20 @@ public readonly record struct EmailAddress : IComparable<EmailAddress>, ISpanPar
         return false;
     }
 
-    public override string ToString() => ToString(null, null);
+    public override string ToString()
+    {
+        return ToString(null, null);
+    }
 
-    public string ToString(string? format, IFormatProvider? formatProvider) => _value ?? string.Empty;
+    public string ToString(string? format, IFormatProvider? formatProvider)
+    {
+        return _value ?? string.Empty;
+    }
 
     public bool TryFormat(Span<char> destination, out int charsWritten)
-        => TryFormat(destination, out charsWritten, default, default);
+    {
+        return TryFormat(destination, out charsWritten, default, default);
+    }
 
     public bool TryFormat(
         Span<char> destination,
@@ -346,20 +393,44 @@ public readonly record struct EmailAddress : IComparable<EmailAddress>, ISpanPar
     }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates - explicit conversion operators
-    public static explicit operator EmailAddress(string value) => new(value);
+    public static explicit operator EmailAddress(string value)
+    {
+        return new EmailAddress(value);
+    }
 
-    public static explicit operator string(EmailAddress value) => value.ToString();
+    public static explicit operator string(EmailAddress value)
+    {
+        return value.ToString();
+    }
 
-    public static explicit operator ReadOnlySpan<char>(EmailAddress value) => value._value;
+    public static explicit operator ReadOnlySpan<char>(EmailAddress value)
+    {
+        return value._value;
+    }
 
-    public static explicit operator ReadOnlyMemory<char>(EmailAddress value) => value._value.AsMemory();
+    public static explicit operator ReadOnlyMemory<char>(EmailAddress value)
+    {
+        return value._value.AsMemory();
+    }
 #pragma warning restore CA2225 // Operator overloads have named alternates
 
-    public static bool operator <(EmailAddress left, EmailAddress right) => left.CompareTo(right) < 0;
+    public static bool operator <(EmailAddress left, EmailAddress right)
+    {
+        return left.CompareTo(right) < 0;
+    }
 
-    public static bool operator <=(EmailAddress left, EmailAddress right) => left.CompareTo(right) <= 0;
+    public static bool operator <=(EmailAddress left, EmailAddress right)
+    {
+        return left.CompareTo(right) <= 0;
+    }
 
-    public static bool operator >(EmailAddress left, EmailAddress right) => left.CompareTo(right) > 0;
+    public static bool operator >(EmailAddress left, EmailAddress right)
+    {
+        return left.CompareTo(right) > 0;
+    }
 
-    public static bool operator >=(EmailAddress left, EmailAddress right) => left.CompareTo(right) >= 0;
+    public static bool operator >=(EmailAddress left, EmailAddress right)
+    {
+        return left.CompareTo(right) >= 0;
+    }
 }

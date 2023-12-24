@@ -44,14 +44,26 @@ public class BinaryValueFromEncodedCharsBenchmarks
     }
 
     [Benchmark]
-    public bool FromBase62EncodedChars() => BinaryValue.TryFromEncodedChars(_base62Encoded, BinaryStringEncoding.Base62, out _);
+    public bool FromBase62EncodedChars()
+    {
+        return BinaryValue.TryFromEncodedChars(_base62Encoded, BinaryStringEncoding.Base62, out _);
+    }
 
     [Benchmark]
-    public bool FromBase64EncodedChars() => BinaryValue.TryFromEncodedChars(_base64Encoded, BinaryStringEncoding.Base64, out _);
+    public bool FromBase64EncodedChars()
+    {
+        return BinaryValue.TryFromEncodedChars(_base64Encoded, BinaryStringEncoding.Base64, out _);
+    }
 
     [Benchmark]
-    public bool FromHexUpperChars() => BinaryValue.TryFromEncodedChars(_upperHexEncoded, BinaryStringEncoding.HexUpper, out _);
+    public bool FromHexUpperChars()
+    {
+        return BinaryValue.TryFromEncodedChars(_upperHexEncoded, BinaryStringEncoding.HexUpper, out _);
+    }
 
     [Benchmark]
-    public bool FromHexLowerChars() => BinaryValue.TryFromEncodedChars(_lowerHexEncoded, BinaryStringEncoding.HexLower, out _);
+    public bool FromHexLowerChars()
+    {
+        return BinaryValue.TryFromEncodedChars(_lowerHexEncoded, BinaryStringEncoding.HexLower, out _);
+    }
 }

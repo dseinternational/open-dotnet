@@ -15,7 +15,10 @@ public sealed class EmailAddressToStringConverter : ValueConverter<EmailAddress,
     {
     }
 
-    private static string ConvertToString(EmailAddress value) => value.ToString();
+    private static string ConvertToString(EmailAddress value)
+    {
+        return value.ToString();
+    }
 
     private static EmailAddress ConvertFromString(string value)
     {

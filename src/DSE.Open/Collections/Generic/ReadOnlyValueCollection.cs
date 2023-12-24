@@ -33,7 +33,10 @@ public static class ReadOnlyValueCollection
     /// <typeparam name="T">The type of element stored in the collection.</typeparam>
     /// <param name="items">The elements to store in the collection.</param>
     /// <returns>A <see cref="ReadOnlyValueCollection{T}"/> containing the specified items.</returns>
-    public static ReadOnlyValueCollection<T> Create<T>(Span<T> items) => Create((ReadOnlySpan<T>)items);
+    public static ReadOnlyValueCollection<T> Create<T>(Span<T> items)
+    {
+        return Create((ReadOnlySpan<T>)items);
+    }
 
     /// <summary>
     /// Creates an <see cref="ReadOnlyValueCollection{T}"/> populated with the contents of the specified sequence.

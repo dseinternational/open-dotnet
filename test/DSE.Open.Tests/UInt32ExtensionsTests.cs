@@ -10,5 +10,8 @@ public class UInt32ExtensionsTests
     [InlineData(1000u, 4)]
     [InlineData(123456789u, 9)]
     [InlineData(1234567890u, 10)]
-    public void GetDigitCountReturnsCorrectCount(uint number, int digits) => Assert.Equal(digits, number.GetDigitCount());
+    public void GetDigitCountReturnsCorrectCount(uint number, int digits)
+    {
+        Assert.Equal(digits, number.GetDigitCount());
+    }
 }

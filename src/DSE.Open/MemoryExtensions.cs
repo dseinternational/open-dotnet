@@ -6,7 +6,9 @@ namespace DSE.Open;
 public static partial class MemoryExtensions
 {
     public static bool ContainsOnly<T>(this Span<T> value, Func<T, bool> predicate)
-        => ContainsOnly((ReadOnlySpan<T>)value, predicate);
+    {
+        return ContainsOnly((ReadOnlySpan<T>)value, predicate);
+    }
 
     public static bool ContainsOnly<T>(this ReadOnlySpan<T> values, Func<T, bool> predicate)
     {
@@ -57,7 +59,9 @@ public static partial class MemoryExtensions
 
 
     public static bool TryCopyWhere<T>(this Span<T> span, Span<T> buffer, Func<T, bool> predicate, out int itemsCopied)
-        => TryCopyWhere((ReadOnlySpan<T>)span, buffer, predicate, out itemsCopied);
+    {
+        return TryCopyWhere((ReadOnlySpan<T>)span, buffer, predicate, out itemsCopied);
+    }
 
     /// <summary>
     /// Tries to copy values matching the specified predicate from a span of values to a buffer.
@@ -96,7 +100,9 @@ public static partial class MemoryExtensions
     }
 
     public static int CopyWhere<T>(this Span<T> span, Span<T> buffer, Func<T, bool> predicate)
-        => CopyWhere((ReadOnlySpan<T>)span, buffer, predicate);
+    {
+        return CopyWhere((ReadOnlySpan<T>)span, buffer, predicate);
+    }
 
     /// <summary>
     /// Copies values matching the specified predicate from a span of values to a new span.
@@ -120,7 +126,10 @@ public static partial class MemoryExtensions
     }
 
     public static int CopyExcluding<T>(this Span<T> span, Span<T> buffer, T value)
-        where T : IEquatable<T> => CopyExcluding((ReadOnlySpan<T>)span, buffer, value);
+        where T : IEquatable<T>
+    {
+        return CopyExcluding((ReadOnlySpan<T>)span, buffer, value);
+    }
 
     /// <summary>
     /// Copies all of the values from a span of values to a new span, except those equal to the specified value.

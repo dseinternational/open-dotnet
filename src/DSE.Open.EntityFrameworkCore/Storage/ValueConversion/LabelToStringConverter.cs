@@ -14,7 +14,13 @@ public sealed class LabelToStringConverter : ValueConverter<Label, string>
     {
     }
 
-    private static string ConvertTo(Label value) => value.ToString();
+    private static string ConvertTo(Label value)
+    {
+        return value.ToString();
+    }
 
-    private static Label ConvertFrom(string value) => new(value);
+    private static Label ConvertFrom(string value)
+    {
+        return new Label(value);
+    }
 }

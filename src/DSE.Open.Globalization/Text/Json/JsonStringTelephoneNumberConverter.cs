@@ -9,5 +9,8 @@ public class JsonStringTelephoneNumberConverter : SpanParsableCharWritingJsonCon
 {
     public static readonly JsonStringTelephoneNumberConverter Default = new();
 
-    protected override int GetMaxCharCountToWrite(TelephoneNumber value) => TelephoneNumber.MaxFormattedLength;
+    protected override int GetMaxCharCountToWrite(TelephoneNumber value)
+    {
+        return TelephoneNumber.MaxFormattedLength;
+    }
 }

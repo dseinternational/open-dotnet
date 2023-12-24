@@ -82,7 +82,10 @@ public sealed class DiagnosticCodeTests
     }
 
     [Fact]
-    public void EmptyTest() => Assert.Equal(DiagnosticCode.Empty, new DiagnosticCode());
+    public void EmptyTest()
+    {
+        Assert.Equal(DiagnosticCode.Empty, new DiagnosticCode());
+    }
 
     [Fact]
     public void EqualsStringOperatorTest()
@@ -112,9 +115,11 @@ public sealed class DiagnosticCodeTests
 
     [Theory]
     [MemberData(nameof(InvalidCodes))]
-    public void New_WithInvalidCodes_ShouldThrowArgumentException(string code) =>
+    public void New_WithInvalidCodes_ShouldThrowArgumentException(string code)
+    {
         // Assert
         _ = Assert.Throws<ArgumentOutOfRangeException>(() => new DiagnosticCode(code));
+    }
 
     [Fact]
     public void Parse_WithNonAsciiChar_ShouldThrowFormatException()

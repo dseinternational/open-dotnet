@@ -36,7 +36,10 @@ public sealed class AlphaNumericCodeTests
     }
 
     [Fact]
-    public void EmptyTest() => Assert.Equal(default, new AlphaNumericCode());
+    public void EmptyTest()
+    {
+        Assert.Equal(default, new AlphaNumericCode());
+    }
 
     [Fact]
     public void New_WithCodeLongerThanMaxLength_ShouldThrowArgumentException()

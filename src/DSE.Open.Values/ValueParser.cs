@@ -12,7 +12,9 @@ public static class ValueParser
         out TValue result)
         where T : IEquatable<T>, ISpanParsable<T>
         where TValue : struct, IValue<TValue, T>
-        => TryParse<TValue, T>(s, null, out result);
+    {
+        return TryParse<TValue, T>(s, null, out result);
+    }
 
     public static TValue Parse<TValue, T>(ReadOnlySpan<char> s, IFormatProvider? provider)
         where T : IEquatable<T>, ISpanParsable<T>

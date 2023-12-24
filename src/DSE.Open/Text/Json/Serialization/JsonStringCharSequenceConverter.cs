@@ -7,5 +7,8 @@ public sealed class JsonStringCharSequenceConverter : SpanParsableCharWritingJso
 {
     public static readonly JsonStringCharSequenceConverter Default = new();
 
-    protected override int GetMaxCharCountToWrite(CharSequence value) => value.Length;
+    protected override int GetMaxCharCountToWrite(CharSequence value)
+    {
+        return value.Length;
+    }
 }

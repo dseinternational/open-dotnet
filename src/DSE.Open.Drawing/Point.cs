@@ -20,7 +20,9 @@ public readonly record struct Point(double X, double Y)
     }
 
     public static bool TryParse([NotNullWhen(true)] string? value, out Point point)
-        => TryParse(value, null, out point);
+    {
+        return TryParse(value, null, out point);
+    }
 
     public static bool TryParse([NotNullWhen(true)] string? value, IFormatProvider? provider, out Point point)
     {
@@ -33,7 +35,10 @@ public readonly record struct Point(double X, double Y)
         return TryParse(value.AsSpan(), out point);
     }
 
-    public static bool TryParse(ReadOnlySpan<char> value, out Point point) => TryParse(value, null, out point);
+    public static bool TryParse(ReadOnlySpan<char> value, out Point point)
+    {
+        return TryParse(value, null, out point);
+    }
 
     public static bool TryParse(ReadOnlySpan<char> value, IFormatProvider? provider, out Point point)
     {

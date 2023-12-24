@@ -9,5 +9,8 @@ public class JsonStringDateMonthOnlyConverter : SpanParsableCharWritingJsonConve
 {
     public static readonly JsonStringDateMonthOnlyConverter Default = new();
 
-    protected override int GetMaxCharCountToWrite(DateMonthOnly value) => 16;
+    protected override int GetMaxCharCountToWrite(DateMonthOnly value)
+    {
+        return 16;
+    }
 }

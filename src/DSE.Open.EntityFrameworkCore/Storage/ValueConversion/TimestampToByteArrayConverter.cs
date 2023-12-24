@@ -14,7 +14,10 @@ public sealed class TimestampToByteArrayConverter : ValueConverter<Timestamp, by
     {
     }
 
-    private static byte[] ConvertToByteArray(Timestamp value) => value.GetBytes();
+    private static byte[] ConvertToByteArray(Timestamp value)
+    {
+        return value.GetBytes();
+    }
 
     private static Timestamp ConvertFromByteArray(byte[] value)
     {

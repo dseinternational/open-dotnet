@@ -9,5 +9,8 @@ public class JsonStringColorConverter : SpanParsableCharWritingJsonConverter<Col
 {
     public static readonly JsonStringColorConverter Default = new();
 
-    protected override int GetMaxCharCountToWrite(Color value) => Color.MaxFormatLength;
+    protected override int GetMaxCharCountToWrite(Color value)
+    {
+        return Color.MaxFormatLength;
+    }
 }

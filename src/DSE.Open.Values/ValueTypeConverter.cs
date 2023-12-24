@@ -10,7 +10,9 @@ public class ValueTypeConverter<TValue, T> : TypeConverter
     where TValue : struct, IValue<TValue, T>
 {
     public override bool CanConvertFrom(ITypeDescriptorContext? context, Type sourceType)
-        => sourceType == typeof(TValue) || base.CanConvertFrom(context, sourceType);
+    {
+        return sourceType == typeof(TValue) || base.CanConvertFrom(context, sourceType);
+    }
 
     public override object? ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object value)
     {

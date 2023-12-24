@@ -19,14 +19,26 @@ public class BinaryValueFromEncodedStringBenchmarks
     private static readonly string s_hexUpperEncoded = BinaryValue.FromEncodedString("Hello, World!").ToString(BinaryStringEncoding.HexUpper);
 
     [Benchmark]
-    public BinaryValue FromBase62EncodedString() => BinaryValue.FromEncodedString(s_base62Encoded, BinaryStringEncoding.Base62);
+    public BinaryValue FromBase62EncodedString()
+    {
+        return BinaryValue.FromEncodedString(s_base62Encoded, BinaryStringEncoding.Base62);
+    }
 
     [Benchmark]
-    public BinaryValue FromBase64EncodedString() => BinaryValue.FromEncodedString(s_base64Encoded, BinaryStringEncoding.Base64);
+    public BinaryValue FromBase64EncodedString()
+    {
+        return BinaryValue.FromEncodedString(s_base64Encoded, BinaryStringEncoding.Base64);
+    }
 
     [Benchmark]
-    public BinaryValue FromHexLowerString() => BinaryValue.FromEncodedString(s_hexLowerEncoded, BinaryStringEncoding.HexLower);
+    public BinaryValue FromHexLowerString()
+    {
+        return BinaryValue.FromEncodedString(s_hexLowerEncoded, BinaryStringEncoding.HexLower);
+    }
 
     [Benchmark]
-    public BinaryValue FromHexUpperString() => BinaryValue.FromEncodedString(s_hexUpperEncoded, BinaryStringEncoding.HexUpper);
+    public BinaryValue FromHexUpperString()
+    {
+        return BinaryValue.FromEncodedString(s_hexUpperEncoded, BinaryStringEncoding.HexUpper);
+    }
 }

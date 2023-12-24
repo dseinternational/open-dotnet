@@ -5,6 +5,8 @@ namespace DSE.Open.Collections.ObjectModel;
 
 public static class CollectionExtensions
 {
-    public static ObservableList<T> ToObservableList<T>(this IEnumerable<T> values) => new(values);
-
+    public static ObservableList<T> ToObservableList<T>(this IEnumerable<T> values)
+    {
+        return new ObservableList<T>(values);
+    }
 }

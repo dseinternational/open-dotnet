@@ -35,7 +35,9 @@ public static class JsonBinarySerializer
     [RequiresDynamicCode(WarningMessages.RequiresDynamicCode)]
     [RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]
     public static bool TryDeserializeFromUtf8Json<T>(ReadOnlySpan<byte> json, out T? value)
-        => TryDeserializeFromUtf8Json(json, null, out value);
+    {
+        return TryDeserializeFromUtf8Json(json, null, out value);
+    }
 
     [RequiresDynamicCode(WarningMessages.RequiresDynamicCode)]
     [RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]
@@ -75,7 +77,9 @@ public static class JsonBinarySerializer
     [RequiresDynamicCode(WarningMessages.RequiresDynamicCode)]
     [RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]
     public static bool TryDeserializeFromBase64Utf8Json<T>(string base64, out T? value)
-        => TryDeserializeFromBase64Utf8Json(base64, null, out value);
+    {
+        return TryDeserializeFromBase64Utf8Json(base64, null, out value);
+    }
 
     [RequiresDynamicCode(WarningMessages.RequiresDynamicCode)]
     [RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]

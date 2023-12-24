@@ -19,5 +19,8 @@ public static class TimestampGenerator
         return new Timestamp(BitConverter.GetBytes(s_timestamp++));
     }
 
-    public static Timestamp GetRandom() => new(BitConverter.GetBytes((ulong)Random.Shared.NextInt64()));
+    public static Timestamp GetRandom()
+    {
+        return new Timestamp(BitConverter.GetBytes((ulong)Random.Shared.NextInt64()));
+    }
 }

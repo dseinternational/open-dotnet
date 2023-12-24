@@ -7,5 +7,8 @@ public sealed class JsonStringAsciiStringConverter : SpanParsableByteWritingJson
 {
     public static readonly JsonStringAsciiStringConverter Default = new();
 
-    protected override int GetMaxByteCountToWrite(AsciiString value) => value.Length;
+    protected override int GetMaxByteCountToWrite(AsciiString value)
+    {
+        return value.Length;
+    }
 }

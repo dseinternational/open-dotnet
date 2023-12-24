@@ -49,10 +49,16 @@ public class StandardTimeZoneInfo
     /// Gets the system-supplied <see cref="TimeZoneInfo"/>.
     /// </summary>
     /// <returns></returns>
-    public TimeZoneInfo GetTimeZoneInfo() => TimeZoneInfo.FindSystemTimeZoneById(WindowsId);
+    public TimeZoneInfo GetTimeZoneInfo()
+    {
+        return TimeZoneInfo.FindSystemTimeZoneById(WindowsId);
+    }
 
 #pragma warning disable CA1024 // Use properties where appropriate
-    public static IEnumerable<StandardTimeZoneInfo> GetAll() => s_standardTimeZones;
+    public static IEnumerable<StandardTimeZoneInfo> GetAll()
+    {
+        return s_standardTimeZones;
+    }
 #pragma warning restore CA1024 // Use properties where appropriate
 
     private static readonly StandardTimeZoneInfo[] s_standardTimeZones =

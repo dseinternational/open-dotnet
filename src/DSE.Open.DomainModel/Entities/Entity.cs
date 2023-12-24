@@ -28,5 +28,8 @@ public abstract class Entity<TId> : StoredObject, IEntity<TId>
 
     object IIdentified.Id => Id;
 
-    public override string ToString() => $"{GetType().Name} [Id: {_id}]";
+    public override string ToString()
+    {
+        return $"{GetType().Name} [Id: {_id}]";
+    }
 }

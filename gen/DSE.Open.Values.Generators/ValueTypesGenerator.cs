@@ -40,7 +40,9 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
     }
 
     private static bool IsSyntaxStructWithAttributes(SyntaxNode node)
-        => node is StructDeclarationSyntax cds && cds.AttributeLists.Count > 0;
+    {
+        return node is StructDeclarationSyntax cds && cds.AttributeLists.Count > 0;
+    }
 
     private static StructDeclarationSyntax? GetSemanticTargetForGeneration(GeneratorSyntaxContext context)
     {
@@ -587,8 +589,10 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
         return specs;
     }
 
-    private static bool IsValueTypeInterface(INamedTypeSymbol? interfaceSymbol) =>
-        interfaceSymbol?.Name is "IEquatableValue" or "IComparableValue" or "IAddableValue" or "IDivisibleValue";
+    private static bool IsValueTypeInterface(INamedTypeSymbol? interfaceSymbol)
+    {
+        return interfaceSymbol?.Name is "IEquatableValue" or "IComparableValue" or "IAddableValue" or "IDivisibleValue";
+    }
 
     private static string GetNamespace(BaseTypeDeclarationSyntax syntax)
     {
@@ -655,8 +659,10 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
     }
 
     // We can only be nested in class/struct/record
-    private static bool IsAllowedKind(SyntaxKind kind) =>
-        kind is SyntaxKind.ClassDeclaration or
+    private static bool IsAllowedKind(SyntaxKind kind)
+    {
+        return kind is SyntaxKind.ClassDeclaration or
             SyntaxKind.StructDeclaration or
             SyntaxKind.RecordDeclaration;
+    }
 }

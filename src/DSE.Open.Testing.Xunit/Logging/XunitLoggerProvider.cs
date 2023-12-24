@@ -17,7 +17,10 @@ public class XunitLoggerProvider : ILoggerProvider
         _minLevel = minLevel;
     }
 
-    public ILogger CreateLogger(string categoryName) => new XunitLogger(_output, categoryName, _minLevel);
+    public ILogger CreateLogger(string categoryName)
+    {
+        return new XunitLogger(_output, categoryName, _minLevel);
+    }
 
     protected virtual void Dispose(bool disposing)
     {

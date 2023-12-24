@@ -1,4 +1,4 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 namespace DSE.Open.Specifications.Abstractions;
@@ -20,7 +20,7 @@ internal sealed class OrAsyncSpecification<T> : IAsyncSpecification<T>
         _right = right;
     }
 
-    public async Task<bool> IsSatisfiedByAsync(T value, CancellationToken cancellationToken=default)
+    public async Task<bool> IsSatisfiedByAsync(T value, CancellationToken cancellationToken = default)
     {
         using var cancellationSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
 

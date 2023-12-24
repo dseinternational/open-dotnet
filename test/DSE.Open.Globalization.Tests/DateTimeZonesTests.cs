@@ -19,7 +19,9 @@ public class DateTimeZonesTests
     [InlineData("BE", TimeZoneIds.EuropeBrussels)]
     [InlineData("HK", TimeZoneIds.AsiaHongKong)]
     public void GetTimeZoneForCountryReturnsExpectedTimeZone(string countryCode, string timeZoneId)
-        => Assert.Equal(DateTimeZoneProviders.Tzdb[timeZoneId], DateTimeZones.GetTimeZoneForCountry(CountryCode.Parse(countryCode, CultureInfo.InvariantCulture)));
+    {
+        Assert.Equal(DateTimeZoneProviders.Tzdb[timeZoneId], DateTimeZones.GetTimeZoneForCountry(CountryCode.Parse(countryCode, CultureInfo.InvariantCulture)));
+    }
 
     [Theory]
     [InlineData("GB", "en-GB", "United Kingdom Time")]

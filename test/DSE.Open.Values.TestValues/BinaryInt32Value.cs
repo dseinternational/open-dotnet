@@ -20,6 +20,8 @@ public readonly partial struct BinaryInt32Value : IEquatableValue<BinaryInt32Val
 
     public static IEnumerable<BinaryInt32Value> ValidValues { get; } = new[] { False, True };
 
-    public static bool IsValidValue(int value) => value is 0 or 1;
-
+    public static bool IsValidValue(int value)
+    {
+        return value is 0 or 1;
+    }
 }

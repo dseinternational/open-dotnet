@@ -17,9 +17,15 @@ public sealed class ValueTypeValueConverter<TValue, T, TStore> : ValueConverter<
     {
     }
 
-    private static TStore ToStore(TValue value) => (TStore)(T)value;
+    private static TStore ToStore(TValue value)
+    {
+        return (TStore)(T)value;
+    }
 
-    private static TValue FromStore(TStore value) => (TValue)(T)value;
+    private static TValue FromStore(TStore value)
+    {
+        return (TValue)(T)value;
+    }
 }
 
 public sealed class ValueTypeValueConverter<TValue, T> : ValueConverter<TValue, T>
@@ -31,7 +37,13 @@ public sealed class ValueTypeValueConverter<TValue, T> : ValueConverter<TValue, 
     {
     }
 
-    private static T ToStore(TValue value) => (T)value;
+    private static T ToStore(TValue value)
+    {
+        return (T)value;
+    }
 
-    private static TValue FromStore(T value) => (TValue)value;
+    private static TValue FromStore(T value)
+    {
+        return (TValue)value;
+    }
 }

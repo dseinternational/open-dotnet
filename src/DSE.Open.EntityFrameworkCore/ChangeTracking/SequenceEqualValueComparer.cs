@@ -11,11 +11,11 @@ public class SequenceEqualValueComparer<
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods
         | DynamicallyAccessedMemberTypes.NonPublicMethods
         | DynamicallyAccessedMemberTypes.PublicProperties)]
-    TItem,
+TItem,
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods
         | DynamicallyAccessedMemberTypes.NonPublicMethods
         | DynamicallyAccessedMemberTypes.PublicProperties)]
-    TCollection>
+TCollection>
     : ValueComparer<TCollection>
     where TCollection : IEnumerable<TItem>
 {
@@ -40,7 +40,7 @@ public sealed class SequenceEqualValueComparer<
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods
         | DynamicallyAccessedMemberTypes.NonPublicMethods
         | DynamicallyAccessedMemberTypes.PublicProperties)]
-    T>
+T>
     : SequenceEqualValueComparer<T, IEnumerable<T>>
 {
     public static readonly SequenceEqualValueComparer<T> Default = new();

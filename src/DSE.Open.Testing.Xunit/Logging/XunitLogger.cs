@@ -55,9 +55,15 @@ public class XunitLogger : ILogger
         }
     }
 
-    public bool IsEnabled(LogLevel logLevel) => logLevel >= _minLogLevel;
+    public bool IsEnabled(LogLevel logLevel)
+    {
+        return logLevel >= _minLogLevel;
+    }
 
-    public IDisposable BeginScope<TState>(TState state) where TState : notnull => new NullScope();
+    public IDisposable BeginScope<TState>(TState state) where TState : notnull
+    {
+        return new NullScope();
+    }
 
     private void WriteLine(string message)
     {

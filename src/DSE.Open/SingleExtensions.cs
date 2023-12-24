@@ -17,5 +17,8 @@ public static class SingleExtensions
         return i;
     }
 
-    public static bool HasDecimalPlaces(this float val) => Math.Round(val, 0) != val;
+    public static bool HasDecimalPlaces(this float val)
+    {
+        return Math.Round(val, 0) != val;
+    }
 }

@@ -45,50 +45,113 @@ public readonly record struct Code
         _code = CodeStringPool.Shared.GetOrAdd(code);
     }
 
-    public ReadOnlySpan<char> AsSpan() => _code.AsSpan();
+    public ReadOnlySpan<char> AsSpan()
+    {
+        return _code.AsSpan();
+    }
 
-    public ReadOnlyMemory<char> AsMemory() => _code.AsMemory();
+    public ReadOnlyMemory<char> AsMemory()
+    {
+        return _code.AsMemory();
+    }
 
-    public int CompareTo(Code other) => CompareTo(other, StringComparison.CurrentCulture);
+    public int CompareTo(Code other)
+    {
+        return CompareTo(other, StringComparison.CurrentCulture);
+    }
 
-    public int CompareTo(Code other, StringComparison comparison) => string.Compare(_code, other._code, comparison);
+    public int CompareTo(Code other, StringComparison comparison)
+    {
+        return string.Compare(_code, other._code, comparison);
+    }
 
-    public int CompareOrdinal(Code other) => string.CompareOrdinal(_code, other._code);
+    public int CompareOrdinal(Code other)
+    {
+        return string.CompareOrdinal(_code, other._code);
+    }
 
-    public int CompareOrdinalIgnoreCase(Code other) => CompareTo(other, StringComparison.OrdinalIgnoreCase);
+    public int CompareOrdinalIgnoreCase(Code other)
+    {
+        return CompareTo(other, StringComparison.OrdinalIgnoreCase);
+    }
 
-    public override int GetHashCode() => string.GetHashCode(_code, StringComparison.Ordinal);
+    public override int GetHashCode()
+    {
+        return string.GetHashCode(_code, StringComparison.Ordinal);
+    }
 
-    public bool Equals(Code other) => Equals(other._code.AsSpan());
+    public bool Equals(Code other)
+    {
+        return Equals(other._code.AsSpan());
+    }
 
-    public bool Equals(Code other, StringComparison comparison) => Equals(other._code, comparison);
+    public bool Equals(Code other, StringComparison comparison)
+    {
+        return Equals(other._code, comparison);
+    }
 
-    public bool Equals(string? other) => other != null && Equals(other.AsSpan());
+    public bool Equals(string? other)
+    {
+        return other != null && Equals(other.AsSpan());
+    }
 
-    public bool Equals(string? other, StringComparison comparison) => other != null
-        && string.Equals(_code, other, comparison);
+    public bool Equals(string? other, StringComparison comparison)
+    {
+        return other != null
+               && string.Equals(_code, other, comparison);
+    }
 
-    public bool Equals(ReadOnlyMemory<char> other) => Equals(other.Span);
+    public bool Equals(ReadOnlyMemory<char> other)
+    {
+        return Equals(other.Span);
+    }
 
-    public bool Equals(ReadOnlySpan<char> other) => _code.AsSpan().SequenceEqual(other);
+    public bool Equals(ReadOnlySpan<char> other)
+    {
+        return _code.AsSpan().SequenceEqual(other);
+    }
 
-    public static explicit operator Code(string code) => FromString(code);
+    public static explicit operator Code(string code)
+    {
+        return FromString(code);
+    }
 
-    public static Code FromString(string code) => new(code);
+    public static Code FromString(string code)
+    {
+        return new Code(code);
+    }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
-    public static explicit operator Code(short code) => FromNumber(code);
+    public static explicit operator Code(short code)
+    {
+        return FromNumber(code);
+    }
 
-    public static explicit operator Code(int code) => FromNumber(code);
+    public static explicit operator Code(int code)
+    {
+        return FromNumber(code);
+    }
 
-    public static explicit operator Code(long code) => FromNumber(code);
+    public static explicit operator Code(long code)
+    {
+        return FromNumber(code);
+    }
 
-    public static explicit operator Code(ushort code) => FromNumber(code);
+    public static explicit operator Code(ushort code)
+    {
+        return FromNumber(code);
+    }
 
-    public static explicit operator Code(uint code) => FromNumber(code);
+    public static explicit operator Code(uint code)
+    {
+        return FromNumber(code);
+    }
 
-    public static explicit operator Code(ulong code) => FromNumber(code);
+    public static explicit operator Code(ulong code)
+    {
+        return FromNumber(code);
+    }
 
 #pragma warning restore CA2225 // Operator overloads have named alternates
 
@@ -102,17 +165,29 @@ public readonly record struct Code
                 $"The maximum length of a {nameof(Code)} is {MaxLength} characters");
     }
 
-    public static explicit operator string(Code code) => code.ToString();
+    public static explicit operator string(Code code)
+    {
+        return code.ToString();
+    }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
-    public static explicit operator ReadOnlyMemory<char>(Code code) => code._code.AsMemory();
+    public static explicit operator ReadOnlyMemory<char>(Code code)
+    {
+        return code._code.AsMemory();
+    }
 
-    public static explicit operator ReadOnlySpan<char>(Code code) => code._code;
+    public static explicit operator ReadOnlySpan<char>(Code code)
+    {
+        return code._code;
+    }
 
 #pragma warning restore CA2225 // Operator overloads have named alternates
 
-    public override string ToString() => ToString(null, null);
+    public override string ToString()
+    {
+        return ToString(null, null);
+    }
 
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
@@ -185,11 +260,23 @@ public readonly record struct Code
         return true;
     }
 
-    public static bool operator <(Code left, Code right) => left.CompareTo(right, StringComparison.CurrentCulture) < 0;
+    public static bool operator <(Code left, Code right)
+    {
+        return left.CompareTo(right, StringComparison.CurrentCulture) < 0;
+    }
 
-    public static bool operator <=(Code left, Code right) => left.CompareTo(right, StringComparison.CurrentCulture) <= 0;
+    public static bool operator <=(Code left, Code right)
+    {
+        return left.CompareTo(right, StringComparison.CurrentCulture) <= 0;
+    }
 
-    public static bool operator >(Code left, Code right) => left.CompareTo(right, StringComparison.CurrentCulture) > 0;
+    public static bool operator >(Code left, Code right)
+    {
+        return left.CompareTo(right, StringComparison.CurrentCulture) > 0;
+    }
 
-    public static bool operator >=(Code left, Code right) => left.CompareTo(right, StringComparison.CurrentCulture) >= 0;
+    public static bool operator >=(Code left, Code right)
+    {
+        return left.CompareTo(right, StringComparison.CurrentCulture) >= 0;
+    }
 }

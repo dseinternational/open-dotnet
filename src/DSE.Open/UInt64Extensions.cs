@@ -10,5 +10,8 @@ public static class UInt64Extensions
     /// </summary>
     /// <param name="number"></param>
     /// <returns></returns>
-    public static int GetDigitCount(this ulong number) => (int)(uint)Math.Log10(number) + 1;
+    public static int GetDigitCount(this ulong number)
+    {
+        return (int)(uint)Math.Log10(number) + 1;
+    }
 }

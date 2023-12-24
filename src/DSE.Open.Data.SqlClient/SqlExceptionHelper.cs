@@ -8,5 +8,7 @@ namespace DSE.Open.Data.SqlClient;
 public static class SqlExceptionHelper
 {
     public static void ThrowSqlNullValueException(string? message = null, Exception? exception = null)
-        => throw new SqlNullValueException(message, exception);
+    {
+        throw new SqlNullValueException(message, exception);
+    }
 }

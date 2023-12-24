@@ -38,7 +38,10 @@ public abstract class PhonemeSymbolSet : IReadOnlyCollection<PhonemeSymbol>
 
     public int Count => _symbols.Count;
 
-    public bool ContainsSymbol(LanguageTag language, string Symbol) => _languageLabelLookup.TryGetValue(language, out var lookup) && lookup.ContainsKey(Symbol);
+    public bool ContainsSymbol(LanguageTag language, string Symbol)
+    {
+        return _languageLabelLookup.TryGetValue(language, out var lookup) && lookup.ContainsKey(Symbol);
+    }
 
     public IEnumerable<PhonemeSymbol> SelectByLanguage(LanguageTag language)
     {
@@ -50,7 +53,10 @@ public abstract class PhonemeSymbolSet : IReadOnlyCollection<PhonemeSymbol>
         return Enumerable.Empty<PhonemeSymbol>();
     }
 
-    public IEnumerator<PhonemeSymbol> GetEnumerator() => _symbols.GetEnumerator();
+    public IEnumerator<PhonemeSymbol> GetEnumerator()
+    {
+        return _symbols.GetEnumerator();
+    }
 
     public bool TryGetLookup(
         LanguageTag language,
@@ -80,5 +86,8 @@ public abstract class PhonemeSymbolSet : IReadOnlyCollection<PhonemeSymbol>
         return false;
     }
 
-    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
 }

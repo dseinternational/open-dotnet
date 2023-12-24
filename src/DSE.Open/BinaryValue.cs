@@ -51,16 +51,28 @@ public readonly partial record struct BinaryValue : ISpanFormattable, IUtf8SpanF
     /// </summary>
     public int BitLength => Length * 8;
 
-    public ReadOnlyMemory<byte> AsMemory() => _value;
+    public ReadOnlyMemory<byte> AsMemory()
+    {
+        return _value;
+    }
 
-    public ReadOnlySpan<byte> AsSpan() => _value.Span;
+    public ReadOnlySpan<byte> AsSpan()
+    {
+        return _value.Span;
+    }
 
     /// <summary>
     /// Returns a copy of the value as an array.
     /// </summary>
-    public byte[] ToArray() => _value.ToArray();
+    public byte[] ToArray()
+    {
+        return _value.ToArray();
+    }
 
-    public bool Equals(BinaryValue other) => _value.Span.SequenceEqual(other._value.Span);
+    public bool Equals(BinaryValue other)
+    {
+        return _value.Span.SequenceEqual(other._value.Span);
+    }
 
     public override int GetHashCode()
     {
@@ -103,9 +115,15 @@ public readonly partial record struct BinaryValue : ISpanFormattable, IUtf8SpanF
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
-    public static explicit operator ReadOnlyMemory<byte>(BinaryValue value) => value.AsMemory();
+    public static explicit operator ReadOnlyMemory<byte>(BinaryValue value)
+    {
+        return value.AsMemory();
+    }
 
-    public static explicit operator ReadOnlySpan<byte>(BinaryValue value) => value.AsSpan();
+    public static explicit operator ReadOnlySpan<byte>(BinaryValue value)
+    {
+        return value.AsSpan();
+    }
 
 #pragma warning restore CA2225 // Operator overloads have named alternates
 

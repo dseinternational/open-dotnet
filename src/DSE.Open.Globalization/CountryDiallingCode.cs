@@ -28,7 +28,10 @@ public readonly struct CountryDiallingCode : IEquatable<CountryDiallingCode>
 
     public string Name { get; }
 
-    public bool Equals(CountryDiallingCode other) => Equals(this, other);
+    public bool Equals(CountryDiallingCode other)
+    {
+        return Equals(this, other);
+    }
 
     private static Dictionary<short, CountryDiallingCode> CreateCodeLookup()
     {
@@ -245,9 +248,15 @@ public readonly struct CountryDiallingCode : IEquatable<CountryDiallingCode>
         return codeLookup;
     }
 
-    public override bool Equals(object? obj) => obj is CountryDiallingCode code && Equals(code);
+    public override bool Equals(object? obj)
+    {
+        return obj is CountryDiallingCode code && Equals(code);
+    }
 
-    public static bool Equals(CountryDiallingCode c1, CountryDiallingCode c2) => c1.Code == c2.Code;
+    public static bool Equals(CountryDiallingCode c1, CountryDiallingCode c2)
+    {
+        return c1.Code == c2.Code;
+    }
 
     public static CountryDiallingCode FromCode(short code)
     {
@@ -256,13 +265,28 @@ public readonly struct CountryDiallingCode : IEquatable<CountryDiallingCode>
             : throw new ArgumentOutOfRangeException(nameof(code), "Invalid dialling code.");
     }
 
-    public override int GetHashCode() => Code.GetHashCode();
+    public override int GetHashCode()
+    {
+        return Code.GetHashCode();
+    }
 
-    public static bool IsValidCountryDiallingCode(short code) => s_codeLookup.ContainsKey(code);
+    public static bool IsValidCountryDiallingCode(short code)
+    {
+        return s_codeLookup.ContainsKey(code);
+    }
 
-    public override string ToString() => "+" + Code.ToStringInvariant();
+    public override string ToString()
+    {
+        return "+" + Code.ToStringInvariant();
+    }
 
-    public static bool operator ==(CountryDiallingCode c1, CountryDiallingCode c2) => Equals(c1, c2);
+    public static bool operator ==(CountryDiallingCode c1, CountryDiallingCode c2)
+    {
+        return Equals(c1, c2);
+    }
 
-    public static bool operator !=(CountryDiallingCode c1, CountryDiallingCode c2) => !Equals(c1, c2);
+    public static bool operator !=(CountryDiallingCode c1, CountryDiallingCode c2)
+    {
+        return !Equals(c1, c2);
+    }
 }

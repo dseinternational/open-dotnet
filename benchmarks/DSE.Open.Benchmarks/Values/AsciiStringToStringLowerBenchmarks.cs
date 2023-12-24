@@ -24,17 +24,32 @@ public class AsciiStringToStringLowerBenchmarks
             CultureInfo.InvariantCulture);
 
     [Benchmark]
-    public string ToStringLower_Single() => s_singleValue.ToStringLower();
+    public string ToStringLower_Single()
+    {
+        return s_singleValue.ToStringLower();
+    }
 
     [Benchmark]
-    public string ToStringLower_Eight() => s_eightValue.ToStringLower();
+    public string ToStringLower_Eight()
+    {
+        return s_eightValue.ToStringLower();
+    }
 
     [Benchmark]
-    public string ToStringLower_Long() => s_longValue.ToStringLower();
+    public string ToStringLower_Long()
+    {
+        return s_longValue.ToStringLower();
+    }
 
     [Benchmark]
-    public string ToStringLower_Longer() => s_longerValue.ToStringLower();
+    public string ToStringLower_Longer()
+    {
+        return s_longerValue.ToStringLower();
+    }
 
     [Benchmark]
-    public string ToStringLower_VeryLong() => s_veryLongValue.ToStringLower();
+    public string ToStringLower_VeryLong()
+    {
+        return s_veryLongValue.ToStringLower();
+    }
 }

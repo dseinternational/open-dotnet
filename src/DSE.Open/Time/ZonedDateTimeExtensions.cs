@@ -8,7 +8,9 @@ namespace DSE.Open.Time;
 public static class ZonedDateTimeExtensions
 {
     public static string ToShortDateTimeWithZoneInfoString(this ZonedDateTime zonedDateTime)
-        => zonedDateTime.ToShortDateTimeWithZoneInfoString(null);
+    {
+        return zonedDateTime.ToShortDateTimeWithZoneInfoString(null);
+    }
 
     public static string ToShortDateTimeWithZoneInfoString(this ZonedDateTime zonedDateTime, IFormatProvider? formatProvider)
     {

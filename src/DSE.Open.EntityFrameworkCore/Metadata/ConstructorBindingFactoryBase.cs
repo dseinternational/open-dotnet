@@ -34,12 +34,14 @@ public abstract class ConstructorBindingFactoryBase : IConstructorBindingFactory
         IConventionEntityType entityType,
         out InstantiationBinding constructorBinding,
         out InstantiationBinding? serviceOnlyBinding)
-        => GetBindings(
+    {
+        GetBindings(
             entityType,
             static (f, e, p, n) => f.FindParameter((IEntityType)e, p, n),
             static (f, e, p, n) => f?.Bind(e, p, n),
             out constructorBinding,
             out serviceOnlyBinding);
+    }
 
     /// <summary>
     ///     This is an internal API that supports the Entity Framework Core infrastructure and not subject to
@@ -51,12 +53,14 @@ public abstract class ConstructorBindingFactoryBase : IConstructorBindingFactory
         IMutableEntityType entityType,
         out InstantiationBinding constructorBinding,
         out InstantiationBinding? serviceOnlyBinding)
-        => GetBindings(
+    {
+        GetBindings(
             entityType,
             static (f, e, p, n) => f.FindParameter((IEntityType)e, p, n),
             static (f, e, p, n) => f?.Bind(e, p, n),
             out constructorBinding,
             out serviceOnlyBinding);
+    }
 
     /// <summary>
     ///     This is an internal API that supports the Entity Framework Core infrastructure and not subject to
@@ -68,23 +72,27 @@ public abstract class ConstructorBindingFactoryBase : IConstructorBindingFactory
         IReadOnlyEntityType entityType,
         out InstantiationBinding constructorBinding,
         out InstantiationBinding? serviceOnlyBinding)
-        => GetBindings(
+    {
+        GetBindings(
             entityType,
             static (f, e, p, n) => f.FindParameter((IEntityType)e, p, n),
             static (f, e, p, n) => f?.Bind(e, p, n),
             out constructorBinding,
             out serviceOnlyBinding);
+    }
 
     public virtual void GetBindings(
         IReadOnlyComplexType complexType,
         out InstantiationBinding constructorBinding,
         out InstantiationBinding? serviceOnlyBinding)
-        => GetBindings(
+    {
+        GetBindings(
             complexType,
             static (f, e, p, n) => f.FindParameter((IComplexType)e, p, n),
             static (f, e, p, n) => null,
             out constructorBinding,
             out serviceOnlyBinding);
+    }
 
     protected virtual void GetBindings<T>(
         T type,
@@ -205,26 +213,30 @@ public abstract class ConstructorBindingFactoryBase : IConstructorBindingFactory
         ConstructorInfo constructor,
         [NotNullWhen(true)] out InstantiationBinding? binding,
         [NotNullWhen(false)] out IEnumerable<ParameterInfo>? unboundParameters)
-        => TryBindConstructor(
+    {
+        return TryBindConstructor(
             entityType,
             constructor,
             static (f, e, p, n) => f.FindParameter((IEntityType)e, p, n),
             static (f, e, p, n) => f?.Bind(e, p, n),
             out binding,
             out unboundParameters);
+    }
 
     public virtual bool TryBindConstructor(
         IConventionEntityType entityType,
         ConstructorInfo constructor,
         [NotNullWhen(true)] out InstantiationBinding? binding,
         [NotNullWhen(false)] out IEnumerable<ParameterInfo>? unboundParameters)
-        => TryBindConstructor(
+    {
+        return TryBindConstructor(
             entityType,
             constructor,
             static (f, e, p, n) => f.FindParameter((IEntityType)e, p, n),
             static (f, e, p, n) => f?.Bind(e, p, n),
             out binding,
             out unboundParameters);
+    }
 
     protected bool TryBindConstructor<T>(
         T entityType,

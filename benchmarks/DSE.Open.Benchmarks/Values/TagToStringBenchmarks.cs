@@ -15,8 +15,15 @@ public class TagToStringBenchmarks
     private static readonly Tag s_tag = Tag.Parse(Str, CultureInfo.InvariantCulture);
 
     [GlobalSetup]
-    public void Setup() => _ = Tag.GetString(Str); // Make sure it's in the pool
+    public void Setup()
+    {
+        _ = Tag.GetString(Str);
+        // Make sure it's in the pool
+    }
 
     [Benchmark]
-    public string TagToString() => s_tag.ToString();
+    public string TagToString()
+    {
+        return s_tag.ToString();
+    }
 }

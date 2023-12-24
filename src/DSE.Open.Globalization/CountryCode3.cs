@@ -31,7 +31,10 @@ public readonly partial struct CountryCode3 : IEquatableValue<CountryCode3, Asci
 
     static int ISpanSerializable<CountryCode3>.MaxSerializedCharLength => 3;
 
-    public static bool IsValidValue(AsciiChar3 value) => IsValidValue(value, true);
+    public static bool IsValidValue(AsciiChar3 value)
+    {
+        return IsValidValue(value, true);
+    }
 
     private static bool IsValidValue(AsciiChar3 value, bool normalize)
     {

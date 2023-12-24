@@ -49,37 +49,85 @@ public readonly struct Char2
         c1 = _c1;
     }
 
-    public bool Equals(Char2 other) => _c0 == other._c0 && _c1 == other._c1;
+    public bool Equals(Char2 other)
+    {
+        return _c0 == other._c0 && _c1 == other._c1;
+    }
 
-    public override bool Equals(object? obj) => obj is Char2 other && Equals(other);
+    public override bool Equals(object? obj)
+    {
+        return obj is Char2 other && Equals(other);
+    }
 
-    public override int GetHashCode() => HashCode.Combine(_c0, _c1);
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(_c0, _c1);
+    }
 
-    public override string ToString() => ToString(null, null);
+    public override string ToString()
+    {
+        return ToString(null, null);
+    }
 
-    public static Char2 FromString(string value) => new(value.AsSpan());
+    public static Char2 FromString(string value)
+    {
+        return new Char2(value.AsSpan());
+    }
 
-    public static Char2 FromSpan(ReadOnlySpan<char> span) => new(span);
+    public static Char2 FromSpan(ReadOnlySpan<char> span)
+    {
+        return new Char2(span);
+    }
 
-    public static bool operator ==(Char2 left, Char2 right) => left.Equals(right);
+    public static bool operator ==(Char2 left, Char2 right)
+    {
+        return left.Equals(right);
+    }
 
-    public static bool operator !=(Char2 left, Char2 right) => !left.Equals(right);
+    public static bool operator !=(Char2 left, Char2 right)
+    {
+        return !left.Equals(right);
+    }
 
-    public static implicit operator string(Char2 value) => value.ToString();
+    public static implicit operator string(Char2 value)
+    {
+        return value.ToString();
+    }
 
-    public static explicit operator Char2(string value) => FromString(value);
+    public static explicit operator Char2(string value)
+    {
+        return FromString(value);
+    }
 
-    public Char2 ToUpper() => ToUpper(CultureInfo.CurrentCulture);
+    public Char2 ToUpper()
+    {
+        return ToUpper(CultureInfo.CurrentCulture);
+    }
 
-    public Char2 ToUpper(CultureInfo cultureInfo) => new(char.ToUpper(_c0, cultureInfo), char.ToUpper(_c1, cultureInfo));
+    public Char2 ToUpper(CultureInfo cultureInfo)
+    {
+        return new Char2(char.ToUpper(_c0, cultureInfo), char.ToUpper(_c1, cultureInfo));
+    }
 
-    public Char2 ToUpperInvariant() => ToUpper(CultureInfo.InvariantCulture);
+    public Char2 ToUpperInvariant()
+    {
+        return ToUpper(CultureInfo.InvariantCulture);
+    }
 
-    public Char2 ToLower() => ToLower(CultureInfo.CurrentCulture);
+    public Char2 ToLower()
+    {
+        return ToLower(CultureInfo.CurrentCulture);
+    }
 
-    public Char2 ToLower(CultureInfo cultureInfo) => new(char.ToLower(_c0, cultureInfo), char.ToLower(_c1, cultureInfo));
+    public Char2 ToLower(CultureInfo cultureInfo)
+    {
+        return new Char2(char.ToLower(_c0, cultureInfo), char.ToLower(_c1, cultureInfo));
+    }
 
-    public Char2 ToLowerInvariant() => ToLower(CultureInfo.InvariantCulture);
+    public Char2 ToLowerInvariant()
+    {
+        return ToLower(CultureInfo.InvariantCulture);
+    }
 
     // TODO: support format provider?
 
@@ -103,11 +151,13 @@ public readonly struct Char2
 
     // TODO: support format provider?
     public string ToString(string? format, IFormatProvider? formatProvider)
-        => string.Create(CharCount, this, (span, value) =>
+    {
+        return string.Create(CharCount, this, (span, value) =>
         {
             span[0] = value._c0;
             span[1] = value._c1;
         });
+    }
 
     public static Char2 Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
     {
@@ -145,5 +195,7 @@ public readonly struct Char2
         [NotNullWhen(true)] string? s,
         IFormatProvider? provider,
         out Char2 result)
-        => TryParse(s.AsSpan(), provider, out result);
+    {
+        return TryParse(s.AsSpan(), provider, out result);
+    }
 }

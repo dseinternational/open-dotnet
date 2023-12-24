@@ -26,8 +26,11 @@ public abstract class ResultBuilder<TResult>
 
 public class ResultBuilder : ResultBuilder<Result>
 {
-    public override Result GetResult() => new()
+    public override Result GetResult()
     {
-        Notifications = [.. Notifications],
-    };
+        return new Result
+        {
+            Notifications = [.. Notifications],
+        };
+    }
 }

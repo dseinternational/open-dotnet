@@ -41,19 +41,33 @@ public readonly record struct AgeInMonths : ISpanFormattable, ISpanParsable<AgeI
     /// </summary>
     public int TotalMonths { get; }
 
-    public AgeInMonths AddMonths(int months) => new(TotalMonths + months);
+    public AgeInMonths AddMonths(int months)
+    {
+        return new AgeInMonths(TotalMonths + months);
+    }
 
-    public AgeInMonths AddYears(int years) => new(TotalMonths + (years * 12));
+    public AgeInMonths AddYears(int years)
+    {
+        return new AgeInMonths(TotalMonths + (years * 12));
+    }
 
-    public int CompareTo(AgeInMonths other) => TotalMonths.CompareTo(other.TotalMonths);
+    public int CompareTo(AgeInMonths other)
+    {
+        return TotalMonths.CompareTo(other.TotalMonths);
+    }
 
-    public bool TryFormat(Span<char> destination, out int charsWritten) => TryFormat(destination, out charsWritten, default, default);
+    public bool TryFormat(Span<char> destination, out int charsWritten)
+    {
+        return TryFormat(destination, out charsWritten, default, default);
+    }
 
     public bool TryFormat(
         Span<char> destination,
         out int charsWritten,
         IFormatProvider? provider)
-        => TryFormat(destination, out charsWritten, default, provider);
+    {
+        return TryFormat(destination, out charsWritten, default, provider);
+    }
 
     public bool TryFormat(
         Span<char> destination,
@@ -81,7 +95,10 @@ public readonly record struct AgeInMonths : ISpanFormattable, ISpanParsable<AgeI
         return false;
     }
 
-    public static AgeInMonths Parse(ReadOnlySpan<char> s) => Parse(s, default);
+    public static AgeInMonths Parse(ReadOnlySpan<char> s)
+    {
+        return Parse(s, default);
+    }
 
     public static AgeInMonths Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
     {
@@ -94,7 +111,10 @@ public readonly record struct AgeInMonths : ISpanFormattable, ISpanParsable<AgeI
         return default;
     }
 
-    public static AgeInMonths Parse(string s) => Parse(s, default);
+    public static AgeInMonths Parse(string s)
+    {
+        return Parse(s, default);
+    }
 
     public static AgeInMonths Parse(string s, IFormatProvider? provider)
     {
@@ -105,7 +125,9 @@ public readonly record struct AgeInMonths : ISpanFormattable, ISpanParsable<AgeI
     public static bool TryParse(
         ReadOnlySpan<char> s,
         out AgeInMonths result)
-        => TryParse(s, default, out result);
+    {
+        return TryParse(s, default, out result);
+    }
 
     public static bool TryParse(
         ReadOnlySpan<char> s,
@@ -141,9 +163,14 @@ public readonly record struct AgeInMonths : ISpanFormattable, ISpanParsable<AgeI
         [NotNullWhen(true)] string? s,
         IFormatProvider? provider,
         out AgeInMonths result)
-        => TryParse(s.AsSpan(), provider, out result);
+    {
+        return TryParse(s.AsSpan(), provider, out result);
+    }
 
-    public override string ToString() => ToString(default, default);
+    public override string ToString()
+    {
+        return ToString(default, default);
+    }
 
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
@@ -152,11 +179,23 @@ public readonly record struct AgeInMonths : ISpanFormattable, ISpanParsable<AgeI
         return new string(destination[..charsWritten]);
     }
 
-    public static bool operator <(AgeInMonths left, AgeInMonths right) => left.CompareTo(right) < 0;
+    public static bool operator <(AgeInMonths left, AgeInMonths right)
+    {
+        return left.CompareTo(right) < 0;
+    }
 
-    public static bool operator <=(AgeInMonths left, AgeInMonths right) => left.CompareTo(right) <= 0;
+    public static bool operator <=(AgeInMonths left, AgeInMonths right)
+    {
+        return left.CompareTo(right) <= 0;
+    }
 
-    public static bool operator >(AgeInMonths left, AgeInMonths right) => left.CompareTo(right) > 0;
+    public static bool operator >(AgeInMonths left, AgeInMonths right)
+    {
+        return left.CompareTo(right) > 0;
+    }
 
-    public static bool operator >=(AgeInMonths left, AgeInMonths right) => left.CompareTo(right) >= 0;
+    public static bool operator >=(AgeInMonths left, AgeInMonths right)
+    {
+        return left.CompareTo(right) >= 0;
+    }
 }

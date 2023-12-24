@@ -15,7 +15,13 @@ public sealed class TagToStringConverter : ValueConverter<Tag, string>
     {
     }
 
-    private static string ConvertToString(Tag value) => value.ToString();
+    private static string ConvertToString(Tag value)
+    {
+        return value.ToString();
+    }
 
-    private static Tag ConvertToUniqueId(string value) => new(value);
+    private static Tag ConvertToUniqueId(string value)
+    {
+        return new Tag(value);
+    }
 }

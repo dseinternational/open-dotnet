@@ -180,5 +180,7 @@ public sealed class AlphaCodeTests
     [InlineData("\"123\"")]
     [InlineData("\"!abc\"")]
     public void Deserialize_WithInvalidCode_Throws(string code)
-        => Assert.Throws<FormatException>(() => JsonSerializer.Deserialize<AlphaCode>(code, JsonSharedOptions.RelaxedJsonEscaping));
+    {
+        Assert.Throws<FormatException>(() => JsonSerializer.Deserialize<AlphaCode>(code, JsonSharedOptions.RelaxedJsonEscaping));
+    }
 }

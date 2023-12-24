@@ -30,7 +30,10 @@ public abstract class SqliteInMemoryTestBase<TContext> : IDisposable
         _ = db.Database.EnsureCreated();
     }
 
-    public virtual TContext CreateContext() => CreateContext(_contextOptions);
+    public virtual TContext CreateContext()
+    {
+        return CreateContext(_contextOptions);
+    }
 
     public abstract TContext CreateContext(DbContextOptions<TContext> contextOptions);
 

@@ -17,5 +17,8 @@ public static class DecimalExtensions
         return i;
     }
 
-    public static bool HasDecimalPlaces(this decimal val) => Math.Round(val, 0) != val;
+    public static bool HasDecimalPlaces(this decimal val)
+    {
+        return Math.Round(val, 0) != val;
+    }
 }

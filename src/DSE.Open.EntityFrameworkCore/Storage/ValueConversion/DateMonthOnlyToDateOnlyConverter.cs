@@ -14,7 +14,13 @@ public sealed class DateMonthOnlyToDateOnlyConverter : ValueConverter<DateMonthO
     {
     }
 
-    private static DateOnly ConvertTo(DateMonthOnly value) => value.StartOfMonth;
+    private static DateOnly ConvertTo(DateMonthOnly value)
+    {
+        return value.StartOfMonth;
+    }
 
-    private static DateMonthOnly ConvertFrom(DateOnly value) => new(value);
+    private static DateMonthOnly ConvertFrom(DateOnly value)
+    {
+        return new DateMonthOnly(value);
+    }
 }

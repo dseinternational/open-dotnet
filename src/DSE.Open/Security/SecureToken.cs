@@ -53,15 +53,30 @@ public readonly record struct SecureToken : ISpanParsable<SecureToken>, ISpanFor
         return new SecureToken(id.ToArray());
     }
 
-    public ReadOnlySpan<char> AsSpan() => _token.AsSpan();
+    public ReadOnlySpan<char> AsSpan()
+    {
+        return _token.AsSpan();
+    }
 
-    public bool Equals(SecureToken other) => _token is null ? other._token is null : other._token is not null && _token.SequenceEqual(other._token);
+    public bool Equals(SecureToken other)
+    {
+        return _token is null ? other._token is null : other._token is not null && _token.SequenceEqual(other._token);
+    }
 
-    public override int GetHashCode() => string.GetHashCode(_token, StringComparison.Ordinal);
+    public override int GetHashCode()
+    {
+        return string.GetHashCode(_token, StringComparison.Ordinal);
+    }
 
-    public override string ToString() => ToString(null, null);
+    public override string ToString()
+    {
+        return ToString(null, null);
+    }
 
-    public string ToString(string? format, IFormatProvider? formatProvider) => new(_token);
+    public string ToString(string? format, IFormatProvider? formatProvider)
+    {
+        return new string(_token);
+    }
 
     public bool TryFormat(
         Span<char> destination,
@@ -81,7 +96,10 @@ public readonly record struct SecureToken : ISpanParsable<SecureToken>, ISpanFor
         return false;
     }
 
-    public static bool IsValidToken(string? token) => token is not null && IsValidToken(token.AsSpan());
+    public static bool IsValidToken(string? token)
+    {
+        return token is not null && IsValidToken(token.AsSpan());
+    }
 
     public static bool IsValidToken(ReadOnlySpan<char> token)
     {
@@ -101,9 +119,15 @@ public readonly record struct SecureToken : ISpanParsable<SecureToken>, ISpanFor
         return true;
     }
 
-    public static bool IsValidTokenChar(char c) => char.IsAsciiLetterOrDigit(c);
+    public static bool IsValidTokenChar(char c)
+    {
+        return char.IsAsciiLetterOrDigit(c);
+    }
 
-    public static SecureToken Parse(string s) => Parse(s, null);
+    public static SecureToken Parse(string s)
+    {
+        return Parse(s, null);
+    }
 
     public static SecureToken Parse(string s, IFormatProvider? provider)
     {
@@ -122,7 +146,10 @@ public readonly record struct SecureToken : ISpanParsable<SecureToken>, ISpanFor
         return default; // unreachable
     }
 
-    public static bool TryParse(string? s, out SecureToken result) => TryParse(s, null, out result);
+    public static bool TryParse(string? s, out SecureToken result)
+    {
+        return TryParse(s, null, out result);
+    }
 
     public static bool TryParse(
         [NotNullWhen(true)] string? s,
@@ -158,9 +185,15 @@ public readonly record struct SecureToken : ISpanParsable<SecureToken>, ISpanFor
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
-    public static explicit operator ReadOnlyMemory<char>(SecureToken token) => token._token;
+    public static explicit operator ReadOnlyMemory<char>(SecureToken token)
+    {
+        return token._token;
+    }
 
-    public static explicit operator ReadOnlySpan<char>(SecureToken token) => token._token;
+    public static explicit operator ReadOnlySpan<char>(SecureToken token)
+    {
+        return token._token;
+    }
 
 #pragma warning restore CA2225 // Operator overloads have named alternates
 }

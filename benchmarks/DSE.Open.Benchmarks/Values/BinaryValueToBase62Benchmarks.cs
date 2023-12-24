@@ -13,7 +13,10 @@ public class BinaryValueToBase62Benchmarks
     private const string Format = "b";
 
     [Benchmark]
-    public string ToBase62String() => s_value.ToBase64EncodedString();
+    public string ToBase62String()
+    {
+        return s_value.ToBase64EncodedString();
+    }
 
     [Benchmark]
     public bool TryFormatBase62_Chars()

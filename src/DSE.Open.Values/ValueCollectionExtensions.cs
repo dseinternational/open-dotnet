@@ -13,7 +13,9 @@ public static class ValueCollectionExtensions
     public static T[] ToPrimitiveArray<TValue, T>(this IEnumerable<TValue> collection)
         where T : IEquatable<T>
         where TValue : struct, IValue<TValue, T>
-        => collection.Select(TValue.ConvertTo).ToArray();
+    {
+        return collection.Select(TValue.ConvertTo).ToArray();
+    }
 
 #pragma warning disable CA1002 // Do not expose generic lists
     public static List<T> ToPrimitiveList<TValue, T>(this IEnumerable<TValue> collection)
@@ -26,7 +28,10 @@ public static class ValueCollectionExtensions
 
     public static int Count<TValue, T>(this IEnumerable<TValue> collection)
         where T : IEquatable<T>
-        where TValue : struct, IValue<TValue, T> => collection.Count();
+        where TValue : struct, IValue<TValue, T>
+    {
+        return collection.Count();
+    }
 
     // ordinal values can be sorted
 
@@ -35,16 +40,23 @@ public static class ValueCollectionExtensions
     public static TValue Sum<TValue, T>(this IEnumerable<TValue> source)
         where T : struct, INumber<T>
         where TValue : struct, IAddableValue<TValue, T>
-        => TValue.FromValue(source.SumPrimitives<TValue, T>());
+    {
+        return TValue.FromValue(source.SumPrimitives<TValue, T>());
+    }
 
     public static TValue Sum<TValue, T>(ReadOnlySpan<TValue> span)
         where T : struct, INumber<T>
         where TValue : struct, IAddableValue<TValue, T>
-        => TValue.FromValue(SumPrimitives<TValue, T>(span));
+    {
+        return TValue.FromValue(SumPrimitives<TValue, T>(span));
+    }
 
     public static T SumPrimitives<TValue, T>(this IEnumerable<TValue> source)
         where T : struct, INumber<T>
-        where TValue : struct, IAddableValue<TValue, T> => source.Select(TValue.ConvertTo).SumCore<T, T>();
+        where TValue : struct, IAddableValue<TValue, T>
+    {
+        return source.Select(TValue.ConvertTo).SumCore<T, T>();
+    }
 
     public static T SumPrimitives<TValue, T>(ReadOnlySpan<TValue> span)
         where T : struct, INumber<T>
@@ -102,7 +114,9 @@ public static class ValueCollectionExtensions
     public static T AveragePrimitives<TValue, T>(ReadOnlySpan<TValue> span)
         where T : struct, INumber<T>
         where TValue : struct, IAddableValue<TValue, T>
-        => T.CreateChecked(SumPrimitives<TValue, T>(span) / T.CreateChecked(span.Length));
+    {
+        return T.CreateChecked(SumPrimitives<TValue, T>(span) / T.CreateChecked(span.Length));
+    }
 
     // https://github.com/dotnet/runtime/blob/da1da02bbd2cb54490b7fc22f43ec32f5f302615/src/libraries/System.Linq/src/System/Linq/Average.cs#LL77C9-L77C9
 

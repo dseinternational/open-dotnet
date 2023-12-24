@@ -1,4 +1,4 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using DSE.Open.Globalization;
@@ -14,7 +14,10 @@ public sealed class LanguageTagToStringConverter : ValueConverter<LanguageTag, s
     {
     }
 
-    private static string ConvertTo(LanguageTag code) => code.ToStringFormatted();
+    private static string ConvertTo(LanguageTag code)
+    {
+        return code.ToStringFormatted();
+    }
 
     private static LanguageTag ConvertFrom(string code)
     {

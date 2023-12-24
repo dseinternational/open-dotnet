@@ -13,5 +13,7 @@ public interface IUtf8SpanFormattableValue<TSelf, T> : IUtf8SpanFormattable
     where TSelf : struct, IUtf8SpanFormattableValue<TSelf, T>
 {
     new bool TryFormat(Span<byte> utf8Destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider? provider)
-        => ((T)this).TryFormat(utf8Destination, out charsWritten, format, provider);
+    {
+        return ((T)this).TryFormat(utf8Destination, out charsWritten, format, provider);
+    }
 }

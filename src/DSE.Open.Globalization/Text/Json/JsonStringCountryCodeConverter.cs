@@ -9,5 +9,8 @@ public class JsonStringCountryCodeConverter : SpanParsableCharWritingJsonConvert
 {
     public static readonly JsonStringCountryCodeConverter Default = new();
 
-    protected override int GetMaxCharCountToWrite(CountryCode value) => CountryCode.Length;
+    protected override int GetMaxCharCountToWrite(CountryCode value)
+    {
+        return CountryCode.Length;
+    }
 }

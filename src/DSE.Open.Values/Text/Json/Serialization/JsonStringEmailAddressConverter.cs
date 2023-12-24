@@ -9,5 +9,8 @@ public class JsonStringEmailAddressConverter : SpanParsableCharWritingJsonConver
 {
     public static readonly JsonStringEmailAddressConverter Default = new();
 
-    protected override int GetMaxCharCountToWrite(EmailAddress value) => EmailAddress.MaxLength;
+    protected override int GetMaxCharCountToWrite(EmailAddress value)
+    {
+        return EmailAddress.MaxLength;
+    }
 }

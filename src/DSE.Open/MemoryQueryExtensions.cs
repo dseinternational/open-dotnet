@@ -5,7 +5,10 @@ namespace DSE.Open;
 
 public static class MemoryQueryExtensions
 {
-    public static bool All<T>(this ReadOnlyMemory<T> values, Func<T, bool> predicate) => values.Span.All(predicate);
+    public static bool All<T>(this ReadOnlyMemory<T> values, Func<T, bool> predicate)
+    {
+        return values.Span.All(predicate);
+    }
 
     public static bool All<T>(this ReadOnlySpan<T> values, Func<T, bool> predicate)
     {
@@ -22,7 +25,10 @@ public static class MemoryQueryExtensions
         return true;
     }
 
-    public static bool Any<T>(this ReadOnlyMemory<T> values, Func<T, bool> predicate) => values.Span.Any(predicate);
+    public static bool Any<T>(this ReadOnlyMemory<T> values, Func<T, bool> predicate)
+    {
+        return values.Span.Any(predicate);
+    }
 
     public static bool Any<T>(this ReadOnlySpan<T> values, Func<T, bool> predicate)
     {
@@ -39,29 +45,65 @@ public static class MemoryQueryExtensions
         return false;
     }
 
-    public static bool AllAreAscii(this ReadOnlyMemory<char> values) => values.Span.AllAreAscii();
+    public static bool AllAreAscii(this ReadOnlyMemory<char> values)
+    {
+        return values.Span.AllAreAscii();
+    }
 
-    public static bool AllAreAscii(this ReadOnlySpan<char> values) => values.All(char.IsAscii);
+    public static bool AllAreAscii(this ReadOnlySpan<char> values)
+    {
+        return values.All(char.IsAscii);
+    }
 
-    public static bool AllAreAsciiDigit(this ReadOnlyMemory<char> values) => values.Span.AllAreAsciiDigit();
+    public static bool AllAreAsciiDigit(this ReadOnlyMemory<char> values)
+    {
+        return values.Span.AllAreAsciiDigit();
+    }
 
-    public static bool AllAreAsciiDigit(this ReadOnlySpan<char> values) => values.All(char.IsAsciiDigit);
+    public static bool AllAreAsciiDigit(this ReadOnlySpan<char> values)
+    {
+        return values.All(char.IsAsciiDigit);
+    }
 
-    public static bool AllAreAsciiLetter(this ReadOnlyMemory<char> values) => values.Span.AllAreAsciiLetter();
+    public static bool AllAreAsciiLetter(this ReadOnlyMemory<char> values)
+    {
+        return values.Span.AllAreAsciiLetter();
+    }
 
-    public static bool AllAreAsciiLetter(this ReadOnlySpan<char> values) => values.All(char.IsAsciiLetter);
+    public static bool AllAreAsciiLetter(this ReadOnlySpan<char> values)
+    {
+        return values.All(char.IsAsciiLetter);
+    }
 
-    public static bool AllAreAsciiLetterLower(this ReadOnlyMemory<char> values) => values.Span.AllAreAsciiLetterLower();
+    public static bool AllAreAsciiLetterLower(this ReadOnlyMemory<char> values)
+    {
+        return values.Span.AllAreAsciiLetterLower();
+    }
 
-    public static bool AllAreAsciiLetterLower(this ReadOnlySpan<char> values) => values.All(char.IsAsciiLetterLower);
+    public static bool AllAreAsciiLetterLower(this ReadOnlySpan<char> values)
+    {
+        return values.All(char.IsAsciiLetterLower);
+    }
 
-    public static bool AllAreAsciiLetterOrDigit(this ReadOnlyMemory<char> values) => values.Span.AllAreAsciiLetterOrDigit();
+    public static bool AllAreAsciiLetterOrDigit(this ReadOnlyMemory<char> values)
+    {
+        return values.Span.AllAreAsciiLetterOrDigit();
+    }
 
-    public static bool AllAreAsciiLetterOrDigit(this ReadOnlySpan<char> values) => values.All(char.IsAsciiLetterOrDigit);
+    public static bool AllAreAsciiLetterOrDigit(this ReadOnlySpan<char> values)
+    {
+        return values.All(char.IsAsciiLetterOrDigit);
+    }
 
-    public static bool AllAreAsciiLetterUpper(this ReadOnlyMemory<char> values) => values.Span.AllAreAsciiLetterUpper();
+    public static bool AllAreAsciiLetterUpper(this ReadOnlyMemory<char> values)
+    {
+        return values.Span.AllAreAsciiLetterUpper();
+    }
 
-    public static bool AllAreAsciiLetterUpper(this ReadOnlySpan<char> values) => values.All(char.IsAsciiLetterUpper);
+    public static bool AllAreAsciiLetterUpper(this ReadOnlySpan<char> values)
+    {
+        return values.All(char.IsAsciiLetterUpper);
+    }
 
     /// <summary>
     /// Returns the number of items matching the condition specified by <paramref name="predicate"/>.

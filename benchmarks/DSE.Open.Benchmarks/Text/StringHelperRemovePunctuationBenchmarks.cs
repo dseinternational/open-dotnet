@@ -40,16 +40,28 @@ public class StringHelperRemovePunctuationBenchmarks
     }
 
     [Benchmark]
-    public string RemovePunctuation_Large_NoPunctuation() => StringHelper.RemovePunctuation(LargeNoPunctuation);
+    public string RemovePunctuation_Large_NoPunctuation()
+    {
+        return StringHelper.RemovePunctuation(LargeNoPunctuation);
+    }
 
     [Benchmark]
-    public string RemovePunctuation_Large_Punctuation() => StringHelper.RemovePunctuation(LargePunctuation);
+    public string RemovePunctuation_Large_Punctuation()
+    {
+        return StringHelper.RemovePunctuation(LargePunctuation);
+    }
 
     [Benchmark]
-    public string RemovePunctuation_Small_NoPunctuation() => StringHelper.RemovePunctuation(SmallNoPunctuation);
+    public string RemovePunctuation_Small_NoPunctuation()
+    {
+        return StringHelper.RemovePunctuation(SmallNoPunctuation);
+    }
 
     [Benchmark]
-    public string RemovePunctuation_Small_Punctuation() => StringHelper.RemovePunctuation(SmallPunctuation);
+    public string RemovePunctuation_Small_Punctuation()
+    {
+        return StringHelper.RemovePunctuation(SmallPunctuation);
+    }
 }
 
 #pragma warning restore CA1822 // Mark members as static

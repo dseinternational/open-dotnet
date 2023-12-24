@@ -43,5 +43,7 @@ public class ContainsOnlyAsciiDigitsByteBenchmarks
     [Benchmark]
     [ArgumentsSource(nameof(Params))]
     public bool ContainsOnlyAsciiDigits(byte[] arr)
-        => arr.AsSpan().ContainsOnlyAsciiDigits();
+    {
+        return arr.AsSpan().ContainsOnlyAsciiDigits();
+    }
 }

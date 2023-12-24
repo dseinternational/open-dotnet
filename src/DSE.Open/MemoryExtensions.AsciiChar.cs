@@ -8,16 +8,30 @@ namespace DSE.Open;
 
 public static partial class MemoryExtensions
 {
-    public static AsciiString ToAsciiString(this ReadOnlyMemory<AsciiChar> memory) => new(memory);
+    public static AsciiString ToAsciiString(this ReadOnlyMemory<AsciiChar> memory)
+    {
+        return new AsciiString(memory);
+    }
 
-    public static AsciiString ToAsciiString(this ReadOnlySpan<AsciiChar> span) => new(span.ToArray());
+    public static AsciiString ToAsciiString(this ReadOnlySpan<AsciiChar> span)
+    {
+        return new AsciiString(span.ToArray());
+    }
 
-    public static ReadOnlyMemory<byte> ToBytes(this ReadOnlyMemory<AsciiChar> memory) => memory.Span.ToBytes();
+    public static ReadOnlyMemory<byte> ToBytes(this ReadOnlyMemory<AsciiChar> memory)
+    {
+        return memory.Span.ToBytes();
+    }
 
-    public static ReadOnlyMemory<byte> ToBytes(this ReadOnlySpan<AsciiChar> span) => ValuesMarshal.AsBytes(span).ToArray();
+    public static ReadOnlyMemory<byte> ToBytes(this ReadOnlySpan<AsciiChar> span)
+    {
+        return ValuesMarshal.AsBytes(span).ToArray();
+    }
 
     public static ReadOnlyMemory<char> ToChars(this ReadOnlyMemory<AsciiChar> memory)
-        => memory.Span.ToChars();
+    {
+        return memory.Span.ToChars();
+    }
 
     public static ReadOnlyMemory<char> ToChars(this ReadOnlySpan<AsciiChar> span)
     {
@@ -40,7 +54,10 @@ public static partial class MemoryExtensions
     /// </summary>
     /// <param name="memory"></param>
     /// <returns></returns>
-    public static string ToStringValue(this ReadOnlyMemory<AsciiChar> memory) => memory.Span.ToString();
+    public static string ToStringValue(this ReadOnlyMemory<AsciiChar> memory)
+    {
+        return memory.Span.ToString();
+    }
 
     /// <summary>
     /// Converts the <see cref="ReadOnlySpan{AsciiChar}"/> to a <see cref="string"/>.

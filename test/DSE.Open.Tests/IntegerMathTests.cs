@@ -6,5 +6,8 @@ namespace DSE.Open.Tests;
 public class IntegerMathTests
 {
     [Fact]
-    public void Int32_Divide() => Assert.Equal(4, 11.DivideByRoundUp(3));
+    public void Int32_Divide()
+    {
+        Assert.Equal(4, 11.DivideByRoundUp(3));
+    }
 }

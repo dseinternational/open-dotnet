@@ -9,5 +9,8 @@ public class JsonStringUInt128Converter : SpanParsableCharWritingJsonConverter<U
 
     public static readonly JsonStringUInt128Converter Default = new();
 
-    protected override int GetMaxCharCountToWrite(UInt128 value) => MaxCharCount;
+    protected override int GetMaxCharCountToWrite(UInt128 value)
+    {
+        return MaxCharCount;
+    }
 }

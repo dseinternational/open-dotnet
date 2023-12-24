@@ -40,7 +40,10 @@ public class ObservableKeyedCollectionTests
 
 internal sealed class TestObservableKeyedCollection : ObservableKeyedCollection<string, TestItem>
 {
-    protected override string GetKeyForItem(TestItem item) => item.Key;
+    protected override string GetKeyForItem(TestItem item)
+    {
+        return item.Key;
+    }
 }
 
 internal sealed class TestItem

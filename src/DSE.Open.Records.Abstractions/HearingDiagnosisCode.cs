@@ -29,36 +29,45 @@ public readonly partial struct HearingDiagnosisCode : IEquatableValue<HearingDia
         return Lookup.ContainsKey(value);
     }
 
-    public static implicit operator HearingDiagnosisCode(long code) => FromInt64(code);
+    public static implicit operator HearingDiagnosisCode(long code)
+    {
+        return FromInt64(code);
+    }
 
-    public static HearingDiagnosisCode FromInt32(int code) => FromInt64(code);
+    public static HearingDiagnosisCode FromInt32(int code)
+    {
+        return FromInt64(code);
+    }
 
-    public static HearingDiagnosisCode FromInt64(long code) => new(new ClinicalConceptCode(code));
+    public static HearingDiagnosisCode FromInt64(long code)
+    {
+        return new HearingDiagnosisCode(new ClinicalConceptCode(code));
+    }
 
     /// <summary>
     /// Identifies a diagnosis of Hearing loss [15188001 | Hearing loss (disorder)].
     /// </summary>
-    public static readonly HearingDiagnosisCode HearingLoss = new ((ClinicalConceptCode)15188001, true);
+    public static readonly HearingDiagnosisCode HearingLoss = new((ClinicalConceptCode)15188001, true);
 
     /// <summary>
     /// Identifies a diagnosis of Mixed conductive AND sensorineural hearing loss [77507001 | Mixed conductive AND sensorineural hearing loss (disorder)].
     /// </summary>
-    public static readonly HearingDiagnosisCode ConductiveAndSensorineuralHearingLoss = new ((ClinicalConceptCode)77507001, true);
+    public static readonly HearingDiagnosisCode ConductiveAndSensorineuralHearingLoss = new((ClinicalConceptCode)77507001, true);
 
     /// <summary>
     /// Identifies a diagnosis of Otitis media [65363002 | Otitis media (disorder)].
     /// </summary>
-    public static readonly HearingDiagnosisCode OtitisMedia = new ((ClinicalConceptCode)65363002, true);
+    public static readonly HearingDiagnosisCode OtitisMedia = new((ClinicalConceptCode)65363002, true);
 
     /// <summary>
     /// Identifies a diagnosis of Otitis media with effusion [80327007 | Serous otitis media (disorder)].
     /// </summary>
-    public static readonly HearingDiagnosisCode OtitisMediaWithEffusion = new ((ClinicalConceptCode)80327007, true);
+    public static readonly HearingDiagnosisCode OtitisMediaWithEffusion = new((ClinicalConceptCode)80327007, true);
 
     /// <summary>
     /// Identifies a diagnosis of Sensorineural hearing loss [60700002 | Sensorineural hearing loss (disorder)]
     /// </summary>
-    public static readonly HearingDiagnosisCode SensorineuralHearingLoss = new ((ClinicalConceptCode)60700002, true);
+    public static readonly HearingDiagnosisCode SensorineuralHearingLoss = new((ClinicalConceptCode)60700002, true);
 
 
     public static readonly IReadOnlyCollection<HearingDiagnosisCode> All = new[]

@@ -42,7 +42,10 @@ public partial class ReadOnlyDbCommandInterceptor : DbCommandInterceptor
     }
 
     // internal for testing
-    internal static bool ContainsWriteStatement(string commandText) => UpdateSqlGeneratedRegex().IsMatch(commandText);
+    internal static bool ContainsWriteStatement(string commandText)
+    {
+        return UpdateSqlGeneratedRegex().IsMatch(commandText);
+    }
 
     [GeneratedRegex(
         "INSERT[ \n]+(.*[ \n])*INTO|UPDATE[ \n]+(.*[ \n])*SET|DELETE[ \n]+(.*[ \n])*FROM",

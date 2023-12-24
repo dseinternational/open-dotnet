@@ -29,13 +29,22 @@ public sealed class ValueConversionException : Exception
 
     [DoesNotReturn]
     [StackTraceHidden]
-    public static void Throw(string message) => throw new ValueConversionException(message);
+    public static void Throw(string message)
+    {
+        throw new ValueConversionException(message);
+    }
 
     [DoesNotReturn]
     [StackTraceHidden]
-    public static void Throw(string message, Exception? innerException) => throw new ValueConversionException(message, innerException);
+    public static void Throw(string message, Exception? innerException)
+    {
+        throw new ValueConversionException(message, innerException);
+    }
 
     [DoesNotReturn]
     [StackTraceHidden]
-    public static void Throw(string message, object value, Exception? innerException) => throw new ValueConversionException(message, value, innerException);
+    public static void Throw(string message, object value, Exception? innerException)
+    {
+        throw new ValueConversionException(message, value, innerException);
+    }
 }

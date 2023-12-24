@@ -16,8 +16,14 @@ public class AsciiStringTryParseBenchmarks
     private static ReadOnlySpan<char> Long => "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".AsSpan();
 
     [Benchmark]
-    public bool TryParse_Short() => AsciiString.TryParse(Short, out _);
+    public bool TryParse_Short()
+    {
+        return AsciiString.TryParse(Short, out _);
+    }
 
     [Benchmark]
-    public bool TryParse_Long() => AsciiString.TryParse(Long, out _);
+    public bool TryParse_Long()
+    {
+        return AsciiString.TryParse(Long, out _);
+    }
 }

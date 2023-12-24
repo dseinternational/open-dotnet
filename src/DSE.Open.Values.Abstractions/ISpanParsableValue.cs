@@ -15,7 +15,10 @@ public interface ISpanParsableValue<TSelf, T> : IParsableValue<TSelf, T>, ISpanP
     where T : IEquatable<T>, ISpanParsable<T>
     where TSelf : struct, ISpanParsableValue<TSelf, T>
 {
-    static new TSelf Parse(ReadOnlySpan<char> s, IFormatProvider? provider) => (TSelf)T.Parse(s, provider);
+    static new TSelf Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
+    {
+        return (TSelf)T.Parse(s, provider);
+    }
 
     static new bool TryParse(
         ReadOnlySpan<char> s,

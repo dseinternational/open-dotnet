@@ -11,5 +11,8 @@ public class Int32ExtensionsTests
     [InlineData(-1000, 4)]
     [InlineData(123456789, 9)]
     [InlineData(-123456789, 9)]
-    public void GetDigitCountReturnsCorrectCount(int number, int digits) => Assert.Equal(digits, number.GetDigitCount());
+    public void GetDigitCountReturnsCorrectCount(int number, int digits)
+    {
+        Assert.Equal(digits, number.GetDigitCount());
+    }
 }

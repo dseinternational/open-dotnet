@@ -15,7 +15,10 @@ public interface IParsableValue<TSelf, T> : IValue<TSelf, T>, IParsable<TSelf>
     where T : IEquatable<T>, IParsable<T>
     where TSelf : struct, IParsableValue<TSelf, T>
 {
-    static new TSelf Parse(string s, IFormatProvider? provider) => (TSelf)T.Parse(s, provider);
+    static new TSelf Parse(string s, IFormatProvider? provider)
+    {
+        return (TSelf)T.Parse(s, provider);
+    }
 
     static new bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, [MaybeNullWhen(false)] out TSelf result)
     {

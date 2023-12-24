@@ -40,5 +40,8 @@ public record Result : ImmutableDataTransferObject
     [JsonIgnore]
     public bool HasNotifications => Notifications.Count != 0;
 
-    public bool HasAnyErrorNotifications() => HasNotifications && Notifications.AnyErrors();
+    public bool HasAnyErrorNotifications()
+    {
+        return HasNotifications && Notifications.AnyErrors();
+    }
 }

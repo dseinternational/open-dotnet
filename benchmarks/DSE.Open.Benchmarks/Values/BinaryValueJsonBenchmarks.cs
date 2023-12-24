@@ -16,8 +16,14 @@ public class BinaryValueJsonBenchmarks
     private static readonly string s_json = JsonSerializer.Serialize(s_value);
 
     [Benchmark]
-    public BinaryValue Deserialize() => JsonSerializer.Deserialize<BinaryValue>(s_json);
+    public BinaryValue Deserialize()
+    {
+        return JsonSerializer.Deserialize<BinaryValue>(s_json);
+    }
 
     [Benchmark]
-    public string Serialize() => JsonSerializer.Serialize(s_value);
+    public string Serialize()
+    {
+        return JsonSerializer.Serialize(s_value);
+    }
 }

@@ -18,7 +18,9 @@ public readonly partial struct Gender : IEquatableValue<Gender, AsciiString>, IU
     public static int MaxSerializedByteLength => 6;
 
     public static bool IsValidValue(AsciiString value)
-        => value.Length > 1 && value.Length <= 6 && Lookup.ContainsKey(value);
+    {
+        return value.Length > 1 && value.Length <= 6 && Lookup.ContainsKey(value);
+    }
 
     public static readonly Gender Female = new((AsciiString)"female", true);
 

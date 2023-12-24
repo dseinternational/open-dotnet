@@ -14,7 +14,10 @@ public class BinaryValueToHexLowerBenchmarks
     private const string Format = "x";
 
     [Benchmark]
-    public string ToHexLowerString() => s_value.ToString(BinaryStringEncoding.HexLower);
+    public string ToHexLowerString()
+    {
+        return s_value.ToString(BinaryStringEncoding.HexLower);
+    }
 
     [Benchmark]
     public bool TryFormatHexLower_Chars()

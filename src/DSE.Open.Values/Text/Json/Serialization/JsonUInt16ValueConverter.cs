@@ -1,4 +1,4 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Text.Json;
@@ -10,7 +10,9 @@ public class JsonUInt16ValueConverter<TValue> : JsonConverter<TValue>
     where TValue : struct, IValue<TValue, uint>
 {
     public override TValue Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-        => (TValue)reader.GetUInt16();
+    {
+        return (TValue)reader.GetUInt16();
+    }
 
     public override void Write(Utf8JsonWriter writer, TValue value, JsonSerializerOptions options)
     {

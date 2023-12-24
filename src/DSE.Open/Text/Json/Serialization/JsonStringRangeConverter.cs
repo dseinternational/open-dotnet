@@ -10,5 +10,8 @@ public class JsonStringRangeConverter<T> : SpanParsableCharWritingJsonConverter<
 {
     public static readonly JsonStringRangeConverter<T> Default = new();
 
-    protected override int GetMaxCharCountToWrite(Range<T> value) => Range<T>.MaxLength;
+    protected override int GetMaxCharCountToWrite(Range<T> value)
+    {
+        return Range<T>.MaxLength;
+    }
 }

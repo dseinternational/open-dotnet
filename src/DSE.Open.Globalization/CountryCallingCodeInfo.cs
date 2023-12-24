@@ -20,9 +20,15 @@ public sealed class CountryCallingCodeInfo
 
     public string Name { get; }
 
-    public static bool IsAssignedCode(uint code) => code <= 999u && Array.BinarySearch(AssignedCodes, code) > -1;
+    public static bool IsAssignedCode(uint code)
+    {
+        return code <= 999u && Array.BinarySearch(AssignedCodes, code) > -1;
+    }
 
-    public static IEnumerable<CountryCallingCodeInfo> GetInfo() => CachedInfo;
+    public static IEnumerable<CountryCallingCodeInfo> GetInfo()
+    {
+        return CachedInfo;
+    }
 
     public static IEnumerable<CountryCallingCodeInfo> GetInfo(uint code)
     {

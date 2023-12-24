@@ -15,7 +15,10 @@ public sealed class CountryCodeToStringConverter : ValueConverter<CountryCode, s
     {
     }
 
-    private static string ConvertToString(CountryCode code) => code.ToStringUpper();
+    private static string ConvertToString(CountryCode code)
+    {
+        return code.ToStringUpper();
+    }
 
     private static CountryCode ConvertFromString(string code)
     {

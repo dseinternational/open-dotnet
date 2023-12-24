@@ -18,8 +18,12 @@ public abstract class SpanParsableByteWritingJsonConverter<TValue> : ByteWriting
     protected virtual IFormatProvider FormatProvider => CultureInfo.InvariantCulture;
 
     protected override bool TryFormat(TValue value, Span<byte> data, out int bytesWritten)
-        => value.TryFormat(data, out bytesWritten, default, FormatProvider);
+    {
+        return value.TryFormat(data, out bytesWritten, default, FormatProvider);
+    }
 
     protected override bool TryParse(ReadOnlySpan<byte> data, [MaybeNullWhen(false)] out TValue value)
-        => TValue.TryParse(data, FormatProvider, out value);
+    {
+        return TValue.TryParse(data, FormatProvider, out value);
+    }
 }

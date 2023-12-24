@@ -18,8 +18,12 @@ public abstract class SpanParsableCharWritingJsonConverter<TValue> : CharWriting
     protected virtual IFormatProvider FormatProvider => CultureInfo.InvariantCulture;
 
     protected override bool TryFormat(TValue value, Span<char> data, out int charsWritten)
-        => value.TryFormat(data, out charsWritten, default, FormatProvider);
+    {
+        return value.TryFormat(data, out charsWritten, default, FormatProvider);
+    }
 
     protected override bool TryParse(ReadOnlySpan<char> data, [MaybeNullWhen(false)] out TValue value)
-        => TValue.TryParse(data, FormatProvider, out value);
+    {
+        return TValue.TryParse(data, FormatProvider, out value);
+    }
 }

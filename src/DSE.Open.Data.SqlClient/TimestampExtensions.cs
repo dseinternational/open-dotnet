@@ -7,7 +7,13 @@ namespace DSE.Open.Data.SqlClient;
 
 public static class TimestampExtensions
 {
-    public static SqlBinary ToSqlBinary(this Timestamp timestamp) => new(timestamp.GetBytes());
+    public static SqlBinary ToSqlBinary(this Timestamp timestamp)
+    {
+        return new SqlBinary(timestamp.GetBytes());
+    }
 
-    public static Timestamp? ToTimestamp(this SqlBinary value) => value.IsNull ? null : new DSE.Open.Timestamp(value.Value);
+    public static Timestamp? ToTimestamp(this SqlBinary value)
+    {
+        return value.IsNull ? null : new DSE.Open.Timestamp(value.Value);
+    }
 }

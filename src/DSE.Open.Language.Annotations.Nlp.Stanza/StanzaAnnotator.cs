@@ -39,9 +39,9 @@ public class StanzaAnnotator : IAnnotator
                 Tokens = [.. s.Tokens.Select(t => new OpenToken
                 {
                     Text = (TokenText)t.Text,
-                    Words = [..t.Words.Select(MapWord)]
+                    Words = [.. t.Words.Select(MapWord)]
                 })],
-                Comments = [..s.Comments]
+                Comments = [.. s.Comments]
             })]
         };
 

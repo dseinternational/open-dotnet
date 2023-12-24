@@ -15,7 +15,10 @@ public sealed class LanguageCode2ToStringConverter : ValueConverter<LanguageCode
     {
     }
 
-    private static string ConvertToString(LanguageCode2 code) => code.ToString();
+    private static string ConvertToString(LanguageCode2 code)
+    {
+        return code.ToString();
+    }
 
     private static LanguageCode2 ConvertFromString(string code)
     {

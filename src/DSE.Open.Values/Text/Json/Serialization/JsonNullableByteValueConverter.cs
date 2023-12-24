@@ -10,7 +10,9 @@ public class JsonNullableByteValueConverter<TValue> : JsonConverter<TValue>
     where TValue : struct, INullableValue<TValue, byte>
 {
     public override TValue Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-        => reader.TokenType == JsonTokenType.Null ? TValue.Null : (TValue)reader.GetByte();
+    {
+        return reader.TokenType == JsonTokenType.Null ? TValue.Null : (TValue)reader.GetByte();
+    }
 
     public override void Write(Utf8JsonWriter writer, TValue value, JsonSerializerOptions options)
     {
