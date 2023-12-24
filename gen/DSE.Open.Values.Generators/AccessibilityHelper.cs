@@ -7,15 +7,18 @@ namespace DSE.Open.Values.Generators;
 
 public static class AccessibilityHelper
 {
-    public static string GetKeyword(Accessibility accessibility) => accessibility switch
+    public static string GetKeyword(Accessibility accessibility)
     {
-        Accessibility.NotApplicable => throw new NotImplementedException(),
-        Accessibility.Private => "private",
-        Accessibility.ProtectedAndInternal => "protected internal",
-        Accessibility.Protected => "protected",
-        Accessibility.Internal => "internal",
-        Accessibility.ProtectedOrInternal => throw new NotImplementedException(),
-        Accessibility.Public => "public",
-        _ => throw new NotImplementedException(),
-    };
+        return accessibility switch
+        {
+            Accessibility.NotApplicable => throw new NotImplementedException(),
+            Accessibility.Private => "private",
+            Accessibility.ProtectedAndInternal => "protected internal",
+            Accessibility.Protected => "protected",
+            Accessibility.Internal => "internal",
+            Accessibility.ProtectedOrInternal => throw new NotImplementedException(),
+            Accessibility.Public => "public",
+            _ => throw new NotImplementedException(),
+        };
+    }
 }

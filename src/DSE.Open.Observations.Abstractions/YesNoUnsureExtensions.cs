@@ -5,11 +5,23 @@ namespace DSE.Open.Observations;
 
 public static class YesNoUnsureExtensions
 {
-    public static bool IsNo(this YesNoUnsure value) => value == YesNoUnsure.No;
+    public static bool IsNo(this YesNoUnsure value)
+    {
+        return value == YesNoUnsure.No;
+    }
 
-    public static bool IsYes(this YesNoUnsure value) => value == YesNoUnsure.Yes;
+    public static bool IsYes(this YesNoUnsure value)
+    {
+        return value == YesNoUnsure.Yes;
+    }
 
-    public static bool IsUnsure(this YesNoUnsure value) => value == YesNoUnsure.Unsure;
+    public static bool IsUnsure(this YesNoUnsure value)
+    {
+        return value == YesNoUnsure.Unsure;
+    }
 
-    public static bool IsNoOrUnsure(this YesNoUnsure value) => value.IsNo() || value.IsUnsure();
+    public static bool IsNoOrUnsure(this YesNoUnsure value)
+    {
+        return value.IsNo() || value.IsUnsure();
+    }
 }

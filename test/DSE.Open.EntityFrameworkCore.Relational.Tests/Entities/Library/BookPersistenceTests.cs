@@ -14,12 +14,16 @@ public class BookPersistenceTests : SqliteEntityPersistenceTestsBase<LibraryDbCo
     }
 
     protected override void AddDbContext(IServiceCollection services)
-        => services.AddLibraryDbContext(ConfigureDbContext);
+    {
+        services.AddLibraryDbContext(ConfigureDbContext);
+    }
 
     protected override Task<Book> CreateEntityAsync(LibraryDbContext dataContext)
-        => Task.FromResult(new Book
+    {
+        return Task.FromResult(new Book
         {
             Title = "The Hitchhiker's Guide to the Galaxy",
             Description = "It's an ordinary Thursday lunchtime for Arthur Dent until his house gets demolished."
         });
+    }
 }

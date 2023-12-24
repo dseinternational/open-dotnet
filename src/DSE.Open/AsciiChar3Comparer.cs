@@ -22,20 +22,37 @@ public abstract class AsciiChar3Comparer : IComparer<AsciiChar3>, IEqualityCompa
 
     private sealed class AsciiCharSequenceComparerCaseSensitive : AsciiChar3Comparer
     {
-        public override int Compare(AsciiChar3 x, AsciiChar3 y) => x.CompareTo(y);
+        public override int Compare(AsciiChar3 x, AsciiChar3 y)
+        {
+            return x.CompareTo(y);
+        }
 
-        public override bool Equals(AsciiChar3 x, AsciiChar3 y) => x.Equals(y);
+        public override bool Equals(AsciiChar3 x, AsciiChar3 y)
+        {
+            return x.Equals(y);
+        }
 
-        public override int GetHashCode([DisallowNull] AsciiChar3 obj) => obj.GetHashCode();
+        public override int GetHashCode([DisallowNull] AsciiChar3 obj)
+        {
+            return obj.GetHashCode();
+        }
     }
 
     private sealed class AsciiCharSequenceComparerCaseInsensitive : AsciiChar3Comparer
     {
-        public override int Compare(AsciiChar3 x, AsciiChar3 y) => x.CompareToCaseInsensitive(y);
+        public override int Compare(AsciiChar3 x, AsciiChar3 y)
+        {
+            return x.CompareToCaseInsensitive(y);
+        }
 
-        public override bool Equals(AsciiChar3 x, AsciiChar3 y) => x.EqualsCaseInsensitive(y);
+        public override bool Equals(AsciiChar3 x, AsciiChar3 y)
+        {
+            return x.EqualsCaseInsensitive(y);
+        }
 
         public override int GetHashCode([DisallowNull] AsciiChar3 obj)
-            => HashCode.Combine(obj._c0.ToUpper(), obj._c1.ToUpper(), obj._c2.ToUpper());
+        {
+            return HashCode.Combine(obj._c0.ToUpper(), obj._c1.ToUpper(), obj._c2.ToUpper());
+        }
     }
 }

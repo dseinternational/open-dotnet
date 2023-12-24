@@ -44,11 +44,20 @@ public readonly record struct DateMonthOnly : ISpanFormattable, ISpanParsable<Da
 
     public DayOfWeek DayOfWeek => StartOfMonth.DayOfWeek;
 
-    public DateMonthOnly AddMonths(int months) => new(StartOfMonth.AddMonths(months));
+    public DateMonthOnly AddMonths(int months)
+    {
+        return new DateMonthOnly(StartOfMonth.AddMonths(months));
+    }
 
-    public DateMonthOnly AddYears(int years) => new(StartOfMonth.AddYears(years));
+    public DateMonthOnly AddYears(int years)
+    {
+        return new DateMonthOnly(StartOfMonth.AddYears(years));
+    }
 
-    public int CompareTo(DateMonthOnly other) => StartOfMonth.CompareTo(other.StartOfMonth);
+    public int CompareTo(DateMonthOnly other)
+    {
+        return StartOfMonth.CompareTo(other.StartOfMonth);
+    }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
     public void Deconstruct(out int year, out int month)
@@ -57,24 +66,45 @@ public readonly record struct DateMonthOnly : ISpanFormattable, ISpanParsable<Da
         month = Month;
     }
 
-    public DateOnly ToDateOnly() => StartOfMonth;
+    public DateOnly ToDateOnly()
+    {
+        return StartOfMonth;
+    }
 
-    public DateTime ToDateTime() => ToDateOnly().ToDateTime(TimeOnly.MinValue);
+    public DateTime ToDateTime()
+    {
+        return ToDateOnly().ToDateTime(TimeOnly.MinValue);
+    }
 
-    public static DateMonthOnly FromDateOnly(DateOnly date) => new(date);
+    public static DateMonthOnly FromDateOnly(DateOnly date)
+    {
+        return new DateMonthOnly(date);
+    }
 
-    public static DateMonthOnly FromDateTime(DateTime date) => new(DateOnly.FromDateTime(date.Date));
+    public static DateMonthOnly FromDateTime(DateTime date)
+    {
+        return new DateMonthOnly(DateOnly.FromDateTime(date.Date));
+    }
 
     public static DateMonthOnly FromDateTimeOffset(DateTimeOffset date)
     {
         return new DateMonthOnly(new DateOnly(date.Year, date.Month, 1));
     }
 
-    public static DateMonthOnly Parse(ReadOnlySpan<char> s) => Parse(s, null);
+    public static DateMonthOnly Parse(ReadOnlySpan<char> s)
+    {
+        return Parse(s, null);
+    }
 
-    public static DateMonthOnly Parse(ReadOnlySpan<char> s, IFormatProvider? provider) => new(DateOnly.Parse(s, provider));
+    public static DateMonthOnly Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
+    {
+        return new DateMonthOnly(DateOnly.Parse(s, provider));
+    }
 
-    public static DateMonthOnly Parse(string s) => Parse(s, null);
+    public static DateMonthOnly Parse(string s)
+    {
+        return Parse(s, null);
+    }
 
     public static DateMonthOnly Parse(string s, IFormatProvider? provider)
     {
@@ -112,31 +142,62 @@ public readonly record struct DateMonthOnly : ISpanFormattable, ISpanParsable<Da
         return false;
     }
 
-    public override string ToString() => ToString(Format, CultureInfo.InvariantCulture);
+    public override string ToString()
+    {
+        return ToString(Format, CultureInfo.InvariantCulture);
+    }
 
-    public string ToString(string? format, IFormatProvider? formatProvider) => StartOfMonth.ToString(format, formatProvider);
+    public string ToString(string? format, IFormatProvider? formatProvider)
+    {
+        return StartOfMonth.ToString(format, formatProvider);
+    }
 
     public bool TryFormat(Span<char> destination, out int charsWritten)
-        => TryFormat(destination, out charsWritten, Format, CultureInfo.InvariantCulture);
+    {
+        return TryFormat(destination, out charsWritten, Format, CultureInfo.InvariantCulture);
+    }
 
     public bool TryFormat(
         Span<char> destination,
         out int charsWritten,
         ReadOnlySpan<char> format,
         IFormatProvider? provider)
-        => StartOfMonth.TryFormat(destination, out charsWritten, format, provider);
+    {
+        return StartOfMonth.TryFormat(destination, out charsWritten, format, provider);
+    }
 
-    public static explicit operator DateOnly(DateMonthOnly dateMonthOnly) => dateMonthOnly.StartOfMonth;
+    public static explicit operator DateOnly(DateMonthOnly dateMonthOnly)
+    {
+        return dateMonthOnly.StartOfMonth;
+    }
 
-    public static explicit operator DateMonthOnly(DateOnly date) => new(date);
+    public static explicit operator DateMonthOnly(DateOnly date)
+    {
+        return new DateMonthOnly(date);
+    }
 
-    public static AgeInMonths operator -(DateMonthOnly a, DateMonthOnly b) => new(a.Year - b.Year, a.Month - b.Month);
+    public static AgeInMonths operator -(DateMonthOnly a, DateMonthOnly b)
+    {
+        return new AgeInMonths(a.Year - b.Year, a.Month - b.Month);
+    }
 
-    public static bool operator <(DateMonthOnly left, DateMonthOnly right) => left.CompareTo(right) < 0;
+    public static bool operator <(DateMonthOnly left, DateMonthOnly right)
+    {
+        return left.CompareTo(right) < 0;
+    }
 
-    public static bool operator <=(DateMonthOnly left, DateMonthOnly right) => left.CompareTo(right) <= 0;
+    public static bool operator <=(DateMonthOnly left, DateMonthOnly right)
+    {
+        return left.CompareTo(right) <= 0;
+    }
 
-    public static bool operator >(DateMonthOnly left, DateMonthOnly right) => left.CompareTo(right) > 0;
+    public static bool operator >(DateMonthOnly left, DateMonthOnly right)
+    {
+        return left.CompareTo(right) > 0;
+    }
 
-    public static bool operator >=(DateMonthOnly left, DateMonthOnly right) => left.CompareTo(right) >= 0;
+    public static bool operator >=(DateMonthOnly left, DateMonthOnly right)
+    {
+        return left.CompareTo(right) >= 0;
+    }
 }

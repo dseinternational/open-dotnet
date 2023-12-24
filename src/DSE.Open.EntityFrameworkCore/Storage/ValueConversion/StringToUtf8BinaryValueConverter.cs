@@ -16,7 +16,13 @@ public sealed class StringToBinaryValueConverter : ValueConverter<string, byte[]
     {
     }
 
-    private static Expression<Func<string, byte[]>> ToBytes() => value => Encoding.UTF8.GetBytes(value);
+    private static Expression<Func<string, byte[]>> ToBytes()
+    {
+        return value => Encoding.UTF8.GetBytes(value);
+    }
 
-    private static Expression<Func<byte[], string>> FromBytes() => value => Encoding.UTF8.GetString(value);
+    private static Expression<Func<byte[], string>> FromBytes()
+    {
+        return value => Encoding.UTF8.GetString(value);
+    }
 }

@@ -16,7 +16,13 @@ public sealed class UriAsciiPathToLowerStringConverter : ValueConverter<UriAscii
     {
     }
 
-    private static Expression<Func<UriAsciiPath, string>> ToStore() => value => value.ToStringLower();
+    private static Expression<Func<UriAsciiPath, string>> ToStore()
+    {
+        return value => value.ToStringLower();
+    }
 
-    private static Expression<Func<string, UriAsciiPath>> FromStore() => value => new(value);
+    private static Expression<Func<string, UriAsciiPath>> FromStore()
+    {
+        return value => new(value);
+    }
 }

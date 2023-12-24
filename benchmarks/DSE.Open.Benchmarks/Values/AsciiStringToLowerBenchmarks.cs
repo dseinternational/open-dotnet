@@ -28,5 +28,8 @@ public class AsciiStringToLowerBenchmarks
     }
 
     [Benchmark]
-    public AsciiString ToLower_WithSpan() => s_value.ToLower();
+    public AsciiString ToLower_WithSpan()
+    {
+        return s_value.ToLower();
+    }
 }

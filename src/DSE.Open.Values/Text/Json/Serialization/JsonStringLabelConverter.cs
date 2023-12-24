@@ -9,5 +9,8 @@ public class JsonStringLabelConverter : SpanParsableCharWritingJsonConverter<Lab
 {
     public static readonly JsonStringLabelConverter Default = new();
 
-    protected override int GetMaxCharCountToWrite(Label value) => Label.MaxLength;
+    protected override int GetMaxCharCountToWrite(Label value)
+    {
+        return Label.MaxLength;
+    }
 }

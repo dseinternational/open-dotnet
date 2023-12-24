@@ -158,13 +158,19 @@ public class IdentifierTests
     [InlineData("12345678901234567890123_VjHlsZTVmKRGglRRjSkPeQL71M17c7sQ")]
     [InlineData("VjHlsZTVmKRGglRRjSkPeQL71M17c7sQ")]
     [InlineData("12_4567_9012_45678_0123_VjHlsZTVmKRGglRRjSkPeQL71M17c7sQ")]
-    public void IsValid(string value) => Assert.True(Identifier.IsValid(value));
+    public void IsValid(string value)
+    {
+        Assert.True(Identifier.IsValid(value));
+    }
 
     [Theory]
     [InlineData("SkPeQL71M1")]
     [InlineData("123456789012345678901234_VjHlsZTVmKRGglRRjSkPeQL71M17c7sQ")]
     [InlineData("_2345678901234567890123_VjHlsZTVmKRGglRRjSkPeQL71M17c7sQ")]
-    public void IsNotValid(string value) => Assert.False(Identifier.IsValid(value));
+    public void IsNotValid(string value)
+    {
+        Assert.False(Identifier.IsValid(value));
+    }
 
     [Theory]
     [InlineData("origin_id_C7bj8qkIIAfCnKlhbqatRt8ibFtVmFDT1qU1uM")]

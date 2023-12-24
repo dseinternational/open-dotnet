@@ -45,15 +45,30 @@ public readonly record struct TimePeriod : IComparable<TimePeriod>
         _value = value;
     }
 
-    public int CompareTo(TimePeriod other) => _value.CompareTo(other._value);
+    public int CompareTo(TimePeriod other)
+    {
+        return _value.CompareTo(other._value);
+    }
 
-    public static bool operator <(TimePeriod left, TimePeriod right) => left.CompareTo(right) < 0;
+    public static bool operator <(TimePeriod left, TimePeriod right)
+    {
+        return left.CompareTo(right) < 0;
+    }
 
-    public static bool operator <=(TimePeriod left, TimePeriod right) => left.CompareTo(right) <= 0;
+    public static bool operator <=(TimePeriod left, TimePeriod right)
+    {
+        return left.CompareTo(right) <= 0;
+    }
 
-    public static bool operator >(TimePeriod left, TimePeriod right) => left.CompareTo(right) > 0;
+    public static bool operator >(TimePeriod left, TimePeriod right)
+    {
+        return left.CompareTo(right) > 0;
+    }
 
-    public static bool operator >=(TimePeriod left, TimePeriod right) => left.CompareTo(right) >= 0;
+    public static bool operator >=(TimePeriod left, TimePeriod right)
+    {
+        return left.CompareTo(right) >= 0;
+    }
 
     public override string ToString()
     {

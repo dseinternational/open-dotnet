@@ -20,25 +20,39 @@ public static partial class MemoryExtensions
     }
 
     public static bool ContainsOnlyAsciiDigits(this Span<byte> value)
-        => ContainsOnlyAsciiDigits((ReadOnlySpan<byte>)value);
+    {
+        return ContainsOnlyAsciiDigits((ReadOnlySpan<byte>)value);
+    }
 
     public static bool ContainsOnlyAsciiLetters(this Span<byte> value)
-        => ContainsOnlyAsciiLetters((ReadOnlySpan<byte>)value);
+    {
+        return ContainsOnlyAsciiLetters((ReadOnlySpan<byte>)value);
+    }
 
     public static bool ContainsOnlyAsciiLettersOrDigits(this Span<byte> value)
-        => ContainsOnlyAsciiLettersOrDigits((ReadOnlySpan<byte>)value);
+    {
+        return ContainsOnlyAsciiLettersOrDigits((ReadOnlySpan<byte>)value);
+    }
 
     public static bool ContainsOnlyAsciiUpperLettersOrDigits(this Span<byte> value)
-        => ContainsOnlyAsciiUpperLettersOrDigits((ReadOnlySpan<byte>)value);
+    {
+        return ContainsOnlyAsciiUpperLettersOrDigits((ReadOnlySpan<byte>)value);
+    }
 
     public static bool ContainsOnlyAsciiLettersLower(this Span<byte> value)
-        => ContainsOnlyAsciiLettersLower((ReadOnlySpan<byte>)value);
+    {
+        return ContainsOnlyAsciiLettersLower((ReadOnlySpan<byte>)value);
+    }
 
     public static bool ContainsOnlyAsciiLettersUpper(this Span<byte> value)
-        => ContainsOnlyAsciiLettersUpper((ReadOnlySpan<byte>)value);
+    {
+        return ContainsOnlyAsciiLettersUpper((ReadOnlySpan<byte>)value);
+    }
 
     public static bool ContainsOnlyAsciiDigits(this ReadOnlySpan<AsciiChar> value)
-        => ValuesMarshal.AsBytes(value).ContainsOnlyAsciiDigits();
+    {
+        return ValuesMarshal.AsBytes(value).ContainsOnlyAsciiDigits();
+    }
 
     public static bool ContainsOnlyAsciiDigits(this ReadOnlySpan<byte> value)
     {
@@ -59,7 +73,9 @@ public static partial class MemoryExtensions
     }
 
     public static bool ContainsOnlyAsciiLetters(this ReadOnlySpan<AsciiChar> value)
-        => ValuesMarshal.AsBytes(value).ContainsOnlyAsciiLetters();
+    {
+        return ValuesMarshal.AsBytes(value).ContainsOnlyAsciiLetters();
+    }
 
     public static bool ContainsOnlyAsciiLetters(this ReadOnlySpan<byte> value)
     {
@@ -80,7 +96,9 @@ public static partial class MemoryExtensions
     }
 
     public static bool ContainsOnlyAsciiLettersOrDigits(this ReadOnlySpan<AsciiChar> value)
-        => ValuesMarshal.AsBytes(value).ContainsOnlyAsciiLettersOrDigits();
+    {
+        return ValuesMarshal.AsBytes(value).ContainsOnlyAsciiLettersOrDigits();
+    }
 
     public static bool ContainsOnlyAsciiLettersOrDigits(this ReadOnlySpan<byte> value)
     {
@@ -101,7 +119,9 @@ public static partial class MemoryExtensions
     }
 
     public static bool ContainsOnlyAsciiUpperLettersOrDigits(this ReadOnlySpan<AsciiChar> value)
-        => ValuesMarshal.AsBytes(value).ContainsOnlyAsciiUpperLettersOrDigits();
+    {
+        return ValuesMarshal.AsBytes(value).ContainsOnlyAsciiUpperLettersOrDigits();
+    }
 
     public static bool ContainsOnlyAsciiUpperLettersOrDigits(this ReadOnlySpan<byte> value)
     {
@@ -122,7 +142,9 @@ public static partial class MemoryExtensions
     }
 
     public static bool ContainsOnlyAsciiLettersLower(this ReadOnlySpan<AsciiChar> value)
-        => ValuesMarshal.AsBytes(value).ContainsOnlyAsciiLettersLower();
+    {
+        return ValuesMarshal.AsBytes(value).ContainsOnlyAsciiLettersLower();
+    }
 
     public static bool ContainsOnlyAsciiLettersLower(this ReadOnlySpan<byte> value)
     {
@@ -143,7 +165,9 @@ public static partial class MemoryExtensions
     }
 
     public static bool ContainsOnlyAsciiLettersUpper(this ReadOnlySpan<AsciiChar> value)
-        => ValuesMarshal.AsBytes(value).ContainsOnlyAsciiLettersUpper();
+    {
+        return ValuesMarshal.AsBytes(value).ContainsOnlyAsciiLettersUpper();
+    }
 
     public static bool ContainsOnlyAsciiLettersUpper(this ReadOnlySpan<byte> value)
     {
@@ -164,53 +188,84 @@ public static partial class MemoryExtensions
     }
 
     public static bool TryCopyWhereNotWhitespace(this Span<byte> span, Span<byte> buffer, out int bytesWritten)
-        => TryCopyWhereNotWhitespace((ReadOnlySpan<byte>)span, buffer, out bytesWritten);
+    {
+        return TryCopyWhereNotWhitespace((ReadOnlySpan<byte>)span, buffer, out bytesWritten);
+    }
 
     public static bool TryCopyWhereNotPunctuation(this Span<byte> span, Span<byte> buffer, out int bytesWritten)
-        => TryCopyWhereNotPunctuation((ReadOnlySpan<byte>)span, buffer, out bytesWritten);
+    {
+        return TryCopyWhereNotPunctuation((ReadOnlySpan<byte>)span, buffer, out bytesWritten);
+    }
 
     public static bool TryCopyWhereNotPunctuationOrWhitespace(this Span<byte> span, Span<byte> buffer, out int bytesWritten)
-        => TryCopyWhereNotPunctuationOrWhitespace((ReadOnlySpan<byte>)span, buffer, out bytesWritten);
+    {
+        return TryCopyWhereNotPunctuationOrWhitespace((ReadOnlySpan<byte>)span, buffer, out bytesWritten);
+    }
 
     public static bool TryCopyWhereNotWhitespace(this ReadOnlySpan<byte> span, Span<byte> buffer, out int bytesWritten)
-        => TryCopyWhere(span, buffer, v => !AsciiChar.IsWhiteSpace(v), out bytesWritten);
+    {
+        return TryCopyWhere(span, buffer, v => !AsciiChar.IsWhiteSpace(v), out bytesWritten);
+    }
 
     public static bool TryCopyWhereNotPunctuation(this ReadOnlySpan<byte> span, Span<byte> buffer, out int bytesWritten)
-        => TryCopyWhere(span, buffer, v => !AsciiChar.IsPunctuation(v), out bytesWritten);
+    {
+        return TryCopyWhere(span, buffer, v => !AsciiChar.IsPunctuation(v), out bytesWritten);
+    }
 
     public static bool TryCopyWhereNotPunctuationOrWhitespace(this ReadOnlySpan<byte> span, Span<byte> buffer, out int bytesWritten)
-        => TryCopyWhere(span, buffer, v => !(AsciiChar.IsPunctuation(v) || AsciiChar.IsWhiteSpace(v)), out bytesWritten);
+    {
+        return TryCopyWhere(span, buffer, v => !(AsciiChar.IsPunctuation(v) || AsciiChar.IsWhiteSpace(v)), out bytesWritten);
+    }
 
     public static int CopyExcludingPunctuation(this ReadOnlySpan<byte> span, Span<byte> buffer)
-        => CopyWhere(span, buffer, v => !AsciiChar.IsPunctuation(v));
+    {
+        return CopyWhere(span, buffer, v => !AsciiChar.IsPunctuation(v));
+    }
 
     public static int CopyExcludingWhitespace(this ReadOnlySpan<byte> span, Span<byte> buffer)
-        => CopyWhere(span, buffer, v => !AsciiChar.IsWhiteSpace(v));
+    {
+        return CopyWhere(span, buffer, v => !AsciiChar.IsWhiteSpace(v));
+    }
 
     public static int CopyExcludingPunctuationAndWhitespace(this ReadOnlySpan<byte> span, Span<byte> buffer)
-        => CopyWhere(span, buffer, v => !(AsciiChar.IsWhiteSpace(v) || AsciiChar.IsPunctuation(v)));
+    {
+        return CopyWhere(span, buffer, v => !(AsciiChar.IsWhiteSpace(v) || AsciiChar.IsPunctuation(v)));
+    }
 
     public static Span<byte> RemoveWhitespace(this Span<byte> span)
-        => Remove(span, AsciiChar.IsWhiteSpace);
+    {
+        return Remove(span, AsciiChar.IsWhiteSpace);
+    }
 
     public static Span<byte> RemovePunctuation(this Span<byte> span)
-        => Remove(span, AsciiChar.IsPunctuation);
+    {
+        return Remove(span, AsciiChar.IsPunctuation);
+    }
 
     public static Span<byte> RemovePunctuationAndWhitespace(this Span<byte> span)
-        => Remove(span, v => AsciiChar.IsWhiteSpace(v) || AsciiChar.IsPunctuation(v));
+    {
+        return Remove(span, v => AsciiChar.IsWhiteSpace(v) || AsciiChar.IsPunctuation(v));
+    }
 
     public static Span<byte> RemoveNonLetterOrDigit(this Span<byte> span)
-        => Remove(span, v => !AsciiChar.IsLetterOrDigit(v));
+    {
+        return Remove(span, v => !AsciiChar.IsLetterOrDigit(v));
+    }
 
     public static Span<byte> RemoveNonAsciiLetterOrDigit(this Span<byte> span)
-        => Remove(span, v => !AsciiChar.IsLetterOrDigit(v));
+    {
+        return Remove(span, v => !AsciiChar.IsLetterOrDigit(v));
+    }
 
     /// <summary>
     /// Checks if the span contains only valid ASCII bytes.
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    public static bool IsAscii(this ReadOnlySpan<byte> value) => Ascii.IsValid(value);
+    public static bool IsAscii(this ReadOnlySpan<byte> value)
+    {
+        return Ascii.IsValid(value);
+    }
 
     /// <summary>
     /// Determines whether the specified spans of ASCII are equal, ignoring case.
@@ -219,5 +274,7 @@ public static partial class MemoryExtensions
     /// <param name="b"></param>
     /// <returns></returns>
     public static bool SequenceEqualsCaseInsensitive(this ReadOnlySpan<AsciiChar> a, ReadOnlySpan<AsciiChar> b)
-        => Ascii.EqualsIgnoreCase(ValuesMarshal.AsBytes(a), ValuesMarshal.AsBytes(b));
+    {
+        return Ascii.EqualsIgnoreCase(ValuesMarshal.AsBytes(a), ValuesMarshal.AsBytes(b));
+    }
 }

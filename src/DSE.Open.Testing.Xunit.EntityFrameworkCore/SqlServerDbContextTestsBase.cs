@@ -31,7 +31,9 @@ public abstract class SqlServerDbContextTestsBase<[DynamicallyAccessedMembers(Tr
     }
 
     protected virtual void ConfigureSqlOptions(SqlServerDbContextOptionsBuilder options)
-        => _ = options.UseDefaultSqlServerOptions();
+    {
+        _ = options.UseDefaultSqlServerOptions();
+    }
 
     protected override void Dispose(bool disposing)
     {

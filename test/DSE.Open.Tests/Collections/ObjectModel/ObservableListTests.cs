@@ -89,7 +89,7 @@ public class ObservableListTests
 
         list.AddRange(items);
 
-        list.RemoveRange([ "one", "two" ]);
+        list.RemoveRange(["one", "two"]);
 
         Assert.Equal(2, list.Count);
         Assert.Equal("three", list[0]);

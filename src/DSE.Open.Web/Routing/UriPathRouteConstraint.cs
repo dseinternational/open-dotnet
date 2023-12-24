@@ -36,8 +36,12 @@ public class UriPathRouteConstraint : IRouteConstraint, IParameterLiteralNodeMat
     }
 
     private static bool CheckConstraintCore(string? valueString)
-        => string.IsNullOrEmpty(valueString) || UriPath.IsValidValue(valueString.AsSpan(), true);
+    {
+        return string.IsNullOrEmpty(valueString) || UriPath.IsValidValue(valueString.AsSpan(), true);
+    }
 
     public bool MatchesLiteral(string parameterName, string literal)
-        => CheckConstraintCore(literal);
+    {
+        return CheckConstraintCore(literal);
+    }
 }

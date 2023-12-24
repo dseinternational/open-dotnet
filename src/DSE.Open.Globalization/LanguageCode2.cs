@@ -23,7 +23,10 @@ public readonly partial struct LanguageCode2
 
     public static int MaxSerializedByteLength => 2;
 
-    public static bool IsValidValue(AsciiChar2 value) => IsValidValue(value, true);
+    public static bool IsValidValue(AsciiChar2 value)
+    {
+        return IsValidValue(value, true);
+    }
 
     private static bool IsValidValue(AsciiChar2 value, bool normalize)
     {
@@ -35,6 +38,8 @@ public readonly partial struct LanguageCode2
         return IsoLanguageCodes.OfficiallyAssignedAlpha2Ascii.Contains(value);
     }
 
-    public static LanguageCode2 FromAsciiChar2(AsciiChar2 value) => value.CastToValue<LanguageCode2, AsciiChar2>();
-
+    public static LanguageCode2 FromAsciiChar2(AsciiChar2 value)
+    {
+        return value.CastToValue<LanguageCode2, AsciiChar2>();
+    }
 }

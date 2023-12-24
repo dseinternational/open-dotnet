@@ -10,7 +10,9 @@ public class JsonByteValueConverter<TValue> : JsonConverter<TValue>
     where TValue : struct, IValue<TValue, byte>
 {
     public override TValue Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-        => (TValue)reader.GetByte();
+    {
+        return (TValue)reader.GetByte();
+    }
 
     public override void Write(Utf8JsonWriter writer, TValue value, JsonSerializerOptions options)
     {

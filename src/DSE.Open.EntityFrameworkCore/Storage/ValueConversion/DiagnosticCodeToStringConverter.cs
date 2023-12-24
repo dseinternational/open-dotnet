@@ -14,7 +14,10 @@ public sealed class DiagnosticCodeToStringConverter : ValueConverter<Diagnostics
     {
     }
 
-    private static string ConvertToString(Open.Diagnostics.DiagnosticCode code) => code.ToString();
+    private static string ConvertToString(Open.Diagnostics.DiagnosticCode code)
+    {
+        return code.ToString();
+    }
 
     private static Open.Diagnostics.DiagnosticCode ConvertFromString(string code)
     {

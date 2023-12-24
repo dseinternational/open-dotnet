@@ -12,5 +12,8 @@ public class IdentifierToStringBenchmarks
     private static readonly Identifier s_identifier = Identifier.Parse("dse_sub_VjHlsZTVmKRGglRRjSkPeQL71M17c7sQ"u8, null);
 
     [Benchmark]
-    public string ToString_Default() => s_identifier.ToString();
+    public string ToString_Default()
+    {
+        return s_identifier.ToString();
+    }
 }

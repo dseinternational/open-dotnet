@@ -173,7 +173,7 @@ public readonly partial struct SemanticClassificationTag
         Declarative,
         DemonstrativeEntity,
         Denial,
-        EntityLocation,        
+        EntityLocation,
         Imperative,
         Location,
         NonExistence,

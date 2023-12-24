@@ -43,5 +43,7 @@ public class ContainsOnlyAsciiDigitsCharBenchmarks
     [Benchmark]
     [ArgumentsSource(nameof(Params))]
     public bool ContainsOnlyAsciiDigits(string str)
-        => str.AsSpan().ContainsOnlyAsciiDigits();
+    {
+        return str.AsSpan().ContainsOnlyAsciiDigits();
+    }
 }

@@ -23,18 +23,33 @@ public abstract class AsciiStringComparer : IComparer<AsciiString>, IEqualityCom
 
     private sealed class AsciiCharSequenceComparerCaseSensitive : AsciiStringComparer
     {
-        public override int Compare(AsciiString x, AsciiString y) => x.CompareTo(y);
+        public override int Compare(AsciiString x, AsciiString y)
+        {
+            return x.CompareTo(y);
+        }
 
-        public override bool Equals(AsciiString x, AsciiString y) => x.Equals(y);
+        public override bool Equals(AsciiString x, AsciiString y)
+        {
+            return x.Equals(y);
+        }
 
-        public override int GetHashCode(AsciiString obj) => obj.GetHashCode();
+        public override int GetHashCode(AsciiString obj)
+        {
+            return obj.GetHashCode();
+        }
     }
 
     private sealed class AsciiCharSequenceComparerCaseInsensitive : AsciiStringComparer
     {
-        public override int Compare(AsciiString x, AsciiString y) => x.CompareToCaseInsensitive(y);
+        public override int Compare(AsciiString x, AsciiString y)
+        {
+            return x.CompareToCaseInsensitive(y);
+        }
 
-        public override bool Equals(AsciiString x, AsciiString y) => x.EqualsCaseInsensitive(y);
+        public override bool Equals(AsciiString x, AsciiString y)
+        {
+            return x.EqualsCaseInsensitive(y);
+        }
 
         public override int GetHashCode(AsciiString obj)
         {

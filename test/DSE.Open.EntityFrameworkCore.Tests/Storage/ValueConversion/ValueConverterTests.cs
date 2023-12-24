@@ -9,7 +9,10 @@ namespace DSE.Open.EntityFrameworkCore.Tests.Storage.ValueConversion;
 
 public class ValueConverterTests : SqliteInMemoryTestBase<TestDbContext>
 {
-    public override TestDbContext CreateContext(DbContextOptions<TestDbContext> contextOptions) => new(contextOptions);
+    public override TestDbContext CreateContext(DbContextOptions<TestDbContext> contextOptions)
+    {
+        return new TestDbContext(contextOptions);
+    }
 
     [Theory]
     [MemberData(nameof(CountryCodeStrings))]

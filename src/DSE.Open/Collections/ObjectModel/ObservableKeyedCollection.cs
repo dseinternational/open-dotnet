@@ -43,7 +43,10 @@ public abstract class ObservableKeyedCollection<TKey, TItem> : ObservableCollect
         }
     }
 
-    private void AddKey(TKey key, TItem item) => _dictionary.Add(key, item);
+    private void AddKey(TKey key, TItem item)
+    {
+        _dictionary.Add(key, item);
+    }
 
     protected void ChangeItemKey(TItem item, TKey newKey)
     {
@@ -71,7 +74,10 @@ public abstract class ObservableKeyedCollection<TKey, TItem> : ObservableCollect
         _dictionary.Clear();
     }
 
-    public bool Contains(TKey key) => key is null ? throw new ArgumentNullException(nameof(key)) : _dictionary.ContainsKey(key);
+    public bool Contains(TKey key)
+    {
+        return key is null ? throw new ArgumentNullException(nameof(key)) : _dictionary.ContainsKey(key);
+    }
 
     private bool ContainsItem(TItem item)
     {
@@ -103,7 +109,10 @@ public abstract class ObservableKeyedCollection<TKey, TItem> : ObservableCollect
         base.RemoveItem(index);
     }
 
-    private void RemoveKey(TKey key) => _ = _dictionary.Remove(key);
+    private void RemoveKey(TKey key)
+    {
+        _ = _dictionary.Remove(key);
+    }
 
     protected override void SetItem(int index, TItem item)
     {

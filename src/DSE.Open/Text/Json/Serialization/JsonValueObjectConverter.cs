@@ -28,7 +28,9 @@ public class JsonValueObjectConverter : JsonConverter<object>
     public override object Read(
         ref Utf8JsonReader reader,
         Type typeToConvert,
-        JsonSerializerOptions options) => reader.TokenType switch
+        JsonSerializerOptions options)
+    {
+        return reader.TokenType switch
         {
             JsonTokenType.True => true,
             JsonTokenType.False => false,
@@ -38,6 +40,7 @@ public class JsonValueObjectConverter : JsonConverter<object>
             JsonTokenType.String => reader.GetString()!,
             _ => JsonDocument.ParseValue(ref reader).RootElement.Clone()
         };
+    }
 
     /// <inheritdoc/>
     public override void Write(

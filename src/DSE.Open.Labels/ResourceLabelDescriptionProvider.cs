@@ -9,7 +9,10 @@ public abstract class ResourceLabelDescriptionProvider<T> : ResourceLabelProvide
 {
     public abstract string GetDescriptionKey(T value);
 
-    public virtual string? GetDescription(T value) => GetDescription(value, CultureInfo.CurrentUICulture);
+    public virtual string? GetDescription(T value)
+    {
+        return GetDescription(value, CultureInfo.CurrentUICulture);
+    }
 
     public virtual string? GetDescription(T value, CultureInfo? culture)
     {

@@ -15,7 +15,13 @@ public sealed class AgeInMonthsToInt32Converter : ValueConverter<AgeInMonths, in
     {
     }
 
-    private static int ConvertToInt32(AgeInMonths code) => code.TotalMonths;
+    private static int ConvertToInt32(AgeInMonths code)
+    {
+        return code.TotalMonths;
+    }
 
-    private static AgeInMonths ConvertFromInt32(int code) => new(code);
+    private static AgeInMonths ConvertFromInt32(int code)
+    {
+        return new AgeInMonths(code);
+    }
 }

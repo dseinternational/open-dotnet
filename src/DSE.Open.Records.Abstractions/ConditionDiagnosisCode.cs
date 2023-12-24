@@ -29,11 +29,20 @@ public readonly partial struct ConditionDiagnosisCode : IEquatableValue<Conditio
         return Lookup.ContainsKey(value);
     }
 
-    public static implicit operator ConditionDiagnosisCode(long code) => FromInt64(code);
+    public static implicit operator ConditionDiagnosisCode(long code)
+    {
+        return FromInt64(code);
+    }
 
-    public static ConditionDiagnosisCode FromInt32(int code) => FromInt64(code);
+    public static ConditionDiagnosisCode FromInt32(int code)
+    {
+        return FromInt64(code);
+    }
 
-    public static ConditionDiagnosisCode FromInt64(long code) => new(new ClinicalConceptCode(code));
+    public static ConditionDiagnosisCode FromInt64(long code)
+    {
+        return new ConditionDiagnosisCode(new ClinicalConceptCode(code));
+    }
 
     /// <summary>
     /// Identifies a diagnosis of Down syndrome [41040004 | Complete trisomy 21 syndrome (disorder)].

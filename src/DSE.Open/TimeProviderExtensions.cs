@@ -28,6 +28,9 @@ public static class TimeProviderExtensions
             _timeProvider = timeProvider;
         }
 
-        public Instant GetCurrentInstant() => _timeProvider.GetCurrentInstant();
+        public Instant GetCurrentInstant()
+        {
+            return _timeProvider.GetCurrentInstant();
+        }
     }
 }

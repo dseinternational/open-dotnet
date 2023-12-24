@@ -9,7 +9,10 @@ namespace DSE.Open.Labels;
 /// <typeparam name="T"></typeparam>
 public abstract class LocalizedLabelProvider<T> : ILocalizedLabelProvider<T>
 {
-    public virtual string? GetLabel(T value) => GetLabel(value, CultureInfo.CurrentUICulture);
+    public virtual string? GetLabel(T value)
+    {
+        return GetLabel(value, CultureInfo.CurrentUICulture);
+    }
 
     public abstract string? GetLabel(T value, CultureInfo? culture);
 }

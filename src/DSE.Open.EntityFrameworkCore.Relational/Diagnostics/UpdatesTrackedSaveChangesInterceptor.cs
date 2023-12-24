@@ -27,7 +27,9 @@ public sealed partial class UpdateTimesTrackedSaveChangesInterceptor : SaveChang
     public bool SetCreatedTimestamp { get; set; }
 
     public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
-        => throw new NotImplementedException("Only async database operations are supported.");
+    {
+        throw new NotImplementedException("Only async database operations are supported.");
+    }
 
     public override ValueTask<InterceptionResult<int>> SavingChangesAsync(
         DbContextEventData eventData,

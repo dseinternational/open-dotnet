@@ -94,7 +94,10 @@ internal sealed class SourceWriter
         while (!isFinalLine);
     }
 
-    public void WriteLine() => _sb.AppendLine();
+    public void WriteLine()
+    {
+        _sb.AppendLine();
+    }
 
     public SourceText ToSourceText()
     {
@@ -103,7 +106,9 @@ internal sealed class SourceWriter
     }
 
     private void AddIndentation()
-        => _sb.Append(IndentationChar, CharsPerIndentation * _indentation);
+    {
+        _sb.Append(IndentationChar, CharsPerIndentation * _indentation);
+    }
 
     private static ReadOnlySpan<char> GetNextLine(ref ReadOnlySpan<char> remainingText, out bool isFinalLine)
     {

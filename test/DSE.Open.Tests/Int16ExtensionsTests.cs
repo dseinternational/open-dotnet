@@ -11,5 +11,8 @@ public class Int16ExtensionsTests
     [InlineData(-1000, 4)]
     [InlineData(12345, 5)]
     [InlineData(-12345, 5)]
-    public void GetDigitCountReturnsCorrectCount(short number, int digits) => Assert.Equal(digits, number.GetDigitCount());
+    public void GetDigitCountReturnsCorrectCount(short number, int digits)
+    {
+        Assert.Equal(digits, number.GetDigitCount());
+    }
 }

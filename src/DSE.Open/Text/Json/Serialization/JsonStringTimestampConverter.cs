@@ -7,5 +7,8 @@ public class JsonStringTimestampConverter : SpanParsableCharWritingJsonConverter
 {
     public static readonly JsonStringTimestampConverter Default = new();
 
-    protected override int GetMaxCharCountToWrite(Timestamp value) => Timestamp.Base64Length;
+    protected override int GetMaxCharCountToWrite(Timestamp value)
+    {
+        return Timestamp.Base64Length;
+    }
 }

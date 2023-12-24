@@ -7,12 +7,23 @@ namespace DSE.Open.Drawing;
 
 public static class SizeExtensions
 {
-    public static Orientation GetOrientation(this Size size) => size.Width > size.Height ? Orientation.Landscape : size.Height > size.Width ? Orientation.Portrait : Orientation.Square;
+    public static Orientation GetOrientation(this Size size)
+    {
+        return size.Width > size.Height ? Orientation.Landscape : size.Height > size.Width ? Orientation.Portrait : Orientation.Square;
+    }
 
-    public static bool IsLandscape(this Size size) => size.GetOrientation() == Orientation.Landscape;
+    public static bool IsLandscape(this Size size)
+    {
+        return size.GetOrientation() == Orientation.Landscape;
+    }
 
-    public static bool IsPortrait(this Size size) => size.GetOrientation() == Orientation.Portrait;
+    public static bool IsPortrait(this Size size)
+    {
+        return size.GetOrientation() == Orientation.Portrait;
+    }
 
-    public static bool IsSquare(this Size size) => size.GetOrientation() == Orientation.Square;
-
+    public static bool IsSquare(this Size size)
+    {
+        return size.GetOrientation() == Orientation.Square;
+    }
 }

@@ -48,6 +48,9 @@ public abstract class ResourceLabelProvider<T> : LocalizedLabelProvider<T>, IStr
 
     // TODO
     // See: https://github.com/dotnet/aspnetcore/blob/main/src/Localization/Localization/src/ResourceManagerStringLocalizer.cs
-    IEnumerable<LocalizedString> IStringLocalizer.GetAllStrings(bool includeParentCultures) => throw new NotImplementedException();
+    IEnumerable<LocalizedString> IStringLocalizer.GetAllStrings(bool includeParentCultures)
+    {
+        throw new NotImplementedException();
+    }
 }
 

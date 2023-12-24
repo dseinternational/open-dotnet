@@ -12,5 +12,8 @@ public readonly partial struct Percentage : IDivisibleValue<Percentage, float>
 
     public static Percentage Zero { get; } = new(0);
 
-    public static bool IsValidValue(float value) => value is >= 0 and <= 100;
+    public static bool IsValidValue(float value)
+    {
+        return value is >= 0 and <= 100;
+    }
 }

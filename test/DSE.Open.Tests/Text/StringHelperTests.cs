@@ -9,7 +9,9 @@ public class StringHelperTests
 {
     [Fact]
     public void Capitalize_Uppercase()
-        => Assert.Equal("THIS IS A SENTENCE.", StringHelper.Capitalize("this is a sentence.", CapitalizationStyle.Uppercase));
+    {
+        Assert.Equal("THIS IS A SENTENCE.", StringHelper.Capitalize("this is a sentence.", CapitalizationStyle.Uppercase));
+    }
 
     [Fact]
     public void ExtractWords_ExtractsWords()
@@ -56,11 +58,15 @@ public class StringHelperTests
 
     [Fact]
     public void ExtractDigits_ReturnsOnlyDigits()
-        => Assert.Equal("341279065", StringHelper.ExtractDigits("Aoerjugfbn3weu412iuhgf79065@:kcereiounf"));
+    {
+        Assert.Equal("341279065", StringHelper.ExtractDigits("Aoerjugfbn3weu412iuhgf79065@:kcereiounf"));
+    }
 
     [Fact]
     public void ExtractAlphaNumeric_ReturnsOnlyAlphaNumeric()
-        => Assert.Equal("Afbn3weu412iuhgf79065zf", StringHelper.ExtractAlphaNumeric("A*f%bn$3we@u412:iuhg;f79,06/5z??f"));
+    {
+        Assert.Equal("Afbn3weu412iuhgf79065zf", StringHelper.ExtractAlphaNumeric("A*f%bn$3we@u412:iuhg;f79,06/5z??f"));
+    }
 
     [Theory]
     [InlineData("", "")]

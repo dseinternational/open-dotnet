@@ -20,7 +20,9 @@ public static class LocalizedCollectionExtensions
     public static T GetLocalizedOrFallback<T>(
         this IEnumerable<KeyValuePair<string, T>> localizedCollection,
         LanguageTag tag)
-        => GetLocalizedOrFallback(localizedCollection, tag, LocalizedCollectionOptions.DefaultFallbacks);
+    {
+        return GetLocalizedOrFallback(localizedCollection, tag, LocalizedCollectionOptions.DefaultFallbacks);
+    }
 
     public static T GetLocalizedOrFallback<T>(
         this Dictionary<string, T> dictionary,
@@ -206,7 +208,9 @@ public static class LocalizedCollectionExtensions
     public static T GetLocalizedOrFallback<T>(
         this IEnumerable<KeyValuePair<LanguageTag, T>> localizedCollection,
         LanguageTag tag)
-        => GetLocalizedOrFallback(localizedCollection, tag, LocalizedCollectionOptions.DefaultFallbacks);
+    {
+        return GetLocalizedOrFallback(localizedCollection, tag, LocalizedCollectionOptions.DefaultFallbacks);
+    }
 
     public static T GetLocalizedOrFallback<T>(
         this Dictionary<LanguageTag, T> dictionary,
@@ -347,7 +351,9 @@ public static class LocalizedCollectionExtensions
         this IEnumerable<T> localizedCollection,
         LanguageTag tag)
         where T : ILocalized
-        => GetLocalizedOrFallback(localizedCollection, tag, LocalizedCollectionOptions.DefaultFallbacks);
+    {
+        return GetLocalizedOrFallback(localizedCollection, tag, LocalizedCollectionOptions.DefaultFallbacks);
+    }
 
     /// <summary>
     /// Gets the item specified by the <paramref name="tag"/> or

@@ -35,16 +35,25 @@ public interface INullable<TSelf, T> : IEquatable<TSelf>, IEqualityOperators<TSe
     /// </summary>
     bool HasValue { get; }
 
-    new bool Equals(TSelf other) => TSelf.Equals((TSelf)this, other);
+    new bool Equals(TSelf other)
+    {
+        return TSelf.Equals((TSelf)this, other);
+    }
 
     static virtual bool Equals(TSelf v1, TSelf v2)
-        => v1.HasValue
-        ? v2.HasValue && EqualityComparer<T>.Default.Equals(v1.Value, v2.Value)
-        : !v2.HasValue;
+    {
+        return v1.HasValue
+            ? v2.HasValue && EqualityComparer<T>.Default.Equals(v1.Value, v2.Value)
+            : !v2.HasValue;
+    }
 
     static virtual bool operator ==(TSelf left, TSelf right)
-        => left.Equals(right);
+    {
+        return left.Equals(right);
+    }
 
     static virtual bool operator !=(TSelf left, TSelf right)
-        => !left.Equals(right);
+    {
+        return !left.Equals(right);
+    }
 }

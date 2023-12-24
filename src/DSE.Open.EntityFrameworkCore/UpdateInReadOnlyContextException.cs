@@ -27,13 +27,22 @@ public class UpdateInReadOnlyContextException : InvalidOperationException
 
     [DoesNotReturn]
     [StackTraceHidden]
-    public static void Throw() => throw new UpdateInReadOnlyContextException();
+    public static void Throw()
+    {
+        throw new UpdateInReadOnlyContextException();
+    }
 
     [DoesNotReturn]
     [StackTraceHidden]
-    public static void Throw(string? message) => throw new UpdateInReadOnlyContextException(message);
+    public static void Throw(string? message)
+    {
+        throw new UpdateInReadOnlyContextException(message);
+    }
 
     [DoesNotReturn]
     [StackTraceHidden]
-    public static void Throw(string? message, Exception? innerException) => throw new UpdateInReadOnlyContextException(message, innerException);
+    public static void Throw(string? message, Exception? innerException)
+    {
+        throw new UpdateInReadOnlyContextException(message, innerException);
+    }
 }

@@ -8,10 +8,14 @@ namespace DSE.Open.Text.Json.Serialization;
 public static class JsonExceptionHelper
 {
     public static void ThrowJsonException(string? message)
-        => throw new JsonException(message);
+    {
+        throw new JsonException(message);
+    }
 
     public static void ThrowJsonException(string? message, Exception? innerException)
-        => throw new JsonException(message, innerException);
+    {
+        throw new JsonException(message, innerException);
+    }
 
     public static void ThrowJsonException(
         string? message,
@@ -19,5 +23,7 @@ public static class JsonExceptionHelper
         long? lineNumber,
         long? bytePositionInLine,
         Exception? innerException)
-        => throw new JsonException(message, path, lineNumber, bytePositionInLine, innerException);
+    {
+        throw new JsonException(message, path, lineNumber, bytePositionInLine, innerException);
+    }
 }

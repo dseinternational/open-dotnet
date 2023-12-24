@@ -14,7 +14,13 @@ public sealed class DateTimeOffsetToUtcTicksConverter : ValueConverter<DateTimeO
     {
     }
 
-    private static long ToUtcTicks(DateTimeOffset value) => value.UtcTicks;
+    private static long ToUtcTicks(DateTimeOffset value)
+    {
+        return value.UtcTicks;
+    }
 
-    private static DateTimeOffset FromUtcTicks(long value) => new(value, TimeSpan.Zero);
+    private static DateTimeOffset FromUtcTicks(long value)
+    {
+        return new DateTimeOffset(value, TimeSpan.Zero);
+    }
 }

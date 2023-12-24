@@ -156,7 +156,10 @@ public class Message : IMessage
 
     public int HandledCount { get; private set; }
 
-    public void SetHandled() => HandledCount++;
+    public void SetHandled()
+    {
+        HandledCount++;
+    }
 }
 
 public sealed class DerivedMessage : Message

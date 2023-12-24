@@ -86,7 +86,9 @@ public static class DictionaryExtensions
 
     public static string? WriteToString<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> collection)
         where TKey : notnull
-        => DictionaryWriter.WriteToString(collection);
+    {
+        return DictionaryWriter.WriteToString(collection);
+    }
 
     public static TValue? GetValueOrDefault<TKey, TValue>(
         this Dictionary<TKey, TValue> dictionary,

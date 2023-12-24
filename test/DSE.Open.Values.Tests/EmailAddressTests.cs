@@ -28,7 +28,10 @@ public class EmailAddressTests
     [InlineData("$A12345@example.com")]
     [InlineData("!def!xyz%abc@example.com")]
     [InlineData("_somename@example.com")]
-    public void TryParse_WithValidEmailAddress_ReturnsTrue(string address) => Assert.True(EmailAddress.TryParse(address, out _));
+    public void TryParse_WithValidEmailAddress_ReturnsTrue(string address)
+    {
+        Assert.True(EmailAddress.TryParse(address, out _));
+    }
 
     [Theory]
     [InlineData("plainaddress")]
@@ -51,7 +54,10 @@ public class EmailAddressTests
     [InlineData("”(),:;<>[\\]@example.com")]
     [InlineData("just”not”right@example.com")]
     [InlineData("this\\ is\"really\"not\\\allowed@example.com ")]
-    public void TryParse_WithInvalidEmailAddress_ShouldReturnFalse(string address) => Assert.False(EmailAddress.TryParse(address, out _));
+    public void TryParse_WithInvalidEmailAddress_ShouldReturnFalse(string address)
+    {
+        Assert.False(EmailAddress.TryParse(address, out _));
+    }
 
     [Theory]
     [InlineData("email@123.123.123.123")]
@@ -59,5 +65,8 @@ public class EmailAddressTests
     [InlineData("\"email\"@example.com")]
     [InlineData("\"john..doe\"@example.org")]
     [InlineData("user@localhost")]
-    public void TryParse_WithUnsupportedEmailAddress_ShouldReturnFalse(string address) => Assert.False(EmailAddress.TryParse(address, out _));
+    public void TryParse_WithUnsupportedEmailAddress_ShouldReturnFalse(string address)
+    {
+        Assert.False(EmailAddress.TryParse(address, out _));
+    }
 }

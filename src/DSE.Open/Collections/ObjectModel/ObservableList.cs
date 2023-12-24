@@ -93,7 +93,10 @@ public class ObservableList<T> : IObservableList<T>
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    public void Add(T item) => Add(item, false);
+    public void Add(T item)
+    {
+        Add(item, false);
+    }
 
     public void Add(T item, bool suppressEvents)
     {
@@ -111,9 +114,15 @@ public class ObservableList<T> : IObservableList<T>
         }
     }
 
-    public void AddRange(IEnumerable<T> collection) => AddRange(collection, AddRangeNotification.Add);
+    public void AddRange(IEnumerable<T> collection)
+    {
+        AddRange(collection, AddRangeNotification.Add);
+    }
 
-    public void AddRange(IEnumerable<T> collection, AddRangeNotification notification) => AddRange(collection, notification, false);
+    public void AddRange(IEnumerable<T> collection, AddRangeNotification notification)
+    {
+        AddRange(collection, notification, false);
+    }
 
     private void AddRange(IEnumerable<T> collection, AddRangeNotification notification, bool suppressEvents)
     {
@@ -166,9 +175,15 @@ public class ObservableList<T> : IObservableList<T>
         return _observedItems.BinarySearch(index, count, item, comparer);
     }
 
-    public int BinarySearch(T item) => BinarySearch(0, Count, item, null);
+    public int BinarySearch(T item)
+    {
+        return BinarySearch(0, Count, item, null);
+    }
 
-    public int BinarySearch(T item, IComparer<T>? comparer) => BinarySearch(0, Count, item, comparer);
+    public int BinarySearch(T item, IComparer<T>? comparer)
+    {
+        return BinarySearch(0, Count, item, comparer);
+    }
 
     public void Clear()
     {
@@ -201,31 +216,70 @@ public class ObservableList<T> : IObservableList<T>
         _observedItems.CopyTo(index, array, arrayIndex, count);
     }
 
-    public int EnsureCapacity(int capacity) => _observedItems.EnsureCapacity(capacity);
+    public int EnsureCapacity(int capacity)
+    {
+        return _observedItems.EnsureCapacity(capacity);
+    }
 
-    public T? Find(Predicate<T> match) => _observedItems.Find(match);
+    public T? Find(Predicate<T> match)
+    {
+        return _observedItems.Find(match);
+    }
 
-    public ObservableList<T> FindAll(Predicate<T> match) => _observedItems.FindAll(match).ToObservableList();
+    public ObservableList<T> FindAll(Predicate<T> match)
+    {
+        return _observedItems.FindAll(match).ToObservableList();
+    }
 
-    public int FindIndex(Predicate<T> match) => _observedItems.FindIndex(match);
+    public int FindIndex(Predicate<T> match)
+    {
+        return _observedItems.FindIndex(match);
+    }
 
-    public int FindIndex(int startIndex, Predicate<T> match) => _observedItems.FindIndex(startIndex, match);
+    public int FindIndex(int startIndex, Predicate<T> match)
+    {
+        return _observedItems.FindIndex(startIndex, match);
+    }
 
-    public int FindIndex(int startIndex, int count, Predicate<T> match) => _observedItems.FindIndex(startIndex, count, match);
+    public int FindIndex(int startIndex, int count, Predicate<T> match)
+    {
+        return _observedItems.FindIndex(startIndex, count, match);
+    }
 
-    public T? FindLast(Predicate<T> match) => _observedItems.FindLast(match);
+    public T? FindLast(Predicate<T> match)
+    {
+        return _observedItems.FindLast(match);
+    }
 
-    public int FindLastIndex(Predicate<T> match) => _observedItems.FindLastIndex(match);
+    public int FindLastIndex(Predicate<T> match)
+    {
+        return _observedItems.FindLastIndex(match);
+    }
 
-    public int FindLastIndex(int startIndex, Predicate<T> match) => _observedItems.FindLastIndex(startIndex, match);
+    public int FindLastIndex(int startIndex, Predicate<T> match)
+    {
+        return _observedItems.FindLastIndex(startIndex, match);
+    }
 
-    public int FindLastIndex(int startIndex, int count, Predicate<T> match) => _observedItems.FindLastIndex(startIndex, count, match);
+    public int FindLastIndex(int startIndex, int count, Predicate<T> match)
+    {
+        return _observedItems.FindLastIndex(startIndex, count, match);
+    }
 
-    public void ForEach(Action<T> action) => _observedItems.ForEach(action);
+    public void ForEach(Action<T> action)
+    {
+        _observedItems.ForEach(action);
+    }
 
-    public IEnumerator<T> GetEnumerator() => _observedItems.GetEnumerator();
+    public IEnumerator<T> GetEnumerator()
+    {
+        return _observedItems.GetEnumerator();
+    }
 
-    public ObservableList<T> GetRange(int index, int count) => _observedItems.GetRange(index, count).ToObservableList();
+    public ObservableList<T> GetRange(int index, int count)
+    {
+        return _observedItems.GetRange(index, count).ToObservableList();
+    }
 
     public int IndexOf(T item)
     {
@@ -233,7 +287,10 @@ public class ObservableList<T> : IObservableList<T>
         return _observedItems.IndexOf(item);
     }
 
-    public void Insert(int index, T item) => Insert(index, item, false);
+    public void Insert(int index, T item)
+    {
+        Insert(index, item, false);
+    }
 
     private void Insert(int index, T item, bool suppressEvents)
     {
@@ -253,7 +310,10 @@ public class ObservableList<T> : IObservableList<T>
         }
     }
 
-    public void MoveItem(int oldIndex, int newIndex) => MoveItem(oldIndex, newIndex, false);
+    public void MoveItem(int oldIndex, int newIndex)
+    {
+        MoveItem(oldIndex, newIndex, false);
+    }
 
     private void MoveItem(int oldIndex, int newIndex, bool suppressEvents)
     {
@@ -273,7 +333,10 @@ public class ObservableList<T> : IObservableList<T>
         }
     }
 
-    public bool Remove(T item) => Remove(item, false);
+    public bool Remove(T item)
+    {
+        return Remove(item, false);
+    }
 
     private bool Remove(T item, bool suppressEvents)
     {
@@ -288,7 +351,10 @@ public class ObservableList<T> : IObservableList<T>
         return false;
     }
 
-    public void RemoveAt(int index) => RemoveAt(index, false);
+    public void RemoveAt(int index)
+    {
+        RemoveAt(index, false);
+    }
 
     private void RemoveAt(int index, bool suppressEvents)
     {
@@ -308,9 +374,15 @@ public class ObservableList<T> : IObservableList<T>
         }
     }
 
-    public void RemoveRange(IEnumerable<T> collection) => RemoveRange(collection, RemoveRangeNotification.Reset);
+    public void RemoveRange(IEnumerable<T> collection)
+    {
+        RemoveRange(collection, RemoveRangeNotification.Reset);
+    }
 
-    public void RemoveRange(IEnumerable<T> collection, RemoveRangeNotification notification) => RemoveRange(collection, notification, false);
+    public void RemoveRange(IEnumerable<T> collection, RemoveRangeNotification notification)
+    {
+        RemoveRange(collection, notification, false);
+    }
 
     private void RemoveRange(IEnumerable<T> collection, RemoveRangeNotification notification, bool suppressEvents)
     {
@@ -418,11 +490,20 @@ public class ObservableList<T> : IObservableList<T>
         OnCollectionChanged(s_resetCollectionChangedEventArgs);
     }
 
-    public ObservableList<T> Slice(int start, int length) => GetRange(start, length);
+    public ObservableList<T> Slice(int start, int length)
+    {
+        return GetRange(start, length);
+    }
 
-    public void Sort(SortOrder sortOrder) => Sort(sortOrder, (IComparer<T>?)null);
+    public void Sort(SortOrder sortOrder)
+    {
+        Sort(sortOrder, (IComparer<T>?)null);
+    }
 
-    public void Sort(IComparer<T>? comparer) => Sort(SortOrder.Ascending, (IComparer<T>?)null);
+    public void Sort(IComparer<T>? comparer)
+    {
+        Sort(SortOrder.Ascending, (IComparer<T>?)null);
+    }
 
     /// <summary>
     /// Sorts the collection using the specified comparer and sort order (the comparer should
@@ -442,9 +523,15 @@ public class ObservableList<T> : IObservableList<T>
     /// <summary>
     /// Sorts the collection using the specified comparison in ascending order.
     /// </summary>
-    public void Sort() => Sort(SortOrder.Ascending, DefaultSortComparison ?? Comparer<T>.Default.Compare);
+    public void Sort()
+    {
+        Sort(SortOrder.Ascending, DefaultSortComparison ?? Comparer<T>.Default.Compare);
+    }
 
-    public void Sort(Comparison<T> comparison) => Sort(SortOrder.Ascending, comparison);
+    public void Sort(Comparison<T> comparison)
+    {
+        Sort(SortOrder.Ascending, comparison);
+    }
 
     /// <summary>
     /// Sorts the collection using the specified comparison and sort order (the comparison should
@@ -477,11 +564,20 @@ public class ObservableList<T> : IObservableList<T>
         OnSort(sortOrder, comparison);
     }
 
-    public void SortBy<TKey>(Func<T, TKey> keySelector) => SortBy(keySelector, (IComparer<TKey>?)null);
+    public void SortBy<TKey>(Func<T, TKey> keySelector)
+    {
+        SortBy(keySelector, (IComparer<TKey>?)null);
+    }
 
-    public void SortBy<TKey>(SortOrder sortOrder, Func<T, TKey> keySelector) => SortBy(sortOrder, keySelector, (IComparer<TKey>?)null);
+    public void SortBy<TKey>(SortOrder sortOrder, Func<T, TKey> keySelector)
+    {
+        SortBy(sortOrder, keySelector, (IComparer<TKey>?)null);
+    }
 
-    public void SortBy<TKey>(Func<T, TKey> keySelector, IComparer<TKey>? comparer) => SortBy(SortOrder.Ascending, keySelector, comparer);
+    public void SortBy<TKey>(Func<T, TKey> keySelector, IComparer<TKey>? comparer)
+    {
+        SortBy(SortOrder.Ascending, keySelector, comparer);
+    }
 
     public void SortBy<TKey>(SortOrder sortOrder, Func<T, TKey> keySelector, IComparer<TKey>? comparer)
     {
@@ -492,7 +588,10 @@ public class ObservableList<T> : IObservableList<T>
         SortBy(sortOrder, keySelector, comparer.Compare);
     }
 
-    public void SortBy<TKey>(Func<T, TKey> keySelector, Comparison<TKey> comparison) => SortBy(SortOrder.Ascending, keySelector, comparison);
+    public void SortBy<TKey>(Func<T, TKey> keySelector, Comparison<TKey> comparison)
+    {
+        SortBy(SortOrder.Ascending, keySelector, comparison);
+    }
 
     public void SortBy<TKey>(SortOrder sortOrder, Func<T, TKey> keySelector, Comparison<TKey> comparison)
     {
@@ -507,11 +606,20 @@ public class ObservableList<T> : IObservableList<T>
         }
     }
 
-    public void TrimExcess() => _observedItems.TrimExcess();
+    public void TrimExcess()
+    {
+        _observedItems.TrimExcess();
+    }
 
-    public bool TrueForAll(Predicate<T> match) => _observedItems.TrueForAll(match);
+    public bool TrueForAll(Predicate<T> match)
+    {
+        return _observedItems.TrueForAll(match);
+    }
 
-    IEnumerator IEnumerable.GetEnumerator() => _observedItems.GetEnumerator();
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return _observedItems.GetEnumerator();
+    }
 
     int IList.Add(object? value)
     {
@@ -522,9 +630,15 @@ public class ObservableList<T> : IObservableList<T>
         return Count - 1;
     }
 
-    bool IList.Contains(object? value) => IsCompatibleObject(value) && Contains((T)value!);
+    bool IList.Contains(object? value)
+    {
+        return IsCompatibleObject(value) && Contains((T)value!);
+    }
 
-    int IList.IndexOf(object? value) => IsCompatibleObject(value) ? IndexOf((T)value!) : -1;
+    int IList.IndexOf(object? value)
+    {
+        return IsCompatibleObject(value) ? IndexOf((T)value!) : -1;
+    }
 
     void IList.Insert(int index, object? value)
     {
@@ -542,7 +656,10 @@ public class ObservableList<T> : IObservableList<T>
         }
     }
 
-    void ICollection.CopyTo(Array array, int index) => ((ICollection)_observedItems).CopyTo(array, index);
+    void ICollection.CopyTo(Array array, int index)
+    {
+        ((ICollection)_observedItems).CopyTo(array, index);
+    }
 
     /// <summary>
     /// Disallow reentrant attempts to change this collection. E.g. an event handler
@@ -626,25 +743,55 @@ public class ObservableList<T> : IObservableList<T>
         }
     }
 
-    protected virtual void OnPropertyChanged(PropertyChangedEventArgs e) => PropertyChanged?.Invoke(this, e);
+    protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
+    {
+        PropertyChanged?.Invoke(this, e);
+    }
 
-    private void OnCountPropertyChanged() => OnPropertyChanged(s_countPropertyChangedEventArgs);
+    private void OnCountPropertyChanged()
+    {
+        OnPropertyChanged(s_countPropertyChangedEventArgs);
+    }
 
-    private void OnIndexerPropertyChanged() => OnPropertyChanged(s_indexerPropertyChangedEventArgs);
+    private void OnIndexerPropertyChanged()
+    {
+        OnPropertyChanged(s_indexerPropertyChangedEventArgs);
+    }
 
-    private void OnCollectionChanged(NotifyCollectionChangedAction action, object? item, int index) => OnCollectionChanged(new NotifyCollectionChangedEventArgs(action, item, index));
+    private void OnCollectionChanged(NotifyCollectionChangedAction action, object? item, int index)
+    {
+        OnCollectionChanged(new NotifyCollectionChangedEventArgs(action, item, index));
+    }
 
-    private void OnCollectionChanged(NotifyCollectionChangedAction action, object? item, int index, int oldIndex) => OnCollectionChanged(new NotifyCollectionChangedEventArgs(action, item, index, oldIndex));
+    private void OnCollectionChanged(NotifyCollectionChangedAction action, object? item, int index, int oldIndex)
+    {
+        OnCollectionChanged(new NotifyCollectionChangedEventArgs(action, item, index, oldIndex));
+    }
 
-    private void OnCollectionChanged(NotifyCollectionChangedAction action, object? oldItem, object? newItem, int index) => OnCollectionChanged(new NotifyCollectionChangedEventArgs(action, newItem, oldItem, index));
+    private void OnCollectionChanged(NotifyCollectionChangedAction action, object? oldItem, object? newItem, int index)
+    {
+        OnCollectionChanged(new NotifyCollectionChangedEventArgs(action, newItem, oldItem, index));
+    }
 
-    private void OnCollectionChanged(NotifyCollectionChangedAction action, IList? changedItems, int startIndex) => OnCollectionChanged(new NotifyCollectionChangedEventArgs(action, changedItems, startIndex));
+    private void OnCollectionChanged(NotifyCollectionChangedAction action, IList? changedItems, int startIndex)
+    {
+        OnCollectionChanged(new NotifyCollectionChangedEventArgs(action, changedItems, startIndex));
+    }
 
-    private void OnCollectionReset() => OnCollectionChanged(s_resetCollectionChangedEventArgs);
+    private void OnCollectionReset()
+    {
+        OnCollectionChanged(s_resetCollectionChangedEventArgs);
+    }
 
-    private static bool IsCompatibleObject(object? value) => value is T || value == null && default(T) == null;
+    private static bool IsCompatibleObject(object? value)
+    {
+        return value is T || value == null && default(T) == null;
+    }
 
-    private SimpleMonitor EnsureMonitorInitialized() => _monitor ??= new SimpleMonitor(this);
+    private SimpleMonitor EnsureMonitorInitialized()
+    {
+        return _monitor ??= new SimpleMonitor(this);
+    }
 
     private sealed class SimpleMonitor : IDisposable
     {
@@ -656,6 +803,9 @@ public class ObservableList<T> : IObservableList<T>
             _collection = collection;
         }
 
-        public void Dispose() => _collection._blockReentrancyCount--;
+        public void Dispose()
+        {
+            _collection._blockReentrancyCount--;
+        }
     }
 }

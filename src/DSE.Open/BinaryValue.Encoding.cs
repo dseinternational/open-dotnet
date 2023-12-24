@@ -17,7 +17,9 @@ public readonly partial record struct BinaryValue
     /// <param name="charsWritten">The number of characters written to the buffer.</param>
     /// <returns><c>true</c> if the value was successfully written to the buffer; otherwise, <c>false</c>.</returns>
     public bool TryFormat(Span<char> destination, out int charsWritten)
-        => TryFormat(destination, out charsWritten, null, null);
+    {
+        return TryFormat(destination, out charsWritten, null, null);
+    }
 
     /// <inheritdoc />
     /// <remarks>
@@ -71,17 +73,23 @@ public readonly partial record struct BinaryValue
         }
     }
 
-    internal static int GetRequiredBufferSize(int inputLength, BinaryStringEncoding encoding) => encoding switch
+    internal static int GetRequiredBufferSize(int inputLength, BinaryStringEncoding encoding)
     {
-        BinaryStringEncoding.Base64 or BinaryStringEncoding.Base62 => (int)((uint)inputLength + 2) / 3 * 4,
-        BinaryStringEncoding.HexLower or BinaryStringEncoding.HexUpper => (int)(uint)inputLength * 2,
-        _ => throw new ArgumentOutOfRangeException(nameof(encoding), encoding, null)
-    };
+        return encoding switch
+        {
+            BinaryStringEncoding.Base64 or BinaryStringEncoding.Base62 => (int)((uint)inputLength + 2) / 3 * 4,
+            BinaryStringEncoding.HexLower or BinaryStringEncoding.HexUpper => (int)(uint)inputLength * 2,
+            _ => throw new ArgumentOutOfRangeException(nameof(encoding), encoding, null)
+        };
+    }
 
     /// <summary>
     /// Returns a Base64 string representation of the value.
     /// </summary>
-    public override string ToString() => ToString(BinaryStringEncoding.Base64);
+    public override string ToString()
+    {
+        return ToString(BinaryStringEncoding.Base64);
+    }
 
     /// <inheritdoc />
     /// <remarks>
@@ -197,7 +205,13 @@ public readonly partial record struct BinaryValue
         };
     }
 
-    public string ToBase62EncodedString() => ToString(BinaryStringEncoding.Base62);
+    public string ToBase62EncodedString()
+    {
+        return ToString(BinaryStringEncoding.Base62);
+    }
 
-    public string ToBase64EncodedString() => ToString(BinaryStringEncoding.Base64);
+    public string ToBase64EncodedString()
+    {
+        return ToString(BinaryStringEncoding.Base64);
+    }
 }

@@ -58,7 +58,10 @@ public sealed class CodeTests
     }
 
     [Fact]
-    public void EmptyTest() => Assert.Equal(Code.Empty, new Code());
+    public void EmptyTest()
+    {
+        Assert.Equal(Code.Empty, new Code());
+    }
 
     [Fact]
     public void CompareTo_less_than()
@@ -99,7 +102,10 @@ public sealed class CodeTests
     }
 
     [Fact]
-    public void Parse_WithNullString_ShouldThrowArgumentNull() => Assert.Throws<ArgumentNullException>(() => Code.Parse(null!, null));
+    public void Parse_WithNullString_ShouldThrowArgumentNull()
+    {
+        Assert.Throws<ArgumentNullException>(() => Code.Parse(null!, null));
+    }
 
     [Fact]
     public void TryParse_WithEmptySpan_ShouldReturnTrueAndDefaultResult()

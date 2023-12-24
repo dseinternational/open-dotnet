@@ -9,7 +9,7 @@ public sealed class CollectionSequenceEqualValueComparer<
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods
         | DynamicallyAccessedMemberTypes.NonPublicMethods
         | DynamicallyAccessedMemberTypes.PublicProperties)]
-    T>
+T>
     : SequenceEqualValueComparer<T, ICollection<T>>
 {
     public static readonly CollectionSequenceEqualValueComparer<T> Default = new();

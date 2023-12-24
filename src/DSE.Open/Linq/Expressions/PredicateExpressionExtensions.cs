@@ -8,7 +8,9 @@ namespace DSE.Open.Linq.Expressions;
 public static class PredicateExpressionExtensions
 {
     public static Expression<Func<T, bool>> And<T>(this Expression<Func<T, bool>> left, Expression<Func<T, bool>> right)
-        => Combine(left, right, Expression.And);
+    {
+        return Combine(left, right, Expression.And);
+    }
 
     /// <summary>
     /// Creates an expression that represents a conditional AND operation
@@ -19,7 +21,9 @@ public static class PredicateExpressionExtensions
     /// <param name="right"></param>
     /// <returns></returns>
     public static Expression<Func<T, bool>> AndAlso<T>(this Expression<Func<T, bool>> left, Expression<Func<T, bool>> right)
-        => Combine(left, right, Expression.AndAlso);
+    {
+        return Combine(left, right, Expression.AndAlso);
+    }
 
     public static Expression<Func<T, bool>> AndAlsoIfNotNull<T>(
         this Expression<Func<T, bool>> left,
@@ -31,7 +35,9 @@ public static class PredicateExpressionExtensions
     }
 
     public static Expression<Func<T, bool>> Or<T>(this Expression<Func<T, bool>> left, Expression<Func<T, bool>> right)
-        => Combine(left, right, Expression.Or);
+    {
+        return Combine(left, right, Expression.Or);
+    }
 
     public static Expression<Func<T, bool>> Combine<T>(
         Expression<Func<T, bool>> left,
@@ -65,6 +71,9 @@ public static class PredicateExpressionExtensions
             _newValue = newValue;
         }
 
-        public override Expression? Visit(Expression? node) => node == _oldValue ? _newValue : base.Visit(node);
+        public override Expression? Visit(Expression? node)
+        {
+            return node == _oldValue ? _newValue : base.Visit(node);
+        }
     }
 }

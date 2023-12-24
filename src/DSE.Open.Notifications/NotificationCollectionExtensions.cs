@@ -83,7 +83,10 @@ public static class NotificationCollectionExtensions
     /// </summary>
     /// <param name="notifications"></param>
     /// <returns></returns>
-    public static bool NoErrors(this IEnumerable<Notification> notifications) => !notifications.AnyErrors();
+    public static bool NoErrors(this IEnumerable<Notification> notifications)
+    {
+        return !notifications.AnyErrors();
+    }
 
     /// <summary>
     /// Indicates if the notifications do not include <see cref="NotificationLevel.Warning"/> or
@@ -92,7 +95,10 @@ public static class NotificationCollectionExtensions
     /// </summary>
     /// <param name="notifications"></param>
     /// <returns></returns>
-    public static bool NoWarnings(this IEnumerable<Notification> notifications) => !notifications.AnyWarnings();
+    public static bool NoWarnings(this IEnumerable<Notification> notifications)
+    {
+        return !notifications.AnyWarnings();
+    }
 
     /// <summary>
     /// Generates a string report each notification in the collection on a new line.

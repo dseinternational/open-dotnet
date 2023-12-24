@@ -29,6 +29,8 @@ public readonly partial struct AgreementLevel : IComparableValue<AgreementLevel,
         AgreeStrongly
     };
 
-    public static bool IsValidValue(int value) => value is >= (-1) and <= 2;
-
+    public static bool IsValidValue(int value)
+    {
+        return value is >= (-1) and <= 2;
+    }
 }

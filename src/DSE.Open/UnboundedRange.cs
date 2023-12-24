@@ -73,12 +73,21 @@ public readonly record struct UnboundedRange<T>
 public static class UnboundedRange
 {
     public static UnboundedRange<T> Between<T>(T minimum, T maximum)
-        where T : struct, IComparable<T> => new(minimum, maximum);
+        where T : struct, IComparable<T>
+    {
+        return new UnboundedRange<T>(minimum, maximum);
+    }
 
     public static UnboundedRange<T> GreaterThanOrEqual<T>(T minimum)
-        where T : struct, IComparable<T> => new(minimum, default);
+        where T : struct, IComparable<T>
+    {
+        return new UnboundedRange<T>(minimum, default);
+    }
 
     public static UnboundedRange<T> LessThanOrEqual<T>(T maximum)
-        where T : struct, IComparable<T> => new(default, maximum);
+        where T : struct, IComparable<T>
+    {
+        return new UnboundedRange<T>(default, maximum);
+    }
 }
 

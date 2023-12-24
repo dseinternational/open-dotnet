@@ -9,5 +9,8 @@ public class JsonStringCodeConverter : SpanParsableCharWritingJsonConverter<Code
 {
     public static readonly JsonStringCodeConverter Default = new();
 
-    protected override int GetMaxCharCountToWrite(Code value) => Code.MaxLength;
+    protected override int GetMaxCharCountToWrite(Code value)
+    {
+        return Code.MaxLength;
+    }
 }

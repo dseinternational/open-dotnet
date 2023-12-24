@@ -81,14 +81,26 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
         }
     }
 
-    public static bool IsValid(ReadOnlySpan<char> pattern) => pattern.Length <= MaxLength;
+    public static bool IsValid(ReadOnlySpan<char> pattern)
+    {
+        return pattern.Length <= MaxLength;
+    }
 
-    public bool Equals(string? other) => Equals(other, StringComparison.Ordinal);
+    public bool Equals(string? other)
+    {
+        return Equals(other, StringComparison.Ordinal);
+    }
 
-    public bool Equals(string? other, StringComparison comparison) => other is not null
-        && ((_pattern is null && other.Length == 0) || string.Equals(_pattern, other, comparison));
+    public bool Equals(string? other, StringComparison comparison)
+    {
+        return other is not null
+               && ((_pattern is null && other.Length == 0) || string.Equals(_pattern, other, comparison));
+    }
 
-    public static bool TryParse(ReadOnlySpan<char> s, out LikePattern result) => TryParse(s, null, out result);
+    public static bool TryParse(ReadOnlySpan<char> s, out LikePattern result)
+    {
+        return TryParse(s, null, out result);
+    }
 
     public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out LikePattern result)
     {
@@ -108,7 +120,10 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
         return true;
     }
 
-    public static LikePattern Parse(ReadOnlySpan<char> s) => Parse(s, null);
+    public static LikePattern Parse(ReadOnlySpan<char> s)
+    {
+        return Parse(s, null);
+    }
 
     public static LikePattern Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
     {
@@ -117,7 +132,10 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
             : ThrowHelper.ThrowFormatException<LikePattern>($"Could not parse {nameof(LikePattern)} with value: {s}");
     }
 
-    public static bool TryParse(string? s, out LikePattern result) => TryParse(s, null, out result);
+    public static bool TryParse(string? s, out LikePattern result)
+    {
+        return TryParse(s, null, out result);
+    }
 
     public static bool TryParse(string? s, IFormatProvider? provider, out LikePattern result)
     {
@@ -130,7 +148,10 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
         return TryParse(s.AsSpan(), provider, out result);
     }
 
-    public static LikePattern Parse(string s) => Parse(s, null);
+    public static LikePattern Parse(string s)
+    {
+        return Parse(s, null);
+    }
 
     public static LikePattern Parse(string s, IFormatProvider? provider)
     {
@@ -154,9 +175,15 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
         return true;
     }
 
-    public override string ToString() => ToString(null, null);
+    public override string ToString()
+    {
+        return ToString(null, null);
+    }
 
-    public string ToString(string? format, IFormatProvider? formatProvider) => _pattern ?? string.Empty;
+    public string ToString(string? format, IFormatProvider? formatProvider)
+    {
+        return _pattern ?? string.Empty;
+    }
 
     /// <summary>
     /// Indicates if the specified value matches the pattern.
@@ -164,7 +191,10 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
     /// <param name="value"></param>
     /// <returns><see langword="true"/> if the specified value matches the patterm; otherwise, <see langword="false"/>.</returns>
     /// <remarks>This method performs an ordinal comparison.</remarks>
-    public bool IsMatch(string value) => IsMatch(value, StringComparison.Ordinal);
+    public bool IsMatch(string value)
+    {
+        return IsMatch(value, StringComparison.Ordinal);
+    }
 
     /// <summary>
     /// Indicates if the specified value matches the pattern.
@@ -338,5 +368,8 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
         return builder.ToString();
     }
 
-    public static explicit operator string(LikePattern pattern) => pattern.ToString();
+    public static explicit operator string(LikePattern pattern)
+    {
+        return pattern.ToString();
+    }
 }

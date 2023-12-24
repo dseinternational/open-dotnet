@@ -15,8 +15,9 @@ public static class Delays
     /// <returns>A sequence of <see cref="TimeSpan"/> values that can be used as sleep durations
     /// for a wait-and-retry policy.</returns>
     public static IEnumerable<TimeSpan> ExponentialBackoffWithJitter()
-
-        => ExponentialBackoffWithJitter(TimeSpan.FromSeconds(1.0));
+    {
+        return ExponentialBackoffWithJitter(TimeSpan.FromSeconds(1.0));
+    }
 
     /// <summary>
     /// Gets a sequence of 5 <see cref="TimeSpan"/> values that can be used as sleep durations
@@ -29,8 +30,9 @@ public static class Delays
     /// <returns>A sequence of <see cref="TimeSpan"/> values that can be used as sleep durations
     /// for a wait-and-retry policy.</returns>
     public static IEnumerable<TimeSpan> ExponentialBackoffWithJitter(TimeSpan medianFirstRetryDelay)
-
-        => ExponentialBackoffWithJitter(medianFirstRetryDelay, 5);
+    {
+        return ExponentialBackoffWithJitter(medianFirstRetryDelay, 5);
+    }
 
     /// <summary>
     /// Gets a sequence of <see cref="TimeSpan"/> values that can be used as sleep durations
@@ -45,6 +47,7 @@ public static class Delays
     /// <returns>A sequence of <see cref="TimeSpan"/> values that can be used as sleep durations
     /// for a wait-and-retry policy.</returns>
     public static IEnumerable<TimeSpan> ExponentialBackoffWithJitter(TimeSpan medianFirstRetryDelay, int retryCount)
-
-        => Backoff.DecorrelatedJitterBackoffV2(medianFirstRetryDelay: TimeSpan.FromSeconds(2.0), retryCount: 5);
+    {
+        return Backoff.DecorrelatedJitterBackoffV2(medianFirstRetryDelay: TimeSpan.FromSeconds(2.0), retryCount: 5);
+    }
 }

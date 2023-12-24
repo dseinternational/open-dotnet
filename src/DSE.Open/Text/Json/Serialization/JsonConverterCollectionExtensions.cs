@@ -13,7 +13,9 @@ public static class JsonConverterCollectionExtensions
     [UnconditionalSuppressMessage("Trimming", "IL3050",
         Justification = "Calls AddDseOpenCoreJsonConverters with includeJsonValueObjectConverter = false")]
     public static void AddDseOpenCoreJsonConverters(this ICollection<JsonConverter> converters)
-        => converters.AddDseOpenCoreJsonConverters(false);
+    {
+        converters.AddDseOpenCoreJsonConverters(false);
+    }
 
     [RequiresDynamicCode(WarningMessages.RequiresDynamicCode)]
     [RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]

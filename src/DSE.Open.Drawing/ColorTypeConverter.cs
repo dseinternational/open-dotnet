@@ -8,7 +8,10 @@ namespace DSE.Open.Drawing;
 public class ColorTypeConverter : TypeConverter
 {
     public override object ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object value)
-        => Color.Parse(value?.ToString()!, culture); // Parse will throw on null
+    {
+        return Color.Parse(value?.ToString()!, culture);
+        // Parse will throw on null
+    }
 
     public override object ConvertTo(ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
     {
@@ -172,11 +175,23 @@ public class ColorTypeConverter : TypeConverter
         });
     }
 
-    public override bool GetStandardValuesExclusive(ITypeDescriptorContext? context) => false;
+    public override bool GetStandardValuesExclusive(ITypeDescriptorContext? context)
+    {
+        return false;
+    }
 
-    public override bool GetStandardValuesSupported(ITypeDescriptorContext? context) => true;
+    public override bool GetStandardValuesSupported(ITypeDescriptorContext? context)
+    {
+        return true;
+    }
 
-    public override bool CanConvertFrom(ITypeDescriptorContext? context, Type sourceType) => sourceType == typeof(string);
+    public override bool CanConvertFrom(ITypeDescriptorContext? context, Type sourceType)
+    {
+        return sourceType == typeof(string);
+    }
 
-    public override bool CanConvertTo(ITypeDescriptorContext? context, Type? destinationType) => destinationType == typeof(string);
+    public override bool CanConvertTo(ITypeDescriptorContext? context, Type? destinationType)
+    {
+        return destinationType == typeof(string);
+    }
 }

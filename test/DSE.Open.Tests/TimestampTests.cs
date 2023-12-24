@@ -62,7 +62,10 @@ public class TimestampTests
     }
 
     [Fact]
-    public void Parse_WithNullString_ShouldThrowArgumentNull() => Assert.Throws<ArgumentNullException>(() => Timestamp.Parse(null!, null));
+    public void Parse_WithNullString_ShouldThrowArgumentNull()
+    {
+        Assert.Throws<ArgumentNullException>(() => Timestamp.Parse(null!, null));
+    }
 
     [Fact]
     public void TryParse_WithEmptySpan_ShouldReturnTrueAndDefaultResult()

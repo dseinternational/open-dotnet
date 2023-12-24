@@ -48,18 +48,30 @@ public abstract class SqlServerStoredObjectPersistenceTestsBase<
         });
     }
 
-    protected virtual Task UpdateAsync(TEntity entity, TDbContext dataContext) => Task.CompletedTask;
+    protected virtual Task UpdateAsync(TEntity entity, TDbContext dataContext)
+    {
+        return Task.CompletedTask;
+    }
 
     /// <summary>
     /// Provides an opportunity to set up the database as needed for the test.
     /// </summary>
     /// <param name="dataContext"></param>
     /// <remarks>The context provided is different from the context used to create/add the entity and save changes.</remarks>
-    protected virtual Task SetupAsync(TDbContext dataContext) => Task.CompletedTask;
+    protected virtual Task SetupAsync(TDbContext dataContext)
+    {
+        return Task.CompletedTask;
+    }
 
-    protected virtual Task CleanupAsync(TEntity? original) => Task.CompletedTask;
+    protected virtual Task CleanupAsync(TEntity? original)
+    {
+        return Task.CompletedTask;
+    }
 
-    protected virtual Task BeforeRemoveAsync(TDbContext dataContext, TEntity savedEntity) => Task.CompletedTask;
+    protected virtual Task BeforeRemoveAsync(TDbContext dataContext, TEntity savedEntity)
+    {
+        return Task.CompletedTask;
+    }
 
     /// <summary>
     /// Override to include related data.

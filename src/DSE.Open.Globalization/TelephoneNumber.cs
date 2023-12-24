@@ -49,7 +49,9 @@ public readonly record struct TelephoneNumber
     public ulong NationalNumber { get; }
 
     public IEnumerable<CountryCallingCodeInfo> GetCountryCallingCodeInfo()
-        => CountryCallingCodeInfo.GetInfo(CountryCode);
+    {
+        return CountryCallingCodeInfo.GetInfo(CountryCode);
+    }
 
     public static void EnsureIsValidCountryCallingCode(
         uint code,
@@ -73,11 +75,21 @@ public readonly record struct TelephoneNumber
         }
     }
 
-    public static bool IsValidNationalNumber(ulong number) => number is >= 1ul and <= 999999999999999ul;
+    public static bool IsValidNationalNumber(ulong number)
+    {
+        return number is >= 1ul and <= 999999999999999ul;
+    }
 
-    public static bool IsValidCountryCallingCode(uint code) => CountryCallingCodeInfo.IsAssignedCode(code);
+    public static bool IsValidCountryCallingCode(uint code)
+    {
+        return CountryCallingCodeInfo.IsAssignedCode(code);
+    }
 
-    public static TelephoneNumber Parse(ReadOnlySpan<char> s) => Parse(s, null);
+    public static TelephoneNumber Parse(ReadOnlySpan<char> s)
+    {
+        return Parse(s, null);
+    }
+
     public static TelephoneNumber Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
     {
         return TryParse(s, provider, out var result)
@@ -86,7 +98,10 @@ public readonly record struct TelephoneNumber
                 $"'{s.ToString()}' is not a valid {nameof(TelephoneNumber)}.");
     }
 
-    public static TelephoneNumber Parse(string s) => Parse(s, null);
+    public static TelephoneNumber Parse(string s)
+    {
+        return Parse(s, null);
+    }
 
     public static TelephoneNumber Parse(string s, IFormatProvider? provider)
     {
@@ -95,7 +110,9 @@ public readonly record struct TelephoneNumber
     }
 
     public static bool TryParse(ReadOnlySpan<char> s, out TelephoneNumber result)
-        => TryParse(s, null, out result);
+    {
+        return TryParse(s, null, out result);
+    }
 
     public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out TelephoneNumber result)
     {
@@ -178,7 +195,10 @@ public readonly record struct TelephoneNumber
         return TryParse(s.AsSpan(), provider, out result);
     }
 
-    public override string ToString() => ToString(null, null);
+    public override string ToString()
+    {
+        return ToString(null, null);
+    }
 
     public string ToString(string? format, IFormatProvider? formatProvider)
     {

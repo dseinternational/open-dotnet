@@ -38,29 +38,68 @@ public sealed record Notification : ImmutableDataTransferObject, INotification
     [JsonPropertyName("message")]
     public string Message { get; }
 
-    public override string ToString() => $"{Level} ({Code}): {Message}";
+    public override string ToString()
+    {
+        return $"{Level} ({Code}): {Message}";
+    }
 
-    public static Notification Trace(DiagnosticCode code, string message) => new(code, NotificationLevel.Trace, message);
+    public static Notification Trace(DiagnosticCode code, string message)
+    {
+        return new Notification(code, NotificationLevel.Trace, message);
+    }
 
-    public static Notification Trace(string code, string message) => new(code, NotificationLevel.Trace, message);
+    public static Notification Trace(string code, string message)
+    {
+        return new Notification(code, NotificationLevel.Trace, message);
+    }
 
-    public static Notification Debug(DiagnosticCode code, string message) => new(code, NotificationLevel.Debug, message);
+    public static Notification Debug(DiagnosticCode code, string message)
+    {
+        return new Notification(code, NotificationLevel.Debug, message);
+    }
 
-    public static Notification Debug(string code, string message) => new(code, NotificationLevel.Debug, message);
+    public static Notification Debug(string code, string message)
+    {
+        return new Notification(code, NotificationLevel.Debug, message);
+    }
 
-    public static Notification Information(DiagnosticCode code, string message) => new(code, NotificationLevel.Information, message);
+    public static Notification Information(DiagnosticCode code, string message)
+    {
+        return new Notification(code, NotificationLevel.Information, message);
+    }
 
-    public static Notification Information(string code, string message) => new(code, NotificationLevel.Information, message);
+    public static Notification Information(string code, string message)
+    {
+        return new Notification(code, NotificationLevel.Information, message);
+    }
 
-    public static Notification Error(DiagnosticCode code, string message) => new(code, NotificationLevel.Error, message);
+    public static Notification Error(DiagnosticCode code, string message)
+    {
+        return new Notification(code, NotificationLevel.Error, message);
+    }
 
-    public static Notification Error(string code, string message) => new(code, NotificationLevel.Error, message);
+    public static Notification Error(string code, string message)
+    {
+        return new Notification(code, NotificationLevel.Error, message);
+    }
 
-    public static Notification Critical(DiagnosticCode code, string message) => new(code, NotificationLevel.Critical, message);
+    public static Notification Critical(DiagnosticCode code, string message)
+    {
+        return new Notification(code, NotificationLevel.Critical, message);
+    }
 
-    public static Notification Critical(string code, string message) => new(code, NotificationLevel.Critical, message);
+    public static Notification Critical(string code, string message)
+    {
+        return new Notification(code, NotificationLevel.Critical, message);
+    }
 
-    public static Notification Warning(DiagnosticCode code, string message) => new(code, NotificationLevel.Warning, message);
+    public static Notification Warning(DiagnosticCode code, string message)
+    {
+        return new Notification(code, NotificationLevel.Warning, message);
+    }
 
-    public static Notification Warning(string code, string message) => new(code, NotificationLevel.Warning, message);
+    public static Notification Warning(string code, string message)
+    {
+        return new Notification(code, NotificationLevel.Warning, message);
+    }
 }

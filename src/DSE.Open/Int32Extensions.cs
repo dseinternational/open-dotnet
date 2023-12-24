@@ -10,5 +10,8 @@ public static class Int32Extensions
     /// </summary>
     /// <param name="number"></param>
     /// <returns></returns>
-    public static int GetDigitCount(this int number) => (int)(uint)Math.Log10(Math.Abs(number)) + 1;
+    public static int GetDigitCount(this int number)
+    {
+        return (int)(uint)Math.Log10(Math.Abs(number)) + 1;
+    }
 }

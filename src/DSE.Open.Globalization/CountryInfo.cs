@@ -48,35 +48,53 @@ public sealed record CountryInfo
     public bool IsGdprTerritory { get; }
 
     public static CountryInfo? FromCountryCode(CountryCode code)
-        => s_twoLetterCodeLookup.Value.TryGetValue(code.ToStringInvariant().ToUpperInvariant()!, out var value) ? value : null;
+    {
+        return s_twoLetterCodeLookup.Value.TryGetValue(code.ToStringInvariant().ToUpperInvariant()!, out var value) ? value : null;
+    }
 
     public static CountryInfo? FromTwoLetterCode(string code)
-        => s_twoLetterCodeLookup.Value.TryGetValue(code, out var value) ? value : null;
+    {
+        return s_twoLetterCodeLookup.Value.TryGetValue(code, out var value) ? value : null;
+    }
 
     public static CountryInfo? FromThreeLetterCode(string code)
-        => s_threeLetterCodeLookup.Value.TryGetValue(code, out var value) ? value : null;
+    {
+        return s_threeLetterCodeLookup.Value.TryGetValue(code, out var value) ? value : null;
+    }
 
     public static CountryInfo? FromNumericCode(int code)
-        => s_numericCodeLookup.Value.TryGetValue(code, out var value) ? value : null;
+    {
+        return s_numericCodeLookup.Value.TryGetValue(code, out var value) ? value : null;
+    }
 
     private static readonly Lazy<Dictionary<string, CountryInfo>> s_twoLetterCodeLookup = new(InitTwoLetterCodeLookup);
     private static readonly Lazy<Dictionary<string, CountryInfo>> s_threeLetterCodeLookup = new(InitThreeLetterCodeLookup);
     private static readonly Lazy<Dictionary<int, CountryInfo>> s_numericCodeLookup = new(InitNumericCodeLookup);
 
     private static Dictionary<string, CountryInfo> InitThreeLetterCodeLookup()
-        => s_countryData.ToDictionary(ci => ci.ThreeLetterCode, StringComparer.OrdinalIgnoreCase);
+    {
+        return s_countryData.ToDictionary(ci => ci.ThreeLetterCode, StringComparer.OrdinalIgnoreCase);
+    }
 
     private static Dictionary<int, CountryInfo> InitNumericCodeLookup()
-        => s_countryData.ToDictionary(ci => ci.NumericCode);
+    {
+        return s_countryData.ToDictionary(ci => ci.NumericCode);
+    }
 
     public static IReadOnlyList<CountryInfo> GetAllCountries()
-        => s_countryData.ToArray();
+    {
+        return s_countryData.ToArray();
+    }
 
     public static IReadOnlyList<CountryInfo> GetEuMemberCountries()
-        => s_countryData.Where(ci => ci.IsEuMemberState).ToArray();
+    {
+        return s_countryData.Where(ci => ci.IsEuMemberState).ToArray();
+    }
 
     private static Dictionary<string, CountryInfo> InitTwoLetterCodeLookup()
-        => s_countryData.ToDictionary(ci => ci.Code.ToString(), StringComparer.OrdinalIgnoreCase);
+    {
+        return s_countryData.ToDictionary(ci => ci.Code.ToString(), StringComparer.OrdinalIgnoreCase);
+    }
 
     private static readonly List<CountryInfo> s_countryData = new()
     {

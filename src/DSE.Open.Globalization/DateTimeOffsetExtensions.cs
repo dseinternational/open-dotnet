@@ -7,6 +7,8 @@ namespace DSE.Open.Globalization;
 
 public static class DateTimeOffsetExtensions
 {
-    public static ZonedDateTime ToZonedDateTime(this DateTimeOffset value, CountryCode countryCode) =>
-        value.ToZonedDateTime(DateTimeZones.GetTimeZoneForCountry(countryCode));
+    public static ZonedDateTime ToZonedDateTime(this DateTimeOffset value, CountryCode countryCode)
+    {
+        return value.ToZonedDateTime(DateTimeZones.GetTimeZoneForCountry(countryCode));
+    }
 }

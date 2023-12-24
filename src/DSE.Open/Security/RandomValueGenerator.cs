@@ -10,7 +10,10 @@ public static class RandomValueGenerator
 {
     private const string DefaultStringValueCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz123456789";
 
-    public static string GetStringValue(int? length = null) => GetStringValue(length ?? 16, DefaultStringValueCharacters);
+    public static string GetStringValue(int? length = null)
+    {
+        return GetStringValue(length ?? 16, DefaultStringValueCharacters);
+    }
 
     public static string GetStringValue(int length, string validCharacters)
     {
@@ -31,7 +34,10 @@ public static class RandomValueGenerator
         return sb.ToString();
     }
 
-    public static int GetInt32Value() => RandomNumberGenerator.GetInt32(int.MaxValue);
+    public static int GetInt32Value()
+    {
+        return RandomNumberGenerator.GetInt32(int.MaxValue);
+    }
 
     public static int GetInt32Value(int minimum, int maximum)
     {
@@ -40,7 +46,10 @@ public static class RandomValueGenerator
             : RandomNumberGenerator.GetInt32(minimum, maximum);
     }
 
-    public static int GetPositiveInt32Value() => Math.Abs(GetInt32Value());
+    public static int GetPositiveInt32Value()
+    {
+        return Math.Abs(GetInt32Value());
+    }
 
     public static long GetInt64Value()
     {
@@ -48,5 +57,8 @@ public static class RandomValueGenerator
         return BitConverter.ToInt64(data, 0);
     }
 
-    public static long GetPositiveInt64Value() => Math.Abs(GetInt64Value());
+    public static long GetPositiveInt64Value()
+    {
+        return Math.Abs(GetInt64Value());
+    }
 }

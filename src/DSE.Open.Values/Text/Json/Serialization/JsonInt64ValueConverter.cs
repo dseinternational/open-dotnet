@@ -10,7 +10,9 @@ public class JsonInt64ValueConverter<TValue> : JsonConverter<TValue>
     where TValue : struct, IValue<TValue, int>
 {
     public override TValue Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-        => (TValue)reader.GetInt64();
+    {
+        return (TValue)reader.GetInt64();
+    }
 
     public override void Write(Utf8JsonWriter writer, TValue value, JsonSerializerOptions options)
     {

@@ -82,9 +82,15 @@ public readonly record struct YearDate : IComparable<YearDate>, ISpanParsable<Ye
 
     public int? DayOfYear => HasDayAndMonth ? _date.DayOfYear : null;
 
-    public int CompareTo(YearDate other) => _date.CompareTo(other._date);
+    public int CompareTo(YearDate other)
+    {
+        return _date.CompareTo(other._date);
+    }
 
-    public override string ToString() => ToString(null, null);
+    public override string ToString()
+    {
+        return ToString(null, null);
+    }
 
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
@@ -109,7 +115,10 @@ public readonly record struct YearDate : IComparable<YearDate>, ISpanParsable<Ye
             : _date.Year.TryFormat(destination, out charsWritten, "0000", provider);
     }
 
-    public static YearDate Parse(string s) => Parse(s, null);
+    public static YearDate Parse(string s)
+    {
+        return Parse(s, null);
+    }
 
     public static YearDate Parse(string s, IFormatProvider? provider)
     {
@@ -128,7 +137,10 @@ public readonly record struct YearDate : IComparable<YearDate>, ISpanParsable<Ye
         return default; // unreachable
     }
 
-    public static bool TryParse(string? s, out YearDate result) => TryParse(s, null, out result);
+    public static bool TryParse(string? s, out YearDate result)
+    {
+        return TryParse(s, null, out result);
+    }
 
     public static bool TryParse(string? s, IFormatProvider? provider, out YearDate result)
     {
@@ -166,11 +178,23 @@ public readonly record struct YearDate : IComparable<YearDate>, ISpanParsable<Ye
         return false;
     }
 
-    public static bool operator <(YearDate left, YearDate right) => left.CompareTo(right) < 0;
+    public static bool operator <(YearDate left, YearDate right)
+    {
+        return left.CompareTo(right) < 0;
+    }
 
-    public static bool operator <=(YearDate left, YearDate right) => left.CompareTo(right) <= 0;
+    public static bool operator <=(YearDate left, YearDate right)
+    {
+        return left.CompareTo(right) <= 0;
+    }
 
-    public static bool operator >(YearDate left, YearDate right) => left.CompareTo(right) > 0;
+    public static bool operator >(YearDate left, YearDate right)
+    {
+        return left.CompareTo(right) > 0;
+    }
 
-    public static bool operator >=(YearDate left, YearDate right) => left.CompareTo(right) >= 0;
+    public static bool operator >=(YearDate left, YearDate right)
+    {
+        return left.CompareTo(right) >= 0;
+    }
 }

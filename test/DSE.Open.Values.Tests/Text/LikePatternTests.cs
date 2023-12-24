@@ -20,7 +20,9 @@ public class LikePatternTests
     [InlineData("a[abc]", "ac")]
     [InlineData("a[abc][abc]", "aca")]
     public void IsMatch_returns_true_for_matches(string pattern, string value)
-        => Assert.True(new LikePattern(pattern).IsMatch(value, StringComparison.Ordinal));
+    {
+        Assert.True(new LikePattern(pattern).IsMatch(value, StringComparison.Ordinal));
+    }
 
     [Theory]
     [InlineData("", " ")]
@@ -34,7 +36,9 @@ public class LikePatternTests
     [InlineData("a[abc]", "ca")]
     [InlineData("a[abc][abc]", "acd")]
     public void IsNotMatch_returns_false_for_nonmatches(string pattern, string value)
-        => Assert.False(new LikePattern(pattern).IsMatch(value, StringComparison.Ordinal));
+    {
+        Assert.False(new LikePattern(pattern).IsMatch(value, StringComparison.Ordinal));
+    }
 
     [Theory]
     [InlineData("", "")]
@@ -46,7 +50,9 @@ public class LikePatternTests
     [InlineData("abcd*", "abcd%")]
     [InlineData("a[abc]", "a[abc]")]
     public void ToSqlLikePattern_returns_expected_pattern(string pattern, string sqlLikePattern)
-        => Assert.Equal(new LikePattern(pattern).ToSqlLikePattern(), sqlLikePattern);
+    {
+        Assert.Equal(new LikePattern(pattern).ToSqlLikePattern(), sqlLikePattern);
+    }
 
     [Fact]
     public void Serializes_to_string_value()

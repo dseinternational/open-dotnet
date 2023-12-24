@@ -14,7 +14,10 @@ public class BinaryValueToHexUpperBenchmarks
     private const string Format = "X";
 
     [Benchmark]
-    public string ToHexUpperString() => s_value.ToString(BinaryStringEncoding.HexUpper);
+    public string ToHexUpperString()
+    {
+        return s_value.ToString(BinaryStringEncoding.HexUpper);
+    }
 
     [Benchmark]
     public bool TryFormatHexUpper_Chars()

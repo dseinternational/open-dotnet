@@ -18,11 +18,23 @@ public readonly partial struct Percent : IDivisibleValue<Percent, double>, IUtf8
 
     public static Percent Zero { get; } = new(0);
 
-    public static bool IsValidValue(double value) => value is >= -100 and <= 100;
+    public static bool IsValidValue(double value)
+    {
+        return value is >= -100 and <= 100;
+    }
 
-    public Ratio ToRatio() => (Ratio)(_value * 100);
+    public Ratio ToRatio()
+    {
+        return (Ratio)(_value * 100);
+    }
 
-    public static explicit operator Percent(Ratio value) => FromRatio(value);
+    public static explicit operator Percent(Ratio value)
+    {
+        return FromRatio(value);
+    }
 
-    public static Percent FromRatio(Ratio value) => new((double)value * 100);
+    public static Percent FromRatio(Ratio value)
+    {
+        return new Percent((double)value * 100);
+    }
 }

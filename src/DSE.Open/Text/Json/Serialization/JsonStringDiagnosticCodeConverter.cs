@@ -9,5 +9,8 @@ public class JsonStringDiagnosticCodeConverter : SpanParsableCharWritingJsonConv
 {
     public static readonly JsonStringDiagnosticCodeConverter Default = new();
 
-    protected override int GetMaxCharCountToWrite(DiagnosticCode value) => DiagnosticCode.MaxLength;
+    protected override int GetMaxCharCountToWrite(DiagnosticCode value)
+    {
+        return DiagnosticCode.MaxLength;
+    }
 }

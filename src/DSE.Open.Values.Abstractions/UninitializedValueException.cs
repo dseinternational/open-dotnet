@@ -40,5 +40,8 @@ public sealed class UninitializedValueException<TValue, T> : Exception
     }
 
     [DoesNotReturn]
-    private static void Throw() => throw new UninitializedValueException<TValue, T>();
+    private static void Throw()
+    {
+        throw new UninitializedValueException<TValue, T>();
+    }
 }

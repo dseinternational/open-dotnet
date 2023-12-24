@@ -9,5 +9,8 @@ public class JsonStringIdentifierConverter : SpanParsableCharWritingJsonConverte
 {
     public static readonly JsonStringIdentifierConverter Default = new();
 
-    protected override int GetMaxCharCountToWrite(Identifier value) => Identifier.MaxLength;
+    protected override int GetMaxCharCountToWrite(Identifier value)
+    {
+        return Identifier.MaxLength;
+    }
 }

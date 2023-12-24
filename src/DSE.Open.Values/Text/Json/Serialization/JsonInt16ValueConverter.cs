@@ -10,7 +10,9 @@ public class JsonInt16ValueConverter<TValue> : JsonConverter<TValue>
     where TValue : struct, IValue<TValue, int>
 {
     public override TValue Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-        => (TValue)reader.GetInt16();
+    {
+        return (TValue)reader.GetInt16();
+    }
 
     public override void Write(Utf8JsonWriter writer, TValue value, JsonSerializerOptions options)
     {

@@ -95,7 +95,7 @@ public readonly record struct Sign : ISpanFormattable, ISpanParsable<Sign>
                 }
             }
         }
-        
+
         result = default;
         return false;
     }

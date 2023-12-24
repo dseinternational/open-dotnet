@@ -15,7 +15,10 @@ public interface IUtf8SpanParsableValue<TSelf, T> : IValue<TSelf, T>, IUtf8SpanP
     where T : IEquatable<T>, IUtf8SpanParsable<T>
     where TSelf : struct, IUtf8SpanParsableValue<TSelf, T>
 {
-    static new TSelf Parse(ReadOnlySpan<byte> utf8Text, IFormatProvider? provider) => (TSelf)T.Parse(utf8Text, provider);
+    static new TSelf Parse(ReadOnlySpan<byte> utf8Text, IFormatProvider? provider)
+    {
+        return (TSelf)T.Parse(utf8Text, provider);
+    }
 
     static new bool TryParse(
         ReadOnlySpan<byte> utf8Text,

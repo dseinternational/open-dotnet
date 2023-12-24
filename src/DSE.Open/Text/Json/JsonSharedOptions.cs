@@ -70,20 +70,24 @@ public static class JsonSharedOptions
         JsonSerializerOptions options,
         bool writeIndented = false,
         bool addDefaultConverters = true)
-        => ConfigureJsonOptions(options, s_defaultNamingPolicy, writeIndented, addDefaultConverters);
+    {
+        ConfigureJsonOptions(options, s_defaultNamingPolicy, writeIndented, addDefaultConverters);
+    }
 
     public static void ConfigureJsonOptions(
         JsonSerializerOptions options,
         JsonNamingPolicy commonNamingPolicy,
         bool writeIndented = false,
         bool addDefaultConverters = true)
-        => ConfigureJsonOptions(
+    {
+        ConfigureJsonOptions(
             options,
             commonNamingPolicy,
             writeIndented,
             addDefaultConverters,
             false,
             null);
+    }
 
     public static void ConfigureJsonOptions(
         JsonSerializerOptions options,
@@ -112,7 +116,9 @@ public static class JsonSharedOptions
     }
 
     public static void AddDefaultConverters(IList<JsonConverter> converters)
-        => AddDefaultConverters(converters, false);
+    {
+        AddDefaultConverters(converters, false);
+    }
 
     public static void AddDefaultConverters(IList<JsonConverter> converters, bool includeJsonValueObjectConverter)
     {

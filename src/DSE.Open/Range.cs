@@ -49,9 +49,15 @@ public readonly record struct Range<T> : ISpanFormattable, ISpanParsable<Range<T
     /// <returns><see langword="true"/> if <paramref name="value"/> is greater that or equal to
     /// <see cref="Start"/> and less than or equal to <see cref="End"/>, otherwise
     /// <see langword="false"/>.</returns>
-    public bool Includes(T value) => Start.CompareTo(value) <= 0 && End.CompareTo(value) >= 0;
+    public bool Includes(T value)
+    {
+        return Start.CompareTo(value) <= 0 && End.CompareTo(value) >= 0;
+    }
 
-    public override string ToString() => ToString(null, null);
+    public override string ToString()
+    {
+        return ToString(null, null);
+    }
 
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
@@ -62,10 +68,14 @@ public readonly record struct Range<T> : ISpanFormattable, ISpanParsable<Range<T
     }
 
     public bool TryFormat(Span<char> destination, out int charsWritten)
-        => TryFormat(destination, out charsWritten, default, default);
+    {
+        return TryFormat(destination, out charsWritten, default, default);
+    }
 
     public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format)
-        => TryFormat(destination, out charsWritten, format, null);
+    {
+        return TryFormat(destination, out charsWritten, format, null);
+    }
 
     public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider? provider)
     {

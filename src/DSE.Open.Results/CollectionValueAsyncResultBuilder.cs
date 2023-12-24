@@ -26,9 +26,11 @@ public class CollectionValueAsyncResultBuilder<TValue>
     : CollectionValueAsyncResultBuilder<CollectionValueAsyncResult<TValue>, TValue>
 {
     public override CollectionValueAsyncResult<TValue> GetResult()
-        => new()
+    {
+        return new CollectionValueAsyncResult<TValue>
         {
             Value = Value ?? AsyncEnumerable.Empty<TValue>(),
             Notifications = [.. Notifications],
         };
+    }
 }

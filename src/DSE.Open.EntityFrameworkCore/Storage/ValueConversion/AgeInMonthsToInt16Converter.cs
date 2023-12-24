@@ -15,7 +15,13 @@ public sealed class AgeInMonthsToInt16Converter : ValueConverter<AgeInMonths, sh
     {
     }
 
-    private static short ConvertToInt16(AgeInMonths code) => (short)code.TotalMonths;
+    private static short ConvertToInt16(AgeInMonths code)
+    {
+        return (short)code.TotalMonths;
+    }
 
-    private static AgeInMonths ConvertFromInt16(short code) => new(code);
+    private static AgeInMonths ConvertFromInt16(short code)
+    {
+        return new AgeInMonths(code);
+    }
 }

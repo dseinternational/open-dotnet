@@ -16,7 +16,10 @@ public class TelephoneNumberTests
 
     [Theory]
     [MemberData(nameof(ValidCountryCallingCodes))]
-    public void IsValidCountryCallingCodeReturnsTrueForAssignedCodes(uint code) => Assert.True(TelephoneNumber.IsValidCountryCallingCode(code));
+    public void IsValidCountryCallingCodeReturnsTrueForAssignedCodes(uint code)
+    {
+        Assert.True(TelephoneNumber.IsValidCountryCallingCode(code));
+    }
 
     [Theory]
     [MemberData(nameof(ValidNumberStrings))]

@@ -8,5 +8,7 @@ public interface IFormattableValue<TSelf, T> : IValue<TSelf, T>, IFormattable
     where TSelf : struct, IFormattableValue<TSelf, T>
 {
     new virtual string ToString(string? format, IFormatProvider? formatProvider)
-       => ((T)this).ToString(format, formatProvider);
+    {
+        return ((T)this).ToString(format, formatProvider);
+    }
 }

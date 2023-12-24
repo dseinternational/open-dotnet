@@ -8,7 +8,7 @@ namespace DSE.Open.Values;
 // TODO: think more about nullability
 
 /// <summary>
-/// Defines a value that is encoded as a value of type <typeparamref name="T"/> and 
+/// Defines a value that is encoded as a value of type <typeparamref name="T"/> and
 /// which may also represent a 'null' or unknown state.
 /// </summary>
 /// <typeparam name="TSelf">The type that implements the interface.</typeparam>
@@ -22,16 +22,25 @@ public interface INullableValue<TSelf, T> : IValue<TSelf, T>, INullable<TSelf, T
 
     // T INullable<TSelf, T>.Value => Value;
 
-    new bool Equals(TSelf other) => TSelf.Equals((TSelf)this, other);
+    new bool Equals(TSelf other)
+    {
+        return TSelf.Equals((TSelf)this, other);
+    }
 
     static new virtual bool Equals(TSelf v1, TSelf v2)
-        => v1.HasValue
-        ? v2.HasValue && EqualityComparer<T>.Default.Equals(v1.Value, v2.Value)
-        : !v2.HasValue;
+    {
+        return v1.HasValue
+            ? v2.HasValue && EqualityComparer<T>.Default.Equals(v1.Value, v2.Value)
+            : !v2.HasValue;
+    }
 
     static virtual bool operator ==(TSelf left, TSelf right)
-        => left.Equals(right);
+    {
+        return left.Equals(right);
+    }
 
     static virtual bool operator !=(TSelf left, TSelf right)
-        => !left.Equals(right);
+    {
+        return !left.Equals(right);
+    }
 }

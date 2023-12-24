@@ -14,7 +14,13 @@ public sealed class BinaryValueToByteArrayConverter : ValueConverter<BinaryValue
     {
     }
 
-    private static byte[] ConvertTo(BinaryValue value) => value.ToArray();
+    private static byte[] ConvertTo(BinaryValue value)
+    {
+        return value.ToArray();
+    }
 
-    private static BinaryValue ConvertFrom(byte[] value) => new(value);
+    private static BinaryValue ConvertFrom(byte[] value)
+    {
+        return new BinaryValue(value);
+    }
 }

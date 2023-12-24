@@ -20,14 +20,36 @@ public abstract class AsciiCharComparer : IComparer<AsciiChar>, IEqualityCompare
 
     private sealed class AsciiCharComparerCaseSensitive : AsciiCharComparer
     {
-        public override int Compare(AsciiChar x, AsciiChar y) => x.CompareTo(y);
-        public override bool Equals(AsciiChar x, AsciiChar y) => x.Equals(y);
-        public override int GetHashCode([DisallowNull] AsciiChar obj) => obj.GetHashCode();
+        public override int Compare(AsciiChar x, AsciiChar y)
+        {
+            return x.CompareTo(y);
+        }
+
+        public override bool Equals(AsciiChar x, AsciiChar y)
+        {
+            return x.Equals(y);
+        }
+
+        public override int GetHashCode([DisallowNull] AsciiChar obj)
+        {
+            return obj.GetHashCode();
+        }
     }
     private sealed class AsciiCharComparerCaseInsensitive : AsciiCharComparer
     {
-        public override int Compare(AsciiChar x, AsciiChar y) => AsciiChar.CompareToCaseInsensitive(x, y);
-        public override bool Equals(AsciiChar x, AsciiChar y) => AsciiChar.EqualsCaseInsensitive(x, y);
-        public override int GetHashCode([DisallowNull] AsciiChar obj) => obj.GetHashCode();
+        public override int Compare(AsciiChar x, AsciiChar y)
+        {
+            return AsciiChar.CompareToCaseInsensitive(x, y);
+        }
+
+        public override bool Equals(AsciiChar x, AsciiChar y)
+        {
+            return AsciiChar.EqualsCaseInsensitive(x, y);
+        }
+
+        public override int GetHashCode([DisallowNull] AsciiChar obj)
+        {
+            return obj.GetHashCode();
+        }
     }
 }

@@ -13,7 +13,10 @@ public class BinaryValueToBase64Benchmarks
     private static readonly BinaryValue s_value = BinaryValue.FromEncodedString("Hello, World!");
 
     [Benchmark]
-    public string ToBase64String() => s_value.ToBase64EncodedString();
+    public string ToBase64String()
+    {
+        return s_value.ToBase64EncodedString();
+    }
 
     [Benchmark]
     public bool TryFormatBase64_Chars()

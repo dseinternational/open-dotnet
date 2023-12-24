@@ -5,5 +5,8 @@ namespace DSE.Open;
 
 public static class DateTimeOffsetHelper
 {
-    public static DateTimeOffset ParseIso8601(string value) => DateTimeOffset.ParseExact(value, "o", CultureInfo.InvariantCulture);
+    public static DateTimeOffset ParseIso8601(string value)
+    {
+        return DateTimeOffset.ParseExact(value, "o", CultureInfo.InvariantCulture);
+    }
 }

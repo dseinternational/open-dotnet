@@ -26,5 +26,8 @@ internal static class StringExtensions
         return string.IsInterned(s) ?? s;
     }
 
-    public static string ToStringInterned(this string s) => string.IsInterned(s) ?? s;
+    public static string ToStringInterned(this string s)
+    {
+        return string.IsInterned(s) ?? s;
+    }
 }

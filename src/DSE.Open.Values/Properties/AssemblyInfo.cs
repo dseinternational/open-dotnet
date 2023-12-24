@@ -3,5 +3,5 @@
 
 using System.Runtime.CompilerServices;
 
-[assembly:InternalsVisibleTo("DSE.Open.Values.Tests")]
+[assembly: InternalsVisibleTo("DSE.Open.Values.Tests")]
 

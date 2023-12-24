@@ -15,7 +15,10 @@ public sealed class AlphaCodeToStringConverter : ValueConverter<AlphaCode, strin
     {
     }
 
-    private static string ConvertToString(AlphaCode code) => code.ToString();
+    private static string ConvertToString(AlphaCode code)
+    {
+        return code.ToString();
+    }
 
     private static AlphaCode ConvertFromString(string code)
     {

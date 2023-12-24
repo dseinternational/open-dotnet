@@ -22,13 +22,16 @@ public static class Base62Converter
     /// </summary>
     /// <param name="c"></param>
     /// <returns></returns>
-    private static int GetIndex(char c) => c switch
+    private static int GetIndex(char c)
     {
-        >= '0' and <= '9' => c - 48,
-        >= 'A' and <= 'Z' => c - 55,
-        >= 'a' and <= 'z' => c - 61,
-        _ => -1
-    };
+        return c switch
+        {
+            >= '0' and <= '9' => c - 48,
+            >= 'A' and <= 'Z' => c - 55,
+            >= 'a' and <= 'z' => c - 61,
+            _ => -1
+        };
+    }
 
     private static bool TryGetIndex(char c, out int value)
     {

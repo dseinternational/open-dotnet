@@ -15,7 +15,10 @@ public sealed class AgeInMonthsToStringConverter : ValueConverter<AgeInMonths, s
     {
     }
 
-    private static string ConvertToString(AgeInMonths code) => code.ToString();
+    private static string ConvertToString(AgeInMonths code)
+    {
+        return code.ToString();
+    }
 
     private static AgeInMonths ConvertFromString(string code)
     {

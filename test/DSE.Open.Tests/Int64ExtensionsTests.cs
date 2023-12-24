@@ -13,5 +13,8 @@ public class Int64ExtensionsTests
     [InlineData(-123456789L, 9)]
     [InlineData(1234567890123L, 13)]
     [InlineData(-1234567890123L, 13)]
-    public void GetDigitCountReturnsCorrectCount(long number, int digits) => Assert.Equal(digits, number.GetDigitCount());
+    public void GetDigitCountReturnsCorrectCount(long number, int digits)
+    {
+        Assert.Equal(digits, number.GetDigitCount());
+    }
 }

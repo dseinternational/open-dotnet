@@ -6,19 +6,31 @@ namespace DSE.Open.Values.Tests;
 public class DateMonthOnlyTests
 {
     [Fact]
-    public void Parse_empty_span_fails() => Assert.Throws<FormatException>(() => DateMonthOnly.Parse(Span<char>.Empty, null));
+    public void Parse_empty_span_fails()
+    {
+        Assert.Throws<FormatException>(() => DateMonthOnly.Parse(Span<char>.Empty, null));
+    }
 
     [Fact]
-    public void Parse_empty_string_fails() => Assert.Throws<FormatException>(() => DateMonthOnly.Parse("", null));
+    public void Parse_empty_string_fails()
+    {
+        Assert.Throws<FormatException>(() => DateMonthOnly.Parse("", null));
+    }
 
     [Fact]
-    public void Parse_null_string_fails() => Assert.Throws<ArgumentNullException>(() => DateMonthOnly.Parse(null!, null));
+    public void Parse_null_string_fails()
+    {
+        Assert.Throws<ArgumentNullException>(() => DateMonthOnly.Parse(null!, null));
+    }
 
     [Theory]
     [InlineData("2023-01")]
     [InlineData("2023-05-06")]
     [InlineData("9090-11")]
-    public void Parse_valid_values_succeeds(string value) => _ = DateMonthOnly.Parse(value, CultureInfo.InvariantCulture);
+    public void Parse_valid_values_succeeds(string value)
+    {
+        _ = DateMonthOnly.Parse(value, CultureInfo.InvariantCulture);
+    }
 
     [Theory]
     [InlineData("2023-01", "2023-01")]

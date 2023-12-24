@@ -14,7 +14,10 @@ public static class StringHelper
 {
     public static readonly IReadOnlyList<char> ValidWordPunctuationCharacters = new[] { '’', '\'', '-', ' ' };
 
-    public static string? CapitalizeInvariant(string? text, CapitalizationStyle style) => Capitalize(text, style, CultureInfo.InvariantCulture);
+    public static string? CapitalizeInvariant(string? text, CapitalizationStyle style)
+    {
+        return Capitalize(text, style, CultureInfo.InvariantCulture);
+    }
 
     /// <summary>Adjusts the capitalization of a given string according the specified
     ///     <see cref="CapitalizationStyle" /> and <see cref="CultureInfo" />.</summary>
@@ -47,7 +50,10 @@ public static class StringHelper
     /// <returns>A <see cref="string" /> including all of the characters from the original
     ///     <see cref="string" /> that are alphanumeric.</returns>
     [return: NotNullIfNotNull("text")]
-    public static string? ExtractAlphaNumeric(string? text) => GetCharacters(text, char.IsLetterOrDigit);
+    public static string? ExtractAlphaNumeric(string? text)
+    {
+        return GetCharacters(text, char.IsLetterOrDigit);
+    }
 
     /// <summary>Creates a <see cref="string" /> by copying all of the characters in the original
     ///     <see cref="string" /> that are alphanumeric or whitespace.</summary>
@@ -55,7 +61,10 @@ public static class StringHelper
     /// <returns>A <see cref="string" /> including all of the characters from the original
     ///     <see cref="string" /> that are alphanumeric or whitespace.</returns>
     [return: NotNullIfNotNull("text")]
-    public static string? ExtractLetterOrDigitOrWhitespace(string? text) => GetCharacters(text, c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c));
+    public static string? ExtractLetterOrDigitOrWhitespace(string? text)
+    {
+        return GetCharacters(text, c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c));
+    }
 
     /// <summary>
     ///     Removes any character that is not a numeric digit (0-9) from the supplied
@@ -70,13 +79,19 @@ public static class StringHelper
     ///     Enumeration).
     /// </remarks>
     [return: NotNullIfNotNull("text")]
-    public static string? ExtractDigits(string? text) => GetCharacters(text, char.IsDigit);
+    public static string? ExtractDigits(string? text)
+    {
+        return GetCharacters(text, char.IsDigit);
+    }
 
     /// <summary>Removes any character that is not a letter from the supplied character array.</summary>
     /// <param name="text">A character array containing the text.</param>
     /// <returns>The input character array, with non-letter characters removed.</returns>
     [return: NotNullIfNotNull("text")]
-    public static string? ExtractLetters(string? text) => GetCharacters(text, char.IsLetter);
+    public static string? ExtractLetters(string? text)
+    {
+        return GetCharacters(text, char.IsLetter);
+    }
 
     [return: NotNullIfNotNull("text")]
     private static string? GetCharacters(string? text, Predicate<char> predicate)
@@ -445,10 +460,16 @@ public static class StringHelper
     }
 
     [return: NotNullIfNotNull("name")]
-    public static string? ToSlugCase(string? name) => ToSeparatedCase(name, '-');
+    public static string? ToSlugCase(string? name)
+    {
+        return ToSeparatedCase(name, '-');
+    }
 
     [return: NotNullIfNotNull("name")]
-    public static string? ToSnakeCase(string? name) => ToSeparatedCase(name, '_');
+    public static string? ToSnakeCase(string? name)
+    {
+        return ToSeparatedCase(name, '_');
+    }
 
     [return: NotNullIfNotNull("name")]
     internal static string? ToSeparatedCase(string? name, char separator)
@@ -526,14 +547,20 @@ public static class StringHelper
     /// </summary>
     /// <param name="value">The string to convert.</param>
     /// <returns></returns>
-    public static string ToTitleCase(this string value) => value.ToTitleCase(CultureInfo.CurrentCulture);
+    public static string ToTitleCase(this string value)
+    {
+        return value.ToTitleCase(CultureInfo.CurrentCulture);
+    }
 
     /// <summary>
     /// Returns a string converted to title casing using the invariant culture.
     /// </summary>
     /// <param name="value">The string to convert.</param>
     /// <returns></returns>
-    public static string ToTitleCaseInvariant(this string value) => value.ToTitleCase(CultureInfo.InvariantCulture);
+    public static string ToTitleCaseInvariant(this string value)
+    {
+        return value.ToTitleCase(CultureInfo.InvariantCulture);
+    }
 
     /// <summary>
     /// Returns a string converted to title casing using the specified culture.
