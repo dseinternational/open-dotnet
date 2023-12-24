@@ -62,6 +62,6 @@ T>
 
     private static HashSet<T> GenerateSnapshot(ISet<T> values)
     {
-        return new(values);
+        return [..values];
     }
 }

@@ -35,7 +35,7 @@ public class ObservableList<T> : IObservableList<T>
 
     public ObservableList()
     {
-        _observedItems = new List<T>();
+        _observedItems = [];
     }
 
     public ObservableList(int capacity)
@@ -49,7 +49,7 @@ public class ObservableList<T> : IObservableList<T>
     {
         ArgumentNullException.ThrowIfNull(items);
 
-        _observedItems = new List<T>(items);
+        _observedItems = [..items];
     }
 
     public int Capacity => _observedItems.Capacity;
@@ -128,7 +128,7 @@ public class ObservableList<T> : IObservableList<T>
     {
         ArgumentNullException.ThrowIfNull(collection);
 
-        var collectionAsList = collection as List<T> ?? new List<T>(collection);
+        var collectionAsList = collection as List<T> ?? [..collection];
 
         if (collectionAsList.Count == 0)
         {
@@ -388,7 +388,7 @@ public class ObservableList<T> : IObservableList<T>
     {
         ArgumentNullException.ThrowIfNull(collection);
 
-        var collectionAsList = collection as List<T> ?? new List<T>(collection);
+        var collectionAsList = collection as List<T> ?? [..collection];
 
         if (collectionAsList.Count == 0)
         {

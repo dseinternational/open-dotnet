@@ -20,6 +20,6 @@ T>
 
     private static List<T> GenerateSnapshot(ICollection<T> values)
     {
-        return new(values);
+        return [..values];
     }
 }

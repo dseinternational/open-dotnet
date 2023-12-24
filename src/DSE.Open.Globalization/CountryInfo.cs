@@ -96,8 +96,8 @@ public sealed record CountryInfo
         return s_countryData.ToDictionary(ci => ci.Code.ToString(), StringComparer.OrdinalIgnoreCase);
     }
 
-    private static readonly List<CountryInfo> s_countryData = new()
-    {
+    private static readonly List<CountryInfo> s_countryData =
+    [
         FromData("AD", "AND", 20, "Andorra", 0, 0, 0, 0, 0),
         FromData("AE", "ARE", 784, "United Arab Emirates", 0, 0, 0, 0, 0),
         FromData("AF", "AFG", 4, "Afghanistan", 0, 0, 0, 0, 0),
@@ -348,5 +348,5 @@ public sealed record CountryInfo
         FromData("ZA", "ZAF", 710, "South Africa", 0, 0, 0, 0, 0),
         FromData("ZM", "ZMB", 894, "Zambia", 0, 0, 0, 0, 0),
         FromData("ZW", "ZWE", 716, "Zimbabwe", 0, 0, 0, 0, 0)
-    };
+    ];
 }

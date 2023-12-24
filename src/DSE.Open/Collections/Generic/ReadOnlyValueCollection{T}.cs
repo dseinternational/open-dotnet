@@ -20,6 +20,7 @@ public class ReadOnlyValueCollection<T>
       ICollection<T>,
       IEquatable<ReadOnlyValueCollection<T>>
 {
+    // Cannot use collection expression because this is the empty used by the builder when supplied with no items.
     public static readonly ReadOnlyValueCollection<T> Empty = new();
 
     internal readonly List<T> _items;
@@ -31,7 +32,7 @@ public class ReadOnlyValueCollection<T>
 
     public ReadOnlyValueCollection(IEnumerable<T> list)
     {
-        _items = list is ReadOnlyValueCollection<T> rovc ? rovc._items : new List<T>(list);
+        _items = list is ReadOnlyValueCollection<T> rovc ? rovc._items : [..list];
     }
 
     /// <summary>

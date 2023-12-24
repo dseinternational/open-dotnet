@@ -7,14 +7,14 @@ public abstract class CollectionValueResultBuilder<TResult, TValue>
     : ValueResultBuilder<TResult, IEnumerable<TValue>>
     where TResult : CollectionValueResult<TValue>
 {
-    private List<TValue> _items = new();
+    private List<TValue> _items = [];
 
     public ICollection<TValue> Items => _items;
 
     public override IEnumerable<TValue>? Value
     {
         get => _items;
-        set => base.Value = _items = new List<TValue>(value ?? Enumerable.Empty<TValue>());
+        set => base.Value = _items = [..value];
     }
 
     public override void MergeNotificationsAndValue(TResult valueResult)

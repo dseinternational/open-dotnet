@@ -66,7 +66,7 @@ public class CollectionExtensionsTests
     public void FindIndex_WithIListStartAndCount_ShouldReturnCorrectIndex()
     {
         // Arrange
-        List<int> list = new() { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+        List<int> list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
         const int target = 6;
 
         // Act
@@ -80,7 +80,7 @@ public class CollectionExtensionsTests
     public void FindIndex_WithIReadOnlyListStartAndCount_ShouldReturnCorrectIndex()
     {
         // Arrange
-        List<int> list = new() { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+        List<int> list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
         const int target = 6;
 
         // Act

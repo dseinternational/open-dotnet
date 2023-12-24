@@ -50,9 +50,9 @@ public readonly record struct Timestamp : IComparable<Timestamp>, ISpanFormattab
 
     public int CompareTo(Timestamp other)
     {
-        ReadOnlySpan<byte> v1 = stackalloc[] { _b0, _b1, _b2, _b3, _b4, _b5, _b6, _b7 };
-        ReadOnlySpan<byte> v2 = stackalloc[]
-        {
+        ReadOnlySpan<byte> v1 = [_b0, _b1, _b2, _b3, _b4, _b5, _b6, _b7];
+        ReadOnlySpan<byte> v2 =
+        [
             other._b0,
             other._b1,
             other._b2,
@@ -61,7 +61,7 @@ public readonly record struct Timestamp : IComparable<Timestamp>, ISpanFormattab
             other._b5,
             other._b6,
             other._b7
-        };
+        ];
         return v1.SequenceCompareTo(v2);
     }
 
@@ -94,7 +94,7 @@ public readonly record struct Timestamp : IComparable<Timestamp>, ISpanFormattab
             return this == Empty;
         }
 
-        ReadOnlySpan<byte> bytes = stackalloc[] { _b0, _b1, _b2, _b3, _b4, _b5, _b6, _b7 };
+        ReadOnlySpan<byte> bytes = [_b0, _b1, _b2, _b3, _b4, _b5, _b6, _b7];
         return Convert.TryToBase64Chars(bytes, destination, out charsWritten);
     }
 
