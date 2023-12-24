@@ -195,7 +195,7 @@ public static partial class MemoryExtensions
 
         for (var i = 0; i < span.Length; i++)
         {
-            span[i] = char.ToLower(span[i]);
+            span[i] = char.ToLower(span[i], CultureInfo.CurrentCulture);
         }
     }
 
@@ -221,7 +221,7 @@ public static partial class MemoryExtensions
 
         for (var i = 0; i < span.Length; i++)
         {
-            span[i] = char.ToUpper(span[i]);
+            span[i] = char.ToUpper(span[i], CultureInfo.CurrentCulture);
         }
     }
 

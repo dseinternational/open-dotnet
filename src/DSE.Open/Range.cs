@@ -62,7 +62,7 @@ public readonly record struct Range<T> : ISpanFormattable, ISpanParsable<Range<T
     }
 
     public bool TryFormat(Span<char> destination, out int charsWritten)
-        => TryFormat(destination, out charsWritten, default);
+        => TryFormat(destination, out charsWritten, default, default);
 
     public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format)
         => TryFormat(destination, out charsWritten, format, null);

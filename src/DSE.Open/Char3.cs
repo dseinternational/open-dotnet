@@ -77,11 +77,7 @@ public readonly struct Char3
 
     public static explicit operator Char3(string value) => FromString(value);
 
-    public Char3 ToUpper()
-        => new(
-            char.ToUpper(_c0),
-            char.ToUpper(_c1),
-            char.ToUpper(_c2));
+    public Char3 ToUpper() => ToUpper(CultureInfo.CurrentCulture);
 
     public Char3 ToUpper(CultureInfo cultureInfo)
         => new(
@@ -91,11 +87,7 @@ public readonly struct Char3
 
     public Char3 ToUpperInvariant() => ToUpper(CultureInfo.InvariantCulture);
 
-    public Char3 ToLower()
-        => new(
-            char.ToLower(_c0),
-            char.ToLower(_c1),
-            char.ToLower(_c2));
+    public Char3 ToLower() => ToLower(CultureInfo.CurrentCulture);
 
     public Char3 ToLower(CultureInfo cultureInfo)
         => new(
