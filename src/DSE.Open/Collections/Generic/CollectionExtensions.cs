@@ -42,7 +42,7 @@ public static class CollectionExtensions
 
         if (collection is List<T> list)
         {
-            list.RemoveRange(values);
+            list.RemoveAll(values.Contains);
             return;
         }
 
