@@ -53,6 +53,7 @@ internal sealed class SourceWriter
             if (value < 0)
             {
                 Throw();
+
                 static void Throw()
                 {
                     throw new ArgumentOutOfRangeException(nameof(value));
@@ -79,7 +80,6 @@ internal sealed class SourceWriter
         }
 
         bool isFinalLine;
-
         var remainingText = text.AsSpan();
 
         do
@@ -89,9 +89,16 @@ internal sealed class SourceWriter
             AddIndentation();
             AppendSpan(_sb, nextLine);
             _ = _sb.AppendLine();
-        }
+        } while (!isFinalLine);
+    }
 
-        while (!isFinalLine);
+    /// <summary>
+    /// Writes a line of text to the output buffer followed by a second newline character.
+    /// </summary>
+    public void WriteBlock(string text)
+    {
+        WriteLine(text);
+        _sb.AppendLine();
     }
 
     public void WriteLine()
@@ -122,6 +129,7 @@ internal sealed class SourceWriter
         ReadOnlySpan<char> rest;
 
         var lineLength = remainingText.IndexOf('\n');
+
         if (lineLength == -1)
         {
             lineLength = remainingText.Length;

@@ -39,7 +39,97 @@ internal static class MethodDeclarationSyntaxExtensions
                && ps1.Identifier.ValueText == "provider";
     }
 
-    // public static bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider? provider);
+    // IParsable<TSelf>.Parse(string s, IFormatProvider? provider)
+    public static bool IsIParsableParseMethod(this MethodDeclarationSyntax s)
+    {
+        if (s.Identifier.Text != KnownMethods.Parse)
+        {
+            return false;
+        }
+
+        return s.ParameterList.Parameters.Count == 2
+               && s.ParameterList.Parameters[0] is ParameterSyntax ps0
+               && ps0.Type is PredefinedTypeSyntax pts0
+               && pts0.Keyword.Text == "string"
+               && ps0.Identifier.ValueText == "s"
+               && s.ParameterList.Parameters[1] is ParameterSyntax ps1
+               && ps1.Type is NullableTypeSyntax nts1
+               && nts1.ElementType is IdentifierNameSyntax ins1
+               && ins1.Identifier.Text == "IFormatProvider"
+               && ps1.Identifier.ValueText == "provider";
+    }
+
+    // bool IParsable<TSelf>.TryParse(string? s, IFormatProvider? provider, out TSelf result)
+    public static bool IsIParsableTryParseMethod(this MethodDeclarationSyntax s)
+    {
+        if (s.Identifier.Text != KnownMethods.TryParse)
+        {
+            return false;
+        }
+
+        return s.ParameterList.Parameters.Count == 3
+               && s.ParameterList.Parameters[0] is ParameterSyntax ps0
+               && ps0.Type is NullableTypeSyntax nts0
+               && nts0.ElementType is PredefinedTypeSyntax pts0
+               && pts0.Keyword.Text == "string"
+               && ps0.Identifier.ValueText == "s"
+               && s.ParameterList.Parameters[1] is ParameterSyntax ps1
+               && ps1.Type is NullableTypeSyntax nts1
+               && nts1.ElementType is IdentifierNameSyntax ins1
+               && ins1.Identifier.Text == "IFormatProvider"
+               && ps1.Identifier.ValueText == "provider"
+               && s.ParameterList.Parameters[2] is ParameterSyntax ps2
+               && ps2.Modifiers.Any(syntaxToken => syntaxToken.IsKind(SyntaxKind.OutKeyword))
+               && ps2.Identifier.ValueText == "result";
+    }
+
+    // ISpanParseable<TSelf>.Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
+    public static bool IsISpanParsableParseMethod(this MethodDeclarationSyntax s)
+    {
+        if (s.Identifier.Text != KnownMethods.Parse)
+        {
+            return false;
+        }
+
+        return s.ParameterList.Parameters.Count == 2
+               && s.ParameterList.Parameters[0] is ParameterSyntax ps0
+               && ps0.Type is GenericNameSyntax gns0
+               && gns0.Identifier.Text == "ReadOnlySpan"
+               && gns0.TypeArgumentList.Arguments.Count == 1
+               && gns0.TypeArgumentList.Arguments[0] is PredefinedTypeSyntax pts0
+               && pts0.Keyword.Text == "char"
+               && ps0.Identifier.ValueText == "s"
+               && s.ParameterList.Parameters[1] is ParameterSyntax ps1
+               && ps1.Type is NullableTypeSyntax nts1
+               && nts1.ElementType is IdentifierNameSyntax ins1
+               && ins1.Identifier.Text == "IFormatProvider"
+               && ps1.Identifier.ValueText == "provider";
+    }
+
+    // bool ISpanParseable<TSelf>.TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out TSelf result)
+    public static bool IsISpanParsableTryParseMethod(this MethodDeclarationSyntax s)
+    {
+        if (s.Identifier.Text != KnownMethods.TryParse)
+        {
+            return false;
+        }
+
+        return s.ParameterList.Parameters.Count == 3
+               && s.ParameterList.Parameters[0] is ParameterSyntax ps0
+               && ps0.Type is GenericNameSyntax gns0
+               && gns0.Identifier.Text == "ReadOnlySpan"
+               && ps0.Identifier.ValueText == "s"
+               && s.ParameterList.Parameters[1] is ParameterSyntax ps1
+               && ps1.Type is NullableTypeSyntax nts1
+               && nts1.ElementType is IdentifierNameSyntax ins1
+               && ins1.Identifier.Text == "IFormatProvider"
+               && ps1.Identifier.ValueText == "provider"
+               && s.ParameterList.Parameters[2] is ParameterSyntax ps2
+               && ps2.Modifiers.Any(syntaxToken => syntaxToken.IsKind(SyntaxKind.OutKeyword))
+               && ps2.Identifier.ValueText == "result";
+    }
+
+    // bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider? provider)
     public static bool IsISpanFormattableTryFormatMethod(this MethodDeclarationSyntax s)
     {
         if (s.Identifier.Text != KnownMethods.TryFormat)
@@ -62,7 +152,7 @@ internal static class MethodDeclarationSyntaxExtensions
                && ps3.Type is NullableTypeSyntax nts3;
     }
 
-    // public static bool TryFormat(this Span<byte> utf8Destination, out int bytesWritten, ReadOnlySpan<char> format = default, IFormatProvider? provider = default)
+    // public bool TryFormat(this Span<byte> utf8Destination, out int bytesWritten, ReadOnlySpan<char> format = default, IFormatProvider? provider = default)
     public static bool IsIUtf8SpanFormattableTryFormatMethod(this MethodDeclarationSyntax s)
     {
         if (s.Identifier.Text != KnownMethods.TryFormat)
@@ -74,6 +164,9 @@ internal static class MethodDeclarationSyntaxExtensions
                && s.ParameterList.Parameters[0] is ParameterSyntax ps0
                && ps0.Type is GenericNameSyntax gns0
                && gns0.Identifier.Text == "Span"
+               && gns0.TypeArgumentList.Arguments.Count == 1
+               && gns0.TypeArgumentList.Arguments[0] is PredefinedTypeSyntax pts0
+               && pts0.Keyword.Text == "byte"
                && ps0.Identifier.ValueText == "utf8Destination"
                && s.ParameterList.Parameters[1] is ParameterSyntax ps1
                && ps1.Type is PredefinedTypeSyntax pts1
@@ -85,8 +178,8 @@ internal static class MethodDeclarationSyntaxExtensions
                && ps3.Type is NullableTypeSyntax;
     }
 
-    // TryParse<T>(ReadOnlySpan<byte> utf8Text, IFormatProvider? provider, [MaybeNullWhen(returnValue: false)] out T result);
-    public static bool IsIUtf8SpanParseableTryParseMethod(this MethodDeclarationSyntax s)
+    // TryParse<T>(ReadOnlySpan<byte> utf8Text, IFormatProvider? provider, out T result)
+    public static bool IsIUtf8SpanParsableTryParseMethod(this MethodDeclarationSyntax s)
     {
         if (s.Identifier.Text != KnownMethods.TryParse)
         {

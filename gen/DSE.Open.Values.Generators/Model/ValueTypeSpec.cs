@@ -90,30 +90,29 @@ internal abstract class ValueTypeSpec
 
     //  ISpanFormattable
 
-    public bool EmitToStringFormatableMethod { get; set; } = true;
+    public bool EmitToStringFormattableMethod { get; set; } = true;
 
     public bool EmitToStringOverrideMethod { get; set; } = true;
 
     public bool EmitTryFormatMethod { get; set; } = true;
 
     //  ISpanParsable<T>
+    public bool EmitParseSpanMethod { get; set; }
 
-    public bool EmitTryParseSpanMethod { get; set; } = true;
-
-    public bool EmitTryParseStringMethod { get; set; } = true;
-
-    public bool EmitTryParseSpanNumberStylesMethod { get; set; }
-
-    public bool EmitTryParseStringNumberStylesMethod { get; set; }
-
-    public bool EmitParseSpanMethod { get; set; } = true;
-
-    public bool EmitParseStringMethod { get; set; } = true;
+    public bool EmitTryParseSpanMethod { get; set; }
 
     public bool EmitParseSpanNumberStylesMethod { get; set; }
 
+    public bool EmitTryParseSpanNumberStylesMethod { get; set; }
+
+    // IParsable<TSelf>
+    public bool EmitParseStringMethod { get; set; }
+
+    public bool EmitTryParseStringMethod { get; set; }
+
     public bool EmitParseStringNumberStylesMethod { get; set; }
 
+    public bool EmitTryParseStringNumberStylesMethod { get; set; }
 
     // IUtf8SpanFormattable
 
