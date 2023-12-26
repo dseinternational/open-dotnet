@@ -462,12 +462,20 @@ public partial class ValueTypesGenerator
 
             if (spec.EmitTryParseStringMethod)
             {
-                writer.WriteBlock($"""
+                writer.WriteBlock($$"""
                                     public static bool TryParse(
                                         string? s,
                                         IFormatProvider? provider,
-                                        out {spec.ValueTypeName} result)
-                                        => {Namespaces.DseOpenValues}.ValueParser.TryParse<{spec.ValueTypeName}, {spec.ContainedValueTypeName}>(s, provider, out result);
+                                        out {{spec.ValueTypeName}} result)
+                                    {
+                                        if (s is null)
+                                        {
+                                            result = default;
+                                            return false;
+                                        }
+
+                                        return TryParse(s.AsSpan(), provider, out result);
+                                    }
                                     """);
 
                 writer.WriteBlock($"""
