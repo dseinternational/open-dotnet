@@ -31,27 +31,6 @@ public static class CollectionExtensions
         }
     }
 
-    public static void RemoveRange<T>(this ICollection<T> collection, IEnumerable<T>? values)
-    {
-        ArgumentNullException.ThrowIfNull(collection);
-
-        if (values is null)
-        {
-            return;
-        }
-
-        if (collection is List<T> list)
-        {
-            list.RemoveAll(values.Contains);
-            return;
-        }
-
-        foreach (var item in values)
-        {
-            _ = collection.Remove(item);
-        }
-    }
-
     [Obsolete("Use collection.Where().ToList()")]
     public static IList<T> FindAll<T>(this IEnumerable<T> collection, Predicate<T> match)
     {
