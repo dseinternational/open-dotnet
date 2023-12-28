@@ -37,6 +37,6 @@ public class PaginatedCollectionValueResultBuilderTests
 
         _ = val1.Should().BeEquivalentTo(val2, config => config
             .ComparingByMembers<PaginatedCollectionValueResult<string>>()
-            .Excluding(e => e.Id));
+            .Excluding(e => e.ResultId));
     }
 }

@@ -32,6 +32,6 @@ public class ResultTests
     public void ResultIdIsNotDefault()
     {
         var request = new Result();
-        Assert.NotEqual(default, request.Id);
+        Assert.NotEqual(default, request.ResultId);
     }
 }

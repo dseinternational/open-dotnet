@@ -12,7 +12,7 @@ public class RequestTests
     public void RequestIdIsNotDefault()
     {
         var request = new Request();
-        Assert.NotEqual(default, request.Id);
+        Assert.NotEqual(default, request.RequestId);
     }
 
     [Fact]

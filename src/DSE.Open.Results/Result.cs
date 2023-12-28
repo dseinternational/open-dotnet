@@ -17,14 +17,14 @@ public record Result : ImmutableDataTransferObject
 
     public static readonly Result? Null;
 
-    private Guid? _id;
+    private Guid? _resultId;
     private ReadOnlyValueCollection<Notification>? _notifications;
 
     [JsonPropertyName("result_id")]
-    public Guid Id
+    public Guid ResultId
     {
-        get => _id ??= Guid.NewGuid();
-        init => _id = value;
+        get => _resultId ??= Guid.NewGuid();
+        init => _resultId = value;
     }
 
     /// <summary>

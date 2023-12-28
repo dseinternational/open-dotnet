@@ -12,12 +12,20 @@ namespace DSE.Open.Requests;
 /// </summary>
 public record Request : ImmutableDataTransferObject
 {
-    private Guid? _id;
+    private Guid? _requestId;
 
-    [JsonPropertyName("id")]
-    public Guid Id
+    [JsonPropertyName("request_id")]
+    public Guid RequestId
     {
-        get => _id ??= Guid.NewGuid();
-        init => _id = value;
+        get => _requestId ??= Guid.NewGuid();
+        init => _requestId = value;
+    }
+
+    [JsonInclude]
+    [JsonPropertyName("id")]
+    protected Guid RequestIdBackCompat
+    {
+        get => RequestId;
+        init => RequestId = value;
     }
 }
