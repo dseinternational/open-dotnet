@@ -4,8 +4,8 @@
     <Version>0.17.0</Version>
     <AssemblyVersion>0.17.0.0</AssemblyVersion>
     <FileVersion>0.17.0</FileVersion>
-    <InformationalVersion>0.17.0-alpha.0+372f367268</InformationalVersion>
-    <PackageVersion>0.17.0-alpha-0000</PackageVersion>
+    <InformationalVersion>0.17.0-beta.1+a3865bc6d0</InformationalVersion>
+    <PackageVersion>0.17.0-beta-0001</PackageVersion>
   </PropertyGroup>
 </Project>
 

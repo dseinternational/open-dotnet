@@ -20,12 +20,4 @@ public record Request : ImmutableDataTransferObject
         get => _requestId ??= Guid.NewGuid();
         init => _requestId = value;
     }
-
-    [JsonInclude]
-    [JsonPropertyName("id")]
-    protected Guid RequestIdBackCompat
-    {
-        get => RequestId;
-        init => RequestId = value;
-    }
 }
