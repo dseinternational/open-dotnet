@@ -64,6 +64,12 @@ public readonly record struct Range<T> : ISpanFormattable, ISpanParsable<Range<T
         return Start.CompareTo(value) <= 0 && End.CompareTo(value) >= 0;
     }
 
+    public void Deconstruct(out T start, out T end)
+    {
+        start = Start;
+        end = End;
+    }
+
     public override string ToString()
     {
         return ToString(null, null);

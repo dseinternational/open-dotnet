@@ -9,6 +9,23 @@ namespace DSE.Open.Tests;
 public class RangeTests
 {
     [Fact]
+    public void Deconstruct()
+    {
+        var r = new Range<int>(2, 20);
+        var (start, end) = r;
+        Assert.Equal(2, start);
+        Assert.Equal(20, end);
+    }
+
+    [Fact]
+    public void Construct()
+    {
+        Range<int> r = new (2, 20);
+        Assert.Equal(2, r.Start);
+        Assert.Equal(20, r.End);
+    }
+
+    [Fact]
     public void Initialize_sets_start_end_int32()
     {
         var r = new Range<int>(2, 20);
