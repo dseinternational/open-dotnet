@@ -5,6 +5,9 @@ using System.Text.Json.Serialization;
 
 namespace DSE.Open.Results;
 
+/// <summary>
+/// Represents pagination information.
+/// </summary>
 public readonly record struct Pagination
 {
     public static readonly Pagination None;
