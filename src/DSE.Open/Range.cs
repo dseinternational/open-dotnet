@@ -9,17 +9,27 @@ using System.Text.Json.Serialization;
 namespace DSE.Open;
 
 /// <summary>
-/// Specifies a range of numeric values.
+/// Specifies a range of numeric values given an inclusive <see cref="Start"/> and inclusive <see cref="End"/>.
 /// </summary>
 /// <typeparam name="T"></typeparam>
 [StructLayout(LayoutKind.Auto)]
 [SuppressMessage("Design", "CA1000:Do not declare static members on generic types", Justification = "<Pending>")]
 public readonly record struct Range<T> : ISpanFormattable, ISpanParsable<Range<T>>
-    where T : INumber<T>
+    where T : INumber<T>, IMinMaxValue<T>
 {
     public const int MaxLength = StackallocThresholds.MaxCharLength;
 
+    /// <summary>
+    /// Gets an empty range value - that is a range with default values for
+    /// <see cref="Start"/> and <see cref="End"/>.
+    /// </summary>
     public static readonly Range<T> Empty;
+
+    /// <summary>
+    /// Gets an unbounded range value - that is a range with <c>T.MinValue</c> for
+    /// <see cref="Start"/> and <c>T.MaxValue</c> for <see cref="End"/>.
+    /// </summary>
+    public static readonly Range<T> Unbounded = new(T.MinValue, T.MaxValue);
 
     [JsonConstructor]
     public Range(T start, T end)

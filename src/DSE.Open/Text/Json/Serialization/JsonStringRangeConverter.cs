@@ -6,7 +6,7 @@ using System.Numerics;
 namespace DSE.Open.Text.Json.Serialization;
 
 public class JsonStringRangeConverter<T> : SpanParsableCharWritingJsonConverter<Range<T>>
-    where T : INumber<T>
+    where T : INumber<T>, IMinMaxValue<T>
 {
     public static readonly JsonStringRangeConverter<T> Default = new();
 
