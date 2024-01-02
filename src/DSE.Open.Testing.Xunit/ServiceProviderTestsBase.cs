@@ -11,18 +11,30 @@ namespace DSE.Open.Testing.Xunit;
 /// </summary>
 public abstract class ServiceProviderTestsBase : LoggedTestsBase
 {
+    private IServiceProvider? _serviceProvider;
+
     protected ServiceProviderTestsBase(ITestOutputHelper output) : base(output)
     {
-        var services = new ServiceCollection();
-
-#pragma warning disable CA2214 // Do not call overridable methods in constructors
-        ConfigureServices(services);
-#pragma warning restore CA2214 // Do not call overridable methods in constructors
-
-        ServiceProvider = services.BuildServiceProvider();
     }
 
-    public IServiceProvider ServiceProvider { get; }
+    public IServiceProvider ServiceProvider
+    {
+        get
+        {
+            if (_serviceProvider is not null)
+            {
+                return _serviceProvider;
+            }
+
+            var services = new ServiceCollection();
+
+            ConfigureServices(services);
+
+            _serviceProvider = services.BuildServiceProvider();
+
+            return _serviceProvider;
+        }
+    }
 
     protected abstract void ConfigureServices(IServiceCollection services);
 
@@ -32,7 +44,7 @@ public abstract class ServiceProviderTestsBase : LoggedTestsBase
         {
             ((ServiceProvider)ServiceProvider).Dispose();
         }
+
         base.Dispose(disposing);
     }
 }
-
