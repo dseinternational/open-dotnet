@@ -31,7 +31,11 @@ public static class PredicateExpressionExtensions
     {
         ArgumentNullException.ThrowIfNull(left);
 
-        return right is null ? left : left.AndAlso(right);
+        return right switch
+        {
+            null => left,
+            _ => left.AndAlso(right)
+        };
     }
 
     public static Expression<Func<T, bool>> Or<T>(this Expression<Func<T, bool>> left, Expression<Func<T, bool>> right)
@@ -59,8 +63,7 @@ public static class PredicateExpressionExtensions
         return Expression.Lambda<Func<T, bool>>(combineOperator(leftBody, rightBody), leftParameter);
     }
 
-    private class ReplaceExpressionVisitor
-        : ExpressionVisitor
+    private sealed class ReplaceExpressionVisitor : ExpressionVisitor
     {
         private readonly Expression _oldValue;
         private readonly Expression _newValue;
@@ -73,7 +76,11 @@ public static class PredicateExpressionExtensions
 
         public override Expression? Visit(Expression? node)
         {
-            return node == _oldValue ? _newValue : base.Visit(node);
+            return (node == _oldValue) switch
+            {
+                true => _newValue,
+                _ => base.Visit(node)
+            };
         }
     }
 }
