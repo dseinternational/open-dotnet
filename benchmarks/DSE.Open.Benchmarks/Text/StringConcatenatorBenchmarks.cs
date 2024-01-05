@@ -12,11 +12,11 @@ namespace DSE.Open.Benchmarks.Text;
 public class StringConcatenatorBenchmarks
 {
     // use Hello World! as the string to join for easy
-    private Array Short = new[] { "Hello", "World", "!" };
+    private static readonly string[] s_short = ["Hello", "World", "!"];
 
     // use the ipsum text as the string to join for medium
-    private Array Long = new[]
-    {
+    private static readonly string[] s_long =
+    [
         "Lorem", "ipsum", "dolor", "sit", "amet,", "consectetur", "adipiscing", "elit.", "Sed", "non", "risus.", "Suspendisse", "lectus", "tortor,",
         "dignissim", "sit", "amet,", "adipiscing", "nec,", "ultricies", "sed,", "dolor.", "Cras", "elementum", "ultrices", "diam.", "Maecenas", "ligula",
         "massa,", "varius", "a,", "semper", "congue,", "euismod", "non,", "mi.", "Proin", "porttitor,", "orci", "nec", "nonummy", "molestie,", "enim",
@@ -26,11 +26,11 @@ public class StringConcatenatorBenchmarks
         "eleifend", "nulla.", "Cras", "ullamcorper", "consequat", "nisl.", "Maecenas", "nisl", "est,", "ultrices", "nec,", "gravida", "ac,", "vulputate",
         "vitae,", "nisl.", "Praesent", "viverra", "massa", "eget", "risus.", "Integer", "quis", "urna.", "Ut", "ante", "enim,", "dapibus", "ut,", "aliquam",
         "quis,", "sagittis", "non,"
-    };
+    ];
 
     // long but as a list
-    private List<string> LongList = new()
-    {
+    private static readonly List<string> s_longList =
+    [
         "Lorem", "ipsum", "dolor", "sit", "amet,", "consectetur", "adipiscing", "elit.", "Sed", "non", "risus.", "Suspendisse", "lectus", "tortor,",
         "dignissim", "sit", "amet,", "adipiscing", "nec,", "ultricies", "sed,", "dolor.", "Cras", "elementum", "ultrices", "diam.", "Maecenas", "ligula",
         "massa,", "varius", "a,", "semper", "congue,", "euismod", "non,", "mi.", "Proin", "porttitor,", "orci", "nec", "nonummy", "molestie,", "enim",
@@ -40,27 +40,25 @@ public class StringConcatenatorBenchmarks
         "eleifend", "nulla.", "Cras", "ullamcorper", "consequat", "nisl.", "Maecenas", "nisl", "est,", "ultrices", "nec,", "gravida", "ac,", "vulputate",
         "vitae,", "nisl.", "Praesent", "viverra", "massa", "eget", "risus.", "Integer", "quis", "urna.", "Ut", "ante", "enim,", "dapibus", "ut,", "aliquam",
         "quis,", "sagittis", "non,"
-    };
+    ];
     // short but as a list
 
-    private List<string> ShortList = new() { "Hello", "World", "!" };
+    private static readonly List<string> s_shortList = ["Hello", "World", "!"];
 
-
-      public IEnumerable<object> Params()
+    public static IEnumerable<object> Params()
     {
-        yield return Short;
-        yield return Long;
-        yield return LongList;
-        yield return ShortList;
+        yield return s_short;
+        yield return s_long;
+        yield return s_longList;
+        yield return s_shortList;
     }
-
 
     // Benchmark Join, Join_2, Join_3
     // with params Short, Long
 
     [Benchmark(Baseline = true)]
     [ArgumentsSource(nameof(Params))]
-    public string Join_Original(string[] values)
+    public string Join_Original(IEnumerable<string> values)
     {
         return StringConcatenator.Join_Original(" ", values, " and ");
     }
@@ -78,5 +76,4 @@ public class StringConcatenatorBenchmarks
     {
         return StringConcatenator.Join2(" ", values, " and ");
     }
-
 }
