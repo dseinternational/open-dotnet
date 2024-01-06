@@ -21,7 +21,8 @@ public readonly struct CharSequence
       IEqualityOperators<CharSequence, CharSequence, bool>,
       IComparable<CharSequence>,
       ISpanFormattable,
-      ISpanParsable<CharSequence>
+      ISpanParsable<CharSequence>,
+      ISpanFormatableCharCountProvider
 {
     private readonly ReadOnlyMemory<char> _value;
 
@@ -54,6 +55,16 @@ public readonly struct CharSequence
     }
 
     public ReadOnlySpan<char> Span => _value.Span;
+
+    public int GetCharCount(ReadOnlySpan<char> format, IFormatProvider? provider)
+    {
+        return _value.Length;
+    }
+
+    public int GetCharCount(string? format, IFormatProvider? formatProvider)
+    {
+        return _value.Length;
+    }
 
     public static CharSequence Parse(ReadOnlySpan<char> s)
     {

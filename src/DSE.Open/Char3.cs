@@ -14,9 +14,13 @@ namespace DSE.Open;
 public readonly struct Char3
     : IEquatable<Char3>,
       ISpanFormattable,
-      ISpanParsable<Char3>
+      ISpanParsable<Char3>,
+      ISpanFormatableCharCountProvider,
+      ISpanSerializable<Char3>
 {
     private const int CharCount = 3;
+
+    public static int MaxSerializedCharLength => CharCount;
 
     private readonly char _c0;
     private readonly char _c1;
@@ -74,6 +78,16 @@ public readonly struct Char3
     public override string ToString()
     {
         return ToString(null, null);
+    }
+
+    public int GetCharCount(ReadOnlySpan<char> format, IFormatProvider? provider)
+    {
+        return CharCount;
+    }
+
+    public int GetCharCount(string? format, IFormatProvider? formatProvider)
+    {
+        return CharCount;
     }
 
     public static Char3 FromString(string value)

@@ -18,12 +18,12 @@ public class StringHelperRemovePunctuationBenchmarks
 
     public StringHelperRemovePunctuationBenchmarks()
     {
-        if (LargePunctuation.Length < StackallocThresholds.MaxCharLength)
+        if (LargePunctuation.Length <= StackallocThresholds.MaxCharLength)
         {
             throw new InvalidOperationException($"LargePunctuation is {LargePunctuation.Length} characters long, which is less than StackAllocThreshold");
         }
 
-        if (LargeNoPunctuation.Length < StackallocThresholds.MaxCharLength)
+        if (LargeNoPunctuation.Length <= StackallocThresholds.MaxCharLength)
         {
             throw new InvalidOperationException($"LargeNoPunctuation is {LargeNoPunctuation.Length} characters long, which is less than StackAllocThreshold");
         }

@@ -31,7 +31,8 @@ public readonly struct AsciiString
       ISpanFormattable,
       ISpanParsable<AsciiString>,
       IUtf8SpanFormattable,
-      IUtf8SpanParsable<AsciiString>
+      IUtf8SpanParsable<AsciiString>,
+      ISpanFormatableCharCountProvider
 {
     private readonly ReadOnlyMemory<AsciiChar> _value;
 
@@ -57,6 +58,16 @@ public readonly struct AsciiString
     }
 
     public ReadOnlySpan<AsciiChar> Span => _value.Span;
+
+    public int GetCharCount(ReadOnlySpan<char> format, IFormatProvider? provider)
+    {
+        return _value.Length;
+    }
+
+    public int GetCharCount(string? format, IFormatProvider? formatProvider)
+    {
+        return _value.Length;
+    }
 
     public AsciiChar[] ToArray()
     {

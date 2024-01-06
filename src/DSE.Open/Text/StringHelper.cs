@@ -10,7 +10,7 @@ namespace DSE.Open.Text;
 /// <summary>
 /// Provides helper functions for working with strings.
 /// </summary>
-public static class StringHelper
+public static partial class StringHelper
 {
     public static readonly IReadOnlyList<char> ValidWordPunctuationCharacters = new[] { '’', '\'', '-', ' ' };
 
