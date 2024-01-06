@@ -1,6 +1,8 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using DSE.Open.Notifications;
+
 namespace DSE.Open.Results;
 
 public abstract class PaginatedCollectionValueAsyncResultBuilder<TResult, TValue> : CollectionValueAsyncResultBuilder<TResult, TValue>
@@ -15,13 +17,17 @@ public class PaginatedCollectionValueAsyncResultBuilder<TValue> : PaginatedColle
 {
     public override PaginatedCollectionValueAsyncResult<TValue> GetResult()
     {
-        return Pagination == Pagination.None
-            ? throw new InvalidOperationException("Pagination must be specified.")
-            : new PaginatedCollectionValueAsyncResult<TValue>
-            {
-                Value = Value ?? AsyncEnumerable.Empty<TValue>(),
-                Notifications = [.. Notifications],
-                Pagination = Pagination,
-            };
+        // Pagination can be `None` if there are errors (e.g., if the provided command was invalid).
+        if (Pagination == Pagination.None && !Notifications.AnyErrors())
+        {
+            throw new InvalidOperationException("Pagination must be specified.");
+        }
+
+        return new PaginatedCollectionValueAsyncResult<TValue>
+        {
+            Value = Value ?? AsyncEnumerable.Empty<TValue>(),
+            Notifications = [.. Notifications],
+            Pagination = Pagination,
+        };
     }
 }
