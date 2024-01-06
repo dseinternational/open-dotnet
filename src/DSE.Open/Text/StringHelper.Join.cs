@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Buffers;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -23,83 +24,41 @@ public static partial class StringHelper
     /// <returns>A string that consists of the elements of <paramref name="values"/> delimited by the
     /// <paramref name="separator"/> string between each member before the penultimate, and by the
     /// <paramref name="finalSeparator"/> between the penultimate and final members; or, <see cref="string.Empty"/>
-    /// if <paramref name="values"/> has zero elements.</returns>   
+    /// if <paramref name="values"/> has zero elements.</returns>
     public static string Join(string? separator, IEnumerable<string?> values, string? finalSeparator)
     {
+        ArgumentNullException.ThrowIfNull(values);
+
+        if (string.IsNullOrEmpty(finalSeparator))
+        {
+            // A `null` or `string.Empty` final separator is treated as asking for
+            // `string.Join(separator, values)` behaviour
+            return string.Join(separator, values);
+        }
+
         if (values is List<string?> valuesList)
         {
-            return JoinCore(separator.AsSpan(), CollectionsMarshal.AsSpan(valuesList), finalSeparator.AsSpan());
+            return JoinSpan(separator.AsSpan(), CollectionsMarshal.AsSpan(valuesList), finalSeparator.AsSpan());
         }
 
         if (values is string?[] valuesArray)
         {
-            return JoinCore(separator.AsSpan(), new ReadOnlySpan<string?>(valuesArray), finalSeparator.AsSpan());
+            return JoinSpan(separator.AsSpan(), new ReadOnlySpan<string?>(valuesArray), finalSeparator.AsSpan());
         }
-
-        ArgumentNullException.ThrowIfNull(values);
-
-        finalSeparator ??= separator;
 
         if (values is ICollection<string?> collection)
         {
-            var count = collection.Count;
-
-            if (count == 0)
-            {
-                return string.Empty;
-            }
-
-            var charCount = collection.Sum(s => s is not null ? (long)s.Length : 0)
-                            + ((count - 2) * separator?.Length ?? 0)
-                            + finalSeparator?.Length ?? 0;
-
-            if (charCount > int.MaxValue)
-            {
-                ThrowHelper.ThrowInvalidOperationException("Resulting string would be > Int32.MaxValue characters.");
-            }
-
-            var length = (int)charCount;
-
-            if (length == 0)
-            {
-                return string.Empty;
-            }
-
-            if (length <= StackallocThresholds.MaxCharLength)
-            {
-                return JoinPreAllocated(separator.AsSpan(), collection, finalSeparator.AsSpan(), length);
-            }
-
-            return string.Create(length, (collection, separator, finalSeparator), (chars, state) =>
-            {
-                var charIndex = 0;
-                var wordIndex = 0;
-
-                var includeSeparator = state.separator is not null;
-                var includefinalSeparator = state.finalSeparator is not null;
-
-                foreach (var str in state.collection)
-                {
-                    var strSpan = str.AsSpan();
-
-                    strSpan.CopyTo(chars[charIndex..]);
-                    charIndex += strSpan.Length;
-                    wordIndex++;
-
-                    if (includeSeparator && wordIndex < state.collection.Count - 1)
-                    {
-                        state.separator!.CopyTo(chars[charIndex..]);
-                        charIndex += state.separator.Length;
-                    }
-                    else if (finalSeparator is not null && wordIndex == state.collection.Count - 1)
-                    {
-                        state.finalSeparator!.CopyTo(chars[charIndex..]);
-                        charIndex += state.finalSeparator.Length;
-                    }
-                }
-            });
+            return JoinCollection(separator, collection, finalSeparator);
         }
 
+        return JoinEnumerable(separator, values, finalSeparator);
+    }
+
+    private static string JoinEnumerable(
+        string? separator,
+        IEnumerable<string?> values,
+        string finalSeparator)
+    {
         var sb = new StringBuilder(64);
 
         using (var en = values.GetEnumerator())
@@ -127,13 +86,95 @@ public static partial class StringHelper
 
                 isLast = !en.MoveNext();
 
-                _ = isLast ? sb.Append(finalSeparator) : sb.Append(separator);
+                _ = sb.Append(isLast ? finalSeparator : separator);
 
                 _ = sb.Append(current);
             }
         }
 
         return sb.ToString();
+    }
+
+    private static string JoinCollection(string? separator, ICollection<string?> collection, string finalSeparator)
+    {
+        switch (collection.Count)
+        {
+            case 0:
+                return string.Empty;
+            case 1:
+                return collection.FirstOrDefault() ?? string.Empty;
+        }
+
+        var charCount = collection.Sum(s => s is not null ? (long)s.Length : 0) +
+            ((collection.Count - 2) * separator?.Length ?? 0) +
+            finalSeparator.Length;
+
+        if (charCount > int.MaxValue)
+        {
+            ThrowHelper.ThrowInvalidOperationException("Resulting string would be > Int32.MaxValue characters.");
+        }
+
+        var length = (int)charCount;
+
+        if (length == 0)
+        {
+            return string.Empty;
+        }
+
+        return string.Create(length,
+            (collection, separator, finalSeparator),
+            (chars, state) =>
+            {
+                var written = Format(chars,
+                    state.separator,
+                    state.collection,
+                    state.finalSeparator,
+                    state.collection.Count);
+                Debug.Assert(written == chars.Length);
+            });
+    }
+
+    private static int Format(
+        Span<char> chars,
+        ReadOnlySpan<char> separator,
+        ICollection<string?> collection,
+        ReadOnlySpan<char> finalSeparator)
+    {
+        return Format(chars, separator, collection, finalSeparator, collection.Count);
+    }
+
+    /// <returns>Number of characters written to the span</returns>
+    private static int Format(
+        Span<char> chars,
+        ReadOnlySpan<char> separator,
+        IEnumerable<string?> collection,
+        ReadOnlySpan<char> finalSeparator,
+        int count)
+    {
+        var charsWritten = 0;
+        var wordIndex = 0;
+
+        foreach (var str in collection)
+        {
+            var strSpan = str.AsSpan();
+
+            strSpan.CopyTo(chars[charsWritten..]);
+            charsWritten += strSpan.Length;
+            wordIndex++;
+
+            if (wordIndex < count - 1)
+            {
+                separator!.CopyTo(chars[charsWritten..]);
+                charsWritten += separator.Length;
+            }
+            else if (wordIndex == count - 1)
+            {
+                finalSeparator.CopyTo(chars[charsWritten..]);
+                charsWritten += finalSeparator.Length;
+            }
+        }
+
+        return charsWritten;
     }
 
     /// <summary>
@@ -155,19 +196,23 @@ public static partial class StringHelper
         IEnumerable<string?> values,
         ReadOnlySpan<char> finalSeparator)
     {
+        ArgumentNullException.ThrowIfNull(values);
+
+        if (finalSeparator.IsEmpty)
+        {
+            // `Empty` final separator is treated as asking for `string.Join(separator, values)` behaviour
+            finalSeparator = separator;
+        }
+
         if (values is List<string?> valuesList)
         {
-            return JoinCore(separator, CollectionsMarshal.AsSpan(valuesList), finalSeparator);
+            return JoinSpan(separator, CollectionsMarshal.AsSpan(valuesList), finalSeparator);
         }
 
         if (values is string?[] valuesArray)
         {
-            return JoinCore(separator, new ReadOnlySpan<string?>(valuesArray), finalSeparator);
+            return JoinSpan(separator, new ReadOnlySpan<string?>(valuesArray), finalSeparator);
         }
-
-        ArgumentNullException.ThrowIfNull(values);
-
-        finalSeparator = finalSeparator.IsEmpty ? separator : finalSeparator;
 
         if (values is ICollection<string?> collection)
         {
@@ -178,9 +223,9 @@ public static partial class StringHelper
                 return string.Empty;
             }
 
-            var charCount = collection.Sum(s => s is not null ? (long)s.Length : 0)
-                            + ((count - 2) * separator.Length)
-                            + finalSeparator.Length;
+            var charCount = collection.Sum(s => s is not null ? (long)s.Length : 0) +
+                ((count - 2) * separator.Length) +
+                finalSeparator.Length;
 
             if (charCount > int.MaxValue)
             {
@@ -188,17 +233,13 @@ public static partial class StringHelper
                     "Resulting string would be > Int32.MaxValue characters.");
             }
 
-            var length = (int)charCount;
-
-            if (length == 0)
+            return charCount switch
             {
-                return string.Empty;
-            }
-
-            // Cannot use string.Create here because ReadOnlySpan<char> values cannot be
-            // passed to lambdas/anonymous functions
-
-            return JoinPreAllocated(separator, collection, finalSeparator, length);
+                0 => string.Empty,
+                // Cannot use string.Create here because ReadOnlySpan<char> values cannot be
+                // passed to lambdas/anonymous functions
+                _ => JoinPreAllocated(separator, collection, finalSeparator, (int)charCount)
+            };
         }
 
         var sb = new StringBuilder(64);
@@ -260,16 +301,22 @@ public static partial class StringHelper
         string? format = default,
         IFormatProvider? provider = default)
     {
+        ArgumentNullException.ThrowIfNull(values);
+
+        finalSeparator = finalSeparator.IsEmpty
+            ? separator
+            : finalSeparator;
+
         if (typeof(T) == typeof(string))
         {
             if (values is List<string?> valuesList)
             {
-                return JoinCore(separator, CollectionsMarshal.AsSpan(valuesList), finalSeparator);
+                return JoinSpan(separator, CollectionsMarshal.AsSpan(valuesList), finalSeparator);
             }
 
             if (values is string?[] valuesArray)
             {
-                return JoinCore(separator, new ReadOnlySpan<string?>(valuesArray), finalSeparator);
+                return JoinSpan(separator, new ReadOnlySpan<string?>(valuesArray), finalSeparator);
             }
 
             if (values is IEnumerable<string> valuesEnumerable)
@@ -277,10 +324,6 @@ public static partial class StringHelper
                 return Join(separator, valuesEnumerable, finalSeparator);
             }
         }
-
-        ArgumentNullException.ThrowIfNull(values);
-
-        finalSeparator = finalSeparator.IsEmpty ? separator : finalSeparator;
 
         using (var e = values.GetEnumerator())
         {
@@ -342,14 +385,7 @@ public static partial class StringHelper
 
                     isLast = !e.MoveNext();
 
-                    if (isLast)
-                    {
-                        sh.AppendFormatted(finalSeparator);
-                    }
-                    else
-                    {
-                        sh.AppendFormatted(separator);
-                    }
+                    sh.AppendFormatted(isLast ? finalSeparator : separator);
 
                     sh.AppendFormatted(current, format);
                 }
@@ -359,22 +395,20 @@ public static partial class StringHelper
         }
     }
 
-    private static string JoinCore(
+    private static string JoinSpan(
         ReadOnlySpan<char> separator,
         ReadOnlySpan<string?> values,
         ReadOnlySpan<char> finalSeparator)
     {
-        if (values.Length <= 1)
+        switch (values.Length)
         {
-            return values.IsEmpty
-                ? string.Empty
-                : values[0] ?? string.Empty;
+            case 0:
+                return string.Empty;
+            case 1:
+                return values[0] ?? string.Empty;
         }
 
-        finalSeparator = finalSeparator.IsEmpty ? separator : finalSeparator;
-
-        var totalSeparatorsLength = ((long)(values.Length - 2) * separator.Length)
-            + finalSeparator.Length;
+        var totalSeparatorsLength = ((long)(values.Length - 2) * separator.Length) + finalSeparator.Length;
 
         if (totalSeparatorsLength > int.MaxValue)
         {
@@ -382,28 +416,19 @@ public static partial class StringHelper
                 "Resulting string would be > Int32.MaxValue characters.");
         }
 
-        var totalLength = (int)totalSeparatorsLength;
+        var totalLength = totalSeparatorsLength + values.Sum(s => s?.Length ?? 0);
 
-        foreach (var value in values)
+        if (totalLength > int.MaxValue)
         {
-            if (value is not null)
-            {
-                totalLength += value.Length;
-
-                if (totalLength < 0)
-                {
-                    ThrowHelper.ThrowInvalidOperationException(
-                        "Resulting string would be > Int32.MaxValue characters.");
-                }
-            }
+            ThrowHelper.ThrowInvalidOperationException(
+                "Resulting string would be > Int32.MaxValue characters.");
         }
 
-        if (totalLength == 0)
+        return totalLength switch
         {
-            return string.Empty;
-        }
-
-        return JoinPreAllocated(separator, values, finalSeparator, totalLength);
+            0 => string.Empty,
+            _ => JoinPreAllocated(separator, values, finalSeparator, (int)totalLength)
+        };
     }
 
     private static string JoinPreAllocated(
@@ -412,43 +437,19 @@ public static partial class StringHelper
         ReadOnlySpan<char> finalSeparator,
         int charCount)
     {
+        Debug.Assert(collection.Count > 1);
+        Debug.Assert(charCount > 0);
+
         char[]? rented = null;
 
         Span<char> chars = charCount <= StackallocThresholds.MaxCharLength
             ? stackalloc char[charCount]
             : rented = ArrayPool<char>.Shared.Rent(charCount);
 
-        var charIndex = 0;
-
         try
         {
-            var wordIndex = 0;
-
-            foreach (var str in collection)
-            {
-                var span = str.AsSpan();
-
-                span.CopyTo(chars.Slice(charIndex, span.Length));
-                charIndex += span.Length;
-                wordIndex++;
-
-                if (wordIndex < collection.Count - 1)
-                {
-                    foreach (var ch in separator)
-                    {
-                        chars[charIndex++] = ch;
-                    }
-                }
-                else if (wordIndex == collection.Count - 1)
-                {
-                    foreach (var ch in finalSeparator)
-                    {
-                        chars[charIndex++] = ch;
-                    }
-                }
-            }
-
-            return new string(chars);
+            var written = Format(chars, separator, collection, finalSeparator);
+            return new string(chars[..written]);
         }
         finally
         {
@@ -465,43 +466,45 @@ public static partial class StringHelper
         ReadOnlySpan<char> finalSeparator,
         int charCount)
     {
+        Debug.Assert(values.Length > 1);
+        Debug.Assert(charCount > 0);
+
         char[]? rented = null;
 
         Span<char> chars = charCount <= StackallocThresholds.MaxCharLength
             ? stackalloc char[charCount]
             : rented = ArrayPool<char>.Shared.Rent(charCount);
 
-        var charIndex = 0;
-
         try
         {
+            var written = 0;
             var wordIndex = 0;
 
             foreach (var str in values)
             {
                 var span = str.AsSpan();
 
-                span.CopyTo(chars.Slice(charIndex, span.Length));
-                charIndex += span.Length;
+                span.CopyTo(chars.Slice(written, span.Length));
+                written += span.Length;
                 wordIndex++;
 
                 if (wordIndex < values.Length - 1)
                 {
                     foreach (var ch in separator)
                     {
-                        chars[charIndex++] = ch;
+                        chars[written++] = ch;
                     }
                 }
                 else if (wordIndex == values.Length - 1)
                 {
                     foreach (var ch in finalSeparator)
                     {
-                        chars[charIndex++] = ch;
+                        chars[written++] = ch;
                     }
                 }
             }
 
-            return new string(chars[..charIndex]);
+            return new string(chars[..written]);
         }
         finally
         {
