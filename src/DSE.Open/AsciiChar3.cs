@@ -17,13 +17,14 @@ namespace DSE.Open;
 [StructLayout(LayoutKind.Auto)]
 public readonly struct AsciiChar3
     : IComparable<AsciiChar3>,
-        IEquatable<AsciiChar3>,
-        IEqualityOperators<AsciiChar3, AsciiChar3, bool>,
-        ISpanFormattable,
-        ISpanParsable<AsciiChar3>,
-        IConvertibleTo<AsciiChar3, string>,
-        ITryConvertibleFrom<AsciiChar3, string>,
-        IUtf8SpanSerializable<AsciiChar3>
+      IEquatable<AsciiChar3>,
+      IEqualityOperators<AsciiChar3, AsciiChar3, bool>,
+      ISpanFormattable,
+      ISpanParsable<AsciiChar3>,
+      IConvertibleTo<AsciiChar3, string>,
+      ITryConvertibleFrom<AsciiChar3, string>,
+      IUtf8SpanSerializable<AsciiChar3>,
+      ISpanFormatableCharCountProvider
 {
     private const int CharCount = 3;
     public static int MaxSerializedByteLength => 3;
@@ -155,6 +156,16 @@ public readonly struct AsciiChar3
     public override string ToString()
     {
         return ToString(null, null);
+    }
+
+    public int GetCharCount(ReadOnlySpan<char> format, IFormatProvider? provider)
+    {
+        return MaxSerializedByteLength;
+    }
+
+    public int GetCharCount(string? format, IFormatProvider? formatProvider)
+    {
+        return MaxSerializedByteLength;
     }
 
     public Char3 ToChar3()

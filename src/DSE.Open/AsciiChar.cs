@@ -22,7 +22,8 @@ public readonly partial struct AsciiChar
         IEqualityOperators<AsciiChar, AsciiChar, bool>,
         ISpanFormattable,
         ISpanParsable<AsciiChar>,
-        IUtf8SpanSerializable<AsciiChar>
+        IUtf8SpanSerializable<AsciiChar>,
+        ISpanFormatableCharCountProvider
 {
     private readonly byte _asciiByte;
 
@@ -110,6 +111,16 @@ public readonly partial struct AsciiChar
     public override string ToString()
     {
         return ToString(null, null);
+    }
+
+    public int GetCharCount(ReadOnlySpan<char> format, IFormatProvider? provider)
+    {
+        return MaxSerializedByteLength;
+    }
+
+    public int GetCharCount(string? format, IFormatProvider? formatProvider)
+    {
+        return MaxSerializedByteLength;
     }
 
     public static bool operator ==(AsciiChar left, AsciiChar right)

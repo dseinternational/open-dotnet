@@ -24,7 +24,8 @@ public readonly struct AsciiChar2
         ISpanParsable<AsciiChar2>,
         IConvertibleTo<AsciiChar2, string>,
         ITryConvertibleFrom<AsciiChar2, string>,
-        IUtf8SpanSerializable<AsciiChar2>
+        IUtf8SpanSerializable<AsciiChar2>,
+        ISpanFormatableCharCountProvider
 {
     private const int CharCount = 2;
 
@@ -154,6 +155,16 @@ public readonly struct AsciiChar2
     public override int GetHashCode()
     {
         return HashCode.Combine(_c0, _c1);
+    }
+
+    public int GetCharCount(ReadOnlySpan<char> format, IFormatProvider? provider)
+    {
+        return MaxSerializedByteLength;
+    }
+
+    public int GetCharCount(string? format, IFormatProvider? formatProvider)
+    {
+        return MaxSerializedByteLength;
     }
 
     public Char2 ToChar2()

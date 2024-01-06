@@ -1,16 +1,16 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Buffers;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace DSE.Open.Text;
 
 public static partial class StringHelper
 {
-    public static string Join(string? separator, IEnumerable<string?> values, string? finalSeparator)
+    public static string Join2(string? separator, IEnumerable<string?> values, string? finalSeparator)
     {
-        ArgumentNullException.ThrowIfNull(values);
-
         if (finalSeparator is null)
         {
             return string.Join(separator, values);
@@ -20,6 +20,33 @@ public static partial class StringHelper
         {
             return string.Concat(values);
         }
+
+        if (values is List<string?> valuesList)
+        {
+            return JoinCore(separator.AsSpan(), CollectionsMarshal.AsSpan(valuesList), finalSeparator);
+        }
+
+        if (values is string?[] valuesArray)
+        {
+            return JoinCore(separator.AsSpan(), new ReadOnlySpan<string?>(valuesArray), finalSeparator);
+        }
+
+        return Join(separator, values, finalSeparator);
+    }
+
+    public static string Join(string? separator, IEnumerable<string?> values, string? finalSeparator)
+    {
+        if (finalSeparator is null)
+        {
+            return string.Join(separator, values);
+        }
+
+        if (string.IsNullOrEmpty(separator))
+        {
+            return string.Concat(values);
+        }
+
+        ArgumentNullException.ThrowIfNull(values);
 
         if (values is ICollection<string?> collection)
         {
@@ -43,12 +70,12 @@ public static partial class StringHelper
 
             // TODO: for smaller strings, consider using stackalloc to build the result
 
-            return string.Create(length, collection, (chars, col) =>
+            return string.Create(length, collection, (chars, state) =>
             {
                 var charIndex = 0;
                 var wordIndex = 0;
 
-                foreach (var str in collection)
+                foreach (var str in state)
                 {
                     var strSpan = str.AsSpan();
 
@@ -120,6 +147,19 @@ public static partial class StringHelper
 
     public static string Join<T>(ReadOnlySpan<char> separator, IEnumerable<T> values, ReadOnlySpan<char> finalSeparator)
     {
+        if (typeof(T) == typeof(string))
+        {
+            if (values is List<string?> valuesList)
+            {
+                return JoinCore(separator, CollectionsMarshal.AsSpan(valuesList), finalSeparator);
+            }
+
+            if (values is string?[] valuesArray)
+            {
+                return JoinCore(separator, new ReadOnlySpan<string?>(valuesArray), finalSeparator);
+            }
+        }
+
         ArgumentNullException.ThrowIfNull(values);
 
         if (finalSeparator.IsEmpty)
@@ -128,5 +168,89 @@ public static partial class StringHelper
         }
 
         throw new NotImplementedException();
+    }
+
+    private static string JoinCore(ReadOnlySpan<char> separator, ReadOnlySpan<string?> values, ReadOnlySpan<char> finalSeparator)
+    {
+        if (values.Length <= 1)
+        {
+            return values.IsEmpty
+                ? string.Empty
+                : values[0] ?? string.Empty;
+        }
+
+        var totalSeparatorsLength = ((long)(values.Length - 2) * separator.Length) + finalSeparator.Length;
+
+        if (totalSeparatorsLength > int.MaxValue)
+        {
+            ThrowHelper.ThrowInvalidOperationException("Resulting string would be > Int32.MaxValue characters.");
+        }
+
+        var totalLength = (int)totalSeparatorsLength;
+
+        // Calculate the length of the resultant string so we know how much space to allocate.
+        foreach (var value in values)
+        {
+            if (value is not null)
+            {
+                totalLength += value.Length;
+
+                if (totalLength < 0) // Check for overflow
+                {
+                    ThrowHelper.ThrowInvalidOperationException("Resulting string would be > Int32.MaxValue characters.");
+                }
+            }
+        }
+
+        if (totalLength == 0)
+        {
+            return string.Empty;
+        }
+
+        char[]? rented = null;
+
+        Span<char> chars = totalLength < StackallocThresholds.MaxCharLength
+            ? stackalloc char[totalLength]
+            : rented = ArrayPool<char>.Shared.Rent(totalLength);
+
+        var charIndex = 0;
+
+        try
+        {
+            var wordIndex = 0;
+
+            foreach (var str in values)
+            {
+                var span = str.AsSpan();
+
+                span.CopyTo(chars.Slice(charIndex, span.Length));
+                charIndex += span.Length;
+                wordIndex++;
+
+                if (wordIndex < values.Length - 1)
+                {
+                    foreach (var ch in separator)
+                    {
+                        chars[charIndex++] = ch;
+                    }
+                }
+                else if (wordIndex == values.Length - 1)
+                {
+                    foreach (var ch in finalSeparator)
+                    {
+                        chars[charIndex++] = ch;
+                    }
+                }
+            }
+
+            return new string(chars[..charIndex]);
+        }
+        finally
+        {
+            if (rented is not null)
+            {
+                ArrayPool<char>.Shared.Return(rented);
+            }
+        }
     }
 }

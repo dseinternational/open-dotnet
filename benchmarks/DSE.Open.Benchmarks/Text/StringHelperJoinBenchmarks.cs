@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using BenchmarkDotNet.Attributes;
 using DSE.Open.Text;
@@ -14,16 +15,31 @@ public class StringHelperJoinBenchmarks
     [Params(5, 20, 100)]
     public int ValuesCount { get; set; }
 
-    private static List<string> GetValuesCollection(int count)
+    [ParamsSource(nameof(GetValues))]
+    public IEnumerable<string> Values { get; set; } = [];
+
+    public IEnumerable<IEnumerable<string>> GetValues()
+    {
+        yield return GetValuesList(ValuesCount);
+        yield return GetValuesCollection(ValuesCount);
+        yield return GetValuesEnumerable(ValuesCount);
+    }
+
+    private static List<string> GetValuesList(int count)
     {
         return Enumerable.Range(0, count)
             .Select(i => WordLists.EnglishEarlyWords[Random.Shared.Next(WordLists.EnglishEarlyWords.Count - 1)])
             .ToList();
     }
 
+    public static IEnumerable<string> GetValuesCollection(int count)
+    {
+        return new Collection<string>(GetValuesList(count));
+    }
+
     private static IEnumerable<string> GetValuesEnumerable(int count)
     {
-        var list = GetValuesCollection(count);
+        var list = GetValuesList(count);
 
         foreach (var item in list)
         {
@@ -31,27 +47,21 @@ public class StringHelperJoinBenchmarks
         }
     }
 
+    [Benchmark]
+    public string StringConcatenatorJoin()
+    {
+        return StringConcatenator.Join(", ", Values, " and ");
+    }
+
     [Benchmark(Baseline = true)]
-    public string Join_Collection()
+    public string StringHelperJoin()
     {
-        return StringConcatenator.Join(", ", GetValuesCollection(ValuesCount), " and ");
+        return StringHelper.Join(", ", Values, " and ");
     }
 
     [Benchmark]
-    public string StringHelperJoin_Collection()
+    public string StringHelperJoin2()
     {
-        return StringHelper.Join(", ", GetValuesCollection(ValuesCount), " and ");
-    }
-
-    [Benchmark]
-    public string Join_Enumerable()
-    {
-        return StringConcatenator.Join(", ", GetValuesEnumerable(ValuesCount), " and ");
-    }
-
-    [Benchmark]
-    public string StringHelperJoin_Enumerable()
-    {
-        return StringHelper.Join(", ", GetValuesEnumerable(ValuesCount), " and ");
+        return StringHelper.Join2(", ", Values, " and ");
     }
 }
