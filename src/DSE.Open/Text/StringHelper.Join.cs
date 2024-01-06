@@ -237,13 +237,12 @@ public static partial class StringHelper
         return sb.ToString();
     }
 
-    // We add this as String.Join overloads do not inlucde formatting options
-
     /// <summary>
     /// Concatenates the members of a collection, using the specified <paramref name="separator"/> between each member
     /// before the penultimate, and the specified <paramref name="finalSeparator"/> between the penultimate and final
     /// members, optionally applying a specified <paramref name="format"/> to each member using a specified
     /// <paramref name="provider"/>.
+    /// members.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="separator">The string to use as a separator. It is included in the returned string only if
@@ -289,6 +288,8 @@ public static partial class StringHelper
             {
                 return string.Empty;
             }
+
+            // TODO: confirm if this adds anything for chars
 
             if (typeof(T) == typeof(char))
             {
