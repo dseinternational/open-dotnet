@@ -10,16 +10,14 @@ public static class StringConcatenator
 {
     public static string Join(string separator, IEnumerable<string> values, string? finalSeparator = null)
     {
+        ArgumentNullException.ThrowIfNull(separator);
         ArgumentNullException.ThrowIfNull(values);
 
         if (finalSeparator is null)
         {
-            return string.Join(separator, values);
-        }
-
-        if (string.IsNullOrEmpty(separator))
-        {
-            return string.Concat(values);
+            return separator.Length == 0
+                ? string.Concat(values)
+                : string.Join(separator, values);
         }
 
         var valuesArray = values as string[] ?? values.ToArray();
@@ -31,9 +29,7 @@ public static class StringConcatenator
             return string.Empty;
         }
 
-        var charCount = valuesArray.Sum(s => s is not null ? (long)s.Length : 0)
-                        + ((count - 2) * separator.Length)
-                        + finalSeparator.Length;
+        var charCount = valuesArray.Sum(s => s is not null ? (long)s.Length : 0) + ((count - 2) * separator.Length) + finalSeparator.Length;
 
         if (charCount > int.MaxValue)
         {

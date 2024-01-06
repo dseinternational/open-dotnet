@@ -74,7 +74,7 @@ public class StringConcatenatorTests
         Assert.Equal("Hello World!", result);
     }
 
-    [Fact(Skip = "TODO")]
+    [Fact]
     public void Join_Three_FinalSeparator_EmptySeparator()
     {
         var result = StringConcatenator.Join(string.Empty, new[] { "Hello", "World", "!" }, " and ");
@@ -99,7 +99,7 @@ public class StringConcatenatorTests
     }
 
     [Fact]
-    public void Join_Three_FinalSeparator_NonEmpty_WithEnum()
+    public void Join_Three_FinalSeparator_NonEmpty_WithEnumerable()
     {
         // non collection enumerable
         var result = StringConcatenator.Join(" ", new[] { "Hello", "World", "!" }.Select(s => s), " and ");
@@ -109,7 +109,7 @@ public class StringConcatenatorTests
 
     [Fact]
     //long string over 256 chars to force use of ArrayPool
-    public void Join_Many_FinalSeperator_Null()
+    public void Join_Many_FinalSeparator_Null()
     {
         // ipsum text
         ICollection<string> text = new List<string>() {"Lorem", "ipsum", "dolor", "sit", "amet,", "consectetur", "adipiscing", "elit.", "Sed", "non", "risus.", "Suspendisse", "lectus", "tortor,", "dignissim", "sit", "amet,", "adipiscing", "nec,", "ultricies", "sed,", "dolor.", "Cras", "elementum", "ultrices", "diam.", "Maecenas", "ligula", "massa,", "varius", "a,", "semper", "congue,", "euismod", "non,", "mi.", "Proin", "porttitor,", "orci", "nec", "nonummy", "molestie,", "enim", "est", "eleifend", "mi,", "non", "fermentum", "diam", "nisi", "sit", "amet,", "sodales", "vel,", "dolor.", "Nulla", "in", "est.", "Curabitur", "viverra", "metus", "accumsan", "nunc.", "In", "nibh.", "Duis", "vitae", "velit", "eu", "erat", "mollis", "placerat.", "Praesent", "dapibus,", "neque", "id", "cursus", "faucibus,", "tortor", "neque", "egestas", "augue,", "eu", "vulputate", "magna", "eros", "eu", "erat.", "Aliquam", "erat", "volutpat.", "Nam", "dui", "mi,", "tincidunt", "quis,", "accumsan", "porttitor,", "facilisis", "luctus,", "metus."};
