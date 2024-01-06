@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using DSE.Open.Collections.Generic;
+using DSE.Open.Notifications;
 
 namespace DSE.Open.Results;
 
@@ -20,6 +21,18 @@ public class PaginatedCollectionValueResultBuilder<TValue> : CollectionValueResu
 
     public override PaginatedCollectionValueResult<TValue> GetResult()
     {
+        ValidatePagination();
+        return Done();
+    }
+
+    private void ValidatePagination()
+    {
+        if (Notifications.AnyErrors())
+        {
+            // Pagination can be `None` if there are errors (e.g., if the provided command was invalid).
+            return;
+        }
+
         if (Pagination == Pagination.None)
         {
             throw new InvalidOperationException("Pagination must be specified.");
@@ -34,7 +47,10 @@ public class PaginatedCollectionValueResultBuilder<TValue> : CollectionValueResu
         {
             throw new InvalidOperationException("PageSize must be equal to or greater than the count of items.");
         }
+    }
 
+    private PaginatedCollectionValueResult<TValue> Done()
+    {
         return new PaginatedCollectionValueResult<TValue>
         {
             Value = [.. Items],
