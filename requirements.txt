@@ -2,5 +2,5 @@
 # windows+cuda: pip3 install torch>=2.1.2 torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
 # linux+cpu: pip3 install torch>=2.1.2 torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
 
-numpy>=1.26.2
+numpy>=1.26.3
 stanza>=1.7.0

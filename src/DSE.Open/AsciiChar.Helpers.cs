@@ -152,7 +152,7 @@ public partial struct AsciiChar
     /// </remarks>
     public static bool IsLetterOrDigit(byte asciiByte)
     {
-        return IsLetter(asciiByte) | IsBetween(asciiByte, (byte)'0', (byte)'9');
+        return IsLetter(asciiByte) || IsBetween(asciiByte, (byte)'0', (byte)'9');
     }
 
     public static bool IsLetterOrDigit(AsciiChar asciiChar)
