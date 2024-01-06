@@ -44,7 +44,7 @@ public static class StringConcatenator
 
         char[]? rented = null;
 
-        Span<char> chars = length < StackallocThresholds.MaxCharLength
+        Span<char> chars = length <= StackallocThresholds.MaxCharLength
             ? stackalloc char[length]
             : rented = ArrayPool<char>.Shared.Rent(length);
 

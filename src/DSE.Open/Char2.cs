@@ -72,12 +72,12 @@ public readonly struct Char2
 
     public int GetCharCount(ReadOnlySpan<char> format, IFormatProvider? provider)
     {
-        return MaxSerializedByteLength;
+        return CharCount;
     }
 
     public int GetCharCount(string? format, IFormatProvider? formatProvider)
     {
-        return MaxSerializedByteLength;
+        return CharCount;
     }
 
     public static Char2 FromString(string value)

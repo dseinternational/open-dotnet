@@ -5,7 +5,7 @@ using DSE.Open.Text;
 
 namespace DSE.Open.Tests.Text;
 
-public class StringHelperTests
+public partial class StringHelperTests
 {
     [Fact]
     public void Capitalize_Uppercase()

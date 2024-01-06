@@ -10,7 +10,7 @@ namespace DSE.Open.Benchmarks.Text;
 
 [MemoryDiagnoser]
 [SuppressMessage("Security", "CA5394:Do not use insecure randomness", Justification = "<Pending>")]
-public class StringHelperJoinBenchmarks
+public class StringHelperJoinStringBenchmarks
 {
     [Params(5, 20, 100)]
     public int ValuesCount { get; set; }
@@ -57,11 +57,5 @@ public class StringHelperJoinBenchmarks
     public string StringHelperJoin()
     {
         return StringHelper.Join(", ", Values, " and ");
-    }
-
-    [Benchmark]
-    public string StringHelperJoin2()
-    {
-        return StringHelper.Join2(", ", Values, " and ");
     }
 }
