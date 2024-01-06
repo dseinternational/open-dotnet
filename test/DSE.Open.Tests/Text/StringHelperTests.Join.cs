@@ -25,6 +25,14 @@ public partial class StringHelperTests
     }
 
     [Fact]
+    public void Join_WithCollectionOfString()
+    {
+        Collection<string> values = ["one", "two", "three"];
+        var joined = StringHelper.Join(", ", values, " and ");
+        Assert.Equal("one, two and three", joined);
+    }
+
+    [Fact]
     public void Joins_enumerable_of_string()
     {
         var joined = StringHelper.Join(", ", GetValues(), " and ");
@@ -36,6 +44,75 @@ public partial class StringHelperTests
             yield return "two";
             yield return "three";
         }
+    }
+
+    [Fact]
+    public void JoinsSpan_array_of_string()
+    {
+        string[] values = ["one", "two", "three"];
+        var joined = StringHelper.Join((ReadOnlySpan<char>)", ", values, " and ");
+        Assert.Equal("one, two and three", joined);
+    }
+
+    [Fact]
+    public void JoinsSpan_list_of_string()
+    {
+        List<string> values = ["one", "two", "three"];
+        var joined = StringHelper.Join((ReadOnlySpan<char>)", ", values, " and ");
+        Assert.Equal("one, two and three", joined);
+    }
+
+    [Fact]
+    public void JoinSpan_WithCollectionOfString()
+    {
+        Collection<string> values = ["one", "two", "three"];
+        var joined = StringHelper.Join((ReadOnlySpan<char>)", ", values, " and ");
+        Assert.Equal("one, two and three", joined);
+    }
+
+    [Fact]
+    public void JoinsSpan_enumerable_of_string()
+    {
+        var joined = StringHelper.Join((ReadOnlySpan<char>)", ", GetValues(), " and ");
+        Assert.Equal("one, two and three", joined);
+
+        static IEnumerable<string> GetValues()
+        {
+            yield return "one";
+            yield return "two";
+            yield return "three";
+        }
+    }
+
+    [Fact]
+    public void JoinSpan_WithEmptyFinalSeparator_ShouldPerformNormalJoin()
+    {
+        // Arrange
+        string[] values = ["one", "two", "three"];
+        var finalSeparator = string.Empty;
+        ReadOnlySpan<char> separator = " ";
+
+        // Act
+        var joined = StringHelper.Join(separator, values, finalSeparator);
+
+        // Assert
+        Assert.Equal("one two three", joined);
+    }
+
+    [Theory]
+    [InlineData(" ")]
+    [InlineData("")]
+    public void JoinSpan_WithEmptyEnumerable_ShouldReturnEmptyString(string finalSeparator)
+    {
+        // Arrange
+        string[] values = [];
+        ReadOnlySpan<char> separator = " ";
+
+        // Act
+        var joined = StringHelper.Join(separator, values, finalSeparator);
+
+        // Assert
+        Assert.Equal(string.Empty, joined);
     }
 
     [Fact]
@@ -151,7 +228,7 @@ public partial class StringHelperTests
     {
         var result = StringHelper.Join(" ", new Collection<string> { "Hello", "World", "!" }, string.Empty);
         Assert.NotNull(result);
-        Assert.Equal("Hello World!", result);
+        Assert.Equal("Hello World !", result);
     }
 
     [Fact]
