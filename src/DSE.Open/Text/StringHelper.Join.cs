@@ -4,7 +4,6 @@
 using System.Buffers;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.Marshalling;
 using System.Text;
 
 namespace DSE.Open.Text;
@@ -39,6 +38,8 @@ public static partial class StringHelper
 
         ArgumentNullException.ThrowIfNull(values);
 
+        finalSeparator ??= separator;
+
         if (values is ICollection<string?> collection)
         {
             var count = collection.Count;
@@ -69,12 +70,15 @@ public static partial class StringHelper
                 return JoinPreAllocated(separator.AsSpan(), collection, finalSeparator.AsSpan(), length);
             }
 
-            return string.Create(length, collection, (chars, state) =>
+            return string.Create(length, (collection, separator, finalSeparator), (chars, state) =>
             {
                 var charIndex = 0;
                 var wordIndex = 0;
 
-                foreach (var str in state)
+                var includeSeparator = state.separator is not null;
+                var includefinalSeparator = state.finalSeparator is not null;
+
+                foreach (var str in state.collection)
                 {
                     var strSpan = str.AsSpan();
 
@@ -82,15 +86,15 @@ public static partial class StringHelper
                     charIndex += strSpan.Length;
                     wordIndex++;
 
-                    if (separator is not null && wordIndex < state.Count - 1)
+                    if (includeSeparator && wordIndex < state.collection.Count - 1)
                     {
-                        separator.CopyTo(chars[charIndex..]);
-                        charIndex += separator.Length;
+                        state.separator!.CopyTo(chars[charIndex..]);
+                        charIndex += state.separator.Length;
                     }
-                    else if (finalSeparator is not null && wordIndex == state.Count - 1)
+                    else if (finalSeparator is not null && wordIndex == state.collection.Count - 1)
                     {
-                        finalSeparator.CopyTo(chars[charIndex..]);
-                        charIndex += finalSeparator.Length;
+                        state.finalSeparator!.CopyTo(chars[charIndex..]);
+                        charIndex += state.finalSeparator.Length;
                     }
                 }
             });
@@ -162,6 +166,8 @@ public static partial class StringHelper
         }
 
         ArgumentNullException.ThrowIfNull(values);
+
+        finalSeparator = finalSeparator.IsEmpty ? separator : finalSeparator;
 
         if (values is ICollection<string?> collection)
         {
@@ -275,6 +281,8 @@ public static partial class StringHelper
 
         ArgumentNullException.ThrowIfNull(values);
 
+        finalSeparator = finalSeparator.IsEmpty ? separator : finalSeparator;
+
         using (var e = values.GetEnumerator())
         {
             if (!e.MoveNext())
@@ -362,6 +370,8 @@ public static partial class StringHelper
                 : values[0] ?? string.Empty;
         }
 
+        finalSeparator = finalSeparator.IsEmpty ? separator : finalSeparator;
+
         var totalSeparatorsLength = ((long)(values.Length - 2) * separator.Length)
             + finalSeparator.Length;
 
@@ -401,7 +411,6 @@ public static partial class StringHelper
         ReadOnlySpan<char> finalSeparator,
         int charCount)
     {
-        var count = 0;
         char[]? rented = null;
 
         Span<char> chars = charCount <= StackallocThresholds.MaxCharLength
@@ -422,14 +431,14 @@ public static partial class StringHelper
                 charIndex += span.Length;
                 wordIndex++;
 
-                if (wordIndex < count - 1)
+                if (wordIndex < collection.Count - 1)
                 {
                     foreach (var ch in separator)
                     {
                         chars[charIndex++] = ch;
                     }
                 }
-                else if (wordIndex == count - 1)
+                else if (wordIndex == collection.Count - 1)
                 {
                     foreach (var ch in finalSeparator)
                     {
@@ -501,5 +510,4 @@ public static partial class StringHelper
             }
         }
     }
-
 }

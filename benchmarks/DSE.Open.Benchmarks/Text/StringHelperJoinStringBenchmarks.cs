@@ -12,18 +12,8 @@ namespace DSE.Open.Benchmarks.Text;
 [SuppressMessage("Security", "CA5394:Do not use insecure randomness", Justification = "<Pending>")]
 public class StringHelperJoinStringBenchmarks
 {
-    [Params(5, 20, 100)]
+    [Params(8, 64, 128)]
     public int ValuesCount { get; set; }
-
-    [ParamsSource(nameof(GetValues))]
-    public IEnumerable<string> Values { get; set; } = [];
-
-    public IEnumerable<IEnumerable<string>> GetValues()
-    {
-        yield return GetValuesList(ValuesCount);
-        yield return GetValuesCollection(ValuesCount);
-        yield return GetValuesEnumerable(ValuesCount);
-    }
 
     private static List<string> GetValuesList(int count)
     {
@@ -47,15 +37,27 @@ public class StringHelperJoinStringBenchmarks
         }
     }
 
-    [Benchmark]
-    public string StringConcatenatorJoin()
+    [Benchmark(Baseline = true)]
+    public string Join_List()
     {
-        return StringConcatenator.Join(", ", Values, " and ");
+        return StringHelper.Join(", ", GetValuesList(ValuesCount), " and ");
     }
 
-    [Benchmark(Baseline = true)]
-    public string StringHelperJoin()
+    [Benchmark]
+    public string StringJoin_List()
     {
-        return StringHelper.Join(", ", Values, " and ");
+        return string.Join(", ", GetValuesList(ValuesCount));
+    }
+
+    [Benchmark]
+    public string Join_Collection()
+    {
+        return StringHelper.Join(", ", GetValuesCollection(ValuesCount), " and ");
+    }
+
+    [Benchmark]
+    public string Join_Enumerable()
+    {
+        return StringHelper.Join(", ", GetValuesEnumerable(ValuesCount), " and ");
     }
 }
