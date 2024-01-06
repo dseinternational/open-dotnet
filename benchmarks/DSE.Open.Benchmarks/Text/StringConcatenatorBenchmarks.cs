@@ -11,6 +11,7 @@ namespace DSE.Open.Benchmarks.Text;
 [MemoryDiagnoser]
 public class StringConcatenatorBenchmarks
 {
+    /*
     // use Hello World! as the string to join for easy
     private static readonly string[] s_short = ["Hello", "World", "!"];
 
@@ -27,7 +28,7 @@ public class StringConcatenatorBenchmarks
         "vitae,", "nisl.", "Praesent", "viverra", "massa", "eget", "risus.", "Integer", "quis", "urna.", "Ut", "ante", "enim,", "dapibus", "ut,", "aliquam",
         "quis,", "sagittis", "non,"
     ];
-
+    */
     // long but as a list
     private static readonly List<string> s_longList =
     [
@@ -43,14 +44,14 @@ public class StringConcatenatorBenchmarks
     ];
     // short but as a list
 
-    private static readonly List<string> s_shortList = ["Hello", "World", "!"];
+    //private static readonly List<string> s_shortList = ["Hello", "World", "!"];
 
     public static IEnumerable<object> Params()
     {
-        yield return s_short;
-        yield return s_long;
+        //yield return s_short;
+        //yield return s_long;
         yield return s_longList;
-        yield return s_shortList;
+        //yield return s_shortList;
     }
 
     // Benchmark Join, Join_2, Join_3
@@ -60,20 +61,27 @@ public class StringConcatenatorBenchmarks
     [ArgumentsSource(nameof(Params))]
     public string Join_Original(IEnumerable<string> values)
     {
-        return StringConcatenator.Join_Original(" ", values, " and ");
+        return StringConcatenator.Join_Original(", ", values, " and ");
     }
 
     [Benchmark]
     [ArgumentsSource(nameof(Params))]
     public string Join(IEnumerable<string> values)
     {
-        return StringConcatenator.Join(" ", values, " and ");
+        return StringConcatenator.Join(", ", values, " and ");
     }
+
+    //[Benchmark]
+    //[ArgumentsSource(nameof(Params))]
+    //public string Join2(IEnumerable<string> values)
+    //{
+    //    return StringConcatenator.Join2(", ", values, " and ");
+    //}
 
     [Benchmark]
     [ArgumentsSource(nameof(Params))]
-    public string Join2(IEnumerable<string> values)
+    public string Join3(IEnumerable<string> values)
     {
-        return StringConcatenator.Join2(" ", values, " and ");
+        return StringConcatenator.Join3(", ", values, " and ");
     }
 }
