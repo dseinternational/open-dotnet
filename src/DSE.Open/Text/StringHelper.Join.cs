@@ -9,7 +9,7 @@ namespace DSE.Open.Text;
 
 public static partial class StringHelper
 {
-    public static string Join2(string? separator, IEnumerable<string?> values, string? finalSeparator)
+    public static string Join(string? separator, IEnumerable<string?> values, string? finalSeparator)
     {
         if (finalSeparator is null)
         {
@@ -29,21 +29,6 @@ public static partial class StringHelper
         if (values is string?[] valuesArray)
         {
             return JoinCore(separator.AsSpan(), new ReadOnlySpan<string?>(valuesArray), finalSeparator);
-        }
-
-        return Join(separator, values, finalSeparator);
-    }
-
-    public static string Join(string? separator, IEnumerable<string?> values, string? finalSeparator)
-    {
-        if (finalSeparator is null)
-        {
-            return string.Join(separator, values);
-        }
-
-        if (string.IsNullOrEmpty(separator))
-        {
-            return string.Concat(values);
         }
 
         ArgumentNullException.ThrowIfNull(values);
@@ -188,7 +173,6 @@ public static partial class StringHelper
 
         var totalLength = (int)totalSeparatorsLength;
 
-        // Calculate the length of the resultant string so we know how much space to allocate.
         foreach (var value in values)
         {
             if (value is not null)
