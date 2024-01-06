@@ -82,12 +82,12 @@ public static partial class StringHelper
                     charIndex += strSpan.Length;
                     wordIndex++;
 
-                    if (separator is not null && wordIndex < count - 1)
+                    if (separator is not null && wordIndex < state.Count - 1)
                     {
                         separator.CopyTo(chars[charIndex..]);
                         charIndex += separator.Length;
                     }
-                    else if (finalSeparator is not null && wordIndex == count - 1)
+                    else if (finalSeparator is not null && wordIndex == state.Count - 1)
                     {
                         finalSeparator.CopyTo(chars[charIndex..]);
                         charIndex += finalSeparator.Length;
