@@ -128,6 +128,45 @@ public class MemoryExtensionsTests
         Assert.True(expected.AsSpan().SequenceEqual(buffer[..charsWritten]));
     }
 
+    [Fact]
+    public void Sum_WithSpan_Int32_ShouldComputeCorrectSum()
+    {
+        // Arrange
+        ReadOnlySpan<string> span = ["1", "2", "3", "4", "5"];
+
+        // Act
+        var sum = span.Sum(x => int.Parse(x, CultureInfo.InvariantCulture));
+
+        // Assert
+        Assert.Equal(15, sum);
+    }
+
+    [Fact]
+    public void Sum_WithSpan_Int64_ShouldComputeCorrectSum()
+    {
+        // Arrange
+        ReadOnlySpan<string> span = ["1", "2", "3", "4", "5"];
+
+        // Act
+        var sum = span.Sum(x => long.Parse(x, CultureInfo.InvariantCulture));
+
+        // Assert
+        Assert.Equal(15, sum);
+    }
+
+    [Fact]
+    public void Sum_WithSpan_ShouldComputeCorrectSum()
+    {
+        // Arrange
+        ReadOnlySpan<string> span = ["1", "2", "3", "4", "5"];
+
+        // Act
+        var sum = span.Sum(x => x.Length);
+
+        // Assert
+        Assert.Equal(5, sum);
+    }
+
     public static TheoryData<string, char, string> StringRemoveData => new()
     {
         { "", ' ', "" },
