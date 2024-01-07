@@ -1,6 +1,9 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Diagnostics;
+using System.Numerics;
+
 namespace DSE.Open;
 
 public static partial class MemoryExtensions
@@ -73,7 +76,8 @@ public static partial class MemoryExtensions
     /// <param name="itemsCopied"></param>
     /// <returns></returns>
     public static bool TryCopyWhere<T>(
-        this ReadOnlySpan<T> span, Span<T> buffer,
+        this ReadOnlySpan<T> span,
+        Span<T> buffer,
         Func<T, bool> predicate,
         out int itemsCopied)
     {
@@ -252,5 +256,27 @@ public static partial class MemoryExtensions
         }
 
         return count;
+    }
+
+    /// <summary>
+    /// Computes the sum of the sequence of Int32 values that are obtained by invoking a transform function
+    /// on each element of the input sequence.
+    /// </summary>
+    public static TResult Sum<TSource, TResult>(this ReadOnlySpan<TSource> source, Func<TSource, TResult> selector)
+        where TResult : struct, INumber<TResult>
+    {
+        ArgumentNullException.ThrowIfNull(selector);
+
+        var accumulator = TResult.Zero;
+
+        foreach (var source1 in source)
+        {
+            checked
+            {
+                accumulator += selector(source1);
+            }
+        }
+
+        return accumulator;
     }
 }
