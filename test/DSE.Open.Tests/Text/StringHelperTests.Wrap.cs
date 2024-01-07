@@ -93,4 +93,28 @@ public partial class StringHelperTests
         Assert.Equal("{{two}}", wrapped[1]);
         Assert.Equal("{{three}}", wrapped[2]);
     }
+
+    [Fact]
+    public void WrapRange_doubles_array_formatteed()
+    {
+        double[] values = [1.5687, 206.9715, 3.0, 42, 1111.111111111];
+        var wrapped = StringHelper.WrapRange("{{", "}}", values, "0.00", CultureInfo.InvariantCulture).ToArray();
+        Assert.Equal("{{1.57}}", wrapped[0]);
+        Assert.Equal("{{206.97}}", wrapped[1]);
+        Assert.Equal("{{3.00}}", wrapped[2]);
+        Assert.Equal("{{42.00}}", wrapped[3]);
+        Assert.Equal("{{1111.11}}", wrapped[4]);
+    }
+
+    [Fact]
+    public void WrapRange_doubles_collection_formatteed()
+    {
+        Collection<double> values = [1.5687, 206.9715, 3.0, 42, 1111.111111111];
+        var wrapped = StringHelper.WrapRange("{{", "}}", values, "0.00", CultureInfo.InvariantCulture).ToArray();
+        Assert.Equal("{{1.57}}", wrapped[0]);
+        Assert.Equal("{{206.97}}", wrapped[1]);
+        Assert.Equal("{{3.00}}", wrapped[2]);
+        Assert.Equal("{{42.00}}", wrapped[3]);
+        Assert.Equal("{{1111.11}}", wrapped[4]);
+    }
 }
