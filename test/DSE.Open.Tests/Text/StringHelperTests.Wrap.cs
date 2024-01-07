@@ -53,14 +53,16 @@ public partial class StringHelperTests
     [Fact]
     public void Wrap_Double_char_formatted()
     {
-        var wrapped = StringHelper.Wrap('[', ']', 92233.75807, "0.00", CultureInfo.InvariantCulture);
+        var wrapped = StringHelper.Wrap('[', ']', 92233.75807,
+            "0.00", CultureInfo.InvariantCulture);
         Assert.Equal("[92233.76]", wrapped);
     }
 
     [Fact]
     public void Wrap_Double_string_formatted()
     {
-        var wrapped = StringHelper.Wrap("{{", "}}", 92233.75807, "0.00", CultureInfo.InvariantCulture);
+        var wrapped = StringHelper.Wrap("{{", "}}", 92233.75807,
+            "0.00", CultureInfo.InvariantCulture);
         Assert.Equal("{{92233.76}}", wrapped);
     }
 
@@ -98,7 +100,8 @@ public partial class StringHelperTests
     public void WrapRange_doubles_array_formatteed()
     {
         double[] values = [1.5687, 206.9715, 3.0, 42, 1111.111111111];
-        var wrapped = StringHelper.WrapRange("{{", "}}", values, "0.00", CultureInfo.InvariantCulture).ToArray();
+        var wrapped = StringHelper.WrapRange("{{", "}}", values,
+            "0.00", CultureInfo.InvariantCulture).ToArray();
         Assert.Equal("{{1.57}}", wrapped[0]);
         Assert.Equal("{{206.97}}", wrapped[1]);
         Assert.Equal("{{3.00}}", wrapped[2]);
@@ -107,14 +110,54 @@ public partial class StringHelperTests
     }
 
     [Fact]
-    public void WrapRange_doubles_collection_formatteed()
+    public void WrapRange_doubles_collection_formatted()
     {
         Collection<double> values = [1.5687, 206.9715, 3.0, 42, 1111.111111111];
-        var wrapped = StringHelper.WrapRange("{{", "}}", values, "0.00", CultureInfo.InvariantCulture).ToArray();
+        var wrapped = StringHelper.WrapRange("{{", "}}", values,
+            "0.00", CultureInfo.InvariantCulture).ToArray();
         Assert.Equal("{{1.57}}", wrapped[0]);
         Assert.Equal("{{206.97}}", wrapped[1]);
         Assert.Equal("{{3.00}}", wrapped[2]);
         Assert.Equal("{{42.00}}", wrapped[3]);
         Assert.Equal("{{1111.11}}", wrapped[4]);
+    }
+
+    [Fact]
+    public void WrapRange_doubles_chars_array_formatted()
+    {
+        double[] values = [1.5687, 206.9715, 3.0, 42, 1111.111111111];
+        var wrapped = StringHelper.WrapRange('[', ']', values,
+            "0.00", CultureInfo.InvariantCulture).ToArray();
+        Assert.Equal("[1.57]", wrapped[0]);
+        Assert.Equal("[206.97]", wrapped[1]);
+        Assert.Equal("[3.00]", wrapped[2]);
+        Assert.Equal("[42.00]", wrapped[3]);
+        Assert.Equal("[1111.11]", wrapped[4]);
+    }
+
+    [Fact]
+    public void WrapRange_doubles_chars_collection_formatted()
+    {
+        Collection<double> values = [1.5687, 206.9715, 3.0, 42, 1111.111111111];
+        var wrapped = StringHelper.WrapRange('[', ']', values,
+            "0.00", CultureInfo.InvariantCulture).ToArray();
+        Assert.Equal("[1.57]", wrapped[0]);
+        Assert.Equal("[206.97]", wrapped[1]);
+        Assert.Equal("[3.00]", wrapped[2]);
+        Assert.Equal("[42.00]", wrapped[3]);
+        Assert.Equal("[1111.11]", wrapped[4]);
+    }
+
+    [Fact]
+    public void WrapRange_doubles_chars_span_formatted()
+    {
+        ReadOnlySpan<double> values = [1.5687, 206.9715, 3.0, 42, 1111.111111111];
+        var wrapped = StringHelper.WrapRange('[', ']', values,
+            "0.00", CultureInfo.InvariantCulture).ToArray();
+        Assert.Equal("[1.57]", wrapped[0]);
+        Assert.Equal("[206.97]", wrapped[1]);
+        Assert.Equal("[3.00]", wrapped[2]);
+        Assert.Equal("[42.00]", wrapped[3]);
+        Assert.Equal("[1111.11]", wrapped[4]);
     }
 }

@@ -141,6 +141,14 @@ public partial class StringHelperTests
     }
 
     [Fact]
+    public void Joins_span_of_double_formatted()
+    {
+        ReadOnlySpan<double> values = [1.7895, 2.84, 3.0, 4.44875, 5.555];
+        var joined = StringHelper.Join(", ", " and ", values, "0.00", CultureInfo.InvariantCulture);
+        Assert.Equal("1.79, 2.84, 3.00, 4.45 and 5.56", joined);
+    }
+
+    [Fact]
     public void Join_Empty()
     {
         var result = StringHelper.Join(" ", default, Enumerable.Empty<string>());

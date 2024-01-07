@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
+using DSE.Open.Linq;
 
 namespace DSE.Open.Text;
 
@@ -300,30 +301,18 @@ public static partial class StringHelper
         IEnumerable<T> values,
         string? format = default,
         IFormatProvider? provider = default)
+        where T : struct, IFormattable
     {
         ArgumentNullException.ThrowIfNull(values);
+
+        if (values.TryGetSpan(out var valuesSpan))
+        {
+            return Join(separator, finalSeparator, valuesSpan, format, provider);
+        }
 
         finalSeparator = finalSeparator.IsEmpty
             ? separator
             : finalSeparator;
-
-        if (typeof(T) == typeof(string))
-        {
-            if (values is List<string?> valuesList)
-            {
-                return JoinSpan(separator, CollectionsMarshal.AsSpan(valuesList), finalSeparator);
-            }
-
-            if (values is string?[] valuesArray)
-            {
-                return JoinSpan(separator, new ReadOnlySpan<string?>(valuesArray), finalSeparator);
-            }
-
-            if (values is IEnumerable<string> valuesEnumerable)
-            {
-                return Join(separator, finalSeparator, valuesEnumerable);
-            }
-        }
 
         using (var e = values.GetEnumerator())
         {
@@ -393,6 +382,57 @@ public static partial class StringHelper
                 return sh.ToStringAndClear();
             }
         }
+    }
+
+    public static string Join<T>(
+        ReadOnlySpan<char> separator,
+        ReadOnlySpan<char> finalSeparator,
+        ReadOnlySpan<T> values,
+        string? format = default,
+        IFormatProvider? provider = default)
+        where T : struct, IFormattable
+    {
+        if (values.IsEmpty)
+        {
+            return string.Empty;
+        }
+
+        finalSeparator = finalSeparator.IsEmpty
+            ? separator
+            : finalSeparator;
+
+        var e = values.GetEnumerator();
+
+        if (!e.MoveNext())
+        {
+            return string.Empty;
+        }
+
+        var firstValue = e.Current;
+
+        if (!e.MoveNext())
+        {
+            return $"{firstValue}";
+        }
+
+        var sh = new DefaultInterpolatedStringHandler(0, 0, provider, stackalloc char[256]);
+
+        sh.AppendFormatted(firstValue, format);
+
+        var isLast = false;
+
+        while (!isLast)
+        {
+            var current = e.Current;
+
+            isLast = !e.MoveNext();
+
+            sh.AppendFormatted(isLast ? finalSeparator : separator);
+
+            sh.AppendFormatted(current, format);
+        }
+
+        return sh.ToStringAndClear();
     }
 
     private static string JoinSpan(
