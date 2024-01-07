@@ -3,7 +3,7 @@
 
 namespace DSE.Open.Tests;
 
-public class MemoryExtensionsTests
+public partial class MemoryExtensionsTests
 {
     [Theory]
     [InlineData("AAAAAAAAAAAAA", 'A', true)]
