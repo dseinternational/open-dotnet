@@ -12,7 +12,7 @@ public partial class StringHelperTests
     public void Joins_array_of_string()
     {
         string[] values = ["one", "two", "three"];
-        var joined = StringHelper.Join(", ", values, " and ");
+        var joined = StringHelper.Join(", ", " and ", values);
         Assert.Equal("one, two and three", joined);
     }
 
@@ -20,7 +20,7 @@ public partial class StringHelperTests
     public void Joins_list_of_string()
     {
         List<string> values = ["one", "two", "three"];
-        var joined = StringHelper.Join(", ", values, " and ");
+        var joined = StringHelper.Join(", ", " and ", values);
         Assert.Equal("one, two and three", joined);
     }
 
@@ -28,14 +28,14 @@ public partial class StringHelperTests
     public void Join_WithCollectionOfString()
     {
         Collection<string> values = ["one", "two", "three"];
-        var joined = StringHelper.Join(", ", values, " and ");
+        var joined = StringHelper.Join(", ", " and ", values);
         Assert.Equal("one, two and three", joined);
     }
 
     [Fact]
     public void Joins_enumerable_of_string()
     {
-        var joined = StringHelper.Join(", ", GetValues(), " and ");
+        var joined = StringHelper.Join(", ", " and ", GetValues());
         Assert.Equal("one, two and three", joined);
 
         static IEnumerable<string> GetValues()
@@ -50,7 +50,7 @@ public partial class StringHelperTests
     public void JoinsSpan_array_of_string()
     {
         string[] values = ["one", "two", "three"];
-        var joined = StringHelper.Join((ReadOnlySpan<char>)", ", values, " and ");
+        var joined = StringHelper.Join((ReadOnlySpan<char>)", ", " and ", values);
         Assert.Equal("one, two and three", joined);
     }
 
@@ -58,7 +58,7 @@ public partial class StringHelperTests
     public void JoinsSpan_list_of_string()
     {
         List<string> values = ["one", "two", "three"];
-        var joined = StringHelper.Join((ReadOnlySpan<char>)", ", values, " and ");
+        var joined = StringHelper.Join((ReadOnlySpan<char>)", ", " and ", values);
         Assert.Equal("one, two and three", joined);
     }
 
@@ -66,14 +66,14 @@ public partial class StringHelperTests
     public void JoinSpan_WithCollectionOfString()
     {
         Collection<string> values = ["one", "two", "three"];
-        var joined = StringHelper.Join((ReadOnlySpan<char>)", ", values, " and ");
+        var joined = StringHelper.Join((ReadOnlySpan<char>)", ", " and ", values);
         Assert.Equal("one, two and three", joined);
     }
 
     [Fact]
     public void JoinsSpan_enumerable_of_string()
     {
-        var joined = StringHelper.Join((ReadOnlySpan<char>)", ", GetValues(), " and ");
+        var joined = StringHelper.Join((ReadOnlySpan<char>)", ", " and ", GetValues());
         Assert.Equal("one, two and three", joined);
 
         static IEnumerable<string> GetValues()
@@ -93,7 +93,7 @@ public partial class StringHelperTests
         ReadOnlySpan<char> separator = " ";
 
         // Act
-        var joined = StringHelper.Join(separator, values, finalSeparator);
+        var joined = StringHelper.Join(separator, finalSeparator, values);
 
         // Assert
         Assert.Equal("one two three", joined);
@@ -109,7 +109,7 @@ public partial class StringHelperTests
         ReadOnlySpan<char> separator = " ";
 
         // Act
-        var joined = StringHelper.Join(separator, values, finalSeparator);
+        var joined = StringHelper.Join(separator, finalSeparator, values);
 
         // Assert
         Assert.Equal(string.Empty, joined);
@@ -119,7 +119,7 @@ public partial class StringHelperTests
     public void Joins_array_of_int()
     {
         int[] values = [1, 2, 3, 4, 5];
-        var joined = StringHelper.Join(", ", values, " and ");
+        var joined = StringHelper.Join(", ", " and ", values);
         Assert.Equal("1, 2, 3, 4 and 5", joined);
     }
 
@@ -127,7 +127,7 @@ public partial class StringHelperTests
     public void Joins_array_of_double_formatted()
     {
         double[] values = [1.7895, 2.84, 3.0, 4.44875, 5.555];
-        var joined = StringHelper.Join(", ", values, " and ", "0.00", CultureInfo.InvariantCulture);
+        var joined = StringHelper.Join(", ", " and ", values, "0.00", CultureInfo.InvariantCulture);
         Assert.Equal("1.79, 2.84, 3.00, 4.45 and 5.56", joined);
     }
 
@@ -135,7 +135,7 @@ public partial class StringHelperTests
     public void Joins_big_array_of_double_formatted()
     {
         double[] values = Enumerable.Range(1,1000).Select(i => i * 0.77313).ToArray();
-        var joined = StringHelper.Join(", ", values, default, "0.00", CultureInfo.InvariantCulture);
+        var joined = StringHelper.Join(", ", default, values, "0.00", CultureInfo.InvariantCulture);
         var expected = string.Join(", ", values.Select(v => v.ToString("0.00", CultureInfo.InvariantCulture)));
         Assert.Equal(expected, joined);
     }
@@ -143,7 +143,7 @@ public partial class StringHelperTests
     [Fact]
     public void Join_Empty()
     {
-        var result = StringHelper.Join(" ", Enumerable.Empty<string>(), default);
+        var result = StringHelper.Join(" ", default, Enumerable.Empty<string>());
         Assert.NotNull(result);
         Assert.Empty(result);
     }
@@ -153,7 +153,7 @@ public partial class StringHelperTests
     {
         static void Act()
         {
-            _ = StringHelper.Join(" ", null!, default);
+            _ = StringHelper.Join(" ", default, null!);
         }
 
         _ = Assert.Throws<ArgumentNullException>(Act);
@@ -162,7 +162,7 @@ public partial class StringHelperTests
     [Fact]
     public void Join_Single()
     {
-        var result = StringHelper.Join(" ", s_hello, default);
+        var result = StringHelper.Join(" ", default, s_hello);
         Assert.NotNull(result);
         Assert.Equal("Hello", result);
     }
@@ -170,7 +170,7 @@ public partial class StringHelperTests
     [Fact]
     public void Join_Two()
     {
-        var result = StringHelper.Join(" ", s_helloWorld, default);
+        var result = StringHelper.Join(" ", default, s_helloWorld);
         Assert.NotNull(result);
         Assert.Equal("Hello World", result);
     }
@@ -178,7 +178,7 @@ public partial class StringHelperTests
     [Fact]
     public void Join_Three()
     {
-        var result = StringHelper.Join(" ", s_helloWorldExc, default);
+        var result = StringHelper.Join(" ", default, s_helloWorldExc);
         Assert.NotNull(result);
         Assert.Equal("Hello World !", result);
     }
@@ -186,7 +186,7 @@ public partial class StringHelperTests
     [Fact]
     public void Join_Three_FinalSeparator()
     {
-        var result = StringHelper.Join(" ", s_helloWorldExc, " and ");
+        var result = StringHelper.Join(" ", " and ", s_helloWorldExc);
         Assert.NotNull(result);
         Assert.Equal("Hello World and !", result);
     }
@@ -194,7 +194,7 @@ public partial class StringHelperTests
     [Fact]
     public void Join_Three_FinalSeparator_Null()
     {
-        var result = StringHelper.Join(" ", s_helloWorldExc, null);
+        var result = StringHelper.Join(" ", null, s_helloWorldExc);
         Assert.NotNull(result);
         Assert.Equal("Hello World !", result);
     }
@@ -202,7 +202,7 @@ public partial class StringHelperTests
     [Fact]
     public void Join_Three_FinalSeparator_Empty()
     {
-        var result = StringHelper.Join(" ", s_helloWorldExc, string.Empty);
+        var result = StringHelper.Join(" ", string.Empty, s_helloWorldExc);
         Assert.NotNull(result);
         Assert.Equal("Hello World !", result);
     }
@@ -210,7 +210,7 @@ public partial class StringHelperTests
     [Fact(Skip = "TODO")]
     public void Join_Three_FinalSeparator_EmptySeparator()
     {
-        var result = StringHelper.Join(string.Empty, s_helloWorldExc, " and ");
+        var result = StringHelper.Join(string.Empty, " and ", s_helloWorldExc);
         Assert.NotNull(result);
         Assert.Equal("HelloWorld and !", result);
     }
@@ -218,7 +218,7 @@ public partial class StringHelperTests
     [Fact]
     public void Join_Three_FinalSeparator_EmptySeparator_Null()
     {
-        var result = StringHelper.Join(string.Empty, s_helloWorldExc, null);
+        var result = StringHelper.Join(string.Empty, null, s_helloWorldExc);
         Assert.NotNull(result);
         Assert.Equal("HelloWorld!", result);
     }
@@ -226,7 +226,7 @@ public partial class StringHelperTests
     [Fact]
     public void Join_Three_FinalSeparator_Empty_WithCollection()
     {
-        var result = StringHelper.Join(" ", new Collection<string> { "Hello", "World", "!" }, string.Empty);
+        var result = StringHelper.Join(" ", string.Empty, new Collection<string> { "Hello", "World", "!" });
         Assert.NotNull(result);
         Assert.Equal("Hello World !", result);
     }
@@ -235,7 +235,7 @@ public partial class StringHelperTests
     public void Join_Three_FinalSeparator_NonEmpty_WithEnum()
     {
         // non collection enumerable
-        var result = StringHelper.Join(" ", s_helloWorldExc.Select(s => s), " and ");
+        var result = StringHelper.Join(" ", " and ", s_helloWorldExc.Select(s => s));
         Assert.NotNull(result);
         Assert.Equal("Hello World and !", result);
     }
@@ -245,7 +245,7 @@ public partial class StringHelperTests
     {
         var text = s_manyWords;
 
-        var result = StringHelper.Join(" ", text, null);
+        var result = StringHelper.Join(" ", null, text);
 
         Assert.NotNull(result);
 
@@ -262,7 +262,7 @@ public partial class StringHelperTests
     {
         var text = s_manyWords.ToList();
 
-        var result = StringHelper.Join(" ", text, null);
+        var result = StringHelper.Join(" ", null, text);
 
         Assert.NotNull(result);
 
@@ -279,7 +279,7 @@ public partial class StringHelperTests
     {
         var text = new Collection<string>(s_manyWords);
 
-        var result = StringHelper.Join(" ", text, null);
+        var result = StringHelper.Join(" ", null, text);
 
         Assert.NotNull(result);
 

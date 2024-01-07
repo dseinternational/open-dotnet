@@ -40,7 +40,7 @@ public class StringHelperJoinStringBenchmarks
     [Benchmark(Baseline = true)]
     public string Join_List()
     {
-        return StringHelper.Join(", ", GetValuesList(ValuesCount), " and ");
+        return StringHelper.Join(", ", " and ", GetValuesList(ValuesCount));
     }
 
     [Benchmark]
@@ -52,12 +52,12 @@ public class StringHelperJoinStringBenchmarks
     [Benchmark]
     public string Join_Collection()
     {
-        return StringHelper.Join(", ", GetValuesCollection(ValuesCount), " and ");
+        return StringHelper.Join(", ", " and ", GetValuesCollection(ValuesCount));
     }
 
     [Benchmark]
     public string Join_Enumerable()
     {
-        return StringHelper.Join(", ", GetValuesEnumerable(ValuesCount), " and ");
+        return StringHelper.Join(", ", " and ", GetValuesEnumerable(ValuesCount));
     }
 }

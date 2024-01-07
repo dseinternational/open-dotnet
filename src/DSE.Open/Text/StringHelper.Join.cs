@@ -17,15 +17,15 @@ public static partial class StringHelper
     /// specified <paramref name="finalSeparator"/> between the penultimate and final members.
     /// </summary>
     /// <param name="separator">The string to use as a separator. It is included in the returned string only if
-    /// <paramref name="values"/> has more than one element.</param>
-    /// <param name="values">A collection that contains the strings to concatenate.</param>
+    ///     <paramref name="values"/> has more than one element.</param>
     /// <param name="finalSeparator">The string to use as the final separator. It is included in the returned string
-    /// only if <paramref name="values"/> has more than one element.</param>
+    ///     only if <paramref name="values"/> has more than one element.</param>
+    /// <param name="values">A collection that contains the strings to concatenate.</param>
     /// <returns>A string that consists of the elements of <paramref name="values"/> delimited by the
     /// <paramref name="separator"/> string between each member before the penultimate, and by the
     /// <paramref name="finalSeparator"/> between the penultimate and final members; or, <see cref="string.Empty"/>
     /// if <paramref name="values"/> has zero elements.</returns>
-    public static string Join(string? separator, IEnumerable<string?> values, string? finalSeparator)
+    public static string Join(string? separator, string? finalSeparator, IEnumerable<string?> values)
     {
         ArgumentNullException.ThrowIfNull(values);
 
@@ -183,18 +183,18 @@ public static partial class StringHelper
     /// specified <paramref name="finalSeparator"/> between the penultimate and final members.
     /// </summary>
     /// <param name="separator">The string to use as a separator. It is included in the returned string only if
-    /// <paramref name="values"/> has more than one element.</param>
-    /// <param name="values">A collection that contains the strings to concatenate.</param>
+    ///     <paramref name="values"/> has more than one element.</param>
     /// <param name="finalSeparator">The string to use as the final separator. It is included in the returned string
-    /// only if <paramref name="values"/> has more than one element.</param>
+    ///     only if <paramref name="values"/> has more than one element.</param>
+    /// <param name="values">A collection that contains the strings to concatenate.</param>
     /// <returns>A string that consists of the elements of <paramref name="values"/> delimited by the
     /// <paramref name="separator"/> string between each member before the penultimate, and by the
     /// <paramref name="finalSeparator"/> between the penultimate and final members; or, <see cref="string.Empty"/>
     /// if <paramref name="values"/> has zero elements.</returns>
     public static string Join(
         ReadOnlySpan<char> separator,
-        IEnumerable<string?> values,
-        ReadOnlySpan<char> finalSeparator)
+        ReadOnlySpan<char> finalSeparator,
+        IEnumerable<string?> values)
     {
         ArgumentNullException.ThrowIfNull(values);
 
@@ -287,17 +287,17 @@ public static partial class StringHelper
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="separator">The string to use as a separator. It is included in the returned string only if
-    /// <paramref name="values"/> has more than one element.</param>
-    /// <param name="values">A collection that contains the strings to concatenate.</param>
+    ///     <paramref name="values"/> has more than one element.</param>
     /// <param name="finalSeparator">The string to use as the final separator. It is included in the returned string
-    /// only if <paramref name="values"/> has more than one element.</param>
+    ///     only if <paramref name="values"/> has more than one element.</param>
+    /// <param name="values">A collection that contains the strings to concatenate.</param>
     /// <param name="format"></param>
     /// <param name="provider"></param>
     /// <returns></returns>
     public static string Join<T>(
         ReadOnlySpan<char> separator,
-        IEnumerable<T> values,
         ReadOnlySpan<char> finalSeparator,
+        IEnumerable<T> values,
         string? format = default,
         IFormatProvider? provider = default)
     {
@@ -321,7 +321,7 @@ public static partial class StringHelper
 
             if (values is IEnumerable<string> valuesEnumerable)
             {
-                return Join(separator, valuesEnumerable, finalSeparator);
+                return Join(separator, finalSeparator, valuesEnumerable);
             }
         }
 
