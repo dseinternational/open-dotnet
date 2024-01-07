@@ -259,7 +259,7 @@ public static partial class MemoryExtensions
     }
 
     /// <summary>
-    /// Computes the sum of the sequence of Int32 values that are obtained by invoking a transform function
+    /// Computes the sum of the sequence of number values that are obtained by invoking a transform function
     /// on each element of the input sequence.
     /// </summary>
     public static TResult Sum<TSource, TResult>(this ReadOnlySpan<TSource> source, Func<TSource, TResult> selector)
