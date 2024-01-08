@@ -38,7 +38,7 @@ public record Word
     /// The universal POS tag (<see href="https://universaldependencies.org/u/pos/index.html"/>).
     /// </summary>
     [JsonPropertyName("upos")]
-    public UniversalPosTag? Pos { get; init; }
+    public required UniversalPosTag Pos { get; init; }
 
     /// <summary>
     /// An optional additional POS tag. May be a <see cref="TreebankPosTag"/>
@@ -80,7 +80,7 @@ public record Word
         return 9 // tabs
             + Form.Length
             + Lemma?.Length ?? 1
-            + Pos?.Length ?? 1
+            + Pos.Length
             + AltPos?.Length ?? 1
             + Features.Sum(f => f.GetCharCount())
             + 3 // at most
@@ -162,20 +162,13 @@ public record Word
         UniversalPosTag? pos;
         var posSpan = s[fields[ConlluFieldIndex.Pos]];
 
-        if (posSpan.Length == 1 && posSpan[0] == '_')
+        if (UniversalPosTag.TryParse(posSpan, provider, out var posValue))
         {
-            pos = null;
+            pos = posValue;
         }
         else
         {
-            if (UniversalPosTag.TryParse(posSpan, provider, out var posValue))
-            {
-                pos = posValue;
-            }
-            else
-            {
-                return Fail(out result);
-            }
+            return Fail(out result);
         }
 
         PosTag? xpos;
@@ -264,7 +257,6 @@ public record Word
 
         // TODO: DEPS
 
-
         var miscSpan = s[fields[ConlluFieldIndex.Misc]];
         ReadOnlyAttributeValueCollection misc;
 
@@ -289,7 +281,7 @@ public record Word
             Index = index,
             Form = word,
             Lemma = lemma,
-            Pos = pos,
+            Pos = (UniversalPosTag)pos,
             AltPos = xpos,
             HeadIndex = head,
             Features = features,
@@ -428,26 +420,12 @@ public record Word
 
         // UPOS
 
-        if (Pos is not null)
+        if (!Pos.Value.TryFormat(destination[charsWritten..], out var cwUpos, format, provider))
         {
-            if (!Pos.Value.TryFormat(destination[charsWritten..], out var cwUpos, format, provider))
-            {
-                return false;
-            }
+            return false;
+        }
 
-            charsWritten += cwUpos;
-        }
-        else
-        {
-            if (destination.Length > charsWritten)
-            {
-                destination[charsWritten++] = '_';
-            }
-            else
-            {
-                return false;
-            }
-        }
+        charsWritten += cwUpos;
 
         if (destination.Length > charsWritten)
         {
