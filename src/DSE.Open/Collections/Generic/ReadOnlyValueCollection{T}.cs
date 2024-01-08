@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace DSE.Open.Collections.Generic;
 
@@ -32,7 +33,7 @@ public class ReadOnlyValueCollection<T>
 
     public ReadOnlyValueCollection(IEnumerable<T> list)
     {
-        _items = list is ReadOnlyValueCollection<T> rovc ? rovc._items : [..list];
+        _items = list is ReadOnlyValueCollection<T> rovc ? rovc._items : [.. list];
     }
 
     /// <summary>
@@ -65,6 +66,11 @@ public class ReadOnlyValueCollection<T>
 #pragma warning disable CA1033 // Interface methods should be callable by child types
 
     bool ICollection<T>.IsReadOnly => false; // JsonSerialization
+
+    public ReadOnlySpan<T> AsSpan()
+    {
+        return CollectionsMarshal.AsSpan(_items);
+    }
 
     void ICollection<T>.Add(T item)
     {

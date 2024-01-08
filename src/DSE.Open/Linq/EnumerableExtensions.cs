@@ -3,6 +3,7 @@
 
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using DSE.Open.Collections.Generic;
 
 namespace DSE.Open.Linq;
 
@@ -28,6 +29,10 @@ public static class EnumerableExtensions
         else if (source.GetType() == typeof(List<TSource>))
         {
             span = CollectionsMarshal.AsSpan(Unsafe.As<List<TSource>>(source));
+        }
+        else if (source.GetType() == typeof(ReadOnlyValueCollection<TSource>))
+        {
+            span = Unsafe.As<ReadOnlyValueCollection<TSource>>(source).AsSpan();
         }
         else
         {
