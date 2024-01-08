@@ -226,7 +226,7 @@ public partial class ValueTypesGenerator
                 }
 
                 writer.WriteBlock("""
-                                      return HashCode.Combine(_value);
+                                      return _value.GetHashCode();
                                   }
                                   """);
             }
