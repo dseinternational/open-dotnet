@@ -1,9 +1,9 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using DSE.Open.Linq;
-using System.Numerics.Tensors;
 using System.Numerics;
+using System.Numerics.Tensors;
+using DSE.Open.Linq;
 
 namespace DSE.Open.Numerics;
 
@@ -24,11 +24,6 @@ public static partial class Sequence
         }
 
         ArgumentNullException.ThrowIfNull(values);
-
-        if (values is IEnumerable<double> doubleSeq)
-        {
-            return T.CreateChecked(MaximumFloatingPointIeee754(doubleSeq));
-        }
 
         T result;
 
@@ -55,12 +50,18 @@ public static partial class Sequence
         return result;
     }
 
-    private static T MaximumFloatingPointIeee754<T>(this IEnumerable<T> values)
+    public static T MaximumFloatingPoint<T>(ReadOnlySpan<T> values)
+        where T : IFloatingPointIeee754<T>
+    {
+        return TensorPrimitives.Max(values);
+    }
+
+    public static T MaximumFloatingPoint<T>(this IEnumerable<T> values)
         where T : struct, IFloatingPointIeee754<T>
     {
         if (values.TryGetSpan(out var span))
         {
-            return Maximum(span);
+            return MaximumFloatingPoint(span);
         }
 
         ArgumentNullException.ThrowIfNull(values);
@@ -84,7 +85,7 @@ public static partial class Sequence
                 {
                     return T.NaN;
                 }
-
+                
                 if (x > result)
                 {
                     result = x;

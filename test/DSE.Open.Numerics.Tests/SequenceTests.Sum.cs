@@ -11,7 +11,7 @@ public partial class SequenceTests
     public void SumInteger_Array_Int32()
     {
         int[] sequence = [1, 2, 3, 4, 5];
-        var sum = Sequence.SumInteger(sequence);
+        var sum = Sequence.Sum(sequence);
         Assert.Equal(15, sum);
     }
 
@@ -35,7 +35,7 @@ public partial class SequenceTests
     public void SumInteger_Collection_Int32()
     {
         Collection<int> sequence = [1, 2, 3, 4, 5];
-        var sum = Sequence.SumInteger(sequence);
+        var sum = Sequence.Sum(sequence);
         Assert.Equal(15, sum);
     }
 

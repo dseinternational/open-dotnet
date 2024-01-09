@@ -3,49 +3,72 @@
 
 using System.Numerics;
 using System.Numerics.Tensors;
-using System.Runtime.InteropServices;
 using DSE.Open.Linq;
 
 namespace DSE.Open.Numerics;
 
 public static partial class Sequence
 {
-    public static T SumInteger<T>(IEnumerable<T> sequence)
-        where T : struct, IBinaryInteger<T>
+    public static T Sum<T>(IEnumerable<T> sequence)
+        where T : struct, INumberBase<T>
     {
-        return SumInteger<T, T>(sequence);
+        return Sum<T, T>(sequence, out _);
     }
 
-    public static TAcc SumInteger<T, TAcc>(IEnumerable<T> sequence)
-        where T : struct, IBinaryInteger<T>
-        where TAcc : struct, IBinaryInteger<TAcc>
+    public static T Sum<T>(IEnumerable<T> sequence, out long size)
+        where T : struct, INumberBase<T>
+    {
+        return Sum<T, T>(sequence, out size);
+    }
+
+    public static TAcc Sum<T, TAcc>(IEnumerable<T> sequence)
+        where T : struct, INumberBase<T>
+        where TAcc : struct, INumberBase<TAcc>
+    {
+        return Sum<T, TAcc>(sequence, out _);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="TAcc"></typeparam>
+    /// <param name="sequence"></param>
+    /// <param name="size">The number of elements in the sequence.</param>
+    /// <returns></returns>
+    public static TAcc Sum<T, TAcc>(IEnumerable<T> sequence, out long size)
+        where T : struct, INumberBase<T>
+        where TAcc : struct, INumberBase<TAcc>
     {
         if (sequence.TryGetSpan(out var span))
         {
-            return SumInteger<T, TAcc>(span);
+            size=span.Length;
+            return Sum<T, TAcc>(span);
         }
 
         ArgumentNullException.ThrowIfNull(sequence);
 
         var result = TAcc.AdditiveIdentity;
+        size = 0;
 
         foreach (var value in sequence)
         {
+            size++;
             result += TAcc.CreateChecked(value);
         }
 
         return result;
     }
 
-    public static T SumInteger<T>(ReadOnlySpan<T> sequence)
-        where T : struct, IBinaryInteger<T>
+    public static T Sum<T>(ReadOnlySpan<T> sequence)
+        where T : struct, INumberBase<T>
     {
-        return SumInteger<T,T>(sequence);
+        return Sum<T, T>(sequence);
     }
 
-    public static TAcc SumInteger<T, TAcc>(ReadOnlySpan<T> sequence)
-        where T : struct, IBinaryInteger<T>
-        where TAcc : struct, IBinaryInteger<TAcc>
+    public static TAcc Sum<T, TAcc>(ReadOnlySpan<T> sequence)
+        where T : struct, INumberBase<T>
+        where TAcc : struct, INumberBase<TAcc>
     {
         if (typeof(T) == typeof(TAcc))
         {
@@ -85,7 +108,7 @@ public static partial class Sequence
 
         if (summation == SummationCompensation.KahanBabushkaNeumaier)
         {
-            return SumFloatingPointIeee754KahanBabushkaNeumaier<T, TAcc>(sequence);
+            return SumFloatingPointKahanBabushkaNeumaier<T, TAcc>(sequence);
         }
         else if (summation == SummationCompensation.KahanBabushka)
         {
@@ -130,7 +153,7 @@ public static partial class Sequence
     {
         if (summation == SummationCompensation.KahanBabushkaNeumaier)
         {
-            return SumFloatingPointIeee754KahanBabushkaNeumaier<T, TAcc>(sequence);
+            return SumFloatingPointKahanBabushkaNeumaier<T, TAcc>(sequence);
         }
         else if (summation == SummationCompensation.KahanBabushka)
         {
@@ -164,7 +187,7 @@ public static partial class Sequence
         return result;
     }
 
-    private static TAcc SumFloatingPointIeee754KahanBabushkaNeumaier<T, TAcc>(IEnumerable<T> sequence)
+    private static TAcc SumFloatingPointKahanBabushkaNeumaier<T, TAcc>(IEnumerable<T> sequence)
         where T : struct, IFloatingPointIeee754<T>
         where TAcc : struct, IFloatingPointIeee754<TAcc>
     {
@@ -200,7 +223,7 @@ public static partial class Sequence
         return result + c;
     }
 
-    private static TAcc SumFloatingPointIeee754KahanBabushkaNeumaier<T, TAcc>(ReadOnlySpan<T> sequence)
+    private static TAcc SumFloatingPointKahanBabushkaNeumaier<T, TAcc>(ReadOnlySpan<T> sequence)
         where T : struct, IFloatingPointIeee754<T>
         where TAcc : struct, IFloatingPointIeee754<TAcc>
     {

@@ -21,18 +21,18 @@ public abstract class SequenceSumIntegerBenchmarksBase<T> : SequenceSumBenchmark
     [Benchmark]
     public T Sequence_Sum_Array()
     {
-        return Sequence.SumInteger(ValuesArray);
+        return Sequence.Sum(ValuesArray);
     }
 
     [Benchmark]
     public T Sequence_Sum_Collection()
     {
-        return Sequence.SumInteger(ValuesCollection);
+        return Sequence.Sum(ValuesCollection);
     }
 
     [Benchmark]
     public T Sequence_Sum_Enumerable()
     {
-        return Sequence.SumInteger(ValuesEnumerable);
+        return Sequence.Sum(ValuesEnumerable);
     }
 }

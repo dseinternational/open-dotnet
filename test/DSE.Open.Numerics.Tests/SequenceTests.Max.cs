@@ -27,7 +27,7 @@ public partial class SequenceTests
         var sequence = Enumerable.Range(1, 500).Union(Enumerable.Range(0, 100))
             .Select(i => i / 3.33)
             .ToArray();
-        var max = Sequence.Maximum(sequence);
+        var max = Sequence.MaximumFloatingPoint(sequence);
         Assert.Equal(150.15015015015015, max);
     }
 
