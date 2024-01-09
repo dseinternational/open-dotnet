@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="TimeZoneNames" />
+    <PackageReference Include="TimeZoneConverter" />
   </ItemGroup>
 
   <ItemGroup>
