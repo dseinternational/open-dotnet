@@ -11,8 +11,8 @@ public static partial class Sequence
     /// Return the sample arithmetic mean of a sequence. If the sequence is empty, an
     /// <see cref="EmptySequenceException"/> is thrown.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="sequence"></param>
+    /// <typeparam name="T">The type of the elements in the sequence.</typeparam>
+    /// <param name="sequence">The sequence of elements to use for the calculation.</param>
     /// <returns></returns>
     public static T Mean<T>(ReadOnlySpan<T> sequence)
         where T : struct, INumberBase<T>
@@ -20,21 +20,21 @@ public static partial class Sequence
         return Mean<T, T>(sequence);
     }
 
-    public static TAcc Mean<T, TAcc>(ReadOnlySpan<T> sequence)
+    public static TResult Mean<T, TResult>(ReadOnlySpan<T> sequence)
         where T : struct, INumberBase<T>
-        where TAcc : struct, INumberBase<TAcc>
+        where TResult : struct, INumberBase<TResult>
     {
         EmptySequenceException.ThrowIfEmpty(sequence);
-        var sum = Sum<T, TAcc>(sequence);
-        return sum / TAcc.CreateChecked(sequence.Length);
+        var sum = Sum<T, TResult>(sequence);
+        return sum / TResult.CreateChecked(sequence.Length);
     }
 
     /// <summary>
     /// Return the sample arithmetic mean of a sequence. If the sequence is empty, an
     /// <see cref="EmptySequenceException"/> is thrown.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="sequence"></param>
+    /// <typeparam name="T">The type of the elements in the sequence.</typeparam>
+    /// <param name="sequence">The sequence of elements to use for the calculation.</param>
     /// <returns></returns>
     public static T Mean<T>(IEnumerable<T> sequence)
         where T : struct, INumberBase<T>
@@ -42,18 +42,18 @@ public static partial class Sequence
         return Mean<T, T>(sequence);
     }
 
-    public static TAcc Mean<T, TAcc>(IEnumerable<T> sequence)
+    public static TResult Mean<T, TResult>(IEnumerable<T> sequence)
         where T : struct, INumberBase<T>
-        where TAcc : struct, INumberBase<TAcc>
+        where TResult : struct, INumberBase<TResult>
     {
-        // TODO: consider accumulating method to avoid TAcc overflow
-        var sum = Sum<T, TAcc>(sequence, out var size);
+        // TODO: consider accumulating method to avoid TResult overflow
+        var sum = Sum<T, TResult>(sequence, out var size);
 
         if (size == 0)
         {
             EmptySequenceException.Throw();
         }
 
-        return sum / TAcc.CreateChecked(size);
+        return sum / TResult.CreateChecked(size);
     }
 }

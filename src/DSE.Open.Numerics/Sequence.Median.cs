@@ -10,16 +10,16 @@ public static partial class Sequence
     /// <summary>
     /// Gets the median (middle value) value of a numeric sequence.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <typeparam name="TAcc"></typeparam>
-    /// <param name="sequence"></param>
+    /// <typeparam name="T">The type of the elements in the sequence.</typeparam>
+    /// <typeparam name="TResult"></typeparam>
+    /// <param name="sequence">The sequence of elements to use for the calculation.</param>
     /// <param name="median"></param>
     /// <returns></returns>
-    public static TAcc Median<T, TAcc>(
+    public static TResult Median<T, TResult>(
         ReadOnlySpan<T> sequence,
         MedianMethod median = MedianMethod.MeanOfMiddleTwo)
         where T : struct, INumberBase<T>
-        where TAcc : struct, INumberBase<TAcc>
+        where TResult : struct, INumberBase<TResult>
     {
         // TODO: can this be done efficiently without sorting?
         // if so, the next overload is not needed
@@ -32,19 +32,19 @@ public static partial class Sequence
     /// <summary>
     /// Gets the median (middle value) value of a numeric sequence by first sorting the sequence in place.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <typeparam name="TAcc"></typeparam>
+    /// <typeparam name="T">The type of the elements in the sequence.</typeparam>
+    /// <typeparam name="TResult"></typeparam>
     /// <typeparam name="TComparer"></typeparam>
-    /// <param name="sequence"></param>
+    /// <param name="sequence">The sequence of elements to use for the calculation.</param>
     /// <param name="comparer"></param>
     /// <param name="median"></param>
     /// <returns></returns>
-    public static TAcc Median<T, TAcc, TComparer>(
+    public static TResult Median<T, TResult, TComparer>(
         Span<T> sequence,
         TComparer comparer,
         MedianMethod median = MedianMethod.MeanOfMiddleTwo)
         where T : struct, INumberBase<T>
-        where TAcc : struct, INumberBase<TAcc>
+        where TResult : struct, INumberBase<TResult>
         where TComparer : IComparer<T>
     {
         throw new NotImplementedException();

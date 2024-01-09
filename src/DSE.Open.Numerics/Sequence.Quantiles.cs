@@ -11,12 +11,12 @@ public static partial class Sequence
     /// Divide data into n continuous intervals with equal probability. Returns a list of n - 1
     /// cut points separating the intervals.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="samples"></param>
+    /// <typeparam name="T">The type of the elements in the sequence.</typeparam>
+    /// <param name="sequence">The sequence of elements to use for the calculation.</param>
     /// <param name="n"></param>
     /// <returns></returns>
     /// <exception cref="NotImplementedException"></exception>
-    public static ReadOnlySpan<T> Quantiles<T>(ReadOnlySpan<T> samples, int n = 4)
+    public static ReadOnlySpan<T> Quantiles<T>(ReadOnlySpan<T> sequence, int n = 4)
         where T : struct, INumberBase<T>
     {
         throw new NotImplementedException();

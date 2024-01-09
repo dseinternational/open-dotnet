@@ -7,26 +7,27 @@ namespace DSE.Open.Numerics;
 
 public static partial class Sequence
 {
-    public static T StandardDeviation<T>(ReadOnlySpan<T> sequence)
+
+    public static T PopulationStandardDeviation<T>(ReadOnlySpan<T> sequence)
         where T : struct, INumberBase<T>
     {
-        return StandardDeviation<T, T>(sequence);
+        return PopulationStandardDeviation<T, T>(sequence);
     }
 
-    public static TResult StandardDeviation<T, TResult>(ReadOnlySpan<T> sequence)
+    public static TResult PopulationStandardDeviation<T, TResult>(ReadOnlySpan<T> sequence)
         where T : struct, INumberBase<T>
         where TResult : struct, INumberBase<TResult>
     {
         throw new NotImplementedException();
     }
 
-    public static T StandardDeviation<T>(IEnumerable<T> sequence)
+    public static T PopulationStandardDeviation<T>(IEnumerable<T> sequence)
         where T : struct, INumberBase<T>
     {
-        return StandardDeviation<T, T>(sequence);
+        return PopulationStandardDeviation<T, T>(sequence);
     }
 
-    public static TResult StandardDeviation<T, TResult>(IEnumerable<T> sequence)
+    public static TResult PopulationStandardDeviation<T, TResult>(IEnumerable<T> sequence)
         where T : struct, INumberBase<T>
         where TResult : struct, INumberBase<TResult>
     {
