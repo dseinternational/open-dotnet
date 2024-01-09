@@ -26,7 +26,7 @@ public static partial class Sequence
 
         // https://rcoh.me/posts/linear-time-median-finding/
 
-        throw new NotSupportedException();
+        throw new NotImplementedException();
     }
 
     /// <summary>
@@ -47,6 +47,6 @@ public static partial class Sequence
         where TAcc : struct, INumberBase<TAcc>
         where TComparer : IComparer<T>
     {
-        throw new NotSupportedException();
+        throw new NotImplementedException();
     }
 }

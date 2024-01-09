@@ -133,11 +133,11 @@ public static partial class Sequence
         }
         else if (summation == SummationCompensation.KahanBabushka)
         {
-            ThrowHelper.ThrowNotSupportedException();
+            throw new NotImplementedException();
         }
         else if (summation == SummationCompensation.Pairwise)
         {
-            ThrowHelper.ThrowNotSupportedException();
+            throw new NotImplementedException();
         }
 
         var result = TAcc.AdditiveIdentity;
@@ -178,11 +178,11 @@ public static partial class Sequence
         }
         else if (summation == SummationCompensation.KahanBabushka)
         {
-            ThrowHelper.ThrowNotSupportedException();
+            throw new NotImplementedException();
         }
         else if (summation == SummationCompensation.Pairwise)
         {
-            ThrowHelper.ThrowNotSupportedException();
+            throw new NotImplementedException();
         }
 
         if (typeof(T) == typeof(TAcc))
