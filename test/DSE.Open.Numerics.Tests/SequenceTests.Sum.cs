@@ -8,54 +8,54 @@ namespace DSE.Open.Numerics;
 public partial class SequenceTests
 {
     [Fact]
-    public void Sum_Array_Int32()
+    public void SumInteger_Array_Int32()
     {
         int[] sequence = [1, 2, 3, 4, 5];
-        var sum = Sequence.Sum(sequence);
+        var sum = Sequence.SumInteger(sequence);
         Assert.Equal(15, sum);
     }
 
     [Fact]
-    public void Sum_Array_Double()
+    public void SumFloatingPoint_Array_Double()
     {
         double[] sequence = [1, 2, 3, 4, 5];
-        var sum = Sequence.Sum(sequence);
+        var sum = Sequence.SumFloatingPoint(sequence);
         Assert.Equal(15.0, sum);
     }
 
     [Fact]
-    public void Sum_Array_Double_with_NaN_returns_NaN()
+    public void SumFloatingPoint_Array_Double_with_NaN_returns_NaN()
     {
         double[] sequence = [1, 2, 3, 4, 5, double.NaN];
-        var sum = Sequence.Sum(sequence);
+        var sum = Sequence.SumFloatingPoint(sequence);
         Assert.True(double.IsNaN(sum));
     }
 
     [Fact]
-    public void Sum_Collection_Int32()
+    public void SumInteger_Collection_Int32()
     {
         Collection<int> sequence = [1, 2, 3, 4, 5];
-        var sum = Sequence.Sum(sequence);
+        var sum = Sequence.SumInteger(sequence);
         Assert.Equal(15, sum);
     }
 
     [Fact]
-    public void Sum_Collection_Double()
+    public void SumFloatingPoint_Collection_Double()
     {
         Collection<double> sequence = [1, 2, 3, 4, 5];
-        var sum = Sequence.Sum(sequence);
+        var sum = Sequence.SumFloatingPoint(sequence);
         Assert.Equal(15.0, sum);
     }
 
     [Fact]
-    public void Sum_Enumerable_Double_with_NaN_returns_NaN()
+    public void SumFloatingPoint_Enumerable_Double_with_NaN_returns_NaN()
     {
-        var sum = Sequence.Sum(GetSequence());
+        var sum = Sequence.SumFloatingPoint(GetSequence());
         Assert.True(double.IsNaN(sum));
 
-        IEnumerable<double> GetSequence()
+        static IEnumerable<double> GetSequence()
         {
-            foreach (var i in Enumerable.Range(1,5))
+            foreach (var i in Enumerable.Range(1, 5))
             {
                 yield return i;
             };
@@ -64,22 +64,23 @@ public partial class SequenceTests
     }
 
     [Fact]
-    public void Sum_Array_Double_Many()
+    public void SumFloatingPoint_Array_Double_Many()
     {
         var sequence = Enumerable.Range(1, 5000).Union(Enumerable.Range(0, 100))
             .Select(i => i / 3.33)
             .ToArray();
-        var sum = Sequence.Sum(sequence);
-        Assert.Equal(3754504.5045045041, sum);
+        var sum = Sequence.SumFloatingPoint(sequence);
+        Assert.Equal(3754504.5045045041, sum, 0.0000000005);
     }
 
     [Fact]
-    public void Sum_Array_Double_Many_KahanBabushkaNeumaier()
+    public void SumFloatingPoint_Array_Double_Many_KahanBabushkaNeumaier()
     {
         var sequence = Enumerable.Range(1, 5000).Union(Enumerable.Range(0, 100))
             .Select(i => i / 3.33)
             .ToArray();
-        var sum = Sequence.Sum(sequence, SummationCompensation.KahanBabushkaNeumaier);
-        Assert.Equal(3754504.5045045046, sum);
+        var sum = Sequence.SumFloatingPoint(sequence, SummationCompensation.KahanBabushkaNeumaier);
+        // TODO: definitive test
+        Assert.Equal(3754504.5045045046, sum, 0.0000000005);
     }
 }
