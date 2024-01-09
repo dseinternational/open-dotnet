@@ -9,12 +9,33 @@ namespace DSE.Open.Numerics;
 
 public static partial class Sequence
 {
+    /// <summary>
+    /// Gets the sum of the elements in the sequence or
+    /// <see cref="IAdditiveIdentity{TSelf, TResult}.AdditiveIdentity"/> if the sequence is empty. The sum
+    /// is accumulated in a <typeparamref name="T"/> value and if an overflow occurs an
+    /// <see cref="OverflowException"/> is thrown.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="sequence"></param>
+    /// <returns></returns>
+    /// <exception cref="OverflowException">An arithmetic overflow occured.</exception>
     public static T Sum<T>(IEnumerable<T> sequence)
         where T : struct, INumberBase<T>
     {
         return Sum<T, T>(sequence, out _);
     }
 
+    /// <summary>
+    /// Gets the sum of the elements in the sequence or
+    /// <see cref="IAdditiveIdentity{TSelf, TResult}.AdditiveIdentity"/> if the sequence is empty, and
+    /// returns the number of elements in the sequence. The sum is accumulated in a <typeparamref name="T"/>
+    /// value and if an overflow occurs an <see cref="OverflowException"/> is thrown.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="sequence"></param>
+    /// <param name="size"></param>
+    /// <returns></returns>
+    /// <exception cref="OverflowException">An arithmetic overflow occured.</exception>
     public static T Sum<T>(IEnumerable<T> sequence, out long size)
         where T : struct, INumberBase<T>
     {
