@@ -149,6 +149,34 @@ public static partial class AssertSequence
     }
 
     /// <summary>
+    /// Asserts that each value in a sequence is greater than the previous value in
+    /// the sequence and that the first value is greater than <paramref name="expectedAllEqualOrAbove"/>.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="expectedAllEqualOrAbove"></param>
+    /// <exception cref="ComparisonException"></exception>
+    public static void EachGreaterThanPrevious<T>(ReadOnlySpan<T> source, T expectedAllEqualOrAbove = default)
+        where T : struct, IComparable<T>
+    {
+        var p = expectedAllEqualOrAbove;
+
+        try
+        {
+            foreach (var value in source)
+            {
+                AssertComparison.GreaterThan(p, value);
+                p = value;
+            }
+        }
+        catch (ComparisonException ex)
+        {
+            throw new SequenceException(
+                "Expected each value in sequence to be greater than or equal to previous", ex);
+        }
+    }
+
+    /// <summary>
     /// Asserts that each value in a sequence is greater than or equal to the previous value in
     /// the sequence and that the first value is greater than or equal to <paramref name="expectedAllEqualOrAbove"/>.
     /// </summary>

@@ -68,6 +68,26 @@ public class AssertSequenceMemoryTests
     }
 
     [Fact]
+    public void EachGreaterThanPrevious()
+    {
+        ReadOnlySpan<int> sequence = [1, 2, 3, 4, 5];
+        AssertSequence.EachGreaterThanPrevious(sequence);
+
+        ReadOnlySpan<int> sequence2 = [10, 12, 14, 20];
+        AssertSequence.EachGreaterThanPrevious(sequence2);
+    }
+
+    [Fact]
+    public void EachGreaterThanPrevious_throws_if_not()
+    {
+        _ = Assert.Throws<SequenceException>(() =>
+        {
+            ReadOnlySpan<int> sequence = [1, 2, 3, 4, 4];
+            AssertSequence.EachGreaterThanPrevious(sequence);
+        });
+    }
+
+    [Fact]
     public void EachGreaterThanOrEqualToPrevious()
     {
         ReadOnlySpan<int> sequence = [1, 2, 3, 4, 5];

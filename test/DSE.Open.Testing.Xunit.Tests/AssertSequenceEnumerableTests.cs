@@ -38,6 +38,23 @@ public class AssertSequenceEnumerableTests
     }
 
     [Fact]
+    public void EachGreaterThanPrevious()
+    {
+        int[] sequence = [1, 2, 3, 4, 5];
+        AssertSequence.EachGreaterThanPrevious(sequence);
+
+        int[] sequence2 = [10, 12, 14, 20];
+        AssertSequence.EachGreaterThanPrevious(sequence2);
+    }
+
+    [Fact]
+    public void EachGreaterThanPrevious_throws_if_not()
+    {
+        int[] sequence = [1, 2, 3, 4, 4];
+        _ = Assert.Throws<SequenceException>(() => AssertSequence.EachGreaterThanPrevious(sequence));
+    }
+
+    [Fact]
     public void EachGreaterThanOrEqualToPrevious()
     {
         int[] sequence = [1, 2, 3, 4, 5];
