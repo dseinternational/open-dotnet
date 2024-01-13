@@ -1,11 +1,13 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Numerics;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace DSE.Open.Testing.Xunit;
 
-public static class AssertSequence
+public static partial class AssertSequence
 {
     public static void True<T>(
         Func<IEnumerable<T>, bool> assertion,
@@ -21,15 +23,49 @@ public static class AssertSequence
         }
     }
 
+    public static void TrueForAll<T>(
+        Func<T, bool> assertion,
+        IEnumerable<T> sequence,
+        [CallerArgumentExpression(nameof(assertion))] string? message = default)
+    {
+        ArgumentNullException.ThrowIfNull(assertion);
+        ArgumentNullException.ThrowIfNull(sequence);
+
+        foreach (var value in sequence)
+        {
+            if (!assertion(value))
+            {
+                throw new SequenceException($"Expected true for all: {message} (failed for {value})");
+            }
+        }
+    }
+
+    public static void TrueForAny<T>(
+        Func<T, bool> assertion,
+        IEnumerable<T> sequence,
+        [CallerArgumentExpression(nameof(assertion))] string? message = default)
+    {
+        ArgumentNullException.ThrowIfNull(assertion);
+        ArgumentNullException.ThrowIfNull(sequence);
+
+        foreach (var value in sequence)
+        {
+            if (assertion(value))
+            {
+                return;
+            }
+        }
+
+        throw new SequenceException($"Expected true for any: {message}");
+    }
+
     public static void Empty<T>(IEnumerable<T> sequence)
     {
-        ArgumentNullException.ThrowIfNull(sequence);
         True(s => !s.Any(), sequence);
     }
 
     public static void NotEmpty<T>(IEnumerable<T> sequence)
     {
-        ArgumentNullException.ThrowIfNull(sequence);
         True(s => s.Any(), sequence);
     }
 
@@ -62,4 +98,12 @@ public static class AssertSequence
                 "Expected each value in sequence to be greater than or equal to previous", ex);
         }
     }
+
+    public static void AllZero<T>(IEnumerable<T> sequence)
+        where T : struct, INumber<T>
+    {
+        TrueForAll(v => v == T.Zero, sequence);
+    }
+
+
 }

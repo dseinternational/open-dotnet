@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 
 namespace DSE.Open.Testing.Xunit;
 
-public static class AssertCollection
+public static partial class AssertSequence
 {
     public static void True<T>(
         Func<ICollection<T>, bool> assertion,
@@ -17,25 +17,32 @@ public static class AssertCollection
 
         if (!assertion(sequence))
         {
-            throw new CollectionException($"Collection assertion failed: {message}");
+            throw new SequenceException($"Sequence assertion failed: {message}");
         }
     }
 
     public static void Empty<T>(ICollection<T> sequence)
     {
-        ArgumentNullException.ThrowIfNull(sequence);
         True(s => s.Count == 0, sequence);
     }
 
     public static void NotEmpty<T>(ICollection<T> sequence)
     {
-        ArgumentNullException.ThrowIfNull(sequence);
         True(s => s.Count > 0, sequence);
+    }
+
+    public static void SingleElement<T>(ICollection<T> sequence)
+    {
+        CountEqual(1, sequence);
+    }
+
+    public static void CountEqual<T>(int expectedCount, ICollection<T> sequence)
+    {
+        True(s => s.Count == expectedCount, sequence);
     }
 
     public static void CountGreaterThan<T>(int expectedCountAbove, ICollection<T> sequence)
     {
-        ArgumentNullException.ThrowIfNull(sequence);
         True(s => s.Count > expectedCountAbove, sequence);
     }
 }

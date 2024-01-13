@@ -3,8 +3,20 @@
 
 namespace DSE.Open.Testing.Xunit;
 
-public partial class AssertSequenceTests
+public class AssertSequenceEnumerableTests
 {
+    [Fact]
+    public void TrueForAll()
+    {
+        AssertSequence.TrueForAll(v => v < 101, Enumerable.Range(1,100));
+    }
+
+    [Fact]
+    public void TrueForAny()
+    {
+        AssertSequence.TrueForAny(v => v > 99, Enumerable.Range(1,100));
+    }
+
     [Fact]
     public void Empty()
     {
@@ -15,6 +27,14 @@ public partial class AssertSequenceTests
     public void NotEmpty()
     {
         AssertSequence.NotEmpty(Enumerable.Range(1, 10));
+    }
+
+    [Fact]
+    public void AllZero()
+    {
+        AssertSequence.AllZero(Enumerable.Range(1, 10).Select(i => 0L));
+        AssertSequence.AllZero(Enumerable.Range(1, 10).Select(i => 0.0));
+        AssertSequence.AllZero(Enumerable.Range(1, 10).Select(i => 0m));
     }
 
     [Fact]
