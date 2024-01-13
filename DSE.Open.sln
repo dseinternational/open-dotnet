@@ -177,11 +177,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Testing.Xunit.Stan
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Interop.Python.Tests", "test\DSE.Open.Interop.Python.Tests\DSE.Open.Interop.Python.Tests.csproj", "{FD73E0B0-CAAD-48E0-99D6-B86A39213899}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.EntityFrameworkCore.Models.Language", "src\DSE.Open.EntityFrameworkCore.Models.Language\DSE.Open.EntityFrameworkCore.Models.Language.csproj", "{610BD640-9DEB-4A7E-AD6A-B9694DEDDC9D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.EntityFrameworkCore.Models.Language", "src\DSE.Open.EntityFrameworkCore.Models.Language\DSE.Open.EntityFrameworkCore.Models.Language.csproj", "{610BD640-9DEB-4A7E-AD6A-B9694DEDDC9D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.EntityFrameworkCore.Models.Speech", "src\DSE.Open.EntityFrameworkCore.Models.Speech\DSE.Open.EntityFrameworkCore.Models.Speech.csproj", "{53C0E389-58B5-4514-B1DB-B8563F7734F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.EntityFrameworkCore.Models.Speech", "src\DSE.Open.EntityFrameworkCore.Models.Speech\DSE.Open.EntityFrameworkCore.Models.Speech.csproj", "{53C0E389-58B5-4514-B1DB-B8563F7734F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.Abstractions.Tests", "test\DSE.Open.Abstractions.Tests\DSE.Open.Abstractions.Tests.csproj", "{70430B9B-7289-41D6-B269-F4D7D733C8D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Abstractions.Tests", "test\DSE.Open.Abstractions.Tests\DSE.Open.Abstractions.Tests.csproj", "{70430B9B-7289-41D6-B269-F4D7D733C8D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.Testing.Xunit.Tests", "test\DSE.Open.Testing.Xunit.Tests\DSE.Open.Testing.Xunit.Tests.csproj", "{BAFF7A7D-E166-4913-BD96-42D334DF39D3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -493,6 +495,10 @@ Global
 		{70430B9B-7289-41D6-B269-F4D7D733C8D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{70430B9B-7289-41D6-B269-F4D7D733C8D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{70430B9B-7289-41D6-B269-F4D7D733C8D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BAFF7A7D-E166-4913-BD96-42D334DF39D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAFF7A7D-E166-4913-BD96-42D334DF39D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAFF7A7D-E166-4913-BD96-42D334DF39D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAFF7A7D-E166-4913-BD96-42D334DF39D3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -574,6 +580,7 @@ Global
 		{610BD640-9DEB-4A7E-AD6A-B9694DEDDC9D} = {D2529453-80C3-4F06-BBD0-6B58EF65EF99}
 		{53C0E389-58B5-4514-B1DB-B8563F7734F2} = {D2529453-80C3-4F06-BBD0-6B58EF65EF99}
 		{70430B9B-7289-41D6-B269-F4D7D733C8D1} = {850B3E2C-6172-4CF9-9E83-AD0997C57CA3}
+		{BAFF7A7D-E166-4913-BD96-42D334DF39D3} = {850B3E2C-6172-4CF9-9E83-AD0997C57CA3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3D3BE91A-3636-45E3-A6BF-8C09D5A9782A}
