@@ -5,24 +5,21 @@ using Xunit.Sdk;
 
 namespace DSE.Open.Testing.Xunit;
 
-/// <summary>
-/// Assertion thrown when a <see cref="AssertComparison.True{T}(Func{T, bool}, T, string?)"/> fails.
-/// </summary>
-public class ComparisonException : XunitException
+public class SequenceException : XunitException
 {
-    private const string DefaultMessage = "Expected comparison failed";
+    private const string DefaultMessage = "Sequence assertion failed";
 
-    public ComparisonException()
+    public SequenceException()
         : base(DefaultMessage)
     {
     }
 
-    public ComparisonException(string message)
+    public SequenceException(string message)
         : base(message ?? DefaultMessage)
     {
     }
 
-    public ComparisonException(string message, Exception innerException)
+    public SequenceException(string message, Exception innerException)
         : base(message ?? DefaultMessage, innerException)
     {
     }

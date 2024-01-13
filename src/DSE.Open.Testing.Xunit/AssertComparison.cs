@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 
 namespace DSE.Open.Testing.Xunit;
 
-public static class AssertExtensions
+public static class AssertComparison
 {
     /// <summary>
     /// Asserts that a comparison is true.
@@ -15,7 +15,7 @@ public static class AssertExtensions
     /// <param name="value"></param>
     /// <param name="message"></param>
     /// <exception cref="ComparisonException"></exception>
-    public static void Comparison<T>(
+    public static void True<T>(
         Func<T, bool> comparison,
         T value,
         [CallerArgumentExpression(nameof(comparison))] string? message = default)
@@ -39,7 +39,7 @@ public static class AssertExtensions
     public static void GreaterThan<T>(T expectedAbove, T value)
         where T : struct, IComparable<T>
     {
-        Comparison(v => v.CompareTo(expectedAbove) > 0, value);
+        True(v => v.CompareTo(expectedAbove) > 0, value);
     }
 
     /// <summary>
@@ -52,7 +52,7 @@ public static class AssertExtensions
     public static void GreaterThanOrEqual<T>(T expectedAboveOrEqual, T value)
         where T : struct, IComparable<T>
     {
-        Comparison(v => v.CompareTo(expectedAboveOrEqual) >= 0, value);
+        True(v => v.CompareTo(expectedAboveOrEqual) >= 0, value);
     }
 
     /// <summary>
@@ -65,7 +65,7 @@ public static class AssertExtensions
     public static void LessThan<T>(T expectedBelow, T value)
         where T : struct, IComparable<T>
     {
-        Comparison(v => v.CompareTo(expectedBelow) < 0, value);
+        True(v => v.CompareTo(expectedBelow) < 0, value);
     }
 
     /// <summary>
@@ -78,7 +78,7 @@ public static class AssertExtensions
     public static void LessThanOrEqual<T>(T expectedBelowOrEqual, T value)
         where T : struct, IComparable<T>
     {
-        Comparison(v => v.CompareTo(expectedBelowOrEqual) <= 0, value);
+        True(v => v.CompareTo(expectedBelowOrEqual) <= 0, value);
     }
 
     /// <summary>
@@ -99,28 +99,6 @@ public static class AssertExtensions
         foreach (var value in source)
         {
             GreaterThan(p, value);
-            p = value;
-        }
-    }
-
-    /// <summary>
-    /// Asserts that each value in a sequence is greater than or equal to the previous value in
-    /// the sequence and that the first value is greater than or equal to <paramref name="expectedAllEqualOrAbove"/>.
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="source"></param>
-    /// <param name="expectedAllEqualOrAbove"></param>
-    /// <exception cref="ComparisonException"></exception>
-    public static void EachGreaterThanOrEqualToPrevious<T>(IEnumerable<T> source, T expectedAllEqualOrAbove = default)
-        where T : struct, IComparable<T>
-    {
-        ArgumentNullException.ThrowIfNull(source);
-
-        var p = expectedAllEqualOrAbove;
-
-        foreach (var value in source)
-        {
-            GreaterThanOrEqual(p, value);
             p = value;
         }
     }
