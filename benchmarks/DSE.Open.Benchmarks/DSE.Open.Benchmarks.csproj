@@ -15,6 +15,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\src\DSE.Open.Globalization\DSE.Open.Globalization.csproj" />
+      <ProjectReference Include="..\..\src\DSE.Open.Numerics\DSE.Open.Numerics.csproj" />
       <ProjectReference Include="..\..\src\DSE.Open\DSE.Open.csproj" />
     </ItemGroup>
 
