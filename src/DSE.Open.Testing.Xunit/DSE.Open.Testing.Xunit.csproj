@@ -9,6 +9,7 @@
     <PackageReference Include="xunit.assert" />
     <PackageReference Include="xunit.extensibility.core" />
     <PackageReference Include="Microsoft.Extensions.Logging" />
+    <PackageReference Include="Microsoft.Extensions.Options" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
   </ItemGroup>
 
