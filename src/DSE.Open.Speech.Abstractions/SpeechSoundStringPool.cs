@@ -5,7 +5,7 @@ using CommunityToolkit.HighPerformance.Buffers;
 
 namespace DSE.Open.Speech;
 
-internal static class PhonemeStringPool
+internal static class SpeechSoundStringPool
 {
     public static readonly StringPool Shared = new(256);
 }

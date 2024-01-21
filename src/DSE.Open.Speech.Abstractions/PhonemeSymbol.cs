@@ -18,9 +18,6 @@ public record PhonemeSymbol
     [JsonPropertyName("phoneme")]
     public required Phoneme Phoneme { get; init; }
 
-    [JsonPropertyName("speech_sound_type")]
-    public required SpeechSoundType SpeechSoundType { get; init; }
-
     /// <summary>
     /// The symbol used to represent the phoneme - usually a letter or digraph in the language.
     /// </summary>
@@ -52,4 +49,21 @@ public record PhonemeSymbol
     /// </summary>
     [JsonPropertyName("examples")]
     public ReadOnlyValueCollection<string> Examples { get; init; } = ReadOnlyValueCollection<string>.Empty;
+}
+
+
+/// <summary>
+/// </summary>
+public static class PhonemeLabel
+{
+    public static bool TryGetLabel(PhonemeLabelScheme scheme, Phoneme phoneme)
+    {
+        throw new NotImplementedException();
+    }
+
+}
+public enum PhonemeLabelScheme
+{
+    IPA,
+    OED
 }

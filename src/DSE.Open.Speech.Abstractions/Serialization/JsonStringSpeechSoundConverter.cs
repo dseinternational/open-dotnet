@@ -5,12 +5,12 @@ using DSE.Open.Text.Json.Serialization;
 
 namespace DSE.Open.Speech.Serialization;
 
-public class JsonStringPhonemeConverter : SpanParsableCharWritingJsonConverter<Phoneme>
+public class JsonStringSpeechSoundConverter : SpanParsableCharWritingJsonConverter<SpeechSound>
 {
-    public static readonly JsonStringPhonemeConverter Default = new();
+    public static readonly JsonStringSpeechSoundConverter Default = new();
 
-    protected override int GetMaxCharCountToWrite(Phoneme value)
+    protected override int GetMaxCharCountToWrite(SpeechSound value)
     {
-        return Phoneme.MaxLength;
+        return SpeechSound.MaxLength;
     }
 }

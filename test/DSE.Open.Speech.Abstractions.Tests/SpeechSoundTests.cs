@@ -1,38 +1,139 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Text.Json;
 using DSE.Open.Collections.Generic;
+using DSE.Open.Text.Json;
 
 namespace DSE.Open.Speech.Abstractions.Tests;
 
-public class PhonemeInfoTests
+public class SpeechSoundTests
 {
+    [Theory]
+    [MemberData(nameof(SpeechSounds))]
+    public void Equality(SpeechSound p)
+    {
+        var p2 = new SpeechSound(p.ToString());
+        Assert.Equal(p, p2);
+    }
+
+    [Theory]
+    [MemberData(nameof(SpeechSounds))]
+    public void Serialize(SpeechSound p)
+    {
+        var json = JsonSerializer.Serialize(p);
+        var expected = JsonSerializer.Serialize(p.ToString());
+
+        Assert.Equal(expected, json);
+    }
+
+    [Theory]
+    [MemberData(nameof(SpeechSounds))]
+    public void SerializeWithRelaxedJsonEscaping(SpeechSound p)
+    {
+        var json = JsonSerializer.Serialize(p, JsonSharedOptions.RelaxedJsonEscaping);
+        Assert.Equal($"\"{p}\"", json);
+    }
+
+    [Theory]
+    [MemberData(nameof(SpeechSounds))]
+    public void SerializeDeserialize(SpeechSound p)
+    {
+        var json = JsonSerializer.Serialize(p);
+        var deserialized = JsonSerializer.Deserialize<SpeechSound>(json);
+        Assert.Equal(p, deserialized);
+    }
+
+    [Theory]
+    [MemberData(nameof(SpeechSounds))]
+    public void SerializeDeserializeWithRelaxedJsonEscaping(SpeechSound p)
+    {
+        var json = JsonSerializer.Serialize(p, JsonSharedOptions.RelaxedJsonEscaping);
+        var deserialized = JsonSerializer.Deserialize<SpeechSound>(json);
+        Assert.Equal(p, deserialized);
+    }
+
+    public static TheoryData<SpeechSound> SpeechSounds
+    {
+        get
+        {
+            var data = new TheoryData<SpeechSound>()
+            {
+                new("b"),
+                new("d"),
+                new("ð"),
+                new("dʒ"),
+                new("f"),
+                new("ɡ"), // U+0261
+                new("h"),
+                new("j"),
+                new("k"),
+                new("l"),
+                new("m"),
+                new("n"),
+                new("ŋ"),
+                new("p"),
+                new("ɹ"),
+                new("s"),
+                new("ʃ"),
+                new("t"),
+                new("tʃ"),
+                new("v"),
+                new("w"),
+                new("z"),
+                new("ʒ"),
+                new("θ"),
+                new("ɒ"),
+                new("ɑː"),
+                new("æ"),
+                new("aɪ"),
+                new("aʊ"),
+                new("ɔː"),
+                new("ɔɪ"),
+                new("ə"),
+                new("eə"),
+                new("eɪ"),
+                new("əʊ"),
+                new("e"),
+                new("ɜː"),
+                new("ɪ"),
+                new("iː"),
+                new("ɪə"),
+                new("ʊ"),
+                new("uː"),
+                new("ʊə"),
+                new("ʌ"),
+            };
+            return data;
+        }
+    }
+
     [Theory]
     [MemberData(nameof(Consonants))]
     public void IsConsonantReturnsTrueForConsonants(string sound)
     {
-        Assert.True(PhonemeInfo.IsConsonant(sound));
+        Assert.True(SpeechSound.IsConsonant(sound));
     }
 
     [Theory]
     [MemberData(nameof(Vowels))]
     public void IsConsonantReturnsFalseForVowels(string sound)
     {
-        Assert.False(PhonemeInfo.IsConsonant(sound));
+        Assert.False(SpeechSound.IsConsonant(sound));
     }
 
     [Theory]
     [MemberData(nameof(Vowels))]
     public void IsVowelReturnsTrueForVowels(string sound)
     {
-        Assert.True(PhonemeInfo.IsVowel(sound));
+        Assert.True(SpeechSound.IsVowel(sound));
     }
 
     [Theory]
     [MemberData(nameof(Consonants))]
     public void IsVowelReturnsFalseForConsonants(string sound)
     {
-        Assert.False(PhonemeInfo.IsVowel(sound));
+        Assert.False(SpeechSound.IsVowel(sound));
     }
 
     public static TheoryData<string> Consonants
