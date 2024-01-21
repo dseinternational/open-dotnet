@@ -1,14 +1,28 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-namespace DSE.Open.Speech.Tests;
+using static DSE.Open.Speech.Phonemes;
+
+namespace DSE.Open.Speech.Abstractions.Tests;
 
 public class PhonemesTests
 {
     [Fact]
     public void CanLoadEnglishAll()
     {
-        var all = Phonemes.English.All;
+        var all = English.All;
         Assert.NotNull(all);
+    }
+
+    [Fact]
+    public void EnglishConsonantsCount()
+    {
+        Assert.Equal(26, English.Consonants.Count);
+    }
+
+    [Fact]
+    public void EnglishVowelsCount()
+    {
+        Assert.Equal(24, English.Vowels.Count);
     }
 }

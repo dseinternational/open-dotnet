@@ -65,11 +65,31 @@ public sealed class Phoneme : IEquatable<Phoneme>
         return Abstraction == sound || Allophones.Contains(sound);
     }
 
+    /// <summary>
+    /// Returns a string representation of the phoneme.
+    /// </summary>
+    /// <returns></returns>
     public override string ToString()
     {
         return Allophones.Count == 0
             ? $"/{Abstraction}/ ({Language})"
             : $"/{Abstraction}/ ({Language}) [ {string.Join(", ", StringHelper.WrapRange('[', ']', Allophones))} ]";
+    }
+
+    /// <summary>
+    /// Returns a string representation of the phoneme using the given <see cref="PhonemeLabelScheme"/>.
+    /// If the scheme does not define a label for the phoneme, returns <see cref="Abstraction"/> as a string.
+    /// </summary>
+    /// <param name="scheme"></param>
+    /// <returns></returns>
+    public string ToString(PhonemeLabelScheme scheme)
+    {
+        if (PhonemeLabel.TryGetLabel(scheme, this, out var label))
+        {
+            return label;
+        }
+
+        return Abstraction.ToString();
     }
 
     public Transcription ToTranscription()

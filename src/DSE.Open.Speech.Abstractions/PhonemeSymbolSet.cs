@@ -9,6 +9,7 @@ namespace DSE.Open.Speech;
 /// <summary>
 /// A set of <see cref="PhonemeSymbol"/>s.
 /// </summary>
+[Obsolete("To be removed.")]
 public abstract class PhonemeSymbolSet : IReadOnlyCollection<PhonemeSymbol>
 {
     private readonly List<PhonemeSymbol> _symbols = new();

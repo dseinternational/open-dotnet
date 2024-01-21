@@ -10,6 +10,7 @@ namespace DSE.Open.Speech;
 /// <summary>
 /// Defines a label used to represent a phoneme, together with example words.
 /// </summary>
+[Obsolete("To be removed.")]
 public record PhonemeSymbol
 {
     /// <summary>
@@ -49,21 +50,4 @@ public record PhonemeSymbol
     /// </summary>
     [JsonPropertyName("examples")]
     public ReadOnlyValueCollection<string> Examples { get; init; } = ReadOnlyValueCollection<string>.Empty;
-}
-
-
-/// <summary>
-/// </summary>
-public static class PhonemeLabel
-{
-    public static bool TryGetLabel(PhonemeLabelScheme scheme, Phoneme phoneme)
-    {
-        throw new NotImplementedException();
-    }
-
-}
-public enum PhonemeLabelScheme
-{
-    IPA,
-    OED
 }

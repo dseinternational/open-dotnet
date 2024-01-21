@@ -81,6 +81,21 @@ public readonly struct Transcription
         _initialized = true;
     }
 
+    public static Transcription Phonetic(ReadOnlySpan<char> value)
+    {
+        return new($"{LeftSquareBracket}{value}{RightSquareBracket}");
+    }
+
+    public static Transcription Phonemic(ReadOnlySpan<char> value)
+    {
+        return new($"{Slash}{value}{Slash}");
+    }
+
+    public static Transcription Prosodic(ReadOnlySpan<char> value)
+    {
+        return new($"{LeftBrace}{value}{RightBrace}");
+    }
+
     public bool IsPhoneticNotation => _value[0] == LeftSquareBracket;
 
     public bool IsPhonemicNotation => _value[0] == Slash;

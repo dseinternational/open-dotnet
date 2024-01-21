@@ -7,9 +7,15 @@ using DSE.Open.Globalization;
 
 namespace DSE.Open.Speech;
 
+/// <summary>
+/// Defines commonly recognised phonemes.
+/// </summary>
 [SuppressMessage("Design", "CA1034:Nested types should not be visible", Justification = "Required")]
 public static class Phonemes
 {
+    /// <summary>
+    /// Defines commonly recognised phonemes in the English language.
+    /// </summary>
     public static class English
     {
         /// <summary>
@@ -156,7 +162,7 @@ public static class Phonemes
         public static readonly Phoneme z = new()
         {
             Language = LanguageCode2.English,
-            Abstraction = SpeechSound.VoicedAlveolarNasal,
+            Abstraction = SpeechSound.VoicedAlveolarFricative,
             Allophones = []
         };
 
@@ -166,7 +172,7 @@ public static class Phonemes
         public static readonly Phoneme ng = new()
         {
             Language = LanguageCode2.English,
-            Abstraction = SpeechSound.VoicedAlveolarNasal,
+            Abstraction = SpeechSound.VoicedVelarNasal,
             Allophones = []
         };
 
@@ -181,9 +187,29 @@ public static class Phonemes
         };
 
         /// <summary>
+        /// The English phoneme /g/ as in ⟨gate⟩.
+        /// </summary>
+        public static readonly Phoneme g = new()
+        {
+            Language = LanguageCode2.English,
+            Abstraction = SpeechSound.VoicedVelarPlosive,
+            Allophones = []
+        };
+
+        /// <summary>
+        /// The English phoneme /j/ as in ⟨judge⟩.
+        /// </summary>
+        public static readonly Phoneme j = new()
+        {
+            Language = LanguageCode2.English,
+            Abstraction = SpeechSound.VoicedPostalveolarAffricate,
+            Allophones = []
+        };
+
+        /// <summary>
         /// The English phoneme /k/ as in ⟨kick⟩.
         /// </summary>
-        public static readonly Phoneme ck = new()
+        public static readonly Phoneme k = new()
         {
             Language = LanguageCode2.English,
             Abstraction = SpeechSound.VoicelessVelarPlosive,
@@ -217,6 +243,26 @@ public static class Phonemes
         {
             Language = LanguageCode2.English,
             Abstraction = SpeechSound.VoicedDentalFricative,
+            Allophones = []
+        };
+
+        /// <summary>
+        /// The English phoneme /hw/ as in ⟨which⟩.
+        /// </summary>
+        public static readonly Phoneme hw = new()
+        {
+            Language = LanguageCode2.English,
+            Abstraction = new SpeechSound("hw"),
+            Allophones = []
+        };
+
+        /// <summary>
+        /// The English phoneme /x/ as in ⟨loch⟩.
+        /// </summary>
+        public static readonly Phoneme k͟h = new()
+        {
+            Language = LanguageCode2.English,
+            Abstraction = SpeechSound.VoicelessVelarFricative,
             Allophones = []
         };
 
@@ -506,56 +552,60 @@ public static class Phonemes
 
         public static readonly FrozenSet<Phoneme> Consonants = FrozenSet.ToFrozenSet(
         [
-            p,
             b,
-            m,
-            t,
+            ch,
             d,
-            n,
-            r,
+            dh,
             f,
-            l,
+            g,
             h,
+            hw,
+            j,
+            k,
+            k͟h,
+            l,
+            m,
+            n,
+            ng,
+            p,
+            r,
+            s,
+            sh,
+            t,
+            th,
             v,
             w,
-            z,
-            ng,
-            ch,
-            ck,
-            s,
-            th,
-            dh,
-            sh,
             y,
-            zh
+            z,
+            zh,
         ]);
 
         public static readonly FrozenSet<Phoneme> Vowels = FrozenSet.ToFrozenSet(
         [
             a,
-            ay,
+            ah,
             air,
             ar,
-            ah,
+            aw,
+            ay,
             e,
             ee,
             eer,
+            er,
             i,
             igh,
             o,
             oh,
-            aw,
-            or,
-            oy,
-            uu,
-            oor,
             oo,
+            oor,
+            or,
             ow,
+            oy,
             u,
-            ur,
             uh,
-            er,
-            yoo
+            ur,
+            uu,
+            yoo,            
         ]);
 
         public static readonly FrozenSet<Phoneme> All = FrozenSet.ToFrozenSet(Consonants.Union(Vowels));

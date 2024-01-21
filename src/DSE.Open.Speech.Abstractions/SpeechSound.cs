@@ -126,6 +126,15 @@ public readonly struct SpeechSound : IEquatable<SpeechSound>, ISpanFormattable, 
         return _value;
     }
 
+    /// <summary>
+    /// Gets a (phonetic) <see cref="Transcription"/> representation of the speech sound.
+    /// </summary>
+    /// <returns></returns>
+    public Transcription ToTranscription()
+    {
+        return Transcription.Phonetic(_value);
+    }
+
     // TODO: formatting options: escaped Unicode? binary format?
 
     public bool TryFormat(
@@ -223,6 +232,15 @@ public readonly struct SpeechSound : IEquatable<SpeechSound>, ISpanFormattable, 
 #pragma warning restore CA2225 // Operator overloads have named alternates
     {
         return new SpeechSound(left._value + right._value);
+    }
+
+    /// <summary>
+    /// Converts a <see cref="SpeechSound"/> to a (phonetic) <see cref="Transcription"/>.
+    /// </summary>
+    /// <param name="value"></param>
+    public static implicit operator Transcription(SpeechSound value)
+    {
+        return value.ToTranscription();
     }
 
     public static readonly FrozenSet<char> Alphabet = FrozenSet.ToFrozenSet(
@@ -858,6 +876,11 @@ public readonly struct SpeechSound : IEquatable<SpeechSound>, ISpanFormattable, 
     /// </summary>
     public static readonly SpeechSound VoicedVelarNasal = new("ŋ", true);
 
+    /// <summary>
+    /// The voiceless velar fricative is a type of consonantal sound used,
+    /// represented in the IPA by the symbol <c>⟨x⟩</c>.
+    /// </summary>
+    /// <remarks>See <see href="https://en.wikipedia.org/wiki/Voiceless_velar_fricative"/></remarks>
     public static readonly SpeechSound VoicelessVelarFricative = new("x", true);
 
     public static readonly SpeechSound VoicedVelarFricative = new("ɣ", true);
