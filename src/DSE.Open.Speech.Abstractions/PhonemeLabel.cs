@@ -7,7 +7,7 @@ public static class PhonemeLabel
 {
     public static bool TryGetLabel(PhonemeLabelScheme scheme, Phoneme phoneme, out string label)
     {
-        if (s_Labels.TryGetValue(scheme, out var labels) && labels.TryGetValue(phoneme, out label!))
+        if (Labels.TryGetValue(scheme, out var labels) && labels.TryGetValue(phoneme, out label!))
         {
             return true;
         }
@@ -16,7 +16,7 @@ public static class PhonemeLabel
         return false;
     }
 
-    private static readonly Dictionary<PhonemeLabelScheme, Dictionary<Phoneme, string>> s_Labels = new()
+    internal static readonly Dictionary<PhonemeLabelScheme, Dictionary<Phoneme, string>> Labels = new()
     {
         {
             PhonemeLabelScheme.Default, new Dictionary<Phoneme, string>()
@@ -211,11 +211,11 @@ public static class PhonemeLabel
                 { Phonemes.English.l, "l" },
                 { Phonemes.English.m, "m" },
                 { Phonemes.English.n, "n" },
-                { Phonemes.English.ng, "ng" },
+                //{ Phonemes.English.ng, "ng" },
                 { Phonemes.English.o, "o" },
                 { Phonemes.English.oh, "oa" },
-                { Phonemes.English.oo, "oo" },
-                { Phonemes.English.oor, "ure" },
+                { Phonemes.English.oo, "OO" },
+                //{ Phonemes.English.oor, "ure" },
                 { Phonemes.English.or, "or" },
                 { Phonemes.English.ow, "ow" },
                 { Phonemes.English.oy, "oi" },
@@ -226,9 +226,9 @@ public static class PhonemeLabel
                 { Phonemes.English.t, "t" },
                 { Phonemes.English.th, "th" },
                 { Phonemes.English.u, "u" },
-                { Phonemes.English.uh, "uh" },
+                //{ Phonemes.English.uh, "uh" },
                 { Phonemes.English.ur, "ur" },
-                { Phonemes.English.uu, "OO" },
+                { Phonemes.English.uu, "oo" },
                 { Phonemes.English.v, "v" },
                 { Phonemes.English.w, "w" },
                 { Phonemes.English.y, "y" },
