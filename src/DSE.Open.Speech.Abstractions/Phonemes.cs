@@ -335,8 +335,10 @@ public static class Phonemes
 
         /// <summary>
         /// The English phoneme /ar/ as in ⟨arm⟩. (See also <see cref="ah"/>.)
-        ///  
         /// </summary>
+        /// <remarks>
+        /// The distinction between /ar/ ([ɑːr]) and /ah/ ([ɑː]) is subtle.
+        /// </remarks>
         public static readonly Phoneme ar = new()
         {
             Language = LanguageCode2.English,
@@ -347,11 +349,24 @@ public static class Phonemes
         /// <summary>
         /// The English phoneme /ah/ as in ⟨father⟩. (See also <see cref="ar"/>.)
         /// </summary>
+        /// <remarks>
+        /// <para>
+        /// The distinction between /ar/ ([ɑːr]) and /ah/ ([ɑː]) is subtle.
+        /// </para>
+        /// <para>
+        /// Where the <see href="https://en.wikipedia.org/wiki/Cot%E2%80%93caught_merger">cot–caught merger</see>
+        /// and father–bother merger are present, there is no vowel difference in words like ⟨palm⟩ /ɑ/,
+        /// ⟨pot⟩ /ɒ/, and ⟨thought⟩ /ɔ/.
+        /// </para>
+        /// </remarks>
         public static readonly Phoneme ah = new()
         {
             Language = LanguageCode2.English,
             Abstraction = new SpeechSound("ɑː"),
-            Allophones = []
+            Allophones =
+            [
+                SpeechSound.NearOpenFrontUnroundedVowel, // bath like trap
+            ]
         };
 
         /// <summary>
@@ -413,6 +428,11 @@ public static class Phonemes
         /// <summary>
         /// The English phoneme /o/ as in ⟨pot⟩.
         /// </summary>
+        /// <remarks>
+        /// Where the <see href="https://en.wikipedia.org/wiki/Cot%E2%80%93caught_merger">cot–caught merger</see>
+        /// and father–bother merger are present, there is no vowel difference in words like ⟨palm⟩ /ɑ/,
+        /// ⟨pot⟩ /ɒ/, and ⟨thought⟩ /ɔ/.
+        /// </remarks>
         public static readonly Phoneme o = new()
         {
             Language = LanguageCode2.English,
@@ -433,11 +453,20 @@ public static class Phonemes
         /// <summary>
         /// The English phoneme /aw/ as in ⟨caught⟩.
         /// </summary>
+        /// <remarks>
+        /// Where the <see href="https://en.wikipedia.org/wiki/Cot%E2%80%93caught_merger">cot–caught merger</see>
+        /// and father–bother merger are present, there is no vowel difference in words like ⟨palm⟩ /ɑ/,
+        /// ⟨pot⟩ /ɒ/, and ⟨thought⟩ /ɔ/.
+        /// </remarks>
         public static readonly Phoneme aw = new()
         {
             Language = LanguageCode2.English,
             Abstraction = new SpeechSound("ɔː"),
-            Allophones = []
+            Allophones =
+            [
+                SpeechSound.OpenMidBackRoundedVowel,    // cot-caught merger
+                SpeechSound.OpenBackUnroundedVowel,
+            ]
         };
 
         /// <summary>
