@@ -35,6 +35,12 @@ public sealed class Phoneme : IEquatable<Phoneme>
     [JsonPropertyName("allophones")]
     public ReadOnlyValueSet<SpeechSound> Allophones { get; init; } = [];
 
+    [JsonIgnore]
+    public bool IsConsonant => SpeechSound.IsConsonant(Abstraction);
+
+    [JsonIgnore]
+    public bool IsVowel => SpeechSound.IsVowel(Abstraction);
+
     public override bool Equals(object? obj)
     {
         return obj is Phoneme phoneme && Equals(phoneme);
