@@ -334,7 +334,7 @@ public static class Phonemes
             Abstraction = SpeechSound.VoicedLabialVelarApproximant,
             Allophones =
             [
-                SpeechSound.VoicelesLabialVelarFricative,
+                SpeechSound.VoicelessLabialVelarFricative,
                 new SpeechSound("hw"),
             ]
         };
@@ -349,7 +349,7 @@ public static class Phonemes
         public static readonly Phoneme hw = new()
         {
             Language = LanguageCode2.English,
-            Abstraction = SpeechSound.VoicelesLabialVelarFricative,
+            Abstraction = SpeechSound.VoicelessLabialVelarFricative,
             Allophones =
             [
                 new SpeechSound("hw"),

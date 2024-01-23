@@ -243,165 +243,6 @@ public readonly struct SpeechSound : IEquatable<SpeechSound>, ISpanFormattable, 
         return value.ToTranscription();
     }
 
-    public static readonly FrozenSet<char> Alphabet = FrozenSet.ToFrozenSet(
-    [
-        // Plosives
-        'p',
-        'b',
-        't',
-        'd',
-        'ʈ',
-        'ɖ',
-        'c',
-        'ɟ',
-        'k',
-        'ɡ', // U+0261
-        'q',
-        'ɢ',
-
-        // Nasals
-        'm',
-        'ɱ',
-        'n',
-        'ɳ',
-        'ɲ',
-        'ŋ',
-        'ɴ',
-
-        // Trills
-        'ʙ',
-        'r',
-        'ʀ',
-
-        // Taps or Flaps
-        'ɾ',
-        'ɽ',
-
-        // Fricatives
-        'ɸ',
-        'β',
-        'f',
-        'v',
-        'θ',
-        'ð',
-        's',
-        'z',
-        'ʃ',
-        'ʒ',
-        'ʂ',
-        'ʐ',
-        'ç',
-        'ʝ',
-        'x',
-        'ɣ',
-        'χ',
-        'ʁ',
-        'ħ',
-        'ʕ',
-        'h',
-        'ɦ',
-
-        // Lateral fricatives
-        'ɬ',
-        'ɮ',
-
-        // Approximants
-        'ʋ',
-        'ɹ',
-        'ɻ',
-        'j',
-        'w',
-        'ɰ',
-
-        // Laterals
-        'l',
-        'ɭ',
-        'ʎ',
-        'ʟ',
-
-        // Vowels
-        'i',
-        'y',
-        'ɨ',
-        'ʉ',
-        'ɯ',
-        'u',
-        'ɪ',
-        'ʏ',
-        'ʊ',
-        'e',
-        'ø',
-        'ɘ',
-        'ɵ',
-        'ɤ',
-        'o',
-        'ɛ',
-        'œ',
-        'ɜ',
-        'ɞ',
-        'ʌ',
-        'ɔ',
-        'æ',
-        'ɐ',
-        'a',
-        'ɶ',
-        'ä',
-        'ɑ',
-        'ɒ',
-
-        'ə',
-
-        // Diacritics and suprasegmentals
-        'ˈ',
-        'ˌ',
-        'ː',
-        'ˑ',
-        'ʼ',
-        'ʴ',
-        'ʵ',
-        'ʶ',
-        'ʰ',
-        'ʱ',
-        'ʲ',
-        'ʷ',
-        'ˠ',
-        'ˤ',
-        'ˁ',
-
-        // TODO: review these
-
-        // Additional diacritics
-        '̥',
-        '̬',
-        '̹',
-        '̜',
-        '̟',
-        '̠',
-        '̈',
-        '̽',
-        '̩',
-        '̯',
-        '̪',
-        '̺',
-        '̻',
-        '̼',
-        '̝',
-        '̞',
-        '̘',
-        '̙',
-        '̆',
-        '̊',
-
-        // Tone letters and other notations
-        '˥',
-        '˦',
-        '˧',
-        '˨',
-        '˩',
-        '↗',
-        '↘'
-    ]);
-
     /// <summary>
     /// Determines if the specified sound is classified as a consonant.
     /// </summary>
@@ -449,213 +290,11 @@ public readonly struct SpeechSound : IEquatable<SpeechSound>, ISpanFormattable, 
     public static bool IsVowel(string sound)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(sound);
-        return Vowels.Contains(sound) || Vowels.Contains(sound[0].ToString());
+
+        return Vowels.Contains(sound)
+            || Vowels.Contains(sound[0].ToString())
+            || sound.StartsWith( "ju", StringComparison.Ordinal);
     }
-
-    public static readonly FrozenSet<string> CloseVowels = FrozenSet.ToFrozenSet(
-    [
-        "i", // close front unrounded vowel
-        "y", // close front rounded vowel
-        "ɨ", // close central unrounded vowel
-        "ʉ", // close central rounded vowel
-        "ɯ", // close back unrounded vowel
-        "u", // close back rounded vowel
-    ]);
-
-    public static readonly FrozenSet<string> NearCloseVowels = FrozenSet.ToFrozenSet(
-    [
-        "ɪ", // near-close near-front unrounded vowel
-        "ʏ", // near-close near-front rounded vowel
-        "ʊ", // near-close near-back rounded vowel
-    ]);
-
-    public static readonly FrozenSet<string> CloseMidVowels = FrozenSet.ToFrozenSet(
-    [
-        "e", // close-mid front unrounded vowel
-        "ø", // close-mid front rounded vowel
-        "ɘ", // close-mid central unrounded vowel
-        "ɵ", // close-mid central rounded vowel
-        "ɤ", // close-mid back unrounded vowel
-        "o", // close-mid back rounded vowel
-    ]);
-
-    public static readonly FrozenSet<string> MidVowels = FrozenSet.ToFrozenSet(
-    [
-        "ə", // schwa, mid central vowel
-    ]);
-
-    public static readonly FrozenSet<string> OpenMidVowels = FrozenSet.ToFrozenSet(
-    [
-        "ɛ", // open-mid front unrounded vowel
-        "œ", // open-mid front rounded vowel
-        "ɜ", // open-mid central unrounded vowel
-        "ɞ", // open-mid central rounded vowel
-        "ʌ", // open-mid back unrounded vowel
-        "ɔ", // open-mid back rounded vowel
-    ]);
-
-    public static readonly FrozenSet<string> NearOpenVowels = FrozenSet.ToFrozenSet(
-    [
-        "æ", // near-open front unrounded vowel
-    ]);
-
-    public static readonly FrozenSet<string> OpenVowels = FrozenSet.ToFrozenSet(
-    [
-        "a", // open front unrounded vowel
-        "ɶ", // open front rounded vowel
-        "ä", // open central unrounded vowel
-        "ɑ", // open back unrounded vowel
-        "ɒ"  // open back rounded vowel
-    ]);
-
-    public static readonly FrozenSet<string> Diphthongs = FrozenSet.ToFrozenSet(
-    [
-        "aɪ",
-        "aʊ",
-        "ɔɪ",
-        "eɪ",
-        "əʊ",
-        "ɪə",
-        "eə",
-        "ʊə",
-    ]);
-
-    public static readonly FrozenSet<string> Monophthongs = FrozenSet.ToFrozenSet(
-    [
-        "iː",
-        "ɜː",
-        "uː",
-        "ɔː",
-        "ɑː",
-        "ɑːr",
-        "æ",
-    ]);
-
-    public static readonly FrozenSet<string> Vowels = FrozenSet.ToFrozenSet(
-    [
-        .. CloseVowels,
-        .. NearCloseVowels,
-        .. CloseMidVowels,
-        .. MidVowels,
-        .. OpenMidVowels,
-        .. NearOpenVowels,
-        .. OpenVowels,
-        .. Diphthongs,
-        .. Monophthongs,
-    ]);
-
-    public static readonly FrozenSet<string> Bilabials = FrozenSet.ToFrozenSet(
-    [
-        "p", // voiceless bilabial plosive
-        "b", // voiced bilabial plosive
-        "m", // bilabial nasal
-        "ʙ", // bilabial trill
-        "ɸ", // voiceless bilabial fricative
-        "β", // voiced bilabial fricative
-    ]);
-
-    public static readonly FrozenSet<string> Labiodentals = FrozenSet.ToFrozenSet(
-    [
-        "f", // voiceless labiodental fricative
-        "v", // voiced labiodental fricative
-        "ʋ", // labiodental approximant
-        "ⱱ", // labiodental flap
-    ]);
-
-    public static readonly FrozenSet<string> Dentals = FrozenSet.ToFrozenSet(
-    [
-        "θ", // voiceless dental fricative
-        "ð", // voiced dental fricative
-    ]);
-
-    public static readonly FrozenSet<string> Alveolars = FrozenSet.ToFrozenSet(
-    [
-        "t", // voiceless alveolar plosive
-        "d", // voiced alveolar plosive
-        "n", // alveolar nasal
-        "r", // alveolar trill
-        "s", // voiceless alveolar fricative
-        "z", // voiced alveolar fricative
-        "ɹ", // alveolar approximant
-        "ɾ", // alveolar flap
-        "ɬ", // voiceless alveolar lateral fricative
-        "ɮ", // voiced alveolar lateral fricative
-        "l", // alveolar lateral approximant
-    ]);
-
-    public static readonly FrozenSet<string> PostAlveolars = FrozenSet.ToFrozenSet(
-    [
-        "ʃ", // voiceless postalveolar fricative
-        "ʒ", // voiced postalveolar fricative
-        "ʈ", // voiceless retroflex plosive
-        "ɖ", // voiced retroflex plosive
-        "ɳ", // retroflex nasal
-        "ɻ", // retroflex approximant
-        "ɽ", // retroflex flap
-        "ʂ", // voiceless retroflex fricative
-        "ʐ", // voiced retroflex fricative
-        "ɭ", // retroflex lateral approximant
-    ]);
-
-    public static readonly FrozenSet<string> Palatals = FrozenSet.ToFrozenSet(
-    [
-        "c", // voiceless palatal plosive
-        "ɟ", // voiced palatal plosive
-        "ɲ", // palatal nasal
-        "ç", // voiceless palatal fricative
-        "ʝ", // voiced palatal fricative
-        "j", // palatal approximant
-        "ʎ", // palatal lateral approximant
-    ]);
-
-    public static readonly FrozenSet<string> Velars = FrozenSet.ToFrozenSet(
-    [
-        "k", // voiceless velar plosive
-        "ɡ", // voiced velar plosive (U+0261)
-        // "g", // ... U+0067 is not supported
-        "ŋ", // velar nasal
-        "x", // voiceless velar fricative
-        "ɣ", // voiced velar fricative
-        "w",
-        "ɰ", // velar non-sibilant fricative
-    ]);
-
-    public static readonly FrozenSet<string> Uvulars = FrozenSet.ToFrozenSet(
-    [
-        "q", // voiceless uvular plosive
-        "ɢ", // voiced uvular plosive
-        "ɴ", // uvular nasal
-        "χ", // voiceless uvular fricative
-        "ʁ", // voiced uvular fricative
-        "ʀ", // uvular trill
-    ]);
-
-    public static readonly FrozenSet<string> Pharyngeals = FrozenSet.ToFrozenSet(
-    [
-        "ħ", // voiceless pharyngeal fricative
-        "ʕ", // voiced pharyngeal fricative
-    ]);
-
-    public static readonly FrozenSet<string> Glottals = FrozenSet.ToFrozenSet(
-    [
-        "ʔ", // glottal plosive
-        "h", // voiceless glottal fricative
-        "ɦ"  // voiced glottal fricative
-    ]);
-
-    public static readonly FrozenSet<string> Consonants = FrozenSet.ToFrozenSet(
-    [
-        .. Bilabials,
-        .. Labiodentals,
-        .. Dentals,
-        .. Alveolars,
-        .. PostAlveolars,
-        .. Palatals,
-        .. Velars,
-        .. Uvulars,
-        .. Pharyngeals,
-        .. Glottals,
-    ]);
 
     /// <summary>
     /// The voiceless bilabial plosive, a type of consonantal sound
@@ -918,7 +557,7 @@ public readonly struct SpeechSound : IEquatable<SpeechSound>, ISpanFormattable, 
     /// represented in the IPA by the symbol <c>⟨ʍ⟩</c>.
     /// </summary>
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Voiceless_labial%E2%80%93velar_fricative"/></remarks>
-    public static readonly SpeechSound VoicelesLabialVelarFricative = new("ʍ", true);
+    public static readonly SpeechSound VoicelessLabialVelarFricative = new("ʍ", true);
 
     public static readonly SpeechSound VoicedVelarApproximant = new("ɰ", true);
 
@@ -1097,4 +736,383 @@ public readonly struct SpeechSound : IEquatable<SpeechSound>, ISpanFormattable, 
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Open_back_rounded_vowel"/></remarks>
     public static readonly SpeechSound OpenBackRoundedVowel = new("ɒ", true);
 
+
+
+
+    public static readonly FrozenSet<char> Alphabet = FrozenSet.ToFrozenSet(
+    [
+        // Plosives
+        'p',
+        'b',
+        't',
+        'd',
+        'ʈ',
+        'ɖ',
+        'c',
+        'ɟ',
+        'k',
+        'ɡ', // U+0261
+        'q',
+        'ɢ',
+
+        // Nasals
+        'm',
+        'ɱ',
+        'n',
+        'ɳ',
+        'ɲ',
+        'ŋ',
+        'ɴ',
+
+        // Trills
+        'ʙ',
+        'r',
+        'ʀ',
+
+        // Taps or Flaps
+        'ɾ',
+        'ɽ',
+
+        // Fricatives
+        'ɸ',
+        'β',
+        'f',
+        'v',
+        'θ',
+        'ð',
+        's',
+        'z',
+        'ʃ',
+        'ʒ',
+        'ʂ',
+        'ʐ',
+        'ç',
+        'ʝ',
+        'x',
+        'ɣ',
+        'χ',
+        'ʁ',
+        'ħ',
+        'ʕ',
+        'h',
+        'ɦ',
+
+        // Lateral fricatives
+        'ɬ',
+        'ɮ',
+
+        // Approximants
+        'ʋ',
+        'ɹ',
+        'ɻ',
+        'j',
+        'w',
+        'ɰ',
+
+        // Laterals
+        'l',
+        'ɭ',
+        'ʎ',
+        'ʟ',
+
+        // Vowels
+        'i',
+        'y',
+        'ɨ',
+        'ʉ',
+        'ɯ',
+        'u',
+        'ɪ',
+        'ʏ',
+        'ʊ',
+        'e',
+        'ø',
+        'ɘ',
+        'ɵ',
+        'ɤ',
+        'o',
+        'ɛ',
+        'œ',
+        'ɜ',
+        'ɞ',
+        'ʌ',
+        'ɔ',
+        'æ',
+        'ɐ',
+        'a',
+        'ɶ',
+        'ä',
+        'ɑ',
+        'ɒ',
+
+        'ə',
+
+        // Diacritics and suprasegmentals
+        'ˈ',
+        'ˌ',
+        'ː',
+        'ˑ',
+        'ʼ',
+        'ʴ',
+        'ʵ',
+        'ʶ',
+        'ʰ',
+        'ʱ',
+        'ʲ',
+        'ʷ',
+        'ˠ',
+        'ˤ',
+        'ˁ',
+
+        // TODO: review these
+
+        // Additional diacritics
+        '̥',
+        '̬',
+        '̹',
+        '̜',
+        '̟',
+        '̠',
+        '̈',
+        '̽',
+        '̩',
+        '̯',
+        '̪',
+        '̺',
+        '̻',
+        '̼',
+        '̝',
+        '̞',
+        '̘',
+        '̙',
+        '̆',
+        '̊',
+
+        // Tone letters and other notations
+        '˥',
+        '˦',
+        '˧',
+        '˨',
+        '˩',
+        '↗',
+        '↘'
+    ]);
+
+
+    public static readonly FrozenSet<string> CloseVowels = FrozenSet.ToFrozenSet(
+    [
+        "i", // close front unrounded vowel
+        "y", // close front rounded vowel
+        "ɨ", // close central unrounded vowel
+        "ʉ", // close central rounded vowel
+        "ɯ", // close back unrounded vowel
+        "u", // close back rounded vowel
+    ]);
+
+    public static readonly FrozenSet<string> NearCloseVowels = FrozenSet.ToFrozenSet(
+    [
+        "ɪ", // near-close near-front unrounded vowel
+        "ʏ", // near-close near-front rounded vowel
+        "ʊ", // near-close near-back rounded vowel
+    ]);
+
+    public static readonly FrozenSet<string> CloseMidVowels = FrozenSet.ToFrozenSet(
+    [
+        "e", // close-mid front unrounded vowel
+        "ø", // close-mid front rounded vowel
+        "ɘ", // close-mid central unrounded vowel
+        "ɵ", // close-mid central rounded vowel
+        "ɤ", // close-mid back unrounded vowel
+        "o", // close-mid back rounded vowel
+    ]);
+
+    public static readonly FrozenSet<string> MidVowels = FrozenSet.ToFrozenSet(
+    [
+        "ə", // schwa, mid central vowel
+    ]);
+
+    public static readonly FrozenSet<string> OpenMidVowels = FrozenSet.ToFrozenSet(
+    [
+        "ɛ", // open-mid front unrounded vowel
+        "œ", // open-mid front rounded vowel
+        "ɜ", // open-mid central unrounded vowel
+        "ɞ", // open-mid central rounded vowel
+        "ʌ", // open-mid back unrounded vowel
+        "ɔ", // open-mid back rounded vowel
+    ]);
+
+    public static readonly FrozenSet<string> NearOpenVowels = FrozenSet.ToFrozenSet(
+    [
+        "æ", // near-open front unrounded vowel
+    ]);
+
+    public static readonly FrozenSet<string> OpenVowels = FrozenSet.ToFrozenSet(
+    [
+        "a", // open front unrounded vowel
+        "ɶ", // open front rounded vowel
+        "ä", // open central unrounded vowel
+        "ɑ", // open back unrounded vowel
+        "ɒ"  // open back rounded vowel
+    ]);
+
+    public static readonly FrozenSet<string> Diphthongs = FrozenSet.ToFrozenSet(
+    [
+        "aɪ",
+        "aʊ",
+        "ɔɪ",
+        "eɪ",
+        "əʊ",
+        "ɪə",
+        "eə",
+        "ʊə",
+    ]);
+
+    public static readonly FrozenSet<string> Monophthongs = FrozenSet.ToFrozenSet(
+    [
+        "iː",
+        "ɜː",
+        "uː",
+        "ɔː",
+        "ɑː",
+        "ɑːr",
+        "æ",
+    ]);
+
+    public static readonly FrozenSet<string> Vowels = FrozenSet.ToFrozenSet(
+    [
+        .. CloseVowels,
+        .. NearCloseVowels,
+        .. CloseMidVowels,
+        .. MidVowels,
+        .. OpenMidVowels,
+        .. NearOpenVowels,
+        .. OpenVowels,
+        .. Diphthongs,
+        .. Monophthongs,
+    ]);
+
+    // https://en.wikipedia.org/wiki/Consonant
+
+    public static readonly FrozenSet<string> Bilabials = FrozenSet.ToFrozenSet(
+    [
+        VoicelessBilabialPlosive._value,        // [p]
+        VoicedBilabialPlosive._value,           // [b]
+        VoicedBilabialNasal._value,             // [m]
+        VoicedBilabialTrill._value,             // [ʙ]
+        VoicelessBilabialFricative._value,      // [ɸ]
+        VoicedBilabialFricative._value,         // [β]
+        // TODO: ʙ̥ https://en.wikipedia.org/wiki/Voiceless_bilabial_trill
+        // TODO: m̥ https://en.wikipedia.org/wiki/Voiceless_bilabial_nasal
+    ]);
+
+    public static readonly FrozenSet<string> Labiodentals = FrozenSet.ToFrozenSet(
+    [
+        VoicelessLabiodentalFricative._value,   // [f]
+        VoicedLabiodentalFricative._value,      // [v]
+        VoicedLabiodentalNasal._value,          // [ɱ]
+        VoicedLabiodentalFlap._value,           // [ⱱ]
+        VoicedLabiodentalApproximant._value,    // [ʋ]
+    ]);
+
+    public static readonly FrozenSet<string> Dentals = FrozenSet.ToFrozenSet(
+    [
+        VoicelessDentalFricative._value,        // [θ]
+        VoicedDentalFricative._value,           // [ð]
+    ]);
+
+    public static readonly FrozenSet<string> Alveolars = FrozenSet.ToFrozenSet(
+    [
+        VoicelessAlveolarPlosive._value,            // [t]
+        VoicedAlveolarPlosive._value,               // [d]
+        VoicedAlveolarNasal._value,                 // [n]
+        VoicedAlveolarTrill._value,                 // [r]
+        VoicelessAlveolarFricative._value,          // [s]
+        VoicedAlveolarFricative._value,             // [z]
+        VoicedAlveolarApproximant._value,           // [ɹ]
+        VoicedAlveolarTap._value,                   // [ɾ]
+        VoicelessLateralAlveolarFricative._value,   // [ɬ]
+        VoicedLateralAlveolarFricative._value,      // [ɮ]
+        VoicedAlveolarLateralApproximant._value,    // [l]
+    ]);
+
+    public static readonly FrozenSet<string> PostAlveolars = FrozenSet.ToFrozenSet(
+    [
+        "ʃ", // voiceless postalveolar fricative
+        "ʒ", // voiced postalveolar fricative
+        "ʈ", // voiceless retroflex plosive
+        "ɖ", // voiced retroflex plosive
+        "ɳ", // retroflex nasal
+        "ɻ", // retroflex approximant
+        "ɽ", // retroflex flap
+        "ʂ", // voiceless retroflex fricative
+        "ʐ", // voiced retroflex fricative
+        "ɭ", // retroflex lateral approximant
+    ]);
+
+    public static readonly FrozenSet<string> Palatals = FrozenSet.ToFrozenSet(
+    [
+        "c", // voiceless palatal plosive
+        "ɟ", // voiced palatal plosive
+        "ɲ", // palatal nasal
+        "ç", // voiceless palatal fricative
+        "ʝ", // voiced palatal fricative
+        "j", // palatal approximant
+        "ʎ", // palatal lateral approximant
+    ]);
+
+    public static readonly FrozenSet<string> Velars = FrozenSet.ToFrozenSet(
+    [
+        "k", // voiceless velar plosive
+        "ɡ", // voiced velar plosive (U+0261)
+        // "g", // ... U+0067 is not supported
+        "ŋ", // velar nasal
+        "x", // voiceless velar fricative
+        "ɣ", // voiced velar fricative
+        "w",
+        "ɰ", // velar non-sibilant fricative
+    ]);
+
+    public static readonly FrozenSet<string> Uvulars = FrozenSet.ToFrozenSet(
+    [
+        "q", // voiceless uvular plosive
+        "ɢ", // voiced uvular plosive
+        "ɴ", // uvular nasal
+        "χ", // voiceless uvular fricative
+        "ʁ", // voiced uvular fricative
+        "ʀ", // uvular trill
+    ]);
+
+    public static readonly FrozenSet<string> Pharyngeals = FrozenSet.ToFrozenSet(
+    [
+        "ħ", // voiceless pharyngeal fricative
+        "ʕ", // voiced pharyngeal fricative
+    ]);
+
+    public static readonly FrozenSet<string> Glottals = FrozenSet.ToFrozenSet(
+    [
+        "ʔ", // glottal plosive
+        "h", // voiceless glottal fricative
+        "ɦ"  // voiced glottal fricative
+    ]);
+
+    public static readonly FrozenSet<string> Coarticulated = FrozenSet.ToFrozenSet(
+    [
+        VoicelessLabialVelarFricative._value,       // [ʍ]
+        VoicedLabialVelarApproximant._value,        // [w]
+    ]);
+
+    public static readonly FrozenSet<string> Consonants = FrozenSet.ToFrozenSet(
+    [
+        .. Bilabials,
+        .. Labiodentals,
+        .. Dentals,
+        .. Alveolars,
+        .. PostAlveolars,
+        .. Palatals,
+        .. Velars,
+        .. Uvulars,
+        .. Pharyngeals,
+        .. Glottals,
+        .. Coarticulated,
+    ]);
 }

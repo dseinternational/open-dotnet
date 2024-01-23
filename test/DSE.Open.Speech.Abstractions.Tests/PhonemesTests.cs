@@ -28,8 +28,26 @@ public class PhonemesTests
     }
 
     [Fact]
+    public void EnglishConsonantsAreConsonants()
+    {
+        foreach (var p in English.Consonants)
+        {
+            Assert.True(p.IsConsonant, $"{p.Abstraction} not classified as consonant");
+        }
+    }
+
+    [Fact]
     public void EnglishVowelsCount()
     {
         Assert.Equal(24, English.Vowels.Count);
+    }
+
+    [Fact]
+    public void EnglishVowelsAreVowels()
+    {
+        foreach (var p in English.Vowels)
+        {
+            Assert.True(p.IsVowel, $"{p.Abstraction} not classified as vowel");
+        }
     }
 }
