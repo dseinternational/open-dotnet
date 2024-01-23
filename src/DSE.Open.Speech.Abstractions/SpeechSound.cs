@@ -727,6 +727,10 @@ public readonly struct SpeechSound : IEquatable<SpeechSound>, ISpanFormattable, 
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Voiced_labiodental_fricative"/></remarks>
     public static readonly SpeechSound VoicedLabiodentalFricative = new("v", true);
 
+    /// <summary>
+    /// The voiced labiodental approximant is a type of consonantal sound,
+    /// represented in the IPA by the symbol <c>⟨ʋ⟩</c>.
+    /// </summary>
     public static readonly SpeechSound VoicedLabiodentalApproximant = new("ʋ", true);
 
     /// <summary>
@@ -806,6 +810,18 @@ public readonly struct SpeechSound : IEquatable<SpeechSound>, ISpanFormattable, 
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Voiced_postalveolar_fricative"/></remarks>
     public static readonly SpeechSound VoicedPostalveolarFricative = new("ʒ", true);
 
+    /// <summary>
+    /// The voiced alveolar approximant is a type of consonantal sound,
+    /// represented in the IPA by the symbol <c>⟨ɹ̠⟩</c>. (See also <see cref="VoicedAlveolarApproximant"/>)
+    /// </summary>
+    /// <remarks>
+    /// The most common sound represented by the letter r in English is the voiced
+    /// postalveolar approximant, pronounced a little more back and transcribed more precisely
+    /// in IPA as ⟨ɹ̠⟩, but ⟨ɹ⟩ is often used for convenience in its place.
+    /// </remarks>
+    /// <remarks>See <see href="https://en.wikipedia.org/wiki/Voiced_alveolar_and_postalveolar_approximants"/></remarks>
+    public static readonly SpeechSound VoicedPostalveolarApproximant = new("ɹ̠", true);
+
     public static readonly SpeechSound VoicedPostalveolarAffricate = new("dʒ", true);
 
     public static readonly SpeechSound VoicelessLateralAlveolarFricative = new("ɬ", true);
@@ -838,6 +854,11 @@ public readonly struct SpeechSound : IEquatable<SpeechSound>, ISpanFormattable, 
 
     public static readonly SpeechSound VoicedRetroflexFricative = new("ʐ", true);
 
+    /// <summary>
+    /// The voiced retroflex approximant is a type of consonant,
+    /// represented in the IPA by the symbol <c>⟨ɻ⟩</c>.
+    /// </summary>
+    /// <remarks>See <see href="https://en.wikipedia.org/wiki/Voiced_retroflex_approximant"/></remarks>
     public static readonly SpeechSound VoicedRetroflexApproximant = new("ɻ", true);
 
     public static readonly SpeechSound VoicedRetroflexLateralApproximant = new("ɭ", true);
@@ -913,6 +934,11 @@ public readonly struct SpeechSound : IEquatable<SpeechSound>, ISpanFormattable, 
 
     public static readonly SpeechSound VoicelessUvularFricative = new("χ", true);
 
+    /// <summary>
+    /// The voiced uvular fricative is a type of consonantal sound,
+    /// represented in the IPA by the symbol <c>⟨ʁ⟩</c>.
+    /// </summary>
+    /// <remarks>See <see href="https://en.wikipedia.org/wiki/Voiced_uvular_fricative"/></remarks>
     public static readonly SpeechSound VoicedUvularFricative = new("ʁ", true);
 
     public static readonly SpeechSound VoicelessPharyngealFricative = new("ħ", true);
@@ -985,8 +1011,18 @@ public readonly struct SpeechSound : IEquatable<SpeechSound>, ISpanFormattable, 
 
     public static readonly SpeechSound CloseMidCentralRoundedVowel = new("ɵ", true);
 
+    /// <summary>
+    /// The mid central vowel (also known as schwa) is a type of vowel sound,
+    /// represented in the IPA by the symbol <c>⟨ə⟩</c>.
+    /// </summary>
+    /// <remarks>See <see href="https://en.wikipedia.org/wiki/Mid_central_vowel"/></remarks>
     public static readonly SpeechSound MidCentralUnroundedVowel = new("ə", true);
 
+    /// <summary>
+    /// The open-mid central unrounded vowel, or low-mid central unrounded vowel, is a type of vowel sound,
+    /// represented in the IPA by the symbol <c>⟨ɜ⟩</c>.
+    /// </summary>
+    /// <remarks>See <see href="https://en.wikipedia.org/wiki/Open-mid_central_unrounded_vowel"/></remarks>
     public static readonly SpeechSound OpenMidCentralUnroundedVowel = new("ɜ", true);
 
     public static readonly SpeechSound OpenMidCentralRoundedVowel = new("ɞ", true);

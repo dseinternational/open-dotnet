@@ -15,6 +15,13 @@ public class PhonemesTests
     }
 
     [Fact]
+    public void EnglishAllAbstractionsAreUnique()
+    {
+        var all = English.All.ToDictionary(p => p.Abstraction);
+        Assert.NotNull(all);
+    }
+
+    [Fact]
     public void EnglishConsonantsCount()
     {
         Assert.Equal(26, English.Consonants.Count);

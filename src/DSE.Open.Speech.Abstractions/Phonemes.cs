@@ -18,55 +18,112 @@ public static class Phonemes
     /// </summary>
     public static class English
     {
-        /// <summary>
-        /// The English phoneme /p/ as in ⟨pin⟩.
-        /// </summary>
-        public static readonly Phoneme p = new()
-        {
-            Language = LanguageCode2.English,
-            Abstraction = SpeechSound.VoicelessBilabialPlosive,
-            Allophones = []
-        };
+        // ---------------------------------------------------------------------
+        // Labial consonants
 
         /// <summary>
-        /// The English phoneme /b/ as in ⟨bin⟩.
-        /// </summary>
-        public static readonly Phoneme b = new()
-        {
-            Language = LanguageCode2.English,
-            Abstraction = SpeechSound.VoicedBilabialPlosive,
-            Allophones = []
-        };
-
-        /// <summary>
-        /// The English phoneme /m/ as in ⟨mouse⟩.
+        /// The English phoneme /m/ as in ⟨mouse⟩ and ⟨him⟩.
         /// </summary>
         public static readonly Phoneme m = new()
         {
             Language = LanguageCode2.English,
             Abstraction = SpeechSound.VoicedBilabialNasal,
-            Allophones = []
+            Allophones =
+            [
+                // ⟨symphony⟩
+                SpeechSound.VoicedLabiodentalNasal,
+            ]
         };
 
         /// <summary>
-        /// The English phoneme /t/ as in ⟨top⟩.
+        /// The English phoneme /p/ as in ⟨pin⟩ and ⟨pin⟩.
         /// </summary>
-        public static readonly Phoneme t = new()
+        public static readonly Phoneme p = new()
         {
             Language = LanguageCode2.English,
-            Abstraction = SpeechSound.VoicelessAlveolarPlosive,
-            Allophones = []
+            Abstraction = SpeechSound.VoicelessBilabialPlosive,
+            Allophones =
+            [
+                // ⟨spin⟩
+                new SpeechSound("pʰ"),
+            ]
         };
 
         /// <summary>
-        /// The English phoneme /d/ as in ⟨dog⟩.
+        /// The English phoneme /b/ as in ⟨bin⟩ and ⟨bit⟩.
         /// </summary>
-        public static readonly Phoneme d = new()
+        public static readonly Phoneme b = new()
         {
             Language = LanguageCode2.English,
-            Abstraction = SpeechSound.VoicedAlveolarPlosive,
+            Abstraction = SpeechSound.VoicedBilabialPlosive,
+            Allophones =
+            [
+                // ⟨web⟩
+                new SpeechSound("b̥"),
+            ]
+        };
+
+        /// <summary>
+        /// The English phoneme /f/ as in ⟨find⟩ and ⟨fad⟩.
+        /// </summary>
+        public static readonly Phoneme f = new()
+        {
+            Language = LanguageCode2.English,
+            Abstraction = SpeechSound.VoicelessLabiodentalFricative,
+            Allophones =
+            [
+                SpeechSound.VoicelessBilabialFricative,
+            ]
+        };
+
+        /// <summary>
+        /// The English phoneme /v/ as in ⟨van⟩ and ⟨vase⟩.
+        /// </summary>
+        public static readonly Phoneme v = new()
+        {
+            Language = LanguageCode2.English,
+            Abstraction = SpeechSound.VoicedLabiodentalFricative,
+            Allophones =
+            [
+                SpeechSound.VoicedBilabialFricative,
+                new SpeechSound("v̥"),
+            ]
+        };
+
+        // ---------------------------------------------------------------------
+        // Dental consonants
+
+        /// <summary>
+        /// The English phoneme /th/ as in ⟨think⟩ and ⟨think⟩.
+        /// </summary>
+        /// <remarks>
+        /// For constrasts with <see cref="dh"/> consider ⟨thigh⟩ and ⟨thy⟩.
+        /// </remarks>
+        public static readonly Phoneme th = new()
+        {
+            Language = LanguageCode2.English,
+            Abstraction = SpeechSound.VoicelessDentalFricative,
+            Allophones =
+            [
+                new SpeechSound("t̪ʰ"),
+            ]
+        };
+
+        /// <summary>
+        /// The English phoneme /dh/ (or /<u>th</u>/) as in ⟨feather⟩ and ⟨this⟩.
+        /// </summary>
+        /// <remarks>
+        /// For constrasts with <see cref="th"/> consider ⟨thigh⟩ and ⟨thy⟩.
+        /// </remarks>
+        public static readonly Phoneme dh = new()
+        {
+            Language = LanguageCode2.English,
+            Abstraction = SpeechSound.VoicedDentalFricative,
             Allophones = []
         };
+
+        // ---------------------------------------------------------------------
+        // Alveolar consonants
 
         /// <summary>
         /// The English phoneme /n/ as in ⟨nod⟩.
@@ -79,81 +136,37 @@ public static class Phonemes
         };
 
         /// <summary>
-        /// The English phoneme /r/ as in ⟨run⟩.
+        /// The English phoneme /t/ as in ⟨top⟩ or ⟨tin⟩.
         /// </summary>
-        public static readonly Phoneme r = new()
+        public static readonly Phoneme t = new()
         {
             Language = LanguageCode2.English,
-            Abstraction = SpeechSound.VoicedAlveolarApproximant,
+            Abstraction = SpeechSound.VoicelessAlveolarPlosive,
+            Allophones = []
+        };
+
+        /// <summary>
+        /// The English phoneme /d/ as in ⟨dog⟩ or ⟨din⟩.
+        /// </summary>
+        public static readonly Phoneme d = new()
+        {
+            Language = LanguageCode2.English,
+            Abstraction = SpeechSound.VoicedAlveolarPlosive,
             Allophones =
             [
-                // "Flapped" or "Tapped" R: alveolar flap [ɾ] (occurs in Scouse and conservative
-                // Northern England English, most Scottish English, some South African, Welsh,
-                // Indian and Irish English and early twentieth-century Received Pronunciation.
                 SpeechSound.VoicedAlveolarTap,
-
-                // "Trilled" or "Rolled" R: alveolar trill [r] (occurs in some conservative
-                // Scottish English, South African English, some Welsh English, Indian English
-                // and Jersey English)
-                SpeechSound.VoicedAlveolarTrill,
+                new SpeechSound("d̥"),
             ]
         };
 
         /// <summary>
-        /// The English phoneme /f/ as in ⟨find⟩.
+        /// The English phoneme /s/ as in ⟨sing⟩.
         /// </summary>
-        public static readonly Phoneme f = new()
+        public static readonly Phoneme s = new()
         {
             Language = LanguageCode2.English,
-            Abstraction = SpeechSound.VoicelessLabiodentalFricative,
+            Abstraction = SpeechSound.VoicelessAlveolarFricative,
             Allophones = []
-        };
-
-        /// <summary>
-        /// The English phoneme /l/ as in ⟨long⟩.
-        /// </summary>
-        public static readonly Phoneme l = new()
-        {
-            Language = LanguageCode2.English,
-            Abstraction = SpeechSound.VoicedAlveolarLateralApproximant,
-            Allophones = []
-        };
-
-        /// <summary>
-        /// The English phoneme /h/ as in ⟨hat⟩.
-        /// </summary>
-        public static readonly Phoneme h = new()
-        {
-            Language = LanguageCode2.English,
-            Abstraction = SpeechSound.VoicelessGlottalFricative,
-            Allophones = []
-        };
-
-        /// <summary>
-        /// The English phoneme /v/ as in ⟨van⟩.
-        /// </summary>
-        public static readonly Phoneme v = new()
-        {
-            Language = LanguageCode2.English,
-            Abstraction = SpeechSound.VoicedLabiodentalFricative,
-            Allophones = []
-        };
-
-        /// <summary>
-        /// The English phoneme /w/ as in ⟨wind⟩.
-        /// </summary>
-        public static readonly Phoneme w = new()
-        {
-            Language = LanguageCode2.English,
-            Abstraction = SpeechSound.VoicedLabialVelarApproximant,
-            Allophones =
-            [
-                // See wine–whine merger:
-                // https://en.wikipedia.org/wiki/Pronunciation_of_English_%E2%9F%A8wh%E2%9F%A9
-                //
-                // TODO: consider adding phoneme: /hw/ (or /ʍ/) as in ⟨which⟩
-                SpeechSound.VoicelesLabialVelarFricative,
-            ]
         };
 
         /// <summary>
@@ -167,14 +180,17 @@ public static class Phonemes
         };
 
         /// <summary>
-        /// The English phoneme /ng/ as in ⟨sing⟩.
+        /// The English phoneme /l/ as in ⟨long⟩.
         /// </summary>
-        public static readonly Phoneme ng = new()
+        public static readonly Phoneme l = new()
         {
             Language = LanguageCode2.English,
-            Abstraction = SpeechSound.VoicedVelarNasal,
+            Abstraction = SpeechSound.VoicedAlveolarLateralApproximant,
             Allophones = []
         };
+
+        // ---------------------------------------------------------------------
+        // Post-alveolar consonants
 
         /// <summary>
         /// The English phoneme /ch/ as in ⟨church⟩.
@@ -183,16 +199,6 @@ public static class Phonemes
         {
             Language = LanguageCode2.English,
             Abstraction = SpeechSound.VoicelessPostalveolarAffricate,
-            Allophones = []
-        };
-
-        /// <summary>
-        /// The English phoneme /g/ as in ⟨gate⟩.
-        /// </summary>
-        public static readonly Phoneme g = new()
-        {
-            Language = LanguageCode2.English,
-            Abstraction = SpeechSound.VoicedVelarPlosive,
             Allophones = []
         };
 
@@ -207,82 +213,12 @@ public static class Phonemes
         };
 
         /// <summary>
-        /// The English phoneme /k/ as in ⟨kick⟩.
-        /// </summary>
-        public static readonly Phoneme k = new()
-        {
-            Language = LanguageCode2.English,
-            Abstraction = SpeechSound.VoicelessVelarPlosive,
-            Allophones = []
-        };
-
-        /// <summary>
-        /// The English phoneme /s/ as in ⟨sing⟩.
-        /// </summary>
-        public static readonly Phoneme s = new()
-        {
-            Language = LanguageCode2.English,
-            Abstraction = SpeechSound.VoicelessAlveolarFricative,
-            Allophones = []
-        };
-
-        /// <summary>
-        /// The English phoneme /th/ as in ⟨think⟩.
-        /// </summary>
-        public static readonly Phoneme th = new()
-        {
-            Language = LanguageCode2.English,
-            Abstraction = SpeechSound.VoicelessDentalFricative,
-            Allophones = []
-        };
-
-        /// <summary>
-        /// The English phoneme /dh/ (or /<u>th</u>/) as in ⟨feather⟩.
-        /// </summary>
-        public static readonly Phoneme dh = new()
-        {
-            Language = LanguageCode2.English,
-            Abstraction = SpeechSound.VoicedDentalFricative,
-            Allophones = []
-        };
-
-        /// <summary>
-        /// The English phoneme /hw/ as in ⟨which⟩.
-        /// </summary>
-        public static readonly Phoneme hw = new()
-        {
-            Language = LanguageCode2.English,
-            Abstraction = new SpeechSound("hw"),
-            Allophones = []
-        };
-
-        /// <summary>
-        /// The English phoneme /x/ as in ⟨loch⟩.
-        /// </summary>
-        public static readonly Phoneme k͟h = new()
-        {
-            Language = LanguageCode2.English,
-            Abstraction = SpeechSound.VoicelessVelarFricative,
-            Allophones = []
-        };
-
-        /// <summary>
         /// The English phoneme /sh/ as in ⟨ship⟩.
         /// </summary>
         public static readonly Phoneme sh = new()
         {
             Language = LanguageCode2.English,
             Abstraction = SpeechSound.VoicelessPostalveolarFricative,
-            Allophones = []
-        };
-
-        /// <summary>
-        /// The English phoneme /y/ as in ⟨yes⟩.
-        /// </summary>
-        public static readonly Phoneme y = new()
-        {
-            Language = LanguageCode2.English,
-            Abstraction = SpeechSound.VoicedPalatalApproximant,
             Allophones = []
         };
 
@@ -297,7 +233,170 @@ public static class Phonemes
         };
 
         /// <summary>
-        /// The English phoneme /a/ as in ⟨cat⟩.
+        /// The English phoneme /r/ as in ⟨run⟩.
+        /// </summary>
+        /// <remarks>
+        /// Our abstraction is the <see cref="SpeechSound.VoicedPostalveolarApproximant"/>,
+        /// which is the most common allophone of /r/ in English.
+        /// </remarks>
+        public static readonly Phoneme r = new()
+        {
+            Language = LanguageCode2.English,
+            Abstraction = SpeechSound.VoicedPostalveolarApproximant,
+            Allophones =
+            [
+                SpeechSound.VoicedAlveolarApproximant,
+
+                // Some American, West Country English, and most Irish dialects.
+                SpeechSound.VoicedRetroflexApproximant,
+
+                // "Flapped" or "Tapped" R: alveolar flap [ɾ] (occurs in Scouse and conservative
+                // Northern England English, most Scottish English, some South African, Welsh,
+                // Indian and Irish English and early twentieth-century Received Pronunciation.
+                SpeechSound.VoicedAlveolarTap,
+
+                // "Trilled" or "Rolled" R: alveolar trill [r] (occurs in some conservative
+                // Scottish English, South African English, some Welsh English, Indian English
+                // and Jersey English)
+                SpeechSound.VoicedAlveolarTrill,
+
+                // Some Welsh and Northumbrian accents
+                SpeechSound.VoicedUvularFricative,
+            ]
+        };
+
+        // ---------------------------------------------------------------------
+        // Palatal consonant
+
+        /// <summary>
+        /// The English phoneme /y/ as in ⟨yes⟩.
+        /// </summary>
+        public static readonly Phoneme y = new()
+        {
+            Language = LanguageCode2.English,
+            Abstraction = SpeechSound.VoicedPalatalApproximant,
+            Allophones = []
+        };
+
+        // ---------------------------------------------------------------------
+        // Velar consonants
+
+        /// <summary>
+        /// The English phoneme /ng/ as in ⟨sing⟩.
+        /// </summary>
+        public static readonly Phoneme ng = new()
+        {
+            Language = LanguageCode2.English,
+            Abstraction = SpeechSound.VoicedVelarNasal,
+            Allophones = []
+        };
+
+        /// <summary>
+        /// The English phoneme /k/ as in ⟨kick⟩.
+        /// </summary>
+        public static readonly Phoneme k = new()
+        {
+            Language = LanguageCode2.English,
+            Abstraction = SpeechSound.VoicelessVelarPlosive,
+            Allophones = []
+        };
+
+        /// <summary>
+        /// The English phoneme /g/ as in ⟨gate⟩.
+        /// </summary>
+        public static readonly Phoneme g = new()
+        {
+            Language = LanguageCode2.English,
+            Abstraction = SpeechSound.VoicedVelarPlosive,
+            Allophones = []
+        };
+
+        /// <summary>
+        /// The English phoneme /x/ as in ⟨loch⟩.
+        /// </summary>
+        public static readonly Phoneme k͟h = new()
+        {
+            Language = LanguageCode2.English,
+            Abstraction = SpeechSound.VoicelessVelarFricative,
+            Allophones = []
+        };
+
+        /// <summary>
+        /// The English phoneme /w/ as in ⟨wine⟩ and ⟨wine⟩.
+        /// </summary>
+        /// <remarks>
+        /// Where the <see href="https://en.wikipedia.org/wiki/Wine%E2%80%93whine_merger">wine–whine merger</see>
+        /// is present, there is no consonant difference in words like ⟨wine⟩ and ⟨whine⟩ (<see cref="hw"/>).
+        /// </remarks>
+        public static readonly Phoneme w = new()
+        {
+            Language = LanguageCode2.English,
+            Abstraction = SpeechSound.VoicedLabialVelarApproximant,
+            Allophones =
+            [
+                SpeechSound.VoicelesLabialVelarFricative,
+                new SpeechSound("hw"),
+            ]
+        };
+
+        /// <summary>
+        /// The English phoneme /hw/ as in ⟨which⟩.
+        /// </summary>
+        /// <remarks>
+        /// Where the <see href="https://en.wikipedia.org/wiki/Wine%E2%80%93whine_merger">wine–whine merger</see>
+        /// is present, there is no consonant difference in words like ⟨wine⟩ and ⟨whine⟩ (<see cref="hw"/>).
+        /// </remarks>
+        public static readonly Phoneme hw = new()
+        {
+            Language = LanguageCode2.English,
+            Abstraction = SpeechSound.VoicelesLabialVelarFricative,
+            Allophones =
+            [
+                new SpeechSound("hw"),
+            ]
+        };
+
+        // ---------------------------------------------------------------------
+        // Glottal consonant
+
+        /// <summary>
+        /// The English phoneme /h/ as in ⟨hat⟩ and ⟨ham⟩.
+        /// </summary>
+        public static readonly Phoneme h = new()
+        {
+            Language = LanguageCode2.English,
+            Abstraction = SpeechSound.VoicelessGlottalFricative,
+            Allophones = []
+        };
+
+        // ---------------------------------------------------------------------
+        // Vowels - front
+
+        /// <summary>
+        /// The English phoneme /i/ as in ⟨bit⟩.
+        /// </summary>
+        public static readonly Phoneme i = new()
+        {
+            Language = LanguageCode2.English,
+            Abstraction = SpeechSound.NearCloseNearFrontUnroundedVowel,
+            Allophones = []
+        };
+
+        /// <summary>
+        /// The English phoneme /e/ as in ⟨let⟩.
+        /// </summary>
+        public static readonly Phoneme e = new()
+        {
+            Language = LanguageCode2.English,
+            Abstraction = SpeechSound.OpenMidFrontUnroundedVowel,
+            Allophones =
+            [
+                new SpeechSound("ɛː")
+            ]
+        };
+
+        /// <summary>
+        /// The English phoneme /a/ as in ⟨cat⟩, ⟨trap⟩ and ⟨ham⟩.
         /// </summary>
         public static readonly Phoneme a = new()
         {
@@ -311,38 +410,101 @@ public static class Phonemes
         };
 
         /// <summary>
-        /// The English phoneme /ay/ as in ⟨day⟩.
+        /// The English phoneme /ee/ as in ⟨see⟩.
         /// </summary>
-        public static readonly Phoneme ay = new()
+        public static readonly Phoneme ee = new()
         {
             Language = LanguageCode2.English,
-            Abstraction = new SpeechSound("eɪ"),
+            Abstraction = new SpeechSound("iː"),
+            Allophones =
+            [
+                SpeechSound.CloseFrontUnroundedVowel
+            ]
+        };
+
+        // ---------------------------------------------------------------------
+        // Vowels - central
+
+        /// <summary>
+        /// The English phoneme /uu/ as in ⟨took⟩.
+        /// </summary>
+        public static readonly Phoneme uu = new()
+        {
+            Language = LanguageCode2.English,
+            Abstraction = SpeechSound.NearCloseNearBackRoundedVowel,
             Allophones = []
         };
 
         /// <summary>
-        /// The English phoneme /air/ as in ⟨hair⟩.
+        /// The English phoneme /u/ as in ⟨cut⟩.
         /// </summary>
-        public static readonly Phoneme air = new()
+        public static readonly Phoneme u = new()
         {
             Language = LanguageCode2.English,
-            Abstraction = new SpeechSound("ɛər"),
+            Abstraction = SpeechSound.OpenMidBackUnroundedVowel,
+            Allophones = []
+        };
+
+        /// <summary>
+        /// The English phoneme /uh/ as in ⟨about⟩, ⟨comma⟩ and ⟨letter⟩.
+        /// </summary>
+        public static readonly Phoneme uh = new()
+        {
+            Language = LanguageCode2.English,
+            Abstraction = SpeechSound.MidCentralUnroundedVowel,
             Allophones =
             [
-                new SpeechSound("ɛə")
+                new SpeechSound("ər"),
             ]
         };
 
         /// <summary>
-        /// The English phoneme /ar/ as in ⟨arm⟩. (See also <see cref="ah"/>.)
+        /// The English phoneme /oo/ as in ⟨soon⟩.
         /// </summary>
-        /// <remarks>
-        /// The distinction between /ar/ ([ɑːr]) and /ah/ ([ɑː]) is subtle.
-        /// </remarks>
-        public static readonly Phoneme ar = new()
+        public static readonly Phoneme oo = new()
         {
             Language = LanguageCode2.English,
-            Abstraction = new SpeechSound("ɑːr"),
+            Abstraction = new SpeechSound("uː"),
+            Allophones = []
+        };
+
+
+
+        // ---------------------------------------------------------------------
+        // Vowels - back
+
+        /// <summary>
+        /// The English phoneme /aw/ as in ⟨caught⟩.
+        /// </summary>
+        /// <remarks>
+        /// Where the <see href="https://en.wikipedia.org/wiki/Cot%E2%80%93caught_merger">cot–caught merger</see>
+        /// and father–bother merger are present, there is no vowel difference in words like ⟨palm⟩ /ɑ/,
+        /// ⟨pot⟩ /ɒ/, and ⟨thought⟩ /ɔ/.
+        /// <para>Also see <see cref="or"/>.</para>
+        /// </remarks>
+        public static readonly Phoneme aw = new()
+        {
+            Language = LanguageCode2.English,
+            Abstraction = new SpeechSound("ɔː"),
+            Allophones =
+            [
+                SpeechSound.OpenMidBackRoundedVowel,    // cot-caught merger
+                SpeechSound.OpenBackUnroundedVowel,
+            ]
+        };
+
+        /// <summary>
+        /// The English phoneme /o/ as in ⟨pot⟩.
+        /// </summary>
+        /// <remarks>
+        /// Where the <see href="https://en.wikipedia.org/wiki/Cot%E2%80%93caught_merger">cot–caught merger</see>
+        /// and father–bother merger are present, there is no vowel difference in words like ⟨palm⟩ /ɑ/,
+        /// ⟨pot⟩ /ɒ/, and ⟨thought⟩ /ɔ/.
+        /// </remarks>
+        public static readonly Phoneme o = new()
+        {
+            Language = LanguageCode2.English,
+            Abstraction = SpeechSound.OpenBackRoundedVowel,
             Allophones = []
         };
 
@@ -369,49 +531,16 @@ public static class Phonemes
             ]
         };
 
-        /// <summary>
-        /// The English phoneme /e/ as in ⟨let⟩.
-        /// </summary>
-        public static readonly Phoneme e = new()
-        {
-            Language = LanguageCode2.English,
-            Abstraction = SpeechSound.OpenMidFrontUnroundedVowel,
-            Allophones =
-            [
-                new SpeechSound("ɛː")
-            ]
-        };
+        // ---------------------------------------------------------------------
+        // Vowels - diphthongs
 
         /// <summary>
-        /// The English phoneme /ee/ as in ⟨see⟩.
+        /// The English phoneme /ay/ as in ⟨day⟩.
         /// </summary>
-        public static readonly Phoneme ee = new()
+        public static readonly Phoneme ay = new()
         {
             Language = LanguageCode2.English,
-            Abstraction = new SpeechSound("iː"),
-            Allophones =
-            [
-                SpeechSound.CloseFrontUnroundedVowel
-            ]
-        };
-
-        /// <summary>
-        /// The English phoneme /eer/ (or /ear/) as in ⟨here⟩ or ⟨ear⟩.
-        /// </summary>
-        public static readonly Phoneme eer = new()
-        {
-            Language = LanguageCode2.English,
-            Abstraction = new SpeechSound("ɪər"),
-            Allophones = []
-        };
-
-        /// <summary>
-        /// The English phoneme /i/ as in ⟨bit⟩.
-        /// </summary>
-        public static readonly Phoneme i = new()
-        {
-            Language = LanguageCode2.English,
-            Abstraction = SpeechSound.NearCloseNearFrontUnroundedVowel,
+            Abstraction = new SpeechSound("eɪ"),
             Allophones = []
         };
 
@@ -426,56 +555,12 @@ public static class Phonemes
         };
 
         /// <summary>
-        /// The English phoneme /o/ as in ⟨pot⟩.
-        /// </summary>
-        /// <remarks>
-        /// Where the <see href="https://en.wikipedia.org/wiki/Cot%E2%80%93caught_merger">cot–caught merger</see>
-        /// and father–bother merger are present, there is no vowel difference in words like ⟨palm⟩ /ɑ/,
-        /// ⟨pot⟩ /ɒ/, and ⟨thought⟩ /ɔ/.
-        /// </remarks>
-        public static readonly Phoneme o = new()
-        {
-            Language = LanguageCode2.English,
-            Abstraction = SpeechSound.OpenBackRoundedVowel,
-            Allophones = []
-        };
-
-        /// <summary>
-        /// The English phoneme /oh/ as in ⟨no⟩.
+        /// The English phoneme /oh/ as in ⟨no⟩ and ⟨goat⟩.
         /// </summary>
         public static readonly Phoneme oh = new()
         {
             Language = LanguageCode2.English,
             Abstraction = new SpeechSound("oʊ"),
-            Allophones = []
-        };
-
-        /// <summary>
-        /// The English phoneme /aw/ as in ⟨caught⟩.
-        /// </summary>
-        /// <remarks>
-        /// Where the <see href="https://en.wikipedia.org/wiki/Cot%E2%80%93caught_merger">cot–caught merger</see>
-        /// and father–bother merger are present, there is no vowel difference in words like ⟨palm⟩ /ɑ/,
-        /// ⟨pot⟩ /ɒ/, and ⟨thought⟩ /ɔ/.
-        /// </remarks>
-        public static readonly Phoneme aw = new()
-        {
-            Language = LanguageCode2.English,
-            Abstraction = new SpeechSound("ɔː"),
-            Allophones =
-            [
-                SpeechSound.OpenMidBackRoundedVowel,    // cot-caught merger
-                SpeechSound.OpenBackUnroundedVowel,
-            ]
-        };
-
-        /// <summary>
-        /// The English phoneme /or/ as in ⟨north⟩.
-        /// </summary>
-        public static readonly Phoneme or = new()
-        {
-            Language = LanguageCode2.English,
-            Abstraction = new SpeechSound("ɔːr"),
             Allophones = []
         };
 
@@ -488,15 +573,90 @@ public static class Phonemes
             Abstraction = new SpeechSound("ɔɪ"),
             Allophones = []
         };
-
         /// <summary>
-        /// The English phoneme /uu/ as in ⟨took⟩.
+        /// The English phoneme /ow/ as in ⟨out⟩.
         /// </summary>
-        public static readonly Phoneme uu = new()
+        public static readonly Phoneme ow = new()
         {
             Language = LanguageCode2.English,
-            Abstraction = SpeechSound.NearCloseNearBackRoundedVowel,
+            Abstraction = new SpeechSound("aʊ"),
             Allophones = []
+        };
+
+        // ---------------------------------------------------------------------
+        // Vowels - r-controlled
+
+        /// <summary>
+        /// The English phoneme /ur/ as in ⟨word⟩ and ⟨nurse⟩.
+        /// </summary>
+        public static readonly Phoneme ur = new()
+        {
+            Language = LanguageCode2.English,
+            Abstraction = new SpeechSound("ɜː"),
+            Allophones =
+            [
+                new SpeechSound("ɜr"),
+                new SpeechSound("ɜːr"),
+            ]
+        };
+
+        /// <summary>
+        /// The English phoneme /ar/ as in ⟨arm⟩. (See also <see cref="ah"/>.)
+        /// </summary>
+        /// <remarks>
+        /// The distinction between /ar/ ([ɑːr]) and /ah/ ([ɑː]) is subtle.
+        /// </remarks>
+        public static readonly Phoneme ar = new()
+        {
+            Language = LanguageCode2.English,
+            Abstraction = new SpeechSound("ɑːr"), // distinguish from /ah/
+            Allophones =
+            [
+                new SpeechSound("ɑr"),
+                new SpeechSound("ɑː"),
+            ]
+        };
+
+        /// <summary>
+        /// The English phoneme /or/ as in ⟨north⟩ and ⟨force⟩.
+        /// </summary>
+        public static readonly Phoneme or = new()
+        {
+            Language = LanguageCode2.English,
+            Abstraction = new SpeechSound("ɔːr"), // distinguish from /aw/
+            Allophones =
+            [
+                new SpeechSound("oʊr"),
+            ]
+        };
+
+        /// <summary>
+        /// The English phoneme /air/ as in ⟨hair⟩ and ⟨square⟩.
+        /// </summary>
+        public static readonly Phoneme air = new()
+        {
+            Language = LanguageCode2.English,
+            Abstraction = new SpeechSound("ɛː"),
+            Allophones =
+            [
+                new SpeechSound("ɛr"),
+                new SpeechSound("ɛə"),
+                new SpeechSound("ɛːr"),
+            ]
+        };
+
+        /// <summary>
+        /// The English phoneme /eer/ (or /ear/) as in ⟨here⟩ or ⟨ear⟩.
+        /// </summary>
+        public static readonly Phoneme eer = new()
+        {
+            Language = LanguageCode2.English,
+            Abstraction = new SpeechSound("ɪə"),
+            Allophones =
+            [
+                new SpeechSound("ɪr"),
+                new SpeechSound("ɪər"),
+            ]
         };
 
         /// <summary>
@@ -510,56 +670,6 @@ public static class Phonemes
         };
 
         /// <summary>
-        /// The English phoneme /oo/ as in ⟨soon⟩.
-        /// </summary>
-        public static readonly Phoneme oo = new()
-        {
-            Language = LanguageCode2.English,
-            Abstraction = new SpeechSound("uː"),
-            Allophones = []
-        };
-
-        /// <summary>
-        /// The English phoneme /ow/ as in ⟨out⟩.
-        /// </summary>
-        public static readonly Phoneme ow = new()
-        {
-            Language = LanguageCode2.English,
-            Abstraction = new SpeechSound("aʊ"),
-            Allophones = []
-        };
-
-        /// <summary>
-        /// The English phoneme /u/ as in ⟨cut⟩.
-        /// </summary>
-        public static readonly Phoneme u = new()
-        {
-            Language = LanguageCode2.English,
-            Abstraction = SpeechSound.OpenMidBackUnroundedVowel,
-            Allophones = []
-        };
-
-        /// <summary>
-        /// The English phoneme /ur/ as in ⟨word⟩.
-        /// </summary>
-        public static readonly Phoneme ur = new()
-        {
-            Language = LanguageCode2.English,
-            Abstraction = new SpeechSound("ɜːr"),
-            Allophones = []
-        };
-
-        /// <summary>
-        /// The English phoneme /uh/ as in ⟨about⟩.
-        /// </summary>
-        public static readonly Phoneme uh = new()
-        {
-            Language = LanguageCode2.English,
-            Abstraction = SpeechSound.MidCentralUnroundedVowel,
-            Allophones = []
-        };
-
-        /// <summary>
         /// The English phoneme /er/ as in ⟨butter⟩.
         /// </summary>
         public static readonly Phoneme er = new()
@@ -568,6 +678,13 @@ public static class Phonemes
             Abstraction = new SpeechSound("ər"),
             Allophones = []
         };
+
+
+
+
+
+        // ---------------------------------------------------------------------
+        // Vowels - other
 
         /// <summary>
         /// The English phoneme /yoo/ as in ⟨view⟩.
@@ -578,6 +695,9 @@ public static class Phonemes
             Abstraction = new SpeechSound("juː"),
             Allophones = []
         };
+
+
+        // ---------------------------------------------------------------------
 
         public static readonly FrozenSet<Phoneme> Consonants = FrozenSet.ToFrozenSet(
         [
