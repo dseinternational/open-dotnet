@@ -392,7 +392,6 @@ public static class TranscriptionData
         "ˈðə",
         "ðə",
         "ði",
-        "ðə,",
         "dˈɜːti",
         "ðˈe‍ə",
         "ðˈe‍əz",

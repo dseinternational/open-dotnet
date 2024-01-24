@@ -1,8 +1,6 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Collections.Frozen;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
@@ -24,7 +22,7 @@ public readonly struct Transcription
     private readonly string _value;
     private readonly bool _initialized;
 
-    public static int MaxLength => 64; // TODO: confirm
+    public static int MaxLength => 256; // TODO: confirm
 
     public static readonly Transcription Empty;
 
@@ -192,24 +190,14 @@ public readonly struct Transcription
     {
         s = s.Trim();
 
-        if (s.Length < 3
-            || s.Length > MaxLength
-            || !((s[0] == LeftSquareBracket && s[^1] == RightSquareBracket)
-                || (s[0] == Slash && s[^1] == Slash)
-                || (s[0] == LeftBrace && s[^1] == RightBrace)))
+        if (!IsValidValue(s))
         {
             result = default;
             return false;
         }
 
-        if (SpeechSound.IsValidValue(s[1..^1]))
-        {
-            result = new Transcription(s, true);
-            return true;
-        }
-
-        result = default;
-        return false;
+        result = new Transcription(s, true);
+        return true;
     }
 
     public static Transcription Parse(string s, IFormatProvider? provider)
