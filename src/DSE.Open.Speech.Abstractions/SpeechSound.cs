@@ -61,6 +61,33 @@ public readonly struct SpeechSound : IEquatable<SpeechSound>, ISpanFormattable, 
         _initialized = true;
     }
 
+    // TODO: review, together with alphabet
+    // https://github.com/unicode-cookbook/cookbook
+
+    public static bool AreAllIpaChars(ReadOnlySpan<char> value)
+    {
+        foreach (var c in value)
+        {
+            if (!IsIpaChar(c))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static bool IsIpaChar(char c)
+    {
+        var valid = (c >= 0x0061 && c <= 0x007A)
+            || IsIpaExtensionChar(c)
+            || (c >= 0x02E0 && c <= 0x02E9)
+            || (c >= 0x0300 && c <= 0x036F)
+            || Alphabet.Contains(c);
+
+        return valid;
+    }
+
     /// <summary>
     /// Determines if the specified character falls within the Unicode IPA Extensions range.
     /// </summary>
@@ -76,14 +103,13 @@ public readonly struct SpeechSound : IEquatable<SpeechSound>, ISpanFormattable, 
     {
         return value.Length > 0
             && value.Length < MaxLength
-            && value.All(Alphabet.Contains);
+            && value.All(IsIpaChar);
     }
 
     private static void EnsureValidValue(ReadOnlySpan<char> value)
     {
         if (!IsValidValue(value))
         {
-            Debugger.Break();
             ThrowHelper.ThrowArgumentOutOfRangeException(nameof(value));
             return; // Unreachable
         }
@@ -293,7 +319,7 @@ public readonly struct SpeechSound : IEquatable<SpeechSound>, ISpanFormattable, 
 
         return Vowels.Contains(sound)
             || Vowels.Contains(sound[0].ToString())
-            || sound.StartsWith( "ju", StringComparison.Ordinal);
+            || sound.StartsWith("ju", StringComparison.Ordinal);
     }
 
     /// <summary>
@@ -736,168 +762,378 @@ public readonly struct SpeechSound : IEquatable<SpeechSound>, ISpanFormattable, 
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Open_back_rounded_vowel"/></remarks>
     public static readonly SpeechSound OpenBackRoundedVowel = new("ɒ", true);
 
+    /// <summary>
+    /// Characters in the International Phonetic Alphabet.
+    /// </summary>
+    public static readonly FrozenSet<char> Alphabet = FrozenSet.ToFrozenSet(new[]
+    {
+        // Bilabial Plosives
+        'p', // Voiceless bilabial plosive
+        'b', // Voiced bilabial plosive
 
+        // Alveolar Plosives
+        't', // Voiceless alveolar plosive
+        'd', // Voiced alveolar plosive
 
+        // Retroflex Plosives
+        'ʈ', // Voiceless retroflex plosive
+        'ɖ', // Voiced retroflex plosive
 
-    public static readonly FrozenSet<char> Alphabet = FrozenSet.ToFrozenSet(
-    [
-        // Plosives
-        'p',
-        'b',
-        't',
-        'd',
-        'ʈ',
-        'ɖ',
-        'c',
-        'ɟ',
-        'k',
-        'ɡ', // U+0261
-        'q',
-        'ɢ',
+        // Palatal Plosives
+        'c', // Voiceless palatal plosive
+        'ɟ', // Voiced palatal plosive
 
-        // Nasals
-        'm',
-        'ɱ',
-        'n',
-        'ɳ',
-        'ɲ',
-        'ŋ',
-        'ɴ',
+        // Velar Plosives
+        'k', // Voiceless velar plosive
+        'ɡ', // Voiced velar plosive
 
-        // Trills
-        'ʙ',
-        'r',
-        'ʀ',
+        // Uvular Plosives
+        'q', // Voiceless uvular plosive
+        'ɢ', // Voiced uvular plosive
 
-        // Taps or Flaps
-        'ɾ',
-        'ɽ',
+        // Glottal Plosive
+        'ʔ', // Voiceless glottal plosive
+        
+        // Bilabial Nasal
+        'm', // Voiced bilabial nasal
 
-        // Fricatives
-        'ɸ',
-        'β',
-        'f',
-        'v',
-        'θ',
-        'ð',
-        's',
-        'z',
-        'ʃ',
-        'ʒ',
-        'ʂ',
-        'ʐ',
-        'ç',
-        'ʝ',
-        'x',
-        'ɣ',
-        'χ',
-        'ʁ',
-        'ħ',
-        'ʕ',
-        'h',
-        'ɦ',
+        // Labiodental Nasal
+        'ɱ', // Voiced labiodental nasal
 
-        // Lateral fricatives
-        'ɬ',
-        'ɮ',
+        // Alveolar Nasal
+        'n', // Voiced alveolar nasal
 
-        // Approximants
-        'ʋ',
-        'ɹ',
-        'ɻ',
-        'j',
-        'w',
-        'ɰ',
+        // Retroflex Nasal
+        'ɳ', // Voiced retroflex nasal
 
-        // Laterals
-        'l',
-        'ɭ',
-        'ʎ',
-        'ʟ',
+        // Palatal Nasal
+        'ɲ', // Voiced palatal nasal
 
-        // Vowels
-        'i',
-        'y',
-        'ɨ',
-        'ʉ',
-        'ɯ',
-        'u',
-        'ɪ',
-        'ʏ',
-        'ʊ',
-        'e',
-        'ø',
-        'ɘ',
-        'ɵ',
-        'ɤ',
-        'o',
-        'ɛ',
-        'œ',
-        'ɜ',
-        'ɞ',
-        'ʌ',
-        'ɔ',
-        'æ',
-        'ɐ',
-        'a',
-        'ɶ',
-        'ä',
-        'ɑ',
-        'ɒ',
+        // Velar Nasal
+        'ŋ', // Voiced velar nasal
 
-        'ə',
+        // Uvular Nasal
+        'ɴ', // Voiced uvular nasal
+                
+        // Bilabial Trill
+        'ʙ', // Voiced bilabial trill
 
-        // Diacritics and suprasegmentals
-        'ˈ',
-        'ˌ',
-        'ː',
-        'ˑ',
-        'ʼ',
-        'ʴ',
-        'ʵ',
-        'ʶ',
-        'ʰ',
-        'ʱ',
-        'ʲ',
-        'ʷ',
-        'ˠ',
-        'ˤ',
-        'ˁ',
+        // Alveolar Trill
+        'r', // Voiced alveolar trill
 
-        // TODO: review these
+        // Uvular Trill
+        'ʀ', // Voiced uvular trill
 
-        // Additional diacritics
-        '̥',
-        '̬',
-        '̹',
-        '̜',
-        '̟',
-        '̠',
-        '̈',
-        '̽',
-        '̩',
-        '̯',
-        '̪',
-        '̺',
-        '̻',
-        '̼',
-        '̝',
-        '̞',
-        '̘',
-        '̙',
-        '̆',
-        '̊',
+        // Alveolar Tap or Flap
+        'ɾ', // Voiced alveolar tap or flap
 
-        // Tone letters and other notations
-        '˥',
-        '˦',
-        '˧',
-        '˨',
-        '˩',
-        '↗',
-        '↘'
-    ]);
+        // Retroflex Tap or Flap
+        'ɽ', // Voiced retroflex tap or flap
+        
+        // Voiced labiodental flap
+        'ⱱ',
 
+        // Bilabial Fricatives
+        'ɸ', // Voiceless bilabial fricative
+        'β', // Voiced bilabial fricative
+
+        // Labiodental Fricatives
+        'f', // Voiceless labiodental fricative
+        'v', // Voiced labiodental fricative
+
+        // Dental Fricatives
+        'θ', // Voiceless dental fricative
+        'ð', // Voiced dental fricative
+
+        // Alveolar Fricatives
+        's', // Voiceless alveolar fricative
+        'z', // Voiced alveolar fricative
+
+        // Post-Alveolar Fricatives
+        'ʃ', // Voiceless post-alveolar fricative
+        'ʒ', // Voiced post-alveolar fricative
+
+        // Retroflex Fricatives
+        'ʂ', // Voiceless retroflex fricative
+        'ʐ', // Voiced retroflex fricative
+
+        // Palatal Fricatives
+        'ç', // Voiceless palatal fricative
+        'ʝ', // Voiced palatal fricative
+
+        // Velar Fricatives
+        'x', // Voiceless velar fricative
+        'ɣ', // Voiced velar fricative
+
+        // Uvular Fricatives
+        'χ', // Voiceless uvular fricative
+        'ʁ', // Voiced uvular fricative
+
+        // Pharyngeal Fricatives
+        'ħ', // Voiceless pharyngeal fricative
+        'ʕ', // Voiced pharyngeal fricative
+
+        // Glottal Fricatives
+        'h', // Voiceless glottal fricative
+        'ɦ', // Voiced glottal fricative
+                
+        // Labial-Velar Approximant
+        'w', // Voiced labial-velar approximant
+
+        // Alveolar Approximant
+        'ɹ', // Voiced alveolar approximant
+
+        // Retroflex Approximant
+        'ɻ', // Voiced retroflex approximant
+
+        // Palatal Approximant
+        'j', // Voiced palatal approximant
+
+        // Velar Approximant
+        'ɰ', // Voiced velar approximant
+
+        // Lateral Approximants
+        'l', // Voiced alveolar lateral approximant
+        'ɫ', // Voiced velarized alveolar lateral approximant
+        'ɭ', // Retroflex lateral approximant
+        'ʎ', // Palatal lateral approximant
+        'ʟ', // Velar lateral approximant
+
+        // Lateral Fricatives
+        'ɬ', // Voiceless alveolar lateral fricative
+        'ɮ', // Voiced alveolar lateral fricative
+
+        // Close Front Vowels
+        'i', // Close front unrounded vowel
+        'y', // Close front rounded vowel
+
+        // Near-Close Front Vowels
+        'ɪ', // Near-close near-front unrounded vowel
+        'ʏ', // Near-close near-front rounded vowel
+
+        // Close-Mid Front Vowels
+        'e', // Close-mid front unrounded vowel
+        'ø', // Close-mid front rounded vowel
+
+        // Open-Mid Front Vowels
+        'ɛ', // Open-mid front unrounded vowel
+        'œ', // Open-mid front rounded vowel
+
+        // Near-Open Front Vowel
+        'æ', // Near-open front unrounded vowel
+
+        // Open Front Vowels
+        'a', // Open front unrounded vowel
+        'ɶ',  // Open front rounded vowel
+
+        // Close Central Vowels
+        'ɨ', // Close central unrounded vowel
+        'ʉ', // Close central rounded vowel
+
+        // Close-Mid Central Vowels
+        'ɘ', // Close-mid central unrounded vowel
+        'ɵ', // Close-mid central rounded vowel
+
+        // Mid Central Vowel
+        'ə', // Mid central vowel
+
+        // Open-Mid Central Vowels
+        'ɜ', // Open-mid central unrounded vowel
+        'ɝ', // Rhotacized open-mid central vowel
+        'ɞ', // Open-mid central rounded vowel
+
+        // Near-Open Central Vowel
+        'ɐ', // Near-open central vowel
+
+        // Open Central Vowel
+        'ä',  // Open central unrounded vowel (represented as a small letter a with diaeresis)
+
+        // Close Back Vowels
+        'ɯ', // Close back unrounded vowel
+        'u', // Close back rounded vowel
+
+        // Near-close near-back vowel
+        'ʊ', // Near-close near-back rounded vowel
+        
+        'o', // Close-mid back rounded vowel
+        'ɤ', // Close-mid back unrounded vowel
+
+        // Open-Mid Back Vowels
+        'ʌ', // Open-mid back unrounded vowel
+        'ɔ', // Open-mid back rounded vowel
+
+        // Near-Open Back Vowel
+        'ɐ', // Near-open central vowel (commonly used for back vowel)
+
+        // Open Back Vowels
+        'ɑ', // Open back unrounded vowel
+        'ɒ',  // Open back rounded vowel
+
+        // Diacritics
+        '\u0325', // Voiceless
+        '\u032C', // Voiced
+        '\u02B0', // Aspirated
+        '\u0339', // More rounded
+        '\u031C', // Less rounded
+        '\u0308', // Centralized
+        '\u033D', // Mid-centralized
+        '\u0329', // Syllabic
+        '\u032F', // Non-syllabic
+        '\u0303', // Nasalized
+        '\u0330', // Nasal release
+        '\u031F', // Advanced
+        '\u0320', // Retracted
+        '\u031D', // Raised
+        '\u031E', // Lowered
+        '\u0318', // Advanced tongue root
+        '\u0319', // Retracted tongue root
+        '\u02DE', // Rhoticity
+
+        // Suprasegmentals
+        '\u02C8', // Primary stress
+        '\u02CC', // Secondary stress
+        '\u02D0', // Length mark
+        '\u02D1', // Half length
+        '\u0306', // Extra-short
+        '\u007C', // Minor (foot) group
+        '\u2016', // Major (intonation) group
+        '\u203F', // Linking (absence of a break)
+
+        // Additional Diacritics
+        '\u0300', // Grave accent (low)
+        '\u0301', // Acute accent (high)
+        '\u0302', // Circumflex accent (falling)
+        '\u0303', // Tilde (rising-falling)
+        '\u0304', // Macron (mid level)
+        '\u0305', // Overline (extra high)
+        '\u0306', // Breve (extra low)
+        '\u0307', // Dot above (advanced front)
+        '\u0308', // Diaeresis (centralized)
+        '\u0309', // Hook above (retracted)
+        '\u030A', // Ring above (syllabicity)
+        '\u030B', // Double acute accent (extra high level)
+        '\u030C', // Caron (rising)
+        '\u030D', // Vertical line above (upstep)
+        '\u030E', // Double vertical line above (upstep)
+        '\u030F', // Double grave accent (downstep)
+        '\u0310', // Candrabindu (nasal escape)
+        '\u0311', // Inverted breve (non-syllabic)
+        '\u0312', // Turned comma above (ingressive airstream)
+        '\u0313', // Comma above (linguolabial)
+        '\u0314', // Reversed comma above (labialized)
+        '\u0315', // Comma above right (labialized)
+        '\u0316', // Grave accent below (breathy voiced)
+        '\u0317', // Acute accent below (creaky voiced)
+        '\u0318', // Left tack below (less rounded)
+        '\u0319', // Right tack below (more rounded)
+        '\u031A', // Left angle above (no audible release)
+        '\u031B', // Horn (extra-high tone)
+        '\u031C', // Left half ring below (less rounded)
+        '\u031D', // Up tack below (raised)
+        '\u031E', // Down tack below (lowered)
+        '\u031F', // Plus sign below (advanced)
+        '\u0320', // Minus sign below (retracted)
+        '\u0321', // Palatalized (palatalized)
+        '\u0322', // Retroflex hook below (retroflex)
+        '\u0323', // Dot below (apical)
+        '\u0324', // Diaeresis below (breathy voiced)
+        '\u0325', // Ring below (voiceless)
+        '\u0326', // Comma below (ingressive airstream)
+        '\u0327', // Cedilla (velarized)
+        '\u0328', // Ogonek (nasalized)
+        '\u0329', // Vertical line below (syllabic)
+        '\u032A', // Bridge below (dental)
+        '\u032B', // Inverted double arch below (velarized or pharyngealized)
+        '\u032C', // Caron below (voiceless)
+        '\u032D', // Circumflex accent below (raised)
+        '\u032E', // Breve below (lowered)
+        '\u032F', // Inverted breve below (non-syllabic)
+        '\u0330', // Tilde below (creaky voiced)
+        '\u0331', // Macron below (syllabic)
+        '\u0332', // Low line (extra-low tone)
+        '\u0333', // Double low line (mid tone)
+        '\u0334', // Tilde overlay (velarized or pharyngealized)
+        '\u0335', // Short stroke overlay (extra short)
+        '\u0336', // Long stroke overlay (half long)
+        '\u0337', // Short solidus overlay (top down)
+        '\u0338', // Long solidus overlay (bottom up)
+        '\u0339', // Right half ring below (more rounded)
+        '\u033A', // Inverted bridge below (apical)
+        '\u033B', // Square below (laminal)
+        '\u033C', // Seagull below (linguolabial)
+        '\u033D', // X above (mid-centralized)
+        '\u033E', // Vertical tilde (extra high tone)
+        '\u033F', // Double overline (extra low tone)
+        '\u0340', // Grave tone mark (global rise)
+        '\u0341', // Acute tone mark (global fall)
+        '\u0342', // Greek perispomeni (peaking tone)
+        '\u0343', // Greek koronis (advanced tongue root)
+        '\u0344', // Greek dialytika tonos (retracted tongue root)
+        '\u0345', // Greek ypogegrammeni (advanced and raised)
+        '\u0346', // Bridge above (voiceless labialized velar fricative)
+        '\u0347', // Equals sign below (syllabic bilabial trill)
+        '\u0348', // Double vertical line below (syllabic alveolar trill)
+        '\u0349', // Left angle below (voiceless alveolar lateral fricative)
+        '\u034A', // Not tilde above (breathy voiced alveolar lateral fricative)
+        '\u034B', // Homothetic above (voiceless alveolar lateral flap)
+        '\u034C', // Wiggly line above (voiceless alveolar lateral approximant)
+        '\u034D', // Rightwards arrow below (voiceless alveolar lateral flap)
+        '\u034E', // Downwards arrow below (voiceless alveolar lateral approximant)
+        '\u034F', // Grapheme joiner (grapheme joiner)
+        '\u0350', // Right arrowhead above (voiceless alveolar lateral flap)
+        '\u0351', // Left half ring above (voiceless alveolar lateral approximant)
+        '\u0352', // Fermata (voiceless alveolar lateral flap)
+        '\u0353', // X below (voiceless alveolar lateral approximant)
+        '\u0354', // Left arrowhead below (voiceless alveolar lateral flap)
+        '\u0355', // Right arrowhead below (voiceless alveolar lateral approximant)
+        '\u0356', // Right arrowhead and up arrowhead below (voiceless alveolar lateral flap)
+        '\u0357', // Right half ring above (voiceless alveolar lateral approximant)
+        '\u0358', // Dot above right (voiceless alveolar lateral flap)
+        '\u0359', // Asterisk below (voiceless alveolar lateral approximant)
+        '\u035A', // Double ring below (voiceless alveolar lateral flap)
+        '\u035B', // Zigzag above (voiceless alveolar lateral approximant)
+        '\u035C', // Double breve below (voiceless alveolar lateral flap)
+        '\u035D', // Double breve (voiceless alveolar lateral approximant)
+        '\u035E', // Double macron (voiceless alveolar lateral flap)
+        '\u035F', // Double macron below (voiceless alveolar lateral approximant)
+        '\u0360', // Double tilde (voiceless alveolar lateral flap)
+        '\u0361', // Double inverted breve (voiceless alveolar lateral approximant)
+        '\u0362', // Double rightwards arrow below (voiceless alveolar lateral flap)
+        '\u0363', // Latin small letter a (voiceless alveolar lateral approximant)
+        '\u0364', // Latin small letter e (voiceless alveolar lateral flap)
+        '\u0365', // Latin small letter i (voiceless alveolar lateral approximant)
+        '\u0366', // Latin small letter o (voiceless alveolar lateral flap)
+        '\u0367', // Latin small letter u (voiceless alveolar lateral approximant)
+        '\u0368', // Latin small letter c (voiceless alveolar lateral flap)
+        '\u0369', // Latin small letter d (voiceless alveolar lateral approximant)
+        '\u036A', // Latin small letter h (voiceless alveolar lateral flap)
+        '\u036B', // Latin small letter m (voiceless alveolar lateral approximant)
+        '\u036C', // Latin small letter r (voiceless alveolar lateral flap)
+        '\u036D', // Latin small letter t (voiceless alveolar lateral approximant)
+        '\u036E', // Latin small letter v (voiceless alveolar lateral flap)
+        '\u036F', // Latin small letter x (voiceless alveolar lateral approximant)
+
+        // Tone Letters
+        '\u02E5', // Extra high tone bar
+        '\u02E6', // High tone bar
+        '\u02E7', // Mid tone bar
+        '\u02E8', // Low tone bar
+        '\u02E9', // Extra low tone bar
+
+        // Other IPA Notations
+
+        '\u02E0', // Rhoticity (superscript small letter inverted r)
+        '\u02E1', // Palatalization (superscript small letter l)
+        '\u02E2', // Velarization or Pharyngealization (superscript small letter s)
+        '\u02E3', // Labialization (superscript small letter x)
+        '\u02E4', // Glottalization (superscript small letter reversed glottal stop)
+
+        // Joiners
+        '\u200D', // Zero width joiner
+        '\u034F', // Combining grapheme joiner
+    });
+
+    // TODO: sync with alphabet
 
     public static readonly FrozenSet<string> CloseVowels = FrozenSet.ToFrozenSet(
     [

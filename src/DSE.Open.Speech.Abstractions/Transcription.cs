@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Collections.Frozen;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
@@ -104,27 +105,21 @@ public readonly struct Transcription
 
     public static bool IsValidValue(ReadOnlySpan<char> value)
     {
-        return value.Length > 2
-            && value.Length <= MaxLength
-            && (
-                (value[0] == LeftSquareBracket && value[^1] == RightSquareBracket)
-                || (value[0] == Slash && value[^1] == Slash)
-                || (value[0] == LeftBrace && value[^1] == RightBrace)
-            )
-            && AllAreInAlphabet(value[1..^1]);
-    }
-
-    private static bool AllAreInAlphabet(ReadOnlySpan<char> value)
-    {
-        foreach (var c in value)
+        if (value.Length <= 2 || value.Length > MaxLength)
         {
-            if (!Alphabet.Contains(c))
-            {
-                return false;
-            }
+            return false;
         }
 
-        return true;
+        var contents = value[1..^1];
+        var first = value[0];
+        var last = value[^1];
+
+        var valid = ((first == LeftSquareBracket && last == RightSquareBracket)
+            || (first == Slash && last == Slash)
+            || (first == LeftBrace && last == RightBrace))
+            && SpeechSound.AreAllIpaChars(contents);
+
+        return valid;
     }
 
     private static void EnsureValidValue(ReadOnlySpan<char> value)
@@ -207,7 +202,7 @@ public readonly struct Transcription
             return false;
         }
 
-        if (AllAreInAlphabet(s[1..^1]))
+        if (SpeechSound.IsValidValue(s[1..^1]))
         {
             result = new Transcription(s, true);
             return true;
@@ -253,60 +248,4 @@ public readonly struct Transcription
     {
         return new Transcription(left._value + right._value);
     }
-
-    public static readonly FrozenSet<char> Alphabet = FrozenSet.ToFrozenSet(new[]
-    {
-        // Plosives
-        'p', 'b', 't', 'd', 'ʈ', 'ɖ',
-        'c', 'ɟ', 'k', 'g', 'q', 'ɢ',
-
-        // Nasals
-        'm', 'ɱ', 'n', 'ɳ', 'ɲ', 'ŋ', 'ɴ',
-
-        // Trills
-        'ʙ', 'r', 'ʀ',
-
-        // Taps or Flaps
-        'ɾ', 'ɽ',
-
-        // Fricatives
-        'ɸ', 'β', 'f', 'v', 'θ', 'ð', 's', 'z',
-        'ʃ', 'ʒ', 'ʂ', 'ʐ', 'ç', 'ʝ', 'x', 'ɣ',
-        'χ', 'ʁ', 'ħ', 'ʕ', 'h', 'ɦ',
-
-        // Lateral fricatives
-        'ɬ', 'ɮ',
-
-        // Approximants
-        'ʋ', 'ɹ', 'ɻ', 'j', 'ɰ',
-
-        // Laterals
-        'l', 'ɭ', 'ʎ', 'ʟ',
-
-        // Vowels
-        'i', 'y', 'ɨ', 'ʉ', 'ɯ', 'u',
-        'ɪ', 'ʏ', 'ʊ', 'e', 'ø', 'ɘ',
-        'ɵ', 'ɤ', 'o', 'ɛ', 'œ', 'ɜ',
-        'ɞ', 'ʌ', 'ɔ', 'æ', 'ɐ', 'a',
-        'ɶ', 'ä', 'ɑ', 'ɒ',
-
-        'ə',
-
-        // Diacritics and suprasegmentals
-        'ˈ', 'ˌ', 'ː', 'ˑ', 'ʼ', 'ʴ',
-        'ʵ', 'ʶ', 'ʰ', 'ʱ', 'ʲ', 'ʷ',
-        'ˠ', 'ˤ', 'ˁ',
-
-        // TODO: review these
-
-        // Additional diacritics
-        '̥', '̬', '̹', '̜', '̟', '̠',
-        '̈', '̽', '̩', '̯', '̪', '̺',
-        '̻', '̼', '̝', '̞', '̘', '̙',
-        '̆', '̊',
-
-        // Tone letters and other notations
-        '˥', '˦', '˧', '˨', '˩',
-        '↗', '↘'
-    });
 }
