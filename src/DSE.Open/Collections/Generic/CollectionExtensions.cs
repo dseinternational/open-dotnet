@@ -532,4 +532,94 @@ public static class CollectionExtensions
     {
         return CollectionWriter.WriteToString(collection);
     }
+
+    public static uint CountUnsigned<T>(this IEnumerable<T> sequence)
+    {
+        if (sequence is ICollection<T> collection)
+        {
+            return (uint)collection.Count;
+        }
+
+        if (sequence is System.Collections.ICollection collection2)
+        {
+            return (uint)collection2.Count;
+        }
+
+        ArgumentNullException.ThrowIfNull(sequence);
+
+        uint count = 0;
+
+        foreach (var item in sequence)
+        {
+            checked
+            {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    public static uint CountUnsignedUnchecked<T>(this IEnumerable<T> sequence)
+    {
+        if (sequence is ICollection<T> collection)
+        {
+            return (uint)collection.Count;
+        }
+
+        if (sequence is System.Collections.ICollection collection2)
+        {
+            return (uint)collection2.Count;
+        }
+
+        ArgumentNullException.ThrowIfNull(sequence);
+
+        uint count = 0;
+
+        foreach (var item in sequence)
+        {
+            count++;
+        }
+
+        return count;
+    }
+
+    public static uint CountUnsigned<T>(this IEnumerable<T> sequence, Func<T, bool> predicate)
+    {
+        ArgumentNullException.ThrowIfNull(sequence);
+        ArgumentNullException.ThrowIfNull(predicate);
+
+        uint count = 0;
+
+        foreach (var item in sequence)
+        {
+            if (!predicate(item))
+            {
+                checked
+                {
+                    count++;
+                }
+            }
+        }
+
+        return count;
+    }
+
+    public static uint CountUnsignedUnchecked<T>(this IEnumerable<T> sequence, Func<T, bool> predicate)
+    {
+        ArgumentNullException.ThrowIfNull(sequence);
+        ArgumentNullException.ThrowIfNull(predicate);
+
+        uint count = 0;
+
+        foreach (var item in sequence)
+        {
+            if (!predicate(item))
+            {
+                count++;
+            }
+        }
+
+        return count;
+    }
 }

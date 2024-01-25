@@ -89,4 +89,57 @@ public class CollectionExtensionsTests
         // Assert
         Assert.Equal(target, index);
     }
+
+    [Fact]
+    public void CountUnsigned_ShouldReturnCorrectCount()
+    {
+        // Arrange
+        List<int> list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+        // Act
+        var count = list.CountUnsigned();
+
+        // Assert
+        Assert.Equal(10u, count);
+    }
+
+    [Fact]
+    public void CountUnsigned_WithPredicate_ShouldReturnCorrectCount()
+    {
+        // Arrange
+        List<int> list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+        // Act
+        var count = list.CountUnsigned(i => i % 2 == 0);
+
+        // Assert
+        Assert.Equal(5u, count);
+
+    }
+
+    [Fact]
+    public void CountUnsignedUnchecked_ShouldReturnCorrectCount()
+    {
+        // Arrange
+        List<int> list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+        // Act
+        var count = list.CountUnsignedUnchecked();
+
+        // Assert
+        Assert.Equal(10u, count);
+    }
+
+    [Fact]
+    public void CountUnsignedUnchecked_WithPredicate_ShouldReturnCorrectCount()
+    {
+        // Arrange
+        List<int> list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+        // Act
+        var count = list.CountUnsignedUnchecked(i => i % 2 == 0);
+
+        // Assert
+        Assert.Equal(5u, count);
+    }
 }
