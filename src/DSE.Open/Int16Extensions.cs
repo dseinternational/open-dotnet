@@ -5,6 +5,19 @@ namespace DSE.Open;
 
 public static class Int16Extensions
 {
+    public static ushort ToUInt16(this short value)
+    {
+        return (ushort)value;
+    }
+
+    public static ushort ToUInt16Checked(this short value)
+    {
+        checked
+        {
+            return (ushort)value;
+        }
+    }
+
     /// <summary>
     /// Gets the count of the digits in the value.
     /// </summary>

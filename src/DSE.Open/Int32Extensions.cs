@@ -5,6 +5,19 @@ namespace DSE.Open;
 
 public static class Int32Extensions
 {
+    public static uint ToUInt32(this int value)
+    {
+        return (uint)value;
+    }
+
+    public static uint ToUInt32Checked(this int value)
+    {
+        checked
+        {
+            return (uint)value;
+        }
+    }
+
     /// <summary>
     /// Gets the count of the digits in the value.
     /// </summary>

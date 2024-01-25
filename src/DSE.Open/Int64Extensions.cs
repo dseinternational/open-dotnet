@@ -5,6 +5,19 @@ namespace DSE.Open;
 
 public static class Int64Extensions
 {
+    public static ulong ToUInt64(this long value)
+    {
+        return (ulong)value;
+    }
+
+    public static ulong ToUInt64Checked(this long value)
+    {
+        checked
+        {
+            return (ulong)value;
+        }
+    }
+
     /// <summary>
     /// Gets the count of the digits in the value.
     /// </summary>
