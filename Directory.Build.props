@@ -20,6 +20,7 @@
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <AnalysisMode>AllEnabledByDefault</AnalysisMode>
     <AnalysisLevel>preview</AnalysisLevel>
+    <CLSCompliant>false</CLSCompliant>
   </PropertyGroup>
 
   <PropertyGroup>
