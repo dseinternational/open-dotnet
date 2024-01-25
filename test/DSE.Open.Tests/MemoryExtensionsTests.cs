@@ -188,4 +188,56 @@ public class MemoryExtensionsTests
         { "This is a string", ' ', 'A', "ThisAisAaAstring" },
         { "1024-2563-9874", '-', 'A', "1024A2563A9874" },
     };
+
+    [Theory]
+    [InlineData("         ", true, true)]
+    [InlineData("         ", false, true)]
+    [InlineData(" ", true, true)]
+    [InlineData(" ", false, true)]
+    [InlineData("        -", true, false)]
+    [InlineData("        -", false, false)]
+    [InlineData("", true, true)]
+    [InlineData("", false, false)]
+    public void ContainsOnlyWhitespace(string source, bool allowEmpty, bool expected)
+    {
+        var result = source.AsSpan().ContainsOnlyWhitespace(allowEmpty);
+        Assert.Equal(expected, result);
+    }
+
+    [Theory]
+    [InlineData("Abcdefghijklm", true, true)]
+    [InlineData("Abcdefghijklm", false, true)]
+    [InlineData("a", true, true)]
+    [InlineData("a", false, true)]
+    [InlineData("Abcdefghijklm-", true, false)]
+    [InlineData("Abcdefghijklm-", false, false)]
+    [InlineData("123", true, false)]
+    [InlineData("123", false, false)]
+    [InlineData("", true, true)]
+    [InlineData("", false, false)]
+    public void ContainsOnlyLetters(string source, bool allowEmpty, bool expected)
+    {
+        var result = source.AsSpan().ContainsOnlyLetters(allowEmpty);
+        Assert.Equal(expected, result);
+    }
+
+    [Theory]
+    [InlineData("Abcdefghijklm", true, true)]
+    [InlineData("Abcdefghijklm", false, true)]
+    [InlineData("Abcdefghijklm123456", true, true)]
+    [InlineData("Abcdefghijklm123456", false, true)]
+    [InlineData("a", true, true)]
+    [InlineData("a", false, true)]
+    [InlineData("Abcdefghijklm-", true, false)]
+    [InlineData("Abcdefghijklm-", false, false)]
+    [InlineData("123", true, true)]
+    [InlineData("123", false, true)]
+    [InlineData("", true, true)]
+    [InlineData("", false, false)]
+    public void ContainsOnlyLettersOrDigits(string source, bool allowEmpty, bool expected)
+    {
+        var result = source.AsSpan().ContainsOnlyLettersOrDigits(allowEmpty);
+        Assert.Equal(expected, result);
+    }
+
 }

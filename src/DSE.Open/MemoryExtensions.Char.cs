@@ -10,45 +10,60 @@ public static partial class MemoryExtensions
 {
     internal static class SearchChars
     {
-        internal static readonly SearchValues<char> s_asciiLetters = SearchValues.Create("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
+        internal static readonly SearchValues<char> s_asciiLetters =
+            SearchValues.Create("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
 
-        internal static readonly SearchValues<char> s_asciiLettersAndDigits = SearchValues.Create("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789");
+        internal static readonly SearchValues<char> s_asciiLettersAndDigits =
+            SearchValues.Create("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789");
 
-        internal static readonly SearchValues<char> s_asciiUpperLettersAndDigits = SearchValues.Create("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
+        internal static readonly SearchValues<char> s_asciiUpperLettersAndDigits =
+            SearchValues.Create("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
     }
 
-    public static bool ContainsOnlyAsciiDigits(this Span<char> value)
+    public static bool ContainsOnlyAsciiDigits(this Span<char> value, bool allowEmpty = true)
     {
-        return ContainsOnlyAsciiDigits((ReadOnlySpan<char>)value);
+        return ContainsOnlyAsciiDigits((ReadOnlySpan<char>)value, allowEmpty);
     }
 
-    public static bool ContainsOnlyAsciiLetters(this Span<char> value)
+    public static bool ContainsOnlyAsciiLetters(this Span<char> value, bool allowEmpty = true)
     {
-        return ContainsOnlyAsciiLetters((ReadOnlySpan<char>)value);
+        return ContainsOnlyAsciiLetters((ReadOnlySpan<char>)value, allowEmpty);
     }
 
-    public static bool ContainsOnlyAsciiLettersOrDigits(this Span<char> value)
+    public static bool ContainsOnlyAsciiLettersOrDigits(this Span<char> value, bool allowEmpty = true)
     {
-        return ContainsOnlyAsciiLettersOrDigits((ReadOnlySpan<char>)value);
+        return ContainsOnlyAsciiLettersOrDigits((ReadOnlySpan<char>)value, allowEmpty);
     }
 
-    public static bool ContainsOnlyAsciiUpperLettersOrDigits(this Span<char> value)
+    public static bool ContainsOnlyAsciiUpperLettersOrDigits(this Span<char> value, bool allowEmpty = true)
     {
-        return ContainsOnlyAsciiUpperLettersOrDigits((ReadOnlySpan<char>)value);
+        return ContainsOnlyAsciiUpperLettersOrDigits((ReadOnlySpan<char>)value, allowEmpty);
     }
 
-    public static bool ContainsOnlyAsciiLettersLower(this Span<char> value)
+    public static bool ContainsOnlyAsciiLettersLower(this Span<char> value, bool allowEmpty = true)
     {
-        return ContainsOnlyAsciiLettersLower((ReadOnlySpan<char>)value);
+        return ContainsOnlyAsciiLettersLower((ReadOnlySpan<char>)value, allowEmpty);
     }
 
-    public static bool ContainsOnlyAsciiLettersUpper(this Span<char> value)
+    public static bool ContainsOnlyAsciiLettersUpper(this Span<char> value, bool allowEmpty = true)
     {
-        return ContainsOnlyAsciiLettersUpper((ReadOnlySpan<char>)value);
+        return ContainsOnlyAsciiLettersUpper((ReadOnlySpan<char>)value, allowEmpty);
     }
 
-    public static bool ContainsOnlyAsciiDigits(this ReadOnlySpan<char> value)
+    /// <summary>
+    /// Determines if the sequence of characters contains only ASCII characters classified as
+    /// decimal digits, or is empty.
+    /// </summary>
+    /// <param name="value"></param>
+    /// <param name="allowEmpty"></param>
+    /// <returns></returns>
+    public static bool ContainsOnlyAsciiDigits(this ReadOnlySpan<char> value, bool allowEmpty = true)
     {
+        if (value.IsEmpty)
+        {
+            return allowEmpty;
+        }
+
         if (Vector128.IsHardwareAccelerated && value.Length >= Vector128<ushort>.Count)
         {
             return value.IndexOfAnyExceptInRange('0', '9') == -1;
@@ -65,8 +80,20 @@ public static partial class MemoryExtensions
         return true;
     }
 
-    public static bool ContainsOnlyAsciiLetters(this ReadOnlySpan<char> value)
+    /// <summary>
+    /// Determines if the sequence of characters contains only ASCII characters classified as
+    /// letters, or is empty.
+    /// </summary>
+    /// <param name="value"></param>
+    /// <param name="allowEmpty"></param>
+    /// <returns></returns>
+    public static bool ContainsOnlyAsciiLetters(this ReadOnlySpan<char> value, bool allowEmpty = true)
     {
+        if (value.IsEmpty)
+        {
+            return allowEmpty;
+        }
+
         if (Vector128.IsHardwareAccelerated && value.Length >= Vector128<ushort>.Count)
         {
             return value.IndexOfAnyExcept(SearchChars.s_asciiLetters) == -1;
@@ -83,8 +110,20 @@ public static partial class MemoryExtensions
         return true;
     }
 
-    public static bool ContainsOnlyAsciiLettersOrDigits(this ReadOnlySpan<char> value)
+    /// <summary>
+    /// Determines if the sequence of characters contains only ASCII characters classified as
+    /// letters or decimal digits, or is empty.
+    /// </summary>
+    /// <param name="value"></param>
+    /// <param name="allowEmpty"></param>
+    /// <returns></returns>
+    public static bool ContainsOnlyAsciiLettersOrDigits(this ReadOnlySpan<char> value, bool allowEmpty = true)
     {
+        if (value.IsEmpty)
+        {
+            return allowEmpty;
+        }
+
         if (Vector128.IsHardwareAccelerated && value.Length >= Vector128<ushort>.Count)
         {
             return value.IndexOfAnyExcept(SearchChars.s_asciiLettersAndDigits) == -1;
@@ -101,8 +140,20 @@ public static partial class MemoryExtensions
         return true;
     }
 
-    public static bool ContainsOnlyAsciiUpperLettersOrDigits(this ReadOnlySpan<char> value)
+    /// <summary>
+    /// Determines if the sequence of characters contains only ASCII characters classified as
+    /// as uppercase letters or decimal digits, or is empty.
+    /// </summary>
+    /// <param name="value"></param>
+    /// <param name="allowEmpty"></param>
+    /// <returns></returns>
+    public static bool ContainsOnlyAsciiUpperLettersOrDigits(this ReadOnlySpan<char> value, bool allowEmpty = true)
     {
+        if (value.IsEmpty)
+        {
+            return allowEmpty;
+        }
+
         if (Vector128.IsHardwareAccelerated && value.Length >= Vector128<ushort>.Count)
         {
             return value.IndexOfAnyExcept(SearchChars.s_asciiUpperLettersAndDigits) == -1;
@@ -119,8 +170,20 @@ public static partial class MemoryExtensions
         return true;
     }
 
-    public static bool ContainsOnlyAsciiLettersLower(this ReadOnlySpan<char> value)
+    /// <summary>
+    /// Determines if the sequence of characters contains only ASCII characters classified as
+    /// lowercase letters, or, optionally, is empty.
+    /// </summary>
+    /// <param name="value"></param>
+    /// <param name="allowEmpty"></param>
+    /// <returns></returns>
+    public static bool ContainsOnlyAsciiLettersLower(this ReadOnlySpan<char> value, bool allowEmpty = true)
     {
+        if (value.IsEmpty)
+        {
+            return allowEmpty;
+        }
+
         if (Vector128.IsHardwareAccelerated && value.Length >= Vector128<ushort>.Count)
         {
             return value.IndexOfAnyExceptInRange('a', 'z') == -1;
@@ -138,8 +201,24 @@ public static partial class MemoryExtensions
 
     }
 
-    public static bool ContainsOnlyAsciiLettersUpper(this ReadOnlySpan<char> value)
+    /// <summary>
+    /// Determines if the sequence of characters contains only ASCII characters classified as
+    /// uppercase letters, or, optionally, is empty.
+    /// </summary>
+    /// <param name="value"></param>
+    /// <param name="allowEmpty"></param>
+    /// <returns>
+    /// <see langword="true"/> if the sequence of characters contains only ASCII characters
+    /// classified as uppercase letters or if <paramref name="allowEmpty"/> is <see langword="true"/>
+    /// and the sequence is empty; otherwise <see langword="false"/>.
+    /// </returns>
+    public static bool ContainsOnlyAsciiLettersUpper(this ReadOnlySpan<char> value, bool allowEmpty = true)
     {
+        if (value.IsEmpty)
+        {
+            return allowEmpty;
+        }
+
         if (Vector128.IsHardwareAccelerated && value.Length >= Vector128<ushort>.Count)
         {
             return value.IndexOfAnyExceptInRange('A', 'Z') == -1;
@@ -148,6 +227,120 @@ public static partial class MemoryExtensions
         for (var i = 0; i < value.Length; i++)
         {
             if (!char.IsAsciiLetterUpper(value[i]))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// Determines if a sequence of characters contains only Unicode characters classified
+    /// as whitespace, or, optionally, is empty.
+    /// </summary>
+    /// <param name="value"></param>
+    /// <param name="allowEmpty"></param>
+    /// <returns>
+    /// <see langword="true"/> if the sequence of characters contains only Unicode characters
+    /// classified as Unicode letters or if <paramref name="allowEmpty"/> is <see langword="true"/>
+    /// and the sequence is empty; otherwise <see langword="false"/>.
+    /// </returns>
+    public static bool ContainsOnlyWhitespace(this ReadOnlySpan<char> value, bool allowEmpty = true)
+    {
+        if (value.IsEmpty)
+        {
+            return allowEmpty;
+        }
+
+        for (var i = 0; i < value.Length; i++)
+        {
+            if (!char.IsWhiteSpace(value[i]))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// Determines if a sequence of characters contains only Unicode characters classified
+    /// as a Unicode letters, or, optionally, is empty.
+    /// </summary>
+    /// <param name="value"></param>
+    /// <param name="allowEmpty"></param>
+    /// <returns>
+    /// <see langword="true"/> if the sequence of characters contains only Unicode characters
+    /// classified as Unicode letters or if <paramref name="allowEmpty"/> is <see langword="true"/>
+    /// and the sequence is empty; otherwise <see langword="false"/>.
+    /// </returns>
+    public static bool ContainsOnlyLetters(this ReadOnlySpan<char> value, bool allowEmpty = true)
+    {
+        if (value.IsEmpty)
+        {
+            return allowEmpty;
+        }
+
+        for (var i = 0; i < value.Length; i++)
+        {
+            if (!char.IsLetter(value[i]))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// Determines if a sequence of characters contains only Unicode characters classified
+    /// as decimal digits, or, optionally, is empty.
+    /// </summary>
+    /// <param name="value"></param>
+    /// <param name="allowEmpty"></param>
+    /// <returns>
+    /// <see langword="true"/> if the sequence of characters contains only Unicode characters
+    /// classified as decimal digits or if <paramref name="allowEmpty"/> is <see langword="true"/>
+    /// and the sequence is empty; otherwise <see langword="false"/>.
+    /// </returns>
+    public static bool ContainsOnlyDigits(this ReadOnlySpan<char> value, bool allowEmpty = true)
+    {
+        if (value.IsEmpty)
+        {
+            return allowEmpty;
+        }
+
+        for (var i = 0; i < value.Length; i++)
+        {
+            if (!char.IsDigit(value[i]))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// Determines if a sequence of characters contains only Unicode characters classified as Unicode
+    /// letters or decimal digits, or, optionally, is empty.
+    /// </summary>
+    /// <param name="value"></param>
+    /// <param name="allowEmpty"></param>
+    /// <returns><see langword="true"/> if the sequence of characters contains only Unicode characters
+    /// classified as Unicode letters or decimal digits or if <paramref name="allowEmpty"/> is
+    /// <see langword="true"/> and the sequence is empty; otherwise <see langword="false"/>.</returns>
+    public static bool ContainsOnlyLettersOrDigits(this ReadOnlySpan<char> value, bool allowEmpty = true)
+    {
+        if (value.IsEmpty)
+        {
+            return allowEmpty;
+        }
+
+        for (var i = 0; i < value.Length; i++)
+        {
+            if (!char.IsLetterOrDigit(value[i]))
             {
                 return false;
             }
