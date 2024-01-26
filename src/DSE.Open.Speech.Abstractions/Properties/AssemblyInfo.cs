@@ -4,3 +4,5 @@
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("DSE.Open.Speech.Abstractions.Tests")]
+
+[assembly: InternalsVisibleTo("DSE.Open.Benchmarks")]

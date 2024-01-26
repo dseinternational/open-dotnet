@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
+using DSE.Open.Diagnostics;
 using DSE.Open.Text.Json.Serialization;
 
 namespace DSE.Open;
@@ -26,11 +27,43 @@ public readonly struct CharSequence
 {
     private readonly ReadOnlyMemory<char> _value;
 
-    public CharSequence(string value) : this(value.AsMemory()) { }
-
-    public CharSequence(ReadOnlyMemory<char> value)
+    /// <summary>
+    /// Initialises a new <see cref="CharSequence"/> value, referencing the characters
+    /// in the specified string.
+    /// </summary>
+    /// <param name="value"></param>
+    /// <remarks>The characters are not copied, as we trust <see cref="string"/> to
+    /// preserve immutability.</remarks>
+    public CharSequence(string value) : this(value.AsMemory(), false)
     {
-        _value = value;
+    }
+
+    /// <summary>
+    /// Initialises a new <see cref="CharSequence"/> value, using the characters
+    /// in the specified region of memory.
+    /// </summary>
+    /// <param name="value"></param>
+    /// <remarks>The characters are copied, to ensure immutability. To avoid this,
+    /// use <see cref="CreateUnsafe(ReadOnlyMemory{char})"/>.</remarks>
+    public CharSequence(ReadOnlyMemory<char> value) : this(value, true)
+    {
+    }
+
+    private CharSequence(ReadOnlyMemory<char> value, bool copy)
+    {
+        _value = copy ? (ReadOnlyMemory<char>)value.ToArray() : value;
+    }
+
+    /// <summary>
+    /// Returns a <see cref="CharSequence"/> that points to the same memory
+    /// as <paramref name="value"/>. The caller is responsible for ensuring that the
+    /// memory is not modified while the <see cref="CharSequence"/> is in use.
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public static CharSequence CreateUnsafe(ReadOnlyMemory<char> value)
+    {
+        return new CharSequence(value, false);
     }
 
     public char this[int i] => _value.Span[i];
@@ -77,8 +110,8 @@ public readonly struct CharSequence
         {
             return result;
         }
-
-        ThrowHelper.ThrowInvalidOperationException(); // this should not be possible
+                
+        Expect.Unreachable();
         return default; // unreachable
     }
 
@@ -191,7 +224,8 @@ public readonly struct CharSequence
     }
 
     /// <summary>
-    /// Checks if the <paramref name="value"/> is contained within this <see cref="CharSequence"/> using <see cref="StringComparison.Ordinal"/>.
+    /// Checks if the <paramref name="value"/> is contained within this <see cref="CharSequence"/>
+    /// using <see cref="StringComparison.Ordinal"/>.
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
@@ -201,7 +235,8 @@ public readonly struct CharSequence
     }
 
     /// <summary>
-    /// Checks if the <paramref name="value"/> is contained within this <see cref="CharSequence"/> using the specified <paramref name="comparisonType"/>.
+    /// Checks if the <paramref name="value"/> is contained within this <see cref="CharSequence"/>
+    /// using the specified <paramref name="comparisonType"/>.
     /// </summary>
     /// <param name="value"></param>
     /// <param name="comparisonType"></param>
