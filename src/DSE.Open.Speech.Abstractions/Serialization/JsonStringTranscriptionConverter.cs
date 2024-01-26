@@ -11,6 +11,6 @@ public class JsonStringTranscriptionConverter : SpanParsableCharWritingJsonConve
 
     protected override int GetMaxCharCountToWrite(Transcription value)
     {
-        return Transcription.MaxLength;
+        return value.Length;
     }
 }

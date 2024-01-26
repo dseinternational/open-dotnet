@@ -283,6 +283,16 @@ public readonly struct SpeechSymbolSequence
         return !(left == right);
     }
 
+#pragma warning disable CA2225 // Operator overloads have named alternates
+    public static SpeechSymbolSequence operator +(SpeechSymbolSequence left, SpeechSymbolSequence right)
+#pragma warning restore CA2225 // Operator overloads have named alternates
+    {
+        var combined = new SpeechSymbol[left._value.Length + right._value.Length];
+        left._value.Span.CopyTo(combined.AsSpan());
+        right._value.Span.CopyTo(combined.AsSpan()[left._value.Length..]);
+        return new SpeechSymbolSequence((ReadOnlyMemory<SpeechSymbol>)combined, false);
+    }
+
 #pragma warning disable CA2225 // Operator overloads have named alternates (Parse)
 
     public static explicit operator SpeechSymbolSequence(string value)

@@ -6,7 +6,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using DSE.Open.Speech.Serialization;
-using DSE.Open.Text.Json.Serialization;
 
 namespace DSE.Open.Speech;
 
@@ -16,9 +15,12 @@ namespace DSE.Open.Speech;
 /// <remarks>See <see href="https://en.wikipedia.org/wiki/International_Phonetic_Alphabet"/></remarks>
 [JsonConverter(typeof(JsonStringSpeechSoundConverter))]
 [StructLayout(LayoutKind.Auto)]
-public readonly struct SpeechSound : IEquatable<SpeechSound>, ISpanFormattable, ISpanParsable<SpeechSound>
+public readonly struct SpeechSound
+    : IEquatable<SpeechSound>,
+      ISpanFormattable,
+      ISpanParsable<SpeechSound>
 {
-    private readonly string _value;
+    private readonly SpeechSymbolSequence _value;
     private readonly bool _initialized;
 
     public static int MaxLength => 4;
@@ -44,7 +46,7 @@ public readonly struct SpeechSound : IEquatable<SpeechSound>, ISpanFormattable, 
             EnsureValidValue(value);
         }
 
-        _value = SpeechSoundStringPool.Shared.GetOrAdd(value);
+        _value = SpeechSymbolSequence.Parse(value, CultureInfo.InvariantCulture); // TODO: more efficient construction given validation
         _initialized = true;
     }
 
@@ -57,7 +59,7 @@ public readonly struct SpeechSound : IEquatable<SpeechSound>, ISpanFormattable, 
             EnsureValidValue(value);
         }
 
-        _value = string.IsInterned(value) ?? SpeechSoundStringPool.Shared.GetOrAdd(value);
+        _value = SpeechSymbolSequence.Parse(value, CultureInfo.InvariantCulture); // TODO: more efficient construction given validation
         _initialized = true;
     }
 
@@ -96,31 +98,12 @@ public readonly struct SpeechSound : IEquatable<SpeechSound>, ISpanFormattable, 
 
     public bool Equals(SpeechSound other)
     {
-        return string.Equals(_value, other._value, StringComparison.Ordinal);
+        return _value.Equals(other._value);
     }
 
     public override int GetHashCode()
     {
-        return string.GetHashCode(_value, StringComparison.Ordinal);
-    }
-
-    public override string ToString()
-    {
-        return _value;
-    }
-
-    public string ToStringInvariant()
-    {
-        return _value;
-    }
-
-    /// <summary>
-    /// Gets a (phonetic) <see cref="Transcription"/> representation of the speech sound.
-    /// </summary>
-    /// <returns></returns>
-    public Transcription ToTranscription()
-    {
-        return Transcription.Phonetic(_value);
+        return _value.GetHashCode();
     }
 
     // TODO: formatting options: escaped Unicode? binary format?
@@ -131,23 +114,29 @@ public readonly struct SpeechSound : IEquatable<SpeechSound>, ISpanFormattable, 
         ReadOnlySpan<char> format,
         IFormatProvider? provider)
     {
-        var span = _value.AsSpan();
-
-        if (span.TryCopyTo(destination))
+        if (_value.TryFormat(destination, out charsWritten, format, provider))
         {
-            charsWritten = span.Length;
             return true;
         }
 
-        charsWritten = 0;
         return false;
+    }
+
+    public override string ToString()
+    {
+        return ToString(null, null);
+    }
+
+    public string ToStringInvariant()
+    {
+        return ToString(null, null);
     }
 
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
-        return _value is null
+        return _value.IsEmpty
             ? string.Empty
-            : _value;
+            : _value.ToString(format, formatProvider);
     }
 
     public static SpeechSound Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
@@ -215,13 +204,6 @@ public readonly struct SpeechSound : IEquatable<SpeechSound>, ISpanFormattable, 
         return !(left == right);
     }
 
-#pragma warning disable CA2225 // Operator overloads have named alternates
-    public static SpeechSound operator +(SpeechSound left, SpeechSound right)
-#pragma warning restore CA2225 // Operator overloads have named alternates
-    {
-        return new SpeechSound(left._value + right._value);
-    }
-
     /// <summary>
     /// Converts a <see cref="SpeechSound"/> to a (phonetic) <see cref="Transcription"/>.
     /// </summary>
@@ -239,7 +221,7 @@ public readonly struct SpeechSound : IEquatable<SpeechSound>, ISpanFormattable, 
     /// <see langword="false"/>.</returns>
     public static bool IsConsonant(SpeechSound sound)
     {
-        return IsConsonant(sound._value);
+        return IsConsonant(sound._value.ToStringInvariant()); // TODO
     }
 
     /// <summary>
@@ -264,7 +246,7 @@ public readonly struct SpeechSound : IEquatable<SpeechSound>, ISpanFormattable, 
     /// <see langword="false"/>.</returns>
     public static bool IsVowel(SpeechSound sound)
     {
-        return IsVowel(sound._value);
+        return IsVowel(sound._value.ToStringInvariant()); // TODO
     }
 
     /// <summary>
@@ -724,7 +706,6 @@ public readonly struct SpeechSound : IEquatable<SpeechSound>, ISpanFormattable, 
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Open_back_rounded_vowel"/></remarks>
     public static readonly SpeechSound OpenBackRoundedVowel = new("ɒ", true);
 
-
     public static readonly FrozenSet<string> CloseVowels = FrozenSet.ToFrozenSet(
     [
         "i", // close front unrounded vowel
@@ -821,44 +802,44 @@ public readonly struct SpeechSound : IEquatable<SpeechSound>, ISpanFormattable, 
 
     public static readonly FrozenSet<string> Bilabials = FrozenSet.ToFrozenSet(
     [
-        VoicelessBilabialPlosive._value,        // [p]
-        VoicedBilabialPlosive._value,           // [b]
-        VoicedBilabialNasal._value,             // [m]
-        VoicedBilabialTrill._value,             // [ʙ]
-        VoicelessBilabialFricative._value,      // [ɸ]
-        VoicedBilabialFricative._value,         // [β]
+        VoicelessBilabialPlosive._value.ToStringInvariant(),        // [p]
+        VoicedBilabialPlosive._value.ToStringInvariant(),           // [b]
+        VoicedBilabialNasal._value.ToStringInvariant(),             // [m]
+        VoicedBilabialTrill._value.ToStringInvariant(),             // [ʙ]
+        VoicelessBilabialFricative._value.ToStringInvariant(),      // [ɸ]
+        VoicedBilabialFricative._value.ToStringInvariant(),         // [β]
         // TODO: ʙ̥ https://en.wikipedia.org/wiki/Voiceless_bilabial_trill
         // TODO: m̥ https://en.wikipedia.org/wiki/Voiceless_bilabial_nasal
     ]);
 
     public static readonly FrozenSet<string> Labiodentals = FrozenSet.ToFrozenSet(
     [
-        VoicelessLabiodentalFricative._value,   // [f]
-        VoicedLabiodentalFricative._value,      // [v]
-        VoicedLabiodentalNasal._value,          // [ɱ]
-        VoicedLabiodentalFlap._value,           // [ⱱ]
-        VoicedLabiodentalApproximant._value,    // [ʋ]
+        VoicelessLabiodentalFricative._value.ToStringInvariant(),   // [f]
+        VoicedLabiodentalFricative._value.ToStringInvariant(),      // [v]
+        VoicedLabiodentalNasal._value.ToStringInvariant(),          // [ɱ]
+        VoicedLabiodentalFlap._value.ToStringInvariant(),           // [ⱱ]
+        VoicedLabiodentalApproximant._value.ToStringInvariant(),    // [ʋ]
     ]);
 
     public static readonly FrozenSet<string> Dentals = FrozenSet.ToFrozenSet(
     [
-        VoicelessDentalFricative._value,        // [θ]
-        VoicedDentalFricative._value,           // [ð]
+        VoicelessDentalFricative._value.ToStringInvariant(),        // [θ]
+        VoicedDentalFricative._value.ToStringInvariant(),           // [ð]
     ]);
 
     public static readonly FrozenSet<string> Alveolars = FrozenSet.ToFrozenSet(
     [
-        VoicelessAlveolarPlosive._value,            // [t]
-        VoicedAlveolarPlosive._value,               // [d]
-        VoicedAlveolarNasal._value,                 // [n]
-        VoicedAlveolarTrill._value,                 // [r]
-        VoicelessAlveolarFricative._value,          // [s]
-        VoicedAlveolarFricative._value,             // [z]
-        VoicedAlveolarApproximant._value,           // [ɹ]
-        VoicedAlveolarTap._value,                   // [ɾ]
-        VoicelessLateralAlveolarFricative._value,   // [ɬ]
-        VoicedLateralAlveolarFricative._value,      // [ɮ]
-        VoicedAlveolarLateralApproximant._value,    // [l]
+        VoicelessAlveolarPlosive._value.ToStringInvariant(),            // [t]
+        VoicedAlveolarPlosive._value.ToStringInvariant(),               // [d]
+        VoicedAlveolarNasal._value.ToStringInvariant(),                 // [n]
+        VoicedAlveolarTrill._value.ToStringInvariant(),                 // [r]
+        VoicelessAlveolarFricative._value.ToStringInvariant(),          // [s]
+        VoicedAlveolarFricative._value.ToStringInvariant(),             // [z]
+        VoicedAlveolarApproximant._value.ToStringInvariant(),           // [ɹ]
+        VoicedAlveolarTap._value.ToStringInvariant(),                   // [ɾ]
+        VoicelessLateralAlveolarFricative._value.ToStringInvariant(),   // [ɬ]
+        VoicedLateralAlveolarFricative._value.ToStringInvariant(),      // [ɮ]
+        VoicedAlveolarLateralApproximant._value.ToStringInvariant(),    // [l]
     ]);
 
     public static readonly FrozenSet<string> PostAlveolars = FrozenSet.ToFrozenSet(
@@ -923,8 +904,8 @@ public readonly struct SpeechSound : IEquatable<SpeechSound>, ISpanFormattable, 
 
     public static readonly FrozenSet<string> Coarticulated = FrozenSet.ToFrozenSet(
     [
-        VoicelessLabialVelarFricative._value,       // [ʍ]
-        VoicedLabialVelarApproximant._value,        // [w]
+        VoicelessLabialVelarFricative._value.ToStringInvariant(),       // [ʍ]
+        VoicedLabialVelarApproximant._value.ToStringInvariant(),        // [w]
     ]);
 
     public static readonly FrozenSet<string> Consonants = FrozenSet.ToFrozenSet(
@@ -941,4 +922,9 @@ public readonly struct SpeechSound : IEquatable<SpeechSound>, ISpanFormattable, 
         .. Glottals,
         .. Coarticulated,
     ]);
+
+    public Transcription ToTranscription()
+    {
+        throw new NotImplementedException();
+    }
 }
