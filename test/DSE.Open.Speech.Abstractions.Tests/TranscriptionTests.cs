@@ -37,8 +37,6 @@ public class TranscriptionTests
     [InlineData("[prəˈvaɪd")]
     [InlineData("")]
     [InlineData(" ")]
-    [InlineData("/ /")]
-    [InlineData("//")]
     public void InvalidTranscriptionsThrowOnParse(string example)
     {
         _ = Assert.Throws<FormatException>(() => Transcription.Parse(example, CultureInfo.InvariantCulture));

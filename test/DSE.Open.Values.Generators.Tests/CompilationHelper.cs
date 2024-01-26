@@ -3,6 +3,7 @@
 
 using System.ComponentModel;
 using System.Reflection;
+using DSE.Open.Runtime.Helpers;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
@@ -34,6 +35,9 @@ public static class CompilationHelper
 
             // DSE.Open.ValueTypes.Abstractions
             MetadataReference.CreateFromFile(typeof(DivisibleValueAttribute).GetTypeInfo().Assembly.Location),
+
+            // DSE.Open
+            MetadataReference.CreateFromFile(typeof(MemoryThresholds).GetTypeInfo().Assembly.Location),
 
             // DSE.Open.ValueTypes
             MetadataReference.CreateFromFile(typeof(ValueFormatter).GetTypeInfo().Assembly.Location),

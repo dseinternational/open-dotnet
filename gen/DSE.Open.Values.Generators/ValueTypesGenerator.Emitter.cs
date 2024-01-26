@@ -32,7 +32,12 @@ public partial class ValueTypesGenerator
 
             writer.WriteLine("using System;");
             writer.WriteLine("using System.ComponentModel;");
-            writer.WriteLine("using DSE.Open.Runtime.Helpers;");
+
+            if (spec.EmitToStringFormattableMethod && (spec.UseGetStringSpan || spec.UseGetString))
+            {
+                writer.WriteLine("using DSE.Open.Runtime.Helpers;");
+            }
+
             writer.WriteLine("using DSE.Open.Values;");
 
             if (spec.EmitUsingSystemGlobalization)
@@ -185,7 +190,6 @@ public partial class ValueTypesGenerator
                                    public static implicit operator {{spec.ContainedValueTypeName}}({{spec.ValueTypeName}} value)
                                    {
                                    """);
-
 
                 if (spec.EmitEnsureIntialised)
                 {
@@ -405,7 +409,6 @@ public partial class ValueTypesGenerator
                                    public static {spec.ValueTypeName} Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
                                        => {Namespaces.DseOpenValues}.ValueParser.Parse<{spec.ValueTypeName}, {spec.ContainedValueTypeName}>(s, provider);
                                    """);
-
 
                 writer.WriteBlock($"""
                                    public static {spec.ValueTypeName} ParseInvariant(ReadOnlySpan<char> s)
