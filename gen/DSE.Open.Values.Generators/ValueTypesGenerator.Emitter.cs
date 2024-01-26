@@ -32,6 +32,7 @@ public partial class ValueTypesGenerator
 
             writer.WriteLine("using System;");
             writer.WriteLine("using System.ComponentModel;");
+            writer.WriteLine("using DSE.Open.Runtime.Helpers;");
             writer.WriteLine("using DSE.Open.Values;");
 
             if (spec.EmitUsingSystemGlobalization)
@@ -178,10 +179,10 @@ public partial class ValueTypesGenerator
                                     """);
             }
 
-            if (spec.EmitExplicitConversionToContainedTypeMethod)
+            if (spec.EmitImplicitConversionToContainedTypeMethod)
             {
                 writer.WriteLine($$"""
-                                   public static explicit operator {{spec.ContainedValueTypeName}}({{spec.ValueTypeName}} value)
+                                   public static implicit operator {{spec.ContainedValueTypeName}}({{spec.ValueTypeName}} value)
                                    {
                                    """);
 
@@ -263,7 +264,7 @@ public partial class ValueTypesGenerator
                 }
 
                 writer.WriteBlock("""
-                                      return _value.TryFormat(destination, out charsWritten, format, provider);
+                                      return ((ISpanFormattable)_value).TryFormat(destination, out charsWritten, format, provider);
                                   }
                                   """);
 
@@ -314,7 +315,7 @@ public partial class ValueTypesGenerator
 
                                           try
                                           {
-                                              Span<char> buffer = MaxSerializedCharLength <= 128
+                                              Span<char> buffer = MemoryThresholds.CanStackalloc<char>(MaxSerializedCharLength)
                                                   ? stackalloc char[MaxSerializedCharLength]
                                                   : (rented = System.Buffers.ArrayPool<char>.Shared.Rent(MaxSerializedCharLength));
 
@@ -338,7 +339,7 @@ public partial class ValueTypesGenerator
 
                                           try
                                           {
-                                              Span<char> buffer = MaxSerializedCharLength <= 128
+                                              Span<char> buffer = MemoryThresholds.CanStackalloc<char>(MaxSerializedCharLength)
                                                   ? stackalloc char[MaxSerializedCharLength]
                                                   : (rented = System.Buffers.ArrayPool<char>.Shared.Rent(MaxSerializedCharLength));
 
@@ -357,7 +358,7 @@ public partial class ValueTypesGenerator
                 }
                 else
                 {
-                    writer.WriteLine("    return _value.ToString(format, formatProvider);");
+                    writer.WriteLine("    return ((IFormattable)_value).ToString(format, formatProvider);");
                 }
 
                 writer.WriteBlock("}");
@@ -537,7 +538,7 @@ public partial class ValueTypesGenerator
 
             if (spec.EmitTryFormatUtf8Method)
             {
-                writer.WriteBlock("// IUtf8Formattable");
+                writer.WriteBlock("// IUtf8SpanFormattable");
 
                 writer.WriteBlock("""
                                   public bool TryFormat(
@@ -545,7 +546,7 @@ public partial class ValueTypesGenerator
                                       out int bytesWritten,
                                       ReadOnlySpan<char> format,
                                       IFormatProvider? provider)
-                                      => _value.TryFormat(utf8Destination, out bytesWritten, format, provider);
+                                      => ((IUtf8SpanFormattable)_value).TryFormat(utf8Destination, out bytesWritten, format, provider);
                                   """);
             }
 

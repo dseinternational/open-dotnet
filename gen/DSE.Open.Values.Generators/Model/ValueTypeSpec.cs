@@ -74,7 +74,7 @@ internal abstract class ValueTypeSpec
 
     public bool EmitConvertToMethod { get; set; } = true;
 
-    public bool EmitExplicitConversionToContainedTypeMethod { get; set; } = true;
+    public bool EmitImplicitConversionToContainedTypeMethod { get; set; } = true;
 
     // IEquatable<TSelf>
 
