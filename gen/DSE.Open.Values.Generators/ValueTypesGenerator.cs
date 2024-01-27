@@ -140,7 +140,7 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
 
         var emitConstructor = true;
         var maxSerializedCharLength = 0;
-        var emitEnsureInitialised = true;
+        var emitEnsureNotDefault = false;
 
         foreach (var structDeclarationSyntax in structs)
         {
@@ -200,9 +200,9 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
                         a.NameEquals is not null
                         && a.NameEquals.Name.Identifier.ValueText == "MaxSerializedCharLength");
 
-                    var allowDefaultSyntax = attributeArgNames.FirstOrDefault(a =>
+                    var allowDefaultValueSyntax = attributeArgNames.FirstOrDefault(a =>
                         a.NameEquals is not null
-                        && a.NameEquals.Name.Identifier.ValueText == "AllowDefault");
+                        && a.NameEquals.Name.Identifier.ValueText == "AllowDefaultValue");
 
                     if (maxSerializedCharLengthSyntax is not null)
                     {
@@ -219,17 +219,17 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
                         }
                     }
 
-                    if (allowDefaultSyntax is not null)
+                    if (allowDefaultValueSyntax is not null)
                     {
-                        var allowDefaultOpt = semanticModel.GetConstantValue(allowDefaultSyntax.Expression, ct);
+                        var allowDefaultOpt = semanticModel.GetConstantValue(allowDefaultValueSyntax.Expression, ct);
 
                         if (allowDefaultOpt is { HasValue: true, Value: not null })
                         {
                             var allowDefaultValue = (bool)allowDefaultOpt.Value;
 
-                            if (allowDefaultValue)
+                            if (!allowDefaultValue)
                             {
-                                emitEnsureInitialised = false;
+                                emitEnsureNotDefault = true;
                             }
                         }
                     }
@@ -598,7 +598,7 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
             spec.EmitConstructor = emitConstructor;
             spec.EmitEqualsMethod = emitEqualsMethod;
             spec.EmitGetHashCodeMethod = emitGetHashCodeMethod;
-            spec.EmitEnsureNotDefault = emitEnsureInitialised;
+            spec.EmitEnsureNotDefault = emitEnsureNotDefault;
 
             // IFormattable
             spec.EmitToStringFormattableMethod = emitIFormattableToStringMethod;

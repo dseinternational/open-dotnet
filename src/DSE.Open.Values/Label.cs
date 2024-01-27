@@ -38,7 +38,7 @@ public readonly partial struct Label : IComparableValue<Label, CharSequence>
 
         if (!skipValidation)
         {
-            EnsureIsValidArgumentValue(label);
+            EnsureIsValidValue(label);
         }
 
         _value = string.IsInterned(label) ?? LabelStringPool.Shared.GetOrAdd(label);
@@ -48,7 +48,7 @@ public readonly partial struct Label : IComparableValue<Label, CharSequence>
     {
         if (!skipValidation)
         {
-            EnsureIsValidArgumentValue(CharSequence.Parse(label, CultureInfo.InvariantCulture));
+            EnsureIsValidValue(CharSequence.Parse(label, CultureInfo.InvariantCulture));
         }
 
         _value = LabelStringPool.Shared.GetOrAdd(label);

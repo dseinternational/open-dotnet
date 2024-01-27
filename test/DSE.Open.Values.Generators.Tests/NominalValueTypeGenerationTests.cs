@@ -90,7 +90,6 @@ public class EquatableValueTypeGenerationTests : ValueTypeGenerationTests
                                                                        private MyOptions(long value)
                                                                        {
                                                                            _value = value;
-                                                                           _initialized = true;
                                                                        }
                                                                    }
 
@@ -136,7 +135,6 @@ public class EquatableValueTypeGenerationTests : ValueTypeGenerationTests
                                                                        private MyOptions(long value, bool skipValidation = false)
                                                                        {
                                                                            _value = value;
-                                                                           _initialized = true;
                                                                        }
                                                                    }
 
@@ -310,7 +308,7 @@ public class EquatableValueTypeGenerationTests : ValueTypeGenerationTests
 
                                                                    #nullable enable
 
-                                                                   [EquatableValue]
+                                                                   [EquatableValue(AllowDefaultValue = false)]
                                                                    public readonly partial struct MyOptions : IEquatableValue<MyOptions, long>
                                                                    {
                                                                        public static readonly MyOptions Option1;

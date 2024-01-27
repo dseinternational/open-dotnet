@@ -38,7 +38,10 @@ public partial class ValueTypesGenerator
                 writer.WriteLine("using DSE.Open.Runtime.Helpers;");
             }
 
-            writer.WriteLine("using DSE.Open.Values;");
+            if (spec.EmitEnsureNotDefault)
+            {
+                writer.WriteLine("using DSE.Open.Values;");
+            }
 
             if (spec.EmitUsingSystemGlobalization)
             {
@@ -101,7 +104,7 @@ public partial class ValueTypesGenerator
                 writer.WriteBlock("""
                                   if (!skipValidation)
                                   {
-                                      EnsureIsValidArgumentValue(value);
+                                      EnsureIsValidValue(value);
                                   }
                                   """);
 
@@ -111,10 +114,10 @@ public partial class ValueTypesGenerator
                 writer.WriteBlock("}");
             }
 
-            if (spec.EmitEnsureIsValidArgumentValueMethod)
+            if (spec.EmitEnsureIsValidValueMethod)
             {
                 writer.WriteBlock($$"""
-                                    private static void EnsureIsValidArgumentValue({{spec.ContainedValueTypeName}} value)
+                                    private static void EnsureIsValidValue({{spec.ContainedValueTypeName}} value)
                                     {
                                         if (!IsValidValue(value))
                                         {
@@ -157,7 +160,7 @@ public partial class ValueTypesGenerator
                 writer.WriteBlock($$"""
                                     public static {{spec.ValueTypeName}} FromValue({{spec.ContainedValueTypeName}} value)
                                     {
-                                        EnsureIsValidArgumentValue(value);
+                                        EnsureIsValidValue(value);
                                         return new(value, true);
                                     }
                                     """);
