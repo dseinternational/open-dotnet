@@ -598,7 +598,7 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
             spec.EmitConstructor = emitConstructor;
             spec.EmitEqualsMethod = emitEqualsMethod;
             spec.EmitGetHashCodeMethod = emitGetHashCodeMethod;
-            spec.EmitEnsureIntialised = emitEnsureInitialised;
+            spec.EmitEnsureNotDefault = emitEnsureInitialised;
 
             // IFormattable
             spec.EmitToStringFormattableMethod = emitIFormattableToStringMethod;

@@ -327,7 +327,7 @@ public class EquatableValueTypeGenerationTests : ValueTypeGenerationTests
                                                                            ReadOnlySpan<char> format,
                                                                            IFormatProvider? provider)
                                                                        {
-                                                                           EnsureInitialized();
+                                                                           EnsureIsNotDefault();
                                                                            return _value.TryFormat(destination, out charsWritten, format, provider);
                                                                        }}
 

@@ -12,7 +12,7 @@ namespace DSE.Open.Values;
 [SuppressMessage("Design", "CA1000:Do not declare static members on generic types", Justification = "<Pending>")]
 public sealed class UninitializedValueException<TValue, T> : Exception
     where T : IEquatable<T>
-    where TValue : struct, IValue<TValue, T>
+    where TValue : struct
 {
     private static readonly string DefaultMessage =
         $"Cannot use a value of type {typeof(TValue)} that is not initialized.";
@@ -33,7 +33,7 @@ public sealed class UninitializedValueException<TValue, T> : Exception
 
     public static void ThrowIfUninitialized(TValue value)
     {
-        if (!value.IsInitialized)
+        if (default(TValue).Equals(value))
         {
             Throw();
         }

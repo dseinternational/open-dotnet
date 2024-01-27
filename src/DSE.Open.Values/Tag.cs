@@ -56,7 +56,6 @@ public readonly partial struct Tag : IComparableValue<Tag, AsciiString>, IUtf8Sp
         }
 
         _value = value;
-        _initialized = true;
     }
 
     public static bool IsValidValue(AsciiString value)

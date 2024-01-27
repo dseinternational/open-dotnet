@@ -90,8 +90,6 @@ public partial class ValueTypesGenerator
                 writer.WriteBlock($"private readonly {spec.ContainedValueTypeName} {spec.ValueFieldName};");
             }
 
-            writer.WriteBlock("private readonly bool _initialized;");
-
             if (spec.EmitConstructor)
             {
                 writer.WriteLine(
@@ -108,13 +106,10 @@ public partial class ValueTypesGenerator
                                   """);
 
                 writer.WriteLine($"{spec.ValueFieldName} = value;");
-                writer.WriteLine("_initialized = true;");
 
                 writer.Indentation--;
                 writer.WriteBlock("}");
             }
-
-            writer.WriteBlock("public bool IsInitialized => _initialized;");
 
             if (spec.EmitEnsureIsValidArgumentValueMethod)
             {
@@ -130,10 +125,10 @@ public partial class ValueTypesGenerator
                                     """);
             }
 
-            if (spec.EmitEnsureIntialised)
+            if (spec.EmitEnsureNotDefault)
             {
                 writer.WriteBlock($$"""
-                                    private void EnsureInitialized()
+                                    private void EnsureIsNotDefault()
                                     {
                                         UninitializedValueException<{{spec.ValueTypeName}}, {{spec.ContainedValueTypeName}}>.ThrowIfUninitialized(this);
                                     }
@@ -191,10 +186,10 @@ public partial class ValueTypesGenerator
                                    {
                                    """);
 
-                if (spec.EmitEnsureIntialised)
+                if (spec.EmitEnsureNotDefault)
                 {
                     writer.Indentation++;
-                    writer.WriteLine("value.EnsureInitialized();");
+                    writer.WriteLine("value.EnsureIsNotDefault();");
                     writer.Indentation--;
                 }
 
@@ -223,10 +218,10 @@ public partial class ValueTypesGenerator
                                  {
                                  """);
 
-                if (spec.EmitEnsureIntialised)
+                if (spec.EmitEnsureNotDefault)
                 {
                     writer.Indentation++;
-                    writer.WriteLine("EnsureInitialized();");
+                    writer.WriteLine("EnsureIsNotDefault();");
                     writer.Indentation--;
                 }
 
@@ -260,10 +255,10 @@ public partial class ValueTypesGenerator
                                  {
                                  """);
 
-                if (spec.EmitEnsureIntialised)
+                if (spec.EmitEnsureNotDefault)
                 {
                     writer.Indentation++;
-                    writer.WriteLine("EnsureInitialized();");
+                    writer.WriteLine("EnsureIsNotDefault();");
                     writer.Indentation--;
                 }
 
@@ -307,9 +302,9 @@ public partial class ValueTypesGenerator
                                     {
                                     """);
 
-                if (spec.EmitEnsureIntialised)
+                if (spec.EmitEnsureNotDefault)
                 {
-                    writer.WriteBlock("    EnsureInitialized();");
+                    writer.WriteBlock("    EnsureIsNotDefault();");
                 }
 
                 if (spec.UseGetStringSpan)
@@ -588,10 +583,10 @@ public partial class ValueTypesGenerator
                                         {
                                         """);
 
-                    if (spec.EmitEnsureIntialised)
+                    if (spec.EmitEnsureNotDefault)
                     {
                         writer.Indentation++;
-                        writer.WriteBlock("EnsureInitialized();");
+                        writer.WriteBlock("EnsureIsNotDefault();");
                         writer.Indentation--;
                     }
 
