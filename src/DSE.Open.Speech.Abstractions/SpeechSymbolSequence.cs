@@ -7,15 +7,17 @@ using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Text.Json.Serialization;
 using DSE.Open.Diagnostics;
 using DSE.Open.Runtime.Helpers;
+using DSE.Open.Speech.Serialization;
 
 namespace DSE.Open.Speech;
 
 /// <summary>
 /// 
 /// </summary>
-// [JsonConverter(typeof(JsonStringSpeechSymbolSequenceConverter))]
+[JsonConverter(typeof(JsonStringSpeechSymbolSequenceConverter))]
 [StructLayout(LayoutKind.Auto)]
 public readonly struct SpeechSymbolSequence
     : IEquatable<SpeechSymbolSequence>,
@@ -78,7 +80,96 @@ public readonly struct SpeechSymbolSequence
         return _value.Span;
     }
 
-    
+    public bool Equals(
+        string value,
+        SpeechSymbolSequenceComparison comparison = SpeechSymbolSequenceComparison.Exact)
+    {
+        return Equals(value.AsSpan(), comparison);
+    }
+
+    public bool Equals(
+        CharSequence chars,
+        SpeechSymbolSequenceComparison comparison = SpeechSymbolSequenceComparison.Exact)
+    {
+        return Equals(chars.AsSpan(), comparison);
+    }
+
+    public bool Equals(
+        ReadOnlySpan<char> chars,
+        SpeechSymbolSequenceComparison comparison = SpeechSymbolSequenceComparison.Exact)
+    {
+        // Would be preferable:
+        // 
+        // var span = MemoryMarshal.Cast<SpeechSymbol, char>(_value.Span);
+
+        var valueSpan = _value.Span;
+
+        Span<char> buffer = stackalloc char[valueSpan.Length];
+
+        for (var i = 0; i < valueSpan.Length; i++)
+        {
+            buffer[i] = valueSpan[i].Value;
+        }
+
+        if (comparison == SpeechSymbolSequenceComparison.Exact)
+        {
+            return buffer.SequenceEqual(chars);
+        }
+
+        if (comparison == SpeechSymbolSequenceComparison.Permissive)
+        {
+            return EqualsPermissive(buffer, chars);
+        }
+
+        if (comparison == SpeechSymbolSequenceComparison.ConsonantsAndVowels)
+        {
+            return EqualsConsonantsAndVowels(buffer, chars);
+        }
+
+        ThrowHelper.ThrowArgumentOutOfRangeException(nameof(comparison));
+        return false; // unreachable
+    }
+
+    internal static bool EqualsPermissive(
+        ReadOnlySpan<char> left,
+        ReadOnlySpan<char> right)
+    {
+        throw new NotImplementedException();
+    }
+
+    internal static bool EqualsConsonantsAndVowels(
+        ReadOnlySpan<char> left,
+        ReadOnlySpan<char> right)
+    {
+        var l = 0;
+        var r = 0;
+
+        while (l < left.Length - 1 && r < right.Length)
+        {
+            if (!SpeechSymbol.IsConsonantOrVowel(left[l]))
+            {
+                l++;
+                continue;
+            }
+
+            if (!SpeechSymbol.IsConsonantOrVowel(right[r]))
+            {
+                r++;
+                continue;
+            }
+
+            if (left[l] == right[r])
+            {
+                l++;
+                r++;
+                continue;
+            }
+
+            return false;
+        }
+
+        return l == left.Length && r == right.Length;
+    }
 
     public int GetCharCount(ReadOnlySpan<char> format, IFormatProvider? provider)
     {

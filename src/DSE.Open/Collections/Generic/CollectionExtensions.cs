@@ -1,7 +1,10 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Collections.Frozen;
+using System.Collections.Immutable;
 using System.Collections.ObjectModel;
+using DSE.Open.Linq;
 
 namespace DSE.Open.Collections.Generic;
 
@@ -398,6 +401,38 @@ public static class CollectionExtensions
         ArgumentNullException.ThrowIfNull(action);
 
         foreach (var item in array)
+        {
+            action(item);
+        }
+    }
+
+    public static void ForEach<T>(this ImmutableArray<T> collection, Action<T> action)
+    {
+        ArgumentNullException.ThrowIfNull(action);
+
+        foreach (var item in collection)
+        {
+            action(item);
+        }
+    }
+
+    public static void ForEach<T>(this ImmutableHashSet<T> collection, Action<T> action)
+    {
+        ArgumentNullException.ThrowIfNull(collection);
+        ArgumentNullException.ThrowIfNull(action);
+
+        foreach (var item in collection)
+        {
+            action(item);
+        }
+    }
+
+    public static void ForEach<T>(this FrozenSet<T> collection, Action<T> action)
+    {
+        ArgumentNullException.ThrowIfNull(collection);
+        ArgumentNullException.ThrowIfNull(action);
+
+        foreach (var item in collection)
         {
             action(item);
         }

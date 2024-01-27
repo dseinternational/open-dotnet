@@ -254,7 +254,9 @@ public readonly struct SpeechSound
     /// <see langword="false"/>.</returns>
     public static bool IsConsonant(SpeechSound sound)
     {
-        return !sound.IsEmpty && Consonants.Contains(sound);
+        return !sound.IsEmpty
+            && (Consonants.Contains(sound)
+                || (sound.Length > 1 && Consonants.Contains(sound[0])));
     }
 
     /// <summary>
@@ -283,7 +285,11 @@ public readonly struct SpeechSound
     {
         return !sound.IsEmpty
             && (Vowels.Contains(sound)
-                || (sound.Length > 1 && Vowels.Contains(sound[0])));
+                || (sound.Length > 1 && Vowels.Contains(sound[0]))
+                // special case [ju] /yoo/ as in <view>
+                || (sound.Length > 1
+                    && sound._value[0] == VoicedPalatalApproximant
+                    && sound._value[1] == CloseBackRoundedVowel));
     }
 
     /// <summary>

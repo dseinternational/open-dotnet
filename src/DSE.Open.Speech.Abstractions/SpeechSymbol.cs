@@ -14,6 +14,7 @@
 
 using System.Collections.Frozen;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using DSE.Open.Values;
 
@@ -164,6 +165,66 @@ public readonly partial struct SpeechSymbol
         }
 
         return s_equivalenceMappings.TryGetValue(c, out var symbol) && symbol._value == _value;
+    }
+
+    public static bool IsConsonant(SpeechSymbol symbol)
+    {
+        return Consonants.Contains(symbol._value);
+    }
+
+    public static bool IsDiacritic(SpeechSymbol symbol)
+    {
+        return Diacritics.Contains(symbol._value);
+    }
+
+    public static bool IsSuprasegmental(SpeechSymbol symbol)
+    {
+        return Suprasegmentals.Contains(symbol._value);
+    }
+
+    public static bool IsVowel(SpeechSymbol symbol)
+    {
+        return Vowels.Contains(symbol._value);
+    }
+
+    public static bool IsConsonantOrVowel(SpeechSymbol symbol)
+    {
+        return ConsonantsAndVowels.Contains(symbol._value);
+    }
+
+    public static bool IsConsonant(char symbol, SpeechSymbolComparison comparison = SpeechSymbolComparison.Exact)
+    {
+        return Contains(Consonants, symbol, comparison);
+    }
+
+    public static bool IsDiacritic(char symbol, SpeechSymbolComparison comparison = SpeechSymbolComparison.Exact)
+    {
+        return Contains(Diacritics, symbol, comparison);
+    }
+
+    public static bool IsSuprasegmental(char symbol, SpeechSymbolComparison comparison = SpeechSymbolComparison.Exact)
+    {
+        return Contains(Suprasegmentals, symbol, comparison);
+    }
+
+    public static bool IsVowel(char symbol, SpeechSymbolComparison comparison = SpeechSymbolComparison.Exact)
+    {
+        return Contains(Vowels, symbol, comparison);
+    }
+
+    public static bool IsConsonantOrVowel(char symbol, SpeechSymbolComparison comparison = SpeechSymbolComparison.Exact)
+    {
+        return Contains(ConsonantsAndVowels, symbol, comparison);
+    }
+
+    private static bool Contains(FrozenSet<uint> symbols, char c, SpeechSymbolComparison comparison)
+    {
+        if (comparison == SpeechSymbolComparison.Exact)
+        {
+            return symbols.Contains(c);
+        }
+
+        return s_equivalenceMappings.TryGetValue(c, out var symbol) && symbols.Contains(symbol._value);
     }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
@@ -1184,6 +1245,11 @@ public readonly partial struct SpeechSymbol
         .Union(s_backVowels)
         .ToFrozenSet());
 
+    private static readonly Lazy<FrozenSet<uint>> s_consonantsAndVowelsSet = new(() =>
+        s_consonantsSet.Value
+        .Union(s_vowelsSet.Value)
+        .ToFrozenSet());
+
     private static readonly Lazy<FrozenSet<uint>> s_diacriticsSet = new(() => s_diacritics.ToFrozenSet());
 
     private static readonly Lazy<FrozenSet<uint>> s_suprasegmantalsSet = new(() => s_suprasegmantals.ToFrozenSet());
@@ -1263,6 +1329,8 @@ public readonly partial struct SpeechSymbol
     public static FrozenSet<uint> BackVowels { get; } = s_backVowelsSet.Value;
 
     public static FrozenSet<uint> Vowels { get; } = s_vowelsSet.Value;
+
+    public static FrozenSet<uint> ConsonantsAndVowels { get; } = s_consonantsAndVowelsSet.Value;
 
     public static FrozenSet<uint> Diacritics { get; } = s_diacriticsSet.Value;
 
