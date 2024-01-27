@@ -130,333 +130,366 @@ public readonly partial struct SpeechSymbol
     /// <summary>
     /// The Unicode 'latin small letter a' <c>a</c> character, used to represent open front unrounded.
     /// </summary>
-    public const char OpenFrontUnrounded = (char)0x0061;
+    public static readonly SpeechSymbol OpenFrontUnrounded = new((char)0x0061, true);
 
     /// <summary>
     /// The Unicode 'latin small letter ae' <c>æ</c> character, used to represent raised open front unrounded.
     /// </summary>
-    public const char RaisedOpenFrontUnrounded = (char)0x00E6;
+    public static readonly SpeechSymbol RaisedOpenFrontUnrounded = new((char)0x00E6, true);
 
     /// <summary>
     /// The Unicode 'latin small letter turned a' <c>ɐ</c> character, used to represent lowered schwa.
     /// </summary>
-    public const char LoweredSchwa = (char)0x0250;
+    public static readonly SpeechSymbol LoweredSchwa = new((char)0x0250, true);
 
-    public const char OpenBackUnrounded = (char)0x0251;  // ɑ,latin small letter alpha,open back unrounded
+    /// <summary>
+    /// The Unicode 'latin small letter alpha' <c>ɑ</c> character, used to represent open back unrounded.
+    /// </summary>
+    public static readonly SpeechSymbol OpenBackUnrounded = new((char)0x0251, true);
 
-    public const char OpenBackRounded = (char)0x0252;  // ɒ,latin small letter turned alpha,open back rounded
+    /// <summary>
+    /// The Unicode 'latin small letter turned alpha' <c>ɒ</c> character, used to represent open back rounded.
+    /// </summary>
+    public static readonly SpeechSymbol OpenBackRounded = new((char)0x0252, true);
 
-    public const char VoicedBilabialPlosive = (char)0x0062;  // b,latin small letter b,voiced bilabial plosive
+    /// <summary>
+    /// The Unicode 'latin small letter b' <c>b</c> character, used to represent voiced bilabial plosive.
+    /// </summary>
+    public static readonly SpeechSymbol VoicedBilabialPlosive = new((char)0x0062, true);
 
-    public const char VoicedBilabialTrill = (char)0x0299;  // ʙ,latin letter small capital b,voiced bilabial trill
+    /// <summary>
+    /// The Unicode 'latin letter small capital b' <c>ʙ</c> character, used to represent voiced bilabial trill.
+    /// </summary>
+    public static readonly SpeechSymbol VoicedBilabialTrill = new((char)0x0299, true);
 
-    public const char VoicedBilabialImplosive = (char)0x0253;  // ɓ,latin small letter b with hook,voiced bilabial implosive
+    /// <summary>
+    /// The Unicode 'latin small letter b with hook' <c>ɓ</c> character, used to represent voiced bilabial implosive.
+    /// </summary>
+    public static readonly SpeechSymbol VoicedBilabialImplosive = new((char)0x0253, true);
 
-    public const char VoicelessPalatalPlosive = (char)0x0063;  // c,latin small letter c,voiceless palatal plosive
+    /// <summary>
+    /// The Unicode 'latin small letter c' <c>c</c> character, used to represent voiceless palatal plosive.
+    /// </summary>
+    public static readonly SpeechSymbol VoicelessPalatalPlosive = new((char)0x0063, true);
 
-    public const char VoicelessPalatalFricative = (char)0x00E7;  // ç,latin small letter c with cedilla,voiceless palatal fricative
+    /// <summary>
+    /// The Unicode 'latin small letter c with cedilla' <c>ç</c> character, used to represent voiceless palatal fricative.
+    /// </summary>
+    public static readonly SpeechSymbol VoicelessPalatalFricative = new((char)0x00E7, true);
 
-    public const char VoicelessAlveoloPalatalFricative = (char)0x0255;  // ɕ,latin small letter c with curl,voiceless alveolo-palatal fricative
+    /// <summary>
+    /// The Unicode 'latin small letter c with curl' <c>ɕ</c> character, used to represent voiceless alveolo-palatal fricative.
+    /// </summary>
+    public static readonly SpeechSymbol VoicelessAlveoloPalatalFricative = new((char)0x0255, true);
 
-    public const char VoicedAlveolarPlosive = (char)0x0064;  // d,latin small letter d,voiced alveolar plosive
+    /// <summary>
+    /// The Unicode 'latin small letter d' <c>d</c> character, used to represent voiced alveolar plosive.
+    /// </summary>
+    public static readonly SpeechSymbol VoicedAlveolarPlosive = new((char)0x0064, true);
 
-    public const char VoicedDentalFricative = (char)0x00F0;  // ð,latin small letter eth,voiced dental fricative
+    /// <summary>
+    /// The Unicode 'lating small letter eth' <c>ð</c> character, used to represent voiced dental fricative.
+    /// </summary>
+    public static readonly SpeechSymbol VoicedDentalFricative = new((char)0x00F0, true);
 
-    public const char VoicedRetroflexPlosive = (char)0x0256;  // ɖ,latin small letter d with tail,voiced retroflex plosive
+    /// <summary>
+    /// The Unicode 'lating small letter d with tail' <c>ɖ</c> character, used to represent voiced retroflex plosive.
+    /// </summary>
+    public static readonly SpeechSymbol VoicedRetroflexPlosive = new((char)0x0256, true);
 
-    public const char VoicedDentalAlveolarImplosive = (char)0x0257;  // ɗ,latin small letter d with hook,voiced dental/alveolar implosive
+    public static readonly SpeechSymbol VoicedDentalAlveolarImplosive = new((char)0x0257, true);  // ɗ,latin small letter d with hook,voiced dental/alveolar implosive
 
-    public const char CloseMidFrontUnrounded = (char)0x0065;  // e,latin small letter e,close-mid front unrounded
+    public static readonly SpeechSymbol CloseMidFrontUnrounded = new((char)0x0065, true);  // e,latin small letter e,close-mid front unrounded
 
-    public const char MidCentralSchwa = (char)0x0259;  // ə,latin small letter schwa,mid-central schwa
+    public static readonly SpeechSymbol MidCentralSchwa = new((char)0x0259, true);  // ə,latin small letter schwa,mid-central schwa
 
-    public const char OpenMidFrontUnrounded = (char)0x025B;  // ɛ,latin small letter open e,open-mid front unrounded
+    public static readonly SpeechSymbol OpenMidFrontUnrounded = new((char)0x025B, true);  // ɛ,latin small letter open e,open-mid front unrounded
 
-    public const char CloseMidCentralUnrounded = (char)0x0258;  // ɘ,latin small letter reversed e,close-mid central unrounded
+    public static readonly SpeechSymbol CloseMidCentralUnrounded = new((char)0x0258, true);  // ɘ,latin small letter reversed e,close-mid central unrounded
 
-    public const char OpenMidCentralUnrounded = (char)0x025C;  // ɜ,latin small letter reversed open e,open-mid central unrounded
+    public static readonly SpeechSymbol OpenMidCentralUnrounded = new((char)0x025C, true);  // ɜ,latin small letter reversed open e,open-mid central unrounded
 
-    public const char OpenMidCentralRounded = (char)0x025E;  // ɞ,latin small letter closed reversed open e,open-mid central rounded
+    public static readonly SpeechSymbol OpenMidCentralRounded = new((char)0x025E, true);  // ɞ,latin small letter closed reversed open e,open-mid central rounded
 
-    public const char VoicelessLabiodentalFricative = (char)0x0066;  // f,latin small letter f,voiceless labiodental fricative
+    public static readonly SpeechSymbol VoicelessLabiodentalFricative = new((char)0x0066, true);  // f,latin small letter f,voiceless labiodental fricative
 
-    public const char VoicedVelarPlosive = (char)0x0261;  // ɡ,latin small letter script g,voiced velar plosive
+    public static readonly SpeechSymbol VoicedVelarPlosive = new((char)0x0261, true);  // ɡ,latin small letter script g,voiced velar plosive
 
-    public const char VoicedUvularPlosive = (char)0x0262;  // ɢ,latin letter small capital g,voiced uvular plosive
+    public static readonly SpeechSymbol VoicedUvularPlosive = new((char)0x0262, true);  // ɢ,latin letter small capital g,voiced uvular plosive
 
-    public const char VoicedVelarImplosive = (char)0x0260;  // ɠ,latin small letter g with hook,voiced velar implosive
+    public static readonly SpeechSymbol VoicedVelarImplosive = new((char)0x0260, true);  // ɠ,latin small letter g with hook,voiced velar implosive
 
-    public const char VoicedUvularImplosive = (char)0x029B;  // ʛ,latin letter small capital g with hook,voiced uvular implosive
+    public static readonly SpeechSymbol VoicedUvularImplosive = new((char)0x029B, true);  // ʛ,latin letter small capital g with hook,voiced uvular implosive
 
-    public const char CloseMidBackUnrounded = (char)0x0264;  // ɤ,latin small letter rams horn,close-mid back unrounded
+    public static readonly SpeechSymbol CloseMidBackUnrounded = new((char)0x0264, true);  // ɤ,latin small letter rams horn,close-mid back unrounded
 
-    public const char VoicedVelarFricative = (char)0x0263;  // ɣ,latin small letter gamma,voiced velar fricative
+    public static readonly SpeechSymbol VoicedVelarFricative = new((char)0x0263, true);  // ɣ,latin small letter gamma,voiced velar fricative
 
-    public const char VoicelessGlottalFricative = (char)0x0068;  // h,latin small letter h,voiceless glottal fricative
+    public static readonly SpeechSymbol VoicelessGlottalFricative = new((char)0x0068, true);  // h,latin small letter h,voiceless glottal fricative
 
-    public const char VoicelessPharyngealFricative = (char)0x0127;  // ħ,latin small letter h with stroke,voiceless pharyngeal fricative
+    public static readonly SpeechSymbol VoicelessPharyngealFricative = new((char)0x0127, true);  // ħ,latin small letter h with stroke,voiceless pharyngeal fricative
 
-    public const char VoicelessEpiglottalFricative = (char)0x029C;  // ʜ,latin letter small capital h,voiceless epiglottal fricative
+    public static readonly SpeechSymbol VoicelessEpiglottalFricative = new((char)0x029C, true);  // ʜ,latin letter small capital h,voiceless epiglottal fricative
 
-    public const char VoicedGlottalFricative = (char)0x0266;  // ɦ,latin small letter h with hook,voiced glottal fricative
+    public static readonly SpeechSymbol VoicedGlottalFricative = new((char)0x0266, true);  // ɦ,latin small letter h with hook,voiced glottal fricative
 
-    public const char SimultaneousVoicelessPostalveolarVelarFricative = (char)0x0267;  // ɧ,latin small letter heng with hook,simultaneous voiceless postalveolar+velar fricative
+    public static readonly SpeechSymbol SimultaneousVoicelessPostalveolarVelarFricative = new((char)0x0267, true);  // ɧ,latin small letter heng with hook,simultaneous voiceless postalveolar+velar fricative
 
-    public const char VoicedLabialPalatalApproximant = (char)0x0265;  // ɥ,latin small letter turned h,voiced labial-palatal approximant
+    public static readonly SpeechSymbol VoicedLabialPalatalApproximant = new((char)0x0265, true);  // ɥ,latin small letter turned h,voiced labial-palatal approximant
 
-    public const char CloseFrontUnrounded = (char)0x0069;  // i,latin small letter i,close front unrounded
+    public static readonly SpeechSymbol CloseFrontUnrounded = new((char)0x0069, true);  // i,latin small letter i,close front unrounded
 
-    public const char LaxCloseFrontUnrounded = (char)0x026A;  // ɪ,latin letter small capital i,lax close front unrounded
+    public static readonly SpeechSymbol LaxCloseFrontUnrounded = new((char)0x026A, true);  // ɪ,latin letter small capital i,lax close front unrounded
 
-    public const char CloseCentralUnrounded = (char)0x0268;  // ɨ,latin small letter i with stroke,close central unrounded
+    public static readonly SpeechSymbol CloseCentralUnrounded = new((char)0x0268, true);  // ɨ,latin small letter i with stroke,close central unrounded
 
-    public const char VoicedPalatalApproximant = (char)0x006A;  // j,latin small letter j,voiced palatal approximant
+    public static readonly SpeechSymbol VoicedPalatalApproximant = new((char)0x006A, true);  // j,latin small letter j,voiced palatal approximant
 
-    public const char VoicedPalatalFricative = (char)0x029D;  // ʝ,latin small letter j with crossed tail,voiced palatal fricative
+    public static readonly SpeechSymbol VoicedPalatalFricative = new((char)0x029D, true);  // ʝ,latin small letter j with crossed tail,voiced palatal fricative
 
-    public const char VoicedPalatalPlosive = (char)0x025F;  // ɟ,latin small letter dotless j with stroke,voiced palatal plosive
+    public static readonly SpeechSymbol VoicedPalatalPlosive = new((char)0x025F, true);  // ɟ,latin small letter dotless j with stroke,voiced palatal plosive
 
-    public const char VoicedPalatalImplosive = (char)0x0284;  // ʄ,latin small letter dotless j with stroke and hook,voiced palatal implosive
+    public static readonly SpeechSymbol VoicedPalatalImplosive = new((char)0x0284, true);  // ʄ,latin small letter dotless j with stroke and hook,voiced palatal implosive
 
-    public const char VoicelessVelarPlosive = (char)0x006B;  // k,latin small letter k,voiceless velar plosive
+    public static readonly SpeechSymbol VoicelessVelarPlosive = new((char)0x006B, true);  // k,latin small letter k,voiceless velar plosive
 
-    public const char VoicedAlveolarLateralApproximant = (char)0x006C;  // l,latin small letter l,voiced alveolar lateral approximant
+    public static readonly SpeechSymbol VoicedAlveolarLateralApproximant = new((char)0x006C, true);  // l,latin small letter l,voiced alveolar lateral approximant
 
-    public const char VoicedVelarLateralApproximant = (char)0x029F;  // ʟ,latin letter small capital l,voiced velar lateral approximant
+    public static readonly SpeechSymbol VoicedVelarLateralApproximant = new((char)0x029F, true);  // ʟ,latin letter small capital l,voiced velar lateral approximant
 
-    public const char VoicelessAlveolarLateralFricative = (char)0x026C;  // ɬ,latin small letter l with belt,voiceless alveolar lateral fricative
+    public static readonly SpeechSymbol VoicelessAlveolarLateralFricative = new((char)0x026C, true);  // ɬ,latin small letter l with belt,voiceless alveolar lateral fricative
 
-    public const char VoicedRetroflexLateralApproximant = (char)0x026D;  // ɭ,latin small letter l with retroflex hook,voiced retroflex lateral approximant
+    public static readonly SpeechSymbol VoicedRetroflexLateralApproximant = new((char)0x026D, true);  // ɭ,latin small letter l with retroflex hook,voiced retroflex lateral approximant
 
-    public const char VoicedAlveolarLateralFricative = (char)0x026E;  // ɮ,latin small letter lezh,voiced alveolar lateral fricative
+    public static readonly SpeechSymbol VoicedAlveolarLateralFricative = new((char)0x026E, true);  // ɮ,latin small letter lezh,voiced alveolar lateral fricative
 
-    public const char VoicedPalatalLateralApproximant = (char)0x028E;  // ʎ,latin small letter turned y,voiced palatal lateral approximant
+    public static readonly SpeechSymbol VoicedPalatalLateralApproximant = new((char)0x028E, true);  // ʎ,latin small letter turned y,voiced palatal lateral approximant
 
-    public const char VoicedBilabialNasal = (char)0x006D;  // m,latin small letter m,voiced bilabial nasal
+    public static readonly SpeechSymbol VoicedBilabialNasal = new((char)0x006D, true);  // m,latin small letter m,voiced bilabial nasal
 
-    public const char VoicedLabiodentalNasal = (char)0x0271;  // ɱ,latin small letter m with hook,voiced labiodental nasal
+    public static readonly SpeechSymbol VoicedLabiodentalNasal = new((char)0x0271, true);  // ɱ,latin small letter m with hook,voiced labiodental nasal
 
-    public const char VoicedAlveolarNasal = (char)0x006E;  // n,latin small letter n,voiced alveolar nasal
+    public static readonly SpeechSymbol VoicedAlveolarNasal = new((char)0x006E, true);  // n,latin small letter n,voiced alveolar nasal
 
-    public const char VoicedUvularNasal = (char)0x0274;  // ɴ,latin letter small capital n,voiced uvular nasal
+    public static readonly SpeechSymbol VoicedUvularNasal = new((char)0x0274, true);  // ɴ,latin letter small capital n,voiced uvular nasal
 
-    public const char VoicedPalatalNasal = (char)0x0272;  // ɲ,latin small letter n with left hook,voiced palatal nasal
+    public static readonly SpeechSymbol VoicedPalatalNasal = new((char)0x0272, true);  // ɲ,latin small letter n with left hook,voiced palatal nasal
 
-    public const char VoicedRetroflexNasal = (char)0x0273;  // ɳ,latin small letter n with retroflex hook,voiced retroflex nasal
+    public static readonly SpeechSymbol VoicedRetroflexNasal = new((char)0x0273, true);  // ɳ,latin small letter n with retroflex hook,voiced retroflex nasal
 
-    public const char VoicedVelarNasal = (char)0x014B;  // ŋ,latin small letter eng,voiced velar nasal
+    public static readonly SpeechSymbol VoicedVelarNasal = new((char)0x014B, true);  // ŋ,latin small letter eng,voiced velar nasal
 
-    public const char CloseMidBackRounded = (char)0x006F;  // o,latin small letter o,close-mid back rounded
+    public static readonly SpeechSymbol CloseMidBackRounded = new((char)0x006F, true);  // o,latin small letter o,close-mid back rounded
 
-    public const char CloseMidFrontRounded = (char)0x00F8;  // ø,latin small letter o with stroke,close-mid front rounded
+    public static readonly SpeechSymbol CloseMidFrontRounded = new((char)0x00F8, true);  // ø,latin small letter o with stroke,close-mid front rounded
 
-    public const char OpenMidFrontRounded = (char)0x0153;  // œ,latin small ligature oe,open-mid front rounded
+    public static readonly SpeechSymbol OpenMidFrontRounded = new((char)0x0153, true);  // œ,latin small ligature oe,open-mid front rounded
 
-    public const char OpenFrontRounded = (char)0x0276;  // ɶ,latin letter small capital oe,open front rounded
+    public static readonly SpeechSymbol OpenFrontRounded = new((char)0x0276, true);  // ɶ,latin letter small capital oe,open front rounded
 
-    public const char OpenMidBackRounded = (char)0x0254;  // ɔ,latin small letter open o,open-mid back rounded
+    public static readonly SpeechSymbol OpenMidBackRounded = new((char)0x0254, true);  // ɔ,latin small letter open o,open-mid back rounded
 
-    public const char CloseMidCentralRounded = (char)0x0275;  // ɵ,latin small letter barred o,close-mid central rounded
+    public static readonly SpeechSymbol CloseMidCentralRounded = new((char)0x0275, true);  // ɵ,latin small letter barred o,close-mid central rounded
 
-    public const char VoicelessBilabialPlosive = (char)0x0070;  // p,latin small letter p,voiceless bilabial plosive
+    public static readonly SpeechSymbol VoicelessBilabialPlosive = new((char)0x0070, true);  // p,latin small letter p,voiceless bilabial plosive
 
-    public const char VoicelessBilabialFricative = (char)0x0278;  // ɸ,latin small letter phi,voiceless bilabial fricative
+    public static readonly SpeechSymbol VoicelessBilabialFricative = new((char)0x0278, true);  // ɸ,latin small letter phi,voiceless bilabial fricative
 
-    public const char VoicelessUvularPlosive = (char)0x0071;  // q,latin small letter q,voiceless uvular plosive
+    public static readonly SpeechSymbol VoicelessUvularPlosive = new((char)0x0071, true);  // q,latin small letter q,voiceless uvular plosive
 
-    public const char VoicedAlveolarTrill = (char)0x0072;  // r,latin small letter r,voiced alveolar trill
+    public static readonly SpeechSymbol VoicedAlveolarTrill = new((char)0x0072, true);  // r,latin small letter r,voiced alveolar trill
 
-    public const char VoicedUvularTrill = (char)0x0280;  // ʀ,latin letter small capital r,voiced uvular trill
+    public static readonly SpeechSymbol VoicedUvularTrill = new((char)0x0280, true);  // ʀ,latin letter small capital r,voiced uvular trill
 
-    public const char VoicedAlveolarApproximant = (char)0x0279;  // ɹ,latin small letter turned r,voiced alveolar approximant
+    public static readonly SpeechSymbol VoicedAlveolarApproximant = new((char)0x0279, true);  // ɹ,latin small letter turned r,voiced alveolar approximant
 
-    public const char VoicedAlveolarLateralFlap = (char)0x027A;  // ɺ,latin small letter turned r with long leg,voiced alveolar lateral flap
+    public static readonly SpeechSymbol VoicedAlveolarLateralFlap = new((char)0x027A, true);  // ɺ,latin small letter turned r with long leg,voiced alveolar lateral flap
 
-    public const char VoicedRetroflexApproximant = (char)0x027B;  // ɻ,latin small letter turned r with hook,voiced retroflex approximant
+    public static readonly SpeechSymbol VoicedRetroflexApproximant = new((char)0x027B, true);  // ɻ,latin small letter turned r with hook,voiced retroflex approximant
 
-    public const char VoicedRetroflexTap = (char)0x027D;  // ɽ,latin small letter r with tail,voiced retroflex tap
+    public static readonly SpeechSymbol VoicedRetroflexTap = new((char)0x027D, true);  // ɽ,latin small letter r with tail,voiced retroflex tap
 
-    public const char VoicedAlveolarTap = (char)0x027E;  // ɾ,latin small letter r with fishhook,voiced alveolar tap
+    public static readonly SpeechSymbol VoicedAlveolarTap = new((char)0x027E, true);  // ɾ,latin small letter r with fishhook,voiced alveolar tap
 
-    public const char VoicedUvularFricative = (char)0x0281;  // ʁ,latin letter small capital inverted r,voiced uvular fricative
+    public static readonly SpeechSymbol VoicedUvularFricative = new((char)0x0281, true);  // ʁ,latin letter small capital inverted r,voiced uvular fricative
 
-    public const char VoicelessAlveolarFricative = (char)0x0073;  // s,latin small letter s,voiceless alveolar fricative
+    public static readonly SpeechSymbol VoicelessAlveolarFricative = new((char)0x0073, true);  // s,latin small letter s,voiceless alveolar fricative
 
-    public const char VoicelessRetroflexFricative = (char)0x0282;  // ʂ,latin small letter s with hook,voiceless retroflex fricative
+    public static readonly SpeechSymbol VoicelessRetroflexFricative = new((char)0x0282, true);  // ʂ,latin small letter s with hook,voiceless retroflex fricative
 
-    public const char VoicelessPostalveolarFricative = (char)0x0283;  // ʃ,latin small letter esh,voiceless postalveolar fricative
+    public static readonly SpeechSymbol VoicelessPostalveolarFricative = new((char)0x0283, true);  // ʃ,latin small letter esh,voiceless postalveolar fricative
 
-    public const char VoicelessAlveolarPlosive = (char)0x0074;  // t,latin small letter t,voiceless alveolar plosive
+    public static readonly SpeechSymbol VoicelessAlveolarPlosive = new((char)0x0074, true);  // t,latin small letter t,voiceless alveolar plosive
 
-    public const char VoicelessRetroflexPlosive = (char)0x0288;  // ʈ,latin small letter t with retroflex hook,voiceless retroflex plosive
+    public static readonly SpeechSymbol VoicelessRetroflexPlosive = new((char)0x0288, true);  // ʈ,latin small letter t with retroflex hook,voiceless retroflex plosive
 
-    public const char CloseBackRounded = (char)0x0075;  // u,latin small letter u,close back rounded
+    public static readonly SpeechSymbol CloseBackRounded = new((char)0x0075, true);  // u,latin small letter u,close back rounded
 
-    public const char CloseCentralRounded = (char)0x0289;  // ʉ,latin small letter u bar,close central rounded
+    public static readonly SpeechSymbol CloseCentralRounded = new((char)0x0289, true);  // ʉ,latin small letter u bar,close central rounded
 
-    public const char CloseBackUnrounded = (char)0x026F;  // ɯ,latin small letter turned m,close back unrounded
+    public static readonly SpeechSymbol CloseBackUnrounded = new((char)0x026F, true);  // ɯ,latin small letter turned m,close back unrounded
 
-    public const char VoicedVelarApproximant = (char)0x0270;  // ɰ,latin small letter turned m with long leg,voiced velar approximant
+    public static readonly SpeechSymbol VoicedVelarApproximant = new((char)0x0270, true);  // ɰ,latin small letter turned m with long leg,voiced velar approximant
 
-    public const char LaxCloseBackRounded = (char)0x028A;  // ʊ,latin small letter upsilon,lax close back rounded
+    public static readonly SpeechSymbol LaxCloseBackRounded = new((char)0x028A, true);  // ʊ,latin small letter upsilon,lax close back rounded
 
-    public const char VoicedLabiodentalFricative = (char)0x0076;  // v,latin small letter v,voiced labiodental fricative
+    public static readonly SpeechSymbol VoicedLabiodentalFricative = new((char)0x0076, true);  // v,latin small letter v,voiced labiodental fricative
 
-    public const char VoicedLabiodentalApproximant = (char)0x028B;  // ʋ,latin small letter v with hook,voiced labiodental approximant
+    public static readonly SpeechSymbol VoicedLabiodentalApproximant = new((char)0x028B, true);  // ʋ,latin small letter v with hook,voiced labiodental approximant
 
-    public const char VoicedLabiodentalTap = (char)0x2C71;  // ⱱ,latin small letter v with right hook,voiced labiodental tap
+    public static readonly SpeechSymbol VoicedLabiodentalTap = new((char)0x2C71, true);  // ⱱ,latin small letter v with right hook,voiced labiodental tap
 
-    public const char OpenMidBackUnrounded = (char)0x028C;  // ʌ,latin small letter turned v,open-mid back unrounded
+    public static readonly SpeechSymbol OpenMidBackUnrounded = new((char)0x028C, true);  // ʌ,latin small letter turned v,open-mid back unrounded
 
-    public const char VoicedLabialVelarApproximant = (char)0x0077;  // w,latin small letter w,voiced labial-velar approximant
+    public static readonly SpeechSymbol VoicedLabialVelarApproximant = new((char)0x0077, true);  // w,latin small letter w,voiced labial-velar approximant
 
-    public const char VoicelessLabialVelarFricative = (char)0x028D;  // ʍ,latin small letter turned w,voiceless labial-velar fricative
+    public static readonly SpeechSymbol VoicelessLabialVelarFricative = new((char)0x028D, true);  // ʍ,latin small letter turned w,voiceless labial-velar fricative
 
-    public const char VoicelessVelarFricative = (char)0x0078;  // x,latin small letter x,voiceless velar fricative
+    public static readonly SpeechSymbol VoicelessVelarFricative = new((char)0x0078, true);  // x,latin small letter x,voiceless velar fricative
 
-    public const char CloseFrontRounded = (char)0x0079;  // y,latin small letter y,close front rounded
+    public static readonly SpeechSymbol CloseFrontRounded = new((char)0x0079, true);  // y,latin small letter y,close front rounded
 
-    public const char LaxCloseFrontRounded = (char)0x028F;  // ʏ,latin letter small capital y,lax close front rounded
+    public static readonly SpeechSymbol LaxCloseFrontRounded = new((char)0x028F, true);  // ʏ,latin letter small capital y,lax close front rounded
 
-    public const char VoicedAlveolarFricative = (char)0x007A;  // z,latin small letter z,voiced alveolar fricative
+    public static readonly SpeechSymbol VoicedAlveolarFricative = new((char)0x007A, true);  // z,latin small letter z,voiced alveolar fricative
 
-    public const char VoicedRetroflexFricative = (char)0x0290;  // ʐ,latin small letter z with retroflex hook,voiced retroflex fricative
+    public static readonly SpeechSymbol VoicedRetroflexFricative = new((char)0x0290, true);  // ʐ,latin small letter z with retroflex hook,voiced retroflex fricative
 
-    public const char VoicedAlveoloPalatalFricative = (char)0x0291;  // ʑ,latin small letter z with curl,voiced alveolo-palatal fricative
+    public static readonly SpeechSymbol VoicedAlveoloPalatalFricative = new((char)0x0291, true);  // ʑ,latin small letter z with curl,voiced alveolo-palatal fricative
 
-    public const char VoicedPostalveolarFricative = (char)0x0292;  // ʒ,latin small letter ezh,voiced postalveolar fricative
+    public static readonly SpeechSymbol VoicedPostalveolarFricative = new((char)0x0292, true);  // ʒ,latin small letter ezh,voiced postalveolar fricative
 
-    public const char VoicelessGlottalPlosive = (char)0x0294;  // ʔ,latin letter glottal stop,voiceless glottal plosive
+    public static readonly SpeechSymbol VoicelessGlottalPlosive = new((char)0x0294, true);  // ʔ,latin letter glottal stop,voiceless glottal plosive
 
-    public const char VoicedPharyngealFricative = (char)0x0295;  // ʕ,latin letter pharyngeal voiced fricative,voiced pharyngeal fricative
+    public static readonly SpeechSymbol VoicedPharyngealFricative = new((char)0x0295, true);  // ʕ,latin letter pharyngeal voiced fricative,voiced pharyngeal fricative
 
-    public const char EpiglottalPlosive = (char)0x02A1;  // ʡ,latin letter glottal stop with stroke,epiglottal plosive
+    public static readonly SpeechSymbol EpiglottalPlosive = new((char)0x02A1, true);  // ʡ,latin letter glottal stop with stroke,epiglottal plosive
 
-    public const char VoicedEpiglottalFricative = (char)0x02A2;  // ʢ,latin letter reversed glottal stop with stroke,voiced epiglottal fricative
+    public static readonly SpeechSymbol VoicedEpiglottalFricative = new((char)0x02A2, true);  // ʢ,latin letter reversed glottal stop with stroke,voiced epiglottal fricative
 
-    public const char VoicelessDentalClick = (char)0x01C0;  // ǀ,latin letter dental click,voiceless dental click
+    public static readonly SpeechSymbol VoicelessDentalClick = new((char)0x01C0, true);  // ǀ,latin letter dental click,voiceless dental click
 
-    public const char VoicelessAlveolarLateralClick = (char)0x01C1;  // ǁ,latin letter lateral click,voiceless alveolar lateral click
+    public static readonly SpeechSymbol VoicelessAlveolarLateralClick = new((char)0x01C1, true);  // ǁ,latin letter lateral click,voiceless alveolar lateral click
 
-    public const char VoicelessPalatoalveolarClick = (char)0x01C2;  // ǂ,latin letter alveolar click,voiceless palatoalveolar click
+    public static readonly SpeechSymbol VoicelessPalatoalveolarClick = new((char)0x01C2, true);  // ǂ,latin letter alveolar click,voiceless palatoalveolar click
 
-    public const char VoicelessPostalveolarClick = (char)0x01C3;  // ǃ,latin letter retroflex click,voiceless (post)alveolar click
+    public static readonly SpeechSymbol VoicelessPostalveolarClick = new((char)0x01C3, true);  // ǃ,latin letter retroflex click,voiceless (post)alveolar click
 
-    public const char VoicelessBilabialClick = (char)0x0298;  // ʘ,latin letter bilabial click,voiceless bilabial click
+    public static readonly SpeechSymbol VoicelessBilabialClick = new((char)0x0298, true);  // ʘ,latin letter bilabial click,voiceless bilabial click
 
-    public const char VoicedBilabialFricative = (char)0x03B2;  // β,greek small letter beta,voiced bilabial fricative
+    public static readonly SpeechSymbol VoicedBilabialFricative = new((char)0x03B2, true);  // β,greek small letter beta,voiced bilabial fricative
 
-    public const char VoicelessDentalFricative = (char)0x03B8;  // θ,greek small letter theta,voiceless dental fricative
+    public static readonly SpeechSymbol VoicelessDentalFricative = new((char)0x03B8, true);  // θ,greek small letter theta,voiceless dental fricative
 
-    public const char VoicelessUvularFricative = (char)0x03C7;  // χ,greek small letter chi,voiceless uvular fricative
+    public static readonly SpeechSymbol VoicelessUvularFricative = new((char)0x03C7, true);  // χ,greek small letter chi,voiceless uvular fricative
 
-    public const char VelarizedOrPharyngealized = (char)0x0334;  // ◌̴,combining tilde overlay,velarized or pharyngealized
+    public static readonly SpeechSymbol VelarizedOrPharyngealized = new((char)0x0334, true);  // ◌̴,combining tilde overlay,velarized or pharyngealized
 
-    public const char Linguolabial = (char)0x033C;  // ◌̼,combining seagull below,linguolabial
+    public static readonly SpeechSymbol Linguolabial = new((char)0x033C, true);  // ◌̼,combining seagull below,linguolabial
 
-    public const char Dental = (char)0x032A;  // ◌̪,combining bridge below,dental
+    public static readonly SpeechSymbol Dental = new((char)0x032A, true);  // ◌̪,combining bridge below,dental
 
-    public const char Laminal = (char)0x033B;  // ◌̻,combining square below,laminal
+    public static readonly SpeechSymbol Laminal = new((char)0x033B, true);  // ◌̻,combining square below,laminal
 
-    public const char Apical = (char)0x033A;  // ◌̺,combining inverted bridge below,apical
+    public static readonly SpeechSymbol Apical = new((char)0x033A, true);  // ◌̺,combining inverted bridge below,apical
 
-    public const char Advanced = (char)0x031F;  // ◌̟,combining plus sign below,advanced
+    public static readonly SpeechSymbol Advanced = new((char)0x031F, true);  // ◌̟,combining plus sign below,advanced
 
-    public const char Retracted = (char)0x0320;  // ◌̠,combining minus sign below,retracted
+    public static readonly SpeechSymbol Retracted = new((char)0x0320, true);  // ◌̠,combining minus sign below,retracted
 
-    public const char Raised = (char)0x031D;  // ◌̝,combining up tack below,raised
+    public static readonly SpeechSymbol Raised = new((char)0x031D, true);  // ◌̝,combining up tack below,raised
 
-    public const char Lowered = (char)0x031E;  // ◌̞,combining down tack below,lowered
+    public static readonly SpeechSymbol Lowered = new((char)0x031E, true);  // ◌̞,combining down tack below,lowered
 
-    public const char AdvancedTongueRoot = (char)0x0318;  // ◌̘,combining left tack below,advanced tongue root
+    public static readonly SpeechSymbol AdvancedTongueRoot = new((char)0x0318, true);  // ◌̘,combining left tack below,advanced tongue root
 
-    public const char RetractedTongueRoot = (char)0x0319;  // ◌̙,combining right tack below,retracted tongue root
+    public static readonly SpeechSymbol RetractedTongueRoot = new((char)0x0319, true);  // ◌̙,combining right tack below,retracted tongue root
 
-    public const char LessRounded = (char)0x031C;  // ◌̜,combining left half ring below,less rounded
+    public static readonly SpeechSymbol LessRounded = new((char)0x031C, true);  // ◌̜,combining left half ring below,less rounded
 
-    public const char MoreRounded = (char)0x0339;  // ◌̹,combining right half ring below,more rounded
+    public static readonly SpeechSymbol MoreRounded = new((char)0x0339, true);  // ◌̹,combining right half ring below,more rounded
 
-    public const char Voiced = (char)0x032C;  // ◌̬,combining caron below,voiced
+    public static readonly SpeechSymbol Voiced = new((char)0x032C, true);  // ◌̬,combining caron below,voiced
 
-    public const char Voiceless = (char)0x0325;  // ◌̥,combining ring below,voiceless
+    public static readonly SpeechSymbol Voiceless = new((char)0x0325, true);  // ◌̥,combining ring below,voiceless
 
-    public const char CreakyVoiced = (char)0x0330;  // ◌̰,combining tilde below,creaky voiced
+    public static readonly SpeechSymbol CreakyVoiced = new((char)0x0330, true);  // ◌̰,combining tilde below,creaky voiced
 
-    public const char BreathyVoiced = (char)0x0324;  // ◌̤,combining diaeresis below,breathy voiced
+    public static readonly SpeechSymbol BreathyVoiced = new((char)0x0324, true);  // ◌̤,combining diaeresis below,breathy voiced
 
-    public const char Syllabic = (char)0x0329;  // ◌̩,combining vertical line below,syllabic
+    public static readonly SpeechSymbol Syllabic = new((char)0x0329, true);  // ◌̩,combining vertical line below,syllabic
 
-    public const char NonSyllabic = (char)0x032F;  // ◌̯,combining inverted breve below,non-syllabic
+    public static readonly SpeechSymbol NonSyllabic = new((char)0x032F, true);  // ◌̯,combining inverted breve below,non-syllabic
 
-    public const char Nasalized = (char)0x0303;  // ◌̃,combining tilde,nasalized
+    public static readonly SpeechSymbol Nasalized = new((char)0x0303, true);  // ◌̃,combining tilde,nasalized
 
-    public const char Centralized = (char)0x0308;  // ◌̈,combining diaeresis,centralized
+    public static readonly SpeechSymbol Centralized = new((char)0x0308, true);  // ◌̈,combining diaeresis,centralized
 
-    public const char MidCentralized = (char)0x033D;  // ◌̽,combining x above,mid-centralized
+    public static readonly SpeechSymbol MidCentralized = new((char)0x033D, true);  // ◌̽,combining x above,mid-centralized
 
-    public const char ExtraShort = (char)0x0306;  // ◌̆,combining breve,extra-short
+    public static readonly SpeechSymbol ExtraShort = new((char)0x0306, true);  // ◌̆,combining breve,extra-short
 
-    public const char NoAudibleRelease = (char)0x031A;  // ◌̚,combining left angle above,no audible release
+    public static readonly SpeechSymbol NoAudibleRelease = new((char)0x031A, true);  // ◌̚,combining left angle above,no audible release
 
-    public const char Rhotacized = (char)0x02DE;  // ◌˞,modifier letter rhotic hook,rhotacized
+    public static readonly SpeechSymbol Rhotacized = new((char)0x02DE, true);  // ◌˞,modifier letter rhotic hook,rhotacized
 
-    public const char LateralRelease = (char)0x02E1;  // ˡ,modifier letter small l,lateral release
+    public static readonly SpeechSymbol LateralRelease = new((char)0x02E1, true);  // ˡ,modifier letter small l,lateral release
 
-    public const char NasalRelease = (char)0x207F;  // ⁿ,superscript latin small letter n,nasal release
+    public static readonly SpeechSymbol NasalRelease = new((char)0x207F, true);  // ⁿ,superscript latin small letter n,nasal release
 
-    public const char Labialized = (char)0x02B7;  // ʷ,modifier letter small w,labialized
+    public static readonly SpeechSymbol Labialized = new((char)0x02B7, true);  // ʷ,modifier letter small w,labialized
 
-    public const char Palatalized = (char)0x02B2;  // ʲ,modifier letter small j,palatalized
+    public static readonly SpeechSymbol Palatalized = new((char)0x02B2, true);  // ʲ,modifier letter small j,palatalized
 
-    public const char Velarized = (char)0x02E0;  // ˠ,modifier letter small gamma,velarized
+    public static readonly SpeechSymbol Velarized = new((char)0x02E0, true);  // ˠ,modifier letter small gamma,velarized
 
-    public const char Pharyngealized = (char)0x02E4;  // ˤ,modifier letter small reversed glottal stop,pharyngealized
+    public static readonly SpeechSymbol Pharyngealized = new((char)0x02E4, true);  // ˤ,modifier letter small reversed glottal stop,pharyngealized
 
-    public const char Aspirated = (char)0x02B0;  // ʰ,modifier letter small h,aspirated
+    public static readonly SpeechSymbol Aspirated = new((char)0x02B0, true);  // ʰ,modifier letter small h,aspirated
 
-    public const char Ejective = (char)0x02BC;  // ʼ,modifier letter apostrophe,ejective
+    public static readonly SpeechSymbol Ejective = new((char)0x02BC, true);  // ʼ,modifier letter apostrophe,ejective
 
-    public const char Long = (char)0x02D0;  // ː,modifier letter triangular colon,long
+    public static readonly SpeechSymbol Long = new((char)0x02D0, true);  // ː,modifier letter triangular colon,long
 
-    public const char HalfLong = (char)0x02D1;  // ˑ,modifier letter half triangular colon,half-long
+    public static readonly SpeechSymbol HalfLong = new((char)0x02D1, true);  // ˑ,modifier letter half triangular colon,half-long
 
-    public const char TieBar = (char)0x0361;  // ͡,combining double inverted breve,tie bar
+    public static readonly SpeechSymbol TieBar = new((char)0x0361, true);  // ͡,combining double inverted breve,tie bar
 
-    public const char PrimaryStress = (char)0x02C8;  // ˈ,modifier letter vertical line,primary stress
+    public static readonly SpeechSymbol PrimaryStress = new((char)0x02C8, true);  // ˈ,modifier letter vertical line,primary stress
 
-    public const char SecondaryStress = (char)0x02CC;  // ˌ,modifier letter low vertical line,secondary stress
+    public static readonly SpeechSymbol SecondaryStress = new((char)0x02CC, true);  // ˌ,modifier letter low vertical line,secondary stress
 
-    public const char ExtraHighTone = (char)0x02E5;  // ˥,modifier letter extra-high tone bar,extra high tone
+    public static readonly SpeechSymbol ExtraHighTone = new((char)0x02E5, true);  // ˥,modifier letter extra-high tone bar,extra high tone
 
-    public const char HighTone = (char)0x02E6;  // ˦,modifier letter high tone bar,high tone
+    public static readonly SpeechSymbol HighTone = new((char)0x02E6, true);  // ˦,modifier letter high tone bar,high tone
 
-    public const char MidTone = (char)0x02E7;  // ˧,modifier letter mid tone bar,mid tone
+    public static readonly SpeechSymbol MidTone = new((char)0x02E7, true);  // ˧,modifier letter mid tone bar,mid tone
 
-    public const char LowTone = (char)0x02E8;  // ˨,modifier letter low tone bar,low tone
+    public static readonly SpeechSymbol LowTone = new((char)0x02E8, true);  // ˨,modifier letter low tone bar,low tone
 
-    public const char ExtraLowTone = (char)0x02E9;  // ˩,modifier letter extra-low tone bar,extra low tone
+    public static readonly SpeechSymbol ExtraLowTone = new((char)0x02E9, true);  // ˩,modifier letter extra-low tone bar,extra low tone
 
-    public const char Upstep = (char)0xA71B;  // ꜛ,modifier letter raised up arrow,upstep
+    public static readonly SpeechSymbol Upstep = new((char)0xA71B, true);  // ꜛ,modifier letter raised up arrow,upstep
 
-    public const char Downstep = (char)0xA71C;  // ꜜ,modifier letter raised down arrow,downstep
+    public static readonly SpeechSymbol Downstep = new((char)0xA71C, true);  // ꜜ,modifier letter raised down arrow,downstep
 
-    public const char GlobalRiseUp = (char)0x2191;  // ↑,upwards arrow,global rise
+    public static readonly SpeechSymbol GlobalRiseUp = new((char)0x2191, true);  // ↑,upwards arrow,global rise
 
-    public const char GlobalFallDown = (char)0x2193;  // ↓,downwards arrow,global fall
+    public static readonly SpeechSymbol GlobalFallDown = new((char)0x2193, true);  // ↓,downwards arrow,global fall
 
-    public const char GlobalRiseUpRight = (char)0x2197;  // ↗,north east arrow,global rise
+    public static readonly SpeechSymbol GlobalRiseUpRight = new((char)0x2197, true);  // ↗,north east arrow,global rise
 
-    public const char GlobalFallDownRight = (char)0x2198;  // ↘,south east arrow,global fall
+    public static readonly SpeechSymbol GlobalFallDownRight = new((char)0x2198, true);  // ↘,south east arrow,global fall
 
-    public const char WordBreak = (char)0x0020;  // ,space,word break
+    public static readonly SpeechSymbol WordBreak = new((char)0x0020, true);  // ,space,word break
 
-    public const char SyllableBreak = (char)0x002E;  // ,full stop,syllable break
+    public static readonly SpeechSymbol SyllableBreak = new((char)0x002E, true);  // ,full stop,syllable break
 
-    public const char MinorGroupBreakFoot = (char)0x007C;  // |,vertical line,minor group break (foot)
+    public static readonly SpeechSymbol MinorGroupBreakFoot = new((char)0x007C, true);  // |,vertical line,minor group break (foot)
 
-    public const char MajorGroupBreakIntonation = (char)0x2016;  // ‖,double vertical line,major group break (intonation)
+    public static readonly SpeechSymbol MajorGroupBreakIntonation = new((char)0x2016, true);  // ‖,double vertical line,major group break (intonation)
 
-    public const char LinkingAbsenceOfABreak = (char)0x203F;  // ‿,undertie,linking (absence of a break)
+    public static readonly SpeechSymbol LinkingAbsenceOfABreak = new((char)0x203F, true);  // ‿,undertie,linking (absence of a break)
 
     // --------------------------------------------------------------------------------------------
     // Additional characters for valid-IPA with Unicode encodings
@@ -464,67 +497,67 @@ public readonly partial struct SpeechSymbol
     /// <summary>
     /// The Unicode 'combining ring above' <c>◌̊</c> character, used to represent voiceless (above). 
     /// </summary>
-    public const char VoicelessAlt = (char)0x030A;  // ◌̊,combining ring above,voiceless (above)
+    public static readonly SpeechSymbol VoicelessAlt = new((char)0x030A, true);  // ◌̊,combining ring above,voiceless (above)
 
     /// <summary>
     /// The Unicode 'latin small letter g' <c>g</c> character, used to represent voiced velar plosive (alt).
     /// </summary>
-    public const char VoicedVelarPlosiveAlt = (char)0x0067;  // g,latin small letter g,voiced velar plosive
+    public static readonly SpeechSymbol VoicedVelarPlosiveAlt = new((char)0x0067, true);  // g,latin small letter g,voiced velar plosive
 
     /// <summary>
     /// The Unicode 'combining double acute accent' <c>◌̋</c> character, used to represent extra high tone (alt).
     /// </summary>
-    public const char ExtraHighToneAlt = (char)0x030B;  // ◌̋,combining double acute accent,extra high tone
+    public static readonly SpeechSymbol ExtraHighToneAlt = new((char)0x030B, true);  // ◌̋,combining double acute accent,extra high tone
 
-    public const char HighToneAlt = (char)0x0301;  // ◌́,combining acute accent,high tone
+    public static readonly SpeechSymbol HighToneAlt = new((char)0x0301, true);  // ◌́,combining acute accent,high tone
 
-    public const char MidToneAlt = (char)0x0304;  // ◌̄,combining macron,mid tone
+    public static readonly SpeechSymbol MidToneAlt = new((char)0x0304, true);  // ◌̄,combining macron,mid tone
 
-    public const char LowToneAlt = (char)0x0300;  // ◌̀,combining grave accent,low tone
+    public static readonly SpeechSymbol LowToneAlt = new((char)0x0300, true);  // ◌̀,combining grave accent,low tone
 
-    public const char ExtraLowToneAlt = (char)0x030F;  // ◌̏,combining double grave accent,extra low tone
+    public static readonly SpeechSymbol ExtraLowToneAlt = new((char)0x030F, true);  // ◌̏,combining double grave accent,extra low tone
 
-    public const char Falling = (char)0x0302;  // ◌̂,combining circumflex accent,falling
+    public static readonly SpeechSymbol Falling = new((char)0x0302, true);  // ◌̂,combining circumflex accent,falling
 
-    public const char Rising = (char)0x030C;  // ◌̌,combining caron,rising
+    public static readonly SpeechSymbol Rising = new((char)0x030C, true);  // ◌̌,combining caron,rising
 
-    public const char HighRising = (char)0x1DC4;  // ◌᷄,combining macron-acute,high rising
+    public static readonly SpeechSymbol HighRising = new((char)0x1DC4, true);  // ◌᷄,combining macron-acute,high rising
 
-    public const char LowRising = (char)0x1DC5;  // ◌᷅,combining grave-macron,low rising
+    public static readonly SpeechSymbol LowRising = new((char)0x1DC5, true);  // ◌᷅,combining grave-macron,low rising
 
-    public const char LowFalling = (char)0x1DC6;  // ◌᷆,combining macron-grave,low falling
+    public static readonly SpeechSymbol LowFalling = new((char)0x1DC6, true);  // ◌᷆,combining macron-grave,low falling
 
-    public const char HighFalling = (char)0x1DC7;  // ◌᷇,combining acute-macron,high falling
+    public static readonly SpeechSymbol HighFalling = new((char)0x1DC7, true);  // ◌᷇,combining acute-macron,high falling
 
-    public const char RisingFalling = (char)0x1DC8;  // ◌᷈,combining grave-acute-grave,rising-falling
+    public static readonly SpeechSymbol RisingFalling = new((char)0x1DC8, true);  // ◌᷈,combining grave-acute-grave,rising-falling
 
-    public const char FallingRising = (char)0x1DC9;  // ◌᷉,combining acute-grave-acute,falling-rising
+    public static readonly SpeechSymbol FallingRising = new((char)0x1DC9, true);  // ◌᷉,combining acute-grave-acute,falling-rising
 
-    public const char TieBarBelow = (char)0x035C;  // ◌͜,combining double breve below,tie bar (below)
+    public static readonly SpeechSymbol TieBarBelow = new((char)0x035C, true);  // ◌͜,combining double breve below,tie bar (below)
 
     /*
     // --------------------------------------------------------------------------------------------
     // Additions to widened-IPA with Unicode encodings
 
-    public const char RetroflexClick = (char)0x203C;  // ‼,double exclamation mark,retroflex click
+    public static readonly SpeechSymbol RetroflexClick = new((char)0x203C, true);  // ‼,double exclamation mark,retroflex click
 
-    public const char VoicedRetroflexImplosive = (char)0x1D91;  // ᶑ,latin small letter d with hook and tail,voiced retroflex implosive
+    public static readonly SpeechSymbol VoicedRetroflexImplosive = new((char)0x1D91, true);  // ᶑ,latin small letter d with hook and tail,voiced retroflex implosive
 
-    public const char Fortis = (char)0x0348;  // ◌͈,combining double vertical line below,fortis
+    public static readonly SpeechSymbol Fortis = new((char)0x0348, true);  // ◌͈,combining double vertical line below,fortis
 
-    public const char Lenis = (char)0x0349;  // ◌͉,combining left angle below,lenis
+    public static readonly SpeechSymbol Lenis = new((char)0x0349, true);  // ◌͉,combining left angle below,lenis
 
-    public const char Frictionalized = (char)0x0353;  // ◌͓,combining x below,frictionalized
+    public static readonly SpeechSymbol Frictionalized = new((char)0x0353, true);  // ◌͓,combining x below,frictionalized
 
-    public const char Derhoticized = (char)0x032E;  // ◌̮,combining breve below,derhoticized
+    public static readonly SpeechSymbol Derhoticized = new((char)0x032E, true);  // ◌̮,combining breve below,derhoticized
 
-    public const char NonSibilant = (char)0x0347;  // ◌͇,combining equals sign below,non-sibilant
+    public static readonly SpeechSymbol NonSibilant = new((char)0x0347, true);  // ◌͇,combining equals sign below,non-sibilant
 
-    public const char Glottalized = (char)0x02C0;  // ◌ˀ,modifier letter glottal stop,glottalized
+    public static readonly SpeechSymbol Glottalized = new((char)0x02C0, true);  // ◌ˀ,modifier letter glottal stop,glottalized
 
-    public const char VoicedPreAspirated = (char)0x02B1;  // ʱ◌,modifier letter small h with hook,voiced pre-aspirated
+    public static readonly SpeechSymbol VoicedPreAspirated = new((char)0x02B1, true);  // ʱ◌,modifier letter small h with hook,voiced pre-aspirated
 
-    public const char EpilaryngealPhonation = (char)0x1D31;  // ◌ᴱ,modifier letter capital e,epilaryngeal phonation
+    public static readonly SpeechSymbol EpilaryngealPhonation = new((char)0x1D31, true);  // ◌ᴱ,modifier letter capital e,epilaryngeal phonation
     
     */
 
