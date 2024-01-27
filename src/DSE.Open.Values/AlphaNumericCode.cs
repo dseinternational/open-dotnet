@@ -42,7 +42,7 @@ public readonly partial struct AlphaNumericCode : IComparableValue<AlphaNumericC
 
     public static bool IsValidValue(AsciiString value)
     {
-        return value is { IsEmpty: false, Length: <= MaxLength } && value.Span.ContainsOnlyAsciiLettersOrDigits();
+        return value is { IsEmpty: false, Length: <= MaxLength } && value.AsSpan().ContainsOnlyAsciiLettersOrDigits();
     }
 
     public bool Equals(ReadOnlySpan<char> other)
@@ -62,7 +62,7 @@ public readonly partial struct AlphaNumericCode : IComparableValue<AlphaNumericC
 
     public ReadOnlySpan<AsciiChar> AsSpan()
     {
-        return _value.Span;
+        return _value.AsSpan();
     }
 
     public char[] ToCharArray()

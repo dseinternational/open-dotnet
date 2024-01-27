@@ -36,7 +36,14 @@ public readonly partial struct SpeechSymbol
     {
     }
 
+    public char Value => _value;
+
     public static bool TryCreate(char value, out SpeechSymbol symbol)
+    {
+        return TryCreate(value, SpeechSymbolComparison.Exact, out symbol);
+    }
+
+    public static bool TryCreate(char value, SpeechSymbolComparison comparison, out SpeechSymbol symbol)
     {
         if (IsValidValue(value))
         {
@@ -44,9 +51,29 @@ public readonly partial struct SpeechSymbol
             return true;
         }
 
-        symbol = default;
+        if (comparison == SpeechSymbolComparison.Exact)
+        {
+            symbol = default;
+            return false;
+        }
+
+        if (s_equivalenceMappings.TryGetValue(value, out symbol))
+        {
+            return true;
+        }
+
         return false;
     }
+
+    private static readonly FrozenDictionary<char, SpeechSymbol> s_equivalenceMappings = new Dictionary<char, SpeechSymbol>()
+    {
+        { 'g', VoicedVelarPlosive },            // Latin g (U+0047) to voiced velar plosive (U+0261)
+        { '\'', Ejective },                     // Apostrophe (U+0027) to modifier letter apostrophe (U+02BC)
+        { '!', VoicelessPostalveolarClick }     // Exclamation mark (U+0021) to voiceless postalveolar click (U+01C3)
+
+        // TODO
+    }
+    .ToFrozenDictionary();
 
     public static bool IsValidValue(char value)
     {
@@ -69,7 +96,7 @@ public readonly partial struct SpeechSymbol
     /// </remarks>
     public static bool IsStrictIpaSymbol(char c)
     {
-        return StrictIpaSet.Contains(c);
+        return StrictIpa.Contains(c);
     }
 
     /// <summary>
@@ -87,7 +114,7 @@ public readonly partial struct SpeechSymbol
     /// </remarks>
     public static bool IsValidIpaSymbol(char c)
     {
-        return IsStrictIpaSymbol(c) || ValidIpaSet.Contains(c);
+        return IsStrictIpaSymbol(c) || ValidIpa.Contains(c);
     }
 
     /// <summary>
@@ -124,6 +151,35 @@ public readonly partial struct SpeechSymbol
         return true;
     }
 
+    public bool Equals(char c, SpeechSymbolComparison comparison = SpeechSymbolComparison.Exact)
+    {
+        if (_value == c)
+        {
+            return true;
+        }
+
+        if (comparison == SpeechSymbolComparison.Exact)
+        {
+            return false;
+        }
+
+        return s_equivalenceMappings.TryGetValue(c, out var symbol) && symbol._value == _value;
+    }
+
+#pragma warning disable CA2225 // Operator overloads have named alternates
+    public static implicit operator int(SpeechSymbol value)
+#pragma warning restore CA2225 // Operator overloads have named alternates
+    {
+        return value._value;
+    }
+
+#pragma warning disable CA2225 // Operator overloads have named alternates
+    public static implicit operator uint(SpeechSymbol value)
+#pragma warning restore CA2225 // Operator overloads have named alternates
+    {
+        return value._value;
+    }
+
     // --------------------------------------------------------------------------------------------
     // 'Strict-IPA' (see https://github.com/unicode-cookbook/cookbook, Chapter 5)
 
@@ -138,12 +194,14 @@ public readonly partial struct SpeechSymbol
     public static readonly SpeechSymbol RaisedOpenFrontUnrounded = new((char)0x00E6, true);
 
     /// <summary>
-    /// The Unicode 'latin small letter turned a' <c>ɐ</c> character, used to represent lowered schwa.
+    /// The lowered schwah, a type of vowel sound, represented by the symbol <c>ɐ</c>
+    /// (U+0250: latin small letter turned a).
     /// </summary>
     public static readonly SpeechSymbol LoweredSchwa = new((char)0x0250, true);
 
     /// <summary>
-    /// The Unicode 'latin small letter alpha' <c>ɑ</c> character, used to represent open back unrounded.
+    /// The open back unrounded, a type of vowel sound, represented by the symbol <c>ɑ</c>
+    /// (U+0251: latin small letter alpha).
     /// </summary>
     public static readonly SpeechSymbol OpenBackUnrounded = new((char)0x0251, true);
 
@@ -183,7 +241,8 @@ public readonly partial struct SpeechSymbol
     public static readonly SpeechSymbol VoicelessAlveoloPalatalFricative = new((char)0x0255, true);
 
     /// <summary>
-    /// The Unicode 'latin small letter d' <c>d</c> character, used to represent voiced alveolar plosive.
+    /// The voiced alveolar plosive, a type of consonantal sound,
+    /// represented by the symbol <c>⟨d⟩</c> (U+0064: latin small letter d).
     /// </summary>
     public static readonly SpeechSymbol VoicedAlveolarPlosive = new((char)0x0064, true);
 
@@ -301,13 +360,21 @@ public readonly partial struct SpeechSymbol
 
     public static readonly SpeechSymbol VoicedUvularTrill = new((char)0x0280, true);  // ʀ,latin letter small capital r,voiced uvular trill
 
-    public static readonly SpeechSymbol VoicedAlveolarApproximant = new((char)0x0279, true);  // ɹ,latin small letter turned r,voiced alveolar approximant
+    /// <summary>
+    /// The voiced alveolar approximant, a type of consonantal sound,
+    /// represented by the symbol <c>ɹ</c> (U+0279: latin small letter turned r).
+    /// </summary>
+    public static readonly SpeechSymbol VoicedAlveolarApproximant = new((char)0x0279, true);
 
     public static readonly SpeechSymbol VoicedAlveolarLateralFlap = new((char)0x027A, true);  // ɺ,latin small letter turned r with long leg,voiced alveolar lateral flap
 
     public static readonly SpeechSymbol VoicedRetroflexApproximant = new((char)0x027B, true);  // ɻ,latin small letter turned r with hook,voiced retroflex approximant
 
-    public static readonly SpeechSymbol VoicedRetroflexTap = new((char)0x027D, true);  // ɽ,latin small letter r with tail,voiced retroflex tap
+    /// <summary>
+    /// The voiced retroflex tap, a type of consonantal sound,
+    /// represented by the symbol <c>ɽ</c> (U+027D: latin small letter r with tail).
+    /// </summary>
+    public static readonly SpeechSymbol VoicedRetroflexTap = new((char)0x027D, true);
 
     public static readonly SpeechSymbol VoicedAlveolarTap = new((char)0x027E, true);  // ɾ,latin small letter r with fishhook,voiced alveolar tap
 
@@ -317,9 +384,17 @@ public readonly partial struct SpeechSymbol
 
     public static readonly SpeechSymbol VoicelessRetroflexFricative = new((char)0x0282, true);  // ʂ,latin small letter s with hook,voiceless retroflex fricative
 
-    public static readonly SpeechSymbol VoicelessPostalveolarFricative = new((char)0x0283, true);  // ʃ,latin small letter esh,voiceless postalveolar fricative
+    /// <summary>
+    /// The voiceless postalveolar fricative, a type of consonantal sound,
+    /// represented by the symbol <c>ʃ</c> (U+0283: latin small letter esh).
+    /// </summary>
+    public static readonly SpeechSymbol VoicelessPostalveolarFricative = new((char)0x0283, true);
 
-    public static readonly SpeechSymbol VoicelessAlveolarPlosive = new((char)0x0074, true);  // t,latin small letter t,voiceless alveolar plosive
+    /// <summary>
+    /// The voiceless alveolar plosive, a type of consonantal sound,
+    /// represented by the symbol <c>t</c> (U+0074: latin small letter t).
+    /// </summary>
+    public static readonly SpeechSymbol VoicelessAlveolarPlosive = new((char)0x0074, true);
 
     public static readonly SpeechSymbol VoicelessRetroflexPlosive = new((char)0x0288, true);  // ʈ,latin small letter t with retroflex hook,voiceless retroflex plosive
 
@@ -337,7 +412,15 @@ public readonly partial struct SpeechSymbol
 
     public static readonly SpeechSymbol VoicedLabiodentalApproximant = new((char)0x028B, true);  // ʋ,latin small letter v with hook,voiced labiodental approximant
 
-    public static readonly SpeechSymbol VoicedLabiodentalTap = new((char)0x2C71, true);  // ⱱ,latin small letter v with right hook,voiced labiodental tap
+    /// <summary>
+    /// The voiced labiodental flap, a type of consonantal sound
+    /// represented in the IPA by the symbol <c>⟨ⱱ⟩</c>.
+    /// </summary>
+    /// <remarks>
+    /// Added to the IPA in 2005. Added to Unicode in version 5.1 (2008).
+    /// <para>See <see href="https://en.wikipedia.org/wiki/Voiced_labiodental_flap" /></para>
+    /// </remarks>
+    public static readonly SpeechSymbol VoicedLabiodentalFlap = new((char)0x2C71, true);  // ⱱ,latin small letter v with right hook,voiced labiodental tap
 
     public static readonly SpeechSymbol OpenMidBackUnrounded = new((char)0x028C, true);  // ʌ,latin small letter turned v,open-mid back unrounded
 
@@ -357,6 +440,10 @@ public readonly partial struct SpeechSymbol
 
     public static readonly SpeechSymbol VoicedAlveoloPalatalFricative = new((char)0x0291, true);  // ʑ,latin small letter z with curl,voiced alveolo-palatal fricative
 
+    /// <summary>
+    /// The voiced postalveolar fricative, a type of consonantal sound,
+    /// represented by the symbol <c>ʒ</c> (U+0292: latin small letter ezh).
+    /// </summary>
     public static readonly SpeechSymbol VoicedPostalveolarFricative = new((char)0x0292, true);  // ʒ,latin small letter ezh,voiced postalveolar fricative
 
     public static readonly SpeechSymbol VoicelessGlottalPlosive = new((char)0x0294, true);  // ʔ,latin letter glottal stop,voiceless glottal plosive
@@ -395,6 +482,9 @@ public readonly partial struct SpeechSymbol
 
     public static readonly SpeechSymbol Advanced = new((char)0x031F, true);  // ◌̟,combining plus sign below,advanced
 
+    /// <summary>
+    /// The retracted symbol, a type of diacritic, represented by the symbol <c>◌̠</c> (U+0320: combining minus sign below).
+    /// </summary>
     public static readonly SpeechSymbol Retracted = new((char)0x0320, true);  // ◌̠,combining minus sign below,retracted
 
     public static readonly SpeechSymbol Raised = new((char)0x031D, true);  // ◌̝,combining up tack below,raised
@@ -453,7 +543,12 @@ public readonly partial struct SpeechSymbol
 
     public static readonly SpeechSymbol HalfLong = new((char)0x02D1, true);  // ˑ,modifier letter half triangular colon,half-long
 
-    public static readonly SpeechSymbol TieBar = new((char)0x0361, true);  // ͡,combining double inverted breve,tie bar
+    /// <summary>
+    /// The tie bar, a type of diacritic, represented by the symbol <c>͡</c> (U+0361: combining double inverted breve).
+    /// It is used to represent double articulation (e.g. [k͡p]), affricates (e.g. [t͡ʃ]) or prenasalized
+    /// consonants (e.g. [m͡b]) in the IPA.
+    /// </summary>
+    public static readonly SpeechSymbol TieBar = new((char)0x0361, true);
 
     public static readonly SpeechSymbol PrimaryStress = new((char)0x02C8, true);  // ˈ,modifier letter vertical line,primary stress
 
@@ -564,7 +659,7 @@ public readonly partial struct SpeechSymbol
     /// <summary>
     /// Characters allowed for strict IPA.
     /// </summary>
-    private static readonly ImmutableArray<int> s_strictIpa =
+    private static readonly ImmutableArray<uint> s_strictIpa =
     [
         0x0020,  // space (word break)
         0x002E,  // full stop (syllable break)
@@ -732,7 +827,7 @@ public readonly partial struct SpeechSymbol
     /// <summary>
     /// Characters (in addition to strict) allowed for valid IPA.
     /// </summary>
-    private static readonly ImmutableArray<int> s_validIpa =
+    private static readonly ImmutableArray<uint> s_validIpa =
     [
         0x0067,  // latin small letter g (voiced velar plosive)
         0x0300,  // combining grave accent (low tone)
@@ -752,11 +847,426 @@ public readonly partial struct SpeechSymbol
         0x1DC9,  // combining acute-grave-acute (falling-rising)
     ];
 
-    private static readonly Lazy<FrozenSet<int>> s_strictIpaSet = new(() => s_strictIpa.ToFrozenSet());
+    private static readonly ImmutableArray<uint> s_bilabialConsonants =
+    [
+        0x0070, // 'p' Voiceless bilabial plosive
+        0x0062, // 'b' Voiced bilabial plosive
+        0x006D, // 'm' Bilabial nasal
+        0x0299, // 'ʙ' Bilabial trill
+        0x0278, // 'ɸ' Voiceless bilabial fricative
+        0x03B2, // 'β' Voiced bilabial fricative
+        0x2C71  // 'ⱱ' Bilabial flap
+    ];
 
-    private static readonly Lazy<FrozenSet<int>> s_validIpaSet = new(() => s_validIpa.ToFrozenSet());
+    private static readonly ImmutableArray<uint> s_labiodentalConsonants =
+    [
+        0x0066, // 'f' Voiceless labiodental fricative
+        0x0076, // 'v' Voiced labiodental fricative
+        0x0271, // 'ɱ' Labiodental nasal
+        0x2C71, // 'ⱱ' Labiodental flap
+    ];
 
-    internal static FrozenSet<int> StrictIpaSet { get; } = s_strictIpaSet.Value;
+    private static readonly ImmutableArray<uint> s_dentalConsonants =
+    [
+        0x03B8, // 'θ' Voiceless dental fricative
+        0x00F0, // 'ð' Voiced dental fricative
+    ];
 
-    internal static FrozenSet<int> ValidIpaSet { get; } = s_validIpaSet.Value;
+    private static readonly ImmutableArray<uint> s_alveolarConsonants =
+    [
+        0x0074, // 't' Voiceless alveolar plosive
+        0x0064, // 'd' Voiced alveolar plosive
+        0x006E, // 'n' Alveolar nasal
+        0x0072, // 'r' Alveolar trill
+        0x027E, // 'ɾ' Alveolar tap
+        0x0073, // 's' Voiceless alveolar fricative
+        0x007A, // 'z' Voiced alveolar fricative
+        0x0283, // 'ʃ' Voiceless postalveolar fricative
+        0x0292, // 'ʒ' Voiced postalveolar fricative
+        0x0279, // 'ɹ' Alveolar approximant
+        0x026C, // 'ɬ' Voiceless alveolar lateral fricative
+        0x026E, // 'ɮ' Voiced alveolar lateral fricative
+        0x006C, // 'l' Alveolar lateral approximant
+    ];
+
+    private static readonly ImmutableArray<uint> s_postalveolarConsonants =
+    [
+        0x0283, // 'ʃ' Voiceless postalveolar fricative
+        0x0292, // 'ʒ' Voiced postalveolar fricative
+        0x027D, // 'ɽ' Retroflex flap, often considered postalveolar or retroflex
+    ];
+
+    private static readonly ImmutableArray<uint> s_retroflexConsonants =
+    [
+        0x0288, // 'ʈ' Voiceless retroflex plosive
+        0x0256, // 'ɖ' Voiced retroflex plosive
+        0x0273, // 'ɳ' Retroflex nasal
+        0x027D, // 'ɽ' Retroflex flap
+        0x0282, // 'ʂ' Voiceless retroflex fricative
+        0x0290, // 'ʐ' Voiced retroflex fricative
+        0x027B, // 'ɻ' Retroflex approximant
+        0x026D, // 'ɭ' Retroflex lateral approximant
+    ];
+
+    private static readonly ImmutableArray<uint> s_palatalConsonants =
+    [
+        0x0063, // 'c' Voiceless palatal plosive
+        0x025F, // 'ɟ' Voiced palatal plosive
+        0x0272, // 'ɲ' Palatal nasal
+        0x0255, // 'ɕ' Voiceless palatal fricative
+        0x0291, // 'ʑ' Voiced palatal fricative
+        0x006A, // 'j' Palatal approximant
+        0x028E, // 'ʎ' Palatal lateral approximant
+    ];
+
+    private static readonly ImmutableArray<uint> s_velarConsonants =
+    [
+        0x006B, // 'k' Voiceless velar plosive
+        0x0261, // 'ɡ' Voiced velar plosive
+        0x014B, // 'ŋ' Velar nasal
+        0x0078, // 'x' Voiceless velar fricative
+        0x0263, // 'ɣ' Voiced velar fricative
+        0x0270, // 'ɰ' Velar approximant
+        0x029F, // 'ʟ' Velar lateral approximant
+    ];
+
+    private static readonly ImmutableArray<uint> s_uvularConsonants =
+    [
+        0x0071, // 'q' Voiceless uvular plosive
+        0x0262, // 'ɢ' Voiced uvular plosive
+        0x0274, // 'ɴ' Uvular nasal
+        0x0281, // 'ʁ' Voiced uvular fricative
+        0x03C7, // 'χ' Voiceless uvular fricative
+        0x029B, // 'ʛ' Voiced uvular implosive
+        0x0280, // 'ʀ' Uvular trill
+    ];
+
+    private static readonly ImmutableArray<uint> s_pharyngealConsonants =
+    [
+        0x0295, // 'ʕ' Voiced pharyngeal fricative
+        0x0127, // 'ħ' Voiceless pharyngeal fricative
+    ];
+
+    private static readonly ImmutableArray<uint> s_glottalConsonants =
+    [
+        0x0294, // 'ʔ' Voiceless glottal plosive (glottal stop)
+        0x0068, // 'h' Voiceless glottal fricative
+        0x0266, // 'ɦ' Voiced glottal fricative
+    ];
+
+    private static readonly ImmutableArray<uint> s_clicksConsonants =
+    [
+        0x0298, // 'ʘ' Bilabial click
+        0x01C0, // 'ǀ' Dental click
+        0x01C3, // 'ǃ' (Post)Alveolar click
+        0x01C2, // 'ǂ' Palatoalveolar click
+        0x01C1, // 'ǁ' Alveolar lateral click
+    ];
+
+    private static readonly ImmutableArray<uint> s_voicedImplosivesConsonants =
+    [
+        0x0253, // 'ɓ' Voiced bilabial implosive
+        0x0257, // 'ɗ' Voiced dental/alveolar implosive
+        0x0284, // 'ʄ' Voiced palatal implosive
+        0x0260, // 'ɠ' Voiced velar implosive
+        0x029B, // 'ʛ' Voiced uvular implosive
+    ];
+
+    private static readonly ImmutableArray<uint> s_frontVowels =
+    [
+        0x0069, // 'i' Close front unrounded vowel
+        0x0079, // 'y' Close front rounded vowel
+        0x026A, // 'ɪ' Near-close near-front unrounded vowel
+        0x028F, // 'ʏ' Near-close near-front rounded vowel
+        0x0065, // 'e' Close-mid front unrounded vowel
+        0x00F8, // 'ø' Close-mid front rounded vowel
+        0x025B, // 'ɛ' Open-mid front unrounded vowel
+        0x0153, // 'œ' Open-mid front rounded vowel
+        0x00E6, // 'æ' Near-open front unrounded vowel
+        0x0061, // 'a' Open front unrounded vowel
+        0x0276  // 'ɶ' Open front rounded vowel
+    ];
+
+    private static readonly ImmutableArray<uint> s_centralVowels =
+    [
+        0x0268, // 'ɨ' Close central unrounded vowel
+        0x0289, // 'ʉ' Close central rounded vowel
+        0x0258, // 'ɘ' Close-mid central unrounded vowel
+        0x0275, // 'ɵ' Close-mid central rounded vowel
+        0x0259, // 'ə' Mid-central vowel
+        0x025C, // 'ɜ' Open-mid central unrounded vowel
+        0x025E, // 'ɞ' Open-mid central rounded vowel
+        0x0250, // 'ɐ' Near-open central vowel
+    ];
+
+    private static readonly ImmutableArray<uint> s_backVowels =
+    [
+        0x026F, // 'ɯ' Close back unrounded vowel
+        0x0075, // 'u' Close back rounded vowel
+        0x028A, // 'ʊ' Near-close near-back rounded vowel
+        0x0264, // 'ɤ' Close-mid back unrounded vowel
+        0x006F, // 'o' Close-mid back rounded vowel
+        0x028C, // 'ʌ' Open-mid back unrounded vowel
+        0x0254, // 'ɔ' Open-mid back rounded vowel
+        0x0251, // 'ɑ' Open back unrounded vowel
+        0x0252  // 'ɒ' Open back rounded vowel
+    ];
+
+    private static readonly ImmutableArray<uint> s_otherConsonants =
+    [
+        0x028D, // 'ʍ' Voiceless labial-velar fricative
+        0x0077, // 'w' Voiced labial-velar approximant
+        0x0265, // 'ɥ' Voiced labial-palatal approximant
+        0x029C, // 'ʜ' voiceless epiglottal fricative
+        0x02A1, // 'ʡ' Epiglottal plosive
+        0x02A2, // 'ʢ' Voiced epiglottal fricative
+        0x0255, // 'ɕ' Voiceless alveolo-palatal fricative
+        0x0291, // 'ʑ' Voiced alveolo-palatal fricative
+        0x027A, // 'ɺ' Voiced alveolar lateral flap
+        0x0267, // 'ɧ' Simultaneous voiceless postalveolar+velar fricative
+    ];
+
+    private static readonly ImmutableArray<uint> s_otherSymbols =
+    [
+        0x028D, // 'ʍ' Voiceless labial-velar fricative
+        0x0077, // 'w' Voiced labial-velar approximant
+        0x0265, // 'ɥ' Voiced labial-palatal approximant
+        0x029C, // 'ʜ' voiceless epiglottal fricative
+        0x02A1, // 'ʡ' Epiglottal plosive
+        0x02A2, // 'ʢ' Voiced epiglottal fricative
+        0x0255, // 'ɕ' Voiceless alveolo-palatal fricative
+        0x0291, // 'ʑ' Voiced alveolo-palatal fricative
+        0x027A, // 'ɺ' Voiced alveolar lateral flap
+        0x0267, // 'ɧ' Simultaneous voiceless postalveolar+velar fricative
+
+        0x0361, // '͡' Tie bar
+    ];
+
+    private static readonly ImmutableArray<uint> s_diacritics =
+    [
+        0x0325, // Voiceless
+        0x032C, // Voiced
+        0x02B0, // Aspirated
+        0x0339, // More rounded
+        0x031C, // Less rounded
+        0x031F, // Advanced
+        0x0320, // Retracted
+        0x0308, // Centralized
+        0X033D, // Mid-centralized
+        0x0329, // Syllabic
+        0x032F, // Non-syllabic
+        0x02DE, // Rhotacized
+        0x0324, // Breathy voiced
+        0x0330, // Creaky voiced
+        0x033C, // Linguolabial
+        0x02B7, // Labialized
+        0x02B2, // Palatalized
+        0x02E0, // Velarized
+        0x02E4, // Pharyngealized
+        0x0334, // Velarized or pharyngealized
+        0x031D, // Raised
+        0x031E, // Lowered
+        0x0318, // Advanced tongue root
+        0x0319, // Retracted tongue root
+        0x032A, // Dental
+        0x033A, // Apical
+        0x033B, // Laminal
+        0x0303, // Nasalized
+        0x207F, // Nasal release
+        0x02E1, // Lateral release
+        0x031A, // No audible release
+    ];
+
+    private static readonly ImmutableArray<uint> s_suprasegmantals =
+    [
+        0x02C8, // Primary stress
+        0x02CC, // Secondary stress
+        0x02D0, // Length mark (long)
+        0x02D1, // Half-length mark
+        0x0306, // Extra-short
+        0x007C, // Minor (foot) group
+        0x2016, // Major (intonation) group
+        0x002E, // Syllable break
+        0x203F, // Linking (absence of a break)
+
+        // Tone letters
+
+        0x02E5, // Extra-high tone
+        0x02E6, // High tone
+        0x02E7, // Mid tone
+        0x02E8, // Low tone
+        0x02E9, // Extra-low tone
+        0xA71C, // Downstep
+        0xA71B, // Upstep
+        0x2191, // Global rise
+        0x2197, // Global rise (right)
+        0x2193, // Global fall
+        0x2198, // Global fall (right)
+    ];
+
+    private static readonly Lazy<FrozenSet<uint>> s_strictIpaSet = new(() => s_strictIpa.ToFrozenSet());
+
+    private static readonly Lazy<FrozenSet<uint>> s_validIpaSet = new(() => s_validIpa.ToFrozenSet());
+
+    private static readonly Lazy<FrozenSet<uint>> s_bilabialConsonantsSet = new(() => s_bilabialConsonants.ToFrozenSet());
+
+    private static readonly Lazy<FrozenSet<uint>> s_labiodentalConsonantsSet = new(() => s_labiodentalConsonants.ToFrozenSet());
+
+    private static readonly Lazy<FrozenSet<uint>> s_dentalConsonantsSet = new(() => s_dentalConsonants.ToFrozenSet());
+
+    private static readonly Lazy<FrozenSet<uint>> s_alveolarConsonantsSet = new(() => s_alveolarConsonants.ToFrozenSet());
+
+    private static readonly Lazy<FrozenSet<uint>> s_postalveolarConsonantsSet = new(() => s_postalveolarConsonants.ToFrozenSet());
+
+    private static readonly Lazy<FrozenSet<uint>> s_retroflexConsonantsSet = new(() => s_retroflexConsonants.ToFrozenSet());
+
+    private static readonly Lazy<FrozenSet<uint>> s_palatalConsonantsSet = new(() => s_palatalConsonants.ToFrozenSet());
+
+    private static readonly Lazy<FrozenSet<uint>> s_velarConsonantsSet = new(() => s_velarConsonants.ToFrozenSet());
+
+    private static readonly Lazy<FrozenSet<uint>> s_uvularConsonantsSet = new(() => s_uvularConsonants.ToFrozenSet());
+
+    private static readonly Lazy<FrozenSet<uint>> s_pharyngealConsonantsSet = new(() => s_pharyngealConsonants.ToFrozenSet());
+
+    private static readonly Lazy<FrozenSet<uint>> s_glottalConsonantsSet = new(() => s_glottalConsonants.ToFrozenSet());
+
+    private static readonly Lazy<FrozenSet<uint>> s_pulmonicConsonantsSet = new(() =>
+        s_bilabialConsonants
+        .Union(s_labiodentalConsonants)
+        .Union(s_dentalConsonants)
+        .Union(s_alveolarConsonants)
+        .Union(s_postalveolarConsonants)
+        .Union(s_retroflexConsonants)
+        .Union(s_palatalConsonants)
+        .Union(s_velarConsonants)
+        .Union(s_uvularConsonants)
+        .Union(s_pharyngealConsonants)
+        .Union(s_glottalConsonants)
+        .ToFrozenSet());
+
+    private static readonly Lazy<FrozenSet<uint>> s_clicksConsonantsSet = new(() => s_clicksConsonants.ToFrozenSet());
+
+    private static readonly Lazy<FrozenSet<uint>> s_voicedImplosivesConsonantsSet = new(() => s_voicedImplosivesConsonants.ToFrozenSet());
+
+    private static readonly Lazy<FrozenSet<uint>> s_nonPulmonicConsonantsSet = new(() =>
+        s_clicksConsonants
+        .Union(s_voicedImplosivesConsonants)
+        .ToFrozenSet());
+
+    private static readonly Lazy<FrozenSet<uint>> s_otherConsonantsSet = new(() => s_otherConsonants.ToFrozenSet());
+
+    private static readonly Lazy<FrozenSet<uint>> s_consonantsSet = new(() =>
+        s_bilabialConsonants
+        .Union(s_labiodentalConsonants)
+        .Union(s_dentalConsonants)
+        .Union(s_alveolarConsonants)
+        .Union(s_postalveolarConsonants)
+        .Union(s_retroflexConsonants)
+        .Union(s_palatalConsonants)
+        .Union(s_velarConsonants)
+        .Union(s_uvularConsonants)
+        .Union(s_pharyngealConsonants)
+        .Union(s_glottalConsonants)
+        .Union(s_clicksConsonants)
+        .Union(s_voicedImplosivesConsonants)
+        .Union(s_otherConsonants)
+        .ToFrozenSet());
+
+    private static readonly Lazy<FrozenSet<uint>> s_frontVowelsSet = new(() => s_frontVowels.ToFrozenSet());
+
+    private static readonly Lazy<FrozenSet<uint>> s_centralVowelsSet = new(() => s_centralVowels.ToFrozenSet());
+
+    private static readonly Lazy<FrozenSet<uint>> s_backVowelsSet = new(() => s_backVowels.ToFrozenSet());
+
+    private static readonly Lazy<FrozenSet<uint>> s_vowelsSet = new(() =>
+        s_frontVowels
+        .Union(s_centralVowels)
+        .Union(s_backVowels)
+        .ToFrozenSet());
+
+    private static readonly Lazy<FrozenSet<uint>> s_diacriticsSet = new(() => s_diacritics.ToFrozenSet());
+
+    private static readonly Lazy<FrozenSet<uint>> s_suprasegmantalsSet = new(() => s_suprasegmantals.ToFrozenSet());
+
+    private static readonly Lazy<FrozenSet<uint>> s_otherSymbolsSet = new(() => s_otherSymbols.ToFrozenSet());
+
+    public static FrozenSet<uint> StrictIpa { get; } = s_strictIpaSet.Value;
+
+    public static FrozenSet<uint> ValidIpa { get; } = s_validIpaSet.Value;
+
+    public static FrozenSet<uint> BilabialConsonants { get; } = s_bilabialConsonantsSet.Value;
+
+    public static FrozenSet<uint> LabiodentalConsonants { get; } = s_labiodentalConsonantsSet.Value;
+
+    public static FrozenSet<uint> DentalConsonants { get; } = s_dentalConsonantsSet.Value;
+
+    public static FrozenSet<uint> AlveolarConsonants { get; } = s_alveolarConsonantsSet.Value;
+
+    public static FrozenSet<uint> PostalveolarConsonants { get; } = s_postalveolarConsonantsSet.Value;
+
+    public static FrozenSet<uint> RetroflexConsonants { get; } = s_retroflexConsonantsSet.Value;
+
+    public static FrozenSet<uint> PalatalConsonants { get; } = s_palatalConsonantsSet.Value;
+
+    public static FrozenSet<uint> VelarConsonants { get; } = s_velarConsonantsSet.Value;
+
+    public static FrozenSet<uint> UvularConsonants { get; } = s_uvularConsonantsSet.Value;
+
+    public static FrozenSet<uint> PharyngealConsonants { get; } = s_pharyngealConsonantsSet.Value;
+
+    /// <summary>
+    /// Gets a set of Unicode values for all of the glottal consonant symbols
+    /// in the International Phonetic Alphabet.
+    /// </summary>
+    public static FrozenSet<uint> GlottalConsonants { get; } = s_glottalConsonantsSet.Value;
+
+    /// <summary>
+    /// Gets a set of Unicode values for all of the pulmonic consonant symbols
+    /// in the International Phonetic Alphabet.
+    /// </summary>
+    public static FrozenSet<uint> PulmonicConsonants { get; } = s_pulmonicConsonantsSet.Value;
+
+    public static FrozenSet<uint> ClicksConsonants { get; } = s_clicksConsonantsSet.Value;
+
+    public static FrozenSet<uint> VoicedImplosivesConsonants { get; } = s_voicedImplosivesConsonantsSet.Value;
+
+    /// <summary>
+    /// Gets a set of Unicode values for consonant symbols that are not grouped as pumonic
+    /// or non-pulmonic on the IPA chart, but rather included in 'other symbols'.
+    /// </summary>
+    public static FrozenSet<uint> OtherConsonants { get; } = s_otherConsonantsSet.Value;
+
+    /// <summary>
+    /// Gets a set of Unicode values for all of the consonant symbols (pulmonic and non-pulmonic)
+    /// in the International Phonetic Alphabet.
+    /// <para><b>Note</b>: ejectives are not represented
+    /// by single symbols in the IPA. They are indicated by an apostrophe following a
+    /// plosive or affricate symbol. The are therefore not included in this set.</para>
+    /// <para><b>Also note</b>: this set includes symbols representing consonantal sounds that
+    /// are on included in the pulmonic and non-pulmonic sections of the IPA chart, but are
+    /// included in the 'other synmbols' section.</para>
+    /// </summary>
+    public static FrozenSet<uint> Consonants { get; } = s_consonantsSet.Value;
+
+    /// <summary>
+    /// Gets a set of Unicode values for all of the non-pulmonic consonant symbols
+    /// in the International Phonetic Alphabet. <b>Note</b>: ejectives are not represented
+    /// by single symbols in the IPA. They are indicated by an apostrophe following a
+    /// plosive or affricate symbol. The are therefore not included in this set.
+    /// </summary>
+    public static FrozenSet<uint> NonPulmonicConsonants { get; } = s_nonPulmonicConsonantsSet.Value;
+
+    public static FrozenSet<uint> FrontVowels { get; } = s_frontVowelsSet.Value;
+
+    public static FrozenSet<uint> CentralVowels { get; } = s_centralVowelsSet.Value;
+
+    public static FrozenSet<uint> BackVowels { get; } = s_backVowelsSet.Value;
+
+    public static FrozenSet<uint> Vowels { get; } = s_vowelsSet.Value;
+
+    public static FrozenSet<uint> Diacritics { get; } = s_diacriticsSet.Value;
+
+    public static FrozenSet<uint> Suprasegmentals { get; } = s_suprasegmantalsSet.Value;
+
+    public static FrozenSet<uint> OtherSymbols { get; } = s_otherSymbolsSet.Value;
 }

@@ -196,7 +196,7 @@ public class SpeechSoundTests
         // Open (Low) Vowels
         "a", // open front unrounded vowel
         "ɶ", // open front rounded vowel
-        "ä", // open central unrounded vowel
+        "ä", // open central unrounded vowel
         "ɑ", // open back unrounded vowel
         "ɒ", // open back rounded vowel
 

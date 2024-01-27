@@ -53,7 +53,7 @@ public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, Asc
         return new UriAsciiPath(_value.Slice(start, length));
     }
 
-    public ReadOnlySpan<AsciiChar> Span => _value.Span;
+    public ReadOnlySpan<AsciiChar> Span => _value.AsSpan();
 
     public bool IsEmpty => _value.IsEmpty;
 
@@ -127,7 +127,7 @@ public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, Asc
 
             if (lastSlashIndex > 0)
             {
-                return new UriAsciiPath(_value.Span[..lastSlashIndex].ToArray());
+                return new UriAsciiPath(_value.AsSpan()[..lastSlashIndex].ToArray());
             }
         }
 
@@ -136,7 +136,7 @@ public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, Asc
 
     public int GetSegmentCount()
     {
-        return Length == 0 ? 0 : _value.Span.Count((AsciiChar)'/') + 1;
+        return Length == 0 ? 0 : _value.AsSpan().Count((AsciiChar)'/') + 1;
     }
 
     public bool StartsWith(ReadOnlySpan<char> value)
@@ -216,7 +216,7 @@ public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, Asc
 
     public static bool IsValidValue(AsciiString value)
     {
-        return IsValidValue(value.Span);
+        return IsValidValue(value.AsSpan());
     }
 
     public static bool IsValidValue(ReadOnlySpan<AsciiChar> value)
@@ -371,9 +371,9 @@ public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, Asc
 
         var combined = new AsciiChar[_value.Length + path.Length + 1];
 
-        _value.Span.CopyTo(combined);
+        _value.AsSpan().CopyTo(combined);
         combined[_value.Length] = Separator;
-        path._value.Span.CopyTo(combined.AsSpan(_value.Length + 1));
+        path._value.AsSpan().CopyTo(combined.AsSpan(_value.Length + 1));
 
         return new UriAsciiPath(combined);
     }
@@ -386,7 +386,7 @@ public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, Asc
     {
         if (utf8Destination.Length >= _value.Length)
         {
-            var bytes = ValuesMarshal.AsBytes(_value.Span);
+            var bytes = ValuesMarshal.AsBytes(_value.AsSpan());
             bytes.CopyTo(utf8Destination);
             bytesWritten = bytes.Length;
             return true;
@@ -444,11 +444,11 @@ public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, Asc
 
         var combined = new AsciiChar[_value.Length + path1.Length + path2.Length + 2];
 
-        _value.Span.CopyTo(combined);
+        _value.AsSpan().CopyTo(combined);
         combined[_value.Length] = Separator;
-        path1._value.Span.CopyTo(combined.AsSpan(_value.Length + 1));
+        path1._value.AsSpan().CopyTo(combined.AsSpan(_value.Length + 1));
         combined[_value.Length + path1.Length + 1] = Separator;
-        path2._value.Span.CopyTo(combined.AsSpan(_value.Length + path1.Length + 2));
+        path2._value.AsSpan().CopyTo(combined.AsSpan(_value.Length + path1.Length + 2));
 
         return new UriAsciiPath(combined);
     }
@@ -477,13 +477,13 @@ public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, Asc
 
         var combined = new AsciiChar[_value.Length + path1.Length + path2.Length + path3.Length + 3];
 
-        _value.Span.CopyTo(combined);
+        _value.AsSpan().CopyTo(combined);
         combined[_value.Length] = Separator;
-        path1._value.Span.CopyTo(combined.AsSpan(_value.Length + 1));
+        path1._value.AsSpan().CopyTo(combined.AsSpan(_value.Length + 1));
         combined[_value.Length + path1.Length + 1] = Separator;
-        path2._value.Span.CopyTo(combined.AsSpan(_value.Length + path1.Length + 2));
+        path2._value.AsSpan().CopyTo(combined.AsSpan(_value.Length + path1.Length + 2));
         combined[_value.Length + path1.Length + path2.Length + 2] = Separator;
-        path3._value.Span.CopyTo(combined.AsSpan(_value.Length + path1.Length + path2.Length + 3));
+        path3._value.AsSpan().CopyTo(combined.AsSpan(_value.Length + path1.Length + path2.Length + 3));
 
         return new UriAsciiPath(combined);
     }
@@ -506,7 +506,7 @@ public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, Asc
             return Empty;
         }
 
-        var sub = _value.Span[startIndex..];
+        var sub = _value.AsSpan()[startIndex..];
 
         if (sub.Length > 0 && sub[0] == '/')
         {
@@ -538,7 +538,7 @@ public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, Asc
             var separator = (AsciiChar)'/';
 
             span[0] = separator;
-            _value.Span.CopyTo(span[1..]);
+            _value.AsSpan().CopyTo(span[1..]);
             span[^1] = separator;
 
             return Encoding.UTF8.GetString(MemoryMarshal.AsBytes(span));

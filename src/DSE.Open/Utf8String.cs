@@ -168,7 +168,7 @@ public readonly struct Utf8String
 
     public static Utf8String FromCharSequence(CharSequence value)
     {
-        return Parse(value.Span, CultureInfo.CurrentCulture);
+        return Parse(value.AsSpan(), CultureInfo.CurrentCulture);
     }
 
     public static explicit operator Utf8String(CharSequence value)

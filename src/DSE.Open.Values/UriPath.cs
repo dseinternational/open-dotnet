@@ -45,7 +45,7 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
         return new UriPath(_value.Slice(start, length));
     }
 
-    public ReadOnlySpan<char> Span => _value.Span;
+    public ReadOnlySpan<char> Span => _value.AsSpan();
 
     public bool IsEmpty => _value.IsEmpty;
 
@@ -99,7 +99,7 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
 
             if (lastSlashIndex > 0)
             {
-                return new UriPath(_value.Span[..lastSlashIndex].ToArray());
+                return new UriPath(_value.AsSpan()[..lastSlashIndex].ToArray());
             }
         }
 
@@ -108,7 +108,7 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
 
     public int GetSegmentCount()
     {
-        return Length == 0 ? 0 : _value.Span.Count('/') + 1;
+        return Length == 0 ? 0 : _value.AsSpan().Count('/') + 1;
     }
 
     public bool StartsWith(ReadOnlySpan<char> value)
@@ -182,7 +182,7 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
 
         var inner = value[1..^1];
 
-        return inner.Span.All(IsValidInnerChar);
+        return inner.AsSpan().All(IsValidInnerChar);
     }
 
     public static bool IsValidValue(ReadOnlySpan<char> value)
@@ -299,9 +299,9 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
 
         var combined = new char[_value.Length + path.Length + 1];
 
-        _value.Span.CopyTo(combined);
+        _value.AsSpan().CopyTo(combined);
         combined[_value.Length] = Separator;
-        path._value.Span.CopyTo(combined.AsSpan(_value.Length + 1));
+        path._value.AsSpan().CopyTo(combined.AsSpan(_value.Length + 1));
 
         return new UriPath(combined);
     }
@@ -325,11 +325,11 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
 
         var combined = new char[_value.Length + path1.Length + path2.Length + 2];
 
-        _value.Span.CopyTo(combined);
+        _value.AsSpan().CopyTo(combined);
         combined[_value.Length] = Separator;
-        path1._value.Span.CopyTo(combined.AsSpan(_value.Length + 1));
+        path1._value.AsSpan().CopyTo(combined.AsSpan(_value.Length + 1));
         combined[_value.Length + path1.Length + 1] = Separator;
-        path2._value.Span.CopyTo(combined.AsSpan(_value.Length + path1.Length + 2));
+        path2._value.AsSpan().CopyTo(combined.AsSpan(_value.Length + path1.Length + 2));
 
         return new UriPath(combined);
     }
@@ -358,13 +358,13 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
 
         var combined = new char[_value.Length + path1.Length + path2.Length + path3.Length + 3];
 
-        _value.Span.CopyTo(combined);
+        _value.AsSpan().CopyTo(combined);
         combined[_value.Length] = Separator;
-        path1._value.Span.CopyTo(combined.AsSpan(_value.Length + 1));
+        path1._value.AsSpan().CopyTo(combined.AsSpan(_value.Length + 1));
         combined[_value.Length + path1.Length + 1] = Separator;
-        path2._value.Span.CopyTo(combined.AsSpan(_value.Length + path1.Length + 2));
+        path2._value.AsSpan().CopyTo(combined.AsSpan(_value.Length + path1.Length + 2));
         combined[_value.Length + path1.Length + path2.Length + 2] = Separator;
-        path3._value.Span.CopyTo(combined.AsSpan(_value.Length + path1.Length + path2.Length + 3));
+        path3._value.AsSpan().CopyTo(combined.AsSpan(_value.Length + path1.Length + path2.Length + 3));
 
         return new UriPath(combined);
     }
@@ -387,7 +387,7 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
             return Empty;
         }
 
-        var sub = _value.Span[startIndex..];
+        var sub = _value.AsSpan()[startIndex..];
 
         if (sub.Length > 0 && sub[0] == '/')
         {
@@ -417,7 +417,7 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
             }
 
             span[0] = '/';
-            _value.Span.CopyTo(span[1..]);
+            _value.AsSpan().CopyTo(span[1..]);
             span[^1] = '/';
 
             return span.ToString();

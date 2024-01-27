@@ -47,7 +47,7 @@ public readonly partial struct AlphaCode
 
     public static bool IsValidValue(AsciiString value)
     {
-        return value is { IsEmpty: false, Length: <= MaxLength } && value.Span.ContainsOnlyAsciiLetters();
+        return value is { IsEmpty: false, Length: <= MaxLength } && value.AsSpan().ContainsOnlyAsciiLetters();
     }
 
     public bool Equals(ReadOnlySpan<char> other)
@@ -67,7 +67,7 @@ public readonly partial struct AlphaCode
 
     public ReadOnlySpan<AsciiChar> AsSpan()
     {
-        return _value.Span;
+        return _value.AsSpan();
     }
 
     public char[] ToCharArray()

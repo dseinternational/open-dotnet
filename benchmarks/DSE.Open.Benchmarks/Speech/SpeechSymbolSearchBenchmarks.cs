@@ -11,7 +11,7 @@ namespace DSE.Open.Benchmarks.Speech;
 
 public class SpeechSymbolSearchBenchmarks
 {
-    private static readonly ImmutableArray<int> s_sortedArray = SpeechSymbol.StrictIpaSet.Order().ToImmutableArray();
+    private static readonly ImmutableArray<uint> s_sortedArray = SpeechSymbol.StrictIpa.Order().ToImmutableArray();
 
     public IEnumerable<char> Values
     {

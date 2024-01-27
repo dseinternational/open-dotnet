@@ -57,7 +57,10 @@ public readonly struct AsciiString
         return _value;
     }
 
-    public ReadOnlySpan<AsciiChar> Span => _value.Span;
+    public ReadOnlySpan<AsciiChar> AsSpan()
+    {
+        return _value.Span;
+    }
 
     public int GetCharCount(ReadOnlySpan<char> format, IFormatProvider? provider)
     {

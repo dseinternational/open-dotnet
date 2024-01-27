@@ -98,7 +98,6 @@ public class BinaryValueTests
         }
     }
 
-
     [Fact]
     public void Base64_RoundTrip_Bytes()
     {
@@ -157,7 +156,6 @@ public class BinaryValueTests
         Assert.Equal(Encoding.UTF8.GetString(hex), decodedHex);
         Assert.True("Hello, World!"u8.SequenceEqual(Convert.FromHexString(decoded.ToString(BinaryStringEncoding.HexLower))));
     }
-
 
     [Fact]
     public void FromHexBytes_WithValidHex_ShouldReturnCorrectData_Upper()

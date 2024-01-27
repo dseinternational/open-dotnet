@@ -87,8 +87,6 @@ public readonly struct CharSequence
         return _value.Span;
     }
 
-    public ReadOnlySpan<char> Span => _value.Span;
-
     public int GetCharCount(ReadOnlySpan<char> format, IFormatProvider? provider)
     {
         return _value.Length;
@@ -110,7 +108,7 @@ public readonly struct CharSequence
         {
             return result;
         }
-                
+
         Expect.Unreachable();
         return default; // unreachable
     }
@@ -185,12 +183,12 @@ public readonly struct CharSequence
 
     public bool EndsWith(CharSequence value)
     {
-        return EndsWith(value.Span, StringComparison.Ordinal);
+        return EndsWith(value.AsSpan(), StringComparison.Ordinal);
     }
 
     public bool EndsWith(CharSequence value, StringComparison comparisonType)
     {
-        return _value.Span.EndsWith(value.Span, comparisonType);
+        return _value.Span.EndsWith(value.AsSpan(), comparisonType);
     }
 
     public bool StartsWith(ReadOnlySpan<char> value)
@@ -205,12 +203,12 @@ public readonly struct CharSequence
 
     public bool StartsWith(CharSequence value)
     {
-        return StartsWith(value.Span, StringComparison.Ordinal);
+        return StartsWith(value.AsSpan(), StringComparison.Ordinal);
     }
 
     public bool StartsWith(CharSequence value, StringComparison comparisonType)
     {
-        return _value.Span.StartsWith(value.Span, comparisonType);
+        return _value.Span.StartsWith(value.AsSpan(), comparisonType);
     }
 
     /// <summary>

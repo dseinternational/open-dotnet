@@ -67,20 +67,20 @@ public readonly partial struct Identifier : IEquatableValue<Identifier, AsciiStr
             return false;
         }
 
-        var prefixEndIndex = value.Span.LastIndexOf((AsciiChar)PrefixDelimiter);
+        var prefixEndIndex = value.AsSpan().LastIndexOf((AsciiChar)PrefixDelimiter);
 
         switch (prefixEndIndex)
         {
             case -1:
-                return value.Span.ContainsOnlyAsciiLettersOrDigits();
+                return value.AsSpan().ContainsOnlyAsciiLettersOrDigits();
             case 0:
             case > MaxPrefixLength:
                 // '_' is not valid in id (beyond prefix) and cannot start with '_'
                 return false;
         }
 
-        var prefix = value.Span[..prefixEndIndex];
-        var id = value.Span[(prefixEndIndex + 1)..];
+        var prefix = value.AsSpan()[..prefixEndIndex];
+        var id = value.AsSpan()[(prefixEndIndex + 1)..];
 
         return prefix[0] != (AsciiChar)PrefixDelimiter
                && prefix.All(id => id == PrefixDelimiter || AsciiChar.IsLetterOrDigit(id))

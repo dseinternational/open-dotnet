@@ -63,6 +63,23 @@ public readonly struct SpeechSound
         _initialized = true;
     }
 
+    private SpeechSound(SpeechSymbolSequence symbols, bool skipValidation)
+    {
+        if (!skipValidation)
+        {
+            EnsureValidValue(symbols);
+        }
+
+        _value = symbols;
+        _initialized = true;
+    }
+
+    public static bool IsValidValue(SpeechSymbolSequence value)
+    {
+        return value.Length > 0
+            && value.Length < MaxLength;
+    }
+
     public static bool IsValidValue(ReadOnlySpan<char> value)
     {
         return value.Length > 0
@@ -78,6 +95,24 @@ public readonly struct SpeechSound
             return; // Unreachable
         }
     }
+
+    private static void EnsureValidValue(SpeechSymbolSequence value)
+    {
+        if (!IsValidValue(value))
+        {
+            ThrowHelper.ThrowArgumentOutOfRangeException(nameof(value));
+            return; // Unreachable
+        }
+    }
+
+    public SpeechSymbol this[int index] => _value[index];
+
+    public SpeechSymbolSequence.Enumerator GetEnumerator()
+    {
+        return _value.GetEnumerator();
+    }
+
+    public bool IsEmpty => _value.IsEmpty;
 
     public int Length => _value.Length;
 
@@ -105,8 +140,6 @@ public readonly struct SpeechSound
     {
         return _value.GetHashCode();
     }
-
-    // TODO: formatting options: escaped Unicode? binary format?
 
     public bool TryFormat(
         Span<char> destination,
@@ -221,7 +254,7 @@ public readonly struct SpeechSound
     /// <see langword="false"/>.</returns>
     public static bool IsConsonant(SpeechSound sound)
     {
-        return IsConsonant(sound._value.ToStringInvariant()); // TODO
+        return !sound.IsEmpty && Consonants.Contains(sound);
     }
 
     /// <summary>
@@ -235,7 +268,9 @@ public readonly struct SpeechSound
     public static bool IsConsonant(string sound)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(sound);
-        return Consonants.Contains(sound) || Consonants.Contains(sound[0].ToString());
+
+        return TryParse(sound, CultureInfo.InvariantCulture, out var result)
+            && IsConsonant(result);
     }
 
     /// <summary>
@@ -246,7 +281,9 @@ public readonly struct SpeechSound
     /// <see langword="false"/>.</returns>
     public static bool IsVowel(SpeechSound sound)
     {
-        return IsVowel(sound._value.ToStringInvariant()); // TODO
+        return !sound.IsEmpty
+            && (Vowels.Contains(sound)
+                || (sound.Length > 1 && Vowels.Contains(sound[0])));
     }
 
     /// <summary>
@@ -261,9 +298,15 @@ public readonly struct SpeechSound
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(sound);
 
-        return Vowels.Contains(sound)
-            || Vowels.Contains(sound[0].ToString())
-            || sound.StartsWith("ju", StringComparison.Ordinal);
+        return TryParse(sound, CultureInfo.InvariantCulture, out var result)
+            && IsVowel(result);
+    }
+
+#pragma warning disable CA2225 // Operator overloads have named alternates
+    public static implicit operator SpeechSound(SpeechSymbol value)
+#pragma warning restore CA2225 // Operator overloads have named alternates
+    {
+        return new SpeechSound(new SpeechSymbolSequence([value]), true);
     }
 
     /// <summary>
@@ -271,157 +314,176 @@ public readonly struct SpeechSound
     /// represented in the IPA by the symbol <c>⟨p⟩</c>.
     /// </summary>
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Voiceless_bilabial_plosive"/></remarks>
-    public static readonly SpeechSound VoicelessBilabialPlosive = new([SpeechSymbol.VoicelessBilabialPlosive], true);
+    public static readonly SpeechSound VoicelessBilabialPlosive = SpeechSymbol.VoicelessBilabialPlosive;
 
     /// <summary>
     /// The voiced bilabial plosive or stop, a type of consonantal sound
     /// represented in the IPA by the symbol <c>⟨b⟩</c>.
     /// </summary>
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Voiced_bilabial_plosive"/></remarks>
-    public static readonly SpeechSound VoicedBilabialPlosive = new("b", true);
+    public static readonly SpeechSound VoicedBilabialPlosive = SpeechSymbol.VoicedBilabialPlosive;
 
     /// <summary>
     /// The voiced bilabial nasal, a type of consonantal sound
     /// represented in the IPA by the symbol <c>⟨m⟩</c>.
     /// </summary>
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Voiced_bilabial_nasal"/></remarks>
-    public static readonly SpeechSound VoicedBilabialNasal = new("m", true);
+    public static readonly SpeechSound VoicedBilabialNasal = SpeechSymbol.VoicedBilabialNasal;
 
     /// <summary>
     /// The voiced bilabial trill, a type of consonantal sound
     /// represented in the IPA by the symbol <c>⟨ʙ⟩</c>.
     /// </summary>
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Voiced_bilabial_trill"/></remarks>
-    public static readonly SpeechSound VoicedBilabialTrill = new("ʙ", true);
+    public static readonly SpeechSound VoicedBilabialTrill = SpeechSymbol.VoicedBilabialTrill;
 
     /// <summary>
     /// The voiceless bilabial fricative, a type of consonantal sound
     /// represented in the IPA by the symbol <c>⟨ɸ⟩</c>.
     /// </summary>
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Voiceless_bilabial_fricative"/></remarks>
-    public static readonly SpeechSound VoicelessBilabialFricative = new("ɸ", true);
+    public static readonly SpeechSound VoicelessBilabialFricative = SpeechSymbol.VoicelessBilabialFricative;
 
     /// <summary>
     /// The voiced bilabial fricative, a type of consonantal sound
     /// represented in the IPA by the symbol <c>⟨β⟩</c>.
     /// </summary>
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Voiced_bilabial_fricative"/></remarks>
-    public static readonly SpeechSound VoicedBilabialFricative = new("β", true);
+    public static readonly SpeechSound VoicedBilabialFricative = SpeechSymbol.VoicedBilabialFricative;
 
     /// <summary>
     /// The voiced labiodental nasal, a type of consonantal sound
     /// represented in the IPA by the symbol <c>⟨ɱ⟩</c>.
     /// </summary>
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Voiced_labiodental_nasal"/></remarks>
-    public static readonly SpeechSound VoicedLabiodentalNasal = new("ɱ", true);
+    public static readonly SpeechSound VoicedLabiodentalNasal = SpeechSymbol.VoicedLabiodentalNasal;
 
     /// <summary>
     /// The voiced labiodental flap, a type of consonantal sound
     /// represented in the IPA by the symbol <c>⟨ⱱ⟩</c>.
     /// </summary>
-    /// <remarks>See <see href="https://en.wikipedia.org/wiki/Voiced_labiodental_flap"/></remarks>
-    public static readonly SpeechSound VoicedLabiodentalFlap = new("ⱱ", true);
+    /// Added to the IPA in 2005. Added to Unicode in version 5.1 (2008).
+    /// <para>See <see href="https://en.wikipedia.org/wiki/Voiced_labiodental_flap" /></para>
+    public static readonly SpeechSound VoicedLabiodentalFlap = SpeechSymbol.VoicedLabiodentalFlap;
 
     /// <summary>
     /// The voiceless labiodental fricative, a type of consonantal sound
     /// represented in the IPA by the symbol <c>⟨f⟩</c>.
     /// </summary>
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Voiceless_labiodental_fricative"/></remarks>
-    public static readonly SpeechSound VoicelessLabiodentalFricative = new("f", true);
+    public static readonly SpeechSound VoicelessLabiodentalFricative = SpeechSymbol.VoicelessLabiodentalFricative;
 
     /// <summary>
     /// The voiced labiodental fricative is a type of consonantal sound
     /// represented in the IPA by the symbol <c>⟨v⟩</c>.
     /// </summary>
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Voiced_labiodental_fricative"/></remarks>
-    public static readonly SpeechSound VoicedLabiodentalFricative = new("v", true);
+    public static readonly SpeechSound VoicedLabiodentalFricative = SpeechSymbol.VoicedLabiodentalFricative;
 
     /// <summary>
     /// The voiced labiodental approximant is a type of consonantal sound,
     /// represented in the IPA by the symbol <c>⟨ʋ⟩</c>.
     /// </summary>
-    public static readonly SpeechSound VoicedLabiodentalApproximant = new("ʋ", true);
+    public static readonly SpeechSound VoicedLabiodentalApproximant = SpeechSymbol.VoicedLabiodentalApproximant;
 
     /// <summary>
     /// The voiceless alveolar plosive is a type of consonantal sound
     /// represented in the IPA by the symbols <c>⟨t⟩</c>.
     /// </summary>
-    public static readonly SpeechSound VoicelessAlveolarPlosive = new("t", true);
+    public static readonly SpeechSound VoicelessAlveolarPlosive =
+        SpeechSymbol.VoicelessAlveolarPlosive;
 
     /// <summary>
     /// The voiced alveolar plosive is a type of consonantal sound
     /// represented in the IPA by the symbol <c>⟨d⟩</c>.
     /// </summary>
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Voiced_dental_and_alveolar_plosives"/></remarks>
-    public static readonly SpeechSound VoicedAlveolarPlosive = new("d", true);
+    public static readonly SpeechSound VoicedAlveolarPlosive =
+        SpeechSymbol.VoicedAlveolarPlosive;
 
     /// <summary>
     /// The voiced alveolar nasal is a type of consonantal sound
     /// represented in the IPA by the symbol <c>⟨n⟩</c>.
     /// </summary>
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Voiced_dental,_alveolar_and_postalveolar_nasals"/></remarks>
-    public static readonly SpeechSound VoicedAlveolarNasal = new("n", true);
+    public static readonly SpeechSound VoicedAlveolarNasal =
+        SpeechSymbol.VoicedAlveolarNasal;
 
-    public static readonly SpeechSound VoicedAlveolarTrill = new("r", true);
+    public static readonly SpeechSound VoicedAlveolarTrill =
+        SpeechSymbol.VoicedAlveolarTrill;
 
     /// <summary>
     /// The voiced alveolar tap or flap is a type of consonantal sound,
     /// represented in the IPA by the symbol <c>⟨ɾ⟩</c>.
     /// </summary>
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Voiced_dental_and_alveolar_taps_and_flaps"/></remarks>
-    public static readonly SpeechSound VoicedAlveolarTap = new("ɾ", true);
+    public static readonly SpeechSound VoicedAlveolarTap =
+        SpeechSymbol.VoicedAlveolarTap;
 
     /// <summary>
     /// The voiceless dental non-sibilant fricative is a type of consonantal sound,
     /// represented in the IPA by the symbol <c>⟨θ⟩</c>.
     /// </summary>
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Voiceless_dental_fricative"/></remarks>
-    public static readonly SpeechSound VoicelessDentalFricative = new("θ", true);
+    public static readonly SpeechSound VoicelessDentalFricative =
+        SpeechSymbol.VoicelessDentalFricative;
 
     /// <summary>
     /// The voiced dental fricative is a consonant sound,
     /// represented in the IPA by the symbol <c>⟨ð⟩</c>.
     /// </summary>
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Voiced_dental_fricative"/></remarks>
-    public static readonly SpeechSound VoicedDentalFricative = new("ð", true);
+    public static readonly SpeechSound VoicedDentalFricative =
+        SpeechSymbol.VoicedDentalFricative;
 
     /// <summary>
     /// The voiceless alveolar fricative is a type of consonantal sound,
     /// represented in the IPA by the symbol <c>⟨s⟩</c>.
     /// </summary>
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Voiceless_alveolar_fricative"/></remarks>
-    public static readonly SpeechSound VoicelessAlveolarFricative = new("s", true);
+    public static readonly SpeechSound VoicelessAlveolarFricative =
+        SpeechSymbol.VoicelessAlveolarFricative;
 
     /// <summary>
     /// The voiced alveolar fricative is a type of consonantal sound,
     /// represented in the IPA by the symbol <c>⟨z⟩</c>.
     /// </summary>
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Voiced_alveolar_fricative"/></remarks>
-    public static readonly SpeechSound VoicedAlveolarFricative = new("z", true);
+    public static readonly SpeechSound VoicedAlveolarFricative =
+        SpeechSymbol.VoicedAlveolarFricative;
 
     /// <summary>
     /// A voiceless postalveolar fricative is a type of consonantal sound,
     /// represented in the IPA by the symbol <c>⟨ʃ⟩</c>.
     /// </summary>
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Voiceless_postalveolar_fricative"/></remarks>
-    public static readonly SpeechSound VoicelessPostalveolarFricative = new("ʃ", true);
+    public static readonly SpeechSound VoicelessPostalveolarFricative =
+        SpeechSymbol.VoicelessPostalveolarFricative;
 
     /// <summary>
     /// The voiceless palato-alveolar sibilant affricate or voiceless domed postalveolar sibilant
     /// affricate is a type of consonantal sound, represented in the IPA by the symbol <c>tʃ</c>.
     /// </summary>
-    public static readonly SpeechSound VoicelessPostalveolarAffricate = new("tʃ", true);
+    public static readonly SpeechSound VoicelessPostalveolarAffricate =
+        new(
+        [
+            SpeechSymbol.VoicelessAlveolarPlosive,
+            SpeechSymbol.TieBar,
+            SpeechSymbol.VoicelessPostalveolarFricative
+        ],
+        true);
 
     /// <summary>
     /// A voiced postalveolar fricative is a type of consonantal sound,
     /// represented in the IPA by the symbol <c>⟨ʒ⟩</c>.
     /// </summary>
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Voiced_postalveolar_fricative"/></remarks>
-    public static readonly SpeechSound VoicedPostalveolarFricative = new("ʒ", true);
+    public static readonly SpeechSound VoicedPostalveolarFricative =
+        SpeechSymbol.VoicedPostalveolarFricative;
 
     /// <summary>
     /// The voiced alveolar approximant is a type of consonantal sound,
-    /// represented in the IPA by the symbol <c>⟨ɹ̠⟩</c>. (See also <see cref="VoicedAlveolarApproximant"/>)
+    /// represented in the IPA by the transcription <c>⟨ɹ̠⟩</c>. (See also <see cref="VoicedAlveolarApproximant"/>)
     /// </summary>
     /// <remarks>
     /// The most common sound represented by the letter r in English is the voiced
@@ -429,132 +491,193 @@ public readonly struct SpeechSound
     /// in IPA as ⟨ɹ̠⟩, but ⟨ɹ⟩ is often used for convenience in its place.
     /// </remarks>
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Voiced_alveolar_and_postalveolar_approximants"/></remarks>
-    public static readonly SpeechSound VoicedPostalveolarApproximant = new("ɹ̠", true);
+    public static readonly SpeechSound VoicedPostalveolarApproximant =
+        new(
+        [
+            SpeechSymbol.VoicedAlveolarApproximant,
+            SpeechSymbol.Retracted,
+        ],
+        true);
 
-    public static readonly SpeechSound VoicedPostalveolarAffricate = new("dʒ", true);
+    public static readonly SpeechSound VoicedPostalveolarAffricate = new(
+        [
+            SpeechSymbol.VoicedAlveolarPlosive,
+            SpeechSymbol.Retracted,
+            SpeechSymbol.VoicedPostalveolarFricative,
+        ],
+        true);
 
-    public static readonly SpeechSound VoicelessLateralAlveolarFricative = new("ɬ", true);
+    public static readonly SpeechSound VoicelessAlveolarLateralFricative =
+        SpeechSymbol.VoicelessAlveolarLateralFricative;
 
-    public static readonly SpeechSound VoicedLateralAlveolarFricative = new("ɮ", true);
+    public static readonly SpeechSound VoicedAlveolarLateralFricative =
+        SpeechSymbol.VoicedAlveolarLateralFricative;
 
     /// <summary>
     /// The voiced alveolar approximant is a type of consonantal sound,
     /// represented in the IPA by the symbol <c>⟨ɹ⟩</c>.
     /// </summary>
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Voiced_alveolar_and_postalveolar_approximants"/></remarks>
-    public static readonly SpeechSound VoicedAlveolarApproximant = new("ɹ", true);
+    public static readonly SpeechSound VoicedAlveolarApproximant =
+        SpeechSymbol.VoicedAlveolarApproximant;
 
     /// <summary>
     /// The voiced alveolar lateral approximant is a type of consonantal sound,
     /// represented in the IPA by the symbol <c>⟨l⟩</c>.
     /// </summary>
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Voiced_dental,_alveolar_and_postalveolar_lateral_approximants"/></remarks>
-    public static readonly SpeechSound VoicedAlveolarLateralApproximant = new("l", true);
+    public static readonly SpeechSound VoicedAlveolarLateralApproximant =
+        SpeechSymbol.VoicedAlveolarLateralApproximant;
 
-    public static readonly SpeechSound VoicelessRetroflexPlosive = new("ʈ", true);
+    /// <summary>
+    /// The voiceless retroflex plosive is a type of consonantal sound,
+    /// represented in the IPA by the symbol <c>⟨ʈ⟩</c>.
+    /// </summary>
+    public static readonly SpeechSound VoicelessRetroflexPlosive =
+        SpeechSymbol.VoicelessRetroflexPlosive;
 
-    public static readonly SpeechSound VoicedRetroflexPlosive = new("ɖ", true);
+    /// <summary>
+    /// The voiced retroflex plosive is a type of consonantal sound,
+    /// represented in the IPA by the symbol <c>⟨ɖ⟩</c>.
+    /// </summary>
+    public static readonly SpeechSound VoicedRetroflexPlosive =
+        SpeechSymbol.VoicedRetroflexPlosive;
 
-    public static readonly SpeechSound VoicedRetroflexNasal = new("ɳ", true);
+    public static readonly SpeechSound VoicedRetroflexNasal =
+        SpeechSymbol.VoicedRetroflexNasal;
 
-    public static readonly SpeechSound VoicedRetroflexFlap = new("ɽ", true);
+    /// <summary>
+    /// The voiced retroflex tap is a type of consonantal sound,
+    /// represented in the IPA by the symbol <c>⟨ɽ⟩</c>.
+    /// </summary>
+    public static readonly SpeechSound VoicedRetroflexTap =
+        SpeechSymbol.VoicedRetroflexTap;
 
-    public static readonly SpeechSound VoicelessRetroflexFricative = new("ʂ", true);
+    public static readonly SpeechSound VoicelessRetroflexFricative =
+        SpeechSymbol.VoicelessRetroflexFricative;
 
-    public static readonly SpeechSound VoicedRetroflexFricative = new("ʐ", true);
+    public static readonly SpeechSound VoicedRetroflexFricative =
+        SpeechSymbol.VoicedRetroflexFricative;
 
     /// <summary>
     /// The voiced retroflex approximant is a type of consonant,
     /// represented in the IPA by the symbol <c>⟨ɻ⟩</c>.
     /// </summary>
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Voiced_retroflex_approximant"/></remarks>
-    public static readonly SpeechSound VoicedRetroflexApproximant = new("ɻ", true);
+    public static readonly SpeechSound VoicedRetroflexApproximant =
+        SpeechSymbol.VoicedRetroflexApproximant;
 
-    public static readonly SpeechSound VoicedRetroflexLateralApproximant = new("ɭ", true);
+    public static readonly SpeechSound VoicedRetroflexLateralApproximant =
+        SpeechSymbol.VoicedRetroflexLateralApproximant;
 
-    public static readonly SpeechSound VoicelessPalatalPlosive = new("c", true);
+    public static readonly SpeechSound VoicelessPalatalPlosive =
+        SpeechSymbol.VoicelessPalatalPlosive;
 
-    public static readonly SpeechSound VoicedPalatalPlosive = new("ɟ", true);
+    public static readonly SpeechSound VoicedPalatalPlosive =
+        SpeechSymbol.VoicedPalatalPlosive;
 
-    public static readonly SpeechSound VoicedPalatalNasal = new("ɲ", true);
+    public static readonly SpeechSound VoicedPalatalNasal =
+        SpeechSymbol.VoicedPalatalNasal;
 
-    public static readonly SpeechSound VoicelessPalatalFricative = new("ç", true);
+    public static readonly SpeechSound VoicelessPalatalFricative =
+        SpeechSymbol.VoicelessPalatalFricative;
 
-    public static readonly SpeechSound VoicedPalatalFricative = new("ʝ", true);
+    public static readonly SpeechSound VoicedPalatalFricative =
+        SpeechSymbol.VoicedPalatalFricative;
 
     /// <summary>
     /// The voiced palatal approximant, or yod, is a type of consonantal sound,
     /// represented in the IPA by the symbol <c>⟨j⟩</c>.
     /// </summary>
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Voiced_palatal_approximant"/></remarks>
-    public static readonly SpeechSound VoicedPalatalApproximant = new("j", true);
+    public static readonly SpeechSound VoicedPalatalApproximant =
+        SpeechSymbol.VoicedPalatalApproximant;
 
-    public static readonly SpeechSound VoicedPalatalLateralApproximant = new("ʎ", true);
+    public static readonly SpeechSound VoicedPalatalLateralApproximant =
+        SpeechSymbol.VoicedPalatalLateralApproximant;
 
     /// <summary>
     /// The voiceless velar plosive or stop is a type of consonantal sound,
     /// represented in the IPA by the symbol <c>⟨k⟩</c>.
     /// </summary>
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Voiceless_velar_plosive"/></remarks>
-    public static readonly SpeechSound VoicelessVelarPlosive = new("k", true);
+    public static readonly SpeechSound VoicelessVelarPlosive =
+        SpeechSymbol.VoicelessVelarPlosive;
 
-    public static readonly SpeechSound VoicedVelarPlosive = new("ɡ", true);
+    public static readonly SpeechSound VoicedVelarPlosive =
+        SpeechSymbol.VoicedVelarPlosive;
 
     /// <summary>
     /// The voiced velar nasal, also known as agma, is a type of consonantal sound
     /// represented in the IPA by the symbol <c>⟨ŋ⟩</c>.
     /// </summary>
-    public static readonly SpeechSound VoicedVelarNasal = new("ŋ", true);
+    public static readonly SpeechSound VoicedVelarNasal =
+        SpeechSymbol.VoicedVelarNasal;
 
     /// <summary>
     /// The voiceless velar fricative is a type of consonantal sound used,
     /// represented in the IPA by the symbol <c>⟨x⟩</c>.
     /// </summary>
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Voiceless_velar_fricative"/></remarks>
-    public static readonly SpeechSound VoicelessVelarFricative = new("x", true);
+    public static readonly SpeechSound VoicelessVelarFricative =
+        SpeechSymbol.VoicelessVelarFricative;
 
-    public static readonly SpeechSound VoicedVelarFricative = new("ɣ", true);
+    public static readonly SpeechSound VoicedVelarFricative =
+        SpeechSymbol.VoicedVelarFricative;
 
     /// <summary>
     /// The voiced labial–velar approximant is a type of consonantal sound,
     /// represented in the IPA by the symbol <c>⟨w⟩</c>.
     /// </summary>
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Voiced_labial%E2%80%93velar_approximant"/></remarks>
-    public static readonly SpeechSound VoicedLabialVelarApproximant = new("w", true);
+    public static readonly SpeechSound VoicedLabialVelarApproximant =
+        SpeechSymbol.VoicedLabialVelarApproximant;
 
     /// <summary>
     /// The voiceless labial–velar fricative is a type of consonantal sound,
     /// represented in the IPA by the symbol <c>⟨ʍ⟩</c>.
     /// </summary>
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Voiceless_labial%E2%80%93velar_fricative"/></remarks>
-    public static readonly SpeechSound VoicelessLabialVelarFricative = new("ʍ", true);
+    public static readonly SpeechSound VoicelessLabialVelarFricative =
+        SpeechSymbol.VoicelessLabialVelarFricative;
 
-    public static readonly SpeechSound VoicedVelarApproximant = new("ɰ", true);
+    public static readonly SpeechSound VoicedVelarApproximant =
+        SpeechSymbol.VoicedVelarApproximant;
 
-    public static readonly SpeechSound VoicedVelarLateralApproximant = new("ʟ", true);
+    public static readonly SpeechSound VoicedVelarLateralApproximant =
+        SpeechSymbol.VoicedVelarLateralApproximant;
 
-    public static readonly SpeechSound VoicelessUvularPlosive = new("q", true);
+    public static readonly SpeechSound VoicelessUvularPlosive =
+        SpeechSymbol.VoicelessUvularPlosive;
 
-    public static readonly SpeechSound VoicedUvularPlosive = new("ɢ", true);
+    public static readonly SpeechSound VoicedUvularPlosive =
+        SpeechSymbol.VoicedUvularPlosive;
 
-    public static readonly SpeechSound VoicedUvularNasal = new("ɴ", true);
+    public static readonly SpeechSound VoicedUvularNasal =
+        SpeechSymbol.VoicedUvularNasal;
 
-    public static readonly SpeechSound VoicedUvularTrill = new("ʀ", true);
+    public static readonly SpeechSound VoicedUvularTrill =
+        SpeechSymbol.VoicedUvularTrill;
 
-    public static readonly SpeechSound VoicelessUvularFricative = new("χ", true);
+    public static readonly SpeechSound VoicelessUvularFricative =
+        SpeechSymbol.VoicelessUvularFricative;
 
     /// <summary>
     /// The voiced uvular fricative is a type of consonantal sound,
     /// represented in the IPA by the symbol <c>⟨ʁ⟩</c>.
     /// </summary>
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Voiced_uvular_fricative"/></remarks>
-    public static readonly SpeechSound VoicedUvularFricative = new("ʁ", true);
+    public static readonly SpeechSound VoicedUvularFricative =
+        SpeechSymbol.VoicedUvularFricative;
 
-    public static readonly SpeechSound VoicelessPharyngealFricative = new("ħ", true);
+    public static readonly SpeechSound VoicelessPharyngealFricative =
+        SpeechSymbol.VoicelessPharyngealFricative;
 
-    public static readonly SpeechSound VoicedPharyngealFricative = new("ʕ", true);
+    public static readonly SpeechSound VoicedPharyngealFricative =
+        SpeechSymbol.VoicedPharyngealFricative;
 
-    public static readonly SpeechSound VoicelessGlottalPlosive = new("ʔ", true);
+    public static readonly SpeechSound VoicelessGlottalPlosive =
+        SpeechSymbol.VoicelessGlottalPlosive;
 
     /// <summary>
     /// The voiceless glottal fricative, sometimes called voiceless glottal transition or the aspirate,
@@ -563,229 +686,260 @@ public readonly struct SpeechSound
     /// The symbol in the International Phonetic Alphabet that represents this sound is ⟨h⟩.
     /// </summary>
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Voiceless_glottal_fricative"/></remarks>
-    public static readonly SpeechSound VoicelessGlottalFricative = new("h", true);
+    public static readonly SpeechSound VoicelessGlottalFricative =
+        SpeechSymbol.VoicelessGlottalFricative;
 
-    public static readonly SpeechSound VoicedGlottalFricative = new("ɦ", true);
+    public static readonly SpeechSound VoicedGlottalFricative =
+        SpeechSymbol.VoicedGlottalFricative;
 
     /// <summary>
     /// The close front unrounded vowel, or high front unrounded vowel, is a type of vowel sound,
     /// represented in the IPA by the symbol <c>⟨i⟩</c>.
     /// </summary>
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Close_front_unrounded_vowel"/></remarks>
-    public static readonly SpeechSound CloseFrontUnroundedVowel = new("i", true);
+    public static readonly SpeechSound CloseFrontUnroundedVowel =
+        SpeechSymbol.CloseFrontUnrounded;
 
-    public static readonly SpeechSound CloseFrontRoundedVowel = new("y", true);
+    public static readonly SpeechSound CloseFrontRoundedVowel =
+        SpeechSymbol.CloseFrontRounded;
 
     /// <summary>
     /// The near-close near-front unrounded vowel, or near-high near-front unrounded vowel, is a type of vowel sound,
     /// represented in the IPA by the symbol <c>⟨ɪ⟩</c>.
     /// </summary>
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Near-close_near-front_unrounded_vowel"/></remarks>
-    public static readonly SpeechSound NearCloseNearFrontUnroundedVowel = new("ɪ", true);
+    public static readonly SpeechSound NearCloseNearFrontUnrounded =
+        SpeechSymbol.LaxCloseFrontUnrounded;
 
-    public static readonly SpeechSound LoweredCloseFrontRoundedVowel = new("ʏ", true);
+    public static readonly SpeechSound NearCloseNearFrontRounded =
+        SpeechSymbol.LaxCloseFrontRounded;
 
-    public static readonly SpeechSound CloseMidFrontUnroundedVowel = new("e", true);
+    public static readonly SpeechSound CloseMidFrontUnroundedVowel =
+        SpeechSymbol.CloseMidFrontUnrounded;
 
-    public static readonly SpeechSound CloseMidFrontRoundedVowel = new("ø", true);
+    public static readonly SpeechSound CloseMidFrontRoundedVowel =
+        SpeechSymbol.CloseMidFrontRounded;
 
     /// <summary>
     /// The open-mid front unrounded vowel, or low-mid front unrounded vowel, is a type of vowel sound,
     /// represented in the IPA by the symbol <c>⟨ɛ⟩</c>.
     /// </summary>
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Open-mid_front_unrounded_vowel"/></remarks>
-    public static readonly SpeechSound OpenMidFrontUnroundedVowel = new("ɛ", true);
+    public static readonly SpeechSound OpenMidFrontUnroundedVowel =
+        SpeechSymbol.OpenMidFrontUnrounded;
 
-    public static readonly SpeechSound OpenMidFrontRoundedVowel = new("œ", true);
+    public static readonly SpeechSound OpenMidFrontRoundedVowel =
+        SpeechSymbol.OpenMidFrontRounded;
 
     /// <summary>
     /// The near-open front unrounded vowel, or near-low front unrounded vowel, is a type of vowel sound,
     /// represented in the IPA by the symbol <c>⟨æ⟩</c>.
     /// </summary>
-    public static readonly SpeechSound NearOpenFrontUnroundedVowel = new("æ", true);
+    public static readonly SpeechSound NearOpenFrontUnroundedVowel =
+        SpeechSymbol.RaisedOpenFrontUnrounded;
 
     /// <summary>
     /// The open front unrounded vowel, or low front unrounded vowel, is a type of vowel sound,
     /// represented in the IPA by the symbol <c>⟨a⟩</c>.
     /// </summary>
-    public static readonly SpeechSound OpenFrontUnroundedVowel = new("a", true);
+    public static readonly SpeechSound OpenFrontUnroundedVowel =
+        SpeechSymbol.OpenFrontUnrounded;
 
-    public static readonly SpeechSound OpenFrontRoundedVowel = new("ɶ", true);
+    public static readonly SpeechSound OpenFrontRoundedVowel =
+        SpeechSymbol.OpenFrontRounded;
 
-    public static readonly SpeechSound CloseCentralUnroundedVowel = new("ɨ", true);
+    public static readonly SpeechSound CloseCentralUnroundedVowel =
+        SpeechSymbol.CloseCentralUnrounded;
 
-    public static readonly SpeechSound CloseCentralRoundedVowel = new("ʉ", true);
+    public static readonly SpeechSound CloseCentralRoundedVowel =
+        SpeechSymbol.CloseCentralRounded;
 
-    public static readonly SpeechSound CloseMidCentralUnroundedVowel = new("ɘ", true);
+    public static readonly SpeechSound CloseMidCentralUnroundedVowel =
+        SpeechSymbol.CloseMidCentralUnrounded;
 
-    public static readonly SpeechSound CloseMidCentralRoundedVowel = new("ɵ", true);
+    public static readonly SpeechSound CloseMidCentralRoundedVowel =
+        SpeechSymbol.CloseMidCentralRounded;
 
     /// <summary>
     /// The mid central vowel (also known as schwa) is a type of vowel sound,
     /// represented in the IPA by the symbol <c>⟨ə⟩</c>.
     /// </summary>
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Mid_central_vowel"/></remarks>
-    public static readonly SpeechSound MidCentralUnroundedVowel = new("ə", true);
+    public static readonly SpeechSound MidCentralVowel =
+        SpeechSymbol.MidCentralSchwa;
 
     /// <summary>
     /// The open-mid central unrounded vowel, or low-mid central unrounded vowel, is a type of vowel sound,
     /// represented in the IPA by the symbol <c>⟨ɜ⟩</c>.
     /// </summary>
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Open-mid_central_unrounded_vowel"/></remarks>
-    public static readonly SpeechSound OpenMidCentralUnroundedVowel = new("ɜ", true);
+    public static readonly SpeechSound OpenMidCentralUnroundedVowel =
+        SpeechSymbol.OpenMidCentralUnrounded;
 
-    public static readonly SpeechSound OpenMidCentralRoundedVowel = new("ɞ", true);
+    public static readonly SpeechSound OpenMidCentralRoundedVowel =
+        SpeechSymbol.OpenMidCentralRounded;
 
     /// <summary>
     /// The near-open central vowel, or near-low central vowel,
     /// represented in the IPA by the symbol <c>⟨ɐ⟩</c>.
     /// </summary>
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Near-open_central_vowel"/></remarks>
-    public static readonly SpeechSound NearOpenCentralUnroundedVowel = new("ɐ", true);
+    public static readonly SpeechSound NearOpenCentralUnroundedVowel =
+        SpeechSymbol.LoweredSchwa;
+
+    /// <summary>
+    /// The open central unrounded vowel, or low central unrounded vowel,
+    /// represented in the IPA by the transcription <c>⟨ä⟩</c>.
+    /// </summary>
+    public static readonly SpeechSound OpenCentralUnroundedVowel = new(
+        [
+            SpeechSymbol.OpenFrontUnrounded,
+            SpeechSymbol.Centralized,
+        ],
+        true);
 
     /// <summary>
     /// The close back unrounded vowel, or high back unrounded vowel,
     /// represented in the IPA by the symbol <c>⟨ɯ⟩</c>.
     /// </summary>
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Close_back_unrounded_vowel"/></remarks>
-    public static readonly SpeechSound CloseBackUnroundedVowel = new("ɯ", true);
+    public static readonly SpeechSound CloseBackUnroundedVowel =
+        SpeechSymbol.CloseBackUnrounded;
 
     /// <summary>
     /// The close back rounded vowel, or high back rounded vowel,
     /// represented in the IPA by the symbol <c>⟨u⟩</c>.
     /// </summary>
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Close_back_rounded_vowel"/></remarks>
-    public static readonly SpeechSound CloseBackRoundedVowel = new("u", true);
+    public static readonly SpeechSound CloseBackRoundedVowel =
+        SpeechSymbol.CloseBackRounded;
 
     /// <summary>
     /// The near-close near-back rounded vowel, or near-high near-back rounded vowel,
     /// represented in the IPA by the symbol <c>⟨ʊ⟩</c>.
     /// </summary>
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Near-close_near-back_rounded_vowel"/></remarks>
-    public static readonly SpeechSound NearCloseNearBackRoundedVowel = new("ʊ", true);
+    public static readonly SpeechSound NearCloseNearBackRoundedVowel =
+        SpeechSymbol.LaxCloseBackRounded;
 
     /// <summary>
     /// The close-mid back unrounded vowel, or high-mid back unrounded vowel,
     /// represented in the IPA by the symbol <c>⟨ɤ⟩</c>.
     /// </summary>
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Close-mid_back_unrounded_vowel"/></remarks>
-    public static readonly SpeechSound CloseMidBackUnroundedVowel = new("ɤ", true);
+    public static readonly SpeechSound CloseMidBackUnroundedVowel =
+        SpeechSymbol.CloseMidBackUnrounded;
 
     /// <summary>
     /// The close-mid back rounded vowel, or high-mid back rounded vowel,
     /// represented in the IPA by the symbol <c>⟨o⟩</c>.
     /// </summary>
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Close-mid_back_rounded_vowel"/></remarks>
-    public static readonly SpeechSound CloseMidBackRoundedVowel = new("o", true);
+    public static readonly SpeechSound CloseMidBackRoundedVowel =
+        SpeechSymbol.CloseMidBackRounded;
 
     /// <summary>
     /// The open-mid back unrounded vowel or low-mid back unrounded vowel,
     /// representented in the IPA by the symbol <c>⟨ʌ⟩</c>.
     /// </summary>
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Open-mid_back_unrounded_vowel"/></remarks>
-    public static readonly SpeechSound OpenMidBackUnroundedVowel = new("ʌ", true);
+    public static readonly SpeechSound OpenMidBackUnroundedVowel =
+        SpeechSymbol.OpenMidBackUnrounded;
 
     /// <summary>
     /// The open-mid back rounded vowel, or low-mid back rounded vowel,
     /// represented in the IPA by the symbol <c>⟨ɔ⟩</c>.
     /// </summary>
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Open-mid_back_rounded_vowel"/></remarks>
-    public static readonly SpeechSound OpenMidBackRoundedVowel = new("ɔ", true);
+    public static readonly SpeechSound OpenMidBackRoundedVowel =
+        SpeechSymbol.OpenMidBackRounded;
 
     /// <summary>
     /// The open back unrounded vowel, or low back unrounded vowel,
     /// represented in the IPA by the symbol <c>⟨ɑ⟩</c>.
     /// </summary>
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Open_back_unrounded_vowel"/></remarks>
-    public static readonly SpeechSound OpenBackUnroundedVowel = new("ɑ", true);
+    public static readonly SpeechSound OpenBackUnroundedVowel =
+        SpeechSymbol.OpenBackUnrounded;
 
     /// <summary>
     /// The open back rounded vowel, or low back rounded vowel,
     /// represented in the IPA by the symbol <c>⟨ɒ⟩</c>.
     /// </summary>
     /// <remarks>See <see href="https://en.wikipedia.org/wiki/Open_back_rounded_vowel"/></remarks>
-    public static readonly SpeechSound OpenBackRoundedVowel = new("ɒ", true);
+    public static readonly SpeechSound OpenBackRoundedVowel =
+        SpeechSymbol.OpenBackRounded;
 
-    public static readonly FrozenSet<string> CloseVowels = FrozenSet.ToFrozenSet(
+    public static readonly FrozenSet<SpeechSound> CloseVowels = FrozenSet.ToFrozenSet(
     [
-        "i", // close front unrounded vowel
-        "y", // close front rounded vowel
-        "ɨ", // close central unrounded vowel
-        "ʉ", // close central rounded vowel
-        "ɯ", // close back unrounded vowel
-        "u", // close back rounded vowel
+        CloseFrontUnroundedVowel,
+        CloseFrontRoundedVowel,
+        CloseCentralUnroundedVowel,
+        CloseCentralRoundedVowel,
+        CloseBackUnroundedVowel,
+        CloseBackRoundedVowel,
     ]);
 
-    public static readonly FrozenSet<string> NearCloseVowels = FrozenSet.ToFrozenSet(
+    public static readonly FrozenSet<SpeechSound> NearCloseVowels = FrozenSet.ToFrozenSet(
     [
-        "ɪ", // near-close near-front unrounded vowel
-        "ʏ", // near-close near-front rounded vowel
-        "ʊ", // near-close near-back rounded vowel
+        NearCloseNearFrontUnrounded,
+        NearCloseNearFrontRounded,
+        NearCloseNearBackRoundedVowel,
     ]);
 
-    public static readonly FrozenSet<string> CloseMidVowels = FrozenSet.ToFrozenSet(
+    public static readonly FrozenSet<SpeechSound> CloseMidVowels = FrozenSet.ToFrozenSet(
     [
-        "e", // close-mid front unrounded vowel
-        "ø", // close-mid front rounded vowel
-        "ɘ", // close-mid central unrounded vowel
-        "ɵ", // close-mid central rounded vowel
-        "ɤ", // close-mid back unrounded vowel
-        "o", // close-mid back rounded vowel
+        CloseMidFrontUnroundedVowel,
+        CloseMidFrontRoundedVowel,
+        CloseMidCentralUnroundedVowel,
+        CloseMidCentralRoundedVowel,
+        CloseMidBackUnroundedVowel,
+        CloseMidBackRoundedVowel,
     ]);
 
-    public static readonly FrozenSet<string> MidVowels = FrozenSet.ToFrozenSet(
+    public static readonly FrozenSet<SpeechSound> MidVowels = FrozenSet.ToFrozenSet(
     [
-        "ə", // schwa, mid central vowel
+        MidCentralVowel,
     ]);
 
-    public static readonly FrozenSet<string> OpenMidVowels = FrozenSet.ToFrozenSet(
+    public static readonly FrozenSet<SpeechSound> OpenMidVowels = FrozenSet.ToFrozenSet(
     [
-        "ɛ", // open-mid front unrounded vowel
-        "œ", // open-mid front rounded vowel
-        "ɜ", // open-mid central unrounded vowel
-        "ɞ", // open-mid central rounded vowel
-        "ʌ", // open-mid back unrounded vowel
-        "ɔ", // open-mid back rounded vowel
+        OpenMidFrontUnroundedVowel,
+        OpenMidFrontRoundedVowel,
+        OpenMidCentralUnroundedVowel,
+        OpenMidCentralRoundedVowel,
+        OpenMidBackUnroundedVowel,
+        OpenMidBackRoundedVowel,
     ]);
 
-    public static readonly FrozenSet<string> NearOpenVowels = FrozenSet.ToFrozenSet(
+    public static readonly FrozenSet<SpeechSound> NearOpenVowels = FrozenSet.ToFrozenSet(
     [
-        "æ", // near-open front unrounded vowel
+        NearOpenFrontUnroundedVowel,
+        NearOpenCentralUnroundedVowel,
     ]);
 
-    public static readonly FrozenSet<string> OpenVowels = FrozenSet.ToFrozenSet(
+    public static readonly FrozenSet<SpeechSound> OpenVowels = FrozenSet.ToFrozenSet(
     [
-        "a", // open front unrounded vowel
-        "ɶ", // open front rounded vowel
-        "ä", // open central unrounded vowel
-        "ɑ", // open back unrounded vowel
-        "ɒ"  // open back rounded vowel
+        OpenFrontUnroundedVowel,
+        OpenFrontRoundedVowel,
+        OpenCentralUnroundedVowel,
+        OpenBackUnroundedVowel,
+        OpenBackRoundedVowel,
     ]);
 
-    public static readonly FrozenSet<string> Diphthongs = FrozenSet.ToFrozenSet(
+    public static readonly FrozenSet<SpeechSound> Diphthongs = FrozenSet.ToFrozenSet(
     [
-        "aɪ",
-        "aʊ",
-        "ɔɪ",
-        "eɪ",
-        "əʊ",
-        "ɪə",
-        "eə",
-        "ʊə",
+        ParseInvariant("aɪ"),
+        ParseInvariant("aʊ"),
+        ParseInvariant("ɔɪ"),
+        ParseInvariant("eɪ"),
+        ParseInvariant("əʊ"),
+        ParseInvariant("ɪə"),
+        ParseInvariant("eə"),
+        ParseInvariant("ʊə"),
     ]);
 
-    public static readonly FrozenSet<string> Monophthongs = FrozenSet.ToFrozenSet(
-    [
-        "iː",
-        "ɜː",
-        "uː",
-        "ɔː",
-        "ɑː",
-        "ɑːr",
-        "æ",
-    ]);
-
-    public static readonly FrozenSet<string> Vowels = FrozenSet.ToFrozenSet(
+    public static readonly FrozenSet<SpeechSound> Vowels = FrozenSet.ToFrozenSet(
     [
         .. CloseVowels,
         .. NearCloseVowels,
@@ -795,120 +949,120 @@ public readonly struct SpeechSound
         .. NearOpenVowels,
         .. OpenVowels,
         .. Diphthongs,
-        .. Monophthongs,
     ]);
 
     // https://en.wikipedia.org/wiki/Consonant
 
-    public static readonly FrozenSet<string> Bilabials = FrozenSet.ToFrozenSet(
+    public static readonly FrozenSet<SpeechSound> Bilabials = FrozenSet.ToFrozenSet(
     [
-        VoicelessBilabialPlosive._value.ToStringInvariant(),        // [p]
-        VoicedBilabialPlosive._value.ToStringInvariant(),           // [b]
-        VoicedBilabialNasal._value.ToStringInvariant(),             // [m]
-        VoicedBilabialTrill._value.ToStringInvariant(),             // [ʙ]
-        VoicelessBilabialFricative._value.ToStringInvariant(),      // [ɸ]
-        VoicedBilabialFricative._value.ToStringInvariant(),         // [β]
-        // TODO: ʙ̥ https://en.wikipedia.org/wiki/Voiceless_bilabial_trill
-        // TODO: m̥ https://en.wikipedia.org/wiki/Voiceless_bilabial_nasal
+        VoicelessBilabialPlosive,        // [p]
+        VoicedBilabialPlosive,           // [b]
+        VoicedBilabialNasal,             // [m]
+        VoicedBilabialTrill,             // [ʙ]
+        VoicelessBilabialFricative,      // [ɸ]
+        VoicedBilabialFricative,         // [β]
     ]);
 
-    public static readonly FrozenSet<string> Labiodentals = FrozenSet.ToFrozenSet(
+    public static readonly FrozenSet<SpeechSound> Labiodentals = FrozenSet.ToFrozenSet(
     [
-        VoicelessLabiodentalFricative._value.ToStringInvariant(),   // [f]
-        VoicedLabiodentalFricative._value.ToStringInvariant(),      // [v]
-        VoicedLabiodentalNasal._value.ToStringInvariant(),          // [ɱ]
-        VoicedLabiodentalFlap._value.ToStringInvariant(),           // [ⱱ]
-        VoicedLabiodentalApproximant._value.ToStringInvariant(),    // [ʋ]
+        VoicelessLabiodentalFricative,   // [f]
+        VoicedLabiodentalFricative,      // [v]
+        VoicedLabiodentalNasal,          // [ɱ]
+        VoicedLabiodentalFlap,           // [ⱱ]
+        VoicedLabiodentalApproximant,    // [ʋ]
     ]);
 
-    public static readonly FrozenSet<string> Dentals = FrozenSet.ToFrozenSet(
+    public static readonly FrozenSet<SpeechSound> Dentals = FrozenSet.ToFrozenSet(
     [
-        VoicelessDentalFricative._value.ToStringInvariant(),        // [θ]
-        VoicedDentalFricative._value.ToStringInvariant(),           // [ð]
+        VoicelessDentalFricative,        // [θ]
+        VoicedDentalFricative,           // [ð]
     ]);
 
-    public static readonly FrozenSet<string> Alveolars = FrozenSet.ToFrozenSet(
+    public static readonly FrozenSet<SpeechSound> Alveolars = FrozenSet.ToFrozenSet(
     [
-        VoicelessAlveolarPlosive._value.ToStringInvariant(),            // [t]
-        VoicedAlveolarPlosive._value.ToStringInvariant(),               // [d]
-        VoicedAlveolarNasal._value.ToStringInvariant(),                 // [n]
-        VoicedAlveolarTrill._value.ToStringInvariant(),                 // [r]
-        VoicelessAlveolarFricative._value.ToStringInvariant(),          // [s]
-        VoicedAlveolarFricative._value.ToStringInvariant(),             // [z]
-        VoicedAlveolarApproximant._value.ToStringInvariant(),           // [ɹ]
-        VoicedAlveolarTap._value.ToStringInvariant(),                   // [ɾ]
-        VoicelessLateralAlveolarFricative._value.ToStringInvariant(),   // [ɬ]
-        VoicedLateralAlveolarFricative._value.ToStringInvariant(),      // [ɮ]
-        VoicedAlveolarLateralApproximant._value.ToStringInvariant(),    // [l]
+        VoicelessAlveolarPlosive,            // [t]
+        VoicedAlveolarPlosive,               // [d]
+        VoicedAlveolarNasal,                 // [n]
+        VoicedAlveolarTrill,                 // [r]
+        VoicelessAlveolarFricative,          // [s]
+        VoicedAlveolarFricative,             // [z]
+        VoicedAlveolarApproximant,           // [ɹ]
+        VoicedAlveolarTap,                   // [ɾ]
+        VoicelessAlveolarLateralFricative,   // [ɬ]
+        VoicedAlveolarLateralFricative,      // [ɮ]
+        VoicedAlveolarLateralApproximant,    // [l]
     ]);
 
-    public static readonly FrozenSet<string> PostAlveolars = FrozenSet.ToFrozenSet(
+    public static readonly FrozenSet<SpeechSound> PostAlveolars = FrozenSet.ToFrozenSet(
     [
-        "ʃ", // voiceless postalveolar fricative
-        "ʒ", // voiced postalveolar fricative
-        "ʈ", // voiceless retroflex plosive
-        "ɖ", // voiced retroflex plosive
-        "ɳ", // retroflex nasal
-        "ɻ", // retroflex approximant
-        "ɽ", // retroflex flap
-        "ʂ", // voiceless retroflex fricative
-        "ʐ", // voiced retroflex fricative
-        "ɭ", // retroflex lateral approximant
+        VoicelessPostalveolarFricative,     // [ʃ]
+        VoicelessPostalveolarAffricate,     // [tʃ]
+        VoicedPostalveolarFricative,        // [ʒ]
+        VoicedPostalveolarAffricate,        // [dʒ]
+        VoicelessRetroflexPlosive,          // [ʈ]
+        VoicedRetroflexPlosive,             // [ɖ]
+        VoicedRetroflexNasal,               // [ɳ]
+        VoicedRetroflexApproximant,         // [ɻ]
+        VoicedRetroflexTap,                 // [ɽ]
+        VoicelessRetroflexFricative,        // [ʂ]
+        VoicedRetroflexFricative,           // [ʐ]
+        VoicedRetroflexLateralApproximant,  // [ɭ]
+
+        VoicelessPostalveolarAffricate,     // [tʃ]
+        VoicedPostalveolarAffricate,        // [dʒ]
     ]);
 
-    public static readonly FrozenSet<string> Palatals = FrozenSet.ToFrozenSet(
+    public static readonly FrozenSet<SpeechSound> Palatals = FrozenSet.ToFrozenSet(
     [
-        "c", // voiceless palatal plosive
-        "ɟ", // voiced palatal plosive
-        "ɲ", // palatal nasal
-        "ç", // voiceless palatal fricative
-        "ʝ", // voiced palatal fricative
-        "j", // palatal approximant
-        "ʎ", // palatal lateral approximant
+        VoicelessPalatalPlosive,        // [c]
+        VoicedPalatalPlosive,           // [ɟ]
+        VoicedPalatalNasal,             // [ɲ]
+        VoicelessPalatalFricative,      // [ç]
+        VoicedPalatalFricative,         // [ʝ]
+        VoicedPalatalApproximant,       // [j]
+        VoicedPalatalLateralApproximant // [ʎ]
     ]);
 
-    public static readonly FrozenSet<string> Velars = FrozenSet.ToFrozenSet(
+    public static readonly FrozenSet<SpeechSound> Velars = FrozenSet.ToFrozenSet(
     [
-        "k", // voiceless velar plosive
-        "ɡ", // voiced velar plosive (U+0261)
-        // "g", // ... U+0067 is not supported
-        "ŋ", // velar nasal
-        "x", // voiceless velar fricative
-        "ɣ", // voiced velar fricative
-        "w",
-        "ɰ", // velar non-sibilant fricative
+        VoicelessVelarPlosive,      // [k]
+        VoicedVelarPlosive,         // [ɡ]
+        VoicedVelarNasal,           // [ŋ]
+        VoicelessVelarFricative,    // [x]
+        VoicedVelarFricative,       // [ɣ]
+        VoicedVelarApproximant,     // [ɰ]
     ]);
 
-    public static readonly FrozenSet<string> Uvulars = FrozenSet.ToFrozenSet(
+    public static readonly FrozenSet<SpeechSound> Uvulars = FrozenSet.ToFrozenSet(
     [
-        "q", // voiceless uvular plosive
-        "ɢ", // voiced uvular plosive
-        "ɴ", // uvular nasal
-        "χ", // voiceless uvular fricative
-        "ʁ", // voiced uvular fricative
-        "ʀ", // uvular trill
+        VoicelessUvularPlosive,     // [q]
+        VoicedUvularPlosive,        // [ɢ]
+        VoicedUvularNasal,          // [ɴ]
+        VoicelessUvularFricative,   // [χ]
+        VoicedUvularFricative,      // [ʁ]
+        VoicedUvularTrill,          // [ʀ]
     ]);
 
-    public static readonly FrozenSet<string> Pharyngeals = FrozenSet.ToFrozenSet(
+    public static readonly FrozenSet<SpeechSound> Pharyngeals = FrozenSet.ToFrozenSet(
     [
-        "ħ", // voiceless pharyngeal fricative
-        "ʕ", // voiced pharyngeal fricative
+        VoicelessPharyngealFricative, // [ħ]
+        VoicedPharyngealFricative,    // [ʕ]
     ]);
 
-    public static readonly FrozenSet<string> Glottals = FrozenSet.ToFrozenSet(
+    public static readonly FrozenSet<SpeechSound> Glottals = FrozenSet.ToFrozenSet(
     [
-        "ʔ", // glottal plosive
-        "h", // voiceless glottal fricative
-        "ɦ"  // voiced glottal fricative
+        VoicelessGlottalPlosive, // [ʔ]
+        VoicelessGlottalFricative, // [h]
+        VoicedGlottalFricative, // [ɦ]
     ]);
 
-    public static readonly FrozenSet<string> Coarticulated = FrozenSet.ToFrozenSet(
+    public static readonly FrozenSet<SpeechSound> Coarticulated = FrozenSet.ToFrozenSet(
     [
-        VoicelessLabialVelarFricative._value.ToStringInvariant(),       // [ʍ]
-        VoicedLabialVelarApproximant._value.ToStringInvariant(),        // [w]
+        VoicelessLabialVelarFricative,       // [ʍ]
+        VoicedLabialVelarApproximant,        // [w]
     ]);
 
-    public static readonly FrozenSet<string> Consonants = FrozenSet.ToFrozenSet(
+    public static readonly FrozenSet<SpeechSound> Consonants = FrozenSet.ToFrozenSet(
     [
         .. Bilabials,
         .. Labiodentals,

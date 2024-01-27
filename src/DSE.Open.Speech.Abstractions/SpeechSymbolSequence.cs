@@ -5,6 +5,7 @@ using System.Buffers;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using DSE.Open.Diagnostics;
 using DSE.Open.Runtime.Helpers;
@@ -77,7 +78,7 @@ public readonly struct SpeechSymbolSequence
         return _value.Span;
     }
 
-    public ReadOnlySpan<SpeechSymbol> Span => _value.Span;
+    
 
     public int GetCharCount(ReadOnlySpan<char> format, IFormatProvider? provider)
     {
@@ -87,6 +88,45 @@ public readonly struct SpeechSymbolSequence
     public int GetCharCount(string? format, IFormatProvider? formatProvider)
     {
         return _value.Length;
+    }
+
+    public Enumerator GetEnumerator()
+    {
+        return new(this);
+    }
+
+#pragma warning disable CA1034 // Nested types should not be visible
+    public ref struct Enumerator
+#pragma warning restore CA1034 // Nested types should not be visible
+    {
+        private readonly SpeechSymbolSequence _span;
+        private int _index;
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal Enumerator(SpeechSymbolSequence span)
+        {
+            _span = span;
+            _index = -1;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool MoveNext()
+        {
+            var index = _index + 1;
+            if (index < _span.Length)
+            {
+                _index = index;
+                return true;
+            }
+
+            return false;
+        }
+
+        public SpeechSymbol Current
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => _span[_index];
+        }
     }
 
     public static SpeechSymbolSequence Parse(ReadOnlySpan<char> s)

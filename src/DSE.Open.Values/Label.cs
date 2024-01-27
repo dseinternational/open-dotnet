@@ -111,7 +111,7 @@ public readonly partial struct Label : IComparableValue<Label, CharSequence>
 
         var nonWhitespaceCount = 0;
 
-        foreach (var c in value.Span)
+        foreach (var c in value.AsSpan())
         {
             if (char.IsWhiteSpace(c))
             {
@@ -158,7 +158,7 @@ public readonly partial struct Label : IComparableValue<Label, CharSequence>
 
     public static explicit operator ReadOnlySpan<char>(Label label)
     {
-        return label._value.Span;
+        return label._value.AsSpan();
     }
 
 #pragma warning restore CA2225 // Operator overloads have named alternates

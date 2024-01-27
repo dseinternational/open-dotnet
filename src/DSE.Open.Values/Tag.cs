@@ -106,12 +106,12 @@ public readonly partial struct Tag : IComparableValue<Tag, AsciiString>, IUtf8Sp
 
     public ReadOnlySpan<byte> AsBytes()
     {
-        return ValuesMarshal.AsBytes(_value.Span);
+        return ValuesMarshal.AsBytes(_value.AsSpan());
     }
 
     public ReadOnlySpan<AsciiChar> AsAsciiChars()
     {
-        return _value.Span;
+        return _value.AsSpan();
     }
 
     public bool StartsWith(AsciiString value)

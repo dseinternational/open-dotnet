@@ -223,7 +223,7 @@ public class AsciiStringTests
         var result = asciiString.ToCharSequence();
 
         // Assert
-        Assert.Equal(value.ToCharArray(), result.Span.ToArray());
+        Assert.Equal(value.ToCharArray(), result.AsSpan().ToArray());
     }
 
     [Fact]

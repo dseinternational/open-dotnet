@@ -378,7 +378,7 @@ public static class Phonemes
         public static readonly Phoneme i = new()
         {
             Language = LanguageCode2.English,
-            Abstraction = SpeechSound.NearCloseNearFrontUnroundedVowel,
+            Abstraction = SpeechSound.NearCloseNearFrontUnrounded,
             Allophones = []
         };
 
@@ -451,7 +451,7 @@ public static class Phonemes
         public static readonly Phoneme uh = new()
         {
             Language = LanguageCode2.English,
-            Abstraction = SpeechSound.MidCentralUnroundedVowel,
+            Abstraction = SpeechSound.MidCentralVowel,
             Allophones =
             [
                 new SpeechSound("ər"),
