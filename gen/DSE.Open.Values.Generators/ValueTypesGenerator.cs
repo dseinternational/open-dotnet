@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Collections.Immutable;
+using System.Diagnostics;
 using DSE.Open.Values.Generators.Extensions;
 using DSE.Open.Values.Generators.Model;
 using Microsoft.CodeAnalysis;
@@ -138,13 +139,13 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
             return specs;
         }
 
-        var emitConstructor = true;
-        var maxSerializedCharLength = 0;
-        var emitEnsureNotDefault = false;
-
         foreach (var structDeclarationSyntax in structs)
         {
             ct.ThrowIfCancellationRequested();
+
+            var emitConstructor = true;
+            var maxSerializedCharLength = 0;
+            var emitEnsureNotDefault = false;
 
             var semanticModel = compilation.GetSemanticModel(structDeclarationSyntax.SyntaxTree);
 
@@ -229,6 +230,11 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
 
                             if (!allowDefaultValue)
                             {
+                                if (namedTypeSymbol.Name == "UriAsciiPath")
+                                {
+                                    Debugger.Break();
+                                }
+
                                 emitEnsureNotDefault = true;
                             }
                         }
@@ -598,6 +604,7 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
             spec.EmitConstructor = emitConstructor;
             spec.EmitEqualsMethod = emitEqualsMethod;
             spec.EmitGetHashCodeMethod = emitGetHashCodeMethod;
+
             spec.EmitEnsureNotDefault = emitEnsureNotDefault;
 
             // IFormattable
