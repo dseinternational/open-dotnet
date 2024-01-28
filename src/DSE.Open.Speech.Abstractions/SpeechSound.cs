@@ -311,6 +311,13 @@ public readonly struct SpeechSound
         return new SpeechSound(new SpeechSymbolSequence([value]), true);
     }
 
+#pragma warning disable CA2225 // Operator overloads have named alternates
+    public static implicit operator SpeechSymbolSequence(SpeechSound value)
+#pragma warning restore CA2225 // Operator overloads have named alternates
+    {
+        return value._value;
+    }
+
     /// <summary>
     /// The voiceless bilabial plosive, a type of consonantal sound
     /// represented in the IPA by the symbol <c>⟨p⟩</c>.

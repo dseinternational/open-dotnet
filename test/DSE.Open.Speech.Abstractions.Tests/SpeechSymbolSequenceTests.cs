@@ -134,6 +134,32 @@ public class SpeechSymbolSequenceTests
     }
 
     [Theory]
+    [InlineData("hˈɛlɪkˌɒptɐ", "h")]
+    [InlineData("hˈɛlɪkˌɒptɐ", "hɛlɪk")]
+    [InlineData("hɛlɪkɒptɐ", "hˈɛlɪkˌɒptɐ")]
+    [InlineData("hˈɛlɪkˌɒptɐ", "hˈɛlɪkˌɒ")]
+    [InlineData("hˈɛlɪkˌɒptɐ", "hˈ")]
+    public void StartsWithConsonantsAndVowels(string t1, string t2)
+    {
+        var transcription1 = SpeechSymbolSequence.Parse(t1, CultureInfo.InvariantCulture);
+        var transcription2 = SpeechSymbolSequence.Parse(t2, CultureInfo.InvariantCulture);
+        Assert.True(transcription1.StartsWith(transcription2, SpeechSymbolSequenceComparison.ConsonantsAndVowels));
+    }
+
+    [Theory]
+    [InlineData("hˈɛlɪkˌɒptɐ", "h")]
+    [InlineData("hˈɛlɪkˌɒptɐ", "hɛlɪk")]
+    [InlineData("hɛlɪkɒptɐ", "hˈɛlɪkˌɒptɐ")]
+    [InlineData("hˈɛlɪkˌɒptɐ", "hˈɛlɪkˌɒ")]
+    [InlineData("hˈɛlɪkˌɒptɐ", "hˈ")]
+    public void StartsWithConsonantsAndVowelsCharSpan(string t1, string t2)
+    {
+        var transcription1 = SpeechSymbolSequence.Parse(t1, CultureInfo.InvariantCulture);
+        var transcription2 = t2.AsSpan();
+        Assert.True(transcription1.StartsWith(transcription2, SpeechSymbolSequenceComparison.ConsonantsAndVowels));
+    }
+
+    [Theory]
     [MemberData(nameof(WordTranscriptions))]
     public void ParseInvariant(string transcription)
     {

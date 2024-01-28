@@ -50,4 +50,31 @@ public class PhonemesTests
             Assert.True(p.IsVowel, $"{p.Abstraction} not classified as vowel");
         }
     }
+
+    [Theory]
+    [InlineData("ˈælɪɡˌeɪtɐ")]
+    [InlineData("ˈænɪməlz")]
+    public void WordsStartingWithA(string word)
+    {
+        var transcription = SpeechSymbolSequence.ParseInvariant(word);
+        Assert.True(transcription.StartsWith(English.a.Abstraction, SpeechSymbolSequenceComparison.ConsonantsAndVowels));
+    }
+
+    [Theory]
+    [InlineData("bˈɑːθɹuːm")]
+    [InlineData("blˈækbəɹi")]
+    public void WordsStartingWithB(string word)
+    {
+        var transcription = SpeechSymbolSequence.ParseInvariant(word);
+        Assert.True(transcription.StartsWith(English.b.Abstraction));
+    }
+
+    [Theory]
+    [InlineData("kˈæbɪdʒ")]
+    [InlineData("kˈeɪks")]
+    public void WordsStartingWithK(string word)
+    {
+        var transcription = SpeechSymbolSequence.ParseInvariant(word);
+        Assert.True(transcription.StartsWith(English.k.Abstraction));
+    }
 }

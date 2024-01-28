@@ -125,11 +125,6 @@ public readonly struct SpeechSymbolSequence
             return buffer.SequenceEqual(chars);
         }
 
-        if (comparison == SpeechSymbolSequenceComparison.Permissive)
-        {
-            return EqualsPermissive(buffer, chars);
-        }
-
         if (comparison == SpeechSymbolSequenceComparison.ConsonantsAndVowels)
         {
             return EqualsConsonantsAndVowels(buffer, chars);
@@ -137,13 +132,6 @@ public readonly struct SpeechSymbolSequence
 
         ThrowHelper.ThrowArgumentOutOfRangeException(nameof(comparison));
         return false; // unreachable
-
-        static bool EqualsPermissive(
-            ReadOnlySpan<char> buffer,
-            ReadOnlySpan<char> chars)
-        {
-            throw new NotImplementedException();
-        }
 
         static bool EqualsConsonantsAndVowels(
             ReadOnlySpan<char> buffer,
@@ -226,8 +214,22 @@ public readonly struct SpeechSymbolSequence
         SpeechSymbolSequenceComparison comparison = SpeechSymbolSequenceComparison.Exact)
     {
         var i = IndexOfAny(chars, comparison);
-        return i == 0
-            || SpeechSymbol.NoneConsonantOrVowel( _value.Span[..i]);
+
+        if (i == 0)
+        {
+            return true;
+        }
+
+        switch (comparison)
+        {
+            case SpeechSymbolSequenceComparison.Exact:
+                return false;
+            case SpeechSymbolSequenceComparison.ConsonantsAndVowels:
+                return SpeechSymbol.NoneConsonantOrVowel(_value.Span[..i]);
+            default:
+                ThrowHelper.ThrowArgumentOutOfRangeException(nameof(comparison));
+                return false; // unreachable
+        }
     }
 
     public bool StartsWith(
@@ -235,8 +237,22 @@ public readonly struct SpeechSymbolSequence
         SpeechSymbolSequenceComparison comparison = SpeechSymbolSequenceComparison.Exact)
     {
         var i = IndexOfAny(chars, comparison);
-        return i == 0
-            || SpeechSymbol.NoneConsonantOrVowel( _value.Span[..i]);
+
+        if (i == 0)
+        {
+            return true;
+        }
+
+        switch (comparison)
+        {
+            case SpeechSymbolSequenceComparison.Exact:
+                return false;
+            case SpeechSymbolSequenceComparison.ConsonantsAndVowels:
+                return SpeechSymbol.NoneConsonantOrVowel(_value.Span[..i]);
+            default:
+                ThrowHelper.ThrowArgumentOutOfRangeException(nameof(comparison));
+                return false; // unreachable
+        }
     }
 
     public int IndexOfAny(
@@ -251,11 +267,6 @@ public readonly struct SpeechSymbolSequence
             return buffer.IndexOfAny(chars);
         }
 
-        if (comparison == SpeechSymbolSequenceComparison.Permissive)
-        {
-            return IndexOfAnyPermissive(buffer, chars);
-        }
-
         if (comparison == SpeechSymbolSequenceComparison.ConsonantsAndVowels)
         {
             return IndexOfAnyConsonantsAndVowels(buffer, chars);
@@ -263,13 +274,6 @@ public readonly struct SpeechSymbolSequence
 
         ThrowHelper.ThrowArgumentOutOfRangeException(nameof(comparison));
         return -1; // unreachable
-
-        static int IndexOfAnyPermissive(
-            ReadOnlySpan<SpeechSymbol> buffer,
-            ReadOnlySpan<SpeechSymbol> chars)
-        {
-            throw new NotImplementedException();
-        }
 
         static int IndexOfAnyConsonantsAndVowels(
             ReadOnlySpan<SpeechSymbol> buffer,
@@ -330,11 +334,6 @@ public readonly struct SpeechSymbolSequence
             return buffer.IndexOfAny(chars);
         }
 
-        if (comparison == SpeechSymbolSequenceComparison.Permissive)
-        {
-            return IndexOfAnyPermissive(buffer, chars);
-        }
-
         if (comparison == SpeechSymbolSequenceComparison.ConsonantsAndVowels)
         {
             return IndexOfAnyConsonantsAndVowels(buffer, chars);
@@ -342,13 +341,6 @@ public readonly struct SpeechSymbolSequence
 
         ThrowHelper.ThrowArgumentOutOfRangeException(nameof(comparison));
         return -1; // unreachable
-
-        static int IndexOfAnyPermissive(
-            ReadOnlySpan<char> buffer,
-            ReadOnlySpan<char> chars)
-        {
-            throw new NotImplementedException();
-        }
 
         static int IndexOfAnyConsonantsAndVowels(
             ReadOnlySpan<char> buffer,
