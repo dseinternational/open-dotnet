@@ -5,12 +5,12 @@ using DSE.Open.Text.Json.Serialization;
 
 namespace DSE.Open.Speech.Serialization;
 
-public class JsonStringTranscriptionConverter : SpanParsableCharWritingJsonConverter<Transcription>
+public class JsonStringTranscriptionConverter : SpanParsableCharWritingJsonConverter<SpeechTranscription>
 {
     public static readonly JsonStringTranscriptionConverter Default = new();
 
-    protected override int GetMaxCharCountToWrite(Transcription value)
+    protected override int GetMaxCharCountToWrite(SpeechTranscription value)
     {
-        return value.Length;
+        return ((ISpanFormatableCharCountProvider)value).GetCharCount(null,null);
     }
 }

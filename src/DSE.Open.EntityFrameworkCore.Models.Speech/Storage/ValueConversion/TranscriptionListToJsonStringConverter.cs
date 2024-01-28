@@ -11,7 +11,7 @@ namespace DSE.Open.EntityFrameworkCore.Models.Speech.Storage.ValueConversion;
 
 [RequiresDynamicCode(WarningMessages.RequiresDynamicCode)]
 [RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]
-public sealed class TranscriptionListToJsonStringConverter : ValueConverter<IList<Transcription>, string>
+public sealed class TranscriptionListToJsonStringConverter : ValueConverter<IList<SpeechTranscription>, string>
 {
     public static readonly TranscriptionListToJsonStringConverter Default = new();
 
@@ -19,15 +19,15 @@ public sealed class TranscriptionListToJsonStringConverter : ValueConverter<ILis
     {
     }
 
-    private static string ConvertTo(IList<Transcription> value)
+    private static string ConvertTo(IList<SpeechTranscription> value)
     {
         return JsonSerializer.Serialize(value, JsonSharedOptions.RelaxedJsonEscaping);
     }
 
 #pragma warning disable CA1859 // Use concrete types when possible for improved performance
-    private static IList<Transcription> ConvertFrom(string value)
+    private static IList<SpeechTranscription> ConvertFrom(string value)
 #pragma warning restore CA1859 // Use concrete types when possible for improved performance
     {
-        return JsonSerializer.Deserialize<List<Transcription>>(value, JsonSharedOptions.RelaxedJsonEscaping)!;
+        return JsonSerializer.Deserialize<List<SpeechTranscription>>(value, JsonSharedOptions.RelaxedJsonEscaping)!;
     }
 }

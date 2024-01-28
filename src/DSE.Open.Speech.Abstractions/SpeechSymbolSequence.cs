@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Buffers;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
@@ -19,6 +20,7 @@ namespace DSE.Open.Speech;
 /// </summary>
 [JsonConverter(typeof(JsonStringSpeechSymbolSequenceConverter))]
 [StructLayout(LayoutKind.Auto)]
+[CollectionBuilder(typeof(SpeechSymbolSequence), "Create")]
 public readonly struct SpeechSymbolSequence
     : IEquatable<SpeechSymbolSequence>,
       IEquatable<ReadOnlyMemory<SpeechSymbol>>,
@@ -40,6 +42,11 @@ public readonly struct SpeechSymbolSequence
     private SpeechSymbolSequence(ReadOnlyMemory<SpeechSymbol> value, bool copy)
     {
         _value = copy ? value.ToArray() : value;
+    }
+
+    public static SpeechSymbolSequence Create(ReadOnlySpan<SpeechSymbol> value)
+    {
+        return new SpeechSymbolSequence(value);
     }
 
     /// <summary>

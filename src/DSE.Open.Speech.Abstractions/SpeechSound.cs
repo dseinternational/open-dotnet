@@ -26,38 +26,13 @@ public readonly struct SpeechSound
 
     public static readonly SpeechSound Empty;
 
-    public SpeechSound(char value) : this(value.ToString())
+    public SpeechSound(ReadOnlySpan<char> value)
+        : this(SpeechSymbolSequence.Parse(value, CultureInfo.InvariantCulture), false)
     {
     }
 
-    public SpeechSound(string value) : this(value, false)
+    public SpeechSound(SpeechSymbolSequence value) : this(value, false)
     {
-    }
-
-    public SpeechSound(ReadOnlySpan<char> value) : this(value, false)
-    {
-    }
-
-    private SpeechSound(ReadOnlySpan<char> value, bool skipValidation)
-    {
-        if (!skipValidation)
-        {
-            EnsureValidValue(value);
-        }
-
-        _value = SpeechSymbolSequence.Parse(value, CultureInfo.InvariantCulture); // TODO: more efficient construction given validation
-    }
-
-    private SpeechSound(string value, bool skipValidation)
-    {
-        ArgumentException.ThrowIfNullOrWhiteSpace(value);
-
-        if (!skipValidation)
-        {
-            EnsureValidValue(value);
-        }
-
-        _value = SpeechSymbolSequence.Parse(value, CultureInfo.InvariantCulture); // TODO: more efficient construction given validation
     }
 
     private SpeechSound(SpeechSymbolSequence symbols, bool skipValidation)
@@ -74,22 +49,6 @@ public readonly struct SpeechSound
     {
         return value.Length > 0
             && value.Length < MaxLength;
-    }
-
-    public static bool IsValidValue(ReadOnlySpan<char> value)
-    {
-        return value.Length > 0
-            && value.Length < MaxLength
-            && value.All(SpeechSymbol.IsStrictIpaSymbol);
-    }
-
-    private static void EnsureValidValue(ReadOnlySpan<char> value)
-    {
-        if (!IsValidValue(value))
-        {
-            ThrowHelper.ThrowArgumentOutOfRangeException(nameof(value));
-            return; // Unreachable
-        }
     }
 
     private static void EnsureValidValue(SpeechSymbolSequence value)
@@ -111,16 +70,6 @@ public readonly struct SpeechSound
     public bool IsEmpty => _value.IsEmpty;
 
     public int Length => _value.Length;
-
-    public SpeechSound Long()
-    {
-        return new(_value + "ː", true);
-    }
-
-    public SpeechSound HalfLong()
-    {
-        return new(_value + "ˑ", true);
-    }
 
     public override bool Equals(object? obj)
     {
@@ -180,22 +129,15 @@ public readonly struct SpeechSound
         IFormatProvider? provider,
         out SpeechSound result)
     {
-        s = s.Trim();
-
-        if (s.IsEmpty)
+        if (SpeechSymbolSequence.TryParse(s, provider, out var symbols)
+            && IsValidValue(symbols))
         {
-            result = default;
+            result = new SpeechSound(symbols, true);
             return true;
         }
 
-        if (s.Length > MaxLength)
-        {
-            result = default;
-            return false;
-        }
-
-        result = new SpeechSound(s, true);
-        return true;
+        result = default;
+        return false;
     }
 
     public static SpeechSound ParseInvariant(string s)
@@ -231,15 +173,6 @@ public readonly struct SpeechSound
     public static bool operator !=(SpeechSound left, SpeechSound right)
     {
         return !(left == right);
-    }
-
-    /// <summary>
-    /// Converts a <see cref="SpeechSound"/> to a (phonetic) <see cref="Transcription"/>.
-    /// </summary>
-    /// <param name="value"></param>
-    public static implicit operator Transcription(SpeechSound value)
-    {
-        return value.ToTranscription();
     }
 
     /// <summary>
@@ -1085,9 +1018,4 @@ public readonly struct SpeechSound
         .. Glottals,
         .. Coarticulated,
     ]);
-
-    public Transcription ToTranscription()
-    {
-        throw new NotImplementedException();
-    }
 }

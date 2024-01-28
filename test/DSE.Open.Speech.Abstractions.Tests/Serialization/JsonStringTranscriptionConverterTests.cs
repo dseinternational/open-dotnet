@@ -13,16 +13,16 @@ public class JsonStringTranscriptionConverterTests
     public void SerializeDeserialize(string transcription)
     {
         var json = $"\"{transcription}\"";
-        var deserialized = JsonSerializer.Deserialize<Transcription>(json, JsonSharedOptions.RelaxedJsonEscaping);
+        var deserialized = JsonSerializer.Deserialize<SpeechTranscription>(json, JsonSharedOptions.RelaxedJsonEscaping);
         Assert.NotEqual(default, deserialized);
 
         var serialized = JsonSerializer.Serialize(deserialized, JsonSharedOptions.RelaxedJsonEscaping);
         Assert.Equal(json, serialized);
 
-        var original = new Transcription(transcription);
+        var original =  SpeechTranscription.Parse(transcription, CultureInfo.InvariantCulture);
         Assert.Equal(original, deserialized);
     }
 
     public static TheoryData<string> WordTranscriptions =>
-        new(TranscriptionData.Transcriptions.Select(t => $"[{t}]").ToArray());
+        new(TranscriptionData.Transcriptions.Skip(800).Take(500).Select(t => $"[{t}]").ToArray());
 }

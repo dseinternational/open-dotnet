@@ -98,9 +98,9 @@ public sealed class Phoneme : IEquatable<Phoneme>
         return Abstraction.ToString();
     }
 
-    public Transcription ToTranscription()
+    public SpeechTranscription ToTranscription()
     {
-        return new Transcription($"/{Abstraction}/");
+        return new SpeechTranscription(Abstraction, TranscriptionNotation.Phonemic);
     }
 
     public static bool Equals(Phoneme? left, Phoneme? right)

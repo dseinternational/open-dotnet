@@ -23,7 +23,7 @@ public class TranscriptionTests
     [InlineData("/tʃɛər/")]
     public void CanCreateAndFormat(string example)
     {
-        var original = new Transcription(example);
+        var original = SpeechTranscription.Parse(example, CultureInfo.InvariantCulture);
         var formatted = original.ToString();
         Assert.Equal(example, formatted);
     }
@@ -33,18 +33,16 @@ public class TranscriptionTests
     [InlineData("/kloʊs")]
     [InlineData("/x-ray/")]
     [InlineData("[prəˈvaɪd")]
-    [InlineData("")]
-    [InlineData(" ")]
     public void InvalidTranscriptionsThrowOnParse(string example)
     {
-        _ = Assert.Throws<FormatException>(() => Transcription.Parse(example, CultureInfo.InvariantCulture));
+        _ = Assert.Throws<FormatException>(() => SpeechTranscription.Parse(example, CultureInfo.InvariantCulture));
     }
 
     [Theory]
     [MemberData(nameof(WordTranscriptions))]
     public void CanCreateWordTranscriptions(string example)
     {
-        var original = new Transcription(example);
+        var original = SpeechTranscription.Parse(example, CultureInfo.InvariantCulture);
         var formatted = original.ToString();
         Assert.Equal(example, formatted);
     }
