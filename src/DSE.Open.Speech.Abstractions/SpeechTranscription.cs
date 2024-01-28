@@ -15,7 +15,7 @@ namespace DSE.Open.Speech;
 /// A unit of speech sound transcription using the International Phonetic Alphabet,
 /// together with notation type.
 /// </summary>
-[JsonConverter(typeof(JsonStringTranscriptionConverter))]
+[JsonConverter(typeof(JsonStringSpeechTranscriptionConverter))]
 [StructLayout(LayoutKind.Auto)]
 public readonly record struct SpeechTranscription
     : IEquatable<SpeechTranscription>,

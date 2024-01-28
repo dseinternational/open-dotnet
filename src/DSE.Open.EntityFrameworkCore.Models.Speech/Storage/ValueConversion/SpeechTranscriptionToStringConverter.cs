@@ -6,26 +6,6 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DSE.Open.EntityFrameworkCore.Models.Speech.Storage.ValueConversion;
 
-[Obsolete("Renamed SpeechTranscriptionToStringConverter")]
-public sealed class TranscriptionToStringConverter : ValueConverter<SpeechTranscription, string>
-{
-    public static readonly TranscriptionToStringConverter Default = new();
-
-    public TranscriptionToStringConverter() : base(v => ConvertTo(v), v => ConvertFrom(v))
-    {
-    }
-
-    private static string ConvertTo(SpeechTranscription value)
-    {
-        return value.ToString();
-    }
-
-    private static SpeechTranscription ConvertFrom(string value)
-    {
-        return SpeechTranscription.Parse(value, CultureInfo.InvariantCulture);
-    }
-}
-
 public sealed class SpeechTranscriptionToStringConverter : ValueConverter<SpeechTranscription, string>
 {
     public static readonly SpeechTranscriptionToStringConverter Default = new();

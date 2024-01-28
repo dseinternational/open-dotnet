@@ -11,11 +11,11 @@ namespace DSE.Open.EntityFrameworkCore.Models.Speech.Storage.ValueConversion;
 
 [RequiresDynamicCode(WarningMessages.RequiresDynamicCode)]
 [RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]
-public sealed class TranscriptionListToJsonStringConverter : ValueConverter<IList<SpeechTranscription>, string>
+public sealed class SpeechTranscriptionListToJsonStringConverter : ValueConverter<IList<SpeechTranscription>, string>
 {
-    public static readonly TranscriptionListToJsonStringConverter Default = new();
+    public static readonly SpeechTranscriptionListToJsonStringConverter Default = new();
 
-    public TranscriptionListToJsonStringConverter() : base(v => ConvertTo(v), v => ConvertFrom(v))
+    public SpeechTranscriptionListToJsonStringConverter() : base(v => ConvertTo(v), v => ConvertFrom(v))
     {
     }
 

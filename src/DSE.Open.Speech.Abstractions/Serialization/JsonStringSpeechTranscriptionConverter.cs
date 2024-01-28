@@ -5,9 +5,9 @@ using DSE.Open.Text.Json.Serialization;
 
 namespace DSE.Open.Speech.Serialization;
 
-public class JsonStringTranscriptionConverter : SpanParsableCharWritingJsonConverter<SpeechTranscription>
+public class JsonStringSpeechTranscriptionConverter : SpanParsableCharWritingJsonConverter<SpeechTranscription>
 {
-    public static readonly JsonStringTranscriptionConverter Default = new();
+    public static readonly JsonStringSpeechTranscriptionConverter Default = new();
 
     protected override int GetMaxCharCountToWrite(SpeechTranscription value)
     {

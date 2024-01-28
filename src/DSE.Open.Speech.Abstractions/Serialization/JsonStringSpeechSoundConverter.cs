@@ -11,6 +11,6 @@ public class JsonStringSpeechSoundConverter : SpanParsableCharWritingJsonConvert
 
     protected override int GetMaxCharCountToWrite(SpeechSound value)
     {
-        return SpeechSound.MaxLength;
+        return value.Length;
     }
 }
