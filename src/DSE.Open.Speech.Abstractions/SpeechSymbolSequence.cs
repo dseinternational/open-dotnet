@@ -133,17 +133,27 @@ public readonly struct SpeechSymbolSequence
         var l = 0;
         var r = 0;
 
-        while (l < left.Length - 1 && r < right.Length)
+        while (l < left.Length || r < right.Length)
         {
-            if (!SpeechSymbol.IsConsonantOrVowel(left[l]))
+            if (l < left.Length - 1 && !SpeechSymbol.IsConsonantOrVowel(left[l]))
             {
                 l++;
+                if (left[l] == right[r])
+                {
+                    l++;
+                    r++;
+                }
                 continue;
             }
 
-            if (!SpeechSymbol.IsConsonantOrVowel(right[r]))
+            if (r < right.Length - 1 && !SpeechSymbol.IsConsonantOrVowel(right[r]))
             {
                 r++;
+                if (left[l] == right[r])
+                {
+                    l++;
+                    r++;
+                }
                 continue;
             }
 
@@ -157,7 +167,7 @@ public readonly struct SpeechSymbolSequence
             return false;
         }
 
-        return l == left.Length && r == right.Length;
+        return true;
     }
 
     public int GetCharCount(ReadOnlySpan<char> format, IFormatProvider? provider)
