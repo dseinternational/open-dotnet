@@ -1,12 +1,22 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Runtime.InteropServices;
 using DSE.Open.Collections.Generic;
 
 namespace DSE.Open.Speech.Abstractions.Tests;
 
 public class SpeechSymbolSequenceTests
 {
+    [Fact]
+    public void CanCastMemoryToChar()
+    {
+        var transcription = SpeechSymbolSequence.Parse("dɹˈɪŋkɪŋ", CultureInfo.InvariantCulture);
+        var span = transcription.AsSpan();
+        var chars = MemoryMarshal.Cast<SpeechSymbol, char>(span);
+        Assert.Equal("dɹˈɪŋkɪŋ", new string(chars));
+    }
+
     [Theory]
     [MemberData(nameof(WordTranscriptions))]
     public void ParseInvariant(string transcription)

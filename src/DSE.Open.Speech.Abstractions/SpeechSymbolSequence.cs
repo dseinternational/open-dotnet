@@ -98,18 +98,7 @@ public readonly struct SpeechSymbolSequence
         ReadOnlySpan<char> chars,
         SpeechSymbolSequenceComparison comparison = SpeechSymbolSequenceComparison.Exact)
     {
-        // Would be preferable:
-        // 
-        // var span = MemoryMarshal.Cast<SpeechSymbol, char>(_value.Span);
-
-        var valueSpan = _value.Span;
-
-        Span<char> buffer = stackalloc char[valueSpan.Length];
-
-        for (var i = 0; i < valueSpan.Length; i++)
-        {
-            buffer[i] = valueSpan[i].Value;
-        }
+        var buffer = MemoryMarshal.Cast<SpeechSymbol, char>(_value.Span);
 
         if (comparison == SpeechSymbolSequenceComparison.Exact)
         {
