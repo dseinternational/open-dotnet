@@ -4,6 +4,8 @@
     <TargetFramework>net8.0</TargetFramework>
     <RootNamespace>DSE.Open.Values</RootNamespace>
     <PackageDescription>Value type abstractions for DSE.Open.Values</PackageDescription>
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+    <CompilerGeneratedFilesOutputPath>gen</CompilerGeneratedFilesOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
