@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Diagnostics;
 using DSE.Open.Values.Generators.Model;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
@@ -38,7 +39,10 @@ public partial class ValueTypesGenerator
                 writer.WriteLine("using DSE.Open.Runtime.Helpers;");
             }
 
-            writer.WriteLine("using DSE.Open.Values;");
+            if (spec.EmitEnsureNotDefault)
+            {
+                writer.WriteLine("using DSE.Open.Values;");
+            }
 
             if (spec.EmitUsingSystemGlobalization)
             {
@@ -90,8 +94,6 @@ public partial class ValueTypesGenerator
                 writer.WriteBlock($"private readonly {spec.ContainedValueTypeName} {spec.ValueFieldName};");
             }
 
-            writer.WriteBlock("private readonly bool _initialized;");
-
             if (spec.EmitConstructor)
             {
                 writer.WriteLine(
@@ -103,23 +105,20 @@ public partial class ValueTypesGenerator
                 writer.WriteBlock("""
                                   if (!skipValidation)
                                   {
-                                      EnsureIsValidArgumentValue(value);
+                                      EnsureIsValidValue(value);
                                   }
                                   """);
 
                 writer.WriteLine($"{spec.ValueFieldName} = value;");
-                writer.WriteLine("_initialized = true;");
 
                 writer.Indentation--;
                 writer.WriteBlock("}");
             }
 
-            writer.WriteBlock("public bool IsInitialized => _initialized;");
-
-            if (spec.EmitEnsureIsValidArgumentValueMethod)
+            if (spec.EmitEnsureIsValidValueMethod)
             {
                 writer.WriteBlock($$"""
-                                    private static void EnsureIsValidArgumentValue({{spec.ContainedValueTypeName}} value)
+                                    private static void EnsureIsValidValue({{spec.ContainedValueTypeName}} value)
                                     {
                                         if (!IsValidValue(value))
                                         {
@@ -130,10 +129,10 @@ public partial class ValueTypesGenerator
                                     """);
             }
 
-            if (spec.EmitEnsureIntialised)
+            if (spec.EmitEnsureNotDefault)
             {
                 writer.WriteBlock($$"""
-                                    private void EnsureInitialized()
+                                    private void EnsureIsNotDefault()
                                     {
                                         UninitializedValueException<{{spec.ValueTypeName}}, {{spec.ContainedValueTypeName}}>.ThrowIfUninitialized(this);
                                     }
@@ -162,7 +161,7 @@ public partial class ValueTypesGenerator
                 writer.WriteBlock($$"""
                                     public static {{spec.ValueTypeName}} FromValue({{spec.ContainedValueTypeName}} value)
                                     {
-                                        EnsureIsValidArgumentValue(value);
+                                        EnsureIsValidValue(value);
                                         return new(value, true);
                                     }
                                     """);
@@ -191,10 +190,10 @@ public partial class ValueTypesGenerator
                                    {
                                    """);
 
-                if (spec.EmitEnsureIntialised)
+                if (spec.EmitEnsureNotDefault)
                 {
                     writer.Indentation++;
-                    writer.WriteLine("value.EnsureInitialized();");
+                    writer.WriteLine("value.EnsureIsNotDefault();");
                     writer.Indentation--;
                 }
 
@@ -223,10 +222,10 @@ public partial class ValueTypesGenerator
                                  {
                                  """);
 
-                if (spec.EmitEnsureIntialised)
+                if (spec.EmitEnsureNotDefault)
                 {
                     writer.Indentation++;
-                    writer.WriteLine("EnsureInitialized();");
+                    writer.WriteLine("EnsureIsNotDefault();");
                     writer.Indentation--;
                 }
 
@@ -260,10 +259,10 @@ public partial class ValueTypesGenerator
                                  {
                                  """);
 
-                if (spec.EmitEnsureIntialised)
+                if (spec.EmitEnsureNotDefault)
                 {
                     writer.Indentation++;
-                    writer.WriteLine("EnsureInitialized();");
+                    writer.WriteLine("EnsureIsNotDefault();");
                     writer.Indentation--;
                 }
 
@@ -307,9 +306,9 @@ public partial class ValueTypesGenerator
                                     {
                                     """);
 
-                if (spec.EmitEnsureIntialised)
+                if (spec.EmitEnsureNotDefault)
                 {
-                    writer.WriteBlock("    EnsureInitialized();");
+                    writer.WriteBlock("    EnsureIsNotDefault();");
                 }
 
                 if (spec.UseGetStringSpan)
@@ -588,10 +587,10 @@ public partial class ValueTypesGenerator
                                         {
                                         """);
 
-                    if (spec.EmitEnsureIntialised)
+                    if (spec.EmitEnsureNotDefault)
                     {
                         writer.Indentation++;
-                        writer.WriteBlock("EnsureInitialized();");
+                        writer.WriteBlock("EnsureIsNotDefault();");
                         writer.Indentation--;
                     }
 

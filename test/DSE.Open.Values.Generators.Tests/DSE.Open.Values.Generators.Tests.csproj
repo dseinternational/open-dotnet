@@ -8,11 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-
     <ProjectReference Include="..\..\gen\DSE.Open.Values.Generators\DSE.Open.Values.Generators.csproj" SetTargetFramework="TargetFramework=netstandard2.0" />
-
     <ProjectReference Include="..\..\src\DSE.Open.Values\DSE.Open.Values.csproj" />
-
   </ItemGroup>
 
   <ItemGroup>

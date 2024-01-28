@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Collections.Immutable;
+using System.Diagnostics;
 using DSE.Open.Values.Generators.Extensions;
 using DSE.Open.Values.Generators.Model;
 using Microsoft.CodeAnalysis;
@@ -138,13 +139,13 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
             return specs;
         }
 
-        var emitConstructor = true;
-        var maxSerializedCharLength = 0;
-        var emitEnsureInitialised = true;
-
         foreach (var structDeclarationSyntax in structs)
         {
             ct.ThrowIfCancellationRequested();
+
+            var emitConstructor = true;
+            var maxSerializedCharLength = 0;
+            var emitEnsureNotDefault = false;
 
             var semanticModel = compilation.GetSemanticModel(structDeclarationSyntax.SyntaxTree);
 
@@ -200,9 +201,9 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
                         a.NameEquals is not null
                         && a.NameEquals.Name.Identifier.ValueText == "MaxSerializedCharLength");
 
-                    var allowDefaultSyntax = attributeArgNames.FirstOrDefault(a =>
+                    var allowDefaultValueSyntax = attributeArgNames.FirstOrDefault(a =>
                         a.NameEquals is not null
-                        && a.NameEquals.Name.Identifier.ValueText == "AllowDefault");
+                        && a.NameEquals.Name.Identifier.ValueText == "AllowDefaultValue");
 
                     if (maxSerializedCharLengthSyntax is not null)
                     {
@@ -219,17 +220,22 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
                         }
                     }
 
-                    if (allowDefaultSyntax is not null)
+                    if (allowDefaultValueSyntax is not null)
                     {
-                        var allowDefaultOpt = semanticModel.GetConstantValue(allowDefaultSyntax.Expression, ct);
+                        var allowDefaultOpt = semanticModel.GetConstantValue(allowDefaultValueSyntax.Expression, ct);
 
                         if (allowDefaultOpt is { HasValue: true, Value: not null })
                         {
                             var allowDefaultValue = (bool)allowDefaultOpt.Value;
 
-                            if (allowDefaultValue)
+                            if (!allowDefaultValue)
                             {
-                                emitEnsureInitialised = false;
+                                if (namedTypeSymbol.Name == "UriAsciiPath")
+                                {
+                                    Debugger.Break();
+                                }
+
+                                emitEnsureNotDefault = true;
                             }
                         }
                     }
@@ -598,7 +604,8 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
             spec.EmitConstructor = emitConstructor;
             spec.EmitEqualsMethod = emitEqualsMethod;
             spec.EmitGetHashCodeMethod = emitGetHashCodeMethod;
-            spec.EmitEnsureIntialised = emitEnsureInitialised;
+
+            spec.EmitEnsureNotDefault = emitEnsureNotDefault;
 
             // IFormattable
             spec.EmitToStringFormattableMethod = emitIFormattableToStringMethod;

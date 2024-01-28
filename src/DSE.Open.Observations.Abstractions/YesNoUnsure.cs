@@ -12,10 +12,12 @@ namespace DSE.Open.Observations;
 /// Represents the selection of a choice between "Yes", "No" and "Not sure"/"Unsure".
 /// To represent no response, use nullable.
 /// </summary>
-[EquatableValue]
+[EquatableValue(AllowDefaultValue = false)]
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<YesNoUnsure, AsciiString>))]
 [StructLayout(LayoutKind.Auto)]
-public readonly partial struct YesNoUnsure : IEquatableValue<YesNoUnsure, AsciiString>, IUtf8SpanSerializable<YesNoUnsure>
+public readonly partial struct YesNoUnsure
+    : IEquatableValue<YesNoUnsure, AsciiString>,
+      IUtf8SpanSerializable<YesNoUnsure>
 {
     public static int MaxSerializedCharLength => 6;
 
@@ -31,7 +33,6 @@ public readonly partial struct YesNoUnsure : IEquatableValue<YesNoUnsure, AsciiS
     public static readonly YesNoUnsure No = new((AsciiString)"no", true);
 
     public static readonly YesNoUnsure Unsure = new((AsciiString)"unsure", true);
-
 
     public static readonly IReadOnlyCollection<YesNoUnsure> All = new[]
     {

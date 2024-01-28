@@ -18,10 +18,12 @@ namespace DSE.Open.Values;
 ///     See: <see href="https://www.ietf.org/rfc/rfc3986.html">RFC 3986: Uniform Resource
 ///     Identifier (URI): Generic Syntax</see>
 /// </remarks>
-[ComparableValue]
+[ComparableValue(AllowDefaultValue = false)]
 [StructLayout(LayoutKind.Auto)]
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<Tag, AsciiString>))]
-public readonly partial struct Tag : IComparableValue<Tag, AsciiString>, IUtf8SpanSerializable<Tag>
+public readonly partial struct Tag
+    : IComparableValue<Tag, AsciiString>,
+      IUtf8SpanSerializable<Tag>
 {
     public const int MinLength = 2;
     public const int MaxLength = 120;
@@ -52,11 +54,10 @@ public readonly partial struct Tag : IComparableValue<Tag, AsciiString>, IUtf8Sp
 
         if (!skipValidation)
         {
-            EnsureIsValidArgumentValue(AsciiString.Parse(tag, CultureInfo.InvariantCulture));
+            EnsureIsValidValue(AsciiString.Parse(tag, CultureInfo.InvariantCulture));
         }
 
         _value = value;
-        _initialized = true;
     }
 
     public static bool IsValidValue(AsciiString value)

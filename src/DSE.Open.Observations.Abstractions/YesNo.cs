@@ -11,10 +11,12 @@ namespace DSE.Open.Observations;
 /// <summary>
 /// Represents the selection of a choice between "Yes" and "No".
 /// </summary>
-[EquatableValue]
+[EquatableValue(AllowDefaultValue = false)]
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<YesNo, AsciiString>))]
 [StructLayout(LayoutKind.Auto)]
-public readonly partial struct YesNo : IEquatableValue<YesNo, AsciiString>, IUtf8SpanSerializable<YesNo>
+public readonly partial struct YesNo
+    : IEquatableValue<YesNo, AsciiString>,
+      IUtf8SpanSerializable<YesNo>
 {
     public static int MaxSerializedCharLength => 3;
 

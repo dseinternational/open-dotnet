@@ -11,7 +11,7 @@ public class JsonInt32ValueConverter<TValue> : JsonConverter<TValue>
 {
     public override TValue Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        return (TValue)reader.GetInt32();
+        return TValue.FromValue(reader.GetInt32());
     }
 
     public override void Write(Utf8JsonWriter writer, TValue value, JsonSerializerOptions options)

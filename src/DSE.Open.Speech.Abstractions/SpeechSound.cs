@@ -21,7 +21,6 @@ public readonly struct SpeechSound
       ISpanParsable<SpeechSound>
 {
     private readonly SpeechSymbolSequence _value;
-    private readonly bool _initialized;
 
     public static int MaxLength => 4;
 
@@ -47,7 +46,6 @@ public readonly struct SpeechSound
         }
 
         _value = SpeechSymbolSequence.Parse(value, CultureInfo.InvariantCulture); // TODO: more efficient construction given validation
-        _initialized = true;
     }
 
     private SpeechSound(string value, bool skipValidation)
@@ -60,7 +58,6 @@ public readonly struct SpeechSound
         }
 
         _value = SpeechSymbolSequence.Parse(value, CultureInfo.InvariantCulture); // TODO: more efficient construction given validation
-        _initialized = true;
     }
 
     private SpeechSound(SpeechSymbolSequence symbols, bool skipValidation)
@@ -71,7 +68,6 @@ public readonly struct SpeechSound
         }
 
         _value = symbols;
-        _initialized = true;
     }
 
     public static bool IsValidValue(SpeechSymbolSequence value)

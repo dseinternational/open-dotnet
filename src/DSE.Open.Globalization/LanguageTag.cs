@@ -15,7 +15,7 @@ namespace DSE.Open.Globalization;
 /// <summary>
 /// A language tag as defined by <see href="https://www.rfc-editor.org/rfc/rfc5646.html">RFC5646</see>.
 /// </summary>
-[ComparableValue]
+[ComparableValue(AllowDefaultValue = false)]
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<LanguageTag, AsciiString>))]
 [StructLayout(LayoutKind.Auto)]
 public readonly partial struct LanguageTag
@@ -173,7 +173,7 @@ public readonly partial struct LanguageTag
         ReadOnlySpan<char> format,
         IFormatProvider? provider)
     {
-        EnsureInitialized();
+        EnsureIsNotDefault();
 
         if (destination.Length < _value.Length)
         {

@@ -57,7 +57,6 @@ public readonly partial struct Identifier : IEquatableValue<Identifier, AsciiStr
     private Identifier(ReadOnlyMemory<AsciiChar> value)
     {
         _value = new AsciiString(value);
-        _initialized = true;
     }
 
     public static bool IsValidValue(AsciiString value)

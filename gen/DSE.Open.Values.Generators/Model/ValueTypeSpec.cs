@@ -21,7 +21,7 @@ internal abstract class ValueTypeSpec
 
     public string ContainedValueTypeName { get; set; } = default!;
 
-    public bool EmitEnsureIntialised { get; set; }
+    public bool EmitEnsureNotDefault { get; set; }
 
     public string ImplementedInterface => ValueTypeKind switch
     {
@@ -62,7 +62,7 @@ internal abstract class ValueTypeSpec
 
     // ITryConvertibleFrom<TSelf, T>
 
-    public bool EmitEnsureIsValidArgumentValueMethod { get; set; } = true;
+    public bool EmitEnsureIsValidValueMethod { get; set; } = true;
 
     public bool EmitTryFromValueMethod { get; set; } = true;
 
@@ -123,8 +123,6 @@ internal abstract class ValueTypeSpec
     public bool EmitParseUtf8Method { get; set; }
 
     public bool EmitTryParseUtf8Method { get; set; }
-
-
 
     public bool EmitUsingSystemGlobalization => EmitParseSpanNumberStylesMethod
         || EmitParseStringNumberStylesMethod

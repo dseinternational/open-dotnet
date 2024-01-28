@@ -15,10 +15,12 @@ namespace DSE.Open.Values;
 /// Forward slashes ('/') are interpreted to define segments and may only occur at locations other
 /// than the first and last character.
 /// </summary>
-[ComparableValue(AllowDefault = true)]
+[ComparableValue]
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<UriAsciiPath, AsciiString>))]
 [StructLayout(LayoutKind.Auto)]
-public readonly partial struct UriAsciiPath : IComparableValue<UriAsciiPath, AsciiString>, IUtf8SpanSerializable<UriAsciiPath>
+public readonly partial struct UriAsciiPath
+    : IComparableValue<UriAsciiPath, AsciiString>,
+      IUtf8SpanSerializable<UriAsciiPath>
 {
     public static readonly AsciiChar Separator = (AsciiChar)'/';
     public static readonly AsciiChar Dash = (AsciiChar)'-';

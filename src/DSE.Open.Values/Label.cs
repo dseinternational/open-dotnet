@@ -12,7 +12,7 @@ namespace DSE.Open.Values;
 /// A label. Must contain at least 2 non-whitespace characters and be no longer than 120 characters long
 /// in total, and may not start or end with whitespace characters.
 /// </summary>
-[ComparableValue]
+[ComparableValue(AllowDefaultValue = false)]
 [StructLayout(LayoutKind.Auto)]
 [JsonConverter(typeof(JsonSpanSerializableValueConverter<Label, CharSequence>))]
 public readonly partial struct Label : IComparableValue<Label, CharSequence>
@@ -38,18 +38,17 @@ public readonly partial struct Label : IComparableValue<Label, CharSequence>
 
         if (!skipValidation)
         {
-            EnsureIsValidArgumentValue(label);
+            EnsureIsValidValue(label);
         }
 
         _value = string.IsInterned(label) ?? LabelStringPool.Shared.GetOrAdd(label);
-        _initialized = true;
     }
 
     private Label(ReadOnlySpan<char> label, bool skipValidation)
     {
         if (!skipValidation)
         {
-            EnsureIsValidArgumentValue(CharSequence.Parse(label, CultureInfo.InvariantCulture));
+            EnsureIsValidValue(CharSequence.Parse(label, CultureInfo.InvariantCulture));
         }
 
         _value = LabelStringPool.Shared.GetOrAdd(label);

@@ -126,11 +126,4 @@ public class LabelTests
 
         Assert.Equal(prefix, p);
     }
-
-    [Fact]
-    public void New_WithValue_SetsIntialized()
-    {
-        var l = new Label("a label");
-        Assert.True(l.IsInitialized);
-    }
 }
