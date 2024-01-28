@@ -44,6 +44,32 @@ public class SpeechSymbolSequenceTests
     }
 
     [Theory]
+    [InlineData("hˈɛlɪkˌɒptɐ", "h", 0)]
+    [InlineData("hˈɛlɪkˌɒptɐ", "ɒptɐ", 7)]
+    [InlineData("hˈɛlɪkˌɒptɐ", "hˈɛlɪkˌɒptɐ", 0)]
+    [InlineData("hˈɛlɪkˌɒptɐ", "ˌ", 6)]
+    [InlineData("hˈɛlɪkˌɒptɐ", "ɐ", 10)]
+    public void IndexOfAny(string t1, string t2, int expected)
+    {
+        var transcription1 = SpeechSymbolSequence.Parse(t1, CultureInfo.InvariantCulture);
+        var transcription2 = SpeechSymbolSequence.Parse(t2, CultureInfo.InvariantCulture);
+        Assert.Equal(expected, transcription1.IndexOfAny(transcription2));
+    }
+
+    [Theory]
+    [InlineData("hˈɛlɪkˌɒptɐ", "h", 0)]
+    [InlineData("hˈɛlɪkˌɒptɐ", "ɒptɐ", 7)]
+    [InlineData("hˈɛlɪkˌɒptɐ", "hˈɛlɪkˌɒptɐ", 0)]
+    [InlineData("hˈɛlɪkˌɒptɐ", "ˌ", 6)]
+    [InlineData("hˈɛlɪkˌɒptɐ", "ɐ", 10)]
+    public void IndexOfAnyCharSpan(string t1, string t2, int expected)
+    {
+        var transcription1 = SpeechSymbolSequence.Parse(t1, CultureInfo.InvariantCulture);
+        var transcription2 = t2.AsSpan();
+        Assert.Equal(expected, transcription1.IndexOfAny(transcription2));
+    }
+
+    [Theory]
     [InlineData("hˈɛlɪkˌɒptɐ", "h")]
     [InlineData("hˈɛlɪkˌɒptɐ", "ɒptɐ")]
     [InlineData("hˈɛlɪkˌɒptɐ", "hˈɛlɪkˌɒptɐ")]
@@ -67,6 +93,18 @@ public class SpeechSymbolSequenceTests
         var transcription1 = SpeechSymbolSequence.Parse(t1, CultureInfo.InvariantCulture);
         var transcription2 = t2.AsSpan();
         Assert.True(transcription1.Contains(transcription2, SpeechSymbolSequenceComparison.Exact));
+    }
+
+    [Theory]
+    [InlineData("hˈɛlɪkˌɒptɐ", "h")]
+    [InlineData("hˈɛlɪkˌɒptɐ", "ɒptɐ")]
+    [InlineData("hˈɛlɪkˌɒptɐ", "hɛlɪkɒptɐ")]
+    [InlineData("hˈɛlɪkˌɒptɐ", "ɐ")]
+    public void ContainsConsonantsAndVowels(string t1, string t2)
+    {
+        var transcription1 = SpeechSymbolSequence.Parse(t1, CultureInfo.InvariantCulture);
+        var transcription2 = SpeechSymbolSequence.Parse(t2, CultureInfo.InvariantCulture);
+        Assert.True(transcription1.Contains(transcription2, SpeechSymbolSequenceComparison.ConsonantsAndVowels));
     }
 
     [Theory]

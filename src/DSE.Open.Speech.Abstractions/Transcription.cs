@@ -115,7 +115,7 @@ public readonly struct Transcription
         var valid = ((first == LeftSquareBracket && last == RightSquareBracket)
             || (first == Slash && last == Slash)
             || (first == LeftBrace && last == RightBrace))
-            && SpeechSymbol.AllStrictIpaChars(contents);
+            && SpeechSymbol.AllStrictIpa(contents);
 
         return valid;
     }

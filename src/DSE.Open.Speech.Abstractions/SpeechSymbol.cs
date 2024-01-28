@@ -126,7 +126,7 @@ public readonly partial struct SpeechSymbol
     /// <param name="chars">The sequence of characters to evaluate.</param>
     /// <returns><see langword="true"/> if all of characters in the specified sequence are 'strict'
     /// IPA characters or the sequence is empty; otherwise <see langword="false"/>.</returns>
-    public static bool AllStrictIpaChars(ReadOnlySpan<char> chars)
+    public static bool AllStrictIpa(ReadOnlySpan<char> chars)
     {
         foreach (var c in chars)
         {
@@ -139,11 +139,63 @@ public readonly partial struct SpeechSymbol
         return true;
     }
 
-    public static bool AllValidIpaChars(ReadOnlySpan<char> chars)
+    public static bool AllValidIpa(ReadOnlySpan<char> chars)
     {
         foreach (var c in chars)
         {
             if (!IsValidIpaSymbol(c))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static bool AllConsonantOrVowel(ReadOnlySpan<SpeechSymbol> chars)
+    {
+        foreach (var c in chars)
+        {
+            if (!IsConsonantOrVowel(c))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static bool AllConsonantOrVowel(ReadOnlySpan<char> chars)
+    {
+        foreach (var c in chars)
+        {
+            if (!IsConsonantOrVowel(c))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static bool NoneConsonantOrVowel(ReadOnlySpan<SpeechSymbol> chars)
+    {
+        foreach (var c in chars)
+        {
+            if (IsConsonantOrVowel(c))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static bool NoneConsonantOrVowel(ReadOnlySpan<char> chars)
+    {
+        foreach (var c in chars)
+        {
+            if (IsConsonantOrVowel(c))
             {
                 return false;
             }

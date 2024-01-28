@@ -56,7 +56,7 @@ public readonly struct SpeechSymbolSequence
 
     public static bool IsValidValue(ReadOnlySpan<char> value)
     {
-        return SpeechSymbol.AllStrictIpaChars(value);
+        return SpeechSymbol.AllStrictIpa(value);
     }
 
     public SpeechSymbol this[int i] => _value.Span[i];
@@ -137,59 +137,59 @@ public readonly struct SpeechSymbolSequence
 
         ThrowHelper.ThrowArgumentOutOfRangeException(nameof(comparison));
         return false; // unreachable
-    }
 
-    internal static bool EqualsPermissive(
-        ReadOnlySpan<char> left,
-        ReadOnlySpan<char> right)
-    {
-        throw new NotImplementedException();
-    }
-
-    internal static bool EqualsConsonantsAndVowels(
-        ReadOnlySpan<char> left,
-        ReadOnlySpan<char> right)
-    {
-        var l = 0;
-        var r = 0;
-
-        while (l < left.Length || r < right.Length)
+        static bool EqualsPermissive(
+            ReadOnlySpan<char> buffer,
+            ReadOnlySpan<char> chars)
         {
-            if (l < left.Length - 1 && !SpeechSymbol.IsConsonantOrVowel(left[l]))
-            {
-                l++;
-                if (left[l] == right[r])
-                {
-                    l++;
-                    r++;
-                }
-
-                continue;
-            }
-
-            if (r < right.Length - 1 && !SpeechSymbol.IsConsonantOrVowel(right[r]))
-            {
-                r++;
-                if (left[l] == right[r])
-                {
-                    l++;
-                    r++;
-                }
-
-                continue;
-            }
-
-            if (left[l] == right[r])
-            {
-                l++;
-                r++;
-                continue;
-            }
-
-            return false;
+            throw new NotImplementedException();
         }
 
-        return true;
+        static bool EqualsConsonantsAndVowels(
+            ReadOnlySpan<char> buffer,
+            ReadOnlySpan<char> chars)
+        {
+            var l = 0;
+            var r = 0;
+
+            while (l < buffer.Length || r < chars.Length)
+            {
+                if (l < buffer.Length - 1 && !SpeechSymbol.IsConsonantOrVowel(buffer[l]))
+                {
+                    l++;
+                    if (buffer[l] == chars[r])
+                    {
+                        l++;
+                        r++;
+                    }
+
+                    continue;
+                }
+
+                if (r < chars.Length - 1 && !SpeechSymbol.IsConsonantOrVowel(chars[r]))
+                {
+                    r++;
+                    if (buffer[l] == chars[r])
+                    {
+                        l++;
+                        r++;
+                    }
+
+                    continue;
+                }
+
+                if (buffer[l] == chars[r])
+                {
+                    l++;
+                    r++;
+                    continue;
+                }
+
+                return false;
+            }
+
+            return true;
+        }
     }
 
     /// <summary>
@@ -202,48 +202,18 @@ public readonly struct SpeechSymbolSequence
         return _value.Span.Contains(value);
     }
 
-    public bool Contains(SpeechSymbolSequence value)
+    public bool Contains(
+        SpeechSymbolSequence symbols,
+        SpeechSymbolSequenceComparison comparison = SpeechSymbolSequenceComparison.Exact)
     {
-        return _value.Span.IndexOfAny(value.AsSpan()) > -1;
+        return IndexOfAny(symbols, comparison) > -1;
     }
 
     public bool Contains(
         ReadOnlySpan<char> chars,
         SpeechSymbolSequenceComparison comparison = SpeechSymbolSequenceComparison.Exact)
     {
-        var buffer = MemoryMarshal.Cast<SpeechSymbol, char>(_value.Span);
-
-        if (comparison == SpeechSymbolSequenceComparison.Exact)
-        {
-            return buffer.IndexOfAny(chars) > -1;
-        }
-
-        if (comparison == SpeechSymbolSequenceComparison.Permissive)
-        {
-            return ContainsPermissive(buffer, chars);
-        }
-
-        if (comparison == SpeechSymbolSequenceComparison.ConsonantsAndVowels)
-        {
-            return ContainsConsonantsAndVowels(buffer, chars);
-        }
-
-        ThrowHelper.ThrowArgumentOutOfRangeException(nameof(comparison));
-        return false; // unreachable
-
-        static bool ContainsPermissive(
-            ReadOnlySpan<char> left,
-            ReadOnlySpan<char> right)
-        {
-            throw new NotImplementedException();
-        }
-
-        static bool ContainsConsonantsAndVowels(
-            ReadOnlySpan<char> left,
-            ReadOnlySpan<char> right)
-        {
-            throw new NotImplementedException();
-        }
+        return IndexOfAny(chars, comparison) > -1;
     }
 
     public bool StartsWith(SpeechSymbol value)
@@ -251,47 +221,173 @@ public readonly struct SpeechSymbolSequence
         return !_value.Span.IsEmpty && _value.Span[0] == value;
     }
 
-    public bool StartsWith(SpeechSymbolSequence value)
+    public bool StartsWith(
+        SpeechSymbolSequence chars,
+        SpeechSymbolSequenceComparison comparison = SpeechSymbolSequenceComparison.Exact)
     {
-        return _value.Span.StartsWith(value.AsSpan());
+        var i = IndexOfAny(chars, comparison);
+        return i == 0
+            || SpeechSymbol.NoneConsonantOrVowel( _value.Span[..i]);
     }
 
     public bool StartsWith(
         ReadOnlySpan<char> chars,
         SpeechSymbolSequenceComparison comparison = SpeechSymbolSequenceComparison.Exact)
     {
-        var buffer = MemoryMarshal.Cast<SpeechSymbol, char>(_value.Span);
+        var i = IndexOfAny(chars, comparison);
+        return i == 0
+            || SpeechSymbol.NoneConsonantOrVowel( _value.Span[..i]);
+    }
+
+    public int IndexOfAny(
+        SpeechSymbolSequence symbols,
+        SpeechSymbolSequenceComparison comparison = SpeechSymbolSequenceComparison.Exact)
+    {
+        var buffer = _value.Span;
+        var chars = symbols._value.Span;
 
         if (comparison == SpeechSymbolSequenceComparison.Exact)
         {
-            return buffer.StartsWith(chars);
+            return buffer.IndexOfAny(chars);
         }
 
         if (comparison == SpeechSymbolSequenceComparison.Permissive)
         {
-            return StartsWithPermissive(buffer, chars);
+            return IndexOfAnyPermissive(buffer, chars);
         }
 
         if (comparison == SpeechSymbolSequenceComparison.ConsonantsAndVowels)
         {
-            return StartsWithConsonantsAndVowels(buffer, chars);
+            return IndexOfAnyConsonantsAndVowels(buffer, chars);
         }
 
         ThrowHelper.ThrowArgumentOutOfRangeException(nameof(comparison));
-        return false; // unreachable
+        return -1; // unreachable
 
-        static bool StartsWithPermissive(
-            ReadOnlySpan<char> left,
-            ReadOnlySpan<char> right)
+        static int IndexOfAnyPermissive(
+            ReadOnlySpan<SpeechSymbol> buffer,
+            ReadOnlySpan<SpeechSymbol> chars)
         {
             throw new NotImplementedException();
         }
 
-        static bool StartsWithConsonantsAndVowels(
-            ReadOnlySpan<char> left,
-            ReadOnlySpan<char> right)
+        static int IndexOfAnyConsonantsAndVowels(
+            ReadOnlySpan<SpeechSymbol> buffer,
+            ReadOnlySpan<SpeechSymbol> chars)
+        {
+            // TODO: investigate if algorithm without the filtering/copying
+            // is more performant.
+
+            SpeechSymbol[]? rentedBuffer = null;
+            SpeechSymbol[]? rentedChars = null;
+
+            Span<SpeechSymbol> bufferComp = MemoryThresholds.CanStackalloc<SpeechSymbol>(buffer.Length)
+                ? stackalloc SpeechSymbol[buffer.Length]
+                : (rentedBuffer = ArrayPool<SpeechSymbol>.Shared.Rent(buffer.Length));
+
+            Span<SpeechSymbol> charsComp = MemoryThresholds.CanStackalloc<SpeechSymbol>(chars.Length)
+                ? stackalloc SpeechSymbol[chars.Length]
+                : (rentedChars = ArrayPool<SpeechSymbol>.Shared.Rent(chars.Length));
+
+            try
+            {
+                try
+                {
+                    CopyConsonantsAndVowels(buffer, bufferComp, out var bufferCharCount);
+                    CopyConsonantsAndVowels(chars, charsComp, out var charsCharCount);
+
+                    return bufferComp.IndexOfAny(charsComp);
+                }
+                finally
+                {
+                    if (rentedBuffer is not null)
+                    {
+                        ArrayPool<SpeechSymbol>.Shared.Return(rentedBuffer);
+                    }
+                }
+            }
+            finally
+            {
+                if (rentedChars is not null)
+                {
+                    ArrayPool<SpeechSymbol>.Shared.Return(rentedChars);
+                }
+            }
+        }
+    }
+
+    public int IndexOfAny(
+        ReadOnlySpan<char> chars,
+        SpeechSymbolSequenceComparison comparison = SpeechSymbolSequenceComparison.Exact)
+    {
+        // TODO: investigate if algorithm without the filtering/copying
+        // is more performant.
+
+        var buffer = MemoryMarshal.Cast<SpeechSymbol, char>(_value.Span);
+
+        if (comparison == SpeechSymbolSequenceComparison.Exact)
+        {
+            return buffer.IndexOfAny(chars);
+        }
+
+        if (comparison == SpeechSymbolSequenceComparison.Permissive)
+        {
+            return IndexOfAnyPermissive(buffer, chars);
+        }
+
+        if (comparison == SpeechSymbolSequenceComparison.ConsonantsAndVowels)
+        {
+            return IndexOfAnyConsonantsAndVowels(buffer, chars);
+        }
+
+        ThrowHelper.ThrowArgumentOutOfRangeException(nameof(comparison));
+        return -1; // unreachable
+
+        static int IndexOfAnyPermissive(
+            ReadOnlySpan<char> buffer,
+            ReadOnlySpan<char> chars)
         {
             throw new NotImplementedException();
+        }
+
+        static int IndexOfAnyConsonantsAndVowels(
+            ReadOnlySpan<char> buffer,
+            ReadOnlySpan<char> chars)
+        {
+            char[]? rentedBuffer = null;
+            char[]? rentedChars = null;
+
+            Span<char> bufferComp = MemoryThresholds.CanStackalloc<char>(buffer.Length)
+                ? stackalloc char[buffer.Length]
+                : (rentedBuffer = ArrayPool<char>.Shared.Rent(buffer.Length));
+
+            Span<char> charsComp = MemoryThresholds.CanStackalloc<char>(chars.Length)
+                ? stackalloc char[chars.Length]
+                : (rentedChars = ArrayPool<char>.Shared.Rent(chars.Length));
+            try
+            {
+                try
+                {
+                    CopyConsonantsAndVowels(buffer, bufferComp, out var bufferCharCount);
+                    CopyConsonantsAndVowels(chars, charsComp, out var charsCharCount);
+
+                    return bufferComp.IndexOfAny(charsComp);
+                }
+                finally
+                {
+                    if (rentedBuffer is not null)
+                    {
+                        ArrayPool<char>.Shared.Return(rentedBuffer);
+                    }
+                }
+            }
+            finally
+            {
+                if (rentedChars is not null)
+                {
+                    ArrayPool<char>.Shared.Return(rentedChars);
+                }
+            }
         }
     }
 
@@ -527,4 +623,83 @@ public readonly struct SpeechSymbolSequence
 
 #pragma warning restore CA2225 // Operator overloads have named alternates
 
+    /// <summary>
+    /// Copies speech symbols that are consonants or vowels from <paramref name="source"/>
+    /// to <paramref name="destination"/>. The number of symbols written is returned.
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="destination"></param>
+    /// <param name="charsWritten">The count of symbols written into <paramref name="destination"/>.</param>
+    /// <exception cref="ArgumentException"><paramref name="destination"/> is not long enough to
+    /// copy all of the consonant or vowel symbols.</exception>
+    public static void CopyConsonantsAndVowels(
+        ReadOnlySpan<SpeechSymbol> source,
+        Span<SpeechSymbol> destination,
+        out int charsWritten)
+    {
+        var i = 0;
+        var j = 0;
+
+        while (i < source.Length)
+        {
+            if (SpeechSymbol.IsConsonantOrVowel(source[i]))
+            {
+                if (j >= destination.Length)
+                {
+                    ThrowHelper.ThrowArgumentException(
+                        "Unable to copy consonants and vowels: destination buffer is too short.");
+                    charsWritten = j; // unreachable
+                    return; // unreachable
+                }
+
+                destination[j] = source[i];
+                j++;
+            }
+
+            i++;
+        }
+
+        charsWritten = j;
+    }
+
+    /// <summary>
+    /// Copies speech symbols that are consonants or vowels from <paramref name="source"/>
+    /// to <paramref name="destination"/>. The number of characters written is returned.
+    /// Only Strict IPA characters classified as consonants or vowels
+    /// (see <see cref="SpeechSymbol.IsConsonantOrVowel(SpeechSymbol)"/> ) are copied.
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="destination"></param>
+    /// <param name="charsWritten">The count of characters written into <paramref name="destination"/>.</param>
+    /// <exception cref="ArgumentException"><paramref name="destination"/> is not long enough to
+    /// copy all of the consonant or vowel symbols.</exception>
+    public static void CopyConsonantsAndVowels(
+        ReadOnlySpan<char> source,
+        Span<char> destination,
+        out int charsWritten)
+    {
+        var i = 0;
+        var j = 0;
+
+        while (i < source.Length)
+        {
+            if (SpeechSymbol.IsConsonantOrVowel(source[i]))
+            {
+                if (j >= destination.Length)
+                {
+                    ThrowHelper.ThrowArgumentException(
+                        "Unable to copy consonants and vowels: destination buffer is too short.");
+                    charsWritten = j; // unreachable
+                    return; // unreachable
+                }
+
+                destination[j] = source[i];
+                j++;
+            }
+
+            i++;
+        }
+
+        charsWritten = j;
+    }
 }
