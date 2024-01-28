@@ -15,7 +15,7 @@ public static class EntityDataInitializationHelper
     /// <param name="value">The value to test.</param>
     /// <param name="valueName">The name of the value.</param>
     /// <returns>The value, if it is not <see langword="null"/>.</returns>
-    public static T EnsureIsNotDefault<T>([NotNull] T? value, [CallerArgumentExpression("value")] string? valueName = null)
+    public static T EnsureInitialized<T>([NotNull] T? value, [CallerArgumentExpression("value")] string? valueName = null)
         where T : class
     {
         EntityDataInitializationException.ThrowIf(value is null, valueName);
