@@ -44,6 +44,18 @@ public class SpeechSymbolSequenceTests
     }
 
     [Theory]
+    [InlineData("hˈɛlɪkˌɒptɐ", "h")]
+    [InlineData("hˈɛlɪkˌɒptɐ", "ɒptɐ")]
+    [InlineData("hˈɛlɪkˌɒptɐ", "hˈɛlɪkˌɒptɐ")]
+    [InlineData("hˈɛlɪkˌɒptɐ", "ˌ")]
+    public void Contains(string t1, string t2)
+    {
+        var transcription1 = SpeechSymbolSequence.Parse(t1, CultureInfo.InvariantCulture);
+        var transcription2 = SpeechSymbolSequence.Parse(t2, CultureInfo.InvariantCulture);
+        Assert.True(transcription1.Contains(transcription2));
+    }
+
+    [Theory]
     [MemberData(nameof(WordTranscriptions))]
     public void ParseInvariant(string transcription)
     {

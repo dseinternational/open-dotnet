@@ -80,6 +80,26 @@ public readonly struct SpeechSymbolSequence
         return _value.Span;
     }
 
+    public bool Equals(ReadOnlySpan<SpeechSymbol> other)
+    {
+        return _value.Span.SequenceEqual(other);
+    }
+
+    public bool Equals(ReadOnlyMemory<SpeechSymbol> other)
+    {
+        return Equals(other.Span);
+    }
+
+    public bool Equals(SpeechSymbolSequence other)
+    {
+        return Equals(other._value.Span);
+    }
+
+    public override bool Equals(object? obj)
+    {
+        return obj is SpeechSymbolSequence other && Equals(other, StringComparison.Ordinal);
+    }
+
     public bool Equals(
         string value,
         SpeechSymbolSequenceComparison comparison = SpeechSymbolSequenceComparison.Exact)
@@ -168,6 +188,21 @@ public readonly struct SpeechSymbolSequence
         }
 
         return true;
+    }
+
+    /// <summary>
+    /// Checks if the <paramref name="value"/> is contained within this <see cref="SpeechSymbolSequence"/>.
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public bool Contains(SpeechSymbol value)
+    {
+        return _value.Span.Contains(value);
+    }
+
+    public bool Contains(SpeechSymbolSequence value)
+    {
+        return _value.Span.IndexOfAny(value.AsSpan()) > -1;
     }
 
     public int GetCharCount(ReadOnlySpan<char> format, IFormatProvider? provider)
@@ -303,36 +338,6 @@ public readonly struct SpeechSymbolSequence
         }
 
         return TryParse(s.AsSpan(), provider, out result);
-    }
-
-    /// <summary>
-    /// Checks if the <paramref name="value"/> is contained within this <see cref="SpeechSymbolSequence"/>.
-    /// </summary>
-    /// <param name="value"></param>
-    /// <returns></returns>
-    public bool Contains(SpeechSymbol value)
-    {
-        return _value.Span.Contains(value);
-    }
-
-    public bool Equals(ReadOnlySpan<SpeechSymbol> other)
-    {
-        return _value.Span.SequenceEqual(other);
-    }
-
-    public bool Equals(ReadOnlyMemory<SpeechSymbol> other)
-    {
-        return Equals(other.Span);
-    }
-
-    public bool Equals(SpeechSymbolSequence other)
-    {
-        return Equals(other._value.Span);
-    }
-
-    public override bool Equals(object? obj)
-    {
-        return obj is SpeechSymbolSequence other && Equals(other, StringComparison.Ordinal);
     }
 
     public override int GetHashCode()
