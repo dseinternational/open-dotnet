@@ -163,6 +163,7 @@ public readonly struct SpeechSymbolSequence
                     l++;
                     r++;
                 }
+
                 continue;
             }
 
@@ -174,6 +175,7 @@ public readonly struct SpeechSymbolSequence
                     l++;
                     r++;
                 }
+
                 continue;
             }
 
@@ -203,6 +205,94 @@ public readonly struct SpeechSymbolSequence
     public bool Contains(SpeechSymbolSequence value)
     {
         return _value.Span.IndexOfAny(value.AsSpan()) > -1;
+    }
+
+    public bool Contains(
+        ReadOnlySpan<char> chars,
+        SpeechSymbolSequenceComparison comparison = SpeechSymbolSequenceComparison.Exact)
+    {
+        var buffer = MemoryMarshal.Cast<SpeechSymbol, char>(_value.Span);
+
+        if (comparison == SpeechSymbolSequenceComparison.Exact)
+        {
+            return buffer.IndexOfAny(chars) > -1;
+        }
+
+        if (comparison == SpeechSymbolSequenceComparison.Permissive)
+        {
+            return ContainsPermissive(buffer, chars);
+        }
+
+        if (comparison == SpeechSymbolSequenceComparison.ConsonantsAndVowels)
+        {
+            return ContainsConsonantsAndVowels(buffer, chars);
+        }
+
+        ThrowHelper.ThrowArgumentOutOfRangeException(nameof(comparison));
+        return false; // unreachable
+
+        static bool ContainsPermissive(
+            ReadOnlySpan<char> left,
+            ReadOnlySpan<char> right)
+        {
+            throw new NotImplementedException();
+        }
+
+        static bool ContainsConsonantsAndVowels(
+            ReadOnlySpan<char> left,
+            ReadOnlySpan<char> right)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public bool StartsWith(SpeechSymbol value)
+    {
+        return !_value.Span.IsEmpty && _value.Span[0] == value;
+    }
+
+    public bool StartsWith(SpeechSymbolSequence value)
+    {
+        return _value.Span.StartsWith(value.AsSpan());
+    }
+
+    public bool StartsWith(
+        ReadOnlySpan<char> chars,
+        SpeechSymbolSequenceComparison comparison = SpeechSymbolSequenceComparison.Exact)
+    {
+        var buffer = MemoryMarshal.Cast<SpeechSymbol, char>(_value.Span);
+
+        if (comparison == SpeechSymbolSequenceComparison.Exact)
+        {
+            return buffer.StartsWith(chars);
+        }
+
+        if (comparison == SpeechSymbolSequenceComparison.Permissive)
+        {
+            return StartsWithPermissive(buffer, chars);
+        }
+
+        if (comparison == SpeechSymbolSequenceComparison.ConsonantsAndVowels)
+        {
+            return StartsWithConsonantsAndVowels(buffer, chars);
+        }
+
+        ThrowHelper.ThrowArgumentOutOfRangeException(nameof(comparison));
+        return false; // unreachable
+
+        static bool StartsWithPermissive(
+            ReadOnlySpan<char> left,
+            ReadOnlySpan<char> right)
+        {
+            throw new NotImplementedException();
+        }
+
+        static bool StartsWithConsonantsAndVowels(
+            ReadOnlySpan<char> left,
+            ReadOnlySpan<char> right)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public int GetCharCount(ReadOnlySpan<char> format, IFormatProvider? provider)

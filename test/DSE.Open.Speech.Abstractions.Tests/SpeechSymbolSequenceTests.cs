@@ -48,11 +48,51 @@ public class SpeechSymbolSequenceTests
     [InlineData("hˈɛlɪkˌɒptɐ", "ɒptɐ")]
     [InlineData("hˈɛlɪkˌɒptɐ", "hˈɛlɪkˌɒptɐ")]
     [InlineData("hˈɛlɪkˌɒptɐ", "ˌ")]
+    [InlineData("hˈɛlɪkˌɒptɐ", "ɐ")]
     public void Contains(string t1, string t2)
     {
         var transcription1 = SpeechSymbolSequence.Parse(t1, CultureInfo.InvariantCulture);
         var transcription2 = SpeechSymbolSequence.Parse(t2, CultureInfo.InvariantCulture);
         Assert.True(transcription1.Contains(transcription2));
+    }
+
+    [Theory]
+    [InlineData("hˈɛlɪkˌɒptɐ", "h")]
+    [InlineData("hˈɛlɪkˌɒptɐ", "ɒptɐ")]
+    [InlineData("hˈɛlɪkˌɒptɐ", "hˈɛlɪkˌɒptɐ")]
+    [InlineData("hˈɛlɪkˌɒptɐ", "ˌ")]
+    [InlineData("hˈɛlɪkˌɒptɐ", "ɐ")]
+    public void ContainsExact(string t1, string t2)
+    {
+        var transcription1 = SpeechSymbolSequence.Parse(t1, CultureInfo.InvariantCulture);
+        var transcription2 = t2.AsSpan();
+        Assert.True(transcription1.Contains(transcription2, SpeechSymbolSequenceComparison.Exact));
+    }
+
+    [Theory]
+    [InlineData("hˈɛlɪkˌɒptɐ", "h")]
+    [InlineData("hˈɛlɪkˌɒptɐ", "hˈɛlɪk")]
+    [InlineData("hˈɛlɪkˌɒptɐ", "hˈɛlɪkˌɒptɐ")]
+    [InlineData("hˈɛlɪkˌɒptɐ", "hˈɛlɪkˌɒ")]
+    [InlineData("hˈɛlɪkˌɒptɐ", "hˈ")]
+    public void StartsWith(string t1, string t2)
+    {
+        var transcription1 = SpeechSymbolSequence.Parse(t1, CultureInfo.InvariantCulture);
+        var transcription2 = SpeechSymbolSequence.Parse(t2, CultureInfo.InvariantCulture);
+        Assert.True(transcription1.StartsWith(transcription2));
+    }
+
+    [Theory]
+    [InlineData("hˈɛlɪkˌɒptɐ", "h")]
+    [InlineData("hˈɛlɪkˌɒptɐ", "hˈɛlɪk")]
+    [InlineData("hˈɛlɪkˌɒptɐ", "hˈɛlɪkˌɒptɐ")]
+    [InlineData("hˈɛlɪkˌɒptɐ", "hˈɛlɪkˌɒ")]
+    [InlineData("hˈɛlɪkˌɒptɐ", "hˈ")]
+    public void StartsWithExact(string t1, string t2)
+    {
+        var transcription1 = SpeechSymbolSequence.Parse(t1, CultureInfo.InvariantCulture);
+        var transcription2 = t2.AsSpan();
+        Assert.True(transcription1.StartsWith(transcription2, SpeechSymbolSequenceComparison.Exact));
     }
 
     [Theory]
