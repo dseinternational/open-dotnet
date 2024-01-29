@@ -88,7 +88,7 @@ public readonly record struct SpeechTranscription
 
     public TranscriptionNotation Notation => _notation;
 
-    public SpeechSymbolSequence Contents => _transcription;
+    public SpeechSymbolSequence Symbols => _transcription;
 
     public override string ToString()
     {
