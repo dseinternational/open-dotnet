@@ -652,9 +652,15 @@ public readonly partial struct SpeechSymbol
 
     public static readonly SpeechSymbol Ejective = new((char)0x02BC, true);  // ʼ,modifier letter apostrophe,ejective
 
-    public static readonly SpeechSymbol Long = new((char)0x02D0, true);  // ː,modifier letter triangular colon,long
+    /// <summary>
+    /// The long suprasegmantal, represented by the symbol <c>ː</c> (U+02D0: modifier letter triangular colon).
+    /// </summary>
+    public static readonly SpeechSymbol Long = new((char)0x02D0, true);
 
-    public static readonly SpeechSymbol HalfLong = new((char)0x02D1, true);  // ˑ,modifier letter half triangular colon,half-long
+    /// <summary>
+    /// The half-long suprasegmantal, represented by the symbol <c>ˑ</c> (U+02D1: modifier letter half triangular colon).
+    /// </summary>
+    public static readonly SpeechSymbol HalfLong = new((char)0x02D1, true);
 
     /// <summary>
     /// The tie bar, a type of diacritic, represented by the symbol <c>͡</c> (U+0361: combining double inverted breve).

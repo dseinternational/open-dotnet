@@ -31,6 +31,10 @@ public readonly struct SpeechSymbolSequence
 {
     private readonly ReadOnlyMemory<SpeechSymbol> _value;
 
+    public SpeechSymbolSequence(IEnumerable<SpeechSymbol> value) : this(value.ToArray(), false)
+    {
+    }
+
     public SpeechSymbolSequence(ReadOnlySpan<SpeechSymbol> value) : this(value.ToArray(), false)
     {
     }
@@ -85,6 +89,117 @@ public readonly struct SpeechSymbolSequence
     public ReadOnlySpan<SpeechSymbol> AsSpan()
     {
         return _value.Span;
+    }
+
+    /// <summary>
+    /// Returns the initial sound of this <see cref="SpeechSymbolSequence"/>.
+    /// </summary>
+    /// <param name="includeInitialStressMarkers"></param>
+    /// <returns></returns>
+    public SpeechSound GetInitialSound(bool includeInitialStressMarkers = false)
+    {
+        if (_value.IsEmpty)
+        {
+            return SpeechSound.Empty;
+        }
+
+        var span = _value.Span;
+
+        Span<SpeechSymbol> buffer = stackalloc SpeechSymbol[SpeechSound.MaxLength];
+        SpeechSoundType? type = null;
+        var i = 0;
+        var v = 0;
+
+        foreach (var s in span)
+        {
+            if (i >= SpeechSound.MaxLength)
+            {
+                ThrowHelper.ThrowInvalidOperationException("Initial speech sound is too long.");
+                break;
+            }
+
+            if (type is null)
+            {
+                if (SpeechSymbol.IsConsonant(s))
+                {
+                    type = SpeechSoundType.Consonant;
+                }
+                else if (SpeechSymbol.IsVowel(s))
+                {
+                    type = SpeechSoundType.Vowel;
+                    v++;
+                }
+
+                if (type is not null
+                    || (includeInitialStressMarkers
+                        && (s == SpeechSymbol.PrimaryStress || s == SpeechSymbol.SecondaryStress)))
+                {
+                    buffer[i] = s;
+                    i++;
+                }
+            }
+            // consonant or vowel followed by tie-bar
+            else if (s == SpeechSymbol.TieBar || s == SpeechSymbol.TieBarBelow)
+            {
+                buffer[i] = s;
+                i++;
+            }
+            else if (type == SpeechSoundType.Consonant)
+            {
+                // do not join consonants, except tʃ
+                if (ModifiesPrecedingConsonantVowel(s)
+                    || (s == 'ʃ' && buffer[i - 1] == 't'))
+                {
+                    buffer[i] = s;
+                    i++;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            else if (type == SpeechSoundType.Vowel)
+            {
+                // join vowel sounds for dipthongs
+                if (SpeechSymbol.IsVowel(s))
+                {
+                    if (v == 2)
+                    {
+                        break;
+                    }
+
+                    buffer[i] = s;
+                    i++;
+                    v++;
+                }
+                else if (ModifiesPrecedingConsonantVowel(s))
+                {
+                    buffer[i] = s;
+                    i++;
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+
+        return new SpeechSound(buffer[..i]);
+
+        static bool ModifiesPrecedingConsonantVowel(SpeechSymbol s)
+        {
+            return SpeechSymbol.IsDiacritic(s)
+                || s == SpeechSymbol.Long
+                || s == SpeechSymbol.HalfLong
+                || s == SpeechSymbol.ExtraShort
+                || s == SpeechSymbol.ExtraHighTone
+                || s == SpeechSymbol.HighTone
+                || s == SpeechSymbol.MidTone
+                || s == SpeechSymbol.LowTone
+                || s == SpeechSymbol.ExtraLowTone
+                || s == SpeechSymbol.TieBar
+                || s == SpeechSymbol.TieBarBelow;
+        }
     }
 
     public bool Equals(ReadOnlySpan<SpeechSymbol> other)
@@ -618,6 +733,16 @@ public readonly struct SpeechSymbolSequence
     public static explicit operator SpeechSymbolSequence(string value)
     {
         return Parse(value, null);
+    }
+
+    public static implicit operator SpeechSymbolSequence(Span<SpeechSymbol> symbols)
+    {
+        return new(symbols);
+    }
+
+    public static implicit operator SpeechSymbolSequence(ReadOnlySpan<SpeechSymbol> symbols)
+    {
+        return new(symbols);
     }
 
 #pragma warning restore CA2225 // Operator overloads have named alternates

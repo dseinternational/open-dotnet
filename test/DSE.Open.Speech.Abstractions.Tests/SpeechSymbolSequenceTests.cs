@@ -8,6 +8,35 @@ namespace DSE.Open.Speech.Abstractions.Tests;
 
 public class SpeechSymbolSequenceTests
 {
+    [Theory]
+    [InlineData("ˈeəɹəplˌeɪn", false, "eə")]
+    [InlineData("lˈɒlɪpˌɒp", true, "l")]
+    [InlineData("dɹˈɪŋkɪŋ", true, "d")]
+    [InlineData("mˈɒp", true, "m")]
+    [InlineData("təmˈɑːtəʊ", true, "t")]
+    [InlineData("ɹˈæbɪt", true, "ɹ")]
+    [InlineData("ˌæftɜ˞ˈnun", true, "ˌæ")]
+    [InlineData("ˈɑːnsɐ", true, "ˈɑː")]
+    [InlineData("ˌæftɜ˞ˈnun", false, "æ")]
+    [InlineData("ˈɑːnsɐ", false, "ɑː")]
+    [InlineData("flˈæɡ", false, "f")]
+    [InlineData("ˈdɹɪŋkɪŋ", false, "d")]
+    [InlineData("ˈdɹɪŋkɪŋ", true, "ˈd")]
+    [InlineData("ɡlˈɑːs", true, "ɡ")]
+    [InlineData("θɹˈəʊɪŋ", true, "θ")]
+    [InlineData("tʃˈiːz", true, "tʃ")]
+    [InlineData("ʃˈɒpɪŋ", true, "ʃ")]
+    [InlineData("ɜ˞ˈaʊnd", true, "ɜ˞")]
+    [InlineData("ˈɬædɜ˞", false, "ɬ")]
+    [InlineData("ˈɬædɜ˞", true, "ˈɬ")]
+    public void GetInitialSound(string sequence, bool includeInitialStressMarkers, string expected)
+    {
+        var transcription = SpeechSymbolSequence.ParseInvariant(sequence);
+        var expectedSound = SpeechSound.ParseInvariant(expected);
+        var initialSound = transcription.GetInitialSound(includeInitialStressMarkers);
+        Assert.Equal(expectedSound, initialSound);
+    }
+
     [Fact]
     public void CanCastMemoryToChar()
     {

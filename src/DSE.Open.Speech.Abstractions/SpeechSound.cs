@@ -22,14 +22,9 @@ public readonly struct SpeechSound
 {
     private readonly SpeechSymbolSequence _value;
 
-    public static int MaxLength => 4;
+    public static int MaxLength => 8;
 
     public static readonly SpeechSound Empty;
-
-    public SpeechSound(ReadOnlySpan<char> value)
-        : this(SpeechSymbolSequence.Parse(value, CultureInfo.InvariantCulture), false)
-    {
-    }
 
     public SpeechSound(SpeechSymbolSequence value) : this(value, false)
     {

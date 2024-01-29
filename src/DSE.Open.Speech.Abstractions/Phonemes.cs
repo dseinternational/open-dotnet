@@ -45,7 +45,7 @@ public static class Phonemes
             Allophones =
             [
                 // ⟨spin⟩
-                new SpeechSound("pʰ"),
+                SpeechSound.ParseInvariant("pʰ"),
             ]
         };
 
@@ -59,7 +59,7 @@ public static class Phonemes
             Allophones =
             [
                 // ⟨web⟩
-                new SpeechSound("b̥"),
+                SpeechSound.ParseInvariant("b̥"),
             ]
         };
 
@@ -86,7 +86,7 @@ public static class Phonemes
             Allophones =
             [
                 SpeechSound.VoicedBilabialFricative,
-                new SpeechSound("v̥"),
+                SpeechSound.ParseInvariant("v̥"),
             ]
         };
 
@@ -105,7 +105,7 @@ public static class Phonemes
             Abstraction = SpeechSound.VoicelessDentalFricative,
             Allophones =
             [
-                new SpeechSound("t̪ʰ"),
+                SpeechSound.ParseInvariant("t̪ʰ"),
             ]
         };
 
@@ -155,7 +155,7 @@ public static class Phonemes
             Allophones =
             [
                 SpeechSound.VoicedAlveolarTap,
-                new SpeechSound("d̥"),
+                SpeechSound.ParseInvariant("d̥"),
             ]
         };
 
@@ -186,7 +186,10 @@ public static class Phonemes
         {
             Language = LanguageCode2.English,
             Abstraction = SpeechSound.VoicedAlveolarLateralApproximant,
-            Allophones = []
+            Allophones =
+            [
+                SpeechSound.VoicelessAlveolarLateralFricative,  // ɬ
+            ]
         };
 
         // ---------------------------------------------------------------------
@@ -199,7 +202,14 @@ public static class Phonemes
         {
             Language = LanguageCode2.English,
             Abstraction = SpeechSound.VoicelessPostalveolarAffricate,
-            Allophones = []
+            Allophones =
+            [
+                new SpeechSound(
+                [
+                    SpeechSymbol.VoicelessAlveolarPlosive,
+                    SpeechSymbol.VoicelessPostalveolarFricative
+                ]),
+            ]
         };
 
         /// <summary>
@@ -335,7 +345,7 @@ public static class Phonemes
             Allophones =
             [
                 SpeechSound.VoicelessLabialVelarFricative,
-                new SpeechSound("hw"),
+                SpeechSound.ParseInvariant("hw"),
             ]
         };
 
@@ -352,7 +362,7 @@ public static class Phonemes
             Abstraction = SpeechSound.VoicelessLabialVelarFricative,
             Allophones =
             [
-                new SpeechSound("hw"),
+                SpeechSound.ParseInvariant("hw"),
             ]
         };
 
@@ -391,7 +401,7 @@ public static class Phonemes
             Abstraction = SpeechSound.OpenMidFrontUnroundedVowel,
             Allophones =
             [
-                new SpeechSound("ɛː")
+                SpeechSound.ParseInvariant("ɛː")
             ]
         };
 
@@ -415,7 +425,7 @@ public static class Phonemes
         public static readonly Phoneme ee = new()
         {
             Language = LanguageCode2.English,
-            Abstraction = new SpeechSound("iː"),
+            Abstraction = SpeechSound.ParseInvariant("iː"),
             Allophones =
             [
                 SpeechSound.CloseFrontUnroundedVowel
@@ -454,7 +464,8 @@ public static class Phonemes
             Abstraction = SpeechSound.MidCentralVowel,
             Allophones =
             [
-                new SpeechSound("ər"),
+                SpeechSound.ParseInvariant("ər"),
+                SpeechSound.ParseInvariant("ɐ"),   // [ɐbˈaʊt] ⟨about⟩
             ]
         };
 
@@ -464,7 +475,7 @@ public static class Phonemes
         public static readonly Phoneme oo = new()
         {
             Language = LanguageCode2.English,
-            Abstraction = new SpeechSound("uː"),
+            Abstraction = SpeechSound.ParseInvariant("uː"),
             Allophones = []
         };
 
@@ -485,7 +496,7 @@ public static class Phonemes
         public static readonly Phoneme aw = new()
         {
             Language = LanguageCode2.English,
-            Abstraction = new SpeechSound("ɔː"),
+            Abstraction = SpeechSound.ParseInvariant("ɔː"),
             Allophones =
             [
                 SpeechSound.OpenMidBackRoundedVowel,    // cot-caught merger
@@ -524,7 +535,7 @@ public static class Phonemes
         public static readonly Phoneme ah = new()
         {
             Language = LanguageCode2.English,
-            Abstraction = new SpeechSound("ɑː"),
+            Abstraction = SpeechSound.ParseInvariant("ɑː"),
             Allophones =
             [
                 SpeechSound.NearOpenFrontUnroundedVowel, // bath like trap
@@ -540,7 +551,7 @@ public static class Phonemes
         public static readonly Phoneme ay = new()
         {
             Language = LanguageCode2.English,
-            Abstraction = new SpeechSound("eɪ"),
+            Abstraction = SpeechSound.ParseInvariant("eɪ"),
             Allophones = []
         };
 
@@ -550,8 +561,14 @@ public static class Phonemes
         public static readonly Phoneme igh = new()
         {
             Language = LanguageCode2.English,
-            Abstraction = new SpeechSound("aɪ"),
-            Allophones = []
+            Abstraction = SpeechSound.ParseInvariant("aɪ"),
+            Allophones =
+            [
+                SpeechSound.OpenFrontUnroundedVowel,
+                SpeechSound.ParseInvariant("aɪ"),
+                SpeechSound.ParseInvariant("ɐɪ"),
+                SpeechSound.ParseInvariant("ɑɪ"),
+            ]
         };
 
         /// <summary>
@@ -560,8 +577,11 @@ public static class Phonemes
         public static readonly Phoneme oh = new()
         {
             Language = LanguageCode2.English,
-            Abstraction = new SpeechSound("oʊ"),
-            Allophones = []
+            Abstraction = SpeechSound.ParseInvariant("oʊ"),
+            Allophones =
+            [
+                SpeechSound.ParseInvariant("əʊ"),
+            ]
         };
 
         /// <summary>
@@ -570,7 +590,7 @@ public static class Phonemes
         public static readonly Phoneme oy = new()
         {
             Language = LanguageCode2.English,
-            Abstraction = new SpeechSound("ɔɪ"),
+            Abstraction = SpeechSound.ParseInvariant("ɔɪ"),
             Allophones = []
         };
         /// <summary>
@@ -579,7 +599,7 @@ public static class Phonemes
         public static readonly Phoneme ow = new()
         {
             Language = LanguageCode2.English,
-            Abstraction = new SpeechSound("aʊ"),
+            Abstraction = SpeechSound.ParseInvariant("aʊ"),
             Allophones = []
         };
 
@@ -592,11 +612,11 @@ public static class Phonemes
         public static readonly Phoneme ur = new()
         {
             Language = LanguageCode2.English,
-            Abstraction = new SpeechSound("ɜː"),
+            Abstraction = SpeechSound.ParseInvariant("ɜː"),
             Allophones =
             [
-                new SpeechSound("ɜr"),
-                new SpeechSound("ɜːr"),
+                SpeechSound.ParseInvariant("ɜr"),
+                SpeechSound.ParseInvariant("ɜːr"),
             ]
         };
 
@@ -609,11 +629,12 @@ public static class Phonemes
         public static readonly Phoneme ar = new()
         {
             Language = LanguageCode2.English,
-            Abstraction = new SpeechSound("ɑːr"), // distinguish from /ah/
+            Abstraction = SpeechSound.ParseInvariant("ɑːr"), // distinguish from /ah/
             Allophones =
             [
-                new SpeechSound("ɑr"),
-                new SpeechSound("ɑː"),
+                SpeechSound.ParseInvariant("ɑr"),
+                SpeechSound.ParseInvariant("ɑː"),
+                SpeechSound.ParseInvariant("ɜ˞"),
             ]
         };
 
@@ -623,10 +644,10 @@ public static class Phonemes
         public static readonly Phoneme or = new()
         {
             Language = LanguageCode2.English,
-            Abstraction = new SpeechSound("ɔːr"), // distinguish from /aw/
+            Abstraction = SpeechSound.ParseInvariant("ɔːr"), // distinguish from /aw/
             Allophones =
             [
-                new SpeechSound("oʊr"),
+                SpeechSound.ParseInvariant("oʊr"),
             ]
         };
 
@@ -636,12 +657,17 @@ public static class Phonemes
         public static readonly Phoneme air = new()
         {
             Language = LanguageCode2.English,
-            Abstraction = new SpeechSound("ɛː"),
+            Abstraction = SpeechSound.ParseInvariant("ɛː"),
             Allophones =
             [
-                new SpeechSound("ɛr"),
-                new SpeechSound("ɛə"),
-                new SpeechSound("ɛːr"),
+                SpeechSound.ParseInvariant("ɛr"),
+                SpeechSound.ParseInvariant("ɛːr"),
+                SpeechSound.ParseInvariant("ɛə"),
+                SpeechSound.ParseInvariant("ɛəɹ"),
+                SpeechSound.ParseInvariant("eɹ"),
+                SpeechSound.ParseInvariant("ɛɹ"),
+                SpeechSound.ParseInvariant("eə"),
+                SpeechSound.ParseInvariant("eəɹ"),
             ]
         };
 
@@ -651,11 +677,14 @@ public static class Phonemes
         public static readonly Phoneme eer = new()
         {
             Language = LanguageCode2.English,
-            Abstraction = new SpeechSound("ɪə"),
+            Abstraction = SpeechSound.ParseInvariant("ɪə"),
             Allophones =
             [
-                new SpeechSound("ɪr"),
-                new SpeechSound("ɪər"),
+                SpeechSound.ParseInvariant("iə"),
+                SpeechSound.ParseInvariant("ɪər"),
+                SpeechSound.ParseInvariant("ɪər"),
+                SpeechSound.ParseInvariant("ɪr"),
+                SpeechSound.ParseInvariant("iɹ"),
             ]
         };
 
@@ -665,7 +694,7 @@ public static class Phonemes
         public static readonly Phoneme oor = new()
         {
             Language = LanguageCode2.English,
-            Abstraction = new SpeechSound("ʊər"),
+            Abstraction = SpeechSound.ParseInvariant("ʊər"),
             Allophones = []
         };
 
@@ -675,7 +704,7 @@ public static class Phonemes
         public static readonly Phoneme er = new()
         {
             Language = LanguageCode2.English,
-            Abstraction = new SpeechSound("ər"),
+            Abstraction = SpeechSound.ParseInvariant("ər"),
             Allophones = []
         };
 
@@ -688,7 +717,7 @@ public static class Phonemes
         public static readonly Phoneme yoo = new()
         {
             Language = LanguageCode2.English,
-            Abstraction = new SpeechSound("juː"),
+            Abstraction = SpeechSound.ParseInvariant("juː"),
             Allophones = []
         };
 

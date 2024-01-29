@@ -77,4 +77,19 @@ public class PhonemesTests
         var transcription = SpeechSymbolSequence.ParseInvariant(word);
         Assert.True(transcription.StartsWith(English.k.Abstraction));
     }
+
+    [Theory]
+    [MemberData(nameof(WordTranscriptions))]
+    public void InitialSoundsArePhonemes(string word)
+    {
+        var sequence = SpeechSymbolSequence.ParseInvariant(word);
+        var initialSound = sequence.GetInitialSound();
+        Assert.Contains(English.All, p => p.Abstraction == initialSound || p.Allophones.Contains(initialSound));
+    }
+
+#pragma warning disable CA5394 // Do not use insecure randomness
+    public static TheoryData<string> WordTranscriptions =>
+        new(TranscriptionData.Transcriptions.ToArray());
+#pragma warning restore CA5394 // Do not use insecure randomness
+
 }
