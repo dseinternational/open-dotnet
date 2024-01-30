@@ -14,7 +14,8 @@ namespace DSE.Open.Values.Text;
 [JsonConverter(typeof(JsonSpanSerializableValueConverter<ContainsPattern, CharSequence>))]
 public readonly partial struct ContainsPattern : IEquatableValue<ContainsPattern, CharSequence>
 {
-    private static readonly SearchValues<char> s_validSymbols = SearchValues.Create(['*', '(', ')', '"', '&', '!', '|']);
+    private static readonly SearchValues<char> s_validSymbols =
+        SearchValues.Create(['*', '(', ')', '"', '&', '!', '|']);
 
     public static int MaxSerializedCharLength => 128;
 

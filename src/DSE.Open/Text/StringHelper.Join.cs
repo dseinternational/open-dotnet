@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using CommunityToolkit.HighPerformance.Buffers;
 using DSE.Open.Linq;
+using DSE.Open.Runtime.Helpers;
 
 namespace DSE.Open.Text;
 
@@ -272,7 +273,7 @@ public static partial class StringHelper
 
         var rented = SpanOwner<char>.Empty;
 
-        Span<char> chars = charCount <= StackallocThresholds.MaxByteLength
+        Span<char> chars = MemoryThresholds.CanStackalloc<char>(charCount)
             ? stackalloc char[charCount]
             : (rented = SpanOwner<char>.Allocate(charCount)).Span;
 
@@ -349,7 +350,7 @@ public static partial class StringHelper
 
         var rented = SpanOwner<char>.Empty;
 
-        Span<char> chars = charCount <= StackallocThresholds.MaxByteLength
+        Span<char> chars = MemoryThresholds.CanStackalloc<char>((int)charCount)
             ? stackalloc char[(int)charCount]
             : (rented = SpanOwner<char>.Allocate((int)charCount)).Span;
 

@@ -6,6 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using CommunityToolkit.HighPerformance.Buffers;
+using DSE.Open.Runtime.Helpers;
 
 namespace DSE.Open.Text.Json.Serialization;
 
@@ -51,7 +52,7 @@ public abstract class ByteWritingJsonConverter<TValue> : JsonConverter<TValue>
 
         var rented = SpanOwner<byte>.Empty;
 
-        Span<byte> output = byteCount <= StackallocThresholds.MaxByteLength
+        Span<byte> output = MemoryThresholds.CanStackalloc<byte>(byteCount)
             ? stackalloc byte[byteCount]
             : (rented = SpanOwner<byte>.Allocate(byteCount)).Span;
 

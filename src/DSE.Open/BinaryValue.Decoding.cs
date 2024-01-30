@@ -6,6 +6,7 @@ using System.Buffers.Text;
 using System.Diagnostics;
 using System.Text;
 using CommunityToolkit.HighPerformance.Buffers;
+using DSE.Open.Runtime.Helpers;
 
 namespace DSE.Open;
 
@@ -90,7 +91,7 @@ public readonly partial record struct BinaryValue
 
         var rented = SpanOwner<byte>.Empty;
 
-        Span<byte> buffer = size <= StackallocThresholds.MaxByteLength
+        Span<byte> buffer = MemoryThresholds.CanStackalloc<byte>(size)
             ? stackalloc byte[size]
             : (rented = SpanOwner<byte>.Allocate(size)).Span;
 
@@ -113,7 +114,7 @@ public readonly partial record struct BinaryValue
 
         var rented = SpanOwner<byte>.Empty;
 
-        Span<byte> bytes = size <= StackallocThresholds.MaxByteLength
+        Span<byte> bytes = MemoryThresholds.CanStackalloc<byte>(size)
             ? stackalloc byte[size]
             : (rented = SpanOwner<byte>.Allocate(size)).Span;
 
@@ -163,7 +164,7 @@ public readonly partial record struct BinaryValue
     {
         var rented = SpanOwner<byte>.Empty;
 
-        Span<byte> buffer = hex.Length <= StackallocThresholds.MaxByteLength
+        Span<byte> buffer = MemoryThresholds.CanStackalloc<byte>(hex.Length)
             ? stackalloc byte[hex.Length]
             : (rented = SpanOwner<byte>.Allocate(hex.Length)).Span;
 

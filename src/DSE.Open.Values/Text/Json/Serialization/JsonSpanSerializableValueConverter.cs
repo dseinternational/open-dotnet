@@ -4,6 +4,8 @@
 using System.Buffers;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using CommunityToolkit.HighPerformance.Buffers;
+using DSE.Open.Runtime.Helpers;
 
 namespace DSE.Open.Values.Text.Json.Serialization;
 
@@ -19,13 +21,13 @@ public sealed class JsonSpanSerializableValueConverter<TValue, T> : JsonConverte
            ? checked((int)reader.ValueSequence.Length)
            : reader.ValueSpan.Length;
 
-        char[]? rented = null;
+        var rented = SpanOwner<char>.Empty;
 
-        Span<char> buffer = valueLength <= JsonConstants.StackallocCharThreshold
+        Span<char> buffer = MemoryThresholds.CanStackalloc<char>(valueLength)
             ? stackalloc char[valueLength]
-            : (rented = ArrayPool<char>.Shared.Rent(valueLength));
+            : (rented = SpanOwner<char>.Allocate(valueLength)).Span;
 
-        try
+        using (rented)
         {
             var chars = reader.CopyString(buffer);
 
@@ -33,26 +35,21 @@ public sealed class JsonSpanSerializableValueConverter<TValue, T> : JsonConverte
 
             return success ? value : throw new FormatException($"Could not convert {typeof(TValue).Name} value: {buffer}");
         }
-        finally
-        {
-            if (rented is not null)
-            {
-                ArrayPool<char>.Shared.Return(rented, clearArray: true);
-            }
-        }
     }
 
     public override void Write(Utf8JsonWriter writer, TValue value, JsonSerializerOptions options)
     {
         ArgumentNullException.ThrowIfNull(writer);
 
-        char[]? rented = null;
+        var rented = SpanOwner<char>.Empty;
 
-        Span<char> buffer = TValue.MaxSerializedCharLength <= JsonConstants.StackallocCharThreshold
-            ? stackalloc char[JsonConstants.StackallocCharThreshold]
-            : (rented = ArrayPool<char>.Shared.Rent(TValue.MaxSerializedCharLength));
+        var length = TValue.MaxSerializedCharLength;
 
-        try
+        Span<char> buffer = MemoryThresholds.CanStackalloc<char>(length)
+            ? stackalloc char[length]
+            : (rented = SpanOwner<char>.Allocate(length)).Span;
+
+        using(rented)
         {
             if (value.TryFormat(buffer, out var charsWritten, default, default))
             {
@@ -61,13 +58,6 @@ public sealed class JsonSpanSerializableValueConverter<TValue, T> : JsonConverte
             else
             {
                 throw new FormatException($"Could not convert {typeof(TValue).Name} value: {value}");
-            }
-        }
-        finally
-        {
-            if (rented is not null)
-            {
-                ArrayPool<char>.Shared.Return(rented, clearArray: true);
             }
         }
     }

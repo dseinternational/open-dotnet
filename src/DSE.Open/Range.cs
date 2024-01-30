@@ -17,7 +17,7 @@ namespace DSE.Open;
 public readonly record struct Range<T> : ISpanFormattable, ISpanParsable<Range<T>>
     where T : INumber<T>, IMinMaxValue<T>
 {
-    public const int MaxLength = StackallocThresholds.MaxCharLength;
+    public const int MaxLength = 64;
 
     /// <summary>
     /// Gets an empty range value - that is a range with default values for

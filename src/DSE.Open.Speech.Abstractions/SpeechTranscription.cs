@@ -1,11 +1,11 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Buffers;
 using System.Collections.Frozen;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
+using CommunityToolkit.HighPerformance.Buffers;
 using DSE.Open.Runtime.Helpers;
 using DSE.Open.Speech.Serialization;
 
@@ -140,13 +140,13 @@ public readonly record struct SpeechTranscription
             ? _transcription.Length
             : _transcription.Length + 2;
 
-        char[]? rented = null;
+        var rented = SpanOwner<char>.Empty;
 
         Span<char> buffer = MemoryThresholds.CanStackalloc<char>(outputLength)
             ? stackalloc char[outputLength]
-            : (rented = new char[outputLength]);
+            : (rented = SpanOwner<char>.Allocate(outputLength)).Span;
 
-        try
+        using (rented)
         {
             if (TryFormat(buffer, out var charsWritten, format.AsSpan(), formatProvider))
             {
@@ -156,13 +156,6 @@ public readonly record struct SpeechTranscription
             ThrowHelper.ThrowFormatException(
                 $"Could not format {nameof(SpeechTranscription)} value: '{_transcription}'");
             return null!; // unreachable
-        }
-        finally
-        {
-            if (rented is not null)
-            {
-                ArrayPool<char>.Shared.Return(rented);
-            }
         }
     }
 

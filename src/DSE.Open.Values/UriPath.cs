@@ -1,9 +1,10 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Buffers;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
+using CommunityToolkit.HighPerformance.Buffers;
+using DSE.Open.Runtime.Helpers;
 using DSE.Open.Values.Text.Json.Serialization;
 
 namespace DSE.Open.Values;
@@ -247,26 +248,19 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
 
         if (s.Length <= MaxLength)
         {
-            char[]? rentedBuffer = null;
+            var rented = SpanOwner<char>.Empty;
 
-            try
+            Span<char> buffer = MemoryThresholds.CanStackalloc<char>(s.Length)
+                ? stackalloc char[s.Length]
+                : (rented = SpanOwner<char>.Allocate(s.Length)).Span;
+
+            using (rented)
             {
-                Span<char> span = s.Length <= StackallocThresholds.MaxCharLength
-                    ? stackalloc char[s.Length]
-                    : rentedBuffer = ArrayPool<char>.Shared.Rent(s.Length);
-
-                var written = s.ToLowerInvariant(span);
+                var written = s.ToLowerInvariant(buffer);
 
                 if (written > -1)
                 {
-                    return TryParse(span, out value);
-                }
-            }
-            finally
-            {
-                if (rentedBuffer is not null)
-                {
-                    ArrayPool<char>.Shared.Return(rentedBuffer);
+                    return TryParse(buffer, out value);
                 }
             }
         }
@@ -402,32 +396,26 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
     /// </summary>
     public string ToAbsolutePath()
     {
-        char[]? rented = null;
         var requiredLength = _value.Length + 2;
 
-        try
-        {
-            var span = requiredLength <= StackallocThresholds.MaxCharLength
-                ? stackalloc char[requiredLength]
-                : rented = ArrayPool<char>.Shared.Rent(requiredLength);
+        var rented = SpanOwner<char>.Empty;
 
-            if (rented is not null)
+        Span<char> buffer = MemoryThresholds.CanStackalloc<char>(requiredLength)
+            ? stackalloc char[requiredLength]
+            : (rented = SpanOwner<char>.Allocate(requiredLength)).Span;
+
+        using(rented)
+        {
+            if (rented.Length > 0)
             {
-                span = span[..requiredLength];
+                buffer = buffer[..requiredLength];
             }
 
-            span[0] = '/';
-            _value.AsSpan().CopyTo(span[1..]);
-            span[^1] = '/';
+            buffer[0] = '/';
+            _value.AsSpan().CopyTo(buffer[1..]);
+            buffer[^1] = '/';
 
-            return span.ToString();
-        }
-        finally
-        {
-            if (rented is not null)
-            {
-                ArrayPool<char>.Shared.Return(rented);
-            }
+            return buffer.ToString();
         }
     }
 

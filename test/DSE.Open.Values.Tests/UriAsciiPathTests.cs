@@ -3,6 +3,7 @@
 
 using System.Text;
 using System.Text.Json;
+using DSE.Open.Runtime.Helpers;
 using DSE.Open.Text.Json;
 
 namespace DSE.Open.Values.Tests;
@@ -256,7 +257,7 @@ public class UriAsciiPathTests
     public void ToAbsolutePath_WithLongInput_ShouldCorrectlyFormat()
     {
         // Arrange
-        var pathStr = string.Create(StackallocThresholds.MaxCharLength + 1, 'a', (span, value) => span.Fill(value));
+        var pathStr = string.Create(MemoryThresholds.StackallocCharThreshold + 1, 'a', (span, value) => span.Fill(value));
         var path = UriAsciiPath.Parse(pathStr, CultureInfo.InvariantCulture);
 
         // Act

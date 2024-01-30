@@ -5,12 +5,14 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json.Serialization;
+using DSE.Open.Runtime.Helpers;
 using DSE.Open.Values.Text.Json.Serialization;
 
 namespace DSE.Open.Values.Text;
 
 /// <summary>
-/// Specifies a pattern that can be used to match a string. Can be translated to a SQL LIKE pattern.
+/// Specifies a pattern that can be used to match a string. Can be translated
+/// to a SQL LIKE pattern.
 /// </summary>
 /// <remarks>
 /// <list type="bullet">
@@ -24,11 +26,13 @@ namespace DSE.Open.Values.Text;
 /// </item>
 /// <item>
 /// <term>[ ]</term>
-/// <description>Any single character within the specified range <c>[a-f]</c> or set <c>[abcdef]</c>.</description>
+/// <description>Any single character within the specified range
+/// <c>[a-f]</c> or set <c>[abcdef]</c>.</description>
 /// </item>
 /// <item>
 /// <term>[^ ]</term>
-/// <description>Any single character not within the specified range <c>[^a-f]</c> or set <c>[^abcdef]</c>.</description>
+/// <description>Any single character not within the specified range
+/// <c>[^a-f]</c> or set <c>[^abcdef]</c>.</description>
 /// </item>
 /// </list>
 /// </remarks>
@@ -36,7 +40,7 @@ namespace DSE.Open.Values.Text;
 [JsonConverter(typeof(JsonStringLikePatternConverter))]
 public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<LikePattern>, ISpanFormattable
 {
-    public const int MaxLength = StackallocThresholds.MaxCharLength;
+    public const int MaxLength = MemoryThresholds.StackallocCharThreshold;
 
     public static readonly LikePattern Empty;
 

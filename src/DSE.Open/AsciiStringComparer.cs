@@ -1,8 +1,8 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Buffers;
 using CommunityToolkit.HighPerformance.Buffers;
+using DSE.Open.Runtime.Helpers;
 
 namespace DSE.Open;
 
@@ -57,7 +57,7 @@ public abstract class AsciiStringComparer : IComparer<AsciiString>, IEqualityCom
 
             var rented = SpanOwner<AsciiChar>.Empty;
 
-            Span<AsciiChar> buffer = source.Length <= StackallocThresholds.MaxByteLength
+            Span<AsciiChar> buffer = MemoryThresholds.CanStackalloc<AsciiChar>(source.Length)
                 ? stackalloc AsciiChar[source.Length]
                 : (rented = SpanOwner<AsciiChar>.Allocate(source.Length)).Span;
 

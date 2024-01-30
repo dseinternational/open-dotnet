@@ -1,10 +1,10 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Buffers;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using CommunityToolkit.HighPerformance.Buffers;
+using DSE.Open.Runtime.Helpers;
 
 namespace DSE.Open.Text.Json.Serialization;
 
@@ -94,7 +94,7 @@ public static class JsonBinarySerializer
 
         var rented = SpanOwner<byte>.Empty;
 
-        Span<byte> buffer = byteLength <= StackallocThresholds.MaxByteLength
+        Span<byte> buffer = MemoryThresholds.CanStackalloc<byte>(byteLength)
             ? stackalloc byte[byteLength]
             : (rented = SpanOwner<byte>.Allocate(byteLength)).Span;
 

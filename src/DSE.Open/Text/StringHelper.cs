@@ -5,6 +5,7 @@ using System.Buffers;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using CommunityToolkit.HighPerformance.Buffers;
+using DSE.Open.Runtime.Helpers;
 
 namespace DSE.Open.Text;
 
@@ -106,7 +107,7 @@ public static partial class StringHelper
 
         try
         {
-            Span<char> buffer = text.Length >= StackallocThresholds.MaxCharLength
+            Span<char> buffer = MemoryThresholds.CanStackalloc<char>(text.Length)
                 ? (rentedBuffer = ArrayPool<char>.Shared.Rent(text.Length))
                 : stackalloc char[text.Length];
 
@@ -141,7 +142,7 @@ public static partial class StringHelper
 
         var rented = SpanOwner<char>.Empty;
 
-        Span<char> buffer = text.Length <= StackallocThresholds.MaxByteLength
+        Span<char> buffer = MemoryThresholds.CanStackalloc<char>(text.Length)
             ? stackalloc char[text.Length]
             : (rented = SpanOwner<char>.Allocate(text.Length)).Span;
 
@@ -324,7 +325,7 @@ public static partial class StringHelper
 
         char[]? rented = null;
 
-        var result = text.Length <= StackallocThresholds.MaxCharLength
+        var result = MemoryThresholds.CanStackalloc<char>(text.Length)
             ? stackalloc char[text.Length]
             : Span<char>.Empty;
 

@@ -1,10 +1,11 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Buffers;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json.Serialization;
+using CommunityToolkit.HighPerformance.Buffers;
+using DSE.Open.Runtime.Helpers;
 using DSE.Open.Values.Text.Json.Serialization;
 
 namespace DSE.Open.Values;
@@ -255,28 +256,21 @@ public readonly partial struct UriAsciiPath
 
     public static bool IsValidValue(ReadOnlySpan<char> value)
     {
-        byte[]? rented = null;
+        var rented = SpanOwner<byte>.Empty;
 
-        try
+        Span<byte> buffer = MemoryThresholds.CanStackalloc<byte>(value.Length)
+            ? stackalloc byte[value.Length]
+            : (rented = SpanOwner<byte>.Allocate(value.Length)).Span;
+
+        using (rented)
         {
-            Span<byte> buffer = value.Length <= StackallocThresholds.MaxByteLength
-                ? stackalloc byte[value.Length]
-                : (rented = ArrayPool<byte>.Shared.Rent(value.Length));
-
             if (NarrowUtf16ToAscii(value, buffer))
             {
                 return IsValidValue(ValuesMarshal.AsAsciiChars(buffer[..value.Length]));
             }
-        }
-        finally
-        {
-            if (rented is not null)
-            {
-                ArrayPool<byte>.Shared.Return(rented);
-            }
-        }
 
-        return false;
+            return false;
+        }
     }
 
     private static bool NarrowUtf16ToAscii(ReadOnlySpan<char> value, Span<byte> destination)
@@ -321,26 +315,19 @@ public readonly partial struct UriAsciiPath
 
         if (s.Length <= MaxLength)
         {
-            char[]? rentedBuffer = null;
+            var rented = SpanOwner<char>.Empty;
 
-            try
+            Span<char> buffer = MemoryThresholds.CanStackalloc<char>(s.Length)
+                ? stackalloc char[s.Length]
+                : (rented = SpanOwner<char>.Allocate(s.Length)).Span;
+
+            using (rented)
             {
-                Span<char> buffer = s.Length <= StackallocThresholds.MaxCharLength
-                    ? stackalloc char[s.Length]
-                    : rentedBuffer = ArrayPool<char>.Shared.Rent(s.Length);
-
                 var written = s.ToLowerInvariant(buffer);
 
                 if (written >= 0)
                 {
                     return TryParse(buffer[..written], out value);
-                }
-            }
-            finally
-            {
-                if (rentedBuffer is not null)
-                {
-                    ArrayPool<char>.Shared.Return(rentedBuffer);
                 }
             }
         }
@@ -523,34 +510,28 @@ public readonly partial struct UriAsciiPath
     /// </summary>
     public string ToAbsolutePath()
     {
-        AsciiChar[]? rented = null;
         var requiredLength = _value.Length + 2;
 
-        try
-        {
-            var span = requiredLength <= StackallocThresholds.MaxCharLength
-                ? stackalloc AsciiChar[requiredLength]
-                : rented = ArrayPool<AsciiChar>.Shared.Rent(requiredLength);
+        var rented = SpanOwner<AsciiChar>.Empty;
 
-            if (rented is not null)
+        Span<AsciiChar> buffer = MemoryThresholds.CanStackalloc<AsciiChar>(requiredLength)
+            ? stackalloc AsciiChar[requiredLength]
+            : (rented = SpanOwner<AsciiChar>.Allocate(requiredLength)).Span;
+
+        using (rented)
+        {
+            if (rented.Length > 0)
             {
-                span = span[..requiredLength];
+                buffer = buffer[..requiredLength];
             }
 
             var separator = (AsciiChar)'/';
 
-            span[0] = separator;
-            _value.AsSpan().CopyTo(span[1..]);
-            span[^1] = separator;
+            buffer[0] = separator;
+            _value.AsSpan().CopyTo(buffer[1..]);
+            buffer[^1] = separator;
 
-            return Encoding.UTF8.GetString(MemoryMarshal.AsBytes(span));
-        }
-        finally
-        {
-            if (rented is not null)
-            {
-                ArrayPool<AsciiChar>.Shared.Return(rented);
-            }
+            return Encoding.UTF8.GetString(MemoryMarshal.AsBytes(buffer));
         }
     }
 

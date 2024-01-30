@@ -10,6 +10,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json.Serialization;
 using CommunityToolkit.HighPerformance.Buffers;
+using DSE.Open.Runtime.Helpers;
 using DSE.Open.Text.Json.Serialization;
 
 namespace DSE.Open;
@@ -148,8 +149,8 @@ public readonly struct AsciiString
         out AsciiString result)
     {
         var rented = SpanOwner<byte>.Empty;
-        
-        Span<byte> buffer = s.Length <= StackallocThresholds.MaxByteLength
+
+        Span<byte> buffer = MemoryThresholds.CanStackalloc<byte>(s.Length)
             ? stackalloc byte[s.Length]
             : (rented = SpanOwner<byte>.Allocate(s.Length)).Span;
 

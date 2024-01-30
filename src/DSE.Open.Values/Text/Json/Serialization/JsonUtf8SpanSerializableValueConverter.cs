@@ -5,6 +5,8 @@ using System.Buffers;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using CommunityToolkit.HighPerformance.Buffers;
+using DSE.Open.Runtime.Helpers;
 
 namespace DSE.Open.Values.Text.Json.Serialization;
 
@@ -23,7 +25,8 @@ public sealed class JsonUtf8SpanSerializableValueConverter<TValue, T> : JsonConv
             return value;
         }
 
-        ThrowHelper.ThrowFormatException($"Could not convert {typeof(TValue).Name} value: {Encoding.UTF8.GetString(bytes)}");
+        ThrowHelper.ThrowFormatException(
+            $"Could not convert {typeof(TValue).Name} value: {Encoding.UTF8.GetString(bytes)}");
         return default; // unreachable
     }
 
@@ -31,13 +34,15 @@ public sealed class JsonUtf8SpanSerializableValueConverter<TValue, T> : JsonConv
     {
         ArgumentNullException.ThrowIfNull(writer);
 
-        byte[]? rented = null;
+        var rented = SpanOwner<char>.Empty;
 
-        Span<byte> buffer = TValue.MaxSerializedByteLength <= JsonConstants.StackallocByteThreshold
-            ? stackalloc byte[JsonConstants.StackallocByteThreshold]
-            : (rented = ArrayPool<byte>.Shared.Rent(TValue.MaxSerializedByteLength));
+        var length = TValue.MaxSerializedCharLength;
 
-        try
+        Span<char> buffer = MemoryThresholds.CanStackalloc<char>(length)
+            ? stackalloc char[length]
+            : (rented = SpanOwner<char>.Allocate(length)).Span;
+
+        using (rented)
         {
             if (value.TryFormat(buffer, out var bytesWritten, default, default))
             {
@@ -45,14 +50,8 @@ public sealed class JsonUtf8SpanSerializableValueConverter<TValue, T> : JsonConv
             }
             else
             {
-                ThrowHelper.ThrowFormatException($"Could not convert {typeof(TValue).Name} value: {value}");
-            }
-        }
-        finally
-        {
-            if (rented is not null)
-            {
-                ArrayPool<byte>.Shared.Return(rented, clearArray: true);
+                ThrowHelper.ThrowFormatException(
+                    $"Could not convert {typeof(TValue).Name} value: {value}");
             }
         }
     }

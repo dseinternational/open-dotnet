@@ -4,6 +4,7 @@
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
+using DSE.Open.Runtime.Helpers;
 using DSE.Open.Text.Json;
 using DSE.Open.Text.Json.Serialization;
 
@@ -178,7 +179,7 @@ public class JsonBinarySerializerTests
     {
         // Arrange
         // inverse of 3 * Math.Ceiling(base64.Length / 4)
-        var str = string.Create((StackallocThresholds.MaxByteLength / 3) * 4, 'a', (span, value) => span.Fill(value));
+        var str = string.Create(MemoryThresholds.StackallocByteThreshold / 3 * 4, 'a', (span, value) => span.Fill(value));
         var base64 = JsonBinarySerializer.SerializeToBase64Utf8Json(str);
 
         // Act

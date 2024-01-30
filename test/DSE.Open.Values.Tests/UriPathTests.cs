@@ -1,6 +1,8 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using DSE.Open.Runtime.Helpers;
+
 namespace DSE.Open.Values.Tests;
 
 public class UriPathTests
@@ -24,7 +26,6 @@ public class UriPathTests
         Assert.False(actual);
         Assert.Equal(expected, result);
     }
-
 
     [Theory]
     [InlineData("", "", "")]
@@ -85,7 +86,7 @@ public class UriPathTests
     public void ToAbsolutePath_WithLongInput_ShouldCorrectlyFormat()
     {
         // Arrange
-        var pathStr = string.Create(StackallocThresholds.MaxCharLength + 1, 'a', (span, value) => span.Fill(value));
+        var pathStr = string.Create(MemoryThresholds.StackallocCharThreshold + 1, 'a', (span, value) => span.Fill(value));
         var path = UriPath.Parse(pathStr, CultureInfo.InvariantCulture);
 
         // Act

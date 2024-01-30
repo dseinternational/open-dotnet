@@ -3,6 +3,7 @@
 
 using System.Buffers;
 using System.Text;
+using DSE.Open.Runtime.Helpers;
 
 namespace DSE.Open;
 
@@ -35,7 +36,7 @@ public static partial class MemoryExtensions
 
     public static ReadOnlyMemory<char> ToChars(this ReadOnlySpan<AsciiChar> span)
     {
-        Span<char> buffer = span.Length <= StackallocThresholds.MaxCharLength
+        Span<char> buffer = MemoryThresholds.CanStackalloc<char>(span.Length)
             ? stackalloc char[span.Length]
             : new char[span.Length];
 
@@ -66,7 +67,7 @@ public static partial class MemoryExtensions
     /// <returns></returns>
     public static string ToStringValue(this ReadOnlySpan<AsciiChar> span)
     {
-        Span<char> buffer = span.Length <= StackallocThresholds.MaxCharLength
+        Span<char> buffer = MemoryThresholds.CanStackalloc<char>(span.Length)
             ? stackalloc char[span.Length]
             : new char[span.Length];
 

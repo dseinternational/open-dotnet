@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using BenchmarkDotNet.Attributes;
+using DSE.Open.Runtime.Helpers;
 using DSE.Open.Text;
 
 namespace DSE.Open.Benchmarks.Text;
@@ -11,31 +12,45 @@ namespace DSE.Open.Benchmarks.Text;
 [MemoryDiagnoser]
 public class StringHelperRemovePunctuationBenchmarks
 {
-    private const string LargeNoPunctuation = "The cat is on the bed and the dog is on the floor and the mouse is on the table and the horse is in the field and the cow is in the barn";
-    private const string LargePunctuation = "The cat is on the bed, and the dog is on the floor, and the mouse is on the table, and the horse is in the field, and the cow is in the barn.";
-    private const string SmallNoPunctuation = "The cat is on the bed";
-    private const string SmallPunctuation = "The cat is on the bed.";
+    private const string LargeNoPunctuation =
+        "The cat is on the bed and the dog is on the floor and the mouse is on the table and the " +
+        "horse is in the field and the cow is in the barn";
+    private const string LargePunctuation =
+        "The cat is on the bed, and the dog is on the floor, and the mouse is on the table, and the " +
+        "horse is in the field, and the cow is in the barn.";
+    private const string SmallNoPunctuation =
+        "The cat is on the bed";
+    private const string SmallPunctuation =
+        "The cat is on the bed.";
 
     public StringHelperRemovePunctuationBenchmarks()
     {
-        if (LargePunctuation.Length <= StackallocThresholds.MaxCharLength)
+        if (LargePunctuation.Length < MemoryThresholds.StackallocCharThreshold)
         {
-            throw new InvalidOperationException($"LargePunctuation is {LargePunctuation.Length} characters long, which is less than StackAllocThreshold");
+            throw new InvalidOperationException(
+                $"LargePunctuation is {LargePunctuation.Length} characters long, which is less " +
+                $"than MemoryThresholds.StackallocCharThreshold");
         }
 
-        if (LargeNoPunctuation.Length <= StackallocThresholds.MaxCharLength)
+        if (LargeNoPunctuation.Length < MemoryThresholds.StackallocCharThreshold)
         {
-            throw new InvalidOperationException($"LargeNoPunctuation is {LargeNoPunctuation.Length} characters long, which is less than StackAllocThreshold");
+            throw new InvalidOperationException(
+                $"LargeNoPunctuation is {LargeNoPunctuation.Length} characters long, which is less " +
+                $"than MemoryThresholds.StackallocCharThreshold");
         }
 
-        if (SmallPunctuation.Length > StackallocThresholds.MaxCharLength)
+        if (SmallPunctuation.Length > MemoryThresholds.StackallocCharThreshold)
         {
-            throw new InvalidOperationException($"SmallPunctuation is {SmallPunctuation.Length} characters long, which is greater than StackAllocThreshold");
+            throw new InvalidOperationException(
+                $"SmallPunctuation is {SmallPunctuation.Length} characters long, which is greater " +
+                $"than MemoryThresholds.StackallocCharThreshold");
         }
 
-        if (SmallNoPunctuation.Length > StackallocThresholds.MaxCharLength)
+        if (SmallNoPunctuation.Length > MemoryThresholds.StackallocCharThreshold)
         {
-            throw new InvalidOperationException($"SmallNoPunctuation is {SmallNoPunctuation.Length} characters long, which is greater than StackAllocThreshold");
+            throw new InvalidOperationException(
+                $"SmallNoPunctuation is {SmallNoPunctuation.Length} characters long, which is " +
+                $"greater than MemoryThresholds.StackallocCharThreshold");
         }
     }
 

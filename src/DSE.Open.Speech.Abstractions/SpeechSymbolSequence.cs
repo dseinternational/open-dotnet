@@ -406,7 +406,7 @@ public readonly struct SpeechSymbolSequence
             var ci = 0;  // current chars index
             var i = -1; // index of first match
 
-            while(bi < buffer.Length)
+            while (bi < buffer.Length)
             {
                 if (ci >= chars.Length)
                 {
@@ -701,13 +701,13 @@ public readonly struct SpeechSymbolSequence
 
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
-        char[]? rented = null;
+        var rented = SpanOwner<char>.Empty;
 
         Span<char> chars = MemoryThresholds.CanStackalloc<char>(_value.Length)
             ? stackalloc char[_value.Length]
-            : (rented = ArrayPool<char>.Shared.Rent(_value.Length));
+            : (rented = SpanOwner<char>.Allocate(_value.Length)).Span;
 
-        try
+        using (rented)
         {
             if (TryFormat(chars, out var charsWritten, format, formatProvider))
             {
@@ -716,13 +716,6 @@ public readonly struct SpeechSymbolSequence
 
             Expect.Unreachable();
             return null!; // unreachable
-        }
-        finally
-        {
-            if (rented is not null)
-            {
-                ArrayPool<char>.Shared.Return(rented);
-            }
         }
     }
 
