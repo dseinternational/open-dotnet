@@ -5,6 +5,7 @@ using System.Buffers;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using CommunityToolkit.HighPerformance.Buffers;
 
 namespace DSE.Open.Text.Json.Serialization;
 
@@ -48,13 +49,13 @@ public abstract class ByteWritingJsonConverter<TValue> : JsonConverter<TValue>
             return;
         }
 
-        byte[]? rented = null;
+        var rented = SpanOwner<byte>.Empty;
 
         Span<byte> output = byteCount <= StackallocThresholds.MaxByteLength
             ? stackalloc byte[byteCount]
-            : (rented = ArrayPool<byte>.Shared.Rent(byteCount));
+            : (rented = SpanOwner<byte>.Allocate(byteCount)).Span;
 
-        try
+        using (rented)
         {
             if (TryFormat(value, output, out var bytesWritten))
             {
@@ -63,13 +64,6 @@ public abstract class ByteWritingJsonConverter<TValue> : JsonConverter<TValue>
             else
             {
                 ThrowHelper.ThrowFormatException($"Could not convert {typeof(TValue).Name} value: {value}");
-            }
-        }
-        finally
-        {
-            if (rented is not null)
-            {
-                ArrayPool<byte>.Shared.Return(rented, clearArray: true);
             }
         }
     }

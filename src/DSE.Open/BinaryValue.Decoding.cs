@@ -5,6 +5,7 @@ using System.Buffers;
 using System.Buffers.Text;
 using System.Diagnostics;
 using System.Text;
+using CommunityToolkit.HighPerformance.Buffers;
 
 namespace DSE.Open;
 
@@ -22,18 +23,13 @@ public readonly partial record struct BinaryValue
 
     public static BinaryValue FromEncodedString(string value, BinaryStringEncoding encoding)
     {
-        switch (encoding)
+        return encoding switch
         {
-            case BinaryStringEncoding.Base64:
-                return new BinaryValue(Convert.FromBase64String(value), true);
-            case BinaryStringEncoding.HexLower:
-            case BinaryStringEncoding.HexUpper:
-                return new BinaryValue(Convert.FromHexString(value), true);
-            case BinaryStringEncoding.Base62:
-                return new BinaryValue(Base62Converter.FromBase62(value), true);
-            default:
-                return ThrowHelper.ThrowFormatException<BinaryValue>("Invalid encoding provided.");
-        }
+            BinaryStringEncoding.Base64 => new BinaryValue(Convert.FromBase64String(value), true),
+            BinaryStringEncoding.HexLower or BinaryStringEncoding.HexUpper => new BinaryValue(Convert.FromHexString(value), true),
+            BinaryStringEncoding.Base62 => new BinaryValue(Base62Converter.FromBase62(value), true),
+            _ => ThrowHelper.ThrowFormatException<BinaryValue>("Invalid encoding provided."),
+        };
     }
 
     /// <summary>
@@ -92,25 +88,18 @@ public readonly partial record struct BinaryValue
     {
         var size = GetRequiredBufferSize(base64.Length, BinaryStringEncoding.Base64);
 
-        byte[]? rented = null;
+        var rented = SpanOwner<byte>.Empty;
 
         Span<byte> buffer = size <= StackallocThresholds.MaxByteLength
             ? stackalloc byte[size]
-            : (rented = ArrayPool<byte>.Shared.Rent(size));
+            : (rented = SpanOwner<byte>.Allocate(size)).Span;
 
-        try
+        using (rented)
         {
             if (Convert.TryFromBase64Chars(base64, buffer, out var bytesWritten))
             {
                 binaryValue = new BinaryValue(buffer[..bytesWritten].ToArray(), noCopy: true);
                 return true;
-            }
-        }
-        finally
-        {
-            if (rented is not null)
-            {
-                ArrayPool<byte>.Shared.Return(rented);
             }
         }
 
@@ -122,13 +111,13 @@ public readonly partial record struct BinaryValue
     {
         var size = GetRequiredBufferSize(base64.Length, BinaryStringEncoding.Base64);
 
-        byte[]? rented = null;
+        var rented = SpanOwner<byte>.Empty;
 
         Span<byte> bytes = size <= StackallocThresholds.MaxByteLength
             ? stackalloc byte[size]
-            : (rented = ArrayPool<byte>.Shared.Rent(size));
+            : (rented = SpanOwner<byte>.Allocate(size)).Span;
 
-        try
+        using (rented)
         {
             var status = Base64.DecodeFromUtf8(base64, bytes, out _, out var bytesWritten, isFinalBlock: true);
 
@@ -138,18 +127,12 @@ public readonly partial record struct BinaryValue
                 return true;
             }
 
-            Debug.Assert(status == OperationStatus.InvalidData, "We should be sizing the buffer so that this is the only possible status.");
-        }
-        finally
-        {
-            if (rented is not null)
-            {
-                ArrayPool<byte>.Shared.Return(rented);
-            }
-        }
+            Debug.Assert(status == OperationStatus.InvalidData,
+                "We should be sizing the buffer so that this is the only possible status.");
 
-        binaryValue = default;
-        return false;
+            binaryValue = default;
+            return false;
+        }
     }
 
     private static bool TryDecodeFromUpperHex(ReadOnlySpan<char> hex, out BinaryValue binaryValue)
@@ -178,32 +161,24 @@ public readonly partial record struct BinaryValue
 
     private static bool TryDecodeFromHex(ReadOnlySpan<byte> hex, out BinaryValue binaryValue)
     {
-        byte[]? rented = null;
+        var rented = SpanOwner<byte>.Empty;
 
         Span<byte> buffer = hex.Length <= StackallocThresholds.MaxByteLength
             ? stackalloc byte[hex.Length]
-            : (rented = ArrayPool<byte>.Shared.Rent(hex.Length));
+            : (rented = SpanOwner<byte>.Allocate(hex.Length)).Span;
 
-        try
+        using (rented)
         {
             if (HexConverter.TryConvertFromUtf8(hex, buffer, out var bytesWritten))
             {
                 binaryValue = new BinaryValue(buffer[..bytesWritten].ToArray(), noCopy: true);
                 return true;
             }
-        }
-        finally
-        {
-            if (rented is not null)
-            {
-                ArrayPool<byte>.Shared.Return(rented);
-            }
-        }
 
-        binaryValue = default;
-        return false;
+            binaryValue = default;
+            return false;
+        }
     }
-
 
     private static bool TryDecodeFromBase62(ReadOnlySpan<char> base62, out BinaryValue binaryValue)
     {

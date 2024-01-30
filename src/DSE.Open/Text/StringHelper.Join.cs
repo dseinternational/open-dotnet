@@ -1,11 +1,11 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Buffers;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
+using CommunityToolkit.HighPerformance.Buffers;
 using DSE.Open.Linq;
 
 namespace DSE.Open.Text;
@@ -270,23 +270,16 @@ public static partial class StringHelper
         Debug.Assert(values.Length > 1);
         Debug.Assert(charCount > 0);
 
-        char[]? rented = null;
+        var rented = SpanOwner<char>.Empty;
 
-        Span<char> chars = charCount <= StackallocThresholds.MaxCharLength
+        Span<char> chars = charCount <= StackallocThresholds.MaxByteLength
             ? stackalloc char[charCount]
-            : rented = ArrayPool<char>.Shared.Rent(charCount);
+            : (rented = SpanOwner<char>.Allocate(charCount)).Span;
 
-        try
+        using (rented)
         {
             var written = Format(chars, separator, values, finalSeparator);
             return new string(chars[..written]);
-        }
-        finally
-        {
-            if (rented is not null)
-            {
-                ArrayPool<char>.Shared.Return(rented);
-            }
         }
     }
 
@@ -354,13 +347,13 @@ public static partial class StringHelper
                 "Resulting string would be > Int32.MaxValue characters.");
         }
 
-        char[]? rented = null;
+        var rented = SpanOwner<char>.Empty;
 
-        Span<char> chars = charCount <= StackallocThresholds.MaxCharLength
+        Span<char> chars = charCount <= StackallocThresholds.MaxByteLength
             ? stackalloc char[(int)charCount]
-            : rented = ArrayPool<char>.Shared.Rent((int)charCount);
+            : (rented = SpanOwner<char>.Allocate((int)charCount)).Span;
 
-        try
+        using (rented)
         {
             var written = Format(chars, separator, collection, finalSeparator, collection.Count);
 
@@ -371,13 +364,6 @@ public static partial class StringHelper
                 // passed to lambdas/anonymous functions
                 _ => new string(chars[..written])
             };
-        }
-        finally
-        {
-            if (rented is not null)
-            {
-                ArrayPool<char>.Shared.Return(rented);
-            }
         }
     }
 

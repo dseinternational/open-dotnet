@@ -4,6 +4,7 @@
 using System.Buffers;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
+using CommunityToolkit.HighPerformance.Buffers;
 
 namespace DSE.Open.Text.Json.Serialization;
 
@@ -91,13 +92,13 @@ public static class JsonBinarySerializer
 
         var byteLength = (int)(3 * Math.Ceiling((double)base64.Length / 4));
 
-        byte[]? rented = null;
+        var rented = SpanOwner<byte>.Empty;
 
         Span<byte> buffer = byteLength <= StackallocThresholds.MaxByteLength
             ? stackalloc byte[byteLength]
-            : (rented = ArrayPool<byte>.Shared.Rent(byteLength));
+            : (rented = SpanOwner<byte>.Allocate(byteLength)).Span;
 
-        try
+        using (rented)
         {
             if (Convert.TryFromBase64String(base64, buffer, out var bytesWritten))
             {
@@ -106,13 +107,6 @@ public static class JsonBinarySerializer
 
             value = default;
             return false;
-        }
-        finally
-        {
-            if (rented is not null)
-            {
-                ArrayPool<byte>.Shared.Return(rented);
-            }
         }
     }
 }

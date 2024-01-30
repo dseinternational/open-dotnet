@@ -1,10 +1,10 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Buffers;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using CommunityToolkit.HighPerformance.Buffers;
 
 namespace DSE.Open.Text.Json.Serialization;
 
@@ -27,13 +27,13 @@ public abstract class CharWritingJsonConverter<TValue> : JsonConverter<TValue>
             ? checked((int)reader.ValueSequence.Length)
             : reader.ValueSpan.Length;
 
-        char[]? rented = null;
+        var rented = SpanOwner<char>.Empty;
 
-        Span<char> buffer = valueLength <= StackallocThresholds.MaxCharLength
+        Span<char> buffer = valueLength <= StackallocThresholds.MaxByteLength
             ? stackalloc char[valueLength]
-            : (rented = ArrayPool<char>.Shared.Rent(valueLength));
+            : (rented = SpanOwner<char>.Allocate(valueLength)).Span;
 
-        try
+        using (rented)
         {
             var chars = reader.CopyString(buffer); // use CopyString to unescape
 
@@ -44,13 +44,6 @@ public abstract class CharWritingJsonConverter<TValue> : JsonConverter<TValue>
 
             ThrowHelper.ThrowFormatException($"Could not convert {typeof(TValue).Name} value: {buffer}");
             return default;
-        }
-        finally
-        {
-            if (rented is not null)
-            {
-                ArrayPool<char>.Shared.Return(rented, clearArray: true);
-            }
         }
     }
 
@@ -66,13 +59,13 @@ public abstract class CharWritingJsonConverter<TValue> : JsonConverter<TValue>
             return;
         }
 
-        char[]? rented = null;
+        var rented = SpanOwner<char>.Empty;
 
-        Span<char> output = charCount <= StackallocThresholds.MaxCharLength
+        Span<char> output = charCount <= StackallocThresholds.MaxByteLength
             ? stackalloc char[charCount]
-            : (rented = ArrayPool<char>.Shared.Rent(charCount));
+            : (rented = SpanOwner<char>.Allocate(charCount)).Span;
 
-        try
+        using (rented)
         {
             if (TryFormat(value, output, out var charsWritten))
             {
@@ -81,13 +74,6 @@ public abstract class CharWritingJsonConverter<TValue> : JsonConverter<TValue>
             else
             {
                 ThrowHelper.ThrowFormatException($"Could not convert {typeof(TValue).Name} value: {value}");
-            }
-        }
-        finally
-        {
-            if (rented is not null)
-            {
-                ArrayPool<char>.Shared.Return(rented, clearArray: true);
             }
         }
     }

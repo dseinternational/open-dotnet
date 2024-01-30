@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Buffers;
+using CommunityToolkit.HighPerformance.Buffers;
 
 namespace DSE.Open;
 
@@ -52,16 +53,16 @@ public abstract class AsciiStringComparer : IComparer<AsciiString>, IEqualityCom
 
         public override int GetHashCode(AsciiString obj)
         {
-            AsciiChar[]? rented = null;
-
             var source = obj.AsSpan();
 
-            try
-            {
-                Span<AsciiChar> buffer = source.Length <= StackallocThresholds.MaxByteLength
-                    ? stackalloc AsciiChar[source.Length]
-                    : rented = ArrayPool<AsciiChar>.Shared.Rent(source.Length);
+            var rented = SpanOwner<AsciiChar>.Empty;
 
+            Span<AsciiChar> buffer = source.Length <= StackallocThresholds.MaxByteLength
+                ? stackalloc AsciiChar[source.Length]
+                : (rented = SpanOwner<AsciiChar>.Allocate(source.Length)).Span;
+
+            using (rented)
+            {
                 for (var i = 0; i < source.Length; i++)
                 {
                     buffer[i] = source[i].ToUpper();
@@ -70,13 +71,6 @@ public abstract class AsciiStringComparer : IComparer<AsciiString>, IEqualityCom
                 var c = new HashCode();
                 c.AddBytes(ValuesMarshal.AsBytes(buffer[..source.Length]));
                 return c.ToHashCode();
-            }
-            finally
-            {
-                if (rented is not null)
-                {
-                    ArrayPool<AsciiChar>.Shared.Return(rented);
-                }
             }
         }
     }

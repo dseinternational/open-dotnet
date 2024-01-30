@@ -4,6 +4,7 @@
 using System.Buffers;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using CommunityToolkit.HighPerformance.Buffers;
 
 namespace DSE.Open.Text;
 
@@ -138,14 +139,14 @@ public static partial class StringHelper
             return text;
         }
 
-        char[]? rentedBuffer = null;
+        var rented = SpanOwner<char>.Empty;
 
-        try
+        Span<char> buffer = text.Length <= StackallocThresholds.MaxByteLength
+            ? stackalloc char[text.Length]
+            : (rented = SpanOwner<char>.Allocate(text.Length)).Span;
+
+        using (rented)
         {
-            Span<char> buffer = text.Length <= StackallocThresholds.MaxCharLength
-                ? stackalloc char[text.Length]
-                : (rentedBuffer = ArrayPool<char>.Shared.Rent(text.Length));
-
             var index = 0;
 
             foreach (var @char in text)
@@ -161,13 +162,6 @@ public static partial class StringHelper
             }
 
             return buffer[..index].ToString();
-        }
-        finally
-        {
-            if (rentedBuffer is not null)
-            {
-                ArrayPool<char>.Shared.Return(rentedBuffer);
-            }
         }
     }
 
@@ -329,59 +323,65 @@ public static partial class StringHelper
         }
 
         char[]? rented = null;
+
         var result = text.Length <= StackallocThresholds.MaxCharLength
             ? stackalloc char[text.Length]
             : Span<char>.Empty;
 
-        var index = 0;
-
-        var exceptionsList = exceptions?.ToList();
-        var exceptionsListIsNotNullOrEmpty = exceptionsList is not null && exceptionsList.Count > 0;
-
-        // Keeping track of whether any changes have been made allows us to avoid allocating a new string if no changes are made.
-        var hasChanged = false;
-
-        foreach (var c in text)
+        try
         {
-            // Nothing mutates the `exceptionsList` so we can hoist the null check out of the loop, but a null suppression is required.
-            if (!char.IsPunctuation(c) || (exceptionsListIsNotNullOrEmpty && exceptionsList!.Contains(c)))
+            var index = 0;
+
+            var exceptionsList = exceptions?.ToList();
+            var exceptionsListIsNotNullOrEmpty = exceptionsList is not null && exceptionsList.Count > 0;
+
+            // Keeping track of whether any changes have been made allows us to avoid allocating a
+            // new string if no changes are made.
+            var hasChanged = false;
+
+            foreach (var c in text)
             {
-                if (hasChanged)
+                // Nothing mutates the `exceptionsList` so we can hoist the null check out of the loop,
+                // but a null suppression is required.
+                if (!char.IsPunctuation(c) || (exceptionsListIsNotNullOrEmpty && exceptionsList!.Contains(c)))
                 {
-                    result[index] = c;
-                }
+                    if (hasChanged)
+                    {
+                        result[index] = c;
+                    }
 
-                index++;
+                    index++;
+                }
+                else if (!hasChanged)
+                {
+                    hasChanged = true;
+
+                    if (result.IsEmpty)
+                    {
+                        // Was too big to stack allocate, rent from pool.
+                        result = rented = ArrayPool<char>.Shared.Rent(text.Length);
+                    }
+
+                    text.AsSpan(0, index).CopyTo(result);
+                }
             }
-            else if (!hasChanged)
+
+            if (!hasChanged)
             {
-                hasChanged = true;
-
-                if (result.IsEmpty)
-                {
-                    // Was too big to stack allocate, rent from pool.
-                    result = rented = ArrayPool<char>.Shared.Rent(text.Length);
-                }
-
-                text.AsSpan(0, index).CopyTo(result);
+                return text;
             }
-        }
 
-        if (!hasChanged)
-        {
-            return text;
-        }
+            Debug.Assert(!result.IsEmpty);
 
-        Debug.Assert(!result.IsEmpty);
-
-        if (rented is null)
-        {
             return new string(result[..index]);
         }
-
-        var rtn = new string(result[..index]);
-        ArrayPool<char>.Shared.Return(rented);
-        return rtn;
+        finally
+        {
+            if (rented is not null)
+            {
+                ArrayPool<char>.Shared.Return(rented);
+            }
+        }
     }
 
     /// <summary>Removes all spaces from a string.</summary>

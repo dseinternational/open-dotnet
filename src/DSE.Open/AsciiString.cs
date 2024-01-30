@@ -9,6 +9,7 @@ using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json.Serialization;
+using CommunityToolkit.HighPerformance.Buffers;
 using DSE.Open.Text.Json.Serialization;
 
 namespace DSE.Open;
@@ -146,14 +147,14 @@ public readonly struct AsciiString
         IFormatProvider? provider,
         out AsciiString result)
     {
-        byte[]? rented = null;
+        var rented = SpanOwner<byte>.Empty;
+        
+        Span<byte> buffer = s.Length <= StackallocThresholds.MaxByteLength
+            ? stackalloc byte[s.Length]
+            : (rented = SpanOwner<byte>.Allocate(s.Length)).Span;
 
-        try
+        using (rented)
         {
-            Span<byte> buffer = s.Length <= StackallocThresholds.MaxByteLength
-                ? stackalloc byte[s.Length]
-                : (rented = ArrayPool<byte>.Shared.Rent(s.Length));
-
             var status = Ascii.FromUtf16(s, buffer, out var bytesWritten);
 
             if (status == OperationStatus.InvalidData)
@@ -166,13 +167,6 @@ public readonly struct AsciiString
 
             result = new AsciiString(ValuesMarshal.AsAsciiChars(buffer[..bytesWritten]).ToArray());
             return true;
-        }
-        finally
-        {
-            if (rented is not null)
-            {
-                ArrayPool<byte>.Shared.Return(rented);
-            }
         }
     }
 
