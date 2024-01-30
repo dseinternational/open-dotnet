@@ -9,6 +9,7 @@ using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
+using CommunityToolkit.HighPerformance.Buffers;
 using DSE.Open.Diagnostics;
 using DSE.Open.Runtime.Helpers;
 using DSE.Open.Speech.Serialization;
@@ -316,14 +317,14 @@ public readonly struct SpeechSymbolSequence
         SpeechSymbolSequence symbols,
         SpeechSymbolSequenceComparison comparison = SpeechSymbolSequenceComparison.Exact)
     {
-        return IndexOfAny(symbols, comparison) > -1;
+        return IndexOf(symbols, comparison) > -1;
     }
 
     public bool Contains(
         ReadOnlySpan<char> chars,
         SpeechSymbolSequenceComparison comparison = SpeechSymbolSequenceComparison.Exact)
     {
-        return IndexOfAny(chars, comparison) > -1;
+        return IndexOf(chars, comparison) > -1;
     }
 
     public bool StartsWith(SpeechSymbol value)
@@ -335,7 +336,7 @@ public readonly struct SpeechSymbolSequence
         SpeechSymbolSequence chars,
         SpeechSymbolSequenceComparison comparison = SpeechSymbolSequenceComparison.Exact)
     {
-        var i = IndexOfAny(chars, comparison);
+        var i = IndexOf(chars, comparison);
 
         if (i == 0)
         {
@@ -358,7 +359,7 @@ public readonly struct SpeechSymbolSequence
         ReadOnlySpan<char> chars,
         SpeechSymbolSequenceComparison comparison = SpeechSymbolSequenceComparison.Exact)
     {
-        var i = IndexOfAny(chars, comparison);
+        var i = IndexOf(chars, comparison);
 
         if (i == 0)
         {
@@ -377,7 +378,7 @@ public readonly struct SpeechSymbolSequence
         }
     }
 
-    public int IndexOfAny(
+    public int IndexOf(
         SpeechSymbolSequence symbols,
         SpeechSymbolSequenceComparison comparison = SpeechSymbolSequenceComparison.Exact)
     {
@@ -386,63 +387,80 @@ public readonly struct SpeechSymbolSequence
 
         if (comparison == SpeechSymbolSequenceComparison.Exact)
         {
-            return buffer.IndexOfAny(chars);
+            return buffer.IndexOf(chars);
         }
 
         if (comparison == SpeechSymbolSequenceComparison.ConsonantsAndVowels)
         {
-            return IndexOfAnyConsonantsAndVowels(buffer, chars);
+            return IndexOfConsonantsAndVowels(buffer, chars);
         }
 
         ThrowHelper.ThrowArgumentOutOfRangeException(nameof(comparison));
         return -1; // unreachable
 
-        static int IndexOfAnyConsonantsAndVowels(
+        static int IndexOfConsonantsAndVowels(
             ReadOnlySpan<SpeechSymbol> buffer,
             ReadOnlySpan<SpeechSymbol> chars)
         {
-            // TODO: investigate if algorithm without the filtering/copying
-            // is more performant.
+            var bi = 0;  // current buffer index
+            var ci = 0;  // current chars index
+            var i = -1; // index of first match
 
-            SpeechSymbol[]? rentedBuffer = null;
-            SpeechSymbol[]? rentedChars = null;
-
-            Span<SpeechSymbol> bufferComp = MemoryThresholds.CanStackalloc<SpeechSymbol>(buffer.Length)
-                ? stackalloc SpeechSymbol[buffer.Length]
-                : (rentedBuffer = ArrayPool<SpeechSymbol>.Shared.Rent(buffer.Length));
-
-            Span<SpeechSymbol> charsComp = MemoryThresholds.CanStackalloc<SpeechSymbol>(chars.Length)
-                ? stackalloc SpeechSymbol[chars.Length]
-                : (rentedChars = ArrayPool<SpeechSymbol>.Shared.Rent(chars.Length));
-
-            try
+            while(bi < buffer.Length)
             {
-                try
+                if (ci >= chars.Length)
                 {
-                    CopyConsonantsAndVowels(buffer, bufferComp, out var bufferCharCount);
-                    CopyConsonantsAndVowels(chars, charsComp, out var charsCharCount);
-
-                    return bufferComp.IndexOfAny(charsComp);
+                    // we have checked all of the symbols in the
+                    // sequence we are looking for
+                    return i;
                 }
-                finally
+
+                var b = buffer[bi];
+                var c = chars[ci];
+
+                // if either symbol is not a consonant or vowel
+                // ignore and move on
+
+                if (!SpeechSymbol.IsConsonantOrVowel(b))
                 {
-                    if (rentedBuffer is not null)
+                    bi++;
+                    continue;
+                }
+
+                if (!SpeechSymbol.IsConsonantOrVowel(c))
+                {
+                    ci++;
+                    continue;
+                }
+
+                if (b == c)
+                {
+                    // we have a match
+                    if (i == -1)
                     {
-                        ArrayPool<SpeechSymbol>.Shared.Return(rentedBuffer);
+                        // this is the first match
+                        i = bi;
                     }
+
+                    // move on to the next symbol in the sequence
+                    // we are searching for
+                    ci++;
                 }
-            }
-            finally
-            {
-                if (rentedChars is not null)
+                else
                 {
-                    ArrayPool<SpeechSymbol>.Shared.Return(rentedChars);
+                    // no match, reset
+                    i = -1;
+                    ci = 0;
                 }
+
+                bi++;
             }
+
+            return ci >= chars.Length ? i : -1;
         }
     }
 
-    public int IndexOfAny(
+    public int IndexOf(
         ReadOnlySpan<char> chars,
         SpeechSymbolSequenceComparison comparison = SpeechSymbolSequenceComparison.Exact)
     {
@@ -453,55 +471,76 @@ public readonly struct SpeechSymbolSequence
 
         if (comparison == SpeechSymbolSequenceComparison.Exact)
         {
-            return buffer.IndexOfAny(chars);
+            return buffer.IndexOf(chars);
         }
 
         if (comparison == SpeechSymbolSequenceComparison.ConsonantsAndVowels)
         {
-            return IndexOfAnyConsonantsAndVowels(buffer, chars);
+            return IndexOfConsonantsAndVowels(buffer, chars);
         }
 
         ThrowHelper.ThrowArgumentOutOfRangeException(nameof(comparison));
         return -1; // unreachable
 
-        static int IndexOfAnyConsonantsAndVowels(
+        static int IndexOfConsonantsAndVowels(
             ReadOnlySpan<char> buffer,
             ReadOnlySpan<char> chars)
         {
-            char[]? rentedBuffer = null;
-            char[]? rentedChars = null;
+            var bi = 0;  // current buffer index
+            var ci = 0;  // current chars index
+            var i = -1; // index of first match
 
-            Span<char> bufferComp = MemoryThresholds.CanStackalloc<char>(buffer.Length)
-                ? stackalloc char[buffer.Length]
-                : (rentedBuffer = ArrayPool<char>.Shared.Rent(buffer.Length));
-
-            Span<char> charsComp = MemoryThresholds.CanStackalloc<char>(chars.Length)
-                ? stackalloc char[chars.Length]
-                : (rentedChars = ArrayPool<char>.Shared.Rent(chars.Length));
-            try
+            while (bi < buffer.Length)
             {
-                try
+                if (ci >= chars.Length)
                 {
-                    CopyConsonantsAndVowels(buffer, bufferComp, out var bufferCharCount);
-                    CopyConsonantsAndVowels(chars, charsComp, out var charsCharCount);
-
-                    return bufferComp.IndexOfAny(charsComp);
+                    // we have checked all of the symbols in the
+                    // sequence we are looking for
+                    return i;
                 }
-                finally
+
+                var b = buffer[bi];
+                var c = chars[ci];
+
+                // if either symbol is not a consonant or vowel
+                // ignore and move on
+
+                if (!SpeechSymbol.IsConsonantOrVowel(b))
                 {
-                    if (rentedBuffer is not null)
+                    bi++;
+                    continue;
+                }
+
+                if (!SpeechSymbol.IsConsonantOrVowel(c))
+                {
+                    ci++;
+                    continue;
+                }
+
+                if (b == c)
+                {
+                    // we have a match
+                    if (i == -1)
                     {
-                        ArrayPool<char>.Shared.Return(rentedBuffer);
+                        // this is the first match
+                        i = bi;
                     }
+
+                    // move on to the next symbol in the sequence
+                    // we are searching for
+                    ci++;
                 }
-            }
-            finally
-            {
-                if (rentedChars is not null)
+                else
                 {
-                    ArrayPool<char>.Shared.Return(rentedChars);
+                    // no match, reset
+                    i = -1;
+                    ci = 0;
                 }
+
+                bi++;
             }
+
+            return ci >= chars.Length ? i : -1;
         }
     }
 

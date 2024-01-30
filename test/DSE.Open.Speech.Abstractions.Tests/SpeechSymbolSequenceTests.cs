@@ -78,11 +78,11 @@ public class SpeechSymbolSequenceTests
     [InlineData("hˈɛlɪkˌɒptɐ", "hˈɛlɪkˌɒptɐ", 0)]
     [InlineData("hˈɛlɪkˌɒptɐ", "ˌ", 6)]
     [InlineData("hˈɛlɪkˌɒptɐ", "ɐ", 10)]
-    public void IndexOfAny(string t1, string t2, int expected)
+    public void IndexOf(string t1, string t2, int expected)
     {
         var transcription1 = SpeechSymbolSequence.Parse(t1, CultureInfo.InvariantCulture);
         var transcription2 = SpeechSymbolSequence.Parse(t2, CultureInfo.InvariantCulture);
-        Assert.Equal(expected, transcription1.IndexOfAny(transcription2));
+        Assert.Equal(expected, transcription1.IndexOf(transcription2));
     }
 
     [Theory]
@@ -91,11 +91,11 @@ public class SpeechSymbolSequenceTests
     [InlineData("hˈɛlɪkˌɒptɐ", "hˈɛlɪkˌɒptɐ", 0)]
     [InlineData("hˈɛlɪkˌɒptɐ", "ˌ", 6)]
     [InlineData("hˈɛlɪkˌɒptɐ", "ɐ", 10)]
-    public void IndexOfAnyCharSpan(string t1, string t2, int expected)
+    public void IndexOfCharSpan(string t1, string t2, int expected)
     {
         var transcription1 = SpeechSymbolSequence.Parse(t1, CultureInfo.InvariantCulture);
         var transcription2 = t2.AsSpan();
-        Assert.Equal(expected, transcription1.IndexOfAny(transcription2));
+        Assert.Equal(expected, transcription1.IndexOf(transcription2));
     }
 
     [Theory]
@@ -165,7 +165,7 @@ public class SpeechSymbolSequenceTests
     [Theory]
     [InlineData("hˈɛlɪkˌɒptɐ", "h")]
     [InlineData("hˈɛlɪkˌɒptɐ", "hɛlɪk")]
-    [InlineData("hɛlɪkɒptɐ", "hˈɛlɪkˌɒptɐ")]
+    [InlineData("hɛlɪkɒptɐ", "hˈɛlɪk")]
     [InlineData("hˈɛlɪkˌɒptɐ", "hˈɛlɪkˌɒ")]
     [InlineData("hˈɛlɪkˌɒptɐ", "hˈ")]
     public void StartsWithConsonantsAndVowels(string t1, string t2)
