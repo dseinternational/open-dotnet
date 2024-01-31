@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Numerics;
+using System.Numerics.Tensors;
 using CommunityToolkit.HighPerformance;
 
 namespace DSE.Open.Numerics;
@@ -9,9 +10,12 @@ namespace DSE.Open.Numerics;
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
 /// <summary>
-/// <b>[Experimental]</b> A readon-only matrix of numbers.
+/// <b>[Experimental]</b> A read-only matrix of numbers.
 /// </summary>
 /// <typeparam name="T"></typeparam>
+/// <remarks>This is an <b>experimental</b> exploration of a matrix type implemented over
+/// <see cref="ReadOnlyMemory2D{T}"/> and utilising <see cref="TensorPrimitives"/>.
+/// </remarks>
 public readonly struct ReadOnlyMatrix<T> : IEquatable<ReadOnlyMatrix<T>>
     where T : struct, INumber<T>
 {
