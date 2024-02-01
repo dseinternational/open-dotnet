@@ -59,7 +59,7 @@ public readonly struct Matrix<T> : IEquatable<Matrix<T>>
     /// </summary>
     /// <param name="row"></param>
     /// <returns></returns>
-    public Span<T> this[int row] => _data.Span.GetRowSpan(row);
+    public SpanVector<T> this[int row] => new ( _data.Span.GetRowSpan(row));
 
     /// <summary>
     /// Gets or sets the value at the specified row and column of the matrix.

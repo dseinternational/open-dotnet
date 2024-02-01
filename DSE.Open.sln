@@ -185,8 +185,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Abstractions.Tests
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Numerics", "src\DSE.Open.Numerics\DSE.Open.Numerics.csproj", "{1C065807-DF7E-4847-89FF-135CED571FFA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.Numerics.Tests", "test\DSE.Open.Numerics.Tests\DSE.Open.Numerics.Tests.csproj", "{994113AB-0BE8-48B7-907E-34F35B798CE9}"
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.Testing.Xunit.Tests", "test\DSE.Open.Testing.Xunit.Tests\DSE.Open.Testing.Xunit.Tests.csproj", "{BAFF7A7D-E166-4913-BD96-42D334DF39D3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Numerics.Tests", "test\DSE.Open.Numerics.Tests\DSE.Open.Numerics.Tests.csproj", "{994113AB-0BE8-48B7-907E-34F35B798CE9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Testing.Xunit.Tests", "test\DSE.Open.Testing.Xunit.Tests\DSE.Open.Testing.Xunit.Tests.csproj", "{BAFF7A7D-E166-4913-BD96-42D334DF39D3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.Interop.Torch", "src\DSE.Open.Interop.Torch\DSE.Open.Interop.Torch.csproj", "{B4B5CA7C-1C4E-46AA-8DBF-1ADCF17195C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.Interop.Torch.Tests", "test\DSE.Open.Interop.Torch.Tests\DSE.Open.Interop.Torch.Tests.csproj", "{0C80A097-CA4F-488F-B442-8CA0CE0CBCF4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -510,6 +515,14 @@ Global
 		{BAFF7A7D-E166-4913-BD96-42D334DF39D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BAFF7A7D-E166-4913-BD96-42D334DF39D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BAFF7A7D-E166-4913-BD96-42D334DF39D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4B5CA7C-1C4E-46AA-8DBF-1ADCF17195C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4B5CA7C-1C4E-46AA-8DBF-1ADCF17195C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4B5CA7C-1C4E-46AA-8DBF-1ADCF17195C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4B5CA7C-1C4E-46AA-8DBF-1ADCF17195C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C80A097-CA4F-488F-B442-8CA0CE0CBCF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C80A097-CA4F-488F-B442-8CA0CE0CBCF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C80A097-CA4F-488F-B442-8CA0CE0CBCF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C80A097-CA4F-488F-B442-8CA0CE0CBCF4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -594,6 +607,8 @@ Global
 		{1C065807-DF7E-4847-89FF-135CED571FFA} = {D2529453-80C3-4F06-BBD0-6B58EF65EF99}
 		{994113AB-0BE8-48B7-907E-34F35B798CE9} = {850B3E2C-6172-4CF9-9E83-AD0997C57CA3}
 		{BAFF7A7D-E166-4913-BD96-42D334DF39D3} = {850B3E2C-6172-4CF9-9E83-AD0997C57CA3}
+		{B4B5CA7C-1C4E-46AA-8DBF-1ADCF17195C1} = {D2529453-80C3-4F06-BBD0-6B58EF65EF99}
+		{0C80A097-CA4F-488F-B442-8CA0CE0CBCF4} = {850B3E2C-6172-4CF9-9E83-AD0997C57CA3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3D3BE91A-3636-45E3-A6BF-8C09D5A9782A}
