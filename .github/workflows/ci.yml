@@ -36,12 +36,12 @@ jobs:
       - name: Set Python version
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.12"
           cache: "pip"
 
       - name: Install Python packages
         run: |
-          pip3 install torch>=2.1.2 --index-url https://download.pytorch.org/whl/cpu
+          pip3 install torch>=2.2.0 --index-url https://download.pytorch.org/whl/cpu
           python -m pip install -r ./requirements.txt --progress-bar off --verbose
 
       - name: Initialize Python environment
