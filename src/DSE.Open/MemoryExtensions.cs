@@ -1,7 +1,10 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Buffers;
+using System.Diagnostics;
 using System.Numerics;
+using System.Runtime.Intrinsics;
 
 namespace DSE.Open;
 
@@ -24,6 +27,59 @@ public static partial class MemoryExtensions
         foreach (var value in values)
         {
             if (!predicate(value))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static bool ContainsOnlyCore<T>(
+        ReadOnlySpan<T> value,
+        SearchValues<T> searchValues,
+        Func<T, bool> filter)
+        where T : unmanaged, IEquatable<T>
+    {
+        Debug.Assert(typeof(T) == typeof(byte) || typeof(T) == typeof(char) || typeof(T) == typeof(AsciiChar));
+
+        // If we can, and the value is long enough to be worth it, pass off to the vectorized SearchValues
+        if (Vector128.IsHardwareAccelerated && value.Length >= Vector128<T>.Count)
+        {
+            return value.IndexOfAnyExcept(searchValues) == -1;
+        }
+
+        foreach (var t in value)
+        {
+            if (!filter(t))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static bool ContainsOnlyInRangeCore<T>(
+        ReadOnlySpan<T> value,
+        T lowInclusive,
+        T highInclusive,
+        Func<T, bool> filter)
+        where T : unmanaged, IComparable<T>
+    {
+        Debug.Assert(typeof(T) != typeof(AsciiChar), "AsciiChar should be passed as bytes");
+        Debug.Assert(typeof(T) == typeof(byte) || typeof(T) == typeof(char));
+        Debug.Assert(filter is not null);
+
+        // If we can, and the value is long enough to be worth it, pass off to the vectorized SearchValues
+        if (Vector128.IsHardwareAccelerated && value.Length >= Vector128<T>.Count)
+        {
+            return value.IndexOfAnyExceptInRange(lowInclusive, highInclusive) == -1;
+        }
+
+        foreach (var t in value)
+        {
+            if (!filter(t))
             {
                 return false;
             }

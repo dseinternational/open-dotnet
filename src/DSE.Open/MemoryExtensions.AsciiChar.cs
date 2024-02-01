@@ -80,4 +80,40 @@ public static partial class MemoryExtensions
 
         return new string(buffer[..charsWritten]);
     }
+
+    public static bool ContainsOnlyAsciiLetters(this ReadOnlySpan<AsciiChar> value)
+    {
+        return ValuesMarshal.AsBytes(value).ContainsOnlyAsciiLetters();
+    }
+
+    public static bool ContainsOnlyAsciiLettersOrDigits(this ReadOnlySpan<AsciiChar> value)
+    {
+        return ValuesMarshal.AsBytes(value).ContainsOnlyAsciiLettersOrDigits();
+    }
+
+    public static bool ContainsOnlyAsciiUpperLettersOrDigits(this ReadOnlySpan<AsciiChar> value)
+    {
+        return ValuesMarshal.AsBytes(value).ContainsOnlyAsciiUpperLettersOrDigits();
+    }
+
+    public static bool ContainsOnlyAsciiLettersLower(this ReadOnlySpan<AsciiChar> value)
+    {
+        return ValuesMarshal.AsBytes(value).ContainsOnlyAsciiLettersLower();
+    }
+
+    public static bool ContainsOnlyAsciiLettersUpper(this ReadOnlySpan<AsciiChar> value)
+    {
+        return ValuesMarshal.AsBytes(value).ContainsOnlyAsciiLettersUpper();
+    }
+
+    /// <summary>
+    /// Determines whether the specified spans of ASCII are equal, ignoring case.
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <returns></returns>
+    public static bool SequenceEqualsCaseInsensitive(this ReadOnlySpan<AsciiChar> a, ReadOnlySpan<AsciiChar> b)
+    {
+        return Ascii.EqualsIgnoreCase(ValuesMarshal.AsBytes(a), ValuesMarshal.AsBytes(b));
+    }
 }

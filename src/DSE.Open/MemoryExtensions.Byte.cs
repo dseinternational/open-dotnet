@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Buffers;
+using System.Diagnostics;
 using System.Runtime.Intrinsics;
 using System.Text;
 
@@ -11,12 +12,20 @@ public static partial class MemoryExtensions
 {
     internal static class SearchBytes
     {
-        internal static readonly SearchValues<byte> s_asciiLetters = SearchValues.Create("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"u8);
+        internal static readonly SearchValues<byte> s_asciiLetters =
+            SearchValues.Create("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"u8);
 
         internal static readonly SearchValues<byte> s_asciiLettersAndDigits =
             SearchValues.Create("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"u8);
 
-        internal static readonly SearchValues<byte> s_asciiUpperLettersAndDigits = SearchValues.Create("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"u8);
+        internal static readonly SearchValues<byte> s_asciiUpperLettersAndDigits =
+            SearchValues.Create("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"u8);
+
+        internal static readonly SearchValues<byte> s_asciiLettersLower =
+            SearchValues.Create("abcdefghijklmnopqrstuvwxyz"u8);
+
+        internal static readonly SearchValues<byte> s_asciiLettersUpper =
+            SearchValues.Create("ABCDEFGHIJKLMNOPQRSTUVWXYZ"u8);
     }
 
     public static bool ContainsOnlyAsciiDigits(this Span<byte> value)
@@ -56,135 +65,37 @@ public static partial class MemoryExtensions
 
     public static bool ContainsOnlyAsciiDigits(this ReadOnlySpan<byte> value)
     {
-        if (Vector128.IsHardwareAccelerated && value.Length >= Vector128<byte>.Count)
-        {
-            return value.IndexOfAnyExceptInRange((byte)'0', (byte)'9') == -1;
-        }
-
-        for (var i = 0; i < value.Length; i++)
-        {
-            if (!AsciiChar.IsDigit(value[i]))
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    public static bool ContainsOnlyAsciiLetters(this ReadOnlySpan<AsciiChar> value)
-    {
-        return ValuesMarshal.AsBytes(value).ContainsOnlyAsciiLetters();
+        return ContainsOnlyCore(value, SearchBytes.s_asciiLetters, AsciiChar.IsDigit);
     }
 
     public static bool ContainsOnlyAsciiLetters(this ReadOnlySpan<byte> value)
     {
-        if (Vector128.IsHardwareAccelerated && value.Length >= Vector128<byte>.Count)
-        {
-            return value.IndexOfAnyExcept(SearchBytes.s_asciiLetters) == -1;
-        }
-
-        for (var i = 0; i < value.Length; i++)
-        {
-            if (!AsciiChar.IsLetter(value[i]))
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    public static bool ContainsOnlyAsciiLettersOrDigits(this ReadOnlySpan<AsciiChar> value)
-    {
-        return ValuesMarshal.AsBytes(value).ContainsOnlyAsciiLettersOrDigits();
+        return ContainsOnlyCore(value, SearchBytes.s_asciiLetters, AsciiChar.IsLetter);
     }
 
     public static bool ContainsOnlyAsciiLettersOrDigits(this ReadOnlySpan<byte> value)
     {
-        if (Vector128.IsHardwareAccelerated && value.Length >= Vector128<byte>.Count)
-        {
-            return value.IndexOfAnyExcept(SearchBytes.s_asciiLettersAndDigits) == -1;
-        }
-
-        for (var i = 0; i < value.Length; i++)
-        {
-            if (!AsciiChar.IsLetterOrDigit(value[i]))
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    public static bool ContainsOnlyAsciiUpperLettersOrDigits(this ReadOnlySpan<AsciiChar> value)
-    {
-        return ValuesMarshal.AsBytes(value).ContainsOnlyAsciiUpperLettersOrDigits();
+        return ContainsOnlyCore(value, SearchBytes.s_asciiLettersAndDigits, AsciiChar.IsLetterOrDigit);
     }
 
     public static bool ContainsOnlyAsciiUpperLettersOrDigits(this ReadOnlySpan<byte> value)
     {
-        if (Vector128.IsHardwareAccelerated && value.Length >= Vector128<byte>.Count)
+        return ContainsOnlyCore(value, SearchBytes.s_asciiUpperLettersAndDigits, Filter);
+
+        static bool Filter(byte value)
         {
-            return value.IndexOfAnyExcept(SearchBytes.s_asciiUpperLettersAndDigits) == -1;
+            return AsciiChar.IsLetterUpper(value) || AsciiChar.IsDigit(value);
         }
-
-        for (var i = 0; i < value.Length; i++)
-        {
-            if (!(AsciiChar.IsLetterUpper(value[i]) || AsciiChar.IsDigit(value[i])))
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    public static bool ContainsOnlyAsciiLettersLower(this ReadOnlySpan<AsciiChar> value)
-    {
-        return ValuesMarshal.AsBytes(value).ContainsOnlyAsciiLettersLower();
     }
 
     public static bool ContainsOnlyAsciiLettersLower(this ReadOnlySpan<byte> value)
     {
-        if (Vector128.IsHardwareAccelerated && value.Length >= Vector128<byte>.Count)
-        {
-            return value.IndexOfAnyExceptInRange((byte)'a', (byte)'z') == -1;
-        }
-
-        for (var i = 0; i < value.Length; i++)
-        {
-            if (!AsciiChar.IsLetterLower(value[i]))
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    public static bool ContainsOnlyAsciiLettersUpper(this ReadOnlySpan<AsciiChar> value)
-    {
-        return ValuesMarshal.AsBytes(value).ContainsOnlyAsciiLettersUpper();
+        return ContainsOnlyCore(value, SearchBytes.s_asciiLettersLower, AsciiChar.IsLetterLower);
     }
 
     public static bool ContainsOnlyAsciiLettersUpper(this ReadOnlySpan<byte> value)
     {
-        if (Vector128.IsHardwareAccelerated && value.Length > Vector128<byte>.Count)
-        {
-            return value.IndexOfAnyExceptInRange((byte)'A', (byte)'Z') == -1;
-        }
-
-        for (var i = 0; i < value.Length; i++)
-        {
-            if (!AsciiChar.IsLetterUpper(value[i]))
-            {
-                return false;
-            }
-        }
-
-        return true;
+        return ContainsOnlyCore(value, SearchBytes.s_asciiLettersUpper, AsciiChar.IsLetterUpper);
     }
 
     public static bool TryCopyWhereNotWhitespace(this Span<byte> span, Span<byte> buffer, out int bytesWritten)
@@ -197,7 +108,10 @@ public static partial class MemoryExtensions
         return TryCopyWhereNotPunctuation((ReadOnlySpan<byte>)span, buffer, out bytesWritten);
     }
 
-    public static bool TryCopyWhereNotPunctuationOrWhitespace(this Span<byte> span, Span<byte> buffer, out int bytesWritten)
+    public static bool TryCopyWhereNotPunctuationOrWhitespace(
+        this Span<byte> span,
+        Span<byte> buffer,
+        out int bytesWritten)
     {
         return TryCopyWhereNotPunctuationOrWhitespace((ReadOnlySpan<byte>)span, buffer, out bytesWritten);
     }
@@ -212,9 +126,15 @@ public static partial class MemoryExtensions
         return TryCopyWhere(span, buffer, v => !AsciiChar.IsPunctuation(v), out bytesWritten);
     }
 
-    public static bool TryCopyWhereNotPunctuationOrWhitespace(this ReadOnlySpan<byte> span, Span<byte> buffer, out int bytesWritten)
+    public static bool TryCopyWhereNotPunctuationOrWhitespace(
+        this ReadOnlySpan<byte> span,
+        Span<byte> buffer,
+        out int bytesWritten)
     {
-        return TryCopyWhere(span, buffer, v => !(AsciiChar.IsPunctuation(v) || AsciiChar.IsWhiteSpace(v)), out bytesWritten);
+        return TryCopyWhere(span,
+            buffer,
+            v => !(AsciiChar.IsPunctuation(v) || AsciiChar.IsWhiteSpace(v)),
+            out bytesWritten);
     }
 
     public static int CopyExcludingPunctuation(this ReadOnlySpan<byte> span, Span<byte> buffer)
@@ -265,16 +185,5 @@ public static partial class MemoryExtensions
     public static bool IsAscii(this ReadOnlySpan<byte> value)
     {
         return Ascii.IsValid(value);
-    }
-
-    /// <summary>
-    /// Determines whether the specified spans of ASCII are equal, ignoring case.
-    /// </summary>
-    /// <param name="a"></param>
-    /// <param name="b"></param>
-    /// <returns></returns>
-    public static bool SequenceEqualsCaseInsensitive(this ReadOnlySpan<AsciiChar> a, ReadOnlySpan<AsciiChar> b)
-    {
-        return Ascii.EqualsIgnoreCase(ValuesMarshal.AsBytes(a), ValuesMarshal.AsBytes(b));
     }
 }

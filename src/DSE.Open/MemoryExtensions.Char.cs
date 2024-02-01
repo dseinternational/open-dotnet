@@ -59,25 +59,11 @@ public static partial class MemoryExtensions
     /// <returns></returns>
     public static bool ContainsOnlyAsciiDigits(this ReadOnlySpan<char> value, bool allowEmpty = true)
     {
-        if (value.IsEmpty)
+        return value.IsEmpty switch
         {
-            return allowEmpty;
-        }
-
-        if (Vector128.IsHardwareAccelerated && value.Length >= Vector128<ushort>.Count)
-        {
-            return value.IndexOfAnyExceptInRange('0', '9') == -1;
-        }
-
-        for (var i = 0; i < value.Length; i++)
-        {
-            if (!char.IsAsciiDigit(value[i]))
-            {
-                return false;
-            }
-        }
-
-        return true;
+            true => allowEmpty,
+            _ => ContainsOnlyInRangeCore(value, '0', '9', char.IsAsciiDigit)
+        };
     }
 
     /// <summary>
@@ -89,25 +75,11 @@ public static partial class MemoryExtensions
     /// <returns></returns>
     public static bool ContainsOnlyAsciiLetters(this ReadOnlySpan<char> value, bool allowEmpty = true)
     {
-        if (value.IsEmpty)
+        return value.IsEmpty switch
         {
-            return allowEmpty;
-        }
-
-        if (Vector128.IsHardwareAccelerated && value.Length >= Vector128<ushort>.Count)
-        {
-            return value.IndexOfAnyExcept(SearchChars.s_asciiLetters) == -1;
-        }
-
-        for (var i = 0; i < value.Length; i++)
-        {
-            if (!char.IsAsciiLetter(value[i]))
-            {
-                return false;
-            }
-        }
-
-        return true;
+            true => allowEmpty,
+            _ => ContainsOnlyCore(value, SearchChars.s_asciiLetters, char.IsAsciiLetter)
+        };
     }
 
     /// <summary>
@@ -119,25 +91,11 @@ public static partial class MemoryExtensions
     /// <returns></returns>
     public static bool ContainsOnlyAsciiLettersOrDigits(this ReadOnlySpan<char> value, bool allowEmpty = true)
     {
-        if (value.IsEmpty)
+        return value.IsEmpty switch
         {
-            return allowEmpty;
-        }
-
-        if (Vector128.IsHardwareAccelerated && value.Length >= Vector128<ushort>.Count)
-        {
-            return value.IndexOfAnyExcept(SearchChars.s_asciiLettersAndDigits) == -1;
-        }
-
-        for (var i = 0; i < value.Length; i++)
-        {
-            if (!char.IsAsciiLetterOrDigit(value[i]))
-            {
-                return false;
-            }
-        }
-
-        return true;
+            true => allowEmpty,
+            _ => ContainsOnlyCore(value, SearchChars.s_asciiLettersAndDigits, char.IsAsciiLetterOrDigit)
+        };
     }
 
     /// <summary>
@@ -149,25 +107,16 @@ public static partial class MemoryExtensions
     /// <returns></returns>
     public static bool ContainsOnlyAsciiUpperLettersOrDigits(this ReadOnlySpan<char> value, bool allowEmpty = true)
     {
-        if (value.IsEmpty)
+        return value.IsEmpty switch
         {
-            return allowEmpty;
-        }
+            true => allowEmpty,
+            _ => ContainsOnlyCore(value, SearchChars.s_asciiUpperLettersAndDigits, Filter)
+        };
 
-        if (Vector128.IsHardwareAccelerated && value.Length >= Vector128<ushort>.Count)
+        static bool Filter(char value)
         {
-            return value.IndexOfAnyExcept(SearchChars.s_asciiUpperLettersAndDigits) == -1;
+            return char.IsAsciiLetterUpper(value) || char.IsAsciiDigit(value);
         }
-
-        for (var i = 0; i < value.Length; i++)
-        {
-            if (!char.IsAsciiLetterUpper(value[i]) && !char.IsAsciiDigit(value[i]))
-            {
-                return false;
-            }
-        }
-
-        return true;
     }
 
     /// <summary>
@@ -179,26 +128,11 @@ public static partial class MemoryExtensions
     /// <returns></returns>
     public static bool ContainsOnlyAsciiLettersLower(this ReadOnlySpan<char> value, bool allowEmpty = true)
     {
-        if (value.IsEmpty)
+        return value.IsEmpty switch
         {
-            return allowEmpty;
-        }
-
-        if (Vector128.IsHardwareAccelerated && value.Length >= Vector128<ushort>.Count)
-        {
-            return value.IndexOfAnyExceptInRange('a', 'z') == -1;
-        }
-
-        for (var i = 0; i < value.Length; i++)
-        {
-            if (!char.IsAsciiLetterLower(value[i]))
-            {
-                return false;
-            }
-        }
-
-        return true;
-
+            true => allowEmpty,
+            _ => ContainsOnlyInRangeCore(value, 'a', 'z', char.IsAsciiLetterLower)
+        };
     }
 
     /// <summary>
@@ -214,25 +148,11 @@ public static partial class MemoryExtensions
     /// </returns>
     public static bool ContainsOnlyAsciiLettersUpper(this ReadOnlySpan<char> value, bool allowEmpty = true)
     {
-        if (value.IsEmpty)
+        return value.IsEmpty switch
         {
-            return allowEmpty;
-        }
-
-        if (Vector128.IsHardwareAccelerated && value.Length >= Vector128<ushort>.Count)
-        {
-            return value.IndexOfAnyExceptInRange('A', 'Z') == -1;
-        }
-
-        for (var i = 0; i < value.Length; i++)
-        {
-            if (!char.IsAsciiLetterUpper(value[i]))
-            {
-                return false;
-            }
-        }
-
-        return true;
+            true => allowEmpty,
+            _ => ContainsOnlyInRangeCore(value, 'A', 'Z', char.IsAsciiLetterUpper)
+        };
     }
 
     /// <summary>
@@ -359,7 +279,10 @@ public static partial class MemoryExtensions
         return TryCopyWhereNotPunctuation((ReadOnlySpan<char>)span, buffer, out charsWritten);
     }
 
-    public static bool TryCopyWhereNotPunctuationOrWhitespace(this Span<char> span, Span<char> buffer, out int charsWritten)
+    public static bool TryCopyWhereNotPunctuationOrWhitespace(
+        this Span<char> span,
+        Span<char> buffer,
+        out int charsWritten)
     {
         return TryCopyWhereNotPunctuationOrWhitespace((ReadOnlySpan<char>)span, buffer, out charsWritten);
     }
@@ -374,7 +297,10 @@ public static partial class MemoryExtensions
         return TryCopyWhere(span, buffer, v => !char.IsPunctuation(v), out charsWritten);
     }
 
-    public static bool TryCopyWhereNotPunctuationOrWhitespace(this ReadOnlySpan<char> span, Span<char> buffer, out int charsWritten)
+    public static bool TryCopyWhereNotPunctuationOrWhitespace(
+        this ReadOnlySpan<char> span,
+        Span<char> buffer,
+        out int charsWritten)
     {
         return TryCopyWhere(span, buffer, v => !(char.IsPunctuation(v) || char.IsWhiteSpace(v)), out charsWritten);
     }
