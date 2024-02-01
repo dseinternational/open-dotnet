@@ -9,13 +9,13 @@ public sealed class PythonContextConfiguration
     {
         if (OperatingSystem.IsWindows())
         {
-            PythonDLL = "python311.dll";
+            PythonDLL = "python312.dll";
         }
         else
         {
             PythonDLL = OperatingSystem.IsLinux()
-                ? "libpython3.11.so"
-                : OperatingSystem.IsMacOS() ? "libpython3.11.dylib" : throw new PlatformNotSupportedException();
+                ? "libpython3.12.so"
+                : OperatingSystem.IsMacOS() ? "libpython3.12.dylib" : throw new PlatformNotSupportedException();
         }
     }
 
