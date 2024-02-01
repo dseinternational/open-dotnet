@@ -62,6 +62,8 @@
     <PackageVersion Include="System.Text.Json" Version="8.0.1" />
     <PackageVersion Include="TimeZoneConverter" Version="6.1.0" />
     <PackageVersion Include="TimeZoneNames" Version="6.0.0" />
+    <PackageVersion Include="TorchSharp" Version="0.101.5" />
+    <PackageVersion Include="TorchSharp-cpu" Version="0.101.5" />
     <PackageVersion Include="xunit" Version="2.6.6" />
     <PackageVersion Include="xunit.assert" Version="2.6.6" />
     <PackageVersion Include="xunit.core" Version="2.6.6" />

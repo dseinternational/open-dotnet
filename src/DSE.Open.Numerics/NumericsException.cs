@@ -7,21 +7,24 @@ public class NumericsException : Exception
 {
     private const string s_defaultMessage = "Numerics error.";
 
-    public NumericsException() : base(s_defaultMessage)
+    public NumericsException()
+        : base(s_defaultMessage)
     {
     }
 
-    public NumericsException(string message) : base(message ?? s_defaultMessage)
+    public NumericsException(string message)
+        : base(message ?? s_defaultMessage)
     {
     }
 
-    public NumericsException(string message, Exception innerException) : base(message ?? s_defaultMessage, innerException)
+    public NumericsException(string message, Exception innerException)
+        : base(message ?? s_defaultMessage, innerException)
     {
     }
 
     public static void Throw()
     {
-        throw new NumericsException("Sequence contains no elements.");
+        throw new NumericsException(s_defaultMessage);
     }
 
     public static void Throw(string message)

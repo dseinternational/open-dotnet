@@ -1,0 +1,24 @@
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Down Syndrome Education International and Contributors licence this file to you under the MIT license.
+
+using System.Numerics;
+using System.Numerics.Tensors;
+
+namespace DSE.Open.Numerics;
+
+public static partial class Sequence
+{
+    public static void Add<T>(ReadOnlySpan<T> x, ReadOnlySpan<T> y, Span<T> destination)
+        where T : struct, INumber<T>
+    {
+        GuardSequence.SameLength(x, y);
+        TensorPrimitives.Add(x, y, destination);
+    }
+
+    public static void AddInPlace<T>(Span<T> x, ReadOnlySpan<T> y)
+        where T : struct, INumber<T>
+    {
+        GuardSequence.SameLength(x, y);
+        TensorPrimitives.Add(x, y, x);
+    }
+}
