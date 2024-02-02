@@ -1,7 +1,10 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Buffers;
+using System.Diagnostics;
 using System.Numerics;
+using System.Runtime.Intrinsics;
 
 namespace DSE.Open;
 
@@ -24,6 +27,71 @@ public static partial class MemoryExtensions
         foreach (var value in values)
         {
             if (!predicate(value))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static bool ContainsOnlyCore<T>(
+        ReadOnlySpan<T> value,
+        SearchValues<T> searchValues,
+        Func<T, bool> filter)
+        where T : unmanaged, IEquatable<T>
+    {
+        Debug.Assert(typeof(T) == typeof(char) || Vector128<T>.IsSupported);
+
+        // If we can, and the value is long enough to be worth it, pass off to the vectorized SearchValues
+        if (Vector128.IsHardwareAccelerated)
+        {
+            var vectorise = typeof(T) == typeof(char)
+                ? value.Length >= Vector128<ushort>.Count
+                : value.Length >= Vector128<T>.Count;
+
+            if (vectorise)
+            {
+                return value.IndexOfAnyExcept(searchValues) == -1;
+            }
+        }
+
+        foreach (var t in value)
+        {
+            if (!filter(t))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static bool ContainsOnlyInRangeCore<T>(
+        ReadOnlySpan<T> value,
+        T lowInclusive,
+        T highInclusive,
+        Func<T, bool> filter)
+        where T : unmanaged, IComparable<T>
+    {
+        Debug.Assert(typeof(T) == typeof(char) || Vector128<T>.IsSupported);
+
+        // If we can, and the value is long enough to be worth it, pass off to the vectorized SearchValues
+        if (Vector128.IsHardwareAccelerated)
+        {
+            var vectorise = typeof(T) == typeof(char)
+                ? value.Length >= Vector128<ushort>.Count
+                : value.Length >= Vector128<T>.Count;
+
+            if (vectorise)
+            {
+                return value.IndexOfAnyExceptInRange(lowInclusive, highInclusive) == -1;
+            }
+        }
+
+        foreach (var t in value)
+        {
+            if (!filter(t))
             {
                 return false;
             }
