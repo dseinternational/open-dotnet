@@ -5,6 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Google.Protobuf" />
+    <PackageReference Include="SharpZipLib" />
+    <PackageReference Include="SkiaSharp" />
     <PackageReference Include="TorchSharp" />
   </ItemGroup>
 
