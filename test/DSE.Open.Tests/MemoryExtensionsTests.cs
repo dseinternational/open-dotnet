@@ -240,4 +240,21 @@ public class MemoryExtensionsTests
         Assert.Equal(expected, result);
     }
 
+    [Theory]
+    [InlineData("Abcdefghijklm", true, true)]
+    [InlineData("Abcdefghijklm", false, true)]
+    public void ContainsOnlyAsciiLetters(string source, bool allowEmpty, bool expected)
+    {
+        var result = source.AsSpan().ContainsOnlyAsciiLetters(allowEmpty);
+        Assert.Equal(expected, result);
+    }
+
+    [Theory]
+    [InlineData("1234567890", true, true)]
+    [InlineData("1234567890", false, true)]
+    public void ContainsOnlyAsciiDigits(string source, bool allowEmpty, bool expected)
+    {
+        var result = source.AsSpan().ContainsOnlyAsciiDigits(allowEmpty);
+        Assert.Equal(expected, result);
+    }
 }

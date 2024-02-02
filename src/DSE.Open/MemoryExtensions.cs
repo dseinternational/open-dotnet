@@ -41,12 +41,19 @@ public static partial class MemoryExtensions
         Func<T, bool> filter)
         where T : unmanaged, IEquatable<T>
     {
-        Debug.Assert(typeof(T) == typeof(byte) || typeof(T) == typeof(char) || typeof(T) == typeof(AsciiChar));
+        Debug.Assert(typeof(T) == typeof(char) || Vector128<T>.IsSupported);
 
         // If we can, and the value is long enough to be worth it, pass off to the vectorized SearchValues
-        if (Vector128.IsHardwareAccelerated && value.Length >= Vector128<T>.Count)
+        if (Vector128.IsHardwareAccelerated)
         {
-            return value.IndexOfAnyExcept(searchValues) == -1;
+            var vectorise = typeof(T) == typeof(char)
+                ? value.Length >= Vector128<ushort>.Count
+                : value.Length >= Vector128<T>.Count;
+
+            if (vectorise)
+            {
+                return value.IndexOfAnyExcept(searchValues) == -1;
+            }
         }
 
         foreach (var t in value)
@@ -67,14 +74,19 @@ public static partial class MemoryExtensions
         Func<T, bool> filter)
         where T : unmanaged, IComparable<T>
     {
-        Debug.Assert(typeof(T) != typeof(AsciiChar), "AsciiChar should be passed as bytes");
-        Debug.Assert(typeof(T) == typeof(byte) || typeof(T) == typeof(char));
-        Debug.Assert(filter is not null);
+        Debug.Assert(typeof(T) == typeof(char) || Vector128<T>.IsSupported);
 
         // If we can, and the value is long enough to be worth it, pass off to the vectorized SearchValues
-        if (Vector128.IsHardwareAccelerated && value.Length >= Vector128<T>.Count)
+        if (Vector128.IsHardwareAccelerated)
         {
-            return value.IndexOfAnyExceptInRange(lowInclusive, highInclusive) == -1;
+            var vectorise = typeof(T) == typeof(char)
+                ? value.Length >= Vector128<ushort>.Count
+                : value.Length >= Vector128<T>.Count;
+
+            if (vectorise)
+            {
+                return value.IndexOfAnyExceptInRange(lowInclusive, highInclusive) == -1;
+            }
         }
 
         foreach (var t in value)
