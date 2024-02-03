@@ -23,7 +23,7 @@ public static class CharSequenceExtensions
         {
             if (value.TryFormat(poolBuffer, out var charsWritten2, format, provider))
             {
-                return new CharSequence(poolBuffer[..charsWritten2].ToArray());
+                return new CharSequence(poolBuffer.AsMemory(0, charsWritten2));
             }
 
             ThrowHelper.ThrowInvalidOperationException("Unable to format value to char sequence: is the result > 2048 characters?");

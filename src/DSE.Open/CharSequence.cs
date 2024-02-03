@@ -126,7 +126,14 @@ public readonly struct CharSequence
     public static CharSequence Parse(string s, IFormatProvider? provider)
     {
         ArgumentNullException.ThrowIfNull(s);
-        return Parse(s.AsSpan(), provider);
+
+        if (TryParse(s, provider, out var result))
+        {
+            return result;
+        }
+
+        Expect.Unreachable();
+        return default; // unreachable
     }
 
     public static bool TryParse(
@@ -163,7 +170,8 @@ public readonly struct CharSequence
             return false;
         }
 
-        return TryParse(s.AsSpan(), provider, out result);
+        result = new CharSequence(s);
+        return true;
     }
 
     public int CompareTo(CharSequence other)
