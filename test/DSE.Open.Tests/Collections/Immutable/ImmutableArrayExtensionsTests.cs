@@ -44,10 +44,10 @@ public class ImmutableArrayExtensionsTests
     {
         var array = ImmutableArray.Create(1, 2, 3, 4, 5, 4);
 
-        Assert.Equal(3, array.IndexOfAny([4, 7]));
-        Assert.Equal(0, array.IndexOfAny([1, 2, 5]));
-        Assert.Equal(4, array.IndexOfAny([9, 8, 5]));
-        Assert.Equal(-1, array.IndexOfAny([7, 8]));
+        Assert.Equal(3, array.IndexOfAnyValues([4, 7]));
+        Assert.Equal(0, array.IndexOfAnyValues([1, 2, 5]));
+        Assert.Equal(4, array.IndexOfAnyValues([9, 8, 5]));
+        Assert.Equal(-1, array.IndexOfAnyValues([7, 8]));
     }
 
     [Fact]
@@ -55,9 +55,41 @@ public class ImmutableArrayExtensionsTests
     {
         var array = ImmutableArray.Create(1, 2, 3, 4, 5, 4);
 
-        Assert.Equal(5, array.LastIndexOfAny([4, 7]));
-        Assert.Equal(4, array.LastIndexOfAny([1, 2, 5]));
-        Assert.Equal(4, array.LastIndexOfAny([9, 8, 5]));
-        Assert.Equal(-1, array.LastIndexOfAny([7, 8]));
+        Assert.Equal(5, array.LastIndexOfAnyValues([4, 7]));
+        Assert.Equal(4, array.LastIndexOfAnyValues([1, 2, 5]));
+        Assert.Equal(4, array.LastIndexOfAnyValues([9, 8, 5]));
+        Assert.Equal(-1, array.LastIndexOfAnyValues([7, 8]));
+    }
+
+    [Fact]
+    public void AllContainAnyValues()
+    {
+        var array = ImmutableArray.Create(
+        [
+            ImmutableArray.Create(1, 2, 3, 4, 5, 4),
+            ImmutableArray.Create(1, 2, 3, 4, 5, 4),
+            ImmutableArray.Create(1, 2, 3, 4, 5, 4),
+            ImmutableArray.Create(1, 2, 3, 4, 5, 4),
+        ]);
+
+        Assert.True(array.AllContainAnyValues([1]));
+        Assert.True(array.AllContainAnyValues([4, 7]));
+        Assert.True(array.AllContainAnyValues([8, 9, 5]));
+    }
+
+    [Fact]
+    public void AllContainAnyValues_2()
+    {
+        var array = ImmutableArray.Create(
+        [
+            ImmutableArray.Create(1, 2, 3),
+            ImmutableArray.Create(3, 4, 5, 4),
+            ImmutableArray.Create(1, 3, 4),
+            ImmutableArray.Create(1, 2, 3, 5),
+        ]);
+
+        Assert.True(array.AllContainAnyValues([3]));
+        Assert.True(array.AllContainAnyValues([3, 7]));
+        Assert.True(array.AllContainAnyValues([8, 9, 3]));
     }
 }

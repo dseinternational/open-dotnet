@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Buffers;
+using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
 using CommunityToolkit.HighPerformance;
 using DSE.Open.Memory;
@@ -327,14 +328,14 @@ public static partial class Memory2DExtensions
     /// the 2D span, or -1 if the value is not found in the row.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    /// <param name="span2D"></param>
+    /// <param name="memory2D"></param>
     /// <param name="value"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ReadOnlySpan<Index2D> RowIndexesOf<T>(this Memory2D<T> span2D, T value)
+    public static ReadOnlySpan<Index2D> RowIndexesOf<T>(this Memory2D<T> memory2D, T value)
         where T : struct, IEquatable<T>
     {
-        return span2D.Span.RowIndexesOf(value);
+        return memory2D.Span.RowIndexesOf(value);
     }
 
     /// <summary>
@@ -342,14 +343,14 @@ public static partial class Memory2DExtensions
     /// the 2D span, or -1 if the value is not found in the row.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    /// <param name="span2D"></param>
+    /// <param name="memory2D"></param>
     /// <param name="value"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ReadOnlySpan<Index2D> RowIndexesOf<T>(this ReadOnlyMemory2D<T> span2D, T value)
+    public static ReadOnlySpan<Index2D> RowIndexesOf<T>(this ReadOnlyMemory2D<T> memory2D, T value)
         where T : struct, IEquatable<T>
     {
-        return span2D.Span.RowIndexesOf(value);
+        return memory2D.Span.RowIndexesOf(value);
     }
 
     /// <summary>
@@ -393,6 +394,34 @@ public static partial class Memory2DExtensions
     /// Searches for the first index of any of the specified values in each row of the 2D span.
     /// </summary>
     /// <typeparam name="T"></typeparam>
+    /// <param name="memory2D"></param>
+    /// <param name="values"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ReadOnlySpan<Index2D> RowIndexesOfAny<T>(this Memory2D<T> memory2D, ReadOnlySpan<T> values)
+        where T : struct, IEquatable<T>
+    {
+        return memory2D.Span.RowIndexesOfAny(values);
+    }
+
+    /// <summary>
+    /// Searches for the first index of any of the specified values in each row of the 2D span.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="memory2D"></param>
+    /// <param name="values"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ReadOnlySpan<Index2D> RowIndexesOfAny<T>(this ReadOnlyMemory2D<T> memory2D, ReadOnlySpan<T> values)
+        where T : struct, IEquatable<T>
+    {
+        return memory2D.Span.RowIndexesOfAny(values);
+    }
+
+    /// <summary>
+    /// Searches for the first index of any of the specified values in each row of the 2D span.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     /// <param name="span2D"></param>
     /// <param name="values"></param>
     /// <returns></returns>
@@ -428,6 +457,34 @@ public static partial class Memory2DExtensions
     /// Searches for the first index of any of the specified values in each row of the 2D span.
     /// </summary>
     /// <typeparam name="T"></typeparam>
+    /// <param name="memory2D"></param>
+    /// <param name="values"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ReadOnlySpan<Index2D> RowIndexesOfAny<T>(this Memory2D<T> memory2D, SearchValues<T> values)
+        where T : struct, IEquatable<T>
+    {
+        return memory2D.Span.RowIndexesOfAny(values);
+    }
+
+    /// <summary>
+    /// Searches for the first index of any of the specified values in each row of the 2D span.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="memory2D"></param>
+    /// <param name="values"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ReadOnlySpan<Index2D> RowIndexesOfAny<T>(this ReadOnlyMemory2D<T> memory2D, SearchValues<T> values)
+        where T : struct, IEquatable<T>
+    {
+        return memory2D.Span.RowIndexesOfAny(values);
+    }
+
+    /// <summary>
+    /// Searches for the first index of any of the specified values in each row of the 2D span.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     /// <param name="span2D"></param>
     /// <param name="values"></param>
     /// <returns></returns>
@@ -453,6 +510,29 @@ public static partial class Memory2DExtensions
         for (var r = 0; r < span2D.Height; r++)
         {
             var row = span2D.GetRowSpan(r);
+            indexes[r] = (r, row.IndexOfAny(values));
+        }
+
+        return indexes;
+    }
+
+    /// <summary>
+    /// Searches for the first index of any of the specified values in each row of the 2D array.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="array2D"></param>
+    /// <param name="values"></param>
+    /// <returns></returns>
+    public static ReadOnlySpan<Index2D> RowIndexesOfAny<T>(
+        this ImmutableArray<ImmutableArray<T>> array2D,
+        ReadOnlySpan<T> values)
+        where T : struct, IEquatable<T>
+    {
+        var indexes = new Index2D[array2D.Length];
+
+        for (var r = 0; r < array2D.Length; r++)
+        {
+            var row = array2D[r].AsSpan();
             indexes[r] = (r, row.IndexOfAny(values));
         }
 
