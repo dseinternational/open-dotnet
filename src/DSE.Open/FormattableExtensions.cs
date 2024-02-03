@@ -7,25 +7,25 @@ public static class FormattableExtensions
 {
     public static string ToString<T>(this T formattable, string? format) where T : IFormattable
     {
-        ArgumentNullException.ThrowIfNull(formattable);
+        Guard.IsNotNull(formattable);
         return formattable.ToString(format, null);
     }
 
     public static string ToString<T>(this T formattable, IFormatProvider formatProvider) where T : IFormattable
     {
-        ArgumentNullException.ThrowIfNull(formattable);
+        Guard.IsNotNull(formattable);
         return formattable.ToString(null, formatProvider);
     }
 
     public static string ToStringInvariant<T>(this T formattable) where T : IFormattable
     {
-        ArgumentNullException.ThrowIfNull(formattable);
+        Guard.IsNotNull(formattable);
         return formattable.ToString(null, CultureInfo.InvariantCulture);
     }
 
     public static string ToStringInvariant<T>(this T formattable, string? format) where T : IFormattable
     {
-        ArgumentNullException.ThrowIfNull(formattable);
+        Guard.IsNotNull(formattable);
         return formattable.ToString(format, CultureInfo.InvariantCulture);
     }
 }
