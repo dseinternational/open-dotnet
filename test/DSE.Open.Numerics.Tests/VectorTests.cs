@@ -3,7 +3,7 @@
 
 namespace DSE.Open.Numerics;
 
-public class VectorTests
+public partial class VectorTests
 {
     [Fact]
     public void Init()
@@ -15,6 +15,30 @@ public class VectorTests
         Assert.Equal(6, v1.Length);
         Assert.Equal(6, v2.Length);
 
-        Assert.True(v1.Sequence.SequenceEqual(v2.Sequence));
+        Assert.True(v1.Span.SequenceEqual(v2.Span));
+    }
+
+    [Fact]
+    public void CreateDefault()
+    {
+        var v1 = Vector.CreateDefault<int>(6);
+        Assert.Equal(6, v1.Length);
+        Assert.True(v1.Span.SequenceEqual(new int[6]));
+    }
+
+    [Fact]
+    public void CreateZeroes()
+    {
+        var v1 = Vector.CreateZeroes<int>(6);
+        Assert.Equal(6, v1.Length);
+        Assert.True(v1.Span.SequenceEqual(new int[6]));
+    }
+
+    [Fact]
+    public void CreateOnes()
+    {
+        var v1 = Vector.CreateOnes<int>(6);
+        Assert.Equal(6, v1.Length);
+        Assert.True(v1.Span.SequenceEqual(new int[6] { 1, 1, 1, 1, 1, 1 }));
     }
 }

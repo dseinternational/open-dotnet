@@ -10,45 +10,42 @@ namespace DSE.Open.Numerics;
 public readonly struct Vector<T> : IVector<T, Vector<T>>, IEquatable<Vector<T>>
     where T : struct, INumber<T>
 {
-    private readonly Memory<T> _sequence;
+    private readonly Memory<T> _data;
 
-    public Vector(T[] sequence) : this(new Memory<T>(sequence))
+    public Vector(T[] data) : this(new Memory<T>(data))
     {
     }
 
-    public Vector(T[] sequence, int start, int length) : this(new Memory<T>(sequence, start, length))
+    public Vector(T[] data, int start, int length) : this(new Memory<T>(data, start, length))
     {
     }
 
-    public Vector(Memory<T> sequence)
+    public Vector(Memory<T> data)
     {
-        _sequence = sequence;
+        _data = data;
     }
 
-#pragma warning disable CA1000 // Do not declare static members on generic types
-
-    public static Vector<T> Create(Span<T> sequence)
+    static Vector<T> IVector<T, Vector<T>>.Create(Span<T> data)
     {
-        return new Vector<T>(sequence.ToArray());
+        return new Vector<T>(data.ToArray());
     }
 
-    public static Vector<T> Create(int length)
+    public Span<T> Span
     {
-        return new Vector<T>(new T[length]);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => _data.Span;
     }
 
-#pragma warning restore CA1000 // Do not declare static members on generic types
+    public int Length => _data.Length;
 
-    public Span<T> Sequence => _sequence.Span;
-
-    public int Length => _sequence.Length;
-
-    ReadOnlySpan<T> IReadOnlyVector<T, Vector<T>>.Sequence => Sequence;
+    ReadOnlySpan<T> IReadOnlyVector<T, Vector<T>>.Span => Span;
 
     public T this[int index]
     {
-        get => _sequence.Span[index];
-        set => _sequence.Span[index] = value;
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => _data.Span[index];
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        set => _data.Span[index] = value;
     }
 
     public override bool Equals(object? obj)
@@ -56,51 +53,30 @@ public readonly struct Vector<T> : IVector<T, Vector<T>>, IEquatable<Vector<T>>
         return obj is Vector<T> vector && Equals(vector);
     }
 
+    public MemoryEnumerator<T> GetEnumerator()
+    {
+        return _data.GetEnumerator();
+    }
+
     public override int GetHashCode()
     {
-        return _sequence.GetHashCode();
+        return _data.GetHashCode();
     }
 
     public bool Equals(Vector<T> other)
     {
-        return _sequence.Equals(other._sequence);
+        return _data.Equals(other._data);
     }
 
-    static Vector<T> IReadOnlyVector<T, Vector<T>>.Create(ReadOnlySpan<T> sequence)
+    public bool SequenceEqual(Vector<T> other)
+    {
+        return _data.Span.SequenceEqual(other._data.Span);
+    }
+
+    static Vector<T> IReadOnlyVector<T, Vector<T>>.Create(ReadOnlySpan<T> data)
     {
         // only option is to copy?
         throw new NotImplementedException();
-    }
-
-    public Enumerator GetEnumerator()
-    {
-        return new(_sequence);
-    }
-
-#pragma warning disable CA1034 // Nested types should not be visible
-    public ref struct Enumerator
-#pragma warning restore CA1034 // Nested types should not be visible
-    {
-        private readonly Memory<T> _sequence;
-        private int _index;
-
-        internal Enumerator(Memory<T> sequence)
-        {
-            _sequence = sequence;
-            _index = -1;
-        }
-
-        public T Current => _sequence.Span[_index];
-
-        public bool MoveNext()
-        {
-            return ++_index < _sequence.Length;
-        }
-
-        public void Reset()
-        {
-            _index = -1;
-        }
     }
 
     public static bool operator ==(Vector<T> left, Vector<T> right)

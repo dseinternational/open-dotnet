@@ -8,34 +8,42 @@ namespace DSE.Open.Numerics;
 
 internal static class GuardMatrix
 {
-    public static bool HaveSameDimensions<T>(ReadOnlyMatrix<T> x, ReadOnlyMatrix<T> y)
+    public static bool HaveSameDimensions<T>(ReadOnlySpanMatrix<T> x, ReadOnlySpanMatrix<T> y)
         where T : struct, INumber<T>
     {
         return x.RowCount == y.RowCount && x.ColumnCount == y.ColumnCount;
     }
 
-    public static bool HaveSameDimensions<T>(ReadOnlyMatrix<T> x, ReadOnlyMatrix<T> y, ReadOnlyMatrix<T> z)
+    public static bool HaveSameDimensions<T>(ReadOnlySpanMatrix<T> x, ReadOnlySpanMatrix<T> y, ReadOnlySpanMatrix<T> z)
         where T : struct, INumber<T>
     {
         return x.RowCount == y.RowCount && x.ColumnCount == y.ColumnCount
             && x.RowCount == z.RowCount && x.ColumnCount == z.ColumnCount;
     }
 
-    public static bool HaveSameDimensions<T>(ReadOnlySpan2D<T> x, ReadOnlySpan2D<T> y)
-        where T : struct, INumber<T>
+    public static bool HaveSameDimensions(IReadOnlyMatrix x, IReadOnlyMatrix y)
     {
-        return x.Height == y.Width && x.Height == y.Width;
+        return x.RowCount == y.RowCount && x.ColumnCount == y.ColumnCount;
+    }
+
+    public static bool HaveSameDimensions(IReadOnlyMatrix x, IReadOnlyMatrix y, IReadOnlyMatrix z)
+    {
+        return x.RowCount == y.RowCount && x.ColumnCount == y.ColumnCount
+            && x.RowCount == z.RowCount && x.ColumnCount == z.ColumnCount;
+    }
+
+    public static bool HaveSameDimensions<T>(ReadOnlySpan2D<T> x, ReadOnlySpan2D<T> y)
+    {
+        return x.Height == y.Height && x.Width == y.Width;
     }
 
     public static bool HaveSameDimensions<T>(ReadOnlySpan2D<T> x, ReadOnlySpan2D<T> y, ReadOnlySpan2D<T> z)
-        where T : struct, INumber<T>
     {
         return x.Height == y.Height && x.Width == y.Width
             && x.Height == z.Height && x.Width == z.Width;
     }
 
-    public static void EnsureSameDimensions<T>(ReadOnlyMatrix<T> x, ReadOnlyMatrix<T> y)
-        where T : struct, INumber<T>
+    public static void EnsureSameDimensions(IReadOnlyMatrix x, IReadOnlyMatrix y)
     {
         if (!HaveSameDimensions(x, y))
         {
@@ -43,8 +51,7 @@ internal static class GuardMatrix
         }
     }
 
-    public static void EnsureSameDimensions<T>(ReadOnlyMatrix<T> x, ReadOnlyMatrix<T> y, ReadOnlyMatrix<T> z)
-        where T : struct, INumber<T>
+    public static void EnsureSameDimensions(IReadOnlyMatrix x, IReadOnlyMatrix y, IReadOnlyMatrix z)
     {
         if (!HaveSameDimensions(x, y, z))
         {
@@ -53,7 +60,6 @@ internal static class GuardMatrix
     }
 
     public static void EnsureSameDimensions<T>(ReadOnlySpan2D<T> x, ReadOnlySpan2D<T> y)
-        where T : struct, INumber<T>
     {
         if (!HaveSameDimensions(x, y))
         {
@@ -62,7 +68,6 @@ internal static class GuardMatrix
     }
 
     public static void EnsureSameDimensions<T>(ReadOnlySpan2D<T> x, ReadOnlySpan2D<T> y, Span2D<T> z)
-        where T : struct, INumber<T>
     {
         if (!HaveSameDimensions(x, y, z))
         {

@@ -5,6 +5,7 @@ using System.Numerics;
 using System.Numerics.Tensors;
 using System.Runtime.CompilerServices;
 using CommunityToolkit.HighPerformance;
+using DSE.Open.Memory;
 
 namespace DSE.Open.Numerics;
 
@@ -50,17 +51,6 @@ public readonly struct Matrix<T> : IEquatable<Matrix<T>>
 
     internal Span2D<T> Span => _data.Span;
 
-    public int RowCount => _data.Height;
-
-    public int ColumnCount => _data.Width;
-
-    /// <summary>
-    /// Gets a <see cref="Span{T}"/> representing the specified row of the matrix.
-    /// </summary>
-    /// <param name="row"></param>
-    /// <returns></returns>
-    public SpanVector<T> this[int row] => new ( _data.Span.GetRowSpan(row));
-
     /// <summary>
     /// Gets or sets the value at the specified row and column of the matrix.
     /// </summary>
@@ -73,6 +63,28 @@ public readonly struct Matrix<T> : IEquatable<Matrix<T>>
         set => _data.Span[row, column] = value;
     }
 
+#pragma warning disable CA1043 // Use Integral Or String Argument For Indexers
+    public T this[MatrixIndex index]
+#pragma warning restore CA1043 // Use Integral Or String Argument For Indexers
+    {
+        get => _data.Span[index.Row, index.Column];
+        set => _data.Span[index.Row, index.Column] = value;
+    }
+
+    public int RowCount => _data.Height;
+
+    public int ColumnCount => _data.Width;
+
+    /// <summary>
+    /// Gets a <see cref="SpanVector{T}"/> representing the specified row of the matrix.
+    /// </summary>
+    /// <param name="row"></param>
+    /// <returns></returns>
+    public SpanVector<T> RowVector(int row)
+    {
+        return new(_data.Span.GetRowSpan(row));
+    }
+
     /// <summary>
     /// Adds the specified matrix to this matrix and returns a <b>new</b> matrix representing
     /// the result of the operation.
@@ -82,7 +94,7 @@ public readonly struct Matrix<T> : IEquatable<Matrix<T>>
     public Matrix<T> Add(Matrix<T> other)
     {
         var destination = new Matrix<T>(RowCount, ColumnCount);
-        MatrixMath.Add(this, other, destination);
+        Matrix.Add(this, other, destination);
         return destination;
     }
 

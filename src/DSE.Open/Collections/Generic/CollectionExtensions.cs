@@ -4,7 +4,6 @@
 using System.Collections.Frozen;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
-using DSE.Open.Linq;
 
 namespace DSE.Open.Collections.Generic;
 

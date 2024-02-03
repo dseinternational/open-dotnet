@@ -1,10 +1,9 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Numerics;
 using System.Numerics.Tensors;
 using BenchmarkDotNet.Attributes;
-using DSE.Open.Numerics;
 
 namespace DSE.Open.Benchmarks.Numerics;
 
@@ -21,18 +20,18 @@ public abstract class SequenceSumFloatingPointBenchmarksBase<T> : SequenceSumBen
     [Benchmark]
     public T Sequence_Sum_Array()
     {
-        return Sequence.SumFloatingPoint(ValuesArray);
+        return Open.Numerics.Vector.SumFloatingPoint(ValuesArray);
     }
 
     [Benchmark]
     public T Sequence_Sum_Collection()
     {
-        return Sequence.SumFloatingPoint(ValuesCollection);
+        return Open.Numerics.Vector.SumFloatingPoint(ValuesCollection);
     }
 
     [Benchmark]
     public T Sequence_Sum_Enumerable()
     {
-        return Sequence.SumFloatingPoint(ValuesEnumerable);
+        return Open.Numerics.Vector.SumFloatingPoint(ValuesEnumerable);
     }
 }

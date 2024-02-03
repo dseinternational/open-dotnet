@@ -1,4 +1,4 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Numerics;
@@ -6,15 +6,18 @@ using System.Numerics.Tensors;
 
 namespace DSE.Open.Numerics;
 
-public interface IReadOnlyVector<T, TSelf>
+public interface IReadOnlyVector
+{
+    int Length { get; }
+}
+
+public interface IReadOnlyVector<T, TSelf> : IReadOnlyVector
     where T : struct, INumber<T>
     where TSelf : IReadOnlyVector<T, TSelf>
 {
-    int Length { get; }
-
     T this[int index] { get; }
 
-    ReadOnlySpan<T> Sequence { get; }
+    ReadOnlySpan<T> Span { get; }
 
 #pragma warning disable CA1000 // Do not declare static members on generic types
     static abstract TSelf Create(ReadOnlySpan<T> sequence);
@@ -29,7 +32,7 @@ public interface IReadOnlyVector<T, TSelf>
 
         var destination = new T[Length];
 
-        TensorPrimitives.Add(Sequence, other.Sequence, destination);
+        TensorPrimitives.Add(Span, other.Span, destination);
 
         return TSelf.Create(destination);
     }
