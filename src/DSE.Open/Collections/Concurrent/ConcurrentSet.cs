@@ -279,7 +279,7 @@ public class ConcurrentSet<T> : IReadOnlyCollection<T>, ICollection<T>
     /// contains too many items.</exception>
     public bool Add(T item)
     {
-        ArgumentNullException.ThrowIfNull(item);
+        Guard.IsNotNull(item);
         return AddInternal(item, _comparer.GetHashCode(item), true);
     }
 
@@ -336,7 +336,7 @@ public class ConcurrentSet<T> : IReadOnlyCollection<T>, ICollection<T>
     /// </remarks>
     public bool TryGetValue(T equalValue, [MaybeNullWhen(false)] out T actualValue)
     {
-        ArgumentNullException.ThrowIfNull(equalValue);
+        Guard.IsNotNull(equalValue);
 
         var hashCode = _comparer.GetHashCode(equalValue);
 
@@ -373,7 +373,7 @@ public class ConcurrentSet<T> : IReadOnlyCollection<T>, ICollection<T>
     /// <returns>true if an item was removed successfully; otherwise, false.</returns>
     public bool TryRemove(T item)
     {
-        ArgumentNullException.ThrowIfNull(item);
+        Guard.IsNotNull(item);
 
         var hashCode = _comparer.GetHashCode(item);
 

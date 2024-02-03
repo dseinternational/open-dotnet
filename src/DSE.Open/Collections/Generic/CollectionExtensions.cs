@@ -384,7 +384,7 @@ public static class CollectionExtensions
 
     public static void ForEach<T>(this ReadOnlyMemory<T> collection, Action<T> action)
     {
-        ArgumentNullException.ThrowIfNull(collection);
+        Guard.IsNotNull(collection);
         ArgumentNullException.ThrowIfNull(action);
 
         var span = collection.Span;

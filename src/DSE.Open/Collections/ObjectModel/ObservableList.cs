@@ -100,7 +100,7 @@ public class ObservableList<T> : IObservableList<T>
 
     public void Add(T item, bool suppressEvents)
     {
-        ArgumentNullException.ThrowIfNull(item);
+        Guard.IsNotNull(item);
 
         _observedItems.Add(item);
 
@@ -171,7 +171,7 @@ public class ObservableList<T> : IObservableList<T>
 
     public int BinarySearch(int index, int count, T item, IComparer<T>? comparer)
     {
-        ArgumentNullException.ThrowIfNull(item);
+        Guard.IsNotNull(item);
         return _observedItems.BinarySearch(index, count, item, comparer);
     }
 
@@ -283,7 +283,7 @@ public class ObservableList<T> : IObservableList<T>
 
     public int IndexOf(T item)
     {
-        ArgumentNullException.ThrowIfNull(item);
+        Guard.IsNotNull(item);
         return _observedItems.IndexOf(item);
     }
 
@@ -296,7 +296,7 @@ public class ObservableList<T> : IObservableList<T>
     {
         CheckReentrancy();
 
-        ArgumentNullException.ThrowIfNull(item);
+        Guard.IsNotNull(item);
 
         _observedItems.Insert(index, item);
 
@@ -438,7 +438,7 @@ public class ObservableList<T> : IObservableList<T>
     {
         CheckReentrancy();
 
-        ArgumentNullException.ThrowIfNull(item);
+        Guard.IsNotNull(item);
 
         var oldItem = this[index];
 
