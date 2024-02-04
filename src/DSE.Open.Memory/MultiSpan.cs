@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Numerics.Tensors;
 using System.Runtime.CompilerServices;
@@ -14,47 +15,71 @@ namespace DSE.Open.Memory;
 #pragma warning disable CA1043 // Use Integral Or String Argument For Indexers
 
 /// <summary>
-/// N-dimensional view over a <see cref="Span{T}"/>
+/// <b>[Experimental]</b> A multi-dimensional view over a <see cref="Span{T}"/>
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public readonly ref struct SpanND<T>
+public readonly ref struct MultiSpan<T>
 {
     private readonly Span<T> _memory;
     private readonly uint[] _shape;
     private readonly uint[] _strides;
 
-    public SpanND(T[] elements)
+    /// <summary>
+    /// Creates a 1-dimensional view over an array. Changes will be reflected
+    /// in the original array.
+    /// </summary>
+    /// <param name="elements">The elements over which to create a 1-dimensional
+    /// <see cref="MultiSpan{T}"/>.</param>
+    public MultiSpan(T[] elements)
     {
         ArgumentNullException.ThrowIfNull(elements);
 
         _shape = [(uint)elements.Length];
 
-        _strides = SpanND.GetStrides(_shape);
+        _strides = MultiSpan.GetStrides(_shape);
 
         _memory = elements;
     }
 
-    public SpanND(Span<T> elements)
+    /// <summary>
+    /// Creates a 1-dimensional view over a span. Changes will be reflected
+    /// in the original span.
+    /// </summary>
+    /// <param name="elements">The elements over which to create a 1-dimensional
+    /// <see cref="MultiSpan{T}"/>.</param>
+    public MultiSpan(Span<T> elements)
     {
         _shape = [(uint)elements.Length];
 
-        _strides = SpanND.GetStrides(_shape);
+        _strides = MultiSpan.GetStrides(_shape);
 
         _memory = elements;
     }
 
-    public SpanND(T[,] elements)
+    /// <summary>
+    /// Creates a 2-dimensional view over an 2-dimensional array. Changes will
+    /// be reflected in the original array.
+    /// </summary>
+    /// <param name="elements">The elements over which to create a 2-dimensional
+    /// <see cref="MultiSpan{T}"/>.</param>
+    public MultiSpan(T[,] elements)
     {
         ArgumentNullException.ThrowIfNull(elements);
 
         _shape = [(uint)elements.GetLength(0), (uint)elements.GetLength(1)];
 
-        _strides = SpanND.GetStrides(_shape);
+        _strides = MultiSpan.GetStrides(_shape);
 
         _memory = MemoryMarshal.CreateSpan(ref elements.DangerousGetReference(), elements.Length);
     }
 
-    public SpanND(T[,,] elements)
+    /// <summary>
+    /// Creates a 3-dimensional view over an 3-dimensional array. Changes will
+    /// be reflected in the original array.
+    /// </summary>
+    /// <param name="elements">The elements over which to create a 3-dimensional
+    /// <see cref="MultiSpan{T}"/>.</param>
+    public MultiSpan(T[,,] elements)
     {
         ArgumentNullException.ThrowIfNull(elements);
 
@@ -65,12 +90,18 @@ public readonly ref struct SpanND<T>
             (uint)elements.GetLength(2)
         ];
 
-        _strides = SpanND.GetStrides(_shape);
+        _strides = MultiSpan.GetStrides(_shape);
 
         _memory = MemoryMarshal.CreateSpan(ref elements.DangerousGetReference(), elements.Length);
     }
 
-    public SpanND(T[,,,] elements)
+    /// <summary>
+    /// Creates a 4-dimensional view over an 4-dimensional array. Changes will
+    /// be reflected in the original array.
+    /// </summary>
+    /// <param name="elements">The elements over which to create a 4-dimensional
+    /// <see cref="MultiSpan{T}"/>.</param>
+    public MultiSpan(T[,,,] elements)
     {
         ArgumentNullException.ThrowIfNull(elements);
 
@@ -82,12 +113,12 @@ public readonly ref struct SpanND<T>
             (uint)elements.GetLength(3)
         ];
 
-        _strides = SpanND.GetStrides(_shape);
+        _strides = MultiSpan.GetStrides(_shape);
 
         _memory = MemoryMarshal.CreateSpan(ref elements.DangerousGetReference(), elements.Length);
     }
 
-    public SpanND(T[,,,,] elements)
+    public MultiSpan(T[,,,,] elements)
     {
         ArgumentNullException.ThrowIfNull(elements);
 
@@ -100,16 +131,16 @@ public readonly ref struct SpanND<T>
             (uint)elements.GetLength(4)
         ];
 
-        _strides = SpanND.GetStrides(_shape);
+        _strides = MultiSpan.GetStrides(_shape);
 
         _memory = MemoryMarshal.CreateSpan(ref elements.DangerousGetReference(), elements.Length);
     }
 
-    public SpanND(Span2D<T> elements)
+    public MultiSpan(Span2D<T> elements)
     {
         _shape = [(uint)elements.Height, (uint)elements.Width];
 
-        _strides = SpanND.GetStrides(_shape);
+        _strides = MultiSpan.GetStrides(_shape);
 
         if (!elements.TryGetSpan(out _memory))
         {
@@ -117,13 +148,13 @@ public readonly ref struct SpanND<T>
         }
     }
 
-    internal SpanND(Span<T> elements, ReadOnlySpan<uint> shape, bool createIfEmpty)
+    internal MultiSpan(Span<T> elements, ReadOnlySpan<uint> shape, bool createIfEmpty)
     {
         _shape = shape.ToArray();
 
         var size = TensorPrimitives.Product<uint>(_shape);
 
-        _strides = SpanND.GetStrides(shape);
+        _strides = MultiSpan.GetStrides(shape);
 
         if (createIfEmpty && elements.IsEmpty && size > 0)
         {
@@ -142,9 +173,9 @@ public readonly ref struct SpanND<T>
     public T this[ReadOnlySpan<uint> index]
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => _memory[(int)SpanND.GetIndex(_strides, index)];
+        get => _memory[(int)MultiSpan.GetIndex(_strides, index)];
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        set => _memory[(int)SpanND.GetIndex(_strides, index)] = value;
+        set => _memory[(int)MultiSpan.GetIndex(_strides, index)] = value;
     }
 
     public Span<T> Memory => _memory;
@@ -157,73 +188,78 @@ public readonly ref struct SpanND<T>
 
     public uint Rank => (uint)_shape.Length;
 
+
+#pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
+
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    [Obsolete("Equals() on MultiSpan<T> will always throw an exception. Use == instead.")]
     public override bool Equals(object? obj)
     {
-        throw new NotSupportedException();
+        throw new NotSupportedException($"{nameof(MultiSpan<T>)}.Equals(object) is not supported.");
     }
 
-    public bool Equals(SpanND<T> other)
-    {
-        throw new NotSupportedException();
-    }
-
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    [Obsolete("GetHashCode() on MultiSpan<T> will always throw an exception.")]
     public override int GetHashCode()
     {
-        throw new NotSupportedException();
+        throw new NotSupportedException($"{nameof(MultiSpan<T>)}.GetHashCode() is not supported.");
     }
 
-    public static bool operator ==(SpanND<T> left, SpanND<T> right)
+#pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
+
+    public static bool operator ==(MultiSpan<T> left, MultiSpan<T> right)
     {
-        return left.Equals(right);
+        return left._memory == right._memory
+            && left._shape.AsSpan().SequenceEqual(right._shape.AsSpan());
     }
 
-    public static bool operator !=(SpanND<T> left, SpanND<T> right)
+    public static bool operator !=(MultiSpan<T> left, MultiSpan<T> right)
     {
         return !(left == right);
     }
 }
 
-public static class SpanND
+public static class MultiSpan
 {
     /// <summary>
-    /// Creates a new 2-dimensional <see cref="SpanND{T}"/> with dimensions of the specified lengths.
+    /// Creates a new 2-dimensional <see cref="MultiSpan{T}"/> with dimensions of the specified lengths.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="d1Length"></param>
     /// <param name="d2Length"></param>
     /// <returns></returns>
-    public static SpanND<T> CreateWithDimensions<T>(uint d1Length, uint d2Length)
+    public static MultiSpan<T> CreateWithDimensions<T>(uint d1Length, uint d2Length)
     {
         uint[] d = [d1Length, d2Length];
-        return new SpanND<T>(default, d, true);
+        return new MultiSpan<T>(default, d, true);
     }
 
     /// <summary>
-    /// Creates a new 3-dimensional <see cref="SpanND{T}"/> with dimensions of the specified lengths.
+    /// Creates a new 3-dimensional <see cref="MultiSpan{T}"/> with dimensions of the specified lengths.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="d1Length"></param>
     /// <param name="d2Length"></param>
     /// <param name="d3Length"></param>
     /// <returns></returns>
-    public static SpanND<T> CreateWithDimensions<T>(
+    public static MultiSpan<T> CreateWithDimensions<T>(
         uint d1Length,
         uint d2Length,
         uint d3Length)
     {
         uint[] d = [d1Length, d2Length, d3Length];
-        return new SpanND<T>(default, d, true);
+        return new MultiSpan<T>(default, d, true);
     }
 
     /// <summary>
-    /// Creates a new n-dimensional <see cref="SpanND{T}"/> with dimensions of the specified lengths.
+    /// Creates a new n-dimensional <see cref="MultiSpan{T}"/> with dimensions of the specified lengths.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="shape"></param>
     /// <returns></returns>
-    public static SpanND<T> CreateWithDimensions<T>(ReadOnlySpan<uint> shape)
+    public static MultiSpan<T> CreateWithDimensions<T>(ReadOnlySpan<uint> shape)
     {
-        return new SpanND<T>(default, shape, true);
+        return new MultiSpan<T>(default, shape, true);
     }
 
     /// <summary>

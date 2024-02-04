@@ -14,7 +14,7 @@ public class MemoryNDTests
     {
         var data = new int[,] { { 1, 2 }, { 3, 4 } };
 
-        var t = MemoryND.Create(data);
+        var t = MultiMemory.Create(data);
 
         Assert.Equal(2, t.Shape.Length);
         Assert.Equal(4u, t.Length);
@@ -33,7 +33,7 @@ public class MemoryNDTests
             { { 7, 8, 9 }, { 10, 11, 12 } }
         };
 
-        var t = MemoryND.Create(data);
+        var t = MultiMemory.Create(data);
 
         Assert.Equal(3, t.Shape.Length);
         Assert.Equal(12u, t.Length);
@@ -61,7 +61,7 @@ public class MemoryNDTests
             }
         };
 
-        var t = MemoryND.Create(data);
+        var t = MultiMemory.Create(data);
 
         Assert.Equal(4, t.Shape.Length);
         Assert.Equal(16u, t.Length);
@@ -82,7 +82,7 @@ public class MemoryNDTests
     {
         Memory2D<int> data = new int[,] { { 1, 2 }, { 3, 4 } };
 
-        var t = new MemoryND<int>(data);
+        var t = new MultiMemory<int>(data);
 
         Assert.Equal(2, t.Shape.Length);
         Assert.Equal(4u, t.Length);
@@ -95,7 +95,7 @@ public class MemoryNDTests
     [Fact]
     public void CreateWithDimensions_Memory()
     {
-        var t = MemoryND.CreateWithDimensions<int>([2, 2, 2]);
+        var t = MultiMemory.CreateWithDimensions<int>([2, 2, 2]);
         Assert.Equal(3, t.Shape.Length);
         Assert.Equal(8u, t.Length);
     }
@@ -103,7 +103,7 @@ public class MemoryNDTests
     [Fact]
     public void CreateWithDimensions_Tuple_2()
     {
-        var t = MemoryND.CreateWithDimensions<int>(2, 2);
+        var t = MultiMemory.CreateWithDimensions<int>(2, 2);
         Assert.Equal(2, t.Shape.Length);
         Assert.Equal(4u, t.Length);
     }
@@ -111,7 +111,7 @@ public class MemoryNDTests
     [Fact]
     public void CreateWithDimensions_Tuple_3()
     {
-        var t = MemoryND.CreateWithDimensions<int>(2, 2, 2);
+        var t = MultiMemory.CreateWithDimensions<int>(2, 2, 2);
         Assert.Equal(3, t.Shape.Length);
         Assert.Equal(8u, t.Length);
     }

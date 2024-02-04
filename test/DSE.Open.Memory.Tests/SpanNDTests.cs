@@ -14,7 +14,7 @@ public class SpanNDTests
     {
         Span<int> data = [1, 2, 3, 4, 5, 6, 7, 8];
 
-        var t = new SpanND<int>(data);
+        var t = new MultiSpan<int>(data);
 
         Assert.Equal(1, t.Shape.Length);
         Assert.Equal(8u, t.Length);
@@ -33,7 +33,7 @@ public class SpanNDTests
     {
         int[] data = [1, 2, 3, 4, 5, 6, 7, 8];
 
-        var t = new SpanND<int>(data);
+        var t = new MultiSpan<int>(data);
 
         Assert.Equal(1, t.Shape.Length);
         Assert.Equal(8u, t.Length);
@@ -52,7 +52,7 @@ public class SpanNDTests
     {
         var data = new int[,] { { 1, 2 }, { 3, 4 } };
 
-        var t = new SpanND<int>(data);
+        var t = new MultiSpan<int>(data);
 
         Assert.Equal(2, t.Shape.Length);
         Assert.Equal(4u, t.Length);
@@ -67,7 +67,7 @@ public class SpanNDTests
     {
         Span2D<int> data = new int[,] { { 1, 2 }, { 3, 4 } };
 
-        var t = new SpanND<int>(data);
+        var t = new MultiSpan<int>(data);
 
         Assert.Equal(2, t.Shape.Length);
         Assert.Equal(4u, t.Length);
@@ -86,7 +86,7 @@ public class SpanNDTests
             { { 7, 8, 9 }, { 10, 11, 12 } }
         };
 
-        var t = new SpanND<int>(data);
+        var t = new MultiSpan<int>(data);
 
         Assert.Equal(3, t.Shape.Length);
         Assert.Equal(12u, t.Length);
@@ -114,7 +114,7 @@ public class SpanNDTests
             }
         };
 
-        var t = new SpanND<int>(data);
+        var t = new MultiSpan<int>(data);
 
         Assert.Equal(4, t.Shape.Length);
         Assert.Equal(16u, t.Length);
@@ -157,7 +157,7 @@ public class SpanNDTests
             }
         };
 
-        var t = new SpanND<int>(data);
+        var t = new MultiSpan<int>(data);
 
         Assert.Equal(5, t.Shape.Length);
         Assert.Equal(32u, t.Length);
@@ -174,7 +174,7 @@ public class SpanNDTests
     [Fact]
     public void CreateWithDimensions_Span()
     {
-        var t = SpanND.CreateWithDimensions<int>([2, 2, 2]);
+        var t = MultiSpan.CreateWithDimensions<int>([2, 2, 2]);
         Assert.Equal(3, t.Shape.Length);
         Assert.Equal(8u, t.Length);
     }
@@ -182,7 +182,7 @@ public class SpanNDTests
     [Fact]
     public void CreateWithDimensions_Tuple_2()
     {
-        var t = SpanND.CreateWithDimensions<int>(2, 2);
+        var t = MultiSpan.CreateWithDimensions<int>(2, 2);
         Assert.Equal(2, t.Shape.Length);
         Assert.Equal(4u, t.Length);
     }
@@ -190,7 +190,7 @@ public class SpanNDTests
     [Fact]
     public void CreateWithDimensions_Tuple_3()
     {
-        var t = SpanND.CreateWithDimensions<int>(2, 2, 2);
+        var t = MultiSpan.CreateWithDimensions<int>(2, 2, 2);
         Assert.Equal(3, t.Shape.Length);
         Assert.Equal(8u, t.Length);
     }

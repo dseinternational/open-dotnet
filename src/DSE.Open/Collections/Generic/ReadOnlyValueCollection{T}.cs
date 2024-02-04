@@ -104,7 +104,8 @@ public class ReadOnlyValueCollection<T>
     {
         return other is not null
             && (ReferenceEquals(this, other)
-                || (Count == other.Count && this.SequenceEqual(other)));
+                || (Count == other.Count
+                    && CollectionsMarshal.AsSpan(_items).SequenceEqual(CollectionsMarshal.AsSpan(other._items))));
     }
 
     public override bool Equals(object? obj)

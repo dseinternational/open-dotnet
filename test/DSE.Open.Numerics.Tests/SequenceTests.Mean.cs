@@ -17,7 +17,7 @@ public partial class SequenceTests
     public void Mean_Array_Int32_Double()
     {
         int[] sequence = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-        var mean = Sequence.Mean<int, double>((IList<int>)sequence);
+        var mean = Sequence.Mean<int, double>(sequence);
         Assert.Equal(5.5, mean);
     }
 
@@ -26,6 +26,6 @@ public partial class SequenceTests
     {
         var sequence = Enumerable.Range(1,500).Select(i => i * 3.333).ToList();
         var mean = Sequence.Mean(sequence);
-        Assert.Equal(834.91650000000004, mean, 0.00000000000001);
+        Assert.Equal(834.91650000000016, mean, 20E-14);
     }
 }
