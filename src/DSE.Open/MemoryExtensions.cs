@@ -127,7 +127,6 @@ public static partial class MemoryExtensions
         return result;
     }
 
-
     public static bool TryCopyWhere<T>(this Span<T> span, Span<T> buffer, Func<T, bool> predicate, out int itemsCopied)
     {
         return TryCopyWhere((ReadOnlySpan<T>)span, buffer, predicate, out itemsCopied);
