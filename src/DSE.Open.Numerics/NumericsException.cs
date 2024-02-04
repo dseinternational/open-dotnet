@@ -3,6 +3,7 @@
 
 using System.Numerics;
 using System.Runtime.CompilerServices;
+using DSE.Open.Memory;
 
 namespace DSE.Open.Numerics;
 
@@ -112,6 +113,67 @@ public class NumericsException : Exception
         if (x.Length != y.Length || x.Length != z.Length)
         {
             Throw("Vectors must be the same length.");
+        }
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void ThrowIfNotSameShape<T>(ReadOnlyMultiSpan<T> x, ReadOnlyMultiSpan<T> y)
+    {
+        if (x.Length != y.Length || !x.Shape.SequenceEqual(y.Shape))
+        {
+            Throw("Tensors must be the same shape.");
+        }
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void ThrowIfNotSameShape<T>(ReadOnlyMultiSpan<T> x, ReadOnlyMultiSpan<T> y, ReadOnlyMultiSpan<T> z)
+    {
+        if (x.Length != y.Length || x.Length != z.Length
+            || !x.Shape.SequenceEqual(y.Shape) || !x.Shape.SequenceEqual(z.Shape))
+        {
+            Throw("Tensors must be the same shape.");
+        }
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void ThrowIfNotSameShape<T>(ReadOnlyTensorSpan<T> x, ReadOnlyTensorSpan<T> y)
+        where T : struct, INumber<T>
+    {
+        if (x.Length != y.Length || !x.Shape.SequenceEqual(y.Shape))
+        {
+            Throw("Tensors must be the same shape.");
+        }
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void ThrowIfNotSameShape<T>(ReadOnlyTensorSpan<T> x, ReadOnlyTensorSpan<T> y, ReadOnlyTensorSpan<T> z)
+        where T : struct, INumber<T>
+    {
+        if (x.Length != y.Length || x.Length != z.Length
+            || !x.Shape.SequenceEqual(y.Shape) || !x.Shape.SequenceEqual(z.Shape))
+        {
+            Throw("Tensors must be the same shape.");
+        }
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void ThrowIfNotSameShape<T>(ReadOnlyTensor<T> x, ReadOnlyTensor<T> y)
+        where T : struct, INumber<T>
+    {
+        if (x.Length != y.Length || !x.Shape.SequenceEqual(y.Shape))
+        {
+            Throw("Tensors must be the same shape.");
+        }
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void ThrowIfNotSameShape<T>(ReadOnlyTensor<T> x, ReadOnlyTensor<T> y, ReadOnlyTensor<T> z)
+        where T : struct, INumber<T>
+    {
+        if (x.Length != y.Length || x.Length != z.Length
+            || !x.Shape.SequenceEqual(y.Shape) || !x.Shape.SequenceEqual(z.Shape))
+        {
+            Throw("Tensors must be the same shape.");
         }
     }
 

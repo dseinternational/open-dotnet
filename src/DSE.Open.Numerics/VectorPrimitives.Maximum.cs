@@ -3,7 +3,6 @@
 
 using System.Numerics;
 using System.Numerics.Tensors;
-using DSE.Open.Linq;
 
 namespace DSE.Open.Numerics;
 

@@ -21,7 +21,9 @@ public sealed class ValueCollection<T>
 
     public bool Equals(ValueCollection<T>? other)
     {
-        return other is not null && this.SequenceEqual(other);
+        return other is not null
+            && Count == other.Count
+            && this.SequenceEqual(other);
     }
 
     public override bool Equals(object? obj)
@@ -41,13 +43,13 @@ public sealed class ValueCollection<T>
 
     public override int GetHashCode()
     {
-        var hashCode = -7291863;
+        var hash = new HashCode();
 
         foreach (var i in this)
         {
-            hashCode = HashCode.Combine(hashCode, i);
+            hash.Add(i);
         }
 
-        return hashCode;
+        return hash.ToHashCode();
     }
 }

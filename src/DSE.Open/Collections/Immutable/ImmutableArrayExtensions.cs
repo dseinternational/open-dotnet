@@ -3,7 +3,6 @@
 
 using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
-using DSE.Open.Memory;
 
 namespace DSE.Open.Collections.Immutable;
 
