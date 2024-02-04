@@ -2,7 +2,6 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Numerics.Tensors;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -10,9 +9,10 @@ using CommunityToolkit.HighPerformance;
 
 namespace DSE.Open.Memory;
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-#pragma warning disable CA1065 // Do not raise exceptions in unexpected locations
 #pragma warning disable CA1043 // Use Integral Or String Argument For Indexers
+#pragma warning disable CA1065 // Do not raise exceptions in unexpected locations
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+#pragma warning disable CA2225 // Operator overloads have named alternates
 
 /// <summary>
 /// <b>[Experimental]</b> A multi-dimensional view over a <see cref="Span{T}"/>
@@ -20,7 +20,7 @@ namespace DSE.Open.Memory;
 /// <typeparam name="T"></typeparam>
 public readonly ref struct MultiSpan<T>
 {
-    private readonly Span<T> _memory;
+    private readonly Span<T> _elements;
     private readonly uint[] _shape;
     private readonly uint[] _strides;
 
@@ -36,9 +36,9 @@ public readonly ref struct MultiSpan<T>
 
         _shape = [(uint)elements.Length];
 
-        _strides = MultiSpan.GetStrides(_shape);
+        _strides = MultiMemory.GetStrides(_shape);
 
-        _memory = elements;
+        _elements = elements;
     }
 
     /// <summary>
@@ -51,9 +51,9 @@ public readonly ref struct MultiSpan<T>
     {
         _shape = [(uint)elements.Length];
 
-        _strides = MultiSpan.GetStrides(_shape);
+        _strides = MultiMemory.GetStrides(_shape);
 
-        _memory = elements;
+        _elements = elements;
     }
 
     /// <summary>
@@ -68,9 +68,9 @@ public readonly ref struct MultiSpan<T>
 
         _shape = [(uint)elements.GetLength(0), (uint)elements.GetLength(1)];
 
-        _strides = MultiSpan.GetStrides(_shape);
+        _strides = MultiMemory.GetStrides(_shape);
 
-        _memory = MemoryMarshal.CreateSpan(ref elements.DangerousGetReference(), elements.Length);
+        _elements = MemoryMarshal.CreateSpan(ref elements.DangerousGetReference(), elements.Length);
     }
 
     /// <summary>
@@ -90,9 +90,9 @@ public readonly ref struct MultiSpan<T>
             (uint)elements.GetLength(2)
         ];
 
-        _strides = MultiSpan.GetStrides(_shape);
+        _strides = MultiMemory.GetStrides(_shape);
 
-        _memory = MemoryMarshal.CreateSpan(ref elements.DangerousGetReference(), elements.Length);
+        _elements = MemoryMarshal.CreateSpan(ref elements.DangerousGetReference(), elements.Length);
     }
 
     /// <summary>
@@ -113,9 +113,9 @@ public readonly ref struct MultiSpan<T>
             (uint)elements.GetLength(3)
         ];
 
-        _strides = MultiSpan.GetStrides(_shape);
+        _strides = MultiMemory.GetStrides(_shape);
 
-        _memory = MemoryMarshal.CreateSpan(ref elements.DangerousGetReference(), elements.Length);
+        _elements = MemoryMarshal.CreateSpan(ref elements.DangerousGetReference(), elements.Length);
     }
 
     public MultiSpan(T[,,,,] elements)
@@ -131,34 +131,41 @@ public readonly ref struct MultiSpan<T>
             (uint)elements.GetLength(4)
         ];
 
-        _strides = MultiSpan.GetStrides(_shape);
+        _strides = MultiMemory.GetStrides(_shape);
 
-        _memory = MemoryMarshal.CreateSpan(ref elements.DangerousGetReference(), elements.Length);
+        _elements = MemoryMarshal.CreateSpan(ref elements.DangerousGetReference(), elements.Length);
     }
 
     public MultiSpan(Span2D<T> elements)
     {
         _shape = [(uint)elements.Height, (uint)elements.Width];
 
-        _strides = MultiSpan.GetStrides(_shape);
+        _strides = MultiMemory.GetStrides(_shape);
 
-        if (!elements.TryGetSpan(out _memory))
+        if (!elements.TryGetSpan(out _elements))
         {
-            _memory = MemoryMarshal.CreateSpan(ref elements.DangerousGetReference(), (int)elements.Length);
+            _elements = MemoryMarshal.CreateSpan(ref elements.DangerousGetReference(), (int)elements.Length);
         }
     }
 
-    internal MultiSpan(Span<T> elements, ReadOnlySpan<uint> shape, bool createIfEmpty)
+    public MultiSpan(ReadOnlySpan<uint> shape)
+        : this(default, shape, true)
+    {
+    }
+
+    internal MultiSpan(Span<T> elements, ReadOnlySpan<uint> shape, bool createIfEmpty, bool createUninitialized = false)
     {
         _shape = shape.ToArray();
 
         var size = TensorPrimitives.Product<uint>(_shape);
 
-        _strides = MultiSpan.GetStrides(shape);
+        _strides = MultiMemory.GetStrides(shape);
 
         if (createIfEmpty && elements.IsEmpty && size > 0)
         {
-            _memory = new T[size];
+            _elements = createUninitialized
+                ? GC.AllocateUninitializedArray<T>((int)size, pinned: false)
+                : new T[size];
             return;
         }
 
@@ -167,27 +174,26 @@ public readonly ref struct MultiSpan<T>
             throw new ArgumentException("The number of elements in the span must match the product of the shape");
         }
 
-        _memory = elements;
+        _elements = elements;
     }
 
     public T this[ReadOnlySpan<uint> index]
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => _memory[(int)MultiSpan.GetIndex(_strides, index)];
+        get => _elements[(int)MultiMemory.GetIndex(_strides, index)];
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        set => _memory[(int)MultiSpan.GetIndex(_strides, index)] = value;
+        set => _elements[(int)MultiMemory.GetIndex(_strides, index)] = value;
     }
 
-    public Span<T> Memory => _memory;
+    public Span<T> Elements => _elements;
 
     public ReadOnlySpan<uint> Shape => _shape;
 
     public ReadOnlySpan<uint> Strides => _strides;
 
-    public uint Length => (uint)_memory.Length;
+    public uint Length => (uint)_elements.Length;
 
     public uint Rank => (uint)_shape.Length;
-
 
 #pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
 
@@ -209,7 +215,7 @@ public readonly ref struct MultiSpan<T>
 
     public static bool operator ==(MultiSpan<T> left, MultiSpan<T> right)
     {
-        return left._memory == right._memory
+        return left._elements == right._elements
             && left._shape.AsSpan().SequenceEqual(right._shape.AsSpan());
     }
 
@@ -217,106 +223,16 @@ public readonly ref struct MultiSpan<T>
     {
         return !(left == right);
     }
-}
 
-public static class MultiSpan
-{
-    /// <summary>
-    /// Creates a new 2-dimensional <see cref="MultiSpan{T}"/> with dimensions of the specified lengths.
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="d1Length"></param>
-    /// <param name="d2Length"></param>
-    /// <returns></returns>
-    public static MultiSpan<T> CreateWithDimensions<T>(uint d1Length, uint d2Length)
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static implicit operator MultiSpan<T>(T[] array)
     {
-        uint[] d = [d1Length, d2Length];
-        return new MultiSpan<T>(default, d, true);
+        return new MultiSpan<T>(array);
     }
 
-    /// <summary>
-    /// Creates a new 3-dimensional <see cref="MultiSpan{T}"/> with dimensions of the specified lengths.
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="d1Length"></param>
-    /// <param name="d2Length"></param>
-    /// <param name="d3Length"></param>
-    /// <returns></returns>
-    public static MultiSpan<T> CreateWithDimensions<T>(
-        uint d1Length,
-        uint d2Length,
-        uint d3Length)
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static implicit operator ReadOnlyMultiSpan<T>(MultiSpan<T> elements)
     {
-        uint[] d = [d1Length, d2Length, d3Length];
-        return new MultiSpan<T>(default, d, true);
-    }
-
-    /// <summary>
-    /// Creates a new n-dimensional <see cref="MultiSpan{T}"/> with dimensions of the specified lengths.
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="shape"></param>
-    /// <returns></returns>
-    public static MultiSpan<T> CreateWithDimensions<T>(ReadOnlySpan<uint> shape)
-    {
-        return new MultiSpan<T>(default, shape, true);
-    }
-
-    /// <summary>
-    /// Gets the set of strides that can be used to calculate the offset of n-shape in a 1-dimensional layout
-    /// </summary>
-    /// <param name="shape"></param>
-    /// <param name="reverseStride"></param>
-    /// <returns></returns>
-    public static uint[] GetStrides(ReadOnlySpan<uint> shape, bool reverseStride = false)
-    {
-        var strides = new uint[shape.Length];
-
-        if (shape.Length == 0)
-        {
-            return strides;
-        }
-
-        var stride = 1u;
-
-        if (reverseStride)
-        {
-            for (var i = 0; i < strides.Length; i++)
-            {
-                strides[i] = stride;
-                stride *= shape[i];
-            }
-        }
-        else
-        {
-            for (var i = strides.Length - 1; i >= 0; i--)
-            {
-                strides[i] = stride;
-                stride *= shape[i];
-            }
-        }
-
-        return strides;
-    }
-
-    /// <summary>
-    /// Calculates the 1-d index for n-d indices in layout specified by strides.
-    /// </summary>
-    /// <param name="strides"></param>
-    /// <param name="indices"></param>
-    /// <param name="startFromDimension"></param>
-    /// <returns></returns>
-    public static uint GetIndex(ReadOnlySpan<uint> strides, ReadOnlySpan<uint> indices, uint startFromDimension = 0)
-    {
-        Debug.Assert(strides.Length == indices.Length);
-
-        var index = 0u;
-
-        for (var i = startFromDimension; i < indices.Length; i++)
-        {
-            index += strides[(int)i] * indices[(int)i];
-        }
-
-        return index;
+        return new ReadOnlyMultiSpan<T>(elements._elements, elements.Shape, false);
     }
 }

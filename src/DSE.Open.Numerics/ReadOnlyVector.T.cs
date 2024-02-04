@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.ComponentModel;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 
@@ -59,6 +60,7 @@ public readonly struct ReadOnlyVector<T> : IEquatable<ReadOnlyVector<T>>
         return _data.GetEnumerator();
     }
 
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public override int GetHashCode()
     {
         return _data.GetHashCode();

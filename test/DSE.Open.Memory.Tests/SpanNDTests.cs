@@ -174,7 +174,7 @@ public class SpanNDTests
     [Fact]
     public void CreateWithDimensions_Span()
     {
-        var t = MultiSpan.CreateWithDimensions<int>([2, 2, 2]);
+        var t = MultiMemory.CreateWithDimensions<int>([2, 2, 2]);
         Assert.Equal(3, t.Shape.Length);
         Assert.Equal(8u, t.Length);
     }
@@ -182,7 +182,7 @@ public class SpanNDTests
     [Fact]
     public void CreateWithDimensions_Tuple_2()
     {
-        var t = MultiSpan.CreateWithDimensions<int>(2, 2);
+        var t = MultiMemory.CreateWithDimensions<int>(2, 2);
         Assert.Equal(2, t.Shape.Length);
         Assert.Equal(4u, t.Length);
     }
@@ -190,7 +190,7 @@ public class SpanNDTests
     [Fact]
     public void CreateWithDimensions_Tuple_3()
     {
-        var t = MultiSpan.CreateWithDimensions<int>(2, 2, 2);
+        var t = MultiMemory.CreateWithDimensions<int>(2, 2, 2);
         Assert.Equal(3, t.Shape.Length);
         Assert.Equal(8u, t.Length);
     }
