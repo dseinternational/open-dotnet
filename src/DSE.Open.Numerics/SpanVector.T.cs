@@ -17,7 +17,6 @@ namespace DSE.Open.Numerics;
 /// </summary>
 /// <typeparam name="T"></typeparam>
 public readonly ref struct SpanVector<T>
-
     where T : struct, INumber<T>
 {
     private readonly Span<T> _data;

@@ -5,7 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DSE.Open.Memory\DSE.Open.Memory.csproj" />
+    <PackageReference Include="System.Numerics.Tensors" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\DSE.Open\DSE.Open.csproj" />
   </ItemGroup>
 
