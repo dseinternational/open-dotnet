@@ -54,12 +54,12 @@ public class SequenceSumFloatingPointKahanBabushkaNeumaierBenchmarks
     [Benchmark(Baseline = true)]
     public double SumFloatingPoint_Array_SummationCompensationNone()
     {
-        return Vector.SumFloatingPoint(ValuesArray, SummationCompensation.None);
+        return Sequence.SumFloatingPoint(ValuesArray, SummationCompensation.None);
     }
 
     [Benchmark]
     public double SumFloatingPoint_Array_SummationCompensationKahanBabushkaNeumaier()
     {
-        return Vector.SumFloatingPoint(ValuesArray, SummationCompensation.KahanBabushkaNeumaier);
+        return Sequence.SumFloatingPoint(ValuesArray, SummationCompensation.KahanBabushkaNeumaier);
     }
 }

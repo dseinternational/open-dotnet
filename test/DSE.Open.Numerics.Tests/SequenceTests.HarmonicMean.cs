@@ -3,7 +3,7 @@
 
 namespace DSE.Open.Numerics;
 
-public partial class VectorTests
+public partial class SequenceTests
 {
 
 }

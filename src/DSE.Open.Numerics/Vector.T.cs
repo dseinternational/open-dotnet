@@ -6,6 +6,8 @@ using System.Runtime.CompilerServices;
 
 namespace DSE.Open.Numerics;
 
+#pragma warning disable CA2225 // Operator overloads have named alternates
+
 [CollectionBuilder(typeof(Vector), nameof(Vector.Create))]
 public readonly struct Vector<T> : IVector<T, Vector<T>>, IEquatable<Vector<T>>
     where T : struct, INumber<T>
@@ -87,5 +89,10 @@ public readonly struct Vector<T> : IVector<T, Vector<T>>, IEquatable<Vector<T>>
     public static bool operator !=(Vector<T> left, Vector<T> right)
     {
         return !(left == right);
+    }
+
+    public static implicit operator ReadOnlyVector<T>(Vector<T> vector)
+    {
+        return new ReadOnlyVector<T>(vector._data);
     }
 }

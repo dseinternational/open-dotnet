@@ -6,7 +6,7 @@ using System.Numerics.Tensors;
 
 namespace DSE.Open.Numerics;
 
-public static partial class Vector
+public static partial class VectorPrimitives
 {
     public static void Subtract<T>(ReadOnlySpan<T> x, ReadOnlySpan<T> y, Span<T> destination)
         where T : struct, INumber<T>

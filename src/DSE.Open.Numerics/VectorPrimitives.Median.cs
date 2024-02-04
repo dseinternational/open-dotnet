@@ -5,18 +5,18 @@ using System.Numerics;
 
 namespace DSE.Open.Numerics;
 
-public static partial class Vector
+public static partial class VectorPrimitives
 {
     /// <summary>
     /// Gets the median (middle value) value of a numeric sequence.
     /// </summary>
     /// <typeparam name="T">The type of the elements in the sequence.</typeparam>
     /// <typeparam name="TResult"></typeparam>
-    /// <param name="sequence">The sequence of elements to use for the calculation.</param>
+    /// <param name="span">The sequence of elements to use for the calculation.</param>
     /// <param name="median"></param>
     /// <returns></returns>
     public static TResult Median<T, TResult>(
-        ReadOnlySpan<T> sequence,
+        ReadOnlySpan<T> span,
         MedianMethod median = MedianMethod.MeanOfMiddleTwo)
         where T : struct, INumberBase<T>
         where TResult : struct, INumberBase<TResult>
@@ -35,12 +35,12 @@ public static partial class Vector
     /// <typeparam name="T">The type of the elements in the sequence.</typeparam>
     /// <typeparam name="TResult"></typeparam>
     /// <typeparam name="TComparer"></typeparam>
-    /// <param name="sequence">The sequence of elements to use for the calculation.</param>
+    /// <param name="span">The sequence of elements to use for the calculation.</param>
     /// <param name="comparer"></param>
     /// <param name="median"></param>
     /// <returns></returns>
     public static TResult Median<T, TResult, TComparer>(
-        Span<T> sequence,
+        Span<T> span,
         TComparer comparer,
         MedianMethod median = MedianMethod.MeanOfMiddleTwo)
         where T : struct, INumberBase<T>

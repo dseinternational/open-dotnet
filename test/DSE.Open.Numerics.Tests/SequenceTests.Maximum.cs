@@ -3,13 +3,13 @@
 
 namespace DSE.Open.Numerics;
 
-public partial class VectorTests
+public partial class SequenceTests
 {
     [Fact]
     public void Max_Array_Int32()
     {
         var sequence = Enumerable.Range(1, 500).Union(Enumerable.Range(0, 100)).ToArray();
-        var max = Vector.Maximum(sequence);
+        var max = Sequence.Maximum(sequence);
         Assert.Equal(500, max);
     }
 
@@ -17,7 +17,7 @@ public partial class VectorTests
     public void Max_Enumerable_Int32()
     {
         var sequence = Enumerable.Range(1, 500).Union(Enumerable.Range(0, 100));
-        var max = Vector.Maximum(sequence);
+        var max = Sequence.Maximum(sequence);
         Assert.Equal(500, max);
     }
 
@@ -27,7 +27,7 @@ public partial class VectorTests
         var sequence = Enumerable.Range(1, 500).Union(Enumerable.Range(0, 100))
             .Select(i => i / 3.33)
             .ToArray();
-        var max = Vector.MaximumFloatingPoint(sequence);
+        var max = Sequence.MaximumFloatingPoint(sequence);
         Assert.Equal(150.15015015015015, max);
     }
 
@@ -37,7 +37,7 @@ public partial class VectorTests
         var sequence = Enumerable.Range(1, 500).Union(Enumerable.Range(0, 100))
             .Select(i => i / 3.33m)
             .ToArray();
-        var max = Vector.Maximum(sequence);
+        var max = Sequence.Maximum(sequence);
         Assert.Equal(150.15015015015015015015015015m, max);
     }
 }

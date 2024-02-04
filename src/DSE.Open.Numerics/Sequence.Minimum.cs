@@ -1,26 +1,19 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Numerics;
-using System.Numerics.Tensors;
 using DSE.Open.Linq;
+using System.Numerics;
 
 namespace DSE.Open.Numerics;
 
-public static partial class Vector
+public static partial class Sequence
 {
-    public static T Maximum<T>(ReadOnlySpan<T> values)
-        where T : INumber<T>
-    {
-        return TensorPrimitives.Max(values);
-    }
-
-    public static T Maximum<T>(IEnumerable<T> values)
+    public static T Minimum<T>(IEnumerable<T> values)
         where T : struct, INumber<T>
     {
         if (values.TryGetSpan(out var span))
         {
-            return Maximum(span);
+            return VectorPrimitives.Minimum(span);
         }
 
         ArgumentNullException.ThrowIfNull(values);
@@ -40,7 +33,7 @@ public static partial class Vector
             {
                 var x = e.Current;
 
-                if (x > result)
+                if (x < result)
                 {
                     result = x;
                 }
@@ -50,23 +43,17 @@ public static partial class Vector
         return result;
     }
 
-    public static T MaximumFloatingPoint<T>(ReadOnlySpan<T> values)
-        where T : IFloatingPointIeee754<T>
-    {
-        return TensorPrimitives.Max(values);
-    }
-
-    public static T MaximumFloatingPoint<T>(this IEnumerable<T> values)
+    public static T MinimumFloatingPoint<T>(this IEnumerable<T> values)
         where T : struct, IFloatingPointIeee754<T>
     {
         if (values.TryGetSpan(out var span))
         {
-            return MaximumFloatingPoint(span);
+            return VectorPrimitives.MinimumFloatingPoint(span);
         }
 
         ArgumentNullException.ThrowIfNull(values);
 
-        var result = T.NegativeInfinity;
+        var result = T.PositiveInfinity;
 
         using (var e = values.GetEnumerator())
         {
@@ -85,8 +72,8 @@ public static partial class Vector
                 {
                     return T.NaN;
                 }
-                
-                if (x > result)
+
+                if (x < result)
                 {
                     result = x;
                 }

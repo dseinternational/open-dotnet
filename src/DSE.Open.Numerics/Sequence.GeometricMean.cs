@@ -5,26 +5,8 @@ using System.Numerics;
 
 namespace DSE.Open.Numerics;
 
-public static partial class Vector
+public static partial class Sequence
 {
-    public static T GeometricMean<T>(ReadOnlySpan<T> sequence)
-        where T : struct, INumberBase<T>
-    {
-        return Mean<T, T>(sequence);
-    }
-
-    public static TResult GeometricMean<T, TResult>(ReadOnlySpan<T> sequence)
-        where T : struct, INumberBase<T>
-        where TResult : struct, INumberBase<TResult>
-    {
-        EmptySequenceException.ThrowIfEmpty(sequence);
-
-        // https://en.wikipedia.org/wiki/Geometric_mean
-        // https://github.com/python/cpython/blob/3.12/Lib/statistics.py#L526
-
-        throw new NotImplementedException();
-    }
-
     public static T GeometricMean<T>(IEnumerable<T> sequence)
         where T : struct, INumberBase<T>
     {

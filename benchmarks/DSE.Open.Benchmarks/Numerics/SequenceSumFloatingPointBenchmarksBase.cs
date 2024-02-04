@@ -4,6 +4,7 @@
 using System.Numerics;
 using System.Numerics.Tensors;
 using BenchmarkDotNet.Attributes;
+using DSE.Open.Numerics;
 
 namespace DSE.Open.Benchmarks.Numerics;
 
@@ -20,18 +21,18 @@ public abstract class SequenceSumFloatingPointBenchmarksBase<T> : SequenceSumBen
     [Benchmark]
     public T Sequence_Sum_Array()
     {
-        return Open.Numerics.Vector.SumFloatingPoint(ValuesArray);
+        return Sequence.SumFloatingPoint(ValuesArray);
     }
 
     [Benchmark]
     public T Sequence_Sum_Collection()
     {
-        return Open.Numerics.Vector.SumFloatingPoint(ValuesCollection);
+        return Sequence.SumFloatingPoint(ValuesCollection);
     }
 
     [Benchmark]
     public T Sequence_Sum_Enumerable()
     {
-        return Open.Numerics.Vector.SumFloatingPoint(ValuesEnumerable);
+        return Sequence.SumFloatingPoint(ValuesEnumerable);
     }
 }

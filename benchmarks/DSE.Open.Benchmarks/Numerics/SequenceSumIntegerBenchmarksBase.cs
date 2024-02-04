@@ -4,6 +4,7 @@
 using System.Numerics;
 using System.Numerics.Tensors;
 using BenchmarkDotNet.Attributes;
+using DSE.Open.Numerics;
 
 namespace DSE.Open.Benchmarks.Numerics;
 
@@ -20,18 +21,18 @@ public abstract class SequenceSumIntegerBenchmarksBase<T> : SequenceSumBenchmark
     [Benchmark]
     public T Sequence_Sum_Array()
     {
-        return Open.Numerics.Vector.Sum(ValuesArray);
+        return Sequence.Sum(ValuesArray);
     }
 
     [Benchmark]
     public T Sequence_Sum_Collection()
     {
-        return Open.Numerics.Vector.Sum(ValuesCollection);
+        return Sequence.Sum(ValuesCollection);
     }
 
     [Benchmark]
     public T Sequence_Sum_Enumerable()
     {
-        return Open.Numerics.Vector.Sum(ValuesEnumerable);
+        return Sequence.Sum(ValuesEnumerable);
     }
 }
