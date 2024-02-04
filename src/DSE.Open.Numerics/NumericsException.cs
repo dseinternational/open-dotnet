@@ -156,4 +156,25 @@ public class NumericsException : Exception
         }
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void ThrowIfNotSameShape<T>(ReadOnlyTensor<T> x, ReadOnlyTensor<T> y)
+        where T : struct, INumber<T>
+    {
+        if (x.Length != y.Length || !x.Shape.SequenceEqual(y.Shape))
+        {
+            Throw("Tensors must be the same shape.");
+        }
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void ThrowIfNotSameShape<T>(ReadOnlyTensor<T> x, ReadOnlyTensor<T> y, ReadOnlyTensor<T> z)
+        where T : struct, INumber<T>
+    {
+        if (x.Length != y.Length || x.Length != z.Length
+            || !x.Shape.SequenceEqual(y.Shape) || !x.Shape.SequenceEqual(z.Shape))
+        {
+            Throw("Tensors must be the same shape.");
+        }
+    }
+
 }

@@ -1,18 +1,15 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System;
 using System.ComponentModel;
 using System.Numerics;
 using System.Runtime.CompilerServices;
-using System.Xml.Linq;
 using DSE.Open.Memory;
 
 namespace DSE.Open.Numerics;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 #pragma warning disable CA2225 // Operator overloads have named alternates
-#pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
 #pragma warning disable CA1065 // Do not raise exceptions in unexpected locations
 #pragma warning disable CA1043 // Use Integral Or String Argument For Indexers
 
@@ -67,7 +64,17 @@ public readonly ref struct TensorSpan<T>
         set => _elements[index] = value;
     }
 
-    public MultiSpan<T> Span => _elements;
+    public MultiSpan<T> Span
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => _elements;
+    }
+
+    public Span<T> Elements
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => _elements.Elements;
+    }
 
     public ReadOnlySpan<uint> Shape => _elements.Shape;
 
@@ -75,8 +82,18 @@ public readonly ref struct TensorSpan<T>
 
     public uint Length => _elements.Length;
 
-    public uint Rank => _elements.Length;
+    public uint Rank => _elements.Rank;
 
+    public TensorSpan<T> Add(ReadOnlyTensorSpan<T> other)
+    {
+        NumericsException.ThrowIfNotSameShape(this, other);
+
+        var result = new TensorSpan<T>(Shape);
+
+        TensorSpan.Add(this, other, result);
+
+        return result;
+    }
 
 #pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
 
@@ -104,6 +121,11 @@ public readonly ref struct TensorSpan<T>
     public static bool operator !=(TensorSpan<T> left, TensorSpan<T> right)
     {
         return !(left == right);
+    }
+
+    public static TensorSpan<T> operator +(TensorSpan<T> left, TensorSpan<T> right)
+    {
+        return left.Add(right);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

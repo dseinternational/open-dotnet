@@ -170,6 +170,6 @@ public readonly struct MultiMemory<T> : IEquatable<MultiMemory<T>>
 
     public static implicit operator ReadOnlyMultiMemory<T>(MultiMemory<T> other)
     {
-        return new ReadOnlyMultiMemory<T>(other._elements);
+        return new ReadOnlyMultiMemory<T>(other._elements, other._shape);
     }
 }

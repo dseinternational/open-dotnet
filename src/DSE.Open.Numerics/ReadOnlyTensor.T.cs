@@ -68,6 +68,12 @@ public readonly struct ReadOnlyTensor<T> : IEquatable<ReadOnlyTensor<T>>
         get => _elements.Span;
     }
 
+    public ReadOnlyTensorSpan<T> TensorSpan
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => new(_elements.Span);
+    }
+
     public ReadOnlyMemory<T> Elements
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

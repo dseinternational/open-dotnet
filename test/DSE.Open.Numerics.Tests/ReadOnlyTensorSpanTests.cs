@@ -1,16 +1,15 @@
-// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 namespace DSE.Open.Numerics;
-
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-public class TensorTests
+public class ReadOnlyTensorSpanTests
 {
     [Fact]
     public void Init_2D_Array()
     {
-        var t = new Tensor<int>(new int[,]
+        var t = new ReadOnlyTensorSpan<int>(new int[,]
         {
             { 1, 2 },
             { 3, 4 },
@@ -30,14 +29,14 @@ public class TensorTests
     [Fact]
     public void Add_2D_Array()
     {
-        var t1 = new Tensor<int>(new int[,]
+        var t1 = new ReadOnlyTensorSpan<int>(new int[,]
         {
             { 1, 2 },
             { 3, 4 },
             { 5, 6 }
         });
 
-        var t2 = new Tensor<int>(new int[,]
+        var t2 = new ReadOnlyTensorSpan<int>(new int[,]
         {
             { 1, 2 },
             { 3, 4 },
@@ -54,3 +53,4 @@ public class TensorTests
         Assert.Equal(8, t3[[1, 1]]);
     }
 }
+

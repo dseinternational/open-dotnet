@@ -13,14 +13,14 @@ public static partial class Tensor
     public static void Add<T>(ReadOnlyTensor<T> x, ReadOnlyTensor<T> y, Tensor<T> destination)
         where T : struct, INumber<T>
     {
-        MultiSpanPrimitives.Add(x.Span, y.Span, destination.Span);
+        MultiSpanPrimitives.Add(x.Span, y.Span, destination.TensorSpan.Span);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void AddInPlace<T>(Tensor<T> x, ReadOnlyTensor<T> y)
         where T : struct, INumber<T>
     {
-        MultiSpanPrimitives.AddInPlace(x.Span, y.Span);
+        MultiSpanPrimitives.AddInPlace(x.TensorSpan.Span, y.Span);
     }
 }
 

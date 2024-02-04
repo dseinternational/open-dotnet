@@ -70,10 +70,10 @@ public readonly struct Tensor<T> : IEquatable<Tensor<T>>
         set => _elements[index] = value;
     }
 
-    public MultiSpan<T> Span
+    public TensorSpan<T> TensorSpan
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => _elements.Span;
+        get => new(_elements.Span);
     }
 
     public Memory<T> Elements
@@ -95,8 +95,12 @@ public readonly struct Tensor<T> : IEquatable<Tensor<T>>
 
     public Tensor<T> Add(ReadOnlyTensor<T> other)
     {
+        NumericsException.ThrowIfNotSameShape(this, other);
+
         var result = Tensor.CreateUninitialized<T>(Shape); // Add will write all locations
+
         Tensor.Add(this, other, result);
+
         return result;
     }
 

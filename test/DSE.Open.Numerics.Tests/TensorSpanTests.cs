@@ -5,12 +5,12 @@ namespace DSE.Open.Numerics;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-public class TensorTests
+public class TensorSpanTests
 {
     [Fact]
     public void Init_2D_Array()
     {
-        var t = new Tensor<int>(new int[,]
+        var t = new TensorSpan<int>(new int[,]
         {
             { 1, 2 },
             { 3, 4 },
@@ -30,14 +30,14 @@ public class TensorTests
     [Fact]
     public void Add_2D_Array()
     {
-        var t1 = new Tensor<int>(new int[,]
+        var t1 = new TensorSpan<int>(new int[,]
         {
             { 1, 2 },
             { 3, 4 },
             { 5, 6 }
         });
 
-        var t2 = new Tensor<int>(new int[,]
+        var t2 = new TensorSpan<int>(new int[,]
         {
             { 1, 2 },
             { 3, 4 },

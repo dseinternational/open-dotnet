@@ -8,8 +8,6 @@ using DSE.Open.Memory;
 
 namespace DSE.Open.Numerics;
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-#pragma warning disable CA2225 // Operator overloads have named alternates
-#pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
 #pragma warning disable CA1065 // Do not raise exceptions in unexpected locations
 #pragma warning disable CA1043 // Use Integral Or String Argument For Indexers
 
@@ -21,7 +19,7 @@ namespace DSE.Open.Numerics;
 public readonly ref struct ReadOnlyTensorSpan<T>
     where T : struct, INumber<T>
 {
-    private readonly ReadOnlyMultiSpan<T> _memory;
+    private readonly ReadOnlyMultiSpan<T> _elements;
 
     public ReadOnlyTensorSpan(T[] elements) : this(new ReadOnlyMultiSpan<T>(elements))
     {
@@ -49,25 +47,45 @@ public readonly ref struct ReadOnlyTensorSpan<T>
 
     public ReadOnlyTensorSpan(ReadOnlyMultiSpan<T> span)
     {
-        _memory = span;
+        _elements = span;
     }
 
     public T this[ReadOnlySpan<uint> index]
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => _memory[index];
+        get => _elements[index];
     }
 
-    public ReadOnlyMultiSpan<T> Span => _memory;
+    public ReadOnlyMultiSpan<T> Span
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => _elements;
+    }
 
-    public ReadOnlySpan<uint> Shape => _memory.Shape;
+    public ReadOnlySpan<T> Elements
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => _elements.Elements;
+    }
 
-    public ReadOnlySpan<uint> Strides => _memory.Strides;
+    public ReadOnlySpan<uint> Shape => _elements.Shape;
 
-    public uint Length => _memory.Length;
+    public ReadOnlySpan<uint> Strides => _elements.Strides;
 
-    public uint Rank => _memory.Length;
+    public uint Length => _elements.Length;
 
+    public uint Rank => _elements.Rank;
+
+    public ReadOnlyTensorSpan<T> Add(ReadOnlyTensorSpan<T> other)
+    {
+        NumericsException.ThrowIfNotSameShape(this, other);
+
+        var result = new TensorSpan<T>(Shape);
+
+        TensorSpan.Add(this, other, result);
+
+        return result;
+    }
 
 #pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
 
@@ -89,11 +107,16 @@ public readonly ref struct ReadOnlyTensorSpan<T>
 
     public static bool operator ==(ReadOnlyTensorSpan<T> left, ReadOnlyTensorSpan<T> right)
     {
-        return left._memory == right._memory;
+        return left._elements == right._elements;
     }
 
     public static bool operator !=(ReadOnlyTensorSpan<T> left, ReadOnlyTensorSpan<T> right)
     {
         return !(left == right);
+    }
+
+    public static ReadOnlyTensorSpan<T> operator +(ReadOnlyTensorSpan<T> left, ReadOnlyTensorSpan<T> right)
+    {
+        return left.Add(right);
     }
 }
