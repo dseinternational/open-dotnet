@@ -15,6 +15,6 @@ public class ReadOnlyVectorTests
         Assert.Equal(6, v1.Length);
         Assert.Equal(6, v2.Length);
 
-        Assert.True(v1.Span.SequenceEqual(v2.Span));
+        Assert.True(v1.Memory.SequenceEqual(v2.Memory));
     }
 }

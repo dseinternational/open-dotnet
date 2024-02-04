@@ -32,7 +32,13 @@ public readonly struct Vector<T> : IVector<T, Vector<T>>, IEquatable<Vector<T>>
         return new Vector<T>(data.ToArray());
     }
 
-    public Span<T> Span
+    public SpanVector<T> Span
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => new(_data.Span);
+    }
+
+    public Span<T> Memory
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get => _data.Span;
@@ -40,7 +46,7 @@ public readonly struct Vector<T> : IVector<T, Vector<T>>, IEquatable<Vector<T>>
 
     public int Length => _data.Length;
 
-    ReadOnlySpan<T> IReadOnlyVector<T, Vector<T>>.Span => Span;
+    ReadOnlySpan<T> IReadOnlyVector<T, Vector<T>>.Memory => Memory;
 
     public T this[int index]
     {
@@ -91,6 +97,13 @@ public readonly struct Vector<T> : IVector<T, Vector<T>>, IEquatable<Vector<T>>
         return !(left == right);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static implicit operator Vector<T>(Memory<T> vector)
+    {
+        return new Vector<T>(vector);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator ReadOnlyVector<T>(Vector<T> vector)
     {
         return new ReadOnlyVector<T>(vector._data);

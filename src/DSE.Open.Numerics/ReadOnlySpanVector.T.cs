@@ -47,6 +47,7 @@ public readonly ref struct ReadOnlySpanVector<T>
         return _data.GetEnumerator();
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator ReadOnlySpanVector<T>(T[]? array)
     {
         return new ReadOnlySpanVector<T>(array.AsSpan());

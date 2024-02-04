@@ -4,32 +4,53 @@
 using System.Collections.Immutable;
 using System.Numerics;
 using System.Numerics.Tensors;
+using System.Runtime.CompilerServices;
 
 namespace DSE.Open.Numerics;
 
 public static partial class VectorPrimitives
 {
-    public static void Add<T>(T[]x, T[]y, T[] destination)
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void Add<T>(T[] x, T[] y, T[] destination)
         where T : IAdditionOperators<T, T, T>, IAdditiveIdentity<T, T>
     {
-        TensorPrimitives.Add(x.AsSpan(), y.AsSpan(), destination.AsSpan());
+        Add(x.AsSpan(), y.AsSpan(), destination.AsSpan());
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void Add<T>(ImmutableArray<T> x, ImmutableArray<T> y, Span<T> destination)
         where T : IAdditionOperators<T, T, T>, IAdditiveIdentity<T, T>
     {
-        TensorPrimitives.Add(x.AsSpan(), y.AsSpan(), destination);
+        Add(x.AsSpan(), y.AsSpan(), destination);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void Add<T>(ReadOnlySpan<T> x, ReadOnlySpan<T> y, Span<T> destination)
         where T : IAdditionOperators<T, T, T>, IAdditiveIdentity<T, T>
     {
+        NumericsException.ThrowIfNotEqualLength(x, y, destination);
         TensorPrimitives.Add(x, y, destination);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void AddInPlace<T>(T[] x, T[] y)
+        where T : IAdditionOperators<T, T, T>, IAdditiveIdentity<T, T>
+    {
+        AddInPlace(x.AsSpan(), y.AsSpan());
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void AddInPlace<T>(Span<T> x, ImmutableArray<T> y)
+        where T : IAdditionOperators<T, T, T>, IAdditiveIdentity<T, T>
+    {
+        AddInPlace(x, y.AsSpan());
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void AddInPlace<T>(Span<T> x, ReadOnlySpan<T> y)
         where T : IAdditionOperators<T, T, T>, IAdditiveIdentity<T, T>
     {
+        NumericsException.ThrowIfNotEqualLength(x, y);
         TensorPrimitives.Add(x, y, x);
     }
 }

@@ -6,6 +6,8 @@ using System.Runtime.CompilerServices;
 
 namespace DSE.Open.Numerics;
 
+#pragma warning disable CA2225 // Operator overloads have named alternates
+
 [CollectionBuilder(typeof(ReadOnlyVector), nameof(ReadOnlyVector.Create))]
 public readonly struct ReadOnlyVector<T> : IEquatable<ReadOnlyVector<T>>
     where T : struct, INumber<T>
@@ -27,7 +29,13 @@ public readonly struct ReadOnlyVector<T> : IEquatable<ReadOnlyVector<T>>
         _data = data;
     }
 
-    public ReadOnlySpan<T> Span
+    public ReadOnlySpanVector<T> Span
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => new(_data.Span);
+    }
+
+    public ReadOnlySpan<T> Memory
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get => _data.Span;
@@ -35,7 +43,11 @@ public readonly struct ReadOnlyVector<T> : IEquatable<ReadOnlyVector<T>>
 
     public int Length => _data.Length;
 
-    public T this[int index] => _data.Span[index];
+    public T this[int index]
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => _data.Span[index];
+    }
 
     public override bool Equals(object? obj)
     {
@@ -65,5 +77,17 @@ public readonly struct ReadOnlyVector<T> : IEquatable<ReadOnlyVector<T>>
     public static bool operator !=(ReadOnlyVector<T> left, ReadOnlyVector<T> right)
     {
         return !(left == right);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static implicit operator ReadOnlyVector<T>(T[] vector)
+    {
+        return new ReadOnlyVector<T>(vector);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static implicit operator ReadOnlyVector<T>(ReadOnlyMemory<T> vector)
+    {
+        return new ReadOnlyVector<T>(vector);
     }
 }

@@ -10,6 +10,7 @@ using DSE.Open.Memory;
 namespace DSE.Open.Numerics;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+#pragma warning disable CA2225 // Operator overloads have named alternates
 
 /// <summary>
 /// <b>[Experimental]</b> A matrix of numbers.
@@ -44,7 +45,7 @@ public readonly struct Matrix<T> : IEquatable<Matrix<T>>
     {
     }
 
-    internal Matrix(Memory2D<T> values)
+    public Matrix(Memory2D<T> values)
     {
         _data = values;
     }
@@ -59,7 +60,9 @@ public readonly struct Matrix<T> : IEquatable<Matrix<T>>
     /// <returns></returns>
     public T this[int row, int column]
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get => _data.Span[row, column];
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         set => _data.Span[row, column] = value;
     }
 
@@ -67,7 +70,9 @@ public readonly struct Matrix<T> : IEquatable<Matrix<T>>
     public T this[MatrixIndex index]
 #pragma warning restore CA1043 // Use Integral Or String Argument For Indexers
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get => _data.Span[index.Row, index.Column];
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         set => _data.Span[index.Row, index.Column] = value;
     }
 
@@ -113,6 +118,15 @@ public readonly struct Matrix<T> : IEquatable<Matrix<T>>
         return _data.GetHashCode();
     }
 
+    /// <summary>
+    /// Copies the elements of the matrix to a new 2D array.
+    /// </summary>
+    /// <returns></returns>
+    public T[,] ToArray()
+    {
+        return _data.ToArray();
+    }
+
     public static bool operator ==(Matrix<T> left, Matrix<T> right)
     {
         return left.Equals(right);
@@ -123,15 +137,9 @@ public readonly struct Matrix<T> : IEquatable<Matrix<T>>
         return !(left == right);
     }
 
-#pragma warning disable CA2225 // Operator overloads have named alternates (AsReadOnly())
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator ReadOnlyMatrix<T>(Matrix<T> matrix)
-#pragma warning restore CA2225 // Operator overloads have named alternates
     {
         return new ReadOnlyMatrix<T>(matrix._data);
-    }
-
-    public ReadOnlyMatrix<T> AsReadOnly()
-    {
-        return new ReadOnlyMatrix<T>(_data);
     }
 }

@@ -54,9 +54,22 @@ public readonly ref struct SpanVector<T>
         return _data.GetEnumerator();
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator SpanVector<T>(T[]? array)
     {
         return new SpanVector<T>(array.AsSpan());
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static implicit operator SpanVector<T>(Span<T> span)
+    {
+        return new SpanVector<T>(span);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static implicit operator ReadOnlySpanVector<T>(SpanVector<T> span)
+    {
+        return new ReadOnlySpanVector<T>(span._data);
     }
 
     [Obsolete("Equals() on SpanVector will always throw an exception.")]

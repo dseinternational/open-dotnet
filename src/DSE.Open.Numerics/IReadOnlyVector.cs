@@ -2,7 +2,6 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Numerics;
-using System.Numerics.Tensors;
 
 namespace DSE.Open.Numerics;
 
@@ -17,7 +16,7 @@ public interface IReadOnlyVector<T, TSelf> : IReadOnlyVector
 {
     T this[int index] { get; }
 
-    ReadOnlySpan<T> Span { get; }
+    ReadOnlySpan<T> Memory { get; }
 
 #pragma warning disable CA1000 // Do not declare static members on generic types
     static abstract TSelf Create(ReadOnlySpan<T> sequence);
@@ -25,14 +24,11 @@ public interface IReadOnlyVector<T, TSelf> : IReadOnlyVector
 
     TSelf Add(TSelf other)
     {
-        if (Length != other.Length)
-        {
-            NumericsException.Throw("Vectors must be the same length.");
-        }
+        NumericsException.ThrowIfNotEqualLength(this, other);
 
         var destination = new T[Length];
 
-        TensorPrimitives.Add(Span, other.Span, destination);
+        VectorPrimitives.Add(Memory, other.Memory, destination);
 
         return TSelf.Create(destination);
     }

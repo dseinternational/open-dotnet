@@ -3,6 +3,7 @@
 
 using System.Numerics;
 using System.Numerics.Tensors;
+using System.Runtime.CompilerServices;
 using CommunityToolkit.HighPerformance;
 
 namespace DSE.Open.Numerics;
@@ -36,26 +37,30 @@ public readonly struct ReadOnlyMatrix<T> : IEquatable<ReadOnlyMatrix<T>>
     {
     }
 
-    internal ReadOnlyMatrix(ReadOnlyMemory2D<T> values)
+    public ReadOnlyMatrix(ReadOnlyMemory2D<T> values)
     {
         _data = values;
     }
 
     internal ReadOnlySpan2D<T> Span => _data.Span;
 
-    public T this[int row, int column] => _data.Span[row, column];
+    public T this[int row, int column]
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => _data.Span[row, column];
+    }
 
 #pragma warning disable CA1043 // Use Integral Or String Argument For Indexers
     public T this[MatrixIndex index]
 #pragma warning restore CA1043 // Use Integral Or String Argument For Indexers
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get => _data.Span[index.Row, index.Column];
     }
 
     public int RowCount => _data.Height;
 
     public int ColumnCount => _data.Width;
-
 
     /// <summary>
     /// Gets a <see cref="ReadOnlySpanVector{T}"/> representing the specified row of the matrix.
@@ -87,6 +92,15 @@ public readonly struct ReadOnlyMatrix<T> : IEquatable<ReadOnlyMatrix<T>>
     public override int GetHashCode()
     {
         return _data.GetHashCode();
+    }
+
+    /// <summary>
+    /// Copies the elements of the matrix to a new 2D array.
+    /// </summary>
+    /// <returns></returns>
+    public T[,] ToArray()
+    {
+        return _data.ToArray();
     }
 
     public static bool operator ==(ReadOnlyMatrix<T> left, ReadOnlyMatrix<T> right)

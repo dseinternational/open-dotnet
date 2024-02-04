@@ -11,7 +11,7 @@ public interface IVector<T, TSelf> : IReadOnlyVector<T, TSelf>
 {
     new T this[int index] { get; set; }
 
-    new Span<T> Span { get; }
+    new Span<T> Memory { get; }
 
 #pragma warning disable CA1000 // Do not declare static members on generic types
     static abstract TSelf Create(Span<T> sequence);
