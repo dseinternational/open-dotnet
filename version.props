@@ -4,8 +4,8 @@
     <Version>0.22.0</Version>
     <AssemblyVersion>0.22.0.0</AssemblyVersion>
     <FileVersion>0.22.0</FileVersion>
-    <InformationalVersion>0.22.0+9fba22d194</InformationalVersion>
-    <PackageVersion>0.22.0</PackageVersion>
+    <InformationalVersion>0.22.0-beta.1+9a710bd8bc</InformationalVersion>
+    <PackageVersion>0.22.0-beta-0001</PackageVersion>
   </PropertyGroup>
 </Project>
 
