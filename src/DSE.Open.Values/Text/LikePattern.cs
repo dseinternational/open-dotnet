@@ -17,17 +17,18 @@ namespace DSE.Open.Values.Text;
 /// <remarks>
 /// <list type="bullet">
 /// <item>
-/// <term>*</term>
+/// <term>?</term>
 /// <description>Matches any single character.</description>
 /// </item>
 /// <item>
-/// <term>?</term>
+/// <term>*</term>
 /// <description>Matches any string of zero or more characters.</description>
 /// </item>
 /// <item>
 /// <term>[ ]</term>
 /// <description>Any single character within the specified range
-/// <c>[a-f]</c> or set <c>[abcdef]</c>.</description>
+/// <c>[a-f]</c> or set <c>[abcdef]</c>. Brackets inside a set are treated as
+/// literals.</description>
 /// </item>
 /// <item>
 /// <term>[^ ]</term>
