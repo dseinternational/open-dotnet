@@ -227,8 +227,13 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
         var patternIndex = 0;
         var valueIndex = 0;
 
+        var escapeNext = false;
+
         while (true)
         {
+            var escapeThis = escapeNext;
+            escapeNext = false;
+
             if (patternIndex >= patternToMatch.Length)
             {
                 return valueIndex >= value.Length;
@@ -244,69 +249,51 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
 
             var v = value[valueIndex];
 
-            switch (p)
+            if (!escapeThis && p == '*')
             {
-                case '*':
-                    if (WildcardMatches(
-                            ref patternIndex,
-                            ref valueIndex,
-                            patternToMatch,
-                            value,
-                            comparison,
-                            out var matched))
-                    {
-                        return matched;
-                    }
-                    break;
-                case '?':
-                    // skip a single character
-                    patternIndex++;
-                    valueIndex++;
-                    break;
+                if (WildcardMatches(
+                        ref patternIndex,
+                        ref valueIndex,
+                        patternToMatch,
+                        value,
+                        comparison,
+                        out var matched))
+                {
+                    return matched;
+                }
+            }
+            else if (!escapeThis && p == '?')
+            {
+                patternIndex++;
+                valueIndex++;
+            }
+            else if (!escapeThis && p == '[')
+            {
+                if (RangeMatches(
+                        ref patternIndex,
+                        ref valueIndex,
+                        patternToMatch,
+                        value,
+                        comparison,
+                        out var matched))
+                {
+                    return matched;
+                }
+            }
+            else if (!escapeThis && p == '\\')
+            {
+                escapeNext = true;
+                patternIndex++;
+            }
+            else
+            {
+                if (!comparer.Equals(p, v))
+                {
+                    return false;
+                }
 
-                case '[':
-                    if (RangeMatches(
-                            ref patternIndex,
-                            ref valueIndex,
-                            patternToMatch,
-                            value,
-                            comparison,
-                            out matched))
-                    {
-                        return matched;
-                    }
-
-                    break;
-
-                case '\\':
-
-                    // escape
-
-                    // TODO: support [] escaping
-                    // https://learn.microsoft.com/en-us/sql/t-sql/language-elements/like-transact-sql?view=sql-server-ver16#pattern-match-with-the-escape-clause
-
-                    patternIndex++;
-
-                    if (patternIndex >= patternToMatch.Length)
-                    {
-                        // \ at end of patternToMatch matches nothing
-                        return false;
-                    }
-
-                    p = patternToMatch[patternIndex];
-                    goto default;
-
-                default:
-
-                    if (!comparer.Equals(p, v))
-                    {
-                        // no match
-                        return false;
-                    }
-
-                    patternIndex++;
-                    valueIndex++;
-                    break;
+                patternIndex++;
+                valueIndex++;
             }
         }
     }
@@ -381,7 +368,9 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
         // pattern will be in the second range.
         Span<Range> rangeBuffer = stackalloc Range[2];
 
-        patternToMatch.AsSpan(patternIndex).Split(rangeBuffer, ']');
+        var written = patternToMatch.AsSpan(patternIndex).Split(rangeBuffer, ']');
+
+        Debug.Assert(written == 2);
 
         var currentRange = rangeBuffer[0];
 
@@ -391,22 +380,6 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
         Debug.Assert(indexOfOpeningBracket < indexOfClosingBracket);
         Debug.Assert(patternToMatch[indexOfOpeningBracket] == '[');
         Debug.Assert(patternToMatch[indexOfClosingBracket] == ']');
-
-        var startIsEscaped = indexOfOpeningBracket > 0 && patternToMatch[indexOfOpeningBracket - 1] == '\\';
-        var endIsEscaped = indexOfClosingBracket > 0 && patternToMatch[indexOfClosingBracket - 1] == '\\';
-
-        if (startIsEscaped ^ endIsEscaped)
-        {
-            throw new FormatException(
-                "Invalid escape sequence in pattern. Start and end of range must both be escaped or unescaped.");
-        }
-
-        if (startIsEscaped && endIsEscaped)
-        {
-            // Match the literal characters
-            matched = default;
-            return false;
-        }
 
         var start = rangeBuffer[0].Start.Value + patternIndex;
         var end = rangeBuffer[0].End.Value + patternIndex;
@@ -471,7 +444,7 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
             if (isPreviousChar && _pattern[i - 1] == '\\')
             {
                 // This character is escaped, so add verbatim
-                builder.Append(current);
+                _ = builder.Append(current);
                 continue;
             }
 
