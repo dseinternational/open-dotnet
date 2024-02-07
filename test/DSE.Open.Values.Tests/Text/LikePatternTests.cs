@@ -61,9 +61,19 @@ public class LikePatternTests
     [InlineData("abcd*", "abcd%")]
     [InlineData("a[abc]", "a[abc]")]
     [InlineData("a[[][abc]", "a[[][abc]")]
+    [InlineData(@"a\[abc\]", "a[[]abc]")]
+    [InlineData(@"\*", "*")]
+    [InlineData(@"\?", "?")]
     public void ToSqlLikePattern_returns_expected_pattern(string pattern, string sqlLikePattern)
     {
-        Assert.Equal(new LikePattern(pattern).ToSqlLikePattern(), sqlLikePattern);
+        // Arrange
+        var likePattern = new LikePattern(pattern);
+
+        // Act
+        var result = likePattern.ToSqlLikePattern();
+
+        // Assert
+        Assert.Equal(sqlLikePattern, result);
     }
 
     [Fact]
