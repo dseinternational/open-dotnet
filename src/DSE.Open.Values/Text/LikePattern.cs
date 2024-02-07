@@ -249,56 +249,60 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
 
             var v = value[valueIndex];
 
-            if (!escapeThis && p == '*')
+            if (!escapeThis)
             {
-                if (WildcardMatches(
-                        ref patternIndex,
-                        ref valueIndex,
-                        patternToMatch,
-                        value,
-                        comparison,
-                        out var matched))
+                switch (p)
                 {
-                    return matched;
-                }
-            }
-            else if (!escapeThis && p == '?')
-            {
-                patternIndex++;
-                valueIndex++;
-            }
-            else if (!escapeThis && p == '[')
-            {
-                if (RangeMatches(
-                        ref patternIndex,
-                        ref valueIndex,
-                        patternToMatch,
-                        value,
-                        comparison,
-                        out var matched))
-                {
-                    return matched;
-                }
-            }
-            else if (!escapeThis && p == '\\')
-            {
-                escapeNext = true;
-                patternIndex++;
-            }
-            else
-            {
-                if (!comparer.Equals(p, v))
-                {
-                    return false;
-                }
+                    case '*':
+                        if (TryMatchAsterisk(
+                                ref patternIndex,
+                                ref valueIndex,
+                                patternToMatch,
+                                value,
+                                comparison,
+                                out var matched))
+                        {
+                            return matched;
+                        }
 
-                patternIndex++;
-                valueIndex++;
+                        continue;
+
+                    case '?':
+                        patternIndex++;
+                        valueIndex++;
+                        continue;
+
+                    case '[':
+                        if (TryMatchSet(
+                                ref patternIndex,
+                                ref valueIndex,
+                                patternToMatch,
+                                value,
+                                comparison,
+                                out matched))
+                        {
+                            return matched;
+                        }
+                        continue;
+
+                    case '\\':
+                        escapeNext = true;
+                        patternIndex++;
+                        continue;
+                }
             }
+
+            if (!comparer.Equals(p, v))
+            {
+                return false;
+            }
+
+            patternIndex++;
+            valueIndex++;
         }
     }
 
-    private static bool WildcardMatches(
+    private static bool TryMatchAsterisk(
         ref int patternIndex,
         ref int valueIndex,
         string patternToMatch,
@@ -316,7 +320,6 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
         }
 
         // skip until next match
-
         while (true)
         {
             if (valueIndex >= value.Length)
@@ -347,7 +350,7 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
     /// <see langword="default"/>
     /// </summary>
     /// <exception cref="FormatException">Thrown if there is a range bracket with no unescaped counterpart.</exception>
-    private static bool RangeMatches(
+    private static bool TryMatchSet(
         ref int patternIndex,
         ref int valueIndex,
         string patternToMatch,
@@ -387,9 +390,7 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
 
         if (set.Length == 0)
         {
-            // [] matches nothing
-            matched = false;
-            return true;
+            throw new FormatException("Range contains no characters");
         }
 
         var v = value[valueIndex];
@@ -439,11 +440,17 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
         for (var i = 0; i < _pattern.Length; i++)
         {
             var current = _pattern[i];
-            var isPreviousChar = i > 0;
+            var hasPreviousChar = i > 0;
 
-            if (isPreviousChar && _pattern[i - 1] == '\\')
+            if (hasPreviousChar && _pattern[i - 1] == '\\')
             {
-                // This character is escaped, so add verbatim
+                if (IsWildcard(current))
+                {
+                    _ = builder.Append(CultureInfo.InvariantCulture, $"[{current}]");
+                    continue;
+                }
+
+                // E.g., `\*` should be outputted as `*` not `%`
                 _ = builder.Append(current);
                 continue;
             }
@@ -453,15 +460,21 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
                 '*' => builder.Append('%'),
                 '?' => builder.Append('_'),
                 '%' or '_' => builder.Append('[').Append(current).Append(']'),
-                _ => builder.Append(current), // escaping
+                '\\' => builder, // Don't write escape characters
+                _ => builder.Append(current)
             };
         }
 
         return builder.ToString();
     }
 
-    public static explicit operator string(LikePattern pattern)
+    private static bool IsWildcard(char c)
+    {
+        // Note: `]` does not need to be escaped, so it is not included here
+        return c is '%' or '_' or '[';
+    }
 
+    public static explicit operator string(LikePattern pattern)
     {
         return pattern.ToString();
     }
