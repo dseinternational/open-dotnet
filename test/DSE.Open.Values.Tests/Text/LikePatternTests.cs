@@ -21,6 +21,9 @@ public class LikePatternTests
     [InlineData("a[abc][abc]", "aca")]
     [InlineData("a[[]", "a[")]
     [InlineData("[[]a*", "[abcde")]
+    [InlineData(@"a\[abc\]", "a[abc]")]
+    [InlineData(@"a\[\[\]\]", "a[[]]")]
+    [InlineData("a[[]]", "a[]")] // The outer brackets mean the inner are treated as literals
     public void IsMatch_returns_true_for_matches(string pattern, string value)
     {
         Assert.True(new LikePattern(pattern).IsMatch(value, StringComparison.Ordinal));
@@ -39,6 +42,7 @@ public class LikePatternTests
     [InlineData("a[abc][abc]", "acd")]
     [InlineData("a[[]", "abc[")]
     [InlineData("[[]a*", "a[abcde")]
+    [InlineData(@"a\[abc\]", "aa")]
     public void IsNotMatch_returns_false_for_nonmatches(string pattern, string value)
     {
         Assert.False(new LikePattern(pattern).IsMatch(value, StringComparison.Ordinal));
