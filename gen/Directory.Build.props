@@ -26,9 +26,10 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <IsPackable>true</IsPackable>
     <IncludeSymbols>true</IncludeSymbols>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <EmbedUntrackedSources>false</EmbedUntrackedSources>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
