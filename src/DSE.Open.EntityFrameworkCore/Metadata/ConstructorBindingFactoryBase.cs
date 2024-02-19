@@ -247,7 +247,7 @@ public abstract class ConstructorBindingFactoryBase : IConstructorBindingFactory
         [NotNullWhen(false)] out IEnumerable<ParameterInfo>? unboundParameters)
         where T : IReadOnlyTypeBase
     {
-        ArgumentNullException.ThrowIfNull(constructor);
+        Guard.IsNotNull(constructor);
 
         var bindings = new List<ParameterBinding>();
 
@@ -288,9 +288,9 @@ public abstract class ConstructorBindingFactoryBase : IConstructorBindingFactory
         ParameterInfo p)
         where T : IReadOnlyTypeBase
     {
-        ArgumentNullException.ThrowIfNull(bindToProperty);
-        ArgumentNullException.ThrowIfNull(bind);
-        ArgumentNullException.ThrowIfNull(p);
+        Guard.IsNotNull(bindToProperty);
+        Guard.IsNotNull(bind);
+        Guard.IsNotNull(p);
 
         return string.IsNullOrEmpty(p.Name)
                 ? null
@@ -301,8 +301,8 @@ public abstract class ConstructorBindingFactoryBase : IConstructorBindingFactory
     protected static string FormatConstructorString<T>(T entityType, InstantiationBinding binding)
         where T : IReadOnlyTypeBase
     {
-        ArgumentNullException.ThrowIfNull(entityType);
-        ArgumentNullException.ThrowIfNull(binding);
+        Guard.IsNotNull(entityType);
+        Guard.IsNotNull(binding);
 
         return entityType.ClrType.ShortDisplayName()
                 + "("

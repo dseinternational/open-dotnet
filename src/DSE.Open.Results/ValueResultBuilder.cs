@@ -10,7 +10,7 @@ public abstract class ValueResultBuilder<TResult, TValue> : ResultBuilder<TResul
 
     public virtual void MergeNotificationsAndValue(TResult valueResult)
     {
-        ArgumentNullException.ThrowIfNull(valueResult);
+        Guard.IsNotNull(valueResult);
         MergeNotifications(valueResult);
         Value = valueResult.Value;
     }

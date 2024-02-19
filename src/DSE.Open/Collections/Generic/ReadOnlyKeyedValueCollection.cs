@@ -26,7 +26,7 @@ public abstract class ReadOnlyKeyedValueCollection<TKey, TValue>
 
     protected ReadOnlyKeyedValueCollection(IEnumerable<TValue> list)
     {
-        ArgumentNullException.ThrowIfNull(list);
+        Guard.IsNotNull(list);
 
         _dictionary = list is ReadOnlyKeyedValueCollection<TKey, TValue> other
             ? other._dictionary

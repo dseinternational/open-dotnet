@@ -14,7 +14,7 @@ public static class ServiceCollectionExtensions
         ServiceLifetime contextLifetime = ServiceLifetime.Scoped)
         where TContext : DbContext
     {
-        ArgumentNullException.ThrowIfNull(services);
+        Guard.IsNotNull(services);
 
         services.TryAdd(new ServiceDescriptor(
             typeof(IDbContextProvider),

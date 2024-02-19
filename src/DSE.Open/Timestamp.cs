@@ -121,7 +121,7 @@ public readonly record struct Timestamp : IComparable<Timestamp>, ISpanFormattab
 
     public static Timestamp Parse(string s, IFormatProvider? provider)
     {
-        ArgumentNullException.ThrowIfNull(s);
+        Guard.IsNotNull(s);
         return Parse(s.AsSpan(), provider);
     }
 

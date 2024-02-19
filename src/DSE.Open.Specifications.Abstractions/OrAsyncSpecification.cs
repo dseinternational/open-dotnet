@@ -14,8 +14,8 @@ internal sealed class OrAsyncSpecification<T> : IAsyncSpecification<T>
 
     public OrAsyncSpecification(IAsyncSpecification<T> left, IAsyncSpecification<T> right)
     {
-        ArgumentNullException.ThrowIfNull(left);
-        ArgumentNullException.ThrowIfNull(right);
+        Guard.IsNotNull(left);
+        Guard.IsNotNull(right);
         _left = left;
         _right = right;
     }

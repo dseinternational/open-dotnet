@@ -15,8 +15,8 @@ public sealed partial class CommandDispatcher : ICommandDispatcher
 
     public CommandDispatcher(IServiceProvider serviceProvider, ILogger<CommandDispatcher> logger)
     {
-        ArgumentNullException.ThrowIfNull(serviceProvider);
-        ArgumentNullException.ThrowIfNull(logger);
+        Guard.IsNotNull(serviceProvider);
+        Guard.IsNotNull(logger);
 
         _serviceProvider = serviceProvider;
         _logger = logger;
@@ -27,7 +27,7 @@ public sealed partial class CommandDispatcher : ICommandDispatcher
     public async Task<TCommandResult> Dispatch<TCommand, TCommandResult>(TCommand command, CancellationToken cancellation = default)
         where TCommand : ICommand
     {
-        ArgumentNullException.ThrowIfNull(command);
+        Guard.IsNotNull(command);
 
         var commandType = command.GetType();
 

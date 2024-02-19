@@ -52,7 +52,7 @@ public static partial class MemoryExtensions
 
     public static void CopyToArray2D<T>(this ReadOnlySpan<T> data, T[,] destination)
     {
-        ArgumentNullException.ThrowIfNull(destination);
+        Guard.IsNotNull(destination);
 
         var rows = destination.GetLength(0);
         var columns = destination.GetLength(1);

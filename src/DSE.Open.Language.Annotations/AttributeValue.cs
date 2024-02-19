@@ -26,7 +26,7 @@ public sealed record AttributeValue
 
     public AttributeValue(AlphaNumericCode name, ReadOnlyValueCollection<CharSequence> values)
     {
-        ArgumentNullException.ThrowIfNull(values);
+        Guard.IsNotNull(values);
 
         Name = name;
 
@@ -197,7 +197,7 @@ public sealed record AttributeValue
 
     public static AttributeValue Parse(string s, IFormatProvider? provider)
     {
-        ArgumentNullException.ThrowIfNull(s);
+        Guard.IsNotNull(s);
         return Parse(s.AsSpan(), provider);
     }
 

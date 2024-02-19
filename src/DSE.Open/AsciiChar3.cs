@@ -286,7 +286,7 @@ public readonly struct AsciiChar3
 
     public static AsciiChar3 Parse(string s, IFormatProvider? provider)
     {
-        ArgumentNullException.ThrowIfNull(s);
+        Guard.IsNotNull(s);
         return Parse(s.AsSpan(), provider);
     }
 

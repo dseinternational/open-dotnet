@@ -12,7 +12,7 @@ public static class AttributeValueSerializer
         IEnumerable<AttributeValue> features,
         out int charsWritten)
     {
-        ArgumentNullException.ThrowIfNull(features);
+        Guard.IsNotNull(features);
         return TrySerialize(destination, features.ToArray(), out charsWritten);
     }
 
@@ -21,7 +21,7 @@ public static class AttributeValueSerializer
         IReadOnlyList<AttributeValue> features,
         out int charsWritten)
     {
-        ArgumentNullException.ThrowIfNull(features);
+        Guard.IsNotNull(features);
 
         charsWritten = 0;
 
@@ -52,7 +52,7 @@ public static class AttributeValueSerializer
 
     public static string SerializeToString(IEnumerable<AttributeValue> features)
     {
-        ArgumentNullException.ThrowIfNull(features);
+        Guard.IsNotNull(features);
 
         var maxLength = features.Count() * 16;
 

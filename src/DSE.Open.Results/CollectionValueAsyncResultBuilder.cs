@@ -15,7 +15,7 @@ public abstract class CollectionValueAsyncResultBuilder<TResult, TValue>
 
     public override void MergeNotificationsAndValue(TResult valueResult)
     {
-        ArgumentNullException.ThrowIfNull(valueResult);
+        Guard.IsNotNull(valueResult);
 
         MergeNotifications(valueResult);
         Value = valueResult.Value ?? AsyncEnumerable.Empty<TValue>();

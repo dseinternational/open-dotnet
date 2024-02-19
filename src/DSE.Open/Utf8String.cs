@@ -24,7 +24,7 @@ public readonly struct Utf8String
 
     public Utf8String(string value)
     {
-        ArgumentNullException.ThrowIfNull(value);
+        Guard.IsNotNull(value);
         _utf8 = Encoding.UTF8.GetBytes(value);
     }
 
@@ -98,7 +98,7 @@ public readonly struct Utf8String
 
     public static Utf8String Parse(string s, IFormatProvider? provider)
     {
-        ArgumentNullException.ThrowIfNull(s);
+        Guard.IsNotNull(s);
         return new Utf8String(s);
     }
 

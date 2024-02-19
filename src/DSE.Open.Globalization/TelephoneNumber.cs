@@ -105,7 +105,7 @@ public readonly record struct TelephoneNumber
 
     public static TelephoneNumber Parse(string s, IFormatProvider? provider)
     {
-        ArgumentNullException.ThrowIfNull(s);
+        Guard.IsNotNull(s);
         return Parse(s.AsSpan(), provider);
     }
 

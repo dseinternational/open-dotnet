@@ -31,7 +31,7 @@ TCollection>
 
     private static int GenerateHash(TCollection values)
     {
-        ArgumentNullException.ThrowIfNull(values);
+        Guard.IsNotNull(values);
 
         var hash = 0;
 

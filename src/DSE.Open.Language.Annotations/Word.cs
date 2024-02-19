@@ -111,7 +111,7 @@ public record Word
 
     public static Word Parse(string s, IFormatProvider? provider)
     {
-        ArgumentNullException.ThrowIfNull(s);
+        Guard.IsNotNull(s);
         return Parse(s.AsSpan(), provider);
     }
 

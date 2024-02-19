@@ -19,8 +19,8 @@ public class Sentence
 
     internal Sentence(Document document, dynamic sentence)
     {
-        ArgumentNullException.ThrowIfNull(document);
-        ArgumentNullException.ThrowIfNull(sentence);
+        Guard.IsNotNull(document);
+        Guard.IsNotNull(sentence);
 
         Document = document;
 

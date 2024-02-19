@@ -48,13 +48,13 @@ public readonly partial struct LanguageTag
 
     public static LanguageTag FromCultureInfo(CultureInfo cultureInfo)
     {
-        ArgumentNullException.ThrowIfNull(cultureInfo);
+        Guard.IsNotNull(cultureInfo);
         return FromString(cultureInfo.Name);
     }
 
     public static LanguageTag FromString(string languageTag)
     {
-        ArgumentNullException.ThrowIfNull(languageTag);
+        Guard.IsNotNull(languageTag);
         return new LanguageTag(AsciiString.Parse(languageTag, CultureInfo.InvariantCulture));
     }
 

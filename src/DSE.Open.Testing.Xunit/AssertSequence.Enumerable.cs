@@ -13,8 +13,8 @@ public static partial class AssertSequence
         IEnumerable<T> sequence,
         [CallerArgumentExpression(nameof(assertion))] string? message = default)
     {
-        ArgumentNullException.ThrowIfNull(assertion);
-        ArgumentNullException.ThrowIfNull(sequence);
+        Guard.IsNotNull(assertion);
+        Guard.IsNotNull(sequence);
 
         if (!assertion(sequence))
         {
@@ -27,8 +27,8 @@ public static partial class AssertSequence
         IEnumerable<T> sequence,
         [CallerArgumentExpression(nameof(assertion))] string? message = default)
     {
-        ArgumentNullException.ThrowIfNull(assertion);
-        ArgumentNullException.ThrowIfNull(sequence);
+        Guard.IsNotNull(assertion);
+        Guard.IsNotNull(sequence);
 
         foreach (var value in sequence)
         {
@@ -44,8 +44,8 @@ public static partial class AssertSequence
         IEnumerable<T> sequence,
         [CallerArgumentExpression(nameof(assertion))] string? message = default)
     {
-        ArgumentNullException.ThrowIfNull(assertion);
-        ArgumentNullException.ThrowIfNull(sequence);
+        Guard.IsNotNull(assertion);
+        Guard.IsNotNull(sequence);
 
         foreach (var value in sequence)
         {
@@ -79,7 +79,7 @@ public static partial class AssertSequence
     public static void EachGreaterThanPrevious<T>(IEnumerable<T> source, T expectedAllEqualOrAbove = default)
         where T : struct, IComparable<T>
     {
-        ArgumentNullException.ThrowIfNull(source);
+        Guard.IsNotNull(source);
 
         var p = expectedAllEqualOrAbove;
 
@@ -109,7 +109,7 @@ public static partial class AssertSequence
     public static void EachGreaterThanOrEqualToPrevious<T>(IEnumerable<T> source, T expectedAllEqualOrAbove = default)
         where T : struct, IComparable<T>
     {
-        ArgumentNullException.ThrowIfNull(source);
+        Guard.IsNotNull(source);
 
         var p = expectedAllEqualOrAbove;
 

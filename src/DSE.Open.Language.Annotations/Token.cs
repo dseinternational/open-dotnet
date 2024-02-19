@@ -97,7 +97,7 @@ public record Token
 
     public static Token Parse(string s, IFormatProvider? provider)
     {
-        ArgumentNullException.ThrowIfNull(s);
+        Guard.IsNotNull(s);
 
         if (TryParse(s, provider, out var token))
         {

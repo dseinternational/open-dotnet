@@ -45,8 +45,8 @@ public class NumericsException : Exception
     public static void ThrowIfNotEqualLength<T>(ICollection<T> x, ICollection<T> y)
         where T : struct, INumber<T>
     {
-        ArgumentNullException.ThrowIfNull(x);
-        ArgumentNullException.ThrowIfNull(y);
+        Guard.IsNotNull(x);
+        Guard.IsNotNull(y);
 
         if (x.Count != y.Count)
         {
@@ -57,8 +57,8 @@ public class NumericsException : Exception
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void ThrowIfNotEqualLength(IReadOnlyVector x, IReadOnlyVector y)
     {
-        ArgumentNullException.ThrowIfNull(x);
-        ArgumentNullException.ThrowIfNull(y);
+        Guard.IsNotNull(x);
+        Guard.IsNotNull(y);
 
         if (x.Length != y.Length)
         {
@@ -89,8 +89,8 @@ public class NumericsException : Exception
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void ThrowIfNotEqualLength<T>(T[] x, T[] y)
     {
-        ArgumentNullException.ThrowIfNull(x);
-        ArgumentNullException.ThrowIfNull(y);
+        Guard.IsNotNull(x);
+        Guard.IsNotNull(y);
 
         if (x.Length != y.Length)
         {

@@ -15,7 +15,7 @@ public static class LocalizedCollectionOptions
 
     public static void SetDefaultFallbacks(ICollection<LanguageTag> languageTags)
     {
-        ArgumentNullException.ThrowIfNull(languageTags);
+        Guard.IsNotNull(languageTags);
         Guard.HasSizeGreaterThanOrEqualTo(languageTags, 1);
 
         s_defaultFallbacks = languageTags.ToArray();

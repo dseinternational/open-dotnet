@@ -9,7 +9,7 @@ public static class Utf8JsonWriterExtensions
 {
     public static void WriteNumberValue(this Utf8JsonWriter writer, decimal value, bool ensureFloatingPoint)
     {
-        ArgumentNullException.ThrowIfNull(writer);
+        Guard.IsNotNull(writer);
 
         if (ensureFloatingPoint && !value.HasDecimalPlaces())
         {
@@ -23,7 +23,7 @@ public static class Utf8JsonWriterExtensions
 
     public static void WriteNumberValue(this Utf8JsonWriter writer, double value, bool ensureFloatingPoint)
     {
-        ArgumentNullException.ThrowIfNull(writer);
+        Guard.IsNotNull(writer);
 
         if (ensureFloatingPoint && !value.HasDecimalPlaces())
         {
@@ -37,7 +37,7 @@ public static class Utf8JsonWriterExtensions
 
     public static void WriteNumberValue(this Utf8JsonWriter writer, float value, bool ensureFloatingPoint)
     {
-        ArgumentNullException.ThrowIfNull(writer);
+        Guard.IsNotNull(writer);
 
         if (ensureFloatingPoint && !value.HasDecimalPlaces())
         {

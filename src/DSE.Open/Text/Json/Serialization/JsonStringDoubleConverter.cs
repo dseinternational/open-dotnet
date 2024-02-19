@@ -34,7 +34,7 @@ public class JsonStringDoubleConverter : JsonConverter<double>
 
     public override void Write(Utf8JsonWriter writer, double value, JsonSerializerOptions options)
     {
-        ArgumentNullException.ThrowIfNull(writer);
+        Guard.IsNotNull(writer);
         writer.WriteStringValue(value.ToStringInvariant());
     }
 }

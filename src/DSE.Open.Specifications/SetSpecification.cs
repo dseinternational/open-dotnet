@@ -53,7 +53,7 @@ public class SetSpecification<TValue> : ICollectionSpecification<TValue>
 
     private bool IsSatisfiedBy(HashSet<TValue> value)
     {
-        ArgumentNullException.ThrowIfNull(value);
+        Guard.IsNotNull(value);
 
         return SetComparison switch
         {
@@ -69,7 +69,7 @@ public class SetSpecification<TValue> : ICollectionSpecification<TValue>
 
     private bool IsSatisfiedBy(FrozenSet<TValue> value)
     {
-        ArgumentNullException.ThrowIfNull(value);
+        Guard.IsNotNull(value);
 
         return SetComparison switch
         {

@@ -32,8 +32,8 @@ public class Word
 
     public Word(Token token, dynamic word)
     {
-        ArgumentNullException.ThrowIfNull(token);
-        ArgumentNullException.ThrowIfNull(word);
+        Guard.IsNotNull(token);
+        Guard.IsNotNull(word);
 
         Token = token;
 

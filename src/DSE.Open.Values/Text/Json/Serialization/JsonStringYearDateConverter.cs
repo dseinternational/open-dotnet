@@ -37,7 +37,7 @@ public class JsonStringYearDateConverter : JsonConverter<YearDate>
 
     public override void Write(Utf8JsonWriter writer, YearDate value, JsonSerializerOptions options)
     {
-        ArgumentNullException.ThrowIfNull(writer);
+        Guard.IsNotNull(writer);
 
         if (value.HasYearOnly)
         {

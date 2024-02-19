@@ -27,7 +27,7 @@ public abstract class EventRaisingEntity<TId> : Entity<TId>, IEventRaisingEntity
 
     protected void AddEvent(IDomainEvent @event)
     {
-        ArgumentNullException.ThrowIfNull(@event);
+        Guard.IsNotNull(@event);
         _events.Value.Add(@event);
     }
 

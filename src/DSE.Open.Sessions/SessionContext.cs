@@ -29,7 +29,7 @@ public sealed class SessionContext
     /// <param name="timeProvider"></param>
     public SessionContext(TimeProvider timeProvider)
     {
-        ArgumentNullException.ThrowIfNull(timeProvider);
+        Guard.IsNotNull(timeProvider);
 
         Id = Identifier.New("sess");
 

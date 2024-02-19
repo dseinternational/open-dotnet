@@ -12,8 +12,8 @@ public static partial class AssertSequence
         ICollection<T> sequence,
         [CallerArgumentExpression(nameof(assertion))] string? message = default)
     {
-        ArgumentNullException.ThrowIfNull(assertion);
-        ArgumentNullException.ThrowIfNull(sequence);
+        Guard.IsNotNull(assertion);
+        Guard.IsNotNull(sequence);
 
         if (!assertion(sequence))
         {

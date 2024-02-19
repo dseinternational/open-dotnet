@@ -9,7 +9,7 @@ public static class EventRaisingEntityExtensions
 {
     public static IEnumerable<IBeforeSaveChangesDomainEvent> GetBeforeSaveChangesEvents(this IEventRaisingEntity entity)
     {
-        ArgumentNullException.ThrowIfNull(entity);
+        Guard.IsNotNull(entity);
 
         if (!entity.HasEvents)
         {
@@ -21,7 +21,7 @@ public static class EventRaisingEntityExtensions
 
     public static bool HasBeforeSaveChangesEvents(this IEventRaisingEntity entity)
     {
-        ArgumentNullException.ThrowIfNull(entity);
+        Guard.IsNotNull(entity);
 
         return entity.HasEvents && entity.Events.OfType<IBeforeSaveChangesDomainEvent>().Any();
     }

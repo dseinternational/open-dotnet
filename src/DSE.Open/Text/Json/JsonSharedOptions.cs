@@ -97,8 +97,8 @@ public static class JsonSharedOptions
         bool includeJsonValueObjectConverter,
         JavaScriptEncoder? encoder)
     {
-        ArgumentNullException.ThrowIfNull(options);
-        ArgumentNullException.ThrowIfNull(commonNamingPolicy);
+        Guard.IsNotNull(options);
+        Guard.IsNotNull(commonNamingPolicy);
 
         options.Encoder = encoder ?? JavaScriptEncoders.UnicodeRangesAll;
 
@@ -122,7 +122,7 @@ public static class JsonSharedOptions
 
     public static void AddDefaultConverters(IList<JsonConverter> converters, bool includeJsonValueObjectConverter)
     {
-        ArgumentNullException.ThrowIfNull(converters);
+        Guard.IsNotNull(converters);
         converters.Add(new JsonStringEnumConverter(s_defaultNamingPolicy));
         converters.AddDseOpenCoreJsonConverters(includeJsonValueObjectConverter);
     }

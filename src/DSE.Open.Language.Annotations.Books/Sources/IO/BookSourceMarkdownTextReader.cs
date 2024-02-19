@@ -16,7 +16,7 @@ public class BookSourceMarkdownTextReader
 
     public Task<BookSource> ReadAsync(Stream stream, string id)
     {
-        ArgumentNullException.ThrowIfNull(stream);
+        Guard.IsNotNull(stream);
 
         using var reader = new StreamReader(stream);
         return ReadAsync(reader, id);
@@ -25,7 +25,7 @@ public class BookSourceMarkdownTextReader
     [SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "<Pending>")]
     public async Task<BookSource> ReadAsync(StreamReader reader, string id)
     {
-        ArgumentNullException.ThrowIfNull(reader);
+        Guard.IsNotNull(reader);
 
         string? title = null;
         var pages = new List<PageSource>();

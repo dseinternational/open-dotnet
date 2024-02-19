@@ -159,7 +159,7 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
 
     public static LikePattern Parse(string s, IFormatProvider? provider)
     {
-        ArgumentNullException.ThrowIfNull(s);
+        Guard.IsNotNull(s);
         return Parse(s.AsSpan(), provider);
     }
 
@@ -209,7 +209,7 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
     /// <returns></returns>
     public bool IsMatch(string value, StringComparison comparison)
     {
-        ArgumentNullException.ThrowIfNull(value);
+        Guard.IsNotNull(value);
 
         var comparer = StringComparer.FromComparison(comparison);
 

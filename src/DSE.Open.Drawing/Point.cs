@@ -9,7 +9,7 @@ public readonly record struct Point(double X, double Y)
 {
     public static Point Parse(string value)
     {
-        ArgumentNullException.ThrowIfNull(value);
+        Guard.IsNotNull(value);
 
         if (TryParse(value, out var point))
         {
@@ -88,7 +88,7 @@ public readonly record struct Point(double X, double Y)
 
     public static bool TryParseCollection(IEnumerable<string> values, out IList<Point> points)
     {
-        ArgumentNullException.ThrowIfNull(values);
+        Guard.IsNotNull(values);
 
         var result = new List<Point>();
 

@@ -132,7 +132,7 @@ public readonly struct AsciiString
 
     public static AsciiString Parse(string s, IFormatProvider? provider)
     {
-        ArgumentNullException.ThrowIfNull(s);
+        Guard.IsNotNull(s);
         return Parse(s.AsSpan(), provider);
     }
 

@@ -32,7 +32,7 @@ public sealed class JsonStringBinaryValueBase64Converter : JsonConverter<BinaryV
 
     public override void Write(Utf8JsonWriter writer, BinaryValue value, JsonSerializerOptions options)
     {
-        ArgumentNullException.ThrowIfNull(writer);
+        Guard.IsNotNull(writer);
 
         if (value == BinaryValue.Empty)
         {

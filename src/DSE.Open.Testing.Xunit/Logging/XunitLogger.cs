@@ -32,7 +32,7 @@ public class XunitLogger : ILogger
             return;
         }
 
-        ArgumentNullException.ThrowIfNull(formatter);
+        Guard.IsNotNull(formatter);
 
         var firstLinePrefix = $"{DateTime.Now.ToString(TimestampFormat, CultureInfo.InvariantCulture)} <{Environment.CurrentManagedThreadId}> [{_category}] {logLevel}: ";
 

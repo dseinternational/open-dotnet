@@ -13,7 +13,7 @@ internal sealed class CollectionDebugView<T>
 
     public CollectionDebugView(ICollection<T> collection)
     {
-        ArgumentNullException.ThrowIfNull(collection);
+        Guard.IsNotNull(collection);
 
         _collection = collection;
     }

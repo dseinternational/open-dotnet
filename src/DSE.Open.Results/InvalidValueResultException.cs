@@ -31,7 +31,7 @@ public static class InvalidValueResultException
     [StackTraceHidden]
     public static void ThrowIfNotHasValue<T>(ValueResult<T> result) where T : struct
     {
-        ArgumentNullException.ThrowIfNull(result);
+        Guard.IsNotNull(result);
 
         if (!result.HasValue)
         {
@@ -42,7 +42,7 @@ public static class InvalidValueResultException
     [StackTraceHidden]
     public static void ThrowIfAnyErrorNotifications<T>(ValueResult<T> result)
     {
-        ArgumentNullException.ThrowIfNull(result);
+        Guard.IsNotNull(result);
 
         if (result.HasAnyErrorNotifications())
         {
@@ -53,7 +53,7 @@ public static class InvalidValueResultException
     [StackTraceHidden]
     public static void ThrowIfNotHasValueOrAnyErrorNotifications<T>(ValueResult<T> result)
     {
-        ArgumentNullException.ThrowIfNull(result);
+        Guard.IsNotNull(result);
 
         if (!result.HasValue || result.HasAnyErrorNotifications())
         {

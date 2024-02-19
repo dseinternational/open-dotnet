@@ -22,7 +22,7 @@ public static class ServiceCollectionExtensions
         this IServiceCollection services,
         ServiceLifetime serviceLifetime = ServiceLifetime.Scoped)
     {
-        ArgumentNullException.ThrowIfNull(services);
+        Guard.IsNotNull(services);
         _ = services.AddMessageDispatcher(serviceLifetime);
         services.TryAdd(new ServiceDescriptor(typeof(IDomainEventDispatcher), typeof(DomainEventDispatcher), serviceLifetime));
         return services;
@@ -44,7 +44,7 @@ public static class ServiceCollectionExtensions
         where THandler : class, IDomainEventMessageHandler<TMessage>
         where TMessage : IDomainEvent
     {
-        ArgumentNullException.ThrowIfNull(services);
+        Guard.IsNotNull(services);
         services.Add(new ServiceDescriptor(typeof(IMessageHandler<TMessage>), typeof(THandler), serviceLifetime));
         return services;
     }

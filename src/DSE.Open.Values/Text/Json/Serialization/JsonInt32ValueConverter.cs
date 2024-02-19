@@ -16,7 +16,7 @@ public class JsonInt32ValueConverter<TValue> : JsonConverter<TValue>
 
     public override void Write(Utf8JsonWriter writer, TValue value, JsonSerializerOptions options)
     {
-        ArgumentNullException.ThrowIfNull(writer);
+        Guard.IsNotNull(writer);
         writer.WriteNumberValue((int)value);
     }
 }

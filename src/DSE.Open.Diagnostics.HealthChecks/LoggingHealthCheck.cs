@@ -10,7 +10,7 @@ public abstract partial class LoggingHealthCheck : IHealthCheck
 {
     protected LoggingHealthCheck(ILogger logger)
     {
-        ArgumentNullException.ThrowIfNull(logger);
+        Guard.IsNotNull(logger);
         Logger = logger;
     }
 
@@ -18,7 +18,7 @@ public abstract partial class LoggingHealthCheck : IHealthCheck
 
     public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
     {
-        ArgumentNullException.ThrowIfNull(context);
+        Guard.IsNotNull(context);
 #pragma warning disable CA1031 // Do not catch general exception types
         try
         {

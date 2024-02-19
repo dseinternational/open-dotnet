@@ -38,7 +38,7 @@ public sealed class JsonSpanSerializableValueConverter<TValue, T> : JsonConverte
 
     public override void Write(Utf8JsonWriter writer, TValue value, JsonSerializerOptions options)
     {
-        ArgumentNullException.ThrowIfNull(writer);
+        Guard.IsNotNull(writer);
 
         var rented = SpanOwner<char>.Empty;
 

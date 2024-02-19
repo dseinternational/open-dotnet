@@ -19,7 +19,7 @@ public static class ServiceCollectionExtensions
     /// <returns></returns>
     public static IServiceCollection AddMessageDispatcher(this IServiceCollection services, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped)
     {
-        ArgumentNullException.ThrowIfNull(services);
+        Guard.IsNotNull(services);
         services.TryAdd(new ServiceDescriptor(typeof(IMessageDispatcher), typeof(MessageDispatcher), serviceLifetime));
         return services;
     }
@@ -40,7 +40,7 @@ public static class ServiceCollectionExtensions
         where THandler : class, IMessageHandler<TMessage>
         where TMessage : IMessage
     {
-        ArgumentNullException.ThrowIfNull(services);
+        Guard.IsNotNull(services);
         services.Add(new ServiceDescriptor(typeof(IMessageHandler<TMessage>), typeof(THandler), serviceLifetime));
         return services;
     }

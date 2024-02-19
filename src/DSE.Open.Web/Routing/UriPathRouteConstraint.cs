@@ -18,8 +18,8 @@ public class UriPathRouteConstraint : IRouteConstraint, IParameterLiteralNodeMat
         RouteValueDictionary values,
         RouteDirection routeDirection)
     {
-        ArgumentNullException.ThrowIfNull(routeKey);
-        ArgumentNullException.ThrowIfNull(values);
+        Guard.IsNotNull(routeKey);
+        Guard.IsNotNull(values);
 
         if (values.TryGetValue(routeKey, out var value))
         {

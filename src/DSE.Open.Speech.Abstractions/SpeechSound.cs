@@ -142,7 +142,7 @@ public readonly struct SpeechSound
 
     public static SpeechSound Parse(string s, IFormatProvider? provider)
     {
-        ArgumentNullException.ThrowIfNull(s);
+        Guard.IsNotNull(s);
         return Parse(s.AsSpan(), provider);
     }
 

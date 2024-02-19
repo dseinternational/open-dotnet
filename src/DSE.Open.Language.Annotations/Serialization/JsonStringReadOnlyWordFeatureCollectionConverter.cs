@@ -12,7 +12,7 @@ public class JsonStringReadOnlyWordFeatureCollectionConverter
 
     protected override int GetMaxCharCountToWrite(ReadOnlyWordFeatureCollection value)
     {
-        ArgumentNullException.ThrowIfNull(value);
+        Guard.IsNotNull(value);
         return value.Count * 16;
     }
 }

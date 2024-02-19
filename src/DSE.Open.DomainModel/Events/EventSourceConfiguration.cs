@@ -16,7 +16,7 @@ public static class EventSourceConfiguration
         get => s_provider;
         set
         {
-            ArgumentNullException.ThrowIfNull(value);
+            Guard.IsNotNull(value);
             s_provider = value;
         }
     }

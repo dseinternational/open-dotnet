@@ -12,7 +12,7 @@ public static class JsonSerializableExtensions
     [RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]
     public static string ToJsonString(this IJsonSerializable obj, JsonSerializerOptions? options = null)
     {
-        ArgumentNullException.ThrowIfNull(obj);
+        Guard.IsNotNull(obj);
         return JsonSerializer.Serialize(obj, obj.GetType(), options);
     }
 }

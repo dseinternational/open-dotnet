@@ -29,7 +29,7 @@ public static class PredicateExpressionExtensions
         this Expression<Func<T, bool>> left,
         Expression<Func<T, bool>>? right)
     {
-        ArgumentNullException.ThrowIfNull(left);
+        Guard.IsNotNull(left);
 
         return right switch
         {
@@ -48,9 +48,9 @@ public static class PredicateExpressionExtensions
         Expression<Func<T, bool>> right,
         Func<Expression, Expression, BinaryExpression> combineOperator)
     {
-        ArgumentNullException.ThrowIfNull(left);
-        ArgumentNullException.ThrowIfNull(right);
-        ArgumentNullException.ThrowIfNull(combineOperator);
+        Guard.IsNotNull(left);
+        Guard.IsNotNull(right);
+        Guard.IsNotNull(combineOperator);
 
         var leftParameter = left.Parameters[0];
         var rightParameter = right.Parameters[0];

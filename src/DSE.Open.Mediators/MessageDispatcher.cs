@@ -19,8 +19,8 @@ public sealed partial class MessageDispatcher : IMessageDispatcher
 
     public MessageDispatcher(IServiceProvider serviceProvider, ILogger<MessageDispatcher> logger)
     {
-        ArgumentNullException.ThrowIfNull(serviceProvider);
-        ArgumentNullException.ThrowIfNull(logger);
+        Guard.IsNotNull(serviceProvider);
+        Guard.IsNotNull(logger);
 
         _serviceProvider = serviceProvider;
         _logger = logger;
@@ -30,7 +30,7 @@ public sealed partial class MessageDispatcher : IMessageDispatcher
     [RequiresDynamicCode("May break functionality when AOT compiling")]
     public async ValueTask PublishAsync(IMessage message, CancellationToken cancellationToken = default)
     {
-        ArgumentNullException.ThrowIfNull(message);
+        Guard.IsNotNull(message);
 
         var messageType = message.GetType();
 

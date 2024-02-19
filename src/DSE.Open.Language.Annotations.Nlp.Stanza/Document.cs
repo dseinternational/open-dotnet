@@ -20,7 +20,7 @@ public class Document
 
     internal Document(dynamic doc)
     {
-        ArgumentNullException.ThrowIfNull(doc);
+        Guard.IsNotNull(doc);
 
         _doc = doc;
 

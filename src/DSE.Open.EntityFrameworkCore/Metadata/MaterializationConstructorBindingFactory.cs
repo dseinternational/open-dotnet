@@ -31,7 +31,7 @@ public class MaterializationConstructorBindingFactory : ConstructorBindingFactor
         out InstantiationBinding constructorBinding,
         out InstantiationBinding? serviceOnlyBinding)
     {
-        ArgumentNullException.ThrowIfNull(type);
+        Guard.IsNotNull(type);
 
         var constructorsWithAttribute = type.ClrType.GetTypeInfo()
             .DeclaredConstructors

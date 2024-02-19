@@ -21,7 +21,7 @@ public static class AssertComparison
         [CallerArgumentExpression(nameof(comparison))] string? message = default)
         where T : struct, IComparable<T>
     {
-        ArgumentNullException.ThrowIfNull(comparison);
+        Guard.IsNotNull(comparison);
 
         if (!comparison(value))
         {
@@ -92,7 +92,7 @@ public static class AssertComparison
     public static void EachGreaterThanPrevious<T>(IEnumerable<T> source, T expectedAllAbove = default)
         where T : struct, IComparable<T>
     {
-        ArgumentNullException.ThrowIfNull(source);
+        Guard.IsNotNull(source);
 
         var p = expectedAllAbove;
 

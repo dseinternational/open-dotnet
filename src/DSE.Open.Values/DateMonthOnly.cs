@@ -108,7 +108,7 @@ public readonly record struct DateMonthOnly : ISpanFormattable, ISpanParsable<Da
 
     public static DateMonthOnly Parse(string s, IFormatProvider? provider)
     {
-        ArgumentNullException.ThrowIfNull(s);
+        Guard.IsNotNull(s);
         return new DateMonthOnly(DateOnly.Parse(s, provider));
     }
 

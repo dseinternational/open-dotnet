@@ -193,8 +193,8 @@ public static partial class StringHelper
     public static string GetSubstringAfterLast(string original, string marker,
         StringComparison comparison = StringComparison.CurrentCulture)
     {
-        ArgumentNullException.ThrowIfNull(original);
-        ArgumentNullException.ThrowIfNull(marker);
+        Guard.IsNotNull(original);
+        Guard.IsNotNull(marker);
 
         var pos = original.LastIndexOf(marker, comparison);
         var rtn = pos > 0 ? original[(pos + 1)..] : string.Empty;
@@ -213,7 +213,7 @@ public static partial class StringHelper
     /// </returns>
     public static string GetSubstringAfterLast(string original, char marker)
     {
-        ArgumentNullException.ThrowIfNull(original);
+        Guard.IsNotNull(original);
 
         var pos = original.LastIndexOf(marker);
         var rtn = pos > 0 ? original[(pos + 1)..] : string.Empty;
@@ -235,7 +235,7 @@ public static partial class StringHelper
     public static string GetSubstringBeforeFirst(string original, char marker,
         StringComparison comparison = StringComparison.CurrentCulture)
     {
-        ArgumentNullException.ThrowIfNull(original);
+        Guard.IsNotNull(original);
 
         var pos = original.IndexOf(marker, comparison);
         var rtn = pos > 0 ? original[..pos] : string.Empty;
@@ -257,8 +257,8 @@ public static partial class StringHelper
     public static string GetSubstringBeforeFirst(string original, string marker,
         StringComparison comparison = StringComparison.CurrentCulture)
     {
-        ArgumentNullException.ThrowIfNull(original);
-        ArgumentNullException.ThrowIfNull(marker);
+        Guard.IsNotNull(original);
+        Guard.IsNotNull(marker);
 
         var pos = original.IndexOf(marker, comparison);
         var rtn = pos > 0 ? original[..pos] : string.Empty;
@@ -280,8 +280,8 @@ public static partial class StringHelper
     public static string GetSubstringBeforeLast(string original, string marker,
         StringComparison comparison = StringComparison.CurrentCulture)
     {
-        ArgumentNullException.ThrowIfNull(original);
-        ArgumentNullException.ThrowIfNull(marker);
+        Guard.IsNotNull(original);
+        Guard.IsNotNull(marker);
 
         var pos = original.LastIndexOf(marker, comparison);
         var rtn = pos > 0 ? original[..pos] : string.Empty;
@@ -301,7 +301,7 @@ public static partial class StringHelper
     /// </returns>
     public static string GetSubstringBeforeLast(string original, char marker)
     {
-        ArgumentNullException.ThrowIfNull(original);
+        Guard.IsNotNull(original);
 
         var pos = original.LastIndexOf(marker);
         var rtn = pos > 0 ? original[..pos] : string.Empty;

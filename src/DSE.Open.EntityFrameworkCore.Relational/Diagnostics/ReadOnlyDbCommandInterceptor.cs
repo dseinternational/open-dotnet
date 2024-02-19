@@ -11,8 +11,8 @@ public partial class ReadOnlyDbCommandInterceptor : DbCommandInterceptor
 {
     public override DbCommand CommandInitialized(CommandEndEventData eventData, DbCommand result)
     {
-        ArgumentNullException.ThrowIfNull(eventData);
-        ArgumentNullException.ThrowIfNull(result);
+        Guard.IsNotNull(eventData);
+        Guard.IsNotNull(result);
 
         if (eventData.CommandSource is CommandSource.LinqQuery
             or CommandSource.FromSqlQuery

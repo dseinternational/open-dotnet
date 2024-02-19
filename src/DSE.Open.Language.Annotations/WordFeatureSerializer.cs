@@ -12,7 +12,7 @@ public static class WordFeatureSerializer
         IEnumerable<WordFeature> features,
         out int charsWritten)
     {
-        ArgumentNullException.ThrowIfNull(features);
+        Guard.IsNotNull(features);
         return TrySerialize(destination, features.ToArray(), out charsWritten);
     }
 
@@ -21,7 +21,7 @@ public static class WordFeatureSerializer
         IReadOnlyList<WordFeature> features,
         out int charsWritten)
     {
-        ArgumentNullException.ThrowIfNull(features);
+        Guard.IsNotNull(features);
 
         charsWritten = 0;
 
@@ -52,7 +52,7 @@ public static class WordFeatureSerializer
 
     public static string SerializeToString(IEnumerable<WordFeature> features)
     {
-        ArgumentNullException.ThrowIfNull(features);
+        Guard.IsNotNull(features);
 
         var maxLength = features.Count() * 16;
 

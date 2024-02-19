@@ -48,7 +48,7 @@ public class JsonValueObjectConverter : JsonConverter<object>
         object value,
         JsonSerializerOptions options)
     {
-        ArgumentNullException.ThrowIfNull(writer);
+        Guard.IsNotNull(writer);
 
         if (value is decimal decimalValue)
         {

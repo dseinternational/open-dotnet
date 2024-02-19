@@ -70,7 +70,7 @@ public static class JsonBinarySerializer
     [RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]
     public static T? DeserializeFromBase64Utf8Json<T>(string base64, JsonSerializerOptions? jsonSerializerOptions = null)
     {
-        ArgumentNullException.ThrowIfNull(base64);
+        Guard.IsNotNull(base64);
         jsonSerializerOptions ??= s_jsonSerializerOptions;
         return DeserializeFromUtf8Json<T>(Convert.FromBase64String(base64), jsonSerializerOptions);
     }
@@ -86,7 +86,7 @@ public static class JsonBinarySerializer
     [RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]
     public static bool TryDeserializeFromBase64Utf8Json<T>(string base64, JsonSerializerOptions? jsonSerializerOptions, out T? value)
     {
-        ArgumentNullException.ThrowIfNull(base64);
+        Guard.IsNotNull(base64);
 
         jsonSerializerOptions ??= s_jsonSerializerOptions;
 

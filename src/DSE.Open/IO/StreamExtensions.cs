@@ -9,7 +9,7 @@ public static class StreamExtensions
 {
     public static byte[] ReadToEnd(this Stream stream, int initialLength = 0)
     {
-        ArgumentNullException.ThrowIfNull(stream);
+        Guard.IsNotNull(stream);
 
         if (initialLength < 1)
         {
@@ -49,7 +49,7 @@ public static class StreamExtensions
 
     public static async Task<byte[]> ReadToEndAsync(this Stream stream, int initialLength = 0)
     {
-        ArgumentNullException.ThrowIfNull(stream);
+        Guard.IsNotNull(stream);
 
         if (initialLength < 1)
         {

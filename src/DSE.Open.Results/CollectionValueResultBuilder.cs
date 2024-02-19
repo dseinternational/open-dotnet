@@ -19,7 +19,7 @@ public abstract class CollectionValueResultBuilder<TResult, TValue>
 
     public override void MergeNotificationsAndValue(TResult valueResult)
     {
-        ArgumentNullException.ThrowIfNull(valueResult);
+        Guard.IsNotNull(valueResult);
 
         MergeNotifications(valueResult);
 

@@ -7,7 +7,7 @@ public static class ValueResultExtensions
 {
     public static T GetRequiredValue<T>(this ValueResult<T> result)
     {
-        ArgumentNullException.ThrowIfNull(result);
+        Guard.IsNotNull(result);
 
         if (!result.HasValue)
         {

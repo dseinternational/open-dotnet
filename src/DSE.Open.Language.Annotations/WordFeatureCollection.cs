@@ -26,7 +26,7 @@ public sealed class WordFeatureCollection
 
     public WordFeatureCollection(IEnumerable<WordFeature> features)
     {
-        ArgumentNullException.ThrowIfNull(features);
+        Guard.IsNotNull(features);
 
         _features = new List<WordFeature>(features);
     }
@@ -57,7 +57,7 @@ public sealed class WordFeatureCollection
 
     public void Add(WordFeature item)
     {
-        ArgumentNullException.ThrowIfNull(item);
+        Guard.IsNotNull(item);
         EnsureDoesNotContainName(item.Name);
         _features.Add(item);
     }
@@ -174,7 +174,7 @@ public sealed class WordFeatureCollection
 
     public static WordFeatureCollection Parse(string s, IFormatProvider? provider)
     {
-        ArgumentNullException.ThrowIfNull(s, nameof(s));
+        Guard.IsNotNull(s, nameof(s));
         return Parse(s.AsSpan(), provider);
     }
 

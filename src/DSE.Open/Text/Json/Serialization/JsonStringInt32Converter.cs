@@ -34,7 +34,7 @@ public class JsonStringInt32Converter : JsonConverter<int>
 
     public override void Write(Utf8JsonWriter writer, int value, JsonSerializerOptions options)
     {
-        ArgumentNullException.ThrowIfNull(writer);
+        Guard.IsNotNull(writer);
         writer.WriteStringValue(value.ToStringInvariant());
     }
 }

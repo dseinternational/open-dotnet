@@ -73,7 +73,7 @@ public sealed partial class SqlServerNonBufferingRetryingExecutionStrategy : Exe
         TimeSpan medianRetryDelay)
         : base(dependencies, maxRetryCount, DefaultMaxDelay)
     {
-        ArgumentNullException.ThrowIfNull(dependencies);
+        Guard.IsNotNull(dependencies);
         _logger = dependencies.CurrentContext.Context.GetService<ILoggerFactory>().CreateLogger<SqlServerNonBufferingRetryingExecutionStrategy>();
         _retryDelays = GetRetryDelays(maxRetryCount, DefaultFirstRetryDelay, medianRetryDelay);
     }
@@ -157,7 +157,7 @@ public sealed partial class SqlServerNonBufferingRetryingExecutionStrategy : Exe
 
     protected override bool ShouldRetryOn(Exception exception)
     {
-        ArgumentNullException.ThrowIfNull(exception);
+        Guard.IsNotNull(exception);
 
         var shouldRetry = SqlServerTransientConnectionExceptionDetector.ShouldRetryOn(exception);
 

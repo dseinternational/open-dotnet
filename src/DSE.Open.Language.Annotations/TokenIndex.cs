@@ -307,7 +307,7 @@ public readonly struct TokenIndex
 
     public static TokenIndex Parse(string s, IFormatProvider? provider)
     {
-        ArgumentNullException.ThrowIfNull(s);
+        Guard.IsNotNull(s);
 
         if (TryParse(s.AsSpan(), provider, out var result))
         {

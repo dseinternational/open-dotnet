@@ -18,8 +18,8 @@ public sealed partial class EventDispatchingSaveChangesInterceptor : SaveChanges
         IDomainEventDispatcher eventDispatcher,
         ILogger<EventDispatchingSaveChangesInterceptor> logger)
     {
-        ArgumentNullException.ThrowIfNull(eventDispatcher);
-        ArgumentNullException.ThrowIfNull(logger);
+        Guard.IsNotNull(eventDispatcher);
+        Guard.IsNotNull(logger);
 
         EventDispatcher = eventDispatcher;
         _logger = logger;
@@ -39,7 +39,7 @@ public sealed partial class EventDispatchingSaveChangesInterceptor : SaveChanges
         InterceptionResult<int> result,
         CancellationToken cancellationToken = default)
     {
-        ArgumentNullException.ThrowIfNull(eventData);
+        Guard.IsNotNull(eventData);
 
         if (eventData.Context is null)
         {
@@ -74,7 +74,7 @@ public sealed partial class EventDispatchingSaveChangesInterceptor : SaveChanges
         int result,
         CancellationToken cancellationToken = default)
     {
-        ArgumentNullException.ThrowIfNull(eventData);
+        Guard.IsNotNull(eventData);
 
         if (eventData.Context is null)
         {

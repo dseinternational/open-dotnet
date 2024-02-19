@@ -11,13 +11,13 @@ public static class RequestResultMetadataExtensions
 {
     public static SessionContext GetSessionContext(this RequestMetadata requestMetadata)
     {
-        ArgumentNullException.ThrowIfNull(requestMetadata);
+        Guard.IsNotNull(requestMetadata);
         return (SessionContext)requestMetadata.Properties[SessionContextMetadataKeys.SessionContext];
     }
 
     public static SessionContext GetSessionContext(this ResultMetadata resultMetadata)
     {
-        ArgumentNullException.ThrowIfNull(resultMetadata);
+        Guard.IsNotNull(resultMetadata);
         return (SessionContext)resultMetadata.Properties[SessionContextMetadataKeys.SessionContext];
     }
 
@@ -25,7 +25,7 @@ public static class RequestResultMetadataExtensions
         this RequestMetadata requestMetadata,
         [NotNullWhen(true)] out SessionContext? sessionContext)
     {
-        ArgumentNullException.ThrowIfNull(requestMetadata);
+        Guard.IsNotNull(requestMetadata);
 
         if (requestMetadata.Properties.TryGetValue(SessionContextMetadataKeys.SessionContext, out var sessionObj)
             && sessionObj is SessionContext session)
@@ -42,7 +42,7 @@ public static class RequestResultMetadataExtensions
         this ResultMetadata resultMetadata,
         [NotNullWhen(true)] out SessionContext? sessionContext)
     {
-        ArgumentNullException.ThrowIfNull(resultMetadata);
+        Guard.IsNotNull(resultMetadata);
 
         if (resultMetadata.Properties.TryGetValue(SessionContextMetadataKeys.SessionContext, out var sessionObj)
             && sessionObj is SessionContext session)

@@ -86,7 +86,7 @@ public readonly record struct TimePeriod : IComparable<TimePeriod>
 
     public static TimePeriod Parse(string value)
     {
-        ArgumentNullException.ThrowIfNull(value);
+        Guard.IsNotNull(value);
 
         return TryParse(value, out var result) ? result : throw new FormatException("Invalid TimePeriod.");
     }

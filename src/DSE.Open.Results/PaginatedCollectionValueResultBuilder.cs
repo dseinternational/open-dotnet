@@ -12,7 +12,7 @@ public class PaginatedCollectionValueResultBuilder<TValue> : CollectionValueResu
 
     public virtual void MergeNotificationsAndValue(PaginatedCollectionValueResult<TValue> valueResult)
     {
-        ArgumentNullException.ThrowIfNull(valueResult);
+        Guard.IsNotNull(valueResult);
 
         MergeNotifications(valueResult);
 

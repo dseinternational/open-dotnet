@@ -30,7 +30,7 @@ public class StrictMaterializationConstructorBindingFactory : ConstructorBinding
         out InstantiationBinding constructorBinding,
         out InstantiationBinding? serviceOnlyBinding)
     {
-        ArgumentNullException.ThrowIfNull(type);
+        Guard.IsNotNull(type);
 
         // Used for join entity types
         // https://learn.microsoft.com/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key#many-to-many

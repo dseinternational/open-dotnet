@@ -24,7 +24,7 @@ public abstract class EntityTypeConfiguration<[DynamicallyAccessedMembers(Trimmi
 
     public override void Configure(EntityTypeBuilder<TEntity> builder)
     {
-        ArgumentNullException.ThrowIfNull(builder);
+        Guard.IsNotNull(builder);
 
         base.Configure(builder);
 

@@ -68,7 +68,7 @@ public readonly struct DiagnosticCode
 
     private DiagnosticCode(string code, bool skipChecks)
     {
-        ArgumentNullException.ThrowIfNull(code);
+        Guard.IsNotNull(code);
 
         if (!skipChecks)
         {
@@ -213,7 +213,7 @@ public readonly struct DiagnosticCode
 
     public static DiagnosticCode Parse(string s, IFormatProvider? provider)
     {
-        ArgumentNullException.ThrowIfNull(s);
+        Guard.IsNotNull(s);
         return Parse(s.AsSpan(), provider);
     }
 

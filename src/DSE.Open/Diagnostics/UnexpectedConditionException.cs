@@ -61,7 +61,7 @@ public class UnexpectedConditionException : Exception
 
     public static void ThrowIfEmpty<T>(ICollection<T> collection, [CallerArgumentExpression(nameof(collection))] string? collectionName = null)
     {
-        ArgumentNullException.ThrowIfNull(collection);
+        Guard.IsNotNull(collection);
 
         if (collection.Count == 0)
         {
@@ -71,7 +71,7 @@ public class UnexpectedConditionException : Exception
 
     public static void ThrowIfEmpty<T>(IEnumerable<T> collection, [CallerArgumentExpression(nameof(collection))] string? collectionName = null)
     {
-        ArgumentNullException.ThrowIfNull(collection);
+        Guard.IsNotNull(collection);
 
         if (!collection.Any())
         {

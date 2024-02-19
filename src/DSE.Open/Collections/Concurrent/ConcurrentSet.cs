@@ -187,7 +187,7 @@ public class ConcurrentSet<T> : IReadOnlyCollection<T>, ICollection<T>
     public ConcurrentSet(IEnumerable<T> collection, IEqualityComparer<T>? comparer)
         : this(comparer)
     {
-        ArgumentNullException.ThrowIfNull(collection);
+        Guard.IsNotNull(collection);
 
         InitializeFromCollection(collection);
     }
@@ -213,7 +213,7 @@ public class ConcurrentSet<T> : IReadOnlyCollection<T>, ICollection<T>
     public ConcurrentSet(int concurrencyLevel, IEnumerable<T> collection, IEqualityComparer<T>? comparer)
         : this(concurrencyLevel, DefaultCapacity, false, comparer)
     {
-        ArgumentNullException.ThrowIfNull(collection);
+        Guard.IsNotNull(collection);
 
         InitializeFromCollection(collection);
     }
@@ -571,7 +571,7 @@ public class ConcurrentSet<T> : IReadOnlyCollection<T>, ICollection<T>
 
     protected virtual void CopyTo(T[] array, int arrayIndex)
     {
-        ArgumentNullException.ThrowIfNull(array);
+        Guard.IsNotNull(array);
         ArgumentOutOfRangeException.ThrowIfNegative(arrayIndex);
 
         var locksAcquired = 0;

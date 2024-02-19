@@ -7,7 +7,7 @@ internal static class StringExtensions
 {
     public static string ToStringInterned(this object obj)
     {
-        ArgumentNullException.ThrowIfNull(obj);
+        Guard.IsNotNull(obj);
 
         var s = obj.ToString();
 

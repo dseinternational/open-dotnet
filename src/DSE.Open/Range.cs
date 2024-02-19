@@ -165,7 +165,7 @@ public readonly record struct Range<T> : ISpanFormattable, ISpanParsable<Range<T
 
     public static Range<T> Parse(string s, IFormatProvider? provider)
     {
-        ArgumentNullException.ThrowIfNull(s);
+        Guard.IsNotNull(s);
         return Parse(s.AsSpan(), provider);
     }
 }

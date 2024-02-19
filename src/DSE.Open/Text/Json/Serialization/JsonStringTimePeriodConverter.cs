@@ -25,7 +25,7 @@ public class JsonStringTimePeriodConverter : JsonConverter<TimePeriod>
 
     public override void Write(Utf8JsonWriter writer, TimePeriod value, JsonSerializerOptions options)
     {
-        ArgumentNullException.ThrowIfNull(writer);
+        Guard.IsNotNull(writer);
         writer.WriteStringValue(value.ToString());
     }
 }

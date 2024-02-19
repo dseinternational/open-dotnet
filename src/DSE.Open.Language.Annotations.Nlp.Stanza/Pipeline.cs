@@ -12,7 +12,7 @@ public class Pipeline : IDisposable
 
     internal Pipeline(dynamic nlp)
     {
-        ArgumentNullException.ThrowIfNull(nlp);
+        Guard.IsNotNull(nlp);
 
         _nlp = nlp;
     }
@@ -21,7 +21,7 @@ public class Pipeline : IDisposable
         IEnumerable<string> sentences,
         CancellationToken cancellationToken = default)
     {
-        ArgumentNullException.ThrowIfNull(sentences);
+        Guard.IsNotNull(sentences);
 
         var text = string.Join("\n\n", sentences);
         return ProcessTextAsync(text, cancellationToken);

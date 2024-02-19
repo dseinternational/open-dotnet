@@ -12,7 +12,7 @@ public abstract class DbContextHealthCheck<TContext> : LoggingHealthCheck
 {
     protected DbContextHealthCheck(TContext dbContext, ILogger logger) : base(logger)
     {
-        ArgumentNullException.ThrowIfNull(dbContext);
+        Guard.IsNotNull(dbContext);
         DbContext = dbContext;
     }
 

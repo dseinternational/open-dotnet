@@ -29,7 +29,7 @@ public static partial class StringHelper
     /// if <paramref name="values"/> has zero elements.</returns>
     public static string Join(string? separator, string? finalSeparator, IEnumerable<string?> values)
     {
-        ArgumentNullException.ThrowIfNull(values);
+        Guard.IsNotNull(values);
         return Join((ReadOnlySpan<char>)separator, (ReadOnlySpan<char>)finalSeparator, values);
     }
 
@@ -52,7 +52,7 @@ public static partial class StringHelper
         ReadOnlySpan<char> finalSeparator,
         IEnumerable<string?> values)
     {
-        ArgumentNullException.ThrowIfNull(values);
+        Guard.IsNotNull(values);
 
         // `Empty` final separator is treated as asking for `string.Join(separator, values)` behaviour
         if (finalSeparator.IsEmpty)
@@ -93,7 +93,7 @@ public static partial class StringHelper
         IFormatProvider? provider = default)
         where T : struct, IFormattable
     {
-        ArgumentNullException.ThrowIfNull(values);
+        Guard.IsNotNull(values);
 
         if (values.TryGetSpan(out var valuesSpan))
         {

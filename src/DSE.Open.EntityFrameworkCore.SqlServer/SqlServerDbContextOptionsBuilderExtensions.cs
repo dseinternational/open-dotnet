@@ -32,7 +32,7 @@ public static class SqlServerDbContextOptionsBuilderExtensions
         QuerySplittingBehavior querySplittingBehavior = QuerySplittingBehavior.SingleQuery,
         bool useHierarchyId = true)
     {
-        ArgumentNullException.ThrowIfNull(builder);
+        Guard.IsNotNull(builder);
 
         _ = builder
             .CommandTimeout(commandTimeout)

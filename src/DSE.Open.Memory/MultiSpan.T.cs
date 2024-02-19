@@ -32,7 +32,7 @@ public readonly ref struct MultiSpan<T>
     /// <see cref="MultiSpan{T}"/>.</param>
     public MultiSpan(T[] elements)
     {
-        ArgumentNullException.ThrowIfNull(elements);
+        Guard.IsNotNull(elements);
 
         _shape = [(uint)elements.Length];
 
@@ -64,7 +64,7 @@ public readonly ref struct MultiSpan<T>
     /// <see cref="MultiSpan{T}"/>.</param>
     public MultiSpan(T[,] elements)
     {
-        ArgumentNullException.ThrowIfNull(elements);
+        Guard.IsNotNull(elements);
 
         _shape = [(uint)elements.GetLength(0), (uint)elements.GetLength(1)];
 
@@ -81,7 +81,7 @@ public readonly ref struct MultiSpan<T>
     /// <see cref="MultiSpan{T}"/>.</param>
     public MultiSpan(T[,,] elements)
     {
-        ArgumentNullException.ThrowIfNull(elements);
+        Guard.IsNotNull(elements);
 
         _shape =
         [
@@ -103,7 +103,7 @@ public readonly ref struct MultiSpan<T>
     /// <see cref="MultiSpan{T}"/>.</param>
     public MultiSpan(T[,,,] elements)
     {
-        ArgumentNullException.ThrowIfNull(elements);
+        Guard.IsNotNull(elements);
 
         _shape =
         [
@@ -120,7 +120,7 @@ public readonly ref struct MultiSpan<T>
 
     public MultiSpan(T[,,,,] elements)
     {
-        ArgumentNullException.ThrowIfNull(elements);
+        Guard.IsNotNull(elements);
 
         _shape =
         [

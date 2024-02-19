@@ -15,7 +15,7 @@ public class StanzaContext : IDisposable
 
     public StanzaContext(PythonContext pythonContext)
     {
-        ArgumentNullException.ThrowIfNull(pythonContext);
+        Guard.IsNotNull(pythonContext);
 
         _pythonContext = pythonContext;
 

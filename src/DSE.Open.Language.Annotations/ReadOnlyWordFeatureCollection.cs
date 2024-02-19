@@ -27,7 +27,7 @@ public sealed class ReadOnlyWordFeatureCollection
 
     public ReadOnlyWordFeatureCollection(IEnumerable<WordFeature> features)
     {
-        ArgumentNullException.ThrowIfNull(features);
+        Guard.IsNotNull(features);
         _features = new WordFeatureCollection(features);
     }
 
@@ -112,7 +112,7 @@ public sealed class ReadOnlyWordFeatureCollection
 
     public static ReadOnlyWordFeatureCollection Parse(string s, IFormatProvider? provider)
     {
-        ArgumentNullException.ThrowIfNull(s, nameof(s));
+        Guard.IsNotNull(s, nameof(s));
         return Parse(s.AsSpan(), provider);
     }
 

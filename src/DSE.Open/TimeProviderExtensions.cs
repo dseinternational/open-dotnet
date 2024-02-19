@@ -9,13 +9,13 @@ public static class TimeProviderExtensions
 {
     public static Instant GetCurrentInstant(this TimeProvider timeProvider)
     {
-        ArgumentNullException.ThrowIfNull(timeProvider);
+        Guard.IsNotNull(timeProvider);
         return Instant.FromDateTimeOffset(timeProvider.GetUtcNow());
     }
 
     public static IClock AsClock(this TimeProvider timeProvider)
     {
-        ArgumentNullException.ThrowIfNull(timeProvider);
+        Guard.IsNotNull(timeProvider);
         return new TimeProviderClock(timeProvider);
     }
 
