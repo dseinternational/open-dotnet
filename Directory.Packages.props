@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageVersion Include="Azure.Core" Version="1.37.0" />
+    <PackageVersion Include="Azure.Core" Version="1.38.0" />
     <PackageVersion Include="Azure.Identity" Version="1.10.4" />
     <PackageVersion Include="BenchmarkDotNet" Version="0.13.12" />
     <PackageVersion Include="CommunityToolkit.Diagnostics" Version="8.2.2" />
@@ -57,7 +57,7 @@
     <PackageVersion Include="System.Management" Version="8.0.0" />
     <PackageVersion Include="System.Memory" Version="4.5.5" />
     <PackageVersion Include="System.Memory.Data" Version="8.0.0" />
-    <PackageVersion Include="System.Numerics.Tensors" Version="9.0.0-preview.2.24125.2" />
+    <PackageVersion Include="System.Numerics.Tensors" Version="9.0.0-preview.3.24126.5" />
     <PackageVersion Include="System.Reflection.Emit" Version="4.7.0" />
     <PackageVersion Include="System.Runtime.Caching" Version="8.0.0" />
     <PackageVersion Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
