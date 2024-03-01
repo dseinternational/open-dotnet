@@ -23,7 +23,7 @@ jobs:
         uses: actions/cache@v4
         env:
           cache-name: cache-stanza-downloads
-          stanza-version: 1.8.0
+          stanza-version: 1.8.1
         with:
           path: ~/stanza_resources
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ env.stanza-version }}

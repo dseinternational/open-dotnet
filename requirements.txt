@@ -3,4 +3,4 @@
 # linux+cpu: pip3 install torch>=2.2.1 torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
 
 numpy>=1.26.4
-stanza>=1.8.0
+stanza>=1.8.1
