@@ -27,6 +27,9 @@ public class LikePatternTests
     [InlineData(@"\\a", @"\a")]
     [InlineData(@"\*", "*")]
     [InlineData(@"\?", "?")]
+    [InlineData(@"\[]", "[]")]
+    [InlineData(@"\[\]", "[]")]
+    [InlineData("a*?b", "abb")]
     public void IsMatch_returns_true_for_matches(string pattern, string value)
     {
         Assert.True(new LikePattern(pattern).IsMatch(value, StringComparison.Ordinal));
@@ -46,6 +49,9 @@ public class LikePatternTests
     [InlineData("a[[]", "abc[")]
     [InlineData("[[]a*", "a[abcde")]
     [InlineData(@"a\[abc\]", "aa")]
+    [InlineData("a*?b", "ab")] // `?` requires exactly 1 character, this pattern requires 2 'b's
+    [InlineData("a*?", "a")] // `?` requires exactly 1 character, this pattern requires 1 more character
+    [InlineData("a?", "a")]
     public void IsNotMatch_returns_false_for_nonmatches(string pattern, string value)
     {
         Assert.False(new LikePattern(pattern).IsMatch(value, StringComparison.Ordinal));

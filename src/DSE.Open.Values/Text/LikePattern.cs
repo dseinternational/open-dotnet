@@ -236,6 +236,7 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
 
             if (patternIndex >= patternToMatch.Length)
             {
+                // If we've reached the end of the pattern without returning, then the pattern has matched the value
                 return valueIndex >= value.Length;
             }
 
@@ -243,8 +244,17 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
 
             if (valueIndex >= value.Length)
             {
-                // end of value
-                return p == '*';
+                if (p != '*')
+                {
+                    return false;
+                }
+
+                if (patternIndex == patternToMatch.Length - 1)
+                {
+                    return true;
+                }
+
+                return patternToMatch[patternIndex + 1] != '?';
             }
 
             var v = value[valueIndex];
@@ -259,7 +269,6 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
                                 ref valueIndex,
                                 patternToMatch,
                                 value,
-                                comparison,
                                 out var matched))
                         {
                             return matched;
@@ -307,7 +316,6 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
         ref int valueIndex,
         string patternToMatch,
         string value,
-        StringComparison comparison,
         out bool matched)
     {
         patternIndex++;
@@ -317,6 +325,14 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
             // `*` at end of pattern matches everything
             matched = true;
             return true;
+        }
+
+        if (patternToMatch[patternIndex] == '?')
+        {
+            // `*?` matches any string of _one or more_ characters. As such, we can't match 0 characters here, so make
+            // sure that another character is present in the value by passing off to `?` matching.
+            matched = false;
+            return false;
         }
 
         // skip until next match
@@ -332,7 +348,7 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
             var valueChar = value[valueIndex];
             var patternChar = patternToMatch[patternIndex];
 
-            if (valueChar.ToString().Equals(patternChar.ToString(), comparison))
+            if (valueChar.Equals(patternChar))
             {
                 // matched the `*` pattern. Break to continue matching the rest of the pattern.
                 matched = default;
