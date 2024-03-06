@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Collections;
 using System.Text.Json;
 using DSE.Open.Collections.Generic;
 
@@ -89,5 +90,69 @@ public class ReadOnlyValueCollectionTests
         Assert.Equal(0, collection[0]);
         Assert.Equal(1, collection[1]);
         Assert.Equal(2, collection.Count);
+    }
+
+    [Fact]
+    public void Foreach_ShouldIterate()
+    {
+        // Arrange
+        const int lower = 0;
+        const int upper = 10;
+        ReadOnlyValueCollection<int> collection = [..Enumerable.Range(lower, upper)];
+
+        // Act
+        var acc = 0;
+
+        foreach (var item in collection)
+        {
+            acc += item;
+        }
+
+        // Assert
+        var expected = Enumerable.Range(lower, upper).Sum();
+        Assert.Equal(expected, acc);
+        Assert.Equal(expected, collection.Sum());
+    }
+
+    [Fact]
+    public void IEnumerable_Sum()
+    {
+        // Arrange
+        const int lower = 0;
+        const int upper = 10;
+        ReadOnlyValueCollection<int> collection = [..Enumerable.Range(lower, upper)];
+
+        // Act
+        var sum = collection.Sum();
+
+        // Assert
+        Assert.Equal(Enumerable.Range(lower, upper).Sum(), sum);
+    }
+
+    [Fact]
+    public void GetEnumerator_ShouldReturnStruct()
+    {
+        // Arrange
+        ReadOnlyValueCollection<int> collection = [0, 1, 2];
+
+        // Act
+        using var enumerator = collection.GetEnumerator();
+
+        // Assert
+        Assert.IsType<ReadOnlyValueCollection<int>.Enumerator>(enumerator);
+    }
+
+    [Fact]
+    public void Reset_ShouldThrowNotSupported()
+    {
+        // Arrange
+        ReadOnlyValueCollection<int> collection = [0, 1, 2];
+        using var enumerator = collection.GetEnumerator();
+
+        // Act
+        void Act() => ((IEnumerator)enumerator).Reset();
+
+        // Assert
+        Assert.Throws<NotSupportedException>(Act);
     }
 }
