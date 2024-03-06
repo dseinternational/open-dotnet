@@ -125,14 +125,19 @@ public class ReadOnlyValueCollection<T>
         return hash.ToHashCode();
     }
 
-    public IEnumerator<T> GetEnumerator()
+    public Enumerator GetEnumerator()
     {
-        return _items.GetEnumerator();
+        return new Enumerator(this);
+    }
+
+    IEnumerator<T> IEnumerable<T>.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()
     {
-        return ((IEnumerable)_items).GetEnumerator();
+        return GetEnumerator();
     }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
@@ -156,6 +161,35 @@ public class ReadOnlyValueCollection<T>
     {
         return new ReadOnlyValueCollection<T>(collection);
     }
-
 #pragma warning restore CA2225 // Operator overloads have named alternates
+
+    public struct Enumerator : IEnumerator<T>
+    {
+        private List<T>.Enumerator _inner;
+
+        public Enumerator(ReadOnlyValueCollection<T> collection)
+        {
+            Guard.IsNotNull(collection);
+            _inner = collection._items.GetEnumerator();
+        }
+
+        public bool MoveNext()
+        {
+            return _inner.MoveNext();
+        }
+
+        public void Reset()
+        {
+            ((IEnumerator)_inner).Reset();
+        }
+
+        public T Current => _inner.Current;
+
+        object? IEnumerator.Current => _inner.Current;
+
+        public void Dispose()
+        {
+            _inner.Dispose();
+        }
+    }
 }
