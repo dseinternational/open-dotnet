@@ -11,7 +11,7 @@ public class TagTests
         // Act
         static void Act()
         {
-            _ = Tag.Parse(Span<char>.Empty, null);
+            _ = Tag.ParseInvariant(Span<char>.Empty);
         }
 
         // Assert
@@ -24,7 +24,7 @@ public class TagTests
         // Act
         static void Act()
         {
-            _ = Tag.Parse(string.Empty, CultureInfo.InvariantCulture);
+            _ = Tag.ParseInvariant(string.Empty);
         }
 
         // Assert
@@ -34,7 +34,7 @@ public class TagTests
     [Fact]
     public void Parse_WithNullString_ShouldThrowArgumentNull()
     {
-        _ = Assert.Throws<ArgumentNullException>(() => Tag.Parse((string)null!, CultureInfo.InvariantCulture));
+        _ = Assert.Throws<ArgumentNullException>(() => Tag.ParseInvariant((string)null!));
     }
 
     [Fact]
@@ -46,7 +46,7 @@ public class TagTests
         // Act
         static void Parse()
         {
-            _ = Tag.Parse(tag, CultureInfo.InvariantCulture);
+            _ = Tag.ParseInvariant(tag);
         }
 
         // Assert
@@ -107,7 +107,7 @@ public class TagTests
     public void TryFormat_WithBufferTooSmall_ShouldReturnFalse()
     {
         // Arrange
-        var code = Tag.Parse("tag", CultureInfo.InvariantCulture);
+        var code = Tag.ParseInvariant("tag");
         var buffer = Span<char>.Empty;
 
         // Act
@@ -137,24 +137,24 @@ public class TagTests
     [Fact]
     public void EqualValuesAreEqual()
     {
-        var v1 = Tag.Parse("tag", CultureInfo.InvariantCulture);
-        var v2 = Tag.Parse(v1.ToString(), CultureInfo.InvariantCulture);
+        var v1 = Tag.ParseInvariant("tag");
+        var v2 = Tag.ParseInvariant(v1.ToString());
         Assert.Equal(v1, v2);
     }
 
     [Fact]
     public void GetHashCodeReturnsEqualValues()
     {
-        var v1 = Tag.Parse("tag", CultureInfo.InvariantCulture);
-        var v2 = Tag.Parse(v1.ToString(), CultureInfo.InvariantCulture);
+        var v1 = Tag.ParseInvariant("tag");
+        var v2 = Tag.ParseInvariant(v1.ToString());
         Assert.Equal(v1.GetHashCode(), v2.GetHashCode());
     }
 
     [Fact]
     public void EqualValuesAsObjectsAreEqual()
     {
-        var v1 = (object)Tag.Parse("tag", CultureInfo.InvariantCulture);
-        var v2 = (object)Tag.Parse(v1.ToString()!, CultureInfo.InvariantCulture);
+        var v1 = (object)Tag.ParseInvariant("tag");
+        var v2 = (object)Tag.ParseInvariant(v1.ToString()!);
         Assert.Equal(v1, v2);
     }
 

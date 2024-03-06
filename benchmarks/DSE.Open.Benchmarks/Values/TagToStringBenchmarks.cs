@@ -12,7 +12,7 @@ namespace DSE.Open.Benchmarks.Values;
 public class TagToStringBenchmarks
 {
     private const string Str = "tag:something/else";
-    private static readonly Tag s_tag = Tag.Parse(Str, CultureInfo.InvariantCulture);
+    private static readonly Tag s_tag = Tag.ParseInvariant(Str);
 
     [GlobalSetup]
     public void Setup()

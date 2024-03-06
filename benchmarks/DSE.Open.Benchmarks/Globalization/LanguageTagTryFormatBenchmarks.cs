@@ -20,8 +20,8 @@ public class LanguageTagTryFormatBenchmarks
         LanguageTag.EnglishIreland,
         LanguageTag.EnglishNewZealand,
         LanguageTag.EnglishSouthAfrica,
-        LanguageTag.Parse("fr-FR", null),
-        LanguageTag.Parse("en-CA-x-ca", null),
+        LanguageTag.ParseInvariant("fr-FR"),
+        LanguageTag.ParseInvariant("en-CA-x-ca"),
     ];
 
     [Benchmark]
