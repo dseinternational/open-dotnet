@@ -20,14 +20,8 @@ public class DateTimeZonesTests
     [InlineData("HK", TimeZoneIds.AsiaHongKong)]
     public void GetTimeZoneForCountryReturnsExpectedTimeZone(string countryCode, string timeZoneId)
     {
-        Assert.Equal(DateTimeZoneProviders.Tzdb[timeZoneId], DateTimeZones.GetTimeZoneForCountry(CountryCode.Parse(countryCode, CultureInfo.InvariantCulture)));
-    }
-
-    [Theory]
-    [InlineData("GB", "en-GB", "United Kingdom Time")]
-    public void GetTimeZoneNamesForCountryReturnsExpectedNames(string countryCode, string languageCode, string generic)
-    {
-        var names = DateTimeZones.GetTimeZoneNamesForCountry(CountryCode.Parse(countryCode, CultureInfo.InvariantCulture), languageCode);
-        Assert.Equal(generic, names.Generic);
+        Assert.Equal(
+            DateTimeZoneProviders.Tzdb[timeZoneId],
+            DateTimeZones.GetTimeZoneForCountry(CountryCode.Parse(countryCode, CultureInfo.InvariantCulture)));
     }
 }

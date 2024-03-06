@@ -4,7 +4,6 @@
 using DSE.Open.Time;
 using NodaTime;
 using NodaTime.TimeZones;
-using TimeZoneNames;
 
 namespace DSE.Open.Globalization;
 
@@ -123,16 +122,5 @@ public static class DateTimeZones
     {
         var zone = GetTimeZoneForCountry(countryCode);
         return dateTime.ToInstant().InZone(zone);
-    }
-
-    public static TimeZoneValues GetTimeZoneNamesForCountry(CountryCode countryCode, LanguageTag languageTag)
-    {
-        return GetTimeZoneNamesForCountry(countryCode, languageTag.ToString());
-    }
-
-    public static TimeZoneValues GetTimeZoneNamesForCountry(CountryCode countryCode, string languageTag)
-    {
-        var zone = GetTimeZoneForCountry(countryCode);
-        return TZNames.GetNamesForTimeZone(zone.Id, languageTag);
     }
 }
