@@ -130,7 +130,7 @@ public class ReadOnlyValueCollectionTests
     }
 
     [Fact]
-    public void GetEnumerator_ShouldReturnStruct()
+    public void GetEnumerator_ShouldReturnStructEnumerator()
     {
         // Arrange
         ReadOnlyValueCollection<int> collection = [0, 1, 2];
@@ -139,7 +139,34 @@ public class ReadOnlyValueCollectionTests
         using var enumerator = collection.GetEnumerator();
 
         // Assert
-        Assert.IsType<ReadOnlyValueCollection<int>.Enumerator>(enumerator);
+        _ = Assert.IsType<ReadOnlyValueCollection<int>.Enumerator>(enumerator);
+    }
+
+    [Fact]
+    public void GetEnumerator_IEnumerable_ShouldReturnStructEnumerator()
+    {
+        // Arrange
+        ReadOnlyValueCollection<int> collection = [0, 1, 2];
+
+        // Act
+        var enumerator = ((IEnumerable)collection).GetEnumerator();
+
+        // Assert
+        _ = Assert.IsType<ReadOnlyValueCollection<int>.Enumerator>(enumerator);
+    }
+
+
+    [Fact]
+    public void GetEnumerator_IEnumerableT_ShouldReturnStructEnumerator()
+    {
+        // Arrange
+        ReadOnlyValueCollection<int> collection = [0, 1, 2];
+
+        // Act
+        using var enumerator = ((IEnumerable<int>)collection).GetEnumerator();
+
+        // Assert
+        _ = Assert.IsType<ReadOnlyValueCollection<int>.Enumerator>(enumerator);
     }
 
     [Fact]
@@ -153,6 +180,6 @@ public class ReadOnlyValueCollectionTests
         void Act() => ((IEnumerator)enumerator).Reset();
 
         // Assert
-        Assert.Throws<NotSupportedException>(Act);
+        _ = Assert.Throws<NotSupportedException>(Act);
     }
 }
