@@ -178,7 +178,7 @@ public class ReadOnlyValueCollection<T>
             return _inner.MoveNext();
         }
 
-        public void Reset()
+        void IEnumerator.Reset()
         {
             ((IEnumerator)_inner).Reset();
         }
