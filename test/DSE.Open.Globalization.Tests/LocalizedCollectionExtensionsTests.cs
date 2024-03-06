@@ -25,7 +25,7 @@ public class LocalizedCollectionExtensionsTests
         {
             new LocalizedFake { LanguageTag = LanguageTag.EnglishAustralia },
             new LocalizedFake { LanguageTag = LanguageTag.EnglishUs },
-            new LocalizedFake { LanguageTag = LanguageTag.Parse("fr-FR", default) },
+            new LocalizedFake { LanguageTag = LanguageTag.ParseInvariant("fr-FR") },
         };
 
         var result = collection.GetLocalizedOrFallback(LanguageTag.EnglishAustralia);
@@ -39,7 +39,7 @@ public class LocalizedCollectionExtensionsTests
         var collection = new[]
         {
             new LocalizedFake { LanguageTag = LanguageTag.EnglishUs },
-            new LocalizedFake { LanguageTag = LanguageTag.Parse("fr-FR", default) },
+            new LocalizedFake { LanguageTag = LanguageTag.ParseInvariant("fr-FR") },
         };
 
         var result = collection.GetLocalizedOrFallback(LanguageTag.EnglishAustralia);
@@ -52,8 +52,8 @@ public class LocalizedCollectionExtensionsTests
     {
         var collection = new[]
         {
-            new LocalizedFake { LanguageTag = LanguageTag.Parse("fr-FR", default) },
-            new LocalizedFake { LanguageTag = LanguageTag.Parse("en", default) },
+            new LocalizedFake { LanguageTag = LanguageTag.ParseInvariant("fr-FR") },
+            new LocalizedFake { LanguageTag = LanguageTag.ParseInvariant("en") },
         };
 
         var result = collection.GetLocalizedOrFallback(LanguageTag.EnglishAustralia);

@@ -14,7 +14,7 @@ public class JsonStringTagConverterTests
     [InlineData("a-longer-tag-with-more-parts-to-it")]
     public void SerializeDeserialize(string tagStr)
     {
-        var tag = Tag.Parse(tagStr, CultureInfo.InvariantCulture);
+        var tag = Tag.ParseInvariant(tagStr);
 
         var json = JsonSerializer.Serialize(tag, JsonSharedOptions.RelaxedJsonEscaping);
 

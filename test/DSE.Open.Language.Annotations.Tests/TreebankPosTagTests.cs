@@ -11,7 +11,7 @@ public class TreebankPosTagTests
     [MemberData(nameof(Tags))]
     public void Parse_valid_tags(string tagStr)
     {
-        var tag = TreebankPosTag.Parse(tagStr, CultureInfo.InvariantCulture);
+        var tag = TreebankPosTag.ParseInvariant(tagStr);
         Assert.NotEqual(default, tag);
     }
 
@@ -19,7 +19,7 @@ public class TreebankPosTagTests
     [MemberData(nameof(Tags))]
     public void Serialize_deserialize(string tagStr)
     {
-        var tag = TreebankPosTag.Parse(tagStr, CultureInfo.InvariantCulture);
+        var tag = TreebankPosTag.ParseInvariant(tagStr);
         var json = JsonSerializer.Serialize(tag);
         var deserialized = JsonSerializer.Deserialize<TreebankPosTag>(json);
         Assert.Equal(tag, deserialized);

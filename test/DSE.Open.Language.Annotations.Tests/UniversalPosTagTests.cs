@@ -11,7 +11,7 @@ public class UniversalPosTagTests
     [MemberData(nameof(Tags))]
     public void Parse_valid_tags(string tagStr)
     {
-        var tag = UniversalPosTag.Parse(tagStr, CultureInfo.InvariantCulture);
+        var tag = UniversalPosTag.ParseInvariant(tagStr);
         Assert.NotEqual(default, tag);
     }
 
@@ -19,7 +19,7 @@ public class UniversalPosTagTests
     [MemberData(nameof(Tags))]
     public void Serialize_deserialize(string tagStr)
     {
-        var tag = UniversalPosTag.Parse(tagStr, CultureInfo.InvariantCulture);
+        var tag = UniversalPosTag.ParseInvariant(tagStr);
         var json = JsonSerializer.Serialize(tag);
         var deserialized = JsonSerializer.Deserialize<UniversalPosTag>(json);
         Assert.Equal(tag, deserialized);
