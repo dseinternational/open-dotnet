@@ -180,7 +180,7 @@ public class ReadOnlyValueCollection<T>
 
         void IEnumerator.Reset()
         {
-            ((IEnumerator)_inner).Reset();
+            throw new NotSupportedException("Reset is not supported. Use a new enumerator instead.");
         }
 
         public T Current => _inner.Current;
