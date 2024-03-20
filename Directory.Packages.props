@@ -4,6 +4,10 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <NoWarn>$(NoWarn);NU5104</NoWarn>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageVersion Include="Azure.Core" Version="1.38.0" />
     <PackageVersion Include="Azure.Identity" Version="1.10.4" />
