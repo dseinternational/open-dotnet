@@ -40,9 +40,9 @@ public sealed partial class SqlServerNonBufferingRetryingExecutionStrategy : Exe
 {
     // https://learn.microsoft.com/en-us/azure/azure-sql/database/troubleshoot-common-connectivity-issues?view=azuresql#interval-increase-between-retries
 
-    // 5 + 1 + 2 + 4 + 8 + 16 + 32 + 64 = 132 seconds (+ actual time retrying)
+    // 5 + 1 + 2 + 4 + 8 + 16 = 36 seconds (+ actual time retrying)
 
-    public static new readonly int DefaultMaxRetryCount = 8;
+    public static new readonly int DefaultMaxRetryCount = 6;
 
     public static readonly TimeSpan DefaultFirstRetryDelay = TimeSpan.FromMilliseconds(5000);
     public static readonly TimeSpan DefaultMedianRetryDelay = TimeSpan.FromMilliseconds(1000);
