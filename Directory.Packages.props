@@ -29,10 +29,10 @@
     <PackageVersion Include="Microsoft.Data.SqlClient" Version="5.2.0" />
     <PackageVersion Include="Microsoft.Diagnostics.Runtime" Version="3.1.512801" />
     <PackageVersion Include="Microsoft.Diagnostics.Tracing.TraceEvent" Version="3.1.9" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="9.0.0-preview.4.24203.6" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.0-preview.4.24203.6" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.0-preview.4.24203.6" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer.HierarchyId" Version="9.0.0-preview.4.24203.6" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="9.0.0-preview.4.24204.3" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.0-preview.4.24204.3" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.0-preview.4.24204.3" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer.HierarchyId" Version="9.0.0-preview.4.24204.3" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="8.0.3" />
     <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="8.0.3" />
@@ -65,7 +65,7 @@
     <PackageVersion Include="System.Management" Version="8.0.0" />
     <PackageVersion Include="System.Memory" Version="4.5.5" />
     <PackageVersion Include="System.Memory.Data" Version="8.0.0" />
-    <PackageVersion Include="System.Numerics.Tensors" Version="9.0.0-preview.4.24203.2" />
+    <PackageVersion Include="System.Numerics.Tensors" Version="9.0.0-preview.4.24204.3" />
     <PackageVersion Include="System.Reflection.Emit" Version="4.7.0" />
     <PackageVersion Include="System.Reflection.Metadata" Version="8.0.0" />
     <PackageVersion Include="System.Runtime.Caching" Version="8.0.0" />
