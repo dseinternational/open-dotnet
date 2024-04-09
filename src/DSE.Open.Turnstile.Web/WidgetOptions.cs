@@ -7,6 +7,8 @@ namespace DSE.Open.Turnstile.Web;
 
 public sealed class WidgetOptions
 {
+    public static readonly WidgetOptions Default = new();
+
     /// <summary>
     /// A customer value that can be used to differentiate widgets under the same
     /// sitekey in analytics and which is returned upon validation. This can only

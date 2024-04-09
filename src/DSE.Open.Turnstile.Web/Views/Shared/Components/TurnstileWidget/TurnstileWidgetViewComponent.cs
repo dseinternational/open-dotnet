@@ -18,12 +18,12 @@ public sealed class TurnstileWidgetViewComponent : ViewComponent
         _clientOptions = options.Value;
     }
 
-    public IViewComponentResult Invoke(WidgetOptions options)
+    public IViewComponentResult Invoke(WidgetOptions? options = null)
     {
         var model = new TurnstileWidgetViewModel
         {
             SiteKey = _clientOptions.SiteKey,
-            WidgetOptions = options
+            WidgetOptions = options ?? WidgetOptions.Default
         };
 
         return View("~/Views/Shared/Components/TurnstileWidget/Default.cshtml", model);
