@@ -64,6 +64,7 @@ public sealed record ValidationResponse
     /// </summary>
     /// <remarks>
     /// <see href="https://developers.cloudflare.com/turnstile/get-started/server-side-validation/"/>
-    /// </remarks>    [JsonPropertyName("error-codes")]
+    /// </remarks>
+    [JsonPropertyName("error-codes")]
     public ReadOnlyValueCollection<string> ErrorCodes { get; init; } = [];
 }
