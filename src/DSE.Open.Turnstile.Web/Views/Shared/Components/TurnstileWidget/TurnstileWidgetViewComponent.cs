@@ -4,7 +4,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
-namespace DSE.Open.Turnstile.Web.Views.Shared.TurnstileWidget;
+namespace DSE.Open.Turnstile.Web.Views.Shared.Components.TurnstileWidget;
 
 public sealed class TurnstileWidgetViewComponent : ViewComponent
 {
@@ -26,6 +26,6 @@ public sealed class TurnstileWidgetViewComponent : ViewComponent
             WidgetOptions = options
         };
 
-        return View(model);
+        return View("~/Views/Shared/Components/TurnstileWidget/Default.cshtml", model);
     }
 }

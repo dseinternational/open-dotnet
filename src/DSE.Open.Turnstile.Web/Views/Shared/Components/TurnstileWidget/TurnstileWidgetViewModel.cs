@@ -3,7 +3,7 @@
 
 using DSE.Open.ViewModels;
 
-namespace DSE.Open.Turnstile.Web.Views.Shared.TurnstileWidget;
+namespace DSE.Open.Turnstile.Web.Views.Shared.Components.TurnstileWidget;
 
 public sealed class TurnstileWidgetViewModel : LocalizedViewModel
 {
