@@ -1,4 +1,4 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Net;
@@ -15,7 +15,7 @@ public sealed record ValidationRequest
     public required string Response { get; init; }
 
     [JsonPropertyName("remoteip")]
-    public IPAddress? ClientIpAddress { get; init; }
+    public string? ClientIpAddress { get; init; }
 
     [JsonPropertyName("idempotency_key")]
     public string? IdempotencyKey { get; init; }

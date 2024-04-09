@@ -74,7 +74,7 @@ public sealed partial class TurnstileClient : ITurnstileClient
         {
             SecretKey = _options.SecretKey,
             Response = clientResponse,
-            ClientIpAddress = clientIpAddress,
+            ClientIpAddress = clientIpAddress?.ToString(),
             IdempotencyKey = idempotencyKey
         };
 
