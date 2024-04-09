@@ -1,0 +1,6 @@
+﻿@using DSE.Open.Turnstile.Web
+@using DSE.Open.Turnstile.Web.Views.Shared.TurnstileWidget
+
+@model TurnstileWidgetViewModel
+
+<div class="@WidgetConstants.WidgetClass" @foreach(var a in Model.GetAttributes()) { @a.Name<text>="</text>@a.Value<text>"</text> }></div>

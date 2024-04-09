@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DSE.Open.Turnstile\DSE.Open.Turnstile.csproj" />
+    <ProjectReference Include="..\DSE.Open.ViewModels\DSE.Open.ViewModels.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EditorConfigFiles Remove="V:\dev\dseinternational\open-dotnet\src\DSE.Open.Turnstile.Web\Views\Shared\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="V:\dev\dseinternational\open-dotnet\src\DSE.Open.Turnstile.Web\Views\Shared\.editorconfig" />
+  </ItemGroup>
+
+</Project>
