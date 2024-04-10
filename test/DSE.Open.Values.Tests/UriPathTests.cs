@@ -95,4 +95,31 @@ public class UriPathTests
         // Assert
         Assert.Equal($"/{pathStr}/", absolutePath);
     }
+
+    [Theory]
+    [InlineData("", "")]
+    [InlineData("/", "")]
+    [InlineData("//", "")]
+    [InlineData("home", "home")]
+    [InlineData("home/SUB", "home/sub")]
+    [InlineData("/HOME/", "home")]
+    [InlineData("/HOME/sub", "home/sub")]
+    [InlineData("/home/SUB/", "home/sub")]
+    [InlineData("home/sub/", "home/sub")]
+    public void TryParseSanitised_WithHandleablePath_ShouldReturnTrue(string path, string expected)
+    {
+        Assert.True(UriPath.TryParseSanitised(path, out var result));
+        Assert.Equal(expected, result.ToString());
+    }
+
+    [Theory]
+    // [InlineData("%home")]
+    // [InlineData("HOME?")]
+    // [InlineData("home/+SUB.html")]
+    [InlineData("//home/sub/")]
+    [InlineData("/home/sub//")]
+    public void TryParseSanitisedWithInvalidPathShouldReturnFalse(string path)
+    {
+        Assert.False(UriPath.TryParseSanitised(path, out _));
+    }
 }

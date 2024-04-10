@@ -310,8 +310,13 @@ public readonly partial struct UriAsciiPath
             return true;
         }
 
-        s = s.Trim();
-        s = s.Trim('/');
+        s = s.TrimOnce('/');
+
+        if (s.IsEmpty)
+        {
+            value = Empty;
+            return true;
+        }
 
         if (s.Length <= MaxLength)
         {

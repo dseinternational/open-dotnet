@@ -257,4 +257,46 @@ public class MemoryExtensionsTests
         var result = source.AsSpan().ContainsOnlyAsciiDigits(allowEmpty);
         Assert.Equal(expected, result);
     }
+
+    [Theory]
+    [InlineData("", '/', "")]
+    [InlineData("/", '/', "")]
+    [InlineData("//", '/', "")]
+    [InlineData("/a/", '/', "a")]
+    [InlineData("//a//", '/', "/a/")]
+    public void TrimOnce_Valid(string source, char val, string expected)
+    {
+        var result = source.AsSpan().TrimOnce(val);
+        Assert.Equal(expected, result.ToString());
+    }
+
+    [Theory]
+    [InlineData("//a//", '/', "a")]
+    public void TrimOnce_Invalid(string source, char val, string expected)
+    {
+        var result = source.AsSpan().TrimStartOnce(val);
+        Assert.NotEqual(expected, result.ToString());
+    }
+
+    [Theory]
+    [InlineData("", '/', "")]
+    [InlineData("/", '/', "")]
+    [InlineData("/a/", '/', "a/")]
+    [InlineData("//a//", '/', "/a//")]
+    public void TrimStartOnce(string source, char val, string expected)
+    {
+        var result = source.AsSpan().TrimStartOnce(val);
+        Assert.Equal(expected, result.ToString());
+    }
+
+    [Theory]
+    [InlineData("", '/', "")]
+    [InlineData("/", '/', "")]
+    [InlineData("/a/", '/', "/a")]
+    [InlineData("//a//", '/', "//a/")]
+    public void TrimEndOnce(string source, char val, string expected)
+    {
+        var result = source.AsSpan().TrimEndOnce(val);
+        Assert.Equal(expected, result.ToString());
+    }
 }

@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Buffers;
+using System.Runtime.CompilerServices;
 
 namespace DSE.Open;
 
@@ -394,5 +395,51 @@ public static partial class MemoryExtensions
         {
             span[i] = char.ToUpperInvariant(span[i]);
         }
+    }
+
+    /// <summary>
+    /// Trims no more than one of the specified <paramref name="value"/> from each end of the <paramref name="span"/>.
+    /// </summary>
+    /// <param name="span"></param>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ReadOnlySpan<char> TrimOnce(this ReadOnlySpan<char> span, char value)
+    {
+        return span.TrimStartOnce(value).TrimEndOnce(value);
+    }
+
+    /// <summary>
+    /// Trims no more than one of the specified <paramref name="value"/> from the start of the <paramref name="span"/>.
+    /// </summary>
+    /// <param name="span"></param>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ReadOnlySpan<char> TrimStartOnce(this ReadOnlySpan<char> span, char value)
+    {
+        if (!span.IsEmpty && span[0] == value)
+        {
+            span = span[1..];
+        }
+
+        return span;
+    }
+
+    /// <summary>
+    /// Trims no more than one of the specified <paramref name="value"/> from the end of the <paramref name="span"/>.
+    /// </summary>
+    /// <param name="span"></param>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ReadOnlySpan<char> TrimEndOnce(this ReadOnlySpan<char> span, char value)
+    {
+        if (!span.IsEmpty && span[^1] == value)
+        {
+            span = span[..^1];
+        }
+
+        return span;
     }
 }

@@ -236,14 +236,12 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
             return true;
         }
 
-        while (s.Length > 0 && s[0] == '/')
-        {
-            s = s[1..];
-        }
+        s = s.TrimOnce('/');
 
-        while (s.Length > 0 && s[^1] == '/')
+        if (s.IsEmpty)
         {
-            s = s[..^1];
+            value = Empty;
+            return true;
         }
 
         if (s.Length <= MaxLength)
@@ -404,7 +402,7 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
             ? stackalloc char[requiredLength]
             : (rented = SpanOwner<char>.Allocate(requiredLength)).Span;
 
-        using(rented)
+        using (rented)
         {
             if (rented.Length > 0)
             {

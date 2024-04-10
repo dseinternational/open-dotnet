@@ -149,6 +149,8 @@ public class UriAsciiPathTests
 
     [Theory]
     [InlineData("", "")]
+    [InlineData("/", "")]
+    [InlineData("//", "")]
     [InlineData("home", "home")]
     [InlineData("home/SUB", "home/sub")]
     [InlineData("/HOME/", "home")]
@@ -165,6 +167,8 @@ public class UriAsciiPathTests
     [InlineData("%home")]
     [InlineData("HOME?")]
     [InlineData("home/+SUB.html")]
+    [InlineData("//home/sub/")]
+    [InlineData("/home/sub//")]
     public void TryParseSanitisedWithInvalidPathShouldReturnFalse(string path)
     {
         Assert.False(UriAsciiPath.TryParseSanitised(path, out _));
