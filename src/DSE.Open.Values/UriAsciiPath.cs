@@ -51,9 +51,9 @@ public readonly partial struct UriAsciiPath
 
     public AsciiChar this[int index] => _value[index];
 
-    public UriAsciiPath Slice(int start, int length)
+    public AsciiString Slice(int start, int length)
     {
-        return new UriAsciiPath(_value.Slice(start, length));
+        return _value.Slice(start, length);
     }
 
     public ReadOnlySpan<AsciiChar> Span => _value.AsSpan();

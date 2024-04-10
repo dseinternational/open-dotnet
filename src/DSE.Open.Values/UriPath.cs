@@ -41,9 +41,9 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
 
     public char this[int index] => _value[index];
 
-    public UriPath Slice(int start, int length)
+    public CharSequence Slice(int start, int length)
     {
-        return new UriPath(_value.Slice(start, length));
+        return _value.Slice(start, length);
     }
 
     public ReadOnlySpan<char> Span => _value.AsSpan();
