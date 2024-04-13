@@ -1,15 +1,13 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Collections.ObjectModel;
-
 namespace DSE.Open.Collections.Generic;
 
 public sealed class ValueCollection<T>
     : Collection<T>,
       IEquatable<ValueCollection<T>>
 {
-    public static readonly ValueCollection<T> Empty = new();
+    public static new readonly ValueCollection<T> Empty = [];
 
     public ValueCollection() : this(Enumerable.Empty<T>())
     {

@@ -22,7 +22,7 @@ public sealed class PythonContext : IDisposable
         {
             EnsureNotInitialized();
 
-            Runtime.PythonDLL = configuration.PythonDLL;
+            global::Python.Runtime.Runtime.PythonDLL = configuration.PythonDLL;
 
             PythonEngine.Initialize();
 
@@ -52,7 +52,7 @@ public sealed class PythonContext : IDisposable
             {
                 using (Py.GIL())
                 {
-                    _ = Runtime.TryCollectingGarbage(3);
+                    _ = global::Python.Runtime.Runtime.TryCollectingGarbage(3);
                 }
 
                 PythonEngine.EndAllowThreads(_threadState);

@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using DSE.Open.Collections.Generic;
 using DSE.Open.Interop.Python;
 
 namespace DSE.Open.Language.Annotations.Nlp.Stanza;
@@ -13,7 +14,7 @@ public class Span
     private readonly Lazy<int> _start;
     private readonly Lazy<int> _end;
 
-    private readonly Lazy<List<Token>> _tokens;
+    private readonly Lazy<Collection<Token>> _tokens;
     private readonly Lazy<List<Word>> _words;
 
     internal Span(Document doc, dynamic span)
@@ -27,7 +28,7 @@ public class Span
         _start = new Lazy<int>(() => PyConverter.GetInt32(_span.start_char));
         _end = new Lazy<int>(() => PyConverter.GetInt32(_span.end_char));
 
-        _tokens = new Lazy<List<Token>>(() => PyConverter.GetList<Token>(_span.tokens));
+        _tokens = new Lazy<Collection<Token>>(() => PyConverter.GetList<Token>(_span.tokens));
         _words = new Lazy<List<Word>>(() => Tokens.SelectMany(t => t.Words).ToList());
     }
 

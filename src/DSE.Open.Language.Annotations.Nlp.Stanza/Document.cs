@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using DSE.Open.Collections.Generic;
 using DSE.Open.Interop.Python;
 
 namespace DSE.Open.Language.Annotations.Nlp.Stanza;
@@ -15,8 +16,8 @@ public class Document
     private readonly dynamic _doc;
 
     private readonly Lazy<string?> _lang;
-    private readonly Lazy<List<Sentence>> _sentences;
-    private readonly Lazy<List<Span>> _entities;
+    private readonly Lazy<Collection<Sentence>> _sentences;
+    private readonly Lazy<Collection<Span>> _entities;
 
     internal Document(dynamic doc)
     {
@@ -26,7 +27,7 @@ public class Document
 
         _lang = new Lazy<string?>(() => PyConverter.GetStringOrNull(doc.lang));
 
-        _sentences = new Lazy<List<Sentence>>(() =>
+        _sentences = new Lazy<Collection<Sentence>>(() =>
         {
             return PyConverter.GetList<Sentence>(_doc.sentences, (PyWrapperFactory<Sentence>)del);
 
@@ -36,7 +37,7 @@ public class Document
             }
         });
 
-        _entities = new Lazy<List<Span>>(() =>
+        _entities = new Lazy<Collection<Span>>(() =>
         {
             return PyConverter.GetList<Span>(_doc.entities, (PyWrapperFactory<Span>)del);
 

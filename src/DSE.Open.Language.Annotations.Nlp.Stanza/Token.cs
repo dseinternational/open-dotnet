@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using DSE.Open.Collections.Generic;
 using DSE.Open.Interop.Python;
 using Python.Runtime;
 
@@ -16,7 +17,7 @@ public class Token : IPyObjectWrapper<Token>
     private readonly Lazy<int> _start;
     private readonly Lazy<int> _end;
     private readonly Lazy<string?> _ner;
-    private readonly Lazy<List<Word>> _words;
+    private readonly Lazy<Collection<Word>> _words;
 
     internal Token(dynamic token)
     {
@@ -28,7 +29,7 @@ public class Token : IPyObjectWrapper<Token>
         _end = new Lazy<int>(() => PyConverter.GetInt32(_token.end_char));
         _ner = new Lazy<string?>(() => PyConverter.GetStringOrNull(_token.ner));
 
-        _words = new Lazy<List<Word>>(() =>
+        _words = new Lazy<Collection<Word>>(() =>
         {
             return PyConverter.GetList<Word>(_token.words, (PyWrapperFactory<Word>)del);
 

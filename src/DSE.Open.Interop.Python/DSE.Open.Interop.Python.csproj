@@ -10,4 +10,8 @@
     <PackageReference Include="System.Reflection.Emit" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DSE.Open\DSE.Open.csproj" />
+  </ItemGroup>
+
 </Project>

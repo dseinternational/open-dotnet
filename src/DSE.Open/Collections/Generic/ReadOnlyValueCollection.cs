@@ -3,6 +3,8 @@
 
 namespace DSE.Open.Collections.Generic;
 
+#pragma warning disable CA1711 // Identifiers should not have incorrect suffix
+
 /// <summary>
 /// A set of initialization methods for instances of <see cref="ReadOnlyValueCollection{T}"/>.
 /// </summary>

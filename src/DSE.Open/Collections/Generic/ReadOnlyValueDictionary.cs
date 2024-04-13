@@ -2,7 +2,6 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Collections;
-using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 
 namespace DSE.Open.Collections.Generic;
@@ -154,6 +153,11 @@ public class ReadOnlyValueDictionary<TKey, TValue>
     }
 
     public static explicit operator ReadOnlyValueDictionary<TKey, TValue>(Collection<KeyValuePair<TKey, TValue>> value)
+    {
+        return new ReadOnlyValueDictionary<TKey, TValue>(value);
+    }
+
+    public static explicit operator ReadOnlyValueDictionary<TKey, TValue>(System.Collections.ObjectModel.Collection<KeyValuePair<TKey, TValue>> value)
     {
         return new ReadOnlyValueDictionary<TKey, TValue>(value);
     }

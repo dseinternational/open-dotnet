@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using DSE.Open.Collections.Generic;
 using Python.Runtime;
 
 namespace DSE.Open.Interop.Python;
@@ -161,7 +162,7 @@ public static class PyConverter
         return T.FromPyObject(pyObj);
     }
 
-    public static IList<T> GetList<T>(dynamic pyList)
+    public static Collection<T> GetList<T>(dynamic pyList)
         where T : IPyObjectWrapper<T>
     {
         Guard.IsNotNull((object?)pyList);
@@ -174,7 +175,7 @@ public static class PyConverter
 
             var count = pyCount.ToInt32();
 
-            var list = new List<T>(count);
+            var list = new Collection<T>(count);
 
             for (var i = 0; i < count; i++)
             {
@@ -194,9 +195,10 @@ public static class PyConverter
         }
     }
 
-    public static IList<T> GetList<T>(dynamic pyList, PyWrapperFactory<T> factory)
+    public static Collection<T> GetList<T>(dynamic pyList, PyWrapperFactory<T> factory)
     {
         Guard.IsNotNull((object?)pyList);
+        Guard.IsNotNull(factory);
 
         using (Py.GIL())
         {
@@ -206,7 +208,7 @@ public static class PyConverter
 
             var count = pyCount.ToInt32();
 
-            var list = new List<T>(count);
+            var list = new Collection<T>(count);
 
             for (var i = 0; i < count; i++)
             {

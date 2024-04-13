@@ -529,6 +529,12 @@ public static class CollectionExtensions
         }
     }
 
+    public static Collection<T> ToCollection<T>(this IEnumerable<T> collection)
+    {
+        Guard.IsNotNull(collection);
+        return new Collection<T>(collection);
+    }
+
     public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> collection)
     {
         Guard.IsNotNull(collection);
