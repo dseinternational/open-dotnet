@@ -1,4 +1,4 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 namespace DSE.Open.Collections.Generic;
@@ -15,7 +15,9 @@ public static class ReadOnlyCollection
     {
         if (items.IsEmpty)
         {
-            return [];
+#pragma warning disable IDE0301 // Simplify collection initialization
+            return ReadOnlyCollection<T>.Empty;
+#pragma warning restore IDE0301 // Simplify collection initialization
         }
 
         var list = new List<T>(items.Length);
