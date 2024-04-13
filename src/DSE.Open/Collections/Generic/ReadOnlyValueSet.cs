@@ -18,7 +18,9 @@ public static class ReadOnlyValueSet
     {
         if (items.IsEmpty)
         {
-            return [];
+#pragma warning disable IDE0301 // Simplify collection initialization
+            return ReadOnlyValueSet<T>.Empty;
+#pragma warning restore IDE0301 // Simplify collection initialization
         }
 
         var set = new HashSet<T>(items.Length);
