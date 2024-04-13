@@ -20,14 +20,14 @@ public readonly partial struct AgreementLevel : IComparableValue<AgreementLevel,
     public static readonly AgreementLevel Agree = new(1);
     public static readonly AgreementLevel AgreeStrongly = new(2);
 
-    public static IEnumerable<AgreementLevel> ValidValues { get; } = new[]
-    {
+    public static IEnumerable<AgreementLevel> ValidValues { get; } =
+    [
         DisagreeStrongly,
         Disagree,
         NeitherAgreeNorDisagree,
         Agree,
         AgreeStrongly
-    };
+    ];
 
     public static bool IsValidValue(int value)
     {

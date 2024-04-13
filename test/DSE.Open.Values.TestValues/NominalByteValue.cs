@@ -13,7 +13,7 @@ public readonly partial struct NominalByteValue : IEquatableValue<NominalByteVal
     public static readonly NominalByteValue Value1;
     public static readonly NominalByteValue Value2 = new(1);
 
-    public static IEnumerable<NominalByteValue> ValidValues { get; } = new[] { Value1, Value2 };
+    public static IEnumerable<NominalByteValue> ValidValues { get; } = [Value1, Value2];
 
     public static bool IsValidValue(byte value)
     {

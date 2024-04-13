@@ -39,6 +39,6 @@ public partial class VectorTests
     {
         var v1 = Vector.CreateOnes<int>(6);
         Assert.Equal(6, v1.Length);
-        Assert.True(v1.Memory.SequenceEqual(new int[6] { 1, 1, 1, 1, 1, 1 }));
+        Assert.True(v1.Memory.SequenceEqual([1, 1, 1, 1, 1, 1]));
     }
 }

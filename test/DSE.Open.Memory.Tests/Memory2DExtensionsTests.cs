@@ -60,17 +60,17 @@ public class Memory2DExtensionsTests
 
         for (var i = 1; i < 8; i++)
         {
-            Assert.True(m.ContainsAny(new int[] { i }));
+            Assert.True(m.ContainsAny([i]));
         }
 
         for (var i = 1; i < 8; i++)
         {
-            Assert.True(m.ContainsAny(new int[] { 10, 11, i }));
+            Assert.True(m.ContainsAny([10, 11, i]));
         }
 
         for (var i = 1; i < 8; i++)
         {
-            Assert.False(m.ContainsAny(new int[] { 10, 11, i + 20 }));
+            Assert.False(m.ContainsAny([10, 11, i + 20]));
         }
     }
 
@@ -81,17 +81,17 @@ public class Memory2DExtensionsTests
 
         for (var i = 1; i < 8; i++)
         {
-            Assert.True(m.ContainsAny(new int[] { i }));
+            Assert.True(m.ContainsAny([i]));
         }
 
         for (var i = 1; i < 8; i++)
         {
-            Assert.True(m.ContainsAny(new int[] { 10, 11, i }));
+            Assert.True(m.ContainsAny([10, 11, i]));
         }
 
         for (var i = 1; i < 8; i++)
         {
-            Assert.False(m.ContainsAny(new int[] { 10, 11, i + 20 }));
+            Assert.False(m.ContainsAny([10, 11, i + 20]));
         }
     }
 

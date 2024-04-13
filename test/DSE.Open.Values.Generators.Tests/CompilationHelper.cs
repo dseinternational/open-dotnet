@@ -53,7 +53,7 @@ public static class CompilationHelper
 
         return CSharpCompilation.Create(
             assemblyName,
-            new[] { CSharpSyntaxTree.ParseText(source) },
+            [CSharpSyntaxTree.ParseText(source)],
             references.ToArray(),
             options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
     }
@@ -63,7 +63,7 @@ public static class CompilationHelper
         generator ??= new ValueTypesGenerator();
 
         return CSharpGeneratorDriver.Create(
-            generators: new[] { generator.AsSourceGenerator() },
+            generators: [generator.AsSourceGenerator()],
             parseOptions: s_parseOptions,
             driverOptions: new GeneratorDriverOptions(
                 disabledOutputs: IncrementalGeneratorOutputKind.None,

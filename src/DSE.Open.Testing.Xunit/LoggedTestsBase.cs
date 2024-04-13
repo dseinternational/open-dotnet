@@ -32,7 +32,9 @@ public abstract class LoggedTestsBase : IDisposable
 
     protected virtual IEnumerable<ILoggerProvider> GetLoggerProviders()
     {
-        return new[] { new XunitLoggerProvider(Output) };
+#pragma warning disable CA2000 // Dispose objects before losing scope
+        return [new XunitLoggerProvider(Output)];
+#pragma warning restore CA2000 // Dispose objects before losing scope
     }
 
     public ILoggerFactory LoggerFactory => _loggerFactory ??= new LoggerFactory(GetLoggerProviders());

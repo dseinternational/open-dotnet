@@ -54,7 +54,7 @@ public class DomainEventDispatcherTests
 
         var bev = entity.AddFakeBackgroundEvent();
 
-        await dispatcher.PublishEventsAsync(new[] { entity });
+        await dispatcher.PublishEventsAsync([entity]);
 
         var state = provider.GetRequiredService<TestState>();
 

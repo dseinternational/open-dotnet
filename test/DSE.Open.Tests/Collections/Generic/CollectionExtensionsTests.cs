@@ -33,7 +33,7 @@ public class CollectionExtensionsTests
     [Fact]
     public void FindIndex_IList()
     {
-        IList<int> list = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 14, 15 };
+        IList<int> list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 14, 15];
 
         Assert.Equal(13, list.FindIndex(i => i == 14));
     }
@@ -41,7 +41,7 @@ public class CollectionExtensionsTests
     [Fact]
     public void FindIndex_IReadOnlyList()
     {
-        IReadOnlyList<int> list = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 14, 15 };
+        IReadOnlyList<int> list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 14, 15];
 
         Assert.Equal(13, list.FindIndex(i => i == 14));
     }
@@ -49,7 +49,7 @@ public class CollectionExtensionsTests
     [Fact]
     public void FindLastIndex_IList()
     {
-        IList<int> list = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 14, 15 };
+        IList<int> list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 14, 15];
 
         Assert.Equal(14, list.FindLastIndex(i => i == 14));
     }
@@ -57,7 +57,7 @@ public class CollectionExtensionsTests
     [Fact]
     public void FindLastIndex_IReadOnlyList()
     {
-        IReadOnlyList<int> list = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 14, 15 };
+        IReadOnlyList<int> list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 14, 15];
 
         Assert.Equal(14, list.FindLastIndex(i => i == 14));
     }

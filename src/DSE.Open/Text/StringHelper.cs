@@ -14,7 +14,7 @@ namespace DSE.Open.Text;
 /// </summary>
 public static partial class StringHelper
 {
-    public static readonly IReadOnlyList<char> ValidWordPunctuationCharacters = new[] { '’', '\'', '-', ' ' };
+    public static readonly IReadOnlyList<char> ValidWordPunctuationCharacters = ['’', '\'', '-', ' '];
 
     public static string? CapitalizeInvariant(string? text, CapitalizationStyle style)
     {

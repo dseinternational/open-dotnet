@@ -70,14 +70,14 @@ public readonly partial struct HearingDiagnosisCode : IEquatableValue<HearingDia
     public static readonly HearingDiagnosisCode SensorineuralHearingLoss = new((ClinicalConceptCode)60700002, true);
 
 
-    public static readonly IReadOnlyCollection<HearingDiagnosisCode> All = new[]
-    {
+    public static readonly IReadOnlyCollection<HearingDiagnosisCode> All =
+    [
         HearingLoss,
         ConductiveAndSensorineuralHearingLoss,
         OtitisMedia,
         OtitisMediaWithEffusion,
         SensorineuralHearingLoss,
-    };
+    ];
 
     public static readonly IReadOnlyDictionary<ClinicalConceptCode, HearingDiagnosisCode> Lookup = All.ToDictionary(r => r._value);
 }

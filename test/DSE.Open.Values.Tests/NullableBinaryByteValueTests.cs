@@ -7,9 +7,9 @@ namespace DSE.Open.Values.Tests;
 
 public class NullableBinaryByteValueTests : ValueTestsBase<NullableBinaryByteValue, byte>
 {
-    public override IEnumerable<NullableBinaryByteValue> ValidValues => new[]
-    {
+    public override IEnumerable<NullableBinaryByteValue> ValidValues =>
+    [
         NullableBinaryByteValue.False,
         NullableBinaryByteValue.True,
-    };
+    ];
 }

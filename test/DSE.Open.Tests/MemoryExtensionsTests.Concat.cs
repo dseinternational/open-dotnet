@@ -8,8 +8,8 @@ public class MemoryExtensionsTestsConcat
     [Fact]
     public void Concat_2()
     {
-        Span<int> s1 = new int[] { 1, 2, 3 };
-        Span<int> s2 = new int[] { 4, 5, 6 };
+        Span<int> s1 = [1, 2, 3];
+        Span<int> s2 = [4, 5, 6];
 
         var result = s1.Concat(s2);
 
@@ -19,9 +19,9 @@ public class MemoryExtensionsTestsConcat
     [Fact]
     public void Concat_3()
     {
-        Span<int> s1 = new int[] { 1, 2, 3 };
-        Span<int> s2 = new int[] { 4, 5, 6 };
-        Span<int> s3 = new int[] { 7, 8, 9 };
+        Span<int> s1 = [1, 2, 3];
+        Span<int> s2 = [4, 5, 6];
+        Span<int> s3 = [7, 8, 9];
 
         var result = s1.Concat(s2, s3);
 
@@ -31,7 +31,7 @@ public class MemoryExtensionsTestsConcat
     [Fact]
     public void Concat_Element()
     {
-        Span<int> s1 = new int[] { 1, 2, 3 };
+        Span<int> s1 = [1, 2, 3];
 
         var result = s1.Concat(4);
 
@@ -42,7 +42,7 @@ public class MemoryExtensionsTestsConcat
     [Fact]
     public void Concat_Element_2()
     {
-        Span<int> s1 = new int[] { 1, 2, 3 };
+        Span<int> s1 = [1, 2, 3];
 
         var result = s1.Concat(4, 5);
 

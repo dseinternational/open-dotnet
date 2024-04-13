@@ -26,11 +26,11 @@ public readonly partial struct BiologicalSex : IEquatableValue<BiologicalSex, As
 
     public static readonly BiologicalSex Male = new((AsciiString)"male", true);
 
-    public static readonly IReadOnlyCollection<BiologicalSex> All = new[]
-    {
+    public static readonly IReadOnlyCollection<BiologicalSex> All =
+    [
         Female,
         Male,
-    };
+    ];
 
     public static readonly IReadOnlyDictionary<AsciiString, BiologicalSex> Lookup = All.ToDictionary(r => r._value);
 }

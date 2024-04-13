@@ -41,7 +41,7 @@ public class ReadOnlyValueCollectionTests
     public void CreateRange_WithIEnumerable_ShouldCreate()
     {
         // Arrange
-        IEnumerable<int> enumerable = new[] { 0, 1 };
+        IEnumerable<int> enumerable = [0, 1];
 
         // Act
         var collection = ReadOnlyValueCollection.CreateRange(enumerable);

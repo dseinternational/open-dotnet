@@ -34,12 +34,12 @@ public readonly partial struct YesNoUnsure
 
     public static readonly YesNoUnsure Unsure = new((AsciiString)"unsure", true);
 
-    public static readonly IReadOnlyCollection<YesNoUnsure> All = new[]
-    {
+    public static readonly IReadOnlyCollection<YesNoUnsure> All =
+    [
         Yes,
         No,
         Unsure
-    };
+    ];
 
     public static readonly IReadOnlyDictionary<AsciiString, YesNoUnsure> Lookup = All.ToDictionary(r => r._value);
 }

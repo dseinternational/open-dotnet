@@ -22,7 +22,7 @@ public class CollectionValueResultTests
     {
         var val = new CollectionValueResult<string>
         {
-            Value = new[] { "Test1", "Test2", "Test3" },
+            Value = ["Test1", "Test2", "Test3"],
             Notifications =
             [
                 Notification.Information("NTF123456", "Information"),

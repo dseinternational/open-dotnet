@@ -28,12 +28,12 @@ public readonly partial struct Gender : IEquatableValue<Gender, AsciiString>, IU
 
     public static readonly Gender Other = new((AsciiString)"other", true);
 
-    public static readonly IReadOnlyCollection<Gender> All = new[]
-    {
+    public static readonly IReadOnlyCollection<Gender> All =
+    [
         Female,
         Male,
         Other
-    };
+    ];
 
     public static readonly IReadOnlyDictionary<AsciiString, Gender> Lookup = All.ToDictionary(r => r._value);
 }

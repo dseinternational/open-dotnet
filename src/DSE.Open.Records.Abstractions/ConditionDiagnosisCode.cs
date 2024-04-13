@@ -90,8 +90,8 @@ public readonly partial struct ConditionDiagnosisCode : IEquatableValue<Conditio
     /// </summary>
     public static readonly ConditionDiagnosisCode SpecificLanguageImpairment = new((ClinicalConceptCode)229746007, true);
 
-    public static readonly IReadOnlyCollection<ConditionDiagnosisCode> All = new[]
-    {
+    public static readonly IReadOnlyCollection<ConditionDiagnosisCode> All =
+    [
         DownSyndrome,
         DownSyndromeMosaic,
         DownSyndromePartial,
@@ -101,7 +101,7 @@ public readonly partial struct ConditionDiagnosisCode : IEquatableValue<Conditio
         WilliamsSyndrome,
         DevelopmentalLanguageDisorder,
         SpecificLanguageImpairment,
-    };
+    ];
 
     public static readonly IReadOnlyDictionary<ClinicalConceptCode, ConditionDiagnosisCode> Lookup = All.ToDictionary(r => r._value);
 }
