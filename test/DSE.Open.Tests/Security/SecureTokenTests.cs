@@ -57,7 +57,7 @@ public class SecureTokenTests
     [Fact]
     public void Parse_WithEmptySpan_ShouldReturnDefault()
     {
-        var a = SecureToken.Parse(Span<char>.Empty, CultureInfo.InvariantCulture);
+        var a = SecureToken.Parse([], CultureInfo.InvariantCulture);
         Assert.Equal(SecureToken.Empty, a);
     }
 
@@ -77,7 +77,7 @@ public class SecureTokenTests
     [Fact]
     public void TryParse_WithEmptySpan_ShouldReturnTrueAndDefaultResult()
     {
-        var success = SecureToken.TryParse(Span<char>.Empty, CultureInfo.InvariantCulture, out var result);
+        var success = SecureToken.TryParse([], CultureInfo.InvariantCulture, out var result);
         Assert.True(success);
         Assert.Equal(SecureToken.Empty, result);
     }

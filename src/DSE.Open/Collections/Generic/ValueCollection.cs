@@ -9,7 +9,7 @@ public sealed class ValueCollection<T>
 {
     public static new readonly ValueCollection<T> Empty = [];
 
-    public ValueCollection() : this(Enumerable.Empty<T>())
+    public ValueCollection() : this([])
     {
     }
 

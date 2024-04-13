@@ -21,7 +21,7 @@ public sealed class ValueDictionary<TKey, TValue>
 
     private readonly Dictionary<TKey, TValue> _inner;
 
-    public ValueDictionary() : this(Enumerable.Empty<KeyValuePair<TKey, TValue>>())
+    public ValueDictionary() : this([])
     {
     }
 

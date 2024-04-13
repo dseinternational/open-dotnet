@@ -11,7 +11,7 @@ public class TagTests
         // Act
         static void Act()
         {
-            _ = Tag.ParseInvariant(Span<char>.Empty);
+            _ = Tag.ParseInvariant([]);
         }
 
         // Assert

@@ -91,7 +91,7 @@ public static class AttributeValueSerializer
     {
         if (values.IsEmpty)
         {
-            features = Enumerable.Empty<AttributeValue>();
+            features = [];
             return true;
         }
 
@@ -112,7 +112,7 @@ public static class AttributeValueSerializer
             }
             else
             {
-                features = Enumerable.Empty<AttributeValue>();
+                features = [];
                 return false;
             }
         }

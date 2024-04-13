@@ -50,7 +50,7 @@ public class TimestampTests
     [Fact]
     public void Parse_WithEmptySpan_ShouldReturnDefault()
     {
-        var a = Timestamp.Parse(Span<char>.Empty, null);
+        var a = Timestamp.Parse([], null);
         Assert.Equal(Timestamp.Empty, a);
     }
 
@@ -70,7 +70,7 @@ public class TimestampTests
     [Fact]
     public void TryParse_WithEmptySpan_ShouldReturnTrueAndDefaultResult()
     {
-        var success = Timestamp.TryParse(Span<char>.Empty, null, out var result);
+        var success = Timestamp.TryParse([], null, out var result);
         Assert.True(success);
         Assert.Equal(Timestamp.Empty, result);
     }

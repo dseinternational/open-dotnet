@@ -11,7 +11,7 @@ public class LabelTests
         // Act
         static void Act()
         {
-            _ = Label.Parse(Span<char>.Empty, null);
+            _ = Label.Parse([], null);
         }
 
         // Assert
@@ -41,7 +41,7 @@ public class LabelTests
     public void TryParse_WithEmptySpan_ShouldReturnFalseAndDefaultResult()
     {
         // Act
-        var success = Label.TryParse(Span<char>.Empty, null, out var result);
+        var success = Label.TryParse([], null, out var result);
 
         // Assert
         Assert.False(success);

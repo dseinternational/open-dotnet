@@ -13,7 +13,7 @@ public static class EventRaisingEntityExtensions
 
         if (!entity.HasEvents)
         {
-            return Enumerable.Empty<IBeforeSaveChangesDomainEvent>();
+            return [];
         }
 
         return entity.Events.OfType<IBeforeSaveChangesDomainEvent>();

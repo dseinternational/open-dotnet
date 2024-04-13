@@ -170,7 +170,7 @@ public static partial class StringHelper
     {
         if (string.IsNullOrEmpty(text))
         {
-            return Enumerable.Empty<string>();
+            return [];
         }
 
         var textBlocks = SplitOnWhitespace(text);
@@ -327,7 +327,7 @@ public static partial class StringHelper
 
         var result = MemoryThresholds.CanStackalloc<char>(text.Length)
             ? stackalloc char[text.Length]
-            : Span<char>.Empty;
+            : [];
 
         try
         {

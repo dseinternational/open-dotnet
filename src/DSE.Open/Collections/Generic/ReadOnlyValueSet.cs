@@ -18,7 +18,7 @@ public static class ReadOnlyValueSet
     {
         if (items.IsEmpty)
         {
-            return ReadOnlyValueSet<T>.Empty;
+            return [];
         }
 
         var set = new HashSet<T>(items.Length);

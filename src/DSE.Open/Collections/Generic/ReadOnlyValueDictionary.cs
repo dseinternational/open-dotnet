@@ -23,7 +23,7 @@ public class ReadOnlyValueDictionary<TKey, TValue>
 
     private readonly Dictionary<TKey, TValue> _inner;
 
-    public ReadOnlyValueDictionary() : this(Enumerable.Empty<KeyValuePair<TKey, TValue>>())
+    public ReadOnlyValueDictionary() : this([])
     {
     }
 

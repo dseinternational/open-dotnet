@@ -83,7 +83,7 @@ public readonly struct AsciiString
     {
         if (_value.IsEmpty)
         {
-            return Array.Empty<byte>();
+            return [];
         }
 
         var result = new byte[_value.Length];
@@ -97,7 +97,7 @@ public readonly struct AsciiString
     {
         if (_value.IsEmpty)
         {
-            return Array.Empty<char>();
+            return [];
         }
 
         var result = new char[_value.Length];

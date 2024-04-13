@@ -88,7 +88,7 @@ public sealed partial class SqlServerNonBufferingRetryingExecutionStrategy : Exe
     {
         if (maxRetryCount == 0)
         {
-            return Array.Empty<TimeSpan>();
+            return [];
         }
 
         var delays = Backoff.DecorrelatedJitterBackoffV2(firstRetryDelay, maxRetryCount).ToArray();

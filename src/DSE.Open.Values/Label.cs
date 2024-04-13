@@ -79,14 +79,14 @@ public readonly partial struct Label : IComparableValue<Label, CharSequence>
 
         if (span.Length <= MinLength)
         {
-            return ReadOnlySpan<char>.Empty;
+            return [];
         }
 
         var firstColonIndex = span.IndexOf(':');
 
         return firstColonIndex switch
         {
-            < 0 => ReadOnlySpan<char>.Empty,
+            < 0 => [],
             _ => span[..firstColonIndex]
         };
     }

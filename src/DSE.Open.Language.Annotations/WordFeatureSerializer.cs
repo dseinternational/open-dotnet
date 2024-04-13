@@ -91,7 +91,7 @@ public static class WordFeatureSerializer
     {
         if (values.IsEmpty)
         {
-            features = Enumerable.Empty<WordFeature>();
+            features = [];
             return true;
         }
 
@@ -112,7 +112,7 @@ public static class WordFeatureSerializer
             }
             else
             {
-                features = Enumerable.Empty<WordFeature>();
+                features = [];
                 return false;
             }
         }

@@ -182,7 +182,7 @@ public static partial class StringHelper
     {
         if (values.IsEmpty)
         {
-            return Enumerable.Empty<string>();
+            return [];
         }
 
         var results = new string[values.Length];
@@ -205,7 +205,7 @@ public static partial class StringHelper
     {
         if (values.IsEmpty)
         {
-            return Enumerable.Empty<string>();
+            return [];
         }
 
         var results = new string[values.Length];
@@ -218,14 +218,14 @@ public static partial class StringHelper
         return results;
     }
 
-    private static IEnumerable<string> WrapRangeCore(
+    private static string[] WrapRangeCore(
         ReadOnlySpan<char> before,
         ReadOnlySpan<char> after,
         ReadOnlySpan<string> values)
     {
         if (values.IsEmpty)
         {
-            return Enumerable.Empty<string>();
+            return [];
         }
 
         var results = new string[values.Length];

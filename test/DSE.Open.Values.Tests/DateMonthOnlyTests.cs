@@ -8,7 +8,7 @@ public class DateMonthOnlyTests
     [Fact]
     public void Parse_empty_span_fails()
     {
-        Assert.Throws<FormatException>(() => DateMonthOnly.Parse(Span<char>.Empty, null));
+        Assert.Throws<FormatException>(() => DateMonthOnly.Parse([], null));
     }
 
     [Fact]

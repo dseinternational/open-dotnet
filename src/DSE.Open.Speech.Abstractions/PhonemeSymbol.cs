@@ -49,5 +49,5 @@ public record PhonemeSymbol
     /// with underscores - for example, "_c_a_k_e" and "du_ck_" for /k/.
     /// </summary>
     [JsonPropertyName("examples")]
-    public ReadOnlyValueCollection<string> Examples { get; init; } = ReadOnlyValueCollection<string>.Empty;
+    public ReadOnlyValueCollection<string> Examples { get; init; } = [];
 }

@@ -26,7 +26,7 @@ public abstract record DataTransferObject : IJsonSerializable, IExtensionData
     [JsonPropertyOrder(2100010010)]
     internal ValueDictionary<string, object> ExtensionDataCore
     {
-        get => _extensionData ??= ValueDictionary<string, object>.Empty;
+        get => _extensionData ??= [];
         init => _extensionData = new ValueDictionary<string, object>(value);
     }
 

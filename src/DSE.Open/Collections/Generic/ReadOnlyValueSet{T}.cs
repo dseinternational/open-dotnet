@@ -2,7 +2,6 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Collections;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
@@ -164,6 +163,16 @@ public class ReadOnlyValueSet<T> : IReadOnlySet<T>, IEquatable<ReadOnlyValueSet<
     }
 
     public static explicit operator ReadOnlyValueSet<T>(Collection<T> collection)
+    {
+        return new ReadOnlyValueSet<T>(collection);
+    }
+
+    public static explicit operator ReadOnlyValueSet<T>(System.Collections.ObjectModel.ReadOnlyCollection<T> collection)
+    {
+        return new ReadOnlyValueSet<T>(collection);
+    }
+
+    public static explicit operator ReadOnlyValueSet<T>(System.Collections.ObjectModel.Collection<T> collection)
     {
         return new ReadOnlyValueSet<T>(collection);
     }

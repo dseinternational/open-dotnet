@@ -151,7 +151,7 @@ public partial class StringHelperTests
     [Fact]
     public void Join_Empty()
     {
-        var result = StringHelper.Join(" ", default, Enumerable.Empty<string>());
+        var result = StringHelper.Join(" ", default, []);
         Assert.NotNull(result);
         Assert.Empty(result);
     }

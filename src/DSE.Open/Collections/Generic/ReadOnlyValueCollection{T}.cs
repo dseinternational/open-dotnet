@@ -2,7 +2,6 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Collections;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
@@ -153,6 +152,16 @@ public class ReadOnlyValueCollection<T>
     }
 
     public static explicit operator ReadOnlyValueCollection<T>(Collection<T> collection)
+    {
+        return new ReadOnlyValueCollection<T>(collection);
+    }
+
+    public static explicit operator ReadOnlyValueCollection<T>(System.Collections.ObjectModel.ReadOnlyCollection<T> collection)
+    {
+        return new ReadOnlyValueCollection<T>(collection);
+    }
+
+    public static explicit operator ReadOnlyValueCollection<T>(System.Collections.ObjectModel.Collection<T> collection)
     {
         return new ReadOnlyValueCollection<T>(collection);
     }

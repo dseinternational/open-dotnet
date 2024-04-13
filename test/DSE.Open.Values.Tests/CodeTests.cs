@@ -90,7 +90,7 @@ public sealed class CodeTests
     [Fact]
     public void Parse_WithEmptySpan_ShouldReturnDefault()
     {
-        var a = Code.Parse(Span<char>.Empty, null);
+        var a = Code.Parse([], null);
         Assert.Equal(Code.Empty, a);
     }
 
@@ -110,7 +110,7 @@ public sealed class CodeTests
     [Fact]
     public void TryParse_WithEmptySpan_ShouldReturnTrueAndDefaultResult()
     {
-        var success = Code.TryParse(Span<char>.Empty, null, out var result);
+        var success = Code.TryParse([], null, out var result);
         Assert.True(success);
         Assert.Equal(Code.Empty, result);
     }

@@ -94,7 +94,7 @@ public static class Base62Converter
     {
         if (base62.IsEmpty)
         {
-            data = Array.Empty<byte>();
+            data = [];
             return true;
         }
 
@@ -118,7 +118,7 @@ public static class Base62Converter
 
         static bool Failed(out byte[] d)
         {
-            d = Array.Empty<byte>();
+            d = [];
             return false;
         }
     }

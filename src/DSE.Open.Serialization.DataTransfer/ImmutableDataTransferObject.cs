@@ -11,7 +11,7 @@ namespace DSE.Open.Serialization.DataTransfer;
 /// </summary>
 public abstract record ImmutableDataTransferObject : IJsonSerializable, IExtensionData
 {
-    private ReadOnlyValueDictionary<string, object> _extensionData = ReadOnlyValueDictionary<string, object>.Empty;
+    private ReadOnlyValueDictionary<string, object> _extensionData = [];
 
     [JsonIgnore]
     public IReadOnlyDictionary<string, object> ExtensionData => ExtensionDataCore;
