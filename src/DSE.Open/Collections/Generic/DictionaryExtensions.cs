@@ -72,8 +72,11 @@ public static class DictionaryExtensions
     /// <param name="dictionary"></param>
     /// <param name="keys"></param>
     /// <returns></returns>
-    /// <exception cref="KeyNotFoundException">A key was specified that did not match the key of any element in the collection.</exception>
-    public static IEnumerable<TItem> GetAll<TKey, TItem>(this IDictionary<TKey, TItem> dictionary, IEnumerable<TKey> keys) where TKey : notnull
+    /// <exception cref="KeyNotFoundException">A key was specified that did not match the key of
+    /// any element in the collection.</exception>
+    public static IEnumerable<TItem> GetAll<TKey, TItem>(
+        this IDictionary<TKey, TItem> dictionary,
+        IEnumerable<TKey> keys) where TKey : notnull
     {
         Guard.IsNotNull(dictionary);
         Guard.IsNotNull(keys);
@@ -90,16 +93,6 @@ public static class DictionaryExtensions
         return DictionaryWriter.WriteToString(collection);
     }
 
-    [Obsolete("Use System.Collections.Generic.CollectionExtensions.GetValueOrDefault instead.")]
-    public static TValue? GetValueOrDefault<TKey, TValue>(
-        this Dictionary<TKey, TValue> dictionary,
-        KeyValuePair<TKey, TValue> keyValuePair)
-        where TKey : notnull
-    {
-        Guard.IsNotNull(dictionary);
-        return System.Collections.Generic.CollectionExtensions.GetValueOrDefault(dictionary, keyValuePair.Key);
-    }
-
     public static TValue? GetValueOrDefault<TKey, TValue>(
         this IDictionary<TKey, TValue> dictionary,
         TKey key)
@@ -112,14 +105,5 @@ public static class DictionaryExtensions
         }
 
         return default;
-    }
-
-    [Obsolete("Use System.Collections.Generic.CollectionExtensions.GetValueOrDefault instead.")]
-    public static TValue? GetValueOrDefault<TKey, TValue>(
-        this IReadOnlyDictionary<TKey, TValue> dictionary,
-        TKey key)
-    {
-        Guard.IsNotNull(dictionary);
-        return System.Collections.Generic.CollectionExtensions.GetValueOrDefault(dictionary, key);
     }
 }
