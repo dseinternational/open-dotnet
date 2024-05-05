@@ -93,17 +93,4 @@ public static class DictionaryExtensions
         return DictionaryWriter.WriteToString(collection);
     }
 
-    public static TValue? GetValueOrDefault<TKey, TValue>(
-        this IDictionary<TKey, TValue> dictionary,
-        TKey key)
-    {
-        Guard.IsNotNull(dictionary);
-
-        if (dictionary.TryGetValue(key, out var value))
-        {
-            return value;
-        }
-
-        return default;
-    }
 }
