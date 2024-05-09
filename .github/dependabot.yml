@@ -4,20 +4,16 @@ registries:
   nuget.org:
     type: nuget-feed
     url: https://api.nuget.org/v3/index.json
-  dseinternational-nuget:
+  dotnet9:
     type: nuget-feed
-    url: https://www.myget.org/F/dseinternational/api/v3/index.json
-    username: frankbuckley
-    password: ${{secrets.PACKAGES_TOKEN}}
+    url: https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet9/nuget/v3/index.json
 
 updates:
-
   - package-ecosystem: nuget
     registries: "*"
     directory: "/"
     schedule:
-      interval: "weekly"
-      day: "wednesday"
+      interval: "daily"
       time: "05:00"
       timezone: "Europe/London"
     open-pull-requests-limit: 20
@@ -25,6 +21,9 @@ updates:
       CommunityToolkit:
         patterns:
           - "CommunityToolkit.*"
+      DotnetCore:
+        patterns:
+          - "System.*"
       EntityFrameworkCore:
         patterns:
           - "Microsoft.EntityFrameworkCore*"
@@ -42,33 +41,30 @@ updates:
         patterns:
           - "xunit*"
     reviewers:
-    - frankbuckley
+      - frankbuckley
     assignees:
-    - frankbuckley
+      - frankbuckley
 
   - package-ecosystem: pip
     directory: "/"
     schedule:
-      interval: "weekly"
-      day: "wednesday"
+      interval: "daily"
       time: "05:00"
       timezone: "Europe/London"
     open-pull-requests-limit: 20
     reviewers:
-    - frankbuckley
+      - frankbuckley
     assignees:
-    - frankbuckley
-
+      - frankbuckley
 
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
-      interval: "weekly"
-      day: "wednesday"
+      interval: "daily"
       time: "05:00"
       timezone: "Europe/London"
     open-pull-requests-limit: 20
     reviewers:
-    - frankbuckley
+      - frankbuckley
     assignees:
-    - frankbuckley
+      - frankbuckley
