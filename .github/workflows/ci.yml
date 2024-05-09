@@ -50,7 +50,7 @@ jobs:
       - name: Set .NET SDK version
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: "8.0.204"
+          global-json-file: global.json
 
       - name: Set Versions
         id: nbgv
@@ -80,7 +80,6 @@ jobs:
         run: |
           dotnet test ./DSE.Open.sln `
             --configuration ${{ matrix.configuration }} `
-            --no-build `
             --collect:"XPlat Code Coverage" `
             --verbosity normal
         shell: pwsh

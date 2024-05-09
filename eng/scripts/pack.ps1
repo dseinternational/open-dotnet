@@ -18,7 +18,7 @@ function Push() {
 
     Write-Host "Packing $($lib)"
 
-    & dotnet pack $lib.FullName --configuration Release --no-build
+    & dotnet pack $lib.FullName --configuration Release
 
     if ($LASTEXITCODE -ne 0) {
       Write-Host
