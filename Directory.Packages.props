@@ -42,9 +42,9 @@
     <PackageVersion Include="Microsoft.Extensions.Options" Version="8.0.2" />
     <PackageVersion Include="Microsoft.Identity.Client" Version="4.61.0" />
     <PackageVersion Include="Microsoft.Identity.Client.Extensions.Msal" Version="4.61.0" />
-    <PackageVersion Include="Microsoft.IdentityModel.Abstractions" Version="7.5.1" />
-    <PackageVersion Include="Microsoft.IdentityModel.JsonWebTokens" Version="7.5.1" />
-    <PackageVersion Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="7.5.1" />
+    <PackageVersion Include="Microsoft.IdentityModel.Abstractions" Version="7.5.2" />
+    <PackageVersion Include="Microsoft.IdentityModel.JsonWebTokens" Version="7.5.2" />
+    <PackageVersion Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="7.5.2" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
     <PackageVersion Include="Microsoft.NETCore.Platforms" Version="7.0.4" />
     <PackageVersion Include="Moq" Version="4.20.70" />
@@ -65,7 +65,7 @@
     <PackageVersion Include="System.Management" Version="8.0.0" />
     <PackageVersion Include="System.Memory" Version="4.5.5" />
     <PackageVersion Include="System.Memory.Data" Version="8.0.0" />
-    <PackageVersion Include="System.Numerics.Tensors" Version="9.0.0-preview.5.24262.2" />
+    <PackageVersion Include="System.Numerics.Tensors" Version="9.0.0-preview.5.24263.12" />
     <PackageVersion Include="System.Reflection.Emit" Version="4.7.0" />
     <PackageVersion Include="System.Reflection.Metadata" Version="8.0.0" />
     <PackageVersion Include="System.Runtime.Caching" Version="8.0.0" />
