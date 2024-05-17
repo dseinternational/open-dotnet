@@ -7,40 +7,40 @@ using System.Diagnostics.CodeAnalysis;
 namespace DSE.Open.Collections.Generic;
 
 /// <summary>
-/// A dictionary where equality is based on the equality of its contents.
+/// A dictionary where equality is based on the equality of its contents and entries are sorted by key.
 /// </summary>
 /// <typeparam name="TKey"></typeparam>
 /// <typeparam name="TValue"></typeparam>
 /// <remarks><see cref="IDictionary{TKey,TValue}"/> is implemented explicitly to support deserialization.</remarks>
 [SuppressMessage("Design", "CA1033:Interface methods should be callable by child types", Justification = "Required")]
-public class ReadOnlyValueDictionary<TKey, TValue>
+public class ReadOnlySortedValueDictionary<TKey, TValue>
     : IReadOnlyDictionary<TKey, TValue>,
       IDictionary<TKey, TValue>,
-      IEquatable<ReadOnlyValueDictionary<TKey, TValue>>
+      IEquatable<ReadOnlySortedValueDictionary<TKey, TValue>>
     where TKey : notnull
 {
-    public static readonly ReadOnlyValueDictionary<TKey, TValue> Empty = new();
+    public static readonly ReadOnlySortedValueDictionary<TKey, TValue> Empty = new();
 
-    private readonly Dictionary<TKey, TValue> _inner;
+    private readonly SortedDictionary<TKey, TValue> _inner;
 
-    public ReadOnlyValueDictionary() : this([])
+    public ReadOnlySortedValueDictionary() : this([])
     {
     }
 
-    public ReadOnlyValueDictionary(IEnumerable<KeyValuePair<TKey, TValue>> collection, IEqualityComparer<TKey>? comparer = null)
+    public ReadOnlySortedValueDictionary(IEnumerable<KeyValuePair<TKey, TValue>> collection, IComparer<TKey>? comparer = null)
     {
-        _inner = collection is ReadOnlyValueDictionary<TKey, TValue> other
+        _inner = collection is ReadOnlySortedValueDictionary<TKey, TValue> other
             && (comparer is null || other._inner.Comparer == comparer)
             ? other._inner
-            : new Dictionary<TKey, TValue>(collection, comparer);
+            : new SortedDictionary<TKey, TValue>(collection.ToDictionary(), comparer);
     }
 
-    public ReadOnlyValueDictionary(IDictionary<TKey, TValue> source, IEqualityComparer<TKey>? comparer = null)
+    public ReadOnlySortedValueDictionary(IDictionary<TKey, TValue> source, IComparer<TKey>? comparer = null)
     {
-        _inner = source is ReadOnlyValueDictionary<TKey, TValue> other
+        _inner = source is ReadOnlySortedValueDictionary<TKey, TValue> other
             && (comparer is null || other._inner.Comparer == comparer)
             ? other._inner
-            : new Dictionary<TKey, TValue>(source, comparer);
+            : new SortedDictionary<TKey, TValue>(source, comparer);
     }
 
     public TValue this[TKey key] => _inner[key];
@@ -67,20 +67,20 @@ public class ReadOnlyValueDictionary<TKey, TValue>
 
     public override bool Equals(object? obj)
     {
-        return obj is ReadOnlyValueDictionary<TKey, TValue> d && Equals(this, d);
+        return obj is ReadOnlySortedValueDictionary<TKey, TValue> d && Equals(this, d);
     }
 
-    public virtual bool Equals(ReadOnlyValueDictionary<TKey, TValue>? other)
+    public virtual bool Equals(ReadOnlySortedValueDictionary<TKey, TValue>? other)
     {
         return DictionaryEqualityComparer<TKey, TValue>.Default.Equals(this, other);
     }
 
-    public static bool operator ==(ReadOnlyValueDictionary<TKey, TValue>? left, ReadOnlyValueDictionary<TKey, TValue>? right)
+    public static bool operator ==(ReadOnlySortedValueDictionary<TKey, TValue>? left, ReadOnlySortedValueDictionary<TKey, TValue>? right)
     {
         return DictionaryEqualityComparer<TKey, TValue>.Default.Equals(left, right);
     }
 
-    public static bool operator !=(ReadOnlyValueDictionary<TKey, TValue>? left, ReadOnlyValueDictionary<TKey, TValue>? right)
+    public static bool operator !=(ReadOnlySortedValueDictionary<TKey, TValue>? left, ReadOnlySortedValueDictionary<TKey, TValue>? right)
     {
         return !DictionaryEqualityComparer<TKey, TValue>.Default.Equals(left, right);
     }
@@ -147,24 +147,24 @@ public class ReadOnlyValueDictionary<TKey, TValue>
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
-    public static explicit operator ReadOnlyValueDictionary<TKey, TValue>(KeyValuePair<TKey, TValue>[] value)
+    public static explicit operator ReadOnlySortedValueDictionary<TKey, TValue>(KeyValuePair<TKey, TValue>[] value)
     {
-        return new ReadOnlyValueDictionary<TKey, TValue>(value);
+        return new ReadOnlySortedValueDictionary<TKey, TValue>(value);
     }
 
-    public static explicit operator ReadOnlyValueDictionary<TKey, TValue>(Collection<KeyValuePair<TKey, TValue>> value)
+    public static explicit operator ReadOnlySortedValueDictionary<TKey, TValue>(Collection<KeyValuePair<TKey, TValue>> value)
     {
-        return new ReadOnlyValueDictionary<TKey, TValue>(value);
+        return new ReadOnlySortedValueDictionary<TKey, TValue>(value);
     }
 
-    public static explicit operator ReadOnlyValueDictionary<TKey, TValue>(System.Collections.ObjectModel.Collection<KeyValuePair<TKey, TValue>> value)
+    public static explicit operator ReadOnlySortedValueDictionary<TKey, TValue>(System.Collections.ObjectModel.Collection<KeyValuePair<TKey, TValue>> value)
     {
-        return new ReadOnlyValueDictionary<TKey, TValue>(value);
+        return new ReadOnlySortedValueDictionary<TKey, TValue>(value);
     }
 
-    public static explicit operator ReadOnlyValueDictionary<TKey, TValue>(Dictionary<TKey, TValue> value)
+    public static explicit operator ReadOnlySortedValueDictionary<TKey, TValue>(Dictionary<TKey, TValue> value)
     {
-        return new ReadOnlyValueDictionary<TKey, TValue>(value);
+        return new ReadOnlySortedValueDictionary<TKey, TValue>(value);
     }
 
 #pragma warning restore CA2225 // Operator overloads have named alternates

@@ -50,6 +50,39 @@ public class DictionaryEqualityComparer<TKey, TValue>
         return true;
     }
 
+    public bool Equals(ReadOnlySortedValueDictionary<TKey, TValue>? x, ReadOnlySortedValueDictionary<TKey, TValue>? y)
+    {
+        if (x is null)
+        {
+            return y is null;
+        }
+
+        if (y is null)
+        {
+            return false;
+        }
+
+        if (x.Count != y.Count)
+        {
+            return false;
+        }
+
+        foreach (var kvp in x)
+        {
+            if (!y.TryGetValue(kvp.Key, out var value2))
+            {
+                return false;
+            }
+
+            if (!ValueComparer.Equals(x[kvp.Key], value2))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public bool Equals(IReadOnlyDictionary<TKey, TValue>? x, IReadOnlyDictionary<TKey, TValue>? y)
     {
         if (x is null)
@@ -117,6 +150,25 @@ public class DictionaryEqualityComparer<TKey, TValue>
     }
 
     public int GetHashCode(ReadOnlyValueDictionary<TKey, TValue> obj)
+    {
+        Guard.IsNotNull(obj);
+
+        var hashCode = -7291863;
+
+        foreach (var kvp in obj)
+        {
+            hashCode = HashCode.Combine(hashCode, kvp.Key);
+
+            if (kvp.Value is not null)
+            {
+                hashCode = HashCode.Combine(hashCode, kvp.Value);
+            }
+        }
+
+        return hashCode;
+    }
+
+    public int GetHashCode(ReadOnlySortedValueDictionary<TKey, TValue> obj)
     {
         Guard.IsNotNull(obj);
 
