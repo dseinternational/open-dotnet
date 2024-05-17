@@ -20,8 +20,12 @@ namespace DSE.Open.Values;
 /// </summary>
 [JsonConverter(typeof(JsonStringEmailAddressConverter))]
 [StructLayout(LayoutKind.Auto)]
-public readonly record struct EmailAddress : IComparable<EmailAddress>, ISpanParsable<EmailAddress>,
-    ISpanFormattable, IEquatable<string>, IEquatable<ReadOnlyMemory<char>>
+public readonly record struct EmailAddress
+    : IComparable<EmailAddress>,
+      ISpanParsable<EmailAddress>,
+      ISpanFormattable,
+      IEquatable<string>,
+      IEquatable<ReadOnlyMemory<char>>
 {
     // https://datatracker.ietf.org/doc/html/rfc5322#section-3.2.3
     private const string ATextSymbolChars = "!#$%&'*+-/=?^_`{|}~";
@@ -303,6 +307,11 @@ public readonly record struct EmailAddress : IComparable<EmailAddress>, ISpanPar
         return TryParse(s, provider, out var result)
             ? result
             : ThrowHelper.ThrowFormatException<EmailAddress>($"Failed to parse {nameof(EmailAddress)}: '{s}'");
+    }
+
+    public static EmailAddress ParseInvariant(ReadOnlySpan<char> s)
+    {
+        return Parse(s, CultureInfo.InvariantCulture);
     }
 
     public static bool TryParse(
