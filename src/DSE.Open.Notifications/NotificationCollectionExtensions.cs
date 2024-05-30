@@ -3,7 +3,6 @@
 
 using System.Diagnostics;
 using System.Text;
-using Microsoft.Extensions.Logging;
 
 namespace DSE.Open.Notifications;
 
@@ -38,62 +37,6 @@ public static class NotificationCollectionExtensions
     {
         Guard.IsNotNull(notifications);
         notifications.Add(Notification.Warning(code, message));
-    }
-
-    public static void AddAndLog<T>(this ICollection<T> notifications, T notification, ILogger logger, LogLevel logLevel)
-        where T : INotification
-    {
-        Guard.IsNotNull(notifications);
-        notifications.Add(notification);
-        logger.Log(logLevel, notification);
-    }
-
-    public static void AddAndLogTrace<T>(this ICollection<T> notifications, T notification, ILogger logger)
-        where T : INotification
-    {
-        Guard.IsNotNull(notifications);
-        notifications.Add(notification);
-        logger.LogTrace(notification);
-    }
-
-    public static void AddAndLogDebug<T>(this ICollection<T> notifications, T notification, ILogger logger)
-        where T : INotification
-    {
-        Guard.IsNotNull(notifications);
-        notifications.Add(notification);
-        logger.LogDebug(notification);
-    }
-
-    public static void AddAndLogInformation<T>(this ICollection<T> notifications, T notification, ILogger logger)
-        where T : INotification
-    {
-        Guard.IsNotNull(notifications);
-        notifications.Add(notification);
-        logger.LogInformation(notification);
-    }
-
-    public static void AddAndLogWarning<T>(this ICollection<T> notifications, T notification, ILogger logger)
-        where T : INotification
-    {
-        Guard.IsNotNull(notifications);
-        notifications.Add(notification);
-        logger.LogWarning(notification);
-    }
-
-    public static void AddAndLogError<T>(this ICollection<T> notifications, T notification, ILogger logger)
-        where T : INotification
-    {
-        Guard.IsNotNull(notifications);
-        notifications.Add(notification);
-        logger.LogError(notification);
-    }
-
-    public static void AddAndLogCritical<T>(this ICollection<T> notifications, T notification, ILogger logger)
-        where T : INotification
-    {
-        Guard.IsNotNull(notifications);
-        notifications.Add(notification);
-        logger.LogCritical(notification);
     }
 
     /// <summary>
