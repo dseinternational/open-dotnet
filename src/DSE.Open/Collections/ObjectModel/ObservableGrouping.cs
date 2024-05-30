@@ -2,7 +2,6 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 
 namespace DSE.Open.Collections.ObjectModel;
 

@@ -5,7 +5,6 @@ using System.Buffers;
 using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
 using CommunityToolkit.HighPerformance;
-using DSE.Open.Memory;
 
 namespace DSE.Open.Memory;
 
