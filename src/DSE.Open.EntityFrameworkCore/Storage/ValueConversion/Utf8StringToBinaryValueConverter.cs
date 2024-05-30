@@ -22,6 +22,6 @@ public sealed class Utf8StringToBinaryValueConverter : ValueConverter<Utf8String
 
     private static Expression<Func<byte[], Utf8String>> FromBytes()
     {
-        return value => new Utf8String(value);
+        return value => new(value);
     }
 }

@@ -51,7 +51,7 @@ public class ReadOnlyValueSet<T> : IReadOnlySet<T>, IEquatable<ReadOnlyValueSet<
             _set = other._set;
         }
 
-        _set = new HashSet<T>(set);
+        _set = new(set);
     }
 
     public int Count => _set.Count;
@@ -154,32 +154,32 @@ public class ReadOnlyValueSet<T> : IReadOnlySet<T>, IEquatable<ReadOnlyValueSet<
 
     public static explicit operator ReadOnlyValueSet<T>(T[] collection)
     {
-        return new ReadOnlyValueSet<T>(collection);
+        return new(collection);
     }
 
     public static explicit operator ReadOnlyValueSet<T>(ReadOnlyCollection<T> collection)
     {
-        return new ReadOnlyValueSet<T>(collection);
+        return new(collection);
     }
 
     public static explicit operator ReadOnlyValueSet<T>(Collection<T> collection)
     {
-        return new ReadOnlyValueSet<T>(collection);
+        return new(collection);
     }
 
     public static explicit operator ReadOnlyValueSet<T>(System.Collections.ObjectModel.ReadOnlyCollection<T> collection)
     {
-        return new ReadOnlyValueSet<T>(collection);
+        return new(collection);
     }
 
     public static explicit operator ReadOnlyValueSet<T>(System.Collections.ObjectModel.Collection<T> collection)
     {
-        return new ReadOnlyValueSet<T>(collection);
+        return new(collection);
     }
 
     public static explicit operator ReadOnlyValueSet<T>(HashSet<T> collection)
     {
-        return new ReadOnlyValueSet<T>((IEnumerable<T>)collection);
+        return new((IEnumerable<T>)collection);
     }
 
 #pragma warning restore CA2225 // Operator overloads have named alternates

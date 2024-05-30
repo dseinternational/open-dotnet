@@ -39,6 +39,6 @@ public static class MemoryEnumerator
 {
     public static MemoryEnumerator<T> GetEnumerator<T>(this Memory<T> data)
     {
-        return new MemoryEnumerator<T>(data);
+        return new(data);
     }
 }

@@ -31,7 +31,7 @@ public class ObservableKeyedCollectionTests
         var items = new List<TestItem>();
         for (var i = 0; i < count; i++)
         {
-            items.Add(new TestItem());
+            items.Add(new());
         }
 
         return items;

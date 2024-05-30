@@ -32,7 +32,7 @@ public class ReadOnlySortedValueDictionary<TKey, TValue>
         _inner = collection is ReadOnlySortedValueDictionary<TKey, TValue> other
             && (comparer is null || other._inner.Comparer == comparer)
             ? other._inner
-            : new SortedDictionary<TKey, TValue>(collection.ToDictionary(), comparer);
+            : new(collection.ToDictionary(), comparer);
     }
 
     public ReadOnlySortedValueDictionary(IDictionary<TKey, TValue> source, IComparer<TKey>? comparer = null)
@@ -40,7 +40,7 @@ public class ReadOnlySortedValueDictionary<TKey, TValue>
         _inner = source is ReadOnlySortedValueDictionary<TKey, TValue> other
             && (comparer is null || other._inner.Comparer == comparer)
             ? other._inner
-            : new SortedDictionary<TKey, TValue>(source, comparer);
+            : new(source, comparer);
     }
 
     public TValue this[TKey key] => _inner[key];
@@ -149,22 +149,22 @@ public class ReadOnlySortedValueDictionary<TKey, TValue>
 
     public static explicit operator ReadOnlySortedValueDictionary<TKey, TValue>(KeyValuePair<TKey, TValue>[] value)
     {
-        return new ReadOnlySortedValueDictionary<TKey, TValue>(value);
+        return new(value);
     }
 
     public static explicit operator ReadOnlySortedValueDictionary<TKey, TValue>(Collection<KeyValuePair<TKey, TValue>> value)
     {
-        return new ReadOnlySortedValueDictionary<TKey, TValue>(value);
+        return new(value);
     }
 
     public static explicit operator ReadOnlySortedValueDictionary<TKey, TValue>(System.Collections.ObjectModel.Collection<KeyValuePair<TKey, TValue>> value)
     {
-        return new ReadOnlySortedValueDictionary<TKey, TValue>(value);
+        return new(value);
     }
 
     public static explicit operator ReadOnlySortedValueDictionary<TKey, TValue>(Dictionary<TKey, TValue> value)
     {
-        return new ReadOnlySortedValueDictionary<TKey, TValue>(value);
+        return new(value);
     }
 
 #pragma warning restore CA2225 // Operator overloads have named alternates

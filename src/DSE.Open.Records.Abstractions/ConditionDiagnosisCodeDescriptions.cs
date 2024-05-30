@@ -9,7 +9,7 @@ namespace DSE.Open.Records;
 public sealed class ConditionDiagnosisCodeDescriptions : ResourceLabelDescriptionProvider<ConditionDiagnosisCode>
 {
     private static readonly Lazy<ResourceManager> s_resourceManager = new(()
-        => new ResourceManager($"{typeof(ConditionDiagnosisCodeDescriptions).Namespace}.Resources.DiagnosisLabels", typeof(ConditionDiagnosisCodeDescriptions).Assembly));
+        => new($"{typeof(ConditionDiagnosisCodeDescriptions).Namespace}.Resources.DiagnosisLabels", typeof(ConditionDiagnosisCodeDescriptions).Assembly));
 
     public static readonly ConditionDiagnosisCodeDescriptions Default = new();
 

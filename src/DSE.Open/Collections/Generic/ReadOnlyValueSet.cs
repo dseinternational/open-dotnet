@@ -30,7 +30,7 @@ public static class ReadOnlyValueSet
             _ = set.Add(item);
         }
 
-        return new ReadOnlyValueSet<T>(set);
+        return new(set);
     }
 
 }

@@ -47,7 +47,7 @@ public readonly struct AsciiString
 
     public AsciiString Slice(int start, int length)
     {
-        return new AsciiString(_value.Slice(start, length));
+        return new(_value.Slice(start, length));
     }
 
     public bool IsEmpty => _value.IsEmpty;
@@ -166,7 +166,7 @@ public readonly struct AsciiString
 
             Debug.Assert(status == OperationStatus.Done);
 
-            result = new AsciiString(ValuesMarshal.AsAsciiChars(buffer[..bytesWritten]).ToArray());
+            result = new(ValuesMarshal.AsAsciiChars(buffer[..bytesWritten]).ToArray());
             return true;
         }
     }
@@ -223,7 +223,7 @@ public readonly struct AsciiString
 
         utf8Text.CopyTo(ValuesMarshal.AsBytes(buffer));
 
-        result = new AsciiString(buffer);
+        result = new(buffer);
         return true;
     }
 
@@ -310,14 +310,14 @@ public readonly struct AsciiString
     {
         var result = new AsciiChar[_value.Length];
         _ = TryFormat(ValuesMarshal.AsBytes(result), out _, "L", default);
-        return new AsciiString(result);
+        return new(result);
     }
 
     public AsciiString ToUpper()
     {
         var result = new AsciiChar[_value.Length];
         _ = TryFormat(ValuesMarshal.AsBytes(result), out _, "U", default);
-        return new AsciiString(result);
+        return new(result);
     }
 
     public override string ToString()

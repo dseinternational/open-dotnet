@@ -9,21 +9,21 @@ public class CharSequenceExtensionTests
     public void Decimal_ToCharSequence_formats_correctly()
     {
         var cs = decimal.MaxValue.ToCharSequence(default, CultureInfo.InvariantCulture);
-        Assert.Equal(new CharSequence("79228162514264337593543950335"), cs);
+        Assert.Equal(new("79228162514264337593543950335"), cs);
     }
 
     [Fact]
     public void Double_ToCharSequence_formats_correctly()
     {
         var cs = double.MaxValue.ToCharSequence(default, CultureInfo.InvariantCulture);
-        Assert.Equal(new CharSequence("1.7976931348623157E+308"), cs);
+        Assert.Equal(new("1.7976931348623157E+308"), cs);
     }
 
     [Fact]
     public void String_ToCharSequence_formats_correctly()
     {
         var cs = "A string".ToCharSequence();
-        Assert.Equal(new CharSequence("A string"), cs);
+        Assert.Equal(new("A string"), cs);
     }
 
     [Fact]
@@ -31,6 +31,6 @@ public class CharSequenceExtensionTests
     {
         var longString = string.Join(" ", Enumerable.Range(0, 300).Select(i => "A string."));
         var cs = longString.ToCharSequence();
-        Assert.Equal(new CharSequence(longString), cs);
+        Assert.Equal(new(longString), cs);
     }
 }

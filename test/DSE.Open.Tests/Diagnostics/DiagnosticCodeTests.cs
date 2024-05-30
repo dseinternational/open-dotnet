@@ -84,7 +84,7 @@ public sealed class DiagnosticCodeTests
     [Fact]
     public void EmptyTest()
     {
-        Assert.Equal(DiagnosticCode.Empty, new DiagnosticCode());
+        Assert.Equal(DiagnosticCode.Empty, new());
     }
 
     [Fact]

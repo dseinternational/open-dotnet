@@ -9,7 +9,7 @@ public static class TimestampExtensions
 {
     public static SqlBinary ToSqlBinary(this Timestamp timestamp)
     {
-        return new SqlBinary(timestamp.GetBytes());
+        return new(timestamp.GetBytes());
     }
 
     public static Timestamp? ToTimestamp(this SqlBinary value)

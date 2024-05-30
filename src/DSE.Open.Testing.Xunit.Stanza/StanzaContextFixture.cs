@@ -9,7 +9,7 @@ public sealed class StanzaContextFixture : IDisposable
 {
     public StanzaContextFixture()
     {
-        StanzaContext = new StanzaContext(TestingPythonContext.Instance);
+        StanzaContext = new(TestingPythonContext.Instance);
 
         // assuming pre-downloaded models
     }

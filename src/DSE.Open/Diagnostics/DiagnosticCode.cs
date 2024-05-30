@@ -254,7 +254,7 @@ public readonly struct DiagnosticCode
     {
         if (IsValid(s))
         {
-            result = new DiagnosticCode(s, skipChecks: true);
+            result = new(s, skipChecks: true);
             return true;
         }
 
@@ -274,7 +274,7 @@ public readonly struct DiagnosticCode
 
     public static DiagnosticCode FromString(string code)
     {
-        return new DiagnosticCode(code);
+        return new(code);
     }
 
     public static bool operator <(DiagnosticCode left, DiagnosticCode right)

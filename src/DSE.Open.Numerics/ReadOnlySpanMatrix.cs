@@ -97,6 +97,6 @@ public readonly ref struct ReadOnlySpanMatrix<T> // : IReadOnlyMatrix<T> (https:
 
     public static implicit operator ReadOnlySpanMatrix<T>(T[,] matrix)
     {
-        return new ReadOnlySpanMatrix<T>(matrix);
+        return new(matrix);
     }
 }

@@ -22,6 +22,6 @@ public sealed class AgeInMonthsToInt32Converter : ValueConverter<AgeInMonths, in
 
     private static AgeInMonths ConvertFromInt32(int code)
     {
-        return new AgeInMonths(code);
+        return new(code);
     }
 }

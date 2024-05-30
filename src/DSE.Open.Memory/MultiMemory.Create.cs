@@ -65,7 +65,7 @@ public static partial class MultiMemory
     /// <returns></returns>
     public static MultiMemory<T> Create<T>(MultiSpan<T> elements)
     {
-        return new MultiMemory<T>(elements.Elements.ToArray(), elements.Shape, false);
+        return new(elements.Elements.ToArray(), elements.Shape, false);
     }
 
     /// <summary>
@@ -78,7 +78,7 @@ public static partial class MultiMemory
     public static MultiMemory<T> CreateWithDimensions<T>(uint d1Length, uint d2Length)
     {
         uint[] d = [d1Length, d2Length];
-        return new MultiMemory<T>(default, d, true);
+        return new(default, d, true);
     }
 
     /// <summary>
@@ -95,7 +95,7 @@ public static partial class MultiMemory
         uint d3Length)
     {
         uint[] d = [d1Length, d2Length, d3Length];
-        return new MultiMemory<T>(default, d, true);
+        return new(default, d, true);
     }
 
     /// <summary>
@@ -106,7 +106,7 @@ public static partial class MultiMemory
     /// <returns></returns>
     public static MultiMemory<T> CreateWithDimensions<T>(ReadOnlySpan<uint> shape)
     {
-        return new MultiMemory<T>(default, shape, true);
+        return new(default, shape, true);
     }
 
     /// <summary>
@@ -119,6 +119,6 @@ public static partial class MultiMemory
     /// <returns></returns>
     public static MultiMemory<T> CreateUninitialized<T>(ReadOnlySpan<uint> shape)
     {
-        return new MultiMemory<T>(default, shape, true, true);
+        return new(default, shape, true, true);
     }
 }

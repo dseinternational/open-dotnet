@@ -140,6 +140,6 @@ public readonly struct Matrix<T> : IEquatable<Matrix<T>>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator ReadOnlyMatrix<T>(Matrix<T> matrix)
     {
-        return new ReadOnlyMatrix<T>(matrix._data);
+        return new(matrix._data);
     }
 }

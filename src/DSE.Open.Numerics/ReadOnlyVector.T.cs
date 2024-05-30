@@ -84,12 +84,12 @@ public readonly struct ReadOnlyVector<T> : IEquatable<ReadOnlyVector<T>>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator ReadOnlyVector<T>(T[] vector)
     {
-        return new ReadOnlyVector<T>(vector);
+        return new(vector);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator ReadOnlyVector<T>(ReadOnlyMemory<T> vector)
     {
-        return new ReadOnlyVector<T>(vector);
+        return new(vector);
     }
 }

@@ -21,6 +21,6 @@ public sealed class DateTimeOffsetToUtcTicksConverter : ValueConverter<DateTimeO
 
     private static DateTimeOffset FromUtcTicks(long value)
     {
-        return new DateTimeOffset(value, TimeSpan.Zero);
+        return new(value, TimeSpan.Zero);
     }
 }

@@ -22,6 +22,6 @@ public sealed class Utf8StringToStringConverter : ValueConverter<Utf8String, str
 
     private static Expression<Func<string, Utf8String>> FromStore()
     {
-        return value => new Utf8String(value);
+        return value => new(value);
     }
 }

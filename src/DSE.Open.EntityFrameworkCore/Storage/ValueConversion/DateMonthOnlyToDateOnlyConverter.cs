@@ -21,6 +21,6 @@ public sealed class DateMonthOnlyToDateOnlyConverter : ValueConverter<DateMonthO
 
     private static DateMonthOnly ConvertFrom(DateOnly value)
     {
-        return new DateMonthOnly(value);
+        return new(value);
     }
 }

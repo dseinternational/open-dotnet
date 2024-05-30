@@ -29,7 +29,7 @@ public class StanzaAnnotator : IAnnotator
 
         var stanzaDoc = await nlp.ProcessTextAsync(text, cancellationToken).ConfigureAwait(false);
 
-        return new OpenDocument
+        return new()
         {
             Sentences = [.. stanzaDoc.Sentences.Select(s => new OpenSentence
             {
@@ -83,7 +83,7 @@ public class StanzaAnnotator : IAnnotator
             throw new StanzaException($"Failed to parse features '{w.Features}'");
         }
 
-        return new OpenWord
+        return new()
         {
             Index = w.Index,
             Form = word,

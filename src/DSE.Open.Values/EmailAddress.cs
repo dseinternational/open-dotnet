@@ -355,7 +355,7 @@ public readonly record struct EmailAddress
 
         if (IsValid(s, out var splitIndex))
         {
-            result = new EmailAddress(s, splitIndex);
+            result = new(s, splitIndex);
             return true;
         }
 
@@ -404,7 +404,7 @@ public readonly record struct EmailAddress
 #pragma warning disable CA2225 // Operator overloads have named alternates - explicit conversion operators
     public static explicit operator EmailAddress(string value)
     {
-        return new EmailAddress(value);
+        return new(value);
     }
 
     public static explicit operator string(EmailAddress value)

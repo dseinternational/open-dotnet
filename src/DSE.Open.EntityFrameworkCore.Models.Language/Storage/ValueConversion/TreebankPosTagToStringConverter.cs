@@ -21,6 +21,6 @@ public sealed class TreebankPosTagToStringConverter : ValueConverter<TreebankPos
 
     private static TreebankPosTag ConvertFrom(string value)
     {
-        return new TreebankPosTag(value);
+        return new(value);
     }
 }

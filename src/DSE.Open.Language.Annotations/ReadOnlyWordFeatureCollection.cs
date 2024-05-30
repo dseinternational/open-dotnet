@@ -28,7 +28,7 @@ public sealed class ReadOnlyWordFeatureCollection
     public ReadOnlyWordFeatureCollection(IEnumerable<WordFeature> features)
     {
         Guard.IsNotNull(features);
-        _features = new WordFeatureCollection(features);
+        _features = new(features);
     }
 
     public static ReadOnlyWordFeatureCollection Create(ReadOnlySpan<WordFeature> items)
@@ -42,7 +42,7 @@ public sealed class ReadOnlyWordFeatureCollection
 
         list.AddRange(items);
 
-        return new ReadOnlyWordFeatureCollection(list);
+        return new(list);
     }
 
     public static ReadOnlyWordFeatureCollection Create(Span<WordFeature> items)
@@ -92,7 +92,7 @@ public sealed class ReadOnlyWordFeatureCollection
     {
         if (WordFeatureSerializer.TryDeserialize(s, out var features))
         {
-            result = new ReadOnlyWordFeatureCollection(features);
+            result = new(features);
             return true;
         };
 

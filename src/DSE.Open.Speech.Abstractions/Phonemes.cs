@@ -204,7 +204,7 @@ public static class Phonemes
             Abstraction = SpeechSound.VoicelessPostalveolarAffricate,
             Allophones =
             [
-                new SpeechSound(
+                new(
                 [
                     SpeechSymbol.VoicelessAlveolarPlosive,
                     SpeechSymbol.VoicelessPostalveolarFricative

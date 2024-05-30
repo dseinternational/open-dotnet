@@ -82,12 +82,12 @@ public readonly struct Char2
 
     public static Char2 FromString(string value)
     {
-        return new Char2(value.AsSpan());
+        return new(value.AsSpan());
     }
 
     public static Char2 FromSpan(ReadOnlySpan<char> span)
     {
-        return new Char2(span);
+        return new(span);
     }
 
     public static bool operator ==(Char2 left, Char2 right)
@@ -117,7 +117,7 @@ public readonly struct Char2
 
     public Char2 ToUpper(CultureInfo cultureInfo)
     {
-        return new Char2(char.ToUpper(_c0, cultureInfo), char.ToUpper(_c1, cultureInfo));
+        return new(char.ToUpper(_c0, cultureInfo), char.ToUpper(_c1, cultureInfo));
     }
 
     public Char2 ToUpperInvariant()
@@ -132,7 +132,7 @@ public readonly struct Char2
 
     public Char2 ToLower(CultureInfo cultureInfo)
     {
-        return new Char2(char.ToLower(_c0, cultureInfo), char.ToLower(_c1, cultureInfo));
+        return new(char.ToLower(_c0, cultureInfo), char.ToLower(_c1, cultureInfo));
     }
 
     public Char2 ToLowerInvariant()
@@ -188,7 +188,7 @@ public readonly struct Char2
     {
         if (s.Length == CharCount)
         {
-            result = new Char2(s);
+            result = new(s);
             return true;
         }
 

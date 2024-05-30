@@ -112,15 +112,15 @@ public class Memory2DExtensionsTests
     public void IndexOf()
     {
         var m = new Memory2D<int>(new int[,] { { 1, 2 }, { 3, 4 }, { 5, 6 } });
-        Assert.Equal(new Index2D(1, 1), m.IndexOf(4));
-        Assert.Equal(new Index2D(2, 1), m.IndexOf(6));
+        Assert.Equal(new(1, 1), m.IndexOf(4));
+        Assert.Equal(new(2, 1), m.IndexOf(6));
     }
 
     [Fact]
     public void IndexOf_ReadOnly()
     {
         var m = new ReadOnlyMemory2D<int>(new int[,] { { 1, 2 }, { 3, 4 }, { 5, 6 } });
-        Assert.Equal(new Index2D(1, 1), m.IndexOf(4));
-        Assert.Equal(new Index2D(2, 1), m.IndexOf(6));
+        Assert.Equal(new(1, 1), m.IndexOf(4));
+        Assert.Equal(new(2, 1), m.IndexOf(6));
     }
 }

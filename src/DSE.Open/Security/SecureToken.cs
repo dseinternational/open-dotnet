@@ -50,7 +50,7 @@ public readonly record struct SecureToken : ISpanParsable<SecureToken>, ISpanFor
             id[i / 2] = TokenChars.Span[c];
         }
 
-        return new SecureToken(id.ToArray());
+        return new(id.ToArray());
     }
 
     public ReadOnlySpan<char> AsSpan()
@@ -75,7 +75,7 @@ public readonly record struct SecureToken : ISpanParsable<SecureToken>, ISpanFor
 
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
-        return new string(_token);
+        return new(_token);
     }
 
     public bool TryFormat(
@@ -179,7 +179,7 @@ public readonly record struct SecureToken : ISpanParsable<SecureToken>, ISpanFor
             return false;
         }
 
-        result = new SecureToken(s.ToArray());
+        result = new(s.ToArray());
         return true;
     }
 

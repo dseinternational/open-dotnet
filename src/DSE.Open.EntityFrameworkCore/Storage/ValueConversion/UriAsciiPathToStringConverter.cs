@@ -23,6 +23,6 @@ public sealed class UriAsciiPathToStringConverter : ValueConverter<UriAsciiPath,
 
     private static Expression<Func<string, UriAsciiPath>> FromStore()
     {
-        return value => new UriAsciiPath(value);
+        return value => new(value);
     }
 }

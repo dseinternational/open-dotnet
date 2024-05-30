@@ -174,7 +174,7 @@ public readonly partial struct Tag
 
     public static explicit operator Tag(string tag)
     {
-        return new Tag(tag);
+        return new(tag);
     }
 
     public static explicit operator string(Tag tag)

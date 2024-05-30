@@ -125,6 +125,6 @@ public abstract class ReadOnlyKeyedValueCollection<TKey, TValue>
     /// <returns></returns>
     public Dictionary<TKey, TValue> ToDictionary()
     {
-        return new Dictionary<TKey, TValue>(_dictionary);
+        return new(_dictionary);
     }
 }

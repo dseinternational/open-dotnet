@@ -22,7 +22,7 @@ public class ColorTypeConverter : TypeConverter
 
     public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext? context)
     {
-        return new StandardValuesCollection(new[]
+        return new(new[]
         {
             nameof(Colors.AliceBlue),
             nameof(Colors.AntiqueWhite),

@@ -50,7 +50,7 @@ public static class HatcherReadabilityCalculator
         var level = CalculateLevel(pageCount, wordCount, maxLinesOnPage,
             maxSentenceLength, syntaxComplexity, wordsLonger5Count, words5Count);
 
-        return new HatcherReadabilityResult(level, pageCount, wordCount, maxLinesOnPage,
+        return new(level, pageCount, wordCount, maxLinesOnPage,
             maxSentenceLength, syntaxComplexity, words5, words6, words7, words8);
     }
 

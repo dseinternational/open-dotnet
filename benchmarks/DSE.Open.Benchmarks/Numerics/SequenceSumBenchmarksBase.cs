@@ -27,7 +27,7 @@ public abstract class SequenceSumBenchmarksBase<T>
     public void Setup()
     {
         ValuesArray = GetValuesArray(Count);
-        ValuesCollection = new Collection<T>(GetValuesList(Count));
+        ValuesCollection = new(GetValuesList(Count));
         ValuesEnumerable = GetValuesEnumerable(Count);
     }
     protected T[] GetValuesArray(int count)

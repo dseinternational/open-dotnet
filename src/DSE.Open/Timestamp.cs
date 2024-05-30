@@ -114,7 +114,7 @@ public readonly record struct Timestamp : IComparable<Timestamp>, ISpanFormattab
 
     public static explicit operator Timestamp(byte[] data)
     {
-        return new Timestamp(data);
+        return new(data);
     }
 
 #pragma warning restore CA2225 // Operator overloads have named alternates
@@ -157,7 +157,7 @@ public readonly record struct Timestamp : IComparable<Timestamp>, ISpanFormattab
 
             if (Convert.TryFromBase64Chars(s, bytes, out var bytesWritten))
             {
-                result = new Timestamp(bytes[..bytesWritten], guard: false);
+                result = new(bytes[..bytesWritten], guard: false);
                 return true;
             }
         }
@@ -180,7 +180,7 @@ public readonly record struct Timestamp : IComparable<Timestamp>, ISpanFormattab
             return false;
         }
 
-        result = new Timestamp(data, guard: false);
+        result = new(data, guard: false);
         return true;
     }
 

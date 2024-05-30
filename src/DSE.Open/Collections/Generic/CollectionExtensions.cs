@@ -10,7 +10,7 @@ namespace DSE.Open.Collections.Generic;
 public static class CollectionExtensions
 {
     private static readonly ThreadLocal<Random> s_random =
-        new(() => new Random(unchecked((Environment.TickCount * 31) + Environment.CurrentManagedThreadId)));
+        new(() => new(unchecked((Environment.TickCount * 31) + Environment.CurrentManagedThreadId)));
 
     public static void AddRange<T>(this ICollection<T> collection, IEnumerable<T>? values)
     {
@@ -532,18 +532,18 @@ public static class CollectionExtensions
     public static Collection<T> ToCollection<T>(this IEnumerable<T> collection)
     {
         Guard.IsNotNull(collection);
-        return new Collection<T>(collection);
+        return new(collection);
     }
 
     public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> collection)
     {
         Guard.IsNotNull(collection);
-        return new ObservableCollection<T>(collection);
+        return new(collection);
     }
 
     public static ObservableCollection<T> ToObservableCollection<T>(this List<T> list)
     {
-        return new ObservableCollection<T>(list);
+        return new(list);
     }
 
     public static ReadOnlyValueCollection<T> ToReadOnlyValueCollection<T>(this IEnumerable<T> collection)
@@ -555,7 +555,7 @@ public static class CollectionExtensions
         this IEnumerable<KeyValuePair<TKey, TValue>> collection)
         where TKey : notnull
     {
-        return new ReadOnlyValueDictionary<TKey, TValue>(collection);
+        return new(collection);
     }
 
     public static ReadOnlyValueSet<T> ToReadOnlyValueSet<T>(this IEnumerable<T> collection)

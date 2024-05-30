@@ -11,7 +11,7 @@ public class ValueConverterTests : SqliteInMemoryTestBase<TestDbContext>
 {
     public override TestDbContext CreateContext(DbContextOptions<TestDbContext> contextOptions)
     {
-        return new TestDbContext(contextOptions);
+        return new(contextOptions);
     }
 
     [Theory]
@@ -46,7 +46,8 @@ public class ValueConverterTests : SqliteInMemoryTestBase<TestDbContext>
     {
         using (var db = CreateContext())
         {
-            _ = db.Countries.Add(new Country { Code = CountryCode.UnitedKingdom });
+            _ = db.Countries.Add(new()
+                { Code = CountryCode.UnitedKingdom });
             _ = await db.SaveChangesAsync();
         }
 

@@ -150,12 +150,12 @@ public readonly partial struct AsciiChar
 
     public static AsciiChar FromByte(byte asciiByte)
     {
-        return new AsciiChar(asciiByte);
+        return new(asciiByte);
     }
 
     public static AsciiChar FromChar(char asciiUtf16Char)
     {
-        return new AsciiChar(asciiUtf16Char);
+        return new(asciiUtf16Char);
     }
 
     public static explicit operator string(AsciiChar value)
@@ -190,12 +190,12 @@ public readonly partial struct AsciiChar
 
     public AsciiChar ToUpper()
     {
-        return new AsciiChar(ToUpper(_asciiByte));
+        return new(ToUpper(_asciiByte));
     }
 
     public AsciiChar ToLower()
     {
-        return new AsciiChar(ToLower(_asciiByte));
+        return new(ToLower(_asciiByte));
     }
 
     public bool TryFormat(
@@ -287,7 +287,7 @@ public readonly partial struct AsciiChar
     {
         if (s.Length >= 1 && IsAscii(s[0]))
         {
-            result = new AsciiChar(s[0], true);
+            result = new(s[0], true);
             return true;
         }
 
@@ -324,7 +324,7 @@ public readonly partial struct AsciiChar
     {
         if (!utf8Text.IsEmpty && IsAscii(utf8Text[0]))
         {
-            result = new AsciiChar(utf8Text[0], true);
+            result = new(utf8Text[0], true);
             return true;
         }
 

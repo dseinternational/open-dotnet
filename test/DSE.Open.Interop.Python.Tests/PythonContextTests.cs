@@ -10,8 +10,8 @@ public class PythonContextTests
     {
         _ = Assert.Throws<InvalidOperationException>(() =>
         {
-            var context1 = new PythonContext(new PythonContextConfiguration());
-            var context21 = new PythonContext(new PythonContextConfiguration());
+            var context1 = new PythonContext(new());
+            var context21 = new PythonContext(new());
         });
     }
 }

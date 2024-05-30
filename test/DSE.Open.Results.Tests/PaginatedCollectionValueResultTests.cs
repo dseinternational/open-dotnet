@@ -29,7 +29,7 @@ public class PaginatedCollectionValueResultTests
                 Notification.Warning("NTF123456", "Warning"),
                 Notification.Error("NTF123456", "Error")
             ],
-            Pagination = new Pagination(13, 10, 2)
+            Pagination = new(13, 10, 2)
         };
 
         var json = JsonSerializer.Serialize(val, JsonSharedOptions.RelaxedJsonEscaping);

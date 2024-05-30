@@ -11,12 +11,12 @@ public static partial class MemoryExtensions
 {
     public static AsciiString ToAsciiString(this ReadOnlyMemory<AsciiChar> memory)
     {
-        return new AsciiString(memory);
+        return new(memory);
     }
 
     public static AsciiString ToAsciiString(this ReadOnlySpan<AsciiChar> span)
     {
-        return new AsciiString(span.ToArray());
+        return new(span.ToArray());
     }
 
     public static ReadOnlyMemory<byte> ToBytes(this ReadOnlyMemory<AsciiChar> memory)
@@ -78,7 +78,7 @@ public static partial class MemoryExtensions
             throw new InvalidOperationException();
         }
 
-        return new string(buffer[..charsWritten]);
+        return new(buffer[..charsWritten]);
     }
 
     public static bool ContainsOnlyAsciiLetters(this ReadOnlySpan<AsciiChar> value)

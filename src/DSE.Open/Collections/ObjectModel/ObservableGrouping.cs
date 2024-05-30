@@ -50,7 +50,7 @@ public class ObservableGrouping<TGroup, TItem> : ObservableCollection<TItem>, IO
             if (!EqualityComparer<TGroup>.Default.Equals(value, _group))
             {
                 _group = value;
-                OnPropertyChanged(new PropertyChangedEventArgs(nameof(Group)));
+                OnPropertyChanged(new(nameof(Group)));
             }
         }
     }

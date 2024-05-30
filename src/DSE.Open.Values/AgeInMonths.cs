@@ -43,12 +43,12 @@ public readonly record struct AgeInMonths : ISpanFormattable, ISpanParsable<AgeI
 
     public AgeInMonths AddMonths(int months)
     {
-        return new AgeInMonths(TotalMonths + months);
+        return new(TotalMonths + months);
     }
 
     public AgeInMonths AddYears(int years)
     {
-        return new AgeInMonths(TotalMonths + (years * 12));
+        return new(TotalMonths + (years * 12));
     }
 
     public int CompareTo(AgeInMonths other)
@@ -151,7 +151,7 @@ public readonly record struct AgeInMonths : ISpanFormattable, ISpanParsable<AgeI
         if (int.TryParse(s[..colonIndex], NumberStyles.Integer, provider, out var years) &&
             int.TryParse(s[(colonIndex + 1)..], NumberStyles.Integer, provider, out var months))
         {
-            result = new AgeInMonths(years, months);
+            result = new(years, months);
             return true;
         }
 
@@ -176,7 +176,7 @@ public readonly record struct AgeInMonths : ISpanFormattable, ISpanParsable<AgeI
     {
         Span<char> destination = stackalloc char[12];
         _ = TryFormat(destination, out var charsWritten, format, formatProvider);
-        return new string(destination[..charsWritten]);
+        return new(destination[..charsWritten]);
     }
 
     public static bool operator <(AgeInMonths left, AgeInMonths right)

@@ -90,7 +90,7 @@ public readonly record struct Sign : ISpanFormattable, ISpanParsable<Sign>
             {
                 if (WordText.TryParse(s[(i + 1)..], provider, out var word))
                 {
-                    result = new Sign(modality, word);
+                    result = new(modality, word);
                     return true;
                 }
             }

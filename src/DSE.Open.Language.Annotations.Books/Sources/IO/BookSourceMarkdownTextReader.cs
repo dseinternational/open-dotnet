@@ -43,27 +43,27 @@ public class BookSourceMarkdownTextReader
             if (pages.Count == 0 && title is null && LineIsHeading1(line))
             {
                 title = GetTextFromHeadingLine(line);
-                paragraphs.Add(new ParagraphSource(title));
-                pages.Add(new PageSource(paragraphs));
+                paragraphs.Add(new(title));
+                pages.Add(new(paragraphs));
                 paragraphs.Clear();
             }
             else if (LineIsPageBreak(line))
             {
-                pages.Add(new PageSource(paragraphs));
+                pages.Add(new(paragraphs));
                 paragraphs.Clear();
             }
             else
             {
-                paragraphs.Add(new ParagraphSource(line));
+                paragraphs.Add(new(line));
             }
         }
 
         if (paragraphs.Count > 0)
         {
-            pages.Add(new PageSource(paragraphs));
+            pages.Add(new(paragraphs));
         }
 
-        return new BookSource(LanguageTag.EnglishUk, title ?? string.Empty, pages);
+        return new(LanguageTag.EnglishUk, title ?? string.Empty, pages);
     }
 
     private static bool LineIsHeading1(string line)

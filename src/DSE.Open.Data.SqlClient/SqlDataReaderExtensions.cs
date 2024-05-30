@@ -89,7 +89,7 @@ public static class SqlDataReaderExtensions
         }
 
         return data.Storage != StorageState.Buffer
-            ? new Utf8String(data.Buffer.AsMemory()[..(int)data.Length])
+            ? new(data.Buffer.AsMemory()[..(int)data.Length])
             : new Utf8String(data.Value);
     }
 
@@ -105,7 +105,7 @@ public static class SqlDataReaderExtensions
         }
 
         return data.Storage != StorageState.Buffer
-            ? new Utf8String(data.Buffer.AsMemory()[..(int)data.Length])
+            ? new(data.Buffer.AsMemory()[..(int)data.Length])
             : new Utf8String(data.Value);
     }
 
@@ -118,7 +118,7 @@ public static class SqlDataReaderExtensions
     public static Uri GetUri(this SqlDataReader reader, int ordinal)
     {
         Guard.IsNotNull(reader);
-        return new Uri(reader.GetString(ordinal));
+        return new(reader.GetString(ordinal));
     }
 
     public static Uri? GetNullableUri(this SqlDataReader reader, int ordinal)

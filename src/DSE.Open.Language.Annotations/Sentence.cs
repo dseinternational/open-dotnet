@@ -49,7 +49,7 @@ public record Sentence : ISpanFormattable
         {
             if (TryFormat(buffer, out var charsWritten, default, default))
             {
-                return new string(buffer, 0, charsWritten);
+                return new(buffer, 0, charsWritten);
             }
             else
             {

@@ -51,7 +51,7 @@ public readonly struct SpeechSymbolSequence
 
     public static SpeechSymbolSequence Create(ReadOnlySpan<SpeechSymbol> value)
     {
-        return new SpeechSymbolSequence(value);
+        return new(value);
     }
 
     /// <summary>
@@ -63,7 +63,7 @@ public readonly struct SpeechSymbolSequence
     /// <returns></returns>
     public static SpeechSymbolSequence CreateUnsafe(ReadOnlyMemory<SpeechSymbol> value)
     {
-        return new SpeechSymbolSequence(value, false);
+        return new(value, false);
     }
 
     public static bool IsValidValue(ReadOnlySpan<char> value)
@@ -75,7 +75,7 @@ public readonly struct SpeechSymbolSequence
 
     public SpeechSymbolSequence Slice(int start, int length)
     {
-        return new SpeechSymbolSequence(_value.Slice(start, length));
+        return new(_value.Slice(start, length));
     }
 
     public bool IsEmpty => _value.IsEmpty;
@@ -185,7 +185,7 @@ public readonly struct SpeechSymbolSequence
             }
         }
 
-        return new SpeechSound(buffer[..i]);
+        return new(buffer[..i]);
 
         static bool ModifiesPrecedingConsonantVowel(SpeechSymbol s)
         {
@@ -654,7 +654,7 @@ public readonly struct SpeechSymbolSequence
             value[i] = symbol;
         }
 
-        result = new SpeechSymbolSequence((ReadOnlyMemory<SpeechSymbol>)value);
+        result = new((ReadOnlyMemory<SpeechSymbol>)value);
         return true;
     }
 
@@ -711,7 +711,7 @@ public readonly struct SpeechSymbolSequence
         {
             if (TryFormat(chars, out var charsWritten, format, formatProvider))
             {
-                return new string(chars[..charsWritten]);
+                return new(chars[..charsWritten]);
             }
 
             Expect.Unreachable();
@@ -757,7 +757,7 @@ public readonly struct SpeechSymbolSequence
         var combined = new SpeechSymbol[left._value.Length + right._value.Length];
         left._value.Span.CopyTo(combined.AsSpan());
         right._value.Span.CopyTo(combined.AsSpan()[left._value.Length..]);
-        return new SpeechSymbolSequence((ReadOnlyMemory<SpeechSymbol>)combined, false);
+        return new((ReadOnlyMemory<SpeechSymbol>)combined, false);
     }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates (Parse)

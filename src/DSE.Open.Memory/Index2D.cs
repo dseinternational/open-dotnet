@@ -32,12 +32,12 @@ public readonly record struct Index2D
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator Index2D(ValueTuple<int, int> value)
     {
-        return new Index2D(value.Item1, value.Item1);
+        return new(value.Item1, value.Item1);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator ValueTuple<int, int>(Index2D value)
     {
-        return new ValueTuple<int, int>(value.Height, value.Width);
+        return new(value.Height, value.Width);
     }
 }

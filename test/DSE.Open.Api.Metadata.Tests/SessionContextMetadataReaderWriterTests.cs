@@ -271,7 +271,7 @@ public class SessionContextMetadataReaderWriterTests
         {
             Properties =
             {
-                [SessionContextMetadataKeys.SessionContext] = new object()
+                [SessionContextMetadataKeys.SessionContext] = new()
             }
         };
         var resultMetadata = new ResultMetadata();
@@ -352,7 +352,7 @@ public class SessionContextMetadataReaderWriterTests
         {
             Properties =
             {
-               [SessionContextMetadataKeys.SessionContext] = new object()
+               [SessionContextMetadataKeys.SessionContext] = new()
             }
         };
 

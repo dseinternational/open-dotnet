@@ -172,12 +172,12 @@ public readonly partial struct WordText
 
     public static explicit operator WordText(string word)
     {
-        return new WordText(word);
+        return new(word);
     }
 
     public static explicit operator WordText(TokenText word)
     {
-        return new WordText((CharSequence)word);
+        return new((CharSequence)word);
     }
 
     public static bool operator ==(WordText left, TokenText right)

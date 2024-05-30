@@ -34,7 +34,7 @@ public class TokenTests
             Text = (TokenText)"He",
             Words =
             [
-                new Word
+                new()
                 {
                     Index = 1,
                     Form = (WordText)"He",
@@ -67,7 +67,7 @@ public class TokenTests
             Text = (TokenText)"He",
             Words =
             [
-                new Word
+                new()
                 {
                     Index = 1,
                     Form = (WordText)"He",
@@ -96,7 +96,7 @@ public class TokenTests
             Text = (TokenText)"cat's",
             Words =
             [
-                new Word
+                new()
                 {
                     Index = 1,
                     Form = (TokenText)"cat",
@@ -107,7 +107,7 @@ public class TokenTests
                     HeadIndex = 0,
                     Relation = UniversalRelationTag.PossessiveNominalModifier,
                 },
-                new Word
+                new()
                 {
                     Index = 2,
                     Form = (TokenText)"'s",

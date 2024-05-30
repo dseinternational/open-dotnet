@@ -103,7 +103,7 @@ public sealed class AlphaCodeTests
         // Assert
         Assert.True(result);
         Assert.Equal(6, charsWritten);
-        Assert.Equal(value, new string(buffer));
+        Assert.Equal(value, new(buffer));
     }
 
     [Fact]

@@ -21,6 +21,6 @@ public sealed class UniversalPosTagToStringConverter : ValueConverter<UniversalP
 
     private static UniversalPosTag ConvertFrom(string value)
     {
-        return new UniversalPosTag(value);
+        return new(value);
     }
 }

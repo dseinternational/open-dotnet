@@ -9,7 +9,7 @@ namespace DSE.Open.DomainModel.Entities;
 public abstract class EventRaisingEntity<TId> : Entity<TId>, IEventRaisingEntity<TId>
     where TId : struct, IEquatable<TId>
 {
-    private readonly Lazy<List<IDomainEvent>> _events = new(() => new List<IDomainEvent>());
+    private readonly Lazy<List<IDomainEvent>> _events = new(() => new());
 
     protected EventRaisingEntity()
     {

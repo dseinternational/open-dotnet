@@ -22,6 +22,6 @@ public sealed class AgeInMonthsToInt16Converter : ValueConverter<AgeInMonths, sh
 
     private static AgeInMonths ConvertFromInt16(short code)
     {
-        return new AgeInMonths(code);
+        return new(code);
     }
 }

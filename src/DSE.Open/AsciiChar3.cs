@@ -170,7 +170,7 @@ public readonly struct AsciiChar3
 
     public Char3 ToChar3()
     {
-        return new Char3((char)_c0, (char)_c1, (char)_c2);
+        return new((char)_c0, (char)_c1, (char)_c2);
     }
 
     public char[] ToCharArray()
@@ -180,12 +180,12 @@ public readonly struct AsciiChar3
 
     public static AsciiChar3 FromString(string value)
     {
-        return new AsciiChar3(value.AsSpan());
+        return new(value.AsSpan());
     }
 
     public static AsciiChar3 FromSpan(ReadOnlySpan<AsciiChar> span)
     {
-        return new AsciiChar3(span);
+        return new(span);
     }
 
     public static bool operator ==(AsciiChar3 left, AsciiChar3 right)
@@ -215,12 +215,12 @@ public readonly struct AsciiChar3
 
     public AsciiChar3 ToUpper()
     {
-        return new AsciiChar3(_c0.ToUpper(), _c1.ToUpper(), _c2.ToUpper());
+        return new(_c0.ToUpper(), _c1.ToUpper(), _c2.ToUpper());
     }
 
     public AsciiChar3 ToLower()
     {
-        return new AsciiChar3(_c0.ToLower(), _c1.ToLower(), _c2.ToLower());
+        return new(_c0.ToLower(), _c1.ToLower(), _c2.ToLower());
     }
 
     public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider? provider)
@@ -276,7 +276,7 @@ public readonly struct AsciiChar3
         if (s.Length == CharCount && AsciiChar.IsAscii(s[0])
                                   && AsciiChar.IsAscii(s[1]) && AsciiChar.IsAscii(s[2]))
         {
-            result = new AsciiChar3(s);
+            result = new(s);
             return true;
         }
 
@@ -330,7 +330,7 @@ public readonly struct AsciiChar3
             return false;
         }
 
-        result = new AsciiChar3((AsciiChar)utf8Text[0], (AsciiChar)utf8Text[1], (AsciiChar)utf8Text[2]);
+        result = new((AsciiChar)utf8Text[0], (AsciiChar)utf8Text[1], (AsciiChar)utf8Text[2]);
         return true;
     }
 

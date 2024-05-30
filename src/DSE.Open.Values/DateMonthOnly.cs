@@ -31,7 +31,7 @@ public readonly record struct DateMonthOnly : ISpanFormattable, ISpanParsable<Da
 
     public DateMonthOnly(DateOnly date)
     {
-        StartOfMonth = new DateOnly(date.Year, date.Month, 1);
+        StartOfMonth = new(date.Year, date.Month, 1);
     }
 
     public DateOnly StartOfMonth { get; }
@@ -46,12 +46,12 @@ public readonly record struct DateMonthOnly : ISpanFormattable, ISpanParsable<Da
 
     public DateMonthOnly AddMonths(int months)
     {
-        return new DateMonthOnly(StartOfMonth.AddMonths(months));
+        return new(StartOfMonth.AddMonths(months));
     }
 
     public DateMonthOnly AddYears(int years)
     {
-        return new DateMonthOnly(StartOfMonth.AddYears(years));
+        return new(StartOfMonth.AddYears(years));
     }
 
     public int CompareTo(DateMonthOnly other)
@@ -78,17 +78,17 @@ public readonly record struct DateMonthOnly : ISpanFormattable, ISpanParsable<Da
 
     public static DateMonthOnly FromDateOnly(DateOnly date)
     {
-        return new DateMonthOnly(date);
+        return new(date);
     }
 
     public static DateMonthOnly FromDateTime(DateTime date)
     {
-        return new DateMonthOnly(DateOnly.FromDateTime(date.Date));
+        return new(DateOnly.FromDateTime(date.Date));
     }
 
     public static DateMonthOnly FromDateTimeOffset(DateTimeOffset date)
     {
-        return new DateMonthOnly(new DateOnly(date.Year, date.Month, 1));
+        return new(new(date.Year, date.Month, 1));
     }
 
     public static DateMonthOnly Parse(ReadOnlySpan<char> s)
@@ -98,7 +98,7 @@ public readonly record struct DateMonthOnly : ISpanFormattable, ISpanParsable<Da
 
     public static DateMonthOnly Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
     {
-        return new DateMonthOnly(DateOnly.Parse(s, provider));
+        return new(DateOnly.Parse(s, provider));
     }
 
     public static DateMonthOnly Parse(string s)
@@ -109,7 +109,7 @@ public readonly record struct DateMonthOnly : ISpanFormattable, ISpanParsable<Da
     public static DateMonthOnly Parse(string s, IFormatProvider? provider)
     {
         Guard.IsNotNull(s);
-        return new DateMonthOnly(DateOnly.Parse(s, provider));
+        return new(DateOnly.Parse(s, provider));
     }
 
     public static bool TryParse(
@@ -119,7 +119,7 @@ public readonly record struct DateMonthOnly : ISpanFormattable, ISpanParsable<Da
     {
         if (!s.IsEmpty && DateOnly.TryParse(s, provider, out var date))
         {
-            result = new DateMonthOnly(date);
+            result = new(date);
             return true;
         }
 
@@ -134,7 +134,7 @@ public readonly record struct DateMonthOnly : ISpanFormattable, ISpanParsable<Da
     {
         if (!string.IsNullOrEmpty(s) && DateOnly.TryParse(s, provider, out var date))
         {
-            result = new DateMonthOnly(date);
+            result = new(date);
             return true;
         }
 
@@ -173,12 +173,12 @@ public readonly record struct DateMonthOnly : ISpanFormattable, ISpanParsable<Da
 
     public static explicit operator DateMonthOnly(DateOnly date)
     {
-        return new DateMonthOnly(date);
+        return new(date);
     }
 
     public static AgeInMonths operator -(DateMonthOnly a, DateMonthOnly b)
     {
-        return new AgeInMonths(a.Year - b.Year, a.Month - b.Month);
+        return new(a.Year - b.Year, a.Month - b.Month);
     }
 
     public static bool operator <(DateMonthOnly left, DateMonthOnly right)

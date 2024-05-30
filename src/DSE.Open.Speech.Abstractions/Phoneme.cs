@@ -100,7 +100,7 @@ public sealed class Phoneme : IEquatable<Phoneme>
 
     public SpeechTranscription ToTranscription()
     {
-        return new SpeechTranscription(Abstraction, TranscriptionNotation.Phonemic);
+        return new(Abstraction, TranscriptionNotation.Phonemic);
     }
 
     public static bool Equals(Phoneme? left, Phoneme? right)

@@ -43,7 +43,7 @@ public readonly partial struct UniversalRelationTag
     public static explicit operator UniversalRelationTag(string value)
 #pragma warning restore CA2225 // Operator overloads have named alternates
     {
-        return new UniversalRelationTag(value);
+        return new(value);
     }
 
     public static readonly UniversalRelationTag ClausalModifierOfNoun = new("acl", true);

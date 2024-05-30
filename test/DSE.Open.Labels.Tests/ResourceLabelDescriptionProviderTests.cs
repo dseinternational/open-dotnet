@@ -20,6 +20,6 @@ public class ResourceLabelDescriptionProviderTests
     [InlineData(MyValues.Value3, "fr", "Trois")]
     public void GetLabelReturnsExpectedValues(MyValues value, string culture, string expected)
     {
-        Assert.Equal(expected, TestResourceLabelDescriptionProvider.Default.GetLabel(value, new CultureInfo(culture)));
+        Assert.Equal(expected, TestResourceLabelDescriptionProvider.Default.GetLabel(value, new(culture)));
     }
 }

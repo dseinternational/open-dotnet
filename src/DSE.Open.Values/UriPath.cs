@@ -35,7 +35,7 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
     {
     }
 
-    public UriPath(ReadOnlyMemory<char> path) : this(new CharSequence(path), false)
+    public UriPath(ReadOnlyMemory<char> path) : this(new(path), false)
     {
     }
 
@@ -295,7 +295,7 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
         combined[_value.Length] = Separator;
         path._value.AsSpan().CopyTo(combined.AsSpan(_value.Length + 1));
 
-        return new UriPath(combined);
+        return new(combined);
     }
 
     public UriPath Append(UriPath path1, UriPath path2)
@@ -323,7 +323,7 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
         combined[_value.Length + path1.Length + 1] = Separator;
         path2._value.AsSpan().CopyTo(combined.AsSpan(_value.Length + path1.Length + 2));
 
-        return new UriPath(combined);
+        return new(combined);
     }
 
     public UriPath Append(UriPath path1, UriPath path2, UriPath path3)
@@ -358,12 +358,12 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
         combined[_value.Length + path1.Length + path2.Length + 2] = Separator;
         path3._value.AsSpan().CopyTo(combined.AsSpan(_value.Length + path1.Length + path2.Length + 3));
 
-        return new UriPath(combined);
+        return new(combined);
     }
 
     public UriPath AppendSegment(string path)
     {
-        return Append(new UriPath(path));
+        return Append(new(path));
     }
 
     /// <summary>
@@ -386,7 +386,7 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
             sub = sub[1..];
         }
 
-        return new UriPath(new CharSequence(sub.ToArray()), true);
+        return new(new(sub.ToArray()), true);
     }
 
     /// <summary>
@@ -444,6 +444,6 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
     /// <returns></returns>
     public static UriPath FromUriAsciiPath(UriAsciiPath uriAsciiPath)
     {
-        return new UriPath(CharSequence.FromAsciiString((AsciiString)uriAsciiPath), skipValidation: true);
+        return new(CharSequence.FromAsciiString((AsciiString)uriAsciiPath), skipValidation: true);
     }
 }

@@ -20,7 +20,7 @@ public static class DictionaryExtensions
         where TKey : IEquatable<TKey>
     {
         Guard.IsNotNull(dictionary);
-        return new ReadOnlyValueDictionary<TKey, TValue>(dictionary);
+        return new(dictionary);
     }
 
     public static ValueDictionary<TKey, TValue> AsValueDictionary<TKey, TValue>(
@@ -28,7 +28,7 @@ public static class DictionaryExtensions
         where TKey : IEquatable<TKey>
     {
         Guard.IsNotNull(dictionary);
-        return new ValueDictionary<TKey, TValue>(dictionary);
+        return new(dictionary);
     }
 
     public static void AddOrSet<TKey, TValue>(

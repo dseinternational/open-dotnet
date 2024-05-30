@@ -227,12 +227,12 @@ public readonly ref struct MultiSpan<T>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator MultiSpan<T>(T[] array)
     {
-        return new MultiSpan<T>(array);
+        return new(array);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator ReadOnlyMultiSpan<T>(MultiSpan<T> elements)
     {
-        return new ReadOnlyMultiSpan<T>(elements._elements, elements.Shape, false);
+        return new(elements._elements, elements.Shape, false);
     }
 }

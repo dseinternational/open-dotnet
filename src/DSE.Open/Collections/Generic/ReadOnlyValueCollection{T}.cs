@@ -126,7 +126,7 @@ public class ReadOnlyValueCollection<T>
 
     public Enumerator GetEnumerator()
     {
-        return new Enumerator(this);
+        return new(this);
     }
 
     IEnumerator<T> IEnumerable<T>.GetEnumerator()
@@ -143,32 +143,32 @@ public class ReadOnlyValueCollection<T>
 
     public static explicit operator ReadOnlyValueCollection<T>(T[] collection)
     {
-        return new ReadOnlyValueCollection<T>(collection);
+        return new(collection);
     }
 
     public static explicit operator ReadOnlyValueCollection<T>(ReadOnlyCollection<T> collection)
     {
-        return new ReadOnlyValueCollection<T>(collection);
+        return new(collection);
     }
 
     public static explicit operator ReadOnlyValueCollection<T>(Collection<T> collection)
     {
-        return new ReadOnlyValueCollection<T>(collection);
+        return new(collection);
     }
 
     public static explicit operator ReadOnlyValueCollection<T>(System.Collections.ObjectModel.ReadOnlyCollection<T> collection)
     {
-        return new ReadOnlyValueCollection<T>(collection);
+        return new(collection);
     }
 
     public static explicit operator ReadOnlyValueCollection<T>(System.Collections.ObjectModel.Collection<T> collection)
     {
-        return new ReadOnlyValueCollection<T>(collection);
+        return new(collection);
     }
 
     public static explicit operator ReadOnlyValueCollection<T>(HashSet<T> collection)
     {
-        return new ReadOnlyValueCollection<T>(collection);
+        return new(collection);
     }
 #pragma warning restore CA2225 // Operator overloads have named alternates
 

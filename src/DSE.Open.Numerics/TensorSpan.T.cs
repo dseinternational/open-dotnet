@@ -131,12 +131,12 @@ public readonly ref struct TensorSpan<T>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator TensorSpan<T>(T[] array)
     {
-        return new TensorSpan<T>(array);
+        return new(array);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator ReadOnlyTensorSpan<T>(TensorSpan<T> elements)
     {
-        return new ReadOnlyTensorSpan<T>(elements._elements);
+        return new(elements._elements);
     }
 }

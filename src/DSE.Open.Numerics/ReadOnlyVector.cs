@@ -10,13 +10,13 @@ public static partial class ReadOnlyVector
     public static ReadOnlyVector<T> Create<T>(ReadOnlyMemory<T> sequence)
         where T : struct, INumber<T>
     {
-        return new ReadOnlyVector<T>(sequence);
+        return new(sequence);
     }
 
     public static ReadOnlyVector<T> Create<T>(ReadOnlySpan<T> sequence)
         where T : struct, INumber<T>
     {
-        return new ReadOnlyVector<T>(sequence.ToArray());
+        return new(sequence.ToArray());
     }
 
 }

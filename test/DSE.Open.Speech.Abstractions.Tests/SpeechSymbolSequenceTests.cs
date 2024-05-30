@@ -43,7 +43,7 @@ public class SpeechSymbolSequenceTests
         var transcription = SpeechSymbolSequence.Parse("dɹˈɪŋkɪŋ", CultureInfo.InvariantCulture);
         var span = transcription.AsSpan();
         var chars = MemoryMarshal.Cast<SpeechSymbol, char>(span);
-        Assert.Equal("dɹˈɪŋkɪŋ", new string(chars));
+        Assert.Equal("dɹˈɪŋkɪŋ", new(chars));
     }
 
     [Theory]

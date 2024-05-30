@@ -169,7 +169,7 @@ public readonly struct AsciiChar2
 
     public Char2 ToChar2()
     {
-        return new Char2(_c0, _c1);
+        return new(_c0, _c1);
     }
 
     public char[] ToCharArray()
@@ -179,22 +179,22 @@ public readonly struct AsciiChar2
 
     public static AsciiChar2 FromString(string value)
     {
-        return new AsciiChar2(value.AsSpan());
+        return new(value.AsSpan());
     }
 
     public static AsciiChar2 FromSpan(ReadOnlySpan<AsciiChar> span)
     {
-        return new AsciiChar2(span);
+        return new(span);
     }
 
     public static AsciiChar2 FromByteSpan(ReadOnlySpan<byte> span)
     {
-        return new AsciiChar2(span);
+        return new(span);
     }
 
     public static AsciiChar2 FromCharSpan(ReadOnlySpan<char> span)
     {
-        return new AsciiChar2(span);
+        return new(span);
     }
 
     public static bool operator ==(AsciiChar2 left, AsciiChar2 right)
@@ -238,12 +238,12 @@ public readonly struct AsciiChar2
 
     public AsciiChar2 ToUpper()
     {
-        return new AsciiChar2(_c0.ToUpper(), _c1.ToUpper());
+        return new(_c0.ToUpper(), _c1.ToUpper());
     }
 
     public AsciiChar2 ToLower()
     {
-        return new AsciiChar2(_c0.ToLower(), _c1.ToLower());
+        return new(_c0.ToLower(), _c1.ToLower());
     }
 
     public bool TryFormat(
@@ -316,7 +316,7 @@ public readonly struct AsciiChar2
     {
         if (s.Length == CharCount && AsciiChar.IsAscii(s[0]) && AsciiChar.IsAscii(s[1]))
         {
-            result = new AsciiChar2(s[..2]);
+            result = new(s[..2]);
             return true;
         }
 
@@ -366,7 +366,7 @@ public readonly struct AsciiChar2
     {
         if (utf8Text.Length == MaxSerializedByteLength && AsciiChar.IsAscii(utf8Text[0]) && AsciiChar.IsAscii(utf8Text[1]))
         {
-            result = new AsciiChar2(new AsciiChar(utf8Text[0]), new AsciiChar(utf8Text[1]));
+            result = new(new(utf8Text[0]), new(utf8Text[1]));
             return true;
         }
 

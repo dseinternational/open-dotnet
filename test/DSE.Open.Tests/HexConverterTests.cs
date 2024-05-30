@@ -36,7 +36,7 @@ public class HexConverterTests
         // Assert
         Assert.True(result);
         Assert.Equal(2, charsWritten);
-        Assert.Equal("00", new string(buffer));
+        Assert.Equal("00", new(buffer));
     }
 
     [Fact]
@@ -68,6 +68,6 @@ public class HexConverterTests
         // Assert
         Assert.True(result);
         Assert.Equal(2, charsWritten);
-        Assert.Equal("00", new string(buffer));
+        Assert.Equal("00", new(buffer));
     }
 }

@@ -47,14 +47,14 @@ public readonly partial struct TreebankPosTag
     public static explicit operator TreebankPosTag(string value)
 #pragma warning restore CA2225 // Operator overloads have named alternates
     {
-        return new TreebankPosTag(value);
+        return new(value);
     }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
     public static implicit operator PosTag(TreebankPosTag value)
 #pragma warning restore CA2225 // Operator overloads have named alternates
     {
-        return new PosTag(value._value);
+        return new(value._value);
     }
 
     public static readonly TreebankPosTag ClosingQuotationMark = new("\"\"", true);

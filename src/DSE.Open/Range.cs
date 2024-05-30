@@ -141,7 +141,7 @@ public readonly record struct Range<T> : ISpanFormattable, ISpanParsable<Range<T
             return false;
         }
 
-        result = new Range<T>(start, end);
+        result = new(start, end);
         return true;
     }
 

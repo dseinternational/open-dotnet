@@ -51,7 +51,7 @@ public class PaginatedCollectionValueResultBuilder<TValue> : CollectionValueResu
 
     private PaginatedCollectionValueResult<TValue> Done()
     {
-        return new PaginatedCollectionValueResult<TValue>
+        return new()
         {
             Value = [.. Items],
             Notifications = [.. Notifications],

@@ -11,7 +11,7 @@ namespace DSE.Open.Testing.Xunit.Stanza;
 public static class TestingPythonContext
 {
     private static readonly Lazy<PythonContext> s_pythonContext =
-        new(() => new PythonContext(new PythonContextConfiguration()));
+        new(() => new(new()));
 
     public static PythonContext Instance => s_pythonContext.Value;
 }

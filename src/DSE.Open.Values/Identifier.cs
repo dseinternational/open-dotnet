@@ -56,7 +56,7 @@ public readonly partial struct Identifier : IEquatableValue<Identifier, AsciiStr
 
     private Identifier(ReadOnlyMemory<AsciiChar> value)
     {
-        _value = new AsciiString(value);
+        _value = new(value);
     }
 
     public static bool IsValidValue(AsciiString value)
@@ -213,7 +213,7 @@ public readonly partial struct Identifier : IEquatableValue<Identifier, AsciiStr
             id.Span[idStartIndex + (i / 2)] = (AsciiChar)ValidIdBytes[c];
         }
 
-        return new Identifier(id);
+        return new(id);
     }
 
     /// <summary>

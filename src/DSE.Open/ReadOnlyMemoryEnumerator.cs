@@ -39,6 +39,6 @@ public static class ReadOnlyMemoryEnumerator
 {
     public static ReadOnlyMemoryEnumerator<T> GetEnumerator<T>(this ReadOnlyMemory<T> data)
     {
-        return new ReadOnlyMemoryEnumerator<T>(data);
+        return new(data);
     }
 }

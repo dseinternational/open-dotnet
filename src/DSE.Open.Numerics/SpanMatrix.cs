@@ -111,11 +111,11 @@ public readonly ref struct SpanMatrix<T> // : IMatrix<T> (https://github.com/dot
 
     public static implicit operator SpanMatrix<T>(T[,] matrix)
     {
-        return new SpanMatrix<T>(matrix);
+        return new(matrix);
     }
 
     public static implicit operator ReadOnlySpanMatrix<T>(SpanMatrix<T> matrix)
     {
-        return new ReadOnlySpanMatrix<T>(matrix.Span);
+        return new(matrix.Span);
     }
 }

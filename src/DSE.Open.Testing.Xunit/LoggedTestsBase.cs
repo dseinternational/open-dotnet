@@ -37,7 +37,7 @@ public abstract class LoggedTestsBase : IDisposable
 #pragma warning restore CA2000 // Dispose objects before losing scope
     }
 
-    public ILoggerFactory LoggerFactory => _loggerFactory ??= new LoggerFactory(GetLoggerProviders());
+    public ILoggerFactory LoggerFactory => _loggerFactory ??= new(GetLoggerProviders());
 
     public ITestOutputHelper Output { get; }
 

@@ -75,19 +75,19 @@ public static class UnboundedRange
     public static UnboundedRange<T> Between<T>(T minimum, T maximum)
         where T : struct, IComparable<T>
     {
-        return new UnboundedRange<T>(minimum, maximum);
+        return new(minimum, maximum);
     }
 
     public static UnboundedRange<T> GreaterThanOrEqual<T>(T minimum)
         where T : struct, IComparable<T>
     {
-        return new UnboundedRange<T>(minimum, default);
+        return new(minimum, default);
     }
 
     public static UnboundedRange<T> LessThanOrEqual<T>(T maximum)
         where T : struct, IComparable<T>
     {
-        return new UnboundedRange<T>(default, maximum);
+        return new(default, maximum);
     }
 }
 

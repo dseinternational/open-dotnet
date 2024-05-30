@@ -45,7 +45,7 @@ public abstract partial class LoggingHealthCheck : IHealthCheck
         catch (Exception ex)
         {
             Log.Error(Logger, ex.Message, ex);
-            return new HealthCheckResult(context.Registration.FailureStatus, description: $"Health Check Error: {ex.Message}", exception: ex);
+            return new(context.Registration.FailureStatus, description: $"Health Check Error: {ex.Message}", exception: ex);
         }
 #pragma warning restore CA1031 // Do not catch general exception types
     }

@@ -63,7 +63,7 @@ public static partial class StringHelper
         return values switch
         {
             List<string?> valuesList => JoinSpan(separator, CollectionsMarshal.AsSpan(valuesList), finalSeparator),
-            string?[] valuesArray => JoinSpan(separator, new ReadOnlySpan<string?>(valuesArray), finalSeparator),
+            string?[] valuesArray => JoinSpan(separator, new(valuesArray), finalSeparator),
             ICollection<string?> collection => JoinCollection(separator, finalSeparator, collection),
             _ => JoinEnumerable(separator, finalSeparator, values)
         };
@@ -280,7 +280,7 @@ public static partial class StringHelper
         using (rented)
         {
             var written = Format(chars, separator, values, finalSeparator);
-            return new string(chars[..written]);
+            return new(chars[..written]);
         }
     }
 
@@ -363,7 +363,7 @@ public static partial class StringHelper
                 0 => string.Empty,
                 // Cannot use string.Create here because ReadOnlySpan<char> values cannot be
                 // passed to lambdas/anonymous functions
-                _ => new string(chars[..written])
+                _ => new(chars[..written])
             };
         }
     }

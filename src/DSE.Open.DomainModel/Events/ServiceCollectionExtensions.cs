@@ -45,7 +45,7 @@ public static class ServiceCollectionExtensions
         where TMessage : IDomainEvent
     {
         Guard.IsNotNull(services);
-        services.Add(new ServiceDescriptor(typeof(IMessageHandler<TMessage>), typeof(THandler), serviceLifetime));
+        services.Add(new(typeof(IMessageHandler<TMessage>), typeof(THandler), serviceLifetime));
         return services;
     }
 }

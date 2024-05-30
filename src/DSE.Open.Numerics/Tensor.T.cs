@@ -132,6 +132,6 @@ public readonly struct Tensor<T> : IEquatable<Tensor<T>>
 
     public static implicit operator ReadOnlyTensor<T>(Tensor<T> tensor)
     {
-        return new ReadOnlyTensor<T>(tensor._elements);
+        return new(tensor._elements);
     }
 }

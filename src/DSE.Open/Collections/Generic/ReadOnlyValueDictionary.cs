@@ -32,7 +32,7 @@ public class ReadOnlyValueDictionary<TKey, TValue>
         _inner = collection is ReadOnlyValueDictionary<TKey, TValue> other
             && (comparer is null || other._inner.Comparer == comparer)
             ? other._inner
-            : new Dictionary<TKey, TValue>(collection, comparer);
+            : new(collection, comparer);
     }
 
     public ReadOnlyValueDictionary(IDictionary<TKey, TValue> source, IEqualityComparer<TKey>? comparer = null)
@@ -40,7 +40,7 @@ public class ReadOnlyValueDictionary<TKey, TValue>
         _inner = source is ReadOnlyValueDictionary<TKey, TValue> other
             && (comparer is null || other._inner.Comparer == comparer)
             ? other._inner
-            : new Dictionary<TKey, TValue>(source, comparer);
+            : new(source, comparer);
     }
 
     public TValue this[TKey key] => _inner[key];
@@ -149,22 +149,22 @@ public class ReadOnlyValueDictionary<TKey, TValue>
 
     public static explicit operator ReadOnlyValueDictionary<TKey, TValue>(KeyValuePair<TKey, TValue>[] value)
     {
-        return new ReadOnlyValueDictionary<TKey, TValue>(value);
+        return new(value);
     }
 
     public static explicit operator ReadOnlyValueDictionary<TKey, TValue>(Collection<KeyValuePair<TKey, TValue>> value)
     {
-        return new ReadOnlyValueDictionary<TKey, TValue>(value);
+        return new(value);
     }
 
     public static explicit operator ReadOnlyValueDictionary<TKey, TValue>(System.Collections.ObjectModel.Collection<KeyValuePair<TKey, TValue>> value)
     {
-        return new ReadOnlyValueDictionary<TKey, TValue>(value);
+        return new(value);
     }
 
     public static explicit operator ReadOnlyValueDictionary<TKey, TValue>(Dictionary<TKey, TValue> value)
     {
-        return new ReadOnlyValueDictionary<TKey, TValue>(value);
+        return new(value);
     }
 
 #pragma warning restore CA2225 // Operator overloads have named alternates

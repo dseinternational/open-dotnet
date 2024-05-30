@@ -19,7 +19,7 @@ public class PaginatedCollectionValueResultBuilderTests
         builder.Notifications.Add(Notification.Information("NTF123456", "Information"));
         builder.Notifications.Add(Notification.Warning("NTF123456", "Warning"));
         builder.Notifications.Add(Notification.Error("NTF123456", "Error"));
-        builder.Pagination = new Pagination(13, 10, 2);
+        builder.Pagination = new(13, 10, 2);
 
         var val1 = builder.GetResult();
 
@@ -32,7 +32,7 @@ public class PaginatedCollectionValueResultBuilderTests
                 Notification.Warning("NTF123456", "Warning"),
                 Notification.Error("NTF123456", "Error")
             ],
-            Pagination = new Pagination(13, 10, 2)
+            Pagination = new(13, 10, 2)
         };
 
         _ = val1.Should().BeEquivalentTo(val2, config => config

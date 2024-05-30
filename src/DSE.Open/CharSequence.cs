@@ -63,14 +63,14 @@ public readonly struct CharSequence
     /// <returns></returns>
     public static CharSequence CreateUnsafe(ReadOnlyMemory<char> value)
     {
-        return new CharSequence(value, false);
+        return new(value, false);
     }
 
     public char this[int i] => _value.Span[i];
 
     public CharSequence Slice(int start, int length)
     {
-        return new CharSequence(_value.Slice(start, length));
+        return new(_value.Slice(start, length));
     }
 
     public bool IsEmpty => _value.IsEmpty;
@@ -148,7 +148,7 @@ public readonly struct CharSequence
         IFormatProvider? provider,
         out CharSequence result)
     {
-        result = new CharSequence(s.ToArray());
+        result = new(s.ToArray());
         return true;
     }
 
@@ -170,7 +170,7 @@ public readonly struct CharSequence
             return false;
         }
 
-        result = new CharSequence(s);
+        result = new(s);
         return true;
     }
 
@@ -319,7 +319,7 @@ public readonly struct CharSequence
 
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
-        return new string(_value.Span);
+        return new(_value.Span);
     }
 
     public bool TryFormat(
@@ -385,6 +385,6 @@ public readonly struct CharSequence
     /// <returns>A new <see cref="CharSequence"/> instance.</returns>
     public static CharSequence FromAsciiString(AsciiString asciiString)
     {
-        return new CharSequence(asciiString.ToCharArray());
+        return new(asciiString.ToCharArray());
     }
 }

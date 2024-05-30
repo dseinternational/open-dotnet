@@ -91,7 +91,7 @@ public static partial class Tensor
     public static Tensor<T> Create<T>(MultiSpan<T> elements)
         where T : struct, INumber<T>
     {
-        return new Tensor<T>(elements.Elements.ToArray(), elements.Shape);
+        return new(elements.Elements.ToArray(), elements.Shape);
     }
 
     /// <summary>
@@ -105,7 +105,7 @@ public static partial class Tensor
         where T : struct, INumber<T>
     {
         uint[] d = [d1Length, d2Length];
-        return new Tensor<T>(default, d);
+        return new(default, d);
     }
 
     /// <summary>
@@ -123,7 +123,7 @@ public static partial class Tensor
         where T : struct, INumber<T>
     {
         uint[] d = [d1Length, d2Length, d3Length];
-        return new Tensor<T>(default, d);
+        return new(default, d);
     }
 
     /// <summary>
@@ -135,12 +135,12 @@ public static partial class Tensor
     public static Tensor<T> CreateWithDimensions<T>(ReadOnlySpan<uint> shape)
         where T : struct, INumber<T>
     {
-        return new Tensor<T>(default, shape);
+        return new(default, shape);
     }
 
     public static Tensor<T> CreateUninitialized<T>(ReadOnlySpan<uint> shape)
         where T : struct, INumber<T>
     {
-        return new Tensor<T>(MultiMemory.CreateUninitialized<T>(shape));
+        return new(MultiMemory.CreateUninitialized<T>(shape));
     }
 }

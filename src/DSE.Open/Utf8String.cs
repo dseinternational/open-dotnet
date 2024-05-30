@@ -87,7 +87,7 @@ public readonly struct Utf8String
         var byteCount = Encoding.UTF8.GetByteCount(s);
         var bytes = new byte[byteCount];
         var bytesWritten = Encoding.UTF8.GetBytes(s, bytes);
-        result = new Utf8String(bytes.AsMemory()[..bytesWritten]);
+        result = new(bytes.AsMemory()[..bytesWritten]);
         return true;
     }
 
@@ -99,7 +99,7 @@ public readonly struct Utf8String
     public static Utf8String Parse(string s, IFormatProvider? provider)
     {
         Guard.IsNotNull(s);
-        return new Utf8String(s);
+        return new(s);
     }
 
     public static bool TryParse(
@@ -178,7 +178,7 @@ public readonly struct Utf8String
 
     public static Utf8String FromAsciiString(AsciiString value)
     {
-        return new Utf8String((ReadOnlyMemory<byte>)value.ToByteArray());
+        return new((ReadOnlyMemory<byte>)value.ToByteArray());
     }
 
     public static explicit operator Utf8String(AsciiString value)

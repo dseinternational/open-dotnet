@@ -15,7 +15,7 @@ public static class Utf8StringFormattingExtensions
 
         if (Utf8Formatter.TryFormat(value, buffer, out var bytesWritten, format))
         {
-            return new Utf8String(buffer[..bytesWritten].ToArray());
+            return new(buffer[..bytesWritten].ToArray());
         }
 
         Expect.Unreachable("Buffer too small");
@@ -28,7 +28,7 @@ public static class Utf8StringFormattingExtensions
 
         if (Utf8Formatter.TryFormat(value, buffer, out var bytesWritten, format))
         {
-            return new Utf8String(buffer[..bytesWritten].ToArray());
+            return new(buffer[..bytesWritten].ToArray());
         }
 
         Expect.Unreachable("Buffer too small");
@@ -41,7 +41,7 @@ public static class Utf8StringFormattingExtensions
 
         if (Utf8Formatter.TryFormat(value, buffer, out var bytesWritten, format))
         {
-            return new Utf8String(buffer[..bytesWritten].ToArray());
+            return new(buffer[..bytesWritten].ToArray());
         }
 
         Expect.Unreachable("Buffer too small");
@@ -54,7 +54,7 @@ public static class Utf8StringFormattingExtensions
 
         if (Utf8Formatter.TryFormat(value, buffer, out var bytesWritten, format))
         {
-            return new Utf8String(buffer[..bytesWritten].ToArray());
+            return new(buffer[..bytesWritten].ToArray());
         }
 
         Expect.Unreachable("Buffer too small");
@@ -67,7 +67,7 @@ public static class Utf8StringFormattingExtensions
 
         if (Utf8Formatter.TryFormat(value, buffer, out var bytesWritten, format))
         {
-            return new Utf8String(buffer[..bytesWritten].ToArray());
+            return new(buffer[..bytesWritten].ToArray());
         }
 
         Expect.Unreachable("Buffer too small");

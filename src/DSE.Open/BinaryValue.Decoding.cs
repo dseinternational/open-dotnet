@@ -26,9 +26,9 @@ public readonly partial record struct BinaryValue
     {
         return encoding switch
         {
-            BinaryStringEncoding.Base64 => new BinaryValue(Convert.FromBase64String(value), true),
-            BinaryStringEncoding.HexLower or BinaryStringEncoding.HexUpper => new BinaryValue(Convert.FromHexString(value), true),
-            BinaryStringEncoding.Base62 => new BinaryValue(Base62Converter.FromBase62(value), true),
+            BinaryStringEncoding.Base64 => new(Convert.FromBase64String(value), true),
+            BinaryStringEncoding.HexLower or BinaryStringEncoding.HexUpper => new(Convert.FromHexString(value), true),
+            BinaryStringEncoding.Base62 => new(Base62Converter.FromBase62(value), true),
             _ => ThrowHelper.ThrowFormatException<BinaryValue>("Invalid encoding provided."),
         };
     }
@@ -42,7 +42,7 @@ public readonly partial record struct BinaryValue
     public static BinaryValue FromEncodedString(string value, Encoding? encoding = null)
     {
         encoding ??= Encoding.UTF8;
-        return new BinaryValue(encoding.GetBytes(value), true);
+        return new(encoding.GetBytes(value), true);
     }
 
     public static bool TryFromBase62EncodedString(string value, out BinaryValue binaryValue)
@@ -99,7 +99,7 @@ public readonly partial record struct BinaryValue
         {
             if (Convert.TryFromBase64Chars(base64, buffer, out var bytesWritten))
             {
-                binaryValue = new BinaryValue(buffer[..bytesWritten].ToArray(), noCopy: true);
+                binaryValue = new(buffer[..bytesWritten].ToArray(), noCopy: true);
                 return true;
             }
         }
@@ -124,7 +124,7 @@ public readonly partial record struct BinaryValue
 
             if (status == OperationStatus.Done)
             {
-                binaryValue = new BinaryValue(bytes[..bytesWritten].ToArray(), noCopy: true);
+                binaryValue = new(bytes[..bytesWritten].ToArray(), noCopy: true);
                 return true;
             }
 
@@ -140,7 +140,7 @@ public readonly partial record struct BinaryValue
     {
         if (HexConverter.IsValidUpperHex(hex))
         {
-            binaryValue = new BinaryValue(Convert.FromHexString(hex), noCopy: true);
+            binaryValue = new(Convert.FromHexString(hex), noCopy: true);
             return true;
         }
 
@@ -152,7 +152,7 @@ public readonly partial record struct BinaryValue
     {
         if (HexConverter.IsValidLowerHex(hex))
         {
-            binaryValue = new BinaryValue(Convert.FromHexString(hex), noCopy: true);
+            binaryValue = new(Convert.FromHexString(hex), noCopy: true);
             return true;
         }
 
@@ -172,7 +172,7 @@ public readonly partial record struct BinaryValue
         {
             if (HexConverter.TryConvertFromUtf8(hex, buffer, out var bytesWritten))
             {
-                binaryValue = new BinaryValue(buffer[..bytesWritten].ToArray(), noCopy: true);
+                binaryValue = new(buffer[..bytesWritten].ToArray(), noCopy: true);
                 return true;
             }
 
@@ -185,7 +185,7 @@ public readonly partial record struct BinaryValue
     {
         if (Base62Converter.TryFromBase62Chars(base62, out var bytes))
         {
-            binaryValue = new BinaryValue(bytes, noCopy: true);
+            binaryValue = new(bytes, noCopy: true);
             return true;
         }
 

@@ -24,7 +24,7 @@ public class AsciiStringToLowerBenchmarks
             result[i] = s_value.AsSpan()[i].ToLower();
         }
 
-        return new AsciiString(result);
+        return new(result);
     }
 
     [Benchmark]

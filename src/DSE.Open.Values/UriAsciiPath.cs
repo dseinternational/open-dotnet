@@ -45,7 +45,7 @@ public readonly partial struct UriAsciiPath
     {
     }
 
-    public UriAsciiPath(ReadOnlyMemory<AsciiChar> path) : this(new AsciiString(path), false)
+    public UriAsciiPath(ReadOnlyMemory<AsciiChar> path) : this(new(path), false)
     {
     }
 
@@ -174,12 +174,12 @@ public readonly partial struct UriAsciiPath
 
     public UriAsciiPath ToLower()
     {
-        return new UriAsciiPath(_value.ToLower(), false);
+        return new(_value.ToLower(), false);
     }
 
     public UriAsciiPath ToUpper()
     {
-        return new UriAsciiPath(_value.ToUpper(), false);
+        return new(_value.ToUpper(), false);
     }
 
     public string ToStringLower()
@@ -369,7 +369,7 @@ public readonly partial struct UriAsciiPath
         combined[_value.Length] = Separator;
         path._value.AsSpan().CopyTo(combined.AsSpan(_value.Length + 1));
 
-        return new UriAsciiPath(combined);
+        return new(combined);
     }
 
     public bool TryFormat(
@@ -415,7 +415,7 @@ public readonly partial struct UriAsciiPath
             return false;
         }
 
-        result = new UriAsciiPath(asciiString, skipValidation: true);
+        result = new(asciiString, skipValidation: true);
         return true;
     }
 
@@ -444,7 +444,7 @@ public readonly partial struct UriAsciiPath
         combined[_value.Length + path1.Length + 1] = Separator;
         path2._value.AsSpan().CopyTo(combined.AsSpan(_value.Length + path1.Length + 2));
 
-        return new UriAsciiPath(combined);
+        return new(combined);
     }
 
     public UriAsciiPath Append(UriAsciiPath path1, UriAsciiPath path2, UriAsciiPath path3)
@@ -479,12 +479,12 @@ public readonly partial struct UriAsciiPath
         combined[_value.Length + path1.Length + path2.Length + 2] = Separator;
         path3._value.AsSpan().CopyTo(combined.AsSpan(_value.Length + path1.Length + path2.Length + 3));
 
-        return new UriAsciiPath(combined);
+        return new(combined);
     }
 
     public UriAsciiPath AppendSegment(string path)
     {
-        return Append(new UriAsciiPath(path));
+        return Append(new(path));
     }
 
     /// <summary>
@@ -507,7 +507,7 @@ public readonly partial struct UriAsciiPath
             sub = sub[1..];
         }
 
-        return new UriAsciiPath(new AsciiString(sub.ToArray()), true);
+        return new(new(sub.ToArray()), true);
     }
 
     /// <summary>

@@ -41,7 +41,7 @@ public readonly partial struct HearingDiagnosisCode : IEquatableValue<HearingDia
 
     public static HearingDiagnosisCode FromInt64(long code)
     {
-        return new HearingDiagnosisCode(new ClinicalConceptCode(code));
+        return new(new(code));
     }
 
     /// <summary>

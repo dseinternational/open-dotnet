@@ -39,10 +39,10 @@ public record Token
 
             if (Words.Count == 1)
             {
-                return new TokenIndex(Words[0].Index);
+                return new(Words[0].Index);
             }
 
-            return new TokenIndex(Words[0].Index, Words[^1].Index);
+            return new(Words[0].Index, Words[^1].Index);
         }
     }
 
@@ -240,7 +240,7 @@ public record Token
         {
             if (words.Count == 1)
             {
-                result = new Token
+                result = new()
                 {
                     Text = words[0].Form,
                     Words = [.. words]
@@ -249,7 +249,7 @@ public record Token
             }
             else
             {
-                result = new Token
+                result = new()
                 {
                     Text = tokenData.Text,
                     Words = [.. words],

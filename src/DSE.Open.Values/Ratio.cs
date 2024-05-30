@@ -35,6 +35,6 @@ public readonly partial struct Ratio : IDivisibleValue<Ratio, double>, IUtf8Span
 
     public static Ratio FromPercent(Percent value)
     {
-        return new Ratio((double)value / 100);
+        return new((double)value / 100);
     }
 }

@@ -22,6 +22,6 @@ public sealed class TagToStringConverter : ValueConverter<Tag, string>
 
     private static Tag ConvertToUniqueId(string value)
     {
-        return new Tag(value);
+        return new(value);
     }
 }

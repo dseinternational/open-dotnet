@@ -164,6 +164,6 @@ public static class Colors
 
 #pragma warning restore CA5394 // Do not use insecure randomness
 
-        return new Color(r, g, b);
+        return new(r, g, b);
     }
 }

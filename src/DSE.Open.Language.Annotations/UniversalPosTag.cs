@@ -49,14 +49,14 @@ public readonly partial struct UniversalPosTag : IEquatableValue<UniversalPosTag
     public static explicit operator UniversalPosTag(string value)
 #pragma warning restore CA2225 // Operator overloads have named alternates
     {
-        return new UniversalPosTag(value);
+        return new(value);
     }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
     public static implicit operator PosTag(UniversalPosTag value)
 #pragma warning restore CA2225 // Operator overloads have named alternates
     {
-        return new PosTag(value._value);
+        return new(value._value);
     }
 
     public static readonly UniversalPosTag Adjective = new("ADJ", true);

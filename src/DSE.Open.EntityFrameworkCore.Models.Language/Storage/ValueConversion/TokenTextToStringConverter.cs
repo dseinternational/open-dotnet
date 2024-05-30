@@ -21,6 +21,6 @@ public sealed class TokenTextToStringConverter : ValueConverter<TokenText, strin
 
     private static TokenText ConvertFrom(string value)
     {
-        return new TokenText(value);
+        return new(value);
     }
 }

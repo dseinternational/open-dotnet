@@ -39,18 +39,18 @@ public class Word
 
         _word = word;
 
-        _index = new Lazy<int>(() => PyConverter.GetInt32(_word.id));
-        _text = new Lazy<string>(() => PyConverter.GetString(_word.text));
-        _lemma = new Lazy<string?>(() => PyConverter.GetStringOrNull(_word.lemma));
-        _upos = new Lazy<string>(() => PyConverter.GetString(_word.upos));
-        _xpos = new Lazy<string?>(() => PyConverter.GetStringOrNull(_word.xpos));
-        _feats = new Lazy<string?>(() => PyConverter.GetStringOrNull(_word.feats));
-        _head = new Lazy<int>(() => PyConverter.GetInt32(_word.head));
-        _deprel = new Lazy<string>(() => PyConverter.GetString(_word.deprel));
-        _deps = new Lazy<string?>(() => PyConverter.GetStringOrNull(_word.deps));
-        _misc = new Lazy<string?>(() => PyConverter.GetStringOrNull(_word.misc));
+        _index = new(() => PyConverter.GetInt32(_word.id));
+        _text = new(() => PyConverter.GetString(_word.text));
+        _lemma = new(() => PyConverter.GetStringOrNull(_word.lemma));
+        _upos = new(() => PyConverter.GetString(_word.upos));
+        _xpos = new(() => PyConverter.GetStringOrNull(_word.xpos));
+        _feats = new(() => PyConverter.GetStringOrNull(_word.feats));
+        _head = new(() => PyConverter.GetInt32(_word.head));
+        _deprel = new(() => PyConverter.GetString(_word.deprel));
+        _deps = new(() => PyConverter.GetStringOrNull(_word.deps));
+        _misc = new(() => PyConverter.GetStringOrNull(_word.misc));
 
-        _prettyPrint = new Lazy<string>(() =>
+        _prettyPrint = new(() =>
         {
             using (Py.GIL())
             {

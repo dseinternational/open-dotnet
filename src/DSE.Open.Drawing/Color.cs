@@ -49,7 +49,7 @@ public readonly record struct Color : ISpanParsable<Color>, ISpanFormattable
 
     internal static Color FromUint(uint value)
     {
-        return new Color(value);
+        return new(value);
     }
 
     public byte A => (byte)((_value >> AlphaShift) & 0xFF);
@@ -98,7 +98,7 @@ public readonly record struct Color : ISpanParsable<Color>, ISpanFormattable
 
     public static Color FromRgb(byte red, byte green, byte blue)
     {
-        return new Color(byte.MaxValue, red, green, blue);
+        return new(byte.MaxValue, red, green, blue);
     }
 
     public static Color FromRgb(float red, float green, float blue)
@@ -123,7 +123,7 @@ public readonly record struct Color : ISpanParsable<Color>, ISpanFormattable
 
     public static Color FromRgba(byte red, byte green, byte blue, byte alpha)
     {
-        return new Color(alpha, red, green, blue);
+        return new(alpha, red, green, blue);
     }
 
     public static Color FromRgba(ReadOnlySpan<byte> bytes)
@@ -138,7 +138,7 @@ public readonly record struct Color : ISpanParsable<Color>, ISpanFormattable
 
     public static Color FromArgb(byte alpha, byte red, byte green, byte blue)
     {
-        return new Color(alpha, red, green, blue);
+        return new(alpha, red, green, blue);
     }
 
     public static Color FromArgb(ReadOnlySpan<byte> bytes)
@@ -173,12 +173,12 @@ public readonly record struct Color : ISpanParsable<Color>, ISpanFormattable
             ThrowHelper.ThrowArgumentOutOfRangeException(nameof(blue));
         }
 
-        return new Color(FloatToByte(alpha), FloatToByte(red), FloatToByte(green), FloatToByte(blue));
+        return new(FloatToByte(alpha), FloatToByte(red), FloatToByte(green), FloatToByte(blue));
     }
 
     public static Color FromSystemDrawingColor(System.Drawing.Color color)
     {
-        return new Color(color.A, color.R, color.G, color.B);
+        return new(color.A, color.R, color.G, color.B);
     }
 
     public static Color Parse(string s)
@@ -476,7 +476,7 @@ public readonly record struct Color : ISpanParsable<Color>, ISpanFormattable
     public static Color FromHsl(float h, float s, float l)
     {
         ConvertHslToRgb(h, s, l, out var r, out var g, out var b);
-        return new Color((byte)(r * 255), (byte)(g * 255), (byte)(b * 255));
+        return new((byte)(r * 255), (byte)(g * 255), (byte)(b * 255));
     }
 
     // Source: https://github.com/dotnet/maui/blob/main/src/Graphics/src/Graphics/Color.cs

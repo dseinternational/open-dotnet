@@ -41,7 +41,7 @@ public sealed class ReadOnlyAttributeValueCollection
 
         list.AddRange(items);
 
-        return new ReadOnlyAttributeValueCollection(list);
+        return new(list);
     }
 
     public static ReadOnlyAttributeValueCollection Create(Span<AttributeValue> items)
@@ -76,7 +76,7 @@ public sealed class ReadOnlyAttributeValueCollection
     {
         if (AttributeValueSerializer.TryDeserialize(s, out var features))
         {
-            result = new ReadOnlyAttributeValueCollection(features);
+            result = new(features);
             return true;
         };
 

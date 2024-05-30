@@ -21,6 +21,6 @@ public sealed class LikePatternToStringConverter : ValueConverter<LikePattern, s
 
     private static LikePattern ConvertFrom(string value)
     {
-        return new LikePattern(value);
+        return new(value);
     }
 }

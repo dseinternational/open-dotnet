@@ -18,7 +18,7 @@ public abstract record ImmutableDataTransferObject : IJsonSerializable, IExtensi
 
     IDictionary<string, object> IExtensionData.ExtensionData
         => _extensionData is not null
-            ? new Dictionary<string, object>(_extensionData)
+            ? new(_extensionData)
             : new Dictionary<string, object>();
 
     [JsonExtensionData]
@@ -26,7 +26,7 @@ public abstract record ImmutableDataTransferObject : IJsonSerializable, IExtensi
     internal ReadOnlyValueDictionary<string, object> ExtensionDataCore
     {
         get => _extensionData;
-        init => _extensionData = new ReadOnlyValueDictionary<string, object>(value);
+        init => _extensionData = new(value);
     }
 
     [JsonIgnore]

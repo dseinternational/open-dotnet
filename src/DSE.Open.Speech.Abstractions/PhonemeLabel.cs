@@ -19,7 +19,7 @@ public static class PhonemeLabel
     internal static readonly Dictionary<PhonemeLabelScheme, Dictionary<Phoneme, string>> Labels = new()
     {
         {
-            PhonemeLabelScheme.Default, new Dictionary<Phoneme, string>()
+            PhonemeLabelScheme.Default, new()
             {
                 { Phonemes.English.a, "a" },
                 { Phonemes.English.ah, "ah" },
@@ -74,7 +74,7 @@ public static class PhonemeLabel
             }
         },
         {
-            PhonemeLabelScheme.OED, new Dictionary<Phoneme, string>()
+            PhonemeLabelScheme.OED, new()
             {
                 { Phonemes.English.a, "a" },
                 { Phonemes.English.ah, "ah" },
@@ -129,7 +129,7 @@ public static class PhonemeLabel
             }
         },
         {
-            PhonemeLabelScheme.BBC, new Dictionary<Phoneme, string>()
+            PhonemeLabelScheme.BBC, new()
             {
                 { Phonemes.English.a, "a" },
                 { Phonemes.English.ah, "aa" },
@@ -184,7 +184,7 @@ public static class PhonemeLabel
             }
         },
         {
-            PhonemeLabelScheme.SeeAndLearnV2, new Dictionary<Phoneme, string>()
+            PhonemeLabelScheme.SeeAndLearnV2, new()
             {
                 { Phonemes.English.a, "a" },
                 { Phonemes.English.air, "air" },

@@ -20,7 +20,7 @@ public class ValueResultBuilder<TValue> : ValueResultBuilder<ValueResult<TValue>
 {
     public override ValueResult<TValue> GetResult()
     {
-        return new ValueResult<TValue>
+        return new()
         {
             Value = Value,
             Notifications = [.. Notifications],

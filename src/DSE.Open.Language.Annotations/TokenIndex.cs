@@ -259,7 +259,7 @@ public readonly struct TokenIndex
             if (int.TryParse(s[ranges[0]], CultureInfo.InvariantCulture, out var id)
                 && int.TryParse(s[ranges[1]], CultureInfo.InvariantCulture, out var emptyId))
             {
-                result = new TokenIndex(id, emptyId: emptyId);
+                result = new(id, emptyId: emptyId);
                 return true;
             }
         }
@@ -277,7 +277,7 @@ public readonly struct TokenIndex
             if (int.TryParse(s[ranges[0]], CultureInfo.InvariantCulture, out var id)
                 && int.TryParse(s[ranges[1]], CultureInfo.InvariantCulture, out var spanId))
             {
-                result = new TokenIndex(id, end: spanId);
+                result = new(id, end: spanId);
                 return true;
             }
         }
@@ -285,7 +285,7 @@ public readonly struct TokenIndex
         {
             if (int.TryParse(s, CultureInfo.InvariantCulture, out var id))
             {
-                result = new TokenIndex(id);
+                result = new(id);
                 return true;
             }
         }
@@ -328,7 +328,7 @@ public readonly struct TokenIndex
 
     public static TokenIndex FromInt32(int index)
     {
-        return new TokenIndex(index);
+        return new(index);
     }
 
     public static explicit operator TokenIndex(int index)

@@ -14,7 +14,7 @@ public static class CharSequenceExtensions
 
         if (value.TryFormat(buffer, out var charsWritten, format, provider))
         {
-            return new CharSequence(buffer[..charsWritten].ToArray());
+            return new(buffer[..charsWritten].ToArray());
         }
 
         var poolBuffer = ArrayPool<char>.Shared.Rent(2048);
@@ -23,7 +23,7 @@ public static class CharSequenceExtensions
         {
             if (value.TryFormat(poolBuffer, out var charsWritten2, format, provider))
             {
-                return new CharSequence(poolBuffer.AsMemory(0, charsWritten2));
+                return new(poolBuffer.AsMemory(0, charsWritten2));
             }
 
             ThrowHelper.ThrowInvalidOperationException("Unable to format value to char sequence: is the result > 2048 characters?");
@@ -37,16 +37,16 @@ public static class CharSequenceExtensions
 
     public static CharSequence ToCharSequence(this string value)
     {
-        return new CharSequence(value);
+        return new(value);
     }
 
     public static CharSequence ToCharSequence(this ReadOnlyMemory<char> value)
     {
-        return new CharSequence(value);
+        return new(value);
     }
 
     public static CharSequence ToCharSequence(this ReadOnlySpan<char> value)
     {
-        return new CharSequence(value.ToArray());
+        return new(value.ToArray());
     }
 }

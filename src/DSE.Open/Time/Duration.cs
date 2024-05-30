@@ -37,27 +37,27 @@ public readonly record struct Duration
 
     public static Duration Minutes(int count)
     {
-        return new Duration(TimePeriod.Minute, count);
+        return new(TimePeriod.Minute, count);
     }
 
     public static Duration Hours(int count)
     {
-        return new Duration(TimePeriod.Hour, count);
+        return new(TimePeriod.Hour, count);
     }
 
     public static Duration Days(int count)
     {
-        return new Duration(TimePeriod.Day, count);
+        return new(TimePeriod.Day, count);
     }
 
     public static Duration Months(int count)
     {
-        return new Duration(TimePeriod.Month, count);
+        return new(TimePeriod.Month, count);
     }
 
     public static Duration Years(int count)
     {
-        return new Duration(TimePeriod.Year, count);
+        return new(TimePeriod.Year, count);
     }
 
     public DateTimeOffset AddTo(DateTimeOffset dateTime)

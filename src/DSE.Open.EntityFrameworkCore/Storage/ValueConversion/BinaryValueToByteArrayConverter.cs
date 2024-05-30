@@ -21,6 +21,6 @@ public sealed class BinaryValueToByteArrayConverter : ValueConverter<BinaryValue
 
     private static BinaryValue ConvertFrom(byte[] value)
     {
-        return new BinaryValue(value);
+        return new(value);
     }
 }

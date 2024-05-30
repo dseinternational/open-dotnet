@@ -108,7 +108,7 @@ public sealed class AlphaNumericCodeTests
         // Assert
         Assert.True(result);
         Assert.Equal(6, charsWritten);
-        Assert.Equal("abc123", new string(buffer));
+        Assert.Equal("abc123", new(buffer));
     }
 
     [Fact]

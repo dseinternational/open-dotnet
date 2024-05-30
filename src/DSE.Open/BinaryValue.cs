@@ -110,7 +110,7 @@ public readonly partial record struct BinaryValue : ISpanFormattable, IUtf8SpanF
     {
         var buffer = new byte[length];
         RandomNumberGenerator.Fill(buffer);
-        return new BinaryValue(buffer, true);
+        return new(buffer, true);
     }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
@@ -136,7 +136,7 @@ public readonly partial record struct BinaryValue : ISpanFormattable, IUtf8SpanF
             return Empty;
         }
 
-        return new BinaryValue(bytes, noCopy: true);
+        return new(bytes, noCopy: true);
     }
 
 }

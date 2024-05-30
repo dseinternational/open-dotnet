@@ -192,64 +192,64 @@ public readonly partial struct CountryCode : IComparableValue<CountryCode, Ascii
         return s_euroZoneCodes.Contains(code);
     }
 
-    public static readonly CountryCode Andorra = new(new AsciiChar2('A', 'D'), true);
-    public static readonly CountryCode UnitedArabEmirates = new(new AsciiChar2('A', 'E'), true);
-    public static readonly CountryCode Austria = new(new AsciiChar2('A', 'T'), true);
-    public static readonly CountryCode Australia = new(new AsciiChar2('A', 'U'), true);
-    public static readonly CountryCode Belgium = new(new AsciiChar2('B', 'E'), true);
-    public static readonly CountryCode Brazil = new(new AsciiChar2('B', 'R'), true);
-    public static readonly CountryCode Bulgaria = new(new AsciiChar2('B', 'G'), true);
-    public static readonly CountryCode Canada = new(new AsciiChar2('C', 'A'), true);
-    public static readonly CountryCode Switzerland = new(new AsciiChar2('C', 'H'), true);
-    public static readonly CountryCode China = new(new AsciiChar2('C', 'N'), true);
-    public static readonly CountryCode Cyprus = new(new AsciiChar2('C', 'Y'), true);
-    public static readonly CountryCode CzechRepublic = new(new AsciiChar2('C', 'Z'), true);
-    public static readonly CountryCode Germany = new(new AsciiChar2('D', 'E'), true);
-    public static readonly CountryCode Denmark = new(new AsciiChar2('D', 'K'), true);
-    public static readonly CountryCode Estonia = new(new AsciiChar2('E', 'E'), true);
-    public static readonly CountryCode Spain = new(new AsciiChar2('E', 'S'), true);
-    public static readonly CountryCode Finland = new(new AsciiChar2('F', 'I'), true);
-    public static readonly CountryCode France = new(new AsciiChar2('F', 'R'), true);
-    public static readonly CountryCode UnitedKingdom = new(new AsciiChar2('G', 'B'), true);
-    public static readonly CountryCode Gibraltar = new(new AsciiChar2('G', 'I'), true);
-    public static readonly CountryCode Greece = new(new AsciiChar2('G', 'R'), true);
-    public static readonly CountryCode HongKongSAR = new(new AsciiChar2('H', 'K'), true);
-    public static readonly CountryCode Croatia = new(new AsciiChar2('H', 'R'), true);
-    public static readonly CountryCode Hungary = new(new AsciiChar2('H', 'U'), true);
-    public static readonly CountryCode Ireland = new(new AsciiChar2('I', 'E'), true);
-    public static readonly CountryCode Israel = new(new AsciiChar2('I', 'L'), true);
-    public static readonly CountryCode IsleOfMan = new(new AsciiChar2('I', 'M'), true);
-    public static readonly CountryCode India = new(new AsciiChar2('I', 'N'), true);
-    public static readonly CountryCode Italy = new(new AsciiChar2('I', 'T'), true);
-    public static readonly CountryCode Jersey = new(new AsciiChar2('J', 'E'), true);
-    public static readonly CountryCode Japan = new(new AsciiChar2('J', 'P'), true);
-    public static readonly CountryCode Liechtenstein = new(new AsciiChar2('L', 'I'), true);
-    public static readonly CountryCode Lithuania = new(new AsciiChar2('L', 'T'), true);
-    public static readonly CountryCode Luxembourg = new(new AsciiChar2('L', 'U'), true);
-    public static readonly CountryCode Latvia = new(new AsciiChar2('L', 'V'), true);
-    public static readonly CountryCode Monaco = new(new AsciiChar2('M', 'C'), true);
-    public static readonly CountryCode Montenegro = new(new AsciiChar2('M', 'E'), true);
-    public static readonly CountryCode Malta = new(new AsciiChar2('M', 'T'), true);
-    public static readonly CountryCode Mexico = new(new AsciiChar2('M', 'X'), true);
-    public static readonly CountryCode Netherlands = new(new AsciiChar2('N', 'L'), true);
-    public static readonly CountryCode Norway = new(new AsciiChar2('N', 'O'), true);
-    public static readonly CountryCode NewZealand = new(new AsciiChar2('N', 'Z'), true);
-    public static readonly CountryCode Poland = new(new AsciiChar2('P', 'L'), true);
-    public static readonly CountryCode Portugal = new(new AsciiChar2('P', 'T'), true);
-    public static readonly CountryCode Romania = new(new AsciiChar2('R', 'O'), true);
-    public static readonly CountryCode Serbia = new(new AsciiChar2('R', 'S'), true);
-    public static readonly CountryCode Russia = new(new AsciiChar2('R', 'U'), true);
-    public static readonly CountryCode SaudiArabia = new(new AsciiChar2('S', 'A'), true);
-    public static readonly CountryCode Sweden = new(new AsciiChar2('S', 'E'), true);
-    public static readonly CountryCode Singapore = new(new AsciiChar2('S', 'G'), true);
-    public static readonly CountryCode Slovenia = new(new AsciiChar2('S', 'I'), true);
-    public static readonly CountryCode Slovakia = new(new AsciiChar2('S', 'K'), true);
-    public static readonly CountryCode SanMarino = new(new AsciiChar2('S', 'M'), true);
-    public static readonly CountryCode Turkey = new(new AsciiChar2('T', 'R'), true);
-    public static readonly CountryCode Ukraine = new(new AsciiChar2('U', 'A'), true);
-    public static readonly CountryCode UnitedStates = new(new AsciiChar2('U', 'S'), true);
-    public static readonly CountryCode Kosovo = new(new AsciiChar2('X', 'K'), true);
-    public static readonly CountryCode SouthAfrica = new(new AsciiChar2('Z', 'A'), true);
+    public static readonly CountryCode Andorra = new(new('A', 'D'), true);
+    public static readonly CountryCode UnitedArabEmirates = new(new('A', 'E'), true);
+    public static readonly CountryCode Austria = new(new('A', 'T'), true);
+    public static readonly CountryCode Australia = new(new('A', 'U'), true);
+    public static readonly CountryCode Belgium = new(new('B', 'E'), true);
+    public static readonly CountryCode Brazil = new(new('B', 'R'), true);
+    public static readonly CountryCode Bulgaria = new(new('B', 'G'), true);
+    public static readonly CountryCode Canada = new(new('C', 'A'), true);
+    public static readonly CountryCode Switzerland = new(new('C', 'H'), true);
+    public static readonly CountryCode China = new(new('C', 'N'), true);
+    public static readonly CountryCode Cyprus = new(new('C', 'Y'), true);
+    public static readonly CountryCode CzechRepublic = new(new('C', 'Z'), true);
+    public static readonly CountryCode Germany = new(new('D', 'E'), true);
+    public static readonly CountryCode Denmark = new(new('D', 'K'), true);
+    public static readonly CountryCode Estonia = new(new('E', 'E'), true);
+    public static readonly CountryCode Spain = new(new('E', 'S'), true);
+    public static readonly CountryCode Finland = new(new('F', 'I'), true);
+    public static readonly CountryCode France = new(new('F', 'R'), true);
+    public static readonly CountryCode UnitedKingdom = new(new('G', 'B'), true);
+    public static readonly CountryCode Gibraltar = new(new('G', 'I'), true);
+    public static readonly CountryCode Greece = new(new('G', 'R'), true);
+    public static readonly CountryCode HongKongSAR = new(new('H', 'K'), true);
+    public static readonly CountryCode Croatia = new(new('H', 'R'), true);
+    public static readonly CountryCode Hungary = new(new('H', 'U'), true);
+    public static readonly CountryCode Ireland = new(new('I', 'E'), true);
+    public static readonly CountryCode Israel = new(new('I', 'L'), true);
+    public static readonly CountryCode IsleOfMan = new(new('I', 'M'), true);
+    public static readonly CountryCode India = new(new('I', 'N'), true);
+    public static readonly CountryCode Italy = new(new('I', 'T'), true);
+    public static readonly CountryCode Jersey = new(new('J', 'E'), true);
+    public static readonly CountryCode Japan = new(new('J', 'P'), true);
+    public static readonly CountryCode Liechtenstein = new(new('L', 'I'), true);
+    public static readonly CountryCode Lithuania = new(new('L', 'T'), true);
+    public static readonly CountryCode Luxembourg = new(new('L', 'U'), true);
+    public static readonly CountryCode Latvia = new(new('L', 'V'), true);
+    public static readonly CountryCode Monaco = new(new('M', 'C'), true);
+    public static readonly CountryCode Montenegro = new(new('M', 'E'), true);
+    public static readonly CountryCode Malta = new(new('M', 'T'), true);
+    public static readonly CountryCode Mexico = new(new('M', 'X'), true);
+    public static readonly CountryCode Netherlands = new(new('N', 'L'), true);
+    public static readonly CountryCode Norway = new(new('N', 'O'), true);
+    public static readonly CountryCode NewZealand = new(new('N', 'Z'), true);
+    public static readonly CountryCode Poland = new(new('P', 'L'), true);
+    public static readonly CountryCode Portugal = new(new('P', 'T'), true);
+    public static readonly CountryCode Romania = new(new('R', 'O'), true);
+    public static readonly CountryCode Serbia = new(new('R', 'S'), true);
+    public static readonly CountryCode Russia = new(new('R', 'U'), true);
+    public static readonly CountryCode SaudiArabia = new(new('S', 'A'), true);
+    public static readonly CountryCode Sweden = new(new('S', 'E'), true);
+    public static readonly CountryCode Singapore = new(new('S', 'G'), true);
+    public static readonly CountryCode Slovenia = new(new('S', 'I'), true);
+    public static readonly CountryCode Slovakia = new(new('S', 'K'), true);
+    public static readonly CountryCode SanMarino = new(new('S', 'M'), true);
+    public static readonly CountryCode Turkey = new(new('T', 'R'), true);
+    public static readonly CountryCode Ukraine = new(new('U', 'A'), true);
+    public static readonly CountryCode UnitedStates = new(new('U', 'S'), true);
+    public static readonly CountryCode Kosovo = new(new('X', 'K'), true);
+    public static readonly CountryCode SouthAfrica = new(new('Z', 'A'), true);
 
     public static CountryCode FromRegionInfo(RegionInfo regionInfo)
     {
@@ -294,7 +294,7 @@ public readonly partial struct CountryCode : IComparableValue<CountryCode, Ascii
     private static readonly FrozenSet<CountryCode> s_euMemberCountryAndSubdivisionCodes = FrozenSet.ToFrozenSet(
     [
         Austria,
-        new CountryCode((AsciiChar2)"AX"), // Åland Islands (Finland)
+        new((AsciiChar2)"AX"), // Åland Islands (Finland)
         Belgium,
         Bulgaria,
         Cyprus,
@@ -302,11 +302,11 @@ public readonly partial struct CountryCode : IComparableValue<CountryCode, Ascii
         Germany,
         Denmark,
         Estonia,
-        new CountryCode((AsciiChar2)"ES"), // (includes Canary Islands, Ceuta and Melilla)
+        new((AsciiChar2)"ES"), // (includes Canary Islands, Ceuta and Melilla)
         Finland,
         France,
-        new CountryCode((AsciiChar2)"GF"), // French Guiana
-        new CountryCode((AsciiChar2)"GP"), // Guadeloupe (France)
+        new((AsciiChar2)"GF"), // French Guiana
+        new((AsciiChar2)"GP"), // Guadeloupe (France)
         Greece,
         Croatia,
         Hungary,
@@ -315,18 +315,18 @@ public readonly partial struct CountryCode : IComparableValue<CountryCode, Ascii
         Lithuania,
         Luxembourg,
         Latvia,
-        new CountryCode((AsciiChar2)"MF"), // Saint Martin (France)
-        new CountryCode((AsciiChar2)"MQ"), // Martinique (France)
+        new((AsciiChar2)"MF"), // Saint Martin (France)
+        new((AsciiChar2)"MQ"), // Martinique (France)
         Malta,
         Netherlands,
         Poland,
-        new CountryCode((AsciiChar2)"PT"), // (Includes Azores and Madeira)
-        new CountryCode((AsciiChar2)"RE"), // Réunion (France)
+        new((AsciiChar2)"PT"), // (Includes Azores and Madeira)
+        new((AsciiChar2)"RE"), // Réunion (France)
         Romania,
         Sweden,
         Slovenia,
         Slovakia,
-        new CountryCode((AsciiChar2)"YT"), // Mayotte (France)
+        new((AsciiChar2)"YT"), // Mayotte (France)
     ]);
 
     // https://www.gov.uk/guidance/vat-eu-country-codes-vat-numbers-and-vat-in-other-languages

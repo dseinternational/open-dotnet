@@ -120,7 +120,7 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
             return false;
         }
 
-        result = new LikePattern(s, validate: false);
+        result = new(s, validate: false);
         return true;
     }
 

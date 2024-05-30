@@ -10,7 +10,7 @@ public static partial class Vector
     public static Vector<T> Create<T>(ReadOnlySpan<T> sequence)
         where T : struct, INumber<T>
     {
-        return new Vector<T>(sequence.ToArray());
+        return new(sequence.ToArray());
     }
 
     public static Vector<T> Create<T>(int length, T scalar)
@@ -18,13 +18,13 @@ public static partial class Vector
     {
         var data = new T[length];
         data.AsSpan().Fill(scalar);
-        return new Vector<T>(data);
+        return new(data);
     }
 
     public static Vector<T> CreateDefault<T>(int length)
         where T : struct, INumber<T>
     {
-        return new Vector<T>(new T[length]);
+        return new(new T[length]);
     }
 
     public static Vector<T> CreateZeroes<T>(int length)

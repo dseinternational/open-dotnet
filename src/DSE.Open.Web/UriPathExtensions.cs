@@ -11,21 +11,21 @@ public static class UriPathExtensions
 {
     public static PathString ToPathString(this UriPath path)
     {
-        return path.IsEmpty ? PathString.Empty : new PathString($"/{path}");
+        return path.IsEmpty ? PathString.Empty : new($"/{path}");
     }
 
     public static PathString ToLanguagePrefixedPathString(this UriPath path, LanguageTag language)
     {
-        return path.IsEmpty ? new PathString($"/{language:L}") : new PathString($"/{language:L}/{path}");
+        return path.IsEmpty ? new($"/{language:L}") : new PathString($"/{language:L}/{path}");
     }
 
     public static PathString ToPathString(this UriAsciiPath path)
     {
-        return path.IsEmpty ? PathString.Empty : new PathString($"/{path}");
+        return path.IsEmpty ? PathString.Empty : new($"/{path}");
     }
 
     public static PathString ToLanguagePrefixedPathString(this UriAsciiPath path, LanguageTag language)
     {
-        return path.IsEmpty ? new PathString($"/{language:L}") : new PathString($"/{language:L}/{path}");
+        return path.IsEmpty ? new($"/{language:L}") : new PathString($"/{language:L}/{path}");
     }
 }

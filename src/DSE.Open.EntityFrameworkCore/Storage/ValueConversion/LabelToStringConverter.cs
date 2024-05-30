@@ -21,6 +21,6 @@ public sealed class LabelToStringConverter : ValueConverter<Label, string>
 
     private static Label ConvertFrom(string value)
     {
-        return new Label(value);
+        return new(value);
     }
 }

@@ -16,8 +16,8 @@ public static class DateTimeOffsetExtensions
             DateTimeTruncation.Minute => dateTime.AddTicks(-dateTime.Ticks % TimeSpan.TicksPerMinute),
             DateTimeTruncation.Hour => dateTime.AddTicks(-dateTime.Ticks % TimeSpan.TicksPerHour),
             DateTimeTruncation.Day => dateTime.AddTicks(-dateTime.Ticks % TimeSpan.TicksPerDay),
-            DateTimeTruncation.Month => new DateTimeOffset(dateTime.Year, dateTime.Month, 1, 0, 0, 0, dateTime.Offset),
-            DateTimeTruncation.Year => new DateTimeOffset(dateTime.Year, 1, 1, 0, 0, 0, dateTime.Offset),
+            DateTimeTruncation.Month => new(dateTime.Year, dateTime.Month, 1, 0, 0, 0, dateTime.Offset),
+            DateTimeTruncation.Year => new(dateTime.Year, 1, 1, 0, 0, 0, dateTime.Offset),
             _ => ThrowHelper.ThrowArgumentOutOfRangeException<DateTimeOffset>(nameof(dateTimeTruncation), $"Invalid {nameof(DateTimeTruncation)}.")
         };
     }

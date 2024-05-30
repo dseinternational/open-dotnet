@@ -276,7 +276,7 @@ public record Word
             }
         }
 
-        result = new Word
+        result = new()
         {
             Index = index,
             Form = word,

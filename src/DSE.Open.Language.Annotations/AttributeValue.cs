@@ -145,7 +145,7 @@ public sealed record AttributeValue
                 {
                     if (CharSequence.TryParse(valuesSpan, provider, out var value))
                     {
-                        result = new AttributeValue(name, [value]);
+                        result = new(name, [value]);
                         return true;
                     }
                     else
@@ -176,7 +176,7 @@ public sealed record AttributeValue
                     }
                 }
 
-                result = new AttributeValue(name, values);
+                result = new(name, values);
                 return true;
             }
         }

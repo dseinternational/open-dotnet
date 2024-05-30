@@ -138,7 +138,7 @@ public readonly record struct TelephoneNumber
                 && span[(delimiterIndex + 1)..].TryCopyWhereNotPunctuationOrWhitespace(digitBuffer, out var digitsWritten)
                 && ulong.TryParse(digitBuffer[..digitsWritten], NumberStyles.None, CultureInfo.InvariantCulture, out var nationalNumber))
             {
-                result = new TelephoneNumber(countryCode, nationalNumber, true);
+                result = new(countryCode, nationalNumber, true);
                 return true;
             }
 
@@ -168,7 +168,7 @@ public readonly record struct TelephoneNumber
                 continue;
             }
 
-            result = new TelephoneNumber(possibleCode, nationalNumber, true);
+            result = new(possibleCode, nationalNumber, true);
             return true;
         }
 

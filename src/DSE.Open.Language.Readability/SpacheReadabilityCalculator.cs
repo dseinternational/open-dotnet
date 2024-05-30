@@ -33,7 +33,7 @@ public static class SpacheReadabilityCalculator
 
         var level = CalculateLevel(averageSentenceLength, distinctWordCount, unfamiliarWordCount);
 
-        return new SpacheReadabilityResult(level, averageSentenceLength, distinctWordCount,
+        return new(level, averageSentenceLength, distinctWordCount,
             unfamiliarWords.Select(w => w.Form.ToString()));
     }
 

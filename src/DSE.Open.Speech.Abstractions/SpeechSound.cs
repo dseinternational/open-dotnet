@@ -127,7 +127,7 @@ public readonly struct SpeechSound
         if (SpeechSymbolSequence.TryParse(s, provider, out var symbols)
             && IsValidValue(symbols))
         {
-            result = new SpeechSound(symbols, true);
+            result = new(symbols, true);
             return true;
         }
 
@@ -236,7 +236,7 @@ public readonly struct SpeechSound
     public static implicit operator SpeechSound(SpeechSymbol value)
 #pragma warning restore CA2225 // Operator overloads have named alternates
     {
-        return new SpeechSound(new SpeechSymbolSequence([value]), true);
+        return new(new([value]), true);
     }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates

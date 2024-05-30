@@ -15,7 +15,7 @@ public class JsonStringYearDateConverter : JsonConverter<YearDate>
         if (reader.TokenType == JsonTokenType.Number)
         {
             var y = reader.GetInt32();
-            return new YearDate(y);
+            return new(y);
         }
 
         if (reader.TokenType == JsonTokenType.String)

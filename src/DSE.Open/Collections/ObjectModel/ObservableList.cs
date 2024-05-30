@@ -42,7 +42,7 @@ public class ObservableList<T> : IObservableList<T>
     {
         Guard.IsGreaterThanOrEqualTo(capacity, 0);
 
-        _observedItems = new List<T>(capacity);
+        _observedItems = new(capacity);
     }
 
     public ObservableList(IEnumerable<T> items)
@@ -760,22 +760,22 @@ public class ObservableList<T> : IObservableList<T>
 
     private void OnCollectionChanged(NotifyCollectionChangedAction action, object? item, int index)
     {
-        OnCollectionChanged(new NotifyCollectionChangedEventArgs(action, item, index));
+        OnCollectionChanged(new(action, item, index));
     }
 
     private void OnCollectionChanged(NotifyCollectionChangedAction action, object? item, int index, int oldIndex)
     {
-        OnCollectionChanged(new NotifyCollectionChangedEventArgs(action, item, index, oldIndex));
+        OnCollectionChanged(new(action, item, index, oldIndex));
     }
 
     private void OnCollectionChanged(NotifyCollectionChangedAction action, object? oldItem, object? newItem, int index)
     {
-        OnCollectionChanged(new NotifyCollectionChangedEventArgs(action, newItem, oldItem, index));
+        OnCollectionChanged(new(action, newItem, oldItem, index));
     }
 
     private void OnCollectionChanged(NotifyCollectionChangedAction action, IList? changedItems, int startIndex)
     {
-        OnCollectionChanged(new NotifyCollectionChangedEventArgs(action, changedItems, startIndex));
+        OnCollectionChanged(new(action, changedItems, startIndex));
     }
 
     private void OnCollectionReset()
@@ -790,7 +790,7 @@ public class ObservableList<T> : IObservableList<T>
 
     private SimpleMonitor EnsureMonitorInitialized()
     {
-        return _monitor ??= new SimpleMonitor(this);
+        return _monitor ??= new(this);
     }
 
     private sealed class SimpleMonitor : IDisposable

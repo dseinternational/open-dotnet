@@ -696,7 +696,7 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
         while (parentSyntax != null && IsAllowedKind(parentSyntax.Kind()))
         {
             // Record the parent type keyword (class/struct etc), name, and constraints
-            parentClassInfo = new ParentClass(
+            parentClassInfo = new(
                 keyword: parentSyntax.Keyword.ValueText,
                 name: parentSyntax.Identifier.ToString() + parentSyntax.TypeParameterList,
                 constraints: parentSyntax.ConstraintClauses.ToString(),

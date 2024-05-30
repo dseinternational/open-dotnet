@@ -111,7 +111,7 @@ public class CountryCodeTests
         // Assert
         Assert.True(result);
         Assert.Equal(2, charsWritten);
-        Assert.Equal(countryCode.ToString(), new string(destination));
+        Assert.Equal(countryCode.ToString(), new(destination));
     }
     /*
     [Fact]

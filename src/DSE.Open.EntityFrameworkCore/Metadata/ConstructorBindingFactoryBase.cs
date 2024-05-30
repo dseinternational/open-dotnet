@@ -258,7 +258,7 @@ public abstract class ConstructorBindingFactoryBase : IConstructorBindingFactory
             var parameterBinding = BindParameter(entityType, bindToProperty, bind, parameter);
             if (parameterBinding == null)
             {
-                unboundParametersList ??= new List<ParameterInfo>();
+                unboundParametersList ??= new();
                 unboundParametersList.Add(parameter);
             }
             else

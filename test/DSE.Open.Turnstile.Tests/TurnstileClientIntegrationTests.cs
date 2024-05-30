@@ -10,9 +10,9 @@ public sealed class TurnstileClientIntegrationTests
     {
         using var httpClient = new HttpClient();
 
-        var client = new TurnstileClient(httpClient, new TurnstileClientOptions
+        var client = new TurnstileClient(httpClient, new()
         {
-            Endpoint = new Uri("https://challenges.cloudflare.com/turnstile/v0/siteverify"),
+            Endpoint = new("https://challenges.cloudflare.com/turnstile/v0/siteverify"),
             SecretKey = TestSecretKeys.Passes
         });
 
@@ -27,9 +27,9 @@ public sealed class TurnstileClientIntegrationTests
     {
         using var httpClient = new HttpClient();
 
-        var client = new TurnstileClient(httpClient, new TurnstileClientOptions
+        var client = new TurnstileClient(httpClient, new()
         {
-            Endpoint = new Uri("https://challenges.cloudflare.com/turnstile/v0/siteverify"),
+            Endpoint = new("https://challenges.cloudflare.com/turnstile/v0/siteverify"),
             SecretKey = TestSecretKeys.Fails
         });
 

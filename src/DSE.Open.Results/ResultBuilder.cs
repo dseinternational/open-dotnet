@@ -28,7 +28,7 @@ public class ResultBuilder : ResultBuilder<Result>
 {
     public override Result GetResult()
     {
-        return new Result
+        return new()
         {
             Notifications = [.. Notifications],
         };

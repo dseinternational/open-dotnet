@@ -16,11 +16,11 @@ public static class TimestampGenerator
             s_timestamp = 0;
         }
 
-        return new Timestamp(BitConverter.GetBytes(s_timestamp++));
+        return new(BitConverter.GetBytes(s_timestamp++));
     }
 
     public static Timestamp GetRandom()
     {
-        return new Timestamp(BitConverter.GetBytes((ulong)Random.Shared.NextInt64()));
+        return new(BitConverter.GetBytes((ulong)Random.Shared.NextInt64()));
     }
 }

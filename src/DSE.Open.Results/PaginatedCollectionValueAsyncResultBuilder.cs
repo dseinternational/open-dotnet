@@ -23,7 +23,7 @@ public class PaginatedCollectionValueAsyncResultBuilder<TValue> : PaginatedColle
             throw new InvalidOperationException("Pagination must be specified.");
         }
 
-        return new PaginatedCollectionValueAsyncResult<TValue>
+        return new()
         {
             Value = Value ?? AsyncEnumerable.Empty<TValue>(),
             Notifications = [.. Notifications],

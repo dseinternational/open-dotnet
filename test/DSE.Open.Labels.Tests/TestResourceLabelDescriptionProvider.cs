@@ -8,7 +8,7 @@ namespace DSE.Open.Labels.Tests;
 public sealed class TestResourceLabelDescriptionProvider : ResourceLabelDescriptionProvider<MyValues>
 {
     private static readonly Lazy<ResourceManager> s_resourceManager = new(()
-        => new ResourceManager($"{typeof(TestResourceLabelDescriptionProvider).Namespace}.Resources.Test", typeof(TestResourceLabelDescriptionProvider).Assembly));
+        => new($"{typeof(TestResourceLabelDescriptionProvider).Namespace}.Resources.Test", typeof(TestResourceLabelDescriptionProvider).Assembly));
 
     public static readonly TestResourceLabelDescriptionProvider Default = new();
 

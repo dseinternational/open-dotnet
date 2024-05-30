@@ -32,7 +32,7 @@ public class CollectionValueResultBuilder<TValue>
 {
     public override CollectionValueResult<TValue> GetResult()
     {
-        return new CollectionValueResult<TValue>
+        return new()
         {
             Value = [.. Items],
             Notifications = [.. Notifications],

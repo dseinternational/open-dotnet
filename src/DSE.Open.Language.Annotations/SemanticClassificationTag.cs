@@ -39,7 +39,7 @@ public readonly partial struct SemanticClassificationTag
     public static explicit operator SemanticClassificationTag(string value)
 #pragma warning restore CA2225 // Operator overloads have named alternates
     {
-        return new SemanticClassificationTag(value);
+        return new(value);
     }
 
 

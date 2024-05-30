@@ -13,9 +13,9 @@ public class ReadOnlySortedValueDictionaryTests
     {
         var d1 = new ReadOnlySortedValueDictionary<int, string>(
             [            
-                new KeyValuePair<int, string>(3, "3"),
-                new KeyValuePair<int, string>(1, "1"),
-                new KeyValuePair<int, string>(2, "2"),
+                new(3, "3"),
+                new(1, "1"),
+                new(2, "2"),
             ]);
 
         var keys = d1.Keys.ToArray();

@@ -41,7 +41,7 @@ public readonly partial struct ConditionDiagnosisCode : IEquatableValue<Conditio
 
     public static ConditionDiagnosisCode FromInt64(long code)
     {
-        return new ConditionDiagnosisCode(new ClinicalConceptCode(code));
+        return new(new(code));
     }
 
     /// <summary>

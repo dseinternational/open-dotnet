@@ -16,7 +16,7 @@ public static class ValueResult
 
     public static ValueResult<T> Create<T>(T? value)
     {
-        return new ValueResult<T>
+        return new()
         {
             Value = value
         };
@@ -24,7 +24,7 @@ public static class ValueResult
 
     public static ValueResult<T> Create<T>(T? value, IEnumerable<Notification> notifications)
     {
-        return new ValueResult<T>
+        return new()
         {
             Value = value,
             Notifications = [.. notifications]

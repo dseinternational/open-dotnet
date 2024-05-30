@@ -100,7 +100,7 @@ public static partial class StringHelper
 
         if (values is string[] valuesArray)
         {
-            return WrapRangeCore(before, after, new ReadOnlySpan<string>(valuesArray));
+            return WrapRangeCore(before, after, new(valuesArray));
         }
 
         var initialCapacity = values is ICollection<string> valuesCollection

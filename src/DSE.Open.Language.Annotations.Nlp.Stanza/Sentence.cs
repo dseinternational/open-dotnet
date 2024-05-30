@@ -26,13 +26,13 @@ public class Sentence
 
         _sentence = sentence;
 
-        _index = new Lazy<int>(() => PyConverter.GetInt32(_sentence.index));
-        _id = new Lazy<string>(() => PyConverter.GetString(_sentence.sent_id));
+        _index = new(() => PyConverter.GetInt32(_sentence.index));
+        _id = new(() => PyConverter.GetString(_sentence.sent_id));
         // v1.7.0 and above
-        _doc_id = new Lazy<string?>(() => PyConverter.GetStringOrNull(_sentence.doc_id));
-        _text = new Lazy<string>(() => PyConverter.GetString(_sentence.text));
+        _doc_id = new(() => PyConverter.GetStringOrNull(_sentence.doc_id));
+        _text = new(() => PyConverter.GetString(_sentence.text));
 
-        _comments = new Lazy<IReadOnlyList<string>>(() =>
+        _comments = new(() =>
         {
             return PyConverter.GetList<string>(_sentence.comments, (PyWrapperFactory<string>)del);
 
@@ -42,7 +42,7 @@ public class Sentence
             }
         });
 
-        _tokens = new Lazy<IReadOnlyList<Token>>(() => PyConverter.GetList<Token>(_sentence.tokens));
+        _tokens = new(() => PyConverter.GetList<Token>(_sentence.tokens));
     }
 
     public Document Document { get; }

@@ -21,6 +21,6 @@ public sealed class PosTagToStringConverter : ValueConverter<PosTag, string>
 
     private static PosTag ConvertFrom(string value)
     {
-        return new PosTag(value);
+        return new(value);
     }
 }

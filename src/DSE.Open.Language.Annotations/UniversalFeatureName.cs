@@ -42,7 +42,7 @@ public readonly partial struct UniversalFeatureName : IEquatableValue<UniversalF
     public static explicit operator UniversalFeatureName(string value)
 #pragma warning restore CA2225 // Operator overloads have named alternates
     {
-        return new UniversalFeatureName(value);
+        return new(value);
     }
 
     public static readonly UniversalFeatureName Abbr = new("Abbr", true);

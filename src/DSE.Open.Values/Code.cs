@@ -118,7 +118,7 @@ public readonly record struct Code
 
     public static Code FromString(string code)
     {
-        return new Code(code);
+        return new(code);
     }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
@@ -160,7 +160,7 @@ public readonly record struct Code
         Span<char> span = stackalloc char[MaxLength];
 
         return code.TryFormat(span, out var charsWritten, null, CultureInfo.InvariantCulture)
-            ? new Code(span[..charsWritten], true)
+            ? new(span[..charsWritten], true)
             : ThrowHelper.ThrowFormatException<Code>(
                 $"The maximum length of a {nameof(Code)} is {MaxLength} characters");
     }
@@ -253,7 +253,7 @@ public readonly record struct Code
             return false;
         }
 
-        result = new Code(s, true);
+        result = new(s, true);
         return true;
     }
 

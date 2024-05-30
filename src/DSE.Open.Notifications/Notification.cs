@@ -45,61 +45,61 @@ public sealed record Notification : ImmutableDataTransferObject, INotification
 
     public static Notification Trace(DiagnosticCode code, string message)
     {
-        return new Notification(code, NotificationLevel.Trace, message);
+        return new(code, NotificationLevel.Trace, message);
     }
 
     public static Notification Trace(string code, string message)
     {
-        return new Notification(code, NotificationLevel.Trace, message);
+        return new(code, NotificationLevel.Trace, message);
     }
 
     public static Notification Debug(DiagnosticCode code, string message)
     {
-        return new Notification(code, NotificationLevel.Debug, message);
+        return new(code, NotificationLevel.Debug, message);
     }
 
     public static Notification Debug(string code, string message)
     {
-        return new Notification(code, NotificationLevel.Debug, message);
+        return new(code, NotificationLevel.Debug, message);
     }
 
     public static Notification Information(DiagnosticCode code, string message)
     {
-        return new Notification(code, NotificationLevel.Information, message);
+        return new(code, NotificationLevel.Information, message);
     }
 
     public static Notification Information(string code, string message)
     {
-        return new Notification(code, NotificationLevel.Information, message);
+        return new(code, NotificationLevel.Information, message);
     }
 
     public static Notification Error(DiagnosticCode code, string message)
     {
-        return new Notification(code, NotificationLevel.Error, message);
+        return new(code, NotificationLevel.Error, message);
     }
 
     public static Notification Error(string code, string message)
     {
-        return new Notification(code, NotificationLevel.Error, message);
+        return new(code, NotificationLevel.Error, message);
     }
 
     public static Notification Critical(DiagnosticCode code, string message)
     {
-        return new Notification(code, NotificationLevel.Critical, message);
+        return new(code, NotificationLevel.Critical, message);
     }
 
     public static Notification Critical(string code, string message)
     {
-        return new Notification(code, NotificationLevel.Critical, message);
+        return new(code, NotificationLevel.Critical, message);
     }
 
     public static Notification Warning(DiagnosticCode code, string message)
     {
-        return new Notification(code, NotificationLevel.Warning, message);
+        return new(code, NotificationLevel.Warning, message);
     }
 
     public static Notification Warning(string code, string message)
     {
-        return new Notification(code, NotificationLevel.Warning, message);
+        return new(code, NotificationLevel.Warning, message);
     }
 }

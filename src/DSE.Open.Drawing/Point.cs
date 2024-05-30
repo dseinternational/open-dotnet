@@ -59,7 +59,7 @@ public readonly record struct Point(double X, double Y)
             goto Fail;
         }
 
-        point = new Point(x, y);
+        point = new(x, y);
         return true;
 
     Fail:

@@ -303,7 +303,7 @@ public static partial class Memory2DExtensions
             {
                 var row = index / span2D.Width;
                 var column = index % span2D.Width;
-                return new Index2D(row, column);
+                return new(row, column);
             }
         }
         else
@@ -315,12 +315,12 @@ public static partial class Memory2DExtensions
 
                 if (index >= 0)
                 {
-                    return new Index2D(r, index);
+                    return new(r, index);
                 }
             }
         }
 
-        return new Index2D(-1, -1);
+        return new(-1, -1);
     }
 
     /// <summary>

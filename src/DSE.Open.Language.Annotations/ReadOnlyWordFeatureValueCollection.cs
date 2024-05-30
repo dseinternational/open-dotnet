@@ -41,7 +41,7 @@ public sealed class ReadOnlyWordFeatureValueCollection
 
         list.AddRange(items);
 
-        return new ReadOnlyWordFeatureValueCollection(list);
+        return new(list);
     }
 
     public static ReadOnlyWordFeatureValueCollection Create(Span<WordFeature> items)
@@ -76,7 +76,7 @@ public sealed class ReadOnlyWordFeatureValueCollection
     {
         if (WordFeatureSerializer.TryDeserialize(s, out var features))
         {
-            result = new ReadOnlyWordFeatureValueCollection(features);
+            result = new(features);
             return true;
         };
 

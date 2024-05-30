@@ -374,7 +374,7 @@ public static partial class StringHelper
 
             Debug.Assert(!result.IsEmpty);
 
-            return new string(result[..index]);
+            return new(result[..index]);
         }
         finally
         {
@@ -404,7 +404,7 @@ public static partial class StringHelper
             result[index++] = t;
         }
 
-        return new string(result, 0, index);
+        return new(result, 0, index);
     }
 
     public static IEnumerable<string> SplitOnWhitespace(string? text)
@@ -598,6 +598,6 @@ public static partial class StringHelper
             }
         }
 
-        return new string(chars);
+        return new(chars);
     }
 }

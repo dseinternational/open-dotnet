@@ -18,7 +18,7 @@ public class Collection<T> : IList<T>, IReadOnlyList<T>
 
     public Collection(int count)
     {
-        _items = new List<T>(count);
+        _items = new(count);
     }
 
     public Collection(IEnumerable<T> collection)

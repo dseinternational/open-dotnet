@@ -7,12 +7,12 @@ public static class DateTimeExtensions
 {
     public static DateTime ToStartOfDay(this DateTime value)
     {
-        return new DateTime(value.Year, value.Month, value.Day, 0, 0, 0);
+        return new(value.Year, value.Month, value.Day, 0, 0, 0);
     }
 
     public static DateTime ToEndOfDay(this DateTime value)
     {
-        return new DateTime(value.Year, value.Month, value.Day, 23, 59, 59, 999);
+        return new(value.Year, value.Month, value.Day, 23, 59, 59, 999);
     }
 
     public static DateTime? ToStartOfDay(this DateTime? value)
@@ -61,8 +61,8 @@ public static class DateTimeExtensions
             DateTimeTruncation.Minute => value.AddTicks(-(value.Ticks % TimeSpan.TicksPerMinute)),
             DateTimeTruncation.Hour => value.AddTicks(-(value.Ticks % TimeSpan.TicksPerHour)),
             DateTimeTruncation.Day => value.AddTicks(-(value.Ticks % TimeSpan.TicksPerDay)),
-            DateTimeTruncation.Month => new DateTime(value.Year, value.Month, 1, 0, 0, 0, value.Kind),
-            DateTimeTruncation.Year => new DateTime(value.Year, 1, 1, 0, 0, 0, value.Kind),
+            DateTimeTruncation.Month => new(value.Year, value.Month, 1, 0, 0, 0, value.Kind),
+            DateTimeTruncation.Year => new(value.Year, 1, 1, 0, 0, 0, value.Kind),
             _ => ThrowHelper.ThrowArgumentOutOfRangeException<DateTime>(nameof(truncation), $"Unsupported {nameof(DateTimeTruncation)}")
         };
     }

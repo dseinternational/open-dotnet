@@ -182,7 +182,7 @@ public sealed record WordFeature
                 {
                     if (AlphaNumericCode.TryParse(valuesSpan, provider, out var value))
                     {
-                        result = new WordFeature(name, [value]);
+                        result = new(name, [value]);
                         return true;
                     }
                     else
@@ -213,7 +213,7 @@ public sealed record WordFeature
                     }
                 }
 
-                result = new WordFeature(name, values);
+                result = new(name, values);
                 return true;
             }
         }

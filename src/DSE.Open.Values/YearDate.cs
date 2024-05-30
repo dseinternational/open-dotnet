@@ -27,7 +27,7 @@ public readonly record struct YearDate : IComparable<YearDate>, ISpanParsable<Ye
     /// of <see cref="DateOnly.MinValue"/>.</exception>
     public YearDate(int year)
     {
-        _date = new DateOnly(year, 1, 1);
+        _date = new(year, 1, 1);
         _hasDayAndMonth = false;
     }
 
@@ -42,7 +42,7 @@ public readonly record struct YearDate : IComparable<YearDate>, ISpanParsable<Ye
     /// are outside the range of values permitted by <see cref="DateTime"/>.</exception>
     public YearDate(int year, int month, int day)
     {
-        _date = new DateOnly(year, month, day);
+        _date = new(year, month, day);
         _hasDayAndMonth = true;
     }
 
@@ -161,7 +161,7 @@ public readonly record struct YearDate : IComparable<YearDate>, ISpanParsable<Ye
                 result = Empty;
                 return true;
             case 4 when int.TryParse(s, NumberStyles.Integer, CultureInfo.InvariantCulture, out var year):
-                result = new YearDate(year);
+                result = new(year);
                 return true;
             case 4:
                 result = default;
@@ -170,7 +170,7 @@ public readonly record struct YearDate : IComparable<YearDate>, ISpanParsable<Ye
 
         if (DateTime.TryParse(s, CultureInfo.InvariantCulture, DateTimeStyles.None, out var dateTime))
         {
-            result = new YearDate(dateTime);
+            result = new(dateTime);
             return true;
         }
 

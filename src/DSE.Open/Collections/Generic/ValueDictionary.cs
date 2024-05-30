@@ -27,12 +27,12 @@ public sealed class ValueDictionary<TKey, TValue>
 
     public ValueDictionary(IEnumerable<KeyValuePair<TKey, TValue>> collection)
     {
-        _inner = new Dictionary<TKey, TValue>(collection);
+        _inner = new(collection);
     }
 
     public ValueDictionary(IDictionary<TKey, TValue> source)
     {
-        _inner = new Dictionary<TKey, TValue>(source);
+        _inner = new(source);
     }
 
     public TValue this[TKey key]
@@ -141,6 +141,6 @@ public sealed class ValueDictionary<TKey, TValue>
 
     public ReadOnlyValueDictionary<TKey, TValue> AsReadOnly()
     {
-        return new ReadOnlyValueDictionary<TKey, TValue>(this);
+        return new(this);
     }
 }

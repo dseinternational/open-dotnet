@@ -50,18 +50,18 @@ public readonly partial struct PosTag
 
     public UniversalPosTag ToUniversalPosTag()
     {
-        return new UniversalPosTag(_value);
+        return new(_value);
     }
 
     public TreebankPosTag ToTreebankPosTag()
     {
-        return new TreebankPosTag(_value);
+        return new(_value);
     }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates - Parse
     public static explicit operator PosTag(string value)
 #pragma warning restore CA2225 // Operator overloads have named alternates
     {
-        return new PosTag(value);
+        return new(value);
     }
 }

@@ -35,7 +35,7 @@ public sealed class SessionContext
 
         Created = timeProvider.GetUtcNow();
 
-        _storageTokens = new ConcurrentDictionary<string, string>();
+        _storageTokens = new();
     }
 
     [JsonConstructor]
@@ -46,7 +46,7 @@ public sealed class SessionContext
     {
         Id = id;
         Created = created;
-        _storageTokens = new ConcurrentDictionary<string, string>(storageTokens, StringComparer.InvariantCultureIgnoreCase);
+        _storageTokens = new(storageTokens, StringComparer.InvariantCultureIgnoreCase);
     }
 
     /// <summary>

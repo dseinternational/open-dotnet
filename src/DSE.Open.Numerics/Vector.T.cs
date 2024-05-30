@@ -30,7 +30,7 @@ public readonly struct Vector<T> : IVector<T, Vector<T>>, IEquatable<Vector<T>>
 
     static Vector<T> IVector<T, Vector<T>>.Create(Span<T> data)
     {
-        return new Vector<T>(data.ToArray());
+        return new(data.ToArray());
     }
 
     public SpanVector<T> Span
@@ -102,12 +102,12 @@ public readonly struct Vector<T> : IVector<T, Vector<T>>, IEquatable<Vector<T>>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator Vector<T>(Memory<T> vector)
     {
-        return new Vector<T>(vector);
+        return new(vector);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator ReadOnlyVector<T>(Vector<T> vector)
     {
-        return new ReadOnlyVector<T>(vector._data);
+        return new(vector._data);
     }
 }

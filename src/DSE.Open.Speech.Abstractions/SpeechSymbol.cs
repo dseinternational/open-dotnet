@@ -47,7 +47,7 @@ public readonly partial struct SpeechSymbol
     {
         if (IsValidValue(value))
         {
-            symbol = new SpeechSymbol(value, true);
+            symbol = new(value, true);
             return true;
         }
 

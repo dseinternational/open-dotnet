@@ -67,7 +67,7 @@ public sealed partial class SessionContextMetadataReaderWriter : IMetadataReader
         }
         else
         {
-            sessionContext = new SessionContext();
+            sessionContext = new();
             Log.NoSessionContextInRequestMetadata(_logger, sessionContext);
         }
 
