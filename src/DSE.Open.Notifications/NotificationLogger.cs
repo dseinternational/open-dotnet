@@ -8,25 +8,6 @@ namespace DSE.Open.Notifications;
 
 public static partial class NotificationLogger
 {
-    public static void Log(ILogger logger, INotification notification)
-    {
-        Guard.IsNotNull(logger);
-        Guard.IsNotNull(notification);
-
-        Log(
-            logger,
-            notification.Level switch
-            {
-                NotificationLevel.Critical => LogLevel.Critical,
-                NotificationLevel.Error => LogLevel.Error,
-                NotificationLevel.Warning => LogLevel.Warning,
-                NotificationLevel.Information => LogLevel.Information,
-                NotificationLevel.Debug => LogLevel.Debug,
-                _ => LogLevel.Trace
-            },
-            notification);
-    }
-
     public static void LogTrace(ILogger logger, INotification notification)
     {
         Guard.IsNotNull(logger);

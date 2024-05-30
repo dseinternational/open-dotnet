@@ -7,42 +7,37 @@ namespace DSE.Open.Notifications;
 
 public static class NotificationLoggerExtensions
 {
-    public static void LogNotification(this ILogger logger, INotification notification)
-    {
-        NotificationLogger.Log(logger, notification);
-    }
-
-    public static void LogNotification(this ILogger logger, LogLevel logLevel, INotification notification)
+    public static void Log(this ILogger logger, LogLevel logLevel, INotification notification)
     {
         NotificationLogger.Log(logger, logLevel, notification);
     }
 
-    public static void LogTraceNotification(this ILogger logger, INotification notification)
+    public static void LogTrace(this ILogger logger, INotification notification)
     {
         NotificationLogger.LogTrace(logger, notification);
     }
 
-    public static void LogDebugNotification(this ILogger logger, INotification notification)
+    public static void LogDebug(this ILogger logger, INotification notification)
     {
         NotificationLogger.LogDebug(logger, notification);
     }
 
-    public static void LogInformationNotification(this ILogger logger, INotification notification)
+    public static void LogInformation(this ILogger logger, INotification notification)
     {
         NotificationLogger.LogInformation(logger, notification);
     }
 
-    public static void LogWarningNotification(this ILogger logger, INotification notification)
+    public static void LogWarning(this ILogger logger, INotification notification)
     {
         NotificationLogger.LogWarning(logger, notification);
     }
 
-    public static void LogErrorNotification(this ILogger logger, INotification notification)
+    public static void LogError(this ILogger logger, INotification notification)
     {
         NotificationLogger.LogError(logger, notification);
     }
 
-    public static void LogCriticalNotification(this ILogger logger, INotification notification)
+    public static void LogCritical(this ILogger logger, INotification notification)
     {
         NotificationLogger.LogCritical(logger, notification);
     }

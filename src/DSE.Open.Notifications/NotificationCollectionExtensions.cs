@@ -40,64 +40,60 @@ public static class NotificationCollectionExtensions
         notifications.Add(Notification.Warning(code, message));
     }
 
-    public static void AddAndLog(this ICollection<Notification> notifications, Notification notification, ILogger logger)
+    public static void AddAndLog<T>(this ICollection<T> notifications, T notification, ILogger logger, LogLevel logLevel)
+        where T : INotification
     {
         Guard.IsNotNull(notifications);
         notifications.Add(notification);
-        logger.LogNotification(notification);
+        logger.Log(logLevel, notification);
     }
 
-    public static void AddAndLogRange(this ICollection<Notification> notifications, IEnumerable<Notification> collection, ILogger logger)
-    {
-        Guard.IsNotNull(notifications);
-        Guard.IsNotNull(collection);
-
-        foreach (var notification in collection)
-        {
-            notifications.AddAndLog(notification, logger);
-        }
-    }
-
-    public static void AddAndLogTrace(this ICollection<Notification> notifications, Notification notification, ILogger logger)
+    public static void AddAndLogTrace<T>(this ICollection<T> notifications, T notification, ILogger logger)
+        where T : INotification
     {
         Guard.IsNotNull(notifications);
         notifications.Add(notification);
-        logger.LogTraceNotification(notification);
+        logger.LogTrace(notification);
     }
 
-    public static void AddAndLogDebug(this ICollection<Notification> notifications, Notification notification, ILogger logger)
+    public static void AddAndLogDebug<T>(this ICollection<T> notifications, T notification, ILogger logger)
+        where T : INotification
     {
         Guard.IsNotNull(notifications);
         notifications.Add(notification);
-        logger.LogDebugNotification(notification);
+        logger.LogDebug(notification);
     }
 
-    public static void AddAndLogInformation(this ICollection<Notification> notifications, Notification notification, ILogger logger)
+    public static void AddAndLogInformation<T>(this ICollection<T> notifications, T notification, ILogger logger)
+        where T : INotification
     {
         Guard.IsNotNull(notifications);
         notifications.Add(notification);
-        logger.LogInformationNotification(notification);
+        logger.LogInformation(notification);
     }
 
-    public static void AddAndLogWarning(this ICollection<Notification> notifications, Notification notification, ILogger logger)
+    public static void AddAndLogWarning<T>(this ICollection<T> notifications, T notification, ILogger logger)
+        where T : INotification
     {
         Guard.IsNotNull(notifications);
         notifications.Add(notification);
-        logger.LogWarningNotification(notification);
+        logger.LogWarning(notification);
     }
 
-    public static void AddAndLogError(this ICollection<Notification> notifications, Notification notification, ILogger logger)
+    public static void AddAndLogError<T>(this ICollection<T> notifications, T notification, ILogger logger)
+        where T : INotification
     {
         Guard.IsNotNull(notifications);
         notifications.Add(notification);
-        logger.LogErrorNotification(notification);
+        logger.LogError(notification);
     }
 
-    public static void AddAndLogCritical(this ICollection<Notification> notifications, Notification notification, ILogger logger)
+    public static void AddAndLogCritical<T>(this ICollection<T> notifications, T notification, ILogger logger)
+        where T : INotification
     {
         Guard.IsNotNull(notifications);
         notifications.Add(notification);
-        logger.LogCriticalNotification(notification);
+        logger.LogCritical(notification);
     }
 
     /// <summary>
@@ -107,7 +103,6 @@ public static class NotificationCollectionExtensions
     /// <returns></returns>
     public static bool AnyCritical(this IEnumerable<Notification> notifications)
     {
-        Guard.IsNotNull(notifications);
         return notifications.Any(n => n.IsCritical());
     }
 
@@ -121,7 +116,6 @@ public static class NotificationCollectionExtensions
     /// level notifications.</returns>
     public static bool AnyErrors(this IEnumerable<Notification> notifications)
     {
-        Guard.IsNotNull(notifications);
         return notifications.Any(n => n.IsErrorOrAbove());
     }
 
@@ -134,7 +128,6 @@ public static class NotificationCollectionExtensions
     /// <returns></returns>
     public static bool AnyWarnings(this IEnumerable<Notification> notifications)
     {
-        Guard.IsNotNull(notifications);
         return notifications.Any(n => n.IsWarningOrAbove());
     }
 
@@ -168,8 +161,6 @@ public static class NotificationCollectionExtensions
     /// <returns></returns>
     public static string ToDiagnosticString(this IEnumerable<Notification> notifications)
     {
-        Guard.IsNotNull(notifications);
-
         var list = notifications.ToList();
 
         if (list.Count == 0)
@@ -215,7 +206,6 @@ public static class NotificationCollectionExtensions
 
     public static IEnumerable<Notification> WhereErrorOrAbove(this IEnumerable<Notification> notifications)
     {
-        Guard.IsNotNull(notifications);
         return notifications.Where(n => n.IsErrorOrAbove());
     }
 }
