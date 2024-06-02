@@ -9,16 +9,16 @@ namespace DSE.Open.Requests.Tests;
 public class RequestTests
 {
     [Fact]
-    public void RequestIdIsNotDefault()
+    public void RequestIdIsNotNullOrWhiteSpace()
     {
         var request = new Request();
-        Assert.NotEqual(default, request.RequestId);
+        Assert.False(string.IsNullOrWhiteSpace(request.RequestId));
     }
 
     [Fact]
     public void SerializeDeserialize()
     {
-        var request = new Request();
+        var request = new Request { Source = new Uri("https://testing.dsegroup.net") };
         var json = JsonSerializer.Serialize(request);
         var deserialized = JsonSerializer.Deserialize<Request>(json);
         Assert.NotNull(deserialized);

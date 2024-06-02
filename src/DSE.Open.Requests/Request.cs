@@ -3,6 +3,7 @@
 
 using System.Text.Json.Serialization;
 using DSE.Open.Serialization.DataTransfer;
+using DSE.Open.Values;
 
 namespace DSE.Open.Requests;
 
@@ -12,12 +13,21 @@ namespace DSE.Open.Requests;
 /// </summary>
 public record Request : ImmutableDataTransferObject
 {
-    private Guid? _requestId;
+    private string? _requestId;
 
+    /// <summary>
+    /// Identifies the request. This should be unique for each request and remain the same if a request is
+    /// retried.
+    /// </summary>
     [JsonPropertyName("request_id")]
-    public Guid RequestId
+    public string RequestId
     {
-        get => _requestId ??= Guid.NewGuid();
+        get => _requestId ??= Identifier.New(20, "req"u8).ToStringInvariant();
         init => _requestId = value;
     }
+
+    /// <summary>
+    /// Identifies the source of the request.
+    /// </summary>
+    public Uri? Source { get; init; }
 }
