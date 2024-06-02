@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.ComponentModel;
 using Microsoft.Data.SqlClient;
 
 namespace DSE.Open.Data.SqlClient;
@@ -27,6 +28,8 @@ public static class SqlServerTransientConnectionExceptionDetector
                 switch (err.Number)
                 {
                     // https://github.com/dotnet/efcore/pull/31612/files
+                    // and
+                    // https://github.com/dotnet/efcore/blob/main/src/EFCore.SqlServer/Storage/Internal/SqlServerTransientExceptionDetector.cs
 
                     // SQL Error Code: 49983
                     // The '%ls' operation failed to complete. Retry the operation. Create a support request if the retry attempts do not succeed.
@@ -402,6 +405,16 @@ public static class SqlServerTransientConnectionExceptionDetector
                     // Snapshot isolation transaction failed in database '%.*ls' because the database did not allow snapshot isolation when
                     // the current transaction started. It may help to retry the transaction.
                     case 3957:
+                    // SQL Error Code: 3966
+                    // Transaction is rolled back when accessing version store. It was earlier marked as victim when the version store
+                    // was shrunk due to insufficient space in tempdb. This transaction was marked as a victim earlier because it may need
+                    // the row version(s) that have already been removed to make space in tempdb. Retry the transaction
+                    case 3966:
+                    // SQL Error Code: 3960
+                    // Snapshot isolation transaction aborted due to update conflict. You cannot use snapshot isolation to access table '%.*ls'
+                    // directly or indirectly in database '%.*ls' to update, delete, or insert the row that has been modified or deleted
+                    // by another transaction. Retry the transaction or change the isolation level for the update/delete statement.
+                    case 3960:
                     // SQL Error Code: 3953
                     // Snapshot isolation transaction failed in database '%.*ls' because the database was not recovered when the current
                     // transaction was started. Retry the transaction after the database has recovered.
@@ -626,6 +639,30 @@ public static class SqlServerTransientConnectionExceptionDetector
                     // occurred during the login process. (provider: Shared Memory Provider, error: 0 -
                     // No process is on the other end of the pipe.) (Microsoft SQL Server, Error: 233)
                     case 233:
+                        return true;
+
+                    // SQL Error Code: 203
+                    // A connection was successfully established with the server, but then an error occurred during the pre-login handshake.
+                    // (provider: TCP Provider, error: 0 - 20) ---> System.ComponentModel.Win32Exception (203): Unknown error: 203
+                    case 203:
+                        if (ex.InnerException is Win32Exception)
+                        {
+                            return true;
+                        }
+                        continue;
+
+                    // SQL Error Code: 121
+                    // The semaphore timeout period has expired
+                    case 121:
+
+                    // SQL Error Code: 64
+                    // A connection was successfully established with the server, but then an error occurred during the login process.
+                    // (provider: TCP Provider, error: 0 - The specified network name is no longer available.)
+                    case 64:
+
+                    // DBNETLIB Error Code: 20
+                    // The instance of SQL Server you attempted to connect to does not support encryption.
+                    case 20:
 
                         return true;
                 }
