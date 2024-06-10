@@ -4,9 +4,6 @@ registries:
   nuget.org:
     type: nuget-feed
     url: https://api.nuget.org/v3/index.json
-  dotnet9:
-    type: nuget-feed
-    url: https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet9/nuget/v3/index.json
 
 updates:
   - package-ecosystem: nuget
