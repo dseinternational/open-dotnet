@@ -14,7 +14,7 @@
 
   <ItemGroup>
     <PackageVersion Include="Azure.Core" Version="1.40.0" />
-    <PackageVersion Include="Azure.Identity" Version="1.11.3" />
+    <PackageVersion Include="Azure.Identity" Version="1.11.4" />
     <PackageVersion Include="BenchmarkDotNet" Version="0.13.12" />
     <PackageVersion Include="CommunityToolkit.Diagnostics" Version="8.2.2" />
     <PackageVersion Include="CommunityToolkit.HighPerformance" Version="8.2.2" />
