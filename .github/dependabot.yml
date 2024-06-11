@@ -11,22 +11,28 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-      time: "05:00"
+      time: "18:00"
       timezone: "Europe/London"
     open-pull-requests-limit: 20
     groups:
+      Azure:
+        patterns:
+          - "Azure.*"
       CommunityToolkit:
         patterns:
           - "CommunityToolkit.*"
-      DotnetCore:
+      DotNet:
         patterns:
           - "System.*"
-      EntityFrameworkCore:
-        patterns:
+          - "Microsoft.Bcl*"
+          - "Microsoft.CodeAnalysis*"
+          - "Microsoft.Diagnostics*"
           - "Microsoft.EntityFrameworkCore*"
-      MicrosoftExtensions:
-        patterns:
           - "Microsoft.Extensions.*"
+          - "Microsoft.NETCore.*"
+      MicrosoftIdentity:
+        patterns:
+          - "Microsoft.Identity*"
       NETTestSdk:
         patterns:
           - "Microsoft.CodeCoverage"
@@ -34,6 +40,9 @@ updates:
       NodaTime:
         patterns:
           - "NodaTime*"
+      Polly:
+        patterns:
+          - "Polly*"
       xunit:
         patterns:
           - "xunit*"
