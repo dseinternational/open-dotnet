@@ -18,6 +18,7 @@ updates:
       Azure:
         patterns:
           - "Azure.*"
+          - "Microsoft.Azure.*"
       CommunityToolkit:
         patterns:
           - "CommunityToolkit.*"
@@ -27,6 +28,7 @@ updates:
           - "Microsoft.Bcl*"
           - "Microsoft.CodeAnalysis*"
           - "Microsoft.Diagnostics*"
+          - "Microsoft.AspNetCore*"
           - "Microsoft.EntityFrameworkCore*"
           - "Microsoft.Extensions.*"
           - "Microsoft.NETCore.*"
