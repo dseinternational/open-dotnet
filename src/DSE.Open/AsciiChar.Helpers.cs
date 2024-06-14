@@ -43,12 +43,12 @@ public partial struct AsciiChar
         return IsUpper(asciiChar._asciiByte);
     }
 
-    public static bool EqualsCaseInsensitive(byte asciiByte1, byte asciiByte2)
+    public static bool EqualsIgnoreCase(byte asciiByte1, byte asciiByte2)
     {
         return (asciiByte1 | 0x20) == (asciiByte2 | 0x20);
     }
 
-    public static int CompareToCaseInsensitive(byte asciiByte1, byte asciiByte2)
+    public static int CompareToIgnoreCase(byte asciiByte1, byte asciiByte2)
     {
         return (asciiByte1 | 0x20).CompareTo(asciiByte2 | 0x20);
     }

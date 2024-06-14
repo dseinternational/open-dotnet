@@ -107,9 +107,9 @@ public readonly partial struct UriAsciiPath
         return _value.Equals(value);
     }
 
-    public bool EqualsCaseInsensitive(UriAsciiPath other)
+    public bool EqualsIgnoreCase(UriAsciiPath other)
     {
-        return _value.EqualsCaseInsensitive(other._value);
+        return _value.EqualsIgnoreCase(other._value);
     }
 
     public int IndexOf(AsciiChar c)

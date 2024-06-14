@@ -113,25 +113,25 @@ public readonly struct AsciiChar3
         return obj is AsciiChar3 other && Equals(other);
     }
 
-    public bool EqualsCaseInsensitive(AsciiChar3 other)
+    public bool EqualsIgnoreCase(AsciiChar3 other)
     {
-        return AsciiChar.EqualsCaseInsensitive(_c0, other._c0)
-               && AsciiChar.EqualsCaseInsensitive(_c1, other._c1)
-               && AsciiChar.EqualsCaseInsensitive(_c2, other._c2);
+        return AsciiChar.EqualsIgnoreCase(_c0, other._c0)
+               && AsciiChar.EqualsIgnoreCase(_c1, other._c1)
+               && AsciiChar.EqualsIgnoreCase(_c2, other._c2);
     }
 
-    public int CompareToCaseInsensitive(AsciiChar3 other)
+    public int CompareToIgnoreCase(AsciiChar3 other)
     {
-        var c = AsciiChar.CompareToCaseInsensitive(_c0, other._c0);
+        var c = AsciiChar.CompareToIgnoreCase(_c0, other._c0);
 
         if (c != 0)
         {
             return c;
         }
 
-        c = AsciiChar.CompareToCaseInsensitive(_c1, other._c1);
+        c = AsciiChar.CompareToIgnoreCase(_c1, other._c1);
 
-        return c != 0 ? c : AsciiChar.CompareToCaseInsensitive(_c2, other._c2);
+        return c != 0 ? c : AsciiChar.CompareToIgnoreCase(_c2, other._c2);
     }
 
     public int CompareTo(AsciiChar3 other)

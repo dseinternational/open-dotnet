@@ -83,9 +83,9 @@ public readonly partial struct AsciiChar
         return _asciiByte.CompareTo(other._asciiByte);
     }
 
-    public int CompareToCaseInsensitive(AsciiChar other)
+    public int CompareToIgnoreCase(AsciiChar other)
     {
-        return CompareToCaseInsensitive(_asciiByte, other._asciiByte);
+        return CompareToIgnoreCase(_asciiByte, other._asciiByte);
     }
 
     public bool Equals(AsciiChar other)

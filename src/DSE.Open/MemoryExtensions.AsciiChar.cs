@@ -112,7 +112,7 @@ public static partial class MemoryExtensions
     /// <param name="a"></param>
     /// <param name="b"></param>
     /// <returns></returns>
-    public static bool SequenceEqualsCaseInsensitive(this ReadOnlySpan<AsciiChar> a, ReadOnlySpan<AsciiChar> b)
+    public static bool SequenceEqualsIgnoreCase(this ReadOnlySpan<AsciiChar> a, ReadOnlySpan<AsciiChar> b)
     {
         return Ascii.EqualsIgnoreCase(ValuesMarshal.AsBytes(a), ValuesMarshal.AsBytes(b));
     }

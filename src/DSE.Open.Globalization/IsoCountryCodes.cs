@@ -12,7 +12,7 @@ public static class IsoCountryCodes
     /// </summary>
     public static readonly IReadOnlySet<AsciiChar2> OfficiallyAssignedAlpha2Ascii
         = ImmutableHashSet.Create(
-            AsciiChar2Comparer.CaseInsensitive,
+            AsciiChar2Comparer.IgnoreCase,
             new[]
         {
             (AsciiChar2)"AD",
@@ -321,7 +321,7 @@ public static class IsoCountryCodes
     /// </summary>
     public static readonly IReadOnlySet<AsciiChar2> AssignedAlpha2Ascii
         = ImmutableHashSet.Create(
-            AsciiChar2Comparer.CaseInsensitive,
+            AsciiChar2Comparer.IgnoreCase,
             OfficiallyAssignedAlpha2Ascii.Concat(UserAssignedAlpha2Ascii).ToArray());
 
     /// <summary>
@@ -329,7 +329,7 @@ public static class IsoCountryCodes
     /// </summary>
     public static readonly IReadOnlySet<AsciiChar3> OfficiallyAssignedAlpha3Ascii
         = ImmutableHashSet.Create(
-            AsciiChar3Comparer.CaseInsensitive,
+            AsciiChar3Comparer.IgnoreCase,
             new[]
         {
             (AsciiChar3)"ABW",

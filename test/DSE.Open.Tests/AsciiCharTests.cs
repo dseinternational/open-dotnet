@@ -30,7 +30,7 @@ public class AsciiCharTests
     [InlineData('?', '?', 0)]
     public void Compare_case_insensitive(char a, char b, int expected)
     {
-        var c = ((AsciiChar)a).CompareToCaseInsensitive((AsciiChar)b);
+        var c = ((AsciiChar)a).CompareToIgnoreCase((AsciiChar)b);
         Assert.Equal(expected, c);
     }
 

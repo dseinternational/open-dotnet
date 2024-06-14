@@ -111,19 +111,19 @@ public readonly struct AsciiChar2
         return c != 0 ? c : _c1.CompareTo(other._c1);
     }
 
-    public bool EqualsCaseInsensitive(AsciiChar2 other)
+    public bool EqualsIgnoreCase(AsciiChar2 other)
     {
-        return AsciiChar.EqualsCaseInsensitive(_c0, other._c0) && AsciiChar.EqualsCaseInsensitive(_c1, other._c1);
+        return AsciiChar.EqualsIgnoreCase(_c0, other._c0) && AsciiChar.EqualsIgnoreCase(_c1, other._c1);
     }
 
-    public int CompareToCaseInsensitive(AsciiChar2 other)
+    public int CompareToIgnoreCase(AsciiChar2 other)
     {
-        var c = AsciiChar.CompareToCaseInsensitive(_c0, other._c0);
+        var c = AsciiChar.CompareToIgnoreCase(_c0, other._c0);
 
         return (c != 0) switch
         {
             true => c,
-            _ => AsciiChar.CompareToCaseInsensitive(_c1, other._c1)
+            _ => AsciiChar.CompareToIgnoreCase(_c1, other._c1)
         };
     }
 

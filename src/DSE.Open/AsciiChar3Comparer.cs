@@ -6,7 +6,7 @@ namespace DSE.Open;
 public abstract class AsciiChar3Comparer : IComparer<AsciiChar3>, IEqualityComparer<AsciiChar3>
 {
     public static readonly AsciiChar3Comparer CaseSensitive = new AsciiCharSequenceComparerCaseSensitive();
-    public static readonly AsciiChar3Comparer CaseInsensitive = new AsciiCharSequenceComparerCaseInsensitive();
+    public static readonly AsciiChar3Comparer IgnoreCase = new AsciiCharSequenceComparerIgnoreCase();
 
     protected AsciiChar3Comparer()
     {
@@ -36,16 +36,16 @@ public abstract class AsciiChar3Comparer : IComparer<AsciiChar3>, IEqualityCompa
         }
     }
 
-    private sealed class AsciiCharSequenceComparerCaseInsensitive : AsciiChar3Comparer
+    private sealed class AsciiCharSequenceComparerIgnoreCase : AsciiChar3Comparer
     {
         public override int Compare(AsciiChar3 x, AsciiChar3 y)
         {
-            return x.CompareToCaseInsensitive(y);
+            return x.CompareToIgnoreCase(y);
         }
 
         public override bool Equals(AsciiChar3 x, AsciiChar3 y)
         {
-            return x.EqualsCaseInsensitive(y);
+            return x.EqualsIgnoreCase(y);
         }
 
         public override int GetHashCode(AsciiChar3 obj)

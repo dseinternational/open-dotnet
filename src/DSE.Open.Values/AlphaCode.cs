@@ -55,14 +55,24 @@ public readonly partial struct AlphaCode
         return _value.Equals(other);
     }
 
+    public bool EqualsIgnoreCase(ReadOnlySpan<char> other)
+    {
+        return _value.EqualsIgnoreCase(other);
+    }
+
     public bool Equals(string other)
     {
         return _value.Equals(other);
     }
 
-    public int CompareToCaseInsensitive(AlphaCode other)
+    public bool EqualsIgnoreCase(string other)
     {
-        return _value.CompareToCaseInsensitive(other._value);
+        return _value.EqualsIgnoreCase(other);
+    }
+
+    public int CompareToIgnoreCase(AlphaCode other)
+    {
+        return _value.CompareToIgnoreCase(other._value);
     }
 
     public ReadOnlySpan<AsciiChar> AsSpan()

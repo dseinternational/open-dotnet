@@ -57,9 +57,9 @@ public readonly partial struct AlphaNumericCode
         return _value.Equals(other);
     }
 
-    public int CompareToCaseInsensitive(AlphaNumericCode other)
+    public int CompareToIgnoreCase(AlphaNumericCode other)
     {
-        return _value.CompareToCaseInsensitive(other._value);
+        return _value.CompareToIgnoreCase(other._value);
     }
 
     public ReadOnlySpan<AsciiChar> AsSpan()

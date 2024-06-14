@@ -9,7 +9,7 @@ namespace DSE.Open;
 public abstract class AsciiStringComparer : IComparer<AsciiString>, IEqualityComparer<AsciiString>
 {
     public static readonly AsciiStringComparer CaseSensitive = new AsciiCharSequenceComparerCaseSensitive();
-    public static readonly AsciiStringComparer CaseInsensitive = new AsciiCharSequenceComparerCaseInsensitive();
+    public static readonly AsciiStringComparer IgnoreCase = new AsciiCharSequenceComparerIgnoreCase();
 
     protected AsciiStringComparer()
     {
@@ -39,16 +39,16 @@ public abstract class AsciiStringComparer : IComparer<AsciiString>, IEqualityCom
         }
     }
 
-    private sealed class AsciiCharSequenceComparerCaseInsensitive : AsciiStringComparer
+    private sealed class AsciiCharSequenceComparerIgnoreCase : AsciiStringComparer
     {
         public override int Compare(AsciiString x, AsciiString y)
         {
-            return x.CompareToCaseInsensitive(y);
+            return x.CompareToIgnoreCase(y);
         }
 
         public override bool Equals(AsciiString x, AsciiString y)
         {
-            return x.EqualsCaseInsensitive(y);
+            return x.EqualsIgnoreCase(y);
         }
 
         public override int GetHashCode(AsciiString obj)

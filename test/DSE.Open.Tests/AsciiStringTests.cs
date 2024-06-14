@@ -39,7 +39,7 @@ public class AsciiStringTests
     [InlineData("\t", "\t", 0)]
     public void Compare_case_insensitive(string a, string b, int expected)
     {
-        var c = AsciiString.Parse(a, CultureInfo.InvariantCulture).CompareToCaseInsensitive(AsciiString.Parse(b, CultureInfo.InvariantCulture));
+        var c = AsciiString.Parse(a, CultureInfo.InvariantCulture).CompareToIgnoreCase(AsciiString.Parse(b, CultureInfo.InvariantCulture));
         Assert.Equal(expected, c);
     }
 

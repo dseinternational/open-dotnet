@@ -232,18 +232,18 @@ public readonly struct AsciiString
         return _value.Span.SequenceCompareTo(other._value.Span);
     }
 
-    public int CompareToCaseInsensitive(AsciiString other)
+    public int CompareToIgnoreCase(AsciiString other)
     {
-        return CompareToCaseInsensitive(other._value.Span);
+        return CompareToIgnoreCase(other._value.Span);
     }
 
-    public int CompareToCaseInsensitive(ReadOnlySpan<AsciiChar> asciiBytes)
+    public int CompareToIgnoreCase(ReadOnlySpan<AsciiChar> asciiBytes)
     {
         var length = Math.Min(_value.Length, asciiBytes.Length);
 
         for (var i = 0; i < length; i++)
         {
-            var c = AsciiChar.CompareToCaseInsensitive(_value.Span[i], asciiBytes[i]);
+            var c = AsciiChar.CompareToIgnoreCase(_value.Span[i], asciiBytes[i]);
 
             if (c != 0)
             {
@@ -279,19 +279,20 @@ public readonly struct AsciiString
         return Ascii.Equals(ValuesMarshal.AsBytes(_value.Span), other);
     }
 
-    public bool EqualsCaseInsensitive(AsciiString other)
+    public bool EqualsIgnoreCase(AsciiString other)
     {
-        return _value.Span.SequenceEqualsCaseInsensitive(other._value.Span);
+        return _value.Span.SequenceEqualsIgnoreCase(other._value.Span);
     }
 
-    public bool EqualsCaseInsensitive(ReadOnlySpan<char> other)
+    public bool EqualsIgnoreCase(ReadOnlySpan<char> other)
     {
         return Ascii.EqualsIgnoreCase(ValuesMarshal.AsBytes(_value.Span), other);
     }
 
-    public bool EqualsCaseInsensitive(string other)
+    public bool EqualsIgnoreCase(string other)
     {
-        return EqualsCaseInsensitive(other.AsSpan());
+        Guard.IsNotNull(other);
+        return EqualsIgnoreCase(other.AsSpan());
     }
 
     public override bool Equals(object? obj)

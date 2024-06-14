@@ -105,17 +105,17 @@ public readonly partial struct LanguageTag
 
     public bool Equals(LanguageTag other)
     {
-        return _value.EqualsCaseInsensitive(other._value);
+        return _value.EqualsIgnoreCase(other._value);
     }
 
     public int CompareTo(LanguageTag other)
     {
-        return _value.CompareToCaseInsensitive(other._value);
+        return _value.CompareToIgnoreCase(other._value);
     }
 
     public override int GetHashCode()
     {
-        return AsciiStringComparer.CaseInsensitive.GetHashCode(_value);
+        return AsciiStringComparer.IgnoreCase.GetHashCode(_value);
     }
 
     // we know they will be interned - see IsoCountryCodes
@@ -336,7 +336,7 @@ public readonly partial struct LanguageTag
         var index = span.IndexOf((AsciiChar)'-');
 
         return otherLangPart.Length == index - 1
-            && span[..index].SequenceEqualsCaseInsensitive(otherLangPart);
+            && span[..index].SequenceEqualsIgnoreCase(otherLangPart);
     }
 
     public ReadOnlySpan<AsciiChar> GetLanguagePartSpan()

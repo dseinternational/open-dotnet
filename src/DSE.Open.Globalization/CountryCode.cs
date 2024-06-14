@@ -28,17 +28,17 @@ public readonly partial struct CountryCode : IComparableValue<CountryCode, Ascii
 
     public bool Equals(CountryCode other)
     {
-        return _value.EqualsCaseInsensitive(other._value);
+        return _value.EqualsIgnoreCase(other._value);
     }
 
     public int CompareTo(CountryCode other)
     {
-        return _value.CompareToCaseInsensitive(other._value);
+        return _value.CompareToIgnoreCase(other._value);
     }
 
     public override int GetHashCode()
     {
-        return AsciiChar2Comparer.CaseInsensitive.GetHashCode(_value);
+        return AsciiChar2Comparer.IgnoreCase.GetHashCode(_value);
     }
 
     public bool Equals(string other)
