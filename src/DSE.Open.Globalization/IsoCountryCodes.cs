@@ -1,7 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Collections.Immutable;
+using System.Collections.Frozen;
 
 namespace DSE.Open.Globalization;
 
@@ -10,10 +10,8 @@ public static class IsoCountryCodes
     /// <summary>
     /// Gets the set of officially assigned alpha-2 ASCII codes.
     /// </summary>
-    public static readonly IReadOnlySet<AsciiChar2> OfficiallyAssignedAlpha2Ascii
-        = ImmutableHashSet.Create(
-            AsciiChar2Comparer.IgnoreCase,
-            new[]
+    public static readonly FrozenSet<AsciiChar2> OfficiallyAssignedAlpha2Ascii
+        = new AsciiChar2[]
         {
             (AsciiChar2)"AD",
             (AsciiChar2)"AE",
@@ -264,73 +262,71 @@ public static class IsoCountryCodes
             (AsciiChar2)"ZA",
             (AsciiChar2)"ZM",
             (AsciiChar2)"ZW",
-        });
+
+        }.ToFrozenSet(AsciiChar2Comparer.IgnoreCase);
 
     /// <summary>
     /// Gets the set of user-assigned alpha-2 ASCII codes.
     /// </summary>
-    public static readonly IReadOnlySet<AsciiChar2> UserAssignedAlpha2Ascii
-        = ImmutableHashSet.Create(new[]
-    {
-        (AsciiChar2)"AA",
-        (AsciiChar2)"QM",
-        (AsciiChar2)"QN",
-        (AsciiChar2)"QO",
-        (AsciiChar2)"QP",
-        (AsciiChar2)"QQ",
-        (AsciiChar2)"QR",
-        (AsciiChar2)"QS",
-        (AsciiChar2)"QT",
-        (AsciiChar2)"QU",
-        (AsciiChar2)"QV",
-        (AsciiChar2)"QW",
-        (AsciiChar2)"QX",
-        (AsciiChar2)"QY",
-        (AsciiChar2)"QZ",
-        (AsciiChar2)"XA",
-        (AsciiChar2)"XB",
-        (AsciiChar2)"XC",
-        (AsciiChar2)"XD",
-        (AsciiChar2)"XE",
-        (AsciiChar2)"XF",
-        (AsciiChar2)"XG",
-        (AsciiChar2)"XH",
-        (AsciiChar2)"XI",
-        (AsciiChar2)"XJ",
-        (AsciiChar2)"XK",
-        (AsciiChar2)"XL",
-        (AsciiChar2)"XM",
-        (AsciiChar2)"XN",
-        (AsciiChar2)"XO",
-        (AsciiChar2)"XP",
-        (AsciiChar2)"XQ",
-        (AsciiChar2)"XR",
-        (AsciiChar2)"XS",
-        (AsciiChar2)"XT",
-        (AsciiChar2)"XU",
-        (AsciiChar2)"XV",
-        (AsciiChar2)"XW",
-        (AsciiChar2)"XX",
-        (AsciiChar2)"XY",
-        (AsciiChar2)"XZ",
-        (AsciiChar2)"ZZ",
-    });
+    public static readonly FrozenSet<AsciiChar2> UserAssignedAlpha2Ascii
+        = new[]
+        {
+            (AsciiChar2)"AA",
+            (AsciiChar2)"QM",
+            (AsciiChar2)"QN",
+            (AsciiChar2)"QO",
+            (AsciiChar2)"QP",
+            (AsciiChar2)"QQ",
+            (AsciiChar2)"QR",
+            (AsciiChar2)"QS",
+            (AsciiChar2)"QT",
+            (AsciiChar2)"QU",
+            (AsciiChar2)"QV",
+            (AsciiChar2)"QW",
+            (AsciiChar2)"QX",
+            (AsciiChar2)"QY",
+            (AsciiChar2)"QZ",
+            (AsciiChar2)"XA",
+            (AsciiChar2)"XB",
+            (AsciiChar2)"XC",
+            (AsciiChar2)"XD",
+            (AsciiChar2)"XE",
+            (AsciiChar2)"XF",
+            (AsciiChar2)"XG",
+            (AsciiChar2)"XH",
+            (AsciiChar2)"XI",
+            (AsciiChar2)"XJ",
+            (AsciiChar2)"XK",
+            (AsciiChar2)"XL",
+            (AsciiChar2)"XM",
+            (AsciiChar2)"XN",
+            (AsciiChar2)"XO",
+            (AsciiChar2)"XP",
+            (AsciiChar2)"XQ",
+            (AsciiChar2)"XR",
+            (AsciiChar2)"XS",
+            (AsciiChar2)"XT",
+            (AsciiChar2)"XU",
+            (AsciiChar2)"XV",
+            (AsciiChar2)"XW",
+            (AsciiChar2)"XX",
+            (AsciiChar2)"XY",
+            (AsciiChar2)"XZ",
+            (AsciiChar2)"ZZ",
+
+        }.ToFrozenSet(AsciiChar2Comparer.IgnoreCase);
 
     /// <summary>
     /// Gets the set of officially assigned and user-assigned alpha-2 ASCII codes.
     /// </summary>
-    public static readonly IReadOnlySet<AsciiChar2> AssignedAlpha2Ascii
-        = ImmutableHashSet.Create(
-            AsciiChar2Comparer.IgnoreCase,
-            OfficiallyAssignedAlpha2Ascii.Concat(UserAssignedAlpha2Ascii).ToArray());
+    public static readonly FrozenSet<AsciiChar2> AssignedAlpha2Ascii
+        = OfficiallyAssignedAlpha2Ascii.Concat(UserAssignedAlpha2Ascii).ToFrozenSet(AsciiChar2Comparer.IgnoreCase);
 
     /// <summary>
     /// Gets the set of officially assigned alpha-3 codes.
     /// </summary>
-    public static readonly IReadOnlySet<AsciiChar3> OfficiallyAssignedAlpha3Ascii
-        = ImmutableHashSet.Create(
-            AsciiChar3Comparer.IgnoreCase,
-            new[]
+    public static readonly FrozenSet<AsciiChar3> OfficiallyAssignedAlpha3Ascii
+        = new[]
         {
             (AsciiChar3)"ABW",
             (AsciiChar3)"AFG",
@@ -581,11 +577,12 @@ public static class IsoCountryCodes
             (AsciiChar3)"ZAF",
             (AsciiChar3)"ZMB",
             (AsciiChar3)"ZWE",
-        });
 
-    public static readonly IReadOnlySet<CountryCode> OfficiallyAssignedAlpha2
-        = ImmutableHashSet.Create(OfficiallyAssignedAlpha2Ascii.Select(CountryCode.FromValue).ToArray());
+        }.ToFrozenSet(AsciiChar3Comparer.IgnoreCase);
 
-    public static readonly IReadOnlySet<CountryCode3> OfficiallyAssignedAlpha3
-        = ImmutableHashSet.Create(OfficiallyAssignedAlpha3Ascii.Select(CountryCode3.FromValue).ToArray());
+    public static readonly FrozenSet<CountryCode> OfficiallyAssignedAlpha2
+        = OfficiallyAssignedAlpha2Ascii.Select(CountryCode.FromValue).ToFrozenSet();
+
+    public static readonly FrozenSet<CountryCode3> OfficiallyAssignedAlpha3
+        = OfficiallyAssignedAlpha3Ascii.Select(CountryCode3.FromValue).ToFrozenSet();
 }

@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Text.Json.Serialization;
 using DSE.Open.Text.Json.Serialization;
 
@@ -95,7 +96,14 @@ public readonly struct AsciiChar3
 
     public bool Equals(string other)
     {
+        Guard.IsNotNull(other);
         return Equals(other.AsSpan());
+    }
+
+    public bool EqualsIgnoreCase(string other)
+    {
+        Guard.IsNotNull(other);
+        return EqualsIgnoreCase(other.AsSpan());
     }
 
     public bool Equals(ReadOnlyMemory<char> other)
@@ -106,6 +114,12 @@ public readonly struct AsciiChar3
     public bool Equals(ReadOnlySpan<char> other)
     {
         return other.Length == CharCount && other[0] == _c0 && other[1] == _c1 && other[2] == _c2;
+    }
+
+    public bool EqualsIgnoreCase(ReadOnlySpan<char> other)
+    {
+        return other.Length == CharCount
+            && Ascii.EqualsIgnoreCase([_c0.ToChar(), _c1.ToChar(), _c2.ToChar()], other);
     }
 
     public override bool Equals(object? obj)

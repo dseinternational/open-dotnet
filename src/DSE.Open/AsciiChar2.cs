@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Text.Json.Serialization;
 using DSE.Open.Text.Json.Serialization;
 
@@ -111,11 +112,6 @@ public readonly struct AsciiChar2
         return c != 0 ? c : _c1.CompareTo(other._c1);
     }
 
-    public bool EqualsIgnoreCase(AsciiChar2 other)
-    {
-        return AsciiChar.EqualsIgnoreCase(_c0, other._c0) && AsciiChar.EqualsIgnoreCase(_c1, other._c1);
-    }
-
     public int CompareToIgnoreCase(AsciiChar2 other)
     {
         var c = AsciiChar.CompareToIgnoreCase(_c0, other._c0);
@@ -132,9 +128,21 @@ public readonly struct AsciiChar2
         return _c0 == other._c0 && _c1 == other._c1;
     }
 
+    public bool EqualsIgnoreCase(AsciiChar2 other)
+    {
+        return AsciiChar.EqualsIgnoreCase(_c0, other._c0) && AsciiChar.EqualsIgnoreCase(_c1, other._c1);
+    }
+
     public bool Equals(string other)
     {
+        Guard.IsNotNull(other);
         return Equals(other.AsSpan());
+    }
+
+    public bool EqualsIgnoreCase(string other)
+    {
+        Guard.IsNotNull(other);
+        return EqualsIgnoreCase(other.AsSpan());
     }
 
     public bool Equals(ReadOnlyMemory<char> other)
@@ -145,6 +153,12 @@ public readonly struct AsciiChar2
     public bool Equals(ReadOnlySpan<char> other)
     {
         return other.Length == CharCount && other[0] == _c0 && other[1] == _c1;
+    }
+
+    public bool EqualsIgnoreCase(ReadOnlySpan<char> other)
+    {
+        return other.Length == CharCount
+            && Ascii.EqualsIgnoreCase([_c0.ToChar(), _c1.ToChar()], other);
     }
 
     public override bool Equals(object? obj)
@@ -254,8 +268,8 @@ public readonly struct AsciiChar2
     {
         if (destination.Length >= 2)
         {
-            _c0.TryFormat(destination, out _, format, provider);
-            _c1.TryFormat(destination[1..], out _, format, provider);
+            _ = _c0.TryFormat(destination, out _, format, provider);
+            _ = _c1.TryFormat(destination[1..], out _, format, provider);
             charsWritten = 2;
             return true;
         }
@@ -382,8 +396,8 @@ public readonly struct AsciiChar2
     {
         if (utf8Destination.Length >= MaxSerializedByteLength)
         {
-            _c0.TryFormat(utf8Destination, out _, format, provider);
-            _c1.TryFormat(utf8Destination[1..], out _, format, provider);
+            _ = _c0.TryFormat(utf8Destination, out _, format, provider);
+            _ = _c1.TryFormat(utf8Destination[1..], out _, format, provider);
             bytesWritten = MaxSerializedByteLength;
             return true;
         }

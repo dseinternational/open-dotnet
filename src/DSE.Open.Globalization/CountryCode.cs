@@ -26,11 +26,6 @@ public readonly partial struct CountryCode : IComparableValue<CountryCode, Ascii
 
     public static int MaxSerializedByteLength => Length;
 
-    public bool Equals(CountryCode other)
-    {
-        return _value.EqualsIgnoreCase(other._value);
-    }
-
     public int CompareTo(CountryCode other)
     {
         return _value.CompareToIgnoreCase(other._value);
@@ -41,19 +36,44 @@ public readonly partial struct CountryCode : IComparableValue<CountryCode, Ascii
         return AsciiChar2Comparer.IgnoreCase.GetHashCode(_value);
     }
 
+    /// <summary>
+    /// Determines if the specified value is equal to this value. Country code comparisons are case-insensitive.
+    /// </summary>
+    /// <param name="other"></param>
+    /// <returns></returns>
+    public bool Equals(CountryCode other)
+    {
+        return _value.EqualsIgnoreCase(other._value);
+    }
+
+    /// <summary>
+    /// Determines if the specified value is equal to this value. Country code comparisons are case-insensitive.
+    /// </summary>
+    /// <param name="other"></param>
+    /// <returns></returns>
     public bool Equals(string other)
     {
-        return _value.Equals(other);
+        return _value.EqualsIgnoreCase(other);
     }
 
+    /// <summary>
+    /// Determines if the specified value is equal to this value. Country code comparisons are case-insensitive.
+    /// </summary>
+    /// <param name="other"></param>
+    /// <returns></returns>
     public bool Equals(ReadOnlyMemory<char> other)
     {
-        return _value.Equals(other);
+        return _value.EqualsIgnoreCase(other.Span);
     }
 
+    /// <summary>
+    /// Determines if the specified value is equal to this value. Country code comparisons are case-insensitive.
+    /// </summary>
+    /// <param name="other"></param>
+    /// <returns></returns>
     public bool Equals(ReadOnlySpan<char> other)
     {
-        return _value.Equals(other);
+        return _value.EqualsIgnoreCase(other);
     }
 
     public char[] ToCharArray()

@@ -1,13 +1,14 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Collections.Immutable;
+using System.Collections.Frozen;
 
 namespace DSE.Open.Globalization;
 
 public static class IsoLanguageCodes
 {
-    public static readonly IReadOnlySet<AsciiChar2> OfficiallyAssignedAlpha2Ascii = ImmutableHashSet.Create(new[]
+    public static readonly FrozenSet<AsciiChar2> OfficiallyAssignedAlpha2Ascii
+        = new[]
     {
         (AsciiChar2)"ab",
         (AsciiChar2)"aa",
@@ -192,8 +193,9 @@ public static class IsoLanguageCodes
         (AsciiChar2)"yo",
         (AsciiChar2)"za",
         (AsciiChar2)"zu",
-    });
 
-    public static readonly IReadOnlySet<LanguageCode2> OfficiallyAssignedAlpha2
-        = ImmutableHashSet.Create(OfficiallyAssignedAlpha2Ascii.Select(LanguageCode2.FromAsciiChar2).ToArray());
+    }.ToFrozenSet(AsciiChar2Comparer.IgnoreCase);
+
+    public static readonly FrozenSet<LanguageCode2> OfficiallyAssignedAlpha2
+        = OfficiallyAssignedAlpha2Ascii.Select(LanguageCode2.FromAsciiChar2).ToFrozenSet();
 }

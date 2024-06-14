@@ -103,9 +103,48 @@ public readonly partial struct LanguageTag
         return s_regex.IsMatch(buffer);
     }
 
+    /// <summary>
+    /// Determines if the specified language tag is equal to this value. Language tag comparisons are
+    /// <see href="https://datatracker.ietf.org/doc/html/rfc5646#section-2.1.1">case insensitive</see>.
+    /// </summary>
+    /// <param name="other"></param>
+    /// <returns></returns>
     public bool Equals(LanguageTag other)
     {
         return _value.EqualsIgnoreCase(other._value);
+    }
+
+    /// <summary>
+    /// Determines if the specified value is equal to this value. Language tag comparisons are
+    /// <see href="https://datatracker.ietf.org/doc/html/rfc5646#section-2.1.1">case insensitive</see>.
+    /// </summary>
+    /// <param name="other"></param>
+    /// <returns></returns>
+    public bool Equals(AsciiString other)
+    {
+        return _value.EqualsIgnoreCase(other);
+    }
+
+    /// <summary>
+    /// Determines if the specified value is equal to this value. Language tag comparisons are
+    /// <see href="https://datatracker.ietf.org/doc/html/rfc5646#section-2.1.1">case insensitive</see>.
+    /// </summary>
+    /// <param name="other"></param>
+    /// <returns></returns>
+    public bool Equals(ReadOnlySpan<char> other)
+    {
+        return _value.EqualsIgnoreCase(other);
+    }
+
+    /// <summary>
+    /// Determines if the specified value is equal to this value. Language tag comparisons are
+    /// <see href="https://datatracker.ietf.org/doc/html/rfc5646#section-2.1.1">case insensitive</see>.
+    /// </summary>
+    /// <param name="other"></param>
+    /// <returns></returns>
+    public bool Equals(string other)
+    {
+        return _value.EqualsIgnoreCase(other);
     }
 
     public int CompareTo(LanguageTag other)
