@@ -15,11 +15,13 @@ namespace DSE.Open.Text.Json.Serialization;
 public abstract class SpanParsableByteWritingJsonConverter<TValue> : ByteWritingJsonConverter<TValue>
     where TValue : IUtf8SpanFormattable, IUtf8SpanParsable<TValue>
 {
+    protected virtual string FormatString => string.Empty;
+
     protected virtual IFormatProvider FormatProvider => CultureInfo.InvariantCulture;
 
     protected override bool TryFormat(TValue value, Span<byte> data, out int bytesWritten)
     {
-        return value.TryFormat(data, out bytesWritten, default, FormatProvider);
+        return value.TryFormat(data, out bytesWritten, FormatString, FormatProvider);
     }
 
     protected override bool TryParse(ReadOnlySpan<byte> data, [MaybeNullWhen(false)] out TValue value)
