@@ -18,7 +18,7 @@ internal static class MethodDeclarationSyntaxExtensions
         public const string Parse = "Parse";
     }
 
-    // public string ToString(string? format, IFormatProvider? provider);
+    // public string ToString(string? format, IFormatProvider? formatProvider);
     public static bool IsIFormattableToStringMethod(this MethodDeclarationSyntax s)
     {
         if (s.Identifier.Text != "ToString")
@@ -36,7 +36,7 @@ internal static class MethodDeclarationSyntaxExtensions
                && ps1.Type is NullableTypeSyntax nts1
                && nts1.ElementType is IdentifierNameSyntax ins1
                && ins1.Identifier.Text == "IFormatProvider"
-               && ps1.Identifier.ValueText == "provider";
+               && ps1.Identifier.ValueText == "formatProvider";
     }
 
     // IParsable<TSelf>.Parse(string s, IFormatProvider? provider)
