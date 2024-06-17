@@ -176,9 +176,9 @@ public readonly record struct DateMonthOnly : ISpanFormattable, ISpanParsable<Da
         return new(date);
     }
 
-    public static AgeInMonths operator -(DateMonthOnly a, DateMonthOnly b)
+    public static int operator -(DateMonthOnly a, DateMonthOnly b)
     {
-        return new(a.Year - b.Year, a.Month - b.Month);
+        return a.TotalMonths - b.TotalMonths;
     }
 
     public static bool operator <(DateMonthOnly left, DateMonthOnly right)
