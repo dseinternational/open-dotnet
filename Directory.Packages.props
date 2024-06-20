@@ -42,9 +42,9 @@
     <PackageVersion Include="Microsoft.Extensions.Options" Version="8.0.2" />
     <PackageVersion Include="Microsoft.Identity.Client" Version="4.61.3" />
     <PackageVersion Include="Microsoft.Identity.Client.Extensions.Msal" Version="4.61.3" />
-    <PackageVersion Include="Microsoft.IdentityModel.Abstractions" Version="7.6.1" />
-    <PackageVersion Include="Microsoft.IdentityModel.JsonWebTokens" Version="7.6.1" />
-    <PackageVersion Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="7.6.1" />
+    <PackageVersion Include="Microsoft.IdentityModel.Abstractions" Version="7.6.2" />
+    <PackageVersion Include="Microsoft.IdentityModel.JsonWebTokens" Version="7.6.2" />
+    <PackageVersion Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="7.6.2" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.10.0" />
     <PackageVersion Include="Microsoft.NETCore.Platforms" Version="7.0.4" />
     <PackageVersion Include="Moq" Version="4.20.70" />
