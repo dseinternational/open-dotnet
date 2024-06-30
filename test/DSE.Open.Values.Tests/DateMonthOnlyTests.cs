@@ -53,6 +53,6 @@ public class DateMonthOnlyTests
     public void Subtraction_operator_returns_difference_in_months(string a, string b, int expectedDif)
     {
         var value = DateMonthOnly.Parse(a, CultureInfo.InvariantCulture) - DateMonthOnly.Parse(b, CultureInfo.InvariantCulture);
-        Assert.Equal(expectedDif, value.TotalMonths);
+        Assert.Equal(expectedDif, value);
     }
 }

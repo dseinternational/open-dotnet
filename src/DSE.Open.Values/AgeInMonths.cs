@@ -1,54 +1,96 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using DSE.Open.Values.Text.Json.Serialization;
 
 namespace DSE.Open.Values;
 
-[JsonConverter(typeof(JsonStringAgeInMonthsConverter))]
+[JsonConverter(typeof(JsonSpanSerializableValueConverter<AgeInMonths, int>))]
+[ComparableValue]
 [StructLayout(LayoutKind.Auto)]
-public readonly record struct AgeInMonths : ISpanFormattable, ISpanParsable<AgeInMonths>, IComparable<AgeInMonths>
+public readonly partial struct AgeInMonths : IComparableValue<AgeInMonths, int>
 {
-    private const string DefaultFormat = "0";
+    private const int MaxYears = int.MaxValue / 12;
+    private const int MaxMonths = int.MaxValue;
 
     public static readonly AgeInMonths Zero;
 
-    public AgeInMonths(int years, int months) : this((years * 12) + months)
+    public static int MaxSerializedCharLength => 12;
+
+    public AgeInMonths(int years, int months)
     {
+        ArgumentOutOfRangeException.ThrowIfNegative(years);
+        ArgumentOutOfRangeException.ThrowIfNegative(months);
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(years, MaxYears);
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(months, MaxMonths);
+
+        var maxMonths = int.MaxValue - (years * 12);
+
+        if (months > maxMonths)
+        {
+            throw new ArgumentOutOfRangeException(nameof(years),
+                "The resulting value is outside the range of a AgeInMonths");
+        }
+
+        checked
+        {
+            TotalMonths = (years * 12) + months;
+        }
     }
 
     public AgeInMonths(int totalMonths)
     {
+        ArgumentOutOfRangeException.ThrowIfNegative(totalMonths);
         TotalMonths = totalMonths;
     }
 
     /// <summary>
-    /// The number of complete years represented by the value.
-    /// </summary>
-    public int Years => TotalMonths / 12;
-
-    /// <summary>
-    /// The number of months represented by the value in addition to the <see cref="Years"/>.
-    /// </summary>
-    public int Months => TotalMonths % 12;
-
-    /// <summary>
-    /// The total number of months represented by the value. This is the combined value of
-    /// <see cref="Years"/> and <see cref="Months"/>.
+    /// The total number of months represented by the value.
     /// </summary>
     public int TotalMonths { get; }
 
-    public AgeInMonths AddMonths(int months)
+    /// <summary>
+    /// The total number of years and months represented by the value.
+    /// </summary>
+    /// <example>
+    /// 13 months would return 1 year and 1 month.
+    /// </example>
+    public (int Years, int Months) YearsAndMonths()
     {
-        return new(TotalMonths + months);
+        var years = TotalMonths / 12;
+        var months = TotalMonths - (years * 12);
+        return (years, months);
     }
 
+    /// <summary>
+    /// Adds the specified number of months to the current value.
+    /// </summary>
+    /// <param name="months"></param>
+    /// <returns></returns>
+    /// <exception cref="OverflowException">The resulting value is outside the range of a <see cref="AgeInMonths"/>.</exception>
+    public AgeInMonths AddMonths(int months)
+    {
+        checked
+        {
+            return new AgeInMonths(TotalMonths + months);
+        }
+    }
+
+    /// <summary>
+    /// Adds the specified number of years to the current value.
+    /// </summary>
+    /// <param name="years"></param>
+    /// <returns></returns>
+    /// <exception cref="OverflowException">The resulting value is outside the range of a <see cref="AgeInMonths"/>.</exception>
     public AgeInMonths AddYears(int years)
     {
-        return new(TotalMonths + (years * 12));
+        checked
+        {
+            return new AgeInMonths(TotalMonths + (years * 12));
+        }
     }
 
     public int CompareTo(AgeInMonths other)
@@ -56,146 +98,87 @@ public readonly record struct AgeInMonths : ISpanFormattable, ISpanParsable<AgeI
         return TotalMonths.CompareTo(other.TotalMonths);
     }
 
-    public bool TryFormat(Span<char> destination, out int charsWritten)
+    public static bool IsValidValue(int value)
     {
-        return TryFormat(destination, out charsWritten, default, default);
+        return value >= 0;
     }
 
-    public bool TryFormat(
-        Span<char> destination,
-        out int charsWritten,
-        IFormatProvider? provider)
+    public static int ConvertTo(AgeInMonths value)
     {
-        return TryFormat(destination, out charsWritten, default, provider);
+        return value.TotalMonths;
+    }
+
+    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out AgeInMonths result)
+    {
+        if (s.IsEmpty)
+        {
+            result = default;
+            return false;
+        }
+
+        Span<Range> ranges = stackalloc Range[3];
+
+        var parts = s.Split(ranges, ':', StringSplitOptions.RemoveEmptyEntries);
+
+        if (parts != 2)
+        {
+            result = default;
+            return false;
+        }
+
+        if (!int.TryParse(s[ranges[0]], NumberStyles.None, NumberFormatInfo.InvariantInfo, out var years) ||
+            !int.TryParse(s[ranges[1]], NumberStyles.None, NumberFormatInfo.InvariantInfo, out var months))
+        {
+            result = default;
+            return false;
+        }
+
+        result = new AgeInMonths(years, months);
+        return true;
     }
 
     public bool TryFormat(
         Span<char> destination,
         out int charsWritten,
         ReadOnlySpan<char> format,
-        IFormatProvider? provider)
+        IFormatProvider? provider = null)
     {
-        if (destination.Length >= 3 && Years.TryFormat(destination, out var charsWrittenYears, DefaultFormat, provider))
+        if (destination.Length < 3)
         {
-            charsWritten = charsWrittenYears;
-
-            if (destination.Length > charsWrittenYears)
-            {
-                destination[charsWrittenYears] = ':';
-                charsWritten++;
-                if (Months.TryFormat(destination[charsWritten..], out var charsWrittenMonths, DefaultFormat, provider))
-                {
-                    charsWritten += charsWrittenMonths;
-                    return true;
-                }
-            }
-        }
-
-        charsWritten = 0;
-        return false;
-    }
-
-    public static AgeInMonths Parse(ReadOnlySpan<char> s)
-    {
-        return Parse(s, default);
-    }
-
-    public static AgeInMonths Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
-    {
-        if (TryParse(s, provider, out var result))
-        {
-            return result;
-        }
-
-        ThrowHelper.ThrowFormatException($"Could not parse {nameof(AgeInMonths)} value: {s}");
-        return default;
-    }
-
-    public static AgeInMonths Parse(string s)
-    {
-        return Parse(s, default);
-    }
-
-    public static AgeInMonths Parse(string s, IFormatProvider? provider)
-    {
-        Guard.IsNotNull(s);
-        return Parse(s.AsSpan(), provider);
-    }
-
-    public static bool TryParse(
-        ReadOnlySpan<char> s,
-        out AgeInMonths result)
-    {
-        return TryParse(s, default, out result);
-    }
-
-    public static bool TryParse(
-        ReadOnlySpan<char> s,
-        IFormatProvider? provider,
-        out AgeInMonths result)
-    {
-        if (s.Length < 3)
-        {
-            result = default;
+            charsWritten = 0;
             return false;
         }
 
-        var colonIndex = s.IndexOf(':');
+        var (years, months) = YearsAndMonths();
 
-        if (colonIndex < 0)
+        if (!years.TryFormat(destination, out var written, null, CultureInfo.InvariantCulture))
         {
-            result = default;
+            charsWritten = 0;
             return false;
         }
 
-        if (int.TryParse(s[..colonIndex], NumberStyles.Integer, provider, out var years) &&
-            int.TryParse(s[(colonIndex + 1)..], NumberStyles.Integer, provider, out var months))
+        destination[written] = ':';
+        written++;
+
+        if (!months.TryFormat(destination[written..], out var written2, null, CultureInfo.InvariantCulture))
         {
-            result = new(years, months);
-            return true;
+            charsWritten = 0;
+            return false;
         }
 
-        result = default;
-        return false;
-    }
-
-    public static bool TryParse(
-        [NotNullWhen(true)] string? s,
-        IFormatProvider? provider,
-        out AgeInMonths result)
-    {
-        return TryParse(s.AsSpan(), provider, out result);
-    }
-
-    public override string ToString()
-    {
-        return ToString(default, default);
+        charsWritten = written + written2;
+        return true;
     }
 
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
-        Span<char> destination = stackalloc char[12];
-        _ = TryFormat(destination, out var charsWritten, format, formatProvider);
-        return new(destination[..charsWritten]);
-    }
+        Span<char> buffer = stackalloc char[MaxSerializedCharLength];
 
-    public static bool operator <(AgeInMonths left, AgeInMonths right)
-    {
-        return left.CompareTo(right) < 0;
-    }
+        if (!TryFormat(buffer, out var charsWritten, null, null))
+        {
+            throw new UnreachableException("The buffer was not large enough to hold the formatted value.");
+        }
 
-    public static bool operator <=(AgeInMonths left, AgeInMonths right)
-    {
-        return left.CompareTo(right) <= 0;
-    }
-
-    public static bool operator >(AgeInMonths left, AgeInMonths right)
-    {
-        return left.CompareTo(right) > 0;
-    }
-
-    public static bool operator >=(AgeInMonths left, AgeInMonths right)
-    {
-        return left.CompareTo(right) >= 0;
+        return new string(buffer[..charsWritten]);
     }
 }
