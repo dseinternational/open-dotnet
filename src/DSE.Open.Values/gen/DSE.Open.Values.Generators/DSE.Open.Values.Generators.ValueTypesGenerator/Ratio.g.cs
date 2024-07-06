@@ -208,15 +208,15 @@ public readonly partial struct Ratio
     // IUtf8SpanParsable<Ratio>
 
     public static Ratio Parse(
-        ReadOnlySpan<byte> utf8Source,
+        ReadOnlySpan<byte> utf8Text,
         IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<Ratio, Double>(utf8Source, provider);
+        => global::DSE.Open.Values.ValueParser.Parse<Ratio, Double>(utf8Text, provider);
 
     public static bool TryParse(
-        ReadOnlySpan<byte> utf8Source,
+        ReadOnlySpan<byte> utf8Text,
         IFormatProvider? provider,
         out Ratio result)
-        => global::DSE.Open.Values.ValueParser.TryParse<Ratio, Double>(utf8Source, provider, out result);
+        => global::DSE.Open.Values.ValueParser.TryParse<Ratio, Double>(utf8Text, provider, out result);
 
     public int CompareTo(Ratio other)
     {

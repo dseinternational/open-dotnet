@@ -238,15 +238,15 @@ public readonly partial struct Tag
     // IUtf8SpanParsable<Tag>
 
     public static Tag Parse(
-        ReadOnlySpan<byte> utf8Source,
+        ReadOnlySpan<byte> utf8Text,
         IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<Tag, AsciiString>(utf8Source, provider);
+        => global::DSE.Open.Values.ValueParser.Parse<Tag, AsciiString>(utf8Text, provider);
 
     public static bool TryParse(
-        ReadOnlySpan<byte> utf8Source,
+        ReadOnlySpan<byte> utf8Text,
         IFormatProvider? provider,
         out Tag result)
-        => global::DSE.Open.Values.ValueParser.TryParse<Tag, AsciiString>(utf8Source, provider, out result);
+        => global::DSE.Open.Values.ValueParser.TryParse<Tag, AsciiString>(utf8Text, provider, out result);
 
     public int CompareTo(Tag other)
     {

@@ -11,12 +11,12 @@ using System.ComponentModel;
 
 namespace DSE.Open.Values;
 
-[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<AgeInMonths, Int32>))]
+[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<AgeInMonths, Months>))]
 public readonly partial struct AgeInMonths
 {
-    private readonly Int32 _value;
+    private readonly Months _value;
 
-    private AgeInMonths(Int32 value, bool skipValidation = false)
+    private AgeInMonths(Months value, bool skipValidation = false)
     {
         if (!skipValidation)
         {
@@ -26,7 +26,7 @@ public readonly partial struct AgeInMonths
         _value = value;
     }
 
-    private static void EnsureIsValidValue(Int32 value)
+    private static void EnsureIsValidValue(Months value)
     {
         if (!IsValidValue(value))
         {
@@ -35,7 +35,7 @@ public readonly partial struct AgeInMonths
         }
     }
 
-    public static bool TryFromValue(Int32 value, out AgeInMonths result)
+    public static bool TryFromValue(Months value, out AgeInMonths result)
     {
         if (IsValidValue(value))
         {
@@ -47,19 +47,19 @@ public readonly partial struct AgeInMonths
         return false;
     }
 
-    public static AgeInMonths FromValue(Int32 value)
+    public static AgeInMonths FromValue(Months value)
     {
         EnsureIsValidValue(value);
         return new(value, true);
     }
 
-    public static explicit operator AgeInMonths(Int32 value)
+    public static explicit operator AgeInMonths(Months value)
         => FromValue(value);
 
-    static Int32 global::DSE.Open.IConvertibleTo<AgeInMonths, Int32>.ConvertTo(AgeInMonths value)
-        => (Int32)value;
+    static Months global::DSE.Open.IConvertibleTo<AgeInMonths, Months>.ConvertTo(AgeInMonths value)
+        => (Months)value;
 
-    public static implicit operator Int32(AgeInMonths value)
+    public static implicit operator Months(AgeInMonths value)
     {
         return value._value;
     }
@@ -113,7 +113,7 @@ public readonly partial struct AgeInMonths
     // ISpanParsable<AgeInMonths>
 
     public static AgeInMonths Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<AgeInMonths, Int32>(s, provider);
+        => global::DSE.Open.Values.ValueParser.Parse<AgeInMonths, Months>(s, provider);
 
     public static AgeInMonths ParseInvariant(ReadOnlySpan<char> s)
         => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
@@ -121,7 +121,7 @@ public readonly partial struct AgeInMonths
     // IParsable<AgeInMonths>
 
     public static AgeInMonths Parse(string s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<AgeInMonths, Int32>(s, provider);
+        => global::DSE.Open.Values.ValueParser.Parse<AgeInMonths, Months>(s, provider);
 
     public static AgeInMonths Parse(string s)
         => Parse(s, default);
@@ -152,6 +152,13 @@ public readonly partial struct AgeInMonths
         string? s,
         out AgeInMonths result)
         => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
+
+    // IUtf8SpanParsable<AgeInMonths>
+
+    public static AgeInMonths Parse(
+        ReadOnlySpan<byte> utf8Text,
+        IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<AgeInMonths, Months>(utf8Text, provider);
 
     // IComparisonOperators<AgeInMonths, AgeInMonths, bool>
 

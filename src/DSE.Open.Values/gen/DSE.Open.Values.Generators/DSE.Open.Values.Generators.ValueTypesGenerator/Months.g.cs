@@ -11,12 +11,12 @@ using System.ComponentModel;
 
 namespace DSE.Open.Values;
 
-[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<Percent, Double>))]
-public readonly partial struct Percent
+[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<Months, Int32>))]
+public readonly partial struct Months
 {
-    private readonly Double _value;
+    private readonly Int32 _value;
 
-    private Percent(Double value, bool skipValidation = false)
+    private Months(Int32 value, bool skipValidation = false)
     {
         if (!skipValidation)
         {
@@ -26,20 +26,20 @@ public readonly partial struct Percent
         _value = value;
     }
 
-    private static void EnsureIsValidValue(Double value)
+    private static void EnsureIsValidValue(Int32 value)
     {
         if (!IsValidValue(value))
         {
             throw new ArgumentOutOfRangeException(nameof(value), value,
-                $"'{value}' is not a valid {nameof(Percent)} value");
+                $"'{value}' is not a valid {nameof(Months)} value");
         }
     }
 
-    public static bool TryFromValue(Double value, out Percent result)
+    public static bool TryFromValue(Int32 value, out Months result)
     {
         if (IsValidValue(value))
         {
-            result = new Percent(value, true);
+            result = new Months(value, true);
             return true;
         }
     
@@ -47,39 +47,39 @@ public readonly partial struct Percent
         return false;
     }
 
-    public static Percent FromValue(Double value)
+    public static Months FromValue(Int32 value)
     {
         EnsureIsValidValue(value);
         return new(value, true);
     }
 
-    public static explicit operator Percent(Double value)
+    public static explicit operator Months(Int32 value)
         => FromValue(value);
 
-    static Double global::DSE.Open.IConvertibleTo<Percent, Double>.ConvertTo(Percent value)
-        => (Double)value;
+    static Int32 global::DSE.Open.IConvertibleTo<Months, Int32>.ConvertTo(Months value)
+        => (Int32)value;
 
-    public static implicit operator Double(Percent value)
+    public static implicit operator Int32(Months value)
     {
         return value._value;
     }
 
     // IEquatable<T>
 
-    public bool Equals(Percent other) => _value.Equals(other._value);
+    public bool Equals(Months other) => _value.Equals(other._value);
 
-    public override bool Equals(object? obj) => obj is Percent other && Equals(other);
+    public override bool Equals(object? obj) => obj is Months other && Equals(other);
 
     public override int GetHashCode()
     {
         return _value.GetHashCode();
     }
 
-    // IEqualityOperators<Percent, Percent, bool>
+    // IEqualityOperators<Months, Months, bool>
 
-    public static bool operator ==(Percent left, Percent right) => left.Equals(right);
+    public static bool operator ==(Months left, Months right) => left.Equals(right);
     
-    public static bool operator !=(Percent left, Percent right) => !(left == right);
+    public static bool operator !=(Months left, Months right) => !(left == right);
 
     // ISpanFormattable
 
@@ -109,7 +109,7 @@ public readonly partial struct Percent
         => TryFormatInvariant(destination, out charsWritten, default);
 
     /// <summary>
-    /// Gets a representation of the <see cref="Percent"/> value as a string with formatting options.
+    /// Gets a representation of the <see cref="Months"/> value as a string with formatting options.
     /// </summary>
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
@@ -127,55 +127,55 @@ public readonly partial struct Percent
     }
 
     /// <summary>
-    /// Gets a representation of the Percent value as a string with default formatting options.
+    /// Gets a representation of the Months value as a string with default formatting options.
     /// </summary>
     /// <returns>
-    /// A representation of the Percent value.
+    /// A representation of the Months value.
     /// </returns>
     public override string ToString()
     {
         return ToString(default, default);
     }
 
-    // ISpanParsable<Percent>
+    // ISpanParsable<Months>
 
-    public static Percent Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<Percent, Double>(s, provider);
+    public static Months Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<Months, Int32>(s, provider);
 
-    public static Percent ParseInvariant(ReadOnlySpan<char> s)
+    public static Months ParseInvariant(ReadOnlySpan<char> s)
         => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
 
     public static bool TryParse(
         ReadOnlySpan<char> s,
         IFormatProvider? provider,
-        out Percent result)
-        => global::DSE.Open.Values.ValueParser.TryParse<Percent, Double>(s, provider, out result);
+        out Months result)
+        => global::DSE.Open.Values.ValueParser.TryParse<Months, Int32>(s, provider, out result);
 
     public static bool TryParse(
         ReadOnlySpan<char> s,
-        out Percent result)
+        out Months result)
         => TryParse(s, default, out result);
 
     public static bool TryParseInvariant(
         ReadOnlySpan<char> s,
-        out Percent result)
+        out Months result)
         => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
 
-    // IParsable<Percent>
+    // IParsable<Months>
 
-    public static Percent Parse(string s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<Percent, Double>(s, provider);
+    public static Months Parse(string s, IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<Months, Int32>(s, provider);
 
-    public static Percent Parse(string s)
+    public static Months Parse(string s)
         => Parse(s, default);
 
-    public static Percent ParseInvariant(string s)
+    public static Months ParseInvariant(string s)
         => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
 
     public static bool TryParse(
         string? s,
         IFormatProvider? provider,
-        out Percent result)
+        out Months result)
     {
         if (s is null)
         {
@@ -188,12 +188,12 @@ public readonly partial struct Percent
 
     public static bool TryParse(
         string? s,
-        out Percent result)
+        out Months result)
         => TryParse(s, default, out result);
 
     public static bool TryParseInvariant(
         string? s,
-        out Percent result)
+        out Months result)
         => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
 
     // IUtf8SpanFormattable
@@ -205,53 +205,33 @@ public readonly partial struct Percent
         IFormatProvider? provider)
         => ((IUtf8SpanFormattable)_value).TryFormat(utf8Destination, out bytesWritten, format, provider);
 
-    // IUtf8SpanParsable<Percent>
+    // IUtf8SpanParsable<Months>
 
-    public static Percent Parse(
+    public static Months Parse(
         ReadOnlySpan<byte> utf8Text,
         IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<Percent, Double>(utf8Text, provider);
+        => global::DSE.Open.Values.ValueParser.Parse<Months, Int32>(utf8Text, provider);
 
     public static bool TryParse(
         ReadOnlySpan<byte> utf8Text,
         IFormatProvider? provider,
-        out Percent result)
-        => global::DSE.Open.Values.ValueParser.TryParse<Percent, Double>(utf8Text, provider, out result);
+        out Months result)
+        => global::DSE.Open.Values.ValueParser.TryParse<Months, Int32>(utf8Text, provider, out result);
 
-    public int CompareTo(Percent other)
+    public int CompareTo(Months other)
     {
         return _value.CompareTo(other._value);
     }
 
-    // IComparisonOperators<Percent, Percent, bool>
+    // IComparisonOperators<Months, Months, bool>
 
-    public static bool operator <(Percent left, Percent right) => left.CompareTo(right) < 0;
+    public static bool operator <(Months left, Months right) => left.CompareTo(right) < 0;
     
-    public static bool operator >(Percent left, Percent right) => left.CompareTo(right) > 0;
+    public static bool operator >(Months left, Months right) => left.CompareTo(right) > 0;
     
-    public static bool operator <=(Percent left, Percent right) => left.CompareTo(right) <= 0;
+    public static bool operator <=(Months left, Months right) => left.CompareTo(right) <= 0;
     
-    public static bool operator >=(Percent left, Percent right) => left.CompareTo(right) >= 0;
-
-    // IAdditionOperators<Percent, Percent, Percent>
-
-    public static Percent operator +(Percent left, Percent right) => (Percent)(left._value + right._value);
-
-    public static Percent operator --(Percent value) => (Percent)(value._value - 1);
-
-    public static Percent operator ++(Percent value) => (Percent)(value._value + 1);
-
-    public static Percent operator -(Percent left, Percent right) => (Percent)(left._value - right._value);
-
-    public static Percent operator +(Percent value) => (Percent)(+value._value);
-
-    public static Percent operator -(Percent value) => (Percent)(-value._value);
-
-    public static Percent operator *(Percent left, Percent right) => (Percent)(left._value * right._value);
-
-    public static Percent operator /(Percent left, Percent right) => (Percent)(left._value / right._value);
-
-    public static Percent operator %(Percent left, Percent right) => (Percent)(left._value % right._value);
+    public static bool operator >=(Months left, Months right) => left.CompareTo(right) >= 0;
 
 }
 
