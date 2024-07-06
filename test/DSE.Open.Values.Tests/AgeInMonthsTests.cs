@@ -29,8 +29,8 @@ public class AgeInMonthsTests
     [InlineData(0, 1, "0:1")]
     [InlineData(0, 13, "1:1")]
     [InlineData(10, 24, "12:0")]
-    [InlineData(178956970, 0, "178956970:0")]
-    [InlineData(0, int.MaxValue, "178956970:7")]
+    [InlineData(150, 0, "150:0")]
+    [InlineData(0, (149 * 12) + 11, "149:11")]
     public void ToString_outputs_correct_format(int years, int months, string expected)
     {
         var age = new AgeInMonths(years, months);
@@ -98,14 +98,6 @@ public class AgeInMonthsTests
 
         // Assert
         Assert.Throws<OverflowException>(Act);
-    }
-
-    [Theory]
-    [InlineData(0, int.MaxValue)]
-    [InlineData(int.MaxValue / 12, int.MaxValue % 12)]
-    public void New_WithMaxValues_ShouldWork(int years, int months)
-    {
-        _ = new AgeInMonths(years, months);
     }
 
     [Theory]

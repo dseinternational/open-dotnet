@@ -8,17 +8,21 @@ using DSE.Open.Values.Text.Json.Serialization;
 
 namespace DSE.Open.Values;
 
-[JsonConverter(typeof(JsonSpanSerializableValueConverter<AgeInMonths, int>))]
+[JsonConverter(typeof(JsonSpanSerializableValueConverter<AgeInMonths, Months>))]
 [ComparableValue]
 [StructLayout(LayoutKind.Auto)]
-public readonly partial struct AgeInMonths : IComparableValue<AgeInMonths, int>
+public readonly partial struct AgeInMonths : IComparableValue<AgeInMonths, Months>, IUtf8SpanSerializable<AgeInMonths>
 {
-    private const int MaxYears = int.MaxValue / 12;
-    private const int MaxMonths = int.MaxValue;
+    private const int MaxYears = 150;
+    private const int MaxMonths = MaxYears * 12;
+
+    private const int MaxAsciiLength = 3 + 1 + 2; // "149:11"
 
     public static readonly AgeInMonths Zero;
 
-    public static int MaxSerializedCharLength => 12;
+    public static int MaxSerializedCharLength => MaxAsciiLength;
+
+    public static int MaxSerializedByteLength => MaxAsciiLength;
 
     public AgeInMonths(int years, int months)
     {
@@ -27,30 +31,22 @@ public readonly partial struct AgeInMonths : IComparableValue<AgeInMonths, int>
         ArgumentOutOfRangeException.ThrowIfGreaterThan(years, MaxYears);
         ArgumentOutOfRangeException.ThrowIfGreaterThan(months, MaxMonths);
 
-        var maxMonths = int.MaxValue - (years * 12);
-
-        if (months > maxMonths)
-        {
-            throw new ArgumentOutOfRangeException(nameof(years),
-                "The resulting value is outside the range of a AgeInMonths");
-        }
-
         checked
         {
-            TotalMonths = (years * 12) + months;
+            _value = Months.FromValue((years * 12) + months);
         }
     }
 
     public AgeInMonths(int totalMonths)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(totalMonths);
-        TotalMonths = totalMonths;
+        _value = Months.FromValue(totalMonths);
     }
 
     /// <summary>
     /// The total number of months represented by the value.
     /// </summary>
-    public int TotalMonths { get; }
+    public int TotalMonths => _value;
 
     /// <summary>
     /// The total number of years and months represented by the value.
@@ -95,17 +91,17 @@ public readonly partial struct AgeInMonths : IComparableValue<AgeInMonths, int>
 
     public int CompareTo(AgeInMonths other)
     {
-        return TotalMonths.CompareTo(other.TotalMonths);
+        return _value.CompareTo(other._value);
     }
 
-    public static bool IsValidValue(int value)
+    public static bool IsValidValue(Months value)
     {
-        return value >= 0;
+        return value >= 0 && value <= MaxMonths;
     }
 
     public static int ConvertTo(AgeInMonths value)
     {
-        return value.TotalMonths;
+        return value._value;
     }
 
     public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out AgeInMonths result)
@@ -128,6 +124,45 @@ public readonly partial struct AgeInMonths : IComparableValue<AgeInMonths, int>
 
         if (!int.TryParse(s[ranges[0]], NumberStyles.None, NumberFormatInfo.InvariantInfo, out var years) ||
             !int.TryParse(s[ranges[1]], NumberStyles.None, NumberFormatInfo.InvariantInfo, out var months))
+        {
+            result = default;
+            return false;
+        }
+
+        result = new AgeInMonths(years, months);
+        return true;
+    }
+
+    public static bool TryParse(
+        ReadOnlySpan<byte> utf8Text,
+        IFormatProvider? provider,
+        out AgeInMonths result)
+    {
+        if (utf8Text.IsEmpty)
+        {
+            result = default;
+            return false;
+        }
+
+        var splitIndex = utf8Text.IndexOf((byte)':');
+
+        if (splitIndex == 0)
+        {
+            result = default;
+            return false;
+        }
+
+        if (utf8Text[splitIndex..].Contains((byte)':'))
+        {
+            result = default;
+            return false;
+        }
+
+        var yearsPart = utf8Text[..splitIndex];
+        var monthsPart = utf8Text[splitIndex..];
+
+        if (!int.TryParse(yearsPart, NumberStyles.None, NumberFormatInfo.InvariantInfo, out var years) ||
+            !int.TryParse(monthsPart, NumberStyles.None, NumberFormatInfo.InvariantInfo, out var months))
         {
             result = default;
             return false;
@@ -167,6 +202,39 @@ public readonly partial struct AgeInMonths : IComparableValue<AgeInMonths, int>
         }
 
         charsWritten = written + written2;
+        return true;
+    }
+
+    public bool TryFormat(
+        Span<byte> utf8Destination,
+        out int bytesWritten,
+        ReadOnlySpan<char> format,
+        IFormatProvider? provider = null)
+    {
+        if (utf8Destination.Length < 3)
+        {
+            bytesWritten = 0;
+            return false;
+        }
+
+        var (years, months) = YearsAndMonths();
+
+        if (!years.TryFormat(utf8Destination, out var written, null, CultureInfo.InvariantCulture))
+        {
+            bytesWritten = 0;
+            return false;
+        }
+
+        utf8Destination[written] = (byte)':';
+        written++;
+
+        if (!months.TryFormat(utf8Destination[written..], out var written2, null, CultureInfo.InvariantCulture))
+        {
+            bytesWritten = 0;
+            return false;
+        }
+
+        bytesWritten = written + written2;
         return true;
     }
 
