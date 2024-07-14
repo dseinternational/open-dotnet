@@ -238,15 +238,15 @@ public readonly partial struct AlphaCode
     // IUtf8SpanParsable<AlphaCode>
 
     public static AlphaCode Parse(
-        ReadOnlySpan<byte> utf8Source,
+        ReadOnlySpan<byte> utf8Text,
         IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<AlphaCode, AsciiString>(utf8Source, provider);
+        => global::DSE.Open.Values.ValueParser.Parse<AlphaCode, AsciiString>(utf8Text, provider);
 
     public static bool TryParse(
-        ReadOnlySpan<byte> utf8Source,
+        ReadOnlySpan<byte> utf8Text,
         IFormatProvider? provider,
         out AlphaCode result)
-        => global::DSE.Open.Values.ValueParser.TryParse<AlphaCode, AsciiString>(utf8Source, provider, out result);
+        => global::DSE.Open.Values.ValueParser.TryParse<AlphaCode, AsciiString>(utf8Text, provider, out result);
 
     public int CompareTo(AlphaCode other)
     {

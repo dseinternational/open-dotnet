@@ -208,15 +208,15 @@ public readonly partial struct Identifier
     // IUtf8SpanParsable<Identifier>
 
     public static Identifier Parse(
-        ReadOnlySpan<byte> utf8Source,
+        ReadOnlySpan<byte> utf8Text,
         IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<Identifier, AsciiString>(utf8Source, provider);
+        => global::DSE.Open.Values.ValueParser.Parse<Identifier, AsciiString>(utf8Text, provider);
 
     public static bool TryParse(
-        ReadOnlySpan<byte> utf8Source,
+        ReadOnlySpan<byte> utf8Text,
         IFormatProvider? provider,
         out Identifier result)
-        => global::DSE.Open.Values.ValueParser.TryParse<Identifier, AsciiString>(utf8Source, provider, out result);
+        => global::DSE.Open.Values.ValueParser.TryParse<Identifier, AsciiString>(utf8Text, provider, out result);
 
 }
 

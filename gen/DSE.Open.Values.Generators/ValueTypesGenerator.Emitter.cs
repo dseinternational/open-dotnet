@@ -560,9 +560,9 @@ public partial class ValueTypesGenerator
             {
                 writer.WriteBlock($"""
                                     public static {spec.ValueTypeName} Parse(
-                                        ReadOnlySpan<byte> utf8Source,
+                                        ReadOnlySpan<byte> utf8Text,
                                         IFormatProvider? provider)
-                                        => {Namespaces.DseOpenValues}.ValueParser.Parse<{spec.ValueTypeName}, {spec.ContainedValueTypeName}>(utf8Source, provider);
+                                        => {Namespaces.DseOpenValues}.ValueParser.Parse<{spec.ValueTypeName}, {spec.ContainedValueTypeName}>(utf8Text, provider);
                                     """);
             }
 
@@ -570,10 +570,10 @@ public partial class ValueTypesGenerator
             {
                 writer.WriteBlock($"""
                                     public static bool TryParse(
-                                        ReadOnlySpan<byte> utf8Source,
+                                        ReadOnlySpan<byte> utf8Text,
                                         IFormatProvider? provider,
                                         out {spec.ValueTypeName} result)
-                                        => {Namespaces.DseOpenValues}.ValueParser.TryParse<{spec.ValueTypeName}, {spec.ContainedValueTypeName}>(utf8Source, provider, out result);
+                                        => {Namespaces.DseOpenValues}.ValueParser.TryParse<{spec.ValueTypeName}, {spec.ContainedValueTypeName}>(utf8Text, provider, out result);
                                     """);
             }
 
