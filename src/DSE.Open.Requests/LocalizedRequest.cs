@@ -9,8 +9,10 @@ namespace DSE.Open.Requests;
 public record LocalizedRequest : Request, ILocalized
 {
     [JsonPropertyName("language")]
+    [JsonPropertyOrder(-899800)]
     public required LanguageTag Language { get; init; }
 
     [JsonPropertyName("format_language")]
+    [JsonPropertyOrder(-899700)]
     public required LanguageTag FormatLanguage { get; init; }
 }

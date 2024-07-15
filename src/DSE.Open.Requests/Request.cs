@@ -20,6 +20,7 @@ public record Request : ImmutableDataTransferObject
     /// retried.
     /// </summary>
     [JsonPropertyName("request_id")]
+    [JsonPropertyOrder(-900000)]
     public string RequestId
     {
         get => _requestId ??= Identifier.New(20, "req"u8).ToStringInvariant();
@@ -29,5 +30,7 @@ public record Request : ImmutableDataTransferObject
     /// <summary>
     /// Identifies the source of the request.
     /// </summary>
+    [JsonPropertyName("source")]
+    [JsonPropertyOrder(-899900)]
     public Uri? Source { get; init; }
 }

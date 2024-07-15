@@ -8,5 +8,6 @@ namespace DSE.Open.Requests;
 public record PaginatedRequest : Request
 {
     [JsonPropertyName("pagination")]
+    [JsonPropertyOrder(-899800)]
     public PaginationOptions Pagination { get; init; }
 }
