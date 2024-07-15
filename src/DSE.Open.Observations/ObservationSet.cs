@@ -9,6 +9,7 @@ namespace DSE.Open.Observations;
 
 [JsonPolymorphic(TypeDiscriminatorPropertyName = "_t")]
 [JsonDerivedType(typeof(ObservationSet<Observation<bool>>), typeDiscriminator: Schemas.BinaryObservation)]
+[JsonDerivedType(typeof(ObservationSet<Observation<uint>>), typeDiscriminator: Schemas.CountObservation)]
 [JsonDerivedType(typeof(ObservationSet<BinaryWordObservation>), typeDiscriminator: Schemas.BinaryWordObservation)]
 [JsonDerivedType(typeof(ObservationSet<BinarySpeechSoundObservation>), typeDiscriminator: Schemas.BinarySpeechSoundObservation)]
 public abstract record ObservationSet : IObservationSet
