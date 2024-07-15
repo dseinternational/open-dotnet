@@ -1,4 +1,3 @@
-﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
@@ -201,9 +200,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Turnstile", "src\D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Turnstile.Tests", "test\DSE.Open.Turnstile.Tests\DSE.Open.Turnstile.Tests.csproj", "{FF4CE213-5894-496B-BBB8-D58E9F8DBB6D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.Turnstile.Web", "src\DSE.Open.Turnstile.Web\DSE.Open.Turnstile.Web.csproj", "{40A3DF0D-DCE5-4514-A290-8A8EA6B690E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Turnstile.Web", "src\DSE.Open.Turnstile.Web\DSE.Open.Turnstile.Web.csproj", "{40A3DF0D-DCE5-4514-A290-8A8EA6B690E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.ViewModels", "src\DSE.Open.ViewModels\DSE.Open.ViewModels.csproj", "{275115A3-40B0-465E-A6EC-A37277C8BBB2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.ViewModels", "src\DSE.Open.ViewModels\DSE.Open.ViewModels.csproj", "{275115A3-40B0-465E-A6EC-A37277C8BBB2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.Observations", "src\DSE.Open.Observations\DSE.Open.Observations.csproj", "{8D0A15D1-A8E3-4B5E-8F5B-54705D13D007}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.Observations.Tests", "test\DSE.Open.Observations.Tests\DSE.Open.Observations.Tests.csproj", "{39133B8C-8487-4C7F-82B0-954A9BFE3419}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -211,6 +214,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{39133B8C-8487-4C7F-82B0-954A9BFE3419}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39133B8C-8487-4C7F-82B0-954A9BFE3419}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39133B8C-8487-4C7F-82B0-954A9BFE3419}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39133B8C-8487-4C7F-82B0-954A9BFE3419}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D0A15D1-A8E3-4B5E-8F5B-54705D13D007}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D0A15D1-A8E3-4B5E-8F5B-54705D13D007}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D0A15D1-A8E3-4B5E-8F5B-54705D13D007}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D0A15D1-A8E3-4B5E-8F5B-54705D13D007}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B41B64E2-BF46-4EE3-9CE3-977DC1D8BADC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B41B64E2-BF46-4EE3-9CE3-977DC1D8BADC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B41B64E2-BF46-4EE3-9CE3-977DC1D8BADC}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -564,6 +575,8 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{39133B8C-8487-4C7F-82B0-954A9BFE3419} = {850B3E2C-6172-4CF9-9E83-AD0997C57CA3}
+		{8D0A15D1-A8E3-4B5E-8F5B-54705D13D007} = {D2529453-80C3-4F06-BBD0-6B58EF65EF99}
 		{B41B64E2-BF46-4EE3-9CE3-977DC1D8BADC} = {D2529453-80C3-4F06-BBD0-6B58EF65EF99}
 		{FDA19544-D97E-431D-A1DC-B75F43AB7137} = {A0556478-3601-4EE6-94DA-62EC721B5A28}
 		{AA7B453D-0AAF-40B9-AD98-72F0868425D8} = {850B3E2C-6172-4CF9-9E83-AD0997C57CA3}

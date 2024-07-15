@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>DSE.Open.Observations</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\DSE.Open.Observations\DSE.Open.Observations.csproj" />
+    <ProjectReference Include="..\..\src\DSE.Open.Testing.Xunit\DSE.Open.Testing.Xunit.csproj" />
+  </ItemGroup>
+
+</Project>
