@@ -3,14 +3,19 @@
 
 using System.Text.Json.Serialization;
 using DSE.Open.Text.Json.Serialization;
+using DSE.Open.Values;
 
 namespace DSE.Open.Observations;
 
 [JsonPolymorphic(TypeDiscriminatorPropertyName = "_t")]
 [JsonDerivedType(typeof(Observation<bool>), typeDiscriminator: Schemas.BinaryObservation)]
-[JsonDerivedType(typeof(Observation<int>), typeDiscriminator: Schemas.CountObservation)]
+[JsonDerivedType(typeof(Observation<Count>), typeDiscriminator: Schemas.CountObservation)]
+[JsonDerivedType(typeof(Observation<Amount>), typeDiscriminator: Schemas.AmountObservation)]
+[JsonDerivedType(typeof(Observation<Ratio>), typeDiscriminator: Schemas.RatioObservation)]
 [JsonDerivedType(typeof(BinaryWordObservation), typeDiscriminator: Schemas.BinaryWordObservation)]
 [JsonDerivedType(typeof(BinarySpeechSoundObservation), typeDiscriminator: Schemas.BinarySpeechSoundObservation)]
+[JsonDerivedType(typeof(Observation<int>), typeDiscriminator: Schemas.IntegerObservation)]
+[JsonDerivedType(typeof(Observation<decimal>), typeDiscriminator: Schemas.DecimalObservation)]
 public abstract record Observation
 {
     [JsonPropertyName("m")]

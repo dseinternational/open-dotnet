@@ -1,4 +1,4 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Runtime.InteropServices;
@@ -82,9 +82,14 @@ public readonly partial struct MeasurementLevel : IEquatableValue<MeasurementLev
     public static readonly MeasurementLevel DerivedRatio = new((AsciiString)"derived_ratio", true);
 
     /// <summary>
-    /// Definition of objects counted.
+    /// A count of something (non-negative integer).
     /// </summary>
     public static readonly MeasurementLevel Count = new((AsciiString)"count", true);
+
+    /// <summary>
+    /// An amount of something (non-negative real number).
+    /// </summary>
+    public static readonly MeasurementLevel Amount = new((AsciiString)"amount", true);
 
     /// <summary>
     /// Ratio level (numerical) data where the value of 'one' (the unit of measurement)
@@ -105,6 +110,7 @@ public readonly partial struct MeasurementLevel : IEquatableValue<MeasurementLev
         CyclicRatio,
         DerivedRatio,
         Count,
+        Amount,
         Absolute
     ];
 

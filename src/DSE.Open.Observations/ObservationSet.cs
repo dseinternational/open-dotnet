@@ -8,10 +8,14 @@ using DSE.Open.Values;
 namespace DSE.Open.Observations;
 
 [JsonPolymorphic(TypeDiscriminatorPropertyName = "_t")]
-[JsonDerivedType(typeof(ObservationSet<Observation<bool>>), typeDiscriminator: Schemas.BinaryObservation)]
-[JsonDerivedType(typeof(ObservationSet<Observation<uint>>), typeDiscriminator: Schemas.CountObservation)]
-[JsonDerivedType(typeof(ObservationSet<BinaryWordObservation>), typeDiscriminator: Schemas.BinaryWordObservation)]
-[JsonDerivedType(typeof(ObservationSet<BinarySpeechSoundObservation>), typeDiscriminator: Schemas.BinarySpeechSoundObservation)]
+[JsonDerivedType(typeof(ObservationSet<Observation<bool>>), typeDiscriminator: Schemas.BinaryObservationSet)]
+[JsonDerivedType(typeof(ObservationSet<Observation<Count>>), typeDiscriminator: Schemas.CountObservationSet)]
+[JsonDerivedType(typeof(ObservationSet<Observation<Amount>>), typeDiscriminator: Schemas.AmountObservationSet)]
+[JsonDerivedType(typeof(ObservationSet<Observation<Ratio>>), typeDiscriminator: Schemas.RatioObservationSet)]
+[JsonDerivedType(typeof(ObservationSet<BinaryWordObservation>), typeDiscriminator: Schemas.BinaryWordObservationSet)]
+[JsonDerivedType(typeof(ObservationSet<BinarySpeechSoundObservation>), typeDiscriminator: Schemas.BinarySpeechSoundObservationSet)]
+[JsonDerivedType(typeof(ObservationSet<Observation<int>>), typeDiscriminator: Schemas.IntegerObservationSet)]
+[JsonDerivedType(typeof(ObservationSet<Observation<decimal>>), typeDiscriminator: Schemas.DecimalObservationSet)]
 public abstract record ObservationSet : IObservationSet
 {
     [JsonPropertyName("trk")]
