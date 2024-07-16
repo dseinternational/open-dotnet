@@ -26,17 +26,15 @@ internal static class MethodDeclarationSyntaxExtensions
             return false;
         }
 
-        return s.ParameterList.Parameters.Count == 2
-               && s.ParameterList.Parameters[0] is ParameterSyntax ps0
-               && ps0.Type is NullableTypeSyntax nts0
-               && nts0.ElementType is PredefinedTypeSyntax pts0
-               && pts0.Keyword.Text == "string"
-               && ps0.Identifier.ValueText == "format"
-               && s.ParameterList.Parameters[1] is ParameterSyntax ps1
-               && ps1.Type is NullableTypeSyntax nts1
-               && nts1.ElementType is IdentifierNameSyntax ins1
-               && ins1.Identifier.Text == "IFormatProvider"
-               && ps1.Identifier.ValueText == "provider";
+        return s.ParameterList.Parameters.Count == 2 &&
+            s.ParameterList.Parameters[0] is ParameterSyntax ps0 &&
+            ps0.Type is NullableTypeSyntax nts0 &&
+            nts0.ElementType is PredefinedTypeSyntax pts0 &&
+            pts0.Keyword.Text == "string" &&
+            s.ParameterList.Parameters[1] is ParameterSyntax ps1 &&
+            ps1.Type is NullableTypeSyntax nts1 &&
+            nts1.ElementType is IdentifierNameSyntax ins1 &&
+            ins1.Identifier.Text == "IFormatProvider";
     }
 
     // IParsable<TSelf>.Parse(string s, IFormatProvider? provider)
@@ -47,16 +45,14 @@ internal static class MethodDeclarationSyntaxExtensions
             return false;
         }
 
-        return s.ParameterList.Parameters.Count == 2
-               && s.ParameterList.Parameters[0] is ParameterSyntax ps0
-               && ps0.Type is PredefinedTypeSyntax pts0
-               && pts0.Keyword.Text == "string"
-               && ps0.Identifier.ValueText == "s"
-               && s.ParameterList.Parameters[1] is ParameterSyntax ps1
-               && ps1.Type is NullableTypeSyntax nts1
-               && nts1.ElementType is IdentifierNameSyntax ins1
-               && ins1.Identifier.Text == "IFormatProvider"
-               && ps1.Identifier.ValueText == "provider";
+        return s.ParameterList.Parameters.Count == 2 &&
+            s.ParameterList.Parameters[0] is ParameterSyntax ps0 &&
+            ps0.Type is PredefinedTypeSyntax pts0 &&
+            pts0.Keyword.Text == "string" &&
+            s.ParameterList.Parameters[1] is ParameterSyntax ps1 &&
+            ps1.Type is NullableTypeSyntax nts1 &&
+            nts1.ElementType is IdentifierNameSyntax ins1 &&
+            ins1.Identifier.Text == "IFormatProvider";
     }
 
     // bool IParsable<TSelf>.TryParse(string? s, IFormatProvider? provider, out TSelf result)
@@ -67,20 +63,17 @@ internal static class MethodDeclarationSyntaxExtensions
             return false;
         }
 
-        return s.ParameterList.Parameters.Count == 3
-               && s.ParameterList.Parameters[0] is ParameterSyntax ps0
-               && ps0.Type is NullableTypeSyntax nts0
-               && nts0.ElementType is PredefinedTypeSyntax pts0
-               && pts0.Keyword.Text == "string"
-               && ps0.Identifier.ValueText == "s"
-               && s.ParameterList.Parameters[1] is ParameterSyntax ps1
-               && ps1.Type is NullableTypeSyntax nts1
-               && nts1.ElementType is IdentifierNameSyntax ins1
-               && ins1.Identifier.Text == "IFormatProvider"
-               && ps1.Identifier.ValueText == "provider"
-               && s.ParameterList.Parameters[2] is ParameterSyntax ps2
-               && ps2.Modifiers.Any(syntaxToken => syntaxToken.IsKind(SyntaxKind.OutKeyword))
-               && ps2.Identifier.ValueText == "result";
+        return s.ParameterList.Parameters.Count == 3 &&
+            s.ParameterList.Parameters[0] is ParameterSyntax ps0 &&
+            ps0.Type is NullableTypeSyntax nts0 &&
+            nts0.ElementType is PredefinedTypeSyntax pts0 &&
+            pts0.Keyword.Text == "string" &&
+            s.ParameterList.Parameters[1] is ParameterSyntax ps1 &&
+            ps1.Type is NullableTypeSyntax nts1 &&
+            nts1.ElementType is IdentifierNameSyntax ins1 &&
+            ins1.Identifier.Text == "IFormatProvider" &&
+            s.ParameterList.Parameters[2] is ParameterSyntax ps2 &&
+            ps2.Modifiers.Any(syntaxToken => syntaxToken.IsKind(SyntaxKind.OutKeyword));
     }
 
     // ISpanParseable<TSelf>.Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
@@ -91,19 +84,17 @@ internal static class MethodDeclarationSyntaxExtensions
             return false;
         }
 
-        return s.ParameterList.Parameters.Count == 2
-               && s.ParameterList.Parameters[0] is ParameterSyntax ps0
-               && ps0.Type is GenericNameSyntax gns0
-               && gns0.Identifier.Text == "ReadOnlySpan"
-               && gns0.TypeArgumentList.Arguments.Count == 1
-               && gns0.TypeArgumentList.Arguments[0] is PredefinedTypeSyntax pts0
-               && pts0.Keyword.Text == "char"
-               && ps0.Identifier.ValueText == "s"
-               && s.ParameterList.Parameters[1] is ParameterSyntax ps1
-               && ps1.Type is NullableTypeSyntax nts1
-               && nts1.ElementType is IdentifierNameSyntax ins1
-               && ins1.Identifier.Text == "IFormatProvider"
-               && ps1.Identifier.ValueText == "provider";
+        return s.ParameterList.Parameters.Count == 2 &&
+            s.ParameterList.Parameters[0] is ParameterSyntax ps0 &&
+            ps0.Type is GenericNameSyntax gns0 &&
+            gns0.Identifier.Text == "ReadOnlySpan" &&
+            gns0.TypeArgumentList.Arguments.Count == 1 &&
+            gns0.TypeArgumentList.Arguments[0] is PredefinedTypeSyntax pts0 &&
+            pts0.Keyword.Text == "char" &&
+            s.ParameterList.Parameters[1] is ParameterSyntax ps1 &&
+            ps1.Type is NullableTypeSyntax nts1 &&
+            nts1.ElementType is IdentifierNameSyntax ins1 &&
+            ins1.Identifier.Text == "IFormatProvider";
     }
 
     // bool ISpanParseable<TSelf>.TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out TSelf result)
@@ -114,19 +105,19 @@ internal static class MethodDeclarationSyntaxExtensions
             return false;
         }
 
-        return s.ParameterList.Parameters.Count == 3
-               && s.ParameterList.Parameters[0] is ParameterSyntax ps0
-               && ps0.Type is GenericNameSyntax gns0
-               && gns0.Identifier.Text == "ReadOnlySpan"
-               && ps0.Identifier.ValueText == "s"
-               && s.ParameterList.Parameters[1] is ParameterSyntax ps1
-               && ps1.Type is NullableTypeSyntax nts1
-               && nts1.ElementType is IdentifierNameSyntax ins1
-               && ins1.Identifier.Text == "IFormatProvider"
-               && ps1.Identifier.ValueText == "provider"
-               && s.ParameterList.Parameters[2] is ParameterSyntax ps2
-               && ps2.Modifiers.Any(syntaxToken => syntaxToken.IsKind(SyntaxKind.OutKeyword))
-               && ps2.Identifier.ValueText == "result";
+        return s.ParameterList.Parameters.Count == 3 &&
+            s.ParameterList.Parameters[0] is ParameterSyntax ps0 &&
+            ps0.Type is GenericNameSyntax gns0 &&
+            gns0.Identifier.Text == "ReadOnlySpan" &&
+            gns0.TypeArgumentList.Arguments.Count == 1 &&
+            gns0.TypeArgumentList.Arguments[0] is PredefinedTypeSyntax pts0 &&
+            pts0.Keyword.Text == "char" &&
+            s.ParameterList.Parameters[1] is ParameterSyntax ps1 &&
+            ps1.Type is NullableTypeSyntax nts1 &&
+            nts1.ElementType is IdentifierNameSyntax ins1 &&
+            ins1.Identifier.Text == "IFormatProvider" &&
+            s.ParameterList.Parameters[2] is ParameterSyntax ps2 &&
+            ps2.Modifiers.Any(syntaxToken => syntaxToken.IsKind(SyntaxKind.OutKeyword));
     }
 
     // bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider? provider)
@@ -137,19 +128,21 @@ internal static class MethodDeclarationSyntaxExtensions
             return false;
         }
 
-        return s.ParameterList.Parameters.Count == 4
-               && s.ParameterList.Parameters[0] is ParameterSyntax ps0
-               && ps0.Type is GenericNameSyntax gns0
-               && gns0.Identifier.Text == "Span"
-               && ps0.Identifier.ValueText == "destination"
-               && s.ParameterList.Parameters[1] is ParameterSyntax ps1
-               && ps1.Type is PredefinedTypeSyntax pts1
-               && pts1.Keyword.Text == "int"
-               && s.ParameterList.Parameters[2] is ParameterSyntax ps2
-               && ps2.Type is GenericNameSyntax gns2
-               && gns2.Identifier.Text == "ReadOnlySpan"
-               && s.ParameterList.Parameters[3] is ParameterSyntax ps3
-               && ps3.Type is NullableTypeSyntax nts3;
+        return s.ParameterList.Parameters.Count == 4 &&
+            s.ParameterList.Parameters[0] is ParameterSyntax ps0 &&
+            ps0.Type is GenericNameSyntax gns0 &&
+            gns0.Identifier.Text == "Span" &&
+            gns0.TypeArgumentList.Arguments.Count == 1 &&
+            gns0.TypeArgumentList.Arguments[0] is PredefinedTypeSyntax pts0 &&
+            pts0.Keyword.Text == "char" &&
+            s.ParameterList.Parameters[1] is ParameterSyntax ps1 &&
+            ps1.Type is PredefinedTypeSyntax pts1 &&
+            pts1.Keyword.Text == "int" &&
+            s.ParameterList.Parameters[2] is ParameterSyntax ps2 &&
+            ps2.Type is GenericNameSyntax gns2 &&
+            gns2.Identifier.Text == "ReadOnlySpan" &&
+            s.ParameterList.Parameters[3] is ParameterSyntax ps3 &&
+            ps3.Type is NullableTypeSyntax;
     }
 
     // public bool TryFormat(this Span<byte> utf8Destination, out int bytesWritten, ReadOnlySpan<char> format = default, IFormatProvider? provider = default)
@@ -160,22 +153,21 @@ internal static class MethodDeclarationSyntaxExtensions
             return false;
         }
 
-        return s.ParameterList.Parameters.Count == 4
-               && s.ParameterList.Parameters[0] is ParameterSyntax ps0
-               && ps0.Type is GenericNameSyntax gns0
-               && gns0.Identifier.Text == "Span"
-               && gns0.TypeArgumentList.Arguments.Count == 1
-               && gns0.TypeArgumentList.Arguments[0] is PredefinedTypeSyntax pts0
-               && pts0.Keyword.Text == "byte"
-               && ps0.Identifier.ValueText == "utf8Destination"
-               && s.ParameterList.Parameters[1] is ParameterSyntax ps1
-               && ps1.Type is PredefinedTypeSyntax pts1
-               && pts1.Keyword.Text == "int"
-               && s.ParameterList.Parameters[2] is ParameterSyntax ps2
-               && ps2.Type is GenericNameSyntax gns2
-               && gns2.Identifier.Text == "ReadOnlySpan"
-               && s.ParameterList.Parameters[3] is ParameterSyntax ps3
-               && ps3.Type is NullableTypeSyntax;
+        return s.ParameterList.Parameters.Count == 4 &&
+            s.ParameterList.Parameters[0] is ParameterSyntax ps0 &&
+            ps0.Type is GenericNameSyntax gns0 &&
+            gns0.Identifier.Text == "Span" &&
+            gns0.TypeArgumentList.Arguments.Count == 1 &&
+            gns0.TypeArgumentList.Arguments[0] is PredefinedTypeSyntax pts0 &&
+            pts0.Keyword.Text == "byte" &&
+            s.ParameterList.Parameters[1] is ParameterSyntax ps1 &&
+            ps1.Type is PredefinedTypeSyntax pts1 &&
+            pts1.Keyword.Text == "int" &&
+            s.ParameterList.Parameters[2] is ParameterSyntax ps2 &&
+            ps2.Type is GenericNameSyntax gns2 &&
+            gns2.Identifier.Text == "ReadOnlySpan" &&
+            s.ParameterList.Parameters[3] is ParameterSyntax ps3 &&
+            ps3.Type is NullableTypeSyntax;
     }
 
     // TryParse<T>(ReadOnlySpan<byte> utf8Text, IFormatProvider? provider, out T result)
@@ -186,18 +178,19 @@ internal static class MethodDeclarationSyntaxExtensions
             return false;
         }
 
-        return s.ParameterList.Parameters.Count == 3
-               && s.ParameterList.Parameters[0] is ParameterSyntax ps0
-               && ps0.Type is GenericNameSyntax gns0
-               && gns0.Identifier.Text == "ReadOnlySpan"
-               && ps0.Identifier.ValueText == "utf8Text"
-               && s.ParameterList.Parameters[1] is ParameterSyntax ps1
-               && ps1.Type is NullableTypeSyntax nts1
-               && nts1.ElementType is IdentifierNameSyntax ins1
-               && ins1.Identifier.Text == "IFormatProvider"
-               && s.ParameterList.Parameters[2] is ParameterSyntax ps2
-               && ps2.Modifiers.Any(s => s.IsKind(SyntaxKind.OutKeyword))
-               && ps2.Identifier.ValueText == "result";
+        return s.ParameterList.Parameters.Count == 3 &&
+            s.ParameterList.Parameters[0] is ParameterSyntax ps0 &&
+            ps0.Type is GenericNameSyntax gns0 &&
+            gns0.Identifier.Text == "ReadOnlySpan" &&
+            gns0.TypeArgumentList.Arguments.Count == 1 &&
+            gns0.TypeArgumentList.Arguments[0] is PredefinedTypeSyntax pts0 &&
+            pts0.Keyword.Text == "byte" &&
+            s.ParameterList.Parameters[1] is ParameterSyntax ps1 &&
+            ps1.Type is NullableTypeSyntax nts1 &&
+            nts1.ElementType is IdentifierNameSyntax ins1 &&
+            ins1.Identifier.Text == "IFormatProvider" &&
+            s.ParameterList.Parameters[2] is ParameterSyntax ps2 &&
+            ps2.Modifiers.Any(s => s.IsKind(SyntaxKind.OutKeyword));
     }
 
     // T Parse<T>(ReadOnlySpan<byte> utf8Text, IFormatProvider? provider = default)
@@ -208,12 +201,14 @@ internal static class MethodDeclarationSyntaxExtensions
             return false;
         }
 
-        return s.ParameterList.Parameters.Count == 2
-               && s.ParameterList.Parameters[0] is ParameterSyntax ps0
-               && ps0.Type is GenericNameSyntax gns0
-               && gns0.Identifier.Text == "ReadOnlySpan"
-               && ps0.Identifier.ValueText == "utf8Text"
-               && s.ParameterList.Parameters[1] is ParameterSyntax ps1
-               && ps1.Type is NullableTypeSyntax;
+        return s.ParameterList.Parameters.Count == 2 &&
+            s.ParameterList.Parameters[0] is ParameterSyntax ps0 &&
+            ps0.Type is GenericNameSyntax gns0 &&
+            gns0.Identifier.Text == "ReadOnlySpan" &&
+            gns0.TypeArgumentList.Arguments.Count == 1 &&
+            gns0.TypeArgumentList.Arguments[0] is PredefinedTypeSyntax pts0 &&
+            pts0.Keyword.Text == "byte" &&
+            s.ParameterList.Parameters[1] is ParameterSyntax ps1 &&
+            ps1.Type is NullableTypeSyntax;
     }
 }
