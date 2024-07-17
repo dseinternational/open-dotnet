@@ -21,12 +21,12 @@ public abstract class ResultBuilder<TResult>
         }
     }
 
-    public abstract TResult GetResult();
+    public abstract TResult Build();
 }
 
 public class ResultBuilder : ResultBuilder<Result>
 {
-    public override Result GetResult()
+    public override Result Build()
     {
         return new()
         {

@@ -21,7 +21,7 @@ public class PaginatedCollectionValueResultBuilderTests
         builder.Notifications.Add(Notification.Error("NTF123456", "Error"));
         builder.Pagination = new(13, 10, 2);
 
-        var val1 = builder.GetResult();
+        var val1 = builder.Build();
 
         var val2 = new PaginatedCollectionValueResult<string>
         {

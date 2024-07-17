@@ -25,7 +25,7 @@ public abstract class CollectionValueAsyncResultBuilder<TResult, TValue>
 public class CollectionValueAsyncResultBuilder<TValue>
     : CollectionValueAsyncResultBuilder<CollectionValueAsyncResult<TValue>, TValue>
 {
-    public override CollectionValueAsyncResult<TValue> GetResult()
+    public override CollectionValueAsyncResult<TValue> Build()
     {
         return new()
         {

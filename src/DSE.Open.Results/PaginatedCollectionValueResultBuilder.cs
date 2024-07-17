@@ -19,7 +19,7 @@ public class PaginatedCollectionValueResultBuilder<TValue> : CollectionValueResu
         Items.AddRange(valueResult.Value);
     }
 
-    public override PaginatedCollectionValueResult<TValue> GetResult()
+    public override PaginatedCollectionValueResult<TValue> Build()
     {
         ValidatePagination();
         return Done();

@@ -12,7 +12,7 @@ public class ResultBuilderTests
     {
         var builder = new ResultBuilder();
         builder.Notifications.AddError((Diagnostics.DiagnosticCode)"TEST123456", "Test");
-        var result = builder.GetResult();
+        var result = builder.Build();
         Assert.True(result.HasNotifications);
         Assert.True(result.Notifications.Count == 1);
     }

@@ -30,7 +30,7 @@ public abstract class CollectionValueResultBuilder<TResult, TValue>
 public class CollectionValueResultBuilder<TValue>
     : CollectionValueResultBuilder<CollectionValueResult<TValue>, TValue>
 {
-    public override CollectionValueResult<TValue> GetResult()
+    public override CollectionValueResult<TValue> Build()
     {
         return new()
         {

@@ -15,7 +15,7 @@ public abstract class PaginatedCollectionValueAsyncResultBuilder<TResult, TValue
 
 public class PaginatedCollectionValueAsyncResultBuilder<TValue> : PaginatedCollectionValueAsyncResultBuilder<PaginatedCollectionValueAsyncResult<TValue>, TValue>
 {
-    public override PaginatedCollectionValueAsyncResult<TValue> GetResult()
+    public override PaginatedCollectionValueAsyncResult<TValue> Build()
     {
         // Pagination can be `None` if there are errors (e.g., if the provided command was invalid).
         if (Pagination == Pagination.None && !Notifications.AnyErrors())

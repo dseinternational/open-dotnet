@@ -18,7 +18,7 @@ public abstract class ValueResultBuilder<TResult, TValue> : ResultBuilder<TResul
 
 public class ValueResultBuilder<TValue> : ValueResultBuilder<ValueResult<TValue>, TValue>
 {
-    public override ValueResult<TValue> GetResult()
+    public override ValueResult<TValue> Build()
     {
         return new()
         {
