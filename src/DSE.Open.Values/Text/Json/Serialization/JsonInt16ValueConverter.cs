@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 namespace DSE.Open.Values.Text.Json.Serialization;
 
 public class JsonInt16ValueConverter<TValue> : JsonConverter<TValue>
-    where TValue : struct, IValue<TValue, int>
+    where TValue : struct, IValue<TValue, short>
 {
     public override TValue Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {

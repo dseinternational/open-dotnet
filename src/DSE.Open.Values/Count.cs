@@ -11,7 +11,7 @@ namespace DSE.Open.Values;
 /// A (non-negative) count.
 /// </summary>
 [DivisibleValue]
-[JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<Count, uint>))]
+[JsonConverter(typeof(JsonUInt32ValueConverter<Count>))]
 [StructLayout(LayoutKind.Auto)]
 public readonly partial struct Count : IDivisibleValue<Count, uint>, IUtf8SpanSerializable<Count>
 {

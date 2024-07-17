@@ -6,17 +6,17 @@ using System.Text.Json.Serialization;
 
 namespace DSE.Open.Values.Text.Json.Serialization;
 
-public class JsonInt64ValueConverter<TValue> : JsonConverter<TValue>
-    where TValue : struct, IValue<TValue, long>
+public class JsonSingleValueConverter<TValue> : JsonConverter<TValue>
+    where TValue : struct, IValue<TValue, float>
 {
     public override TValue Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        return (TValue)reader.GetInt64();
+        return (TValue)reader.GetSingle();
     }
 
     public override void Write(Utf8JsonWriter writer, TValue value, JsonSerializerOptions options)
     {
         ArgumentNullException.ThrowIfNull(writer);
-        writer.WriteNumberValue((long)value);
+        writer.WriteNumberValue((float)value);
     }
 }

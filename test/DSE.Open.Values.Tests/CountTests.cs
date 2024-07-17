@@ -29,4 +29,15 @@ public class CountTests
         var count2 = JsonSerializer.Deserialize<Count>(json, JsonSharedOptions.RelaxedJsonEscaping);
         Assert.Equal(count, count2);
     }
+
+    [Theory]
+    [InlineData(0u)]
+    [InlineData(1u)]
+    [InlineData(uint.MaxValue)]
+    public void SerializesToNumber(uint value)
+    {
+        var count = new Count(value);
+        var json = JsonSerializer.Serialize(count, JsonSharedOptions.RelaxedJsonEscaping);
+        Assert.Equal(value.ToStringInvariant(), json);
+    }
 }

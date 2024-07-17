@@ -37,4 +37,15 @@ public class AmountTests
         var amount2 = JsonSerializer.Deserialize<Amount>(json, JsonSharedOptions.RelaxedJsonEscaping);
         Assert.Equal(amount, amount2);
     }
+
+    [Theory]
+    [InlineData(0.0)]
+    [InlineData(1.0)]
+    [InlineData(798165.249850)]
+    public void SerializesToNumber(decimal value)
+    {
+        var amount = new Amount(value);
+        var json = JsonSerializer.Serialize(amount, JsonSharedOptions.RelaxedJsonEscaping);
+        Assert.Equal(value.ToStringInvariant(), json);
+    }
 }

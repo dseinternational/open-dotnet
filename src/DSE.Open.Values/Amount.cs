@@ -11,7 +11,7 @@ namespace DSE.Open.Values;
 /// A (non-negative) amount.
 /// </summary>
 [DivisibleValue]
-[JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<Amount, decimal>))]
+[JsonConverter(typeof(JsonDecimalValueConverter<Amount>))]
 [StructLayout(LayoutKind.Auto)]
 public readonly partial struct Amount : IDivisibleValue<Amount, decimal>, IUtf8SpanSerializable<Amount>
 {
