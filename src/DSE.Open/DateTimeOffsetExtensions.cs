@@ -34,7 +34,7 @@ public static class DateTimeOffsetExtensions
 
     public static ZonedDateTime ToZonedDateTime(this DateTimeOffset value, DateTimeZone dateTimeZone)
     {
-        Guard.IsNotNull(dateTimeZone);
+        ArgumentNullException.ThrowIfNull(dateTimeZone);
         return value.ToInstant().InZone(dateTimeZone);
     }
 

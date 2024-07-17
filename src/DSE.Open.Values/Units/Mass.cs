@@ -30,7 +30,7 @@ public readonly record struct Mass : IQuantity<double, UnitOfMass>, IComparable<
 
     public double ConvertValueTo(UnitOfMass unitOfMass)
     {
-        Guard.IsNotNull(unitOfMass);
+        ArgumentNullException.ThrowIfNull(unitOfMass);
 
         if (unitOfMass == UnitOfMass.Gram)
         {
@@ -147,7 +147,7 @@ public readonly record struct Mass : IQuantity<double, UnitOfMass>, IComparable<
 
     public string ToString(string? format, IFormatProvider? formatProvider, UnitOfMass unitOfMass)
     {
-        Guard.IsNotNull(unitOfMass);
+        ArgumentNullException.ThrowIfNull(unitOfMass);
 
         return ConvertValueTo(unitOfMass).ToString(format, formatProvider) + unitOfMass.Abbreviation;
     }

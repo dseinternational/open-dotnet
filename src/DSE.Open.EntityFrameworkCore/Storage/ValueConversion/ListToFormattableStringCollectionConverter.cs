@@ -27,13 +27,13 @@ public sealed class ListToFormattableStringCollectionConverter<T> : ValueConvert
 
     private static IEnumerable<string> ToCollection(IList<T> set, string? format, IFormatProvider? formatProvider)
     {
-        Guard.IsNotNull(set);
+        ArgumentNullException.ThrowIfNull(set);
         return set.Select(p => p.ToString(format, formatProvider) ?? string.Empty);
     }
 
     private static List<T> FromCollection(IEnumerable<string> collection, IFormatProvider? formatProvider)
     {
-        Guard.IsNotNull(collection);
+        ArgumentNullException.ThrowIfNull(collection);
         return collection.Select(s => T.Parse(s, formatProvider)).ToList();
     }
 }

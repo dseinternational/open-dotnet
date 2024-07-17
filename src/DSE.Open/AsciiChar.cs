@@ -297,7 +297,7 @@ public readonly partial struct AsciiChar
 
     public static AsciiChar Parse(string s, IFormatProvider? provider)
     {
-        Guard.IsNotNull(s);
+        ArgumentNullException.ThrowIfNull(s);
         return Parse(s.AsSpan(), provider);
     }
 

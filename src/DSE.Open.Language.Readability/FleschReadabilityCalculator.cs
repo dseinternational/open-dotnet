@@ -17,7 +17,7 @@ public static class FleschReadabilityCalculator
 
     public static double CalculateReadingEase(IReadOnlyCollection<Sentence> sentences)
     {
-        Guard.IsNotNull(sentences);
+        ArgumentNullException.ThrowIfNull(sentences);
 
         var words = sentences.SelectMany(s => s.Words).ToArray();
 
@@ -42,7 +42,7 @@ public static class FleschReadabilityCalculator
 
     public static double CalculateReadingGrade(IReadOnlyCollection<Sentence> sentences)
     {
-        Guard.IsNotNull(sentences);
+        ArgumentNullException.ThrowIfNull(sentences);
 
         var words = sentences.SelectMany(s => s.Words).ToArray();
 

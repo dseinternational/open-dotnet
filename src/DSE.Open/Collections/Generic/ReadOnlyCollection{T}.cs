@@ -20,7 +20,7 @@ public class ReadOnlyCollection<T> : IReadOnlyList<T>
 
     public ReadOnlyCollection(IEnumerable<T> items)
     {
-        Guard.IsNotNull(items);
+        ArgumentNullException.ThrowIfNull(items);
         _items = new(items);
     }
 
@@ -37,7 +37,7 @@ public class ReadOnlyCollection<T> : IReadOnlyList<T>
     protected ReadOnlyCollection(List<T> collection)
 #pragma warning restore CA1002 // Do not expose generic lists
     {
-        Guard.IsNotNull(collection);
+        ArgumentNullException.ThrowIfNull(collection);
         _items = collection;
     }
 

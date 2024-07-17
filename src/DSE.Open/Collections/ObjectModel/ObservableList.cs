@@ -47,7 +47,7 @@ public class ObservableList<T> : IObservableList<T>
 
     public ObservableList(IEnumerable<T> items)
     {
-        Guard.IsNotNull(items);
+        ArgumentNullException.ThrowIfNull(items);
 
         _observedItems = [..items];
     }
@@ -100,7 +100,7 @@ public class ObservableList<T> : IObservableList<T>
 
     public void Add(T item, bool suppressEvents)
     {
-        Guard.IsNotNull(item);
+        ArgumentNullException.ThrowIfNull(item);
 
         _observedItems.Add(item);
 
@@ -126,7 +126,7 @@ public class ObservableList<T> : IObservableList<T>
 
     private void AddRange(IEnumerable<T> collection, AddRangeNotification notification, bool suppressEvents)
     {
-        Guard.IsNotNull(collection);
+        ArgumentNullException.ThrowIfNull(collection);
 
         var collectionAsList = collection as List<T> ?? [..collection];
 
@@ -171,7 +171,7 @@ public class ObservableList<T> : IObservableList<T>
 
     public int BinarySearch(int index, int count, T item, IComparer<T>? comparer)
     {
-        Guard.IsNotNull(item);
+        ArgumentNullException.ThrowIfNull(item);
         return _observedItems.BinarySearch(index, count, item, comparer);
     }
 
@@ -200,19 +200,19 @@ public class ObservableList<T> : IObservableList<T>
 
     public bool Contains(T item)
     {
-        Guard.IsNotNull(item);
+        ArgumentNullException.ThrowIfNull(item);
         return _observedItems.Contains(item);
     }
 
     public void CopyTo(T[] array, int arrayIndex)
     {
-        Guard.IsNotNull(array);
+        ArgumentNullException.ThrowIfNull(array);
         _observedItems.CopyTo(array, arrayIndex);
     }
 
     public void CopyTo(int index, T[] array, int arrayIndex, int count)
     {
-        Guard.IsNotNull(array);
+        ArgumentNullException.ThrowIfNull(array);
         _observedItems.CopyTo(index, array, arrayIndex, count);
     }
 
@@ -283,7 +283,7 @@ public class ObservableList<T> : IObservableList<T>
 
     public int IndexOf(T item)
     {
-        Guard.IsNotNull(item);
+        ArgumentNullException.ThrowIfNull(item);
         return _observedItems.IndexOf(item);
     }
 
@@ -296,7 +296,7 @@ public class ObservableList<T> : IObservableList<T>
     {
         CheckReentrancy();
 
-        Guard.IsNotNull(item);
+        ArgumentNullException.ThrowIfNull(item);
 
         _observedItems.Insert(index, item);
 
@@ -386,7 +386,7 @@ public class ObservableList<T> : IObservableList<T>
 
     private void RemoveRange(IEnumerable<T> collection, RemoveRangeNotification notification, bool suppressEvents)
     {
-        Guard.IsNotNull(collection);
+        ArgumentNullException.ThrowIfNull(collection);
 
         var collectionAsList = collection as List<T> ?? [..collection];
 
@@ -438,7 +438,7 @@ public class ObservableList<T> : IObservableList<T>
     {
         CheckReentrancy();
 
-        Guard.IsNotNull(item);
+        ArgumentNullException.ThrowIfNull(item);
 
         var oldItem = this[index];
 
@@ -457,7 +457,7 @@ public class ObservableList<T> : IObservableList<T>
     /// <param name="collection"></param>
     public void SetRange(IEnumerable<T> collection)
     {
-        Guard.IsNotNull(collection);
+        ArgumentNullException.ThrowIfNull(collection);
 
         CheckReentrancy();
 
@@ -543,7 +543,7 @@ public class ObservableList<T> : IObservableList<T>
     {
         CheckReentrancy();
 
-        Guard.IsNotNull(comparison);
+        ArgumentNullException.ThrowIfNull(comparison);
 
         var sorted = new List<T>(_observedItems);
 
@@ -581,7 +581,7 @@ public class ObservableList<T> : IObservableList<T>
 
     public void SortBy<TKey>(SortOrder sortOrder, Func<T, TKey> keySelector, IComparer<TKey>? comparer)
     {
-        Guard.IsNotNull(keySelector);
+        ArgumentNullException.ThrowIfNull(keySelector);
 
         comparer ??= Comparer<TKey>.Default;
 
@@ -595,8 +595,8 @@ public class ObservableList<T> : IObservableList<T>
 
     public void SortBy<TKey>(SortOrder sortOrder, Func<T, TKey> keySelector, Comparison<TKey> comparison)
     {
-        Guard.IsNotNull(keySelector);
-        Guard.IsNotNull(comparison);
+        ArgumentNullException.ThrowIfNull(keySelector);
+        ArgumentNullException.ThrowIfNull(comparison);
 
         Sort(sortOrder, itemComparison);
 
@@ -623,7 +623,7 @@ public class ObservableList<T> : IObservableList<T>
 
     int IList.Add(object? value)
     {
-        Guard.IsNotNull(value);
+        ArgumentNullException.ThrowIfNull(value);
         Guard.IsOfType<T>(value);
 
         Add((T)value);
@@ -642,7 +642,7 @@ public class ObservableList<T> : IObservableList<T>
 
     void IList.Insert(int index, object? value)
     {
-        Guard.IsNotNull(value);
+        ArgumentNullException.ThrowIfNull(value);
         Guard.IsOfType<T>(value);
 
         Insert(index, (T)value);

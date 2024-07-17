@@ -32,7 +32,7 @@ public class EntityDataInitializationException : EntityDataException
     public EntityDataInitializationException(string parameterName, ValidationResult? validationResult = null, string? message = null, Exception? innerException = null)
         : base(message ?? DefaultMessage + parameterName, innerException)
     {
-        Guard.IsNotNull(parameterName);
+        ArgumentNullException.ThrowIfNull(parameterName);
 
         ParameterName = parameterName;
         ValidationResult = validationResult;

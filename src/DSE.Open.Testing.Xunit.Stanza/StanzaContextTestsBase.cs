@@ -10,7 +10,7 @@ public abstract class StanzaContextTestsBase : LoggedTestsBase
 {
     protected StanzaContextTestsBase(StanzaContextFixture fixture, ITestOutputHelper output) : base(output)
     {
-        Guard.IsNotNull(fixture);
+        ArgumentNullException.ThrowIfNull(fixture);
 
         StanzaContext = fixture.StanzaContext;
     }

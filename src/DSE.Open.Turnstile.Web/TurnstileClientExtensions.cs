@@ -16,8 +16,8 @@ public static class TurnstileClientExtensions
         HttpContext httpContext,
         CancellationToken cancellationToken = default)
     {
-        Guard.IsNotNull(client);
-        Guard.IsNotNull(httpContext);
+        ArgumentNullException.ThrowIfNull(client);
+        ArgumentNullException.ThrowIfNull(httpContext);
 
         _ = httpContext.Request.Form.TryGetValue(WidgetConstants.DefaultResponseFieldName, out var clientResponse);
 

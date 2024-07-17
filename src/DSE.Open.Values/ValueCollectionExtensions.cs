@@ -212,7 +212,7 @@ public static class ValueCollectionExtensions
         // sufficient performance testing.
         where TSource : struct
     {
-        Guard.IsNotNull(source);
+        ArgumentNullException.ThrowIfNull(source);
 
         // Use `GetType() == typeof(...)` rather than `is` to avoid cast helpers.  This is measurably cheaper
         // but does mean we could end up missing some rare cases where we could get a span but don't (e.g. a uint[]

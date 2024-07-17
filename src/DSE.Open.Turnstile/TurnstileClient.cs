@@ -23,10 +23,10 @@ public sealed partial class TurnstileClient : ITurnstileClient
         IOptions<TurnstileClientOptions> options,
         ILogger<TurnstileClient> logger)
     {
-        Guard.IsNotNull(httpClient);
-        Guard.IsNotNull(options);
-        Guard.IsNotNull(options.Value);
-        Guard.IsNotNull(logger);
+        ArgumentNullException.ThrowIfNull(httpClient);
+        ArgumentNullException.ThrowIfNull(options);
+        ArgumentNullException.ThrowIfNull(options.Value);
+        ArgumentNullException.ThrowIfNull(logger);
 
         _options = options.Value;
         _httpClient = httpClient;
@@ -38,9 +38,9 @@ public sealed partial class TurnstileClient : ITurnstileClient
         TurnstileClientOptions options,
         ILogger<TurnstileClient> logger)
     {
-        Guard.IsNotNull(httpClient);
-        Guard.IsNotNull(options);
-        Guard.IsNotNull(logger);
+        ArgumentNullException.ThrowIfNull(httpClient);
+        ArgumentNullException.ThrowIfNull(options);
+        ArgumentNullException.ThrowIfNull(logger);
 
         _options = options;
         _httpClient = httpClient;
@@ -51,8 +51,8 @@ public sealed partial class TurnstileClient : ITurnstileClient
         HttpClient httpClient,
         TurnstileClientOptions options)
     {
-        Guard.IsNotNull(httpClient);
-        Guard.IsNotNull(options);
+        ArgumentNullException.ThrowIfNull(httpClient);
+        ArgumentNullException.ThrowIfNull(options);
 
         _options = options;
         _httpClient = httpClient;
@@ -66,7 +66,7 @@ public sealed partial class TurnstileClient : ITurnstileClient
         IPAddress? clientIpAddress = null,
         CancellationToken cancellationToken = default)
     {
-        Guard.IsNotNull(clientResponse);
+        ArgumentNullException.ThrowIfNull(clientResponse);
 
         var idempotencyKey = Guid.NewGuid().ToString();
 

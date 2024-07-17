@@ -53,7 +53,7 @@ public static partial class Matrix
     public static Matrix<T> Create<T>(IReadOnlyList<IReadOnlyList<T>> source)
         where T : struct, INumber<T>
     {
-        Guard.IsNotNull(source);
+        ArgumentNullException.ThrowIfNull(source);
 
         if (source.Count == 0)
         {

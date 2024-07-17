@@ -28,7 +28,7 @@ public class JsonStringLengthConverter : JsonConverter<Length>
 
     public override void Write(Utf8JsonWriter writer, Length value, JsonSerializerOptions options)
     {
-        Guard.IsNotNull(writer);
+        ArgumentNullException.ThrowIfNull(writer);
         Guard.IsNotDefault(value);
         writer.WriteStringValue(value.ToStringInvariant());
     }

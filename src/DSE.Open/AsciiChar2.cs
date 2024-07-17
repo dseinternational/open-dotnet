@@ -135,13 +135,13 @@ public readonly struct AsciiChar2
 
     public bool Equals(string other)
     {
-        Guard.IsNotNull(other);
+        ArgumentNullException.ThrowIfNull(other);
         return Equals(other.AsSpan());
     }
 
     public bool EqualsIgnoreCase(string other)
     {
-        Guard.IsNotNull(other);
+        ArgumentNullException.ThrowIfNull(other);
         return EqualsIgnoreCase(other.AsSpan());
     }
 
@@ -340,7 +340,7 @@ public readonly struct AsciiChar2
 
     public static AsciiChar2 Parse(string s, IFormatProvider? provider)
     {
-        Guard.IsNotNull(s);
+        ArgumentNullException.ThrowIfNull(s);
         return Parse(s.AsSpan(), provider);
     }
 

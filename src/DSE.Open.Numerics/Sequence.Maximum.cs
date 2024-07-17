@@ -16,7 +16,7 @@ public static partial class Sequence
             return VectorPrimitives.Maximum(span);
         }
 
-        Guard.IsNotNull(values);
+        ArgumentNullException.ThrowIfNull(values);
 
         T result;
 
@@ -51,7 +51,7 @@ public static partial class Sequence
             return VectorPrimitives.MaximumFloatingPoint(span);
         }
 
-        Guard.IsNotNull(values);
+        ArgumentNullException.ThrowIfNull(values);
 
         var result = T.NegativeInfinity;
 

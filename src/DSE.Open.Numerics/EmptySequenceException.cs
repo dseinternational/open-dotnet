@@ -29,7 +29,7 @@ public class EmptySequenceException : NumericsException
 
     public static void ThrowIfEmpty<T>(ICollection<T> sequence)
     {
-        Guard.IsNotNull(sequence);
+        ArgumentNullException.ThrowIfNull(sequence);
 
         if (sequence.Count == 0)
         {

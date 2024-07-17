@@ -10,7 +10,7 @@ public static class MeasureIdHelper
 {
     public static uint GetId(Uri urn)
     {
-        Guard.IsNotNull(urn);
+        ArgumentNullException.ThrowIfNull(urn);
         return GetId(urn.ToString());
     }
 

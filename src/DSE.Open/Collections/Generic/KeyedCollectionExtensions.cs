@@ -17,8 +17,8 @@ public static class KeyedCollectionExtensions
     public static IEnumerable<TItem> GetAll<TKey, TItem>(this IKeyedCollection<TKey, TItem> collection, IEnumerable<TKey> keys)
         where TKey : notnull
     {
-        Guard.IsNotNull(collection);
-        Guard.IsNotNull(keys);
+        ArgumentNullException.ThrowIfNull(collection);
+        ArgumentNullException.ThrowIfNull(keys);
 
         foreach (var k in keys)
         {

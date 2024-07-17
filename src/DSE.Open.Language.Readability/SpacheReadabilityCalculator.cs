@@ -15,7 +15,7 @@ public static class SpacheReadabilityCalculator
 
     public static SpacheReadabilityResult Calculate(Book book)
     {
-        Guard.IsNotNull(book);
+        ArgumentNullException.ThrowIfNull(book);
 
         var allParas = book.Paragraphs.ToArray();
 
@@ -46,14 +46,14 @@ public static class SpacheReadabilityCalculator
 
     public static int GetUnfamiliarWordCount(IEnumerable<string> words)
     {
-        Guard.IsNotNull(words);
+        ArgumentNullException.ThrowIfNull(words);
 
         return words.Distinct().Where(IsUnfamiliarWord).Count();
     }
 
     public static bool IsFamiliarWord(string word)
     {
-        Guard.IsNotNull(word);
+        ArgumentNullException.ThrowIfNull(word);
 
         word = word.ToLower(CultureInfo.CurrentCulture).Trim();
 
@@ -118,7 +118,7 @@ public static class SpacheReadabilityCalculator
 
     public static bool IsUnfamiliarWord(string word)
     {
-        Guard.IsNotNull(word);
+        ArgumentNullException.ThrowIfNull(word);
 
         return !IsFamiliarWord(word);
     }

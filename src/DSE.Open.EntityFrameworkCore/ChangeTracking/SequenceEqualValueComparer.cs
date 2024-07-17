@@ -31,7 +31,7 @@ TCollection>
 
     private static int GenerateHash(TCollection values)
     {
-        Guard.IsNotNull(values);
+        ArgumentNullException.ThrowIfNull(values);
         return values.Aggregate(0, (a, v) => HashCode.Combine(a, v?.GetHashCode() ?? 0));
     }
 }

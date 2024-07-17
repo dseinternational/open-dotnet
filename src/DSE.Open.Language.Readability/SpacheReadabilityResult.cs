@@ -8,7 +8,7 @@ public class SpacheReadabilityResult
     public SpacheReadabilityResult(double level, double averageSentenceLength,
         int distinctWordCount, IEnumerable<string> unfamiliarWords)
     {
-        Guard.IsNotNull(unfamiliarWords);
+        ArgumentNullException.ThrowIfNull(unfamiliarWords);
 
         Level = level;
         AverageSentenceLength = averageSentenceLength;

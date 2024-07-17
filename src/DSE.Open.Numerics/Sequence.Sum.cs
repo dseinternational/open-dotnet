@@ -81,7 +81,7 @@ public static partial class Sequence
             return VectorPrimitives.Sum<T, TResult>(span);
         }
 
-        Guard.IsNotNull(sequence);
+        ArgumentNullException.ThrowIfNull(sequence);
 
         var result = TResult.AdditiveIdentity;
         size = 0;
@@ -140,7 +140,7 @@ public static partial class Sequence
             return VectorPrimitives.SumFloatingPoint<T, TResult>(span, summation);
         }
 
-        Guard.IsNotNull(sequence);
+        ArgumentNullException.ThrowIfNull(sequence);
 
         if (summation == SummationCompensation.KahanBabushkaNeumaier)
         {

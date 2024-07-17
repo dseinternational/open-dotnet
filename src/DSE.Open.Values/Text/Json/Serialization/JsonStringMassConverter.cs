@@ -28,7 +28,7 @@ public class JsonStringMassConverter : JsonConverter<Mass>
 
     public override void Write(Utf8JsonWriter writer, Mass value, JsonSerializerOptions options)
     {
-        Guard.IsNotNull(writer);
+        ArgumentNullException.ThrowIfNull(writer);
         writer.WriteStringValue(value.ToStringInvariant());
     }
 }

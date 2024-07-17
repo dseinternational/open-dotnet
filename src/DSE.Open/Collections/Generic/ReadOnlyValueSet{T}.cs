@@ -44,7 +44,7 @@ public class ReadOnlyValueSet<T> : IReadOnlySet<T>, IEquatable<ReadOnlyValueSet<
 
     public ReadOnlyValueSet(IEnumerable<T> set)
     {
-        Guard.IsNotNull(set);
+        ArgumentNullException.ThrowIfNull(set);
 
         if (set is ReadOnlyValueSet<T> other)
         {

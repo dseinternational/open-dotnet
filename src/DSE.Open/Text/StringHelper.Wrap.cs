@@ -50,8 +50,8 @@ public static partial class StringHelper
 
     public static string Wrap<T>(string before, string after, T value, string? format = default, IFormatProvider? provider = default)
     {
-        Guard.IsNotNull(before);
-        Guard.IsNotNull(after);
+        ArgumentNullException.ThrowIfNull(before);
+        ArgumentNullException.ThrowIfNull(after);
 
         var sh = new DefaultInterpolatedStringHandler(before.Length + after.Length, 1, provider, stackalloc char[256]);
         sh.AppendLiteral(before);
@@ -91,7 +91,7 @@ public static partial class StringHelper
         ReadOnlySpan<char> after,
         IEnumerable<string> values)
     {
-        Guard.IsNotNull(values);
+        ArgumentNullException.ThrowIfNull(values);
 
         if (values is List<string?> valuesList)
         {
@@ -124,7 +124,7 @@ public static partial class StringHelper
         IFormatProvider? provider = default)
         where T : struct, IFormattable
     {
-        Guard.IsNotNull(values);
+        ArgumentNullException.ThrowIfNull(values);
 
         if (values.TryGetSpan(out var valuesSpan))
         {
@@ -152,7 +152,7 @@ public static partial class StringHelper
         IFormatProvider? provider = default)
         where T : struct, IFormattable
     {
-        Guard.IsNotNull(values);
+        ArgumentNullException.ThrowIfNull(values);
 
         if (values.TryGetSpan(out var valuesSpan))
         {

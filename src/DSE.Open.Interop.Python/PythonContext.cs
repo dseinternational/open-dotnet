@@ -14,7 +14,7 @@ public sealed class PythonContext : IDisposable
 
     public PythonContext(PythonContextConfiguration configuration)
     {
-        Guard.IsNotNull(configuration);
+        ArgumentNullException.ThrowIfNull(configuration);
 
         EnsureNotInitialized();
 

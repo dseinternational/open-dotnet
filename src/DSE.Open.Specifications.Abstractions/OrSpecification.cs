@@ -14,8 +14,8 @@ internal sealed class OrSpecification<T> : ISpecification<T>
 
     public OrSpecification(ISpecification<T> left, ISpecification<T> right)
     {
-        Guard.IsNotNull(left);
-        Guard.IsNotNull(right);
+        ArgumentNullException.ThrowIfNull(left);
+        ArgumentNullException.ThrowIfNull(right);
         _left = left;
         _right = right;
     }

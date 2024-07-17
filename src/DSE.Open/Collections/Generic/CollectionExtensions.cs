@@ -14,7 +14,7 @@ public static class CollectionExtensions
 
     public static void AddRange<T>(this ICollection<T> collection, IEnumerable<T>? values)
     {
-        Guard.IsNotNull(collection);
+        ArgumentNullException.ThrowIfNull(collection);
 
         if (values is null)
         {
@@ -46,8 +46,8 @@ public static class CollectionExtensions
 
     public static int FindIndex<T>(this T[] collection, int startIndex, Predicate<T> match)
     {
-        Guard.IsNotNull(collection);
-        Guard.IsNotNull(match);
+        ArgumentNullException.ThrowIfNull(collection);
+        ArgumentNullException.ThrowIfNull(match);
 
         if (startIndex > collection.Length - 1)
         {
@@ -71,8 +71,8 @@ public static class CollectionExtensions
     /// <returns></returns>
     public static int FindIndex<T>(this T[] collection, int startIndex, int count, Predicate<T> match)
     {
-        Guard.IsNotNull(collection);
-        Guard.IsNotNull(match);
+        ArgumentNullException.ThrowIfNull(collection);
+        ArgumentNullException.ThrowIfNull(match);
 
         for (var i = startIndex; i < count; i++)
         {
@@ -92,8 +92,8 @@ public static class CollectionExtensions
 
     public static int FindIndex<T>(this IList<T> collection, int startIndex, Predicate<T> match)
     {
-        Guard.IsNotNull(collection);
-        Guard.IsNotNull(match);
+        ArgumentNullException.ThrowIfNull(collection);
+        ArgumentNullException.ThrowIfNull(match);
 
         if (startIndex > collection.Count - 1)
         {
@@ -117,8 +117,8 @@ public static class CollectionExtensions
     /// <returns></returns>
     public static int FindIndex<T>(this IList<T> collection, int startIndex, int count, Predicate<T> match)
     {
-        Guard.IsNotNull(collection);
-        Guard.IsNotNull(match);
+        ArgumentNullException.ThrowIfNull(collection);
+        ArgumentNullException.ThrowIfNull(match);
 
         var upperBound = startIndex + count;
 
@@ -140,8 +140,8 @@ public static class CollectionExtensions
 
     public static int FindIndex<T>(this IReadOnlyList<T> collection, int startIndex, Predicate<T> match)
     {
-        Guard.IsNotNull(collection);
-        Guard.IsNotNull(match);
+        ArgumentNullException.ThrowIfNull(collection);
+        ArgumentNullException.ThrowIfNull(match);
 
         if (startIndex > collection.Count - 1)
         {
@@ -165,8 +165,8 @@ public static class CollectionExtensions
     /// <returns></returns>
     public static int FindIndex<T>(this IReadOnlyList<T> collection, int startIndex, int count, Predicate<T> match)
     {
-        Guard.IsNotNull(collection);
-        Guard.IsNotNull(match);
+        ArgumentNullException.ThrowIfNull(collection);
+        ArgumentNullException.ThrowIfNull(match);
 
         var upperBound = startIndex + count;
 
@@ -191,8 +191,8 @@ public static class CollectionExtensions
     /// <returns></returns>
     public static T? FindLast<T>(this T[] collection, Predicate<T> match)
     {
-        Guard.IsNotNull(collection);
-        Guard.IsNotNull(match);
+        ArgumentNullException.ThrowIfNull(collection);
+        ArgumentNullException.ThrowIfNull(match);
 
         for (var i = collection.Length - 1; i >= 0; i--)
         {
@@ -215,8 +215,8 @@ public static class CollectionExtensions
     /// <returns></returns>
     public static T? FindLast<T>(this IList<T> collection, Predicate<T> match)
     {
-        Guard.IsNotNull(collection);
-        Guard.IsNotNull(match);
+        ArgumentNullException.ThrowIfNull(collection);
+        ArgumentNullException.ThrowIfNull(match);
 
         for (var i = collection.Count - 1; i >= 0; i--)
         {
@@ -239,8 +239,8 @@ public static class CollectionExtensions
     /// <returns></returns>
     public static T? FindLast<T>(this IReadOnlyList<T> collection, Predicate<T> match)
     {
-        Guard.IsNotNull(collection);
-        Guard.IsNotNull(match);
+        ArgumentNullException.ThrowIfNull(collection);
+        ArgumentNullException.ThrowIfNull(match);
 
         for (var i = collection.Count - 1; i >= 0; i--)
         {
@@ -255,16 +255,16 @@ public static class CollectionExtensions
 
     public static int FindLastIndex<T>(this T[] collection, Predicate<T> match)
     {
-        Guard.IsNotNull(collection);
-        Guard.IsNotNull(match);
+        ArgumentNullException.ThrowIfNull(collection);
+        ArgumentNullException.ThrowIfNull(match);
 
         return collection.FindLastIndex(collection.Length - 1, match);
     }
 
     public static int FindLastIndex<T>(this T[] collection, int startIndex, Predicate<T> match)
     {
-        Guard.IsNotNull(collection);
-        Guard.IsNotNull(match);
+        ArgumentNullException.ThrowIfNull(collection);
+        ArgumentNullException.ThrowIfNull(match);
         Guard.IsLessThan(startIndex, int.MaxValue);
 
         return collection.FindLastIndex(startIndex, startIndex + 1, match);
@@ -272,8 +272,8 @@ public static class CollectionExtensions
 
     public static int FindLastIndex<T>(this T[] collection, int startIndex, int count, Predicate<T> match)
     {
-        Guard.IsNotNull(collection);
-        Guard.IsNotNull(match);
+        ArgumentNullException.ThrowIfNull(collection);
+        ArgumentNullException.ThrowIfNull(match);
 
         Guard.IsGreaterThanOrEqualTo(startIndex, 0);
         Guard.IsGreaterThanOrEqualTo(count, 0);
@@ -294,16 +294,16 @@ public static class CollectionExtensions
 
     public static int FindLastIndex<T>(this IList<T> collection, Predicate<T> match)
     {
-        Guard.IsNotNull(collection);
-        Guard.IsNotNull(match);
+        ArgumentNullException.ThrowIfNull(collection);
+        ArgumentNullException.ThrowIfNull(match);
 
         return collection.FindLastIndex(collection.Count - 1, match);
     }
 
     public static int FindLastIndex<T>(this IList<T> collection, int startIndex, Predicate<T> match)
     {
-        Guard.IsNotNull(collection);
-        Guard.IsNotNull(match);
+        ArgumentNullException.ThrowIfNull(collection);
+        ArgumentNullException.ThrowIfNull(match);
         Guard.IsLessThan(startIndex, int.MaxValue);
 
         return collection.FindLastIndex(startIndex, startIndex + 1, match);
@@ -311,8 +311,8 @@ public static class CollectionExtensions
 
     public static int FindLastIndex<T>(this IList<T> collection, int startIndex, int count, Predicate<T> match)
     {
-        Guard.IsNotNull(collection);
-        Guard.IsNotNull(match);
+        ArgumentNullException.ThrowIfNull(collection);
+        ArgumentNullException.ThrowIfNull(match);
 
         Guard.IsGreaterThanOrEqualTo(startIndex, 0);
         Guard.IsGreaterThanOrEqualTo(count, 0);
@@ -333,16 +333,16 @@ public static class CollectionExtensions
 
     public static int FindLastIndex<T>(this IReadOnlyList<T> collection, Predicate<T> match)
     {
-        Guard.IsNotNull(collection);
-        Guard.IsNotNull(match);
+        ArgumentNullException.ThrowIfNull(collection);
+        ArgumentNullException.ThrowIfNull(match);
 
         return collection.FindLastIndex(collection.Count - 1, match);
     }
 
     public static int FindLastIndex<T>(this IReadOnlyList<T> collection, int startIndex, Predicate<T> match)
     {
-        Guard.IsNotNull(collection);
-        Guard.IsNotNull(match);
+        ArgumentNullException.ThrowIfNull(collection);
+        ArgumentNullException.ThrowIfNull(match);
         Guard.IsLessThan(startIndex, int.MaxValue);
 
         return collection.FindLastIndex(startIndex, startIndex + 1, match);
@@ -350,8 +350,8 @@ public static class CollectionExtensions
 
     public static int FindLastIndex<T>(this IReadOnlyList<T> collection, int startIndex, int count, Predicate<T> match)
     {
-        Guard.IsNotNull(collection);
-        Guard.IsNotNull(match);
+        ArgumentNullException.ThrowIfNull(collection);
+        ArgumentNullException.ThrowIfNull(match);
 
         Guard.IsGreaterThanOrEqualTo(startIndex, 0);
         Guard.IsGreaterThanOrEqualTo(count, 0);
@@ -372,8 +372,8 @@ public static class CollectionExtensions
 
     public static void ForEach<T>(this IEnumerable<T> collection, Action<T> action)
     {
-        Guard.IsNotNull(collection);
-        Guard.IsNotNull(action);
+        ArgumentNullException.ThrowIfNull(collection);
+        ArgumentNullException.ThrowIfNull(action);
 
         foreach (var item in collection)
         {
@@ -383,8 +383,8 @@ public static class CollectionExtensions
 
     public static void ForEach<T>(this ReadOnlyMemory<T> collection, Action<T> action)
     {
-        Guard.IsNotNull(collection);
-        Guard.IsNotNull(action);
+        ArgumentNullException.ThrowIfNull(collection);
+        ArgumentNullException.ThrowIfNull(action);
 
         var span = collection.Span;
 
@@ -396,8 +396,8 @@ public static class CollectionExtensions
 
     public static void ForEach<T>(this T[] array, Action<T> action)
     {
-        Guard.IsNotNull(array);
-        Guard.IsNotNull(action);
+        ArgumentNullException.ThrowIfNull(array);
+        ArgumentNullException.ThrowIfNull(action);
 
         foreach (var item in array)
         {
@@ -407,7 +407,7 @@ public static class CollectionExtensions
 
     public static void ForEach<T>(this ImmutableArray<T> collection, Action<T> action)
     {
-        Guard.IsNotNull(action);
+        ArgumentNullException.ThrowIfNull(action);
 
         foreach (var item in collection)
         {
@@ -417,8 +417,8 @@ public static class CollectionExtensions
 
     public static void ForEach<T>(this ImmutableHashSet<T> collection, Action<T> action)
     {
-        Guard.IsNotNull(collection);
-        Guard.IsNotNull(action);
+        ArgumentNullException.ThrowIfNull(collection);
+        ArgumentNullException.ThrowIfNull(action);
 
         foreach (var item in collection)
         {
@@ -428,8 +428,8 @@ public static class CollectionExtensions
 
     public static void ForEach<T>(this FrozenSet<T> collection, Action<T> action)
     {
-        Guard.IsNotNull(collection);
-        Guard.IsNotNull(action);
+        ArgumentNullException.ThrowIfNull(collection);
+        ArgumentNullException.ThrowIfNull(action);
 
         foreach (var item in collection)
         {
@@ -439,8 +439,8 @@ public static class CollectionExtensions
 
     public static void ForEach<T>(this IList<T> collection, Action<T> action)
     {
-        Guard.IsNotNull(collection);
-        Guard.IsNotNull(action);
+        ArgumentNullException.ThrowIfNull(collection);
+        ArgumentNullException.ThrowIfNull(action);
 
         foreach (var item in collection)
         {
@@ -450,8 +450,8 @@ public static class CollectionExtensions
 
     public static void ForEach<T>(this IReadOnlyList<T> collection, Action<T> action)
     {
-        Guard.IsNotNull(collection);
-        Guard.IsNotNull(action);
+        ArgumentNullException.ThrowIfNull(collection);
+        ArgumentNullException.ThrowIfNull(action);
 
         foreach (var item in collection)
         {
@@ -461,7 +461,7 @@ public static class CollectionExtensions
 
     public static IEnumerable<T> RandomSelection<T>(this IEnumerable<T> collection, int count)
     {
-        Guard.IsNotNull(collection);
+        ArgumentNullException.ThrowIfNull(collection);
 
         if (s_random.Value is null)
         {
@@ -482,8 +482,8 @@ public static class CollectionExtensions
 
     public static int RemoveAll<T>(this IList<T> collection, Predicate<T> match)
     {
-        Guard.IsNotNull(collection);
-        Guard.IsNotNull(match);
+        ArgumentNullException.ThrowIfNull(collection);
+        ArgumentNullException.ThrowIfNull(match);
 
         var count = 0;
 
@@ -510,7 +510,7 @@ public static class CollectionExtensions
     /// <remarks>See http://en.wikipedia.org/wiki/Fisher-Yates_shuffle</remarks>
     public static void Shuffle<T>(this IList<T> list)
     {
-        Guard.IsNotNull(list);
+        ArgumentNullException.ThrowIfNull(list);
 
         if (s_random.Value is null)
         {
@@ -531,13 +531,13 @@ public static class CollectionExtensions
 
     public static Collection<T> ToCollection<T>(this IEnumerable<T> collection)
     {
-        Guard.IsNotNull(collection);
+        ArgumentNullException.ThrowIfNull(collection);
         return new(collection);
     }
 
     public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> collection)
     {
-        Guard.IsNotNull(collection);
+        ArgumentNullException.ThrowIfNull(collection);
         return new(collection);
     }
 
@@ -585,7 +585,7 @@ public static class CollectionExtensions
             return (uint)collection2.Count;
         }
 
-        Guard.IsNotNull(sequence);
+        ArgumentNullException.ThrowIfNull(sequence);
 
         uint count = 0;
 
@@ -612,7 +612,7 @@ public static class CollectionExtensions
             return (uint)collection2.Count;
         }
 
-        Guard.IsNotNull(sequence);
+        ArgumentNullException.ThrowIfNull(sequence);
 
         uint count = 0;
 
@@ -626,8 +626,8 @@ public static class CollectionExtensions
 
     public static uint CountUnsigned<T>(this IEnumerable<T> sequence, Func<T, bool> predicate)
     {
-        Guard.IsNotNull(sequence);
-        Guard.IsNotNull(predicate);
+        ArgumentNullException.ThrowIfNull(sequence);
+        ArgumentNullException.ThrowIfNull(predicate);
 
         uint count = 0;
 
@@ -647,8 +647,8 @@ public static class CollectionExtensions
 
     public static uint CountUnsignedUnchecked<T>(this IEnumerable<T> sequence, Func<T, bool> predicate)
     {
-        Guard.IsNotNull(sequence);
-        Guard.IsNotNull(predicate);
+        ArgumentNullException.ThrowIfNull(sequence);
+        ArgumentNullException.ThrowIfNull(predicate);
 
         uint count = 0;
 

@@ -96,13 +96,13 @@ public readonly struct AsciiChar3
 
     public bool Equals(string other)
     {
-        Guard.IsNotNull(other);
+        ArgumentNullException.ThrowIfNull(other);
         return Equals(other.AsSpan());
     }
 
     public bool EqualsIgnoreCase(string other)
     {
-        Guard.IsNotNull(other);
+        ArgumentNullException.ThrowIfNull(other);
         return EqualsIgnoreCase(other.AsSpan());
     }
 
@@ -300,7 +300,7 @@ public readonly struct AsciiChar3
 
     public static AsciiChar3 Parse(string s, IFormatProvider? provider)
     {
-        Guard.IsNotNull(s);
+        ArgumentNullException.ThrowIfNull(s);
         return Parse(s.AsSpan(), provider);
     }
 

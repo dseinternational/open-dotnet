@@ -21,7 +21,7 @@ public class DateTimeOffsetUnixTimeMillisecondsJsonConverter : JsonConverter<Dat
         DateTimeOffset value,
         JsonSerializerOptions options)
     {
-        Guard.IsNotNull(writer);
+        ArgumentNullException.ThrowIfNull(writer);
         writer.WriteNumberValue(value.ToUnixTimeMilliseconds());
     }
 }

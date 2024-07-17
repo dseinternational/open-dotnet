@@ -43,7 +43,7 @@ public abstract class UnitOfMeasure<T> : IUnitOfMeasure<T>, IEquatable<UnitOfMea
 
     public bool Equals(UnitOfMeasure<T>? other)
     {
-        Guard.IsNotNull(other);
+        ArgumentNullException.ThrowIfNull(other);
         return Equals(this, other);
     }
 
@@ -66,7 +66,7 @@ public abstract class UnitOfMeasure<T> : IUnitOfMeasure<T>, IEquatable<UnitOfMea
 
     public int CompareTo(UnitOfMeasure<T>? other)
     {
-        Guard.IsNotNull(other);
+        ArgumentNullException.ThrowIfNull(other);
         return Compare(this, other);
     }
 
@@ -87,25 +87,25 @@ public abstract class UnitOfMeasure<T> : IUnitOfMeasure<T>, IEquatable<UnitOfMea
 
     public static bool operator <(UnitOfMeasure<T> left, UnitOfMeasure<T> right)
     {
-        Guard.IsNotNull(left);
+        ArgumentNullException.ThrowIfNull(left);
         return left.CompareTo(right) < 0;
     }
 
     public static bool operator <=(UnitOfMeasure<T> left, UnitOfMeasure<T> right)
     {
-        Guard.IsNotNull(left);
+        ArgumentNullException.ThrowIfNull(left);
         return left.CompareTo(right) <= 0;
     }
 
     public static bool operator >(UnitOfMeasure<T> left, UnitOfMeasure<T> right)
     {
-        Guard.IsNotNull(left);
+        ArgumentNullException.ThrowIfNull(left);
         return left.CompareTo(right) > 0;
     }
 
     public static bool operator >=(UnitOfMeasure<T> left, UnitOfMeasure<T> right)
     {
-        Guard.IsNotNull(left);
+        ArgumentNullException.ThrowIfNull(left);
         return left.CompareTo(right) >= 0;
     }
 }

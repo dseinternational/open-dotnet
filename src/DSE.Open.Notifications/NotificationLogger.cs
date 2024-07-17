@@ -10,8 +10,8 @@ public static partial class NotificationLogger
 {
     public static void LogTrace(ILogger logger, INotification notification)
     {
-        Guard.IsNotNull(logger);
-        Guard.IsNotNull(notification);
+        ArgumentNullException.ThrowIfNull(logger);
+        ArgumentNullException.ThrowIfNull(notification);
 
         Log(
             logger,
@@ -22,8 +22,8 @@ public static partial class NotificationLogger
 
     public static void LogDebug(ILogger logger, INotification notification)
     {
-        Guard.IsNotNull(logger);
-        Guard.IsNotNull(notification);
+        ArgumentNullException.ThrowIfNull(logger);
+        ArgumentNullException.ThrowIfNull(notification);
 
         Log(
             logger,
@@ -34,8 +34,8 @@ public static partial class NotificationLogger
 
     public static void LogInformation(ILogger logger, INotification notification)
     {
-        Guard.IsNotNull(logger);
-        Guard.IsNotNull(notification);
+        ArgumentNullException.ThrowIfNull(logger);
+        ArgumentNullException.ThrowIfNull(notification);
 
         Log(
             logger,
@@ -46,8 +46,8 @@ public static partial class NotificationLogger
 
     public static void LogWarning(ILogger logger, INotification notification)
     {
-        Guard.IsNotNull(logger);
-        Guard.IsNotNull(notification);
+        ArgumentNullException.ThrowIfNull(logger);
+        ArgumentNullException.ThrowIfNull(notification);
 
         Log(
             logger,
@@ -58,8 +58,8 @@ public static partial class NotificationLogger
 
     public static void LogError(ILogger logger, INotification notification)
     {
-        Guard.IsNotNull(logger);
-        Guard.IsNotNull(notification);
+        ArgumentNullException.ThrowIfNull(logger);
+        ArgumentNullException.ThrowIfNull(notification);
 
         Log(
             logger,
@@ -70,8 +70,8 @@ public static partial class NotificationLogger
 
     public static void LogCritical(ILogger logger, INotification notification)
     {
-        Guard.IsNotNull(logger);
-        Guard.IsNotNull(notification);
+        ArgumentNullException.ThrowIfNull(logger);
+        ArgumentNullException.ThrowIfNull(notification);
 
         Log(
             logger,
@@ -82,8 +82,8 @@ public static partial class NotificationLogger
 
     public static void Log(ILogger logger, LogLevel logLevel, INotification notification)
     {
-        Guard.IsNotNull(logger);
-        Guard.IsNotNull(notification);
+        ArgumentNullException.ThrowIfNull(logger);
+        ArgumentNullException.ThrowIfNull(notification);
 
         Log(
             logger,

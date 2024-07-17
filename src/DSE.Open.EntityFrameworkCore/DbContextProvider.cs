@@ -45,8 +45,8 @@ public static class DbContextExtensions
         Func<T, DbUpdateConcurrencyException, int> concurrencyExceptionHandler)
         where T : DbContext
     {
-        Guard.IsNotNull(dataContext);
-        Guard.IsNotNull(concurrencyExceptionHandler);
+        ArgumentNullException.ThrowIfNull(dataContext);
+        ArgumentNullException.ThrowIfNull(concurrencyExceptionHandler);
 
         int result;
         try
@@ -66,8 +66,8 @@ public static class DbContextExtensions
         CancellationToken cancellationToken = default)
         where T : DbContext
     {
-        Guard.IsNotNull(dataContext);
-        Guard.IsNotNull(concurrencyExceptionHandler);
+        ArgumentNullException.ThrowIfNull(dataContext);
+        ArgumentNullException.ThrowIfNull(concurrencyExceptionHandler);
 
         int result;
         try
@@ -87,7 +87,7 @@ public static class QueryableExtensions
         where T : class, IIdentified<TId>
         where TId : struct, IEquatable<TId>
     {
-        Guard.IsNotNull(query);
+        ArgumentNullException.ThrowIfNull(query);
         return query.WhereIdEquals(id).Any();
     }
 
@@ -95,7 +95,7 @@ public static class QueryableExtensions
         where T : class, IIdentified<TId>
         where TId : struct, IEquatable<TId>
     {
-        Guard.IsNotNull(query);
+        ArgumentNullException.ThrowIfNull(query);
         return query.Where(e => e.Id.Equals(id));
     }
 
@@ -116,7 +116,7 @@ public static class QueryableExtensions
     private static IQueryable<T> ValidateAndInitQuery<T>(IQueryable<T> query, bool withNoTracking)
         where T : class
     {
-        Guard.IsNotNull(query);
+        ArgumentNullException.ThrowIfNull(query);
 
         var result = query;
 
@@ -135,7 +135,7 @@ public static class QueryableExtensions
         where T : class, IIdentified<TId>
         where TId : struct, IEquatable<TId>
     {
-        Guard.IsNotNull(query);
+        ArgumentNullException.ThrowIfNull(query);
         return query.WhereIdEquals(id).AnyAsync(cancellationToken);
     }
 

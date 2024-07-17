@@ -21,7 +21,7 @@ public static class HatcherReadabilityCalculator
         int maxLinesOnPage = 1,
         int syntaxComplexity = 0)
     {
-        Guard.IsNotNull(book);
+        ArgumentNullException.ThrowIfNull(book);
 
         var pageCount = book.Pages.Count;
 

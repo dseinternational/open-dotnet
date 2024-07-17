@@ -178,7 +178,7 @@ public class ReadOnlyValueCollection<T>
 
         public Enumerator(ReadOnlyValueCollection<T> collection)
         {
-            Guard.IsNotNull(collection);
+            ArgumentNullException.ThrowIfNull(collection);
             _inner = collection._items.GetEnumerator();
         }
 

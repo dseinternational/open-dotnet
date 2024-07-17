@@ -30,7 +30,7 @@ public class Collection<T> : IList<T>, IReadOnlyList<T>
     protected Collection(List<T> collection)
 #pragma warning restore CA1002 // Do not expose generic lists
     {
-        Guard.IsNotNull(collection);
+        ArgumentNullException.ThrowIfNull(collection);
         _items = collection;
     }
 

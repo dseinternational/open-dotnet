@@ -40,7 +40,7 @@ public abstract class TorchTensor<T> : IDisposable
 
     public TorchTensor<T> Add(TorchTensor<T> other)
     {
-        Guard.IsNotNull(other);
+        ArgumentNullException.ThrowIfNull(other);
         return CreateNew(torch.add(Tensor, other.Tensor));
     }
 

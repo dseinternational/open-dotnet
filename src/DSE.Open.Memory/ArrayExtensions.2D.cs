@@ -15,7 +15,7 @@ public static partial class ArrayExtensions
     /// <returns></returns>
     public static T[,] ToArray2D<T>(this T[][] data)
     {
-        Guard.IsNotNull(data);
+        ArgumentNullException.ThrowIfNull(data);
 
         if (data.Length == 0)
         {
@@ -51,7 +51,7 @@ public static partial class ArrayExtensions
     /// <returns></returns>
     public static T[,] ToArray2D<T>(this T[] data, int rows, int columns)
     {
-        Guard.IsNotNull(data);
+        ArgumentNullException.ThrowIfNull(data);
         return data.AsSpan().ToArray2D(rows, columns);
     }
 }

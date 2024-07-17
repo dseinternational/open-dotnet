@@ -25,8 +25,8 @@ public abstract class SqlServerEntityPersistenceTestsBase<
 
     protected override Task<TEntity?> GetSavedEntityAsync(TDbContext dataContext, TEntity original)
     {
-        Guard.IsNotNull(dataContext);
-        Guard.IsNotNull(original);
+        ArgumentNullException.ThrowIfNull(dataContext);
+        ArgumentNullException.ThrowIfNull(original);
 
         return dataContext.Set<TEntity>().SingleOrDefaultWithIdAsync(original.Id);
     }

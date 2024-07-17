@@ -28,7 +28,7 @@ public class InvalidResultException<TResult> : Exception
     public InvalidResultException(TResult result, string? message, Exception? innerException)
         : base(message ?? DefaultMessage, innerException)
     {
-        Guard.IsNotNull(result);
+        ArgumentNullException.ThrowIfNull(result);
         Result = result;
     }
 
@@ -59,7 +59,7 @@ public class InvalidResultException : InvalidResultException<Result>
     [StackTraceHidden]
     public static void ThrowIfAnyErrorNotifications(Result result)
     {
-        Guard.IsNotNull(result);
+        ArgumentNullException.ThrowIfNull(result);
 
         if (result.HasAnyErrorNotifications())
         {

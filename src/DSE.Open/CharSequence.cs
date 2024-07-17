@@ -125,7 +125,7 @@ public readonly struct CharSequence
 
     public static CharSequence Parse(string s, IFormatProvider? provider)
     {
-        Guard.IsNotNull(s);
+        ArgumentNullException.ThrowIfNull(s);
 
         if (TryParse(s, provider, out var result))
         {

@@ -16,7 +16,7 @@ public class JsonNullableByteValueConverter<TValue> : JsonConverter<TValue>
 
     public override void Write(Utf8JsonWriter writer, TValue value, JsonSerializerOptions options)
     {
-        Guard.IsNotNull(writer);
+        ArgumentNullException.ThrowIfNull(writer);
 
         if (value.HasValue)
         {

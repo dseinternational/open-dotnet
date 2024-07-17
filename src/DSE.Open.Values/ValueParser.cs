@@ -48,7 +48,7 @@ public static class ValueParser
         where T : IEquatable<T>, IParsable<T>
         where TValue : struct, IValue<TValue, T>
     {
-        Guard.IsNotNull(s);
+        ArgumentNullException.ThrowIfNull(s);
 
         if (TValue.TryParse(s, provider, out var result))
         {

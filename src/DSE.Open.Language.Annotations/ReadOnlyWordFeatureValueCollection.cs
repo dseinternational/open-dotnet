@@ -26,7 +26,7 @@ public sealed class ReadOnlyWordFeatureValueCollection
 
     protected override AlphaNumericCode GetKeyForItem(WordFeature item)
     {
-        Guard.IsNotNull(item);
+        ArgumentNullException.ThrowIfNull(item);
         return item.Name;
     }
 
@@ -96,7 +96,7 @@ public sealed class ReadOnlyWordFeatureValueCollection
 
     public static ReadOnlyWordFeatureValueCollection Parse(string s, IFormatProvider? provider)
     {
-        Guard.IsNotNull(s, nameof(s));
+        ArgumentNullException.ThrowIfNull(s, nameof(s));
         return Parse(s.AsSpan(), provider);
     }
 

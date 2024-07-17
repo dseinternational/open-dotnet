@@ -619,7 +619,7 @@ public readonly struct SpeechSymbolSequence
 
     public static SpeechSymbolSequence Parse(string s, IFormatProvider? provider)
     {
-        Guard.IsNotNull(s);
+        ArgumentNullException.ThrowIfNull(s);
         return Parse(s.AsSpan(), provider);
     }
 

@@ -132,7 +132,7 @@ public readonly struct AsciiString
 
     public static AsciiString Parse(string s, IFormatProvider? provider)
     {
-        Guard.IsNotNull(s);
+        ArgumentNullException.ThrowIfNull(s);
         return Parse(s.AsSpan(), provider);
     }
 
@@ -291,7 +291,7 @@ public readonly struct AsciiString
 
     public bool EqualsIgnoreCase(string other)
     {
-        Guard.IsNotNull(other);
+        ArgumentNullException.ThrowIfNull(other);
         return EqualsIgnoreCase(other.AsSpan());
     }
 

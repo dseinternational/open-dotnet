@@ -36,7 +36,7 @@ public readonly partial struct Tag
 
     public Tag(string tag) : this(tag, false)
     {
-        Guard.IsNotNull(tag);
+        ArgumentNullException.ThrowIfNull(tag);
     }
 
     public Tag(ReadOnlySpan<char> tag) : this(tag, false)

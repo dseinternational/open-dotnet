@@ -29,7 +29,7 @@ public readonly record struct Length : IQuantity<double, UnitOfLength>, ICompara
 
     public double ConvertValueTo(UnitOfLength unitOfLength)
     {
-        Guard.IsNotNull(unitOfLength);
+        ArgumentNullException.ThrowIfNull(unitOfLength);
 
         if (unitOfLength == UnitOfLength.Millimetre)
         {
@@ -109,7 +109,7 @@ public readonly record struct Length : IQuantity<double, UnitOfLength>, ICompara
 
     public string ToString(string? format, IFormatProvider? formatProvider, UnitOfLength unitOfMass)
     {
-        Guard.IsNotNull(unitOfMass);
+        ArgumentNullException.ThrowIfNull(unitOfMass);
 
         return ConvertValueTo(unitOfMass).ToString(format, formatProvider) + " " + unitOfMass.Abbreviation;
     }

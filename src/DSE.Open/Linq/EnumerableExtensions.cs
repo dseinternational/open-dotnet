@@ -18,7 +18,7 @@ public static class EnumerableExtensions
     public static bool TryGetSpan<TSource>(this IEnumerable<TSource> source, out ReadOnlySpan<TSource> span)
         where TSource : struct
     {
-        Guard.IsNotNull(source);
+        ArgumentNullException.ThrowIfNull(source);
 
         var result = true;
 

@@ -26,7 +26,7 @@ public sealed class ReadOnlyAttributeValueCollection
 
     protected override AlphaNumericCode GetKeyForItem(AttributeValue item)
     {
-        Guard.IsNotNull(item);
+        ArgumentNullException.ThrowIfNull(item);
         return item.Name;
     }
 
@@ -96,7 +96,7 @@ public sealed class ReadOnlyAttributeValueCollection
 
     public static ReadOnlyAttributeValueCollection Parse(string s, IFormatProvider? provider)
     {
-        Guard.IsNotNull(s, nameof(s));
+        ArgumentNullException.ThrowIfNull(s, nameof(s));
         return Parse(s.AsSpan(), provider);
     }
 

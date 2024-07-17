@@ -40,7 +40,7 @@ public abstract class ByteWritingJsonConverter<TValue> : JsonConverter<TValue>
 
     public override void Write(Utf8JsonWriter writer, TValue value, JsonSerializerOptions options)
     {
-        Guard.IsNotNull(writer);
+        ArgumentNullException.ThrowIfNull(writer);
 
         var byteCount = GetMaxByteCountToWrite(value);
 

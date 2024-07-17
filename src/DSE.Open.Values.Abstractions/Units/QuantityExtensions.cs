@@ -9,7 +9,7 @@ public static class QuantityExtensions
         where TAmount : IEquatable<TAmount>, IComparable<TAmount>
         where TUnits : IUnitOfMeasure<TAmount>
     {
-        Guard.IsNotNull(quantity);
+        ArgumentNullException.ThrowIfNull(quantity);
         return quantity.ToString(null, units);
     }
 
@@ -17,7 +17,7 @@ public static class QuantityExtensions
         where TAmount : IEquatable<TAmount>, IComparable<TAmount>
         where TUnits : IUnitOfMeasure<TAmount>
     {
-        Guard.IsNotNull(quantity);
+        ArgumentNullException.ThrowIfNull(quantity);
         return quantity.ToString(format, CultureInfo.CurrentCulture, units);
     }
 
@@ -25,7 +25,7 @@ public static class QuantityExtensions
         where TAmount : IEquatable<TAmount>, IComparable<TAmount>
         where TUnits : IUnitOfMeasure<TAmount>
     {
-        Guard.IsNotNull(quantity);
+        ArgumentNullException.ThrowIfNull(quantity);
         return quantity.ToString(null, CultureInfo.InvariantCulture, quantity.Units);
     }
 
@@ -33,7 +33,7 @@ public static class QuantityExtensions
         where TAmount : IEquatable<TAmount>, IComparable<TAmount>
         where TUnits : IUnitOfMeasure<TAmount>
     {
-        Guard.IsNotNull(quantity);
+        ArgumentNullException.ThrowIfNull(quantity);
         return quantity.ToString(null, CultureInfo.InvariantCulture, units);
     }
 }

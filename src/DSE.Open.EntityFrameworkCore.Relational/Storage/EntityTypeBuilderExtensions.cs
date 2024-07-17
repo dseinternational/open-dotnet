@@ -15,7 +15,7 @@ public static class EntityTypeBuilderExtensions
         this EntityTypeBuilder<TEntity> builder)
         where TEntity : class, IUpdateTimesTracked
     {
-        Guard.IsNotNull(builder);
+        ArgumentNullException.ThrowIfNull(builder);
 
         _ = builder.Property(e => e.Created);
         _ = builder.Property(e => e.Updated);
@@ -28,7 +28,7 @@ public static class EntityTypeBuilderExtensions
         ValueConverter? valueConverter = null)
         where TEntity : class, ITimestamped
     {
-        Guard.IsNotNull(builder);
+        ArgumentNullException.ThrowIfNull(builder);
 
         valueConverter ??= TimestampToByteArrayConverter.Default;
 

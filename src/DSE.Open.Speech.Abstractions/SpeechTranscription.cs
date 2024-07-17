@@ -219,7 +219,7 @@ public readonly record struct SpeechTranscription
 
     public static SpeechTranscription Parse(string s, IFormatProvider? provider)
     {
-        Guard.IsNotNull(s);
+        ArgumentNullException.ThrowIfNull(s);
         return Parse(s.AsSpan(), provider);
     }
 

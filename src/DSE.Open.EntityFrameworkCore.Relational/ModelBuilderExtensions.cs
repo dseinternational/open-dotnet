@@ -11,7 +11,7 @@ public static class ModelBuilderExtensions
 {
     public static void ApplySnakeCaseConvention(this ModelBuilder builder)
     {
-        Guard.IsNotNull(builder);
+        ArgumentNullException.ThrowIfNull(builder);
 
         foreach (var entity in builder.Model.GetEntityTypes())
         {

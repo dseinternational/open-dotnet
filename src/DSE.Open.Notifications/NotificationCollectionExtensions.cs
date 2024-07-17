@@ -10,32 +10,32 @@ public static class NotificationCollectionExtensions
 {
     public static void AddCritical(this ICollection<Notification> notifications, Diagnostics.DiagnosticCode code, string message)
     {
-        Guard.IsNotNull(notifications);
+        ArgumentNullException.ThrowIfNull(notifications);
         notifications.Add(Notification.Critical(code, message));
     }
 
     [Conditional("DEBUG")]
     public static void AddDebug(this ICollection<Notification> notifications, Diagnostics.DiagnosticCode code, string message)
     {
-        Guard.IsNotNull(notifications);
+        ArgumentNullException.ThrowIfNull(notifications);
         notifications.Add(Notification.Debug(code, message));
     }
 
     public static void AddError(this ICollection<Notification> notifications, Diagnostics.DiagnosticCode code, string message)
     {
-        Guard.IsNotNull(notifications);
+        ArgumentNullException.ThrowIfNull(notifications);
         notifications.Add(Notification.Error(code, message));
     }
 
     public static void AddInformation(this ICollection<Notification> notifications, Diagnostics.DiagnosticCode code, string message)
     {
-        Guard.IsNotNull(notifications);
+        ArgumentNullException.ThrowIfNull(notifications);
         notifications.Add(Notification.Information(code, message));
     }
 
     public static void AddWarning(this ICollection<Notification> notifications, Diagnostics.DiagnosticCode code, string message)
     {
-        Guard.IsNotNull(notifications);
+        ArgumentNullException.ThrowIfNull(notifications);
         notifications.Add(Notification.Warning(code, message));
     }
 
@@ -142,7 +142,7 @@ public static class NotificationCollectionExtensions
      *
     public static Result ToResult(this IEnumerable<Notification> notifications)
     {
-        Guard.IsNotNull(notifications);
+        ArgumentNullException.ThrowIfNull(notifications);
         return new Result { Notifications = notifications };
     }
     */

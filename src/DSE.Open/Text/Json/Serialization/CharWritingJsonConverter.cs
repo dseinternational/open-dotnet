@@ -50,7 +50,7 @@ public abstract class CharWritingJsonConverter<TValue> : JsonConverter<TValue>
 
     public override void Write(Utf8JsonWriter writer, TValue value, JsonSerializerOptions options)
     {
-        Guard.IsNotNull(writer);
+        ArgumentNullException.ThrowIfNull(writer);
 
         var charCount = GetMaxCharCountToWrite(value);
 

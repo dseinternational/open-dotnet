@@ -55,7 +55,7 @@ public readonly record struct Volume : IQuantity<double, UnitOfVolume>, ICompara
 
     public string ToString(string? format, IFormatProvider? formatProvider, UnitOfVolume unitOfMass)
     {
-        Guard.IsNotNull(unitOfMass);
+        ArgumentNullException.ThrowIfNull(unitOfMass);
         return Amount.ToString(format, formatProvider) + " " + unitOfMass.Abbreviation;
     }
 

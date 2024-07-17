@@ -21,7 +21,7 @@ public class Document
 
     internal Document(dynamic doc)
     {
-        Guard.IsNotNull(doc);
+        ArgumentNullException.ThrowIfNull(doc);
 
         _doc = doc;
 

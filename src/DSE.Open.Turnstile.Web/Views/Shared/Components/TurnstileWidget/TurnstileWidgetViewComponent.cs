@@ -12,8 +12,8 @@ public sealed class TurnstileWidgetViewComponent : ViewComponent
 
     public TurnstileWidgetViewComponent(IOptions<TurnstileClientOptions> options)
     {
-        Guard.IsNotNull(options);
-        Guard.IsNotNull(options.Value);
+        ArgumentNullException.ThrowIfNull(options);
+        ArgumentNullException.ThrowIfNull(options.Value);
 
         _clientOptions = options.Value;
     }

@@ -13,7 +13,7 @@ public static partial class AssertSequence
         ReadOnlyMemory<T> sequence,
         [CallerArgumentExpression(nameof(assertion))] string? message = default)
     {
-        Guard.IsNotNull(assertion);
+        ArgumentNullException.ThrowIfNull(assertion);
 
         if (!assertion(sequence))
         {
@@ -34,7 +34,7 @@ public static partial class AssertSequence
         ReadOnlySpan<T> sequence,
         [CallerArgumentExpression(nameof(assertion))] string? message = default)
     {
-        Guard.IsNotNull(assertion);
+        ArgumentNullException.ThrowIfNull(assertion);
 
         foreach (var value in sequence)
         {
@@ -58,7 +58,7 @@ public static partial class AssertSequence
         ReadOnlySpan<T> sequence,
         [CallerArgumentExpression(nameof(assertion))] string? message = default)
     {
-        Guard.IsNotNull(assertion);
+        ArgumentNullException.ThrowIfNull(assertion);
 
         foreach (var value in sequence)
         {

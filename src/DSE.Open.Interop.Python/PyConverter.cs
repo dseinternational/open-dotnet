@@ -10,7 +10,7 @@ public static class PyConverter
 {
     public static bool GetBool(dynamic pyBool)
     {
-        Guard.IsNotNull((object?)pyBool);
+        ArgumentNullException.ThrowIfNull((object?)pyBool);
 
         var value = GetInt32(pyBool);
 
@@ -19,7 +19,7 @@ public static class PyConverter
 
     public static short GetInt16(dynamic pyInt)
     {
-        Guard.IsNotNull((object?)pyInt);
+        ArgumentNullException.ThrowIfNull((object?)pyInt);
 
         using (Py.GIL())
         {
@@ -30,7 +30,7 @@ public static class PyConverter
 
     public static int GetInt32(dynamic pyInt)
     {
-        Guard.IsNotNull((object?)pyInt);
+        ArgumentNullException.ThrowIfNull((object?)pyInt);
 
         using (Py.GIL())
         {
@@ -41,7 +41,7 @@ public static class PyConverter
 
     public static long GetInt64(dynamic pyInt)
     {
-        Guard.IsNotNull((object?)pyInt);
+        ArgumentNullException.ThrowIfNull((object?)pyInt);
 
         using (Py.GIL())
         {
@@ -52,7 +52,7 @@ public static class PyConverter
 
     public static float GetFloat(dynamic pyFloat)
     {
-        Guard.IsNotNull((object?)pyFloat);
+        ArgumentNullException.ThrowIfNull((object?)pyFloat);
 
         using (Py.GIL())
         {
@@ -63,7 +63,7 @@ public static class PyConverter
 
     public static double GetDouble(dynamic pyFloat)
     {
-        Guard.IsNotNull((object?)pyFloat);
+        ArgumentNullException.ThrowIfNull((object?)pyFloat);
 
         using (Py.GIL())
         {
@@ -116,7 +116,7 @@ public static class PyConverter
 
     public static string GetString(dynamic pyString)
     {
-        Guard.IsNotNull((object?)pyString);
+        ArgumentNullException.ThrowIfNull((object?)pyString);
 
         using (Py.GIL())
         {
@@ -165,7 +165,7 @@ public static class PyConverter
     public static Collection<T> GetList<T>(dynamic pyList)
         where T : IPyObjectWrapper<T>
     {
-        Guard.IsNotNull((object?)pyList);
+        ArgumentNullException.ThrowIfNull((object?)pyList);
 
         using (Py.GIL())
         {
@@ -197,8 +197,8 @@ public static class PyConverter
 
     public static Collection<T> GetList<T>(dynamic pyList, PyWrapperFactory<T> factory)
     {
-        Guard.IsNotNull((object?)pyList);
-        Guard.IsNotNull(factory);
+        ArgumentNullException.ThrowIfNull((object?)pyList);
+        ArgumentNullException.ThrowIfNull(factory);
 
         using (Py.GIL())
         {
