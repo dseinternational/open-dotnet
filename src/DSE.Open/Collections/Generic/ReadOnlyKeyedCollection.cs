@@ -6,8 +6,7 @@ using System.Collections.ObjectModel;
 
 namespace DSE.Open.Collections.Generic;
 
-public class ReadOnlyKeyedCollection<TKey, TItem>
-    : IKeyedCollection<TKey, TItem>
+public class ReadOnlyKeyedCollection<TKey, TItem> : IReadOnlyKeyedCollection<TKey, TItem>
     where TKey : notnull
 {
     private readonly KeyedCollection<TKey, TItem> _innerCollection;
