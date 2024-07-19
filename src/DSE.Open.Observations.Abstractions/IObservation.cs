@@ -8,21 +8,21 @@ public interface IObservation
     /// <summary>
     /// Identifies the measure that defines the observation.
     /// </summary>
-    uint MeasureId { get; init; }
+    uint MeasureId { get; }
 
     /// <summary>
     /// The value that describes the observation.
     /// </summary>
-    object Value { get; init; }
+    object Value { get; }
 
     /// <summary>
     /// The time at which the observation was made.
     /// </summary>
-    DateTimeOffset Time { get; init; }
+    DateTimeOffset Time { get; }
 }
 
 public interface IObservation<T> : IObservation
     where T : IEquatable<T>
 {
-    new T Value { get; init; }
+    new T Value { get; }
 }

@@ -2,70 +2,33 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Text.Json;
-using DSE.Open.Testing.Xunit;
 using DSE.Open.Text.Json;
 using DSE.Open.Values;
 
 namespace DSE.Open.Observations;
 
-public class ObservationSetTests : LoggedTestsBase
+public class ObservationSetTests
 {
-    private const string Serialized = "{\"trk\":\"SQklNhktDJ4MaEDBDJsOLnaFAHlssKROaVhx8em2ZiRLLqSL\",\"obr\":\"gWegtqxJ7fqAXU4vfOroDOh8ge4qfkb5yXzqaZmgMpNQVTJx\",\"src\":\"https://test.dsegroup.net\",\"obs\":[{\"m\":68436815,\"t\":1721047510118,\"v\":true},{\"m\":68436815,\"t\":1721047513548,\"v\":false}]}";
-
-    public ObservationSetTests(ITestOutputHelper output) : base(output)
-    {
-    }
-
     [Fact]
-    public void CanSerialize()
+    public void CanSerializeAndDeserialize()
     {
-        var obs = new ObservationSet<Observation<bool>>
-        {
-            ObserverReference = Identifier.ParseInvariant("gWegtqxJ7fqAXU4vfOroDOh8ge4qfkb5yXzqaZmgMpNQVTJx"),
-            TrackerReference = Identifier.ParseInvariant("SQklNhktDJ4MaEDBDJsOLnaFAHlssKROaVhx8em2ZiRLLqSL"),
-            Source = new Uri("https://test.dsegroup.net"),
-            Observations =
+        var obs = ObservationSet.Create(
+            Identifier.New("trk"),
+            Identifier.New("obr"),
+            new Uri("https://test.dsegroup.net"),
             [
-                new Observation<bool>
-                {
-                    MeasureId = 68436815,
-                    Value = true,
-                    Time = DateTimeOffset.FromUnixTimeMilliseconds(1721047510118)
-                },
-                new Observation<bool>
-                {
-                    MeasureId = 68436815,
-                    Value = false,
-                    Time = DateTimeOffset.FromUnixTimeMilliseconds(1721047513548)
-                }
-            ]
-        };
+                Observation.Create(68436815, true),
+                Observation.Create(68436815, false),
+            ]);
         var json = JsonSerializer.Serialize(obs, JsonSharedOptions.RelaxedJsonEscaping);
-        Output.WriteLine(json);
-        Assert.Equal(Serialized, json);
-    }
-
-    [Fact]
-    public void CanDeserialize()
-    {
-        var obs = JsonSerializer.Deserialize<ObservationSet<Observation<bool>>>(Serialized, JsonSharedOptions.RelaxedJsonEscaping);
-
-        Assert.NotNull(obs);
-        Assert.Equal(Identifier.ParseInvariant("gWegtqxJ7fqAXU4vfOroDOh8ge4qfkb5yXzqaZmgMpNQVTJx"), obs.ObserverReference);
-        Assert.Equal(Identifier.ParseInvariant("SQklNhktDJ4MaEDBDJsOLnaFAHlssKROaVhx8em2ZiRLLqSL"), obs.TrackerReference);
-        Assert.Equal(new Uri("https://test.dsegroup.net"), obs.Source);
-        Assert.Collection(obs.Observations,
-            obs =>
-            {
-                Assert.Equal(68436815u, obs.MeasureId);
-                Assert.True(obs.Value);
-                Assert.Equal(1721047510118, obs.Time.ToUnixTimeMilliseconds());
-            },
-            obs =>
-            {
-                Assert.Equal(68436815u, obs.MeasureId);
-                Assert.False(obs.Value);
-                Assert.Equal(1721047513548, obs.Time.ToUnixTimeMilliseconds());
-            });
+        var deserialized = JsonSerializer.Deserialize<ObservationSet<Observation<bool>>>(json, JsonSharedOptions.RelaxedJsonEscaping);
+        Assert.NotNull(deserialized);
+        Assert.Equal(obs.Id, deserialized.Id);
+        Assert.Equal(obs.Created.ToUnixTimeMilliseconds(), deserialized.Created.ToUnixTimeMilliseconds());
+        Assert.Equal(obs.TrackerReference, deserialized.TrackerReference);
+        Assert.Equal(obs.ObserverReference, deserialized.ObserverReference);
+        Assert.Equal(obs.Source, deserialized.Source);
+        Assert.Equal(obs.Location, deserialized.Location);
+        Assert.Equal(obs.Observations.Count, deserialized.Observations.Count);
     }
 }

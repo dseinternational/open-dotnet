@@ -18,14 +18,43 @@ namespace DSE.Open.Observations;
 [JsonDerivedType(typeof(Observation<decimal>), typeDiscriminator: Schemas.DecimalObservation)]
 public abstract record Observation
 {
+    /// <summary>
+    /// A randomly generated number between 0 and <see cref="RandomNumberHelper.MaxJsonSafeInteger"/> that,
+    /// together with the timestamp, uniquely identifies this observation.
+    /// </summary>
+    [JsonInclude]
+    [JsonPropertyName("i")]
+    [JsonPropertyOrder(-91000)]
+    public ulong Id { get; private init; }
+
+    /// <summary>
+    /// The identifier for the measure.
+    /// </summary>
+    [JsonInclude]
     [JsonPropertyName("m")]
     [JsonPropertyOrder(-90000)]
-    public uint MeasureId { get; init; }
+    public uint MeasureId { get; private init; }
 
+    /// <summary>
+    /// The time of the observation.
+    /// </summary>
+    [JsonInclude]
     [JsonPropertyName("t")]
     [JsonPropertyOrder(-89800)]
     [JsonConverter(typeof(DateTimeOffsetUnixTimeMillisecondsJsonConverter))]
-    public DateTimeOffset Time { get; init; }
+    public DateTimeOffset Time { get; private init; }
+
+    public static Observation<T> Create<T>(uint measureId, T value)
+        where T : IEquatable<T>
+    {
+        return new()
+        {
+            Id = RandomNumberHelper.GetJsonSafeInteger(),
+            MeasureId = measureId,
+            Value = value,
+            Time = DateTimeOffset.UtcNow
+        };
+    }
 }
 
 public record Observation<T> : Observation, IObservation<T>
@@ -35,5 +64,5 @@ public record Observation<T> : Observation, IObservation<T>
     [JsonPropertyOrder(-1)]
     public required T Value { get; init; }
 
-    object IObservation.Value { get => Value!; init => Value = (T)value; }
+    object IObservation.Value => Value!;
 }
