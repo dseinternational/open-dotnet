@@ -25,7 +25,7 @@ public abstract record Observation
     [JsonInclude]
     [JsonPropertyName("i")]
     [JsonPropertyOrder(-91000)]
-    public ulong Id { get; private init; }
+    public ulong Id { get; protected init; }
 
     /// <summary>
     /// The identifier for the measure.
@@ -33,7 +33,7 @@ public abstract record Observation
     [JsonInclude]
     [JsonPropertyName("m")]
     [JsonPropertyOrder(-90000)]
-    public uint MeasureId { get; private init; }
+    public uint MeasureId { get; protected init; }
 
     /// <summary>
     /// The time of the observation.
@@ -42,7 +42,7 @@ public abstract record Observation
     [JsonPropertyName("t")]
     [JsonPropertyOrder(-89800)]
     [JsonConverter(typeof(DateTimeOffsetUnixTimeMillisecondsJsonConverter))]
-    public DateTimeOffset Time { get; private init; }
+    public DateTimeOffset Time { get; protected init; }
 
     public static Observation<T> Create<T>(uint measureId, T value)
         where T : IEquatable<T>
