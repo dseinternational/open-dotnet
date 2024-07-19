@@ -1,4 +1,4 @@
-// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Text.Json.Serialization;
@@ -12,13 +12,20 @@ public sealed record BinaryWordObservation : Observation<bool>, IWordObservation
 
     public static BinaryWordObservation Create(uint measureId, uint wordId, bool value)
     {
-        return new()
+        return Create(measureId, wordId, value, TimeProvider.System);
+    }
+
+    public static BinaryWordObservation Create(uint measureId, uint wordId, bool value, TimeProvider timeProvider)
+    {
+        ArgumentNullException.ThrowIfNull(timeProvider);
+
+        return new BinaryWordObservation
         {
             Id = RandomNumberHelper.GetJsonSafeInteger(),
             MeasureId = measureId,
             WordId = wordId,
             Value = value,
-            Time = DateTimeOffset.UtcNow
+            Time = timeProvider.GetUtcNow()
         };
     }
 }

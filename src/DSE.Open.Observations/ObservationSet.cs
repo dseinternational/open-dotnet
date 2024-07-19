@@ -76,15 +76,29 @@ public abstract record ObservationSet : IObservationSet
         IEnumerable<T> observations)
         where T : IObservation
     {
+        return Create(trackerReference, observerReference, source, location, observations, TimeProvider.System);
+    }
+
+
+    public static ObservationSet<T> Create<T>(
+        Identifier trackerReference,
+        Identifier observerReference,
+        Uri source,
+        GroundPoint? location,
+        IEnumerable<T> observations,
+        TimeProvider timeProvider)
+        where T : IObservation
+    {
         Guard.IsNotDefault(trackerReference);
         Guard.IsNotDefault(observerReference);
         ArgumentNullException.ThrowIfNull(source);
         ArgumentNullException.ThrowIfNull(observations);
+        ArgumentNullException.ThrowIfNull(timeProvider);
 
         return new ObservationSet<T>
         {
             Id = RandomNumberHelper.GetJsonSafeInteger(),
-            Created = DateTimeOffset.UtcNow,
+            Created = timeProvider.GetUtcNow(),
             TrackerReference = trackerReference,
             ObserverReference = observerReference,
             Source = source,

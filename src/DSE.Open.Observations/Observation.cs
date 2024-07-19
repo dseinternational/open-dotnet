@@ -44,15 +44,38 @@ public abstract record Observation
     [JsonConverter(typeof(DateTimeOffsetUnixTimeMillisecondsJsonConverter))]
     public DateTimeOffset Time { get; protected init; }
 
+    /// <summary>
+    /// Creates an <see cref="Observation{T}"/> using the System <see cref="TimeProvider"/>.
+    /// </summary>
+    /// <param name="measureId"></param>
+    /// <param name="value"></param>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
     public static Observation<T> Create<T>(uint measureId, T value)
         where T : IEquatable<T>
     {
-        return new()
+        return Create(measureId, value, TimeProvider.System);
+    }
+
+    /// <summary>
+    /// Creates an <see cref="Observation{T}"/>
+    /// </summary>
+    /// <param name="measureId"></param>
+    /// <param name="value"></param>
+    /// <param name="timeProvider"></param>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public static Observation<T> Create<T>(uint measureId, T value, TimeProvider timeProvider)
+        where T : IEquatable<T>
+    {
+        ArgumentNullException.ThrowIfNull(timeProvider);
+
+        return new Observation<T>
         {
             Id = RandomNumberHelper.GetJsonSafeInteger(),
             MeasureId = measureId,
             Value = value,
-            Time = DateTimeOffset.UtcNow
+            Time = timeProvider.GetUtcNow()
         };
     }
 }
