@@ -22,5 +22,5 @@ public interface IObservationSet<T> : IObservationSet
     /// <summary>
     /// The observations in the set.
     /// </summary>
-    IReadOnlyCollection<T> Observations { get; }
+    IReadOnlySet<T> Observations { get; }
 }

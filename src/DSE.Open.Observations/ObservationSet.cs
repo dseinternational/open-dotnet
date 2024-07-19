@@ -103,7 +103,7 @@ public abstract record ObservationSet : IObservationSet
             ObserverReference = observerReference,
             Source = source,
             Location = location,
-            Observations = observations.ToReadOnlyValueCollection()
+            Observations = observations.ToReadOnlyValueSet()
         };
     }
 }
@@ -113,7 +113,7 @@ public record ObservationSet<T> : ObservationSet, IObservationSet<T>
 {
     [JsonPropertyName("obs")]
     [JsonPropertyOrder(900000)]
-    public ReadOnlyValueCollection<T> Observations { get; init; } = [];
+    public ReadOnlyValueSet<T> Observations { get; init; } = [];
 
-    IReadOnlyCollection<T> IObservationSet<T>.Observations => Observations;
+    IReadOnlySet<T> IObservationSet<T>.Observations => Observations;
 }

@@ -19,6 +19,16 @@ public interface IObservation
     /// The time at which the observation was made.
     /// </summary>
     DateTimeOffset Time { get; }
+
+    /// <summary>
+    /// Gets a code that discriminates between measurement types.
+    /// </summary>
+    /// <returns></returns>
+    /// <remarks>
+    /// For 'simple' measures, this may simply be derived from the <see cref="MeasureId"/>. For types with additional
+    /// identifying/discriminating state, additional values may need to be taken into account.
+    /// </remarks>
+    int GetDiscriminatorCode();
 }
 
 public interface IObservation<T> : IObservation

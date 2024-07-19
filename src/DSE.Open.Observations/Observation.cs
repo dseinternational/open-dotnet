@@ -36,6 +36,21 @@ public abstract record Observation
     public uint MeasureId { get; protected init; }
 
     /// <summary>
+    /// Gets a code that discriminates between measurement types.
+    /// </summary>
+    /// <returns></returns>
+    /// <remarks>
+    /// For 'simple' measures, this may simply be derived from the <see cref="MeasureId"/>. For types with additional
+    /// identifying/discriminating state, additional values may need to be taken into account (for example, a
+    /// <see cref="BinaryWordObservation"/> will derive a value from <see cref="MeasureId"/> and
+    /// <see cref="BinaryWordObservation.WordId"/>.
+    /// </remarks>
+    public virtual int GetDiscriminatorCode()
+    {
+        return HashCode.Combine(MeasureId);
+    }
+
+    /// <summary>
     /// The time of the observation.
     /// </summary>
     [JsonInclude]
