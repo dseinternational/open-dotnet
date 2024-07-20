@@ -21,12 +21,21 @@ namespace DSE.Open.Observations;
 [JsonDerivedType(typeof(ObservationSnapshot<Observation<decimal>>), typeDiscriminator: Schemas.DecimalObservationSnapshot)]
 public abstract record ObservationSnapshot
 {
+    protected ObservationSnapshot(DateTimeOffset time)
+    {
+        ObservationsValidator.EnsureMinimumObservationTime(time);
+        Time = time;
+    }
+
     /// <summary>
     /// The time the snapshot was created.
     /// </summary>
     [JsonPropertyName("t")]
-    public required DateTimeOffset Time { get; init; }
+    public DateTimeOffset Time { get; private init; }
 
+    /// <summary>
+    /// Gets a code that discriminates between measurement types.
+    /// </summary>
     public abstract int GetDiscriminatorCode();
 
     public static ObservationSnapshot<TObs> ForUtcNow<TObs>(TObs observation)
@@ -46,15 +55,9 @@ public abstract record ObservationSnapshot
 public record ObservationSnapshot<TObs> : ObservationSnapshot
     where TObs : IObservation
 {
-    public ObservationSnapshot()
-    {
-    }
-
     [SetsRequiredMembers]
-    public ObservationSnapshot(DateTimeOffset time, TObs observation)
+    public ObservationSnapshot(DateTimeOffset time, TObs observation) : base(time)
     {
-        ObservationsValidator.EnsureMinimumObservationTime(time);
-        Time = time;
         Observation = observation;
     }
 
