@@ -10,7 +10,6 @@ namespace DSE.Open.Observations;
 /// <summary>
 /// Records an observation at a point in time.
 /// </summary>
-/// <typeparam name="TObs"></typeparam>
 [JsonPolymorphic(TypeDiscriminatorPropertyName = "_t")]
 [JsonDerivedType(typeof(ObservationSnapshot<Observation<bool>>), typeDiscriminator: Schemas.BinaryObservationSnapshot)]
 [JsonDerivedType(typeof(ObservationSnapshot<Observation<Count>>), typeDiscriminator: Schemas.CountObservationSnapshot)]
@@ -20,7 +19,31 @@ namespace DSE.Open.Observations;
 [JsonDerivedType(typeof(ObservationSnapshot<BinarySpeechSoundObservation>), typeDiscriminator: Schemas.BinarySpeechSoundObservationSnapshot)]
 [JsonDerivedType(typeof(ObservationSnapshot<Observation<int>>), typeDiscriminator: Schemas.IntegerObservationSnapshot)]
 [JsonDerivedType(typeof(ObservationSnapshot<Observation<decimal>>), typeDiscriminator: Schemas.DecimalObservationSnapshot)]
-public sealed record ObservationSnapshot<TObs>
+public abstract record ObservationSnapshot
+{
+    /// <summary>
+    /// The time the snapshot was created.
+    /// </summary>
+    [JsonPropertyName("t")]
+    public required DateTimeOffset Time { get; init; }
+
+    public abstract int GetDiscriminatorCode();
+
+    public static ObservationSnapshot<TObs> ForUtcNow<TObs>(TObs observation)
+        where TObs : IObservation
+    {
+        return ForUtcNow(observation, TimeProvider.System);
+    }
+
+    public static ObservationSnapshot<TObs> ForUtcNow<TObs>(TObs observation, TimeProvider timeProvider)
+        where TObs : IObservation
+    {
+        ArgumentNullException.ThrowIfNull(timeProvider);
+        return new ObservationSnapshot<TObs>(timeProvider.GetUtcNow(), observation);
+    }
+}
+
+public record ObservationSnapshot<TObs> : ObservationSnapshot
     where TObs : IObservation
 {
     public ObservationSnapshot()
@@ -36,35 +59,13 @@ public sealed record ObservationSnapshot<TObs>
     }
 
     /// <summary>
-    /// The time the snapshot was created.
-    /// </summary>
-    [JsonPropertyName("t")]
-    public required DateTimeOffset Time { get; init; }
-
-    /// <summary>
     /// The observation at the time the snapshot was created.
     /// </summary>
     [JsonPropertyName("o")]
     public required TObs Observation { get; init; }
 
-    public int GetDiscriminatorCode()
+    public override int GetDiscriminatorCode()
     {
         return Observation.GetDiscriminatorCode();
-    }
-}
-
-public static class ObservationSnapshot
-{
-    public static ObservationSnapshot<TObs> ForUtcNow<TObs>(TObs observation)
-        where TObs : IObservation
-    {
-        return ForUtcNow(observation, TimeProvider.System);
-    }
-
-    public static ObservationSnapshot<TObs> ForUtcNow<TObs>(TObs observation, TimeProvider timeProvider)
-        where TObs : IObservation
-    {
-        ArgumentNullException.ThrowIfNull(timeProvider);
-        return new ObservationSnapshot<TObs>(timeProvider.GetUtcNow(), observation);
     }
 }
