@@ -85,12 +85,16 @@ public abstract record Observation
     {
         ArgumentNullException.ThrowIfNull(timeProvider);
 
+        var time = timeProvider.GetUtcNow();
+
+        ObservationsValidator.EnsureMinimumObservationTime(time);
+
         return new Observation<T>
         {
             Id = RandomNumberHelper.GetJsonSafeInteger(),
             MeasureId = measureId,
             Value = value,
-            Time = timeProvider.GetUtcNow()
+            Time = time
         };
     }
 }
