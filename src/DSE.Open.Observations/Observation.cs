@@ -56,7 +56,7 @@ public abstract record Observation
     [JsonInclude]
     [JsonPropertyName("t")]
     [JsonPropertyOrder(-89800)]
-    [JsonConverter(typeof(DateTimeOffsetUnixTimeMillisecondsJsonConverter))]
+    [JsonConverter(typeof(JsonDateTimeOffsetUnixTimeMillisecondsConverter))]
     public DateTimeOffset Time { get; protected init; }
 
     /// <summary>

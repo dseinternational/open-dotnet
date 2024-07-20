@@ -34,7 +34,7 @@ public abstract record ObservationSet : IObservationSet
     [JsonInclude]
     [JsonPropertyName("crt")]
     [JsonPropertyOrder(-97800)]
-    [JsonConverter(typeof(DateTimeOffsetUnixTimeMillisecondsJsonConverter))]
+    [JsonConverter(typeof(JsonDateTimeOffsetUnixTimeMillisecondsConverter))]
     public DateTimeOffset Created { get; private init; }
 
     [JsonInclude]
