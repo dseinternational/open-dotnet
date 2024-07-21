@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.ComponentModel;
 using System.Text.Json.Serialization;
 using DSE.Open.Collections.Generic;
 using DSE.Open.Text.Json.Serialization;
@@ -9,16 +10,53 @@ using DSE.Open.Values;
 namespace DSE.Open.Observations;
 
 [JsonPolymorphic(TypeDiscriminatorPropertyName = "_t")]
-[JsonDerivedType(typeof(ObservationSet<Observation<bool>>), typeDiscriminator: Schemas.BinaryObservationSet)]
-[JsonDerivedType(typeof(ObservationSet<Observation<Count>>), typeDiscriminator: Schemas.CountObservationSet)]
-[JsonDerivedType(typeof(ObservationSet<Observation<Amount>>), typeDiscriminator: Schemas.AmountObservationSet)]
-[JsonDerivedType(typeof(ObservationSet<Observation<Ratio>>), typeDiscriminator: Schemas.RatioObservationSet)]
-[JsonDerivedType(typeof(ObservationSet<BinaryWordObservation>), typeDiscriminator: Schemas.BinaryWordObservationSet)]
-[JsonDerivedType(typeof(ObservationSet<BinarySpeechSoundObservation>), typeDiscriminator: Schemas.BinarySpeechSoundObservationSet)]
-[JsonDerivedType(typeof(ObservationSet<Observation<int>>), typeDiscriminator: Schemas.IntegerObservationSet)]
-[JsonDerivedType(typeof(ObservationSet<Observation<decimal>>), typeDiscriminator: Schemas.DecimalObservationSet)]
-public abstract record ObservationSet
+[JsonDerivedType(typeof(BinaryObservationSet), typeDiscriminator: Schemas.BinaryObservationSet)]
+[JsonDerivedType(typeof(CountObservationSet), typeDiscriminator: Schemas.CountObservationSet)]
+[JsonDerivedType(typeof(AmountObservationSet), typeDiscriminator: Schemas.AmountObservationSet)]
+[JsonDerivedType(typeof(RatioObservationSet), typeDiscriminator: Schemas.RatioObservationSet)]
+[JsonDerivedType(typeof(BinaryWordObservationSet), typeDiscriminator: Schemas.BinaryWordObservationSet)]
+[JsonDerivedType(typeof(BinarySpeechSoundObservationSet), typeDiscriminator: Schemas.BinarySpeechSoundObservationSet)]
+public abstract record ObservationSet<TObs, TValue>
+    where TObs : Observation<TValue>
+    where TValue : IEquatable<TValue>
 {
+    [Obsolete("For deserialization only", true)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    protected ObservationSet(
+        ulong id,
+        DateTimeOffset created,
+        Identifier trackerReference,
+        Identifier observerReference,
+        Uri source,
+        GroundPoint? location,
+        ReadOnlyValueSet<TObs> observations)
+    {
+        Id = id;
+        Created = created;
+        TrackerReference = trackerReference;
+        ObserverReference = observerReference;
+        Source = source;
+        Location = location;
+        Observations = observations;
+    }
+
+    protected ObservationSet(
+        DateTimeOffset created,
+        Identifier trackerReference,
+        Identifier observerReference,
+        Uri source,
+        GroundPoint? location,
+        ReadOnlyValueSet<TObs> observations)
+    {
+        Id = RandomNumberHelper.GetJsonSafeInteger();
+        Created = created;
+        TrackerReference = trackerReference;
+        ObserverReference = observerReference;
+        Source = source;
+        Location = location;
+        Observations = observations;
+    }
+
     /// <summary>
     /// A randomly generated number between 0 and <see cref="RandomNumberHelper.MaxJsonSafeInteger"/> that,
     /// together with the timestamp, uniquely identifies this observation set.
@@ -26,7 +64,7 @@ public abstract record ObservationSet
     [JsonInclude]
     [JsonPropertyName("id")]
     [JsonPropertyOrder(-98000)]
-    public ulong Id { get; private init; }
+    public ulong Id { get; }
 
     /// <summary>
     /// The time the observation set was created.
@@ -35,82 +73,31 @@ public abstract record ObservationSet
     [JsonPropertyName("crt")]
     [JsonPropertyOrder(-97800)]
     [JsonConverter(typeof(JsonDateTimeOffsetUnixTimeMillisecondsConverter))]
-    public DateTimeOffset Created { get; private init; }
+    public DateTimeOffset Created { get; }
 
     [JsonInclude]
     [JsonPropertyName("trk")]
     [JsonPropertyOrder(-90000)]
-    public Identifier TrackerReference { get; private init; }
+    public Identifier TrackerReference { get; }
 
     [JsonInclude]
     [JsonPropertyName("obr")]
     [JsonPropertyOrder(-89000)]
-    public Identifier ObserverReference { get; private init; }
+    public Identifier ObserverReference { get; }
 
     [JsonInclude]
     [JsonPropertyOrder(-60000)]
     [JsonPropertyName("src")]
-    public Uri Source { get; private init; } = default!;
+    public Uri Source { get; } = default!;
 
     [JsonInclude]
     [JsonPropertyName("loc")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
     [JsonPropertyOrder(-50000)]
-    public GroundPoint? Location { get; private init; }
+    public GroundPoint? Location { get; }
 
-    public static ObservationSet<T> Create<T>(
-        Identifier trackerReference,
-        Identifier observerReference,
-        Uri source,
-        IEnumerable<T> observations)
-        where T : Observation
-    {
-        return Create(trackerReference, observerReference, source, null, observations);
-    }
-
-    public static ObservationSet<T> Create<T>(
-        Identifier trackerReference,
-        Identifier observerReference,
-        Uri source,
-        GroundPoint? location,
-        IEnumerable<T> observations)
-        where T : Observation
-    {
-        return Create(trackerReference, observerReference, source, location, observations, TimeProvider.System);
-    }
-
-    public static ObservationSet<T> Create<T>(
-        Identifier trackerReference,
-        Identifier observerReference,
-        Uri source,
-        GroundPoint? location,
-        IEnumerable<T> observations,
-        TimeProvider timeProvider)
-        where T : Observation
-    {
-        Guard.IsNotDefault(trackerReference);
-        Guard.IsNotDefault(observerReference);
-        ArgumentNullException.ThrowIfNull(source);
-        ArgumentNullException.ThrowIfNull(observations);
-        ArgumentNullException.ThrowIfNull(timeProvider);
-
-        return new ObservationSet<T>
-        {
-            Id = RandomNumberHelper.GetJsonSafeInteger(),
-            Created = timeProvider.GetUtcNow(),
-            TrackerReference = trackerReference,
-            ObserverReference = observerReference,
-            Source = source,
-            Location = location,
-            Observations = observations.ToReadOnlyValueSet()
-        };
-    }
-}
-
-public record ObservationSet<T> : ObservationSet
-    where T : Observation
-{
     [JsonPropertyName("obs")]
     [JsonPropertyOrder(900000)]
-    public ReadOnlyValueSet<T> Observations { get; init; } = [];
+    public ReadOnlyValueSet<TObs> Observations { get; } = [];
+
 }

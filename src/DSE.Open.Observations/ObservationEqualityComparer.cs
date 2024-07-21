@@ -5,23 +5,24 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace DSE.Open.Observations;
 
-public abstract class ObservationEqualityComparer<T> : IEqualityComparer<T>
-    where T : Observation
+public abstract class ObservationEqualityComparer<TObs, TValue> : IEqualityComparer<TObs>
+    where TObs : Observation<TValue>
+    where TValue : IEquatable<TValue>
 {
-    public static readonly IEqualityComparer<T> Default = EqualityComparer<T>.Default;
+    public static readonly IEqualityComparer<TObs> Default = EqualityComparer<TObs>.Default;
 
     /// <summary>
-    /// Gets an equality comparer that compares observations by <see cref="Observation.GetMeasurementCode"/>
+    /// Gets an equality comparer that compares observations by <see cref="Observation{TObs, TValue}.GetMeasurementCode"/>
     /// </summary>
-    public static readonly IEqualityComparer<T> Discriminator = new DiscriminatorObservationEqualityComparer();
+    public static readonly IEqualityComparer<TObs> Measurement = new DiscriminatorObservationEqualityComparer();
 
-    public abstract bool Equals(T? x, T? y);
+    public abstract bool Equals(TObs? x, TObs? y);
 
-    public abstract int GetHashCode([DisallowNull] T obj);
+    public abstract int GetHashCode([DisallowNull] TObs obj);
 
-    private sealed class DiscriminatorObservationEqualityComparer : ObservationEqualityComparer<T>
+    private sealed class DiscriminatorObservationEqualityComparer : ObservationEqualityComparer<TObs, TValue>
     {
-        public override bool Equals(T? x, T? y)
+        public override bool Equals(TObs? x, TObs? y)
         {
             if (x is null)
             {
@@ -36,7 +37,7 @@ public abstract class ObservationEqualityComparer<T> : IEqualityComparer<T>
             return x.GetMeasurementCode().Equals(y.GetMeasurementCode());
         }
 
-        public override int GetHashCode([DisallowNull] T obj)
+        public override int GetHashCode([DisallowNull] TObs obj)
         {
             return obj.GetMeasurementCode();
         }

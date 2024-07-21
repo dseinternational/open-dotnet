@@ -7,21 +7,21 @@ using DSE.Open.Values;
 
 namespace DSE.Open.Observations;
 
-public class ObservationSetTests
+public class BinaryObservationSetTests
 {
     [Fact]
     public void CanSerializeAndDeserialize()
     {
-        var obs = ObservationSet.Create(
+        var obs = BinaryObservationSet.Create(
             Identifier.New("trk"),
             Identifier.New("obr"),
             new Uri("https://test.dsegroup.net"),
             [
-                Observation.Create(68436815, true),
-                Observation.Create(68436815, false),
+                BinaryObservation.Create(68436815, true),
+                BinaryObservation.Create(68436815, false),
             ]);
         var json = JsonSerializer.Serialize(obs, JsonSharedOptions.RelaxedJsonEscaping);
-        var deserialized = JsonSerializer.Deserialize<ObservationSet<Observation<bool>>>(json, JsonSharedOptions.RelaxedJsonEscaping);
+        var deserialized = JsonSerializer.Deserialize<BinaryObservationSet>(json, JsonSharedOptions.RelaxedJsonEscaping);
         Assert.NotNull(deserialized);
         Assert.Equal(obs.Id, deserialized.Id);
         Assert.Equal(obs.Created.ToUnixTimeMilliseconds(), deserialized.Created.ToUnixTimeMilliseconds());

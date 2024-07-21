@@ -5,19 +5,21 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace DSE.Open.Observations;
 
-public abstract class ObservationSnapshotEqualityComparer<TObs> : IEqualityComparer<ObservationSnapshot<TObs>>
-    where TObs : Observation
+public abstract class ObservationSnapshotEqualityComparer<TObs, TValue>
+    : IEqualityComparer<ObservationSnapshot<TObs, TValue>>
+    where TObs : Observation<TValue>
+    where TValue : IEquatable<TValue>
 {
-    public static readonly IEqualityComparer<ObservationSnapshot<TObs>> Discriminated =
+    public static readonly IEqualityComparer<ObservationSnapshot<TObs, TValue>> Measurement =
         new DiscriminatedObservationSnapshotEqualityComparer();
 
-    public abstract bool Equals(ObservationSnapshot<TObs>? x, ObservationSnapshot<TObs>? y);
+    public abstract bool Equals(ObservationSnapshot<TObs, TValue>? x, ObservationSnapshot<TObs, TValue>? y);
 
-    public abstract int GetHashCode([DisallowNull] ObservationSnapshot<TObs> obj);
+    public abstract int GetHashCode([DisallowNull] ObservationSnapshot<TObs, TValue> obj);
 
-    private sealed class DiscriminatedObservationSnapshotEqualityComparer : ObservationSnapshotEqualityComparer<TObs>
+    private sealed class DiscriminatedObservationSnapshotEqualityComparer : ObservationSnapshotEqualityComparer<TObs, TValue>
     {
-        public override bool Equals(ObservationSnapshot<TObs>? x, ObservationSnapshot<TObs>? y)
+        public override bool Equals(ObservationSnapshot<TObs, TValue>? x, ObservationSnapshot<TObs, TValue>? y)
         {
             if (x is null)
             {
@@ -32,7 +34,7 @@ public abstract class ObservationSnapshotEqualityComparer<TObs> : IEqualityCompa
             return x.GetMeasurementCode().Equals(y.GetMeasurementCode());
         }
 
-        public override int GetHashCode([DisallowNull] ObservationSnapshot<TObs> obj)
+        public override int GetHashCode([DisallowNull] ObservationSnapshot<TObs, TValue> obj)
         {
             return obj.GetMeasurementCode();
         }

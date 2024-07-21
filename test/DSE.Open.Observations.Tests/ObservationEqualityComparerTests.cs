@@ -8,16 +8,16 @@ public class ObservationEqualityComparerTests
     [Fact]
     public void DefaultNotEqualIfValuesDiffer()
     {
-        var obs1 = Observation.Create(68436815, true);
-        var obs2 = Observation.Create(68436815, false);
-        Assert.False(ObservationEqualityComparer<Observation<bool>>.Default.Equals(obs1, obs2));
+        var obs1 = BinaryObservation.Create(68436815, true);
+        var obs2 = BinaryObservation.Create(68436815, false);
+        Assert.False(ObservationEqualityComparer<BinaryObservation, bool>.Default.Equals(obs1, obs2));
     }
 
     [Fact]
-    public void DiscriminatorEqualIfDiscriminatorEqual()
+    public void MeasurementEqualIfMeasurementEqual()
     {
-        var obs1 = Observation.Create(68436815, true);
-        var obs2 = Observation.Create(68436815, false);
-        Assert.True(ObservationEqualityComparer<Observation<bool>>.Discriminator.Equals(obs1, obs2));
+        var obs1 = BinaryObservation.Create(68436815, true);
+        var obs2 = BinaryObservation.Create(68436815, false);
+        Assert.True(ObservationEqualityComparer<BinaryObservation, bool>.Measurement.Equals(obs1, obs2));
     }
 }

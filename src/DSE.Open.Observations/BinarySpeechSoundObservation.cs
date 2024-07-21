@@ -1,20 +1,29 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.ComponentModel;
 using System.Text.Json.Serialization;
 using DSE.Open.Speech;
 
 namespace DSE.Open.Observations;
 
-public sealed record BinarySpeechSoundObservation : Observation<bool>
+public sealed record BinarySpeechSoundObservation : Observation<bool, SpeechSound>
 {
-    [JsonPropertyName("s")]
-    public required SpeechSound SpeechSound { get; init; }
-
-    public override int GetMeasurementCode()
+    internal BinarySpeechSoundObservation(uint measureId, SpeechSound discriminator, DateTimeOffset time, bool value)
+        : base(measureId, discriminator, time, value)
     {
-        return HashCode.Combine(MeasureId, SpeechSound);
     }
+
+    [JsonConstructor]
+    [Obsolete("For deserialization only", true)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    internal BinarySpeechSoundObservation(ulong id, uint measureId, SpeechSound discriminator, DateTimeOffset time, bool value)
+        : base(id, measureId, discriminator, time, value)
+    {
+    }
+
+    [JsonIgnore]
+    public SpeechSound SpeechSound => Discriminator;
 
     public static BinarySpeechSoundObservation Create(uint measureId, SpeechSound speechSound, bool value)
     {
@@ -29,13 +38,6 @@ public sealed record BinarySpeechSoundObservation : Observation<bool>
     {
         ArgumentNullException.ThrowIfNull(timeProvider);
 
-        return new BinarySpeechSoundObservation
-        {
-            Id = RandomNumberHelper.GetJsonSafeInteger(),
-            MeasureId = measureId,
-            SpeechSound = speechSound,
-            Value = value,
-            Time = timeProvider.GetUtcNow()
-        };
+        return new BinarySpeechSoundObservation(measureId, speechSound, timeProvider.GetUtcNow(), value);
     }
 }

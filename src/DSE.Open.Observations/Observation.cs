@@ -1,23 +1,46 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.ComponentModel;
 using System.Text.Json.Serialization;
 using DSE.Open.Text.Json.Serialization;
-using DSE.Open.Values;
 
 namespace DSE.Open.Observations;
 
-[JsonPolymorphic(TypeDiscriminatorPropertyName = "_t")]
-[JsonDerivedType(typeof(Observation<bool>), typeDiscriminator: Schemas.BinaryObservation)]
-[JsonDerivedType(typeof(Observation<Count>), typeDiscriminator: Schemas.CountObservation)]
-[JsonDerivedType(typeof(Observation<Amount>), typeDiscriminator: Schemas.AmountObservation)]
-[JsonDerivedType(typeof(Observation<Ratio>), typeDiscriminator: Schemas.RatioObservation)]
-[JsonDerivedType(typeof(BinaryWordObservation), typeDiscriminator: Schemas.BinaryWordObservation)]
-[JsonDerivedType(typeof(BinarySpeechSoundObservation), typeDiscriminator: Schemas.BinarySpeechSoundObservation)]
-[JsonDerivedType(typeof(Observation<int>), typeDiscriminator: Schemas.IntegerObservation)]
-[JsonDerivedType(typeof(Observation<decimal>), typeDiscriminator: Schemas.DecimalObservation)]
-public abstract record Observation
+/// <summary>
+/// An observation for a measure that records a single measurement value.
+/// </summary>
+/// <typeparam name="TValue"></typeparam>
+//[JsonPolymorphic(TypeDiscriminatorPropertyName = "_t")]
+//[JsonDerivedType(typeof(BinaryObservation), typeDiscriminator: Schemas.BinaryObservation)]
+//[JsonDerivedType(typeof(CountObservation), typeDiscriminator: Schemas.CountObservation)]
+//[JsonDerivedType(typeof(AmountObservation), typeDiscriminator: Schemas.AmountObservation)]
+//[JsonDerivedType(typeof(RatioObservation), typeDiscriminator: Schemas.RatioObservation)]
+//[JsonDerivedType(typeof(BinaryWordObservation), typeDiscriminator: Schemas.BinaryWordObservation)]
+//[JsonDerivedType(typeof(BinarySpeechSoundObservation), typeDiscriminator: Schemas.BinarySpeechSoundObservation)]
+public abstract record Observation<TValue>
+    where TValue : IEquatable<TValue>
 {
+    protected Observation(uint measureId, DateTimeOffset time, TValue value)
+    {
+        ObservationsValidator.EnsureMinimumObservationTime(time);
+
+        Id = RandomNumberHelper.GetJsonSafeInteger();
+        MeasureId = measureId;
+        Time = time;
+        Value = value;
+    }
+
+    [Obsolete("For deserialization only", true)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    protected Observation(ulong id, uint measureId, DateTimeOffset time, TValue value)
+    {
+        Id = id;
+        MeasureId = measureId;
+        Time = time;
+        Value = value;
+    }
+
     /// <summary>
     /// A randomly generated number between 0 and <see cref="RandomNumberHelper.MaxJsonSafeInteger"/> that,
     /// together with the timestamp, uniquely identifies this observation.
@@ -25,7 +48,7 @@ public abstract record Observation
     [JsonInclude]
     [JsonPropertyName("i")]
     [JsonPropertyOrder(-91000)]
-    public ulong Id { get; protected init; }
+    public ulong Id { get; init; }
 
     /// <summary>
     /// The identifier for the measure.
@@ -33,7 +56,7 @@ public abstract record Observation
     [JsonInclude]
     [JsonPropertyName("m")]
     [JsonPropertyOrder(-90000)]
-    public uint MeasureId { get; protected init; }
+    public uint MeasureId { get; }
 
     /// <summary>
     /// Gets a code that discriminates between measurement types and is suitable for use as a hash code.
@@ -57,52 +80,42 @@ public abstract record Observation
     [JsonPropertyName("t")]
     [JsonPropertyOrder(-89800)]
     [JsonConverter(typeof(JsonDateTimeOffsetUnixTimeMillisecondsConverter))]
-    public DateTimeOffset Time { get; protected init; }
+    public DateTimeOffset Time { get; }
 
-    /// <summary>
-    /// Creates an <see cref="Observation{T}"/> using the System <see cref="TimeProvider"/>.
-    /// </summary>
-    /// <param name="measureId"></param>
-    /// <param name="value"></param>
-    /// <typeparam name="T"></typeparam>
-    /// <returns></returns>
-    public static Observation<T> Create<T>(uint measureId, T value)
-        where T : IEquatable<T>
-    {
-        return Create(measureId, value, TimeProvider.System);
-    }
-
-    /// <summary>
-    /// Creates an <see cref="Observation{T}"/>
-    /// </summary>
-    /// <param name="measureId"></param>
-    /// <param name="value"></param>
-    /// <param name="timeProvider"></param>
-    /// <typeparam name="T"></typeparam>
-    /// <returns></returns>
-    public static Observation<T> Create<T>(uint measureId, T value, TimeProvider timeProvider)
-        where T : IEquatable<T>
-    {
-        ArgumentNullException.ThrowIfNull(timeProvider);
-
-        var time = timeProvider.GetUtcNow();
-
-        ObservationsValidator.EnsureMinimumObservationTime(time);
-
-        return new Observation<T>
-        {
-            Id = RandomNumberHelper.GetJsonSafeInteger(),
-            MeasureId = measureId,
-            Value = value,
-            Time = time
-        };
-    }
-}
-
-public record Observation<T> : Observation
-    where T : IEquatable<T>
-{
     [JsonPropertyName("v")]
     [JsonPropertyOrder(-1)]
-    public required T Value { get; init; }
+    public TValue Value { get; }
+}
+
+/// <summary>
+/// An observation for a measure that records a single measurement value and a discriminator value.
+/// </summary>
+/// <typeparam name="TValue"></typeparam>
+/// <typeparam name="TDisc"></typeparam>
+public abstract record Observation<TValue, TDisc> : Observation<TValue>
+    where TValue : IEquatable<TValue>
+    where TDisc : IEquatable<TDisc>
+{
+    protected Observation(uint measureId, TDisc discriminator, DateTimeOffset time, TValue value)
+        : base(measureId, time, value)
+    {
+        Discriminator = discriminator;
+    }
+
+    [Obsolete("For deserialization only", true)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    protected Observation(ulong id, uint measureId, TDisc discriminator, DateTimeOffset time, TValue value)
+        : base(id, measureId, time, value)
+    {
+        Discriminator = discriminator;
+    }
+
+    [JsonPropertyName("d")]
+    [JsonPropertyOrder(-100)]
+    public TDisc Discriminator { get; }
+
+    public override int GetMeasurementCode()
+    {
+        return HashCode.Combine(MeasureId, Discriminator);
+    }
 }

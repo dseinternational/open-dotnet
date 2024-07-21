@@ -5,7 +5,7 @@ using DSE.Open.Values;
 
 namespace DSE.Open.Observations;
 
-public sealed class ObservationSnapshotTests
+public sealed class CountObservationSnapshotTests
 {
     [Fact]
     public void New_WithInvalidDate_ShouldThrow()
@@ -14,19 +14,19 @@ public sealed class ObservationSnapshotTests
         var date = DateTime.Parse("01/01/2024", null).AddDays(-1);
 
         // Act
-        void Act() => _ = new ObservationSnapshot<Observation<Count>>(date, Observation.Create(1, Count.Zero));
+        void Act() => _ = new CountObservationSnapshot(date, CountObservation.Create(1, Count.Zero));
 
         // Assert
         Assert.Throws<ArgumentOutOfRangeException>(Act);
     }
 
     [Fact]
-    public void GetDiscriminatorCode_WithDifferentMeasures_ShouldReturnDifferentCodes()
+    public void GetMeasurementCode_WithDifferentMeasures_ShouldReturnDifferentCodes()
     {
         // Arrange
-        var one = Observation.Create(1, Count.Zero);
-        var two = Observation.Create(2, Count.Zero);
-        var oneAgain = Observation.Create(1, Count.FromValue(1));
+        var one = CountObservation.Create(1, Count.Zero);
+        var two = CountObservation.Create(2, Count.Zero);
+        var oneAgain = CountObservation.Create(1, Count.FromValue(1));
 
         // Assert
         Assert.NotEqual(one.GetMeasurementCode(), two.GetMeasurementCode());
