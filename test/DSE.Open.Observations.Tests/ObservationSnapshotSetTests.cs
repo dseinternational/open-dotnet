@@ -24,7 +24,7 @@ public sealed class ObservationSnapshotSetTests
 
         // Assert
         Assert.NotNull(deserialized);
-        Assert.Equal(set, deserialized);
+        Assert.Equal(set, deserialized); // xUnit HashSet equality calls `SetEquals`
     }
 
 
@@ -44,7 +44,7 @@ public sealed class ObservationSnapshotSetTests
 
         // Assert
         Assert.NotNull(deserialized);
-        Assert.Equal(set, deserialized);
+        Assert.Equal(set, deserialized); // xUnit HashSet equality calls `SetEquals`
     }
 
     [Fact]
@@ -63,7 +63,7 @@ public sealed class ObservationSnapshotSetTests
 
         // Assert
         Assert.NotNull(deserialized);
-        Assert.Equal(set, deserialized);
+        Assert.Equal(set, deserialized); // xUnit HashSet equality calls `SetEquals`
     }
 
     [Fact]
@@ -84,7 +84,7 @@ public sealed class ObservationSnapshotSetTests
         };
 
         // Assert
-        Assert.Equal(set1, set2);
+        Assert.Equal(set1, set2); // xUnit HashSet equality calls `SetEquals`
     }
 
     [Fact]
@@ -109,6 +109,7 @@ public sealed class ObservationSnapshotSetTests
         ]);
 
         // Assert
+        // xUnit HashSet equality calls `SetEquals`
         Assert.Equal(set1, set2);
         Assert.Equal(set1, set3);
         Assert.Equal(set2, set3);
