@@ -6,7 +6,7 @@ using DSE.Open.Speech;
 
 namespace DSE.Open.Observations;
 
-public sealed record BinarySpeechSoundObservation : Observation<bool>, ISpeechSoundObservation
+public sealed record BinarySpeechSoundObservation : Observation<bool>
 {
     [JsonPropertyName("s")]
     public required SpeechSound SpeechSound { get; init; }

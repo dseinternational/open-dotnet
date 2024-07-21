@@ -10,7 +10,7 @@ namespace DSE.Open.Observations;
 /// </summary>
 /// <typeparam name="TObs">The type of observation contained in the snapshot.</typeparam>
 public class ObservationSnapshotSet<TObs> : HashSet<ObservationSnapshot<TObs>>
-    where TObs : IObservation
+    where TObs : Observation
 {
     public ObservationSnapshotSet()
         : base(ObservationSnapshotEqualityComparer<TObs>.Discriminated)

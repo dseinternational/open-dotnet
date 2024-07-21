@@ -99,12 +99,10 @@ public abstract record Observation
     }
 }
 
-public record Observation<T> : Observation, IObservation<T>
+public record Observation<T> : Observation
     where T : IEquatable<T>
 {
     [JsonPropertyName("v")]
     [JsonPropertyOrder(-1)]
     public required T Value { get; init; }
-
-    object IObservation.Value => Value!;
 }

@@ -39,13 +39,13 @@ public abstract record ObservationSnapshot
     public abstract int GetDiscriminatorCode();
 
     public static ObservationSnapshot<TObs> ForUtcNow<TObs>(TObs observation)
-        where TObs : IObservation
+        where TObs : Observation
     {
         return ForUtcNow(observation, TimeProvider.System);
     }
 
     public static ObservationSnapshot<TObs> ForUtcNow<TObs>(TObs observation, TimeProvider timeProvider)
-        where TObs : IObservation
+        where TObs : Observation
     {
         ArgumentNullException.ThrowIfNull(timeProvider);
         return new ObservationSnapshot<TObs>(timeProvider.GetUtcNow(), observation);
@@ -53,7 +53,7 @@ public abstract record ObservationSnapshot
 }
 
 public record ObservationSnapshot<TObs> : ObservationSnapshot
-    where TObs : IObservation
+    where TObs : Observation
 {
     [SetsRequiredMembers]
     public ObservationSnapshot(DateTimeOffset time, TObs observation) : base(time)

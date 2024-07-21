@@ -17,7 +17,7 @@ namespace DSE.Open.Observations;
 [JsonDerivedType(typeof(ObservationSet<BinarySpeechSoundObservation>), typeDiscriminator: Schemas.BinarySpeechSoundObservationSet)]
 [JsonDerivedType(typeof(ObservationSet<Observation<int>>), typeDiscriminator: Schemas.IntegerObservationSet)]
 [JsonDerivedType(typeof(ObservationSet<Observation<decimal>>), typeDiscriminator: Schemas.DecimalObservationSet)]
-public abstract record ObservationSet : IObservationSet
+public abstract record ObservationSet
 {
     /// <summary>
     /// A randomly generated number between 0 and <see cref="RandomNumberHelper.MaxJsonSafeInteger"/> that,
@@ -63,7 +63,7 @@ public abstract record ObservationSet : IObservationSet
         Identifier observerReference,
         Uri source,
         IEnumerable<T> observations)
-        where T : IObservation
+        where T : Observation
     {
         return Create(trackerReference, observerReference, source, null, observations);
     }
@@ -74,11 +74,10 @@ public abstract record ObservationSet : IObservationSet
         Uri source,
         GroundPoint? location,
         IEnumerable<T> observations)
-        where T : IObservation
+        where T : Observation
     {
         return Create(trackerReference, observerReference, source, location, observations, TimeProvider.System);
     }
-
 
     public static ObservationSet<T> Create<T>(
         Identifier trackerReference,
@@ -87,7 +86,7 @@ public abstract record ObservationSet : IObservationSet
         GroundPoint? location,
         IEnumerable<T> observations,
         TimeProvider timeProvider)
-        where T : IObservation
+        where T : Observation
     {
         Guard.IsNotDefault(trackerReference);
         Guard.IsNotDefault(observerReference);
@@ -108,12 +107,10 @@ public abstract record ObservationSet : IObservationSet
     }
 }
 
-public record ObservationSet<T> : ObservationSet, IObservationSet<T>
-    where T : IObservation
+public record ObservationSet<T> : ObservationSet
+    where T : Observation
 {
     [JsonPropertyName("obs")]
     [JsonPropertyOrder(900000)]
     public ReadOnlyValueSet<T> Observations { get; init; } = [];
-
-    IReadOnlySet<T> IObservationSet<T>.Observations => Observations;
 }

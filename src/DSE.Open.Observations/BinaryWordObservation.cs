@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace DSE.Open.Observations;
 
-public sealed record BinaryWordObservation : Observation<bool>, IWordObservation
+public sealed record BinaryWordObservation : Observation<bool>
 {
     [JsonPropertyName("w")]
     public required uint WordId { get; init; }

@@ -6,12 +6,12 @@ using System.Diagnostics.CodeAnalysis;
 namespace DSE.Open.Observations;
 
 public abstract class ObservationEqualityComparer<T> : IEqualityComparer<T>
-    where T : IObservation
+    where T : Observation
 {
     public static readonly IEqualityComparer<T> Default = EqualityComparer<T>.Default;
 
     /// <summary>
-    /// Gets an equality comparer that compares observations by <see cref="IObservation.GetDiscriminatorCode"/>
+    /// Gets an equality comparer that compares observations by <see cref="Observation.GetDiscriminatorCode"/>
     /// </summary>
     public static readonly IEqualityComparer<T> Discriminator = new DiscriminatorObservationEqualityComparer();
 

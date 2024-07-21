@@ -6,7 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace DSE.Open.Observations;
 
 public abstract class ObservationSnapshotEqualityComparer<TObs> : IEqualityComparer<ObservationSnapshot<TObs>>
-    where TObs : IObservation
+    where TObs : Observation
 {
     public static readonly IEqualityComparer<ObservationSnapshot<TObs>> Discriminated =
         new DiscriminatedObservationSnapshotEqualityComparer();
