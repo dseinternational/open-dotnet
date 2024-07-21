@@ -16,10 +16,23 @@ namespace DSE.Open.Observations;
 [JsonDerivedType(typeof(RatioObservationSet), typeDiscriminator: Schemas.RatioObservationSet)]
 [JsonDerivedType(typeof(BinaryWordObservationSet), typeDiscriminator: Schemas.BinaryWordObservationSet)]
 [JsonDerivedType(typeof(BinarySpeechSoundObservationSet), typeDiscriminator: Schemas.BinarySpeechSoundObservationSet)]
-public abstract record ObservationSet<TObs, TValue>
-    where TObs : Observation<TValue>
-    where TValue : IEquatable<TValue>
+public abstract record ObservationSet
 {
+    protected ObservationSet(
+        DateTimeOffset created,
+        Identifier trackerReference,
+        Identifier observerReference,
+        Uri source,
+        GroundPoint? location)
+    {
+        Id = RandomNumberHelper.GetJsonSafeInteger();
+        Created = created;
+        TrackerReference = trackerReference;
+        ObserverReference = observerReference;
+        Source = source;
+        Location = location;
+    }
+
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     protected ObservationSet(
@@ -28,8 +41,7 @@ public abstract record ObservationSet<TObs, TValue>
         Identifier trackerReference,
         Identifier observerReference,
         Uri source,
-        GroundPoint? location,
-        ReadOnlyValueSet<TObs> observations)
+        GroundPoint? location)
     {
         Id = id;
         Created = created;
@@ -37,24 +49,6 @@ public abstract record ObservationSet<TObs, TValue>
         ObserverReference = observerReference;
         Source = source;
         Location = location;
-        Observations = observations;
-    }
-
-    protected ObservationSet(
-        DateTimeOffset created,
-        Identifier trackerReference,
-        Identifier observerReference,
-        Uri source,
-        GroundPoint? location,
-        ReadOnlyValueSet<TObs> observations)
-    {
-        Id = RandomNumberHelper.GetJsonSafeInteger();
-        Created = created;
-        TrackerReference = trackerReference;
-        ObserverReference = observerReference;
-        Source = source;
-        Location = location;
-        Observations = observations;
     }
 
     /// <summary>
@@ -95,9 +89,40 @@ public abstract record ObservationSet<TObs, TValue>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
     [JsonPropertyOrder(-50000)]
     public GroundPoint? Location { get; }
+}
+
+public abstract record ObservationSet<TObs, TValue> : ObservationSet
+    where TObs : Observation<TValue>
+    where TValue : IEquatable<TValue>
+{
+    protected ObservationSet(
+        DateTimeOffset created,
+        Identifier trackerReference,
+        Identifier observerReference,
+        Uri source,
+        GroundPoint? location,
+        ReadOnlyValueSet<TObs> observations)
+        : base(created, trackerReference, observerReference, source, location)
+    {
+        Observations = observations;
+    }
+
+    [Obsolete("For deserialization only", true)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    protected ObservationSet(
+        ulong id,
+        DateTimeOffset created,
+        Identifier trackerReference,
+        Identifier observerReference,
+        Uri source,
+        GroundPoint? location,
+        ReadOnlyValueSet<TObs> observations)
+        : base(id, created, trackerReference, observerReference, source, location)
+    {
+        Observations = observations;
+    }
 
     [JsonPropertyName("obs")]
     [JsonPropertyOrder(900000)]
     public ReadOnlyValueSet<TObs> Observations { get; } = [];
-
 }

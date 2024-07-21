@@ -11,13 +11,6 @@ namespace DSE.Open.Observations;
 /// An observation for a measure that records a single measurement value.
 /// </summary>
 /// <typeparam name="TValue"></typeparam>
-//[JsonPolymorphic(TypeDiscriminatorPropertyName = "_t")]
-//[JsonDerivedType(typeof(BinaryObservation), typeDiscriminator: Schemas.BinaryObservation)]
-//[JsonDerivedType(typeof(CountObservation), typeDiscriminator: Schemas.CountObservation)]
-//[JsonDerivedType(typeof(AmountObservation), typeDiscriminator: Schemas.AmountObservation)]
-//[JsonDerivedType(typeof(RatioObservation), typeDiscriminator: Schemas.RatioObservation)]
-//[JsonDerivedType(typeof(BinaryWordObservation), typeDiscriminator: Schemas.BinaryWordObservation)]
-//[JsonDerivedType(typeof(BinarySpeechSoundObservation), typeDiscriminator: Schemas.BinarySpeechSoundObservation)]
 public abstract record Observation<TValue>
     where TValue : IEquatable<TValue>
 {

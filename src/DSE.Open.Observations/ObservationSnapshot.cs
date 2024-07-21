@@ -8,13 +8,6 @@ namespace DSE.Open.Observations;
 /// <summary>
 /// Records an observation at a point in time.
 /// </summary>
-[JsonPolymorphic(TypeDiscriminatorPropertyName = "_t")]
-[JsonDerivedType(typeof(BinaryObservationSnapshot), typeDiscriminator: Schemas.BinaryObservationSnapshot)]
-[JsonDerivedType(typeof(CountObservationSnapshot), typeDiscriminator: Schemas.CountObservationSnapshot)]
-[JsonDerivedType(typeof(AmountObservationSnapshot), typeDiscriminator: Schemas.AmountObservationSnapshot)]
-[JsonDerivedType(typeof(RatioObservationSnapshot), typeDiscriminator: Schemas.RatioObservationSnapshot)]
-[JsonDerivedType(typeof(BinaryWordObservationSnapshot), typeDiscriminator: Schemas.BinaryWordObservationSnapshot)]
-[JsonDerivedType(typeof(BinarySpeechSoundObservationSnapshot), typeDiscriminator: Schemas.BinarySpeechSoundObservationSnapshot)]
 public abstract record ObservationSnapshot<TObs, TValue>
     where TObs : Observation<TValue>
     where TValue : IEquatable<TValue>
