@@ -11,7 +11,7 @@ public sealed record BinarySpeechSoundObservation : Observation<bool>
     [JsonPropertyName("s")]
     public required SpeechSound SpeechSound { get; init; }
 
-    public override int GetDiscriminatorCode()
+    public override int GetMeasurementCode()
     {
         return HashCode.Combine(MeasureId, SpeechSound);
     }

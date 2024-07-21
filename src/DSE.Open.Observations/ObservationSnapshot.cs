@@ -34,9 +34,9 @@ public abstract record ObservationSnapshot
     public DateTimeOffset Time { get; private init; }
 
     /// <summary>
-    /// Gets a code that discriminates between measurement types.
+    /// Gets a code that discriminates between measurement types and is suitable for use as a hash code.
     /// </summary>
-    public abstract int GetDiscriminatorCode();
+    public abstract int GetMeasurementCode();
 
     public static ObservationSnapshot<TObs> ForUtcNow<TObs>(TObs observation)
         where TObs : Observation
@@ -67,8 +67,8 @@ public record ObservationSnapshot<TObs> : ObservationSnapshot
     [JsonPropertyName("o")]
     public required TObs Observation { get; init; }
 
-    public override int GetDiscriminatorCode()
+    public override int GetMeasurementCode()
     {
-        return Observation.GetDiscriminatorCode();
+        return Observation.GetMeasurementCode();
     }
 }

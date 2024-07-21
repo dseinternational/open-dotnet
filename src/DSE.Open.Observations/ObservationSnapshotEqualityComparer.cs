@@ -29,12 +29,12 @@ public abstract class ObservationSnapshotEqualityComparer<TObs> : IEqualityCompa
                 return false;
             }
 
-            return x.GetDiscriminatorCode().Equals(y.GetDiscriminatorCode());
+            return x.GetMeasurementCode().Equals(y.GetMeasurementCode());
         }
 
         public override int GetHashCode([DisallowNull] ObservationSnapshot<TObs> obj)
         {
-            return obj.GetDiscriminatorCode();
+            return obj.GetMeasurementCode();
         }
     }
 }

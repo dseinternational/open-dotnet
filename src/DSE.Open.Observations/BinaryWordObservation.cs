@@ -10,7 +10,7 @@ public sealed record BinaryWordObservation : Observation<bool>
     [JsonPropertyName("w")]
     public required uint WordId { get; init; }
 
-    public override int GetDiscriminatorCode()
+    public override int GetMeasurementCode()
     {
         return HashCode.Combine(MeasureId, WordId);
     }

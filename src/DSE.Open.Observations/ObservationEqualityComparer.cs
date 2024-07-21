@@ -11,7 +11,7 @@ public abstract class ObservationEqualityComparer<T> : IEqualityComparer<T>
     public static readonly IEqualityComparer<T> Default = EqualityComparer<T>.Default;
 
     /// <summary>
-    /// Gets an equality comparer that compares observations by <see cref="Observation.GetDiscriminatorCode"/>
+    /// Gets an equality comparer that compares observations by <see cref="Observation.GetMeasurementCode"/>
     /// </summary>
     public static readonly IEqualityComparer<T> Discriminator = new DiscriminatorObservationEqualityComparer();
 
@@ -33,12 +33,12 @@ public abstract class ObservationEqualityComparer<T> : IEqualityComparer<T>
                 return false;
             }
 
-            return x.GetDiscriminatorCode().Equals(y.GetDiscriminatorCode());
+            return x.GetMeasurementCode().Equals(y.GetMeasurementCode());
         }
 
         public override int GetHashCode([DisallowNull] T obj)
         {
-            return obj.GetDiscriminatorCode().GetHashCode();
+            return obj.GetMeasurementCode();
         }
     }
 }

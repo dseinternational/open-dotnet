@@ -36,7 +36,7 @@ public abstract record Observation
     public uint MeasureId { get; protected init; }
 
     /// <summary>
-    /// Gets a code that discriminates between measurement types.
+    /// Gets a code that discriminates between measurement types and is suitable for use as a hash code.
     /// </summary>
     /// <returns></returns>
     /// <remarks>
@@ -45,7 +45,7 @@ public abstract record Observation
     /// <see cref="BinaryWordObservation"/> will derive a value from <see cref="MeasureId"/> and
     /// <see cref="BinaryWordObservation.WordId"/>.
     /// </remarks>
-    public virtual int GetDiscriminatorCode()
+    public virtual int GetMeasurementCode()
     {
         return HashCode.Combine(MeasureId);
     }

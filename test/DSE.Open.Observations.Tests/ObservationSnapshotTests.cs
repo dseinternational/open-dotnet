@@ -29,7 +29,7 @@ public sealed class ObservationSnapshotTests
         var oneAgain = Observation.Create(1, Count.FromValue(1));
 
         // Assert
-        Assert.NotEqual(one.GetDiscriminatorCode(), two.GetDiscriminatorCode());
-        Assert.Equal(one.GetDiscriminatorCode(), oneAgain.GetDiscriminatorCode());
+        Assert.NotEqual(one.GetMeasurementCode(), two.GetMeasurementCode());
+        Assert.Equal(one.GetMeasurementCode(), oneAgain.GetMeasurementCode());
     }
 }

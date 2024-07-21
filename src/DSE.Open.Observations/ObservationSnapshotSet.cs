@@ -6,7 +6,7 @@ namespace DSE.Open.Observations;
 /// <summary>
 /// A set of observation snapshots where equality is compared using
 /// <see cref="ObservationSnapshotEqualityComparer{TObs}.Discriminated"/> (which compares snapshots using
-/// <see cref="ObservationSnapshot{TObs}.GetDiscriminatorCode"/>).
+/// <see cref="ObservationSnapshot{TObs}.GetMeasurementCode"/>).
 /// </summary>
 /// <typeparam name="TObs">The type of observation contained in the snapshot.</typeparam>
 public class ObservationSnapshotSet<TObs> : HashSet<ObservationSnapshot<TObs>>
