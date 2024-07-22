@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Text.Json.Serialization;
+using DSE.Open.Text.Json.Serialization;
 
 namespace DSE.Open.Observations;
 
@@ -23,6 +24,7 @@ public abstract record ObservationSnapshot<TObs, TValue>
     /// The time the snapshot was created.
     /// </summary>
     [JsonPropertyName("t")]
+    [JsonConverter(typeof(JsonDateTimeOffsetUnixTimeMillisecondsConverter))]
     public DateTimeOffset Time { get; private init; }
 
     /// <summary>
