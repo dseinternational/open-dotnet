@@ -6,12 +6,14 @@ using System.Text.Json.Serialization;
 using DSE.Open.Values;
 using DSE.Open.Values.Text.Json.Serialization;
 
-namespace DSE.Open.Records;
+namespace DSE.Open.Observations;
 
 [EquatableValue]
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<MeasurementLevel, AsciiString>))]
 [StructLayout(LayoutKind.Auto)]
-public readonly partial struct MeasurementLevel : IEquatableValue<MeasurementLevel, AsciiString>, IUtf8SpanSerializable<MeasurementLevel>
+public readonly partial struct MeasurementLevel
+    : IEquatableValue<MeasurementLevel, AsciiString>,
+      IUtf8SpanSerializable<MeasurementLevel>
 {
     public static int MaxSerializedCharLength => 32;
 

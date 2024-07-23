@@ -7,7 +7,7 @@ using DSE.Open.Values;
 
 namespace DSE.Open.Observations;
 
-public class BinaryObservationSetTests
+public sealed class BinaryObservationSetTests
 {
     [Fact]
     public void CanSerializeAndDeserialize()
@@ -17,8 +17,8 @@ public class BinaryObservationSetTests
             Identifier.New("obr"),
             new Uri("https://test.dsegroup.net"),
             [
-                BinaryObservation.Create(68436815, true),
-                BinaryObservation.Create(68436815, false),
+                BinaryObservation.Create(TestMeasures.BinaryMeasure, true),
+                BinaryObservation.Create(TestMeasures.BinaryMeasure2, false),
             ]);
         var json = JsonSerializer.Serialize(obs, JsonSharedOptions.RelaxedJsonEscaping);
         var deserialized = JsonSerializer.Deserialize<BinaryObservationSet>(json, JsonSharedOptions.RelaxedJsonEscaping);

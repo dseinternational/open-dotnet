@@ -9,31 +9,31 @@ namespace DSE.Open.Observations;
 
 public sealed record CountObservation : Observation<Count>
 {
-    internal CountObservation(uint measureId, DateTimeOffset time, Count value)
-        : base(measureId, time, value)
+    public CountObservation(Measure measure, DateTimeOffset time, Count value)
+        : base(measure, time, value)
     {
     }
 
     [JsonConstructor]
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    internal CountObservation(ulong id, uint measureId, DateTimeOffset time, Count value)
-        : base(id, measureId, time, value)
+    internal CountObservation(ulong id, uint measureId, long timestamp, Count value)
+        : base(id, measureId, timestamp, value)
     {
     }
 
-    public static CountObservation Create(uint measureId, Count value)
+    public static CountObservation Create(Measure measure, Count value)
     {
-        return Create(measureId, value, TimeProvider.System);
+        return Create(measure, value, TimeProvider.System);
     }
 
     public static CountObservation Create(
-        uint measureId,
+        Measure measure,
         Count value,
         TimeProvider timeProvider)
     {
         ArgumentNullException.ThrowIfNull(timeProvider);
 
-        return new CountObservation(measureId, timeProvider.GetUtcNow(), value);
+        return new CountObservation(measure, timeProvider.GetUtcNow(), value);
     }
 }

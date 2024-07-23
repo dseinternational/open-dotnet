@@ -3,21 +3,21 @@
 
 namespace DSE.Open.Observations;
 
-public class ObservationEqualityComparerTests
+public sealed class ObservationEqualityComparerTests
 {
     [Fact]
     public void DefaultNotEqualIfValuesDiffer()
     {
-        var obs1 = BinaryObservation.Create(68436815, true);
-        var obs2 = BinaryObservation.Create(68436815, false);
+        var obs1 = BinaryObservation.Create(TestMeasures.BinaryMeasure, true);
+        var obs2 = BinaryObservation.Create(TestMeasures.BinaryMeasure2, false);
         Assert.False(ObservationEqualityComparer<BinaryObservation, bool>.Default.Equals(obs1, obs2));
     }
 
     [Fact]
     public void MeasurementEqualIfMeasurementEqual()
     {
-        var obs1 = BinaryObservation.Create(68436815, true);
-        var obs2 = BinaryObservation.Create(68436815, false);
+        var obs1 = BinaryObservation.Create(TestMeasures.BinaryMeasure, true);
+        var obs2 = BinaryObservation.Create(TestMeasures.BinaryMeasure, false);
         Assert.True(ObservationEqualityComparer<BinaryObservation, bool>.Measurement.Equals(obs1, obs2));
     }
 }

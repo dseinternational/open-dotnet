@@ -9,31 +9,31 @@ namespace DSE.Open.Observations;
 
 public sealed record RatioObservation : Observation<Ratio>
 {
-    internal RatioObservation(uint measureId, DateTimeOffset time, Ratio value)
-        : base(measureId, time, value)
+    public RatioObservation(Measure measure, DateTimeOffset time, Ratio value)
+        : base(measure, time, value)
     {
     }
 
     [JsonConstructor]
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    internal RatioObservation(ulong id, uint measureId, DateTimeOffset time, Ratio value)
-        : base(id, measureId, time, value)
+    internal RatioObservation(ulong id, uint measureId, long timestamp, Ratio value)
+        : base(id, measureId, timestamp, value)
     {
     }
 
-    public static RatioObservation Create(uint measureId, Ratio value)
+    public static RatioObservation Create(Measure measure, Ratio value)
     {
-        return Create(measureId, value, TimeProvider.System);
+        return Create(measure, value, TimeProvider.System);
     }
 
     public static RatioObservation Create(
-        uint measureId,
+        Measure measure,
         Ratio value,
         TimeProvider timeProvider)
     {
         ArgumentNullException.ThrowIfNull(timeProvider);
 
-        return new RatioObservation(measureId, timeProvider.GetUtcNow(), value);
+        return new RatioObservation(measure, timeProvider.GetUtcNow(), value);
     }
 }

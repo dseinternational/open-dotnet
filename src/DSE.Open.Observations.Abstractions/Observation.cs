@@ -3,7 +3,6 @@
 
 using System.ComponentModel;
 using System.Text.Json.Serialization;
-using DSE.Open.Text.Json.Serialization;
 
 namespace DSE.Open.Observations;
 
@@ -14,23 +13,24 @@ namespace DSE.Open.Observations;
 public abstract record Observation<TValue>
     where TValue : IEquatable<TValue>
 {
-    protected Observation(uint measureId, DateTimeOffset time, TValue value)
+    protected Observation(Measure measure, DateTimeOffset time, TValue value)
     {
+        ArgumentNullException.ThrowIfNull(measure);
         ObservationsValidator.EnsureMinimumObservationTime(time);
 
         Id = RandomNumberHelper.GetJsonSafeInteger();
-        MeasureId = measureId;
-        Time = time;
+        MeasureId = measure.Id;
+        Timestamp = time.ToUnixTimeMilliseconds();
         Value = value;
     }
 
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    protected Observation(ulong id, uint measureId, DateTimeOffset time, TValue value)
+    protected Observation(ulong id, uint measureId, long timestamp, TValue value)
     {
         Id = id;
         MeasureId = measureId;
-        Time = time;
+        Timestamp = timestamp;
         Value = value;
     }
 
@@ -57,9 +57,7 @@ public abstract record Observation<TValue>
     /// <returns></returns>
     /// <remarks>
     /// For 'simple' measures, this may simply be derived from the <see cref="MeasureId"/>. For types with additional
-    /// identifying/discriminating state, additional values may need to be taken into account (for example, a
-    /// <see cref="BinaryWordObservation"/> will derive a value from <see cref="MeasureId"/> and
-    /// <see cref="BinaryWordObservation.WordId"/>.
+    /// identifying/discriminating state, additional values may need to be taken into account.
     /// </remarks>
     public virtual int GetMeasurementCode()
     {
@@ -69,11 +67,13 @@ public abstract record Observation<TValue>
     /// <summary>
     /// The time of the observation.
     /// </summary>
+    [JsonIgnore]
+    public DateTimeOffset Time => DateTimeOffset.FromUnixTimeMilliseconds(Timestamp);
+
     [JsonInclude]
     [JsonPropertyName("t")]
     [JsonPropertyOrder(-89800)]
-    [JsonConverter(typeof(JsonDateTimeOffsetUnixTimeMillisecondsConverter))]
-    public DateTimeOffset Time { get; }
+    protected long Timestamp { get; }
 
     [JsonPropertyName("v")]
     [JsonPropertyOrder(-1)]
@@ -89,16 +89,16 @@ public abstract record Observation<TValue, TDisc> : Observation<TValue>
     where TValue : IEquatable<TValue>
     where TDisc : IEquatable<TDisc>
 {
-    protected Observation(uint measureId, TDisc discriminator, DateTimeOffset time, TValue value)
-        : base(measureId, time, value)
+    protected Observation(Measure measure, TDisc discriminator, DateTimeOffset time, TValue value)
+        : base(measure, time, value)
     {
         Discriminator = discriminator;
     }
 
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    protected Observation(ulong id, uint measureId, TDisc discriminator, DateTimeOffset time, TValue value)
-        : base(id, measureId, time, value)
+    protected Observation(ulong id, uint measureId, TDisc discriminator, long timestamp, TValue value)
+        : base(id, measureId, timestamp, value)
     {
         Discriminator = discriminator;
     }

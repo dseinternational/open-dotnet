@@ -6,12 +6,12 @@ using DSE.Open.Text.Json;
 
 namespace DSE.Open.Observations;
 
-public class BinaryWordObservationTests
+public sealed class BinaryWordObservationTests
 {
     [Fact]
     public void CanSerializeAndDeserialize()
     {
-        var obs = BinaryWordObservation.Create(68436815, 96815631, true);
+        var obs = BinaryWordObservation.Create(TestMeasures.BinaryWordMeasure, 96815631, true);
         var json = JsonSerializer.Serialize(obs, JsonSharedOptions.RelaxedJsonEscaping);
         var deserialized = JsonSerializer.Deserialize<BinaryWordObservation>(json, JsonSharedOptions.RelaxedJsonEscaping);
         Assert.NotNull(deserialized);

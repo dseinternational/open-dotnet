@@ -8,35 +8,35 @@ namespace DSE.Open.Observations;
 
 public sealed record BinaryWordObservation : Observation<bool, uint>
 {
-    internal BinaryWordObservation(uint measureId, uint discriminator, DateTimeOffset time, bool value)
-        : base(measureId, discriminator, time, value)
+    internal BinaryWordObservation(Measure measure, uint discriminator, DateTimeOffset time, bool value)
+        : base(measure, discriminator, time, value)
     {
     }
 
     [JsonConstructor]
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    internal BinaryWordObservation(ulong id, uint measureId, uint discriminator, DateTimeOffset time, bool value)
-        : base(id, measureId, discriminator, time, value)
+    internal BinaryWordObservation(ulong id, uint measureId, uint discriminator, long timestamp, bool value)
+        : base(id, measureId, discriminator, timestamp, value)
     {
     }
 
     [JsonIgnore]
     public uint WordId => Discriminator;
 
-    public static BinaryWordObservation Create(uint measureId, uint wordId, bool value)
+    public static BinaryWordObservation Create(Measure measure, uint wordId, bool value)
     {
-        return Create(measureId, wordId, value, TimeProvider.System);
+        return Create(measure, wordId, value, TimeProvider.System);
     }
 
     public static BinaryWordObservation Create(
-        uint measureId,
+        Measure measure,
         uint wordId,
         bool value,
         TimeProvider timeProvider)
     {
         ArgumentNullException.ThrowIfNull(timeProvider);
 
-        return new BinaryWordObservation(measureId, wordId, timeProvider.GetUtcNow(), value);
+        return new BinaryWordObservation(measure, wordId, timeProvider.GetUtcNow(), value);
     }
 }

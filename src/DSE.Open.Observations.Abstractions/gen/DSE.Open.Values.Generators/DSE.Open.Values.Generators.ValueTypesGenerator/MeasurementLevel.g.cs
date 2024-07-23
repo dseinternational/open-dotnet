@@ -9,7 +9,7 @@
 using System;
 using System.ComponentModel;
 
-namespace DSE.Open.Records;
+namespace DSE.Open.Observations;
 
 [TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<MeasurementLevel, AsciiString>))]
 public readonly partial struct MeasurementLevel

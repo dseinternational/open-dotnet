@@ -9,35 +9,35 @@ namespace DSE.Open.Observations;
 
 public sealed record BinarySpeechSoundObservation : Observation<bool, SpeechSound>
 {
-    internal BinarySpeechSoundObservation(uint measureId, SpeechSound discriminator, DateTimeOffset time, bool value)
-        : base(measureId, discriminator, time, value)
+    internal BinarySpeechSoundObservation(Measure measure, SpeechSound discriminator, DateTimeOffset time, bool value)
+        : base(measure, discriminator, time, value)
     {
     }
 
     [JsonConstructor]
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    internal BinarySpeechSoundObservation(ulong id, uint measureId, SpeechSound discriminator, DateTimeOffset time, bool value)
-        : base(id, measureId, discriminator, time, value)
+    internal BinarySpeechSoundObservation(ulong id, uint measureId, SpeechSound discriminator, long timestamp, bool value)
+        : base(id, measureId, discriminator, timestamp, value)
     {
     }
 
     [JsonIgnore]
     public SpeechSound SpeechSound => Discriminator;
 
-    public static BinarySpeechSoundObservation Create(uint measureId, SpeechSound speechSound, bool value)
+    public static BinarySpeechSoundObservation Create(Measure measure, SpeechSound speechSound, bool value)
     {
-        return Create(measureId, speechSound, value, TimeProvider.System);
+        return Create(measure, speechSound, value, TimeProvider.System);
     }
 
     public static BinarySpeechSoundObservation Create(
-        uint measureId,
+        Measure measure,
         SpeechSound speechSound,
         bool value,
         TimeProvider timeProvider)
     {
         ArgumentNullException.ThrowIfNull(timeProvider);
 
-        return new BinarySpeechSoundObservation(measureId, speechSound, timeProvider.GetUtcNow(), value);
+        return new BinarySpeechSoundObservation(measure, speechSound, timeProvider.GetUtcNow(), value);
     }
 }

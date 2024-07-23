@@ -9,31 +9,31 @@ namespace DSE.Open.Observations;
 
 public sealed record AmountObservation : Observation<Amount>
 {
-    public AmountObservation(uint measureId, DateTimeOffset time, Amount value)
-        : base(measureId, time, value)
+    public AmountObservation(Measure measure, DateTimeOffset time, Amount value)
+        : base(measure, time, value)
     {
     }
 
     [JsonConstructor]
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    internal AmountObservation(ulong id, uint measureId, DateTimeOffset time, Amount value)
-        : base(id, measureId, time, value)
+    internal AmountObservation(ulong id, uint measureId, long timestamp, Amount value)
+        : base(id, measureId, timestamp, value)
     {
     }
 
-    public static AmountObservation Create(uint measureId, Amount value)
+    public static AmountObservation Create(Measure measure, Amount value)
     {
-        return Create(measureId, value, TimeProvider.System);
+        return Create(measure, value, TimeProvider.System);
     }
 
     public static AmountObservation Create(
-        uint measureId,
+        Measure measure,
         Amount value,
         TimeProvider timeProvider)
     {
         ArgumentNullException.ThrowIfNull(timeProvider);
 
-        return new AmountObservation(measureId, timeProvider.GetUtcNow(), value);
+        return new AmountObservation(measure, timeProvider.GetUtcNow(), value);
     }
 }

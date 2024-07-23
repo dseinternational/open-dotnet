@@ -8,31 +8,31 @@ namespace DSE.Open.Observations;
 
 public sealed record BinaryObservation : Observation<bool>
 {
-    private BinaryObservation(uint measureId, DateTimeOffset time, bool value)
-        : base(measureId, time, value)
+    public BinaryObservation(Measure measure, DateTimeOffset time, bool value)
+        : base(measure, time, value)
     {
     }
 
     [JsonConstructor]
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    internal BinaryObservation(ulong id, uint measureId, DateTimeOffset time, bool value)
-        : base(id, measureId, time, value)
+    internal BinaryObservation(ulong id, uint measureId, long timestamp, bool value)
+        : base(id, measureId, timestamp, value)
     {
     }
 
-    public static BinaryObservation Create(uint measureId, bool value)
+    public static BinaryObservation Create(Measure measure, bool value)
     {
-        return Create(measureId, value, TimeProvider.System);
+        return Create(measure, value, TimeProvider.System);
     }
 
     public static BinaryObservation Create(
-        uint measureId,
+        Measure measure,
         bool value,
         TimeProvider timeProvider)
     {
         ArgumentNullException.ThrowIfNull(timeProvider);
 
-        return new BinaryObservation(measureId, timeProvider.GetUtcNow(), value);
+        return new BinaryObservation(measure, timeProvider.GetUtcNow(), value);
     }
 }

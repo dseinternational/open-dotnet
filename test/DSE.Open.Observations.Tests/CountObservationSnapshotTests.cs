@@ -14,7 +14,7 @@ public sealed class CountObservationSnapshotTests
         var date = DateTime.Parse("01/01/2024", null).AddDays(-1);
 
         // Act
-        void Act() => _ = new CountObservationSnapshot(date, CountObservation.Create(1, Count.Zero));
+        void Act() => _ = new CountObservationSnapshot(date, CountObservation.Create(TestMeasures.CountMeasure, Count.Zero));
 
         // Assert
         Assert.Throws<ArgumentOutOfRangeException>(Act);
@@ -24,9 +24,9 @@ public sealed class CountObservationSnapshotTests
     public void GetMeasurementCode_WithDifferentMeasures_ShouldReturnDifferentCodes()
     {
         // Arrange
-        var one = CountObservation.Create(1, Count.Zero);
-        var two = CountObservation.Create(2, Count.Zero);
-        var oneAgain = CountObservation.Create(1, Count.FromValue(1));
+        var one = CountObservation.Create(TestMeasures.CountMeasure, Count.Zero);
+        var two = CountObservation.Create(TestMeasures.CountMeasure2, Count.Zero);
+        var oneAgain = CountObservation.Create(TestMeasures.CountMeasure, Count.FromValue(1));
 
         // Assert
         Assert.NotEqual(one.GetMeasurementCode(), two.GetMeasurementCode());

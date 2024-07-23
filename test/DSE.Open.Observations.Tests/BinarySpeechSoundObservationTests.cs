@@ -7,12 +7,12 @@ using DSE.Open.Text.Json;
 
 namespace DSE.Open.Observations;
 
-public class BinarySpeechSoundObservationTests
+public sealed class BinarySpeechSoundObservationTests
 {
     [Fact]
     public void CanSerializeAndDeserialize()
     {
-        var obs = BinarySpeechSoundObservation.Create(68436815, SpeechSound.VoicedPostalveolarAffricate, true);
+        var obs = BinarySpeechSoundObservation.Create(TestMeasures.BinarySpeechSoundMeasure, SpeechSound.VoicedPostalveolarAffricate, true);
         var json = JsonSerializer.Serialize(obs, JsonSharedOptions.RelaxedJsonEscaping);
         var deserialized = JsonSerializer.Deserialize<BinarySpeechSoundObservation>(json, JsonSharedOptions.RelaxedJsonEscaping);
         Assert.NotNull(deserialized);

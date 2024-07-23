@@ -14,8 +14,8 @@ public sealed class MeasurementSnapshotSetTests
         // Arrange
         var set = new MeasurementSnapshotSet<CountObservationSnapshot, CountObservation, Count>
         {
-            CountObservationSnapshot.ForUtcNow(CountObservation.Create(1, Count.FromValue(1))),
-            CountObservationSnapshot.ForUtcNow(CountObservation.Create(2, Count.FromValue(1)))
+            CountObservationSnapshot.ForUtcNow(CountObservation.Create(TestMeasures.CountMeasure, Count.FromValue(1))),
+            CountObservationSnapshot.ForUtcNow(CountObservation.Create(TestMeasures.CountMeasure2, Count.FromValue(1)))
         };
 
         // Act
@@ -33,8 +33,8 @@ public sealed class MeasurementSnapshotSetTests
         // Arrange
         var set = new MeasurementSnapshotSet<BinaryObservationSnapshot, BinaryObservation, bool>
         {
-            BinaryObservationSnapshot.ForUtcNow(BinaryObservation.Create(1, true)),
-            BinaryObservationSnapshot.ForUtcNow(BinaryObservation.Create(2, false))
+            BinaryObservationSnapshot.ForUtcNow(BinaryObservation.Create(TestMeasures.CountMeasure, true)),
+            BinaryObservationSnapshot.ForUtcNow(BinaryObservation.Create(TestMeasures.CountMeasure2, false))
         };
 
         // Act
@@ -52,8 +52,8 @@ public sealed class MeasurementSnapshotSetTests
         // Arrange
         var set = new MeasurementSnapshotSet<AmountObservationSnapshot, AmountObservation, Amount>
         {
-            AmountObservationSnapshot.ForUtcNow(AmountObservation.Create(1, Amount.FromValue(1.2m))),
-            AmountObservationSnapshot.ForUtcNow(AmountObservation.Create(2, Amount.FromValue(2.1m)))
+            AmountObservationSnapshot.ForUtcNow(AmountObservation.Create(TestMeasures.CountMeasure, Amount.FromValue(1.2m))),
+            AmountObservationSnapshot.ForUtcNow(AmountObservation.Create(TestMeasures.CountMeasure2, Amount.FromValue(2.1m)))
         };
 
         // Act
@@ -71,15 +71,15 @@ public sealed class MeasurementSnapshotSetTests
         // Arrange
         var set1 = new MeasurementSnapshotSet<CountObservationSnapshot, CountObservation, Count>
         {
-            CountObservationSnapshot.ForUtcNow(CountObservation.Create(1, Count.FromValue(1))),
-            CountObservationSnapshot.ForUtcNow(CountObservation.Create(1, Count.FromValue(1))),
-            CountObservationSnapshot.ForUtcNow(CountObservation.Create(1, Count.FromValue(3))),
-            CountObservationSnapshot.ForUtcNow(CountObservation.Create(1, Count.FromValue(2))),
+            CountObservationSnapshot.ForUtcNow(CountObservation.Create(TestMeasures.CountMeasure, Count.FromValue(1))),
+            CountObservationSnapshot.ForUtcNow(CountObservation.Create(TestMeasures.CountMeasure, Count.FromValue(1))),
+            CountObservationSnapshot.ForUtcNow(CountObservation.Create(TestMeasures.CountMeasure, Count.FromValue(3))),
+            CountObservationSnapshot.ForUtcNow(CountObservation.Create(TestMeasures.CountMeasure, Count.FromValue(2))),
         };
 
         var set2 = new MeasurementSnapshotSet<CountObservationSnapshot, CountObservation, Count>
         {
-            CountObservationSnapshot.ForUtcNow(CountObservation.Create(1, Count.FromValue(2))),
+            CountObservationSnapshot.ForUtcNow(CountObservation.Create(TestMeasures.CountMeasure, Count.FromValue(2))),
         };
 
         // Assert
@@ -92,19 +92,19 @@ public sealed class MeasurementSnapshotSetTests
         // Arrange
         var set1 = new MeasurementSnapshotSet<CountObservationSnapshot, CountObservation, Count>
         {
-            CountObservationSnapshot.ForUtcNow(CountObservation.Create(1, Count.FromValue(1))),
-            CountObservationSnapshot.ForUtcNow(CountObservation.Create(1, Count.FromValue(1))),
-            CountObservationSnapshot.ForUtcNow(CountObservation.Create(1, Count.FromValue(3))),
-            CountObservationSnapshot.ForUtcNow(CountObservation.Create(1, Count.FromValue(2))),
+            CountObservationSnapshot.ForUtcNow(CountObservation.Create(TestMeasures.CountMeasure, Count.FromValue(1))),
+            CountObservationSnapshot.ForUtcNow(CountObservation.Create(TestMeasures.CountMeasure, Count.FromValue(1))),
+            CountObservationSnapshot.ForUtcNow(CountObservation.Create(TestMeasures.CountMeasure, Count.FromValue(3))),
+            CountObservationSnapshot.ForUtcNow(CountObservation.Create(TestMeasures.CountMeasure, Count.FromValue(2))),
         };
 
         var set2 = new MeasurementSnapshotSet<CountObservationSnapshot, CountObservation, Count>
         {
-            CountObservationSnapshot.ForUtcNow(CountObservation.Create(1, Count.FromValue(2))),
+            CountObservationSnapshot.ForUtcNow(CountObservation.Create(TestMeasures.CountMeasure, Count.FromValue(2))),
         };
 
         var set3 = new MeasurementSnapshotSet<CountObservationSnapshot, CountObservation, Count>([
-            CountObservationSnapshot.ForUtcNow(CountObservation.Create(1, Count.FromValue(2)))
+            CountObservationSnapshot.ForUtcNow(CountObservation.Create(TestMeasures.CountMeasure, Count.FromValue(2)))
         ]);
 
         // Assert
