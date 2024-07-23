@@ -1,4 +1,4 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.ComponentModel;
@@ -7,7 +7,7 @@ using DSE.Open.Values;
 
 namespace DSE.Open.Observations;
 
-public sealed record class RatioMeasure : Measure<RatioObservation, Ratio>
+public sealed class RatioMeasure : Measure<RatioObservation, Ratio>
 {
     public RatioMeasure(Uri uri, MeasurementLevel measurementLevel, string name, string statement)
         : base(uri, measurementLevel, name, statement)

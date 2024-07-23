@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Text.Json.Serialization;
 
 namespace DSE.Open.Observations;
@@ -9,7 +10,7 @@ namespace DSE.Open.Observations;
 /// <summary>
 /// A measure defines what the value of an observation refers to.
 /// </summary>
-public abstract record Measure
+public abstract class Measure : IEquatable<Measure>
 {
     protected Measure(Uri uri, MeasurementLevel measurementLevel, string name, string statement)
     {
@@ -25,6 +26,8 @@ public abstract record Measure
     [EditorBrowsable(EditorBrowsableState.Never)]
     protected Measure(uint id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
     {
+        Debug.Assert(MeasureIdHelper.GetId(uri) == id);
+
         Id = id;
         Uri = uri;
         MeasurementLevel = measurementLevel;
@@ -52,9 +55,24 @@ public abstract record Measure
 
     [JsonPropertyName("statement")]
     public string Statement { get; }
+
+    public bool Equals(Measure? other)
+    {
+        return other is not null && Id == other.Id;
+    }
+
+    public override bool Equals(object? obj)
+    {
+        return Equals(obj as Measure);
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Id);
+    }
 }
 
-public abstract record Measure<TObs, TValue> : Measure
+public abstract class Measure<TObs, TValue> : Measure
     where TObs : Observation<TValue>
     where TValue : IEquatable<TValue>
 {
@@ -86,7 +104,7 @@ public abstract record Measure<TObs, TValue> : Measure
 }
 
 #pragma warning disable CA1005 // Avoid excessive parameters on generic types
-public abstract record Measure<TObs, TValue, TDisc> : Measure
+public abstract class Measure<TObs, TValue, TDisc> : Measure
 #pragma warning restore CA1005 // Avoid excessive parameters on generic types
     where TObs : Observation<TValue, TDisc>
     where TValue : IEquatable<TValue>

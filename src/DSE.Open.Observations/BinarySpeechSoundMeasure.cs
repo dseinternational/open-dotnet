@@ -7,7 +7,7 @@ using DSE.Open.Speech;
 
 namespace DSE.Open.Observations;
 
-public sealed record class BinarySpeechSoundMeasure : Measure<BinarySpeechSoundObservation, bool, SpeechSound>
+public sealed class BinarySpeechSoundMeasure : Measure<BinarySpeechSoundObservation, bool, SpeechSound>
 {
     public BinarySpeechSoundMeasure(Uri uri, string name, string statement)
         : base(uri, MeasurementLevel.Binary, name, statement)

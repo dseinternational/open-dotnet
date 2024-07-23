@@ -48,6 +48,18 @@ public class MeasureTests
         var measure = new FakeBinaryMeasure(uri, "Test measure", "[subject] does something");
         Assert.Equal("[subject] does something", measure.Statement);
     }
+
+    [Fact]
+    public void EqualUrisAreEqualMeasures()
+    {
+        var uri = new Uri("https://schema-test.dseapi.app/testing/measure");
+        var measure = new FakeBinaryMeasure(uri, "Test measure", "[subject] does something");
+        var measure2 = new FakeBinaryMeasure(uri, "Test measure 2", "[subject] does something 2");
+        Assert.Equal(measure.Id, measure2.Id);
+        Assert.Equal(measure, measure2);
+        Assert.Equal(measure.GetHashCode(), measure2.GetHashCode());
+    }
+
 }
 
 public sealed record FakeBinaryObservation : Observation<bool>
@@ -66,7 +78,7 @@ public sealed record FakeBinaryObservation : Observation<bool>
     }
 }
 
-public sealed record FakeBinaryMeasure : Measure<FakeBinaryObservation, bool>
+public sealed class FakeBinaryMeasure : Measure<FakeBinaryObservation, bool>
 {
     public FakeBinaryMeasure(Uri uri, string name, string statement)
         : base(uri, MeasurementLevel.Binary, name, statement)

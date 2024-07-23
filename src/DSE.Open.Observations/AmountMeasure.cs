@@ -7,7 +7,7 @@ using DSE.Open.Values;
 
 namespace DSE.Open.Observations;
 
-public sealed record class AmountMeasure : Measure<AmountObservation, Amount>
+public sealed class AmountMeasure : Measure<AmountObservation, Amount>
 {
     public AmountMeasure(Uri uri, string name, string statement)
         : base(uri, MeasurementLevel.Amount, name, statement)
