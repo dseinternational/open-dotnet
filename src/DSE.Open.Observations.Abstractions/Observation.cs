@@ -35,7 +35,7 @@ public abstract record Observation<TValue>
     }
 
     /// <summary>
-    /// A randomly generated number between 0 and <see cref="RandomNumberHelper.MaxJsonSafeInteger"/> that,
+    /// A randomly generated number between 0 and <see cref="NumberHelper.MaxJsonSafeInteger"/> that,
     /// together with the timestamp, uniquely identifies this observation.
     /// </summary>
     [JsonInclude]
@@ -69,6 +69,8 @@ public abstract record Observation<TValue>
     /// </summary>
     [JsonIgnore]
     public DateTimeOffset Time => DateTimeOffset.FromUnixTimeMilliseconds(Timestamp);
+
+    // this ensures equality tests are the same before/after serialization
 
     [JsonInclude]
     [JsonPropertyName("t")]

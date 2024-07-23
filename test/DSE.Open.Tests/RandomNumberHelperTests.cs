@@ -11,7 +11,7 @@ public class RandomNumberHelperTests
         var values = Enumerable.Range(0, 10000)
             .Select(_ => RandomNumberHelper.GetJsonSafeInteger()).ToArray();
 
-        Assert.All(values, v => Assert.InRange(v, (ulong)0, RandomNumberHelper.MaxJsonSafeInteger));
+        Assert.All(values, v => Assert.InRange(v, (ulong)0, NumberHelper.MaxJsonSafeInteger));
 
         var uniqueValues = new HashSet<ulong>(values);
 

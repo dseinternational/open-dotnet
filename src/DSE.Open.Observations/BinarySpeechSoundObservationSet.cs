@@ -16,7 +16,7 @@ public sealed record BinarySpeechSoundObservationSet : ObservationSet<BinarySpee
         Identifier observerReference,
         Uri source,
         GroundPoint? location,
-        ReadOnlyValueSet<BinarySpeechSoundObservation> observations)
+        ReadOnlyValueCollection<BinarySpeechSoundObservation> observations)
         : base(created, trackerReference, observerReference, source, location, observations)
     {
     }
@@ -26,13 +26,13 @@ public sealed record BinarySpeechSoundObservationSet : ObservationSet<BinarySpee
     [EditorBrowsable(EditorBrowsableState.Never)]
     internal BinarySpeechSoundObservationSet(
         ulong id,
-        DateTimeOffset created,
+        long createdTimestamp,
         Identifier trackerReference,
         Identifier observerReference,
         Uri source,
         GroundPoint? location,
-        ReadOnlyValueSet<BinarySpeechSoundObservation> observations)
-        : base(id, created, trackerReference, observerReference, source, location, observations)
+        ReadOnlyValueCollection<BinarySpeechSoundObservation> observations)
+        : base(id, createdTimestamp, trackerReference, observerReference, source, location, observations)
     {
     }
 
@@ -40,7 +40,7 @@ public sealed record BinarySpeechSoundObservationSet : ObservationSet<BinarySpee
         Identifier trackerReference,
         Identifier observerReference,
         Uri source,
-        ReadOnlyValueSet<BinarySpeechSoundObservation> observations)
+        ReadOnlyValueCollection<BinarySpeechSoundObservation> observations)
     {
         return Create(trackerReference, observerReference, source, null, observations);
     }
@@ -50,7 +50,7 @@ public sealed record BinarySpeechSoundObservationSet : ObservationSet<BinarySpee
         Identifier observerReference,
         Uri source,
         GroundPoint? location,
-        ReadOnlyValueSet<BinarySpeechSoundObservation> observations)
+        ReadOnlyValueCollection<BinarySpeechSoundObservation> observations)
     {
         return Create(trackerReference, observerReference, source, location, observations, TimeProvider.System);
     }
@@ -60,7 +60,7 @@ public sealed record BinarySpeechSoundObservationSet : ObservationSet<BinarySpee
         Identifier observerReference,
         Uri source,
         GroundPoint? location,
-        ReadOnlyValueSet<BinarySpeechSoundObservation> observations,
+        ReadOnlyValueCollection<BinarySpeechSoundObservation> observations,
         TimeProvider timeProvider)
     {
         Guard.IsNotDefault(trackerReference);

@@ -16,7 +16,7 @@ public sealed record CountObservationSet : ObservationSet<CountObservation, Coun
         Identifier observerReference,
         Uri source,
         GroundPoint? location,
-        ReadOnlyValueSet<CountObservation> observations)
+        ReadOnlyValueCollection<CountObservation> observations)
         : base(created, trackerReference, observerReference, source, location, observations)
     {
     }
@@ -26,13 +26,13 @@ public sealed record CountObservationSet : ObservationSet<CountObservation, Coun
     [EditorBrowsable(EditorBrowsableState.Never)]
     internal CountObservationSet(
         ulong id,
-        DateTimeOffset created,
+        long createdTimestamp,
         Identifier trackerReference,
         Identifier observerReference,
         Uri source,
         GroundPoint? location,
-        ReadOnlyValueSet<CountObservation> observations)
-        : base(id, created, trackerReference, observerReference, source, location, observations)
+        ReadOnlyValueCollection<CountObservation> observations)
+        : base(id, createdTimestamp, trackerReference, observerReference, source, location, observations)
     {
     }
 
@@ -40,7 +40,7 @@ public sealed record CountObservationSet : ObservationSet<CountObservation, Coun
         Identifier trackerReference,
         Identifier observerReference,
         Uri source,
-        ReadOnlyValueSet<CountObservation> observations)
+        ReadOnlyValueCollection<CountObservation> observations)
     {
         return Create(trackerReference, observerReference, source, null, observations);
     }
@@ -50,7 +50,7 @@ public sealed record CountObservationSet : ObservationSet<CountObservation, Coun
         Identifier observerReference,
         Uri source,
         GroundPoint? location,
-        ReadOnlyValueSet<CountObservation> observations)
+        ReadOnlyValueCollection<CountObservation> observations)
     {
         return Create(trackerReference, observerReference, source, location, observations, TimeProvider.System);
     }
@@ -60,7 +60,7 @@ public sealed record CountObservationSet : ObservationSet<CountObservation, Coun
         Identifier observerReference,
         Uri source,
         GroundPoint? location,
-        ReadOnlyValueSet<CountObservation> observations,
+        ReadOnlyValueCollection<CountObservation> observations,
         TimeProvider timeProvider)
     {
         Guard.IsNotDefault(trackerReference);

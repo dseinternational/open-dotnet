@@ -16,7 +16,7 @@ public sealed record RatioObservationSet : ObservationSet<RatioObservation, Rati
         Identifier observerReference,
         Uri source,
         GroundPoint? location,
-        ReadOnlyValueSet<RatioObservation> observations)
+        ReadOnlyValueCollection<RatioObservation> observations)
         : base(created, trackerReference, observerReference, source, location, observations)
     {
     }
@@ -26,13 +26,13 @@ public sealed record RatioObservationSet : ObservationSet<RatioObservation, Rati
     [EditorBrowsable(EditorBrowsableState.Never)]
     internal RatioObservationSet(
         ulong id,
-        DateTimeOffset created,
+        long createdTimestamp,
         Identifier trackerReference,
         Identifier observerReference,
         Uri source,
         GroundPoint? location,
-        ReadOnlyValueSet<RatioObservation> observations)
-        : base(id, created, trackerReference, observerReference, source, location, observations)
+        ReadOnlyValueCollection<RatioObservation> observations)
+        : base(id, createdTimestamp, trackerReference, observerReference, source, location, observations)
     {
     }
 
@@ -40,7 +40,7 @@ public sealed record RatioObservationSet : ObservationSet<RatioObservation, Rati
         Identifier trackerReference,
         Identifier observerReference,
         Uri source,
-        ReadOnlyValueSet<RatioObservation> observations)
+        ReadOnlyValueCollection<RatioObservation> observations)
     {
         return Create(trackerReference, observerReference, source, null, observations);
     }
@@ -50,7 +50,7 @@ public sealed record RatioObservationSet : ObservationSet<RatioObservation, Rati
         Identifier observerReference,
         Uri source,
         GroundPoint? location,
-        ReadOnlyValueSet<RatioObservation> observations)
+        ReadOnlyValueCollection<RatioObservation> observations)
     {
         return Create(trackerReference, observerReference, source, location, observations, TimeProvider.System);
     }
@@ -60,7 +60,7 @@ public sealed record RatioObservationSet : ObservationSet<RatioObservation, Rati
         Identifier observerReference,
         Uri source,
         GroundPoint? location,
-        ReadOnlyValueSet<RatioObservation> observations,
+        ReadOnlyValueCollection<RatioObservation> observations,
         TimeProvider timeProvider)
     {
         Guard.IsNotDefault(trackerReference);

@@ -16,7 +16,7 @@ public sealed record AmountObservationSet : ObservationSet<AmountObservation, Am
         Identifier observerReference,
         Uri source,
         GroundPoint? location,
-        ReadOnlyValueSet<AmountObservation> observations)
+        ReadOnlyValueCollection<AmountObservation> observations)
         : base(created, trackerReference, observerReference, source, location, observations)
     {
     }
@@ -26,13 +26,13 @@ public sealed record AmountObservationSet : ObservationSet<AmountObservation, Am
     [EditorBrowsable(EditorBrowsableState.Never)]
     internal AmountObservationSet(
         ulong id,
-        DateTimeOffset created,
+        long createdTimestamp,
         Identifier trackerReference,
         Identifier observerReference,
         Uri source,
         GroundPoint? location,
-        ReadOnlyValueSet<AmountObservation> observations)
-        : base(id, created, trackerReference, observerReference, source, location, observations)
+        ReadOnlyValueCollection<AmountObservation> observations)
+        : base(id, createdTimestamp, trackerReference, observerReference, source, location, observations)
     {
     }
 
@@ -40,7 +40,7 @@ public sealed record AmountObservationSet : ObservationSet<AmountObservation, Am
         Identifier trackerReference,
         Identifier observerReference,
         Uri source,
-        ReadOnlyValueSet<AmountObservation> observations)
+        ReadOnlyValueCollection<AmountObservation> observations)
     {
         return Create(trackerReference, observerReference, source, null, observations);
     }
@@ -50,7 +50,7 @@ public sealed record AmountObservationSet : ObservationSet<AmountObservation, Am
         Identifier observerReference,
         Uri source,
         GroundPoint? location,
-        ReadOnlyValueSet<AmountObservation> observations)
+        ReadOnlyValueCollection<AmountObservation> observations)
     {
         return Create(trackerReference, observerReference, source, location, observations, TimeProvider.System);
     }
@@ -60,7 +60,7 @@ public sealed record AmountObservationSet : ObservationSet<AmountObservation, Am
         Identifier observerReference,
         Uri source,
         GroundPoint? location,
-        ReadOnlyValueSet<AmountObservation> observations,
+        ReadOnlyValueCollection<AmountObservation> observations,
         TimeProvider timeProvider)
     {
         Guard.IsNotDefault(trackerReference);

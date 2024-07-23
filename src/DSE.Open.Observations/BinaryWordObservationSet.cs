@@ -16,7 +16,7 @@ public sealed record BinaryWordObservationSet : ObservationSet<BinaryWordObserva
         Identifier observerReference,
         Uri source,
         GroundPoint? location,
-        ReadOnlyValueSet<BinaryWordObservation> observations)
+        ReadOnlyValueCollection<BinaryWordObservation> observations)
         : base(created, trackerReference, observerReference, source, location, observations)
     {
     }
@@ -26,13 +26,13 @@ public sealed record BinaryWordObservationSet : ObservationSet<BinaryWordObserva
     [EditorBrowsable(EditorBrowsableState.Never)]
     internal BinaryWordObservationSet(
         ulong id,
-        DateTimeOffset created,
+        long createdTimestamp,
         Identifier trackerReference,
         Identifier observerReference,
         Uri source,
         GroundPoint? location,
-        ReadOnlyValueSet<BinaryWordObservation> observations)
-        : base(id, created, trackerReference, observerReference, source, location, observations)
+        ReadOnlyValueCollection<BinaryWordObservation> observations)
+        : base(id, createdTimestamp, trackerReference, observerReference, source, location, observations)
     {
     }
 
@@ -40,7 +40,7 @@ public sealed record BinaryWordObservationSet : ObservationSet<BinaryWordObserva
         Identifier trackerReference,
         Identifier observerReference,
         Uri source,
-        ReadOnlyValueSet<BinaryWordObservation> observations)
+        ReadOnlyValueCollection<BinaryWordObservation> observations)
     {
         return Create(trackerReference, observerReference, source, null, observations);
     }
@@ -50,7 +50,7 @@ public sealed record BinaryWordObservationSet : ObservationSet<BinaryWordObserva
         Identifier observerReference,
         Uri source,
         GroundPoint? location,
-        ReadOnlyValueSet<BinaryWordObservation> observations)
+        ReadOnlyValueCollection<BinaryWordObservation> observations)
     {
         return Create(trackerReference, observerReference, source, location, observations, TimeProvider.System);
     }
@@ -60,7 +60,7 @@ public sealed record BinaryWordObservationSet : ObservationSet<BinaryWordObserva
         Identifier observerReference,
         Uri source,
         GroundPoint? location,
-        ReadOnlyValueSet<BinaryWordObservation> observations,
+        ReadOnlyValueCollection<BinaryWordObservation> observations,
         TimeProvider timeProvider)
     {
         Guard.IsNotDefault(trackerReference);
