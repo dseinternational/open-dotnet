@@ -26,7 +26,7 @@ public abstract record Observation<TValue>
 
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    protected Observation(ulong id, uint measureId, long timestamp, TValue value)
+    protected Observation(ulong id, ulong measureId, long timestamp, TValue value)
     {
         Id = id;
         MeasureId = measureId;
@@ -49,7 +49,20 @@ public abstract record Observation<TValue>
     [JsonInclude]
     [JsonPropertyName("m")]
     [JsonPropertyOrder(-90000)]
-    public uint MeasureId { get; }
+    public ulong MeasureId { get; }
+
+    /// <summary>
+    /// Gets a value that discriminates between measurement types.
+    /// </summary>
+    /// <returns></returns>
+    /// <remarks>
+    /// For 'simple' measures, this may simply be derived from the <see cref="MeasureId"/>. For types with additional
+    /// identifying/discriminating state, additional values may need to be taken into account.
+    /// </remarks>
+    public virtual ulong GetMeasurementId()
+    {
+        return MeasureId;
+    }
 
     /// <summary>
     /// Gets a code that discriminates between measurement types and is suitable for use as a hash code.
@@ -59,9 +72,9 @@ public abstract record Observation<TValue>
     /// For 'simple' measures, this may simply be derived from the <see cref="MeasureId"/>. For types with additional
     /// identifying/discriminating state, additional values may need to be taken into account.
     /// </remarks>
-    public virtual int GetMeasurementCode()
+    public virtual int GetMeasurementHashCode()
     {
-        return HashCode.Combine(MeasureId);
+        return HashCode.Combine(GetMeasurementId());
     }
 
     /// <summary>
@@ -99,7 +112,7 @@ public abstract record Observation<TValue, TDisc> : Observation<TValue>
 
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    protected Observation(ulong id, uint measureId, TDisc discriminator, long timestamp, TValue value)
+    protected Observation(ulong id, ulong measureId, TDisc discriminator, long timestamp, TValue value)
         : base(id, measureId, timestamp, value)
     {
         Discriminator = discriminator;
@@ -109,7 +122,14 @@ public abstract record Observation<TValue, TDisc> : Observation<TValue>
     [JsonPropertyOrder(-100)]
     public TDisc Discriminator { get; }
 
-    public override int GetMeasurementCode()
+    protected abstract ulong GetDiscriminatorId();
+
+    public override ulong GetMeasurementId()
+    {
+        return MeasureId ^ GetDiscriminatorId();
+    }
+
+    public override int GetMeasurementHashCode()
     {
         return HashCode.Combine(MeasureId, Discriminator);
     }

@@ -20,4 +20,52 @@ public sealed class BinaryWordObservationTests
         Assert.Equal(obs.WordId, deserialized.WordId);
         Assert.Equal(obs.Time.ToUnixTimeMilliseconds(), deserialized.Time.ToUnixTimeMilliseconds());
     }
+
+    [Fact]
+    public void MeasurementIdEqualForSameMeasureAndSound()
+    {
+        var obs1 = BinaryWordObservation.Create(TestMeasures.BinaryWordMeasure, 9813861, true);
+        var obs2 = BinaryWordObservation.Create(TestMeasures.BinaryWordMeasure, 9813861, false);
+        Assert.Equal(obs1.GetMeasurementId(), obs2.GetMeasurementId());
+    }
+
+    [Fact]
+    public void MeasurementIdNotEqualForSameMeasureAndDifferentSound()
+    {
+        var obs1 = BinaryWordObservation.Create(TestMeasures.BinaryWordMeasure, 9813861, true);
+        var obs2 = BinaryWordObservation.Create(TestMeasures.BinaryWordMeasure, 68151, false);
+        Assert.NotEqual(obs1.GetMeasurementId(), obs2.GetMeasurementId());
+    }
+
+    [Fact]
+    public void MeasurementIdNotEqualForDifferentMeasureAndSameSound()
+    {
+        var obs1 = BinaryWordObservation.Create(TestMeasures.BinaryWordMeasure, 9813861, true);
+        var obs2 = BinaryWordObservation.Create(TestMeasures.BinaryWordMeasure2, 9813861, false);
+        Assert.NotEqual(obs1.GetMeasurementId(), obs2.GetMeasurementId());
+    }
+
+    [Fact]
+    public void MeasurementHashCodeEqualForSameMeasureAndSound()
+    {
+        var obs1 = BinaryWordObservation.Create(TestMeasures.BinaryWordMeasure, 9813861, true);
+        var obs2 = BinaryWordObservation.Create(TestMeasures.BinaryWordMeasure, 9813861, false);
+        Assert.Equal(obs1.GetMeasurementHashCode(), obs2.GetMeasurementHashCode());
+    }
+
+    [Fact]
+    public void MeasurementHashCodeNotEqualForSameMeasureAndDifferentSound()
+    {
+        var obs1 = BinaryWordObservation.Create(TestMeasures.BinaryWordMeasure, 9813861, true);
+        var obs2 = BinaryWordObservation.Create(TestMeasures.BinaryWordMeasure, 981565, false);
+        Assert.NotEqual(obs1.GetMeasurementHashCode(), obs2.GetMeasurementHashCode());
+    }
+
+    [Fact]
+    public void MeasurementHashCodeNotEqualForDifferentMeasureAndSameSound()
+    {
+        var obs1 = BinaryWordObservation.Create(TestMeasures.BinaryWordMeasure, 9813861, true);
+        var obs2 = BinaryWordObservation.Create(TestMeasures.BinaryWordMeasure2, 9813861, false);
+        Assert.NotEqual(obs1.GetMeasurementHashCode(), obs2.GetMeasurementHashCode());
+    }
 }

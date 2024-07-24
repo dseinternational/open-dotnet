@@ -17,7 +17,7 @@ public sealed record CountObservation : Observation<Count>
     [JsonConstructor]
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    internal CountObservation(ulong id, uint measureId, long timestamp, Count value)
+    internal CountObservation(ulong id, ulong measureId, long timestamp, Count value)
         : base(id, measureId, timestamp, value)
     {
     }

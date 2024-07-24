@@ -17,7 +17,7 @@ public sealed class BinarySpeechSoundMeasure : Measure<BinarySpeechSoundObservat
     [JsonConstructor]
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public BinarySpeechSoundMeasure(uint id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
+    public BinarySpeechSoundMeasure(ulong id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
         : base(id, uri, measurementLevel, name, statement)
     {
     }

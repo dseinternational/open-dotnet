@@ -16,7 +16,7 @@ public sealed class BinaryMeasure : Measure<BinaryObservation, bool>
     [JsonConstructor]
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public BinaryMeasure(uint id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
+    public BinaryMeasure(ulong id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
         : base(id, uri, measurementLevel, name, statement)
     {
     }

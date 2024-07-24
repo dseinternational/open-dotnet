@@ -17,7 +17,7 @@ public sealed class AmountMeasure : Measure<AmountObservation, Amount>
     [JsonConstructor]
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public AmountMeasure(uint id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
+    public AmountMeasure(ulong id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
         : base(id, uri, measurementLevel, name, statement)
     {
     }

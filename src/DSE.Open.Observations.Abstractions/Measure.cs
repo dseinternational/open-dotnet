@@ -24,7 +24,7 @@ public abstract class Measure : IEquatable<Measure>
     [JsonConstructor]
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    protected Measure(uint id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
+    protected Measure(ulong id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
     {
         Debug.Assert(MeasureIdHelper.GetId(uri) == id);
 
@@ -39,7 +39,7 @@ public abstract class Measure : IEquatable<Measure>
     /// An identifier for the measure. This is generated from a hash of the <see cref="Uri" />.
     /// </summary>
     [JsonPropertyName("id")]
-    public uint Id { get; }
+    public ulong Id { get; }
 
     /// <summary>
     /// A URI that uniquely identifies the measure.
@@ -84,7 +84,7 @@ public abstract class Measure<TObs, TValue> : Measure
     [JsonConstructor]
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    protected Measure(uint id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
+    protected Measure(ulong id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
         : base(id, uri, measurementLevel, name, statement)
     {
     }
@@ -118,7 +118,7 @@ public abstract class Measure<TObs, TValue, TDisc> : Measure
     [JsonConstructor]
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    protected Measure(uint id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
+    protected Measure(ulong id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
         : base(id, uri, measurementLevel, name, statement)
     {
     }

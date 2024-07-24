@@ -17,7 +17,7 @@ public sealed class RatioMeasure : Measure<RatioObservation, Ratio>
     [JsonConstructor]
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public RatioMeasure(uint id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
+    public RatioMeasure(ulong id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
         : base(id, uri, measurementLevel, name, statement)
     {
     }

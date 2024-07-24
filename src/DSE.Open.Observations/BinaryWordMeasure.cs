@@ -16,7 +16,7 @@ public sealed class BinaryWordMeasure : Measure<BinaryWordObservation, bool, uin
     [JsonConstructor]
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public BinaryWordMeasure(uint id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
+    public BinaryWordMeasure(ulong id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
         : base(id, uri, measurementLevel, name, statement)
     {
     }

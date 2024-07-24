@@ -12,7 +12,7 @@ public abstract class ObservationEqualityComparer<TObs, TValue> : IEqualityCompa
     public static readonly IEqualityComparer<TObs> Default = EqualityComparer<TObs>.Default;
 
     /// <summary>
-    /// Gets an equality comparer that compares observations by <see cref="Observation{TObs, TValue}.GetMeasurementCode"/>
+    /// Gets an equality comparer that compares observations by <see cref="Observation{TObs, TValue}.GetMeasurementHashCode"/>
     /// </summary>
     public static readonly IEqualityComparer<TObs> Measurement = new DiscriminatorObservationEqualityComparer();
 
@@ -34,12 +34,12 @@ public abstract class ObservationEqualityComparer<TObs, TValue> : IEqualityCompa
                 return false;
             }
 
-            return x.GetMeasurementCode().Equals(y.GetMeasurementCode());
+            return x.GetMeasurementHashCode().Equals(y.GetMeasurementHashCode());
         }
 
         public override int GetHashCode([DisallowNull] TObs obj)
         {
-            return obj.GetMeasurementCode();
+            return obj.GetMeasurementHashCode();
         }
     }
 }

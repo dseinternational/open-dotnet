@@ -36,8 +36,8 @@ public abstract record ObservationSnapshot<TObs, TValue>
     /// <summary>
     /// Gets a code that discriminates between measurement types and is suitable for use as a hash code.
     /// </summary>
-    public virtual int GetMeasurementCode()
+    public virtual int GetMeasurementHashCode()
     {
-        return Observation.GetMeasurementCode();
+        return Observation.GetMeasurementHashCode();
     }
 }

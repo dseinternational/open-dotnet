@@ -22,7 +22,7 @@ public sealed class CountMeasure : Measure<CountObservation, Count>
     [JsonConstructor]
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public CountMeasure(uint id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
+    public CountMeasure(ulong id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
         : base(id, uri, measurementLevel, name, statement)
     {
     }

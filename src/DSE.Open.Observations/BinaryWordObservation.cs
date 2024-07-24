@@ -16,7 +16,7 @@ public sealed record BinaryWordObservation : Observation<bool, uint>
     [JsonConstructor]
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    internal BinaryWordObservation(ulong id, uint measureId, uint discriminator, long timestamp, bool value)
+    internal BinaryWordObservation(ulong id, ulong measureId, uint discriminator, long timestamp, bool value)
         : base(id, measureId, discriminator, timestamp, value)
     {
     }
@@ -38,5 +38,10 @@ public sealed record BinaryWordObservation : Observation<bool, uint>
         ArgumentNullException.ThrowIfNull(timeProvider);
 
         return new BinaryWordObservation(measure, wordId, timeProvider.GetUtcNow(), value);
+    }
+
+    protected override ulong GetDiscriminatorId()
+    {
+        return ((ulong)WordId << 32) | WordId;
     }
 }

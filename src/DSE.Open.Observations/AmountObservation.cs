@@ -17,7 +17,7 @@ public sealed record AmountObservation : Observation<Amount>
     [JsonConstructor]
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    internal AmountObservation(ulong id, uint measureId, long timestamp, Amount value)
+    internal AmountObservation(ulong id, ulong measureId, long timestamp, Amount value)
         : base(id, measureId, timestamp, value)
     {
     }

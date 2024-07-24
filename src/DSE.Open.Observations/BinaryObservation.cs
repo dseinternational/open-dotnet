@@ -16,7 +16,7 @@ public sealed record BinaryObservation : Observation<bool>
     [JsonConstructor]
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    internal BinaryObservation(ulong id, uint measureId, long timestamp, bool value)
+    internal BinaryObservation(ulong id, ulong measureId, long timestamp, bool value)
         : base(id, measureId, timestamp, value)
     {
     }

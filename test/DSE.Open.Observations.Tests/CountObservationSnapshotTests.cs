@@ -29,7 +29,7 @@ public sealed class CountObservationSnapshotTests
         var oneAgain = CountObservation.Create(TestMeasures.CountMeasure, Count.FromValue(1));
 
         // Assert
-        Assert.NotEqual(one.GetMeasurementCode(), two.GetMeasurementCode());
-        Assert.Equal(one.GetMeasurementCode(), oneAgain.GetMeasurementCode());
+        Assert.NotEqual(one.GetMeasurementHashCode(), two.GetMeasurementHashCode());
+        Assert.Equal(one.GetMeasurementHashCode(), oneAgain.GetMeasurementHashCode());
     }
 }

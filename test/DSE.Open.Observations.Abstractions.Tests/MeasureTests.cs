@@ -59,7 +59,6 @@ public class MeasureTests
         Assert.Equal(measure, measure2);
         Assert.Equal(measure.GetHashCode(), measure2.GetHashCode());
     }
-
 }
 
 public sealed record FakeBinaryObservation : Observation<bool>
@@ -72,7 +71,7 @@ public sealed record FakeBinaryObservation : Observation<bool>
     [JsonConstructor]
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    private FakeBinaryObservation(ulong id, uint measureId, long timestamp, bool value)
+    private FakeBinaryObservation(ulong id, ulong measureId, long timestamp, bool value)
         : base(id, measureId, timestamp, value)
     {
     }
@@ -88,7 +87,7 @@ public sealed class FakeBinaryMeasure : Measure<FakeBinaryObservation, bool>
     [JsonConstructor]
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public FakeBinaryMeasure(uint id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
+    public FakeBinaryMeasure(ulong id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
         : base(id, uri, measurementLevel, name, statement)
     {
     }
