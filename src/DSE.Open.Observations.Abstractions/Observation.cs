@@ -44,11 +44,24 @@ public abstract record Observation<TValue>
     public ulong Id { get; init; }
 
     /// <summary>
+    /// The time of the observation.
+    /// </summary>
+    [JsonIgnore]
+    public DateTimeOffset Time => DateTimeOffset.FromUnixTimeMilliseconds(Timestamp);
+
+    // this ensures equality tests are the same before/after serialization
+
+    [JsonInclude]
+    [JsonPropertyName("t")]
+    [JsonPropertyOrder(-89800)]
+    protected long Timestamp { get; }
+
+    /// <summary>
     /// The identifier for the measure.
     /// </summary>
     [JsonInclude]
     [JsonPropertyName("m")]
-    [JsonPropertyOrder(-90000)]
+    [JsonPropertyOrder(-88000)]
     public ulong MeasureId { get; }
 
     /// <summary>
@@ -76,19 +89,6 @@ public abstract record Observation<TValue>
     {
         return HashCode.Combine(GetMeasurementId());
     }
-
-    /// <summary>
-    /// The time of the observation.
-    /// </summary>
-    [JsonIgnore]
-    public DateTimeOffset Time => DateTimeOffset.FromUnixTimeMilliseconds(Timestamp);
-
-    // this ensures equality tests are the same before/after serialization
-
-    [JsonInclude]
-    [JsonPropertyName("t")]
-    [JsonPropertyOrder(-89800)]
-    protected long Timestamp { get; }
 
     [JsonPropertyName("v")]
     [JsonPropertyOrder(-1)]
