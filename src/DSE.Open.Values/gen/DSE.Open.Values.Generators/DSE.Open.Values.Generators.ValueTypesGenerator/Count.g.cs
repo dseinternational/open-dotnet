@@ -11,12 +11,12 @@ using System.ComponentModel;
 
 namespace DSE.Open.Values;
 
-[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<Count, UInt32>))]
+[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<Count, Int64>))]
 public readonly partial struct Count
 {
-    private readonly UInt32 _value;
+    private readonly Int64 _value;
 
-    private Count(UInt32 value, bool skipValidation = false)
+    private Count(Int64 value, bool skipValidation = false)
     {
         if (!skipValidation)
         {
@@ -26,7 +26,7 @@ public readonly partial struct Count
         _value = value;
     }
 
-    private static void EnsureIsValidValue(UInt32 value)
+    private static void EnsureIsValidValue(Int64 value)
     {
         if (!IsValidValue(value))
         {
@@ -35,7 +35,7 @@ public readonly partial struct Count
         }
     }
 
-    public static bool TryFromValue(UInt32 value, out Count result)
+    public static bool TryFromValue(Int64 value, out Count result)
     {
         if (IsValidValue(value))
         {
@@ -47,19 +47,19 @@ public readonly partial struct Count
         return false;
     }
 
-    public static Count FromValue(UInt32 value)
+    public static Count FromValue(Int64 value)
     {
         EnsureIsValidValue(value);
         return new(value, true);
     }
 
-    public static explicit operator Count(UInt32 value)
+    public static explicit operator Count(Int64 value)
         => FromValue(value);
 
-    static UInt32 global::DSE.Open.IConvertibleTo<Count, UInt32>.ConvertTo(Count value)
-        => (UInt32)value;
+    static Int64 global::DSE.Open.IConvertibleTo<Count, Int64>.ConvertTo(Count value)
+        => (Int64)value;
 
-    public static implicit operator UInt32(Count value)
+    public static implicit operator Int64(Count value)
     {
         return value._value;
     }
@@ -140,7 +140,7 @@ public readonly partial struct Count
     // ISpanParsable<Count>
 
     public static Count Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<Count, UInt32>(s, provider);
+        => global::DSE.Open.Values.ValueParser.Parse<Count, Int64>(s, provider);
 
     public static Count ParseInvariant(ReadOnlySpan<char> s)
         => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
@@ -149,7 +149,7 @@ public readonly partial struct Count
         ReadOnlySpan<char> s,
         IFormatProvider? provider,
         out Count result)
-        => global::DSE.Open.Values.ValueParser.TryParse<Count, UInt32>(s, provider, out result);
+        => global::DSE.Open.Values.ValueParser.TryParse<Count, Int64>(s, provider, out result);
 
     public static bool TryParse(
         ReadOnlySpan<char> s,
@@ -164,7 +164,7 @@ public readonly partial struct Count
     // IParsable<Count>
 
     public static Count Parse(string s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<Count, UInt32>(s, provider);
+        => global::DSE.Open.Values.ValueParser.Parse<Count, Int64>(s, provider);
 
     public static Count Parse(string s)
         => Parse(s, default);
@@ -210,13 +210,13 @@ public readonly partial struct Count
     public static Count Parse(
         ReadOnlySpan<byte> utf8Source,
         IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<Count, UInt32>(utf8Source, provider);
+        => global::DSE.Open.Values.ValueParser.Parse<Count, Int64>(utf8Source, provider);
 
     public static bool TryParse(
         ReadOnlySpan<byte> utf8Source,
         IFormatProvider? provider,
         out Count result)
-        => global::DSE.Open.Values.ValueParser.TryParse<Count, UInt32>(utf8Source, provider, out result);
+        => global::DSE.Open.Values.ValueParser.TryParse<Count, Int64>(utf8Source, provider, out result);
 
     public int CompareTo(Count other)
     {

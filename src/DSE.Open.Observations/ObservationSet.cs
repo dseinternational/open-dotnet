@@ -47,7 +47,7 @@ public abstract record ObservationSet
         Uri source,
         GroundPoint? location)
     {
-        ArgumentOutOfRangeException.ThrowIfGreaterThan(id, NumberHelper.MaxJsonSafeInteger);
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(id, (ulong)NumberHelper.MaxJsonSafeInteger);
         ArgumentNullException.ThrowIfNull(source);
 
         Id = id;

@@ -6,7 +6,7 @@ namespace DSE.Open;
 public static class NumberHelper
 {
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/MAX_SAFE_INTEGER
-    public const ulong MaxJsonSafeInteger = 9007199254740991;
+    public const long MaxJsonSafeInteger = 9007199254740991;
 
     public static bool IsJsonSafeInteger(ulong value)
     {

@@ -9,13 +9,13 @@ namespace DSE.Open.Values.Tests;
 public class CountTests
 {
     [Theory]
-    [InlineData(0u)]
-    [InlineData(1u)]
+    [InlineData(0uL)]
+    [InlineData(1uL)]
     [InlineData(uint.MaxValue)]
-    public void CanInitialize(uint value)
+    public void CanInitialize(ulong value)
     {
         var count = new Count(value);
-        Assert.Equal(value, (uint)count);
+        Assert.Equal(value, (ulong)count);
     }
 
     [Theory]
