@@ -100,6 +100,11 @@ public readonly partial struct Count : IDivisibleValue<Count, long>, IUtf8SpanSe
         return new(value, true);
     }
 
+    public static Count FromValue(uint value)
+    {
+        return new(value, true);
+    }
+
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
     public static explicit operator Count(ulong value)
@@ -120,6 +125,11 @@ public readonly partial struct Count : IDivisibleValue<Count, long>, IUtf8SpanSe
     public static explicit operator int(Count value)
     {
         return (int)value._value;
+    }
+
+    public static implicit operator Count(uint value)
+    {
+        return FromValue(value);
     }
 
 #pragma warning restore CA2225 // Operator overloads have named alternates
