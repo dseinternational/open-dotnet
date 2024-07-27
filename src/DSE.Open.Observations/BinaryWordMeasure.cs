@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 
 namespace DSE.Open.Observations;
 
-public sealed class BinaryWordMeasure : Measure<BinaryWordObservation, bool, uint>
+public sealed class BinaryWordMeasure : Measure<BinaryWordObservation, bool, ulong>
 {
     public BinaryWordMeasure(Uri uri, string name, string statement)
         : base(uri, MeasurementLevel.Binary, name, statement)
@@ -22,7 +22,7 @@ public sealed class BinaryWordMeasure : Measure<BinaryWordObservation, bool, uin
     }
 
 #pragma warning disable CA1725 // Parameter names should match base declaration
-    public override BinaryWordObservation CreateObservation(uint wordId, bool value, DateTimeOffset timestamp)
+    public override BinaryWordObservation CreateObservation(ulong wordId, bool value, DateTimeOffset timestamp)
 #pragma warning restore CA1725 // Parameter names should match base declaration
     {
         return BinaryWordObservation.Create(this, wordId, value, TimeProvider.System);

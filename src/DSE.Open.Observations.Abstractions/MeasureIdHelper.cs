@@ -19,6 +19,6 @@ public static class MeasureIdHelper
         var c = Encoding.UTF8.GetByteCount(urn);
         Span<byte> b = stackalloc byte[c];
         _ = Encoding.UTF8.GetBytes(urn, b);
-        return (ulong)(XxHash3.HashToUInt64(b) / (double)ulong.MaxValue * NumberHelper.MaxJsonSafeInteger);
+        return (ulong)(XxHash3.HashToUInt64(b) / (decimal)ulong.MaxValue * NumberHelper.MaxJsonSafeInteger);
     }
 }
