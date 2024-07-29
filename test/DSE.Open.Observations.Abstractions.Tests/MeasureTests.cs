@@ -9,19 +9,10 @@ namespace DSE.Open.Observations;
 public class MeasureTests
 {
     [Fact]
-    public void CreateSetsMeasureId()
-    {
-        var uri = new Uri("https://schema-test.dseapi.app/testing/measure");
-        var measure = new FakeBinaryMeasure(uri, "Test measure", "[subject] does something");
-        var expectedId = MeasureIdHelper.GetId(uri);
-        Assert.Equal(expectedId, measure.Id);
-    }
-
-    [Fact]
     public void CreateSetsUri()
     {
         var uri = new Uri("https://schema-test.dseapi.app/testing/measure");
-        var measure = new FakeBinaryMeasure(uri, "Test measure", "[subject] does something");
+        var measure = new FakeBinaryMeasure(11684189, uri, "Test measure", "[subject] does something");
         Assert.Equal(uri, measure.Uri);
     }
 
@@ -29,7 +20,7 @@ public class MeasureTests
     public void CreateSetsMeasurementLevel()
     {
         var uri = new Uri("https://schema-test.dseapi.app/testing/measure");
-        var measure = new FakeBinaryMeasure(uri, "Test measure", "[subject] does something");
+        var measure = new FakeBinaryMeasure(11684189, uri, "Test measure", "[subject] does something");
         Assert.Equal(MeasurementLevel.Binary, measure.MeasurementLevel);
     }
 
@@ -37,7 +28,7 @@ public class MeasureTests
     public void CreateSetsName()
     {
         var uri = new Uri("https://schema-test.dseapi.app/testing/measure");
-        var measure = new FakeBinaryMeasure(uri, "Test measure", "[subject] does something");
+        var measure = new FakeBinaryMeasure(11684189, uri, "Test measure", "[subject] does something");
         Assert.Equal("Test measure", measure.Name);
     }
 
@@ -45,19 +36,8 @@ public class MeasureTests
     public void CreateSetsStatement()
     {
         var uri = new Uri("https://schema-test.dseapi.app/testing/measure");
-        var measure = new FakeBinaryMeasure(uri, "Test measure", "[subject] does something");
+        var measure = new FakeBinaryMeasure(11684189, uri, "Test measure", "[subject] does something");
         Assert.Equal("[subject] does something", measure.Statement);
-    }
-
-    [Fact]
-    public void EqualUrisAreEqualMeasures()
-    {
-        var uri = new Uri("https://schema-test.dseapi.app/testing/measure");
-        var measure = new FakeBinaryMeasure(uri, "Test measure", "[subject] does something");
-        var measure2 = new FakeBinaryMeasure(uri, "Test measure 2", "[subject] does something 2");
-        Assert.Equal(measure.Id, measure2.Id);
-        Assert.Equal(measure, measure2);
-        Assert.Equal(measure.GetHashCode(), measure2.GetHashCode());
     }
 }
 
@@ -79,14 +59,12 @@ public sealed record FakeBinaryObservation : Observation<bool>
 
 public sealed class FakeBinaryMeasure : Measure<FakeBinaryObservation, bool>
 {
-    public FakeBinaryMeasure(Uri uri, string name, string statement)
-        : base(uri, MeasurementLevel.Binary, name, statement)
+    public FakeBinaryMeasure(ulong id, Uri uri, string name, string statement)
+        : base(id, uri, MeasurementLevel.Binary, name, statement)
     {
     }
 
     [JsonConstructor]
-    [Obsolete("For deserialization only", true)]
-    [EditorBrowsable(EditorBrowsableState.Never)]
     public FakeBinaryMeasure(ulong id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
         : base(id, uri, measurementLevel, name, statement)
     {

@@ -10,19 +10,10 @@ namespace DSE.Open.Observations;
 public sealed class CountMeasureTests
 {
     [Fact]
-    public void CreateSetsMeasureId()
-    {
-        var uri = new Uri("https://schema-test.dseapi.app/testing/measure");
-        var measure = new CountMeasure(uri, "Test measure", "[subject] does something");
-        var expectedId = MeasureIdHelper.GetId(uri);
-        Assert.Equal(expectedId, measure.Id);
-    }
-
-    [Fact]
     public void CanSerializeAndDeserialize()
     {
         var uri = new Uri("https://schema-test.dseapi.app/testing/measure");
-        var measure = new CountMeasure(uri, "Test measure", "[subject] does something");
+        var measure = new CountMeasure(19688645, uri, "Test measure", "[subject] does something");
         var json = JsonSerializer.Serialize(measure, JsonSharedOptions.RelaxedJsonEscaping);
         var deserialized = JsonSerializer.Deserialize<CountMeasure>(json, JsonSharedOptions.RelaxedJsonEscaping);
         Assert.NotNull(deserialized);
@@ -37,7 +28,7 @@ public sealed class CountMeasureTests
     public void CanCreateObservation()
     {
         var uri = new Uri("https://schema-test.dseapi.app/testing/measure");
-        var measure = new CountMeasure(uri, "Test measure", "[subject] does something");
+        var measure = new CountMeasure(19688645, uri, "Test measure", "[subject] does something");
         var obs = measure.CreateObservation((Count)42, DateTimeOffset.UtcNow);
         Assert.Equal(measure.Id, obs.MeasureId);
         Assert.Equal((Count)42, obs.Value);

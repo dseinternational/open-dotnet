@@ -1,7 +1,6 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.ComponentModel;
 using System.Text.Json.Serialization;
 using DSE.Open.Values;
 
@@ -9,17 +8,16 @@ namespace DSE.Open.Observations;
 
 public sealed class AmountMeasure : Measure<AmountObservation, Amount>
 {
-    public AmountMeasure(Uri uri, string name, string statement)
-        : base(uri, MeasurementLevel.Amount, name, statement)
+    public AmountMeasure(ulong id, Uri uri, string name, string statement)
+        : base(id, uri, MeasurementLevel.Amount, name, statement)
     {
     }
 
     [JsonConstructor]
-    [Obsolete("For deserialization only", true)]
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public AmountMeasure(ulong id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
+    private AmountMeasure(ulong id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
         : base(id, uri, measurementLevel, name, statement)
     {
+        ArgumentOutOfRangeException.ThrowIfNotEqual(measurementLevel, MeasurementLevel.Amount);
     }
 
     public override AmountObservation CreateObservation(Amount value, DateTimeOffset timestamp)

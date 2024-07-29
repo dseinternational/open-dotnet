@@ -1,8 +1,6 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Text.Json.Serialization;
 
 namespace DSE.Open.Observations;
@@ -12,22 +10,9 @@ namespace DSE.Open.Observations;
 /// </summary>
 public abstract class Measure : IEquatable<Measure>
 {
-    protected Measure(Uri uri, MeasurementLevel measurementLevel, string name, string statement)
-    {
-        Id = MeasureIdHelper.GetId(uri);
-        Uri = uri;
-        MeasurementLevel = measurementLevel;
-        Name = name;
-        Statement = statement;
-    }
-
     [JsonConstructor]
-    [Obsolete("For deserialization only", true)]
-    [EditorBrowsable(EditorBrowsableState.Never)]
     protected Measure(ulong id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
     {
-        Debug.Assert(MeasureIdHelper.GetId(uri) == id);
-
         Id = id;
         Uri = uri;
         MeasurementLevel = measurementLevel;
@@ -76,14 +61,7 @@ public abstract class Measure<TObs, TValue> : Measure
     where TObs : Observation<TValue>
     where TValue : IEquatable<TValue>
 {
-    protected Measure(Uri uri, MeasurementLevel measurementLevel, string name, string statement)
-        : base(uri, measurementLevel, name, statement)
-    {
-    }
-
     [JsonConstructor]
-    [Obsolete("For deserialization only", true)]
-    [EditorBrowsable(EditorBrowsableState.Never)]
     protected Measure(ulong id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
         : base(id, uri, measurementLevel, name, statement)
     {
@@ -110,14 +88,7 @@ public abstract class Measure<TObs, TValue, TDisc> : Measure
     where TValue : IEquatable<TValue>
     where TDisc : IEquatable<TDisc>
 {
-    protected Measure(Uri uri, MeasurementLevel measurementLevel, string name, string statement)
-        : base(uri, measurementLevel, name, statement)
-    {
-    }
-
     [JsonConstructor]
-    [Obsolete("For deserialization only", true)]
-    [EditorBrowsable(EditorBrowsableState.Never)]
     protected Measure(ulong id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
         : base(id, uri, measurementLevel, name, statement)
     {

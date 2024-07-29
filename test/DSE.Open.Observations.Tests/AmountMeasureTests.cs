@@ -1,4 +1,4 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Text.Json;
@@ -10,19 +10,10 @@ namespace DSE.Open.Observations;
 public sealed class AmountMeasureTests
 {
     [Fact]
-    public void CreateSetsMeasureId()
-    {
-        var uri = new Uri("https://schema-test.dseapi.app/testing/measure");
-        var measure = new AmountMeasure(uri, "Test measure", "[subject] does something");
-        var expectedId = MeasureIdHelper.GetId(uri);
-        Assert.Equal(expectedId, measure.Id);
-    }
-
-    [Fact]
     public void CanSerializeAndDeserialize()
     {
         var uri = new Uri("https://schema-test.dseapi.app/testing/measure");
-        var measure = new AmountMeasure(uri, "Test measure", "[subject] does something");
+        var measure = new AmountMeasure(986168514, uri, "Test measure", "[subject] does something");
         var json = JsonSerializer.Serialize(measure, JsonSharedOptions.RelaxedJsonEscaping);
         var deserialized = JsonSerializer.Deserialize<AmountMeasure>(json, JsonSharedOptions.RelaxedJsonEscaping);
         Assert.NotNull(deserialized);
@@ -37,7 +28,7 @@ public sealed class AmountMeasureTests
     public void CanCreateObservation()
     {
         var uri = new Uri("https://schema-test.dseapi.app/testing/measure");
-        var measure = new AmountMeasure(uri, "Test measure", "[subject] does something");
+        var measure = new AmountMeasure(986168514, uri, "Test measure", "[subject] does something");
         var obs = measure.CreateObservation((Amount)42.123m, DateTimeOffset.UtcNow);
         Assert.Equal(measure.Id, obs.MeasureId);
         Assert.Equal((Amount)42.123m, obs.Value);

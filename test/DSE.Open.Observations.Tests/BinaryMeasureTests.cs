@@ -9,19 +9,10 @@ namespace DSE.Open.Observations;
 public sealed class BinaryMeasureTests
 {
     [Fact]
-    public void CreateSetsMeasureId()
-    {
-        var uri = new Uri("https://schema-test.dseapi.app/testing/measure");
-        var measure = new BinaryMeasure(uri, "Test measure", "[subject] does something");
-        var expectedId = MeasureIdHelper.GetId(uri);
-        Assert.Equal(expectedId, measure.Id);
-    }
-
-    [Fact]
     public void CanSerializeAndDeserialize()
     {
         var uri = new Uri("https://schema-test.dseapi.app/testing/measure");
-        var measure = new BinaryMeasure(uri, "Test measure", "[subject] does something");
+        var measure = new BinaryMeasure(RandomNumberHelper.GetJsonSafeInteger(), uri, "Test measure", "[subject] does something");
         var json = JsonSerializer.Serialize(measure, JsonSharedOptions.RelaxedJsonEscaping);
         var deserialized = JsonSerializer.Deserialize<BinaryMeasure>(json, JsonSharedOptions.RelaxedJsonEscaping);
         Assert.NotNull(deserialized);
@@ -36,7 +27,7 @@ public sealed class BinaryMeasureTests
     public void CanCreateObservation()
     {
         var uri = new Uri("https://schema-test.dseapi.app/testing/measure");
-        var measure = new BinaryMeasure(uri, "Test measure", "[subject] does something");
+        var measure = new BinaryMeasure(19688645, uri, "Test measure", "[subject] does something");
         var obs = measure.CreateObservation(true, DateTimeOffset.UtcNow);
         Assert.Equal(measure.Id, obs.MeasureId);
         Assert.True(obs.Value);
