@@ -6,14 +6,9 @@ using System.Text.Json.Serialization;
 
 namespace DSE.Open.Observations;
 
-/// <summary>
-/// An observation for a measure that records a single measurement value.
-/// </summary>
-/// <typeparam name="TValue"></typeparam>
-public abstract record Observation<TValue>
-    where TValue : IEquatable<TValue>
+public abstract record Observation
 {
-    protected Observation(Measure measure, DateTimeOffset time, TValue value)
+    protected Observation(Measure measure, DateTimeOffset time)
     {
         ArgumentNullException.ThrowIfNull(measure);
         ObservationsValidator.EnsureMinimumObservationTime(time);
@@ -21,17 +16,15 @@ public abstract record Observation<TValue>
         Id = RandomNumberHelper.GetJsonSafeInteger();
         MeasureId = measure.Id;
         Timestamp = time.ToUnixTimeMilliseconds();
-        Value = value;
     }
 
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    protected Observation(ulong id, ulong measureId, long timestamp, TValue value)
+    protected Observation(ulong id, ulong measureId, long timestamp)
     {
         Id = id;
         MeasureId = measureId;
         Timestamp = timestamp;
-        Value = value;
     }
 
     /// <summary>
@@ -41,7 +34,7 @@ public abstract record Observation<TValue>
     [JsonInclude]
     [JsonPropertyName("i")]
     [JsonPropertyOrder(-91000)]
-    public ulong Id { get; init; }
+    public ulong Id { get; }
 
     /// <summary>
     /// The time of the observation.
@@ -88,6 +81,28 @@ public abstract record Observation<TValue>
     public virtual int GetMeasurementHashCode()
     {
         return HashCode.Combine(GetMeasurementId());
+    }
+}
+
+/// <summary>
+/// An observation for a measure that records a single measurement value.
+/// </summary>
+/// <typeparam name="TValue"></typeparam>
+public abstract record Observation<TValue> : Observation
+    where TValue : IEquatable<TValue>
+{
+    protected Observation(Measure measure, DateTimeOffset time, TValue value)
+        : base(measure, time)
+    {
+        Value = value;
+    }
+
+    [Obsolete("For deserialization only", true)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    protected Observation(ulong id, ulong measureId, long timestamp, TValue value)
+        : base(id, measureId, timestamp)
+    {
+        Value = value;
     }
 
     [JsonPropertyName("v")]
