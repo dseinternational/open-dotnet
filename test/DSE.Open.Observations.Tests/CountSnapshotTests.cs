@@ -5,7 +5,7 @@ using DSE.Open.Values;
 
 namespace DSE.Open.Observations;
 
-public sealed class CountObservationSnapshotTests
+public sealed class CountSnapshotTests
 {
     [Fact]
     public void New_WithInvalidDate_ShouldThrow()
@@ -14,7 +14,7 @@ public sealed class CountObservationSnapshotTests
         var date = DateTime.Parse("01/01/2024", null).AddDays(-1);
 
         // Act
-        void Act() => _ = new CountObservationSnapshot(date, CountObservation.Create(TestMeasures.CountMeasure, Count.Zero));
+        void Act() => _ = new CountSnapshot(date, CountObservation.Create(TestMeasures.CountMeasure, Count.Zero));
 
         // Assert
         Assert.Throws<ArgumentOutOfRangeException>(Act);

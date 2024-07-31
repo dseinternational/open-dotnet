@@ -1,22 +1,22 @@
-// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.ComponentModel;
 using System.Text.Json.Serialization;
 using DSE.Open.Collections.Generic;
-using DSE.Open.Speech;
+using DSE.Open.Language;
 using DSE.Open.Values;
 
 namespace DSE.Open.Observations;
 
-public record BinarySpeechSoundObservationSnapshotSet
-    : ObservationSnapshotSet<BinarySpeechSoundObservationSnapshot, BinarySpeechSoundObservation, bool, SpeechSound>
+public record BinarySentenceSnapshotSet
+    : SnapshotSet<BinarySentenceSnapshot, BinarySentenceObservation, bool, SentenceId>
 {
-    protected BinarySpeechSoundObservationSnapshotSet(
+    protected BinarySentenceSnapshotSet(
         DateTimeOffset created,
         DateTimeOffset updated,
         Identifier trackerReference,
-        ReadOnlyValueCollection<BinarySpeechSoundObservationSnapshot> snapshots)
+        ReadOnlyValueCollection<BinarySentenceSnapshot> snapshots)
         : base(created, updated, trackerReference, snapshots)
     {
     }
@@ -24,26 +24,26 @@ public record BinarySpeechSoundObservationSnapshotSet
     [JsonConstructor]
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    protected BinarySpeechSoundObservationSnapshotSet(
-        ObservationSnapshotSetId id,
+    protected BinarySentenceSnapshotSet(
+        SnapshotSetId id,
         long createdTimestamp,
         long updatedTimestamp,
         Identifier trackerReference,
-        ReadOnlyValueCollection<BinarySpeechSoundObservationSnapshot> snapshots)
+        ReadOnlyValueCollection<BinarySentenceSnapshot> snapshots)
         : base(id, createdTimestamp, updatedTimestamp, trackerReference, snapshots)
     {
     }
 
-    public static BinarySpeechSoundObservationSnapshotSet Create(
+    public static BinarySentenceSnapshotSet Create(
         Identifier trackerReference,
-        ReadOnlyValueCollection<BinarySpeechSoundObservationSnapshot> snapshots)
+        ReadOnlyValueCollection<BinarySentenceSnapshot> snapshots)
     {
         return Create(trackerReference, snapshots, TimeProvider.System);
     }
 
-    public static BinarySpeechSoundObservationSnapshotSet Create(
+    public static BinarySentenceSnapshotSet Create(
         Identifier trackerReference,
-        ReadOnlyValueCollection<BinarySpeechSoundObservationSnapshot> snapshots,
+        ReadOnlyValueCollection<BinarySentenceSnapshot> snapshots,
         TimeProvider timeProvider)
     {
         Guard.IsNotDefault(trackerReference);
@@ -51,6 +51,6 @@ public record BinarySpeechSoundObservationSnapshotSet
         ArgumentNullException.ThrowIfNull(timeProvider);
 
         var now = timeProvider.GetUtcNow();
-        return new BinarySpeechSoundObservationSnapshotSet(now, now, trackerReference, snapshots);
+        return new BinarySentenceSnapshotSet(now, now, trackerReference, snapshots);
     }
 }

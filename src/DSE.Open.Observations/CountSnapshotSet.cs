@@ -8,13 +8,13 @@ using DSE.Open.Values;
 
 namespace DSE.Open.Observations;
 
-public record BinaryObservationSnapshotSet : ObservationSnapshotSet<BinaryObservationSnapshot, BinaryObservation, bool>
+public record CountSnapshotSet : SnapshotSet<CountSnapshot, CountObservation, Count>
 {
-    protected BinaryObservationSnapshotSet(
+    protected CountSnapshotSet(
         DateTimeOffset created,
         DateTimeOffset updated,
         Identifier trackerReference,
-        ReadOnlyValueCollection<BinaryObservationSnapshot> snapshots)
+        ReadOnlyValueCollection<CountSnapshot> snapshots)
         : base(created, updated, trackerReference, snapshots)
     {
     }
@@ -22,26 +22,26 @@ public record BinaryObservationSnapshotSet : ObservationSnapshotSet<BinaryObserv
     [JsonConstructor]
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    protected BinaryObservationSnapshotSet(
-        ObservationSnapshotSetId id,
+    protected CountSnapshotSet(
+        SnapshotSetId id,
         long createdTimestamp,
         long updatedTimestamp,
         Identifier trackerReference,
-        ReadOnlyValueCollection<BinaryObservationSnapshot> snapshots)
+        ReadOnlyValueCollection<CountSnapshot> snapshots)
         : base(id, createdTimestamp, updatedTimestamp, trackerReference, snapshots)
     {
     }
 
-    public static BinaryObservationSnapshotSet Create(
+    public static CountSnapshotSet Create(
         Identifier trackerReference,
-        ReadOnlyValueCollection<BinaryObservationSnapshot> snapshots)
+        ReadOnlyValueCollection<CountSnapshot> snapshots)
     {
         return Create(trackerReference, snapshots, TimeProvider.System);
     }
 
-    public static BinaryObservationSnapshotSet Create(
+    public static CountSnapshotSet Create(
         Identifier trackerReference,
-        ReadOnlyValueCollection<BinaryObservationSnapshot> snapshots,
+        ReadOnlyValueCollection<CountSnapshot> snapshots,
         TimeProvider timeProvider)
     {
         Guard.IsNotDefault(trackerReference);
@@ -49,6 +49,6 @@ public record BinaryObservationSnapshotSet : ObservationSnapshotSet<BinaryObserv
         ArgumentNullException.ThrowIfNull(timeProvider);
 
         var now = timeProvider.GetUtcNow();
-        return new BinaryObservationSnapshotSet(now, now, trackerReference, snapshots);
+        return new CountSnapshotSet(now, now, trackerReference, snapshots);
     }
 }

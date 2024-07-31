@@ -12,9 +12,9 @@ namespace DSE.Open.Observations;
 /// <summary>
 /// Records an observation at a point in time.
 /// </summary>
-public abstract record ObservationSnapshot : ImmutableDataTransferObject
+public abstract record Snapshot : ImmutableDataTransferObject
 {
-    protected ObservationSnapshot(DateTimeOffset time)
+    protected Snapshot(DateTimeOffset time)
     {
         ObservationsValidator.EnsureMinimumObservationTime(time);
         Time = time;
@@ -36,11 +36,11 @@ public abstract record ObservationSnapshot : ImmutableDataTransferObject
 /// <summary>
 /// Records an observation at a point in time.
 /// </summary>
-public abstract record ObservationSnapshot<TObs, TValue> : ObservationSnapshot
+public abstract record Snapshot<TObs, TValue> : Snapshot
     where TObs : Observation<TValue>
     where TValue : IEquatable<TValue>
 {
-    protected ObservationSnapshot(DateTimeOffset time, TObs observation) : base(time)
+    protected Snapshot(DateTimeOffset time, TObs observation) : base(time)
     {
         Observation = observation;
     }
@@ -63,12 +63,12 @@ public abstract record ObservationSnapshot<TObs, TValue> : ObservationSnapshot
 /// <summary>
 /// Records an observation at a point in time.
 /// </summary>
-public abstract record ObservationSnapshot<TObs, TValue, TDisc> : ObservationSnapshot<TObs, TValue>
+public abstract record Snapshot<TObs, TValue, TDisc> : Snapshot<TObs, TValue>
     where TObs : Observation<TValue>
     where TValue : IEquatable<TValue>
     where TDisc : IEquatable<TDisc>
 {
-    protected ObservationSnapshot(DateTimeOffset time, TObs observation) : base(time, observation)
+    protected Snapshot(DateTimeOffset time, TObs observation) : base(time, observation)
     {
     }
 }

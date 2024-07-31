@@ -21,19 +21,19 @@ public static class Schemas
 
     public const string DecimalObservationSet = "https://schema.dseapi.app/v1.0/observations/sets/decimal";
 
-    public const string BinaryObservationSnapshotSet = "https://schema.dseapi.app/v1.0/observations/snapshots/sets/binary";
+    public const string BinarySnapshotSet = "https://schema.dseapi.app/v1.0/observations/snapshots/sets/binary";
 
-    public const string CountObservationSnapshotSet = "https://schema.dseapi.app/v1.0/observations/snapshots/sets/count";
+    public const string CountSnapshotSet = "https://schema.dseapi.app/v1.0/observations/snapshots/sets/count";
 
-    public const string AmountObservationSnapshotSet = "https://schema.dseapi.app/v1.0/observations/snapshots/sets/amount";
+    public const string AmountSnapshotSet = "https://schema.dseapi.app/v1.0/observations/snapshots/sets/amount";
 
-    public const string RatioObservationSnapshotSet = "https://schema.dseapi.app/v1.0/observations/snapshots/sets/ratio";
+    public const string RatioSnapshotSet = "https://schema.dseapi.app/v1.0/observations/snapshots/sets/ratio";
 
-    public const string BinaryWordObservationSnapshotSet = "https://schema.dseapi.app/v1.0/observations/snapshots/sets/binary/word";
+    public const string BinaryWordSnapshotSet = "https://schema.dseapi.app/v1.0/observations/snapshots/sets/binary/word";
 
-    public const string BinarySpeechSoundObservationSnapshotSet = "https://schema.dseapi.app/v1.0/observations/snapshots/sets/binary/speech-sound";
+    public const string BinarySpeechSoundSnapshotSet = "https://schema.dseapi.app/v1.0/observations/snapshots/sets/binary/speech-sound";
 
-    public const string IntegerObservationSnapshotSet = "https://schema.dseapi.app/v1.0/observations/snapshots/sets/int";
+    public const string IntegerSnapshotSet = "https://schema.dseapi.app/v1.0/observations/snapshots/sets/int";
 
-    public const string DecimalObservationSnapshotSet = "https://schema.dseapi.app/v1.0/observations/snapshots/sets/decimal";
+    public const string DecimalSnapshotSet = "https://schema.dseapi.app/v1.0/observations/snapshots/sets/decimal";
 }

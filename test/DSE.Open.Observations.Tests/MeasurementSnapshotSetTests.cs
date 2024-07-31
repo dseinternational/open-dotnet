@@ -12,15 +12,15 @@ public sealed class MeasurementSnapshotSetTests
     public void JsonRoundtrip_WithObservationCount()
     {
         // Arrange
-        var set = new MeasurementSnapshotSet<CountObservationSnapshot, CountObservation, Count>
+        var set = new MeasurementSnapshotSet<CountSnapshot, CountObservation, Count>
         {
-            CountObservationSnapshot.ForUtcNow(CountObservation.Create(TestMeasures.CountMeasure, Count.FromValue(1))),
-            CountObservationSnapshot.ForUtcNow(CountObservation.Create(TestMeasures.CountMeasure2, Count.FromValue(1)))
+            CountSnapshot.ForUtcNow(CountObservation.Create(TestMeasures.CountMeasure, Count.FromValue(1))),
+            CountSnapshot.ForUtcNow(CountObservation.Create(TestMeasures.CountMeasure2, Count.FromValue(1)))
         };
 
         // Act
         var json = JsonSerializer.Serialize(set);
-        var deserialized = JsonSerializer.Deserialize<MeasurementSnapshotSet<CountObservationSnapshot, CountObservation, Count>>(json);
+        var deserialized = JsonSerializer.Deserialize<MeasurementSnapshotSet<CountSnapshot, CountObservation, Count>>(json);
 
         // Assert
         Assert.NotNull(deserialized);
@@ -31,15 +31,15 @@ public sealed class MeasurementSnapshotSetTests
     public void JsonRoundtrip_WithObservationBool()
     {
         // Arrange
-        var set = new MeasurementSnapshotSet<BinaryObservationSnapshot, BinaryObservation, bool>
+        var set = new MeasurementSnapshotSet<BinarySnapshot, BinaryObservation, bool>
         {
-            BinaryObservationSnapshot.ForUtcNow(BinaryObservation.Create(TestMeasures.CountMeasure, true)),
-            BinaryObservationSnapshot.ForUtcNow(BinaryObservation.Create(TestMeasures.CountMeasure2, false))
+            BinarySnapshot.ForUtcNow(BinaryObservation.Create(TestMeasures.CountMeasure, true)),
+            BinarySnapshot.ForUtcNow(BinaryObservation.Create(TestMeasures.CountMeasure2, false))
         };
 
         // Act
         var json = JsonSerializer.Serialize(set);
-        var deserialized = JsonSerializer.Deserialize<MeasurementSnapshotSet<BinaryObservationSnapshot, BinaryObservation, bool>>(json);
+        var deserialized = JsonSerializer.Deserialize<MeasurementSnapshotSet<BinarySnapshot, BinaryObservation, bool>>(json);
 
         // Assert
         Assert.NotNull(deserialized);
@@ -50,15 +50,15 @@ public sealed class MeasurementSnapshotSetTests
     public void JsonRoundtrip_WithObservationAmount()
     {
         // Arrange
-        var set = new MeasurementSnapshotSet<AmountObservationSnapshot, AmountObservation, Amount>
+        var set = new MeasurementSnapshotSet<AmountSnapshot, AmountObservation, Amount>
         {
-            AmountObservationSnapshot.ForUtcNow(AmountObservation.Create(TestMeasures.CountMeasure, Amount.FromValue(1.2m))),
-            AmountObservationSnapshot.ForUtcNow(AmountObservation.Create(TestMeasures.CountMeasure2, Amount.FromValue(2.1m)))
+            AmountSnapshot.ForUtcNow(AmountObservation.Create(TestMeasures.CountMeasure, Amount.FromValue(1.2m))),
+            AmountSnapshot.ForUtcNow(AmountObservation.Create(TestMeasures.CountMeasure2, Amount.FromValue(2.1m)))
         };
 
         // Act
         var json = JsonSerializer.Serialize(set);
-        var deserialized = JsonSerializer.Deserialize<MeasurementSnapshotSet<AmountObservationSnapshot, AmountObservation, Amount>>(json);
+        var deserialized = JsonSerializer.Deserialize<MeasurementSnapshotSet<AmountSnapshot, AmountObservation, Amount>>(json);
 
         // Assert
         Assert.NotNull(deserialized);
@@ -66,20 +66,20 @@ public sealed class MeasurementSnapshotSetTests
     }
 
     [Fact]
-    public void ObservationSnapshotSet_ShouldNotHoldDuplicates()
+    public void SnapshotSet_ShouldNotHoldDuplicates()
     {
         // Arrange
-        var set1 = new MeasurementSnapshotSet<CountObservationSnapshot, CountObservation, Count>
+        var set1 = new MeasurementSnapshotSet<CountSnapshot, CountObservation, Count>
         {
-            CountObservationSnapshot.ForUtcNow(CountObservation.Create(TestMeasures.CountMeasure, Count.FromValue(1))),
-            CountObservationSnapshot.ForUtcNow(CountObservation.Create(TestMeasures.CountMeasure, Count.FromValue(1))),
-            CountObservationSnapshot.ForUtcNow(CountObservation.Create(TestMeasures.CountMeasure, Count.FromValue(3))),
-            CountObservationSnapshot.ForUtcNow(CountObservation.Create(TestMeasures.CountMeasure, Count.FromValue(2))),
+            CountSnapshot.ForUtcNow(CountObservation.Create(TestMeasures.CountMeasure, Count.FromValue(1))),
+            CountSnapshot.ForUtcNow(CountObservation.Create(TestMeasures.CountMeasure, Count.FromValue(1))),
+            CountSnapshot.ForUtcNow(CountObservation.Create(TestMeasures.CountMeasure, Count.FromValue(3))),
+            CountSnapshot.ForUtcNow(CountObservation.Create(TestMeasures.CountMeasure, Count.FromValue(2))),
         };
 
-        var set2 = new MeasurementSnapshotSet<CountObservationSnapshot, CountObservation, Count>
+        var set2 = new MeasurementSnapshotSet<CountSnapshot, CountObservation, Count>
         {
-            CountObservationSnapshot.ForUtcNow(CountObservation.Create(TestMeasures.CountMeasure, Count.FromValue(2))),
+            CountSnapshot.ForUtcNow(CountObservation.Create(TestMeasures.CountMeasure, Count.FromValue(2))),
         };
 
         // Assert
@@ -90,21 +90,21 @@ public sealed class MeasurementSnapshotSetTests
     public void New_WithCollection_ShouldBeEquivalent()
     {
         // Arrange
-        var set1 = new MeasurementSnapshotSet<CountObservationSnapshot, CountObservation, Count>
+        var set1 = new MeasurementSnapshotSet<CountSnapshot, CountObservation, Count>
         {
-            CountObservationSnapshot.ForUtcNow(CountObservation.Create(TestMeasures.CountMeasure, Count.FromValue(1))),
-            CountObservationSnapshot.ForUtcNow(CountObservation.Create(TestMeasures.CountMeasure, Count.FromValue(1))),
-            CountObservationSnapshot.ForUtcNow(CountObservation.Create(TestMeasures.CountMeasure, Count.FromValue(3))),
-            CountObservationSnapshot.ForUtcNow(CountObservation.Create(TestMeasures.CountMeasure, Count.FromValue(2))),
+            CountSnapshot.ForUtcNow(CountObservation.Create(TestMeasures.CountMeasure, Count.FromValue(1))),
+            CountSnapshot.ForUtcNow(CountObservation.Create(TestMeasures.CountMeasure, Count.FromValue(1))),
+            CountSnapshot.ForUtcNow(CountObservation.Create(TestMeasures.CountMeasure, Count.FromValue(3))),
+            CountSnapshot.ForUtcNow(CountObservation.Create(TestMeasures.CountMeasure, Count.FromValue(2))),
         };
 
-        var set2 = new MeasurementSnapshotSet<CountObservationSnapshot, CountObservation, Count>
+        var set2 = new MeasurementSnapshotSet<CountSnapshot, CountObservation, Count>
         {
-            CountObservationSnapshot.ForUtcNow(CountObservation.Create(TestMeasures.CountMeasure, Count.FromValue(2))),
+            CountSnapshot.ForUtcNow(CountObservation.Create(TestMeasures.CountMeasure, Count.FromValue(2))),
         };
 
-        var set3 = new MeasurementSnapshotSet<CountObservationSnapshot, CountObservation, Count>([
-            CountObservationSnapshot.ForUtcNow(CountObservation.Create(TestMeasures.CountMeasure, Count.FromValue(2)))
+        var set3 = new MeasurementSnapshotSet<CountSnapshot, CountObservation, Count>([
+            CountSnapshot.ForUtcNow(CountObservation.Create(TestMeasures.CountMeasure, Count.FromValue(2)))
         ]);
 
         // Assert
@@ -124,7 +124,7 @@ public sealed class MeasurementSnapshotSetTests
             """;
 
         // Act
-        var result = JsonSerializer.Deserialize<MeasurementSnapshotSet<CountObservationSnapshot, CountObservation, Count>>(json);
+        var result = JsonSerializer.Deserialize<MeasurementSnapshotSet<CountSnapshot, CountObservation, Count>>(json);
 
         // Assert
         Assert.NotNull(result);

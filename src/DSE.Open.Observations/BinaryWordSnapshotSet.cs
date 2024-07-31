@@ -1,20 +1,22 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.ComponentModel;
 using System.Text.Json.Serialization;
 using DSE.Open.Collections.Generic;
+using DSE.Open.Language;
 using DSE.Open.Values;
 
 namespace DSE.Open.Observations;
 
-public record AmountObservationSnapshotSet : ObservationSnapshotSet<AmountObservationSnapshot, AmountObservation, Amount>
+public record BinaryWordSnapshotSet
+    : SnapshotSet<BinaryWordSnapshot, BinaryWordObservation, bool, WordId>
 {
-    protected AmountObservationSnapshotSet(
+    protected BinaryWordSnapshotSet(
         DateTimeOffset created,
         DateTimeOffset updated,
         Identifier trackerReference,
-        ReadOnlyValueCollection<AmountObservationSnapshot> snapshots)
+        ReadOnlyValueCollection<BinaryWordSnapshot> snapshots)
         : base(created, updated, trackerReference, snapshots)
     {
     }
@@ -22,26 +24,26 @@ public record AmountObservationSnapshotSet : ObservationSnapshotSet<AmountObserv
     [JsonConstructor]
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    protected AmountObservationSnapshotSet(
-        ObservationSnapshotSetId id,
+    protected BinaryWordSnapshotSet(
+        SnapshotSetId id,
         long createdTimestamp,
         long updatedTimestamp,
         Identifier trackerReference,
-        ReadOnlyValueCollection<AmountObservationSnapshot> snapshots)
+        ReadOnlyValueCollection<BinaryWordSnapshot> snapshots)
         : base(id, createdTimestamp, updatedTimestamp, trackerReference, snapshots)
     {
     }
 
-    public static AmountObservationSnapshotSet Create(
+    public static BinaryWordSnapshotSet Create(
         Identifier trackerReference,
-        ReadOnlyValueCollection<AmountObservationSnapshot> snapshots)
+        ReadOnlyValueCollection<BinaryWordSnapshot> snapshots)
     {
         return Create(trackerReference, snapshots, TimeProvider.System);
     }
 
-    public static AmountObservationSnapshotSet Create(
+    public static BinaryWordSnapshotSet Create(
         Identifier trackerReference,
-        ReadOnlyValueCollection<AmountObservationSnapshot> snapshots,
+        ReadOnlyValueCollection<BinaryWordSnapshot> snapshots,
         TimeProvider timeProvider)
     {
         Guard.IsNotDefault(trackerReference);
@@ -49,6 +51,6 @@ public record AmountObservationSnapshotSet : ObservationSnapshotSet<AmountObserv
         ArgumentNullException.ThrowIfNull(timeProvider);
 
         var now = timeProvider.GetUtcNow();
-        return new AmountObservationSnapshotSet(now, now, trackerReference, snapshots);
+        return new BinaryWordSnapshotSet(now, now, trackerReference, snapshots);
     }
 }

@@ -10,14 +10,14 @@ using DSE.Open.Values.Text.Json.Serialization;
 namespace DSE.Open.Observations;
 
 /// <summary>
-/// A value used to identify a <see cref="ObservationSnapshot"/>.
+/// A value used to identify a <see cref="Snapshot"/>.
 /// </summary>
 [EquatableValue(AllowDefaultValue = false)]
-[JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<ObservationSnapshotSetId, ulong>))]
+[JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<SnapshotSetId, ulong>))]
 [StructLayout(LayoutKind.Auto)]
-public readonly partial struct ObservationSnapshotSetId
-    : IEquatableValue<ObservationSnapshotSetId, ulong>,
-      IUtf8SpanSerializable<ObservationSnapshotSetId>
+public readonly partial struct SnapshotSetId
+    : IEquatableValue<SnapshotSetId, ulong>,
+      IUtf8SpanSerializable<SnapshotSetId>
 {
     public const ulong MinIdValue = 1;
     public const ulong MaxIdValue = NumberHelper.MaxJsonSafeInteger;
@@ -26,7 +26,7 @@ public readonly partial struct ObservationSnapshotSetId
 
     public static int MaxSerializedByteLength => 16;
 
-    public ObservationSnapshotSetId(ulong value) : this(value, false)
+    public SnapshotSetId(ulong value) : this(value, false)
     {
     }
 
@@ -40,11 +40,11 @@ public readonly partial struct ObservationSnapshotSetId
         return value is <= ((long)MaxIdValue) and >= ((long)MinIdValue);
     }
 
-    public static bool TryFromInt64(long value, out ObservationSnapshotSetId id)
+    public static bool TryFromInt64(long value, out SnapshotSetId id)
     {
         if (IsValidValue(value))
         {
-            id = new ObservationSnapshotSetId((ulong)value);
+            id = new SnapshotSetId((ulong)value);
             return true;
         }
         else
@@ -54,22 +54,22 @@ public readonly partial struct ObservationSnapshotSetId
         }
     }
 
-    public static ObservationSnapshotSetId FromInt64(long value)
+    public static SnapshotSetId FromInt64(long value)
     {
         if (!IsValidValue(value))
         {
             ThrowHelper.ThrowArgumentOutOfRangeException(nameof(value));
         }
 
-        return new ObservationSnapshotSetId((ulong)value);
+        return new SnapshotSetId((ulong)value);
     }
 
-    public static explicit operator ObservationSnapshotSetId(long value)
+    public static explicit operator SnapshotSetId(long value)
     {
         return FromInt64(value);
     }
 
-    public static long ToInt64(ObservationSnapshotSetId value)
+    public static long ToInt64(SnapshotSetId value)
     {
         unchecked
         {
@@ -77,13 +77,13 @@ public readonly partial struct ObservationSnapshotSetId
         }
     }
 
-    public static implicit operator long(ObservationSnapshotSetId value)
+    public static implicit operator long(SnapshotSetId value)
     {
         return ToInt64(value);
     }
 
-    public static ObservationSnapshotSetId GetRandomId()
+    public static SnapshotSetId GetRandomId()
     {
-        return (ObservationSnapshotSetId)RandomValueGenerator.GetUInt64Value(MinIdValue, MaxIdValue);
+        return (SnapshotSetId)RandomValueGenerator.GetUInt64Value(MinIdValue, MaxIdValue);
     }
 }

@@ -9,20 +9,20 @@ using DSE.Open.Values;
 namespace DSE.Open.Observations;
 
 [JsonPolymorphic(TypeDiscriminatorPropertyName = "_t")]
-[JsonDerivedType(typeof(BinaryObservationSnapshotSet), typeDiscriminator: Schemas.BinaryObservationSnapshotSet)]
-[JsonDerivedType(typeof(CountObservationSnapshotSet), typeDiscriminator: Schemas.CountObservationSnapshotSet)]
-[JsonDerivedType(typeof(AmountObservationSnapshotSet), typeDiscriminator: Schemas.AmountObservationSnapshotSet)]
-[JsonDerivedType(typeof(RatioObservationSnapshotSet), typeDiscriminator: Schemas.RatioObservationSnapshotSet)]
-[JsonDerivedType(typeof(BinaryWordObservationSnapshotSet), typeDiscriminator: Schemas.BinaryWordObservationSnapshotSet)]
-[JsonDerivedType(typeof(BinarySpeechSoundObservationSnapshotSet), typeDiscriminator: Schemas.BinarySpeechSoundObservationSnapshotSet)]
-public abstract record ObservationSnapshotSet
+[JsonDerivedType(typeof(BinarySnapshotSet), typeDiscriminator: Schemas.BinarySnapshotSet)]
+[JsonDerivedType(typeof(CountSnapshotSet), typeDiscriminator: Schemas.CountSnapshotSet)]
+[JsonDerivedType(typeof(AmountSnapshotSet), typeDiscriminator: Schemas.AmountSnapshotSet)]
+[JsonDerivedType(typeof(RatioSnapshotSet), typeDiscriminator: Schemas.RatioSnapshotSet)]
+[JsonDerivedType(typeof(BinaryWordSnapshotSet), typeDiscriminator: Schemas.BinaryWordSnapshotSet)]
+[JsonDerivedType(typeof(BinarySpeechSoundSnapshotSet), typeDiscriminator: Schemas.BinarySpeechSoundSnapshotSet)]
+public abstract record SnapshotSet
 {
-    protected ObservationSnapshotSet(
+    protected SnapshotSet(
         DateTimeOffset created,
         DateTimeOffset updated,
         Identifier trackerReference)
     {
-        Id = ObservationSnapshotSetId.GetRandomId();
+        Id = SnapshotSetId.GetRandomId();
         CreatedTimestamp = created.ToUnixTimeMilliseconds();
         UpdatedTimestamp = updated.ToUnixTimeMilliseconds();
         TrackerReference = trackerReference;
@@ -30,8 +30,8 @@ public abstract record ObservationSnapshotSet
 
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    protected ObservationSnapshotSet(
-        ObservationSnapshotSetId id,
+    protected SnapshotSet(
+        SnapshotSetId id,
         long createdTimestamp,
         long updatedTimestamp,
         Identifier trackerReference)
@@ -49,7 +49,7 @@ public abstract record ObservationSnapshotSet
     [JsonInclude]
     [JsonPropertyName("id")]
     [JsonPropertyOrder(-98000)]
-    public ObservationSnapshotSetId Id { get; }
+    public SnapshotSetId Id { get; }
 
     [JsonIgnore]
     public DateTimeOffset Created => DateTimeOffset.FromUnixTimeMilliseconds(CreatedTimestamp);
@@ -77,12 +77,12 @@ public abstract record ObservationSnapshotSet
 
 #pragma warning disable CA1005 // Avoid excessive parameters on generic types
 
-public abstract record ObservationSnapshotSet<TSnapshot, TObs, TValue> : ObservationSnapshotSet
-    where TSnapshot : ObservationSnapshot<TObs, TValue>
+public abstract record SnapshotSet<TSnapshot, TObs, TValue> : SnapshotSet
+    where TSnapshot : Snapshot<TObs, TValue>
     where TObs : Observation<TValue>
     where TValue : IEquatable<TValue>
 {
-    protected ObservationSnapshotSet(
+    protected SnapshotSet(
         DateTimeOffset created,
         DateTimeOffset updated,
         Identifier trackerReference,
@@ -95,8 +95,8 @@ public abstract record ObservationSnapshotSet<TSnapshot, TObs, TValue> : Observa
 
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    protected ObservationSnapshotSet(
-        ObservationSnapshotSetId id,
+    protected SnapshotSet(
+        SnapshotSetId id,
         long createdTimestamp,
         long updatedTimestamp,
         Identifier trackerReference,
@@ -112,13 +112,13 @@ public abstract record ObservationSnapshotSet<TSnapshot, TObs, TValue> : Observa
     public ReadOnlyValueCollection<TSnapshot> Snapshots { get; } = [];
 }
 
-public abstract record ObservationSnapshotSet<TSnapshot, TObs, TValue, TDisc> : ObservationSnapshotSet
-    where TSnapshot : ObservationSnapshot<TObs, TValue, TDisc>
+public abstract record SnapshotSet<TSnapshot, TObs, TValue, TDisc> : SnapshotSet
+    where TSnapshot : Snapshot<TObs, TValue, TDisc>
     where TObs : Observation<TValue>
     where TValue : IEquatable<TValue>
     where TDisc : IEquatable<TDisc>
 {
-    protected ObservationSnapshotSet(
+    protected SnapshotSet(
         DateTimeOffset created,
         DateTimeOffset updated,
         Identifier trackerReference,
@@ -131,8 +131,8 @@ public abstract record ObservationSnapshotSet<TSnapshot, TObs, TValue, TDisc> : 
 
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    protected ObservationSnapshotSet(
-        ObservationSnapshotSetId id,
+    protected SnapshotSet(
+        SnapshotSetId id,
         long createdTimestamp,
         long updatedTimestamp,
         Identifier trackerReference,

@@ -1,4 +1,4 @@
-// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.ComponentModel;
@@ -8,13 +8,13 @@ using DSE.Open.Values;
 
 namespace DSE.Open.Observations;
 
-public record CountObservationSnapshotSet : ObservationSnapshotSet<CountObservationSnapshot, CountObservation, Count>
+public record AmountSnapshotSet : SnapshotSet<AmountSnapshot, AmountObservation, Amount>
 {
-    protected CountObservationSnapshotSet(
+    protected AmountSnapshotSet(
         DateTimeOffset created,
         DateTimeOffset updated,
         Identifier trackerReference,
-        ReadOnlyValueCollection<CountObservationSnapshot> snapshots)
+        ReadOnlyValueCollection<AmountSnapshot> snapshots)
         : base(created, updated, trackerReference, snapshots)
     {
     }
@@ -22,26 +22,26 @@ public record CountObservationSnapshotSet : ObservationSnapshotSet<CountObservat
     [JsonConstructor]
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    protected CountObservationSnapshotSet(
-        ObservationSnapshotSetId id,
+    protected AmountSnapshotSet(
+        SnapshotSetId id,
         long createdTimestamp,
         long updatedTimestamp,
         Identifier trackerReference,
-        ReadOnlyValueCollection<CountObservationSnapshot> snapshots)
+        ReadOnlyValueCollection<AmountSnapshot> snapshots)
         : base(id, createdTimestamp, updatedTimestamp, trackerReference, snapshots)
     {
     }
 
-    public static CountObservationSnapshotSet Create(
+    public static AmountSnapshotSet Create(
         Identifier trackerReference,
-        ReadOnlyValueCollection<CountObservationSnapshot> snapshots)
+        ReadOnlyValueCollection<AmountSnapshot> snapshots)
     {
         return Create(trackerReference, snapshots, TimeProvider.System);
     }
 
-    public static CountObservationSnapshotSet Create(
+    public static AmountSnapshotSet Create(
         Identifier trackerReference,
-        ReadOnlyValueCollection<CountObservationSnapshot> snapshots,
+        ReadOnlyValueCollection<AmountSnapshot> snapshots,
         TimeProvider timeProvider)
     {
         Guard.IsNotDefault(trackerReference);
@@ -49,6 +49,6 @@ public record CountObservationSnapshotSet : ObservationSnapshotSet<CountObservat
         ArgumentNullException.ThrowIfNull(timeProvider);
 
         var now = timeProvider.GetUtcNow();
-        return new CountObservationSnapshotSet(now, now, trackerReference, snapshots);
+        return new AmountSnapshotSet(now, now, trackerReference, snapshots);
     }
 }

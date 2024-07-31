@@ -1,4 +1,4 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.ComponentModel;
@@ -8,13 +8,13 @@ using DSE.Open.Values;
 
 namespace DSE.Open.Observations;
 
-public record RatioObservationSnapshotSet : ObservationSnapshotSet<RatioObservationSnapshot, RatioObservation, Ratio>
+public record BinarySnapshotSet : SnapshotSet<BinarySnapshot, BinaryObservation, bool>
 {
-    protected RatioObservationSnapshotSet(
+    protected BinarySnapshotSet(
         DateTimeOffset created,
         DateTimeOffset updated,
         Identifier trackerReference,
-        ReadOnlyValueCollection<RatioObservationSnapshot> snapshots)
+        ReadOnlyValueCollection<BinarySnapshot> snapshots)
         : base(created, updated, trackerReference, snapshots)
     {
     }
@@ -22,26 +22,26 @@ public record RatioObservationSnapshotSet : ObservationSnapshotSet<RatioObservat
     [JsonConstructor]
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    protected RatioObservationSnapshotSet(
-        ObservationSnapshotSetId id,
+    protected BinarySnapshotSet(
+        SnapshotSetId id,
         long createdTimestamp,
         long updatedTimestamp,
         Identifier trackerReference,
-        ReadOnlyValueCollection<RatioObservationSnapshot> snapshots)
+        ReadOnlyValueCollection<BinarySnapshot> snapshots)
         : base(id, createdTimestamp, updatedTimestamp, trackerReference, snapshots)
     {
     }
 
-    public static RatioObservationSnapshotSet Create(
+    public static BinarySnapshotSet Create(
         Identifier trackerReference,
-        ReadOnlyValueCollection<RatioObservationSnapshot> snapshots)
+        ReadOnlyValueCollection<BinarySnapshot> snapshots)
     {
         return Create(trackerReference, snapshots, TimeProvider.System);
     }
 
-    public static RatioObservationSnapshotSet Create(
+    public static BinarySnapshotSet Create(
         Identifier trackerReference,
-        ReadOnlyValueCollection<RatioObservationSnapshot> snapshots,
+        ReadOnlyValueCollection<BinarySnapshot> snapshots,
         TimeProvider timeProvider)
     {
         Guard.IsNotDefault(trackerReference);
@@ -49,6 +49,6 @@ public record RatioObservationSnapshotSet : ObservationSnapshotSet<RatioObservat
         ArgumentNullException.ThrowIfNull(timeProvider);
 
         var now = timeProvider.GetUtcNow();
-        return new RatioObservationSnapshotSet(now, now, trackerReference, snapshots);
+        return new BinarySnapshotSet(now, now, trackerReference, snapshots);
     }
 }
