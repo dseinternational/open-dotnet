@@ -114,7 +114,7 @@ public abstract record SnapshotSet<TSnapshot, TObs, TValue> : SnapshotSet
 
 public abstract record SnapshotSet<TSnapshot, TObs, TValue, TDisc> : SnapshotSet
     where TSnapshot : Snapshot<TObs, TValue, TDisc>
-    where TObs : Observation<TValue>
+    where TObs : Observation<TValue, TDisc>
     where TValue : IEquatable<TValue>
     where TDisc : IEquatable<TDisc>
 {

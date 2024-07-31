@@ -27,6 +27,14 @@ public abstract record Snapshot : ImmutableDataTransferObject
     [JsonConverter(typeof(JsonDateTimeOffsetUnixTimeMillisecondsConverter))]
     public DateTimeOffset Time { get; private init; }
 
+    public bool HasMeasure(Measure measure)
+    {
+        ArgumentNullException.ThrowIfNull(measure);
+        return HasMeasureId(measure.Id);
+    }
+
+    public abstract bool HasMeasureId(MeasureId measureId);
+
     /// <summary>
     /// Gets a code that discriminates between measurement types and is suitable for use as a hash code.
     /// </summary>
@@ -49,6 +57,11 @@ public abstract record Snapshot<TObs> : Snapshot
     /// </summary>
     [JsonPropertyName("o")]
     public TObs Observation { get; }
+
+    public override bool HasMeasureId(MeasureId measureId)
+    {
+        return Observation.HasMeasureId(measureId);
+    }
 
     /// <summary>
     /// Gets a code that discriminates between measurement types and is suitable for use as a hash code.
@@ -75,11 +88,17 @@ public abstract record Snapshot<TObs, TValue> : Snapshot<TObs>
 /// Records an observation at a point in time.
 /// </summary>
 public abstract record Snapshot<TObs, TValue, TDisc> : Snapshot<TObs, TValue>
-    where TObs : Observation<TValue>
+    where TObs : Observation<TValue, TDisc>
     where TValue : IEquatable<TValue>
     where TDisc : IEquatable<TDisc>
 {
     protected Snapshot(DateTimeOffset time, TObs observation) : base(time, observation)
     {
+    }
+
+    public virtual bool HasMeasurement(Measure measure, TDisc discriminator)
+    {
+        ArgumentNullException.ThrowIfNull(measure);
+        return HasMeasureId(measure.Id) && Observation.Discriminator.Equals(discriminator);
     }
 }

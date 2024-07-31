@@ -58,6 +58,17 @@ public abstract record Observation : ImmutableDataTransferObject
     [JsonPropertyOrder(-88000)]
     public MeasureId MeasureId { get; }
 
+    public bool HasMeasure(Measure measure)
+    {
+        ArgumentNullException.ThrowIfNull(measure);
+        return HasMeasureId(measure.Id);
+    }
+
+    public bool HasMeasureId(MeasureId measureId)
+    {
+        return MeasureId == measureId;
+    }
+
     /// <summary>
     /// Gets a value that discriminates between measurement types.
     /// </summary>
@@ -137,6 +148,12 @@ public abstract record Observation<TValue, TDisc> : Observation<TValue>
     [JsonPropertyName("d")]
     [JsonPropertyOrder(-100)]
     public TDisc Discriminator { get; }
+
+    public virtual bool HasMeasurement(Measure measure, TDisc discriminator)
+    {
+        ArgumentNullException.ThrowIfNull(measure);
+        return HasMeasureId(measure.Id) && Discriminator.Equals(discriminator);
+    }
 
     protected abstract ulong GetDiscriminatorId();
 
