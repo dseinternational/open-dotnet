@@ -9,7 +9,7 @@ using DSE.Open.Values;
 namespace DSE.Open.Observations;
 
 /// <summary>
-/// A value used to identify a word.
+/// A value used to identify a <see cref="Measure"/>.
 /// </summary>
 [EquatableValue(AllowDefaultValue = false)]
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<MeasureId, ulong>))]

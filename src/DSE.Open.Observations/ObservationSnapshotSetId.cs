@@ -1,4 +1,4 @@
-// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Runtime.InteropServices;
@@ -10,14 +10,14 @@ using DSE.Open.Values.Text.Json.Serialization;
 namespace DSE.Open.Observations;
 
 /// <summary>
-/// A value used to identify a <see cref="ObservationSet"/>.
+/// A value used to identify a <see cref="ObservationSnapshot"/>.
 /// </summary>
 [EquatableValue(AllowDefaultValue = false)]
-[JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<ObservationSetId, ulong>))]
+[JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<ObservationSnapshotSetId, ulong>))]
 [StructLayout(LayoutKind.Auto)]
-public readonly partial struct ObservationSetId
-    : IEquatableValue<ObservationSetId, ulong>,
-      IUtf8SpanSerializable<ObservationSetId>
+public readonly partial struct ObservationSnapshotSetId
+    : IEquatableValue<ObservationSnapshotSetId, ulong>,
+      IUtf8SpanSerializable<ObservationSnapshotSetId>
 {
     public const ulong MinIdValue = 1;
     public const ulong MaxIdValue = NumberHelper.MaxJsonSafeInteger;
@@ -26,7 +26,7 @@ public readonly partial struct ObservationSetId
 
     public static int MaxSerializedByteLength => 16;
 
-    public ObservationSetId(ulong value) : this(value, false)
+    public ObservationSnapshotSetId(ulong value) : this(value, false)
     {
     }
 
@@ -40,11 +40,11 @@ public readonly partial struct ObservationSetId
         return value is <= ((long)MaxIdValue) and >= ((long)MinIdValue);
     }
 
-    public static bool TryFromInt64(long value, out ObservationSetId id)
+    public static bool TryFromInt64(long value, out ObservationSnapshotSetId id)
     {
         if (IsValidValue(value))
         {
-            id = new ObservationSetId((ulong)value);
+            id = new ObservationSnapshotSetId((ulong)value);
             return true;
         }
         else
@@ -54,22 +54,22 @@ public readonly partial struct ObservationSetId
         }
     }
 
-    public static ObservationSetId FromInt64(long value)
+    public static ObservationSnapshotSetId FromInt64(long value)
     {
         if (!IsValidValue(value))
         {
             ThrowHelper.ThrowArgumentOutOfRangeException(nameof(value));
         }
 
-        return new ObservationSetId((ulong)value);
+        return new ObservationSnapshotSetId((ulong)value);
     }
 
-    public static explicit operator ObservationSetId(long value)
+    public static explicit operator ObservationSnapshotSetId(long value)
     {
         return FromInt64(value);
     }
 
-    public static long ToInt64(ObservationSetId value)
+    public static long ToInt64(ObservationSnapshotSetId value)
     {
         unchecked
         {
@@ -77,13 +77,13 @@ public readonly partial struct ObservationSetId
         }
     }
 
-    public static implicit operator long(ObservationSetId value)
+    public static implicit operator long(ObservationSnapshotSetId value)
     {
         return ToInt64(value);
     }
 
-    public static ObservationSetId GetRandomId()
+    public static ObservationSnapshotSetId GetRandomId()
     {
-        return (ObservationSetId)RandomValueGenerator.GetUInt64Value(MinIdValue, MaxIdValue);
+        return (ObservationSnapshotSetId)RandomValueGenerator.GetUInt64Value(MinIdValue, MaxIdValue);
     }
 }

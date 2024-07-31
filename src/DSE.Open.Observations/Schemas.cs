@@ -5,21 +5,35 @@ namespace DSE.Open.Observations;
 
 public static class Schemas
 {
-    internal const string ObservationSets = "https://schema.dseapi.app/v1.0/observations/sets";
+    public const string BinaryObservationSet = "https://schema.dseapi.app/v1.0/observations/sets/binary";
 
-    public const string BinaryObservationSet = $"{ObservationSets}/binary";
+    public const string CountObservationSet = "https://schema.dseapi.app/v1.0/observations/sets/count";
 
-    public const string CountObservationSet = $"{ObservationSets}/count";
+    public const string AmountObservationSet = "https://schema.dseapi.app/v1.0/observations/sets/amount";
 
-    public const string AmountObservationSet = $"{ObservationSets}/amount";
+    public const string RatioObservationSet = "https://schema.dseapi.app/v1.0/observations/sets/ratio";
 
-    public const string RatioObservationSet = $"{ObservationSets}/ratio";
+    public const string BinaryWordObservationSet = "https://schema.dseapi.app/v1.0/observations/sets/binary/word";
 
-    public const string BinaryWordObservationSet = $"{ObservationSets}/binary/word";
+    public const string BinarySpeechSoundObservationSet = "https://schema.dseapi.app/v1.0/observations/sets/binary/speech-sound";
 
-    public const string BinarySpeechSoundObservationSet = $"{ObservationSets}/binary/speech-sound";
+    public const string IntegerObservationSet = "https://schema.dseapi.app/v1.0/observations/sets/int";
 
-    public const string IntegerObservationSet = $"{ObservationSets}/int";
+    public const string DecimalObservationSet = "https://schema.dseapi.app/v1.0/observations/sets/decimal";
 
-    public const string DecimalObservationSet = $"{ObservationSets}/decimal";
+    public const string BinaryObservationSnapshotSet = "https://schema.dseapi.app/v1.0/observations/snapshots/sets/binary";
+
+    public const string CountObservationSnapshotSet = "https://schema.dseapi.app/v1.0/observations/snapshots/sets/count";
+
+    public const string AmountObservationSnapshotSet = "https://schema.dseapi.app/v1.0/observations/snapshots/sets/amount";
+
+    public const string RatioObservationSnapshotSet = "https://schema.dseapi.app/v1.0/observations/snapshots/sets/ratio";
+
+    public const string BinaryWordObservationSnapshotSet = "https://schema.dseapi.app/v1.0/observations/snapshots/sets/binary/word";
+
+    public const string BinarySpeechSoundObservationSnapshotSet = "https://schema.dseapi.app/v1.0/observations/snapshots/sets/binary/speech-sound";
+
+    public const string IntegerObservationSnapshotSet = "https://schema.dseapi.app/v1.0/observations/snapshots/sets/int";
+
+    public const string DecimalObservationSnapshotSet = "https://schema.dseapi.app/v1.0/observations/snapshots/sets/decimal";
 }
