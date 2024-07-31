@@ -3,10 +3,11 @@
 
 using System.ComponentModel;
 using System.Text.Json.Serialization;
+using DSE.Open.Serialization.DataTransfer;
 
 namespace DSE.Open.Observations;
 
-public abstract record Observation
+public abstract record Observation : ImmutableDataTransferObject
 {
     protected Observation(Measure measure, DateTimeOffset time)
     {

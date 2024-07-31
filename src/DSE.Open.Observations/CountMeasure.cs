@@ -6,7 +6,7 @@ using DSE.Open.Values;
 
 namespace DSE.Open.Observations;
 
-public sealed class CountMeasure : Measure<CountObservation, Count>
+public sealed record CountMeasure : Measure<CountObservation, Count>
 {
     public CountMeasure(ulong id, Uri uri, string name, string statement)
         : this(id, uri, MeasurementLevel.Count, name, statement)

@@ -57,7 +57,7 @@ public sealed record FakeBinaryObservation : Observation<bool>
     }
 }
 
-public sealed class FakeBinaryMeasure : Measure<FakeBinaryObservation, bool>
+public sealed record FakeBinaryMeasure : Measure<FakeBinaryObservation, bool>
 {
     public FakeBinaryMeasure(ulong id, Uri uri, string name, string statement)
         : base(id, uri, MeasurementLevel.Binary, name, statement)

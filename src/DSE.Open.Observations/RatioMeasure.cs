@@ -6,7 +6,7 @@ using DSE.Open.Values;
 
 namespace DSE.Open.Observations;
 
-public sealed class RatioMeasure : Measure<RatioObservation, Ratio>
+public sealed record RatioMeasure : Measure<RatioObservation, Ratio>
 {
     [JsonConstructor]
     public RatioMeasure(ulong id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)

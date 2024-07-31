@@ -2,13 +2,14 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Text.Json.Serialization;
+using DSE.Open.Serialization.DataTransfer;
 
 namespace DSE.Open.Observations;
 
 /// <summary>
 /// A measure defines what the value of an observation refers to.
 /// </summary>
-public abstract class Measure : IEquatable<Measure>
+public abstract record Measure : ImmutableDataTransferObject, IEquatable<Measure>
 {
     [JsonConstructor]
     protected Measure(ulong id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
@@ -41,14 +42,9 @@ public abstract class Measure : IEquatable<Measure>
     [JsonPropertyName("statement")]
     public string Statement { get; }
 
-    public bool Equals(Measure? other)
+    public virtual bool Equals(Measure? other)
     {
         return other is not null && Id == other.Id;
-    }
-
-    public override bool Equals(object? obj)
-    {
-        return Equals(obj as Measure);
     }
 
     public override int GetHashCode()
@@ -57,7 +53,7 @@ public abstract class Measure : IEquatable<Measure>
     }
 }
 
-public abstract class Measure<TObs, TValue> : Measure
+public abstract record Measure<TObs, TValue> : Measure
     where TObs : Observation<TValue>
     where TValue : IEquatable<TValue>
 {
@@ -82,7 +78,7 @@ public abstract class Measure<TObs, TValue> : Measure
 }
 
 #pragma warning disable CA1005 // Avoid excessive parameters on generic types
-public abstract class Measure<TObs, TValue, TDisc> : Measure
+public abstract record Measure<TObs, TValue, TDisc> : Measure
 #pragma warning restore CA1005 // Avoid excessive parameters on generic types
     where TObs : Observation<TValue, TDisc>
     where TValue : IEquatable<TValue>

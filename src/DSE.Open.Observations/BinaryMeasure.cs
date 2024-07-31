@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace DSE.Open.Observations;
 
-public sealed class BinaryMeasure : Measure<BinaryObservation, bool>
+public sealed record BinaryMeasure : Measure<BinaryObservation, bool>
 {
     public BinaryMeasure(ulong id, Uri uri, string name, string statement)
         : base(id, uri, MeasurementLevel.Binary, name, statement)
