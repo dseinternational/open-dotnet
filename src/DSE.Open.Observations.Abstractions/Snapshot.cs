@@ -36,9 +36,8 @@ public abstract record Snapshot : ImmutableDataTransferObject
 /// <summary>
 /// Records an observation at a point in time.
 /// </summary>
-public abstract record Snapshot<TObs, TValue> : Snapshot
-    where TObs : Observation<TValue>
-    where TValue : IEquatable<TValue>
+public abstract record Snapshot<TObs> : Snapshot
+    where TObs : Observation
 {
     protected Snapshot(DateTimeOffset time, TObs observation) : base(time)
     {
@@ -57,6 +56,18 @@ public abstract record Snapshot<TObs, TValue> : Snapshot
     public override int GetMeasurementHashCode()
     {
         return Observation.GetMeasurementHashCode();
+    }
+}
+
+/// <summary>
+/// Records an observation at a point in time.
+/// </summary>
+public abstract record Snapshot<TObs, TValue> : Snapshot<TObs>
+    where TObs : Observation<TValue>
+    where TValue : IEquatable<TValue>
+{
+    protected Snapshot(DateTimeOffset time, TObs observation) : base(time, observation)
+    {
     }
 }
 
