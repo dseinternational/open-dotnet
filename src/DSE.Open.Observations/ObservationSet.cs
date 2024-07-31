@@ -29,7 +29,7 @@ public abstract record ObservationSet
     {
         ArgumentNullException.ThrowIfNull(source);
 
-        Id = RandomNumberHelper.GetJsonSafeInteger();
+        Id = ObservationSetId.GetRandomId();
         CreatedTimestamp = created.ToUnixTimeMilliseconds();
         TrackerReference = trackerReference;
         ObserverReference = observerReference;
@@ -40,14 +40,13 @@ public abstract record ObservationSet
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     protected ObservationSet(
-        ulong id,
+        ObservationSetId id,
         long createdTimestamp,
         Identifier trackerReference,
         Identifier observerReference,
         Uri source,
         GroundPoint? location)
     {
-        ArgumentOutOfRangeException.ThrowIfGreaterThan(id, (ulong)NumberHelper.MaxJsonSafeInteger);
         ArgumentNullException.ThrowIfNull(source);
 
         Id = id;
@@ -65,7 +64,7 @@ public abstract record ObservationSet
     [JsonInclude]
     [JsonPropertyName("id")]
     [JsonPropertyOrder(-98000)]
-    public ulong Id { get; }
+    public ObservationSetId Id { get; }
 
     /// <summary>
     /// The time the observation set was created.
@@ -125,7 +124,7 @@ public abstract record ObservationSet<TObs, TValue> : ObservationSet
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     protected ObservationSet(
-        ulong id,
+        ObservationSetId id,
         long createdTimestamp,
         Identifier trackerReference,
         Identifier observerReference,

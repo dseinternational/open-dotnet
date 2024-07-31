@@ -13,7 +13,7 @@ public sealed class BinarySpeechSoundMeasureTests
     public void CanSerializeAndDeserialize()
     {
         var uri = new Uri("https://schema-test.dseapi.app/testing/measure");
-        var measure = new BinarySpeechSoundMeasure(986168514, uri, "Test measure", "[subject] does something");
+        var measure = new BinarySpeechSoundMeasure(MeasureId.GetRandomId(), uri, "Test measure", "[subject] does something");
         var json = JsonSerializer.Serialize(measure, JsonSharedOptions.RelaxedJsonEscaping);
         var deserialized = JsonSerializer.Deserialize<BinarySpeechSoundMeasure>(json, JsonSharedOptions.RelaxedJsonEscaping);
         Assert.NotNull(deserialized);
@@ -28,7 +28,7 @@ public sealed class BinarySpeechSoundMeasureTests
     public void CanCreateObservation()
     {
         var uri = new Uri("https://schema-test.dseapi.app/testing/measure");
-        var measure = new BinarySpeechSoundMeasure(986168514, uri, "Test measure", "[subject] does something");
+        var measure = new BinarySpeechSoundMeasure(MeasureId.GetRandomId(), uri, "Test measure", "[subject] does something");
         var obs = measure.CreateObservation(SpeechSound.CloseBackRoundedVowel, true, DateTimeOffset.UtcNow);
         Assert.Equal(measure.Id, obs.MeasureId);
         Assert.True(obs.Value);

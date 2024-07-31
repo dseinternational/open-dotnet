@@ -25,7 +25,7 @@ public sealed record AmountObservationSet : ObservationSet<AmountObservation, Am
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     internal AmountObservationSet(
-        ulong id,
+        ObservationSetId id,
         long createdTimestamp,
         Identifier trackerReference,
         Identifier observerReference,

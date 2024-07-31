@@ -14,14 +14,14 @@ public abstract record Observation : ImmutableDataTransferObject
         ArgumentNullException.ThrowIfNull(measure);
         ObservationsValidator.EnsureMinimumObservationTime(time);
 
-        Id = RandomNumberHelper.GetJsonSafeInteger();
+        Id = ObservationId.GetRandomId();
         MeasureId = measure.Id;
         Timestamp = time.ToUnixTimeMilliseconds();
     }
 
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    protected Observation(ulong id, ulong measureId, long timestamp)
+    protected Observation(ObservationId id, MeasureId measureId, long timestamp)
     {
         Id = id;
         MeasureId = measureId;
@@ -35,7 +35,7 @@ public abstract record Observation : ImmutableDataTransferObject
     [JsonInclude]
     [JsonPropertyName("i")]
     [JsonPropertyOrder(-91000)]
-    public ulong Id { get; }
+    public ObservationId Id { get; }
 
     /// <summary>
     /// The time of the observation.
@@ -56,7 +56,7 @@ public abstract record Observation : ImmutableDataTransferObject
     [JsonInclude]
     [JsonPropertyName("m")]
     [JsonPropertyOrder(-88000)]
-    public ulong MeasureId { get; }
+    public MeasureId MeasureId { get; }
 
     /// <summary>
     /// Gets a value that discriminates between measurement types.
@@ -100,7 +100,7 @@ public abstract record Observation<TValue> : Observation
 
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    protected Observation(ulong id, ulong measureId, long timestamp, TValue value)
+    protected Observation(ObservationId id, MeasureId measureId, long timestamp, TValue value)
         : base(id, measureId, timestamp)
     {
         Value = value;
@@ -128,7 +128,7 @@ public abstract record Observation<TValue, TDisc> : Observation<TValue>
 
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    protected Observation(ulong id, ulong measureId, TDisc discriminator, long timestamp, TValue value)
+    protected Observation(ObservationId id, MeasureId measureId, TDisc discriminator, long timestamp, TValue value)
         : base(id, measureId, timestamp, value)
     {
         Discriminator = discriminator;

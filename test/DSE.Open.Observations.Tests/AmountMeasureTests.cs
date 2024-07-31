@@ -13,7 +13,7 @@ public sealed class AmountMeasureTests
     public void CanSerializeAndDeserialize()
     {
         var uri = new Uri("https://schema-test.dseapi.app/testing/measure");
-        var measure = new AmountMeasure(986168514, uri, "Test measure", "[subject] does something");
+        var measure = new AmountMeasure(MeasureId.GetRandomId(), uri, "Test measure", "[subject] does something");
         var json = JsonSerializer.Serialize(measure, JsonSharedOptions.RelaxedJsonEscaping);
         var deserialized = JsonSerializer.Deserialize<AmountMeasure>(json, JsonSharedOptions.RelaxedJsonEscaping);
         Assert.NotNull(deserialized);
@@ -28,7 +28,7 @@ public sealed class AmountMeasureTests
     public void CanCreateObservation()
     {
         var uri = new Uri("https://schema-test.dseapi.app/testing/measure");
-        var measure = new AmountMeasure(986168514, uri, "Test measure", "[subject] does something");
+        var measure = new AmountMeasure(MeasureId.GetRandomId(), uri, "Test measure", "[subject] does something");
         var obs = measure.CreateObservation((Amount)42.123m, DateTimeOffset.UtcNow);
         Assert.Equal(measure.Id, obs.MeasureId);
         Assert.Equal((Amount)42.123m, obs.Value);

@@ -25,7 +25,7 @@ public sealed record BinarySpeechSoundObservationSet : ObservationSet<BinarySpee
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     internal BinarySpeechSoundObservationSet(
-        ulong id,
+        ObservationSetId id,
         long createdTimestamp,
         Identifier trackerReference,
         Identifier observerReference,

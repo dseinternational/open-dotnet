@@ -7,13 +7,13 @@ namespace DSE.Open.Observations;
 
 public sealed record BinaryMeasure : Measure<BinaryObservation, bool>
 {
-    public BinaryMeasure(ulong id, Uri uri, string name, string statement)
+    public BinaryMeasure(MeasureId id, Uri uri, string name, string statement)
         : base(id, uri, MeasurementLevel.Binary, name, statement)
     {
     }
 
     [JsonConstructor]
-    private BinaryMeasure(ulong id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
+    private BinaryMeasure(MeasureId id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
         : base(id, uri, measurementLevel, name, statement)
     {
         ArgumentOutOfRangeException.ThrowIfNotEqual(measurementLevel, MeasurementLevel.Binary);

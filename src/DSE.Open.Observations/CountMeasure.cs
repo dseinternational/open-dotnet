@@ -8,13 +8,13 @@ namespace DSE.Open.Observations;
 
 public sealed record CountMeasure : Measure<CountObservation, Count>
 {
-    public CountMeasure(ulong id, Uri uri, string name, string statement)
+    public CountMeasure(MeasureId id, Uri uri, string name, string statement)
         : this(id, uri, MeasurementLevel.Count, name, statement)
     {
     }
 
     [JsonConstructor]
-    private CountMeasure(ulong id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
+    private CountMeasure(MeasureId id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
         : base(id, uri, measurementLevel, name, statement)
     {
         ArgumentOutOfRangeException.ThrowIfNotEqual(measurementLevel, MeasurementLevel.Count);

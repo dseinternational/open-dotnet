@@ -5,6 +5,8 @@ using System.Text.Json.Serialization;
 using DSE.Open.Serialization.DataTransfer;
 using DSE.Open.Text.Json.Serialization;
 
+#pragma warning disable CA1005 // Avoid excessive parameters on generic types
+
 namespace DSE.Open.Observations;
 
 /// <summary>
@@ -55,5 +57,18 @@ public abstract record ObservationSnapshot<TObs, TValue> : ObservationSnapshot
     public override int GetMeasurementHashCode()
     {
         return Observation.GetMeasurementHashCode();
+    }
+}
+
+/// <summary>
+/// Records an observation at a point in time.
+/// </summary>
+public abstract record ObservationSnapshot<TObs, TValue, TDisc> : ObservationSnapshot<TObs, TValue>
+    where TObs : Observation<TValue>
+    where TValue : IEquatable<TValue>
+    where TDisc : IEquatable<TDisc>
+{
+    protected ObservationSnapshot(DateTimeOffset time, TObs observation) : base(time, observation)
+    {
     }
 }

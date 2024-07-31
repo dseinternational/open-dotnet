@@ -12,7 +12,7 @@ namespace DSE.Open.Observations;
 public abstract record Measure : ImmutableDataTransferObject, IEquatable<Measure>
 {
     [JsonConstructor]
-    protected Measure(ulong id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
+    protected Measure(MeasureId id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
     {
         Id = id;
         Uri = uri;
@@ -25,7 +25,7 @@ public abstract record Measure : ImmutableDataTransferObject, IEquatable<Measure
     /// An identifier for the measure. This is generated from a hash of the <see cref="Uri" />.
     /// </summary>
     [JsonPropertyName("id")]
-    public ulong Id { get; }
+    public MeasureId Id { get; }
 
     /// <summary>
     /// A URI that uniquely identifies the measure.
@@ -58,7 +58,7 @@ public abstract record Measure<TObs, TValue> : Measure
     where TValue : IEquatable<TValue>
 {
     [JsonConstructor]
-    protected Measure(ulong id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
+    protected Measure(MeasureId id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
         : base(id, uri, measurementLevel, name, statement)
     {
     }
@@ -85,7 +85,7 @@ public abstract record Measure<TObs, TValue, TDisc> : Measure
     where TDisc : IEquatable<TDisc>
 {
     [JsonConstructor]
-    protected Measure(ulong id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
+    protected Measure(MeasureId id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
         : base(id, uri, measurementLevel, name, statement)
     {
     }

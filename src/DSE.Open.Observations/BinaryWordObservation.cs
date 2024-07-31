@@ -3,12 +3,13 @@
 
 using System.ComponentModel;
 using System.Text.Json.Serialization;
+using DSE.Open.Language;
 
 namespace DSE.Open.Observations;
 
-public record BinaryWordObservation : Observation<bool, ulong>
+public record BinaryWordObservation : Observation<bool, WordId>
 {
-    protected BinaryWordObservation(Measure measure, ulong discriminator, DateTimeOffset time, bool value)
+    protected BinaryWordObservation(Measure measure, WordId discriminator, DateTimeOffset time, bool value)
         : base(measure, discriminator, time, value)
     {
     }
@@ -16,22 +17,22 @@ public record BinaryWordObservation : Observation<bool, ulong>
     [JsonConstructor]
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    protected BinaryWordObservation(ulong id, ulong measureId, ulong discriminator, long timestamp, bool value)
+    protected BinaryWordObservation(ObservationId id, MeasureId measureId, WordId discriminator, long timestamp, bool value)
         : base(id, measureId, discriminator, timestamp, value)
     {
     }
 
     [JsonIgnore]
-    public ulong WordId => Discriminator;
+    public WordId WordId => Discriminator;
 
-    public static BinaryWordObservation Create(Measure measure, ulong wordId, bool value)
+    public static BinaryWordObservation Create(Measure measure, WordId wordId, bool value)
     {
         return Create(measure, wordId, value, TimeProvider.System);
     }
 
     public static BinaryWordObservation Create(
         Measure measure,
-        ulong wordId,
+        WordId wordId,
         bool value,
         TimeProvider timeProvider)
     {
@@ -42,6 +43,6 @@ public record BinaryWordObservation : Observation<bool, ulong>
 
     protected override ulong GetDiscriminatorId()
     {
-        return MeasureId | WordId;
+        return MeasureId | (ulong)WordId;
     }
 }

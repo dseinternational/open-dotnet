@@ -13,7 +13,7 @@ public sealed class CountMeasureTests
     public void CanSerializeAndDeserialize()
     {
         var uri = new Uri("https://schema-test.dseapi.app/testing/measure");
-        var measure = new CountMeasure(19688645, uri, "Test measure", "[subject] does something");
+        var measure = new CountMeasure(MeasureId.GetRandomId(), uri, "Test measure", "[subject] does something");
         var json = JsonSerializer.Serialize(measure, JsonSharedOptions.RelaxedJsonEscaping);
         var deserialized = JsonSerializer.Deserialize<CountMeasure>(json, JsonSharedOptions.RelaxedJsonEscaping);
         Assert.NotNull(deserialized);
@@ -28,7 +28,7 @@ public sealed class CountMeasureTests
     public void CanCreateObservation()
     {
         var uri = new Uri("https://schema-test.dseapi.app/testing/measure");
-        var measure = new CountMeasure(19688645, uri, "Test measure", "[subject] does something");
+        var measure = new CountMeasure(MeasureId.GetRandomId(), uri, "Test measure", "[subject] does something");
         var obs = measure.CreateObservation((Count)42, DateTimeOffset.UtcNow);
         Assert.Equal(measure.Id, obs.MeasureId);
         Assert.Equal((Count)42, obs.Value);

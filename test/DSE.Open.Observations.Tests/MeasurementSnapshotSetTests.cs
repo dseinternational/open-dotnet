@@ -120,7 +120,7 @@ public sealed class MeasurementSnapshotSetTests
         // Arrange
         const string json =
             """
-            [{"o":{"i":5506732958415133,"m":1,"t":1721485055917,"v":1},"t":1721485057117}]
+            [{"o":{"i":5506732958415133,"m":100000000001,"t":1721485055917,"v":1},"t":1721485057117}]
             """;
 
         // Act

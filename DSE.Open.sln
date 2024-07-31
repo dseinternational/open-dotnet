@@ -204,9 +204,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Turnstile.Web", "s
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.ViewModels", "src\DSE.Open.ViewModels\DSE.Open.ViewModels.csproj", "{275115A3-40B0-465E-A6EC-A37277C8BBB2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.Observations", "src\DSE.Open.Observations\DSE.Open.Observations.csproj", "{8D0A15D1-A8E3-4B5E-8F5B-54705D13D007}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Observations", "src\DSE.Open.Observations\DSE.Open.Observations.csproj", "{8D0A15D1-A8E3-4B5E-8F5B-54705D13D007}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.Observations.Tests", "test\DSE.Open.Observations.Tests\DSE.Open.Observations.Tests.csproj", "{39133B8C-8487-4C7F-82B0-954A9BFE3419}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSE.Open.Observations.Tests", "test\DSE.Open.Observations.Tests\DSE.Open.Observations.Tests.csproj", "{39133B8C-8487-4C7F-82B0-954A9BFE3419}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSE.Open.EntityFrameworkCore.Models.Observations", "src\DSE.Open.EntityFrameworkCore.Models.Observations\DSE.Open.EntityFrameworkCore.Models.Observations.csproj", "{73EA835E-9F55-4BEB-B189-11836675DEAB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -218,6 +220,10 @@ Global
 		{39133B8C-8487-4C7F-82B0-954A9BFE3419}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39133B8C-8487-4C7F-82B0-954A9BFE3419}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{39133B8C-8487-4C7F-82B0-954A9BFE3419}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73EA835E-9F55-4BEB-B189-11836675DEAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73EA835E-9F55-4BEB-B189-11836675DEAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73EA835E-9F55-4BEB-B189-11836675DEAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73EA835E-9F55-4BEB-B189-11836675DEAB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8D0A15D1-A8E3-4B5E-8F5B-54705D13D007}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8D0A15D1-A8E3-4B5E-8F5B-54705D13D007}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8D0A15D1-A8E3-4B5E-8F5B-54705D13D007}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -576,6 +582,7 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{39133B8C-8487-4C7F-82B0-954A9BFE3419} = {850B3E2C-6172-4CF9-9E83-AD0997C57CA3}
+		{73EA835E-9F55-4BEB-B189-11836675DEAB} = {D2529453-80C3-4F06-BBD0-6B58EF65EF99}
 		{8D0A15D1-A8E3-4B5E-8F5B-54705D13D007} = {D2529453-80C3-4F06-BBD0-6B58EF65EF99}
 		{B41B64E2-BF46-4EE3-9CE3-977DC1D8BADC} = {D2529453-80C3-4F06-BBD0-6B58EF65EF99}
 		{FDA19544-D97E-431D-A1DC-B75F43AB7137} = {A0556478-3601-4EE6-94DA-62EC721B5A28}

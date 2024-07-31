@@ -25,7 +25,7 @@ public sealed record CountObservationSet : ObservationSet<CountObservation, Coun
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     internal CountObservationSet(
-        ulong id,
+        ObservationSetId id,
         long createdTimestamp,
         Identifier trackerReference,
         Identifier observerReference,

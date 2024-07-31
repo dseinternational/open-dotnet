@@ -25,7 +25,7 @@ public sealed record RatioObservationSet : ObservationSet<RatioObservation, Rati
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     internal RatioObservationSet(
-        ulong id,
+        ObservationSetId id,
         long createdTimestamp,
         Identifier trackerReference,
         Identifier observerReference,

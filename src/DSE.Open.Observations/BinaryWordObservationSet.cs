@@ -25,7 +25,7 @@ public sealed record BinaryWordObservationSet : ObservationSet<BinaryWordObserva
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     internal BinaryWordObservationSet(
-        ulong id,
+        ObservationSetId id,
         long createdTimestamp,
         Identifier trackerReference,
         Identifier observerReference,

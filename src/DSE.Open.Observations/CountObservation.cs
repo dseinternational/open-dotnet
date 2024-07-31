@@ -17,7 +17,7 @@ public record CountObservation : Observation<Count>
     [JsonConstructor]
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    protected CountObservation(ulong id, ulong measureId, long timestamp, Count value)
+    protected CountObservation(ObservationId id, MeasureId measureId, long timestamp, Count value)
         : base(id, measureId, timestamp, value)
     {
     }

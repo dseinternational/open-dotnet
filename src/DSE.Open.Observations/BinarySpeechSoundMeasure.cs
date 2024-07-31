@@ -8,13 +8,13 @@ namespace DSE.Open.Observations;
 
 public sealed record BinarySpeechSoundMeasure : Measure<BinarySpeechSoundObservation, bool, SpeechSound>
 {
-    public BinarySpeechSoundMeasure(ulong id, Uri uri, string name, string statement)
+    public BinarySpeechSoundMeasure(MeasureId id, Uri uri, string name, string statement)
         : base(id, uri, MeasurementLevel.Binary, name, statement)
     {
     }
 
     [JsonConstructor]
-    private BinarySpeechSoundMeasure(ulong id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
+    private BinarySpeechSoundMeasure(MeasureId id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
         : base(id, uri, measurementLevel, name, statement)
     {
         ArgumentOutOfRangeException.ThrowIfNotEqual(measurementLevel, MeasurementLevel.Binary);

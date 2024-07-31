@@ -8,13 +8,13 @@ namespace DSE.Open.Observations;
 
 public sealed record AmountMeasure : Measure<AmountObservation, Amount>
 {
-    public AmountMeasure(ulong id, Uri uri, string name, string statement)
+    public AmountMeasure(MeasureId id, Uri uri, string name, string statement)
         : base(id, uri, MeasurementLevel.Amount, name, statement)
     {
     }
 
     [JsonConstructor]
-    private AmountMeasure(ulong id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
+    private AmountMeasure(MeasureId id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
         : base(id, uri, measurementLevel, name, statement)
     {
         ArgumentOutOfRangeException.ThrowIfNotEqual(measurementLevel, MeasurementLevel.Amount);

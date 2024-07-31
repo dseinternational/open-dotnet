@@ -49,4 +49,40 @@ public class RandomValueGeneratorTests
             Assert.True(value <= 999999);
         }
     }
+
+    [Fact]
+    public void GetInt64Value()
+    {
+        for (var i = 0; i < 50; i++)
+        {
+            var value = RandomValueGenerator.GetInt64Value(10000000000001, 99999999999999);
+            _output.WriteLine(value.ToStringInvariant());
+            Assert.True(value >= 10000000000001);
+            Assert.True(value <= 99999999999999);
+        }
+    }
+
+    [Fact]
+    public void GetUInt64Value()
+    {
+        for (var i = 0; i < 50; i++)
+        {
+            var value = RandomValueGenerator.GetUInt64Value(100000000001, 999999999999);
+            _output.WriteLine(value.ToStringInvariant());
+            Assert.True(value >= 100000000001);
+            Assert.True(value <= 999999999999);
+        }
+    }
+
+    [Fact]
+    public void GetJsonSafeUInt64()
+    {
+        for (var i = 0; i < 50; i++)
+        {
+            var value = RandomValueGenerator.GetJsonSafeUInt64();
+            _output.WriteLine(value.ToStringInvariant());
+            Assert.True(value >= 0);
+            Assert.True(value <= NumberHelper.MaxJsonSafeInteger);
+        }
+    }
 }

@@ -12,7 +12,7 @@ public class MeasureTests
     public void CreateSetsUri()
     {
         var uri = new Uri("https://schema-test.dseapi.app/testing/measure");
-        var measure = new FakeBinaryMeasure(11684189, uri, "Test measure", "[subject] does something");
+        var measure = new FakeBinaryMeasure(MeasureId.GetRandomId(), uri, "Test measure", "[subject] does something");
         Assert.Equal(uri, measure.Uri);
     }
 
@@ -20,7 +20,7 @@ public class MeasureTests
     public void CreateSetsMeasurementLevel()
     {
         var uri = new Uri("https://schema-test.dseapi.app/testing/measure");
-        var measure = new FakeBinaryMeasure(11684189, uri, "Test measure", "[subject] does something");
+        var measure = new FakeBinaryMeasure(MeasureId.GetRandomId(), uri, "Test measure", "[subject] does something");
         Assert.Equal(MeasurementLevel.Binary, measure.MeasurementLevel);
     }
 
@@ -28,7 +28,7 @@ public class MeasureTests
     public void CreateSetsName()
     {
         var uri = new Uri("https://schema-test.dseapi.app/testing/measure");
-        var measure = new FakeBinaryMeasure(11684189, uri, "Test measure", "[subject] does something");
+        var measure = new FakeBinaryMeasure(MeasureId.GetRandomId(), uri, "Test measure", "[subject] does something");
         Assert.Equal("Test measure", measure.Name);
     }
 
@@ -36,7 +36,7 @@ public class MeasureTests
     public void CreateSetsStatement()
     {
         var uri = new Uri("https://schema-test.dseapi.app/testing/measure");
-        var measure = new FakeBinaryMeasure(11684189, uri, "Test measure", "[subject] does something");
+        var measure = new FakeBinaryMeasure(MeasureId.GetRandomId(), uri, "Test measure", "[subject] does something");
         Assert.Equal("[subject] does something", measure.Statement);
     }
 }
@@ -51,7 +51,7 @@ public sealed record FakeBinaryObservation : Observation<bool>
     [JsonConstructor]
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    private FakeBinaryObservation(ulong id, ulong measureId, long timestamp, bool value)
+    private FakeBinaryObservation(ObservationId id, MeasureId measureId, long timestamp, bool value)
         : base(id, measureId, timestamp, value)
     {
     }
@@ -59,13 +59,13 @@ public sealed record FakeBinaryObservation : Observation<bool>
 
 public sealed record FakeBinaryMeasure : Measure<FakeBinaryObservation, bool>
 {
-    public FakeBinaryMeasure(ulong id, Uri uri, string name, string statement)
+    public FakeBinaryMeasure(MeasureId id, Uri uri, string name, string statement)
         : base(id, uri, MeasurementLevel.Binary, name, statement)
     {
     }
 
     [JsonConstructor]
-    public FakeBinaryMeasure(ulong id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
+    public FakeBinaryMeasure(MeasureId id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
         : base(id, uri, measurementLevel, name, statement)
     {
     }

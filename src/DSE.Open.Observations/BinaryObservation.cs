@@ -16,7 +16,7 @@ public record BinaryObservation : Observation<bool>
     [JsonConstructor]
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    protected BinaryObservation(ulong id, ulong measureId, long timestamp, bool value)
+    protected BinaryObservation(ObservationId id, MeasureId measureId, long timestamp, bool value)
         : base(id, measureId, timestamp, value)
     {
     }

@@ -9,7 +9,7 @@ namespace DSE.Open.Observations;
 public sealed record RatioMeasure : Measure<RatioObservation, Ratio>
 {
     [JsonConstructor]
-    public RatioMeasure(ulong id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
+    public RatioMeasure(MeasureId id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
         : base(id, uri, measurementLevel, name, statement)
     {
     }
