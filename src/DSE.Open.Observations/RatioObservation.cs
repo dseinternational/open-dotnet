@@ -7,9 +7,9 @@ using DSE.Open.Values;
 
 namespace DSE.Open.Observations;
 
-public sealed record RatioObservation : Observation<Ratio>
+public record RatioObservation : Observation<Ratio>
 {
-    public RatioObservation(Measure measure, DateTimeOffset time, Ratio value)
+    protected RatioObservation(Measure measure, DateTimeOffset time, Ratio value)
         : base(measure, time, value)
     {
     }
@@ -17,7 +17,7 @@ public sealed record RatioObservation : Observation<Ratio>
     [JsonConstructor]
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    internal RatioObservation(ulong id, ulong measureId, long timestamp, Ratio value)
+    protected RatioObservation(ulong id, ulong measureId, long timestamp, Ratio value)
         : base(id, measureId, timestamp, value)
     {
     }

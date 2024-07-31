@@ -7,9 +7,9 @@ using DSE.Open.Values;
 
 namespace DSE.Open.Observations;
 
-public sealed record AmountObservation : Observation<Amount>
+public record AmountObservation : Observation<Amount>
 {
-    public AmountObservation(Measure measure, DateTimeOffset time, Amount value)
+    protected AmountObservation(Measure measure, DateTimeOffset time, Amount value)
         : base(measure, time, value)
     {
     }
@@ -17,7 +17,7 @@ public sealed record AmountObservation : Observation<Amount>
     [JsonConstructor]
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    internal AmountObservation(ulong id, ulong measureId, long timestamp, Amount value)
+    protected AmountObservation(ulong id, ulong measureId, long timestamp, Amount value)
         : base(id, measureId, timestamp, value)
     {
     }

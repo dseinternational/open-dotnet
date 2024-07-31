@@ -6,9 +6,9 @@ using System.Text.Json.Serialization;
 
 namespace DSE.Open.Observations;
 
-public sealed record BinaryObservation : Observation<bool>
+public record BinaryObservation : Observation<bool>
 {
-    public BinaryObservation(Measure measure, DateTimeOffset time, bool value)
+    protected BinaryObservation(Measure measure, DateTimeOffset time, bool value)
         : base(measure, time, value)
     {
     }
@@ -16,7 +16,7 @@ public sealed record BinaryObservation : Observation<bool>
     [JsonConstructor]
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    internal BinaryObservation(ulong id, ulong measureId, long timestamp, bool value)
+    protected BinaryObservation(ulong id, ulong measureId, long timestamp, bool value)
         : base(id, measureId, timestamp, value)
     {
     }

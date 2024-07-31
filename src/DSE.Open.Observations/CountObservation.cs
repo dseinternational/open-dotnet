@@ -7,9 +7,9 @@ using DSE.Open.Values;
 
 namespace DSE.Open.Observations;
 
-public sealed record CountObservation : Observation<Count>
+public record CountObservation : Observation<Count>
 {
-    public CountObservation(Measure measure, DateTimeOffset time, Count value)
+    protected CountObservation(Measure measure, DateTimeOffset time, Count value)
         : base(measure, time, value)
     {
     }
@@ -17,7 +17,7 @@ public sealed record CountObservation : Observation<Count>
     [JsonConstructor]
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    internal CountObservation(ulong id, ulong measureId, long timestamp, Count value)
+    protected CountObservation(ulong id, ulong measureId, long timestamp, Count value)
         : base(id, measureId, timestamp, value)
     {
     }

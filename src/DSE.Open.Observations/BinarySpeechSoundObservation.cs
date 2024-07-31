@@ -9,9 +9,9 @@ using DSE.Open.Speech;
 
 namespace DSE.Open.Observations;
 
-public sealed record BinarySpeechSoundObservation : Observation<bool, SpeechSound>
+public record BinarySpeechSoundObservation : Observation<bool, SpeechSound>
 {
-    internal BinarySpeechSoundObservation(Measure measure, SpeechSound discriminator, DateTimeOffset time, bool value)
+    protected BinarySpeechSoundObservation(Measure measure, SpeechSound discriminator, DateTimeOffset time, bool value)
         : base(measure, discriminator, time, value)
     {
     }
@@ -19,7 +19,7 @@ public sealed record BinarySpeechSoundObservation : Observation<bool, SpeechSoun
     [JsonConstructor]
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    internal BinarySpeechSoundObservation(ulong id, ulong measureId, SpeechSound discriminator, long timestamp, bool value)
+    protected BinarySpeechSoundObservation(ulong id, ulong measureId, SpeechSound discriminator, long timestamp, bool value)
         : base(id, measureId, discriminator, timestamp, value)
     {
     }
