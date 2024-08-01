@@ -1,4 +1,4 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.ComponentModel;
@@ -18,6 +18,16 @@ public record BinarySentenceSnapshotSet
         Identifier trackerReference,
         ReadOnlyValueCollection<BinarySentenceSnapshot> snapshots)
         : base(created, updated, trackerReference, snapshots)
+    {
+    }
+
+    protected BinarySentenceSnapshotSet(
+        SnapshotSetId id,
+        DateTimeOffset created,
+        DateTimeOffset updated,
+        Identifier trackerReference,
+        ReadOnlyValueCollection<BinarySentenceSnapshot> snapshots)
+        : base(id, created, updated, trackerReference, snapshots)
     {
     }
 

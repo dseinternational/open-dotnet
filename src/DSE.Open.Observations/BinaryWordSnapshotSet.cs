@@ -21,6 +21,16 @@ public record BinaryWordSnapshotSet
     {
     }
 
+    protected BinaryWordSnapshotSet(
+        SnapshotSetId id,
+        DateTimeOffset created,
+        DateTimeOffset updated,
+        Identifier trackerReference,
+        ReadOnlyValueCollection<BinaryWordSnapshot> snapshots)
+        : base(id, created, updated, trackerReference, snapshots)
+    {
+    }
+
     [JsonConstructor]
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]

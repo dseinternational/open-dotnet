@@ -21,8 +21,17 @@ public abstract record SnapshotSet
         DateTimeOffset created,
         DateTimeOffset updated,
         Identifier trackerReference)
+        : this(SnapshotSetId.GetRandomId(), created, updated, trackerReference)
     {
-        Id = SnapshotSetId.GetRandomId();
+    }
+
+    protected SnapshotSet(
+        SnapshotSetId id,
+        DateTimeOffset created,
+        DateTimeOffset updated,
+        Identifier trackerReference)
+    {
+        Id = id;
         CreatedTimestamp = created.ToUnixTimeMilliseconds();
         UpdatedTimestamp = updated.ToUnixTimeMilliseconds();
         TrackerReference = trackerReference;
@@ -93,6 +102,18 @@ public abstract record SnapshotSet<TSnapshot, TObs, TValue> : SnapshotSet
         Snapshots = snapshots;
     }
 
+    protected SnapshotSet(
+        SnapshotSetId id,
+        DateTimeOffset created,
+        DateTimeOffset updated,
+        Identifier trackerReference,
+        ReadOnlyValueCollection<TSnapshot> snapshots)
+        : base(id, created, updated, trackerReference)
+    {
+        ArgumentNullException.ThrowIfNull(snapshots);
+        Snapshots = snapshots;
+    }
+
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     protected SnapshotSet(
@@ -124,6 +145,18 @@ public abstract record SnapshotSet<TSnapshot, TObs, TValue, TDisc> : SnapshotSet
         Identifier trackerReference,
         ReadOnlyValueCollection<TSnapshot> snapshots)
         : base(created, updated, trackerReference)
+    {
+        ArgumentNullException.ThrowIfNull(snapshots);
+        Snapshots = snapshots;
+    }
+
+    protected SnapshotSet(
+        SnapshotSetId id,
+        DateTimeOffset created,
+        DateTimeOffset updated,
+        Identifier trackerReference,
+        ReadOnlyValueCollection<TSnapshot> snapshots)
+        : base(id, created, updated, trackerReference)
     {
         ArgumentNullException.ThrowIfNull(snapshots);
         Snapshots = snapshots;

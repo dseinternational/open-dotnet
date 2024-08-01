@@ -1,4 +1,4 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.ComponentModel;
@@ -16,6 +16,16 @@ public record AmountSnapshotSet : SnapshotSet<AmountSnapshot, AmountObservation,
         Identifier trackerReference,
         ReadOnlyValueCollection<AmountSnapshot> snapshots)
         : base(created, updated, trackerReference, snapshots)
+    {
+    }
+
+    protected AmountSnapshotSet(
+        SnapshotSetId id,
+        DateTimeOffset created,
+        DateTimeOffset updated,
+        Identifier trackerReference,
+        ReadOnlyValueCollection<AmountSnapshot> snapshots)
+        : base(id, created, updated, trackerReference, snapshots)
     {
     }
 

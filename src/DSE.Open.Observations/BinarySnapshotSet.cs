@@ -19,6 +19,16 @@ public record BinarySnapshotSet : SnapshotSet<BinarySnapshot, BinaryObservation,
     {
     }
 
+    protected BinarySnapshotSet(
+        SnapshotSetId id,
+        DateTimeOffset created,
+        DateTimeOffset updated,
+        Identifier trackerReference,
+        ReadOnlyValueCollection<BinarySnapshot> snapshots)
+        : base(id, created, updated, trackerReference, snapshots)
+    {
+    }
+
     [JsonConstructor]
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]

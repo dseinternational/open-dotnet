@@ -21,6 +21,16 @@ public record BinarySpeechSoundSnapshotSet
     {
     }
 
+    protected BinarySpeechSoundSnapshotSet(
+        SnapshotSetId id,
+        DateTimeOffset created,
+        DateTimeOffset updated,
+        Identifier trackerReference,
+        ReadOnlyValueCollection<BinarySpeechSoundSnapshot> snapshots)
+        : base(id, created, updated, trackerReference, snapshots)
+    {
+    }
+
     [JsonConstructor]
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]

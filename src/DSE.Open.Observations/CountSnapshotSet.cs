@@ -19,6 +19,16 @@ public record CountSnapshotSet : SnapshotSet<CountSnapshot, CountObservation, Co
     {
     }
 
+    protected CountSnapshotSet(
+        SnapshotSetId id,
+        DateTimeOffset created,
+        DateTimeOffset updated,
+        Identifier trackerReference,
+        ReadOnlyValueCollection<CountSnapshot> snapshots)
+        : base(id, created, updated, trackerReference, snapshots)
+    {
+    }
+
     [JsonConstructor]
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
