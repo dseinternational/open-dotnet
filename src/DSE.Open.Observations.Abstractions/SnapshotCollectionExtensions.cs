@@ -1,4 +1,4 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 #pragma warning disable CA1005 // Avoid excessive parameters on generic types
@@ -27,6 +27,17 @@ public static class SnapshotCollectionExtensions
         where TValue : IEquatable<TValue>
     {
         return collection.Where(s => s.Observation.Value.Equals(value));
+    }
+
+    public static IEnumerable<TSnapshot> WhereMeasureAndValue<TSnapshot, TObs, TValue>(
+        this IEnumerable<TSnapshot> collection,
+        Measure meaure,
+        TValue value)
+        where TSnapshot : Snapshot<TObs, TValue>
+        where TObs : Observation<TValue>
+        where TValue : IEquatable<TValue>
+    {
+        return collection.Where(s => s.HasMeasure(meaure) && s.Observation.Value.Equals(value));
     }
 
     public static IEnumerable<TSnapshot> WhereMeasureAndValue<TSnapshot, TObs, TValue>(
