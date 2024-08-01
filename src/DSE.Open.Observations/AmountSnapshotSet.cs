@@ -20,7 +20,7 @@ public record AmountSnapshotSet : SnapshotSet<AmountSnapshot, AmountObservation,
     }
 
     protected AmountSnapshotSet(
-        SnapshotSetId id,
+        Identifier id,
         DateTimeOffset created,
         DateTimeOffset updated,
         Identifier trackerReference,
@@ -33,7 +33,7 @@ public record AmountSnapshotSet : SnapshotSet<AmountSnapshot, AmountObservation,
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     protected AmountSnapshotSet(
-        SnapshotSetId id,
+        Identifier id,
         long createdTimestamp,
         long updatedTimestamp,
         Identifier trackerReference,

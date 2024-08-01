@@ -20,7 +20,7 @@ public record BinarySnapshotSet : SnapshotSet<BinarySnapshot, BinaryObservation,
     }
 
     protected BinarySnapshotSet(
-        SnapshotSetId id,
+        Identifier id,
         DateTimeOffset created,
         DateTimeOffset updated,
         Identifier trackerReference,
@@ -33,7 +33,7 @@ public record BinarySnapshotSet : SnapshotSet<BinarySnapshot, BinaryObservation,
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     protected BinarySnapshotSet(
-        SnapshotSetId id,
+        Identifier id,
         long createdTimestamp,
         long updatedTimestamp,
         Identifier trackerReference,

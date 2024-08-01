@@ -21,12 +21,12 @@ public abstract record SnapshotSet
         DateTimeOffset created,
         DateTimeOffset updated,
         Identifier trackerReference)
-        : this(SnapshotSetId.GetRandomId(), created, updated, trackerReference)
+        : this(Identifier.New(36, "snp"u8), created, updated, trackerReference)
     {
     }
 
     protected SnapshotSet(
-        SnapshotSetId id,
+        Identifier id,
         DateTimeOffset created,
         DateTimeOffset updated,
         Identifier trackerReference)
@@ -40,7 +40,7 @@ public abstract record SnapshotSet
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     protected SnapshotSet(
-        SnapshotSetId id,
+        Identifier id,
         long createdTimestamp,
         long updatedTimestamp,
         Identifier trackerReference)
@@ -58,7 +58,7 @@ public abstract record SnapshotSet
     [JsonInclude]
     [JsonPropertyName("id")]
     [JsonPropertyOrder(-98000)]
-    public SnapshotSetId Id { get; }
+    public Identifier Id { get; }
 
     [JsonIgnore]
     public DateTimeOffset Created => DateTimeOffset.FromUnixTimeMilliseconds(CreatedTimestamp);
@@ -103,7 +103,7 @@ public abstract record SnapshotSet<TSnapshot, TObs, TValue> : SnapshotSet
     }
 
     protected SnapshotSet(
-        SnapshotSetId id,
+        Identifier id,
         DateTimeOffset created,
         DateTimeOffset updated,
         Identifier trackerReference,
@@ -117,7 +117,7 @@ public abstract record SnapshotSet<TSnapshot, TObs, TValue> : SnapshotSet
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     protected SnapshotSet(
-        SnapshotSetId id,
+        Identifier id,
         long createdTimestamp,
         long updatedTimestamp,
         Identifier trackerReference,
@@ -151,7 +151,7 @@ public abstract record SnapshotSet<TSnapshot, TObs, TValue, TDisc> : SnapshotSet
     }
 
     protected SnapshotSet(
-        SnapshotSetId id,
+        Identifier id,
         DateTimeOffset created,
         DateTimeOffset updated,
         Identifier trackerReference,
@@ -165,7 +165,7 @@ public abstract record SnapshotSet<TSnapshot, TObs, TValue, TDisc> : SnapshotSet
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     protected SnapshotSet(
-        SnapshotSetId id,
+        Identifier id,
         long createdTimestamp,
         long updatedTimestamp,
         Identifier trackerReference,

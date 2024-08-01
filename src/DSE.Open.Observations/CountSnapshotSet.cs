@@ -20,7 +20,7 @@ public record CountSnapshotSet : SnapshotSet<CountSnapshot, CountObservation, Co
     }
 
     protected CountSnapshotSet(
-        SnapshotSetId id,
+        Identifier id,
         DateTimeOffset created,
         DateTimeOffset updated,
         Identifier trackerReference,
@@ -33,7 +33,7 @@ public record CountSnapshotSet : SnapshotSet<CountSnapshot, CountObservation, Co
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     protected CountSnapshotSet(
-        SnapshotSetId id,
+        Identifier id,
         long createdTimestamp,
         long updatedTimestamp,
         Identifier trackerReference,

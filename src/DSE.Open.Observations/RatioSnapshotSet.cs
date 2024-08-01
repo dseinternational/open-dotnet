@@ -20,7 +20,7 @@ public record RatioSnapshotSet : SnapshotSet<RatioSnapshot, RatioObservation, Ra
     }
 
     protected RatioSnapshotSet(
-        SnapshotSetId id,
+        Identifier id,
         DateTimeOffset created,
         DateTimeOffset updated,
         Identifier trackerReference,
@@ -33,7 +33,7 @@ public record RatioSnapshotSet : SnapshotSet<RatioSnapshot, RatioObservation, Ra
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     protected RatioSnapshotSet(
-        SnapshotSetId id,
+        Identifier id,
         long createdTimestamp,
         long updatedTimestamp,
         Identifier trackerReference,

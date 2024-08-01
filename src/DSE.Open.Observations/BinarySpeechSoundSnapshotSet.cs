@@ -22,7 +22,7 @@ public record BinarySpeechSoundSnapshotSet
     }
 
     protected BinarySpeechSoundSnapshotSet(
-        SnapshotSetId id,
+        Identifier id,
         DateTimeOffset created,
         DateTimeOffset updated,
         Identifier trackerReference,
@@ -35,7 +35,7 @@ public record BinarySpeechSoundSnapshotSet
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     protected BinarySpeechSoundSnapshotSet(
-        SnapshotSetId id,
+        Identifier id,
         long createdTimestamp,
         long updatedTimestamp,
         Identifier trackerReference,
