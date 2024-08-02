@@ -48,6 +48,17 @@ public static class ObservationCollectionExtensions
         return collection.Where(o => o.HasMeasureId(id) && o.Value.Equals(value));
     }
 
+    public static IEnumerable<TObs> WhereMeasurement<TObs, TValue, TDisc>(
+        this IEnumerable<TObs> collection,
+        Measure measure,
+        TDisc discriminator)
+        where TObs : Observation<TValue, TDisc>
+        where TValue : IEquatable<TValue>
+        where TDisc : IEquatable<TDisc>
+    {
+        return collection.Where(o => o.HasMeasurement(measure, discriminator));
+    }
+
     public static IEnumerable<TObs> WhereMeasurementAndValue<TObs, TValue, TDisc>(
         this IEnumerable<TObs> collection,
         Measure measure,

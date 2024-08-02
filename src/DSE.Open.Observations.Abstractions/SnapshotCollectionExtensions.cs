@@ -51,6 +51,18 @@ public static class SnapshotCollectionExtensions
         return collection.Where(s => s.HasMeasureId(id) && s.Observation.Value.Equals(value));
     }
 
+    public static IEnumerable<TSnapshot> WhereMeasurement<TSnapshot, TObs, TValue, TDisc>(
+        this IEnumerable<TSnapshot> collection,
+        Measure measure,
+        TDisc discriminator)
+        where TSnapshot : Snapshot<TObs, TValue, TDisc>
+        where TObs : Observation<TValue, TDisc>
+        where TValue : IEquatable<TValue>
+        where TDisc : IEquatable<TDisc>
+    {
+        return collection.Where(s => s.HasMeasurement(measure, discriminator));
+    }
+
     public static IEnumerable<TSnapshot> WhereMeasurementAndValue<TSnapshot, TObs, TValue, TDisc>(
         this IEnumerable<TSnapshot> collection,
         Measure measure,
@@ -62,5 +74,15 @@ public static class SnapshotCollectionExtensions
         where TDisc : IEquatable<TDisc>
     {
         return collection.Where(s => s.HasMeasurement(measure, discriminator) && s.Observation.Value.Equals(value));
+    }
+
+    public static IEnumerable<TSnapshot> WhereObservation<TSnapshot, TObs>(
+        this IEnumerable<TSnapshot> collection,
+        Func<TObs, bool> observationPredicate)
+        where TSnapshot : Snapshot<TObs>
+        where TObs : Observation
+    {
+        ArgumentNullException.ThrowIfNull(observationPredicate);
+        return collection.Where(e => observationPredicate(e.Observation));
     }
 }
