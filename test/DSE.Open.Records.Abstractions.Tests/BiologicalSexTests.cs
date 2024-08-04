@@ -16,6 +16,19 @@ public class BiologicalSexTests
         Assert.Equal(value, deserialized);
     }
 
+    [Fact]
+    public void IsValidValue_WithUnknownValue_ShouldReturnFalse()
+    {
+        // Arrange
+        var value = AsciiString.Parse("notkwn", null);
+
+        // Act
+        var result = BiologicalSex.IsValidValue(value);
+
+        // Assert
+        Assert.False(result);
+    }
+
     public static TheoryData<BiologicalSex> Values { get; } = new()
     {
         BiologicalSex.Female,
