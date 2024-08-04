@@ -16,7 +16,7 @@ namespace DSE.Open.Observations;
 [StructLayout(LayoutKind.Auto)]
 public readonly partial struct MeasureId
     : IEquatableValue<MeasureId, ulong>,
-      IUtf8SpanSerializable<MeasureId>
+        IUtf8SpanSerializable<MeasureId>
 {
     public const ulong MinIdValue = 100000000001;
     public const ulong MaxIdValue = 999999999999;
@@ -68,17 +68,22 @@ public readonly partial struct MeasureId
         return FromInt64(value);
     }
 
-    public static long ToInt64(MeasureId value)
+    public long ToInt64()
     {
         unchecked
         {
-            return (long)value._value;
+            return (long)_value;
         }
+    }
+
+    public ulong ToUInt64()
+    {
+        return _value;
     }
 
     public static implicit operator long(MeasureId value)
     {
-        return ToInt64(value);
+        return (long)value._value;
     }
 
 #pragma warning disable CA5394 // Do not use insecure randomness

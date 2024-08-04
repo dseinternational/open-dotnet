@@ -37,7 +37,94 @@ public class MeasureTests
     {
         var uri = new Uri("https://schema-test.dseapi.app/testing/measure");
         var measure = new FakeBinaryMeasure(MeasureId.GetRandomId(), uri, "Test measure", "[subject] does something");
+
         Assert.Equal("[subject] does something", measure.Statement);
+    }
+
+    [Fact]
+    public void Equals_WithNull_ShouldReturnFalse()
+    {
+        // Arrange
+        var uri = new Uri("https://schema-test.dseapi.app/testing/measure");
+        var measure = new FakeBinaryMeasure(MeasureId.GetRandomId(), uri, "Test measure", "[subject] does something");
+
+        // Act
+#pragma warning disable CA1508 // Always false - testing this!
+        var result = measure.Equals(null);
+#pragma warning restore CA1508
+
+        // Assert
+        Assert.False(result);
+    }
+
+    [Fact]
+    public void Equals_WithEqualMeasureId_ShouldReturnTrue()
+    {
+        // Arrange
+        var sharedId = MeasureId.GetRandomId();
+
+        var uri1 = new Uri("https://schema-test.dseapi.app/testing/measure");
+        var measure1 = new FakeBinaryMeasure(sharedId, uri1, "Test measure 1", "[subject] does something 1");
+
+        var uri2 = new Uri("https://schema-test.dseapi.app/testing/measure");
+        var measure2 = new FakeBinaryMeasure(sharedId, uri2, "Test measure 2", "[subject] does something 2");
+
+        // Act
+        var result = measure1.Equals(measure2);
+
+        // Assert
+        Assert.True(result);
+    }
+
+    [Fact]
+    public void Equals_WithDifferentMeasureId_ShouldReturnFalse()
+    {
+        // Arrange
+        var uri = new Uri("https://schema-test.dseapi.app/testing/measure");
+        var measure1 = new FakeBinaryMeasure(MeasureId.GetRandomId(), uri, "Test measure", "[subject] does something");
+        var measure2 = new FakeBinaryMeasure(MeasureId.GetRandomId(), uri, "Test measure", "[subject] does something");
+
+        // Act
+        var result = measure1.Equals(measure2);
+
+        // Assert
+        Assert.False(result);
+    }
+
+    [Fact]
+    public void GetHashCode_WithSameId_ShouldReturnSameHashCode()
+    {
+        // Arrange
+        var sharedId = MeasureId.GetRandomId();
+
+        var uri1 = new Uri("https://schema-test.dseapi.app/testing/measure");
+        var measure1 = new FakeBinaryMeasure(sharedId, uri1, "Test measure 1", "[subject] does something 1");
+
+        var uri2 = new Uri("https://schema-test.dseapi.app/testing/measure");
+        var measure2 = new FakeBinaryMeasure(sharedId, uri2, "Test measure 2", "[subject] does something 2");
+
+        // Act
+        var hash1 = measure1.GetHashCode();
+        var hash2 = measure2.GetHashCode();
+
+        // Assert
+        Assert.Equal(hash1, hash2);
+    }
+
+    [Fact]
+    public void GetHashCode_WithDifferentIds_ShouldReturnFalse()
+    {
+        // Arrange
+        var uri = new Uri("https://schema-test.dseapi.app/testing/measure");
+        var measure1 = new FakeBinaryMeasure(MeasureId.GetRandomId(), uri, "Test measure", "[subject] does something");
+        var measure2 = new FakeBinaryMeasure(MeasureId.GetRandomId(), uri, "Test measure", "[subject] does something");
+
+        // Act
+        var hash1 = measure1.GetHashCode();
+        var hash2 = measure2.GetHashCode();
+
+        // Assert
+        Assert.NotEqual(hash1, hash2);
     }
 }
 
