@@ -59,6 +59,8 @@ public readonly partial struct Identifier : IEquatableValue<Identifier, AsciiStr
         _value = new(value);
     }
 
+    public int Length => _value.Length;
+
     public static bool IsValidValue(AsciiString value)
     {
         if (value.Length is < MinIdLength or > MaxLength)
