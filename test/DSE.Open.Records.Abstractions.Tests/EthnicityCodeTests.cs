@@ -131,6 +131,35 @@ public sealed class EthnicityCodeTests
     }
 
     [Fact]
+    public void IsValidValue_WithUnknownValue_ShouldReturnFalse()
+    {
+        // Arrange
+        const short value = 101;
+
+        // Act
+        var isValid = EthnicityCode.IsValidValue(value);
+
+        // Assert
+        Assert.False(isValid);
+    }
+
+    [Fact]
+    public void IsValidValue_WithValueOutOfRange_ShouldReturnFalse()
+    {
+        // Arrange
+        const short over = 1000;
+        const short under = 100;
+
+        // Act
+        var overIsValid = EthnicityCode.IsValidValue(over);
+        var underIsValid = EthnicityCode.IsValidValue(under);
+
+        // Assert
+        Assert.False(overIsValid);
+        Assert.False(underIsValid);
+    }
+
+    [Fact]
     public void JsonRoundTrip()
     {
         // Arrange

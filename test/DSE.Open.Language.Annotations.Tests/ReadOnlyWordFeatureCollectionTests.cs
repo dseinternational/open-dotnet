@@ -1,7 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Text.Json;
+using DSE.Open.Testing.Xunit;
 
 namespace DSE.Open.Language.Annotations;
 
@@ -27,15 +27,6 @@ public class ReadOnlyWordFeatureCollectionTests
     {
         var col = ReadOnlyWordFeatureCollection.ParseInvariant(feature);
         Assert.Equal(count, col.Count);
-        var json = JsonSerializer.Serialize(col);
-        var deserialized = JsonSerializer.Deserialize<ReadOnlyWordFeatureCollection>(json);
-
-        Assert.NotNull(deserialized);
-        Assert.Equal(count, deserialized.Count);
-
-        for (var i = 0; i < deserialized.Count; i++)
-        {
-            Assert.Equal(col[i], deserialized[i]);
-        }
+        AssertJson.Roundtrip(col);
     }
 }

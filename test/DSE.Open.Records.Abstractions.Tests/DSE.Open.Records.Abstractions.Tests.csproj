@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\DSE.Open.Records.Abstractions\DSE.Open.Records.Abstractions.csproj" />
+    <ProjectReference Include="..\..\src\DSE.Open.Testing.Xunit\DSE.Open.Testing.Xunit.csproj" />
   </ItemGroup>
 
   <ItemGroup>

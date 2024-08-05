@@ -1,7 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Text.Json;
+using DSE.Open.Testing.Xunit;
 
 namespace DSE.Open.Language.Abstractions.Tests;
 
@@ -28,8 +28,6 @@ public class SignTests
     public void SerializeDeserialize(string signValue)
     {
         var sign = Sign.Parse(signValue, CultureInfo.InvariantCulture);
-        var json = JsonSerializer.Serialize(sign);
-        var deserialized = JsonSerializer.Deserialize<Sign>(json);
-        Assert.Equal(sign, deserialized);
+        AssertJson.Roundtrip(sign);
     }
 }

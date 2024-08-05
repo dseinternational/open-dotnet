@@ -1,7 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Text.Json;
+using DSE.Open.Testing.Xunit;
 
 namespace DSE.Open.Language.Abstractions.Tests;
 
@@ -15,9 +15,7 @@ public class WordTests
     public void SerializeDeserialize(string wordValue)
     {
         var word = WordText.Parse(wordValue, CultureInfo.InvariantCulture);
-        var json = JsonSerializer.Serialize(word);
-        var deserialized = JsonSerializer.Deserialize<WordText>(json);
-        Assert.Equal(word, deserialized);
+        AssertJson.Roundtrip(word);
     }
 
     [Theory]

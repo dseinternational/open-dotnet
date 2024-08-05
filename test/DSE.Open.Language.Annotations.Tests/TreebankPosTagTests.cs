@@ -1,7 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Text.Json;
+using DSE.Open.Testing.Xunit;
 
 namespace DSE.Open.Language.Annotations;
 
@@ -20,9 +20,7 @@ public class TreebankPosTagTests
     public void Serialize_deserialize(string tagStr)
     {
         var tag = TreebankPosTag.ParseInvariant(tagStr);
-        var json = JsonSerializer.Serialize(tag);
-        var deserialized = JsonSerializer.Deserialize<TreebankPosTag>(json);
-        Assert.Equal(tag, deserialized);
+        AssertJson.Roundtrip(tag);
     }
 
     public static readonly TheoryData<string> Tags = new()
