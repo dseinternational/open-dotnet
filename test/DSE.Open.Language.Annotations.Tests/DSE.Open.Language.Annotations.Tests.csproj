@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\DSE.Open.Language.Annotations\DSE.Open.Language.Annotations.csproj" />
+    <ProjectReference Include="..\..\src\DSE.Open.Testing.Xunit\DSE.Open.Testing.Xunit.csproj" />
   </ItemGroup>
 
   <ItemGroup>

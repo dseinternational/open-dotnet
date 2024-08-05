@@ -1,7 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Text.Json;
+using DSE.Open.Testing.Xunit;
 
 namespace DSE.Open.Language.Annotations;
 
@@ -81,11 +81,7 @@ public class TokenTests
             ]
         };
 
-        var json = JsonSerializer.Serialize(token);
-
-        var deserialized = JsonSerializer.Deserialize<Token>(json);
-
-        Assert.Equal(token, deserialized);
+        AssertJson.Roundtrip(token);
     }
 
     [Fact]

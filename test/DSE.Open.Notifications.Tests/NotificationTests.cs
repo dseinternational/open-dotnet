@@ -1,8 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Text.Json;
-using DSE.Open.Text.Json;
+using DSE.Open.Testing.Xunit;
 
 namespace DSE.Open.Notifications.Tests;
 
@@ -82,13 +81,6 @@ public class NotificationTests
     public void Serialize_Deserialize()
     {
         var n1 = Notification.Warning("CODE123456", "Message");
-        var json = JsonSerializer.Serialize(n1, JsonSharedOptions.RelaxedJsonEscaping);
-        var n2 = JsonSerializer.Deserialize<Notification>(json, JsonSharedOptions.RelaxedJsonEscaping);
-        Assert.NotNull(n2);
-        Assert.Equal(n1.Code, n2.Code);
-        Assert.Equal(n1.Level, n2.Level);
-        Assert.Equal(n1.Message, n2.Message);
-        Assert.Equal(n1, n2);
-        Assert.Equal(n1.GetHashCode(), n2.GetHashCode());
+        AssertJson.Roundtrip(n1);
     }
 }

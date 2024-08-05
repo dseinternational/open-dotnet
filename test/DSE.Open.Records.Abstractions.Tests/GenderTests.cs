@@ -1,9 +1,9 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Text.Json;
+using DSE.Open.Testing.Xunit;
 
-namespace DSE.Open.Records.Tests;
+namespace DSE.Open.Records.Abstractions.Tests;
 
 public class GenderTests
 {
@@ -11,9 +11,7 @@ public class GenderTests
     [MemberData(nameof(Values))]
     public void SerializeDeserialize(Gender value)
     {
-        var json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Gender>(json);
-        Assert.Equal(value, deserialized);
+        AssertJson.Roundtrip(value);
     }
 
     public static TheoryData<Gender> Values { get; } = new()
