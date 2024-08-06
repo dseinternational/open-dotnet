@@ -31,13 +31,24 @@ public static class SnapshotCollectionExtensions
 
     public static IEnumerable<TSnapshot> WhereMeasureAndValue<TSnapshot, TObs, TValue>(
         this IEnumerable<TSnapshot> collection,
-        Measure meaure,
+        Measure measure,
         TValue value)
         where TSnapshot : Snapshot<TObs, TValue>
         where TObs : Observation<TValue>
         where TValue : IEquatable<TValue>
     {
-        return collection.Where(s => s.HasMeasure(meaure) && s.Observation.Value.Equals(value));
+        return collection.Where(s => s.HasMeasure(measure) && s.Observation.Value.Equals(value));
+    }
+
+    public static bool AnyWithMeasureAndValue<TSnapshot, TObs, TValue>(
+        this IEnumerable<TSnapshot> collection,
+        Measure measure,
+        TValue value)
+        where TSnapshot : Snapshot<TObs, TValue>
+        where TObs : Observation<TValue>
+        where TValue : IEquatable<TValue>
+    {
+        return collection.Any(s => s.HasMeasure(measure) && s.Observation.Value.Equals(value));
     }
 
     public static IEnumerable<TSnapshot> WhereMeasureAndValue<TSnapshot, TObs, TValue>(
@@ -74,6 +85,19 @@ public static class SnapshotCollectionExtensions
         where TDisc : IEquatable<TDisc>
     {
         return collection.Where(s => s.HasMeasurement(measure, discriminator) && s.Observation.Value.Equals(value));
+    }
+
+    public static bool AnyWithMeasurementAndValue<TSnapshot, TObs, TValue, TDisc>(
+        this IEnumerable<TSnapshot> collection,
+        Measure measure,
+        TDisc discriminator,
+        TValue value)
+        where TSnapshot : Snapshot<TObs, TValue, TDisc>
+        where TObs : Observation<TValue, TDisc>
+        where TValue : IEquatable<TValue>
+        where TDisc : IEquatable<TDisc>
+    {
+        return collection.Any(s => s.HasMeasurement(measure, discriminator) && s.Observation.Value.Equals(value));
     }
 
     public static IEnumerable<TSnapshot> WhereObservation<TSnapshot, TObs>(
