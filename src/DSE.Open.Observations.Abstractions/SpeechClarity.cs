@@ -18,7 +18,7 @@ public readonly partial struct SpeechClarity
     : IComparableValue<SpeechClarity, uint>,
       IUtf8SpanSerializable<SpeechClarity>
 {
-    private const uint EmergingValue = 10;
+    private const uint UnclearValue = 10;
     private const uint DevelopingValue = 50;
     private const uint ClearValue = 90;
 
@@ -28,14 +28,14 @@ public readonly partial struct SpeechClarity
 
     public static bool IsValidValue(uint value)
     {
-        return value is EmergingValue or DevelopingValue or ClearValue;
+        return value is UnclearValue or DevelopingValue or ClearValue;
     }
 
     /// <summary>
     /// Sometimes recognizable to familiar listeners, but unclear and usually not
     /// recognised by unfamiliar listeners.
     /// </summary>
-    public static SpeechClarity Unclear => new(EmergingValue);
+    public static SpeechClarity Unclear => new(UnclearValue);
 
     /// <summary>
     /// Clarity is improving, but still not ideal: mostly understood by familiar listeners, but
