@@ -18,6 +18,7 @@ public readonly partial struct BehaviorFrequency
     : IComparableValue<BehaviorFrequency, uint>,
       IUtf8SpanSerializable<BehaviorFrequency>
 {
+    private const uint NeverValue = 0;
     private const uint EmergingValue = 10;
     private const uint DevelopingValue = 50;
     private const uint AchievedValue = 90;
@@ -28,8 +29,10 @@ public readonly partial struct BehaviorFrequency
 
     public static bool IsValidValue(uint value)
     {
-        return value is EmergingValue or DevelopingValue or AchievedValue;
+        return value is NeverValue or EmergingValue or DevelopingValue or AchievedValue;
     }
+
+    public static BehaviorFrequency Never => new(NeverValue);
 
     public static BehaviorFrequency Emerging => new(EmergingValue);
 
