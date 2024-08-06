@@ -1,0 +1,39 @@
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Down Syndrome Education International and Contributors licence this file to you under the MIT license.
+
+using System.Runtime.InteropServices;
+using System.Text.Json.Serialization;
+using DSE.Open.Values;
+using DSE.Open.Values.Text.Json.Serialization;
+
+namespace DSE.Open.Observations;
+
+/// <summary>
+/// A rating of the frequency of an emerging behavior.
+/// </summary>
+[ComparableValue]
+[JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<BehaviorFrequency, uint>))]
+[StructLayout(LayoutKind.Auto)]
+public readonly partial struct BehaviorFrequency
+    : IComparableValue<BehaviorFrequency, uint>,
+      IUtf8SpanSerializable<BehaviorFrequency>
+{
+    private const uint EmergingValue = 10;
+    private const uint DevelopingValue = 50;
+    private const uint AchievedValue = 90;
+
+    public static int MaxSerializedCharLength => 2;
+
+    public static int MaxSerializedByteLength => 2;
+
+    public static bool IsValidValue(uint value)
+    {
+        return value is EmergingValue or DevelopingValue or AchievedValue;
+    }
+
+    public static BehaviorFrequency Emerging => new(EmergingValue);
+
+    public static BehaviorFrequency Developing => new(DevelopingValue);
+
+    public static BehaviorFrequency Achieved => new(AchievedValue);
+}
