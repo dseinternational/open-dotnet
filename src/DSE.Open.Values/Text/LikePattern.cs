@@ -202,7 +202,7 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
     /// Indicates if the specified value matches the pattern.
     /// </summary>
     /// <param name="value"></param>
-    /// <returns><see langword="true"/> if the specified value matches the patterm; otherwise, <see langword="false"/>.</returns>
+    /// <returns><see langword="true"/> if the specified value matches the pattern; otherwise, <see langword="false"/>.</returns>
     /// <remarks>This method performs an ordinal comparison.</remarks>
     public bool IsMatch(string value)
     {
@@ -214,7 +214,7 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
     /// </summary>
     /// <param name="value"></param>
     /// <param name="comparison"></param>
-    /// <returns><see langword="true"/> if the specified value matches the patterm; otherwise, <see langword="false"/>.</returns>
+    /// <returns><see langword="true"/> if the specified value matches the pattern; otherwise, <see langword="false"/>.</returns>
     /// <returns></returns>
     public bool IsMatch(string value, StringComparison comparison)
     {
@@ -374,6 +374,8 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
         StringComparison comparison,
         out bool matched)
     {
+        Debug.Assert(patternToMatch[patternIndex] == '[');
+
         patternIndex++;
 
         if (patternIndex >= patternToMatch.Length)
@@ -383,10 +385,9 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
             return true;
         }
 
-        // We want the first range. If there are _more than 1_ ranges, then the range for the _remainder_ of of the
-        // pattern will be in the second range.
+        // We want the first range from `Split`. If there are _more than 1_ ranges, then the range for the _remainder_
+        // of the pattern will be in the second range.
         Span<Range> rangeBuffer = stackalloc Range[2];
-
         var written = patternToMatch.AsSpan(patternIndex).Split(rangeBuffer, ']');
 
         Debug.Assert(written == 2);
@@ -404,14 +405,28 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
         var end = rangeBuffer[0].End.Value + patternIndex;
         var set = patternToMatch.AsSpan(start, end - start);
 
-        if (set.Length == 0)
+        switch (set.Length)
         {
-            throw new FormatException("Range contains no characters");
+            case 0:
+                throw new FormatException("Range contains no characters");
+            case 3 when set[1] == '-':
+                return TryMatchRange(
+                    ref patternIndex,
+                    ref valueIndex,
+                    value,
+                    set,
+                    out matched);
+            case 4 when set[0] == '^' && set[2] == '-':
+                return TryMatchNegatedRange(
+                    ref patternIndex,
+                    ref valueIndex,
+                    value,
+                    set,
+                    out matched);
         }
 
         var v = value[valueIndex];
 
-        // TODO: support range - e.g. [a-z]
         if (patternToMatch[indexOfOpeningBracket + 1] == '^')
         {
             // Negated set
@@ -439,6 +454,77 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
             patternIndex += set.Length + 1;
             valueIndex++;
         }
+
+        matched = default;
+        return false;
+    }
+
+    private static bool TryMatchRange(
+        ref int patternIndex,
+        ref int valueIndex,
+        string value,
+        ReadOnlySpan<char> range,
+        out bool matched)
+    {
+        var rangeStart = range[0];
+        var rangeEnd = range[2];
+
+        if (rangeStart > rangeEnd)
+        {
+            throw new FormatException($"The specified range ('[{rangeStart}-{rangeEnd}']) is invalid.");
+        }
+
+        if (!(char.IsAscii(rangeStart) && char.IsAscii(rangeEnd)))
+        {
+            throw new FormatException($"Only ASCII ranges are supported by {nameof(LikePattern)}");
+        }
+
+        if (value[valueIndex] > rangeEnd || value[valueIndex] < rangeStart)
+        {
+            matched = false;
+            return true;
+        }
+
+        patternIndex += range.Length + 1;
+        valueIndex += 1;
+
+        matched = default;
+        return false;
+    }
+
+
+    private static bool TryMatchNegatedRange(
+        ref int patternIndex,
+        ref int valueIndex,
+        string value,
+        ReadOnlySpan<char> range,
+        out bool matched)
+    {
+        Debug.Assert(range.Length == 4);
+        Debug.Assert(range[0] == '^');
+        Debug.Assert(range[2] == '-');
+
+        var rangeStart = range[1];
+        var rangeEnd = range[3];
+
+        if (rangeStart > rangeEnd)
+        {
+            throw new FormatException($"The specified range ('[{rangeStart}-{rangeEnd}']) is invalid.");
+        }
+
+        if (!(char.IsAscii(rangeStart) && char.IsAscii(rangeEnd)))
+        {
+            throw new FormatException($"Only ASCII ranges are supported by {nameof(LikePattern)}");
+        }
+
+        if (value[valueIndex] >= rangeStart && value[valueIndex] <= rangeEnd)
+        {
+            matched = false;
+            return true;
+        }
+
+        patternIndex += range.Length + 1;
+        valueIndex += 1;
 
         matched = default;
         return false;
