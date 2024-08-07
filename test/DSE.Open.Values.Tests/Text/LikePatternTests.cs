@@ -76,6 +76,8 @@ public class LikePatternTests
     [InlineData(@"a\[abc\]", "a[[]abc]")]
     [InlineData(@"\*", "*")]
     [InlineData(@"\?", "?")]
+    [InlineData("[a-z]", "[a-z]")]
+    [InlineData("[^a-z]", "[^a-z]")]
     public void ToSqlLikePattern_returns_expected_pattern(string pattern, string sqlLikePattern)
     {
         // Arrange

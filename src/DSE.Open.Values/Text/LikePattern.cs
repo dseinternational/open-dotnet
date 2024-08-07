@@ -466,6 +466,8 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
         ReadOnlySpan<char> range,
         out bool matched)
     {
+        Debug.Assert(range[1] == '-');
+
         var rangeStart = range[0];
         var rangeEnd = range[2];
 
