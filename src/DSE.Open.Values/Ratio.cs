@@ -10,7 +10,7 @@ namespace DSE.Open.Values;
 /// </summary>
 [DivisibleValue]
 [StructLayout(LayoutKind.Auto)]
-public readonly partial struct Ratio : IDivisibleValue<Ratio, double>, IUtf8SpanSerializable<Ratio>
+public readonly partial struct Ratio : IDivisibleValue<Ratio, decimal>, IUtf8SpanSerializable<Ratio>
 {
     public static int MaxSerializedCharLength => 128; // TODO
 
@@ -18,14 +18,14 @@ public readonly partial struct Ratio : IDivisibleValue<Ratio, double>, IUtf8Span
 
     public static Ratio Zero { get; } = new(0);
 
-    public static bool IsValidValue(double value)
+    public static bool IsValidValue(decimal value)
     {
-        return value is >= -1 and <= 1;
+        return value is >= -1m and <= 1m;
     }
 
     public Percent ToPercent()
     {
-        return (Percent)(_value * 100);
+        return (Percent)(_value * 100m);
     }
 
     public static explicit operator Ratio(Percent value)
@@ -35,6 +35,6 @@ public readonly partial struct Ratio : IDivisibleValue<Ratio, double>, IUtf8Span
 
     public static Ratio FromPercent(Percent value)
     {
-        return new((double)value / 100);
+        return new((decimal)value / 100m);
     }
 }
