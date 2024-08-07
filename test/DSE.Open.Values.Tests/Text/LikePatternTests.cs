@@ -2,9 +2,8 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Text.Json;
-using DSE.Open.Values.Text;
 
-namespace DSE.Open.Values.Tests.Text;
+namespace DSE.Open.Values.Text;
 
 public class LikePatternTests
 {
@@ -21,6 +20,20 @@ public class LikePatternTests
     [InlineData("a[abc][abc]", "aca")]
     [InlineData("a[[]", "a[")]
     [InlineData("[[]a*", "[abcde")]
+    [InlineData(@"a\[abc\]", "a[abc]")]
+    [InlineData(@"a\[\[\]\]", "a[[]]")]
+    [InlineData("a[[]]", "a[]")] // The outer brackets mean the inner are treated as literals
+    [InlineData(@"\\a", @"\a")]
+    [InlineData(@"\*", "*")]
+    [InlineData(@"\?", "?")]
+    [InlineData(@"\[]", "[]")]
+    [InlineData(@"\[\]", "[]")]
+    [InlineData("a*?b", "abb")]
+    [InlineData("[az]", "z")]
+    [InlineData("[a-z]", "b")]
+    [InlineData("[^a-c]", "d")]
+    [InlineData("[a-c]", "b")]
+    [InlineData("[0-9]", "1")]
     public void IsMatch_returns_true_for_matches(string pattern, string value)
     {
         Assert.True(new LikePattern(pattern).IsMatch(value, StringComparison.Ordinal));
@@ -39,6 +52,12 @@ public class LikePatternTests
     [InlineData("a[abc][abc]", "acd")]
     [InlineData("a[[]", "abc[")]
     [InlineData("[[]a*", "a[abcde")]
+    [InlineData(@"a\[abc\]", "aa")]
+    [InlineData("a*?b", "ab")] // `?` requires exactly 1 character, this pattern requires 2 'b's
+    [InlineData("a*?", "a")] // `?` requires exactly 1 character, this pattern requires 1 more character
+    [InlineData("a?", "a")]
+    [InlineData("[a-z]", "A")]
+    [InlineData("[0-9]", "a")]
     public void IsNotMatch_returns_false_for_nonmatches(string pattern, string value)
     {
         Assert.False(new LikePattern(pattern).IsMatch(value, StringComparison.Ordinal));
@@ -54,9 +73,21 @@ public class LikePatternTests
     [InlineData("abcd*", "abcd%")]
     [InlineData("a[abc]", "a[abc]")]
     [InlineData("a[[][abc]", "a[[][abc]")]
+    [InlineData(@"a\[abc\]", "a[[]abc]")]
+    [InlineData(@"\*", "*")]
+    [InlineData(@"\?", "?")]
+    [InlineData("[a-z]", "[a-z]")]
+    [InlineData("[^a-z]", "[^a-z]")]
     public void ToSqlLikePattern_returns_expected_pattern(string pattern, string sqlLikePattern)
     {
-        Assert.Equal(new LikePattern(pattern).ToSqlLikePattern(), sqlLikePattern);
+        // Arrange
+        var likePattern = new LikePattern(pattern);
+
+        // Act
+        var result = likePattern.ToSqlLikePattern();
+
+        // Assert
+        Assert.Equal(sqlLikePattern, result);
     }
 
     [Fact]

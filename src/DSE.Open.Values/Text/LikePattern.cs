@@ -17,17 +17,18 @@ namespace DSE.Open.Values.Text;
 /// <remarks>
 /// <list type="bullet">
 /// <item>
-/// <term>*</term>
+/// <term>?</term>
 /// <description>Matches any single character.</description>
 /// </item>
 /// <item>
-/// <term>?</term>
+/// <term>*</term>
 /// <description>Matches any string of zero or more characters.</description>
 /// </item>
 /// <item>
 /// <term>[ ]</term>
 /// <description>Any single character within the specified range
-/// <c>[a-f]</c> or set <c>[abcdef]</c>.</description>
+/// <c>[a-f]</c> or set <c>[abcdef]</c>. Brackets inside a set are treated as
+/// literals.</description>
 /// </item>
 /// <item>
 /// <term>[^ ]</term>
@@ -49,7 +50,9 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
     /// </remarks>
     private readonly string? _pattern;
 
-    public LikePattern(string pattern) : this(pattern, true) { }
+    public LikePattern(string pattern) : this(pattern, true)
+    {
+    }
 
     private LikePattern(string pattern, bool validate)
     {
@@ -63,7 +66,9 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
         _pattern = pattern;
     }
 
-    public LikePattern(ReadOnlySpan<char> pattern) : this(pattern, true) { }
+    public LikePattern(ReadOnlySpan<char> pattern) : this(pattern, true)
+    {
+    }
 
     private LikePattern(ReadOnlySpan<char> pattern, bool validate)
     {
@@ -97,8 +102,8 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
 
     public bool Equals(string? other, StringComparison comparison)
     {
-        return other is not null
-               && ((_pattern is null && other.Length == 0) || string.Equals(_pattern, other, comparison));
+        return other is not null &&
+            ((_pattern is null && other.Length == 0) || string.Equals(_pattern, other, comparison));
     }
 
     public static bool TryParse(ReadOnlySpan<char> s, out LikePattern result)
@@ -163,7 +168,11 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
         return Parse(s.AsSpan(), provider);
     }
 
-    public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider? provider)
+    public bool TryFormat(
+        Span<char> destination,
+        out int charsWritten,
+        ReadOnlySpan<char> format,
+        IFormatProvider? provider)
     {
         var span = _pattern.AsSpan();
 
@@ -193,7 +202,7 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
     /// Indicates if the specified value matches the pattern.
     /// </summary>
     /// <param name="value"></param>
-    /// <returns><see langword="true"/> if the specified value matches the patterm; otherwise, <see langword="false"/>.</returns>
+    /// <returns><see langword="true"/> if the specified value matches the pattern; otherwise, <see langword="false"/>.</returns>
     /// <remarks>This method performs an ordinal comparison.</remarks>
     public bool IsMatch(string value)
     {
@@ -205,7 +214,7 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
     /// </summary>
     /// <param name="value"></param>
     /// <param name="comparison"></param>
-    /// <returns><see langword="true"/> if the specified value matches the patterm; otherwise, <see langword="false"/>.</returns>
+    /// <returns><see langword="true"/> if the specified value matches the pattern; otherwise, <see langword="false"/>.</returns>
     /// <returns></returns>
     public bool IsMatch(string value, StringComparison comparison)
     {
@@ -218,10 +227,16 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
         var patternIndex = 0;
         var valueIndex = 0;
 
+        var escapeNext = false;
+
         while (true)
         {
+            var escapeThis = escapeNext;
+            escapeNext = false;
+
             if (patternIndex >= patternToMatch.Length)
             {
+                // If we've reached the end of the pattern without returning, then the pattern has matched the value
                 return valueIndex >= value.Length;
             }
 
@@ -229,120 +244,292 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
 
             if (valueIndex >= value.Length)
             {
-                // end of value
-                return p == '*';
+                if (p != '*')
+                {
+                    return false;
+                }
+
+                if (patternIndex == patternToMatch.Length - 1)
+                {
+                    return true;
+                }
+
+                return patternToMatch[patternIndex + 1] != '?';
             }
 
             var v = value[valueIndex];
 
-            switch (p)
+            if (!escapeThis)
             {
-                case '*':
-                    // skip any number of characters
-
-                    patternIndex++;
-
-                    if (patternIndex >= patternToMatch.Length)
-                    {
-                        // * at end of pattern matches everything
-                        return true;
-                    }
-
-                    // skip until next match
-
-                    while (true)
-                    {
-                        if (valueIndex >= value.Length)
+                switch (p)
+                {
+                    case '*':
+                        if (TryMatchAsterisk(
+                                ref patternIndex,
+                                ref valueIndex,
+                                patternToMatch,
+                                value,
+                                out var matched))
                         {
-                            // end of value
-                            return false;
+                            return matched;
                         }
 
-                        var c = value[valueIndex];
+                        continue;
 
-                        if (comparer.Equals(c, patternToMatch[patternIndex]))
-                        {
-                            // found next match
-                            break;
-                        }
-
+                    case '?':
+                        patternIndex++;
                         valueIndex++;
-                    }
+                        continue;
 
-                    break;
+                    case '[':
+                        if (TryMatchSet(
+                                ref patternIndex,
+                                ref valueIndex,
+                                patternToMatch,
+                                value,
+                                comparison,
+                                out matched))
+                        {
+                            return matched;
+                        }
+                        continue;
 
-                case '?':
-                    // skip a single character
-
-                    patternIndex++;
-                    valueIndex++;
-
-                    break;
-
-                case '[':
-                    // match any character in set
-
-                    patternIndex++;
-
-                    if (patternIndex >= patternToMatch.Length)
-                    {
-                        // [ at end of patternToMatch matches nothing
-                        return false;
-                    }
-
-                    // TODO: escaped ']' - e.g. "\]"
-
-                    var set = patternToMatch[patternIndex..].Split(']')[0];
-
-                    if (set.Length == 0)
-                    {
-                        // [] matches nothing
-                        return false;
-                    }
-
-                    // TODO: support range - e.g. [a-z]
-
-                    if (!set.Contains(v, comparison))
-                    {
-                        // no match
-                        return false;
-                    }
-
-                    patternIndex += set.Length + 1;
-                    valueIndex++;
-                    break;
-
-                case '\\':
-
-                    // escape
-
-                    // TODO: support [] escaping
-                    // https://learn.microsoft.com/en-us/sql/t-sql/language-elements/like-transact-sql?view=sql-server-ver16#pattern-match-with-the-escape-clause
-
-                    patternIndex++;
-
-                    if (patternIndex >= patternToMatch.Length)
-                    {
-                        // \ at end of patternToMatch matches nothing
-                        return false;
-                    }
-
-                    p = patternToMatch[patternIndex];
-                    goto default;
-
-                default:
-
-                    if (!comparer.Equals(p, v))
-                    {
-                        // no match
-                        return false;
-                    }
-
-                    patternIndex++;
-                    valueIndex++;
-                    break;
+                    case '\\':
+                        escapeNext = true;
+                        patternIndex++;
+                        continue;
+                }
             }
+
+            if (!comparer.Equals(p, v))
+            {
+                return false;
+            }
+
+            patternIndex++;
+            valueIndex++;
         }
+    }
+
+    private static bool TryMatchAsterisk(
+        ref int patternIndex,
+        ref int valueIndex,
+        string patternToMatch,
+        string value,
+        out bool matched)
+    {
+        patternIndex++;
+
+        if (patternIndex >= patternToMatch.Length)
+        {
+            // `*` at end of pattern matches everything
+            matched = true;
+            return true;
+        }
+
+        if (patternToMatch[patternIndex] == '?')
+        {
+            // `*?` matches any string of _one or more_ characters. As such, we can't match 0 characters here, so make
+            // sure that another character is present in the value by passing off to `?` matching.
+            matched = false;
+            return false;
+        }
+
+        // skip until next match
+        while (true)
+        {
+            if (valueIndex >= value.Length)
+            {
+                // reached the end of the value without finding a match
+                matched = false;
+                return true;
+            }
+
+            var valueChar = value[valueIndex];
+            var patternChar = patternToMatch[patternIndex];
+
+            if (valueChar.Equals(patternChar))
+            {
+                // matched the `*` pattern. Break to continue matching the rest of the pattern.
+                matched = default;
+                return false;
+            }
+
+            valueIndex++;
+        }
+    }
+
+    /// <summary>
+    /// Returns <see langword="true"/> it can be determined that the pattern matches or does not match the value; in
+    /// this case, the value of <paramref name="matched"/> represents whether the range pattern matches. Otherwise,
+    /// <see langword="false"/> is returned and <paramref name="matched"/> is meaningless and always
+    /// <see langword="default"/>
+    /// </summary>
+    /// <exception cref="FormatException">Thrown if there is a range bracket with no unescaped counterpart.</exception>
+    private static bool TryMatchSet(
+        ref int patternIndex,
+        ref int valueIndex,
+        string patternToMatch,
+        string value,
+        StringComparison comparison,
+        out bool matched)
+    {
+        Debug.Assert(patternToMatch[patternIndex] == '[');
+
+        patternIndex++;
+
+        if (patternIndex >= patternToMatch.Length)
+        {
+            // [ at end of patternToMatch matches nothing
+            matched = false;
+            return true;
+        }
+
+        // We want the first range from `Split`. If there are _more than 1_ ranges, then the range for the _remainder_
+        // of the pattern will be in the second range.
+        Span<Range> rangeBuffer = stackalloc Range[2];
+        var written = patternToMatch.AsSpan(patternIndex).Split(rangeBuffer, ']');
+
+        Debug.Assert(written == 2);
+
+        var currentRange = rangeBuffer[0];
+
+        var indexOfOpeningBracket = patternIndex - 1;
+        var indexOfClosingBracket = patternIndex + currentRange.End.Value;
+
+        Debug.Assert(indexOfOpeningBracket < indexOfClosingBracket);
+        Debug.Assert(patternToMatch[indexOfOpeningBracket] == '[');
+        Debug.Assert(patternToMatch[indexOfClosingBracket] == ']');
+
+        var start = rangeBuffer[0].Start.Value + patternIndex;
+        var end = rangeBuffer[0].End.Value + patternIndex;
+        var set = patternToMatch.AsSpan(start, end - start);
+
+        switch (set.Length)
+        {
+            case 0:
+                throw new FormatException("Range contains no characters");
+            case 3 when set[1] == '-':
+                return TryMatchRange(
+                    ref patternIndex,
+                    ref valueIndex,
+                    value,
+                    set,
+                    out matched);
+            case 4 when set[0] == '^' && set[2] == '-':
+                return TryMatchNegatedRange(
+                    ref patternIndex,
+                    ref valueIndex,
+                    value,
+                    set,
+                    out matched);
+        }
+
+        var v = value[valueIndex];
+
+        if (patternToMatch[indexOfOpeningBracket + 1] == '^')
+        {
+            // Negated set
+            set = set[1..];
+
+            if (set.Contains([v], comparison))
+            {
+                // no match
+                matched = false;
+                return true;
+            }
+
+            patternIndex += set.Length + 2; // 1 for the `^` and 1 for the `]`
+            valueIndex++;
+        }
+        else
+        {
+            if (!set.Contains([v], comparison))
+            {
+                // no match
+                matched = false;
+                return true;
+            }
+
+            patternIndex += set.Length + 1;
+            valueIndex++;
+        }
+
+        matched = default;
+        return false;
+    }
+
+    private static bool TryMatchRange(
+        ref int patternIndex,
+        ref int valueIndex,
+        string value,
+        ReadOnlySpan<char> range,
+        out bool matched)
+    {
+        Debug.Assert(range[1] == '-');
+
+        var rangeStart = range[0];
+        var rangeEnd = range[2];
+
+        if (rangeStart > rangeEnd)
+        {
+            throw new FormatException($"The specified range ('[{rangeStart}-{rangeEnd}']) is invalid.");
+        }
+
+        if (!(char.IsAscii(rangeStart) && char.IsAscii(rangeEnd)))
+        {
+            throw new FormatException($"Only ASCII ranges are supported by {nameof(LikePattern)}");
+        }
+
+        if (value[valueIndex] > rangeEnd || value[valueIndex] < rangeStart)
+        {
+            matched = false;
+            return true;
+        }
+
+        patternIndex += range.Length + 1;
+        valueIndex += 1;
+
+        matched = default;
+        return false;
+    }
+
+
+    private static bool TryMatchNegatedRange(
+        ref int patternIndex,
+        ref int valueIndex,
+        string value,
+        ReadOnlySpan<char> range,
+        out bool matched)
+    {
+        Debug.Assert(range.Length == 4);
+        Debug.Assert(range[0] == '^');
+        Debug.Assert(range[2] == '-');
+
+        var rangeStart = range[1];
+        var rangeEnd = range[3];
+
+        if (rangeStart > rangeEnd)
+        {
+            throw new FormatException($"The specified range ('[{rangeStart}-{rangeEnd}']) is invalid.");
+        }
+
+        if (!(char.IsAscii(rangeStart) && char.IsAscii(rangeEnd)))
+        {
+            throw new FormatException($"Only ASCII ranges are supported by {nameof(LikePattern)}");
+        }
+
+        if (value[valueIndex] >= rangeStart && value[valueIndex] <= rangeEnd)
+        {
+            matched = false;
+            return true;
+        }
+
+        patternIndex += range.Length + 1;
+        valueIndex += 1;
+
+        matched = default;
+        return false;
     }
 
     public string ToSqlLikePattern()
@@ -356,20 +543,39 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
 
         for (var i = 0; i < _pattern.Length; i++)
         {
-            var c = _pattern[i];
+            var current = _pattern[i];
+            var hasPreviousChar = i > 0;
 
-            // TODO: support escaping - e.g. "\*" or "\?"
+            if (hasPreviousChar && _pattern[i - 1] == '\\')
+            {
+                if (IsWildcard(current))
+                {
+                    _ = builder.Append(CultureInfo.InvariantCulture, $"[{current}]");
+                    continue;
+                }
 
-            _ = c switch
+                // E.g., `\*` should be outputted as `*` not `%`
+                _ = builder.Append(current);
+                continue;
+            }
+
+            _ = current switch
             {
                 '*' => builder.Append('%'),
                 '?' => builder.Append('_'),
-                '%' or '_' => builder.Append('[').Append(c).Append(']'),
-                _ => builder.Append(c),
+                '%' or '_' => builder.Append('[').Append(current).Append(']'),
+                '\\' => builder, // Don't write escape characters
+                _ => builder.Append(current)
             };
         }
 
         return builder.ToString();
+    }
+
+    private static bool IsWildcard(char c)
+    {
+        // Note: `]` does not need to be escaped, so it is not included here
+        return c is '%' or '_' or '[';
     }
 
     public static explicit operator string(LikePattern pattern)
