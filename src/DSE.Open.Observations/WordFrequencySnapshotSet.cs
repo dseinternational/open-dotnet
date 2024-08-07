@@ -9,24 +9,24 @@ using DSE.Open.Values;
 
 namespace DSE.Open.Observations;
 
-public record SpokenWordClaritySnapshotSet
-    : SnapshotSet<SpokenWordClaritySnapshot, SpokenWordClarityObservation, SpeechClarity, WordId>
+public record WordFrequencySnapshotSet
+    : SnapshotSet<WordFrequencySnapshot, WordFrequencyObservation, BehaviorFrequency, WordId>
 {
-    protected SpokenWordClaritySnapshotSet(
+    protected WordFrequencySnapshotSet(
         DateTimeOffset created,
         DateTimeOffset updated,
         Identifier trackerReference,
-        ReadOnlyValueCollection<SpokenWordClaritySnapshot> snapshots)
+        ReadOnlyValueCollection<WordFrequencySnapshot> snapshots)
         : base(created, updated, trackerReference, snapshots)
     {
     }
 
-    protected SpokenWordClaritySnapshotSet(
+    protected WordFrequencySnapshotSet(
         Identifier id,
         DateTimeOffset created,
         DateTimeOffset updated,
         Identifier trackerReference,
-        ReadOnlyValueCollection<SpokenWordClaritySnapshot> snapshots)
+        ReadOnlyValueCollection<WordFrequencySnapshot> snapshots)
         : base(id, created, updated, trackerReference, snapshots)
     {
     }
@@ -34,26 +34,26 @@ public record SpokenWordClaritySnapshotSet
     [JsonConstructor]
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    protected SpokenWordClaritySnapshotSet(
+    protected WordFrequencySnapshotSet(
         Identifier id,
         long createdTimestamp,
         long updatedTimestamp,
         Identifier trackerReference,
-        ReadOnlyValueCollection<SpokenWordClaritySnapshot> snapshots)
+        ReadOnlyValueCollection<WordFrequencySnapshot> snapshots)
         : base(id, createdTimestamp, updatedTimestamp, trackerReference, snapshots)
     {
     }
 
-    public static SpokenWordClaritySnapshotSet Create(
+    public static WordFrequencySnapshotSet Create(
         Identifier trackerReference,
-        ReadOnlyValueCollection<SpokenWordClaritySnapshot> snapshots)
+        ReadOnlyValueCollection<WordFrequencySnapshot> snapshots)
     {
         return Create(trackerReference, snapshots, TimeProvider.System);
     }
 
-    public static SpokenWordClaritySnapshotSet Create(
+    public static WordFrequencySnapshotSet Create(
         Identifier trackerReference,
-        ReadOnlyValueCollection<SpokenWordClaritySnapshot> snapshots,
+        ReadOnlyValueCollection<WordFrequencySnapshot> snapshots,
         TimeProvider timeProvider)
     {
         Guard.IsNotDefault(trackerReference);
@@ -61,6 +61,6 @@ public record SpokenWordClaritySnapshotSet
         ArgumentNullException.ThrowIfNull(timeProvider);
 
         var now = timeProvider.GetUtcNow();
-        return new SpokenWordClaritySnapshotSet(now, now, trackerReference, snapshots);
+        return new WordFrequencySnapshotSet(now, now, trackerReference, snapshots);
     }
 }

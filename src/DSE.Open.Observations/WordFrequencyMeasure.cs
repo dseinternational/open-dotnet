@@ -6,24 +6,27 @@ using DSE.Open.Language;
 
 namespace DSE.Open.Observations;
 
-public sealed record SpokenWordClarityMeasure : Measure<SpokenWordClarityObservation, SpeechClarity, WordId>
+/// <summary>
+/// A measure of observed frequency relating to a word.
+/// </summary>
+public sealed record WordFrequencyMeasure : Measure<WordFrequencyObservation, BehaviorFrequency, WordId>
 {
-    public SpokenWordClarityMeasure(MeasureId id, Uri uri, string name, string statement)
+    public WordFrequencyMeasure(MeasureId id, Uri uri, string name, string statement)
         : base(id, uri, MeasurementLevel.Binary, name, statement)
     {
     }
 
     [JsonConstructor]
-    private SpokenWordClarityMeasure(MeasureId id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
+    private WordFrequencyMeasure(MeasureId id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
         : base(id, uri, measurementLevel, name, statement)
     {
         ArgumentOutOfRangeException.ThrowIfNotEqual(measurementLevel, MeasurementLevel.Binary);
     }
 
 #pragma warning disable CA1725 // Parameter names should match base declaration
-    public override SpokenWordClarityObservation CreateObservation(WordId speechSound, SpeechClarity value, DateTimeOffset timestamp)
+    public override WordFrequencyObservation CreateObservation(WordId speechSound, BehaviorFrequency value, DateTimeOffset timestamp)
 #pragma warning restore CA1725 // Parameter names should match base declaration
     {
-        return SpokenWordClarityObservation.Create(this, speechSound, value, TimeProvider.System);
+        return WordFrequencyObservation.Create(this, speechSound, value, TimeProvider.System);
     }
 }

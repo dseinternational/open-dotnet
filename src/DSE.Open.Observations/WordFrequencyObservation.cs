@@ -9,9 +9,12 @@ using DSE.Open.Language;
 
 namespace DSE.Open.Observations;
 
-public record SpokenWordClarityObservation : Observation<SpeechClarity, WordId>
+/// <summary>
+/// An observation of frequency related to a word.
+/// </summary>
+public record WordFrequencyObservation : Observation<BehaviorFrequency, WordId>
 {
-    protected SpokenWordClarityObservation(Measure measure, WordId discriminator, DateTimeOffset time, SpeechClarity value)
+    protected WordFrequencyObservation(Measure measure, WordId discriminator, DateTimeOffset time, BehaviorFrequency value)
         : base(measure, discriminator, time, value)
     {
     }
@@ -19,7 +22,7 @@ public record SpokenWordClarityObservation : Observation<SpeechClarity, WordId>
     [JsonConstructor]
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    protected SpokenWordClarityObservation(ObservationId id, MeasureId measureId, WordId discriminator, long timestamp, SpeechClarity value)
+    protected WordFrequencyObservation(ObservationId id, MeasureId measureId, WordId discriminator, long timestamp, BehaviorFrequency value)
         : base(id, measureId, discriminator, timestamp, value)
     {
     }
@@ -27,20 +30,20 @@ public record SpokenWordClarityObservation : Observation<SpeechClarity, WordId>
     [JsonIgnore]
     public WordId WordId => Discriminator;
 
-    public static SpokenWordClarityObservation Create(Measure measure, WordId speechSound, SpeechClarity value)
+    public static WordFrequencyObservation Create(Measure measure, WordId speechSound, BehaviorFrequency value)
     {
         return Create(measure, speechSound, value, TimeProvider.System);
     }
 
-    public static SpokenWordClarityObservation Create(
+    public static WordFrequencyObservation Create(
         Measure measure,
         WordId speechSound,
-        SpeechClarity value,
+        BehaviorFrequency value,
         TimeProvider timeProvider)
     {
         ArgumentNullException.ThrowIfNull(timeProvider);
 
-        return new SpokenWordClarityObservation(measure, speechSound, timeProvider.GetUtcNow(), value);
+        return new WordFrequencyObservation(measure, speechSound, timeProvider.GetUtcNow(), value);
     }
 
     protected override ulong GetDiscriminatorId()

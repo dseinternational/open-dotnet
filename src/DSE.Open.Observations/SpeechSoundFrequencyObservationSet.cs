@@ -1,4 +1,4 @@
-// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.ComponentModel;
@@ -8,15 +8,15 @@ using DSE.Open.Values;
 
 namespace DSE.Open.Observations;
 
-public sealed record SpokenWordClarityObservationSet : ObservationSet<SpokenWordClarityObservation, SpeechClarity>
+public sealed record SpeechSoundFrequencyObservationSet : ObservationSet<SpeechSoundFrequencyObservation, BehaviorFrequency>
 {
-    internal SpokenWordClarityObservationSet(
+    internal SpeechSoundFrequencyObservationSet(
         DateTimeOffset created,
         Identifier trackerReference,
         Identifier observerReference,
         Uri source,
         GroundPoint? location,
-        ReadOnlyValueCollection<SpokenWordClarityObservation> observations)
+        ReadOnlyValueCollection<SpeechSoundFrequencyObservation> observations)
         : base(created, trackerReference, observerReference, source, location, observations)
     {
     }
@@ -24,43 +24,43 @@ public sealed record SpokenWordClarityObservationSet : ObservationSet<SpokenWord
     [JsonConstructor]
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    internal SpokenWordClarityObservationSet(
+    internal SpeechSoundFrequencyObservationSet(
         ObservationSetId id,
         long createdTimestamp,
         Identifier trackerReference,
         Identifier observerReference,
         Uri source,
         GroundPoint? location,
-        ReadOnlyValueCollection<SpokenWordClarityObservation> observations)
+        ReadOnlyValueCollection<SpeechSoundFrequencyObservation> observations)
         : base(id, createdTimestamp, trackerReference, observerReference, source, location, observations)
     {
     }
 
-    public static SpokenWordClarityObservationSet Create(
+    public static SpeechSoundFrequencyObservationSet Create(
         Identifier trackerReference,
         Identifier observerReference,
         Uri source,
-        ReadOnlyValueCollection<SpokenWordClarityObservation> observations)
+        ReadOnlyValueCollection<SpeechSoundFrequencyObservation> observations)
     {
         return Create(trackerReference, observerReference, source, null, observations);
     }
 
-    public static SpokenWordClarityObservationSet Create(
+    public static SpeechSoundFrequencyObservationSet Create(
         Identifier trackerReference,
         Identifier observerReference,
         Uri source,
         GroundPoint? location,
-        ReadOnlyValueCollection<SpokenWordClarityObservation> observations)
+        ReadOnlyValueCollection<SpeechSoundFrequencyObservation> observations)
     {
         return Create(trackerReference, observerReference, source, location, observations, TimeProvider.System);
     }
 
-    public static SpokenWordClarityObservationSet Create(
+    public static SpeechSoundFrequencyObservationSet Create(
         Identifier trackerReference,
         Identifier observerReference,
         Uri source,
         GroundPoint? location,
-        ReadOnlyValueCollection<SpokenWordClarityObservation> observations,
+        ReadOnlyValueCollection<SpeechSoundFrequencyObservation> observations,
         TimeProvider timeProvider)
     {
         Guard.IsNotDefault(trackerReference);
@@ -69,6 +69,6 @@ public sealed record SpokenWordClarityObservationSet : ObservationSet<SpokenWord
         ArgumentNullException.ThrowIfNull(observations);
         ArgumentNullException.ThrowIfNull(timeProvider);
 
-        return new SpokenWordClarityObservationSet(timeProvider.GetUtcNow(), trackerReference, observerReference, source, location, observations);
+        return new SpeechSoundFrequencyObservationSet(timeProvider.GetUtcNow(), trackerReference, observerReference, source, location, observations);
     }
 }

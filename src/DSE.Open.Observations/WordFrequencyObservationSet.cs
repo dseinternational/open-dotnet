@@ -8,15 +8,15 @@ using DSE.Open.Values;
 
 namespace DSE.Open.Observations;
 
-public sealed record SpokenWordClarityObservationSet : ObservationSet<SpokenWordClarityObservation, SpeechClarity>
+public sealed record WordFrequencyObservationSet : ObservationSet<WordFrequencyObservation, BehaviorFrequency>
 {
-    internal SpokenWordClarityObservationSet(
+    internal WordFrequencyObservationSet(
         DateTimeOffset created,
         Identifier trackerReference,
         Identifier observerReference,
         Uri source,
         GroundPoint? location,
-        ReadOnlyValueCollection<SpokenWordClarityObservation> observations)
+        ReadOnlyValueCollection<WordFrequencyObservation> observations)
         : base(created, trackerReference, observerReference, source, location, observations)
     {
     }
@@ -24,43 +24,43 @@ public sealed record SpokenWordClarityObservationSet : ObservationSet<SpokenWord
     [JsonConstructor]
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    internal SpokenWordClarityObservationSet(
+    internal WordFrequencyObservationSet(
         ObservationSetId id,
         long createdTimestamp,
         Identifier trackerReference,
         Identifier observerReference,
         Uri source,
         GroundPoint? location,
-        ReadOnlyValueCollection<SpokenWordClarityObservation> observations)
+        ReadOnlyValueCollection<WordFrequencyObservation> observations)
         : base(id, createdTimestamp, trackerReference, observerReference, source, location, observations)
     {
     }
 
-    public static SpokenWordClarityObservationSet Create(
+    public static WordFrequencyObservationSet Create(
         Identifier trackerReference,
         Identifier observerReference,
         Uri source,
-        ReadOnlyValueCollection<SpokenWordClarityObservation> observations)
+        ReadOnlyValueCollection<WordFrequencyObservation> observations)
     {
         return Create(trackerReference, observerReference, source, null, observations);
     }
 
-    public static SpokenWordClarityObservationSet Create(
+    public static WordFrequencyObservationSet Create(
         Identifier trackerReference,
         Identifier observerReference,
         Uri source,
         GroundPoint? location,
-        ReadOnlyValueCollection<SpokenWordClarityObservation> observations)
+        ReadOnlyValueCollection<WordFrequencyObservation> observations)
     {
         return Create(trackerReference, observerReference, source, location, observations, TimeProvider.System);
     }
 
-    public static SpokenWordClarityObservationSet Create(
+    public static WordFrequencyObservationSet Create(
         Identifier trackerReference,
         Identifier observerReference,
         Uri source,
         GroundPoint? location,
-        ReadOnlyValueCollection<SpokenWordClarityObservation> observations,
+        ReadOnlyValueCollection<WordFrequencyObservation> observations,
         TimeProvider timeProvider)
     {
         Guard.IsNotDefault(trackerReference);
@@ -69,6 +69,6 @@ public sealed record SpokenWordClarityObservationSet : ObservationSet<SpokenWord
         ArgumentNullException.ThrowIfNull(observations);
         ArgumentNullException.ThrowIfNull(timeProvider);
 
-        return new SpokenWordClarityObservationSet(timeProvider.GetUtcNow(), trackerReference, observerReference, source, location, observations);
+        return new WordFrequencyObservationSet(timeProvider.GetUtcNow(), trackerReference, observerReference, source, location, observations);
     }
 }

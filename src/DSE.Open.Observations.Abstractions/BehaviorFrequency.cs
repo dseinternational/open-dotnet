@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using System.Text.Json.Serialization;
 using DSE.Open.Values;
 using DSE.Open.Values.Text.Json.Serialization;
@@ -34,9 +35,18 @@ public readonly partial struct BehaviorFrequency
 
     public static BehaviorFrequency Never => new(NeverValue);
 
+    /// <summary>
+    /// Behavior is observed for the first time.
+    /// </summary>
     public static BehaviorFrequency Emerging => new(EmergingValue);
 
+    /// <summary>
+    /// Behavior is observed sometimes.
+    /// </summary>
     public static BehaviorFrequency Developing => new(DevelopingValue);
 
+    /// <summary>
+    /// Behavior occurs often/usually.
+    /// </summary>
     public static BehaviorFrequency Achieved => new(AchievedValue);
 }
