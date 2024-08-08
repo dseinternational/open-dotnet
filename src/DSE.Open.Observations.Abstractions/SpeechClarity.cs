@@ -12,7 +12,7 @@ namespace DSE.Open.Observations;
 /// A rating of speech clarity.
 /// </summary>
 [ComparableValue]
-[JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<SpeechClarity, uint>))]
+[JsonConverter(typeof(JsonUInt32ValueConverter<SpeechClarity>))]
 [StructLayout(LayoutKind.Auto)]
 public readonly partial struct SpeechClarity
     : IComparableValue<SpeechClarity, uint>,

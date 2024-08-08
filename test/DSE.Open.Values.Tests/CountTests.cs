@@ -6,7 +6,7 @@ using DSE.Open.Text.Json;
 
 namespace DSE.Open.Values.Tests;
 
-public class CountTests
+public sealed class CountTests
 {
     [Theory]
     [InlineData(0uL)]

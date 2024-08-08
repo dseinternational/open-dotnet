@@ -2,6 +2,8 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Runtime.InteropServices;
+using DSE.Open.Values.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace DSE.Open.Values;
 
@@ -9,6 +11,7 @@ namespace DSE.Open.Values;
 /// A value that expresses a ratio as a signed value between 0 and 1 (values between -1 and 1).
 /// </summary>
 [DivisibleValue]
+[JsonConverter(typeof(JsonDecimalValueConverter<Ratio>))]
 [StructLayout(LayoutKind.Auto)]
 public readonly partial struct Ratio : IDivisibleValue<Ratio, decimal>, IUtf8SpanSerializable<Ratio>
 {
@@ -17,6 +20,8 @@ public readonly partial struct Ratio : IDivisibleValue<Ratio, decimal>, IUtf8Spa
     public static int MaxSerializedByteLength => 128; // TODO
 
     public static Ratio Zero { get; } = new(0);
+
+    public Ratio(decimal value) : this(value, false) { }
 
     public static bool IsValidValue(decimal value)
     {

@@ -2,7 +2,6 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Runtime.InteropServices;
-using System.Security.Cryptography;
 using System.Text.Json.Serialization;
 using DSE.Open.Values;
 using DSE.Open.Values.Text.Json.Serialization;
@@ -13,7 +12,7 @@ namespace DSE.Open.Observations;
 /// A rating of the frequency of an emerging behavior.
 /// </summary>
 [ComparableValue]
-[JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<BehaviorFrequency, uint>))]
+[JsonConverter(typeof(JsonUInt32ValueConverter<BehaviorFrequency>))]
 [StructLayout(LayoutKind.Auto)]
 public readonly partial struct BehaviorFrequency
     : IComparableValue<BehaviorFrequency, uint>,

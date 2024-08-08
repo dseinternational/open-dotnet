@@ -12,7 +12,7 @@ namespace DSE.Open.Observations;
 /// A rating of completeness.
 /// </summary>
 [ComparableValue]
-[JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<Completeness, uint>))]
+[JsonConverter(typeof(JsonUInt32ValueConverter<Completeness>))]
 [StructLayout(LayoutKind.Auto)]
 public readonly partial struct Completeness
     : IComparableValue<Completeness, uint>,
