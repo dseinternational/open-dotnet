@@ -12,7 +12,7 @@ namespace DSE.Open.Language;
 /// A value used to identify a word.
 /// </summary>
 [EquatableValue(AllowDefaultValue = false)]
-[JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<WordMeaningId, ulong>))]
+[JsonConverter(typeof(JsonUInt64ValueConverter<WordMeaningId>))]
 [StructLayout(LayoutKind.Auto)]
 public readonly partial struct WordMeaningId
     : IEquatableValue<WordMeaningId, ulong>,
