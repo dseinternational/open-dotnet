@@ -11,12 +11,12 @@ using System.ComponentModel;
 
 namespace DSE.Open.Values;
 
-[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<Ratio, Double>))]
+[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<Ratio, Decimal>))]
 public readonly partial struct Ratio
 {
-    private readonly Double _value;
+    private readonly Decimal _value;
 
-    private Ratio(Double value, bool skipValidation = false)
+    private Ratio(Decimal value, bool skipValidation = false)
     {
         if (!skipValidation)
         {
@@ -26,7 +26,7 @@ public readonly partial struct Ratio
         _value = value;
     }
 
-    private static void EnsureIsValidValue(Double value)
+    private static void EnsureIsValidValue(Decimal value)
     {
         if (!IsValidValue(value))
         {
@@ -35,7 +35,7 @@ public readonly partial struct Ratio
         }
     }
 
-    public static bool TryFromValue(Double value, out Ratio result)
+    public static bool TryFromValue(Decimal value, out Ratio result)
     {
         if (IsValidValue(value))
         {
@@ -47,19 +47,19 @@ public readonly partial struct Ratio
         return false;
     }
 
-    public static Ratio FromValue(Double value)
+    public static Ratio FromValue(Decimal value)
     {
         EnsureIsValidValue(value);
         return new(value, true);
     }
 
-    public static explicit operator Ratio(Double value)
+    public static explicit operator Ratio(Decimal value)
         => FromValue(value);
 
-    static Double global::DSE.Open.IConvertibleTo<Ratio, Double>.ConvertTo(Ratio value)
-        => (Double)value;
+    static Decimal global::DSE.Open.IConvertibleTo<Ratio, Decimal>.ConvertTo(Ratio value)
+        => (Decimal)value;
 
-    public static implicit operator Double(Ratio value)
+    public static implicit operator Decimal(Ratio value)
     {
         return value._value;
     }
@@ -140,7 +140,7 @@ public readonly partial struct Ratio
     // ISpanParsable<Ratio>
 
     public static Ratio Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<Ratio, Double>(s, provider);
+        => global::DSE.Open.Values.ValueParser.Parse<Ratio, Decimal>(s, provider);
 
     public static Ratio ParseInvariant(ReadOnlySpan<char> s)
         => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
@@ -149,7 +149,7 @@ public readonly partial struct Ratio
         ReadOnlySpan<char> s,
         IFormatProvider? provider,
         out Ratio result)
-        => global::DSE.Open.Values.ValueParser.TryParse<Ratio, Double>(s, provider, out result);
+        => global::DSE.Open.Values.ValueParser.TryParse<Ratio, Decimal>(s, provider, out result);
 
     public static bool TryParse(
         ReadOnlySpan<char> s,
@@ -164,7 +164,7 @@ public readonly partial struct Ratio
     // IParsable<Ratio>
 
     public static Ratio Parse(string s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<Ratio, Double>(s, provider);
+        => global::DSE.Open.Values.ValueParser.Parse<Ratio, Decimal>(s, provider);
 
     public static Ratio Parse(string s)
         => Parse(s, default);
@@ -210,13 +210,13 @@ public readonly partial struct Ratio
     public static Ratio Parse(
         ReadOnlySpan<byte> utf8Source,
         IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<Ratio, Double>(utf8Source, provider);
+        => global::DSE.Open.Values.ValueParser.Parse<Ratio, Decimal>(utf8Source, provider);
 
     public static bool TryParse(
         ReadOnlySpan<byte> utf8Source,
         IFormatProvider? provider,
         out Ratio result)
-        => global::DSE.Open.Values.ValueParser.TryParse<Ratio, Double>(utf8Source, provider, out result);
+        => global::DSE.Open.Values.ValueParser.TryParse<Ratio, Decimal>(utf8Source, provider, out result);
 
     public int CompareTo(Ratio other)
     {

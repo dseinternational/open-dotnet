@@ -11,12 +11,12 @@ using System.ComponentModel;
 
 namespace DSE.Open.Values;
 
-[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<Percent, Double>))]
+[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<Percent, Decimal>))]
 public readonly partial struct Percent
 {
-    private readonly Double _value;
+    private readonly Decimal _value;
 
-    private Percent(Double value, bool skipValidation = false)
+    private Percent(Decimal value, bool skipValidation = false)
     {
         if (!skipValidation)
         {
@@ -26,7 +26,7 @@ public readonly partial struct Percent
         _value = value;
     }
 
-    private static void EnsureIsValidValue(Double value)
+    private static void EnsureIsValidValue(Decimal value)
     {
         if (!IsValidValue(value))
         {
@@ -35,7 +35,7 @@ public readonly partial struct Percent
         }
     }
 
-    public static bool TryFromValue(Double value, out Percent result)
+    public static bool TryFromValue(Decimal value, out Percent result)
     {
         if (IsValidValue(value))
         {
@@ -47,19 +47,19 @@ public readonly partial struct Percent
         return false;
     }
 
-    public static Percent FromValue(Double value)
+    public static Percent FromValue(Decimal value)
     {
         EnsureIsValidValue(value);
         return new(value, true);
     }
 
-    public static explicit operator Percent(Double value)
+    public static explicit operator Percent(Decimal value)
         => FromValue(value);
 
-    static Double global::DSE.Open.IConvertibleTo<Percent, Double>.ConvertTo(Percent value)
-        => (Double)value;
+    static Decimal global::DSE.Open.IConvertibleTo<Percent, Decimal>.ConvertTo(Percent value)
+        => (Decimal)value;
 
-    public static implicit operator Double(Percent value)
+    public static implicit operator Decimal(Percent value)
     {
         return value._value;
     }
@@ -140,7 +140,7 @@ public readonly partial struct Percent
     // ISpanParsable<Percent>
 
     public static Percent Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<Percent, Double>(s, provider);
+        => global::DSE.Open.Values.ValueParser.Parse<Percent, Decimal>(s, provider);
 
     public static Percent ParseInvariant(ReadOnlySpan<char> s)
         => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
@@ -149,7 +149,7 @@ public readonly partial struct Percent
         ReadOnlySpan<char> s,
         IFormatProvider? provider,
         out Percent result)
-        => global::DSE.Open.Values.ValueParser.TryParse<Percent, Double>(s, provider, out result);
+        => global::DSE.Open.Values.ValueParser.TryParse<Percent, Decimal>(s, provider, out result);
 
     public static bool TryParse(
         ReadOnlySpan<char> s,
@@ -164,7 +164,7 @@ public readonly partial struct Percent
     // IParsable<Percent>
 
     public static Percent Parse(string s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<Percent, Double>(s, provider);
+        => global::DSE.Open.Values.ValueParser.Parse<Percent, Decimal>(s, provider);
 
     public static Percent Parse(string s)
         => Parse(s, default);
@@ -210,13 +210,13 @@ public readonly partial struct Percent
     public static Percent Parse(
         ReadOnlySpan<byte> utf8Source,
         IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<Percent, Double>(utf8Source, provider);
+        => global::DSE.Open.Values.ValueParser.Parse<Percent, Decimal>(utf8Source, provider);
 
     public static bool TryParse(
         ReadOnlySpan<byte> utf8Source,
         IFormatProvider? provider,
         out Percent result)
-        => global::DSE.Open.Values.ValueParser.TryParse<Percent, Double>(utf8Source, provider, out result);
+        => global::DSE.Open.Values.ValueParser.TryParse<Percent, Decimal>(utf8Source, provider, out result);
 
     public int CompareTo(Percent other)
     {
