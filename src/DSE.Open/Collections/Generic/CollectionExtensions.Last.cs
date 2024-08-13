@@ -11,25 +11,6 @@ public static partial class CollectionExtensionsLast
     /// <typeparam name="T"></typeparam>
     /// <param name="collection"></param>
     /// <returns></returns>
-    public static T Last<T>(this IList<T> collection)
-    {
-        ArgumentNullException.ThrowIfNull(collection);
-
-        if (collection.Count == 0)
-        {
-            ThrowHelper.ThrowInvalidOperationException("The list is empty.");
-            return default!; // unreachable
-        }
-
-        return collection[collection.Count - 1];
-    }
-
-    /// <summary>
-    /// Returns the last element of a list.
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="collection"></param>
-    /// <returns></returns>
     public static T Last<T>(this IReadOnlyList<T> collection)
     {
         ArgumentNullException.ThrowIfNull(collection);
@@ -38,24 +19,6 @@ public static partial class CollectionExtensionsLast
         {
             ThrowHelper.ThrowInvalidOperationException("The list is empty.");
             return default!; // unreachable
-        }
-
-        return collection[collection.Count - 1];
-    }
-
-    /// <summary>
-    /// Returns the last element of a list, or a default value if no element is found.
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="collection"></param>
-    /// <returns></returns>
-    public static T LastOrDefault<T>(this IList<T> collection)
-    {
-        ArgumentNullException.ThrowIfNull(collection);
-
-        if (collection.Count == 0)
-        {
-            return default!;
         }
 
         return collection[collection.Count - 1];
