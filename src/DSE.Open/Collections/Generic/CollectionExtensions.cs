@@ -6,8 +6,7 @@ using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 
 namespace DSE.Open.Collections.Generic;
-
-public static class CollectionExtensions
+public static partial class CollectionExtensions
 {
     private static readonly ThreadLocal<Random> s_random =
         new(() => new(unchecked((Environment.TickCount * 31) + Environment.CurrentManagedThreadId)));

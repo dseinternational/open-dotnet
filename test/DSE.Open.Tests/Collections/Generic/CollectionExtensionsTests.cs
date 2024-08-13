@@ -5,7 +5,7 @@ using DSE.Open.Collections.Generic;
 
 namespace DSE.Open.Tests.Collections.Generic;
 
-public class CollectionExtensionsTests
+public partial class CollectionExtensionsTests
 {
     private static readonly int[] s_integersInOrder = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
 

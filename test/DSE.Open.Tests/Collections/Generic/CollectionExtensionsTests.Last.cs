@@ -1,0 +1,65 @@
+﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Down Syndrome Education International and Contributors licence this file to you under the MIT license.
+
+using DSE.Open.Collections.Generic;
+
+namespace DSE.Open.Tests.Collections.Generic;
+
+public partial class CollectionExtensionsTestsLast
+{
+    [Fact]
+    public void Last_IList_WithElements_ReturnsLast()
+    {
+        IList<int> list = [1, 2, 3, 4, 5, 6];
+        Assert.Equal(6, list.Last());
+    }
+
+    [Fact]
+    public void Last_IList_NoElements_ThrowsInvalidOperationException()
+    {
+        IList<int> list = [];
+        _ = Assert.Throws<InvalidOperationException>(() => list.Last());
+    }
+
+    [Fact]
+    public void LastOrDefault_IList_WithElements_ReturnsLast()
+    {
+        IList<int> list = [1, 2, 3, 4, 5, 6];
+        Assert.Equal(6, list.LastOrDefault());
+    }
+
+    [Fact]
+    public void LastOrDefault_IList_NoElements_ReturnsDefaultValue()
+    {
+        IList<int> list = [];
+        Assert.Equal(0, list.LastOrDefault());
+    }
+
+    [Fact]
+    public void Last_IReadOnlyList_WithElements_ReturnsLast()
+    {
+        IReadOnlyList<int> list = [1, 2, 3, 4, 5, 6];
+        Assert.Equal(6, list.Last());
+    }
+
+    [Fact]
+    public void Last_IReadOnlyList_NoElements_ThrowsInvalidOperationException()
+    {
+        IReadOnlyList<int> list = [];
+        _ = Assert.Throws<InvalidOperationException>(() => list.Last());
+    }
+
+    [Fact]
+    public void LastOrDefault_IReadOnlyList_WithElements_ReturnsLast()
+    {
+        IReadOnlyList<int> list = [1, 2, 3, 4, 5, 6];
+        Assert.Equal(6, list.LastOrDefault());
+    }
+
+    [Fact]
+    public void LastOrDefault_IReadOnlyList_NoElements_ReturnsDefaultValue()
+    {
+        IReadOnlyList<int> list = [];
+        Assert.Equal(0, list.LastOrDefault());
+    }
+}
