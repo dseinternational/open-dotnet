@@ -33,12 +33,6 @@ public static class CollectionExtensions
         }
     }
 
-    [Obsolete("Use collection.Where().ToList()")]
-    public static IList<T> FindAll<T>(this IEnumerable<T> collection, Predicate<T> match)
-    {
-        return collection.Where(i => match(i)).ToList();
-    }
-
     public static int FindIndex<T>(this T[] collection, Predicate<T> match)
     {
         return collection.FindIndex(0, match);
