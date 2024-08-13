@@ -4,6 +4,7 @@
 using System.ComponentModel;
 using System.Text.Json.Serialization;
 using DSE.Open.Serialization.DataTransfer;
+using MessagePack;
 
 namespace DSE.Open.Observations;
 
@@ -35,6 +36,7 @@ public abstract record Observation : ImmutableDataTransferObject
     [JsonInclude]
     [JsonPropertyName("i")]
     [JsonPropertyOrder(-91000)]
+    [Key(-91000)]
     public ObservationId Id { get; }
 
     /// <summary>
@@ -48,6 +50,7 @@ public abstract record Observation : ImmutableDataTransferObject
     [JsonInclude]
     [JsonPropertyName("t")]
     [JsonPropertyOrder(-89800)]
+    [Key(-89800)]
     protected long Timestamp { get; }
 
     /// <summary>
@@ -56,6 +59,7 @@ public abstract record Observation : ImmutableDataTransferObject
     [JsonInclude]
     [JsonPropertyName("m")]
     [JsonPropertyOrder(-88000)]
+    [Key(-88000)]
     public MeasureId MeasureId { get; }
 
     public bool HasMeasure(Measure measure)

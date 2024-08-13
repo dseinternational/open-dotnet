@@ -3,6 +3,7 @@
 
 using System.Text.Json.Serialization;
 using DSE.Open.Collections.Generic;
+using MessagePack;
 
 namespace DSE.Open.Serialization.DataTransfer;
 
@@ -24,6 +25,7 @@ public abstract record DataTransferObject : IJsonSerializable, IExtensionData
 
     [JsonExtensionData]
     [JsonPropertyOrder(2100010010)]
+    [Key(2100010010)]
     internal ValueDictionary<string, object> ExtensionDataCore
     {
         get => _extensionData ??= [];
@@ -31,5 +33,6 @@ public abstract record DataTransferObject : IJsonSerializable, IExtensionData
     }
 
     [JsonIgnore]
+    [IgnoreMember]
     public bool HasExtensionData => _extensionData is not null && _extensionData.Count > 0;
 }

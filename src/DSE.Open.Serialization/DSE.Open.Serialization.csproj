@@ -8,4 +8,9 @@
     <ProjectReference Include="..\DSE.Open\DSE.Open.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="MessagePack" />
+    <PackageReference Include="MessagePackAnalyzer" />
+  </ItemGroup>
+
 </Project>
