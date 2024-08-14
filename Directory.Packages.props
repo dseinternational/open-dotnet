@@ -23,24 +23,24 @@
     <PackageVersion Include="Iced" Version="1.21.0" />
     <PackageVersion Include="Google.Protobuf" Version="3.27.3" />
     <PackageVersion Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0-beta1.24318.1" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0-beta1.24324.1" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.10.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Data.SqlClient" Version="5.2.1" />
     <PackageVersion Include="Microsoft.Diagnostics.Runtime" Version="3.1.512801" />
     <PackageVersion Include="Microsoft.Diagnostics.Tracing.TraceEvent" Version="3.1.13" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="8.0.7" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.7" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.7" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer.HierarchyId" Version="8.0.7" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.8" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.8" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer.HierarchyId" Version="8.0.8" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="8.0.7" />
-    <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="8.0.7" />
-    <PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="8.0.7" />
+    <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="8.0.8" />
+    <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="8.0.8" />
+    <PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="8.0.8" />
     <PackageVersion Include="Microsoft.Extensions.Logging" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1" />
     <PackageVersion Include="Microsoft.Extensions.Options" Version="8.0.2" />
-    <PackageVersion Include="Microsoft.Extensions.TimeProvider.Testing" Version="8.7.0" />
+    <PackageVersion Include="Microsoft.Extensions.TimeProvider.Testing" Version="8.8.0" />
     <PackageVersion Include="Microsoft.Identity.Client" Version="4.63.0" />
     <PackageVersion Include="Microsoft.Identity.Client.Extensions.Msal" Version="4.63.0" />
     <PackageVersion Include="Microsoft.IdentityModel.Abstractions" Version="8.0.1" />
@@ -66,7 +66,7 @@
     <PackageVersion Include="System.Management" Version="8.0.0" />
     <PackageVersion Include="System.Memory" Version="4.5.5" />
     <PackageVersion Include="System.Memory.Data" Version="8.0.0" />
-    <PackageVersion Include="System.Numerics.Tensors" Version="9.0.0-preview.6.24327.7" />
+    <PackageVersion Include="System.Numerics.Tensors" Version="9.0.0-preview.7.24405.7" />
     <PackageVersion Include="System.Reflection.Emit" Version="4.7.0" />
     <PackageVersion Include="System.Reflection.Metadata" Version="8.0.0" />
     <PackageVersion Include="System.Runtime.Caching" Version="8.0.0" />
