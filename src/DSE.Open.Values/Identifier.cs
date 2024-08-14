@@ -266,7 +266,7 @@ public readonly partial struct Identifier : IEquatableValue<Identifier, AsciiStr
     /// <param name="other"></param>
     public bool Equals(ReadOnlySpan<byte> other)
     {
-        return _value.Equals(other);
+        return _value.Equals(ValuesMarshal.AsAsciiChars(other));
     }
 
     /// <summary>
