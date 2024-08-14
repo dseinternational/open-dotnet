@@ -36,13 +36,14 @@ public abstract record Observation : ImmutableDataTransferObject
     [JsonInclude]
     [JsonPropertyName("i")]
     [JsonPropertyOrder(-91000)]
-    [Key(-91000)]
+    [Key(0)]
     public ObservationId Id { get; }
 
     /// <summary>
     /// The time of the observation.
     /// </summary>
     [JsonIgnore]
+    [IgnoreMember]
     public DateTimeOffset Time => DateTimeOffset.FromUnixTimeMilliseconds(Timestamp);
 
     // this ensures equality tests are the same before/after serialization
@@ -50,8 +51,8 @@ public abstract record Observation : ImmutableDataTransferObject
     [JsonInclude]
     [JsonPropertyName("t")]
     [JsonPropertyOrder(-89800)]
-    [Key(-89800)]
-    protected long Timestamp { get; }
+    [Key(2)]
+    public long Timestamp { get; }
 
     /// <summary>
     /// The identifier for the measure.
@@ -59,7 +60,7 @@ public abstract record Observation : ImmutableDataTransferObject
     [JsonInclude]
     [JsonPropertyName("m")]
     [JsonPropertyOrder(-88000)]
-    [Key(-88000)]
+    [Key(1)]
     public MeasureId MeasureId { get; }
 
     public bool HasMeasure(Measure measure)
@@ -123,6 +124,7 @@ public abstract record Observation<TValue> : Observation
 
     [JsonPropertyName("v")]
     [JsonPropertyOrder(-1)]
+    [Key(3)]
     public TValue Value { get; }
 }
 
@@ -151,6 +153,7 @@ public abstract record Observation<TValue, TDisc> : Observation<TValue>
 
     [JsonPropertyName("d")]
     [JsonPropertyOrder(-100)]
+    [Key(4)]
     public TDisc Discriminator { get; }
 
     public virtual bool HasMeasurement(Measure measure, TDisc discriminator)

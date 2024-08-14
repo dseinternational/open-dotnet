@@ -15,6 +15,7 @@ public abstract record ImmutableDataTransferObject : IJsonSerializable, IExtensi
     private ReadOnlyValueDictionary<string, object> _extensionData = [];
 
     [JsonIgnore]
+    [IgnoreMember]
     public IReadOnlyDictionary<string, object> ExtensionData => ExtensionDataCore;
 
     IDictionary<string, object> IExtensionData.ExtensionData

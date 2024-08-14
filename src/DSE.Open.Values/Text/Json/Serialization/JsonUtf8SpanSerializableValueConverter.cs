@@ -7,6 +7,8 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using CommunityToolkit.HighPerformance.Buffers;
 using DSE.Open.Runtime.Helpers;
+using MessagePack;
+using MessagePack.Formatters;
 
 namespace DSE.Open.Values.Text.Json.Serialization;
 

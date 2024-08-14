@@ -4,6 +4,7 @@
 using System.Text.Json.Serialization;
 using DSE.Open.Serialization.DataTransfer;
 using DSE.Open.Text.Json.Serialization;
+using MessagePack;
 
 #pragma warning disable CA1005 // Avoid excessive parameters on generic types
 
@@ -25,6 +26,7 @@ public abstract record Snapshot : ImmutableDataTransferObject
     /// </summary>
     [JsonPropertyName("t")]
     [JsonConverter(typeof(JsonDateTimeOffsetUnixTimeMillisecondsConverter))]
+    [Key(0)]
     public DateTimeOffset Time { get; private init; }
 
     public bool HasMeasure(Measure measure)
@@ -56,6 +58,7 @@ public abstract record Snapshot<TObs> : Snapshot
     /// The observation at the time the snapshot was created.
     /// </summary>
     [JsonPropertyName("o")]
+    [Key(3)]
     public TObs Observation { get; }
 
     public override bool HasMeasureId(MeasureId measureId)

@@ -6,6 +6,9 @@ using System.Text.Json.Serialization;
 using DSE.Open.Security;
 using DSE.Open.Values;
 using DSE.Open.Values.Text.Json.Serialization;
+using DSE.Open.Values.Text.MessagePack.Serialization;
+using MessagePack;
+using MessagePack.Formatters;
 
 namespace DSE.Open.Observations;
 
@@ -14,10 +17,11 @@ namespace DSE.Open.Observations;
 /// </summary>
 [EquatableValue(AllowDefaultValue = false)]
 [JsonConverter(typeof(JsonUInt64ValueConverter<ObservationId>))]
+[MessagePackFormatter(typeof(MessagePackUInt64ValueConverter<ObservationId>))]
 [StructLayout(LayoutKind.Auto)]
 public readonly partial struct ObservationId
     : IEquatableValue<ObservationId, ulong>,
-      IUtf8SpanSerializable<ObservationId>
+        IUtf8SpanSerializable<ObservationId>
 {
     public const ulong MinIdValue = 1;
     public const ulong MaxIdValue = NumberHelper.MaxJsonSafeInteger;

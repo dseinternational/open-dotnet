@@ -1,17 +1,13 @@
 <Project>
-
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
-
   <PropertyGroup>
     <NuGetAuditMode>direct</NuGetAuditMode>
   </PropertyGroup>
-
   <PropertyGroup>
     <NoWarn>$(NoWarn);NU5104</NoWarn>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageVersion Include="Azure.Core" Version="1.42.0" />
     <PackageVersion Include="Azure.Identity" Version="1.12.0" />
@@ -22,8 +18,9 @@
     <PackageVersion Include="FluentAssertions" Version="6.12.0" />
     <PackageVersion Include="Iced" Version="1.21.0" />
     <PackageVersion Include="Google.Protobuf" Version="3.27.3" />
-    <PackageVersion Include="MessagePack" Version="3.0.134-beta" />
-    <PackageVersion Include="MessagePackAnalyzer" Version="3.0.134-beta" />
+    <PackageVersion Include="MessagePack" Version="2.5.172" />
+    <PackageVersion Include="MessagePack.Annotations" Version="2.5.172" />
+    <PackageVersion Include="MessagePackAnalyzer" Version="2.5.172" />
     <PackageVersion Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0-beta1.24318.1" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.10.0" />
@@ -84,5 +81,4 @@
     <PackageVersion Include="xunit.extensibility.core" Version="2.9.0" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="2.8.2" />
   </ItemGroup>
-
 </Project>

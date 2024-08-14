@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Text.Json.Serialization;
 using DSE.Open.Collections.Generic;
 using DSE.Open.Values;
+using MessagePack;
 
 namespace DSE.Open.Observations;
 
@@ -15,6 +16,7 @@ namespace DSE.Open.Observations;
 [JsonDerivedType(typeof(RatioSnapshotSet), typeDiscriminator: Schemas.RatioSnapshotSet)]
 [JsonDerivedType(typeof(BinaryWordSnapshotSet), typeDiscriminator: Schemas.BinaryWordSnapshotSet)]
 [JsonDerivedType(typeof(BinarySpeechSoundSnapshotSet), typeDiscriminator: Schemas.BinarySpeechSoundSnapshotSet)]
+[Union(-1, typeof(BinaryWordSnapshotSet))]
 public abstract record SnapshotSet
 {
     protected SnapshotSet(
@@ -38,6 +40,7 @@ public abstract record SnapshotSet
     }
 
     [Obsolete("For deserialization only", true)]
+    [SerializationConstructor]
     [EditorBrowsable(EditorBrowsableState.Never)]
     protected SnapshotSet(
         Identifier id,
@@ -58,12 +61,15 @@ public abstract record SnapshotSet
     [JsonInclude]
     [JsonPropertyName("id")]
     [JsonPropertyOrder(-98000)]
+    [Key(0)]
     public Identifier Id { get; }
 
     [JsonIgnore]
+    [IgnoreMember]
     public DateTimeOffset Created => DateTimeOffset.FromUnixTimeMilliseconds(CreatedTimestamp);
 
     [JsonIgnore]
+    [IgnoreMember]
     public DateTimeOffset Updated => DateTimeOffset.FromUnixTimeMilliseconds(UpdatedTimestamp);
 
     // this ensures equality tests are the same before/after serialization
@@ -71,16 +77,19 @@ public abstract record SnapshotSet
     [JsonInclude]
     [JsonPropertyName("crt")]
     [JsonPropertyOrder(-97800)]
-    protected long CreatedTimestamp { get; }
+    [Key(1)]
+    public long CreatedTimestamp { get; }
 
     [JsonInclude]
     [JsonPropertyName("upd")]
     [JsonPropertyOrder(-97800)]
-    protected long UpdatedTimestamp { get; }
+    [Key(2)]
+    public long UpdatedTimestamp { get; }
 
     [JsonInclude]
     [JsonPropertyName("trk")]
     [JsonPropertyOrder(-90000)]
+    [Key(3)]
     public Identifier TrackerReference { get; }
 }
 
@@ -114,6 +123,7 @@ public abstract record SnapshotSet<TSnapshot, TObs, TValue> : SnapshotSet
         Snapshots = snapshots;
     }
 
+    [SerializationConstructor]
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     protected SnapshotSet(
@@ -133,6 +143,7 @@ public abstract record SnapshotSet<TSnapshot, TObs, TValue> : SnapshotSet
     public ReadOnlyValueCollection<TSnapshot> Snapshots { get; } = [];
 }
 
+[Union(0, typeof(BinaryWordSnapshotSet))]
 public abstract record SnapshotSet<TSnapshot, TObs, TValue, TDisc> : SnapshotSet
     where TSnapshot : Snapshot<TObs, TValue, TDisc>
     where TObs : Observation<TValue, TDisc>
@@ -163,6 +174,7 @@ public abstract record SnapshotSet<TSnapshot, TObs, TValue, TDisc> : SnapshotSet
     }
 
     [Obsolete("For deserialization only", true)]
+    [SerializationConstructor]
     [EditorBrowsable(EditorBrowsableState.Never)]
     protected SnapshotSet(
         Identifier id,
@@ -178,5 +190,6 @@ public abstract record SnapshotSet<TSnapshot, TObs, TValue, TDisc> : SnapshotSet
 
     [JsonPropertyName("obs")]
     [JsonPropertyOrder(900000)]
+    [Key(4)]
     public ReadOnlyValueCollection<TSnapshot> Snapshots { get; } = [];
 }

@@ -8,11 +8,14 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json.Serialization;
 using DSE.Open.Values.Text.Json.Serialization;
+using MessagePack;
+using MessagePack.Formatters;
 
 namespace DSE.Open.Values;
 
 [EquatableValue]
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<Identifier, AsciiString>))]
+[MessagePackFormatter(typeof(IdentifierFormatter))]
 [StructLayout(LayoutKind.Auto)]
 public readonly partial struct Identifier : IEquatableValue<Identifier, AsciiString>, IUtf8SpanSerializable<Identifier>
 {
@@ -46,9 +49,11 @@ public readonly partial struct Identifier : IEquatableValue<Identifier, AsciiStr
 
     public const char PrefixDelimiter = '_';
 
-    private static ReadOnlySpan<byte> ValidIdBytes => "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"u8;
+    private static ReadOnlySpan<byte> ValidIdBytes =>
+        "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"u8;
 
-    private static ReadOnlySpan<byte> ValidPrefixBytes => "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_"u8;
+    private static ReadOnlySpan<byte> ValidPrefixBytes =>
+        "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_"u8;
 
     private static readonly SearchValues<byte> s_validPrefixBytes = SearchValues.Create(ValidPrefixBytes);
 
@@ -60,6 +65,11 @@ public readonly partial struct Identifier : IEquatableValue<Identifier, AsciiStr
     }
 
     public int Length => _value.Length;
+
+    public byte[] ToArray()
+    {
+        return _value.ToByteArray();
+    }
 
     public static bool IsValidValue(AsciiString value)
     {
@@ -83,10 +93,10 @@ public readonly partial struct Identifier : IEquatableValue<Identifier, AsciiStr
         var prefix = value.AsSpan()[..prefixEndIndex];
         var id = value.AsSpan()[(prefixEndIndex + 1)..];
 
-        return prefix[0] != (AsciiChar)PrefixDelimiter
-               && prefix.All(id => id == PrefixDelimiter || AsciiChar.IsLetterOrDigit(id))
-               && id.Length is >= MinIdLength and <= MaxIdLength
-               && id.ContainsOnlyAsciiLettersOrDigits();
+        return prefix[0] != (AsciiChar)PrefixDelimiter &&
+            prefix.All(id => id == PrefixDelimiter || AsciiChar.IsLetterOrDigit(id)) &&
+            id.Length is >= MinIdLength and <= MaxIdLength &&
+            id.ContainsOnlyAsciiLettersOrDigits();
     }
 
     public static bool IsValid(ReadOnlySpan<char> id)
@@ -118,7 +128,8 @@ public readonly partial struct Identifier : IEquatableValue<Identifier, AsciiStr
 
     private static bool IsValidPrefix(ReadOnlySpan<byte> prefix)
     {
-        return prefix.Length is >= MinPrefixLength and <= MaxPrefixLength && prefix.IndexOfAnyExcept(s_validPrefixBytes) < 0;
+        return prefix.Length is >= MinPrefixLength and <= MaxPrefixLength &&
+            prefix.IndexOfAnyExcept(s_validPrefixBytes) < 0;
     }
 
     /// <summary>
@@ -256,5 +267,25 @@ public readonly partial struct Identifier : IEquatableValue<Identifier, AsciiStr
     public bool EndsWith(ReadOnlySpan<byte> value)
     {
         return _value.EndsWith(value);
+    }
+}
+
+public sealed class IdentifierFormatter : IMessagePackFormatter<Identifier>
+{
+    public void Serialize(ref MessagePackWriter writer, Identifier value, MessagePackSerializerOptions options)
+    {
+        writer.Write(value.ToArray());
+    }
+
+    public Identifier Deserialize(ref MessagePackReader reader, MessagePackSerializerOptions options)
+    {
+        var seq = reader.ReadBytes()!;
+
+        if (Identifier.TryParse(seq.Value.FirstSpan, null, out var id))
+        {
+            return id;
+        }
+
+        throw new InvalidOperationException();
     }
 }

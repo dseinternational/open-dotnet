@@ -4,9 +4,11 @@
 using System.ComponentModel;
 using System.Text.Json.Serialization;
 using DSE.Open.Language;
+using MessagePack;
 
 namespace DSE.Open.Observations;
 
+[MessagePackObject]
 public record BinaryWordObservation : Observation<bool, WordId>
 {
     protected BinaryWordObservation(Measure measure, WordId discriminator, DateTimeOffset time, bool value)
@@ -15,13 +17,15 @@ public record BinaryWordObservation : Observation<bool, WordId>
     }
 
     [JsonConstructor]
+    [SerializationConstructor]
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    protected BinaryWordObservation(ObservationId id, MeasureId measureId, WordId discriminator, long timestamp, bool value)
+    public BinaryWordObservation(ObservationId id, MeasureId measureId, long timestamp, bool value, WordId discriminator)
         : base(id, measureId, discriminator, timestamp, value)
     {
     }
 
+    [IgnoreMember]
     [JsonIgnore]
     public WordId WordId => Discriminator;
 

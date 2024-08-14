@@ -5,6 +5,8 @@ using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using DSE.Open.Values.Text.Json.Serialization;
 using DSE.Open.Values;
+using DSE.Open.Values.Text.MessagePack.Serialization;
+using MessagePack;
 
 namespace DSE.Open.Observations;
 
@@ -13,6 +15,7 @@ namespace DSE.Open.Observations;
 /// </summary>
 [EquatableValue(AllowDefaultValue = false)]
 [JsonConverter(typeof(JsonUInt64ValueConverter<MeasureId>))]
+[MessagePackFormatter(typeof(MessagePackUInt64ValueConverter<MeasureId>))]
 [StructLayout(LayoutKind.Auto)]
 public readonly partial struct MeasureId
     : IEquatableValue<MeasureId, ulong>,

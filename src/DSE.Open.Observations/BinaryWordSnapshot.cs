@@ -3,13 +3,16 @@
 
 using System.Text.Json.Serialization;
 using DSE.Open.Language;
+using MessagePack;
 
 namespace DSE.Open.Observations;
 
+[MessagePackObject]
 public sealed record BinaryWordSnapshot : Snapshot<BinaryWordObservation, bool, WordId>
 {
     [JsonConstructor]
-    internal BinaryWordSnapshot(DateTimeOffset time, BinaryWordObservation observation) : base(time, observation)
+    [SerializationConstructor]
+    public BinaryWordSnapshot(DateTimeOffset time, BinaryWordObservation observation) : base(time, observation)
     {
     }
 

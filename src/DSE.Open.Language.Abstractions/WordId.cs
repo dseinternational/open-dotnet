@@ -5,6 +5,9 @@ using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using DSE.Open.Values;
 using DSE.Open.Values.Text.Json.Serialization;
+using DSE.Open.Values.Text.MessagePack.Serialization;
+using MessagePack;
+using MessagePack.Formatters;
 
 namespace DSE.Open.Language;
 
@@ -13,10 +16,9 @@ namespace DSE.Open.Language;
 /// </summary>
 [EquatableValue(AllowDefaultValue = false)]
 [JsonConverter(typeof(JsonUInt64ValueConverter<WordId>))]
+[MessagePackFormatter(typeof(MessagePackUInt64ValueConverter<WordId>))]
 [StructLayout(LayoutKind.Auto)]
-public readonly partial struct WordId
-    : IEquatableValue<WordId, ulong>,
-      IUtf8SpanSerializable<WordId>
+public readonly partial struct WordId : IEquatableValue<WordId, ulong>, IUtf8SpanSerializable<WordId>
 {
     public const ulong MinIdValue = 100000000001;
     public const ulong MaxIdValue = 999999999999;

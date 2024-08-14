@@ -6,6 +6,8 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using MessagePack;
+using MessagePack.Formatters;
 
 namespace DSE.Open.Collections.Generic;
 
@@ -14,6 +16,8 @@ namespace DSE.Open.Collections.Generic;
 /// </summary>
 /// <typeparam name="T"></typeparam>
 /// <remarks><see cref="ICollection{T}"/> is implemented explicitly to support deserialization.</remarks>
+[MessagePackObject]
+[MessagePackFormatter(typeof(ReadOnlyValueCollectionFormatter<>))]
 [CollectionBuilder(typeof(ReadOnlyValueCollection), nameof(ReadOnlyValueCollection.Create))]
 public class ReadOnlyValueCollection<T>
     : IReadOnlyList<T>,
@@ -23,6 +27,7 @@ public class ReadOnlyValueCollection<T>
     // Cannot use collection expression because this is the empty used by the builder when supplied with no items.
     public static readonly ReadOnlyValueCollection<T> Empty = new();
 
+    [Key(0)]
     internal readonly List<T> _items;
 
     public ReadOnlyValueCollection()
@@ -200,5 +205,31 @@ public class ReadOnlyValueCollection<T>
         {
             _inner.Dispose();
         }
+    }
+}
+
+public sealed class ReadOnlyValueCollectionFormatter<T> : IMessagePackFormatter<ReadOnlyValueCollection<T>>
+{
+    private readonly ListFormatter<T> _inner = new();
+
+    public void Serialize(
+        ref MessagePackWriter writer,
+        ReadOnlyValueCollection<T> value,
+        MessagePackSerializerOptions options)
+    {
+        ArgumentNullException.ThrowIfNull(value);
+        _inner.Serialize(ref writer, value._items, options);
+    }
+
+    public ReadOnlyValueCollection<T> Deserialize(ref MessagePackReader reader, MessagePackSerializerOptions options)
+    {
+        var list = _inner.Deserialize(ref reader, options);
+
+        if (list is null || list.Count == 0)
+        {
+            return [];
+        }
+
+        return ReadOnlyValueCollection.CreateUnsafe(list);
     }
 }

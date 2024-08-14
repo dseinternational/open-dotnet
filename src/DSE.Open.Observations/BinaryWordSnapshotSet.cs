@@ -6,13 +6,14 @@ using System.Text.Json.Serialization;
 using DSE.Open.Collections.Generic;
 using DSE.Open.Language;
 using DSE.Open.Values;
+using MessagePack;
 
 namespace DSE.Open.Observations;
 
-public record BinaryWordSnapshotSet
-    : SnapshotSet<BinaryWordSnapshot, BinaryWordObservation, bool, WordId>
+[MessagePackObject]
+public record BinaryWordSnapshotSet : SnapshotSet<BinaryWordSnapshot, BinaryWordObservation, bool, WordId>
 {
-    protected BinaryWordSnapshotSet(
+    public BinaryWordSnapshotSet(
         DateTimeOffset created,
         DateTimeOffset updated,
         Identifier trackerReference,
@@ -21,7 +22,7 @@ public record BinaryWordSnapshotSet
     {
     }
 
-    protected BinaryWordSnapshotSet(
+    public BinaryWordSnapshotSet(
         Identifier id,
         DateTimeOffset created,
         DateTimeOffset updated,
@@ -32,9 +33,10 @@ public record BinaryWordSnapshotSet
     }
 
     [JsonConstructor]
+    [SerializationConstructor]
     [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    protected BinaryWordSnapshotSet(
+    public BinaryWordSnapshotSet(
         Identifier id,
         long createdTimestamp,
         long updatedTimestamp,
