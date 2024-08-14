@@ -1,7 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-namespace DSE.Open.Values.Tests;
+namespace DSE.Open.Values;
 
 public class IdentifierTests
 {
@@ -307,5 +307,90 @@ public class IdentifierTests
         // Assert
         Assert.Equal(prefixText, prefix.ToString());
         Assert.Equal(Identifier.MaxIdLength, id.Length);
+    }
+
+    [Fact]
+    public void EqualsRosByte_WithEqual_ShouldReturnTrue()
+    {
+        // Arrange
+        var identifier = Identifier.New();
+        var bytes = identifier.AsBytes();
+
+        // Act
+        var result = identifier.Equals(bytes);
+
+        // Assert
+        Assert.True(result);
+    }
+
+    [Fact]
+    public void EqualsRosByte_WithNotEqual_ShouldReturnFalse()
+    {
+        // Arrange
+        var identifier = Identifier.New();
+        var identifier2Bytes = Identifier.New().AsBytes();
+
+        // Act
+        var result = identifier.Equals(identifier2Bytes);
+
+        // Assert
+        Assert.False(result);
+    }
+
+    [Fact]
+    public void EqualsString_WithNull_ShouldReturnFalse()
+    {
+        // Arrange
+        string? nullString = null;
+
+        // Act
+#pragma warning disable CA1508 // Always false - good!
+        var result = Identifier.New().Equals(nullString);
+#pragma warning restore CA1508
+
+        // Assert
+        Assert.False(result);
+    }
+
+    [Fact]
+    public void EqualsString_WithEqual_ShouldReturnTrue()
+    {
+        // Arrange
+        var identifier = Identifier.New();
+        var str = identifier.ToString();
+
+        // Act
+        var result = identifier.Equals(str);
+
+        // Assert
+        Assert.True(result);
+    }
+
+    [Fact]
+    public void EqualsRosChar_WithEqual_ShouldReturnTrue()
+    {
+        // Arrange
+        var identifier = Identifier.New();
+        var chars = ((AsciiString)identifier).ToCharArray();
+
+        // Act
+        var result = identifier.Equals(new ReadOnlySpan<char>(chars));
+
+        // Assert
+        Assert.True(result);
+    }
+
+    [Fact]
+    public void EqualsRosChar_WithNotEqual_ShouldReturnFalse()
+    {
+        // Arrange
+        var identifier = Identifier.New();
+        var identifier2Str = Identifier.New().ToString();
+
+        // Act
+        var result = identifier.Equals(identifier2Str.AsSpan());
+
+        // Assert
+        Assert.False(result);
     }
 }

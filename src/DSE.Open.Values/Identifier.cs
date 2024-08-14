@@ -14,7 +14,9 @@ namespace DSE.Open.Values;
 [EquatableValue]
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<Identifier, AsciiString>))]
 [StructLayout(LayoutKind.Auto)]
-public readonly partial struct Identifier : IEquatableValue<Identifier, AsciiString>, IUtf8SpanSerializable<Identifier>
+public readonly partial struct Identifier : IEquatableValue<Identifier, AsciiString>,
+    IEquatable<string>,
+    IUtf8SpanSerializable<Identifier>
 {
     public const int DefaultLength = 48;
 
@@ -256,5 +258,33 @@ public readonly partial struct Identifier : IEquatableValue<Identifier, AsciiStr
     public bool EndsWith(ReadOnlySpan<byte> value)
     {
         return _value.EndsWith(value);
+    }
+
+    /// <summary>
+    /// Determines whether this Identifier is equal to <paramref name="other"/> by comparing bytes.
+    /// </summary>
+    /// <param name="other"></param>
+    public bool Equals(ReadOnlySpan<byte> other)
+    {
+        return _value.Equals(other);
+    }
+
+    /// <summary>
+    /// Determines whether this Identifier is equal to <paramref name="other"/> by comparing chars.
+    /// </summary>
+    /// <param name="other"></param>
+    public bool Equals(ReadOnlySpan<char> other)
+    {
+        return _value.Equals(other);
+    }
+
+    public bool Equals(string? other)
+    {
+        return other is not null && Equals(other.AsSpan());
+    }
+
+    public ReadOnlySpan<byte> AsBytes()
+    {
+        return ValuesMarshal.AsBytes(_value.AsSpan());
     }
 }
