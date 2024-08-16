@@ -1,4 +1,4 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Collections;
@@ -28,13 +28,8 @@ public class ReadOnlyCollection<T> : IReadOnlyList<T>
     /// Unsafely creates a <see cref="ReadOnlyCollection{T}"/> using the provided list as it's backing store.
     /// This should only be done when the caller is the only holder of the list, and does not mutate it after constructing this collection.
     /// </summary>
-    internal static ReadOnlyCollection<T> CreateWrapped(List<T> items)
-    {
-        return new(items);
-    }
-
 #pragma warning disable CA1002 // Do not expose generic lists
-    protected ReadOnlyCollection(List<T> collection)
+    internal ReadOnlyCollection(List<T> collection)
 #pragma warning restore CA1002 // Do not expose generic lists
     {
         ArgumentNullException.ThrowIfNull(collection);
