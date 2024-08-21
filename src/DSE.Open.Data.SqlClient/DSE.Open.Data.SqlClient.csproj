@@ -19,6 +19,7 @@
     <PackageReference Include="System.Text.Encoding.CodePages" />
     <PackageReference Include="System.Memory" />
     <PackageReference Include="System.Memory.Data" />
+    <PackageReference Include="System.Text.Json" />
   </ItemGroup>
 
   <ItemGroup>
