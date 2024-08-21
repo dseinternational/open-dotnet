@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Google.Protobuf" />
     <PackageReference Include="TorchSharp-cpu" />
   </ItemGroup>
 
