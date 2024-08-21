@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="SkiaSharp" />
     <PackageReference Include="TorchSharp-cpu" />
   </ItemGroup>
 
