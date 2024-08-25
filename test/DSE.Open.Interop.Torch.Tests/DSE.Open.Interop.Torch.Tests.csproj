@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="SkiaSharp" />
+    <PackageReference Include="SharpZipLib" />
     <PackageReference Include="TorchSharp-cpu" />
   </ItemGroup>
 
