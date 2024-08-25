@@ -41,11 +41,11 @@
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1" />
     <PackageVersion Include="Microsoft.Extensions.Options" Version="8.0.2" />
     <PackageVersion Include="Microsoft.Extensions.TimeProvider.Testing" Version="8.8.0" />
-    <PackageVersion Include="Microsoft.Identity.Client" Version="4.63.0" />
-    <PackageVersion Include="Microsoft.Identity.Client.Extensions.Msal" Version="4.63.0" />
-    <PackageVersion Include="Microsoft.IdentityModel.Abstractions" Version="8.0.1" />
-    <PackageVersion Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.0.1" />
-    <PackageVersion Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.0.1" />
+    <PackageVersion Include="Microsoft.Identity.Client" Version="4.64.0" />
+    <PackageVersion Include="Microsoft.Identity.Client.Extensions.Msal" Version="4.64.0" />
+    <PackageVersion Include="Microsoft.IdentityModel.Abstractions" Version="8.0.2" />
+    <PackageVersion Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.0.2" />
+    <PackageVersion Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.0.2" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.11.0" />
     <PackageVersion Include="Microsoft.NETCore.Platforms" Version="7.0.4" />
     <PackageVersion Include="Moq" Version="4.20.70" />
