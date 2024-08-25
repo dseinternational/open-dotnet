@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="SharpZipLib" />
     <PackageReference Include="TorchSharp-cpu" />
   </ItemGroup>
 
