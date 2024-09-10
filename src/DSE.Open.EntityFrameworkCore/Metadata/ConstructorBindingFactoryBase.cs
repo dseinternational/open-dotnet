@@ -176,7 +176,7 @@ public abstract class ConstructorBindingFactoryBase : IConstructorBindingFactory
         {
             foundBindings.Add(new FactoryMethodBinding(
                     s_createInstance,
-                    Array.Empty<ParameterBinding>(),
+                    [],
                     type.ClrType));
         }
 

@@ -11,7 +11,7 @@ public class Grouping<TGroup, TItem> : Collection<TItem>, IGrouping<TGroup, TIte
     /// Initializes a new instance with the provided group value and no items.
     /// </summary>
     /// <param name="group">A value identifying the group.</param>
-    public Grouping(TGroup group) : this(group, Array.Empty<TItem>())
+    public Grouping(TGroup group) : this(group, [])
     {
     }
 

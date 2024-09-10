@@ -51,8 +51,8 @@ public static class CachedTasks
 
         public static readonly Task<IEnumerable<T>> EmptyEnumerable = Task.FromResult(Enumerable.Empty<T>());
 
-        public static readonly Task<IReadOnlyCollection<T>> EmptyReadOnlyCollection = Task.FromResult<IReadOnlyCollection<T>>(Array.Empty<T>());
+        public static readonly Task<IReadOnlyCollection<T>> EmptyReadOnlyCollection = Task.FromResult<IReadOnlyCollection<T>>([]);
 
-        public static readonly Task<IReadOnlyList<T>> EmptyReadOnlyList = Task.FromResult<IReadOnlyList<T>>(Array.Empty<T>());
+        public static readonly Task<IReadOnlyList<T>> EmptyReadOnlyList = Task.FromResult<IReadOnlyList<T>>([]);
     }
 }
