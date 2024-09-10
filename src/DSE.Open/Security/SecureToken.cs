@@ -10,7 +10,7 @@ using DSE.Open.Text.Json.Serialization;
 
 namespace DSE.Open.Security;
 
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 [JsonConverter(typeof(JsonStringSecureTokenConverter))]
 public readonly record struct SecureToken : ISpanParsable<SecureToken>, ISpanFormattable
 {

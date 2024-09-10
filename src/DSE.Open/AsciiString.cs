@@ -24,7 +24,7 @@ namespace DSE.Open;
 /// a <see cref="ReadOnlyMemory{T}"/> of <see cref="AsciiChar"/>.
 /// </remarks>
 [JsonConverter(typeof(JsonStringAsciiStringConverter))]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 public readonly struct AsciiString
     : IEnumerable<AsciiChar>,
       IEquatable<AsciiString>,

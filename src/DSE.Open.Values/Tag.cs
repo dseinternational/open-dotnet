@@ -19,7 +19,7 @@ namespace DSE.Open.Values;
 ///     Identifier (URI): Generic Syntax</see>
 /// </remarks>
 [ComparableValue(AllowDefaultValue = false)]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<Tag, AsciiString>))]
 public readonly partial struct Tag
     : IComparableValue<Tag, AsciiString>,

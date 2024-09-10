@@ -10,7 +10,7 @@ namespace DSE.Open.Records;
 
 [EquatableValue]
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<Gender, AsciiString>))]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 public readonly partial struct Gender : IEquatableValue<Gender, AsciiString>, IUtf8SpanSerializable<Gender>
 {
     public static int MaxSerializedCharLength => 6;

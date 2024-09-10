@@ -38,7 +38,7 @@ namespace DSE.Open.Values.Text;
 /// </item>
 /// </list>
 /// </remarks>
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 [JsonConverter(typeof(JsonStringLikePatternConverter))]
 public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<LikePattern>, ISpanFormattable
 {

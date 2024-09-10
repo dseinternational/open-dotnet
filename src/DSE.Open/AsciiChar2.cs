@@ -16,7 +16,7 @@ namespace DSE.Open;
 /// An immutable sequence of two ASCII bytes.
 /// </summary>
 [JsonConverter(typeof(JsonStringAsciiCharNConverter<AsciiChar2>))]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 public readonly struct AsciiChar2
     : IComparable<AsciiChar2>,
         IEquatable<AsciiChar2>,

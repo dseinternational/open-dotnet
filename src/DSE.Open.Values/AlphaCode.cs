@@ -12,7 +12,7 @@ namespace DSE.Open.Values;
 /// </summary>
 [ComparableValue(AllowDefaultValue = false)]
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<AlphaCode, AsciiString>))]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 public readonly partial struct AlphaCode
     : IComparableValue<AlphaCode, AsciiString>,
       IUtf8SpanSerializable<AlphaCode>

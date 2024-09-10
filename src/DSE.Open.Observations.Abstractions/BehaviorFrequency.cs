@@ -13,7 +13,7 @@ namespace DSE.Open.Observations;
 /// </summary>
 [ComparableValue]
 [JsonConverter(typeof(JsonUInt32ValueConverter<BehaviorFrequency>))]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 public readonly partial struct BehaviorFrequency
     : IComparableValue<BehaviorFrequency, uint>,
       IUtf8SpanSerializable<BehaviorFrequency>

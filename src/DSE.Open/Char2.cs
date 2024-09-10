@@ -10,7 +10,7 @@ namespace DSE.Open;
 /// <summary>
 /// An immutable sequence of two unicode characters.
 /// </summary>
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 public readonly struct Char2
     : IEquatable<Char2>,
       ISpanFormattable,

@@ -12,7 +12,7 @@ namespace DSE.Open.Values;
 /// </summary>
 [DivisibleValue]
 [JsonConverter(typeof(JsonDecimalValueConverter<Amount>))]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 public readonly partial struct Amount : IDivisibleValue<Amount, decimal>, IUtf8SpanSerializable<Amount>
 {
     public static int MaxSerializedCharLength => 32;

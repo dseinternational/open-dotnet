@@ -12,7 +12,7 @@ namespace DSE.Open.Values;
 /// An immutable series of (up to 32) characters used to identify something.
 /// </summary>
 [JsonConverter(typeof(JsonStringCodeConverter))]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 public readonly record struct Code
     : IComparable<Code>,
       ISpanFormattable,

@@ -18,7 +18,7 @@ namespace DSE.Open.Speech;
 /// 
 /// </summary>
 [JsonConverter(typeof(JsonStringSpeechSymbolSequenceConverter))]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 [CollectionBuilder(typeof(SpeechSymbolSequence), "Create")]
 public readonly struct SpeechSymbolSequence
     : IEquatable<SpeechSymbolSequence>,

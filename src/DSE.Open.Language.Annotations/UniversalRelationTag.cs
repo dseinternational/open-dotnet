@@ -10,7 +10,7 @@ using DSE.Open.Values.Text.Json.Serialization;
 namespace DSE.Open.Language.Annotations;
 
 [EquatableValue]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<UniversalRelationTag, AsciiString>))]
 public readonly partial struct UniversalRelationTag
     : IEquatableValue<UniversalRelationTag, AsciiString>,

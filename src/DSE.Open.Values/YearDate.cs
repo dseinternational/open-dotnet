@@ -11,7 +11,7 @@ namespace DSE.Open.Values;
 /// <summary>
 /// A value that identifies a date (day) or just a year. Used for birth date in Open ID connect spec.
 /// </summary>
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 [JsonConverter(typeof(JsonStringYearDateConverter))]
 public readonly record struct YearDate : IComparable<YearDate>, ISpanParsable<YearDate>, ISpanFormattable
 {

@@ -17,7 +17,7 @@ namespace DSE.Open.Speech;
 /// together with notation type.
 /// </summary>
 [JsonConverter(typeof(JsonStringSpeechTranscriptionConverter))]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 public readonly record struct SpeechTranscription
     : IEquatable<SpeechTranscription>,
       ISpanFormattable,

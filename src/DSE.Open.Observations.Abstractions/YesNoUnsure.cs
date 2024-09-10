@@ -14,7 +14,7 @@ namespace DSE.Open.Observations;
 /// </summary>
 [EquatableValue(AllowDefaultValue = false)]
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<YesNoUnsure, AsciiString>))]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 public readonly partial struct YesNoUnsure
     : IEquatableValue<YesNoUnsure, AsciiString>,
       IUtf8SpanSerializable<YesNoUnsure>

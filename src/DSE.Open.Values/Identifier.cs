@@ -14,7 +14,7 @@ namespace DSE.Open.Values;
 
 [EquatableValue]
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<Identifier, AsciiString>))]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 public readonly partial struct Identifier : IEquatableValue<Identifier, AsciiString>,
     IEquatable<string>,
     IUtf8SpanSerializable<Identifier>

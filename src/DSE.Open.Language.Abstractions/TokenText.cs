@@ -9,7 +9,7 @@ using DSE.Open.Values.Text.Json.Serialization;
 namespace DSE.Open.Language;
 
 [ComparableValue]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 [JsonConverter(typeof(JsonSpanSerializableValueConverter<TokenText, CharSequence>))]
 public readonly partial struct TokenText
     : IComparableValue<TokenText, CharSequence>,

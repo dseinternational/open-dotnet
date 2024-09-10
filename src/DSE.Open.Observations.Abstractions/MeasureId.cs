@@ -13,7 +13,7 @@ namespace DSE.Open.Observations;
 /// </summary>
 [EquatableValue(AllowDefaultValue = false)]
 [JsonConverter(typeof(JsonUInt64ValueConverter<MeasureId>))]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 public readonly partial struct MeasureId
     : IEquatableValue<MeasureId, ulong>,
         IUtf8SpanSerializable<MeasureId>

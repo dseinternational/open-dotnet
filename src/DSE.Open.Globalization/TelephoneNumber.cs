@@ -10,7 +10,7 @@ using DSE.Open.Globalization.Text.Json;
 namespace DSE.Open.Globalization;
 
 [JsonConverter(typeof(JsonStringTelephoneNumberConverter))]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 public readonly record struct TelephoneNumber
     : ISpanParsable<TelephoneNumber>,
       ISpanFormattable

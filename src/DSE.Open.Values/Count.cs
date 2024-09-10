@@ -12,7 +12,7 @@ namespace DSE.Open.Values;
 /// </summary>
 [DivisibleValue]
 [JsonConverter(typeof(JsonInt64ValueConverter<Count>))]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 public readonly partial struct Count : IDivisibleValue<Count, long>, IUtf8SpanSerializable<Count>
 {
     public const long MaxValue = NumberHelper.MaxJsonSafeInteger;

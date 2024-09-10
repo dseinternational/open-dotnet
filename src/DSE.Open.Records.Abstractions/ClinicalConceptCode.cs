@@ -17,7 +17,7 @@ namespace DSE.Open.Records;
 /// </remarks>
 [EquatableValue]
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<ClinicalConceptCode, long>))]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 public readonly partial struct ClinicalConceptCode
     : IEquatableValue<ClinicalConceptCode, long>,
       IClinicalConceptCode<ClinicalConceptCode>,

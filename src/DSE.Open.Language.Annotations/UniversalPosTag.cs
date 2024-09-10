@@ -14,7 +14,7 @@ namespace DSE.Open.Language.Annotations;
 /// part-of-speech categories.
 /// </summary>
 [EquatableValue]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<UniversalPosTag, AsciiString>))]
 public readonly partial struct UniversalPosTag : IEquatableValue<UniversalPosTag, AsciiString>, IUtf8SpanSerializable<UniversalPosTag>
 {

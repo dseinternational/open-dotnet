@@ -10,7 +10,7 @@ namespace DSE.Open;
 /// <summary>
 /// An immutable sequence of three unicode characters.
 /// </summary>
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 public readonly struct Char3
     : IEquatable<Char3>,
       ISpanFormattable,

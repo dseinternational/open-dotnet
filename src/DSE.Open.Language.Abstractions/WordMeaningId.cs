@@ -13,7 +13,7 @@ namespace DSE.Open.Language;
 /// </summary>
 [EquatableValue(AllowDefaultValue = false)]
 [JsonConverter(typeof(JsonUInt64ValueConverter<WordMeaningId>))]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 public readonly partial struct WordMeaningId
     : IEquatableValue<WordMeaningId, ulong>,
       IUtf8SpanSerializable<WordMeaningId>

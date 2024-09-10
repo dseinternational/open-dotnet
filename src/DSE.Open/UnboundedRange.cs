@@ -10,7 +10,7 @@ namespace DSE.Open;
 /// Specifies a range of comparable values where the lower or upper bound may be unspecified.
 /// </summary>
 /// <typeparam name="T"></typeparam>
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 public readonly record struct UnboundedRange<T>
     where T : struct, IComparable<T>
 {

@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 
 namespace DSE.Open.Time;
 
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 public readonly record struct Duration
 {
     public static readonly Duration None;

@@ -23,7 +23,7 @@ namespace DSE.Open.Speech;
 /// A symbol used to represent the sounds of language.
 /// </summary>
 [ComparableValue]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 public readonly partial struct SpeechSymbol
     : IComparableValue<SpeechSymbol, char>,
       IUtf8SpanSerializable<SpeechSymbol>

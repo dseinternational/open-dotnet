@@ -14,7 +14,7 @@ namespace DSE.Open.Values;
 /// </summary>
 [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates", Justification = "Not needed")]
 [JsonConverter(typeof(JsonStringDateMonthOnlyConverter))]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 public readonly record struct DateMonthOnly : ISpanFormattable, ISpanParsable<DateMonthOnly>, IComparable<DateMonthOnly>
 {
     private const string Format = "yyyy-MM";

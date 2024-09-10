@@ -12,7 +12,7 @@ namespace DSE.Open;
 /// An 8 byte version stamp.
 /// </summary>
 [JsonConverter(typeof(JsonStringTimestampConverter))]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 public readonly record struct Timestamp : IComparable<Timestamp>, ISpanFormattable, ISpanParsable<Timestamp>
 {
     public static readonly Timestamp Empty;

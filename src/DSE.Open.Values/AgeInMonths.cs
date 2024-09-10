@@ -10,7 +10,7 @@ using DSE.Open.Values.Text.Json.Serialization;
 namespace DSE.Open.Values;
 
 [JsonConverter(typeof(JsonStringAgeInMonthsConverter))]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 public readonly record struct AgeInMonths : ISpanFormattable, ISpanParsable<AgeInMonths>, IComparable<AgeInMonths>
 {
     private const string DefaultFormat = "0";

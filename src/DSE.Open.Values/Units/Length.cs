@@ -8,7 +8,7 @@ using DSE.Open.Values.Text.Json.Serialization;
 
 namespace DSE.Open.Values.Units;
 
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 [JsonConverter(typeof(JsonStringLengthConverter))]
 public readonly record struct Length : IQuantity<double, UnitOfLength>, IComparable<Length>
 {

@@ -10,7 +10,7 @@ namespace DSE.Open.Observations;
 
 [EquatableValue]
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<MeasurementLevel, AsciiString>))]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 public readonly partial struct MeasurementLevel
     : IEquatableValue<MeasurementLevel, AsciiString>,
       IUtf8SpanSerializable<MeasurementLevel>

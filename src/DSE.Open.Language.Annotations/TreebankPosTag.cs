@@ -12,7 +12,7 @@ namespace DSE.Open.Language.Annotations;
 // https://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html
 
 [EquatableValue]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<TreebankPosTag, AsciiString>))]
 public readonly partial struct TreebankPosTag
     : IEquatableValue<TreebankPosTag, AsciiString>,

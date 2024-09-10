@@ -15,7 +15,7 @@ namespace DSE.Open;
 /// An immutable sequence of three ASCII bytes.
 /// </summary>
 [JsonConverter(typeof(JsonStringAsciiCharNConverter<AsciiChar3>))]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 public readonly struct AsciiChar3
     : IComparable<AsciiChar3>,
       IEquatable<AsciiChar3>,

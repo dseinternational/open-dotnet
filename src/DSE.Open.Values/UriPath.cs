@@ -16,7 +16,7 @@ namespace DSE.Open.Values;
 /// </summary>
 [ComparableValue]
 [JsonConverter(typeof(JsonSpanSerializableValueConverter<UriPath, CharSequence>))]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
 {
     public const char Separator = '/';

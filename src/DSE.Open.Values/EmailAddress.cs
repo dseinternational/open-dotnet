@@ -20,7 +20,7 @@ namespace DSE.Open.Values;
 /// </list>
 /// </summary>
 [JsonConverter(typeof(JsonStringEmailAddressConverter))]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 public readonly record struct EmailAddress
     : IComparable<EmailAddress>,
       ISpanParsable<EmailAddress>,

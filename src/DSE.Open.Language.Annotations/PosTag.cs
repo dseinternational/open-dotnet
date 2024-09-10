@@ -12,7 +12,7 @@ namespace DSE.Open.Language.Annotations;
 /// Unconstrained POS tag (placeholder for others).
 /// </summary>
 [EquatableValue]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<PosTag, AsciiString>))]
 public readonly partial struct PosTag
     : IEquatableValue<PosTag, AsciiString>,

@@ -14,7 +14,7 @@ namespace DSE.Open.Observations;
 /// </summary>
 [EquatableValue(AllowDefaultValue = false)]
 [JsonConverter(typeof(JsonUInt64ValueConverter<ObservationId>))]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 public readonly partial struct ObservationId
     : IEquatableValue<ObservationId, ulong>,
       IUtf8SpanSerializable<ObservationId>

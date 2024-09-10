@@ -13,7 +13,7 @@ namespace DSE.Open.Globalization;
 /// </summary>
 [EquatableValue]
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<CountryCode3, AsciiChar3>))]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 public readonly partial struct CountryCode3 : IEquatableValue<CountryCode3, AsciiChar3>, IUtf8SpanSerializable<CountryCode3>
 {
     public static readonly CountryCode3 Australia = new((AsciiChar3)"AUS");

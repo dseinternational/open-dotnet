@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 namespace DSE.Open.Values.Units;
 
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 public readonly record struct Volume : IQuantity<double, UnitOfVolume>, IComparable<Volume>
 {
     private Volume(double amount, UnitOfVolume measure)

@@ -16,7 +16,7 @@ namespace DSE.Open.Globalization;
 /// </summary>
 [ComparableValue]
 [JsonConverter(typeof(JsonStringCountryCodeConverter))]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 [SuppressMessage("Design", "CA1036:Override methods on comparable types", Justification = "Not necessary")]
 public readonly partial struct CountryCode : IComparableValue<CountryCode, AsciiChar2>, IUtf8SpanSerializable<CountryCode>
 {

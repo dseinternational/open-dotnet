@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 namespace DSE.Open.Globalization;
 
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 public sealed class CountryCallingCodeInfo
 {
     public static readonly CountryCallingCodeInfo? Empty;

@@ -18,7 +18,7 @@ namespace DSE.Open.Globalization;
 /// </summary>
 [ComparableValue(AllowDefaultValue = false)]
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<LanguageTag, AsciiString>))]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 public readonly partial struct LanguageTag
     : IComparableValue<LanguageTag, AsciiString>,
       IUtf8SpanSerializable<LanguageTag>

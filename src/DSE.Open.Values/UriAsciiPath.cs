@@ -19,7 +19,7 @@ namespace DSE.Open.Values;
 /// </summary>
 [ComparableValue]
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<UriAsciiPath, AsciiString>))]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 public readonly partial struct UriAsciiPath
     : IComparableValue<UriAsciiPath, AsciiString>,
       IUtf8SpanSerializable<UriAsciiPath>

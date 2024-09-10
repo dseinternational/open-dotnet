@@ -15,7 +15,7 @@ namespace DSE.Open;
 /// a <see cref="ReadOnlyMemory{T}"/> of <see cref="char"/>.
 /// </summary>
 [JsonConverter(typeof(JsonStringCharSequenceConverter))]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 public readonly struct CharSequence
     : IEquatable<CharSequence>,
       IEquatable<ReadOnlyMemory<char>>,

@@ -9,7 +9,7 @@ using DSE.Open.Values.Text.Json.Serialization;
 
 namespace DSE.Open.Values.Units;
 
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 [JsonConverter(typeof(JsonStringMassConverter))]
 public readonly record struct Mass : IQuantity<double, UnitOfMass>, IComparable<Mass>
 {

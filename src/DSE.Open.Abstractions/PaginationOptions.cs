@@ -9,7 +9,7 @@ namespace DSE.Open;
 /// <summary>
 /// Represents pagination options, usually used in a request.
 /// </summary>
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 public readonly record struct PaginationOptions
 {
     /// <summary>

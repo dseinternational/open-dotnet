@@ -12,7 +12,7 @@ namespace DSE.Open.Values;
 /// </summary>
 [DivisibleValue]
 [JsonConverter(typeof(JsonDecimalValueConverter<Ratio>))]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 public readonly partial struct Ratio : IDivisibleValue<Ratio, decimal>, IUtf8SpanSerializable<Ratio>
 {
     public static int MaxSerializedCharLength => 128; // TODO

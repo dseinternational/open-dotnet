@@ -14,7 +14,7 @@ namespace DSE.Open;
 /// a <see cref="ReadOnlyMemory{T}"/> of <see cref="byte"/> where the data is UTF8 encoded text.
 /// </summary>
 [JsonConverter(typeof(JsonStringUtf8StringConverter))]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 public readonly struct Utf8String
     : IEquatable<Utf8String>,
       ISpanFormattable,

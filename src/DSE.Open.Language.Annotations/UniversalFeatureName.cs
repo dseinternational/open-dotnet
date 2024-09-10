@@ -13,7 +13,7 @@ namespace DSE.Open.Language.Annotations;
 /// Names of universal features (<see href="https://universaldependencies.org/u/feat/index.html"/>).
 /// </summary>
 [EquatableValue]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<UniversalFeatureName, AsciiString>))]
 public readonly partial struct UniversalFeatureName : IEquatableValue<UniversalFeatureName, AsciiString>, IUtf8SpanSerializable<UniversalFeatureName>
 {

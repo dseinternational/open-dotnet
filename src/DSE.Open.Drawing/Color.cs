@@ -14,7 +14,7 @@ namespace DSE.Open.Drawing;
 /// A RGBA color value.
 /// </summary>
 [JsonConverter(typeof(JsonStringColorConverter))]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 public readonly record struct Color : ISpanParsable<Color>, ISpanFormattable
 {
     private const int AlphaShift = 24;

@@ -8,7 +8,7 @@ using DSE.Open.Text.Json.Serialization;
 
 namespace DSE.Open.Diagnostics;
 
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 [JsonConverter(typeof(JsonStringDiagnosticCodeConverter))]
 public readonly struct DiagnosticCode
     : IComparable<DiagnosticCode>,

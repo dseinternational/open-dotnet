@@ -17,7 +17,7 @@ namespace DSE.Open.Records;
 /// </remarks>
 [EquatableValue]
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<ConditionDiagnosisCode, ClinicalConceptCode>))]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 public readonly partial struct ConditionDiagnosisCode : IEquatableValue<ConditionDiagnosisCode, ClinicalConceptCode>, IUtf8SpanSerializable<ConditionDiagnosisCode>
 {
     public static int MaxSerializedCharLength => ClinicalConceptCode.MaxSerializedCharLength;

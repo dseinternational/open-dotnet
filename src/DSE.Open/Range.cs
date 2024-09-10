@@ -12,7 +12,7 @@ namespace DSE.Open;
 /// Specifies a range of numeric values given an inclusive <see cref="Start"/> and inclusive <see cref="End"/>.
 /// </summary>
 /// <typeparam name="T"></typeparam>
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 [SuppressMessage("Design", "CA1000:Do not declare static members on generic types", Justification = "<Pending>")]
 public readonly record struct Range<T> : ISpanFormattable, ISpanParsable<Range<T>>
     where T : INumber<T>, IMinMaxValue<T>

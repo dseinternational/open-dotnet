@@ -13,7 +13,7 @@ namespace DSE.Open.Observations;
 /// Longitude and latitude are defined in terms of the World Geodetic System 2D coordinate
 /// system - WGS 84 (G2139) / EPSG:4326.
 /// </summary>
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 public readonly record struct GroundPoint
 {
     public GroundPoint(double latitude, double longitude, Length accuracy)

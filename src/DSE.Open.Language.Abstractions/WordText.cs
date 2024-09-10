@@ -22,7 +22,7 @@ namespace DSE.Open.Language;
 /// This structure is simply the characters in the word or template.
 /// </remarks>
 [ComparableValue]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 [JsonConverter(typeof(JsonSpanSerializableValueConverter<WordText, CharSequence>))]
 public readonly partial struct WordText
     : IComparableValue<WordText, CharSequence>,

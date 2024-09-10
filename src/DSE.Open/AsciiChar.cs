@@ -15,7 +15,7 @@ namespace DSE.Open;
 /// An ASCII character, stored as a byte.
 /// </summary>
 [JsonConverter(typeof(JsonStringAsciiCharNConverter<AsciiChar>))]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 public readonly partial struct AsciiChar
     : IComparable<AsciiChar>,
         IEquatable<AsciiChar>,

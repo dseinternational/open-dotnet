@@ -9,7 +9,7 @@ using DSE.Open.Values.Text.Json.Serialization;
 
 namespace DSE.Open.Records;
 
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 [JsonConverter(typeof(JsonSpanSerializableValueConverter<EthnicityCode, short>))]
 [EquatableValue]
 public readonly partial struct EthnicityCode : IEquatableValue<EthnicityCode, short>,

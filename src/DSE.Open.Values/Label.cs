@@ -13,7 +13,7 @@ namespace DSE.Open.Values;
 /// in total, and may not start or end with whitespace characters.
 /// </summary>
 [ComparableValue(AllowDefaultValue = false)]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 [JsonConverter(typeof(JsonSpanSerializableValueConverter<Label, CharSequence>))]
 public readonly partial struct Label : IComparableValue<Label, CharSequence>
 {

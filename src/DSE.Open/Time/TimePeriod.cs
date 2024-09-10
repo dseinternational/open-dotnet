@@ -11,7 +11,7 @@ namespace DSE.Open.Time;
 /// <summary>
 /// Defines a period of time.
 /// </summary>
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 [JsonConverter(typeof(JsonStringTimePeriodConverter))]
 public readonly record struct TimePeriod : IComparable<TimePeriod>
 {

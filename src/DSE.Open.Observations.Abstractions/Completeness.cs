@@ -13,7 +13,7 @@ namespace DSE.Open.Observations;
 /// </summary>
 [ComparableValue]
 [JsonConverter(typeof(JsonUInt32ValueConverter<Completeness>))]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 public readonly partial struct Completeness
     : IComparableValue<Completeness, uint>,
       IUtf8SpanSerializable<Completeness>

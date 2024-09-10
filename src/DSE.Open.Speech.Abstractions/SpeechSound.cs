@@ -14,7 +14,7 @@ namespace DSE.Open.Speech;
 /// </summary>
 /// <remarks>See <see href="https://en.wikipedia.org/wiki/International_Phonetic_Alphabet"/></remarks>
 [JsonConverter(typeof(JsonStringSpeechSoundConverter))]
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential)]
 public readonly struct SpeechSound
     : IEquatable<SpeechSound>,
       ISpanFormattable,
