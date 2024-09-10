@@ -69,7 +69,7 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
 
     public bool EndsWith(char value)
     {
-        return !_value.IsEmpty && _value[_value.Length] == value;
+        return _value.EndsWith(value);
     }
 
     public bool Equals(string value)
