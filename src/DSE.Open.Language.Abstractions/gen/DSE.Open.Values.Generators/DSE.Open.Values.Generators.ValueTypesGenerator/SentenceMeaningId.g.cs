@@ -8,6 +8,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using DSE.Open.Values;
 
 namespace DSE.Open.Language;
@@ -120,6 +121,7 @@ public readonly partial struct SentenceMeaningId
     /// <summary>
     /// Gets a representation of the <see cref="SentenceMeaningId"/> value as a string with formatting options.
     /// </summary>
+    [SkipLocalsInit]
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
         EnsureIsNotDefault();

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <RootNamespace>DSE.Open.Speech</RootNamespace>
     <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
     <CompilerGeneratedFilesOutputPath>gen</CompilerGeneratedFilesOutputPath>
@@ -13,8 +13,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\gen\DSE.Open.Values.Generators\DSE.Open.Values.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-    <ProjectReference Include="..\DSE.Open.Globalization\DSE.Open.Globalization.csproj" />    
-    <ProjectReference Include="..\DSE.Open.Values\DSE.Open.Values.csproj" />  
+    <ProjectReference Include="..\DSE.Open.Globalization\DSE.Open.Globalization.csproj" />
+    <ProjectReference Include="..\DSE.Open.Values\DSE.Open.Values.csproj" />
   </ItemGroup>
 
 </Project>

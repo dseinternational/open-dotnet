@@ -32,6 +32,7 @@ public partial class ValueTypesGenerator
 
             writer.WriteLine("using System;");
             writer.WriteLine("using System.ComponentModel;");
+            writer.WriteLine("using System.Runtime.CompilerServices;");
 
             if (spec.EmitToStringFormattableMethod && (spec.UseGetStringSpan || spec.UseGetString))
             {
@@ -301,6 +302,7 @@ public partial class ValueTypesGenerator
                                     /// <summary>
                                     /// Gets a representation of the <see cref="{{spec.ValueTypeName}}"/> value as a string with formatting options.
                                     /// </summary>
+                                    [SkipLocalsInit]
                                     public string ToString(string? format, IFormatProvider? formatProvider)
                                     {
                                     """);

@@ -98,7 +98,7 @@ public class ReadOnlyValueCollectionTests
         // Arrange
         const int lower = 0;
         const int upper = 10;
-        ReadOnlyValueCollection<int> collection = [..Enumerable.Range(lower, upper)];
+        ReadOnlyValueCollection<int> collection = [.. Enumerable.Range(lower, upper)];
 
         // Act
         var acc = 0;
@@ -120,7 +120,7 @@ public class ReadOnlyValueCollectionTests
         // Arrange
         const int lower = 0;
         const int upper = 10;
-        ReadOnlyValueCollection<int> collection = [..Enumerable.Range(lower, upper)];
+        ReadOnlyValueCollection<int> collection = [.. Enumerable.Range(lower, upper)];
 
         // Act
         var sum = collection.Sum();

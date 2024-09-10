@@ -51,11 +51,15 @@ public static class CompilationHelper
             }
         }
 
+        var options = new CSharpCompilationOptions(
+            outputKind: OutputKind.DynamicallyLinkedLibrary,
+            allowUnsafe: true);
+
         return CSharpCompilation.Create(
             assemblyName,
             [CSharpSyntaxTree.ParseText(source)],
             references.ToArray(),
-            options: new(OutputKind.DynamicallyLinkedLibrary));
+            options: options);
     }
 
     public static CSharpGeneratorDriver CreateValuesSourceGeneratorDriver(ValueTypesGenerator? generator = null)

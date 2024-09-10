@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using DSE.Open.Text.Json.Serialization;
@@ -75,6 +76,7 @@ public readonly record struct Timestamp : IComparable<Timestamp>, ISpanFormattab
         return ToString(null, null);
     }
 
+    [SkipLocalsInit]
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
         Span<char> buffer = stackalloc char[Base64Length];
@@ -98,6 +100,7 @@ public readonly record struct Timestamp : IComparable<Timestamp>, ISpanFormattab
         return Convert.TryToBase64Chars(bytes, destination, out charsWritten);
     }
 
+    [SkipLocalsInit]
     public string ToBase64String()
     {
         Span<char> buffer = stackalloc char[Base64Length];
@@ -143,6 +146,7 @@ public readonly record struct Timestamp : IComparable<Timestamp>, ISpanFormattab
             : ThrowHelper.ThrowFormatException<Timestamp>("Could not parse timestamp");
     }
 
+    [SkipLocalsInit]
     public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out Timestamp result)
     {
         if (s.IsEmpty)

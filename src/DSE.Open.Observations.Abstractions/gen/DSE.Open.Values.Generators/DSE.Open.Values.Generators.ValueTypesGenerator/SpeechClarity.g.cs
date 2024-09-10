@@ -8,6 +8,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace DSE.Open.Observations;
 
@@ -111,6 +112,7 @@ public readonly partial struct SpeechClarity
     /// <summary>
     /// Gets a representation of the <see cref="SpeechClarity"/> value as a string with formatting options.
     /// </summary>
+    [SkipLocalsInit]
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
         return ((IFormattable)_value).ToString(format, formatProvider);

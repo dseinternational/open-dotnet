@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 using DSE.Open.Language.Annotations.Serialization;
 
@@ -211,6 +212,7 @@ public readonly struct TokenIndex
         return ToString(default, default);
     }
 
+    [SkipLocalsInit]
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
         Span<char> buffer = stackalloc char[MaxSerializedCharLength];
@@ -240,6 +242,7 @@ public readonly struct TokenIndex
             $"Cannot parse '{s}' as {typeof(TokenIndex).Name}.");
     }
 
+    [SkipLocalsInit]
     public static bool TryParse(
         ReadOnlySpan<char> s,
         IFormatProvider? provider,

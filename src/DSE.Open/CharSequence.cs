@@ -189,6 +189,11 @@ public readonly struct CharSequence
         return _value.Span.EndsWith(value, comparisonType);
     }
 
+    public bool EndsWith(char value)
+    {
+        return _value.Span.EndsWith(value);
+    }
+
     public bool EndsWith(CharSequence value)
     {
         return EndsWith(value.AsSpan(), StringComparison.Ordinal);

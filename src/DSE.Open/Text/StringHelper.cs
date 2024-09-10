@@ -4,6 +4,7 @@
 using System.Buffers;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using CommunityToolkit.HighPerformance.Buffers;
 using DSE.Open.Runtime.Helpers;
 
@@ -95,6 +96,7 @@ public static partial class StringHelper
         return GetCharacters(text, char.IsLetter);
     }
 
+    [SkipLocalsInit]
     [return: NotNullIfNotNull("text")]
     private static string? GetCharacters(string? text, Predicate<char> predicate)
     {
@@ -132,6 +134,7 @@ public static partial class StringHelper
         }
     }
 
+    [SkipLocalsInit]
     [return: NotNullIfNotNull("text")]
     public static string? ExtractLettersWithDashesForWhitespace(string? text)
     {
@@ -315,6 +318,7 @@ public static partial class StringHelper
     /// <param name="text">A character array with the characters to be scanned.</param>
     /// <param name="exceptions">Characters that should not be removed.</param>
     /// <returns>A string containing the characters with punctuation characters removed.</returns>
+    [SkipLocalsInit]
     [return: NotNullIfNotNull("text")]
     public static string? RemovePunctuation(string? text, IEnumerable<char>? exceptions = null)
     {

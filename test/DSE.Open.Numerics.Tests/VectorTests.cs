@@ -10,7 +10,7 @@ public partial class VectorTests
     {
         Vector<int> v1 = [1, 2, 3, 4, 5, 6];
 
-        var v2 = new Vector<int>([1, 2, 3, 4, 5, 6] );
+        var v2 = new Vector<int>([1, 2, 3, 4, 5, 6]);
 
         Assert.Equal(6, v1.Length);
         Assert.Equal(6, v2.Length);

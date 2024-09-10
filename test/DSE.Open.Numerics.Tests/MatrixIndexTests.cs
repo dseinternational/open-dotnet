@@ -23,7 +23,7 @@ public class MatrixIndexTests
     public void Implicit_conversion_index2D()
     {
         var index = new MatrixIndex(1, 2);
-        var index2D = new Index2D(1,2);
+        var index2D = new Index2D(1, 2);
         var index2 = (MatrixIndex)index2D;
         var index2D2 = (Index2D)index;
 

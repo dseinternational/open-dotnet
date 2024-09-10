@@ -19,7 +19,7 @@ public class JsonStringTranscriptionConverterTests
         var serialized = JsonSerializer.Serialize(deserialized, JsonSharedOptions.RelaxedJsonEscaping);
         Assert.Equal(json, serialized);
 
-        var original =  SpeechTranscription.Parse(transcription, CultureInfo.InvariantCulture);
+        var original = SpeechTranscription.Parse(transcription, CultureInfo.InvariantCulture);
         Assert.Equal(original, deserialized);
     }
 

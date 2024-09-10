@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using DSE.Open.Diagnostics;
@@ -120,6 +121,7 @@ public readonly record struct Sign : ISpanFormattable, ISpanParsable<Sign>
         return ToString(null, null);
     }
 
+    [SkipLocalsInit]
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
         Span<char> buffer = stackalloc char[SignModality.MaxSerializedCharLength + 2 + WordText.MaxSerializedCharLength];

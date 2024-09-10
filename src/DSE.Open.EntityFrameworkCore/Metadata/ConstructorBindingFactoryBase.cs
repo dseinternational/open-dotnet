@@ -9,12 +9,18 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace DSE.Open.EntityFrameworkCore.Metadata;
 
+[UnconditionalSuppressMessage("Trimming",
+    "IL2026:Members annotated with 'RequiresUnreferencedCodeAttribute' require dynamic access otherwise can break functionality when trimming application code",
+    Justification = "<Pending>")]
 public abstract class ConstructorBindingFactoryBase : IConstructorBindingFactory
 {
     private readonly IPropertyParameterBindingFactory _propertyFactory;
     private readonly IParameterBindingFactories _factories;
-    private static readonly MethodInfo _createInstance =
+
+#pragma warning disable IL2111 // Method with parameters or return value with `DynamicallyAccessedMembersAttribute` is accessed via reflection. Trimmer can't guarantee availability of the requirements of the method.
+    private static readonly MethodInfo s_createInstance =
         typeof(Activator).GetMethod(nameof(Activator.CreateInstance), BindingFlags.Public | BindingFlags.Static, [typeof(Type)])!;
+#pragma warning restore IL2111 // Method with parameters or return value with `DynamicallyAccessedMembersAttribute` is accessed via reflection. Trimmer can't guarantee availability of the requirements of the method.
 
     protected ConstructorBindingFactoryBase(IPropertyParameterBindingFactory propertyFactory, IParameterBindingFactories factories)
     {
@@ -169,8 +175,8 @@ public abstract class ConstructorBindingFactoryBase : IConstructorBindingFactory
             && type.ClrType.IsValueType)
         {
             foundBindings.Add(new FactoryMethodBinding(
-                    _createInstance,
-                    Array.Empty<ParameterBinding>(),
+                    s_createInstance,
+                    [],
                     type.ClrType));
         }
 

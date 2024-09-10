@@ -8,6 +8,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using DSE.Open.Values;
 
 namespace DSE.Open.Observations;
@@ -120,6 +121,7 @@ public readonly partial struct MeasureId
     /// <summary>
     /// Gets a representation of the <see cref="MeasureId"/> value as a string with formatting options.
     /// </summary>
+    [SkipLocalsInit]
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
         EnsureIsNotDefault();

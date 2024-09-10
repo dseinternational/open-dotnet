@@ -8,6 +8,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace DSE.Open.Speech;
 
@@ -111,6 +112,7 @@ public readonly partial struct SpeechSymbol
     /// <summary>
     /// Gets a representation of the <see cref="SpeechSymbol"/> value as a string with formatting options.
     /// </summary>
+    [SkipLocalsInit]
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
         return ((IFormattable)_value).ToString(format, formatProvider);

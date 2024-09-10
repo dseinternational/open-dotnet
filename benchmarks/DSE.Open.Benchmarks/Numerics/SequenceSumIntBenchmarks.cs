@@ -5,7 +5,7 @@ using BenchmarkDotNet.Attributes;
 
 namespace DSE.Open.Benchmarks.Numerics;
 
-public class SequenceSumIntBenchmarks: SequenceSumIntegerBenchmarksBase<int>
+public class SequenceSumIntBenchmarks : SequenceSumIntegerBenchmarksBase<int>
 {
     [Benchmark(Baseline = true)]
     public int Linq_Sum_Array()

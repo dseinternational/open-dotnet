@@ -8,6 +8,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace DSE.Open.Language;
 
@@ -111,6 +112,7 @@ public readonly partial struct WordText
     /// <summary>
     /// Gets a representation of the <see cref="WordText"/> value as a string with formatting options.
     /// </summary>
+    [SkipLocalsInit]
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
         return ((IFormattable)_value).ToString(format, formatProvider);

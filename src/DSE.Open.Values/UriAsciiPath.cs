@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -31,7 +32,7 @@ public readonly partial struct UriAsciiPath
 
     public static readonly UriAsciiPath Empty = new(default, true);
 
-    public const int MaxLength = 256;
+    public const int MaxLength = 512;
 
     public static int MaxSerializedByteLength => MaxLength;
 
@@ -254,6 +255,7 @@ public readonly partial struct UriAsciiPath
         return inner.All(IsValidInnerChar);
     }
 
+    [SkipLocalsInit]
     public static bool IsValidValue(ReadOnlySpan<char> value)
     {
         var rented = SpanOwner<byte>.Empty;
@@ -302,6 +304,7 @@ public readonly partial struct UriAsciiPath
         return IsValidValue(value.AsSpan());
     }
 
+    [SkipLocalsInit]
     public static bool TryParseSanitised(ReadOnlySpan<char> s, out UriAsciiPath value)
     {
         if (s.IsEmpty)
@@ -513,6 +516,7 @@ public readonly partial struct UriAsciiPath
     /// <summary>
     /// Creates an absolute path by prepending and appending '/' characters to the current path.
     /// </summary>
+    [SkipLocalsInit]
     public string ToAbsolutePath()
     {
         var requiredLength = _value.Length + 2;

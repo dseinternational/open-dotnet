@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -366,6 +367,7 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
     /// <see langword="default"/>
     /// </summary>
     /// <exception cref="FormatException">Thrown if there is a range bracket with no unescaped counterpart.</exception>
+    [SkipLocalsInit]
     private static bool TryMatchSet(
         ref int patternIndex,
         ref int valueIndex,

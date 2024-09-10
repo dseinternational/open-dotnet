@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Buffers;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -30,6 +31,7 @@ public sealed class JsonUtf8SpanSerializableValueConverter<TValue, T> : JsonConv
         return default; // unreachable
     }
 
+    [SkipLocalsInit]
     public override void Write(Utf8JsonWriter writer, TValue value, JsonSerializerOptions options)
     {
         ArgumentNullException.ThrowIfNull(writer);

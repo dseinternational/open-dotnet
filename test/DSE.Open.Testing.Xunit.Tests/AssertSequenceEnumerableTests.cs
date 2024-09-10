@@ -8,13 +8,13 @@ public class AssertSequenceEnumerableTests
     [Fact]
     public void TrueForAll()
     {
-        AssertSequence.TrueForAll(v => v < 101, Enumerable.Range(1,100));
+        AssertSequence.TrueForAll(v => v < 101, Enumerable.Range(1, 100));
     }
 
     [Fact]
     public void TrueForAny()
     {
-        AssertSequence.TrueForAny(v => v > 99, Enumerable.Range(1,100));
+        AssertSequence.TrueForAny(v => v > 99, Enumerable.Range(1, 100));
     }
 
     [Fact]

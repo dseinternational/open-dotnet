@@ -97,7 +97,7 @@ public abstract class ReadOnlyKeyedValueCollection<TKey, TValue>
         return Equals(obj as ReadOnlyKeyedValueCollection<TKey, TValue>);
     }
 
-    public override int GetHashCode() 
+    public override int GetHashCode()
     {
         var hash = new HashCode();
 

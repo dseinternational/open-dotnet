@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using CommunityToolkit.HighPerformance.Buffers;
@@ -23,7 +24,7 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
 
     public static readonly UriPath Empty = new(default, true);
 
-    public const int MaxLength = 256;
+    public const int MaxLength = 512;
 
     public static int MaxSerializedCharLength => MaxLength;
 
@@ -69,7 +70,7 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
 
     public bool EndsWith(char value)
     {
-        return !_value.IsEmpty && _value[_value.Length] == value;
+        return _value.EndsWith(value);
     }
 
     public bool Equals(string value)
@@ -228,6 +229,7 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
         return IsValidValue(value.AsSpan());
     }
 
+    [SkipLocalsInit]
     public static bool TryParseSanitised(ReadOnlySpan<char> s, out UriPath value)
     {
         if (s.IsEmpty)
@@ -392,6 +394,7 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
     /// <summary>
     /// Creates an absolute path by prepending and appending '/' characters to the current path.
     /// </summary>
+    [SkipLocalsInit]
     public string ToAbsolutePath()
     {
         var requiredLength = _value.Length + 2;

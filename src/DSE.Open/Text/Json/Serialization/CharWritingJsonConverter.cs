@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using CommunityToolkit.HighPerformance.Buffers;
@@ -22,6 +23,7 @@ public abstract class CharWritingJsonConverter<TValue> : JsonConverter<TValue>
 
     protected abstract bool TryFormat(TValue value, Span<char> data, out int charsWritten);
 
+    [SkipLocalsInit]
     public override TValue Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         var valueLength = reader.HasValueSequence
@@ -48,6 +50,7 @@ public abstract class CharWritingJsonConverter<TValue> : JsonConverter<TValue>
         }
     }
 
+    [SkipLocalsInit]
     public override void Write(Utf8JsonWriter writer, TValue value, JsonSerializerOptions options)
     {
         ArgumentNullException.ThrowIfNull(writer);

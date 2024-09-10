@@ -3,12 +3,14 @@
 
 using System.Buffers;
 using System.Buffers.Text;
+using System.Runtime.CompilerServices;
 using DSE.Open.Diagnostics;
 
 namespace DSE.Open;
 
 public static class Utf8StringFormattingExtensions
 {
+    [SkipLocalsInit]
     public static Utf8String ToUtf8String(this DateTime value, StandardFormat format = default)
     {
         Span<byte> buffer = stackalloc byte[64];
@@ -22,6 +24,7 @@ public static class Utf8StringFormattingExtensions
         return default; // unreachable
     }
 
+    [SkipLocalsInit]
     public static Utf8String ToUtf8String(this DateTimeOffset value, StandardFormat format = default)
     {
         Span<byte> buffer = stackalloc byte[64];
@@ -35,6 +38,7 @@ public static class Utf8StringFormattingExtensions
         return default; // unreachable
     }
 
+    [SkipLocalsInit]
     public static Utf8String ToUtf8String(this short value, StandardFormat format = default)
     {
         Span<byte> buffer = stackalloc byte[32];
@@ -48,6 +52,7 @@ public static class Utf8StringFormattingExtensions
         return default; // unreachable
     }
 
+    [SkipLocalsInit]
     public static Utf8String ToUtf8String(this int value, StandardFormat format = default)
     {
         Span<byte> buffer = stackalloc byte[32];
@@ -61,6 +66,7 @@ public static class Utf8StringFormattingExtensions
         return default; // unreachable
     }
 
+    [SkipLocalsInit]
     public static Utf8String ToUtf8String(this long value, StandardFormat format = default)
     {
         Span<byte> buffer = stackalloc byte[32];

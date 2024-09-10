@@ -17,7 +17,7 @@ internal abstract class ValueTypeSpec
 
     public ParentClass? ParentClass { get; set; }
 
-    public IEnumerable<string> Fields { get; set; } = Array.Empty<string>();
+    public IEnumerable<string> Fields { get; set; } = [];
 
     public string ContainedValueTypeName { get; set; } = default!;
 

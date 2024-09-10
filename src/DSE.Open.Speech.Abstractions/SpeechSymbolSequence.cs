@@ -95,6 +95,7 @@ public readonly struct SpeechSymbolSequence
     /// </summary>
     /// <param name="includeInitialStressMarkers"></param>
     /// <returns></returns>
+    [SkipLocalsInit]
     public SpeechSound GetInitialSound(bool includeInitialStressMarkers = false)
     {
         if (_value.IsEmpty)

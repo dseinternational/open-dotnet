@@ -24,7 +24,7 @@ public partial class SequenceTests
     [Fact]
     public void Mean_List_Double()
     {
-        var sequence = Enumerable.Range(1,500).Select(i => i * 3.333).ToList();
+        var sequence = Enumerable.Range(1, 500).Select(i => i * 3.333).ToList();
         var mean = Sequence.Mean(sequence);
         Assert.Equal(834.91650000000016, mean, 20E-14);
     }

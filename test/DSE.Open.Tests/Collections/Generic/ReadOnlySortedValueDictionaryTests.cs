@@ -12,7 +12,7 @@ public class ReadOnlySortedValueDictionaryTests
     public void Init_sorts_by_key()
     {
         var d1 = new ReadOnlySortedValueDictionary<int, string>(
-            [            
+            [
                 new(3, "3"),
                 new(1, "1"),
                 new(2, "2"),

@@ -16,7 +16,7 @@ public static class MemoryThresholds
         return Unsafe.SizeOf<T>() * length <= StackallocByteThreshold;
     }
 
-    public const int StackallocByteThreshold = 256;
+    public const int StackallocByteThreshold = 512;
 
     public const int StackallocCharThreshold = StackallocByteThreshold / 2;
 }

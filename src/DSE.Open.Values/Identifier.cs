@@ -3,6 +3,7 @@
 
 using System.Buffers;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
@@ -155,6 +156,7 @@ public readonly partial struct Identifier : IEquatableValue<Identifier, AsciiStr
     /// <param name="idLength">The length of <see cref="Identifier"/> to create.</param>
     /// <param name="prefix">The prefix to use.</param>
     /// <returns>A new <see cref="Identifier"/> with the given prefix and a random value.</returns>
+    [SkipLocalsInit]
     public static Identifier New(int idLength, ReadOnlySpan<char> prefix)
     {
         Guard.IsBetweenOrEqualTo(idLength, MinIdLength, MaxIdLength);

@@ -85,6 +85,7 @@ public static partial class StringHelper
     /// <param name="format"></param>
     /// <param name="provider"></param>
     /// <returns></returns>
+    [SkipLocalsInit]
     public static string Join<T>(
         ReadOnlySpan<char> separator,
         ReadOnlySpan<char> finalSeparator,
@@ -153,7 +154,7 @@ public static partial class StringHelper
                     return $"{firstValue}";
                 }
 
-                var sh = new DefaultInterpolatedStringHandler(0, 0, provider, stackalloc char[256]);
+                var sh = new DefaultInterpolatedStringHandler(0, 0, provider, stackalloc char[MemoryThresholds.StackallocCharThreshold]);
 
                 sh.AppendFormatted(firstValue, format);
 
@@ -175,6 +176,7 @@ public static partial class StringHelper
         }
     }
 
+    [SkipLocalsInit]
     public static string Join<T>(
         ReadOnlySpan<char> separator,
         ReadOnlySpan<char> finalSeparator,
@@ -206,7 +208,7 @@ public static partial class StringHelper
             return $"{firstValue}";
         }
 
-        var sh = new DefaultInterpolatedStringHandler(0, 0, provider, stackalloc char[256]);
+        var sh = new DefaultInterpolatedStringHandler(0, 0, provider, stackalloc char[MemoryThresholds.StackallocCharThreshold]);
 
         sh.AppendFormatted(firstValue, format);
 
@@ -262,6 +264,7 @@ public static partial class StringHelper
         };
     }
 
+    [SkipLocalsInit]
     private static string JoinPreAllocated(
         ReadOnlySpan<char> separator,
         ReadOnlySpan<string?> values,
@@ -325,6 +328,7 @@ public static partial class StringHelper
         return sb.ToString();
     }
 
+    [SkipLocalsInit]
     private static string JoinCollection(
         ReadOnlySpan<char> separator,
         ReadOnlySpan<char> finalSeparator,

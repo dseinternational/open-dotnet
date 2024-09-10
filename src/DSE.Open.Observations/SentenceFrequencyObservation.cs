@@ -1,8 +1,9 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.ComponentModel;
 using System.IO.Hashing;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json.Serialization;
 using DSE.Open.Language;
@@ -46,6 +47,7 @@ public record SentenceFrequencyObservation : Observation<BehaviorFrequency, Sent
         return new SentenceFrequencyObservation(measure, speechSound, timeProvider.GetUtcNow(), value);
     }
 
+    [SkipLocalsInit]
     protected override ulong GetDiscriminatorId()
     {
         var chars = SentenceId.ToCharSequence().AsSpan();

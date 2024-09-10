@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using CommunityToolkit.HighPerformance.Buffers;
@@ -14,6 +15,7 @@ public sealed class JsonSpanSerializableValueConverter<TValue, T> : JsonConverte
 {
     public static readonly JsonSpanSerializableValueConverter<TValue, T> Default = new();
 
+    [SkipLocalsInit]
     public override TValue Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         var valueLength = reader.HasValueSequence
@@ -36,6 +38,7 @@ public sealed class JsonSpanSerializableValueConverter<TValue, T> : JsonConverte
         }
     }
 
+    [SkipLocalsInit]
     public override void Write(Utf8JsonWriter writer, TValue value, JsonSerializerOptions options)
     {
         ArgumentNullException.ThrowIfNull(writer);
@@ -48,7 +51,7 @@ public sealed class JsonSpanSerializableValueConverter<TValue, T> : JsonConverte
             ? stackalloc char[length]
             : (rented = SpanOwner<char>.Allocate(length)).Span;
 
-        using(rented)
+        using (rented)
         {
             if (value.TryFormat(buffer, out var charsWritten, default, default))
             {

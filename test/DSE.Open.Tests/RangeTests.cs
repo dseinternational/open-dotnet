@@ -20,7 +20,7 @@ public class RangeTests
     [Fact]
     public void Construct()
     {
-        Range<int> r = new (2, 20);
+        Range<int> r = new(2, 20);
         Assert.Equal(2, r.Start);
         Assert.Equal(20, r.End);
     }

@@ -72,7 +72,7 @@ public static partial class Sequence
                 {
                     return T.NaN;
                 }
-                
+
                 if (x > result)
                 {
                     result = x;
