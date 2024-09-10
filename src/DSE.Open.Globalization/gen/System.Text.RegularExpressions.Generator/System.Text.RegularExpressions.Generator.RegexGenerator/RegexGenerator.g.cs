@@ -236,7 +236,7 @@ namespace DSE.Open.Globalization
         /// ○ Match if at the end of the string or if before an ending newline.<br/>
         /// </code>
         /// </remarks>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "8.0.10.36612")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "8.0.10.31311")]
         private static partial global::System.Text.RegularExpressions.Regex GetValidationRegex() => global::System.Text.RegularExpressions.Generated.GetValidationRegex_0.Instance;
     }
 }
@@ -254,7 +254,7 @@ namespace System.Text.RegularExpressions.Generated
     using System.Threading;
 
     /// <summary>Custom <see cref="Regex"/>-derived type for the GetValidationRegex method.</summary>
-    [GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "8.0.10.36612")]
+    [GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "8.0.10.31311")]
     file sealed class GetValidationRegex_0 : Regex
     {
         /// <summary>Cached, thread-safe singleton instance.</summary>
@@ -269,7 +269,7 @@ namespace System.Text.RegularExpressions.Generated
             base.factory = new RunnerFactory();
             base.capsize = 1;
         }
-    
+            
         /// <summary>Provides a factory for creating <see cref="RegexRunner"/> instances to be used by methods on <see cref="Regex"/>.</summary>
         private sealed class RunnerFactory : RegexRunnerFactory
         {
@@ -1932,7 +1932,7 @@ namespace System.Text.RegularExpressions.Generated
     }
     
     /// <summary>Helper methods used by generated <see cref="Regex"/>-derived implementations.</summary>
-    [GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "8.0.10.36612")]
+    [GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "8.0.10.31311")]
     file static class Utilities
     {
         /// <summary>Pops 2 values from the backtracking stack.</summary>
