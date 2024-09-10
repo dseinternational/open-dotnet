@@ -20,6 +20,6 @@ T>
 
     private static List<T> GenerateSnapshot(IReadOnlyCollection<T> values)
     {
-        return [..values];
+        return [.. values];
     }
 }

@@ -27,7 +27,7 @@ public readonly struct Tensor<T> : IEquatable<Tensor<T>>
     /// Elements are initialised to <see langword="default" />.
     /// </summary>
     /// <param name="length"></param>
-    public Tensor(uint length) : this (new MultiMemory<T>(length))
+    public Tensor(uint length) : this(new MultiMemory<T>(length))
     {
     }
 
@@ -37,11 +37,11 @@ public readonly struct Tensor<T> : IEquatable<Tensor<T>>
     /// </summary>
     /// <param name="length"></param>
     /// <param name="initialValue"></param>
-    public Tensor(uint length, T initialValue) : this (new MultiMemory<T>(length, initialValue))
+    public Tensor(uint length, T initialValue) : this(new MultiMemory<T>(length, initialValue))
     {
     }
 
-    public Tensor(Memory2D<T> elements) : this (new MultiMemory<T>(elements))
+    public Tensor(Memory2D<T> elements) : this(new MultiMemory<T>(elements))
     {
     }
 

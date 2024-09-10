@@ -24,7 +24,7 @@ public class MatrixTests
     [Fact]
     public void Can_init_with_jagged_array()
     {
-        var m = new Matrix<int>( [ [1, 2], [3, 4], [5, 6] ]);
+        var m = new Matrix<int>([[1, 2], [3, 4], [5, 6]]);
 
         Assert.Equal(3, m.RowCount);
         Assert.Equal(2, m.ColumnCount);
@@ -33,7 +33,7 @@ public class MatrixTests
     [Fact]
     public void Can_init_with_span()
     {
-        Span<int> s = [1,2,3,4,5,6];
+        Span<int> s = [1, 2, 3, 4, 5, 6];
         var m = Matrix.Create(s, 3, 2);
 
         Assert.Equal(3, m.RowCount);
@@ -46,7 +46,7 @@ public class MatrixTests
         var m1 = Matrix.Create([1, 2, 3, 4, 5, 6], 3, 2);
         var m2 = Matrix.Create([1, 2, 3, 4, 5, 6], 3, 2);
 
-        var m3 = m1.Add( m2);
+        var m3 = m1.Add(m2);
 
         Assert.Equal(3, m3.RowCount);
         Assert.Equal(2, m3.ColumnCount);

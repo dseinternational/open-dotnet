@@ -16,7 +16,7 @@ public abstract class TorchTensor<T> : IDisposable
     private bool _disposed;
 
     protected internal TorchTensor(torch.Tensor tensor)
-    { 
+    {
         Debug.Assert(TorchTensor.IsValidElementType(typeof(T)));
         _tensor = tensor;
     }
@@ -29,7 +29,7 @@ public abstract class TorchTensor<T> : IDisposable
 
     protected abstract TorchTensor<T> CreateNew(torch.Tensor tensor);
 
-    protected abstract torch.Tensor CreateNewNative(TensorSpan<T>  tensor);
+    protected abstract torch.Tensor CreateNewNative(TensorSpan<T> tensor);
 
     public abstract TorchTensor<T> Add(T scalar);
 

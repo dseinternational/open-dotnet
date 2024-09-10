@@ -779,7 +779,7 @@ public static class Phonemes
             uh,
             ur,
             uu,
-            yoo,            
+            yoo,
         ]);
 
         public static readonly FrozenSet<Phoneme> All = FrozenSet.ToFrozenSet(Consonants.Union(Vowels));

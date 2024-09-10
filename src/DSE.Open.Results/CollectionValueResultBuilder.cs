@@ -17,8 +17,8 @@ public abstract class CollectionValueResultBuilder<TResult, TValue>
     public override ReadOnlyValueCollection<TValue>? Value
 #pragma warning restore CA2227 // Collection properties should be read only
     {
-        get => [.._items];
-        set => base.Value = [.. _items = [..value]];
+        get => [.. _items];
+        set => base.Value = [.. _items = [.. value]];
     }
 
     public override void MergeNotificationsAndValue(TResult valueResult)

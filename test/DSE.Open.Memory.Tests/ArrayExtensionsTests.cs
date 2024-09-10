@@ -25,7 +25,7 @@ public class ArrayExtensionsTests
     [Fact]
     public void ToArray2D_Jagged()
     {
-        int[][] data = [[ 1, 2, 3], [4, 5, 6 ]];
+        int[][] data = [[1, 2, 3], [4, 5, 6]];
         var result = data.ToArray2D();
         Assert.Equal(2, result.GetLength(0));
     }

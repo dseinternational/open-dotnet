@@ -9,6 +9,6 @@ public class PhonemeLabelTests
     public void SeeAndLearnV2Labels_count_equals_41()
     {
         var labels = PhonemeLabel.Labels[PhonemeLabelScheme.SeeAndLearnV2];
-        Assert.Equal(41, labels.Count); 
+        Assert.Equal(41, labels.Count);
     }
 }

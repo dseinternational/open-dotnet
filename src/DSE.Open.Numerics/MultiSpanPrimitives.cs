@@ -23,5 +23,5 @@ public static partial class MultiSpanPrimitives
     {
         NumericsException.ThrowIfNotSameShape(x, y);
         VectorPrimitives.AddInPlace(x.Elements, y.Elements);
-    }   
+    }
 }

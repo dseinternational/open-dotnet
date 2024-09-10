@@ -21,7 +21,7 @@ public class TemporalValueTests
     public void Init2()
     {
         var now = DateTimeOffset.Now;
-        var t = new TemporalValue<int>{ Time = now, Value = 42};
+        var t = new TemporalValue<int> { Time = now, Value = 42 };
         Assert.Equal(42, t.Value);
         Assert.Equal(now, t.Time);
     }

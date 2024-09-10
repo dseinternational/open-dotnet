@@ -5,7 +5,7 @@ using System.Numerics;
 
 namespace DSE.Open.Numerics;
 
-public static  class GuardSequence
+public static class GuardSequence
 {
     public static void SameLength<T>(ReadOnlySpan<T> x, ReadOnlySpan<T> y)
         where T : struct, INumber<T>

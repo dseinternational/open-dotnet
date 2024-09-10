@@ -10,7 +10,7 @@ public class ReadOnlyVectorTests
     {
         ReadOnlyVector<int> v1 = [1, 2, 3, 4, 5, 6];
 
-        var v2 = new ReadOnlyVector<int>([1, 2, 3, 4, 5, 6] );
+        var v2 = new ReadOnlyVector<int>([1, 2, 3, 4, 5, 6]);
 
         Assert.Equal(6, v1.Length);
         Assert.Equal(6, v2.Length);

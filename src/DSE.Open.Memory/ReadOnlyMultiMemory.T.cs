@@ -26,7 +26,7 @@ public readonly struct ReadOnlyMultiMemory<T> : IEquatable<ReadOnlyMultiMemory<T
     /// <param name="length"></param>
     public ReadOnlyMultiMemory(uint length)
     {
-        ArgumentOutOfRangeException .ThrowIfGreaterThan(length, (uint)Array.MaxLength, nameof(length));
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(length, (uint)Array.MaxLength, nameof(length));
 
         _shape = [length];
         _strides = [1u];

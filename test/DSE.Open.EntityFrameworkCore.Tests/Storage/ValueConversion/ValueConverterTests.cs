@@ -47,7 +47,7 @@ public class ValueConverterTests : SqliteInMemoryTestBase<TestDbContext>
         using (var db = CreateContext())
         {
             _ = db.Countries.Add(new()
-                { Code = CountryCode.UnitedKingdom });
+            { Code = CountryCode.UnitedKingdom });
             _ = await db.SaveChangesAsync();
         }
 
