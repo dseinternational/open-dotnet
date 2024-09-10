@@ -92,10 +92,10 @@ namespace DSE.Open.Globalization
         ///                 ○ Match a character in the set [Tt].<br/>
         ///                 ○ Match with 2 alternative expressions.<br/>
         ///                     ○ Match a sequence of expressions.<br/>
-        ///                         ○ Match a character in the set [Aa].<br/>
+        ///                         ○ Match an empty string.<br/>
         ///                         ○ Match a character in the set [OYoy].<br/>
         ///                     ○ Match a sequence of expressions.<br/>
-        ///                         ○ Match a character in the set [Ss].<br/>
+        ///                         ○ Match an empty string.<br/>
         ///                         ○ Match a character in the set [Uu].<br/>
         ///     ○ Match a sequence of expressions.<br/>
         ///         ○ Match a character in the set [Ss].<br/>
@@ -109,10 +109,10 @@ namespace DSE.Open.Globalization
         ///                 ○ Match '-'.<br/>
         ///                 ○ Match with 2 alternative expressions.<br/>
         ///                     ○ Match a sequence of expressions.<br/>
-        ///                         ○ Match a character in the set [Ff].<br/>
+        ///                         ○ Match an empty string.<br/>
         ///                         ○ Match a character in the set [Rr].<br/>
         ///                     ○ Match a sequence of expressions.<br/>
-        ///                         ○ Match a character in the set [Nn].<br/>
+        ///                         ○ Match an empty string.<br/>
         ///                         ○ Match a character in the set [Ll].<br/>
         ///             ○ Match a sequence of expressions.<br/>
         ///                 ○ Match a character in the set [Cc].<br/>
@@ -149,11 +149,11 @@ namespace DSE.Open.Globalization
         ///         ○ Match '-'.<br/>
         ///         ○ Match with 2 alternative expressions.<br/>
         ///             ○ Match a sequence of expressions.<br/>
-        ///                 ○ Match a character in the set [Bb].<br/>
+        ///                 ○ Match an empty string.<br/>
         ///                 ○ Match a character in the set [Oo].<br/>
         ///                 ○ Match a character in the set [Kk\u212A].<br/>
         ///             ○ Match a sequence of expressions.<br/>
-        ///                 ○ Match a character in the set [Nn].<br/>
+        ///                 ○ Match an empty string.<br/>
         ///                 ○ Match a character in the set [Yy].<br/>
         ///                 ○ Match a character in the set [Nn].<br/>
         ///     ○ Match a sequence of expressions.<br/>
@@ -236,7 +236,7 @@ namespace DSE.Open.Globalization
         /// ○ Match if at the end of the string or if before an ending newline.<br/>
         /// </code>
         /// </remarks>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "8.0.10.31311")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "9.0.10.43107")]
         private static partial global::System.Text.RegularExpressions.Regex GetValidationRegex() => global::System.Text.RegularExpressions.Generated.GetValidationRegex_0.Instance;
     }
 }
@@ -254,7 +254,7 @@ namespace System.Text.RegularExpressions.Generated
     using System.Threading;
 
     /// <summary>Custom <see cref="Regex"/>-derived type for the GetValidationRegex method.</summary>
-    [GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "8.0.10.31311")]
+    [GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "9.0.10.43107")]
     file sealed class GetValidationRegex_0 : Regex
     {
         /// <summary>Cached, thread-safe singleton instance.</summary>
@@ -591,6 +591,7 @@ namespace System.Text.RegularExpressions.Generated
                                         switch (slice[3])
                                         {
                                             case 'A' or 'a':
+                                                
                                                 // Match a character in the set [OYoy].
                                                 if ((uint)slice.Length < 5 || ((long)((0x8020000080200000UL << (int)(charMinusLowUInt64 = (uint)slice[4] - 'O')) & (charMinusLowUInt64 - 64)) >= 0))
                                                 {
@@ -602,6 +603,7 @@ namespace System.Text.RegularExpressions.Generated
                                                 break;
                                                 
                                             case 'S' or 's':
+                                                
                                                 // Match a character in the set [Uu].
                                                 if ((uint)slice.Length < 5 || ((slice[4] | 0x20) != 'u'))
                                                 {
@@ -691,6 +693,7 @@ namespace System.Text.RegularExpressions.Generated
                                         switch (slice[7])
                                         {
                                             case 'F' or 'f':
+                                                
                                                 // Match a character in the set [Rr].
                                                 if ((uint)slice.Length < 9 || ((slice[8] | 0x20) != 'r'))
                                                 {
@@ -702,6 +705,7 @@ namespace System.Text.RegularExpressions.Generated
                                                 break;
                                                 
                                             case 'N' or 'n':
+                                                
                                                 // Match a character in the set [Ll].
                                                 if ((uint)slice.Length < 9 || ((slice[8] | 0x20) != 'l'))
                                                 {
@@ -815,6 +819,7 @@ namespace System.Text.RegularExpressions.Generated
                                 switch (slice[3])
                                 {
                                     case 'B' or 'b':
+                                        
                                         if ((uint)slice.Length < 6 ||
                                             ((slice[4] | 0x20) != 'o') || // Match a character in the set [Oo].
                                             ((((ch = slice[5]) | 0x20) != 'k') & (ch != 'K'))) // Match a character in the set [Kk\u212A].
@@ -827,6 +832,7 @@ namespace System.Text.RegularExpressions.Generated
                                         break;
                                         
                                     case 'N' or 'n':
+                                        
                                         if ((uint)slice.Length < 6 ||
                                             !slice.Slice(4).StartsWith("yn", StringComparison.OrdinalIgnoreCase)) // Match the string "yn" (ordinal case-insensitive)
                                         {
@@ -1301,62 +1307,47 @@ namespace System.Text.RegularExpressions.Generated
                                 
                                 // Match with 2 alternative expressions.
                                 //{
-                                    int alternation_starting_pos6 = pos;
-                                    
-                                    // Branch 0
-                                    //{
-                                        // Match a character in the set [A-Za-z\u212A] exactly 2 times.
-                                        {
-                                            if ((uint)slice.Length < 3 ||
-                                                ((ch = slice[1]) < 128 ? !char.IsAsciiLetter(ch) : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) ||
-                                                ((ch = slice[2]) < 128 ? !char.IsAsciiLetter(ch) : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")))
-                                            {
-                                                goto AlternationBranch25;
-                                            }
-                                        }
-                                        
-                                        Utilities.StackPush(ref base.runstack!, ref stackpos, 0, alternation_starting_pos6);
-                                        pos += 3;
-                                        slice = inputSpan.Slice(pos);
-                                        goto AlternationMatch6;
-                                        
-                                        AlternationBranch25:
-                                        pos = alternation_starting_pos6;
-                                        slice = inputSpan.Slice(pos);
-                                    //}
-                                    
-                                    // Branch 1
-                                    //{
-                                        // Match a character in the set [0-9] exactly 3 times.
-                                        {
-                                            if ((uint)slice.Length < 4 ||
-                                                !char.IsAsciiDigit(slice[1]) ||
-                                                !char.IsAsciiDigit(slice[2]) ||
-                                                !char.IsAsciiDigit(slice[3]))
-                                            {
-                                                goto LoopIterationNoMatch3;
-                                            }
-                                        }
-                                        
-                                        Utilities.StackPush(ref base.runstack!, ref stackpos, 1, alternation_starting_pos6);
-                                        pos += 4;
-                                        slice = inputSpan.Slice(pos);
-                                        goto AlternationMatch6;
-                                    //}
-                                    
-                                    AlternationBacktrack6:
-                                    base.CheckTimeout();
-                                    
-                                    alternation_starting_pos6 = base.runstack![--stackpos];
-                                    switch (base.runstack![--stackpos])
+                                    if ((uint)slice.Length < 2)
                                     {
-                                        case 0:
-                                            goto AlternationBranch25;
-                                        case 1:
-                                            goto LoopIterationNoMatch3;
+                                        goto LoopIterationNoMatch3;
                                     }
                                     
-                                    AlternationMatch6:;
+                                    switch (slice[1])
+                                    {
+                                        case 'A' or 'B' or 'C' or 'D' or 'E' or 'F' or 'G' or 'H' or 'I' or 'J' or 'K' or 'L' or 'M' or 'N' or 'O' or 'P' or 'Q' or 'R' or 'S' or 'T' or 'U' or 'V' or 'W' or 'X' or 'Y' or 'Z' or 'a' or 'b' or 'c' or 'd' or 'e' or 'f' or 'g' or 'h' or 'i' or 'j' or 'k' or 'l' or 'm' or 'n' or 'o' or 'p' or 'q' or 'r' or 's' or 't' or 'u' or 'v' or 'w' or 'x' or 'y' or 'z' or 'K':
+                                            // Match a character in the set [A-Za-z\u212A] exactly 2 times.
+                                            {
+                                                if ((uint)slice.Length < 3 ||
+                                                    ((ch = slice[1]) < 128 ? !char.IsAsciiLetter(ch) : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")) ||
+                                                    ((ch = slice[2]) < 128 ? !char.IsAsciiLetter(ch) : !RegexRunner.CharInClass((char)ch, "\0\u0006\0A[a{KÅ")))
+                                                {
+                                                    goto LoopIterationNoMatch3;
+                                                }
+                                            }
+                                            
+                                            pos += 3;
+                                            slice = inputSpan.Slice(pos);
+                                            break;
+                                            
+                                        case '0' or '1' or '2' or '3' or '4' or '5' or '6' or '7' or '8' or '9':
+                                            // Match a character in the set [0-9] exactly 3 times.
+                                            {
+                                                if ((uint)slice.Length < 4 ||
+                                                    !char.IsAsciiDigit(slice[1]) ||
+                                                    !char.IsAsciiDigit(slice[2]) ||
+                                                    !char.IsAsciiDigit(slice[3]))
+                                                {
+                                                    goto LoopIterationNoMatch3;
+                                                }
+                                            }
+                                            
+                                            pos += 4;
+                                            slice = inputSpan.Slice(pos);
+                                            break;
+                                            
+                                        default:
+                                            goto LoopIterationNoMatch3;
+                                    }
                                 //}
                                 
                                 
@@ -1376,17 +1367,6 @@ namespace System.Text.RegularExpressions.Generated
                                 }
                                 pos = base.runstack![--stackpos];
                                 slice = inputSpan.Slice(pos);
-                                goto LoopEnd3;
-                                
-                                LoopBacktrack2:
-                                base.CheckTimeout();
-                                
-                                if (loop_iteration3 == 0)
-                                {
-                                    // No iterations of the loop remain to backtrack into. Fail the loop.
-                                    goto LoopIterationNoMatch2;
-                                }
-                                goto AlternationBacktrack6;
                                 LoopEnd3:;
                             //}
                             
@@ -1407,7 +1387,7 @@ namespace System.Text.RegularExpressions.Generated
                                 
                                 // Match with 2 alternative expressions.
                                 //{
-                                    int alternation_starting_pos7 = pos;
+                                    int alternation_starting_pos6 = pos;
                                     
                                     // Branch 0
                                     //{
@@ -1425,7 +1405,7 @@ namespace System.Text.RegularExpressions.Generated
                                             
                                             if (iteration2 < 5)
                                             {
-                                                goto AlternationBranch26;
+                                                goto AlternationBranch25;
                                             }
                                             
                                             slice = slice.Slice(iteration2);
@@ -1442,7 +1422,7 @@ namespace System.Text.RegularExpressions.Generated
                                             
                                             if (charloop_starting_pos2 >= charloop_ending_pos2)
                                             {
-                                                goto AlternationBranch26;
+                                                goto AlternationBranch25;
                                             }
                                             pos = --charloop_ending_pos2;
                                             slice = inputSpan.Slice(pos);
@@ -1451,11 +1431,11 @@ namespace System.Text.RegularExpressions.Generated
                                             Utilities.StackPush(ref base.runstack!, ref stackpos, charloop_starting_pos2, charloop_ending_pos2);
                                         //}
                                         
-                                        Utilities.StackPush(ref base.runstack!, ref stackpos, 0, alternation_starting_pos7);
-                                        goto AlternationMatch7;
+                                        Utilities.StackPush(ref base.runstack!, ref stackpos, 0, alternation_starting_pos6);
+                                        goto AlternationMatch6;
                                         
-                                        AlternationBranch26:
-                                        pos = alternation_starting_pos7;
+                                        AlternationBranch25:
+                                        pos = alternation_starting_pos6;
                                         slice = inputSpan.Slice(pos);
                                     //}
                                     
@@ -1470,16 +1450,16 @@ namespace System.Text.RegularExpressions.Generated
                                             goto LoopIterationNoMatch4;
                                         }
                                         
-                                        Utilities.StackPush(ref base.runstack!, ref stackpos, 1, alternation_starting_pos7);
+                                        Utilities.StackPush(ref base.runstack!, ref stackpos, 1, alternation_starting_pos6);
                                         pos += 5;
                                         slice = inputSpan.Slice(pos);
-                                        goto AlternationMatch7;
+                                        goto AlternationMatch6;
                                     //}
                                     
-                                    AlternationBacktrack7:
+                                    AlternationBacktrack6:
                                     base.CheckTimeout();
                                     
-                                    alternation_starting_pos7 = base.runstack![--stackpos];
+                                    alternation_starting_pos6 = base.runstack![--stackpos];
                                     switch (base.runstack![--stackpos])
                                     {
                                         case 0:
@@ -1488,7 +1468,7 @@ namespace System.Text.RegularExpressions.Generated
                                             goto LoopIterationNoMatch4;
                                     }
                                     
-                                    AlternationMatch7:;
+                                    AlternationMatch6:;
                                 //}
                                 
                                 
@@ -1500,21 +1480,21 @@ namespace System.Text.RegularExpressions.Generated
                                 if (--loop_iteration4 < 0)
                                 {
                                     // Unable to match the remainder of the expression after exhausting the loop.
-                                    goto LoopBacktrack2;
+                                    goto LoopIterationNoMatch3;
                                 }
                                 pos = base.runstack![--stackpos];
                                 slice = inputSpan.Slice(pos);
                                 goto LoopEnd4;
                                 
-                                LoopBacktrack3:
+                                LoopBacktrack2:
                                 base.CheckTimeout();
                                 
                                 if (loop_iteration4 == 0)
                                 {
                                     // No iterations of the loop remain to backtrack into. Fail the loop.
-                                    goto LoopBacktrack2;
+                                    goto LoopIterationNoMatch3;
                                 }
-                                goto AlternationBacktrack7;
+                                goto AlternationBacktrack6;
                                 LoopEnd4:;
                             //}
                             
@@ -1612,7 +1592,7 @@ namespace System.Text.RegularExpressions.Generated
                                     
                                     goto LoopEnd6;
                                     
-                                    LoopBacktrack4:
+                                    LoopBacktrack3:
                                     base.CheckTimeout();
                                     
                                     if (loop_iteration6 == 0)
@@ -1626,11 +1606,11 @@ namespace System.Text.RegularExpressions.Generated
                                     Utilities.StackPush(ref base.runstack!, ref stackpos, loop_iteration6);
                                     goto LoopSkipBacktrack1;
                                     
-                                    LoopBacktrack5:
+                                    LoopBacktrack4:
                                     loop_iteration6 = base.runstack![--stackpos];
                                     base.CheckTimeout();
                                     
-                                    goto LoopBacktrack4;
+                                    goto LoopBacktrack3;
                                     
                                     LoopSkipBacktrack1:;
                                 //}
@@ -1644,21 +1624,21 @@ namespace System.Text.RegularExpressions.Generated
                                 if (--loop_iteration5 < 0)
                                 {
                                     // Unable to match the remainder of the expression after exhausting the loop.
-                                    goto LoopBacktrack3;
+                                    goto LoopBacktrack2;
                                 }
                                 pos = base.runstack![--stackpos];
                                 slice = inputSpan.Slice(pos);
                                 goto LoopEnd5;
                                 
-                                LoopBacktrack6:
+                                LoopBacktrack5:
                                 base.CheckTimeout();
                                 
                                 if (loop_iteration5 == 0)
                                 {
                                     // No iterations of the loop remain to backtrack into. Fail the loop.
-                                    goto LoopBacktrack3;
+                                    goto LoopBacktrack2;
                                 }
-                                goto LoopBacktrack5;
+                                goto LoopBacktrack4;
                                 LoopEnd5:;
                             //}
                             
@@ -1755,7 +1735,7 @@ namespace System.Text.RegularExpressions.Generated
                                     
                                     goto LoopEnd8;
                                     
-                                    LoopBacktrack7:
+                                    LoopBacktrack6:
                                     base.CheckTimeout();
                                     
                                     if (loop_iteration8 == 0)
@@ -1769,11 +1749,11 @@ namespace System.Text.RegularExpressions.Generated
                                     Utilities.StackPush(ref base.runstack!, ref stackpos, loop_iteration8);
                                     goto LoopSkipBacktrack2;
                                     
-                                    LoopBacktrack8:
+                                    LoopBacktrack7:
                                     loop_iteration8 = base.runstack![--stackpos];
                                     base.CheckTimeout();
                                     
-                                    goto LoopBacktrack7;
+                                    goto LoopBacktrack6;
                                     
                                     LoopSkipBacktrack2:;
                                 //}
@@ -1791,21 +1771,21 @@ namespace System.Text.RegularExpressions.Generated
                                 if (--loop_iteration7 < 0)
                                 {
                                     // Unable to match the remainder of the expression after exhausting the loop.
-                                    goto LoopBacktrack6;
+                                    goto LoopBacktrack5;
                                 }
                                 pos = base.runstack![--stackpos];
                                 slice = inputSpan.Slice(pos);
                                 goto LoopEnd7;
                                 
-                                LoopBacktrack9:
+                                LoopBacktrack8:
                                 base.CheckTimeout();
                                 
                                 if (loop_iteration7 == 0)
                                 {
                                     // No iterations of the loop remain to backtrack into. Fail the loop.
-                                    goto LoopBacktrack6;
+                                    goto LoopBacktrack5;
                                 }
-                                goto LoopBacktrack8;
+                                goto LoopBacktrack7;
                                 LoopEnd7:;
                             //}
                             
@@ -1907,7 +1887,7 @@ namespace System.Text.RegularExpressions.Generated
                             case 6:
                                 goto AlternationBacktrack3;
                             case 7:
-                                goto LoopBacktrack9;
+                                goto LoopBacktrack8;
                             case 8:
                                 goto LoopIterationNoMatch9;
                         }
@@ -1932,7 +1912,7 @@ namespace System.Text.RegularExpressions.Generated
     }
     
     /// <summary>Helper methods used by generated <see cref="Regex"/>-derived implementations.</summary>
-    [GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "8.0.10.31311")]
+    [GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "9.0.10.43107")]
     file static class Utilities
     {
         /// <summary>Pops 2 values from the backtracking stack.</summary>

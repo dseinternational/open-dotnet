@@ -1,14 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <IsTestProject>false</IsTestProject>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="xunit.core" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <ProjectReference Include="..\DSE.Open.Language.Annotations.Nlp.Stanza\DSE.Open.Language.Annotations.Nlp.Stanza.csproj" />
     <ProjectReference Include="..\DSE.Open.Testing.Xunit\DSE.Open.Testing.Xunit.csproj" />
