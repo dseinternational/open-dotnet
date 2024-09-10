@@ -23,7 +23,7 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
 
     public static readonly UriPath Empty = new(default, true);
 
-    public const int MaxLength = 256;
+    public const int MaxLength = 512;
 
     public static int MaxSerializedCharLength => MaxLength;
 

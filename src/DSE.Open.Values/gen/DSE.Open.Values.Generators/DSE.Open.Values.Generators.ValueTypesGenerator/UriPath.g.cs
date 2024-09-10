@@ -8,6 +8,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using DSE.Open.Runtime.Helpers;
 
 namespace DSE.Open.Values;
@@ -112,6 +113,7 @@ public readonly partial struct UriPath
     /// <summary>
     /// Gets a representation of the <see cref="UriPath"/> value as a string with formatting options.
     /// </summary>
+    [SkipLocalsInit]
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
         char[]? rented = null;

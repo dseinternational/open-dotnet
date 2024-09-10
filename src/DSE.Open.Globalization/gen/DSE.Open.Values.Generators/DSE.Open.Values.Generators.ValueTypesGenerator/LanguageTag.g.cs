@@ -8,6 +8,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using DSE.Open.Runtime.Helpers;
 using DSE.Open.Values;
 
@@ -103,6 +104,7 @@ public readonly partial struct LanguageTag
     /// <summary>
     /// Gets a representation of the <see cref="LanguageTag"/> value as a string with formatting options.
     /// </summary>
+    [SkipLocalsInit]
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
         EnsureIsNotDefault();

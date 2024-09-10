@@ -255,6 +255,7 @@ namespace System.Text.RegularExpressions.Generated
 
     /// <summary>Custom <see cref="Regex"/>-derived type for the GetValidationRegex method.</summary>
     [GeneratedCodeAttribute("System.Text.RegularExpressions.Generator", "9.0.10.43107")]
+    [SkipLocalsInit]
     file sealed class GetValidationRegex_0 : Regex
     {
         /// <summary>Cached, thread-safe singleton instance.</summary>
