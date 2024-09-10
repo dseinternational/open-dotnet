@@ -3,7 +3,9 @@
 
 using System.Buffers;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
+using DSE.Open.Runtime.Helpers;
 
 namespace DSE.Open.Language.Annotations;
 
@@ -77,15 +79,20 @@ public record Word
 
     internal int GetCharCount()
     {
-        return 9 // tabs
+        var features = Features.Sum(f => f.GetCharCount() + 1);
+        var attributes = Attributes.Sum(a => a.GetCharCount() + 1);
+
+        var count = 9 // tabs
             + Form.Length
-            + Lemma?.Length ?? 1
+            + (Lemma?.Length ?? 1)
             + Pos.Length
-            + AltPos?.Length ?? 1
-            + Features.Sum(f => f.GetCharCount())
+            + (AltPos?.Length ?? 1)
+            + features
             + 3 // at most
-            + Relation?.Length ?? 1
-            + Attributes.Sum(a => a.GetCharCount());
+            + (Relation?.Length ?? 1)
+            + attributes;
+
+        return count;
     }
 
     public static Word Parse(ReadOnlySpan<char> s)
@@ -115,6 +122,7 @@ public record Word
         return Parse(s.AsSpan(), provider);
     }
 
+    [SkipLocalsInit]
     public static bool TryParse(
         ReadOnlySpan<char> s,
         IFormatProvider? provider,
@@ -317,15 +325,16 @@ public record Word
         return ToString(default, default);
     }
 
+    [SkipLocalsInit]
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
         var charCount = GetCharCount();
 
         char[]? rented = null;
 
-        Span<char> buffer = charCount > 128
-            ? (rented = ArrayPool<char>.Shared.Rent(charCount))
-            : stackalloc char[128];
+        Span<char> buffer = MemoryThresholds.CanStackalloc<char>(charCount)
+            ? stackalloc char[charCount]
+            : (rented = ArrayPool<char>.Shared.Rent(charCount));
 
         try
         {

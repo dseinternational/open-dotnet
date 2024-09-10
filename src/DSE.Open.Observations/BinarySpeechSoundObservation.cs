@@ -3,6 +3,7 @@
 
 using System.ComponentModel;
 using System.IO.Hashing;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json.Serialization;
 using DSE.Open.Speech;
@@ -43,6 +44,7 @@ public record BinarySpeechSoundObservation : Observation<bool, SpeechSound>
         return new BinarySpeechSoundObservation(measure, speechSound, timeProvider.GetUtcNow(), value);
     }
 
+    [SkipLocalsInit]
     protected override ulong GetDiscriminatorId()
     {
         var chars = SpeechSound.ToCharSequence().AsSpan();

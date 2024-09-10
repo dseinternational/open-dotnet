@@ -3,6 +3,7 @@
 
 using System.Buffers;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using CommunityToolkit.HighPerformance.Buffers;
@@ -38,6 +39,7 @@ public abstract class ByteWritingJsonConverter<TValue> : JsonConverter<TValue>
         return default;
     }
 
+    [SkipLocalsInit]
     public override void Write(Utf8JsonWriter writer, TValue value, JsonSerializerOptions options)
     {
         ArgumentNullException.ThrowIfNull(writer);

@@ -3,6 +3,7 @@
 
 using System.Collections.Frozen;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
@@ -73,6 +74,7 @@ public readonly partial struct LanguageTag
         return IsValidValue(ValuesMarshal.AsBytes(value));
     }
 
+    [SkipLocalsInit]
     public static bool IsValidValue(ReadOnlySpan<byte> value)
     {
         switch (value.Length)

@@ -6,6 +6,7 @@ using System.Collections;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -143,6 +144,7 @@ public readonly struct AsciiString
         return TryParse(s, default, out result);
     }
 
+    [SkipLocalsInit]
     public static bool TryParse(
         ReadOnlySpan<char> s,
         IFormatProvider? provider,

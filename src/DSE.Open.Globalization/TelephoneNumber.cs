@@ -200,6 +200,7 @@ public readonly record struct TelephoneNumber
         return ToString(null, null);
     }
 
+    [SkipLocalsInit]
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
         Span<char> buffer = stackalloc char[MaxFormattedLength];

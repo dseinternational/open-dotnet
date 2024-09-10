@@ -3,6 +3,7 @@
 
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using DSE.Open.Drawing.Text.Json.Serialization;
@@ -292,6 +293,7 @@ public readonly record struct Color : ISpanParsable<Color>, ISpanFormattable
         return ToString(null, null);
     }
 
+    [SkipLocalsInit]
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
         Span<char> destination = stackalloc char[MaxFormatLength];

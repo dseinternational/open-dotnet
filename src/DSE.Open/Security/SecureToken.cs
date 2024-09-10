@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text.Json.Serialization;
@@ -30,6 +31,7 @@ public readonly record struct SecureToken : ISpanParsable<SecureToken>, ISpanFor
         _token = token;
     }
 
+    [SkipLocalsInit]
     public static SecureToken New(int length = DefaultLength)
     {
         if (length is < MinTokenLength or > MaxTokenLength)

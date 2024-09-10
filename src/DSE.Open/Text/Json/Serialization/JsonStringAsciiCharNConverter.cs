@@ -3,6 +3,7 @@
 
 using System.Buffers;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -27,9 +28,11 @@ public sealed class JsonStringAsciiCharNConverter<T> : JsonConverter<T> where T 
         return default; // unreachable
     }
 
+    [SkipLocalsInit]
     public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
     {
         ArgumentNullException.ThrowIfNull(writer);
+
         Debug.Assert(T.MaxSerializedByteLength <= 8);
 
         Span<byte> buffer = stackalloc byte[T.MaxSerializedByteLength];

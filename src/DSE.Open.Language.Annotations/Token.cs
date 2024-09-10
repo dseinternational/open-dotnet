@@ -3,8 +3,10 @@
 
 using System.Buffers;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 using DSE.Open.Collections.Generic;
+using DSE.Open.Runtime.Helpers;
 
 namespace DSE.Open.Language.Annotations;
 
@@ -303,15 +305,16 @@ public record Token
             + 2;                        // "_\n"
     }
 
+    [SkipLocalsInit]
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
         var charCount = GetCharCount();
 
         char[]? rented = null;
 
-        Span<char> buffer = charCount > 128
-            ? (rented = ArrayPool<char>.Shared.Rent(charCount))
-            : stackalloc char[128];
+        Span<char> buffer = MemoryThresholds.CanStackalloc<char>(charCount)
+            ? stackalloc char[charCount]
+            : (rented = ArrayPool<char>.Shared.Rent(charCount));
 
         try
         {

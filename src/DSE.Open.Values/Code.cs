@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using DSE.Open.Values.Text.Json.Serialization;
@@ -155,6 +156,7 @@ public readonly record struct Code
 
 #pragma warning restore CA2225 // Operator overloads have named alternates
 
+    [SkipLocalsInit]
     private static Code FromNumber<T>(T code) where T : ISpanFormattable
     {
         Span<char> span = stackalloc char[MaxLength];

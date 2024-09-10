@@ -4,6 +4,7 @@
 using System.Buffers;
 using System.Buffers.Text;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Text;
 using CommunityToolkit.HighPerformance.Buffers;
 using DSE.Open.Runtime.Helpers;
@@ -85,6 +86,7 @@ public readonly partial record struct BinaryValue
         };
     }
 
+    [SkipLocalsInit]
     private static bool TryDecodeFromBase64(ReadOnlySpan<char> base64, out BinaryValue binaryValue)
     {
         var size = GetRequiredBufferSize(base64.Length, BinaryStringEncoding.Base64);
@@ -108,6 +110,7 @@ public readonly partial record struct BinaryValue
         return false;
     }
 
+    [SkipLocalsInit]
     private static bool TryDecodeFromBase64(ReadOnlySpan<byte> base64, out BinaryValue binaryValue)
     {
         var size = GetRequiredBufferSize(base64.Length, BinaryStringEncoding.Base64);
@@ -160,6 +163,7 @@ public readonly partial record struct BinaryValue
         return false;
     }
 
+    [SkipLocalsInit]
     private static bool TryDecodeFromHex(ReadOnlySpan<byte> hex, out BinaryValue binaryValue)
     {
         var rented = SpanOwner<byte>.Empty;

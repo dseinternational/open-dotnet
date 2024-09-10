@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 using CommunityToolkit.HighPerformance.Buffers;
 using DSE.Open.Runtime.Helpers;
@@ -84,6 +85,7 @@ public static class JsonBinarySerializer
 
     [RequiresDynamicCode(WarningMessages.RequiresDynamicCode)]
     [RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]
+    [SkipLocalsInit]
     public static bool TryDeserializeFromBase64Utf8Json<T>(string base64, JsonSerializerOptions? jsonSerializerOptions, out T? value)
     {
         ArgumentNullException.ThrowIfNull(base64);

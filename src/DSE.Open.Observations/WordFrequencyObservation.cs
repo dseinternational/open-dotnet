@@ -3,6 +3,7 @@
 
 using System.ComponentModel;
 using System.IO.Hashing;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json.Serialization;
 using DSE.Open.Language;
@@ -46,6 +47,7 @@ public record WordFrequencyObservation : Observation<BehaviorFrequency, WordId>
         return new WordFrequencyObservation(measure, speechSound, timeProvider.GetUtcNow(), value);
     }
 
+    [SkipLocalsInit]
     protected override ulong GetDiscriminatorId()
     {
         var chars = WordId.ToCharSequence().AsSpan();

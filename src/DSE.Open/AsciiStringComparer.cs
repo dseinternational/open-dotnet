@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Runtime.CompilerServices;
 using CommunityToolkit.HighPerformance.Buffers;
 using DSE.Open.Runtime.Helpers;
 
@@ -51,6 +52,7 @@ public abstract class AsciiStringComparer : IComparer<AsciiString>, IEqualityCom
             return x.EqualsIgnoreCase(y);
         }
 
+        [SkipLocalsInit]
         public override int GetHashCode(AsciiString obj)
         {
             var source = obj.AsSpan();

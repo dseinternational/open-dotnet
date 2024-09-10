@@ -4,6 +4,7 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using DSE.Open.Linq;
+using DSE.Open.Runtime.Helpers;
 
 namespace DSE.Open.Text;
 
@@ -34,9 +35,10 @@ public static partial class StringHelper
         return Wrap(wrapper, wrapper, value, format, provider);
     }
 
+    [SkipLocalsInit]
     public static string Wrap<T>(char before, char after, T value, ReadOnlySpan<char> format = default, IFormatProvider? provider = default)
     {
-        var sh = new DefaultInterpolatedStringHandler(2, 3, provider, stackalloc char[256]);
+        var sh = new DefaultInterpolatedStringHandler(2, 3, provider, stackalloc char[MemoryThresholds.StackallocCharThreshold]);
         sh.AppendFormatted(before, null);
         sh.AppendFormatted(value, format.ToString()); // TODO: ??
         sh.AppendFormatted(after, null);
@@ -48,12 +50,13 @@ public static partial class StringHelper
         return Wrap(wrapper, wrapper, value, format, provider);
     }
 
+    [SkipLocalsInit]
     public static string Wrap<T>(string before, string after, T value, string? format = default, IFormatProvider? provider = default)
     {
         ArgumentNullException.ThrowIfNull(before);
         ArgumentNullException.ThrowIfNull(after);
 
-        var sh = new DefaultInterpolatedStringHandler(before.Length + after.Length, 1, provider, stackalloc char[256]);
+        var sh = new DefaultInterpolatedStringHandler(before.Length + after.Length, 1, provider, stackalloc char[MemoryThresholds.StackallocCharThreshold]);
         sh.AppendLiteral(before);
         sh.AppendFormatted(value, format);
         sh.AppendLiteral(after);
@@ -70,6 +73,7 @@ public static partial class StringHelper
         return Wrap(wrapper, wrapper, value, format, provider);
     }
 
+    [SkipLocalsInit]
     public static string Wrap<T>(
         ReadOnlySpan<char> before,
         ReadOnlySpan<char> after,
@@ -79,7 +83,7 @@ public static partial class StringHelper
         where T : struct, IFormattable
     {
         var sh = new DefaultInterpolatedStringHandler(before.Length + after.Length, 1,
-            provider, stackalloc char[256]);
+            provider, stackalloc char[MemoryThresholds.StackallocCharThreshold]);
         sh.AppendFormatted(before);
         sh.AppendFormatted(value, format.ToString()); // TODO: isn't this avoidable?
         sh.AppendFormatted(after);

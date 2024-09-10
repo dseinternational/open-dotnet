@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using DSE.Open.Values.Text.Json.Serialization;
@@ -112,6 +113,7 @@ public readonly record struct EmailAddress
         return !AnyConsecutiveDots(localPart);
     }
 
+    [SkipLocalsInit]
     private static bool IsValidDomainPart(ReadOnlySpan<char> domain)
     {
         // labels (words or strings separated by periods) that make up a domain name must consist of only the ASCII [ASCII] alphabetic and numeric characters,

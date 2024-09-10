@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Buffers;
+using System.Runtime.CompilerServices;
 using System.Text;
 using DSE.Open.Runtime.Helpers;
 
@@ -34,20 +35,33 @@ public static partial class MemoryExtensions
         return memory.Span.ToChars();
     }
 
+    [SkipLocalsInit]
     public static ReadOnlyMemory<char> ToChars(this ReadOnlySpan<AsciiChar> span)
     {
+        char[]? rented = null;
+
         Span<char> buffer = MemoryThresholds.CanStackalloc<char>(span.Length)
             ? stackalloc char[span.Length]
-            : new char[span.Length];
+            : (rented = ArrayPool<char>.Shared.Rent(span.Length));
 
-        var status = Ascii.ToUtf16(ValuesMarshal.AsBytes(span), buffer, out var charsWritten);
-
-        if (status != OperationStatus.Done)
+        try
         {
-            throw new InvalidOperationException();
-        }
+            var status = Ascii.ToUtf16(ValuesMarshal.AsBytes(span), buffer, out var charsWritten);
 
-        return buffer[..charsWritten].ToArray();
+            if (status != OperationStatus.Done)
+            {
+                throw new InvalidOperationException();
+            }
+
+            return buffer[..charsWritten].ToArray();
+        }
+        finally
+        {
+            if (rented is not null)
+            {
+                ArrayPool<char>.Shared.Return(rented);
+            }
+        }
     }
 
     /// <summary>
@@ -65,20 +79,33 @@ public static partial class MemoryExtensions
     /// </summary>
     /// <param name="span"></param>
     /// <returns></returns>
+    [SkipLocalsInit]
     public static string ToStringValue(this ReadOnlySpan<AsciiChar> span)
     {
+        char[]? rented = null;
+
         Span<char> buffer = MemoryThresholds.CanStackalloc<char>(span.Length)
             ? stackalloc char[span.Length]
-            : new char[span.Length];
+            : (rented = ArrayPool<char>.Shared.Rent(span.Length));
 
-        var status = Ascii.ToUtf16(ValuesMarshal.AsBytes(span), buffer, out var charsWritten);
-
-        if (status != OperationStatus.Done)
+        try
         {
-            throw new InvalidOperationException();
-        }
+            var status = Ascii.ToUtf16(ValuesMarshal.AsBytes(span), buffer, out var charsWritten);
 
-        return new(buffer[..charsWritten]);
+            if (status != OperationStatus.Done)
+            {
+                throw new InvalidOperationException();
+            }
+
+            return new(buffer[..charsWritten]);
+        }
+        finally
+        {
+            if (rented is not null)
+            {
+                ArrayPool<char>.Shared.Return(rented);
+            }
+        }
     }
 
     public static bool ContainsOnlyAsciiLetters(this ReadOnlySpan<AsciiChar> value)

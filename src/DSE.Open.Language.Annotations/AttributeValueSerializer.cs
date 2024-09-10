@@ -2,6 +2,8 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Buffers;
+using System.Runtime.CompilerServices;
+using DSE.Open.Runtime.Helpers;
 
 namespace DSE.Open.Language.Annotations;
 
@@ -50,6 +52,7 @@ public static class AttributeValueSerializer
         return true;
     }
 
+    [SkipLocalsInit]
     public static string SerializeToString(IEnumerable<AttributeValue> features)
     {
         ArgumentNullException.ThrowIfNull(features);
@@ -58,9 +61,9 @@ public static class AttributeValueSerializer
 
         char[]? rented = null;
 
-        Span<char> buffer = maxLength > 128
-            ? (rented = ArrayPool<char>.Shared.Rent(maxLength))
-            : stackalloc char[maxLength];
+        Span<char> buffer = MemoryThresholds.CanStackalloc<char>(maxLength)
+            ? stackalloc char[maxLength]
+            : (rented = ArrayPool<char>.Shared.Rent(maxLength));
 
         try
         {
