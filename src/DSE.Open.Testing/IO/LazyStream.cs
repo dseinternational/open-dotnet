@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-namespace DSE.Open.Testing;
+namespace DSE.Open.Testing.IO;
 
 /// <summary>
 /// A <see cref="Stream"/> wrapper for testing asynchronous code paths. Asynchronous operations have an artificial delay
