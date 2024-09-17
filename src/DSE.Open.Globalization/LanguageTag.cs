@@ -96,13 +96,14 @@ public readonly partial struct LanguageTag
         }
 
         // Fall back to regex
-        Span<char> buffer = stackalloc char[value.Length];
+        Span<char> buffer = stackalloc char[MaxSerializedCharLength];
+
         for (var i = 0; i < value.Length; i++)
         {
             buffer[i] = (char)value[i];
         }
 
-        return s_regex.IsMatch(buffer);
+        return s_regex.IsMatch(buffer[..value.Length]);
     }
 
     /// <summary>

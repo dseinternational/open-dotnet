@@ -19,13 +19,21 @@ public sealed class JsonSpanSerializableValueConverter<TValue, T> : JsonConverte
     public override TValue Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         var valueLength = reader.HasValueSequence
-           ? checked((int)reader.ValueSequence.Length)
-           : reader.ValueSpan.Length;
+            ? checked((int)reader.ValueSequence.Length)
+            : reader.ValueSpan.Length;
 
+        if (valueLength > TValue.MaxSerializedCharLength)
+        {
+            throw new FormatException($"Could not convert {typeof(TValue).Name} value: value was too long.");
+        }
+
+        var length = TValue.MaxSerializedCharLength;
         var rented = SpanOwner<char>.Empty;
 
-        Span<char> buffer = MemoryThresholds.CanStackalloc<char>(valueLength)
-            ? stackalloc char[valueLength]
+        // Stack allocate the constant `TValue.MaxSerializedCharLength` if we can, otherwise get an array of size >=
+        // `valueLength` from the `ArrayPool` (via `SpanOwner`).
+        Span<char> buffer = MemoryThresholds.CanStackalloc<char>(length)
+            ? stackalloc char[length]
             : (rented = SpanOwner<char>.Allocate(valueLength)).Span;
 
         using (rented)
@@ -34,7 +42,11 @@ public sealed class JsonSpanSerializableValueConverter<TValue, T> : JsonConverte
 
             var success = TValue.TryParse(buffer[..chars], default, out var value);
 
-            return success ? value : throw new FormatException($"Could not convert {typeof(TValue).Name} value: {buffer}");
+            return success switch
+            {
+                true => value,
+                _ => throw new FormatException($"Could not convert {typeof(TValue).Name} value: {buffer}")
+            };
         }
     }
 

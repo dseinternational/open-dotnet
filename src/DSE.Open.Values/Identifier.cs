@@ -166,14 +166,14 @@ public readonly partial struct Identifier : IEquatableValue<Identifier, AsciiStr
             return New(idLength, ReadOnlySpan<byte>.Empty);
         }
 
-        Span<byte> utf8 = stackalloc byte[prefix.Length];
+        Span<byte> utf8 = stackalloc byte[MaxPrefixLength];
 
         var status = Ascii.FromUtf16(prefix, utf8, out var bytesWritten);
 
         if (status is OperationStatus.Done)
         {
             Debug.Assert(bytesWritten == prefix.Length);
-            return New(idLength, utf8);
+            return New(idLength, utf8[..bytesWritten]);
         }
 
         Debug.Assert(status is OperationStatus.InvalidData);
@@ -208,11 +208,11 @@ public readonly partial struct Identifier : IEquatableValue<Identifier, AsciiStr
             id.Span[idStartIndex - 1] = (AsciiChar)'_';
         }
 
-        Span<byte> randomBuffer = stackalloc byte[idLength * 2];
+        Span<byte> randomBuffer = stackalloc byte[MaxIdLength * 2];
 
         RandomNumberGenerator.Fill(randomBuffer);
 
-        for (var i = 0; i < randomBuffer.Length; i += 2)
+        for (var i = 0; i < idLength * 2; i += 2)
         {
             var f = BitConverter.ToUInt16(randomBuffer.Slice(i, 2));
             var c = f % ValidIdBytes.Length;

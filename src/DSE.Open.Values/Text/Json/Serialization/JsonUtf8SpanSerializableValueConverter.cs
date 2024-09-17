@@ -1,9 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Buffers;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using CommunityToolkit.HighPerformance.Buffers;
@@ -17,18 +15,36 @@ public sealed class JsonUtf8SpanSerializableValueConverter<TValue, T> : JsonConv
 {
     public override TValue Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        var bytes = reader.HasValueSequence
-            ? reader.ValueSequence.ToArray()
-            : reader.ValueSpan;
+        var valueLength = reader.HasValueSequence
+            ? checked((int)reader.ValueSequence.Length)
+            : reader.ValueSpan.Length;
 
-        if (TValue.TryParse(bytes, default, out var value))
+        if (valueLength > TValue.MaxSerializedByteLength)
         {
-            return value;
+            throw new FormatException($"Could not convert {typeof(TValue).Name} value: value was too long.");
         }
 
-        ThrowHelper.ThrowFormatException(
-            $"Could not convert {typeof(TValue).Name} value: {Encoding.UTF8.GetString(bytes)}");
-        return default; // unreachable
+        var length = TValue.MaxSerializedByteLength;
+        var rented = SpanOwner<byte>.Empty;
+
+        // Stack allocate the constant `TValue.MaxSerializedByteLength` if we can, otherwise get an array of size >=
+        // `valueLength` from the `ArrayPool` (via `SpanOwner`).
+        Span<byte> buffer = MemoryThresholds.CanStackalloc<byte>(length)
+            ? stackalloc byte[length]
+            : (rented = SpanOwner<byte>.Allocate(length)).Span;
+
+        using (rented)
+        {
+            var chars = reader.CopyString(buffer);
+
+            var success = TValue.TryParse(buffer[..chars], default, out var value);
+
+            return success switch
+            {
+                true => value,
+                _ => throw new FormatException($"Could not convert {typeof(TValue).Name} value")
+            };
+        }
     }
 
     [SkipLocalsInit]

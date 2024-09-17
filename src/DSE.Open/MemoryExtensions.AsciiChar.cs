@@ -41,7 +41,7 @@ public static partial class MemoryExtensions
         char[]? rented = null;
 
         Span<char> buffer = MemoryThresholds.CanStackalloc<char>(span.Length)
-            ? stackalloc char[span.Length]
+            ? stackalloc char[MemoryThresholds.StackallocCharThreshold]
             : (rented = ArrayPool<char>.Shared.Rent(span.Length));
 
         try
