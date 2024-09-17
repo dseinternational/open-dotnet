@@ -153,7 +153,7 @@ public readonly struct AsciiString
         var rented = SpanOwner<byte>.Empty;
 
         Span<byte> buffer = MemoryThresholds.CanStackalloc<byte>(s.Length)
-            ? stackalloc byte[s.Length]
+            ? stackalloc byte[MemoryThresholds.StackallocByteThreshold]
             : (rented = SpanOwner<byte>.Allocate(s.Length)).Span;
 
         using (rented)

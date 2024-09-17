@@ -261,17 +261,13 @@ public readonly partial struct UriAsciiPath
         var rented = SpanOwner<byte>.Empty;
 
         Span<byte> buffer = MemoryThresholds.CanStackalloc<byte>(value.Length)
-            ? stackalloc byte[value.Length]
+            ? stackalloc byte[MemoryThresholds.StackallocCharThreshold]
             : (rented = SpanOwner<byte>.Allocate(value.Length)).Span;
 
         using (rented)
         {
-            if (NarrowUtf16ToAscii(value, buffer))
-            {
-                return IsValidValue(ValuesMarshal.AsAsciiChars(buffer[..value.Length]));
-            }
-
-            return false;
+            return NarrowUtf16ToAscii(value, buffer)
+                && IsValidValue(ValuesMarshal.AsAsciiChars(buffer[..value.Length]));
         }
     }
 
@@ -326,7 +322,7 @@ public readonly partial struct UriAsciiPath
             var rented = SpanOwner<char>.Empty;
 
             Span<char> buffer = MemoryThresholds.CanStackalloc<char>(s.Length)
-                ? stackalloc char[s.Length]
+                ? stackalloc char[MemoryThresholds.StackallocCharThreshold]
                 : (rented = SpanOwner<char>.Allocate(s.Length)).Span;
 
             using (rented)
