@@ -74,6 +74,18 @@ public readonly record struct EmailAddress
         _splitIndex = splitIndex;
     }
 
+    public int Length => _value?.Length ?? 0;
+
+    public ReadOnlySpan<char> LocalPart()
+    {
+        return _value.AsSpan(0, _splitIndex);
+    }
+
+    public ReadOnlySpan<char> DomainPart()
+    {
+        return _value.AsSpan(_splitIndex + 1);
+    }
+
     public static bool IsValid(ReadOnlySpan<char> email)
     {
         return IsValid(email, out _);
@@ -209,6 +221,11 @@ public readonly record struct EmailAddress
         }
 
         return true;
+    }
+
+    public ReadOnlySpan<char> AsSpan()
+    {
+        return _value.AsSpan();
     }
 
     public int CompareTo(EmailAddress other)
