@@ -6,9 +6,12 @@ using System.Collections.Immutable;
 
 namespace DSE.Open.Globalization;
 
-public sealed record CountryInfo
+/// <summary>
+/// Provides information about a recognised country.
+/// </summary>
+public sealed record Country
 {
-    private CountryInfo(CountryCode code, int numericCode, string threeLetterCode,
+    private Country(CountryCode code, int numericCode, string threeLetterCode,
         string name, bool isEuMemberState, bool isEuSpecialTerritory, bool isEuOutermostRegion,
         bool isUsOverseasTerritory, bool isGdprTerritory)
     {
@@ -23,7 +26,7 @@ public sealed record CountryInfo
         IsGdprTerritory = isGdprTerritory;
     }
 
-    private static CountryInfo FromData(string code, string threeLetterCode, int numericCode,
+    private static Country FromData(string code, string threeLetterCode, int numericCode,
         string name, byte isEuMemberState, byte isEuSpecialTerritory, byte isEuOutermostRegion,
         byte isUsOverseasTerritory, byte isGdprTerritory)
     {
@@ -50,58 +53,58 @@ public sealed record CountryInfo
 
     public bool IsGdprTerritory { get; }
 
-    public static CountryInfo? FromCountryCode(CountryCode code)
+    public static Country? FromCountryCode(CountryCode code)
     {
         return s_twoLetterCodeLookup.Value.GetValueOrDefault(code.ToStringInvariant().ToUpperInvariant());
     }
 
-    public static CountryInfo? FromTwoLetterCode(string code)
+    public static Country? FromTwoLetterCode(string code)
     {
         return s_twoLetterCodeLookup.Value.GetValueOrDefault(code);
     }
 
-    public static CountryInfo? FromThreeLetterCode(string code)
+    public static Country? FromThreeLetterCode(string code)
     {
         return s_threeLetterCodeLookup.Value.GetValueOrDefault(code);
     }
 
-    public static CountryInfo? FromNumericCode(int code)
+    public static Country? FromNumericCode(int code)
     {
         return s_numericCodeLookup.Value.GetValueOrDefault(code);
     }
 
-    private static readonly Lazy<FrozenDictionary<string, CountryInfo>> s_twoLetterCodeLookup = new(InitTwoLetterCodeLookup);
-    private static readonly Lazy<FrozenDictionary<string, CountryInfo>> s_threeLetterCodeLookup = new(InitThreeLetterCodeLookup);
-    private static readonly Lazy<FrozenDictionary<int, CountryInfo>> s_numericCodeLookup = new(InitNumericCodeLookup);
+    private static readonly Lazy<FrozenDictionary<string, Country>> s_twoLetterCodeLookup = new(InitTwoLetterCodeLookup);
+    private static readonly Lazy<FrozenDictionary<string, Country>> s_threeLetterCodeLookup = new(InitThreeLetterCodeLookup);
+    private static readonly Lazy<FrozenDictionary<int, Country>> s_numericCodeLookup = new(InitNumericCodeLookup);
 
-    private static FrozenDictionary<string, CountryInfo> InitThreeLetterCodeLookup()
+    private static FrozenDictionary<string, Country> InitThreeLetterCodeLookup()
     {
         return s_countryData.ToFrozenDictionary(ci => ci.ThreeLetterCode, StringComparer.OrdinalIgnoreCase);
     }
 
-    private static FrozenDictionary<int, CountryInfo> InitNumericCodeLookup()
+    private static FrozenDictionary<int, Country> InitNumericCodeLookup()
     {
         return s_countryData.ToFrozenDictionary(ci => ci.NumericCode);
     }
 
 #pragma warning disable CA1024 // Use properties where appropriate
-    public static IReadOnlyList<CountryInfo> GetAllCountries()
+    public static IReadOnlyList<Country> GetAllCountries()
 #pragma warning restore CA1024 // Use properties where appropriate
     {
         return [.. s_countryData];
     }
 
-    public static IReadOnlyList<CountryInfo> GetEuMemberCountries()
+    public static IReadOnlyList<Country> GetEuMemberCountries()
     {
         return s_countryData.Where(ci => ci.IsEuMemberState).ToImmutableList();
     }
 
-    private static FrozenDictionary<string, CountryInfo> InitTwoLetterCodeLookup()
+    private static FrozenDictionary<string, Country> InitTwoLetterCodeLookup()
     {
         return s_countryData.ToFrozenDictionary(ci => ci.Code.ToString(), StringComparer.OrdinalIgnoreCase);
     }
 
-    private static readonly ImmutableArray<CountryInfo> s_countryData =
+    private static readonly ImmutableArray<Country> s_countryData =
     [
         FromData("AD", "AND", 20, "Andorra", 0, 0, 0, 0, 0),
         FromData("AE", "ARE", 784, "United Arab Emirates", 0, 0, 0, 0, 0),
