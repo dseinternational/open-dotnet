@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 namespace DSE.Open.Collections.Generic;
 
 [CollectionBuilder(typeof(ReadOnlyCollection), nameof(ReadOnlyCollection.Create))]
-public class ReadOnlyCollection<T> : IReadOnlyList<T>
+public class ReadOnlyCollection<T> : IReadOnlyList<T>, IList
 {
     public static readonly ReadOnlyCollection<T> Empty = [];
 
@@ -28,9 +28,7 @@ public class ReadOnlyCollection<T> : IReadOnlyList<T>
     /// Unsafely creates a <see cref="ReadOnlyCollection{T}"/> using the provided list as it's backing store.
     /// This should only be done when the caller is the only holder of the list, and does not mutate it after constructing this collection.
     /// </summary>
-#pragma warning disable CA1002 // Do not expose generic lists
     internal ReadOnlyCollection(List<T> collection)
-#pragma warning restore CA1002 // Do not expose generic lists
     {
         ArgumentNullException.ThrowIfNull(collection);
         _items = collection;
@@ -54,6 +52,20 @@ public class ReadOnlyCollection<T> : IReadOnlyList<T>
     }
 
     public int Count => _items.Count;
+
+#pragma warning disable CA1033 // Interface methods should be callable by child types
+
+    bool IList.IsFixedSize => true;
+
+    bool IList.IsReadOnly => true;
+
+    bool ICollection.IsSynchronized => true;
+
+    object ICollection.SyncRoot => ((IList)_items).SyncRoot;
+
+#pragma warning restore CA1033 // Interface methods should be callable by child types
+
+    object? IList.this[int index] { get => this[index]; set => throw new NotSupportedException(); }
 
     public bool Contains(T item)
     {
@@ -158,5 +170,55 @@ public class ReadOnlyCollection<T> : IReadOnlyList<T>
     public T[] ToArray()
     {
         return [.. _items];
+    }
+
+    int IList.Add(object? value)
+    {
+        throw new NotSupportedException();
+    }
+
+    void IList.Clear()
+    {
+        throw new NotSupportedException();
+    }
+
+    bool IList.Contains(object? value)
+    {
+        if (value is not T item)
+        {
+            return false;
+        }
+
+        return Contains(item);
+    }
+
+    int IList.IndexOf(object? value)
+    {
+        if (value is not T item)
+        {
+            return -1;
+        }
+
+        return IndexOf(item);
+    }
+
+    void IList.Insert(int index, object? value)
+    {
+        throw new NotSupportedException();
+    }
+
+    void IList.Remove(object? value)
+    {
+        throw new NotSupportedException();
+    }
+
+    void IList.RemoveAt(int index)
+    {
+        throw new NotSupportedException();
+    }
+
+    void ICollection.CopyTo(Array array, int index)
+    {
+        ((IList)_items).CopyTo(array, index);
     }
 }
