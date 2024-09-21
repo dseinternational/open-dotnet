@@ -28,7 +28,7 @@ public sealed class MeasureIdToInt64Converter : ValueConverter<MeasureId, long>
         }
 
         ValueConversionException.Throw(
-            $"Unable to convert {typeof(long).Name} value '{value}' to {nameof(MeasureId)}.", value, null);
+            $"Unable to convert {nameof(Int64)} value '{value}' to {nameof(MeasureId)}.", value, null);
         return default;
     }
 }

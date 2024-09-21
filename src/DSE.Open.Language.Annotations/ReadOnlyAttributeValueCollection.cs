@@ -66,7 +66,7 @@ public sealed class ReadOnlyAttributeValueCollection
         }
 
         return ThrowHelper.ThrowFormatException<ReadOnlyAttributeValueCollection>(
-            $"Cannot parse '{s}' as {typeof(ReadOnlyAttributeValueCollection).Name}.");
+            $"Cannot parse '{s}' as {nameof(ReadOnlyAttributeValueCollection)}.");
     }
 
     public static bool TryParse(

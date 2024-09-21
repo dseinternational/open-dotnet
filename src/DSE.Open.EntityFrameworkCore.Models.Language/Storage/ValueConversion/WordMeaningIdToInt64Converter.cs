@@ -28,7 +28,7 @@ public sealed class WordMeaningIdToInt64Converter : ValueConverter<WordMeaningId
         }
 
         ValueConversionException.Throw(
-            $"Unable to convert {typeof(long).Name} value '{value}' to {nameof(WordMeaningId)}.", value, null);
+            $"Unable to convert {nameof(Int64)} value '{value}' to {nameof(WordMeaningId)}.", value, null);
         return default;
     }
 }

@@ -144,7 +144,7 @@ public sealed class WordFeatureCollection
         }
 
         return ThrowHelper.ThrowFormatException<WordFeatureCollection>(
-            $"Cannot parse '{s}' as {typeof(WordFeatureCollection).Name}.");
+            $"Cannot parse '{s}' as {nameof(WordFeatureCollection)}.");
     }
 
     public static bool TryParse(

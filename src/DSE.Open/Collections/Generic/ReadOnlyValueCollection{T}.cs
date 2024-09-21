@@ -83,8 +83,6 @@ public class ReadOnlyValueCollection<T>
 
     object ICollection.SyncRoot => ((IList)_items).SyncRoot;
 
-    int ICollection.Count => throw new NotImplementedException();
-
     object? IList.this[int index] { get => this[index]; set => throw new InvalidOperationException("Cannot change a read-only collection."); }
 
     public ReadOnlySpan<T> AsSpan()
@@ -260,7 +258,7 @@ public class ReadOnlyValueCollection<T>
 
         void IEnumerator.Reset()
         {
-            throw new InvalidOperationException("Cannot change a read-only collection.");
+            throw new NotSupportedException();
         }
 
         public T Current => _inner.Current;

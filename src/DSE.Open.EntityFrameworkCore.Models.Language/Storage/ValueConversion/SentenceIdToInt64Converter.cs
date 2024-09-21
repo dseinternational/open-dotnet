@@ -28,7 +28,7 @@ public sealed class SentenceIdToInt64Converter : ValueConverter<SentenceId, long
         }
 
         ValueConversionException.Throw(
-            $"Unable to convert {typeof(long).Name} value '{value}' to {nameof(SentenceId)}.", value, null);
+            $"Unable to convert {nameof(Int64)} value '{value}' to {nameof(SentenceId)}.", value, null);
         return default;
     }
 }

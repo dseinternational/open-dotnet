@@ -28,7 +28,7 @@ public sealed class WordIdToInt64Converter : ValueConverter<WordId, long>
         }
 
         ValueConversionException.Throw(
-            $"Unable to convert {typeof(long).Name} value '{value}' to {nameof(WordId)}.", value, null);
+            $"Unable to convert {nameof(Int64)} value '{value}' to {nameof(WordId)}.", value, null);
         return default;
     }
 }

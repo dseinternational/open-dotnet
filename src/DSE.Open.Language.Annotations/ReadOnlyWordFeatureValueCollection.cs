@@ -66,7 +66,7 @@ public sealed class ReadOnlyWordFeatureValueCollection
         }
 
         return ThrowHelper.ThrowFormatException<ReadOnlyWordFeatureValueCollection>(
-            $"Cannot parse '{s}' as {typeof(ReadOnlyWordFeatureValueCollection).Name}.");
+            $"Cannot parse '{s}' as {nameof(ReadOnlyWordFeatureValueCollection)}.");
     }
 
     public static bool TryParse(

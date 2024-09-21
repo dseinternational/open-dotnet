@@ -154,7 +154,7 @@ public sealed record WordFeature
             return value;
         }
 
-        return ThrowHelper.ThrowFormatException<WordFeature>($"Cannot parse '{s}' as {typeof(WordFeature).Name}.");
+        return ThrowHelper.ThrowFormatException<WordFeature>($"Cannot parse '{s}' as {nameof(WordFeature)}.");
     }
 
     public static bool TryParse(

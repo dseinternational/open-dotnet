@@ -117,7 +117,7 @@ public sealed record AttributeValue
             return value;
         }
 
-        return ThrowHelper.ThrowFormatException<AttributeValue>($"Cannot parse '{s}' as {typeof(AttributeValue).Name}.");
+        return ThrowHelper.ThrowFormatException<AttributeValue>($"Cannot parse '{s}' as {nameof(AttributeValue)}.");
     }
 
     public static bool TryParse(

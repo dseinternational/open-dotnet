@@ -28,7 +28,7 @@ public sealed class ObservationIdToInt64Converter : ValueConverter<ObservationId
         }
 
         ValueConversionException.Throw(
-            $"Unable to convert {typeof(long).Name} value '{value}' to {nameof(ObservationId)}.", value, null);
+            $"Unable to convert {nameof(Int64)} value '{value}' to {nameof(ObservationId)}.", value, null);
         return default;
     }
 }

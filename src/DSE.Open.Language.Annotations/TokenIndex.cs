@@ -239,7 +239,7 @@ public readonly struct TokenIndex
         }
 
         return ThrowHelper.ThrowFormatException<TokenIndex>(
-            $"Cannot parse '{s}' as {typeof(TokenIndex).Name}.");
+            $"Cannot parse '{s}' as {nameof(TokenIndex)}.");
     }
 
     [SkipLocalsInit]
@@ -318,7 +318,7 @@ public readonly struct TokenIndex
         }
 
         return ThrowHelper.ThrowFormatException<TokenIndex>(
-            $"Cannot parse '{s}' as {typeof(TokenIndex).Name}.");
+            $"Cannot parse '{s}' as {nameof(TokenIndex)}.");
     }
 
     public static bool TryParse(
