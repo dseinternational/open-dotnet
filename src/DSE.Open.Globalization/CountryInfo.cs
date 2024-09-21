@@ -1,6 +1,9 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Collections.Frozen;
+using System.Collections.Immutable;
+
 namespace DSE.Open.Globalization;
 
 public sealed record CountryInfo
@@ -67,18 +70,18 @@ public sealed record CountryInfo
         return s_numericCodeLookup.Value.GetValueOrDefault(code);
     }
 
-    private static readonly Lazy<Dictionary<string, CountryInfo>> s_twoLetterCodeLookup = new(InitTwoLetterCodeLookup);
-    private static readonly Lazy<Dictionary<string, CountryInfo>> s_threeLetterCodeLookup = new(InitThreeLetterCodeLookup);
-    private static readonly Lazy<Dictionary<int, CountryInfo>> s_numericCodeLookup = new(InitNumericCodeLookup);
+    private static readonly Lazy<FrozenDictionary<string, CountryInfo>> s_twoLetterCodeLookup = new(InitTwoLetterCodeLookup);
+    private static readonly Lazy<FrozenDictionary<string, CountryInfo>> s_threeLetterCodeLookup = new(InitThreeLetterCodeLookup);
+    private static readonly Lazy<FrozenDictionary<int, CountryInfo>> s_numericCodeLookup = new(InitNumericCodeLookup);
 
-    private static Dictionary<string, CountryInfo> InitThreeLetterCodeLookup()
+    private static FrozenDictionary<string, CountryInfo> InitThreeLetterCodeLookup()
     {
-        return s_countryData.ToDictionary(ci => ci.ThreeLetterCode, StringComparer.OrdinalIgnoreCase);
+        return s_countryData.ToFrozenDictionary(ci => ci.ThreeLetterCode, StringComparer.OrdinalIgnoreCase);
     }
 
-    private static Dictionary<int, CountryInfo> InitNumericCodeLookup()
+    private static FrozenDictionary<int, CountryInfo> InitNumericCodeLookup()
     {
-        return s_countryData.ToDictionary(ci => ci.NumericCode);
+        return s_countryData.ToFrozenDictionary(ci => ci.NumericCode);
     }
 
 #pragma warning disable CA1024 // Use properties where appropriate
@@ -90,15 +93,15 @@ public sealed record CountryInfo
 
     public static IReadOnlyList<CountryInfo> GetEuMemberCountries()
     {
-        return s_countryData.Where(ci => ci.IsEuMemberState).ToArray();
+        return s_countryData.Where(ci => ci.IsEuMemberState).ToImmutableList();
     }
 
-    private static Dictionary<string, CountryInfo> InitTwoLetterCodeLookup()
+    private static FrozenDictionary<string, CountryInfo> InitTwoLetterCodeLookup()
     {
-        return s_countryData.ToDictionary(ci => ci.Code.ToString(), StringComparer.OrdinalIgnoreCase);
+        return s_countryData.ToFrozenDictionary(ci => ci.Code.ToString(), StringComparer.OrdinalIgnoreCase);
     }
 
-    private static readonly List<CountryInfo> s_countryData =
+    private static readonly ImmutableArray<CountryInfo> s_countryData =
     [
         FromData("AD", "AND", 20, "Andorra", 0, 0, 0, 0, 0),
         FromData("AE", "ARE", 784, "United Arab Emirates", 0, 0, 0, 0, 0),
