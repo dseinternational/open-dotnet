@@ -520,6 +520,10 @@ public static partial class StringHelper
                     case SeparatedCaseState.NewWord:
                         buffer[pos++] = separator;
                         break;
+                    case SeparatedCaseState.Start:
+                        break;
+                    default:
+                        break;
                 }
 
                 buffer[pos++] = char.ToLowerInvariant(nameSpan[i]);

@@ -239,6 +239,8 @@ public static partial class StringHelper
                 return string.Empty;
             case 1:
                 return values[0] ?? string.Empty;
+            default:
+                break;
         }
 
         var totalSeparatorsLength = ((long)(values.Length - 2) * separator.Length) + finalSeparator.Length;
@@ -340,6 +342,8 @@ public static partial class StringHelper
                 return string.Empty;
             case 1:
                 return collection.First() ?? string.Empty;
+            default:
+                break;
         }
 
         var charCount = collection.Sum(s => s is not null ? (long)s.Length : 0) +

@@ -118,6 +118,8 @@ public readonly record struct TimePeriod : IComparable<TimePeriod>
                 case NoneLabel:
                     timePeriod = None;
                     return true;
+                default:
+                    break;
             }
         }
 

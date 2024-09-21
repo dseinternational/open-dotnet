@@ -665,6 +665,8 @@ public static class SqlServerTransientConnectionExceptionDetector
                     case 20:
 
                         return true;
+                    default:
+                        break;
                 }
             }
 
@@ -693,6 +695,8 @@ public static class SqlServerTransientConnectionExceptionDetector
                     case 41325:
                     case 41839:
                         return true;
+                    default:
+                        break;
                 }
             }
         }
@@ -749,6 +753,8 @@ public static class SqlServerTransientConnectionExceptionDetector
                     case 233:
                     case -2:
                         return true;
+                    default:
+                        break;
                 }
             }
         }

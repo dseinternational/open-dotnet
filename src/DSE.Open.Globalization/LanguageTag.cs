@@ -93,6 +93,8 @@ public readonly partial struct LanguageTag
                 return AsciiChar.IsLetter(value[0])
                     && AsciiChar.IsLetter(value[1])
                     && AsciiChar.IsLetter(value[2]);
+            default:
+                break;
         }
 
         // Fall back to regex

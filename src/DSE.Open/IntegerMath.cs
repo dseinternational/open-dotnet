@@ -13,6 +13,8 @@ public static class IntegerMath
                 throw new ArgumentOutOfRangeException(nameof(divisor));
             case -1 when dividend == int.MinValue:
                 throw new ArgumentOutOfRangeException(nameof(divisor));
+            default:
+                break;
         }
 
         var roundedTowardsZeroQuotient = dividend / divisor;
@@ -37,6 +39,8 @@ public static class IntegerMath
                 throw new ArgumentOutOfRangeException(nameof(divisor));
             case -1 when dividend == long.MinValue:
                 throw new ArgumentOutOfRangeException(nameof(divisor));
+            default:
+                break;
         }
 
         var roundedTowardsZeroQuotient = dividend / divisor;

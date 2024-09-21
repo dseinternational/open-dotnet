@@ -168,6 +168,8 @@ public readonly record struct YearDate : IComparable<YearDate>, ISpanParsable<Ye
             case 4:
                 result = default;
                 return false;
+            default:
+                break;
         }
 
         if (DateTime.TryParse(s, CultureInfo.InvariantCulture, DateTimeStyles.None, out var dateTime))

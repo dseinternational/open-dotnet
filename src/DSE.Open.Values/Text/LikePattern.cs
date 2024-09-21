@@ -299,6 +299,8 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
                         escapeNext = true;
                         patternIndex++;
                         continue;
+                    default:
+                        break;
                 }
             }
 
@@ -425,6 +427,8 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
                     value,
                     set,
                     out matched);
+            default:
+                break;
         }
 
         var v = value[valueIndex];

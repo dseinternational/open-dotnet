@@ -81,6 +81,8 @@ public readonly partial struct Identifier : IEquatableValue<Identifier, AsciiStr
             case > MaxPrefixLength:
                 // '_' is not valid in id (beyond prefix) and cannot start with '_'
                 return false;
+            default:
+                break;
         }
 
         var prefix = value.AsSpan()[..prefixEndIndex];

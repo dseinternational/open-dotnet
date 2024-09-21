@@ -35,6 +35,8 @@ public static partial class CollectionExtensions
             case 1:
                 found = true;
                 return source[0];
+            default:
+                break;
         }
 
         found = false;

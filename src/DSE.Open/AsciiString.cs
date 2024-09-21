@@ -383,6 +383,8 @@ public readonly struct AsciiString
                 return Ascii.ToLower(ValuesMarshal.AsBytes(_value.Span), destination, out charsWritten) == OperationStatus.Done;
             case 'u':
                 return Ascii.ToUpper(ValuesMarshal.AsBytes(_value.Span), destination, out charsWritten) == OperationStatus.Done;
+            default:
+                break;
         }
 
         ThrowHelper.ThrowFormatException($"The format '{format.ToString()}' is not supported.");
@@ -420,6 +422,8 @@ public readonly struct AsciiString
                 return Ascii.ToLower(ValuesMarshal.AsBytes(_value.Span), utf8Destination, out bytesWritten) == OperationStatus.Done;
             case 'u':
                 return Ascii.ToUpper(ValuesMarshal.AsBytes(_value.Span), utf8Destination, out bytesWritten) == OperationStatus.Done;
+            default:
+                break;
         }
 
         ThrowHelper.ThrowFormatException($"The format '{format.ToString()}' is not supported.");
