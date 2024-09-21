@@ -5,7 +5,7 @@ using System.Collections;
 
 namespace DSE.Open.Collections.Generic;
 
-public class Collection<T> : IList<T>, IReadOnlyList<T>
+public class Collection<T> : IList<T>, IReadOnlyList<T>, IList
 {
     public static readonly Collection<T> Empty = [];
 
@@ -47,6 +47,18 @@ public class Collection<T> : IList<T>, IReadOnlyList<T>
     public int Count => _items.Count;
 
     public bool IsReadOnly => ((ICollection<T>)_items).IsReadOnly;
+
+#pragma warning disable CA1033 // Interface methods should be callable by child types
+
+    bool IList.IsFixedSize => ((IList)_items).IsFixedSize;
+
+    bool ICollection.IsSynchronized => ((ICollection)_items).IsSynchronized;
+
+    object ICollection.SyncRoot => ((ICollection)_items).SyncRoot;
+
+#pragma warning restore CA1033 // Interface methods should be callable by child types
+
+    object? IList.this[int index] { get => this[index]; set => this[index] = (T)value!; }
 
     public void Add(T item)
     {
@@ -273,5 +285,49 @@ public class Collection<T> : IList<T>, IReadOnlyList<T>
     IEnumerator IEnumerable.GetEnumerator()
     {
         return _items.GetEnumerator();
+    }
+
+    int IList.Add(object? value)
+    {
+        ArgumentNullException.ThrowIfNull(value);
+        Add((T)value);
+        return Count - 1;
+    }
+
+    bool IList.Contains(object? value)
+    {
+        if (value is not T item)
+        {
+            return false;
+        }
+
+        return Contains(item);
+    }
+
+    int IList.IndexOf(object? value)
+    {
+        if (value is not T item)
+        {
+            return -1;
+        }
+
+        return IndexOf(item);
+    }
+
+    void IList.Insert(int index, object? value)
+    {
+        ArgumentNullException.ThrowIfNull(value);
+        Insert(index, (T)value);
+    }
+
+    void IList.Remove(object? value)
+    {
+        ArgumentNullException.ThrowIfNull(value);
+        _ = Remove((T)value);
+    }
+
+    void ICollection.CopyTo(Array array, int index)
+    {
+        _items.CopyTo((T[])array, index);
     }
 }
