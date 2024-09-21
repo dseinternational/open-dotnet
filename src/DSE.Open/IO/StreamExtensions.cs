@@ -71,7 +71,7 @@ public static class StreamExtensions
 
                 if (nextByte == -1)
                 {
-                    return buffer.ToArray();
+                    return [.. buffer];
                 }
 
                 var newBuffer = new byte[buffer.Length * 2];

@@ -58,7 +58,7 @@ public static class CompilationHelper
         return CSharpCompilation.Create(
             assemblyName,
             [CSharpSyntaxTree.ParseText(source)],
-            references.ToArray(),
+            [.. references],
             options: options);
     }
 

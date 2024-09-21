@@ -157,6 +157,6 @@ public class ReadOnlyCollection<T> : IReadOnlyList<T>
 
     public T[] ToArray()
     {
-        return _items.ToArray();
+        return [.. _items];
     }
 }

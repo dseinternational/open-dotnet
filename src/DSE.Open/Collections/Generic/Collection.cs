@@ -267,7 +267,7 @@ public class Collection<T> : IList<T>, IReadOnlyList<T>
 
     public T[] ToArray()
     {
-        return _items.ToArray();
+        return [.. _items];
     }
 
     IEnumerator IEnumerable.GetEnumerator()

@@ -215,7 +215,7 @@ public class SpeechSymbolSequenceTests
     }
 
     public static TheoryData<string> WordTranscriptions =>
-        new(TranscriptionData.Transcriptions.ToArray());
+        new([.. TranscriptionData.Transcriptions]);
 
     public static TheoryData<string, string> WordTranscriptionPairs
     {

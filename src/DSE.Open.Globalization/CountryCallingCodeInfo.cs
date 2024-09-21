@@ -300,5 +300,5 @@ public sealed class CountryCallingCodeInfo
     ];
 
     // internal for testing
-    internal static readonly uint[] AssignedCodes = CachedInfo.Select(c => c.Code).Distinct().Order().ToArray();
+    internal static readonly uint[] AssignedCodes = [.. CachedInfo.Select(c => c.Code).Distinct().Order()];
 }

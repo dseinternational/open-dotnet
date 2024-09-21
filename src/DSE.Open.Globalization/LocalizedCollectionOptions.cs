@@ -18,6 +18,6 @@ public static class LocalizedCollectionOptions
         ArgumentNullException.ThrowIfNull(languageTags);
         Guard.HasSizeGreaterThanOrEqualTo(languageTags, 1);
 
-        s_defaultFallbacks = languageTags.ToArray();
+        s_defaultFallbacks = [.. languageTags];
     }
 }

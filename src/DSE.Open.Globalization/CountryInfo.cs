@@ -81,9 +81,11 @@ public sealed record CountryInfo
         return s_countryData.ToDictionary(ci => ci.NumericCode);
     }
 
+#pragma warning disable CA1024 // Use properties where appropriate
     public static IReadOnlyList<CountryInfo> GetAllCountries()
+#pragma warning restore CA1024 // Use properties where appropriate
     {
-        return s_countryData.ToArray();
+        return [.. s_countryData];
     }
 
     public static IReadOnlyList<CountryInfo> GetEuMemberCountries()

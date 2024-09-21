@@ -157,13 +157,13 @@ public static class Base62Converter
 
             result.Insert(0, remainder);
 
-            source = quotient.ToArray();
+            source = [.. quotient];
             quotient.Clear();
         }
 
         result.InsertRange(0, Enumerable.Repeat(0, leadingZeroCount));
 
-        return result.ToArray();
+        return [.. result];
     }
 
     public static bool TryEncodeToBase62(ReadOnlySpan<byte> bytes, Span<char> destination, out int charsWritten)
