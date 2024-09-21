@@ -10,14 +10,18 @@ using System.Runtime.InteropServices;
 namespace DSE.Open.Collections.Generic;
 
 /// <summary>
-/// A <see cref="IReadOnlyCollection{T}"/> that defines equality based on the equality of the items it contains.
+///     A <see cref="IReadOnlyCollection{T}"/> that defines equality based on the equality of the items it contains.
 /// </summary>
 /// <typeparam name="T"></typeparam>
-/// <remarks><see cref="ICollection{T}"/> is implemented explicitly to support deserialization.</remarks>
+/// <remarks>
+///     <see cref="ICollection{T}"/> is implemented explicitly to support deserialization and <see cref="IList"/>
+///     is implemented to support certain data-binding scenarios.
+/// </remarks>
 [CollectionBuilder(typeof(ReadOnlyValueCollection), nameof(ReadOnlyValueCollection.Create))]
 public class ReadOnlyValueCollection<T>
     : IReadOnlyList<T>,
       ICollection<T>,
+      IList,
       IEquatable<ReadOnlyValueCollection<T>>
 {
     // Cannot use collection expression because this is the empty used by the builder when supplied with no items.
@@ -62,9 +66,26 @@ public class ReadOnlyValueCollection<T>
 
     public T this[int index] => _items[index];
 
+    public int IndexOf(T item)
+    {
+        return _items.IndexOf(item);
+    }
+
 #pragma warning disable CA1033 // Interface methods should be callable by child types
 
     bool ICollection<T>.IsReadOnly => false; // JsonSerialization
+
+    bool IList.IsFixedSize => true;
+
+    bool IList.IsReadOnly => true;
+
+    bool ICollection.IsSynchronized => ((IList)_items).IsSynchronized;
+
+    object ICollection.SyncRoot => ((IList)_items).SyncRoot;
+
+    int ICollection.Count => throw new NotImplementedException();
+
+    object? IList.this[int index] { get => this[index]; set => throw new InvalidOperationException("Cannot change a read-only collection."); }
 
     public ReadOnlySpan<T> AsSpan()
     {
@@ -139,6 +160,56 @@ public class ReadOnlyValueCollection<T>
         return GetEnumerator();
     }
 
+    int IList.Add(object? value)
+    {
+        throw new InvalidOperationException("Cannot change a read-only collection.");
+    }
+
+    void IList.Clear()
+    {
+        throw new InvalidOperationException("Cannot change a read-only collection.");
+    }
+
+    bool IList.Contains(object? value)
+    {
+        if (value is not T item)
+        {
+            return false;
+        }
+
+        return Contains(item);
+    }
+
+    int IList.IndexOf(object? value)
+    {
+        if (value is not T item)
+        {
+            return -1;
+        }
+
+        return IndexOf(item);
+    }
+
+    void IList.Insert(int index, object? value)
+    {
+        throw new InvalidOperationException("Cannot change a read-only collection.");
+    }
+
+    void IList.Remove(object? value)
+    {
+        throw new InvalidOperationException("Cannot change a read-only collection.");
+    }
+
+    void IList.RemoveAt(int index)
+    {
+        throw new InvalidOperationException("Cannot change a read-only collection.");
+    }
+
+    void ICollection.CopyTo(Array array, int index)
+    {
+        ((IList)_items).CopyTo(array, index);
+    }
+
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
     public static explicit operator ReadOnlyValueCollection<T>(T[] collection)
@@ -189,7 +260,7 @@ public class ReadOnlyValueCollection<T>
 
         void IEnumerator.Reset()
         {
-            throw new NotSupportedException("Reset is not supported. Use a new enumerator instead.");
+            throw new InvalidOperationException("Cannot change a read-only collection.");
         }
 
         public T Current => _inner.Current;

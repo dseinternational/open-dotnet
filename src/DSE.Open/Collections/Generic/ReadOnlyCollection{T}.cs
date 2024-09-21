@@ -6,8 +6,18 @@ using System.Runtime.CompilerServices;
 
 namespace DSE.Open.Collections.Generic;
 
+/// <summary>
+/// </summary>
+/// <typeparam name="T"></typeparam>
+/// <remarks>
+///     <see cref="ICollection{T}"/> is implemented explicitly to support deserialization and <see cref="IList"/>
+///     is implemented to support certain data-binding scenarios.
+/// </remarks>
 [CollectionBuilder(typeof(ReadOnlyCollection), nameof(ReadOnlyCollection.Create))]
-public class ReadOnlyCollection<T> : IReadOnlyList<T>, IList
+public class ReadOnlyCollection<T>
+    : IReadOnlyList<T>,
+      ICollection<T>,
+      IList
 {
     public static readonly ReadOnlyCollection<T> Empty = [];
 
@@ -63,9 +73,15 @@ public class ReadOnlyCollection<T> : IReadOnlyList<T>, IList
 
     object ICollection.SyncRoot => ((IList)_items).SyncRoot;
 
+    bool ICollection<T>.IsReadOnly => true;
+
 #pragma warning restore CA1033 // Interface methods should be callable by child types
 
-    object? IList.this[int index] { get => this[index]; set => throw new NotSupportedException(); }
+    object? IList.this[int index]
+    {
+        get => this[index];
+        set => throw new InvalidOperationException("Cannot change a read-only collection.");
+    }
 
     public bool Contains(T item)
     {
@@ -174,12 +190,12 @@ public class ReadOnlyCollection<T> : IReadOnlyList<T>, IList
 
     int IList.Add(object? value)
     {
-        throw new NotSupportedException();
+        throw new InvalidOperationException("Cannot change a read-only collection.");
     }
 
     void IList.Clear()
     {
-        throw new NotSupportedException();
+        throw new InvalidOperationException("Cannot change a read-only collection.");
     }
 
     bool IList.Contains(object? value)
@@ -204,21 +220,36 @@ public class ReadOnlyCollection<T> : IReadOnlyList<T>, IList
 
     void IList.Insert(int index, object? value)
     {
-        throw new NotSupportedException();
+        throw new InvalidOperationException("Cannot change a read-only collection.");
     }
 
     void IList.Remove(object? value)
     {
-        throw new NotSupportedException();
+        throw new InvalidOperationException("Cannot change a read-only collection.");
     }
 
     void IList.RemoveAt(int index)
     {
-        throw new NotSupportedException();
+        throw new InvalidOperationException("Cannot change a read-only collection.");
     }
 
     void ICollection.CopyTo(Array array, int index)
     {
         ((IList)_items).CopyTo(array, index);
+    }
+
+    void ICollection<T>.Add(T item)
+    {
+        throw new InvalidOperationException("Cannot change a read-only collection.");
+    }
+
+    void ICollection<T>.Clear()
+    {
+        throw new InvalidOperationException("Cannot change a read-only collection.");
+    }
+
+    bool ICollection<T>.Remove(T item)
+    {
+        throw new InvalidOperationException("Cannot change a read-only collection.");
     }
 }
