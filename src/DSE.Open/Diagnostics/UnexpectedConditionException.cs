@@ -34,6 +34,15 @@ public class UnexpectedConditionException : Exception
         }
     }
 
+    public static void ThrowIfDefault<T>([NotNull] T value, [CallerArgumentExpression(nameof(value))] string? valueName = null)
+        where T : struct
+    {
+        if (EqualityComparer<T>.Default.Equals(value, default))
+        {
+            Throw($"Encountered an unexpected condition: {valueName} was the default value.");
+        }
+    }
+
     public static void ThrowIfNull([NotNull] object? value, [CallerArgumentExpression(nameof(value))] string? valueName = null)
     {
         if (value is null)
@@ -49,6 +58,13 @@ public class UnexpectedConditionException : Exception
         {
             Throw($"Encountered an unexpected condition: {valueName} was null.");
         }
+    }
+
+    public static void ThrowIfNullOrDefault<T>([NotNull] T? value, [CallerArgumentExpression(nameof(value))] string? valueName = null)
+        where T : struct
+    {
+        ThrowIfNull(value, valueName);
+        ThrowIfDefault(value.Value, valueName);
     }
 
     public static void ThrowIfNullOrEmpty([NotNull] string? value, [CallerArgumentExpression(nameof(value))] string? valueName = null)

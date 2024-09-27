@@ -32,6 +32,18 @@ public static class Expect
     }
 
     /// <summary>
+    /// Throws an <see cref="UnexpectedConditionException"/> if <paramref name="value"/> is default(T).
+    /// </summary>
+    /// <param name="value">The value to check.</param>
+    /// <param name="valueName">The name of the value to include in the exception.</param>
+    /// <exception cref="UnexpectedConditionException">Thrown when <paramref name="value"/> is default(T).</exception>
+    public static void NotDefault<T>([NotNull] T value, [CallerArgumentExpression(nameof(value))] string? valueName = null)
+        where T : struct
+    {
+        UnexpectedConditionException.ThrowIfDefault(value, valueName);
+    }
+
+    /// <summary>
     /// Throws an <see cref="UnexpectedConditionException"/> if <paramref name="value"/> is null.
     /// </summary>
     /// <param name="value">The value to check.</param>
@@ -52,6 +64,12 @@ public static class Expect
         where T : struct
     {
         UnexpectedConditionException.ThrowIfNull(value, valueName);
+    }
+
+    public static void NotNullOrDefault<T>([NotNull] T? value, [CallerArgumentExpression(nameof(value))] string? valueName = null)
+        where T : struct
+    {
+        UnexpectedConditionException.ThrowIfNullOrDefault(value, valueName);
     }
 
     /// <summary>
