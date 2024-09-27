@@ -14,7 +14,7 @@
 
   <ItemGroup>
     <PackageVersion Include="Azure.Core" Version="1.43.0" />
-    <PackageVersion Include="Azure.Identity" Version="1.12.0" />
+    <PackageVersion Include="Azure.Identity" Version="1.12.1" />
     <PackageVersion Include="BenchmarkDotNet" Version="0.14.0" />
     <PackageVersion Include="CommunityToolkit.Diagnostics" Version="8.3.2" />
     <PackageVersion Include="CommunityToolkit.HighPerformance" Version="8.3.2" />
@@ -42,8 +42,8 @@
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0-rc.1.24431.7" />
     <PackageVersion Include="Microsoft.Extensions.Options" Version="9.0.0-rc.1.24431.7" />
     <PackageVersion Include="Microsoft.Extensions.TimeProvider.Testing" Version="9.0.0-preview.8.24460.1" />
-    <PackageVersion Include="Microsoft.Identity.Client" Version="4.64.1" />
-    <PackageVersion Include="Microsoft.Identity.Client.Extensions.Msal" Version="4.64.1" />
+    <PackageVersion Include="Microsoft.Identity.Client" Version="4.65.0" />
+    <PackageVersion Include="Microsoft.Identity.Client.Extensions.Msal" Version="4.65.0" />
     <PackageVersion Include="Microsoft.IdentityModel.Abstractions" Version="8.1.0" />
     <PackageVersion Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.1.0" />
     <PackageVersion Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.1.0" />
@@ -54,7 +54,7 @@
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageVersion Include="NodaTime" Version="3.1.12" />
     <PackageVersion Include="NodaTime.Serialization.SystemTextJson" Version="1.2.0" />
-    <PackageVersion Include="Polly" Version="8.4.1" />
+    <PackageVersion Include="Polly" Version="8.4.2" />
     <PackageVersion Include="Polly.Contrib.WaitAndRetry" Version="1.1.1" />
     <PackageVersion Include="Polly.Extensions.Http" Version="3.0.0" />
     <PackageVersion Include="pythonnet" Version="3.1.0-preview2024-09-06" />
@@ -80,11 +80,11 @@
     <PackageVersion Include="System.IO.Hashing" Version="9.0.0-rc.1.24431.7" />
     <PackageVersion Include="TorchSharp" Version="0.103.0" />
     <PackageVersion Include="TorchSharp-cpu" Version="0.103.0" />
-    <PackageVersion Include="xunit" Version="2.9.1" />
+    <PackageVersion Include="xunit" Version="2.9.2" />
     <PackageVersion Include="xunit.analyzers" Version="1.16.0" />
-    <PackageVersion Include="xunit.assert" Version="2.9.1" />
-    <PackageVersion Include="xunit.core" Version="2.9.1" />
-    <PackageVersion Include="xunit.extensibility.core" Version="2.9.1" />
+    <PackageVersion Include="xunit.assert" Version="2.9.2" />
+    <PackageVersion Include="xunit.core" Version="2.9.2" />
+    <PackageVersion Include="xunit.extensibility.core" Version="2.9.2" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="2.8.2" />
   </ItemGroup>
 
