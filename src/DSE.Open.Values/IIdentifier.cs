@@ -5,7 +5,9 @@ namespace DSE.Open.Values;
 
 #pragma warning disable CA1716 // Identifiers should not match keywords
 
-public interface IIdentifier<TSelf> : IEquatable<TSelf>
+public interface IIdentifier<TSelf>
+    : IEquatable<TSelf>,
+      ISpanFormattable
     where TSelf : IIdentifier<TSelf>
 {
     static abstract TSelf New();
