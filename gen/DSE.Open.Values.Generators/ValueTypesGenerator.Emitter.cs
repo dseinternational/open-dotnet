@@ -78,8 +78,11 @@ public partial class ValueTypesGenerator
                 }
             }
 
-            writer.WriteLine($"[TypeConverter(typeof({Namespaces.DseOpenValues}.ValueTypeConverter<{spec.ValueTypeName}, {spec.ContainedValueTypeName}>))]");
-            writer.WriteLine($"{AccessibilityHelper.GetKeyword(spec.Accessibility)} readonly partial struct {spec.ValueTypeName}");
+            writer.WriteLine(
+                $"[TypeConverter(typeof({Namespaces.DseOpenValues}.ValueTypeConverter<{spec.ValueTypeName}, {spec.ContainedValueTypeName}>))]");
+
+            writer.WriteLine(
+                $"{AccessibilityHelper.GetKeyword(spec.Accessibility)} readonly partial struct {spec.ValueTypeName}");
             writer.WriteLine("{");
 
             writer.Indentation++;
@@ -170,23 +173,42 @@ public partial class ValueTypesGenerator
             if (spec.EmitExplicitConversionFromContainedTypeMethod)
             {
                 writer.WriteBlock($"""
-                                    public static explicit operator {spec.ValueTypeName}({spec.ContainedValueTypeName} value)
-                                        => FromValue(value);
-                                    """);
+                                   public static explicit operator {spec.ValueTypeName}({spec.ContainedValueTypeName} value)
+                                       => FromValue(value);
+                                   """);
             }
 
             if (spec.EmitConvertToMethod)
             {
                 writer.WriteBlock($"""
-                                    static {spec.ContainedValueTypeName} {Namespaces.DseOpen}.IConvertibleTo<{spec.ValueTypeName}, {spec.ContainedValueTypeName}>.ConvertTo({spec.ValueTypeName} value)
-                                        => ({spec.ContainedValueTypeName})value;
-                                    """);
+                                   static {spec.ContainedValueTypeName} {Namespaces.DseOpen}.IConvertibleTo<{spec.ValueTypeName}, {spec.ContainedValueTypeName}>.ConvertTo({spec.ValueTypeName} value)
+                                       => ({spec.ContainedValueTypeName})value;
+                                   """);
             }
 
             if (spec.EmitImplicitConversionToContainedTypeMethod)
             {
                 writer.WriteLine($$"""
                                    public static implicit operator {{spec.ContainedValueTypeName}}({{spec.ValueTypeName}} value)
+                                   {
+                                   """);
+
+                if (spec.EmitEnsureNotDefault)
+                {
+                    writer.Indentation++;
+                    writer.WriteLine("value.EnsureIsNotDefault();");
+                    writer.Indentation--;
+                }
+
+                writer.WriteBlock("""
+                                      return value._value;
+                                  }
+                                  """);
+            }
+            else if (spec.EmitExplicitConversionToContainedType)
+            {
+                writer.WriteLine($$"""
+                                   public static explicit operator {{spec.ContainedValueTypeName}}({{spec.ValueTypeName}} value)
                                    {
                                    """);
 
@@ -212,7 +234,8 @@ public partial class ValueTypesGenerator
 
             if (spec.EmitEqualsObjectMethod)
             {
-                writer.WriteBlock($"public override bool Equals(object? obj) => obj is {spec.ValueTypeName} other && Equals(other);");
+                writer.WriteBlock(
+                    $"public override bool Equals(object? obj) => obj is {spec.ValueTypeName} other && Equals(other);");
             }
 
             if (spec.EmitGetHashCodeMethod)
@@ -240,10 +263,10 @@ public partial class ValueTypesGenerator
                 writer.WriteBlock($"// IEqualityOperators<{spec.ValueTypeName}, {spec.ValueTypeName}, bool>");
 
                 writer.WriteBlock($"""
-                                    public static bool operator ==({spec.ValueTypeName} left, {spec.ValueTypeName} right) => left.Equals(right);
+                                   public static bool operator ==({spec.ValueTypeName} left, {spec.ValueTypeName} right) => left.Equals(right);
 
-                                    public static bool operator !=({spec.ValueTypeName} left, {spec.ValueTypeName} right) => !(left == right);
-                                    """);
+                                   public static bool operator !=({spec.ValueTypeName} left, {spec.ValueTypeName} right) => !(left == right);
+                                   """);
             }
 
             writer.WriteBlock("// ISpanFormattable");
@@ -299,13 +322,13 @@ public partial class ValueTypesGenerator
             if (spec.EmitToStringFormattableMethod)
             {
                 writer.WriteLine($$"""
-                                    /// <summary>
-                                    /// Gets a representation of the <see cref="{{spec.ValueTypeName}}"/> value as a string with formatting options.
-                                    /// </summary>
-                                    [SkipLocalsInit]
-                                    public string ToString(string? format, IFormatProvider? formatProvider)
-                                    {
-                                    """);
+                                   /// <summary>
+                                   /// Gets a representation of the <see cref="{{spec.ValueTypeName}}"/> value as a string with formatting options.
+                                   /// </summary>
+                                   [SkipLocalsInit]
+                                   public string ToString(string? format, IFormatProvider? formatProvider)
+                                   {
+                                   """);
 
                 if (spec.EmitEnsureNotDefault)
                 {
@@ -315,50 +338,50 @@ public partial class ValueTypesGenerator
                 if (spec.UseGetStringSpan)
                 {
                     writer.WriteLine("""
-                                          char[]? rented = null;
+                                         char[]? rented = null;
 
-                                          try
-                                          {
-                                              Span<char> buffer = MemoryThresholds.CanStackalloc<char>(MaxSerializedCharLength)
-                                                  ? stackalloc char[MaxSerializedCharLength]
-                                                  : (rented = System.Buffers.ArrayPool<char>.Shared.Rent(MaxSerializedCharLength));
+                                         try
+                                         {
+                                             Span<char> buffer = MemoryThresholds.CanStackalloc<char>(MaxSerializedCharLength)
+                                                 ? stackalloc char[MaxSerializedCharLength]
+                                                 : (rented = System.Buffers.ArrayPool<char>.Shared.Rent(MaxSerializedCharLength));
 
-                                              _ = TryFormat(buffer, out var charsWritten, format, formatProvider);
+                                             _ = TryFormat(buffer, out var charsWritten, format, formatProvider);
 
-                                              return GetString(buffer[..charsWritten]);
-                                          }
-                                          finally
-                                          {
-                                              if (rented is not null)
-                                              {
-                                                  System.Buffers.ArrayPool<char>.Shared.Return(rented);
-                                              }
-                                          }
-                                      """);
+                                             return GetString(buffer[..charsWritten]);
+                                         }
+                                         finally
+                                         {
+                                             if (rented is not null)
+                                             {
+                                                 System.Buffers.ArrayPool<char>.Shared.Return(rented);
+                                             }
+                                         }
+                                     """);
                 }
                 else if (spec.UseGetString)
                 {
                     writer.WriteLine("""
-                                          char[]? rented = null;
+                                         char[]? rented = null;
 
-                                          try
-                                          {
-                                              Span<char> buffer = MemoryThresholds.CanStackalloc<char>(MaxSerializedCharLength)
-                                                  ? stackalloc char[MaxSerializedCharLength]
-                                                  : (rented = System.Buffers.ArrayPool<char>.Shared.Rent(MaxSerializedCharLength));
+                                         try
+                                         {
+                                             Span<char> buffer = MemoryThresholds.CanStackalloc<char>(MaxSerializedCharLength)
+                                                 ? stackalloc char[MaxSerializedCharLength]
+                                                 : (rented = System.Buffers.ArrayPool<char>.Shared.Rent(MaxSerializedCharLength));
 
-                                              _ = TryFormat(buffer, out var charsWritten, format, formatProvider);
+                                             _ = TryFormat(buffer, out var charsWritten, format, formatProvider);
 
-                                              return GetString(new string(buffer[..charsWritten]));
-                                          }
-                                          finally
-                                          {
-                                              if (rented is not null)
-                                              {
-                                                  System.Buffers.ArrayPool<char>.Shared.Return(rented);
-                                              }
-                                          }
-                                      """);
+                                             return GetString(new string(buffer[..charsWritten]));
+                                         }
+                                         finally
+                                         {
+                                             if (rented is not null)
+                                             {
+                                                 System.Buffers.ArrayPool<char>.Shared.Return(rented);
+                                             }
+                                         }
+                                     """);
                 }
                 else
                 {
@@ -419,26 +442,26 @@ public partial class ValueTypesGenerator
             if (spec.EmitTryParseSpanMethod)
             {
                 writer.WriteBlock($"""
-                                    public static bool TryParse(
-                                        ReadOnlySpan<char> s,
-                                        IFormatProvider? provider,
-                                        out {spec.ValueTypeName} result)
-                                        => {Namespaces.DseOpenValues}.ValueParser.TryParse<{spec.ValueTypeName}, {spec.ContainedValueTypeName}>(s, provider, out result);
-                                    """);
+                                   public static bool TryParse(
+                                       ReadOnlySpan<char> s,
+                                       IFormatProvider? provider,
+                                       out {spec.ValueTypeName} result)
+                                       => {Namespaces.DseOpenValues}.ValueParser.TryParse<{spec.ValueTypeName}, {spec.ContainedValueTypeName}>(s, provider, out result);
+                                   """);
 
                 writer.WriteBlock($"""
-                                    public static bool TryParse(
-                                        ReadOnlySpan<char> s,
-                                        out {spec.ValueTypeName} result)
-                                        => TryParse(s, default, out result);
-                                    """);
+                                   public static bool TryParse(
+                                       ReadOnlySpan<char> s,
+                                       out {spec.ValueTypeName} result)
+                                       => TryParse(s, default, out result);
+                                   """);
 
                 writer.WriteBlock($"""
-                                    public static bool TryParseInvariant(
-                                        ReadOnlySpan<char> s,
-                                        out {spec.ValueTypeName} result)
-                                        => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
-                                    """);
+                                   public static bool TryParseInvariant(
+                                       ReadOnlySpan<char> s,
+                                       out {spec.ValueTypeName} result)
+                                       => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
+                                   """);
             }
 
             if (spec.EmitParseStringMethod || spec.EmitTryParseStringMethod)
@@ -483,44 +506,44 @@ public partial class ValueTypesGenerator
                                     """);
 
                 writer.WriteBlock($"""
-                                    public static bool TryParse(
-                                        string? s,
-                                        out {spec.ValueTypeName} result)
-                                        => TryParse(s, default, out result);
-                                    """);
+                                   public static bool TryParse(
+                                       string? s,
+                                       out {spec.ValueTypeName} result)
+                                       => TryParse(s, default, out result);
+                                   """);
 
                 writer.WriteBlock($"""
-                                    public static bool TryParseInvariant(
-                                        string? s,
-                                        out {spec.ValueTypeName} result)
-                                        => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
-                                    """);
+                                   public static bool TryParseInvariant(
+                                       string? s,
+                                       out {spec.ValueTypeName} result)
+                                       => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
+                                   """);
             }
 
             if (spec.EmitTryParseSpanNumberStylesMethod)
             {
                 writer.WriteBlock($"""
-                                    public static bool TryParse(
-                                        ReadOnlySpan<char> s,
-                                        NumberStyles style,
-                                        IFormatProvider? provider,
-                                        out {spec.ValueTypeName} result)
-                                        // TODO: ***** NumberStyles *****
-                                        => {Namespaces.DseOpenValues}.ValueParser.TryParse<{spec.ValueTypeName}, {spec.ContainedValueTypeName}>(s, provider, out result);
-                                    """);
+                                   public static bool TryParse(
+                                       ReadOnlySpan<char> s,
+                                       NumberStyles style,
+                                       IFormatProvider? provider,
+                                       out {spec.ValueTypeName} result)
+                                       // TODO: ***** NumberStyles *****
+                                       => {Namespaces.DseOpenValues}.ValueParser.TryParse<{spec.ValueTypeName}, {spec.ContainedValueTypeName}>(s, provider, out result);
+                                   """);
             }
 
             if (spec.EmitTryParseStringNumberStylesMethod)
             {
                 writer.WriteBlock($"""
-                                    public static bool TryParse(
-                                        string? s,
-                                        NumberStyles style,
-                                        IFormatProvider? provider,
-                                        out {spec.ValueTypeName} result)
-                                        // TODO: ***** NumberStyles *****
-                                        => {Namespaces.DseOpenValues}.ValueParser.TryParse<{spec.ValueTypeName}, {spec.ContainedValueTypeName}>(s, provider, out result);
-                                    """);
+                                   public static bool TryParse(
+                                       string? s,
+                                       NumberStyles style,
+                                       IFormatProvider? provider,
+                                       out {spec.ValueTypeName} result)
+                                       // TODO: ***** NumberStyles *****
+                                       => {Namespaces.DseOpenValues}.ValueParser.TryParse<{spec.ValueTypeName}, {spec.ContainedValueTypeName}>(s, provider, out result);
+                                   """);
             }
 
             if (spec.EmitParseSpanNumberStylesMethod)
@@ -561,22 +584,22 @@ public partial class ValueTypesGenerator
             if (spec.EmitParseUtf8Method)
             {
                 writer.WriteBlock($"""
-                                    public static {spec.ValueTypeName} Parse(
-                                        ReadOnlySpan<byte> utf8Source,
-                                        IFormatProvider? provider)
-                                        => {Namespaces.DseOpenValues}.ValueParser.Parse<{spec.ValueTypeName}, {spec.ContainedValueTypeName}>(utf8Source, provider);
-                                    """);
+                                   public static {spec.ValueTypeName} Parse(
+                                       ReadOnlySpan<byte> utf8Source,
+                                       IFormatProvider? provider)
+                                       => {Namespaces.DseOpenValues}.ValueParser.Parse<{spec.ValueTypeName}, {spec.ContainedValueTypeName}>(utf8Source, provider);
+                                   """);
             }
 
             if (spec.EmitTryParseUtf8Method)
             {
                 writer.WriteBlock($"""
-                                    public static bool TryParse(
-                                        ReadOnlySpan<byte> utf8Source,
-                                        IFormatProvider? provider,
-                                        out {spec.ValueTypeName} result)
-                                        => {Namespaces.DseOpenValues}.ValueParser.TryParse<{spec.ValueTypeName}, {spec.ContainedValueTypeName}>(utf8Source, provider, out result);
-                                    """);
+                                   public static bool TryParse(
+                                       ReadOnlySpan<byte> utf8Source,
+                                       IFormatProvider? provider,
+                                       out {spec.ValueTypeName} result)
+                                       => {Namespaces.DseOpenValues}.ValueParser.TryParse<{spec.ValueTypeName}, {spec.ContainedValueTypeName}>(utf8Source, provider, out result);
+                                   """);
             }
 
             if (spec is ComparableValueTypeSpec ordinalSpec)
@@ -584,9 +607,9 @@ public partial class ValueTypesGenerator
                 if (ordinalSpec.EmitCompareToMethod)
                 {
                     writer.WriteLine($$"""
-                                        public int CompareTo({{spec.ValueTypeName}} other)
-                                        {
-                                        """);
+                                       public int CompareTo({{spec.ValueTypeName}} other)
+                                       {
+                                       """);
 
                     if (spec.EmitEnsureNotDefault)
                     {
@@ -616,14 +639,14 @@ public partial class ValueTypesGenerator
                     writer.WriteBlock($"// IComparisonOperators<{spec.ValueTypeName}, {spec.ValueTypeName}, bool>");
 
                     writer.WriteBlock($"""
-                                        public static bool operator <({spec.ValueTypeName} left, {spec.ValueTypeName} right) => left.CompareTo(right) < 0;
+                                       public static bool operator <({spec.ValueTypeName} left, {spec.ValueTypeName} right) => left.CompareTo(right) < 0;
 
-                                        public static bool operator >({spec.ValueTypeName} left, {spec.ValueTypeName} right) => left.CompareTo(right) > 0;
+                                       public static bool operator >({spec.ValueTypeName} left, {spec.ValueTypeName} right) => left.CompareTo(right) > 0;
 
-                                        public static bool operator <=({spec.ValueTypeName} left, {spec.ValueTypeName} right) => left.CompareTo(right) <= 0;
+                                       public static bool operator <=({spec.ValueTypeName} left, {spec.ValueTypeName} right) => left.CompareTo(right) <= 0;
 
-                                        public static bool operator >=({spec.ValueTypeName} left, {spec.ValueTypeName} right) => left.CompareTo(right) >= 0;
-                                        """);
+                                       public static bool operator >=({spec.ValueTypeName} left, {spec.ValueTypeName} right) => left.CompareTo(right) >= 0;
+                                       """);
                 }
             }
 
@@ -631,34 +654,41 @@ public partial class ValueTypesGenerator
             {
                 if (intervalSpec.EmitAdditionOperator)
                 {
-                    writer.WriteBlock($"// IAdditionOperators<{spec.ValueTypeName}, {spec.ValueTypeName}, {spec.ValueTypeName}>");
+                    writer.WriteBlock(
+                        $"// IAdditionOperators<{spec.ValueTypeName}, {spec.ValueTypeName}, {spec.ValueTypeName}>");
 
-                    writer.WriteBlock($"public static {spec.ValueTypeName} operator +({spec.ValueTypeName} left, {spec.ValueTypeName} right) => ({spec.ValueTypeName})(left._value + right._value);");
+                    writer.WriteBlock(
+                        $"public static {spec.ValueTypeName} operator +({spec.ValueTypeName} left, {spec.ValueTypeName} right) => ({spec.ValueTypeName})(left._value + right._value);");
                 }
 
                 if (intervalSpec.EmitDecrementOperator)
                 {
-                    writer.WriteBlock($"public static {spec.ValueTypeName} operator --({spec.ValueTypeName} value) => ({spec.ValueTypeName})(value._value - 1);");
+                    writer.WriteBlock(
+                        $"public static {spec.ValueTypeName} operator --({spec.ValueTypeName} value) => ({spec.ValueTypeName})(value._value - 1);");
                 }
 
                 if (intervalSpec.EmitIncrementOperator)
                 {
-                    writer.WriteBlock($"public static {spec.ValueTypeName} operator ++({spec.ValueTypeName} value) => ({spec.ValueTypeName})(value._value + 1);");
+                    writer.WriteBlock(
+                        $"public static {spec.ValueTypeName} operator ++({spec.ValueTypeName} value) => ({spec.ValueTypeName})(value._value + 1);");
                 }
 
                 if (intervalSpec.EmitSubtractionOperator)
                 {
-                    writer.WriteBlock($"public static {spec.ValueTypeName} operator -({spec.ValueTypeName} left, {spec.ValueTypeName} right) => ({spec.ValueTypeName})(left._value - right._value);");
+                    writer.WriteBlock(
+                        $"public static {spec.ValueTypeName} operator -({spec.ValueTypeName} left, {spec.ValueTypeName} right) => ({spec.ValueTypeName})(left._value - right._value);");
                 }
 
                 if (intervalSpec.EmitUnaryPlusOperator)
                 {
-                    writer.WriteBlock($"public static {spec.ValueTypeName} operator +({spec.ValueTypeName} value) => ({spec.ValueTypeName})(+value._value);");
+                    writer.WriteBlock(
+                        $"public static {spec.ValueTypeName} operator +({spec.ValueTypeName} value) => ({spec.ValueTypeName})(+value._value);");
                 }
 
                 if (intervalSpec.EmitUnaryNegationOperator)
                 {
-                    writer.WriteBlock($"public static {spec.ValueTypeName} operator -({spec.ValueTypeName} value) => ({spec.ValueTypeName})(-value._value);");
+                    writer.WriteBlock(
+                        $"public static {spec.ValueTypeName} operator -({spec.ValueTypeName} value) => ({spec.ValueTypeName})(-value._value);");
                 }
             }
 
@@ -666,25 +696,28 @@ public partial class ValueTypesGenerator
             {
                 if (ratioSpec.EmitMultiplicationOperator)
                 {
-                    writer.WriteBlock($"public static {spec.ValueTypeName} operator *({spec.ValueTypeName} left, {spec.ValueTypeName} right) => ({spec.ValueTypeName})(left._value * right._value);");
+                    writer.WriteBlock(
+                        $"public static {spec.ValueTypeName} operator *({spec.ValueTypeName} left, {spec.ValueTypeName} right) => ({spec.ValueTypeName})(left._value * right._value);");
                 }
 
                 if (ratioSpec.EmitDivisionOperator)
                 {
-                    writer.WriteBlock($"public static {spec.ValueTypeName} operator /({spec.ValueTypeName} left, {spec.ValueTypeName} right) => ({spec.ValueTypeName})(left._value / right._value);");
+                    writer.WriteBlock(
+                        $"public static {spec.ValueTypeName} operator /({spec.ValueTypeName} left, {spec.ValueTypeName} right) => ({spec.ValueTypeName})(left._value / right._value);");
                 }
 
                 if (ratioSpec.EmitModulusOperator)
                 {
-                    writer.WriteBlock($"public static {spec.ValueTypeName} operator %({spec.ValueTypeName} left, {spec.ValueTypeName} right) => ({spec.ValueTypeName})(left._value % right._value);");
+                    writer.WriteBlock(
+                        $"public static {spec.ValueTypeName} operator %({spec.ValueTypeName} left, {spec.ValueTypeName} right) => ({spec.ValueTypeName})(left._value % right._value);");
                 }
             }
 
             writer.Indentation--;
             writer.WriteBlock("}");
 
-            // We need to "close" each of the parent types, so write
-            // the required number of '}'
+// We need to "close" each of the parent types, so write
+// the required number of '}'
             for (var i = 0; i < parentsCount; i++)
             {
                 writer.Indentation--;

@@ -146,6 +146,7 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
             var emitConstructor = true;
             var maxSerializedCharLength = 0;
             var emitEnsureNotDefault = false;
+            var emitImplicitDowncast = true;
 
             var semanticModel = compilation.GetSemanticModel(structDeclarationSyntax.SyntaxTree);
 
@@ -205,6 +206,10 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
                         a.NameEquals is not null
                         && a.NameEquals.Name.Identifier.ValueText == "AllowDefaultValue");
 
+                    var implicitDowncastArgumentSyntax = attributeArgNames.FirstOrDefault(a =>
+                        a.NameEquals is not null
+                        && a.NameEquals.Name.Identifier.ValueText == "ImplicitDowncast");
+
                     if (maxSerializedCharLengthSyntax is not null)
                     {
                         var maxSerializedCharLengthOpt = semanticModel.GetConstantValue(maxSerializedCharLengthSyntax.Expression, ct);
@@ -230,13 +235,18 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
 
                             if (!allowDefaultValue)
                             {
-                                if (namedTypeSymbol.Name == "UriAsciiPath")
-                                {
-                                    Debugger.Break();
-                                }
-
                                 emitEnsureNotDefault = true;
                             }
+                        }
+                    }
+
+                    if (implicitDowncastArgumentSyntax is not null)
+                    {
+                        var emitImplicitDowncastOpt = semanticModel.GetConstantValue(implicitDowncastArgumentSyntax.Expression, ct);
+
+                        if (emitImplicitDowncastOpt is { HasValue: true, Value: not null })
+                        {
+                            emitImplicitDowncast = (bool)emitImplicitDowncastOpt.Value;
                         }
                     }
                 }
@@ -634,6 +644,8 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
             spec.EmitTryFormatUtf8Method = emitTryFormatUtf8Method;
             spec.EmitParseUtf8Method = emitParseUtf8Method;
             spec.EmitTryParseUtf8Method = emitTryParseUtf8SpanMethod;
+
+            spec.EmitImplicitConversionToContainedTypeMethod = emitImplicitDowncast;
 
             specs.Add(spec);
         }

@@ -16,4 +16,9 @@ public abstract class ValueAttribute : Attribute
     /// the source generator will generate checks to prevent use of the default value.
     /// </summary>
     public bool AllowDefaultValue { get; set; } = true;
+
+    /// <summary>
+    /// Defines whether to emit a method for implicit conversion to the inner value type. Defaults to <see langword="true"/>.
+    /// </summary>
+    public bool ImplicitDowncast { get; set; } = true;
 }
