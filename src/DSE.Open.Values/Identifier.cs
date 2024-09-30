@@ -16,6 +16,7 @@ namespace DSE.Open.Values;
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<Identifier, AsciiString>))]
 [StructLayout(LayoutKind.Sequential)]
 public readonly partial struct Identifier : IEquatableValue<Identifier, AsciiString>,
+    IIdentifier<Identifier>,
     IEquatable<string>,
     IUtf8SpanSerializable<Identifier>
 {
@@ -188,25 +189,25 @@ public readonly partial struct Identifier : IEquatableValue<Identifier, AsciiStr
     /// Creates a new <see cref="Identifier"/> of the specified length with the given prefix and a random value
     /// </summary>
     /// <param name="idLength">The length of <see cref="Identifier"/> to create.</param>
-    /// <param name="prefix">The prefix to use.</param>
+    /// <param name="utf8Prefix">The prefix to use.</param>
     /// <returns>A new <see cref="Identifier"/> with the given prefix and a random value.</returns>
-    public static Identifier New(int idLength, ReadOnlySpan<byte> prefix)
+    public static Identifier New(int idLength, ReadOnlySpan<byte> utf8Prefix)
     {
         Guard.IsBetweenOrEqualTo(idLength, MinIdLength, MaxIdLength);
 
-        if (!prefix.IsEmpty && !IsValidPrefix(prefix))
+        if (!utf8Prefix.IsEmpty && !IsValidPrefix(utf8Prefix))
         {
-            ThrowHelper.ThrowArgumentException(nameof(prefix),
-                $"Invalid {nameof(Identifier)} prefix '{Encoding.UTF8.GetString(prefix)}'");
+            ThrowHelper.ThrowArgumentException(nameof(utf8Prefix),
+                $"Invalid {nameof(Identifier)} prefix '{Encoding.UTF8.GetString(utf8Prefix)}'");
         }
 
-        var idStartIndex = prefix.IsEmpty ? 0 : prefix.Length + 1;
+        var idStartIndex = utf8Prefix.IsEmpty ? 0 : utf8Prefix.Length + 1;
         var idAndPrefixLength = idStartIndex + idLength;
         var id = new Memory<AsciiChar>(new AsciiChar[idAndPrefixLength]);
 
         if (idStartIndex > 0)
         {
-            prefix.CopyTo(ValuesMarshal.AsBytes(id.Span));
+            utf8Prefix.CopyTo(ValuesMarshal.AsBytes(id.Span));
             id.Span[idStartIndex - 1] = (AsciiChar)'_';
         }
 
