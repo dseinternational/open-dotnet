@@ -13,6 +13,10 @@ inputs:
     required: false
     default: "true"
     description: If code coverage data collection is enabled.
+  coverage-output:
+    required: false
+    default: ""
+    description: Code coverage output destination.
   default-locale-unix:
     required: false
     default: "en_GB.UTF-8"
@@ -35,5 +39,6 @@ runs:
           target = "${{ inputs.target }}"
           configuration = "${{ inputs.configuration }}"
           coverage = $cov
+          coverage_output = "${{ inputs.coverage-output }}"
         }
         ./eng/scripts/test.ps1 @args
