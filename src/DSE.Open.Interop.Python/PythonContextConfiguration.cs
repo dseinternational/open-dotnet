@@ -15,7 +15,7 @@ public sealed class PythonContextConfiguration
         {
             PythonDLL = OperatingSystem.IsLinux()
                 ? "libpython3.12.so"
-                : OperatingSystem.IsMacOS() ? "libpython3.12.dylib" : throw new PlatformNotSupportedException();
+                : OperatingSystem.IsMacOS() ? "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3" : throw new PlatformNotSupportedException();
         }
     }
 
