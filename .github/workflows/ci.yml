@@ -75,41 +75,43 @@ jobs:
         run: dotnet restore ./DSE.Open.sln
 
       - name: Build DSE.Open.Values.Generators
-        run: dotnet build ./gen/DSE.Open.Values.Generators/DSE.Open.Values.Generators.csproj --configuration ${{ matrix.configuration }}
+        run: dotnet build ./gen/DSE.Open.Values.Generators/DSE.Open.Values.Generators.csproj --no-restore --configuration ${{ matrix.configuration }}
 
       - name: Build
-        run: dotnet build ./DSE.Open.sln --configuration ${{ matrix.configuration }}
+        run: dotnet build ./DSE.Open.sln --no-restore --configuration ${{ matrix.configuration }} /p:MsCodeCoverageInstrumentation="${{ matrix.configuration == 'Debug' }}"
 
       - name: Run Tests
-        uses: dseinternational/open-dotnet/.github/actions/dotnet-test@actions-0.5
+        uses: dseinternational/open-dotnet/.github/actions/dotnet-test@actions-0.6
         with:
           target: ./test
           configuration: ${{ matrix.configuration }}
-          coverage: true
+          coverage: ${{ matrix.configuration == 'Debug' }},
+          coverage-output: "${{ github.workspace }}/coverage/report.cobertura.xml"
         env:
           STANZA_NLP: en
 
       - name: Generate coverage report
         uses: danielpalme/ReportGenerator-GitHub-Action@5
         with:
-          reports: "./coverage/report.cobertura.xml"
-          targetdir: "./coverage/coveragereport"
+          reports: "${{ github.workspace }}/coverage/report.cobertura.xml"
+          targetdir: "${{ github.workspace }}/coverage/coveragereport"
           reporttypes: "MarkdownSummaryGithub"
 
       - name: Upload coverage report into summary
-        run: cat ./coverage/coveragereport/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
+        shell: bash
+        run: cat ${{ github.workspace }}/coverage/coveragereport/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
 
       - name: Archive code coverage results
         uses: actions/upload-artifact@v3
         with:
           name: code-coverage-report
-          path: ./coverage
+          path: ${{ github.workspace }}/coverage
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          directory: ./coverage
+          directory: ${{ github.workspace }}/coverage
 
       - name: Pack libraries and source generators
         if: matrix.configuration == 'Release'

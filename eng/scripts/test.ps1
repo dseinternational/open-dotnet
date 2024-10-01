@@ -6,7 +6,7 @@ param (
   [string]$target,
   [string]$configuration = "Debug",
   [bool]$coverage = $false,
-  [string]$coverage_output = "./coverage/report.cobertura.xml",
+  [string]$coverage_output,
   [string]$coverage_output_format = "cobertura"
 )
 
@@ -35,12 +35,19 @@ try {
       Write-Host "Running tests in $test" -ForegroundColor Green
       Write-Host "------------------------------------------------------------------------------------------------------------------------" -ForegroundColor Green
       Write-Host
-      if($coverage) {
-        &dotnet run --project "$($test.FullName)" --configuration $configuration --coverage --coverage-output "$($coverage_output)" --coverage-output-format "$($coverage_output_format)"
+      $dotnet_args = @("run", "--project", "$($test.FullName)", "--configuration", $configuration);
+      if ($coverage) {
+        $dotnet_args += "--coverage";
+        if (-not [string]::IsNullOrWhiteSpace($coverage_output)) {
+          $dotnet_args += "--coverage-output";
+          $dotnet_args += $coverage_output;
+        }
+        if (-not [string]::IsNullOrWhiteSpace($coverage_output_format)) {
+          $dotnet_args += "--coverage-output-format";
+          $dotnet_args += $coverage_output_format;
+        }
       }
-      else {
-        &dotnet run --project "$($test.FullName)" --configuration $configuration
-      }
+      &dotnet $dotnet_args
 
       if ($LASTEXITCODE -ne 0 -and $LASTEXITCODE -ne 8) {
         Write-Host
@@ -60,11 +67,17 @@ try {
     Write-Host "Running tests in $item" -ForegroundColor Green
     Write-Host "------------------------------------------------------------------------------------------------------------------------" -ForegroundColor Green
     Write-Host
-    if($coverage) {
-      &dotnet run --project "$($test.FullName)" --configuration $configuration --coverage --coverage-output "$($coverage_output)" --coverage-output-format "$($coverage_output_format)"
-    }
-    else {
-      &dotnet run --project "$($test.FullName)" --configuration $configuration
+    $dotnet_args = @("run", "--project", "$($test.FullName)", "--configuration", $configuration);
+    if ($coverage) {
+      $dotnet_args += "--coverage";
+      if (-not [string]::IsNullOrWhiteSpace($coverage_output)) {
+        $dotnet_args += "--coverage-output";
+        $dotnet_args += $coverage_output;
+      }
+      if (-not [string]::IsNullOrWhiteSpace($coverage_output_format)) {
+        $dotnet_args += "--coverage-output-format";
+        $dotnet_args += $coverage_output_format;
+      }
     }
 
     if ($LASTEXITCODE -ne 0 -and $LASTEXITCODE -ne 8) {
@@ -93,7 +106,7 @@ try {
       Write-Host " - $fe" -ForegroundColor Red
     }
   }
-  else{
+  else {
     Write-Host
     Write-Host "------------------------------------------------------------------------------------------------------------------------" -ForegroundColor Green
     Write-Host "------------------------------------------------------------------------------------------------------------------------" -ForegroundColor Green
