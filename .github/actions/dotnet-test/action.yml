@@ -34,11 +34,10 @@ runs:
       run: |
         if ($IsLinux -or $IsMacOS) { &locale }
         Write-Host
-        $cov = "${{ inputs.coverage }}" -eq "true"
         $args = @{
           target = "${{ inputs.target }}"
           configuration = "${{ inputs.configuration }}"
-          coverage = $cov
+          coverage = ${{ inputs.coverage }}
           coverage_output = "${{ inputs.coverage-output }}"
         }
         ./eng/scripts/test.ps1 @args
