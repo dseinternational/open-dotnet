@@ -34,7 +34,7 @@ public abstract class ValueTypeGenerationTests
     {
         Assert.NotNull(syntaxTree);
         TestOutput.WriteLine("----------------------------------------------------------");
-        TestOutput.WriteLine(syntaxTree?.ToString());
+        TestOutput.WriteLine(syntaxTree.ToString());
         TestOutput.WriteLine("----------------------------------------------------------");
     }
 }

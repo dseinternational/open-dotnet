@@ -10,7 +10,8 @@ public class AnySatisfiedSpecificationTests
     {
         ISpecification<bool>[] specs = [new IsTrueSpecification(), new IsTrueSpecification(), new IsTrueSpecification()];
         var any = specs.AsAnySatisfied();
-        Assert.True(any.IsSatisfiedBy(true));
+        var satisfied = any.IsSatisfiedBy(true, TestContext.Current.CancellationToken);
+        Assert.True(satisfied);
     }
 
     [Fact]
@@ -18,7 +19,8 @@ public class AnySatisfiedSpecificationTests
     {
         ISpecification<bool>[] specs = [new IsTrueSpecification(), new IsTrueSpecification(), new IsTrueSpecification()];
         var any = specs.AsAnySatisfied();
-        Assert.True(any.IsSatisfiedBy(true, Environment.ProcessorCount));
+        var satisfied = any.IsSatisfiedBy(true, Environment.ProcessorCount, cancellationToken: TestContext.Current.CancellationToken);
+        Assert.True(satisfied);
     }
 
     [Fact]
@@ -26,7 +28,8 @@ public class AnySatisfiedSpecificationTests
     {
         ISpecification<bool>[] specs = [new IsTrueSpecification(), new IsFalseSpecification(), new IsFalseSpecification()];
         var any = specs.AsAnySatisfied();
-        Assert.True(any.IsSatisfiedBy(true));
+        var satisfied = any.IsSatisfiedBy(true, TestContext.Current.CancellationToken);
+        Assert.True(satisfied);
     }
 
     [Fact]
@@ -34,6 +37,7 @@ public class AnySatisfiedSpecificationTests
     {
         ISpecification<bool>[] specs = [new IsTrueSpecification(), new IsFalseSpecification(), new IsFalseSpecification()];
         var any = specs.AsAnySatisfied();
-        Assert.True(any.IsSatisfiedBy(true, Environment.ProcessorCount));
+        var satisfied = any.IsSatisfiedBy(true, Environment.ProcessorCount, cancellationToken: TestContext.Current.CancellationToken);
+        Assert.True(satisfied);
     }
 }

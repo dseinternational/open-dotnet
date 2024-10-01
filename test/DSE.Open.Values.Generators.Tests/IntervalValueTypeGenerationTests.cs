@@ -27,9 +27,9 @@ public class AddableValueTypeGenerationTests : ValueTypeGenerationTests
                                                                    {
                                                                        public static readonly MyOptions Option1;
                                                                        public static readonly MyOptions Option2 = new(1);
-                                                                   
+
                                                                        public static int MaxSerializedCharLength { get; } = 1;
-                                                                   
+
                                                                        public static bool IsValidValue(byte value) => value is >= 0 and <= 1;
                                                                    }
 
@@ -47,7 +47,7 @@ public class AddableValueTypeGenerationTests : ValueTypeGenerationTests
 
         WriteSyntax(outputSyntaxTrees[1]);
 
-        var newCompilationDiagnostics = result.NewCompilation.GetDiagnostics();
+        var newCompilationDiagnostics = result.NewCompilation.GetDiagnostics(TestContext.Current.CancellationToken);
 
         AssertDiagnosticsCount(0, newCompilationDiagnostics);
     }
@@ -69,11 +69,11 @@ public class AddableValueTypeGenerationTests : ValueTypeGenerationTests
                                                                        public static readonly MyOptions Option1;
                                                                        public static readonly MyOptions Option2 = new(1);
                                                                        public static readonly MyOptions Option3 = new(2);
-                                                                   
+
                                                                        public static int MaxSerializedCharLength { get; } = 1;
-                                                                   
+
                                                                        public static bool IsValidValue(long value) => value is >= 0 and <= 2;
-                                                                   
+
                                                                        public int CompareTo(MyOptions other) => _value.CompareTo(other._value);
                                                                    }
 
@@ -91,7 +91,7 @@ public class AddableValueTypeGenerationTests : ValueTypeGenerationTests
 
         WriteSyntax(outputSyntaxTrees[1]);
 
-        var newCompilationDiagnostics = result.NewCompilation.GetDiagnostics();
+        var newCompilationDiagnostics = result.NewCompilation.GetDiagnostics(TestContext.Current.CancellationToken);
 
         AssertDiagnosticsCount(0, newCompilationDiagnostics);
     }

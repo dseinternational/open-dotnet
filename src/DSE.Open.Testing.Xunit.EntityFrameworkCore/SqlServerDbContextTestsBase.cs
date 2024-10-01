@@ -6,7 +6,7 @@ using DSE.Open.EntityFrameworkCore;
 using DSE.Open.EntityFrameworkCore.SqlServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Xunit.Abstractions;
+using Xunit;
 
 namespace DSE.Open.Testing.Xunit.EntityFrameworkCore;
 

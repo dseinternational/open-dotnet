@@ -88,8 +88,7 @@ public class PhonemesTests
     }
 
 #pragma warning disable CA5394 // Do not use insecure randomness
-    public static TheoryData<string> WordTranscriptions =>
-        new([.. TranscriptionData.Transcriptions]);
+    public static TheoryData<string> WordTranscriptions => new((string[])[.. TranscriptionData.Transcriptions]);
 #pragma warning restore CA5394 // Do not use insecure randomness
 
 }

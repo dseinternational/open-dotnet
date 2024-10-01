@@ -2,7 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using Microsoft.Extensions.DependencyInjection;
-using Xunit.Abstractions;
+using Xunit;
 
 namespace DSE.Open.Testing.Xunit;
 

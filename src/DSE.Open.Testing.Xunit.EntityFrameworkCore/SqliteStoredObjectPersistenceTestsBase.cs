@@ -7,7 +7,6 @@ using DSE.Open.EntityFrameworkCore;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace DSE.Open.Testing.Xunit.EntityFrameworkCore;
 

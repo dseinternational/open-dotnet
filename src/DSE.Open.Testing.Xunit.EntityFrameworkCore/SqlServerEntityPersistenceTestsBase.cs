@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using DSE.Open.DomainModel.Entities;
 using DSE.Open.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Xunit.Abstractions;
+using Xunit;
 
 namespace DSE.Open.Testing.Xunit.EntityFrameworkCore;
 
