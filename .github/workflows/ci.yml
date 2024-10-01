@@ -89,11 +89,27 @@ jobs:
         env:
           STANZA_NLP: en
 
+      - name: Generate coverage report
+        uses: danielpalme/ReportGenerator-GitHub-Action@5
+        with:
+          reports: "./coverage/report.cobertura.xml"
+          targetdir: "./coverage/coveragereport"
+          reporttypes: "MarkdownSummaryGithub"
+
+      - name: Upload coverage report into summary
+        run: cat ./coverage/coveragereport/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
+
+      - name: Archive code coverage results
+        uses: actions/upload-artifact@v3
+        with:
+          name: code-coverage-report
+          path: ./coverage
+
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          directory: ./test
+          directory: ./coverage
 
       - name: Pack libraries and source generators
         if: matrix.configuration == 'Release'

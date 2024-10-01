@@ -6,6 +6,7 @@ param (
   [string]$target,
   [string]$configuration = "Debug",
   [bool]$coverage = $false,
+  [string]$coverage_output = "./coverage/report.cobertura.xml",
   [string]$coverage_output_format = "cobertura"
 )
 
@@ -35,7 +36,7 @@ try {
       Write-Host "------------------------------------------------------------------------------------------------------------------------" -ForegroundColor Green
       Write-Host
       if($coverage) {
-        &dotnet run --project "$($test.FullName)" --configuration $configuration --coverage --coverage-output-format $coverage_output_format
+        &dotnet run --project "$($test.FullName)" --configuration $configuration --coverage --coverage-output "$($coverage_output)" --coverage-output-format "$($coverage_output_format)"
       }
       else {
         &dotnet run --project "$($test.FullName)" --configuration $configuration
@@ -60,7 +61,7 @@ try {
     Write-Host "------------------------------------------------------------------------------------------------------------------------" -ForegroundColor Green
     Write-Host
     if($coverage) {
-      &dotnet run --project "$($test.FullName)" --configuration $configuration --coverage --coverage-output-format $coverage_output_format
+      &dotnet run --project "$($test.FullName)" --configuration $configuration --coverage --coverage-output "$($coverage_output)" --coverage-output-format "$($coverage_output_format)"
     }
     else {
       &dotnet run --project "$($test.FullName)" --configuration $configuration
