@@ -48,12 +48,12 @@ public class ValueConverterTests : SqliteInMemoryTestBase<TestDbContext>
         {
             _ = db.Countries.Add(new()
             { Code = CountryCode.UnitedKingdom });
-            _ = await db.SaveChangesAsync();
+            _ = await db.SaveChangesAsync(TestContext.Current.CancellationToken);
         }
 
         using (var db = CreateContext())
         {
-            var c = await db.Countries.SingleAsync(c => c.Code == CountryCode.UnitedKingdom);
+            var c = await db.Countries.SingleAsync(c => c.Code == CountryCode.UnitedKingdom, cancellationToken: TestContext.Current.CancellationToken);
             Assert.Equal(CountryCode.UnitedKingdom, c.Code);
         }
     }

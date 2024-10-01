@@ -27,9 +27,9 @@ public class EquatableValueTypeGenerationTests : ValueTypeGenerationTests
                                                                    {
                                                                        public static readonly MyOptions Option1;
                                                                        public static readonly MyOptions Option2 = new(1);
-                                                                   
+
                                                                        public static int MaxSerializedCharLength { get; } = 1;
-                                                                   
+
                                                                        public static bool IsValidValue(byte value) => value is >= 0 and <= 1;
                                                                    }
 
@@ -40,9 +40,9 @@ public class EquatableValueTypeGenerationTests : ValueTypeGenerationTests
                                                                        public static readonly MyOptions2 Option1;
                                                                    #pragma warning restore CS0649
                                                                        public static readonly MyOptions2 Option2 = new(1);
-                                                                   
+
                                                                        public static int MaxSerializedCharLength { get; } = 1;
-                                                                   
+
                                                                        public static bool IsValidValue(byte value) => value is >= 0 and <= 1;
                                                                    }
 
@@ -60,7 +60,7 @@ public class EquatableValueTypeGenerationTests : ValueTypeGenerationTests
 
         WriteSyntax(outputSyntaxTrees[1]);
 
-        var newCompilationDiagnostics = result.NewCompilation.GetDiagnostics();
+        var newCompilationDiagnostics = result.NewCompilation.GetDiagnostics(TestContext.Current.CancellationToken);
 
         AssertDiagnosticsCount(0, newCompilationDiagnostics);
     }
@@ -82,11 +82,11 @@ public class EquatableValueTypeGenerationTests : ValueTypeGenerationTests
                                                                        public static readonly MyOptions Option1;
                                                                        public static readonly MyOptions Option2 = new(1);
                                                                        public static readonly MyOptions Option3 = new(2);
-                                                                   
+
                                                                        public static int MaxSerializedCharLength { get; } = 1;
-                                                                   
+
                                                                        public static bool IsValidValue(long value) => value is >= 0 and <= 2;
-                                                                   
+
                                                                        private MyOptions(long value)
                                                                        {
                                                                            _value = value;
@@ -107,7 +107,7 @@ public class EquatableValueTypeGenerationTests : ValueTypeGenerationTests
 
         WriteSyntax(outputSyntaxTrees[1]);
 
-        var newCompilationDiagnostics = result.NewCompilation.GetDiagnostics();
+        var newCompilationDiagnostics = result.NewCompilation.GetDiagnostics(TestContext.Current.CancellationToken);
 
         AssertDiagnosticsCount(0, newCompilationDiagnostics);
     }
@@ -129,9 +129,9 @@ public class EquatableValueTypeGenerationTests : ValueTypeGenerationTests
                                                                        public static readonly MyOptions Option1;
                                                                        public static readonly MyOptions Option2 = new(1);
                                                                        public static readonly MyOptions Option3 = new(2);
-                                                                   
+
                                                                        public static bool IsValidValue(long value) => value is >= 0 and <= 2;
-                                                                   
+
                                                                        private MyOptions(long value, bool skipValidation = false)
                                                                        {
                                                                            _value = value;
@@ -152,7 +152,7 @@ public class EquatableValueTypeGenerationTests : ValueTypeGenerationTests
 
         WriteSyntax(outputSyntaxTrees[1]);
 
-        var newCompilationDiagnostics = result.NewCompilation.GetDiagnostics();
+        var newCompilationDiagnostics = result.NewCompilation.GetDiagnostics(TestContext.Current.CancellationToken);
 
         AssertDiagnosticsCount(0, newCompilationDiagnostics);
     }
@@ -175,13 +175,13 @@ public class EquatableValueTypeGenerationTests : ValueTypeGenerationTests
                                                                        public static readonly MyOptions Option1;
                                                                        public static readonly MyOptions Option2 = new(1);
                                                                        public static readonly MyOptions Option3 = new(2);
-                                                                   
+
                                                                        public static int MaxSerializedCharLength { get; } = 1;
-                                                                   
+
                                                                        public static bool IsValidValue(long value) => value is >= 0 and <= 2;
-                                                                   
+
                                                                        private static string GetString(string s) => string.IsInterned(s) ?? s;
-                                                                   
+
                                                                        private static string GetString(ReadOnlySpan<char> s) => GetString(s.ToString());
                                                                    }
 
@@ -199,7 +199,7 @@ public class EquatableValueTypeGenerationTests : ValueTypeGenerationTests
 
         WriteSyntax(outputSyntaxTrees[1]);
 
-        var newCompilationDiagnostics = result.NewCompilation.GetDiagnostics();
+        var newCompilationDiagnostics = result.NewCompilation.GetDiagnostics(TestContext.Current.CancellationToken);
 
         AssertDiagnosticsCount(0, newCompilationDiagnostics);
     }
@@ -223,11 +223,11 @@ public class EquatableValueTypeGenerationTests : ValueTypeGenerationTests
                                                                        public static readonly MyOptions Option1;
                                                                        public static readonly MyOptions Option2 = new(1);
                                                                        public static readonly MyOptions Option3 = new(2);
-                                                                   
+
                                                                        public static int MaxSerializedCharLength { get; } = 1;
-                                                                   
+
                                                                        public static bool IsValidValue(long value) => value is >= 0 and <= 2;
-                                                                   
+
                                                                        public bool Equals(MyOptions other) => _value == other._value;
                                                                    }
 
@@ -245,7 +245,7 @@ public class EquatableValueTypeGenerationTests : ValueTypeGenerationTests
 
         WriteSyntax(outputSyntaxTrees[1]);
 
-        var newCompilationDiagnostics = result.NewCompilation.GetDiagnostics();
+        var newCompilationDiagnostics = result.NewCompilation.GetDiagnostics(TestContext.Current.CancellationToken);
 
         AssertDiagnosticsCount(0, newCompilationDiagnostics);
     }
@@ -268,11 +268,11 @@ public class EquatableValueTypeGenerationTests : ValueTypeGenerationTests
                                                                        public static readonly MyOptions Option1;
                                                                        public static readonly MyOptions Option2 = new(1);
                                                                        public static readonly MyOptions Option3 = new(2);
-                                                                   
+
                                                                        public static int MaxSerializedCharLength { get; } = 1;
-                                                                   
+
                                                                        public static bool IsValidValue(long value) => value is >= 0 and <= 2;
-                                                                   
+
                                                                        public override int GetHashCode() => _value.GetHashCode();
                                                                    }
 
@@ -290,7 +290,7 @@ public class EquatableValueTypeGenerationTests : ValueTypeGenerationTests
 
         WriteSyntax(outputSyntaxTrees[1]);
 
-        var newCompilationDiagnostics = result.NewCompilation.GetDiagnostics();
+        var newCompilationDiagnostics = result.NewCompilation.GetDiagnostics(TestContext.Current.CancellationToken);
 
         AssertDiagnosticsCount(0, newCompilationDiagnostics);
     }
@@ -314,11 +314,11 @@ public class EquatableValueTypeGenerationTests : ValueTypeGenerationTests
                                                                        public static readonly MyOptions Option1;
                                                                        public static readonly MyOptions Option2 = new(1);
                                                                        public static readonly MyOptions Option3 = new(2);
-                                                                   
+
                                                                        public static int MaxSerializedCharLength { get; } = 1;
-                                                                   
+
                                                                        public static bool IsValidValue(long value) => value is >= 0 and <= 2;
-                                                                   
+
                                                                        public bool TryFormat(
                                                                            Span<char> destination,
                                                                            out int charsWritten,
@@ -343,7 +343,7 @@ public class EquatableValueTypeGenerationTests : ValueTypeGenerationTests
 
         WriteSyntax(outputSyntaxTrees[1]);
 
-        var newCompilationDiagnostics = result.NewCompilation.GetDiagnostics();
+        var newCompilationDiagnostics = result.NewCompilation.GetDiagnostics(TestContext.Current.CancellationToken);
 
         AssertDiagnosticsCount(0, newCompilationDiagnostics);
     }

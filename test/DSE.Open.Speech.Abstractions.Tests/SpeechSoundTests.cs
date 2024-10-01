@@ -146,7 +146,7 @@ public class SpeechSoundTests
         }
     }
 
-    public static IEnumerable<object[]> Vowels
+    public static TheoryData<string> Vowels
     {
         get
         {

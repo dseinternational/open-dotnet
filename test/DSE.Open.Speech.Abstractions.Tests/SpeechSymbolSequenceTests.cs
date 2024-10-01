@@ -214,8 +214,7 @@ public class SpeechSymbolSequenceTests
         Assert.True(transcription1.Equals(transcription2));
     }
 
-    public static TheoryData<string> WordTranscriptions =>
-        new([.. TranscriptionData.Transcriptions]);
+    public static TheoryData<string> WordTranscriptions => new((string[])[.. TranscriptionData.Transcriptions]);
 
     public static TheoryData<string, string> WordTranscriptionPairs
     {

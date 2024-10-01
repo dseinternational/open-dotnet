@@ -47,7 +47,7 @@ public class MessageDispatcherTests : LoggedTestsBase
 
         foreach (var message in messagesToSend)
         {
-            await dispatcher.PublishAsync(message);
+            await dispatcher.PublishAsync(message, TestContext.Current.CancellationToken);
         }
 
         foreach (var message in messagesToSend.OfType<Message>())

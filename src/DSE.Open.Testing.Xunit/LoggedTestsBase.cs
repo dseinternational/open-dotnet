@@ -3,7 +3,7 @@
 
 using DSE.Open.Testing.Xunit.Logging;
 using Microsoft.Extensions.Logging;
-using Xunit.Abstractions;
+using Xunit;
 
 namespace DSE.Open.Testing.Xunit;
 

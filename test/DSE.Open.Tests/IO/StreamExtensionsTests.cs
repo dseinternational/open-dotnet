@@ -12,7 +12,7 @@ public class StreamExtensionsTests
     {
         var stream = new MemoryStream(1024);
         var bytes = "Hello, World!"u8.ToArray();
-        await stream.WriteAsync(bytes);
+        await stream.WriteAsync(bytes, TestContext.Current.CancellationToken);
         stream.Position = 0;
 
         var result = await stream.ReadToEndAsStringAsync();

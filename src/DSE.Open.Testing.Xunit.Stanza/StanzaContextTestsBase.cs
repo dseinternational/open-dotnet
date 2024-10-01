@@ -2,7 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using DSE.Open.Language.Annotations.Nlp.Stanza;
-using Xunit.Abstractions;
+using Xunit;
 
 namespace DSE.Open.Testing.Xunit.Stanza;
 

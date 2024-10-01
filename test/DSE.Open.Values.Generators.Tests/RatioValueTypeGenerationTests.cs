@@ -26,9 +26,9 @@ public class DivisibleValueTypeGenerationTests : ValueTypeGenerationTests
                                                                    public readonly partial struct Percentage : IDivisibleValue<Percentage, int>
                                                                    {
                                                                        public static Percentage Zero { get; } = new(0);
-                                                                   
+
                                                                        public static int MaxSerializedCharLength { get; } = 1;
-                                                                   
+
                                                                        public static bool IsValidValue(int value) => value is >= 0 and <= 100;
                                                                    }
 
@@ -36,9 +36,9 @@ public class DivisibleValueTypeGenerationTests : ValueTypeGenerationTests
                                                                    public readonly partial struct PercentageF : IDivisibleValue<PercentageF, float>
                                                                    {
                                                                        public static PercentageF Zero { get; } = new(0);
-                                                                   
+
                                                                        public static int MaxSerializedCharLength { get; } = 1;
-                                                                   
+
                                                                        public static bool IsValidValue(float value) => value is >= 0 and <= 100;
                                                                    }
 
@@ -56,7 +56,7 @@ public class DivisibleValueTypeGenerationTests : ValueTypeGenerationTests
 
         WriteSyntax(outputSyntaxTrees[1]);
 
-        var newCompilationDiagnostics = result.NewCompilation.GetDiagnostics();
+        var newCompilationDiagnostics = result.NewCompilation.GetDiagnostics(TestContext.Current.CancellationToken);
 
         AssertDiagnosticsCount(0, newCompilationDiagnostics);
     }

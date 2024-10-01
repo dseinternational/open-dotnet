@@ -16,7 +16,7 @@ public sealed class TurnstileClientIntegrationTests
             SecretKey = TestSecretKeys.Passes
         });
 
-        var response = await client.ValidateAsync("ABCDEFGHIJKLMNOP");
+        var response = await client.ValidateAsync("ABCDEFGHIJKLMNOP", cancellationToken: TestContext.Current.CancellationToken);
 
         Assert.NotNull(response);
         Assert.True(response.Success);
@@ -33,7 +33,7 @@ public sealed class TurnstileClientIntegrationTests
             SecretKey = TestSecretKeys.Fails
         });
 
-        var response = await client.ValidateAsync("ABCDEFGHIJKLMNOP");
+        var response = await client.ValidateAsync("ABCDEFGHIJKLMNOP", cancellationToken: TestContext.Current.CancellationToken);
 
         Assert.NotNull(response);
         Assert.False(response.Success);

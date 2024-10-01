@@ -10,7 +10,8 @@ public class AllSatisfiedAsyncSpecificationTests
     {
         IAsyncSpecification<bool>[] specs = [new IsTrueAsyncSpecification(), new IsTrueAsyncSpecification(), new IsTrueAsyncSpecification()];
         var all = specs.AsAllSatisfied();
-        Assert.True(await all.IsSatisfiedByAsync(true));
+        var satisfied = await all.IsSatisfiedByAsync(true, TestContext.Current.CancellationToken);
+        Assert.True(satisfied);
     }
 
     [Fact]
@@ -18,6 +19,7 @@ public class AllSatisfiedAsyncSpecificationTests
     {
         IAsyncSpecification<bool>[] specs = [new IsTrueAsyncSpecification(), new IsFalseAsyncSpecification(), new IsFalseAsyncSpecification()];
         var all = specs.AsAllSatisfied();
-        Assert.False(await all.IsSatisfiedByAsync(true));
+        var satisfied = await all.IsSatisfiedByAsync(true, TestContext.Current.CancellationToken);
+        Assert.False(satisfied);
     }
 }

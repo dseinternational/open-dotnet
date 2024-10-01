@@ -72,11 +72,11 @@
     <PackageVersion Include="System.IO.Hashing" Version="9.0.0-rc.1.24431.7" />
     <PackageVersion Include="TorchSharp" Version="0.103.0" />
     <PackageVersion Include="TorchSharp-cpu" Version="0.103.0" />
-    <PackageVersion Include="xunit" Version="2.9.2" />
+    <PackageVersion Include="xunit.v3" Version="0.4.0-pre.20" />
     <PackageVersion Include="xunit.analyzers" Version="1.16.0" />
-    <PackageVersion Include="xunit.assert" Version="2.9.2" />
-    <PackageVersion Include="xunit.core" Version="2.9.2" />
-    <PackageVersion Include="xunit.extensibility.core" Version="2.9.2" />
+    <PackageVersion Include="xunit.v3.assert" Version="0.4.0-pre.20" />
+    <PackageVersion Include="xunit.v3.core" Version="0.4.0-pre.20" />
+    <PackageVersion Include="xunit.v3.extensibility.core" Version="0.4.0-pre.20" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.0.0-pre.35" />
   </ItemGroup>
 

@@ -6,7 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 using DSE.Open.EntityFrameworkCore;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using Xunit.Abstractions;
+using Xunit;
 
 namespace DSE.Open.Testing.Xunit.EntityFrameworkCore;
 

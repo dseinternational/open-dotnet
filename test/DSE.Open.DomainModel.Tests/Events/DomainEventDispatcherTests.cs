@@ -26,7 +26,7 @@ public class DomainEventDispatcherTests
 
         var ev = new DomainEventFake("Test");
 
-        await mediator.PublishAsync(ev);
+        await mediator.PublishAsync(ev, TestContext.Current.CancellationToken);
 
         var state = provider.GetRequiredService<TestState>();
 
@@ -54,7 +54,7 @@ public class DomainEventDispatcherTests
 
         var bev = entity.AddFakeBackgroundEvent();
 
-        await dispatcher.PublishEventsAsync([entity]);
+        await dispatcher.PublishEventsAsync([entity], TestContext.Current.CancellationToken);
 
         var state = provider.GetRequiredService<TestState>();
 
