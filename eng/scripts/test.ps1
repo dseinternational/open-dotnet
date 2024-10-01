@@ -5,7 +5,7 @@
 param (
   [string]$target,
   [string]$configuration = "Debug",
-  [bool]$coverage = $false,
+  [string]$coverage = "false",
   [string]$coverage_output,
   [string]$coverage_output_format = "cobertura"
 )
@@ -27,17 +27,26 @@ try {
   $failed_count = 0
   $failed_executions = @()
 
+  $cov = $coverage -eq "true"
+
   if ($item -is [System.IO.DirectoryInfo]) {
+
     $tests = Get-ChildItem -Path $item -Recurse -Filter *Tests.csproj
+
     foreach ($test in $tests) {
+
       Write-Host
       Write-Host "------------------------------------------------------------------------------------------------------------------------" -ForegroundColor Green
       Write-Host "Running tests in $test" -ForegroundColor Green
       Write-Host "------------------------------------------------------------------------------------------------------------------------" -ForegroundColor Green
       Write-Host
+
       $dotnet_args = @("run", "--project", "$($test.FullName)", "--configuration", $configuration);
-      if ($coverage) {
+
+      if ($cov) {
+
         $dotnet_args += "--coverage";
+
         if (-not [string]::IsNullOrWhiteSpace($coverage_output)) {
           $dotnet_args += "--coverage-output";
           $dotnet_args += $coverage_output;
@@ -60,38 +69,6 @@ try {
         $failed_count += 1;
         $failed_executions += $test.FullName;
       }
-    }
-  }
-  elseif ($item -is [System.IO.FileInfo]) {
-    Write-Host
-    Write-Host "------------------------------------------------------------------------------------------------------------------------" -ForegroundColor Green
-    Write-Host "Running tests in $item" -ForegroundColor Green
-    Write-Host "------------------------------------------------------------------------------------------------------------------------" -ForegroundColor Green
-    Write-Host
-    $dotnet_args = @("run", "--project", "$($test.FullName)", "--configuration", $configuration);
-    if ($coverage) {
-      $dotnet_args += "--coverage";
-      if (-not [string]::IsNullOrWhiteSpace($coverage_output)) {
-        $dotnet_args += "--coverage-output";
-        $dotnet_args += $coverage_output;
-      }
-      if (-not [string]::IsNullOrWhiteSpace($coverage_output_format)) {
-        $dotnet_args += "--coverage-output-format";
-        $dotnet_args += $coverage_output_format;
-      }
-    }
-    Write-Host "dotnet $dotnet_args"
-    &dotnet $dotnet_args
-
-    if ($LASTEXITCODE -ne 0 -and $LASTEXITCODE -ne 8) {
-      Write-Host
-      Write-Host "********************************************************************************" -ForegroundColor Red
-      Write-Host "Test execution FAILED with exit code $LASTEXITCODE" -ForegroundColor Red
-      Write-Host "********************************************************************************" -ForegroundColor Red
-      Write-Host
-      $exit_code = $LASTEXITCODE;
-      $failed_count += 1;
-      $failed_executions += $test.FullName;
     }
   }
   else {
