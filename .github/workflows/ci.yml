@@ -81,7 +81,7 @@ jobs:
         run: dotnet build ./DSE.Open.sln --configuration ${{ matrix.configuration }}
 
       - name: Run Tests
-        uses: dseinternational/open-dotnet/.github/actions/dotnet-test@actions-0.1
+        uses: dseinternational/open-dotnet/.github/workflows/actions/dotnet-test@actions-0.1
         with:
           target: ./test
           configuration: ${{ matrix.configuration }}
