@@ -4,7 +4,9 @@
 [CmdletBinding(PositionalBinding = $false)]
 param (
   [string]$target,
-  [string]$configuration = "Debug"
+  [string]$configuration = "Debug",
+  [bool]$coverage = $false,
+  [string]$coverage_output_format = "cobertura"
 )
 
 Set-StrictMode -version 2.0
@@ -31,10 +33,13 @@ try {
       Write-Host "------------------------------------------------------------------------------------------------------------------------" -ForegroundColor Green
       Write-Host "Running tests in $test" -ForegroundColor Green
       Write-Host "------------------------------------------------------------------------------------------------------------------------" -ForegroundColor Green
-      Write-Host "dotnet run `"$test`" --configuration $configuration" -ForegroundColor Yellow
       Write-Host
-      &dotnet run --project "$($test.FullName)" `
-        --configuration $configuration --coverage --coverage-output-format xml
+      if($coverage) {
+        &dotnet run --project "$($test.FullName)" --configuration $configuration --coverage --coverage-output-format $coverage_output_format
+      }
+      else {
+        &dotnet run --project "$($test.FullName)" --configuration $configuration
+      }
 
       if ($LASTEXITCODE -ne 0 -and $LASTEXITCODE -ne 8) {
         Write-Host
@@ -53,10 +58,13 @@ try {
     Write-Host "------------------------------------------------------------------------------------------------------------------------" -ForegroundColor Green
     Write-Host "Running tests in $item" -ForegroundColor Green
     Write-Host "------------------------------------------------------------------------------------------------------------------------" -ForegroundColor Green
-    Write-Host "dotnet run `"$item`" --configuration $configuration" -ForegroundColor Yellow
     Write-Host
-    &dotnet run --project "$($item.FullName)" `
-      --configuration $configuration --coverage --coverage-output-format xml
+    if($coverage) {
+      &dotnet run --project "$($test.FullName)" --configuration $configuration --coverage --coverage-output-format $coverage_output_format
+    }
+    else {
+      &dotnet run --project "$($test.FullName)" --configuration $configuration
+    }
 
     if ($LASTEXITCODE -ne 0 -and $LASTEXITCODE -ne 8) {
       Write-Host
