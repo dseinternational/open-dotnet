@@ -34,7 +34,12 @@ try {
         --configuration $configuration
 
       if ($LASTEXITCODE -ne 0) {
-        $exit_code = 1;
+        Write-Host
+        Write-Host "********************************************************************************"
+        Write-Host "Test execution FAILED with exit code $LASTEXITCODE"
+        Write-Host "********************************************************************************"
+        Write-Host
+        $exit_code = $LASTEXITCODE;
       }
     }
   }
@@ -49,7 +54,12 @@ try {
       --configuration $configuration
 
     if ($LASTEXITCODE -ne 0) {
-      $exit_code = 1;
+      Write-Host
+      Write-Host "********************************************************************************"
+      Write-Host "Test execution FAILED with exit code $LASTEXITCODE"
+      Write-Host "********************************************************************************"
+      Write-Host
+      $exit_code = $LASTEXITCODE;
     }
   }
   else {
