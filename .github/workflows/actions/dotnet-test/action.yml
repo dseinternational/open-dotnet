@@ -1,0 +1,33 @@
+name: dotnet test
+description: Runs dotnet projects tests.
+
+inputs:
+  target:
+    required: true
+    description: The project or solution, or directory.
+  configuration:
+    required: false
+    default: Debug
+    description: The configuration.
+  default-locale-unix:
+    required: false
+    default: "en_GB.UTF-8"
+    description: Locale on Unix systems.
+
+runs:
+  using: "composite"
+  steps:
+    - name: Run unit tests (dotnet)
+      shell: pwsh
+      env:
+        LANG: ${{ inputs.default-locale-unix }}
+        LC_ALL: ${{ inputs.default-locale-unix }}
+        LANGUAGE: ${{ inputs.default-locale-unix }}
+      run: |
+        if ($IsLinux -or $IsMacOS) { &locale }
+        Write-Host
+        $args = @{
+          target = "${{ inputs.target }}"
+          configuration = "${{ inputs.configuration }}"
+        }
+        ./eng/scripts/test.ps1 @args
