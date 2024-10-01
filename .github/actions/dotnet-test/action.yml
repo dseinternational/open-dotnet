@@ -7,8 +7,12 @@ inputs:
     description: The project or solution, or directory.
   configuration:
     required: false
-    default: Debug
+    default: "Debug"
     description: The configuration.
+  coverage:
+    required: false
+    default: "true"
+    description: If code coverage data collection is enabled.
   default-locale-unix:
     required: false
     default: "en_GB.UTF-8"
@@ -29,5 +33,6 @@ runs:
         $args = @{
           target = "${{ inputs.target }}"
           configuration = "${{ inputs.configuration }}"
+          coverage = "${{ inputs.coverage }}"
         }
         ./eng/scripts/test.ps1 @args
