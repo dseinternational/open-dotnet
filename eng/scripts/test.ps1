@@ -16,6 +16,18 @@ $ErrorActionPreference = "Stop"
 try {
   . (Join-Path $PSScriptRoot "utils.ps1")
 
+  Write-Host
+  Write-Host "------------------------------------------------------------------------------------------------------------------------" -ForegroundColor Green
+  Write-Host "Running tests" -ForegroundColor Green
+  Write-Host "------------------------------------------------------------------------------------------------------------------------" -ForegroundColor Green
+  Write-Host "Target:                   $target"
+  Write-Host "Configuration:            $configuration"
+  Write-Host "Coverage:                 $coverage"
+  Write-Host "Coverage output:          $coverage_output"
+  Write-Host "Coverage output format:   $coverage_output_format"
+  Write-Host "------------------------------------------------------------------------------------------------------------------------" -ForegroundColor Green
+  Write-Host
+
   if (-not (Test-Path $target)) {
     throw "Path does not exist: $target"
   }
@@ -26,8 +38,6 @@ try {
 
   $failed_count = 0
   $failed_executions = @()
-
-  $cov = $coverage -eq "true"
 
   if ($item -is [System.IO.DirectoryInfo]) {
 
@@ -43,7 +53,7 @@ try {
 
       $dotnet_args = @("run", "--project", "$($test.FullName)", "--configuration", $configuration);
 
-      if ($cov) {
+      if ($coverage -eq "true") {
 
         $dotnet_args += "--coverage";
 
@@ -51,12 +61,15 @@ try {
           $dotnet_args += "--coverage-output";
           $dotnet_args += $coverage_output;
         }
+
         if (-not [string]::IsNullOrWhiteSpace($coverage_output_format)) {
           $dotnet_args += "--coverage-output-format";
           $dotnet_args += $coverage_output_format;
         }
       }
+
       Write-Host "dotnet $dotnet_args"
+
       &dotnet $dotnet_args
 
       if ($LASTEXITCODE -ne 0 -and $LASTEXITCODE -ne 8) {
@@ -74,7 +87,6 @@ try {
   else {
     throw "Invalid path: $target"
   }
-
 
   if ($failed_count -ne 0) {
     Write-Host
