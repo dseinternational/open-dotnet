@@ -5,7 +5,7 @@
 param (
   [string]$target,
   [string]$configuration = "Debug",
-  [bool]$coverage = $true,
+  [bool]$coverage = $false,
   [string]$coverage_output_format = "cobertura"
 )
 

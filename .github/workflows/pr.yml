@@ -78,10 +78,11 @@ jobs:
         run: dotnet build ./DSE.Open.sln --configuration ${{ matrix.configuration }}
 
       - name: Run Tests
-        uses: dseinternational/open-dotnet/.github/actions/dotnet-test@actions-0.2
+        uses: dseinternational/open-dotnet/.github/actions/dotnet-test@actions-0.3
         with:
           target: ./test
           configuration: ${{ matrix.configuration }}
+          coverage: true
         env:
           STANZA_NLP: en
 
@@ -89,3 +90,4 @@ jobs:
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+          directory: ./test
