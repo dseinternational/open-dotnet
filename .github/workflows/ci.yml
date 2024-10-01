@@ -108,6 +108,7 @@ jobs:
           path: ${{ github.workspace }}/coverage
 
       - name: Upload coverage reports to Codecov
+        if: matrix.configuration == 'Debug'
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}

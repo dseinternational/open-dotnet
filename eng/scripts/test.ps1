@@ -47,6 +47,7 @@ try {
           $dotnet_args += $coverage_output_format;
         }
       }
+      Write-Host "dotnet $dotnet_args"
       &dotnet $dotnet_args
 
       if ($LASTEXITCODE -ne 0 -and $LASTEXITCODE -ne 8) {
@@ -79,6 +80,8 @@ try {
         $dotnet_args += $coverage_output_format;
       }
     }
+    Write-Host "dotnet $dotnet_args"
+    &dotnet $dotnet_args
 
     if ($LASTEXITCODE -ne 0 -and $LASTEXITCODE -ne 8) {
       Write-Host
