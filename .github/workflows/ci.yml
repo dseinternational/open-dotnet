@@ -85,7 +85,7 @@ jobs:
         with:
           target: ./test
           configuration: ${{ matrix.configuration }}
-          coverage: ${{ matrix.configuration == 'Debug' }},
+          coverage: ${{ matrix.configuration == 'Debug' }}
           coverage-output: "${{ github.workspace }}/coverage/report.cobertura.xml"
         env:
           STANZA_NLP: en

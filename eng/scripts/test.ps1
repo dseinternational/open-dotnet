@@ -51,7 +51,7 @@ try {
       Write-Host "------------------------------------------------------------------------------------------------------------------------" -ForegroundColor Green
       Write-Host
 
-      $dotnet_args = @("run", "--project", "$($test.FullName)", "--configuration", $configuration);
+      $dotnet_args = @("run", "--project", "$($test.FullName)", "--configuration", $configuration, "--ignore-exit-code", "8");
 
       if ($coverage -eq "true") {
 
@@ -72,7 +72,7 @@ try {
 
       &dotnet $dotnet_args
 
-      if ($LASTEXITCODE -ne 0 -and $LASTEXITCODE -ne 8) {
+      if ($LASTEXITCODE -ne 0) {
         Write-Host
         Write-Host "********************************************************************************" -ForegroundColor Red
         Write-Host "Test execution FAILED with exit code $LASTEXITCODE" -ForegroundColor Red
