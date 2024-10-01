@@ -34,7 +34,7 @@ try {
       Write-Host "dotnet run `"$test`" --configuration $configuration" -ForegroundColor Yellow
       Write-Host
       &dotnet run --project "$($test.FullName)" `
-        --configuration $configuration
+        --configuration $configuration --coverage --coverage-output-format xml
 
       if ($LASTEXITCODE -ne 0 -and $LASTEXITCODE -ne 8) {
         Write-Host
@@ -56,7 +56,7 @@ try {
     Write-Host "dotnet run `"$item`" --configuration $configuration" -ForegroundColor Yellow
     Write-Host
     &dotnet run --project "$($item.FullName)" `
-      --configuration $configuration
+      --configuration $configuration --coverage --coverage-output-format xml
 
     if ($LASTEXITCODE -ne 0 -and $LASTEXITCODE -ne 8) {
       Write-Host
@@ -87,7 +87,9 @@ try {
   else{
     Write-Host
     Write-Host "------------------------------------------------------------------------------------------------------------------------" -ForegroundColor Green
+    Write-Host "------------------------------------------------------------------------------------------------------------------------" -ForegroundColor Green
     Write-Host "All test executions passed" -ForegroundColor Green
+    Write-Host "------------------------------------------------------------------------------------------------------------------------" -ForegroundColor Green
     Write-Host "------------------------------------------------------------------------------------------------------------------------" -ForegroundColor Green
     Write-Host
   }

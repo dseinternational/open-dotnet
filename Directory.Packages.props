@@ -35,6 +35,7 @@
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0-rc.1.24431.7" />
     <PackageVersion Include="Microsoft.Extensions.Options" Version="9.0.0-rc.1.24431.7" />
     <PackageVersion Include="Microsoft.Extensions.TimeProvider.Testing" Version="9.0.0-preview.8.24460.1" />
+    <PackageVersion Include="Microsoft.Testing.Extensions.CodeCoverage" Version="17.12.5" />
     <PackageVersion Include="Microsoft.Identity.Client" Version="4.65.0" />
     <PackageVersion Include="Microsoft.Identity.Client.Extensions.Msal" Version="4.65.0" />
     <PackageVersion Include="Microsoft.IdentityModel.Abstractions" Version="8.1.0" />
