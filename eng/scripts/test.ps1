@@ -90,10 +90,11 @@ try {
 
   if ($failed_count -ne 0) {
     Write-Host
-    Write-Host "------------------------------------------------------------------------------------------------------------------------" -ForegroundColor Red
-    Write-Host "A total of $failed_count test executions failed" -ForegroundColor Red
-    Write-Host "------------------------------------------------------------------------------------------------------------------------" -ForegroundColor Red
     Write-Host
+    Write-Host "========================================================================================================================" -ForegroundColor Red
+    Write-Host "A total of $failed_count test executions failed" -ForegroundColor Red
+    Write-Host "========================================================================================================================" -ForegroundColor Red
+    Write-Host "Failing test projects:" -ForegroundColor Red
     foreach ($fe in $failed_executions) {
       Write-Host " - $fe" -ForegroundColor Red
     }

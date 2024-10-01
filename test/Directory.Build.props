@@ -19,28 +19,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk"/>
-    <!-- referenced by Microsoft.NET.Test.Sdk -->
-    <PackageReference Include="Newtonsoft.Json"/>
-    <!-- referenced by Microsoft.NET.Test.Sdk -->
-    <PackageReference Include="System.Reflection.Metadata"/>
     <PackageReference Include="xunit.v3"/>
-    <PackageReference Include="xunit.runner.visualstudio">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
     <PackageReference Include="xunit.analyzers">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="coverlet.collector">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage"/>
     <PackageReference Include="Moq"/>
     <PackageReference Include="FluentAssertions"/>
-    <PackageReference Include="System.Configuration.ConfigurationManager"/>
   </ItemGroup>
 
   <ItemGroup>

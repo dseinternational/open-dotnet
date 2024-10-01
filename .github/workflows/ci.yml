@@ -78,7 +78,7 @@ jobs:
         run: dotnet build ./gen/DSE.Open.Values.Generators/DSE.Open.Values.Generators.csproj --no-restore --configuration ${{ matrix.configuration }}
 
       - name: Build
-        run: dotnet build ./DSE.Open.sln --no-restore --configuration ${{ matrix.configuration }} /p:MsCodeCoverageInstrumentation="${{ matrix.configuration == 'Debug' }}"
+        run: dotnet build ./DSE.Open.sln --no-restore --configuration ${{ matrix.configuration }}
 
       - name: Run Tests
         uses: dseinternational/open-dotnet/.github/actions/dotnet-test@actions-0.8
@@ -105,7 +105,7 @@ jobs:
 
       - name: Archive code coverage results
         if: matrix.configuration == 'Debug'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: code-coverage-report
           path: ${{ github.workspace }}/coverage
