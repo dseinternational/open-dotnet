@@ -7,6 +7,10 @@ jobs:
     name: Build and Test
 
     runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    defaults:
+      run:
+        shell: pwsh
 
     strategy:
       matrix:
@@ -73,13 +77,11 @@ jobs:
       - name: Build
         run: dotnet build ./DSE.Open.sln --configuration ${{ matrix.configuration }}
 
-      - name: Test
-        run: |
-          dotnet test ./DSE.Open.sln `
-            --configuration ${{ matrix.configuration }} `
-            --collect:"XPlat Code Coverage" `
-            --verbosity normal
-        shell: pwsh
+      - name: Run Tests
+        uses: dseinternational/open-dotnet/.github/actions/dotnet-test@actions-0.1
+        with:
+          target: ./test
+          configuration: ${{ matrix.configuration }}
         env:
           STANZA_NLP: en
 
