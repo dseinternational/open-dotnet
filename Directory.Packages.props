@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageVersion Include="Azure.Core" Version="1.43.0" />
+    <PackageVersion Include="Azure.Core" Version="1.44.0" />
     <PackageVersion Include="Azure.Identity" Version="1.13.0-beta.2" />
     <PackageVersion Include="BenchmarkDotNet" Version="0.14.0" />
     <PackageVersion Include="CommunityToolkit.Diagnostics" Version="8.3.2" />
@@ -16,7 +16,7 @@
     <PackageVersion Include="Google.Protobuf" Version="3.29.0-rc1" />
     <PackageVersion Include="Microsoft.Bcl.AsyncInterfaces" Version="9.0.0-rc.1.24431.7" />
     <PackageVersion Include="Microsoft.Bcl.TimeProvider" Version="9.0.0-rc.1.24431.7" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0-beta1.24415.1" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.12.0-2.final" />
     <PackageVersion Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Data.SqlClient" Version="6.0.0-preview1.24240.8" />
@@ -55,7 +55,7 @@
     <PackageVersion Include="SharpZipLib" Version="1.4.2" />
     <PackageVersion Include="SkiaSharp" Version="3.0.0-preview.4.1" />
     <PackageVersion Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.10" />
-    <PackageVersion Include="System.ClientModel" Version="1.1.0" />
+    <PackageVersion Include="System.ClientModel" Version="1.2.0" />
     <PackageVersion Include="System.Collections.Immutable" Version="9.0.0-rc.1.24431.7" />
     <PackageVersion Include="System.Configuration.ConfigurationManager" Version="9.0.0-rc.1.24431.7" />
     <PackageVersion Include="System.Diagnostics.DiagnosticSource" Version="9.0.0-rc.1.24431.7" />
