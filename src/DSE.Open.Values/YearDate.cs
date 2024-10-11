@@ -93,6 +93,16 @@ public readonly record struct YearDate : IComparable<YearDate>, ISpanParsable<Ye
         return ToString(null, null);
     }
 
+    public DateOnly ToDateOnly()
+    {
+        return _date;
+    }
+
+    public DateTime ToDateTime()
+    {
+        return _date.ToDateTime(TimeOnly.MinValue);
+    }
+
     [SkipLocalsInit]
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
