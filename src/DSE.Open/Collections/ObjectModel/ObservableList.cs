@@ -20,7 +20,7 @@ namespace DSE.Open.Collections.ObjectModel;
 [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
 [DebuggerDisplay("Count = {Count}")]
 #pragma warning disable CA1001 // Types that own disposable fields should be disposable
-public class ObservableList<T> : IObservableList<T>
+public class ObservableList<T> : IObservableList<T>, IList
 #pragma warning restore CA1001 // Types that own disposable fields should be disposable
 {
     private static readonly PropertyChangedEventArgs s_countPropertyChangedEventArgs = new(nameof(Count));
