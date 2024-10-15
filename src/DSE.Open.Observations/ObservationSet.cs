@@ -17,6 +17,7 @@ namespace DSE.Open.Observations;
 [JsonDerivedType(typeof(AmountObservationSet), typeDiscriminator: Schemas.AmountObservationSet)]
 [JsonDerivedType(typeof(RatioObservationSet), typeDiscriminator: Schemas.RatioObservationSet)]
 [JsonDerivedType(typeof(BinaryWordObservationSet), typeDiscriminator: Schemas.BinaryWordObservationSet)]
+[JsonDerivedType(typeof(BinarySentenceObservationSet), typeDiscriminator: Schemas.BinarySentenceObservationSet)]
 [JsonDerivedType(typeof(BinarySpeechSoundObservationSet), typeDiscriminator: Schemas.BinarySpeechSoundObservationSet)]
 public abstract record ObservationSet
 {
@@ -37,7 +38,6 @@ public abstract record ObservationSet
         Location = location;
     }
 
-    [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     protected ObservationSet(
         ObservationSetId id,
@@ -77,7 +77,7 @@ public abstract record ObservationSet
     [JsonInclude]
     [JsonPropertyName("crt")]
     [JsonPropertyOrder(-97800)]
-    protected long CreatedTimestamp { get; }
+    internal long CreatedTimestamp { get; }
 
     [JsonInclude]
     [JsonPropertyName("trk")]
@@ -121,7 +121,6 @@ public abstract record ObservationSet<TObs, TValue> : ObservationSet
         Observations = observations;
     }
 
-    [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     protected ObservationSet(
         ObservationSetId id,

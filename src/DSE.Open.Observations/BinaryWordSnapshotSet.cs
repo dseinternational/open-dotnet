@@ -32,7 +32,6 @@ public record BinaryWordSnapshotSet
     }
 
     [JsonConstructor]
-    [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     protected BinaryWordSnapshotSet(
         Identifier id,

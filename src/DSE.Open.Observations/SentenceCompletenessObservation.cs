@@ -1,4 +1,4 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.ComponentModel;
@@ -15,9 +15,8 @@ public record SentenceCompletenessObservation : Observation<Completeness, Senten
     }
 
     [JsonConstructor]
-    [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    protected SentenceCompletenessObservation(ObservationId id, MeasureId measureId, SentenceId discriminator, long timestamp, Completeness value)
+    internal SentenceCompletenessObservation(ObservationId id, MeasureId measureId, SentenceId discriminator, long timestamp, Completeness value)
         : base(id, measureId, discriminator, timestamp, value)
     {
     }

@@ -14,7 +14,7 @@ public sealed record BinarySentenceMeasure : Measure<BinarySentenceObservation, 
     }
 
     [JsonConstructor]
-    private BinarySentenceMeasure(MeasureId id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
+    internal BinarySentenceMeasure(MeasureId id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
         : base(id, uri, measurementLevel, name, statement)
     {
         ArgumentOutOfRangeException.ThrowIfNotEqual(measurementLevel, MeasurementLevel.Binary);

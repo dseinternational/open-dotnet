@@ -14,7 +14,7 @@ public sealed record BinarySpeechSoundMeasure : Measure<BinarySpeechSoundObserva
     }
 
     [JsonConstructor]
-    private BinarySpeechSoundMeasure(MeasureId id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
+    internal BinarySpeechSoundMeasure(MeasureId id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
         : base(id, uri, measurementLevel, name, statement)
     {
         ArgumentOutOfRangeException.ThrowIfNotEqual(measurementLevel, MeasurementLevel.Binary);

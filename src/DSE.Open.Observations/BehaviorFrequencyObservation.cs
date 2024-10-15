@@ -14,9 +14,8 @@ public record BehaviorFrequencyObservation : Observation<BehaviorFrequency>
     }
 
     [JsonConstructor]
-    [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    protected BehaviorFrequencyObservation(ObservationId id, MeasureId measureId, long timestamp, BehaviorFrequency value)
+    internal BehaviorFrequencyObservation(ObservationId id, MeasureId measureId, long timestamp, BehaviorFrequency value)
         : base(id, measureId, timestamp, value)
     {
     }

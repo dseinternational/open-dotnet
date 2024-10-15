@@ -37,7 +37,6 @@ public abstract record SnapshotSet
         TrackerReference = trackerReference;
     }
 
-    [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     protected SnapshotSet(
         Identifier id,
@@ -114,7 +113,6 @@ public abstract record SnapshotSet<TSnapshot, TObs, TValue> : SnapshotSet
         Snapshots = snapshots;
     }
 
-    [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     protected SnapshotSet(
         Identifier id,
@@ -162,7 +160,6 @@ public abstract record SnapshotSet<TSnapshot, TObs, TValue, TDisc> : SnapshotSet
         Snapshots = snapshots;
     }
 
-    [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     protected SnapshotSet(
         Identifier id,

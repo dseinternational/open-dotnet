@@ -13,7 +13,7 @@ public sealed record BehaviorFrequencyMeasure : Measure<BehaviorFrequencyObserva
     }
 
     [JsonConstructor]
-    private BehaviorFrequencyMeasure(MeasureId id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
+    internal BehaviorFrequencyMeasure(MeasureId id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
         : base(id, uri, measurementLevel, name, statement)
     {
         ArgumentOutOfRangeException.ThrowIfNotEqual(measurementLevel, MeasurementLevel.GradedMembership);

@@ -63,6 +63,17 @@ public readonly partial struct SentenceId
         return new SentenceId((ulong)value);
     }
 
+    public static SentenceId FromUInt64(ulong value)
+    {
+        if (!IsValidValue(value))
+        {
+            ThrowHelper.ThrowArgumentOutOfRangeException(nameof(value));
+        }
+
+        return new SentenceId(value);
+    }
+
+
     public static explicit operator SentenceId(long value)
     {
         return FromInt64(value);

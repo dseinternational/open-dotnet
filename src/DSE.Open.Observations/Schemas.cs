@@ -33,6 +33,8 @@ public static class Schemas
 
     public const string BinarySpeechSoundSnapshotSet = "https://schema.dseapi.app/v1.0/observations/snapshots/binary/speech-sound";
 
+    public const string BinarySentenceObservationSet = "https://schema.dseapi.app/v1.0/observations/snapshots/binary/sentence";
+
     public const string IntegerSnapshotSet = "https://schema.dseapi.app/v1.0/observations/snapshots/int";
 
     public const string DecimalSnapshotSet = "https://schema.dseapi.app/v1.0/observations/snapshots/decimal";

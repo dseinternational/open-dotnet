@@ -22,9 +22,8 @@ public sealed record BinaryObservationSet : ObservationSet<BinaryObservation, bo
     }
 
     [JsonConstructor]
-    [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    private BinaryObservationSet(
+    internal BinaryObservationSet(
         ObservationSetId id,
         long createdTimestamp,
         Identifier trackerReference,

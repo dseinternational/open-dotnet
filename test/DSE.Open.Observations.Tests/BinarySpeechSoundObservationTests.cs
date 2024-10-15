@@ -16,6 +16,14 @@ public sealed class BinarySpeechSoundObservationTests
     }
 
     [Fact]
+    public void JsonRoundtrip_WithContext()
+    {
+        var obs = BinarySpeechSoundObservation.Create(TestMeasures.BinarySpeechSoundMeasure, SpeechSound.VoicedPostalveolarAffricate, true);
+        var typeInfo = ObservationsJsonSerializerContext.Default.BinarySpeechSoundObservation;
+        AssertJson.Roundtrip(obs, typeInfo);
+    }
+
+    [Fact]
     public void MeasurementIdEqualForSameMeasureAndSound()
     {
         var obs1 = BinarySpeechSoundObservation.Create(TestMeasures.BinarySpeechSoundMeasure, SpeechSound.VoicedPostalveolarAffricate, true);

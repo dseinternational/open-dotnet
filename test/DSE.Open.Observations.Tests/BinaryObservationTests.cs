@@ -13,4 +13,12 @@ public sealed class BinaryObservationTests
         var obs = BinaryObservation.Create(TestMeasures.BinaryMeasure, true);
         AssertJson.Roundtrip(obs);
     }
+
+    [Fact]
+    public void JsonRoundtrip_WithContext()
+    {
+        var obs = BinaryObservation.Create(TestMeasures.BinaryMeasure, true);
+        var typeInfo = ObservationsJsonSerializerContext.Default.BinaryObservation;
+        AssertJson.Roundtrip(obs, typeInfo);
+    }
 }

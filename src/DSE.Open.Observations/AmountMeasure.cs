@@ -14,7 +14,7 @@ public sealed record AmountMeasure : Measure<AmountObservation, Amount>
     }
 
     [JsonConstructor]
-    private AmountMeasure(MeasureId id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
+    internal AmountMeasure(MeasureId id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
         : base(id, uri, measurementLevel, name, statement)
     {
         ArgumentOutOfRangeException.ThrowIfNotEqual(measurementLevel, MeasurementLevel.Amount);

@@ -15,9 +15,8 @@ public record AmountObservation : Observation<Amount>
     }
 
     [JsonConstructor]
-    [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    protected AmountObservation(ObservationId id, MeasureId measureId, long timestamp, Amount value)
+    internal AmountObservation(ObservationId id, MeasureId measureId, long timestamp, Amount value)
         : base(id, measureId, timestamp, value)
     {
     }

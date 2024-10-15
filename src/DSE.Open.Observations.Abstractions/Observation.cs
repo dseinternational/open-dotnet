@@ -19,7 +19,6 @@ public abstract record Observation : ImmutableDataTransferObject
         Timestamp = time.ToUnixTimeMilliseconds();
     }
 
-    [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     protected Observation(ObservationId id, MeasureId measureId, long timestamp)
     {
@@ -48,7 +47,7 @@ public abstract record Observation : ImmutableDataTransferObject
     [JsonInclude]
     [JsonPropertyName("t")]
     [JsonPropertyOrder(-89800)]
-    protected long Timestamp { get; }
+    public long Timestamp { get; }
 
     /// <summary>
     /// The identifier for the measure.
@@ -109,7 +108,6 @@ public abstract record Observation<TValue> : Observation
         Value = value;
     }
 
-    [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     protected Observation(ObservationId id, MeasureId measureId, long timestamp, TValue value)
         : base(id, measureId, timestamp)
@@ -137,7 +135,6 @@ public abstract record Observation<TValue, TDisc> : Observation<TValue>
         Discriminator = discriminator;
     }
 
-    [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     protected Observation(ObservationId id, MeasureId measureId, TDisc discriminator, long timestamp, TValue value)
         : base(id, measureId, timestamp, value)

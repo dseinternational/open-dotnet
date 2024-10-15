@@ -30,9 +30,8 @@ public record AmountSnapshotSet : SnapshotSet<AmountSnapshot, AmountObservation,
     }
 
     [JsonConstructor]
-    [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    protected AmountSnapshotSet(
+    internal AmountSnapshotSet(
         Identifier id,
         long createdTimestamp,
         long updatedTimestamp,

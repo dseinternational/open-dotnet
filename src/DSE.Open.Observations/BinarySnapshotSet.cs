@@ -30,7 +30,6 @@ public record BinarySnapshotSet : SnapshotSet<BinarySnapshot, BinaryObservation,
     }
 
     [JsonConstructor]
-    [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     protected BinarySnapshotSet(
         Identifier id,

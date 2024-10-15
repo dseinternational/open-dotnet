@@ -22,7 +22,6 @@ public sealed record CountObservationSet : ObservationSet<CountObservation, Coun
     }
 
     [JsonConstructor]
-    [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     internal CountObservationSet(
         ObservationSetId id,

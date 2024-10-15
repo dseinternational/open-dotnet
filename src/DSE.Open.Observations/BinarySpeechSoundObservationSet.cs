@@ -22,7 +22,6 @@ public sealed record BinarySpeechSoundObservationSet : ObservationSet<BinarySpee
     }
 
     [JsonConstructor]
-    [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     internal BinarySpeechSoundObservationSet(
         ObservationSetId id,
