@@ -22,7 +22,6 @@ public sealed record RatioObservationSet : ObservationSet<RatioObservation, Rati
     }
 
     [JsonConstructor]
-    [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     internal RatioObservationSet(
         ObservationSetId id,

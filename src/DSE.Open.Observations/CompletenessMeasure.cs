@@ -1,4 +1,4 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Text.Json.Serialization;
@@ -13,7 +13,7 @@ public sealed record CompletenessMeasure : Measure<CompletenessObservation, Comp
     }
 
     [JsonConstructor]
-    private CompletenessMeasure(MeasureId id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
+    internal CompletenessMeasure(MeasureId id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
         : base(id, uri, measurementLevel, name, statement)
     {
         ArgumentOutOfRangeException.ThrowIfNotEqual(measurementLevel, MeasurementLevel.GradedMembership);

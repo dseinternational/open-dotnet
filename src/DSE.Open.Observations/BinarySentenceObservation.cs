@@ -15,9 +15,8 @@ public record BinarySentenceObservation : Observation<bool, SentenceId>
     }
 
     [JsonConstructor]
-    [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    protected BinarySentenceObservation(ObservationId id, MeasureId measureId, SentenceId discriminator, long timestamp, bool value)
+    internal BinarySentenceObservation(ObservationId id, MeasureId measureId, SentenceId discriminator, long timestamp, bool value)
         : base(id, measureId, discriminator, timestamp, value)
     {
     }

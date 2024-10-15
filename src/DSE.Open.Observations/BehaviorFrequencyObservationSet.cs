@@ -22,9 +22,8 @@ public sealed record BehaviorFrequencyObservationSet : ObservationSet<BehaviorFr
     }
 
     [JsonConstructor]
-    [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    private BehaviorFrequencyObservationSet(
+    internal BehaviorFrequencyObservationSet(
         ObservationSetId id,
         long createdTimestamp,
         Identifier trackerReference,

@@ -14,7 +14,7 @@ public sealed record BinaryWordMeasure : Measure<BinaryWordObservation, bool, Wo
     }
 
     [JsonConstructor]
-    private BinaryWordMeasure(MeasureId id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
+    internal BinaryWordMeasure(MeasureId id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
         : base(id, uri, measurementLevel, name, statement)
     {
         ArgumentOutOfRangeException.ThrowIfNotEqual(measurementLevel, MeasurementLevel.Binary);

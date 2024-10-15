@@ -14,7 +14,7 @@ public sealed record CountMeasure : Measure<CountObservation, Count>
     }
 
     [JsonConstructor]
-    private CountMeasure(MeasureId id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
+    internal CountMeasure(MeasureId id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
         : base(id, uri, measurementLevel, name, statement)
     {
         ArgumentOutOfRangeException.ThrowIfNotEqual(measurementLevel, MeasurementLevel.Count);

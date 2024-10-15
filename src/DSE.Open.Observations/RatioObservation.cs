@@ -15,9 +15,8 @@ public record RatioObservation : Observation<Ratio>
     }
 
     [JsonConstructor]
-    [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    protected RatioObservation(ObservationId id, MeasureId measureId, long timestamp, Ratio value)
+    internal RatioObservation(ObservationId id, MeasureId measureId, long timestamp, Ratio value)
         : base(id, measureId, timestamp, value)
     {
     }

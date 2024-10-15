@@ -3,6 +3,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
 using Xunit;
 
@@ -33,4 +34,12 @@ public static class AssertJson
         var deserialized = JsonSerializer.Deserialize(json, typeInfo);
         Assert.Equivalent(value, deserialized);
     }
+
+    public static void Roundtrip<T>(T value, JsonSerializerContext context)
+    {
+        var json = JsonSerializer.Serialize(value, typeof(T), context);
+        var deserialized = JsonSerializer.Deserialize(json, typeof(T), context);
+        Assert.Equivalent(value, deserialized);
+    }
+
 }

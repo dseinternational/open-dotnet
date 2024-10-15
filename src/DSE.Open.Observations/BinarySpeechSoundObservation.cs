@@ -18,9 +18,8 @@ public record BinarySpeechSoundObservation : Observation<bool, SpeechSound>
     }
 
     [JsonConstructor]
-    [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    protected BinarySpeechSoundObservation(ObservationId id, MeasureId measureId, SpeechSound discriminator, long timestamp, bool value)
+    internal BinarySpeechSoundObservation(ObservationId id, MeasureId measureId, SpeechSound discriminator, long timestamp, bool value)
         : base(id, measureId, discriminator, timestamp, value)
     {
     }

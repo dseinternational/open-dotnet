@@ -16,6 +16,13 @@ public sealed class BinaryWordObservationTests
     }
 
     [Fact]
+    public void JsonRoundtrip_WithContext()
+    {
+        var obs = BinaryWordObservation.Create(TestMeasures.BinaryWordMeasure, (WordId)420048260031uL, true);
+        AssertJson.Roundtrip(obs, ObservationsJsonSerializerContext.RelaxedJsonEscaping);
+    }
+
+    [Fact]
     public void MeasurementIdEqualForSameMeasureAndSound()
     {
         var obs1 = BinaryWordObservation.Create(TestMeasures.BinaryWordMeasure, (WordId)420048260031uL, true);

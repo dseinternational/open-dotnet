@@ -32,7 +32,6 @@ public record BinarySpeechSoundSnapshotSet
     }
 
     [JsonConstructor]
-    [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     protected BinarySpeechSoundSnapshotSet(
         Identifier id,

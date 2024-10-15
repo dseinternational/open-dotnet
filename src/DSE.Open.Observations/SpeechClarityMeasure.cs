@@ -13,7 +13,7 @@ public sealed record SpeechClarityMeasure : Measure<SpeechClarityObservation, Sp
     }
 
     [JsonConstructor]
-    private SpeechClarityMeasure(MeasureId id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
+    internal SpeechClarityMeasure(MeasureId id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
         : base(id, uri, measurementLevel, name, statement)
     {
         ArgumentOutOfRangeException.ThrowIfNotEqual(measurementLevel, MeasurementLevel.GradedMembership);

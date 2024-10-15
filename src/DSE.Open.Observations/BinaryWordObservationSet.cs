@@ -22,7 +22,6 @@ public sealed record BinaryWordObservationSet : ObservationSet<BinaryWordObserva
     }
 
     [JsonConstructor]
-    [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     internal BinaryWordObservationSet(
         ObservationSetId id,

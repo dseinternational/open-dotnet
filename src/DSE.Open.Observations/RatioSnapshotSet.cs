@@ -30,9 +30,8 @@ public record RatioSnapshotSet : SnapshotSet<RatioSnapshot, RatioObservation, Ra
     }
 
     [JsonConstructor]
-    [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    protected RatioSnapshotSet(
+    internal RatioSnapshotSet(
         Identifier id,
         long createdTimestamp,
         long updatedTimestamp,

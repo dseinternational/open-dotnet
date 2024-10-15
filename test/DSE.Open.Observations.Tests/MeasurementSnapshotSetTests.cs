@@ -1,15 +1,19 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Diagnostics;
 using System.Text.Json;
+using System.Text.Json.Serialization.Metadata;
 using DSE.Open.Values;
 
 namespace DSE.Open.Observations;
 
 public sealed class MeasurementSnapshotSetTests
 {
-    [Fact]
-    public void JsonRoundtrip_WithObservationCount()
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void JsonRoundtrip_WithObservationCount(bool useContext)
     {
         // Arrange
         var set = new MeasurementSnapshotSet<CountSnapshot, CountObservation, Count>
@@ -19,16 +23,19 @@ public sealed class MeasurementSnapshotSetTests
         };
 
         // Act
-        var json = JsonSerializer.Serialize(set);
-        var deserialized = JsonSerializer.Deserialize<MeasurementSnapshotSet<CountSnapshot, CountObservation, Count>>(json);
+        var deserialized = useContext
+            ? JsonRoundtripCore(set, ObservationsJsonSerializerContext.RelaxedJsonEscaping)
+            : JsonRoundtripCore(set);
 
         // Assert
         Assert.NotNull(deserialized);
         Assert.Equal(set, deserialized); // xUnit HashSet equality calls `SetEquals`
     }
 
-    [Fact]
-    public void JsonRoundtrip_WithObservationBool()
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void JsonRoundtrip_WithObservationBool(bool useContext)
     {
         // Arrange
         var set = new MeasurementSnapshotSet<BinarySnapshot, BinaryObservation, bool>
@@ -38,16 +45,19 @@ public sealed class MeasurementSnapshotSetTests
         };
 
         // Act
-        var json = JsonSerializer.Serialize(set);
-        var deserialized = JsonSerializer.Deserialize<MeasurementSnapshotSet<BinarySnapshot, BinaryObservation, bool>>(json);
+        var deserialized = useContext
+            ? JsonRoundtripCore(set, ObservationsJsonSerializerContext.RelaxedJsonEscaping)
+            : JsonRoundtripCore(set);
 
         // Assert
         Assert.NotNull(deserialized);
         Assert.Equal(set, deserialized); // xUnit HashSet equality calls `SetEquals`
     }
 
-    [Fact]
-    public void JsonRoundtrip_WithObservationAmount()
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void JsonRoundtrip_WithObservationAmount(bool useContext)
     {
         // Arrange
         var set = new MeasurementSnapshotSet<AmountSnapshot, AmountObservation, Amount>
@@ -57,12 +67,25 @@ public sealed class MeasurementSnapshotSetTests
         };
 
         // Act
-        var json = JsonSerializer.Serialize(set);
-        var deserialized = JsonSerializer.Deserialize<MeasurementSnapshotSet<AmountSnapshot, AmountObservation, Amount>>(json);
+        var deserialized = useContext
+            ? JsonRoundtripCore(set, ObservationsJsonSerializerContext.RelaxedJsonEscaping)
+            : JsonRoundtripCore(set);
 
         // Assert
         Assert.NotNull(deserialized);
         Assert.Equal(set, deserialized); // xUnit HashSet equality calls `SetEquals`
+    }
+
+    private static TSet? JsonRoundtripCore<TSet>(TSet set, ObservationsJsonSerializerContext context)
+    {
+        var json = JsonSerializer.Serialize(set, typeof(TSet), context);
+        return (TSet?)JsonSerializer.Deserialize(json, typeof(TSet), context);
+    }
+
+    private static TSet? JsonRoundtripCore<TSet>(TSet set)
+    {
+        var json = JsonSerializer.Serialize(set);
+        return JsonSerializer.Deserialize<TSet>(json);
     }
 
     [Fact]
@@ -115,7 +138,7 @@ public sealed class MeasurementSnapshotSetTests
     }
 
     [Fact]
-    public void Deserialize_WithWhat_ShouldDoWhat()
+    public void Deserialize_Compat()
     {
         // Arrange
         const string json =

@@ -11,15 +11,27 @@ public sealed class BinaryObservationSetTests
     [Fact]
     public void CanSerializeAndDeserialize()
     {
-        var obs = BinaryObservationSet.Create(
+        var obs = CreateBinaryObservationSet();
+        AssertJson.Roundtrip(obs);
+    }
+
+    [Fact]
+    public void JsonRoundTrip_WithContext()
+    {
+        var obs = CreateBinaryObservationSet();
+        AssertJson.Roundtrip(obs, ObservationsJsonSerializerContext.RelaxedJsonEscaping);
+    }
+
+    private static BinaryObservationSet CreateBinaryObservationSet()
+    {
+        return BinaryObservationSet.Create(
             Identifier.New("trk"),
             Identifier.New("obr"),
             new Uri("https://test.dsegroup.net"),
             [
                 BinaryObservation.Create(TestMeasures.BinaryMeasure, true),
                 BinaryObservation.Create(TestMeasures.BinaryMeasure2, false),
-            ]);
-
-        AssertJson.Roundtrip(obs);
+            ]
+        );
     }
 }

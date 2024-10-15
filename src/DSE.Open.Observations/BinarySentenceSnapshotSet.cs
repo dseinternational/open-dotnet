@@ -32,9 +32,8 @@ public record BinarySentenceSnapshotSet
     }
 
     [JsonConstructor]
-    [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    protected BinarySentenceSnapshotSet(
+    internal BinarySentenceSnapshotSet(
         Identifier id,
         long createdTimestamp,
         long updatedTimestamp,

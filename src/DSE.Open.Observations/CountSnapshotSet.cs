@@ -30,9 +30,8 @@ public record CountSnapshotSet : SnapshotSet<CountSnapshot, CountObservation, Co
     }
 
     [JsonConstructor]
-    [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    protected CountSnapshotSet(
+    internal CountSnapshotSet(
         Identifier id,
         long createdTimestamp,
         long updatedTimestamp,

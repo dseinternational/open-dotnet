@@ -17,6 +17,14 @@ public sealed class AmountMeasureTests
     }
 
     [Fact]
+    public void JsonRoundtrip_WithContext()
+    {
+        var uri = new Uri("https://schema-test.dseapi.app/testing/measure");
+        var measure = new AmountMeasure(MeasureId.GetRandomId(), uri, "Test measure", "[subject] does something");
+        AssertJson.Roundtrip(measure, ObservationsJsonSerializerContext.RelaxedJsonEscaping);
+    }
+
+    [Fact]
     public void CanCreateObservation()
     {
         var uri = new Uri("https://schema-test.dseapi.app/testing/measure");

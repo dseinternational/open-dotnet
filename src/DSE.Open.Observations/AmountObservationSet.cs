@@ -22,7 +22,6 @@ public sealed record AmountObservationSet : ObservationSet<AmountObservation, Am
     }
 
     [JsonConstructor]
-    [Obsolete("For deserialization only", true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     internal AmountObservationSet(
         ObservationSetId id,

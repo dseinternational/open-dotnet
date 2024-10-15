@@ -14,7 +14,7 @@ public sealed record SpokenWordClarityMeasure : Measure<SpokenWordClarityObserva
     }
 
     [JsonConstructor]
-    private SpokenWordClarityMeasure(MeasureId id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
+    internal SpokenWordClarityMeasure(MeasureId id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
         : base(id, uri, measurementLevel, name, statement)
     {
         ArgumentOutOfRangeException.ThrowIfNotEqual(measurementLevel, MeasurementLevel.Binary);
