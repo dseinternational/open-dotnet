@@ -3,6 +3,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
+using System.Text.Json.Serialization.Metadata;
 using Xunit;
 
 namespace DSE.Open.Testing.Xunit;
@@ -17,6 +18,19 @@ public static class AssertJson
     {
         var json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<T>(json);
+        Assert.Equivalent(value, deserialized);
+    }
+
+    /// <summary>
+    /// Roundtrip a value of type <typeparamref name="T"/> using the provided <see cref="JsonTypeInfo{T}"/> instance.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="value"></param>
+    /// <param name="typeInfo"></param>
+    public static void Roundtrip<T>(T value, JsonTypeInfo<T> typeInfo)
+    {
+        var json = JsonSerializer.Serialize(value, typeInfo);
+        var deserialized = JsonSerializer.Deserialize(json, typeInfo);
         Assert.Equivalent(value, deserialized);
     }
 }
