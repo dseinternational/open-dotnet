@@ -47,7 +47,7 @@ public abstract record Observation : ImmutableDataTransferObject
     [JsonInclude]
     [JsonPropertyName("t")]
     [JsonPropertyOrder(-89800)]
-    public long Timestamp { get; }
+    internal long Timestamp { get; }
 
     /// <summary>
     /// The identifier for the measure.
