@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <PackageVersion Include="Azure.Core" Version="1.44.1" />
-    <PackageVersion Include="Azure.Identity" Version="1.13.0-beta.2" />
+    <PackageVersion Include="Azure.Identity" Version="1.13.0" />
     <PackageVersion Include="BenchmarkDotNet" Version="0.14.0" />
     <PackageVersion Include="CommunityToolkit.Diagnostics" Version="8.3.2" />
     <PackageVersion Include="CommunityToolkit.HighPerformance" Version="8.3.2" />
@@ -36,7 +36,7 @@
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0-rc.2.24473.5" />
     <PackageVersion Include="Microsoft.Extensions.Options" Version="9.0.0-rc.2.24473.5" />
     <PackageVersion Include="Microsoft.Extensions.TimeProvider.Testing" Version="9.0.0-preview.9.24507.7" />
-    <PackageVersion Include="Microsoft.Testing.Extensions.CodeCoverage" Version="17.12.5" />
+    <PackageVersion Include="Microsoft.Testing.Extensions.CodeCoverage" Version="17.12.6" />
     <PackageVersion Include="Microsoft.Identity.Client" Version="4.65.0" />
     <PackageVersion Include="Microsoft.Identity.Client.Extensions.Msal" Version="4.65.0" />
     <PackageVersion Include="Microsoft.IdentityModel.Abstractions" Version="8.1.2" />
@@ -49,7 +49,7 @@
     <PackageVersion Include="Microsoft.Testing.Platform.MSBuild" Version="1.4.1" />
     <PackageVersion Include="Moq" Version="4.20.72" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageVersion Include="NodaTime" Version="3.1.12" />
+    <PackageVersion Include="NodaTime" Version="3.2.0" />
     <PackageVersion Include="NodaTime.Serialization.SystemTextJson" Version="1.2.0" />
     <PackageVersion Include="Polly" Version="8.4.2" />
     <PackageVersion Include="Polly.Contrib.WaitAndRetry" Version="1.1.1" />
