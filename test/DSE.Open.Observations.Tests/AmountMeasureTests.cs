@@ -21,8 +21,7 @@ public sealed class AmountMeasureTests
     {
         var uri = new Uri("https://schema-test.dseapi.app/testing/measure");
         var measure = new AmountMeasure(MeasureId.GetRandomId(), uri, "Test measure", "[subject] does something");
-        var typeInfo = ObservationsJsonSerializerContext.Default.AmountMeasure;
-        AssertJson.Roundtrip(measure, typeInfo);
+        AssertJson.Roundtrip(measure, ObservationsJsonSerializerContext.RelaxedJsonEscaping);
     }
 
     [Fact]

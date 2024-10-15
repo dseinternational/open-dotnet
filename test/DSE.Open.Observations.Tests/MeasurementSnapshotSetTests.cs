@@ -24,7 +24,7 @@ public sealed class MeasurementSnapshotSetTests
 
         // Act
         var deserialized = useContext
-            ? JsonRoundtripCore(set, ObservationsJsonSerializerContext.Default.MeasurementSnapshotSetCountSnapshotCountObservationCount)
+            ? JsonRoundtripCore(set, ObservationsJsonSerializerContext.RelaxedJsonEscaping)
             : JsonRoundtripCore(set);
 
         // Assert
@@ -46,7 +46,7 @@ public sealed class MeasurementSnapshotSetTests
 
         // Act
         var deserialized = useContext
-            ? JsonRoundtripCore(set, ObservationsJsonSerializerContext.Default.MeasurementSnapshotSetBinarySnapshotBinaryObservationBoolean)
+            ? JsonRoundtripCore(set, ObservationsJsonSerializerContext.RelaxedJsonEscaping)
             : JsonRoundtripCore(set);
 
         // Assert
@@ -68,7 +68,7 @@ public sealed class MeasurementSnapshotSetTests
 
         // Act
         var deserialized = useContext
-            ? JsonRoundtripCore(set, ObservationsJsonSerializerContext.Default.MeasurementSnapshotSetAmountSnapshotAmountObservationAmount)
+            ? JsonRoundtripCore(set, ObservationsJsonSerializerContext.RelaxedJsonEscaping)
             : JsonRoundtripCore(set);
 
         // Assert
@@ -76,10 +76,10 @@ public sealed class MeasurementSnapshotSetTests
         Assert.Equal(set, deserialized); // xUnit HashSet equality calls `SetEquals`
     }
 
-    private static TSet? JsonRoundtripCore<TSet>(TSet set, JsonTypeInfo<TSet> typeInfo)
+    private static TSet? JsonRoundtripCore<TSet>(TSet set, ObservationsJsonSerializerContext context)
     {
-        var json = JsonSerializer.Serialize(set, typeInfo);
-        return JsonSerializer.Deserialize(json, typeInfo);
+        var json = JsonSerializer.Serialize(set, typeof(TSet), context);
+        return (TSet?)JsonSerializer.Deserialize(json, typeof(TSet), context);
     }
 
     private static TSet? JsonRoundtripCore<TSet>(TSet set)

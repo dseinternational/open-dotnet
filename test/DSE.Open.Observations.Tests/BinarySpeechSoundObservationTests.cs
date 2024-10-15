@@ -19,8 +19,7 @@ public sealed class BinarySpeechSoundObservationTests
     public void JsonRoundtrip_WithContext()
     {
         var obs = BinarySpeechSoundObservation.Create(TestMeasures.BinarySpeechSoundMeasure, SpeechSound.VoicedPostalveolarAffricate, true);
-        var typeInfo = ObservationsJsonSerializerContext.Default.BinarySpeechSoundObservation;
-        AssertJson.Roundtrip(obs, typeInfo);
+        AssertJson.Roundtrip(obs, ObservationsJsonSerializerContext.RelaxedJsonEscaping);
     }
 
     [Fact]

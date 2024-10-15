@@ -21,8 +21,7 @@ public sealed class CountMeasureTests
     public void JsonRoundtrip_WithContext()
     {
         var measure = new CountMeasure(MeasureId.GetRandomId(), s_measureUri, "Test measure", "[subject] does something");
-        var typeInfo = ObservationsJsonSerializerContext.Default.CountMeasure;
-        AssertJson.Roundtrip(measure, typeInfo);
+        AssertJson.Roundtrip(measure, ObservationsJsonSerializerContext.RelaxedJsonEscaping);
     }
 
     [Fact]

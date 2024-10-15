@@ -19,8 +19,7 @@ public sealed class BinarySentenceObservationTests
     public void JsonRoundtrip_WithContext()
     {
         var obs = BinarySentenceObservation.Create(TestMeasures.BinarySentenceMeasure, SentenceId.FromUInt64(420048260031uL), true);
-        var typeInfo = ObservationsJsonSerializerContext.Default.BinarySentenceObservation;
-        AssertJson.Roundtrip(obs, typeInfo);
+        AssertJson.Roundtrip(obs, ObservationsJsonSerializerContext.RelaxedJsonEscaping);
     }
 
     [Fact]
