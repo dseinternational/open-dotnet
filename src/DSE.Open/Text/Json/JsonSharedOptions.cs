@@ -1,18 +1,14 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Diagnostics.CodeAnalysis;
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using DSE.Open.Text.Json.Serialization;
 using NodaTime;
 using NodaTime.Serialization.SystemTextJson;
 
 namespace DSE.Open.Text.Json;
 
-[RequiresDynamicCode(WarningMessages.RequiresDynamicCode)]
-[RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]
 public static class JsonSharedOptions
 {
     private static readonly JsonNamingPolicy s_defaultNamingPolicy = JsonNamingPolicy.SnakeCaseLower;
@@ -42,7 +38,7 @@ public static class JsonSharedOptions
             s_defaultNamingPolicy,
             writeIndented,
             addDefaultConverters,
-            false,
+            includeJsonValueObjectConverter: false,
             encoder);
 
         return options;
@@ -107,23 +103,11 @@ public static class JsonSharedOptions
 
         if (addDefaultConverters)
         {
-            AddDefaultConverters(options.Converters, includeJsonValueObjectConverter);
+            options.Converters.AddDseOpenCoreJsonConverters();
         }
 
         _ = options.ConfigureForNodaTime(DateTimeZoneProviders.Tzdb);
 
         options.WriteIndented = writeIndented;
-    }
-
-    public static void AddDefaultConverters(IList<JsonConverter> converters)
-    {
-        AddDefaultConverters(converters, false);
-    }
-
-    public static void AddDefaultConverters(IList<JsonConverter> converters, bool includeJsonValueObjectConverter)
-    {
-        ArgumentNullException.ThrowIfNull(converters);
-        converters.Add(new JsonStringEnumConverter(s_defaultNamingPolicy));
-        converters.AddDseOpenCoreJsonConverters(includeJsonValueObjectConverter);
     }
 }

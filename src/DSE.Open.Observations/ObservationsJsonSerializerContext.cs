@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Text.Json.Serialization;
+using DSE.Open.Text.Json;
 using DSE.Open.Values;
 
 namespace DSE.Open.Observations;
@@ -29,4 +30,5 @@ namespace DSE.Open.Observations;
 [JsonSerializable(typeof(ObservationSet))]
 public partial class ObservationsJsonSerializerContext : JsonSerializerContext
 {
+    public static ObservationsJsonSerializerContext RelaxedJsonEscaping { get; } = new ObservationsJsonSerializerContext(JsonSharedOptions.RelaxedJsonEscaping);
 }
