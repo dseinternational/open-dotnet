@@ -5,46 +5,40 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace DSE.Open.ViewModels;
 
-public abstract partial class ViewModel : ObservableObject, IViewModel
+public abstract partial class UserInterfaceModel : ObservableObject, IUserInterfaceModel
 {
     private bool _isBusy;
     private bool _isReadOnly;
     private bool _isInitialized;
-    [ObservableProperty] private CultureInfo _viewCulture = CultureInfo.CurrentCulture;
-    [ObservableProperty] private CultureInfo _viewUiCulture = CultureInfo.CurrentUICulture;
+    [ObservableProperty] private CultureInfo _formatCulture = CultureInfo.CurrentCulture;
+    [ObservableProperty] private CultureInfo _presentationCulture = CultureInfo.CurrentUICulture;
 
-    protected ViewModel()
+    protected UserInterfaceModel()
     {
-        ViewName = GetType().Name;
     }
 
+    /// <inheritdoc />
     public virtual bool IsBusy
     {
         get => _isBusy;
         protected set => SetProperty(ref _isBusy, value, nameof(IsBusy));
     }
 
+    /// <inheritdoc />
     public virtual bool IsReadOnly
     {
         get => _isReadOnly;
         protected set => SetProperty(ref _isReadOnly, value, nameof(IsReadOnly));
     }
 
+    /// <inheritdoc />
     public virtual bool IsInitialized
     {
         get => _isInitialized;
         protected set => SetProperty(ref _isInitialized, value, nameof(IsInitialized));
     }
 
-    public virtual string ViewName { get; }
-
-    /// <summary>
-    /// Initializes the view model.
-    /// </summary>
-    /// <param name="state"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    /// <exception cref="InvalidOperationException"></exception>
+    /// <inheritdoc />
     public async ValueTask InitializeAsync(object? state = null, CancellationToken cancellationToken = default)
     {
         if (IsInitialized)
@@ -57,7 +51,7 @@ public abstract partial class ViewModel : ObservableObject, IViewModel
     }
 
     /// <summary>
-    /// Initializes the view model.
+    /// Called once to initialise the view model.
     /// </summary>
     /// <param name="state"></param>
     /// <param name="cancellationToken"></param>

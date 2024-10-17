@@ -612,6 +612,12 @@ dotnet_diagnostic.CA5405.severity = error           # CA5405: Do not always skip
 # prevent code cleanup auto-'fixing' simple properties
 dotnet_style_prefer_auto_properties = false:suggestion
 
+# spelling
+spelling_languages = en-us,en-gb
+spelling_checkable_types = strings,identifiers,comments
+spelling_error_severity = information
+spelling_exclusion_path = .\spelling.dic
+
 # License header
 file_header_template = Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.\nDown Syndrome Education International and Contributors licence this file to you under the MIT license.
 
