@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Collections.Concurrent;
 using System.Collections.Frozen;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
@@ -350,13 +351,21 @@ public readonly partial struct LanguageTag
         }
     }
 
+    private static readonly ConcurrentDictionary<AsciiString, CultureInfo> s_cultureInfoCache = new();
+
     /// <summary>
     /// Gets the <see cref="CultureInfo"/> represented by the current value.
     /// </summary>
     /// <returns></returns>
     public CultureInfo GetCultureInfo()
     {
-        return CultureInfo.GetCultureInfo(_value.ToString());
+        if (!s_cultureInfoCache.TryGetValue(_value, out var ci))
+        {
+            ci = CultureInfo.GetCultureInfo(_value.ToString());
+            _ = s_cultureInfoCache.TryAdd(_value, ci);
+        }
+
+        return ci;
     }
 
     /// <summary>
