@@ -5,7 +5,7 @@ using DSE.Open.ViewModels;
 
 namespace DSE.Open.Turnstile.Web.Views.Shared.Components.TurnstileWidget;
 
-public sealed class TurnstileWidgetViewModel : LocalizedViewModel
+public sealed class TurnstileWidgetViewModel : ViewModel
 {
     public required string SiteKey { get; init; }
 
@@ -17,7 +17,7 @@ public sealed class TurnstileWidgetViewModel : LocalizedViewModel
 
         attributes.Add((WidgetDataAttributes.SiteKey, SiteKey));
 
-        attributes.Add((WidgetDataAttributes.Language, Language.ToStringInvariant()));
+        attributes.Add((WidgetDataAttributes.Language, ViewUiCulture.Name));
 
         if (!string.IsNullOrWhiteSpace(WidgetOptions.Action))
         {

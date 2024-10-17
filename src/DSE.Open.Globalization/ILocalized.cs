@@ -4,7 +4,7 @@
 namespace DSE.Open.Globalization;
 
 /// <summary>
-/// Indicates that something can be localized.
+/// Indicates that something indicates localization requirements.
 /// </summary>
 public interface ILocalized
 {
