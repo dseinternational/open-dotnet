@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <PackageVersion Include="Azure.Core" Version="1.44.1" />
-    <PackageVersion Include="Azure.Identity" Version="1.13.0" />
+    <PackageVersion Include="Azure.Identity" Version="1.13.1" />
     <PackageVersion Include="BenchmarkDotNet" Version="0.14.0" />
     <PackageVersion Include="CommunityToolkit.Diagnostics" Version="8.3.2" />
     <PackageVersion Include="CommunityToolkit.HighPerformance" Version="8.3.2" />
@@ -14,7 +14,7 @@
     <PackageVersion Include="coverlet.collector" Version="6.0.2" />
     <PackageVersion Include="FluentAssertions" Version="7.0.0-alpha.4" />
     <PackageVersion Include="Iced" Version="1.21.0" />
-    <PackageVersion Include="Google.Protobuf" Version="3.29.0-rc1" />
+    <PackageVersion Include="Google.Protobuf" Version="3.29.0-rc2" />
     <PackageVersion Include="Microsoft.Bcl.AsyncInterfaces" Version="9.0.0-rc.2.24473.5" />
     <PackageVersion Include="Microsoft.Bcl.TimeProvider" Version="9.0.0-rc.2.24473.5" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" />
@@ -57,7 +57,7 @@
     <PackageVersion Include="Polly.Extensions.Http" Version="3.0.0" />
     <PackageVersion Include="pythonnet" Version="3.1.0-preview2024-09-06" />
     <PackageVersion Include="SharpZipLib" Version="1.4.2" />
-    <PackageVersion Include="SkiaSharp" Version="3.0.0-preview.4.1" />
+    <PackageVersion Include="SkiaSharp" Version="3.0.0-preview.5.4" />
     <PackageVersion Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.10" />
     <PackageVersion Include="System.ClientModel" Version="1.2.1" />
     <PackageVersion Include="System.Collections.Immutable" Version="9.0.0-rc.2.24473.5" />
@@ -76,8 +76,8 @@
     <PackageVersion Include="System.Text.Encodings.Web" Version="9.0.0-rc.2.24473.5" />
     <PackageVersion Include="System.Text.Json" Version="9.0.0-rc.2.24473.5" />
     <PackageVersion Include="System.IO.Hashing" Version="9.0.0-rc.2.24473.5" />
-    <PackageVersion Include="TorchSharp" Version="0.103.0" />
-    <PackageVersion Include="TorchSharp-cpu" Version="0.103.0" />
+    <PackageVersion Include="TorchSharp" Version="0.103.1" />
+    <PackageVersion Include="TorchSharp-cpu" Version="0.103.1" />
     <PackageVersion Include="xunit.v3" Version="0.5.0-pre.27" />
     <PackageVersion Include="xunit.analyzers" Version="1.16.0" />
     <PackageVersion Include="xunit.v3.assert" Version="0.5.0-pre.27" />
