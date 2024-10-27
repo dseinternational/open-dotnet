@@ -21,7 +21,7 @@ namespace DSE.Open.Collections.ObjectModel;
 [DebuggerDisplay("Count = {Count}")]
 #pragma warning disable CA1001 // Types that own disposable fields should be disposable
 #pragma warning disable CA1710 // Identifiers should have correct suffix
-public class ObservableList<T> : IObservableList<T>, IReadOnlyCollection<T>, IList
+public class ObservableList<T> : IObservableList<T>, IReadOnlyObservableList<T>, IReadOnlyCollection<T>, IList
 #pragma warning restore CA1710 // Identifiers should have correct suffix
 #pragma warning restore CA1001 // Types that own disposable fields should be disposable
 {
