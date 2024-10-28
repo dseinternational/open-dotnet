@@ -4,6 +4,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
+    <RootNamespace>DSE.Open</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

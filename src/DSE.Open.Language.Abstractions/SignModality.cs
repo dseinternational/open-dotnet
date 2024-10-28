@@ -54,13 +54,13 @@ public readonly partial struct SignModality : IEquatableValue<SignModality, Asci
     /// </summary>
     public static readonly SignModality Written = new("written", true);
 
-    public static readonly IReadOnlySet<SignModality> All = FrozenSet.ToFrozenSet(new[]
-    {
+    public static readonly IReadOnlySet<SignModality> All = FrozenSet.ToFrozenSet(
+    [
         Pictured,
         Spoken,
         Gestured,
         Written,
-    });
+    ]);
 
     private static readonly FrozenSet<AsciiString> s_validValues = FrozenSet.ToFrozenSet(All.Select(x => x._value));
 }

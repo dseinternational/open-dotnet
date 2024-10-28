@@ -104,7 +104,7 @@ public class Memory2DExtensionsTests
 
         foreach (var c in memory)
         {
-            Assert.True(m.ContainsAny(SearchValues.Create(new char[] { 'z', 'y', 'x', c })));
+            Assert.True(m.ContainsAny(SearchValues.Create(['z', 'y', 'x', c])));
         }
     }
 
