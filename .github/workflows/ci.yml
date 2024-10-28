@@ -40,7 +40,7 @@ jobs:
       - name: Set Python version
         uses: actions/setup-python@v5
         with:
-          python-version: "3.13.0"
+          python-version: "3.12.7"
           cache: "pip"
 
       - name: Install Python packages
