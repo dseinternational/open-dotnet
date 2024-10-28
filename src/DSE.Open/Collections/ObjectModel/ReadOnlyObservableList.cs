@@ -27,7 +27,7 @@ public class ReadOnlyObservableList<T> : IReadOnlyObservableList<T>
 {
     private readonly IObservableList<T> _inner;
 
-    public ReadOnlyObservableList() : this([])
+    internal ReadOnlyObservableList() : this([])
     {
     }
 
