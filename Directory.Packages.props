@@ -18,7 +18,7 @@
     <PackageVersion Include="Microsoft.Bcl.AsyncInterfaces" Version="9.0.0-rc.2.24473.5" />
     <PackageVersion Include="Microsoft.Bcl.TimeProvider" Version="9.0.0-rc.2.24473.5" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.12.0-2.final" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.12.0-3.final" />
     <PackageVersion Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Data.SqlClient" Version="6.0.0-preview1.24240.8" />
     <PackageVersion Include="Microsoft.Diagnostics.Runtime" Version="4.0.0-beta.24360.3" />
