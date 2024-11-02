@@ -14,12 +14,14 @@ public sealed class PosTagToStringConverter : ValueConverter<PosTag, string>
     {
     }
 
-    private static string ConvertTo(PosTag value)
+    // public for EF Core model compilation
+    public static string ConvertTo(PosTag value)
     {
         return value.ToString();
     }
 
-    private static PosTag ConvertFrom(string value)
+    // public for EF Core model compilation
+    public static PosTag ConvertFrom(string value)
     {
         return new(value);
     }

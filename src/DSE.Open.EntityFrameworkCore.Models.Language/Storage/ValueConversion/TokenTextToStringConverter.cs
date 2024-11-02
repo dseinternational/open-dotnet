@@ -14,12 +14,14 @@ public sealed class TokenTextToStringConverter : ValueConverter<TokenText, strin
     {
     }
 
-    private static string ConvertTo(TokenText value)
+    // public for EF Core model compilation
+    public static string ConvertTo(TokenText value)
     {
         return value.ToString();
     }
 
-    private static TokenText ConvertFrom(string value)
+    // public for EF Core model compilation
+    public static TokenText ConvertFrom(string value)
     {
         return new(value);
     }

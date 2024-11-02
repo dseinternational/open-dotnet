@@ -16,12 +16,14 @@ public sealed class SemanticClassificationTagToStringConverter : ValueConverter<
     {
     }
 
-    private static string ConvertToString(SemanticClassificationTag code)
+    // public for EF Core model compilation
+    public static string ConvertToString(SemanticClassificationTag code)
     {
         return code.ToString();
     }
 
-    private static SemanticClassificationTag ConvertFromString(string code)
+    // public for EF Core model compilation
+    public static SemanticClassificationTag ConvertFromString(string code)
     {
         if (SemanticClassificationTag.TryParse(code, out var alphaCode))
         {

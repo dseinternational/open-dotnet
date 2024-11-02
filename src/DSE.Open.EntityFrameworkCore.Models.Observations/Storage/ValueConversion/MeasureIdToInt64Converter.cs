@@ -15,12 +15,14 @@ public sealed class MeasureIdToInt64Converter : ValueConverter<MeasureId, long>
     {
     }
 
-    private static long ConvertTo(MeasureId value)
+    // public for EF Core model compilation
+    public static long ConvertTo(MeasureId value)
     {
         return (long)value;
     }
 
-    private static MeasureId ConvertFrom(long value)
+    // public for EF Core model compilation
+    public static MeasureId ConvertFrom(long value)
     {
         if (MeasureId.TryFromInt64(value, out var id))
         {

@@ -14,12 +14,14 @@ public sealed class WordTextToStringConverter : ValueConverter<WordText, string>
     {
     }
 
-    private static string ConvertTo(WordText value)
+    // public for EF Core model compilation
+    public static string ConvertTo(WordText value)
     {
         return value.ToString();
     }
 
-    private static WordText ConvertFrom(string value)
+    // public for EF Core model compilation
+    public static WordText ConvertFrom(string value)
     {
         return new(value);
     }

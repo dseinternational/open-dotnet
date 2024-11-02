@@ -19,13 +19,15 @@ public sealed class SpeechTranscriptionListToJsonStringConverter : ValueConverte
     {
     }
 
-    private static string ConvertTo(IList<SpeechTranscription> value)
+    // public for EF Core model compilation
+    public static string ConvertTo(IList<SpeechTranscription> value)
     {
         return JsonSerializer.Serialize(value, JsonSharedOptions.RelaxedJsonEscaping);
     }
 
 #pragma warning disable CA1859 // Use concrete types when possible for improved performance
-    private static IList<SpeechTranscription> ConvertFrom(string value)
+    // public for EF Core model compilation
+    public static IList<SpeechTranscription> ConvertFrom(string value)
 #pragma warning restore CA1859 // Use concrete types when possible for improved performance
     {
         return JsonSerializer.Deserialize<List<SpeechTranscription>>(value, JsonSharedOptions.RelaxedJsonEscaping)!;

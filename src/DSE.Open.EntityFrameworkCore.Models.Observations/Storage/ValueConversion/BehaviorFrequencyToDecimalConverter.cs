@@ -14,7 +14,8 @@ public sealed class BehaviorFrequencyToDecimalConverter : ValueConverter<Behavio
     {
     }
 
-    private static decimal ConvertTo(BehaviorFrequency value)
+    // public for EF Core model compilation
+    public static decimal ConvertTo(BehaviorFrequency value)
     {
         unchecked
         {
@@ -22,7 +23,8 @@ public sealed class BehaviorFrequencyToDecimalConverter : ValueConverter<Behavio
         }
     }
 
-    private static BehaviorFrequency ConvertFrom(decimal value)
+    // public for EF Core model compilation
+    public static BehaviorFrequency ConvertFrom(decimal value)
     {
         return (BehaviorFrequency)(uint)Math.Round(value, 0);
     }

@@ -19,12 +19,14 @@ public sealed class SentenceToJsonStringConverter : ValueConverter<Sentence, str
     {
     }
 
-    private static string ConvertTo(Sentence value)
+    // public for EF Core model compilation
+    public static string ConvertTo(Sentence value)
     {
         return JsonSerializer.Serialize(value, JsonSharedOptions.RelaxedJsonEscaping);
     }
 
-    private static Sentence ConvertFrom(string value)
+    // public for EF Core model compilation
+    public static Sentence ConvertFrom(string value)
     {
         return JsonSerializer.Deserialize<Sentence>(value, JsonSharedOptions.RelaxedJsonEscaping)!;
     }

@@ -14,12 +14,14 @@ public sealed class TokenIndexToStringConverter : ValueConverter<TokenIndex, str
     {
     }
 
-    private static string ConvertTo(TokenIndex value)
+    // public for EF Core model compilation
+    public static string ConvertTo(TokenIndex value)
     {
         return value.ToString();
     }
 
-    private static TokenIndex ConvertFrom(string value)
+    // public for EF Core model compilation
+    public static TokenIndex ConvertFrom(string value)
     {
         return TokenIndex.ParseInvariant(value);
     }

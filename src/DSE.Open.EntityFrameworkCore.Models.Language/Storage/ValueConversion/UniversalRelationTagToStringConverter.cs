@@ -14,12 +14,14 @@ public sealed class UniversalRelationTagToStringConverter : ValueConverter<Unive
     {
     }
 
-    private static string ConvertTo(UniversalRelationTag value)
+    // public for EF Core model compilation
+    public static string ConvertTo(UniversalRelationTag value)
     {
         return value.ToString();
     }
 
-    private static UniversalRelationTag ConvertFrom(string value)
+    // public for EF Core model compilation
+    public static UniversalRelationTag ConvertFrom(string value)
     {
         return UniversalRelationTag.ParseInvariant(value);
     }

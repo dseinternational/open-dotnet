@@ -15,12 +15,14 @@ public sealed class ObservationIdToInt64Converter : ValueConverter<ObservationId
     {
     }
 
-    private static long ConvertTo(ObservationId value)
+    // public for EF Core model compilation
+    public static long ConvertTo(ObservationId value)
     {
         return (long)value;
     }
 
-    private static ObservationId ConvertFrom(long value)
+    // public for EF Core model compilation
+    public static ObservationId ConvertFrom(long value)
     {
         if (ObservationId.TryFromInt64(value, out var id))
         {

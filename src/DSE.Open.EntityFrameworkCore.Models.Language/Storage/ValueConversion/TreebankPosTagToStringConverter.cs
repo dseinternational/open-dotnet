@@ -14,12 +14,14 @@ public sealed class TreebankPosTagToStringConverter : ValueConverter<TreebankPos
     {
     }
 
-    private static string ConvertTo(TreebankPosTag value)
+    // public for EF Core model compilation
+    public static string ConvertTo(TreebankPosTag value)
     {
         return value.ToString();
     }
 
-    private static TreebankPosTag ConvertFrom(string value)
+    // public for EF Core model compilation
+    public static TreebankPosTag ConvertFrom(string value)
     {
         return new(value);
     }

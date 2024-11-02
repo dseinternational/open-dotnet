@@ -14,12 +14,15 @@ public sealed class ReadOnlyWordFeatureValueCollectionToStringConverter : ValueC
     {
     }
 
-    private static string ConvertTo(ReadOnlyWordFeatureValueCollection value)
+    // public for EF Core model compilation
+    public static string ConvertTo(ReadOnlyWordFeatureValueCollection value)
     {
+        ArgumentNullException.ThrowIfNull(value);
         return value.ToString();
     }
 
-    private static ReadOnlyWordFeatureValueCollection ConvertFrom(string value)
+    // public for EF Core model compilation
+    public static ReadOnlyWordFeatureValueCollection ConvertFrom(string value)
     {
         return ReadOnlyWordFeatureValueCollection.ParseInvariant(value);
     }

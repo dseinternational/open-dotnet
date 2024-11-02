@@ -1,4 +1,4 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using DSE.Open.EntityFrameworkCore.Storage.ValueConversion;
@@ -15,12 +15,14 @@ public sealed class SpeechSoundToStringConverter : ValueConverter<SpeechSound, s
     {
     }
 
-    private static string ConvertTo(SpeechSound value)
+    // public for EF Core model compilation
+    public static string ConvertTo(SpeechSound value)
     {
         return value.ToStringInvariant();
     }
 
-    private static SpeechSound ConvertFrom(string value)
+    // public for EF Core model compilation
+    public static SpeechSound ConvertFrom(string value)
     {
         if (SpeechSound.TryParse(value, CultureInfo.InvariantCulture, out var result))
         {

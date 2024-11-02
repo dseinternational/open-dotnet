@@ -14,12 +14,15 @@ public sealed class ReadOnlyAttributeValueCollectionToStringConverter : ValueCon
     {
     }
 
-    private static string ConvertTo(ReadOnlyAttributeValueCollection value)
+    // public for EF Core model compilation
+    public static string ConvertTo(ReadOnlyAttributeValueCollection value)
     {
+        ArgumentNullException.ThrowIfNull(value);
         return value.ToString();
     }
 
-    private static ReadOnlyAttributeValueCollection ConvertFrom(string value)
+    // public for EF Core model compilation
+    public static ReadOnlyAttributeValueCollection ConvertFrom(string value)
     {
         return ReadOnlyAttributeValueCollection.ParseInvariant(value);
     }

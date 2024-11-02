@@ -1,4 +1,4 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using DSE.Open.EntityFrameworkCore.Storage.ValueConversion;
@@ -15,12 +15,14 @@ public sealed class WordMeaningIdToInt64Converter : ValueConverter<WordMeaningId
     {
     }
 
-    private static long ConvertTo(WordMeaningId value)
+    // public for EF Core model compilation
+    public static long ConvertTo(WordMeaningId value)
     {
         return (long)value;
     }
 
-    private static WordMeaningId ConvertFrom(long value)
+    // public for EF Core model compilation
+    public static WordMeaningId ConvertFrom(long value)
     {
         if (WordMeaningId.TryFromInt64(value, out var id))
         {

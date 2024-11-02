@@ -1,4 +1,4 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using DSE.Open.EntityFrameworkCore.Storage.ValueConversion;
@@ -15,12 +15,14 @@ public sealed class SentenceIdToInt64Converter : ValueConverter<SentenceId, long
     {
     }
 
-    private static long ConvertTo(SentenceId value)
+    // public for EF Core model compilation
+    public static long ConvertTo(SentenceId value)
     {
         return (long)value;
     }
 
-    private static SentenceId ConvertFrom(long value)
+    // public for EF Core model compilation
+    public static SentenceId ConvertFrom(long value)
     {
         if (SentenceId.TryFromInt64(value, out var id))
         {

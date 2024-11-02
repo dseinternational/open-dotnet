@@ -14,12 +14,14 @@ public sealed class UniversalPosTagToStringConverter : ValueConverter<UniversalP
     {
     }
 
-    private static string ConvertTo(UniversalPosTag value)
+    // public for EF Core model compilation
+    public static string ConvertTo(UniversalPosTag value)
     {
         return value.ToString();
     }
 
-    private static UniversalPosTag ConvertFrom(string value)
+    // public for EF Core model compilation
+    public static UniversalPosTag ConvertFrom(string value)
     {
         return new(value);
     }

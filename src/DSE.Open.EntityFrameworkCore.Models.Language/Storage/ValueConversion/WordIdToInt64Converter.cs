@@ -15,12 +15,14 @@ public sealed class WordIdToInt64Converter : ValueConverter<WordId, long>
     {
     }
 
-    private static long ConvertTo(WordId value)
+    // public for EF Core model compilation
+    public static long ConvertTo(WordId value)
     {
         return (long)value;
     }
 
-    private static WordId ConvertFrom(long value)
+    // public for EF Core model compilation
+    public static WordId ConvertFrom(long value)
     {
         if (WordId.TryFromInt64(value, out var id))
         {
