@@ -12,7 +12,7 @@ namespace DSE.Open.Observations;
 /// <summary>
 /// A value used to identify a <see cref="ObservationSet"/>.
 /// </summary>
-[EquatableValue(AllowDefaultValue = false)]
+[EquatableValue]
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<ObservationSetId, ulong>))]
 [StructLayout(LayoutKind.Sequential)]
 public readonly partial struct ObservationSetId

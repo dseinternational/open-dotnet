@@ -18,12 +18,5 @@ public class YesNoUnsureTests
         Assert.Equal(value, deserialized);
     }
 
-    [Fact]
-    public void MustBeInitialized()
-    {
-        YesNoUnsure value = default;
-        _ = Assert.Throws<UninitializedValueException<YesNoUnsure, AsciiString>>(value.ToString);
-    }
-
     public static TheoryData<YesNoUnsure> Values { get; } = new() { YesNoUnsure.No, YesNoUnsure.Yes, YesNoUnsure.Unsure, };
 }

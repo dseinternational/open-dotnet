@@ -11,7 +11,7 @@ namespace DSE.Open.Observations;
 /// <summary>
 /// Represents the selection of a choice between "Yes" and "No".
 /// </summary>
-[EquatableValue(AllowDefaultValue = false)]
+[EquatableValue]
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<YesNo, AsciiString>))]
 [StructLayout(LayoutKind.Sequential)]
 public readonly partial struct YesNo

@@ -11,7 +11,7 @@ namespace DSE.Open.Language;
 /// <summary>
 /// A value used to identify a word.
 /// </summary>
-[EquatableValue(AllowDefaultValue = false)]
+[EquatableValue]
 [JsonConverter(typeof(JsonUInt64ValueConverter<SentenceId>))]
 [StructLayout(LayoutKind.Sequential)]
 public readonly partial struct SentenceId

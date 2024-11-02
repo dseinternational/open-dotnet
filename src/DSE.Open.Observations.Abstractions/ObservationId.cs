@@ -12,7 +12,7 @@ namespace DSE.Open.Observations;
 /// <summary>
 /// A value used to identify a word.
 /// </summary>
-[EquatableValue(AllowDefaultValue = false)]
+[EquatableValue]
 [JsonConverter(typeof(JsonUInt64ValueConverter<ObservationId>))]
 [StructLayout(LayoutKind.Sequential)]
 public readonly partial struct ObservationId

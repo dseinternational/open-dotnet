@@ -10,7 +10,7 @@ namespace DSE.Open.Values;
 /// <summary>
 /// An immutable series of (up to 32) ASCII letters used to identify something.
 /// </summary>
-[ComparableValue(AllowDefaultValue = false)]
+[ComparableValue]
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<AlphaCode, AsciiString>))]
 [StructLayout(LayoutKind.Sequential)]
 public readonly partial struct AlphaCode

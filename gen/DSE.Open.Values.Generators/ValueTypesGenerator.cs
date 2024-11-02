@@ -2,7 +2,6 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Collections.Immutable;
-using System.Diagnostics;
 using DSE.Open.Values.Generators.Extensions;
 using DSE.Open.Values.Generators.Model;
 using Microsoft.CodeAnalysis;
@@ -145,7 +144,6 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
 
             var emitConstructor = true;
             var maxSerializedCharLength = 0;
-            var emitEnsureNotDefault = false;
             var emitImplicitDowncast = true;
 
             var semanticModel = compilation.GetSemanticModel(structDeclarationSyntax.SyntaxTree);
@@ -202,10 +200,6 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
                         a.NameEquals is not null
                         && a.NameEquals.Name.Identifier.ValueText == "MaxSerializedCharLength");
 
-                    var allowDefaultValueSyntax = attributeArgNames.FirstOrDefault(a =>
-                        a.NameEquals is not null
-                        && a.NameEquals.Name.Identifier.ValueText == "AllowDefaultValue");
-
                     var implicitDowncastArgumentSyntax = attributeArgNames.FirstOrDefault(a =>
                         a.NameEquals is not null
                         && a.NameEquals.Name.Identifier.ValueText == "ImplicitDowncast");
@@ -221,21 +215,6 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
                             if (maxSerializedCharLengthValue > 0)
                             {
                                 maxSerializedCharLength = maxSerializedCharLengthValue;
-                            }
-                        }
-                    }
-
-                    if (allowDefaultValueSyntax is not null)
-                    {
-                        var allowDefaultOpt = semanticModel.GetConstantValue(allowDefaultValueSyntax.Expression, ct);
-
-                        if (allowDefaultOpt is { HasValue: true, Value: not null })
-                        {
-                            var allowDefaultValue = (bool)allowDefaultOpt.Value;
-
-                            if (!allowDefaultValue)
-                            {
-                                emitEnsureNotDefault = true;
                             }
                         }
                     }
@@ -614,8 +593,6 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
             spec.EmitConstructor = emitConstructor;
             spec.EmitEqualsMethod = emitEqualsMethod;
             spec.EmitGetHashCodeMethod = emitGetHashCodeMethod;
-
-            spec.EmitEnsureNotDefault = emitEnsureNotDefault;
 
             // IFormattable
             spec.EmitToStringFormattableMethod = emitIFormattableToStringMethod;
