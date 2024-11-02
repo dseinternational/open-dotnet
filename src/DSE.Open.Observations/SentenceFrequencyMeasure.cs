@@ -1,7 +1,7 @@
-// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Text.Json.Serialization;
+using System.Diagnostics.CodeAnalysis;
 using DSE.Open.Language;
 
 namespace DSE.Open.Observations;
@@ -11,22 +11,18 @@ namespace DSE.Open.Observations;
 /// </summary>
 public sealed record SentenceFrequencyMeasure : Measure<SentenceFrequencyObservation, BehaviorFrequency, SentenceId>
 {
+    [SetsRequiredMembers]
     public SentenceFrequencyMeasure(MeasureId id, Uri uri, string name, string statement)
-        : base(id, uri, MeasurementLevel.Binary, name, statement)
     {
+        Id = id;
+        Uri = uri;
+        MeasurementLevel = MeasurementLevel.Binary;
+        Name = name;
+        Statement = statement;
     }
 
-    [JsonConstructor]
-    internal SentenceFrequencyMeasure(MeasureId id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
-        : base(id, uri, measurementLevel, name, statement)
+    public override SentenceFrequencyObservation CreateObservation(SentenceId sentenceId, BehaviorFrequency value, DateTimeOffset timestamp)
     {
-        ArgumentOutOfRangeException.ThrowIfNotEqual(measurementLevel, MeasurementLevel.Binary);
-    }
-
-#pragma warning disable CA1725 // Parameter names should match base declaration
-    public override SentenceFrequencyObservation CreateObservation(SentenceId speechSound, BehaviorFrequency value, DateTimeOffset timestamp)
-#pragma warning restore CA1725 // Parameter names should match base declaration
-    {
-        return SentenceFrequencyObservation.Create(this, speechSound, value, TimeProvider.System);
+        return SentenceFrequencyObservation.Create(this, sentenceId, value, TimeProvider.System);
     }
 }

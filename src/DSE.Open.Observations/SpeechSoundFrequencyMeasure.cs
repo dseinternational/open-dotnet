@@ -1,7 +1,7 @@
-// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Text.Json.Serialization;
+using System.Diagnostics.CodeAnalysis;
 using DSE.Open.Speech;
 
 namespace DSE.Open.Observations;
@@ -9,23 +9,23 @@ namespace DSE.Open.Observations;
 /// <summary>
 /// A measure of observed frequency relating to a speech sound.
 /// </summary>
-public sealed record SpeechSoundFrequencyMeasure : Measure<SpeechSoundFrequencyObservation, BehaviorFrequency, SpeechSound>
+public sealed record SpeechSoundFrequencyMeasure
+    : Measure<SpeechSoundFrequencyObservation, BehaviorFrequency, SpeechSound>
 {
+    [SetsRequiredMembers]
     public SpeechSoundFrequencyMeasure(MeasureId id, Uri uri, string name, string statement)
-        : base(id, uri, MeasurementLevel.Binary, name, statement)
     {
+        Id = id;
+        Uri = uri;
+        MeasurementLevel = MeasurementLevel.Binary;
+        Name = name;
+        Statement = statement;
     }
 
-    [JsonConstructor]
-    internal SpeechSoundFrequencyMeasure(MeasureId id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
-        : base(id, uri, measurementLevel, name, statement)
-    {
-        ArgumentOutOfRangeException.ThrowIfNotEqual(measurementLevel, MeasurementLevel.Binary);
-    }
-
-#pragma warning disable CA1725 // Parameter names should match base declaration
-    public override SpeechSoundFrequencyObservation CreateObservation(SpeechSound speechSound, BehaviorFrequency value, DateTimeOffset timestamp)
-#pragma warning restore CA1725 // Parameter names should match base declaration
+    public override SpeechSoundFrequencyObservation CreateObservation(
+        SpeechSound speechSound,
+        BehaviorFrequency value,
+        DateTimeOffset timestamp)
     {
         return SpeechSoundFrequencyObservation.Create(this, speechSound, value, TimeProvider.System);
     }

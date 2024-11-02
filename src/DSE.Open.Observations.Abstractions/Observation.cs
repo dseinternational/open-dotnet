@@ -4,28 +4,13 @@
 using System.ComponentModel;
 using System.Text.Json.Serialization;
 using DSE.Open.Serialization.DataTransfer;
+using DSE.Open.Text.Json.Serialization;
 
 namespace DSE.Open.Observations;
 
 public abstract record Observation : ImmutableDataTransferObject
 {
-    protected Observation(Measure measure, DateTimeOffset time)
-    {
-        ArgumentNullException.ThrowIfNull(measure);
-        ObservationsValidator.EnsureMinimumObservationTime(time);
-
-        Id = ObservationId.GetRandomId();
-        MeasureId = measure.Id;
-        Timestamp = time.ToUnixTimeMilliseconds();
-    }
-
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    protected Observation(ObservationId id, MeasureId measureId, long timestamp)
-    {
-        Id = id;
-        MeasureId = measureId;
-        Timestamp = timestamp;
-    }
+    private readonly DateTimeOffset _time;
 
     /// <summary>
     /// A randomly generated number between 0 and <see cref="NumberHelper.MaxJsonSafeInteger"/> that,
@@ -34,20 +19,20 @@ public abstract record Observation : ImmutableDataTransferObject
     [JsonInclude]
     [JsonPropertyName("i")]
     [JsonPropertyOrder(-91000)]
-    public ObservationId Id { get; }
+    public ObservationId Id { get; init; } = ObservationId.GetRandomId();
 
     /// <summary>
     /// The time of the observation.
     /// </summary>
-    [JsonIgnore]
-    public DateTimeOffset Time => DateTimeOffset.FromUnixTimeMilliseconds(Timestamp);
-
-    // this ensures equality tests are the same before/after serialization
-
     [JsonInclude]
     [JsonPropertyName("t")]
     [JsonPropertyOrder(-89800)]
-    internal long Timestamp { get; }
+    [JsonConverter(typeof(JsonDateTimeOffsetUnixTimeMillisecondsConverter))]
+    public required DateTimeOffset Time
+    {
+        get => _time;
+        init => _time = DateTimeOffset.FromUnixTimeMilliseconds(value.ToUnixTimeMilliseconds());
+    }
 
     /// <summary>
     /// The identifier for the measure.
@@ -55,7 +40,7 @@ public abstract record Observation : ImmutableDataTransferObject
     [JsonInclude]
     [JsonPropertyName("m")]
     [JsonPropertyOrder(-88000)]
-    public MeasureId MeasureId { get; }
+    public required MeasureId MeasureId { get; init; }
 
     public bool HasMeasure(Measure measure)
     {
@@ -102,22 +87,9 @@ public abstract record Observation : ImmutableDataTransferObject
 public abstract record Observation<TValue> : Observation
     where TValue : IEquatable<TValue>
 {
-    protected Observation(Measure measure, DateTimeOffset time, TValue value)
-        : base(measure, time)
-    {
-        Value = value;
-    }
-
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    protected Observation(ObservationId id, MeasureId measureId, long timestamp, TValue value)
-        : base(id, measureId, timestamp)
-    {
-        Value = value;
-    }
-
     [JsonPropertyName("v")]
     [JsonPropertyOrder(-1)]
-    public TValue Value { get; }
+    public required TValue Value { get; init; }
 }
 
 /// <summary>
@@ -129,22 +101,9 @@ public abstract record Observation<TValue, TDisc> : Observation<TValue>
     where TValue : IEquatable<TValue>
     where TDisc : IEquatable<TDisc>
 {
-    protected Observation(Measure measure, TDisc discriminator, DateTimeOffset time, TValue value)
-        : base(measure, time, value)
-    {
-        Discriminator = discriminator;
-    }
-
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    protected Observation(ObservationId id, MeasureId measureId, TDisc discriminator, long timestamp, TValue value)
-        : base(id, measureId, timestamp, value)
-    {
-        Discriminator = discriminator;
-    }
-
     [JsonPropertyName("d")]
     [JsonPropertyOrder(-100)]
-    public TDisc Discriminator { get; }
+    public required TDisc Discriminator { get; init; }
 
     public virtual bool HasMeasurement(Measure measure, TDisc discriminator)
     {

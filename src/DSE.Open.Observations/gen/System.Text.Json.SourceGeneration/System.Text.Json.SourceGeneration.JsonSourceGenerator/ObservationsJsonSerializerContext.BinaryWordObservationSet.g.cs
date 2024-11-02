@@ -29,11 +29,11 @@ namespace DSE.Open.Observations
                 var objectInfo = new global::System.Text.Json.Serialization.Metadata.JsonObjectInfoValues<global::DSE.Open.Observations.BinaryWordObservationSet>
                 {
                     ObjectCreator = null,
-                    ObjectWithParameterizedConstructorCreator = static args => new global::DSE.Open.Observations.BinaryWordObservationSet((global::DSE.Open.Observations.ObservationSetId)args[0], (long)args[1], (global::DSE.Open.Values.Identifier)args[2], (global::DSE.Open.Values.Identifier)args[3], (global::System.Uri)args[4], (global::DSE.Open.Observations.GroundPoint?)args[5], (global::DSE.Open.Collections.Generic.ReadOnlyValueCollection<global::DSE.Open.Observations.BinaryWordObservation>)args[6]),
+                    ObjectWithParameterizedConstructorCreator = static args => new global::DSE.Open.Observations.BinaryWordObservationSet(){ Observations = (global::DSE.Open.Collections.Generic.ReadOnlyValueCollection<global::DSE.Open.Observations.BinaryWordObservation>)args[0], Id = (global::DSE.Open.Observations.ObservationSetId)args[1], Created = (global::System.DateTimeOffset)args[2], TrackerReference = (global::DSE.Open.Values.Identifier)args[3], ObserverReference = (global::DSE.Open.Values.Identifier)args[4], Source = (global::System.Uri)args[5], Location = (global::DSE.Open.Observations.GroundPoint?)args[6] },
                     PropertyMetadataInitializer = _ => BinaryWordObservationSetPropInit(options),
                     ConstructorParameterMetadataInitializer = BinaryWordObservationSetCtorParamInit,
-                    ConstructorAttributeProviderFactory = static () => typeof(global::DSE.Open.Observations.BinaryWordObservationSet).GetConstructor(InstanceMemberBindingFlags, binder: null, new[] {typeof(global::DSE.Open.Observations.ObservationSetId), typeof(long), typeof(global::DSE.Open.Values.Identifier), typeof(global::DSE.Open.Values.Identifier), typeof(global::System.Uri), typeof(global::DSE.Open.Observations.GroundPoint?), typeof(global::DSE.Open.Collections.Generic.ReadOnlyValueCollection<global::DSE.Open.Observations.BinaryWordObservation>)}, modifiers: null),
-                    SerializeHandler = BinaryWordObservationSetSerializeHandler,
+                    ConstructorAttributeProviderFactory = static () => typeof(global::DSE.Open.Observations.BinaryWordObservationSet).GetConstructor(InstanceMemberBindingFlags, binder: null, global::System.Array.Empty<global::System.Type>(), modifiers: null),
+                    SerializeHandler = null,
                 };
                 
                 jsonTypeInfo = global::System.Text.Json.Serialization.Metadata.JsonMetadataServices.CreateObjectInfo<global::DSE.Open.Observations.BinaryWordObservationSet>(options, objectInfo);
@@ -46,7 +46,7 @@ namespace DSE.Open.Observations
 
         private static global::System.Text.Json.Serialization.Metadata.JsonPropertyInfo[] BinaryWordObservationSetPropInit(global::System.Text.Json.JsonSerializerOptions options)
         {
-            var properties = new global::System.Text.Json.Serialization.Metadata.JsonPropertyInfo[8];
+            var properties = new global::System.Text.Json.Serialization.Metadata.JsonPropertyInfo[7];
 
             var info0 = new global::System.Text.Json.Serialization.Metadata.JsonPropertyInfoValues<global::DSE.Open.Collections.Generic.ReadOnlyValueCollection<global::DSE.Open.Observations.BinaryWordObservation>>
             {
@@ -56,7 +56,7 @@ namespace DSE.Open.Observations
                 DeclaringType = typeof(global::DSE.Open.Observations.ObservationSet<global::DSE.Open.Observations.BinaryWordObservation, bool>),
                 Converter = null,
                 Getter = static obj => ((global::DSE.Open.Observations.ObservationSet<global::DSE.Open.Observations.BinaryWordObservation, bool>)obj).Observations,
-                Setter = null,
+                Setter = static (obj, value) => throw new global::System.InvalidOperationException("Setting init-only properties is not supported in source generation mode."),
                 IgnoreCondition = null,
                 HasJsonInclude = false,
                 IsExtensionData = false,
@@ -67,8 +67,10 @@ namespace DSE.Open.Observations
             };
             
             properties[0] = global::System.Text.Json.Serialization.Metadata.JsonMetadataServices.CreatePropertyInfo<global::DSE.Open.Collections.Generic.ReadOnlyValueCollection<global::DSE.Open.Observations.BinaryWordObservation>>(options, info0);
+            properties[0].IsRequired = true;
             properties[0].Order = 900000;
             properties[0].IsGetNullable = false;
+            properties[0].IsSetNullable = false;
 
             var info1 = new global::System.Text.Json.Serialization.Metadata.JsonPropertyInfoValues<global::DSE.Open.Observations.ObservationSetId>
             {
@@ -78,7 +80,7 @@ namespace DSE.Open.Observations
                 DeclaringType = typeof(global::DSE.Open.Observations.ObservationSet),
                 Converter = null,
                 Getter = static obj => ((global::DSE.Open.Observations.ObservationSet)obj).Id,
-                Setter = static (obj, value) => throw new global::System.InvalidOperationException("The member 'BinaryWordObservationSet.Id' has been annotated with the JsonIncludeAttribute but is not visible to the source generator."),
+                Setter = static (obj, value) => throw new global::System.InvalidOperationException("Setting init-only properties is not supported in source generation mode."),
                 IgnoreCondition = null,
                 HasJsonInclude = true,
                 IsExtensionData = false,
@@ -97,42 +99,23 @@ namespace DSE.Open.Observations
                 IsPublic = true,
                 IsVirtual = false,
                 DeclaringType = typeof(global::DSE.Open.Observations.ObservationSet),
-                Converter = null,
-                Getter = null,
-                Setter = null,
-                IgnoreCondition = global::System.Text.Json.Serialization.JsonIgnoreCondition.Always,
-                HasJsonInclude = false,
-                IsExtensionData = false,
-                NumberHandling = null,
-                PropertyName = "Created",
-                JsonPropertyName = null,
-                AttributeProviderFactory = static () => typeof(global::DSE.Open.Observations.ObservationSet).GetProperty("Created", InstanceMemberBindingFlags, null, typeof(global::System.DateTimeOffset), global::System.Array.Empty<global::System.Type>(), null),
-            };
-            
-            properties[2] = global::System.Text.Json.Serialization.Metadata.JsonMetadataServices.CreatePropertyInfo<global::System.DateTimeOffset>(options, info2);
-
-            var info3 = new global::System.Text.Json.Serialization.Metadata.JsonPropertyInfoValues<long>
-            {
-                IsProperty = true,
-                IsPublic = true,
-                IsVirtual = false,
-                DeclaringType = typeof(global::DSE.Open.Observations.ObservationSet),
-                Converter = null,
-                Getter = static obj => ((global::DSE.Open.Observations.ObservationSet)obj).CreatedTimestamp,
-                Setter = static (obj, value) => throw new global::System.InvalidOperationException("The member 'BinaryWordObservationSet.CreatedTimestamp' has been annotated with the JsonIncludeAttribute but is not visible to the source generator."),
+                Converter = (global::System.Text.Json.Serialization.JsonConverter<global::System.DateTimeOffset>)ExpandConverter(typeof(global::System.DateTimeOffset), new global::DSE.Open.Text.Json.Serialization.JsonDateTimeOffsetUnixTimeMillisecondsConverter(), options),
+                Getter = static obj => ((global::DSE.Open.Observations.ObservationSet)obj).Created,
+                Setter = static (obj, value) => throw new global::System.InvalidOperationException("Setting init-only properties is not supported in source generation mode."),
                 IgnoreCondition = null,
                 HasJsonInclude = true,
                 IsExtensionData = false,
                 NumberHandling = null,
-                PropertyName = "CreatedTimestamp",
+                PropertyName = "Created",
                 JsonPropertyName = "crt",
-                AttributeProviderFactory = static () => typeof(global::DSE.Open.Observations.ObservationSet).GetProperty("CreatedTimestamp", InstanceMemberBindingFlags, null, typeof(long), global::System.Array.Empty<global::System.Type>(), null),
+                AttributeProviderFactory = static () => typeof(global::DSE.Open.Observations.ObservationSet).GetProperty("Created", InstanceMemberBindingFlags, null, typeof(global::System.DateTimeOffset), global::System.Array.Empty<global::System.Type>(), null),
             };
             
-            properties[3] = global::System.Text.Json.Serialization.Metadata.JsonMetadataServices.CreatePropertyInfo<long>(options, info3);
-            properties[3].Order = -97800;
+            properties[2] = global::System.Text.Json.Serialization.Metadata.JsonMetadataServices.CreatePropertyInfo<global::System.DateTimeOffset>(options, info2);
+            properties[2].IsRequired = true;
+            properties[2].Order = -97800;
 
-            var info4 = new global::System.Text.Json.Serialization.Metadata.JsonPropertyInfoValues<global::DSE.Open.Values.Identifier>
+            var info3 = new global::System.Text.Json.Serialization.Metadata.JsonPropertyInfoValues<global::DSE.Open.Values.Identifier>
             {
                 IsProperty = true,
                 IsPublic = true,
@@ -140,7 +123,7 @@ namespace DSE.Open.Observations
                 DeclaringType = typeof(global::DSE.Open.Observations.ObservationSet),
                 Converter = null,
                 Getter = static obj => ((global::DSE.Open.Observations.ObservationSet)obj).TrackerReference,
-                Setter = static (obj, value) => throw new global::System.InvalidOperationException("The member 'BinaryWordObservationSet.TrackerReference' has been annotated with the JsonIncludeAttribute but is not visible to the source generator."),
+                Setter = static (obj, value) => throw new global::System.InvalidOperationException("Setting init-only properties is not supported in source generation mode."),
                 IgnoreCondition = null,
                 HasJsonInclude = true,
                 IsExtensionData = false,
@@ -150,10 +133,11 @@ namespace DSE.Open.Observations
                 AttributeProviderFactory = static () => typeof(global::DSE.Open.Observations.ObservationSet).GetProperty("TrackerReference", InstanceMemberBindingFlags, null, typeof(global::DSE.Open.Values.Identifier), global::System.Array.Empty<global::System.Type>(), null),
             };
             
-            properties[4] = global::System.Text.Json.Serialization.Metadata.JsonMetadataServices.CreatePropertyInfo<global::DSE.Open.Values.Identifier>(options, info4);
-            properties[4].Order = -90000;
+            properties[3] = global::System.Text.Json.Serialization.Metadata.JsonMetadataServices.CreatePropertyInfo<global::DSE.Open.Values.Identifier>(options, info3);
+            properties[3].IsRequired = true;
+            properties[3].Order = -90000;
 
-            var info5 = new global::System.Text.Json.Serialization.Metadata.JsonPropertyInfoValues<global::DSE.Open.Values.Identifier>
+            var info4 = new global::System.Text.Json.Serialization.Metadata.JsonPropertyInfoValues<global::DSE.Open.Values.Identifier>
             {
                 IsProperty = true,
                 IsPublic = true,
@@ -161,7 +145,7 @@ namespace DSE.Open.Observations
                 DeclaringType = typeof(global::DSE.Open.Observations.ObservationSet),
                 Converter = null,
                 Getter = static obj => ((global::DSE.Open.Observations.ObservationSet)obj).ObserverReference,
-                Setter = static (obj, value) => throw new global::System.InvalidOperationException("The member 'BinaryWordObservationSet.ObserverReference' has been annotated with the JsonIncludeAttribute but is not visible to the source generator."),
+                Setter = static (obj, value) => throw new global::System.InvalidOperationException("Setting init-only properties is not supported in source generation mode."),
                 IgnoreCondition = null,
                 HasJsonInclude = true,
                 IsExtensionData = false,
@@ -171,10 +155,11 @@ namespace DSE.Open.Observations
                 AttributeProviderFactory = static () => typeof(global::DSE.Open.Observations.ObservationSet).GetProperty("ObserverReference", InstanceMemberBindingFlags, null, typeof(global::DSE.Open.Values.Identifier), global::System.Array.Empty<global::System.Type>(), null),
             };
             
-            properties[5] = global::System.Text.Json.Serialization.Metadata.JsonMetadataServices.CreatePropertyInfo<global::DSE.Open.Values.Identifier>(options, info5);
-            properties[5].Order = -89000;
+            properties[4] = global::System.Text.Json.Serialization.Metadata.JsonMetadataServices.CreatePropertyInfo<global::DSE.Open.Values.Identifier>(options, info4);
+            properties[4].IsRequired = true;
+            properties[4].Order = -89000;
 
-            var info6 = new global::System.Text.Json.Serialization.Metadata.JsonPropertyInfoValues<global::System.Uri>
+            var info5 = new global::System.Text.Json.Serialization.Metadata.JsonPropertyInfoValues<global::System.Uri>
             {
                 IsProperty = true,
                 IsPublic = true,
@@ -182,7 +167,7 @@ namespace DSE.Open.Observations
                 DeclaringType = typeof(global::DSE.Open.Observations.ObservationSet),
                 Converter = null,
                 Getter = static obj => ((global::DSE.Open.Observations.ObservationSet)obj).Source,
-                Setter = static (obj, value) => throw new global::System.InvalidOperationException("The member 'BinaryWordObservationSet.Source' has been annotated with the JsonIncludeAttribute but is not visible to the source generator."),
+                Setter = static (obj, value) => ((global::DSE.Open.Observations.ObservationSet)obj).Source = value!,
                 IgnoreCondition = null,
                 HasJsonInclude = true,
                 IsExtensionData = false,
@@ -192,11 +177,13 @@ namespace DSE.Open.Observations
                 AttributeProviderFactory = static () => typeof(global::DSE.Open.Observations.ObservationSet).GetProperty("Source", InstanceMemberBindingFlags, null, typeof(global::System.Uri), global::System.Array.Empty<global::System.Type>(), null),
             };
             
-            properties[6] = global::System.Text.Json.Serialization.Metadata.JsonMetadataServices.CreatePropertyInfo<global::System.Uri>(options, info6);
-            properties[6].Order = -60000;
-            properties[6].IsGetNullable = false;
+            properties[5] = global::System.Text.Json.Serialization.Metadata.JsonMetadataServices.CreatePropertyInfo<global::System.Uri>(options, info5);
+            properties[5].IsRequired = true;
+            properties[5].Order = -60000;
+            properties[5].IsGetNullable = false;
+            properties[5].IsSetNullable = false;
 
-            var info7 = new global::System.Text.Json.Serialization.Metadata.JsonPropertyInfoValues<global::DSE.Open.Observations.GroundPoint?>
+            var info6 = new global::System.Text.Json.Serialization.Metadata.JsonPropertyInfoValues<global::DSE.Open.Observations.GroundPoint?>
             {
                 IsProperty = true,
                 IsPublic = true,
@@ -204,8 +191,8 @@ namespace DSE.Open.Observations
                 DeclaringType = typeof(global::DSE.Open.Observations.ObservationSet),
                 Converter = null,
                 Getter = static obj => ((global::DSE.Open.Observations.ObservationSet)obj).Location,
-                Setter = static (obj, value) => throw new global::System.InvalidOperationException("The member 'BinaryWordObservationSet.Location' has been annotated with the JsonIncludeAttribute but is not visible to the source generator."),
-                IgnoreCondition = global::System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault,
+                Setter = static (obj, value) => throw new global::System.InvalidOperationException("Setting init-only properties is not supported in source generation mode."),
+                IgnoreCondition = null,
                 HasJsonInclude = true,
                 IsExtensionData = false,
                 NumberHandling = null,
@@ -214,115 +201,69 @@ namespace DSE.Open.Observations
                 AttributeProviderFactory = static () => typeof(global::DSE.Open.Observations.ObservationSet).GetProperty("Location", InstanceMemberBindingFlags, null, typeof(global::DSE.Open.Observations.GroundPoint?), global::System.Array.Empty<global::System.Type>(), null),
             };
             
-            properties[7] = global::System.Text.Json.Serialization.Metadata.JsonMetadataServices.CreatePropertyInfo<global::DSE.Open.Observations.GroundPoint?>(options, info7);
-            properties[7].Order = -50000;
+            properties[6] = global::System.Text.Json.Serialization.Metadata.JsonMetadataServices.CreatePropertyInfo<global::DSE.Open.Observations.GroundPoint?>(options, info6);
+            properties[6].IsRequired = true;
+            properties[6].Order = -50000;
 
             return properties;
-        }
-
-        // Intentionally not a static method because we create a delegate to it. Invoking delegates to instance
-        // methods is almost as fast as virtual calls. Static methods need to go through a shuffle thunk.
-        private void BinaryWordObservationSetSerializeHandler(global::System.Text.Json.Utf8JsonWriter writer, global::DSE.Open.Observations.BinaryWordObservationSet? value)
-        {
-            if (value is null)
-            {
-                writer.WriteNullValue();
-                return;
-            }
-            
-            writer.WriteStartObject();
-
-            writer.WritePropertyName(PropName_id);
-            global::System.Text.Json.JsonSerializer.Serialize(writer, ((global::DSE.Open.Observations.ObservationSet)value).Id, ObservationSetId);
-            writer.WriteNumber(PropName_crt, ((global::DSE.Open.Observations.ObservationSet)value).CreatedTimestamp);
-            writer.WritePropertyName(PropName_trk);
-            global::System.Text.Json.JsonSerializer.Serialize(writer, ((global::DSE.Open.Observations.ObservationSet)value).TrackerReference, Identifier);
-            writer.WritePropertyName(PropName_obr);
-            global::System.Text.Json.JsonSerializer.Serialize(writer, ((global::DSE.Open.Observations.ObservationSet)value).ObserverReference, Identifier);
-            writer.WritePropertyName(PropName_src);
-            global::System.Text.Json.JsonSerializer.Serialize(writer, ((global::DSE.Open.Observations.ObservationSet)value).Source, Uri);
-            global::DSE.Open.Observations.GroundPoint? __value_Location = ((global::DSE.Open.Observations.ObservationSet)value).Location;
-            if (__value_Location is not null)
-            {
-                writer.WritePropertyName(PropName_loc);
-                global::System.Text.Json.JsonSerializer.Serialize(writer, __value_Location, NullableGroundPoint);
-            }
-            writer.WritePropertyName(PropName_obs);
-            ReadOnlyValueCollectionBinaryWordObservationSerializeHandler(writer, ((global::DSE.Open.Observations.ObservationSet<global::DSE.Open.Observations.BinaryWordObservation, bool>)value).Observations);
-
-            writer.WriteEndObject();
         }
 
         private static global::System.Text.Json.Serialization.Metadata.JsonParameterInfoValues[] BinaryWordObservationSetCtorParamInit() => new global::System.Text.Json.Serialization.Metadata.JsonParameterInfoValues[]
         {
             new()
             {
-                Name = "id",
-                ParameterType = typeof(global::DSE.Open.Observations.ObservationSetId),
+                Name = "Observations",
+                ParameterType = typeof(global::DSE.Open.Collections.Generic.ReadOnlyValueCollection<global::DSE.Open.Observations.BinaryWordObservation>),
                 Position = 0,
-                HasDefaultValue = false,
-                DefaultValue = null,
-                IsNullable = false,
+                IsMemberInitializer = true,
             },
 
             new()
             {
-                Name = "createdTimestamp",
-                ParameterType = typeof(long),
+                Name = "Id",
+                ParameterType = typeof(global::DSE.Open.Observations.ObservationSetId),
                 Position = 1,
-                HasDefaultValue = false,
-                DefaultValue = null,
-                IsNullable = false,
+                IsMemberInitializer = true,
             },
 
             new()
             {
-                Name = "trackerReference",
-                ParameterType = typeof(global::DSE.Open.Values.Identifier),
+                Name = "Created",
+                ParameterType = typeof(global::System.DateTimeOffset),
                 Position = 2,
-                HasDefaultValue = false,
-                DefaultValue = null,
-                IsNullable = false,
+                IsMemberInitializer = true,
             },
 
             new()
             {
-                Name = "observerReference",
+                Name = "TrackerReference",
                 ParameterType = typeof(global::DSE.Open.Values.Identifier),
                 Position = 3,
-                HasDefaultValue = false,
-                DefaultValue = null,
-                IsNullable = false,
+                IsMemberInitializer = true,
             },
 
             new()
             {
-                Name = "source",
-                ParameterType = typeof(global::System.Uri),
+                Name = "ObserverReference",
+                ParameterType = typeof(global::DSE.Open.Values.Identifier),
                 Position = 4,
-                HasDefaultValue = false,
-                DefaultValue = null,
-                IsNullable = false,
+                IsMemberInitializer = true,
             },
 
             new()
             {
-                Name = "location",
-                ParameterType = typeof(global::DSE.Open.Observations.GroundPoint?),
+                Name = "Source",
+                ParameterType = typeof(global::System.Uri),
                 Position = 5,
-                HasDefaultValue = false,
-                DefaultValue = null,
-                IsNullable = true,
+                IsMemberInitializer = true,
             },
 
             new()
             {
-                Name = "observations",
-                ParameterType = typeof(global::DSE.Open.Collections.Generic.ReadOnlyValueCollection<global::DSE.Open.Observations.BinaryWordObservation>),
+                Name = "Location",
+                ParameterType = typeof(global::DSE.Open.Observations.GroundPoint?),
                 Position = 6,
-                HasDefaultValue = false,
-                DefaultValue = null,
-                IsNullable = false,
+                IsMemberInitializer = true,
             },
         };
     }

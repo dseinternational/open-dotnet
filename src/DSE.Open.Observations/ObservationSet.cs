@@ -1,9 +1,9 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.ComponentModel;
 using System.Text.Json.Serialization;
 using DSE.Open.Collections.Generic;
+using DSE.Open.Text.Json.Serialization;
 using DSE.Open.Values;
 
 namespace DSE.Open.Observations;
@@ -21,41 +21,7 @@ namespace DSE.Open.Observations;
 [JsonDerivedType(typeof(BinarySpeechSoundObservationSet), typeDiscriminator: Schemas.BinarySpeechSoundObservationSet)]
 public abstract record ObservationSet
 {
-    protected ObservationSet(
-        DateTimeOffset created,
-        Identifier trackerReference,
-        Identifier observerReference,
-        Uri source,
-        GroundPoint? location)
-    {
-        ArgumentNullException.ThrowIfNull(source);
-
-        Id = ObservationSetId.GetRandomId();
-        CreatedTimestamp = created.ToUnixTimeMilliseconds();
-        TrackerReference = trackerReference;
-        ObserverReference = observerReference;
-        Source = source;
-        Location = location;
-    }
-
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    protected ObservationSet(
-        ObservationSetId id,
-        long createdTimestamp,
-        Identifier trackerReference,
-        Identifier observerReference,
-        Uri source,
-        GroundPoint? location)
-    {
-        ArgumentNullException.ThrowIfNull(source);
-
-        Id = id;
-        CreatedTimestamp = createdTimestamp;
-        TrackerReference = trackerReference;
-        ObserverReference = observerReference;
-        Source = source;
-        Location = location;
-    }
+    private readonly DateTimeOffset _created;
 
     /// <summary>
     /// A randomly generated number between 0 and <see cref="NumberHelper.MaxJsonSafeInteger"/> that,
@@ -64,41 +30,37 @@ public abstract record ObservationSet
     [JsonInclude]
     [JsonPropertyName("id")]
     [JsonPropertyOrder(-98000)]
-    public ObservationSetId Id { get; }
-
-    /// <summary>
-    /// The time the observation set was created.
-    /// </summary>
-    [JsonIgnore]
-    public DateTimeOffset Created => DateTimeOffset.FromUnixTimeMilliseconds(CreatedTimestamp);
-
-    // this ensures equality tests are the same before/after serialization
+    public ObservationSetId Id { get; init; } = ObservationSetId.GetRandomId();
 
     [JsonInclude]
     [JsonPropertyName("crt")]
     [JsonPropertyOrder(-97800)]
-    internal long CreatedTimestamp { get; }
+    [JsonConverter(typeof(JsonDateTimeOffsetUnixTimeMillisecondsConverter))]
+    public required DateTimeOffset Created
+    {
+        get => _created;
+        init => _created = DateTimeOffset.FromUnixTimeMilliseconds(value.ToUnixTimeMilliseconds());
+    }
 
     [JsonInclude]
     [JsonPropertyName("trk")]
     [JsonPropertyOrder(-90000)]
-    public Identifier TrackerReference { get; }
+    public required Identifier TrackerReference { get; init; }
 
     [JsonInclude]
     [JsonPropertyName("obr")]
     [JsonPropertyOrder(-89000)]
-    public Identifier ObserverReference { get; }
+    public required Identifier ObserverReference { get; init; }
 
     [JsonInclude]
     [JsonPropertyOrder(-60000)]
     [JsonPropertyName("src")]
-    public Uri Source { get; } = default!;
+    public required Uri Source { get; set; }
 
     [JsonInclude]
     [JsonPropertyName("loc")]
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
     [JsonPropertyOrder(-50000)]
-    public GroundPoint? Location { get; }
+    public required GroundPoint? Location { get; init; }
 }
 
 /// <summary>
@@ -108,35 +70,7 @@ public abstract record ObservationSet<TObs, TValue> : ObservationSet
     where TObs : Observation<TValue>
     where TValue : IEquatable<TValue>
 {
-    protected ObservationSet(
-        DateTimeOffset created,
-        Identifier trackerReference,
-        Identifier observerReference,
-        Uri source,
-        GroundPoint? location,
-        ReadOnlyValueCollection<TObs> observations)
-        : base(created, trackerReference, observerReference, source, location)
-    {
-        ArgumentNullException.ThrowIfNull(observations);
-        Observations = observations;
-    }
-
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    protected ObservationSet(
-        ObservationSetId id,
-        long createdTimestamp,
-        Identifier trackerReference,
-        Identifier observerReference,
-        Uri source,
-        GroundPoint? location,
-        ReadOnlyValueCollection<TObs> observations)
-        : base(id, createdTimestamp, trackerReference, observerReference, source, location)
-    {
-        ArgumentNullException.ThrowIfNull(observations);
-        Observations = observations;
-    }
-
     [JsonPropertyName("obs")]
     [JsonPropertyOrder(900000)]
-    public ReadOnlyValueCollection<TObs> Observations { get; } = [];
+    public required ReadOnlyValueCollection<TObs> Observations { get; init; } = [];
 }

@@ -20,7 +20,7 @@ public sealed class BinaryMeasureTests
     public void JsonRoundtrip_WithContext()
     {
         var measure = new BinaryMeasure(MeasureId.GetRandomId(), s_measureUri, "Test measure", "[subject] does something");
-        AssertJson.Roundtrip(measure, ObservationsJsonSerializerContext.RelaxedJsonEscaping);
+        AssertJson.Roundtrip(measure, JsonContext.Default);
     }
 
     [Fact]

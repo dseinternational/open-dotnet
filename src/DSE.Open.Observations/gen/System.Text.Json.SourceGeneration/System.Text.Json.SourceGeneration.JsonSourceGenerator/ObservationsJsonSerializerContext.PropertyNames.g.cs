@@ -15,17 +15,6 @@ namespace DSE.Open.Observations
         private static readonly global::System.Text.Json.JsonEncodedText PropName_level = global::System.Text.Json.JsonEncodedText.Encode("level");
         private static readonly global::System.Text.Json.JsonEncodedText PropName_name = global::System.Text.Json.JsonEncodedText.Encode("name");
         private static readonly global::System.Text.Json.JsonEncodedText PropName_statement = global::System.Text.Json.JsonEncodedText.Encode("statement");
-        private static readonly global::System.Text.Json.JsonEncodedText PropName_i = global::System.Text.Json.JsonEncodedText.Encode("i");
-        private static readonly global::System.Text.Json.JsonEncodedText PropName_t = global::System.Text.Json.JsonEncodedText.Encode("t");
-        private static readonly global::System.Text.Json.JsonEncodedText PropName_m = global::System.Text.Json.JsonEncodedText.Encode("m");
-        private static readonly global::System.Text.Json.JsonEncodedText PropName_v = global::System.Text.Json.JsonEncodedText.Encode("v");
-        private static readonly global::System.Text.Json.JsonEncodedText PropName_crt = global::System.Text.Json.JsonEncodedText.Encode("crt");
-        private static readonly global::System.Text.Json.JsonEncodedText PropName_trk = global::System.Text.Json.JsonEncodedText.Encode("trk");
-        private static readonly global::System.Text.Json.JsonEncodedText PropName_obr = global::System.Text.Json.JsonEncodedText.Encode("obr");
-        private static readonly global::System.Text.Json.JsonEncodedText PropName_src = global::System.Text.Json.JsonEncodedText.Encode("src");
-        private static readonly global::System.Text.Json.JsonEncodedText PropName_loc = global::System.Text.Json.JsonEncodedText.Encode("loc");
-        private static readonly global::System.Text.Json.JsonEncodedText PropName_obs = global::System.Text.Json.JsonEncodedText.Encode("obs");
-        private static readonly global::System.Text.Json.JsonEncodedText PropName_d = global::System.Text.Json.JsonEncodedText.Encode("d");
         private static readonly global::System.Text.Json.JsonEncodedText PropName_latitude = global::System.Text.Json.JsonEncodedText.Encode("latitude");
         private static readonly global::System.Text.Json.JsonEncodedText PropName_longitude = global::System.Text.Json.JsonEncodedText.Encode("longitude");
         private static readonly global::System.Text.Json.JsonEncodedText PropName_accuracy = global::System.Text.Json.JsonEncodedText.Encode("accuracy");

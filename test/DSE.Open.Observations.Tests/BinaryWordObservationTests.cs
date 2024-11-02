@@ -19,7 +19,7 @@ public sealed class BinaryWordObservationTests
     public void JsonRoundtrip_WithContext()
     {
         var obs = BinaryWordObservation.Create(TestMeasures.BinaryWordMeasure, (WordId)420048260031uL, true);
-        AssertJson.Roundtrip(obs, ObservationsJsonSerializerContext.RelaxedJsonEscaping);
+        AssertJson.Roundtrip(obs, JsonContext.Default);
     }
 
     [Fact]

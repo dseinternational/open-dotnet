@@ -1,29 +1,25 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Text.Json.Serialization;
+using System.Diagnostics.CodeAnalysis;
 using DSE.Open.Language;
 
 namespace DSE.Open.Observations;
 
 public sealed record SpokenWordClarityMeasure : Measure<SpokenWordClarityObservation, SpeechClarity, WordId>
 {
+    [SetsRequiredMembers]
     public SpokenWordClarityMeasure(MeasureId id, Uri uri, string name, string statement)
-        : base(id, uri, MeasurementLevel.Binary, name, statement)
     {
+        Id = id;
+        Uri = uri;
+        MeasurementLevel = MeasurementLevel.Binary;
+        Name = name;
+        Statement = statement;
     }
 
-    [JsonConstructor]
-    internal SpokenWordClarityMeasure(MeasureId id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
-        : base(id, uri, measurementLevel, name, statement)
+    public override SpokenWordClarityObservation CreateObservation(WordId wordId, SpeechClarity value, DateTimeOffset timestamp)
     {
-        ArgumentOutOfRangeException.ThrowIfNotEqual(measurementLevel, MeasurementLevel.Binary);
-    }
-
-#pragma warning disable CA1725 // Parameter names should match base declaration
-    public override SpokenWordClarityObservation CreateObservation(WordId speechSound, SpeechClarity value, DateTimeOffset timestamp)
-#pragma warning restore CA1725 // Parameter names should match base declaration
-    {
-        return SpokenWordClarityObservation.Create(this, speechSound, value, TimeProvider.System);
+        return SpokenWordClarityObservation.Create(this, wordId, value, TimeProvider.System);
     }
 }

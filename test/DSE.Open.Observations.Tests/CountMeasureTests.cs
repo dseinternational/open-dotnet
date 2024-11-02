@@ -8,26 +8,26 @@ namespace DSE.Open.Observations;
 
 public sealed class CountMeasureTests
 {
-    public static readonly Uri s_measureUri = new("https://schema-test.dseapi.app/testing/measure");
+    public static readonly Uri MeasureUri = new("https://schema-test.dseapi.app/testing/measure");
 
     [Fact]
     public void CanSerializeAndDeserialize()
     {
-        var measure = new CountMeasure(MeasureId.GetRandomId(), s_measureUri, "Test measure", "[subject] does something");
+        var measure = new CountMeasure(MeasureId.GetRandomId(), MeasureUri, "Test measure", "[subject] does something");
         AssertJson.Roundtrip(measure);
     }
 
     [Fact]
     public void JsonRoundtrip_WithContext()
     {
-        var measure = new CountMeasure(MeasureId.GetRandomId(), s_measureUri, "Test measure", "[subject] does something");
-        AssertJson.Roundtrip(measure, ObservationsJsonSerializerContext.RelaxedJsonEscaping);
+        var measure = new CountMeasure(MeasureId.GetRandomId(), MeasureUri, "Test measure", "[subject] does something");
+        AssertJson.Roundtrip(measure, JsonContext.Default);
     }
 
     [Fact]
     public void CanCreateObservation()
     {
-        var measure = new CountMeasure(MeasureId.GetRandomId(), s_measureUri, "Test measure", "[subject] does something");
+        var measure = new CountMeasure(MeasureId.GetRandomId(), MeasureUri, "Test measure", "[subject] does something");
         var obs = measure.CreateObservation((Count)42, DateTimeOffset.UtcNow);
         Assert.Equal(measure.Id, obs.MeasureId);
         Assert.Equal((Count)42, obs.Value);

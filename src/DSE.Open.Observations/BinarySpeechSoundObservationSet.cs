@@ -1,8 +1,6 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.ComponentModel;
-using System.Text.Json.Serialization;
 using DSE.Open.Collections.Generic;
 using DSE.Open.Values;
 
@@ -10,31 +8,6 @@ namespace DSE.Open.Observations;
 
 public sealed record BinarySpeechSoundObservationSet : ObservationSet<BinarySpeechSoundObservation, bool>
 {
-    internal BinarySpeechSoundObservationSet(
-        DateTimeOffset created,
-        Identifier trackerReference,
-        Identifier observerReference,
-        Uri source,
-        GroundPoint? location,
-        ReadOnlyValueCollection<BinarySpeechSoundObservation> observations)
-        : base(created, trackerReference, observerReference, source, location, observations)
-    {
-    }
-
-    [JsonConstructor]
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    internal BinarySpeechSoundObservationSet(
-        ObservationSetId id,
-        long createdTimestamp,
-        Identifier trackerReference,
-        Identifier observerReference,
-        Uri source,
-        GroundPoint? location,
-        ReadOnlyValueCollection<BinarySpeechSoundObservation> observations)
-        : base(id, createdTimestamp, trackerReference, observerReference, source, location, observations)
-    {
-    }
-
     public static BinarySpeechSoundObservationSet Create(
         Identifier trackerReference,
         Identifier observerReference,
@@ -68,6 +41,14 @@ public sealed record BinarySpeechSoundObservationSet : ObservationSet<BinarySpee
         ArgumentNullException.ThrowIfNull(observations);
         ArgumentNullException.ThrowIfNull(timeProvider);
 
-        return new BinarySpeechSoundObservationSet(timeProvider.GetUtcNow(), trackerReference, observerReference, source, location, observations);
+        return new BinarySpeechSoundObservationSet
+        {
+            Created = timeProvider.GetUtcNow(),
+            TrackerReference = trackerReference,
+            ObserverReference = observerReference,
+            Source = source,
+            Location = location,
+            Observations = observations
+        };
     }
 }

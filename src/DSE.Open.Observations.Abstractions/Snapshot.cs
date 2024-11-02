@@ -14,18 +14,22 @@ namespace DSE.Open.Observations;
 /// </summary>
 public abstract record Snapshot : ImmutableDataTransferObject
 {
-    protected Snapshot(DateTimeOffset time)
-    {
-        ObservationsValidator.EnsureMinimumObservationTime(time);
-        Time = time;
-    }
+    private readonly DateTimeOffset _time;
 
     /// <summary>
     /// The time the snapshot was created.
     /// </summary>
     [JsonPropertyName("t")]
     [JsonConverter(typeof(JsonDateTimeOffsetUnixTimeMillisecondsConverter))]
-    public DateTimeOffset Time { get; private init; }
+    public required DateTimeOffset Time
+    {
+        get => _time;
+        init
+        {
+            ObservationsValidator.EnsureMinimumObservationTime(value);
+            _time = DateTimeOffset.FromUnixTimeMilliseconds(value.ToUnixTimeMilliseconds());
+        }
+    }
 
     public bool HasMeasure(Measure measure)
     {
@@ -47,16 +51,11 @@ public abstract record Snapshot : ImmutableDataTransferObject
 public abstract record Snapshot<TObs> : Snapshot
     where TObs : Observation
 {
-    protected Snapshot(DateTimeOffset time, TObs observation) : base(time)
-    {
-        Observation = observation;
-    }
-
     /// <summary>
     /// The observation at the time the snapshot was created.
     /// </summary>
     [JsonPropertyName("o")]
-    public TObs Observation { get; }
+    public required TObs Observation { get; init; }
 
     public override bool HasMeasureId(MeasureId measureId)
     {
@@ -79,9 +78,6 @@ public abstract record Snapshot<TObs, TValue> : Snapshot<TObs>
     where TObs : Observation<TValue>
     where TValue : IEquatable<TValue>
 {
-    protected Snapshot(DateTimeOffset time, TObs observation) : base(time, observation)
-    {
-    }
 }
 
 /// <summary>
@@ -92,10 +88,6 @@ public abstract record Snapshot<TObs, TValue, TDisc> : Snapshot<TObs, TValue>
     where TValue : IEquatable<TValue>
     where TDisc : IEquatable<TDisc>
 {
-    protected Snapshot(DateTimeOffset time, TObs observation) : base(time, observation)
-    {
-    }
-
     public virtual bool HasMeasurement(Measure measure, TDisc discriminator)
     {
         ArgumentNullException.ThrowIfNull(measure);
