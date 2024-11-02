@@ -54,7 +54,7 @@ namespace DSE.Open.Observations
 
             foreach (global::DSE.Open.Observations.BinarySpeechSoundObservation element in value)
             {
-                BinarySpeechSoundObservationSerializeHandler(writer, element);
+                global::System.Text.Json.JsonSerializer.Serialize(writer, element, BinarySpeechSoundObservation);
             }
 
             writer.WriteEndArray();

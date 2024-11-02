@@ -10,11 +10,12 @@ public sealed class CountSnapshotTests
     [Fact]
     public void New_WithInvalidDate_ShouldThrow()
     {
-        // Arrange
-        var date = DateTime.Parse("01/01/2024", null).AddDays(-1);
-
         // Act
-        void Act() => _ = new CountSnapshot(date, CountObservation.Create(TestMeasures.CountMeasure, Count.Zero));
+        static void Act() => _ = new CountSnapshot
+        {
+            Time = DateTime.Parse("01/01/2024", null).AddDays(-1),
+            Observation = CountObservation.Create(TestMeasures.CountMeasure, Count.Zero)
+        };
 
         // Assert
         Assert.Throws<ArgumentOutOfRangeException>(Act);

@@ -1,7 +1,6 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.ComponentModel;
 using System.IO.Hashing;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -12,19 +11,6 @@ namespace DSE.Open.Observations;
 
 public record SpeechSoundClarityObservation : Observation<SpeechClarity, SpeechSound>
 {
-    protected SpeechSoundClarityObservation(Measure measure, SpeechSound discriminator, DateTimeOffset time, SpeechClarity value)
-        : base(measure, discriminator, time, value)
-    {
-    }
-
-    [JsonConstructor]
-    [Obsolete("For deserialization only", true)]
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    protected SpeechSoundClarityObservation(ObservationId id, MeasureId measureId, SpeechSound discriminator, long timestamp, SpeechClarity value)
-        : base(id, measureId, discriminator, timestamp, value)
-    {
-    }
-
     [JsonIgnore]
     public SpeechSound SpeechSound => Discriminator;
 
@@ -39,9 +25,16 @@ public record SpeechSoundClarityObservation : Observation<SpeechClarity, SpeechS
         SpeechClarity value,
         TimeProvider timeProvider)
     {
+        ArgumentNullException.ThrowIfNull(measure);
         ArgumentNullException.ThrowIfNull(timeProvider);
 
-        return new SpeechSoundClarityObservation(measure, speechSound, timeProvider.GetUtcNow(), value);
+        return new SpeechSoundClarityObservation
+        {
+            Time = timeProvider.GetUtcNow(),
+            MeasureId = measure.Id,
+            Value = value,
+            Discriminator = speechSound
+        };
     }
 
     [SkipLocalsInit]

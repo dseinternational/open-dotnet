@@ -54,7 +54,7 @@ namespace DSE.Open.Observations
 
             foreach (global::DSE.Open.Observations.CountObservation element in value)
             {
-                CountObservationSerializeHandler(writer, element);
+                global::System.Text.Json.JsonSerializer.Serialize(writer, element, CountObservation);
             }
 
             writer.WriteEndArray();

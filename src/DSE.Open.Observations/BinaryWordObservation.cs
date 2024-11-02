@@ -1,7 +1,6 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.ComponentModel;
 using System.Text.Json.Serialization;
 using DSE.Open.Language;
 
@@ -9,18 +8,6 @@ namespace DSE.Open.Observations;
 
 public record BinaryWordObservation : Observation<bool, WordId>
 {
-    protected BinaryWordObservation(Measure measure, WordId discriminator, DateTimeOffset time, bool value)
-        : base(measure, discriminator, time, value)
-    {
-    }
-
-    [JsonConstructor]
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    internal BinaryWordObservation(ObservationId id, MeasureId measureId, WordId discriminator, long timestamp, bool value)
-        : base(id, measureId, discriminator, timestamp, value)
-    {
-    }
-
     [JsonIgnore]
     public WordId WordId => Discriminator;
 
@@ -35,9 +22,16 @@ public record BinaryWordObservation : Observation<bool, WordId>
         bool value,
         TimeProvider timeProvider)
     {
+        ArgumentNullException.ThrowIfNull(measure);
         ArgumentNullException.ThrowIfNull(timeProvider);
 
-        return new BinaryWordObservation(measure, wordId, timeProvider.GetUtcNow(), value);
+        return new BinaryWordObservation
+        {
+            Time = timeProvider.GetUtcNow(),
+            MeasureId = measure.Id,
+            Value = value,
+            Discriminator = wordId
+        };
     }
 
     protected override ulong GetDiscriminatorId()

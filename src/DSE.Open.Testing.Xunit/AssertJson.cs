@@ -19,7 +19,7 @@ public static class AssertJson
     {
         var json = JsonSerializer.Serialize(value, options);
         var deserialized = JsonSerializer.Deserialize<T>(json, options);
-        Assert.Equivalent(value, deserialized);
+        Assert.Equivalent(value, deserialized, true);
     }
 
     /// <summary>
@@ -32,13 +32,13 @@ public static class AssertJson
     {
         var json = JsonSerializer.Serialize(value, typeInfo);
         var deserialized = JsonSerializer.Deserialize(json, typeInfo);
-        Assert.Equivalent(value, deserialized);
+        Assert.Equivalent(value, deserialized, true);
     }
 
     public static void Roundtrip<T>(T value, JsonSerializerContext context)
     {
         var json = JsonSerializer.Serialize(value, typeof(T), context);
         var deserialized = JsonSerializer.Deserialize(json, typeof(T), context);
-        Assert.Equivalent(value, deserialized);
+        Assert.Equivalent(value, deserialized, true);
     }
 }

@@ -54,7 +54,7 @@ namespace DSE.Open.Observations
 
             foreach (global::DSE.Open.Observations.RatioObservation element in value)
             {
-                RatioObservationSerializeHandler(writer, element);
+                global::System.Text.Json.JsonSerializer.Serialize(writer, element, RatioObservation);
             }
 
             writer.WriteEndArray();

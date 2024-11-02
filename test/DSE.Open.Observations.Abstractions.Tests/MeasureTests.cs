@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 
 namespace DSE.Open.Observations;
@@ -130,35 +131,27 @@ public class MeasureTests
 
 public sealed record FakeBinaryObservation : Observation<bool>
 {
-    public FakeBinaryObservation(Measure measure, DateTimeOffset time, bool value)
-        : base(measure, time, value)
-    {
-    }
-
-    [JsonConstructor]
-    [Obsolete("For deserialization only", true)]
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    private FakeBinaryObservation(ObservationId id, MeasureId measureId, long timestamp, bool value)
-        : base(id, measureId, timestamp, value)
-    {
-    }
 }
 
 public sealed record FakeBinaryMeasure : Measure<FakeBinaryObservation, bool>
 {
+    [SetsRequiredMembers]
     public FakeBinaryMeasure(MeasureId id, Uri uri, string name, string statement)
-        : base(id, uri, MeasurementLevel.Binary, name, statement)
     {
-    }
-
-    [JsonConstructor]
-    public FakeBinaryMeasure(MeasureId id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
-        : base(id, uri, measurementLevel, name, statement)
-    {
+        Id = id;
+        Uri = uri;
+        MeasurementLevel = MeasurementLevel.Binary;
+        Name = name;
+        Statement = statement;
     }
 
     public override FakeBinaryObservation CreateObservation(bool value, DateTimeOffset timestamp)
     {
-        return new FakeBinaryObservation(this, timestamp, value);
+        return new FakeBinaryObservation
+        {
+            Time = timestamp,
+            MeasureId = Id,
+            Value = value
+        };
     }
 }

@@ -29,10 +29,10 @@ namespace DSE.Open.Observations
                 var objectInfo = new global::System.Text.Json.Serialization.Metadata.JsonObjectInfoValues<global::DSE.Open.Observations.SpeechClarityMeasure>
                 {
                     ObjectCreator = null,
-                    ObjectWithParameterizedConstructorCreator = static args => new global::DSE.Open.Observations.SpeechClarityMeasure((global::DSE.Open.Observations.MeasureId)args[0], (global::System.Uri)args[1], (global::DSE.Open.Observations.MeasurementLevel)args[2], (string)args[3], (string)args[4]),
+                    ObjectWithParameterizedConstructorCreator = static args => new global::DSE.Open.Observations.SpeechClarityMeasure((global::DSE.Open.Observations.MeasureId)args[0], (global::System.Uri)args[1], (string)args[2], (string)args[3]){ Id = (global::DSE.Open.Observations.MeasureId)args[0], Uri = (global::System.Uri)args[1], MeasurementLevel = (global::DSE.Open.Observations.MeasurementLevel)args[4], Name = (string)args[2], Statement = (string)args[3] },
                     PropertyMetadataInitializer = _ => SpeechClarityMeasurePropInit(options),
                     ConstructorParameterMetadataInitializer = SpeechClarityMeasureCtorParamInit,
-                    ConstructorAttributeProviderFactory = static () => typeof(global::DSE.Open.Observations.SpeechClarityMeasure).GetConstructor(InstanceMemberBindingFlags, binder: null, new[] {typeof(global::DSE.Open.Observations.MeasureId), typeof(global::System.Uri), typeof(global::DSE.Open.Observations.MeasurementLevel), typeof(string), typeof(string)}, modifiers: null),
+                    ConstructorAttributeProviderFactory = static () => typeof(global::DSE.Open.Observations.SpeechClarityMeasure).GetConstructor(InstanceMemberBindingFlags, binder: null, new[] {typeof(global::DSE.Open.Observations.MeasureId), typeof(global::System.Uri), typeof(string), typeof(string)}, modifiers: null),
                     SerializeHandler = SpeechClarityMeasureSerializeHandler,
                 };
                 
@@ -56,7 +56,7 @@ namespace DSE.Open.Observations
                 DeclaringType = typeof(global::DSE.Open.Observations.Measure),
                 Converter = null,
                 Getter = static obj => ((global::DSE.Open.Observations.Measure)obj).Id,
-                Setter = null,
+                Setter = static (obj, value) => throw new global::System.InvalidOperationException("Setting init-only properties is not supported in source generation mode."),
                 IgnoreCondition = null,
                 HasJsonInclude = false,
                 IsExtensionData = false,
@@ -76,7 +76,7 @@ namespace DSE.Open.Observations
                 DeclaringType = typeof(global::DSE.Open.Observations.Measure),
                 Converter = null,
                 Getter = static obj => ((global::DSE.Open.Observations.Measure)obj).Uri,
-                Setter = null,
+                Setter = static (obj, value) => throw new global::System.InvalidOperationException("Setting init-only properties is not supported in source generation mode."),
                 IgnoreCondition = null,
                 HasJsonInclude = false,
                 IsExtensionData = false,
@@ -88,6 +88,7 @@ namespace DSE.Open.Observations
             
             properties[1] = global::System.Text.Json.Serialization.Metadata.JsonMetadataServices.CreatePropertyInfo<global::System.Uri>(options, info1);
             properties[1].IsGetNullable = false;
+            properties[1].IsSetNullable = false;
 
             var info2 = new global::System.Text.Json.Serialization.Metadata.JsonPropertyInfoValues<global::DSE.Open.Observations.MeasurementLevel>
             {
@@ -97,7 +98,7 @@ namespace DSE.Open.Observations
                 DeclaringType = typeof(global::DSE.Open.Observations.Measure),
                 Converter = null,
                 Getter = static obj => ((global::DSE.Open.Observations.Measure)obj).MeasurementLevel,
-                Setter = null,
+                Setter = static (obj, value) => throw new global::System.InvalidOperationException("Setting init-only properties is not supported in source generation mode."),
                 IgnoreCondition = null,
                 HasJsonInclude = false,
                 IsExtensionData = false,
@@ -117,7 +118,7 @@ namespace DSE.Open.Observations
                 DeclaringType = typeof(global::DSE.Open.Observations.Measure),
                 Converter = null,
                 Getter = static obj => ((global::DSE.Open.Observations.Measure)obj).Name,
-                Setter = null,
+                Setter = static (obj, value) => throw new global::System.InvalidOperationException("Setting init-only properties is not supported in source generation mode."),
                 IgnoreCondition = null,
                 HasJsonInclude = false,
                 IsExtensionData = false,
@@ -129,6 +130,7 @@ namespace DSE.Open.Observations
             
             properties[3] = global::System.Text.Json.Serialization.Metadata.JsonMetadataServices.CreatePropertyInfo<string>(options, info3);
             properties[3].IsGetNullable = false;
+            properties[3].IsSetNullable = false;
 
             var info4 = new global::System.Text.Json.Serialization.Metadata.JsonPropertyInfoValues<string>
             {
@@ -138,7 +140,7 @@ namespace DSE.Open.Observations
                 DeclaringType = typeof(global::DSE.Open.Observations.Measure),
                 Converter = null,
                 Getter = static obj => ((global::DSE.Open.Observations.Measure)obj).Statement,
-                Setter = null,
+                Setter = static (obj, value) => throw new global::System.InvalidOperationException("Setting init-only properties is not supported in source generation mode."),
                 IgnoreCondition = null,
                 HasJsonInclude = false,
                 IsExtensionData = false,
@@ -150,6 +152,7 @@ namespace DSE.Open.Observations
             
             properties[4] = global::System.Text.Json.Serialization.Metadata.JsonMetadataServices.CreatePropertyInfo<string>(options, info4);
             properties[4].IsGetNullable = false;
+            properties[4].IsSetNullable = false;
 
             var info5 = new global::System.Text.Json.Serialization.Metadata.JsonPropertyInfoValues<global::System.Collections.Generic.IReadOnlyDictionary<string, object>>
             {
@@ -243,19 +246,9 @@ namespace DSE.Open.Observations
 
             new()
             {
-                Name = "measurementLevel",
-                ParameterType = typeof(global::DSE.Open.Observations.MeasurementLevel),
-                Position = 2,
-                HasDefaultValue = false,
-                DefaultValue = null,
-                IsNullable = false,
-            },
-
-            new()
-            {
                 Name = "name",
                 ParameterType = typeof(string),
-                Position = 3,
+                Position = 2,
                 HasDefaultValue = false,
                 DefaultValue = null,
                 IsNullable = false,
@@ -265,10 +258,18 @@ namespace DSE.Open.Observations
             {
                 Name = "statement",
                 ParameterType = typeof(string),
-                Position = 4,
+                Position = 3,
                 HasDefaultValue = false,
                 DefaultValue = null,
                 IsNullable = false,
+            },
+
+            new()
+            {
+                Name = "MeasurementLevel",
+                ParameterType = typeof(global::DSE.Open.Observations.MeasurementLevel),
+                Position = 4,
+                IsMemberInitializer = true,
             },
         };
     }

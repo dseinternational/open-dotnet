@@ -21,7 +21,7 @@ public sealed class BinarySpeechSoundMeasureTests
     public void JsonRoundtrip_WithContext()
     {
         var measure = new BinarySpeechSoundMeasure(MeasureId.GetRandomId(), s_measureUri, "Test measure", "[subject] does something");
-        AssertJson.Roundtrip(measure, ObservationsJsonSerializerContext.RelaxedJsonEscaping);
+        AssertJson.Roundtrip(measure, JsonContext.Default);
     }
 
     [Fact]

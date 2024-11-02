@@ -54,7 +54,7 @@ namespace DSE.Open.Observations
 
             foreach (global::DSE.Open.Observations.BinaryObservation element in value)
             {
-                BinaryObservationSerializeHandler(writer, element);
+                global::System.Text.Json.JsonSerializer.Serialize(writer, element, BinaryObservation);
             }
 
             writer.WriteEndArray();

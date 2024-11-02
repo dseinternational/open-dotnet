@@ -267,10 +267,6 @@ namespace DSE.Open.Observations
             {
                 return Create_Uri(options);
             }
-            if (type == typeof(long))
-            {
-                return Create_Int64(options);
-            }
             if (type == typeof(string))
             {
                 return Create_String(options);

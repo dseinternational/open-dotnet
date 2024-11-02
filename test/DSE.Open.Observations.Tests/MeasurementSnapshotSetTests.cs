@@ -1,9 +1,8 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Diagnostics;
 using System.Text.Json;
-using System.Text.Json.Serialization.Metadata;
+using System.Text.Json.Serialization;
 using DSE.Open.Values;
 
 namespace DSE.Open.Observations;
@@ -24,7 +23,7 @@ public sealed class MeasurementSnapshotSetTests
 
         // Act
         var deserialized = useContext
-            ? JsonRoundtripCore(set, ObservationsJsonSerializerContext.RelaxedJsonEscaping)
+            ? JsonRoundtripCore(set, JsonContext.Default)
             : JsonRoundtripCore(set);
 
         // Assert
@@ -46,7 +45,7 @@ public sealed class MeasurementSnapshotSetTests
 
         // Act
         var deserialized = useContext
-            ? JsonRoundtripCore(set, ObservationsJsonSerializerContext.RelaxedJsonEscaping)
+            ? JsonRoundtripCore(set, JsonContext.Default)
             : JsonRoundtripCore(set);
 
         // Assert
@@ -68,7 +67,7 @@ public sealed class MeasurementSnapshotSetTests
 
         // Act
         var deserialized = useContext
-            ? JsonRoundtripCore(set, ObservationsJsonSerializerContext.RelaxedJsonEscaping)
+            ? JsonRoundtripCore(set, JsonContext.Default)
             : JsonRoundtripCore(set);
 
         // Assert
@@ -76,7 +75,7 @@ public sealed class MeasurementSnapshotSetTests
         Assert.Equal(set, deserialized); // xUnit HashSet equality calls `SetEquals`
     }
 
-    private static TSet? JsonRoundtripCore<TSet>(TSet set, ObservationsJsonSerializerContext context)
+    private static TSet? JsonRoundtripCore<TSet>(TSet set, JsonSerializerContext context)
     {
         var json = JsonSerializer.Serialize(set, typeof(TSet), context);
         return (TSet?)JsonSerializer.Deserialize(json, typeof(TSet), context);

@@ -19,7 +19,7 @@ public sealed class BinaryObservationSetTests
     public void JsonRoundTrip_WithContext()
     {
         var obs = CreateBinaryObservationSet();
-        AssertJson.Roundtrip(obs, ObservationsJsonSerializerContext.RelaxedJsonEscaping);
+        AssertJson.Roundtrip(obs, JsonContext.Default);
     }
 
     private static BinaryObservationSet CreateBinaryObservationSet()

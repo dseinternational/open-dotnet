@@ -29,10 +29,10 @@ namespace DSE.Open.Observations
                 var objectInfo = new global::System.Text.Json.Serialization.Metadata.JsonObjectInfoValues<global::DSE.Open.Observations.AmountSnapshot>
                 {
                     ObjectCreator = null,
-                    ObjectWithParameterizedConstructorCreator = static args => new global::DSE.Open.Observations.AmountSnapshot((global::System.DateTimeOffset)args[0], (global::DSE.Open.Observations.AmountObservation)args[1]),
+                    ObjectWithParameterizedConstructorCreator = static args => new global::DSE.Open.Observations.AmountSnapshot(){ Observation = (global::DSE.Open.Observations.AmountObservation)args[0], Time = (global::System.DateTimeOffset)args[1] },
                     PropertyMetadataInitializer = _ => AmountSnapshotPropInit(options),
                     ConstructorParameterMetadataInitializer = AmountSnapshotCtorParamInit,
-                    ConstructorAttributeProviderFactory = static () => typeof(global::DSE.Open.Observations.AmountSnapshot).GetConstructor(InstanceMemberBindingFlags, binder: null, new[] {typeof(global::System.DateTimeOffset), typeof(global::DSE.Open.Observations.AmountObservation)}, modifiers: null),
+                    ConstructorAttributeProviderFactory = static () => typeof(global::DSE.Open.Observations.AmountSnapshot).GetConstructor(InstanceMemberBindingFlags, binder: null, global::System.Array.Empty<global::System.Type>(), modifiers: null),
                     SerializeHandler = null,
                 };
                 
@@ -56,7 +56,7 @@ namespace DSE.Open.Observations
                 DeclaringType = typeof(global::DSE.Open.Observations.Snapshot<global::DSE.Open.Observations.AmountObservation>),
                 Converter = null,
                 Getter = static obj => ((global::DSE.Open.Observations.Snapshot<global::DSE.Open.Observations.AmountObservation>)obj).Observation,
-                Setter = null,
+                Setter = static (obj, value) => throw new global::System.InvalidOperationException("Setting init-only properties is not supported in source generation mode."),
                 IgnoreCondition = null,
                 HasJsonInclude = false,
                 IsExtensionData = false,
@@ -67,6 +67,7 @@ namespace DSE.Open.Observations
             };
             
             properties[0] = global::System.Text.Json.Serialization.Metadata.JsonMetadataServices.CreatePropertyInfo<global::DSE.Open.Observations.AmountObservation>(options, info0);
+            properties[0].IsRequired = true;
 
             var info1 = new global::System.Text.Json.Serialization.Metadata.JsonPropertyInfoValues<global::System.DateTimeOffset>
             {
@@ -76,7 +77,7 @@ namespace DSE.Open.Observations
                 DeclaringType = typeof(global::DSE.Open.Observations.Snapshot),
                 Converter = (global::System.Text.Json.Serialization.JsonConverter<global::System.DateTimeOffset>)ExpandConverter(typeof(global::System.DateTimeOffset), new global::DSE.Open.Text.Json.Serialization.JsonDateTimeOffsetUnixTimeMillisecondsConverter(), options),
                 Getter = static obj => ((global::DSE.Open.Observations.Snapshot)obj).Time,
-                Setter = null,
+                Setter = static (obj, value) => throw new global::System.InvalidOperationException("Setting init-only properties is not supported in source generation mode."),
                 IgnoreCondition = null,
                 HasJsonInclude = false,
                 IsExtensionData = false,
@@ -87,6 +88,7 @@ namespace DSE.Open.Observations
             };
             
             properties[1] = global::System.Text.Json.Serialization.Metadata.JsonMetadataServices.CreatePropertyInfo<global::System.DateTimeOffset>(options, info1);
+            properties[1].IsRequired = true;
 
             var info2 = new global::System.Text.Json.Serialization.Metadata.JsonPropertyInfoValues<global::System.Collections.Generic.IReadOnlyDictionary<string, object>>
             {
@@ -136,22 +138,18 @@ namespace DSE.Open.Observations
         {
             new()
             {
-                Name = "time",
-                ParameterType = typeof(global::System.DateTimeOffset),
+                Name = "Observation",
+                ParameterType = typeof(global::DSE.Open.Observations.AmountObservation),
                 Position = 0,
-                HasDefaultValue = false,
-                DefaultValue = null,
-                IsNullable = false,
+                IsMemberInitializer = true,
             },
 
             new()
             {
-                Name = "observation",
-                ParameterType = typeof(global::DSE.Open.Observations.AmountObservation),
+                Name = "Time",
+                ParameterType = typeof(global::System.DateTimeOffset),
                 Position = 1,
-                HasDefaultValue = false,
-                DefaultValue = null,
-                IsNullable = false,
+                IsMemberInitializer = true,
             },
         };
     }

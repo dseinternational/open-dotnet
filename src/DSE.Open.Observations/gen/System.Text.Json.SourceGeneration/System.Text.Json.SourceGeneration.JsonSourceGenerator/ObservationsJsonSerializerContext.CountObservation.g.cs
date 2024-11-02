@@ -29,11 +29,11 @@ namespace DSE.Open.Observations
                 var objectInfo = new global::System.Text.Json.Serialization.Metadata.JsonObjectInfoValues<global::DSE.Open.Observations.CountObservation>
                 {
                     ObjectCreator = null,
-                    ObjectWithParameterizedConstructorCreator = static args => new global::DSE.Open.Observations.CountObservation((global::DSE.Open.Observations.ObservationId)args[0], (global::DSE.Open.Observations.MeasureId)args[1], (long)args[2], (global::DSE.Open.Values.Count)args[3]),
+                    ObjectWithParameterizedConstructorCreator = static args => new global::DSE.Open.Observations.CountObservation(){ Value = (global::DSE.Open.Values.Count)args[0], Id = (global::DSE.Open.Observations.ObservationId)args[1], Time = (global::System.DateTimeOffset)args[2], MeasureId = (global::DSE.Open.Observations.MeasureId)args[3] },
                     PropertyMetadataInitializer = _ => CountObservationPropInit(options),
                     ConstructorParameterMetadataInitializer = CountObservationCtorParamInit,
-                    ConstructorAttributeProviderFactory = static () => typeof(global::DSE.Open.Observations.CountObservation).GetConstructor(InstanceMemberBindingFlags, binder: null, new[] {typeof(global::DSE.Open.Observations.ObservationId), typeof(global::DSE.Open.Observations.MeasureId), typeof(long), typeof(global::DSE.Open.Values.Count)}, modifiers: null),
-                    SerializeHandler = CountObservationSerializeHandler,
+                    ConstructorAttributeProviderFactory = static () => typeof(global::DSE.Open.Observations.CountObservation).GetConstructor(InstanceMemberBindingFlags, binder: null, global::System.Array.Empty<global::System.Type>(), modifiers: null),
+                    SerializeHandler = null,
                 };
                 
                 jsonTypeInfo = global::System.Text.Json.Serialization.Metadata.JsonMetadataServices.CreateObjectInfo<global::DSE.Open.Observations.CountObservation>(options, objectInfo);
@@ -46,7 +46,7 @@ namespace DSE.Open.Observations
 
         private static global::System.Text.Json.Serialization.Metadata.JsonPropertyInfo[] CountObservationPropInit(global::System.Text.Json.JsonSerializerOptions options)
         {
-            var properties = new global::System.Text.Json.Serialization.Metadata.JsonPropertyInfo[7];
+            var properties = new global::System.Text.Json.Serialization.Metadata.JsonPropertyInfo[6];
 
             var info0 = new global::System.Text.Json.Serialization.Metadata.JsonPropertyInfoValues<global::DSE.Open.Values.Count>
             {
@@ -56,7 +56,7 @@ namespace DSE.Open.Observations
                 DeclaringType = typeof(global::DSE.Open.Observations.Observation<global::DSE.Open.Values.Count>),
                 Converter = null,
                 Getter = static obj => ((global::DSE.Open.Observations.Observation<global::DSE.Open.Values.Count>)obj).Value,
-                Setter = null,
+                Setter = static (obj, value) => throw new global::System.InvalidOperationException("Setting init-only properties is not supported in source generation mode."),
                 IgnoreCondition = null,
                 HasJsonInclude = false,
                 IsExtensionData = false,
@@ -67,6 +67,7 @@ namespace DSE.Open.Observations
             };
             
             properties[0] = global::System.Text.Json.Serialization.Metadata.JsonMetadataServices.CreatePropertyInfo<global::DSE.Open.Values.Count>(options, info0);
+            properties[0].IsRequired = true;
             properties[0].Order = -1;
 
             var info1 = new global::System.Text.Json.Serialization.Metadata.JsonPropertyInfoValues<global::DSE.Open.Observations.ObservationId>
@@ -77,7 +78,7 @@ namespace DSE.Open.Observations
                 DeclaringType = typeof(global::DSE.Open.Observations.Observation),
                 Converter = null,
                 Getter = static obj => ((global::DSE.Open.Observations.Observation)obj).Id,
-                Setter = static (obj, value) => throw new global::System.InvalidOperationException("The member 'CountObservation.Id' has been annotated with the JsonIncludeAttribute but is not visible to the source generator."),
+                Setter = static (obj, value) => throw new global::System.InvalidOperationException("Setting init-only properties is not supported in source generation mode."),
                 IgnoreCondition = null,
                 HasJsonInclude = true,
                 IsExtensionData = false,
@@ -96,42 +97,23 @@ namespace DSE.Open.Observations
                 IsPublic = true,
                 IsVirtual = false,
                 DeclaringType = typeof(global::DSE.Open.Observations.Observation),
-                Converter = null,
-                Getter = null,
-                Setter = null,
-                IgnoreCondition = global::System.Text.Json.Serialization.JsonIgnoreCondition.Always,
-                HasJsonInclude = false,
-                IsExtensionData = false,
-                NumberHandling = null,
-                PropertyName = "Time",
-                JsonPropertyName = null,
-                AttributeProviderFactory = static () => typeof(global::DSE.Open.Observations.Observation).GetProperty("Time", InstanceMemberBindingFlags, null, typeof(global::System.DateTimeOffset), global::System.Array.Empty<global::System.Type>(), null),
-            };
-            
-            properties[2] = global::System.Text.Json.Serialization.Metadata.JsonMetadataServices.CreatePropertyInfo<global::System.DateTimeOffset>(options, info2);
-
-            var info3 = new global::System.Text.Json.Serialization.Metadata.JsonPropertyInfoValues<long>
-            {
-                IsProperty = true,
-                IsPublic = true,
-                IsVirtual = false,
-                DeclaringType = typeof(global::DSE.Open.Observations.Observation),
-                Converter = null,
-                Getter = static obj => ((global::DSE.Open.Observations.Observation)obj).Timestamp,
-                Setter = static (obj, value) => throw new global::System.InvalidOperationException("The member 'CountObservation.Timestamp' has been annotated with the JsonIncludeAttribute but is not visible to the source generator."),
+                Converter = (global::System.Text.Json.Serialization.JsonConverter<global::System.DateTimeOffset>)ExpandConverter(typeof(global::System.DateTimeOffset), new global::DSE.Open.Text.Json.Serialization.JsonDateTimeOffsetUnixTimeMillisecondsConverter(), options),
+                Getter = static obj => ((global::DSE.Open.Observations.Observation)obj).Time,
+                Setter = static (obj, value) => throw new global::System.InvalidOperationException("Setting init-only properties is not supported in source generation mode."),
                 IgnoreCondition = null,
                 HasJsonInclude = true,
                 IsExtensionData = false,
                 NumberHandling = null,
-                PropertyName = "Timestamp",
+                PropertyName = "Time",
                 JsonPropertyName = "t",
-                AttributeProviderFactory = static () => typeof(global::DSE.Open.Observations.Observation).GetProperty("Timestamp", InstanceMemberBindingFlags, null, typeof(long), global::System.Array.Empty<global::System.Type>(), null),
+                AttributeProviderFactory = static () => typeof(global::DSE.Open.Observations.Observation).GetProperty("Time", InstanceMemberBindingFlags, null, typeof(global::System.DateTimeOffset), global::System.Array.Empty<global::System.Type>(), null),
             };
             
-            properties[3] = global::System.Text.Json.Serialization.Metadata.JsonMetadataServices.CreatePropertyInfo<long>(options, info3);
-            properties[3].Order = -89800;
+            properties[2] = global::System.Text.Json.Serialization.Metadata.JsonMetadataServices.CreatePropertyInfo<global::System.DateTimeOffset>(options, info2);
+            properties[2].IsRequired = true;
+            properties[2].Order = -89800;
 
-            var info4 = new global::System.Text.Json.Serialization.Metadata.JsonPropertyInfoValues<global::DSE.Open.Observations.MeasureId>
+            var info3 = new global::System.Text.Json.Serialization.Metadata.JsonPropertyInfoValues<global::DSE.Open.Observations.MeasureId>
             {
                 IsProperty = true,
                 IsPublic = true,
@@ -139,7 +121,7 @@ namespace DSE.Open.Observations
                 DeclaringType = typeof(global::DSE.Open.Observations.Observation),
                 Converter = null,
                 Getter = static obj => ((global::DSE.Open.Observations.Observation)obj).MeasureId,
-                Setter = static (obj, value) => throw new global::System.InvalidOperationException("The member 'CountObservation.MeasureId' has been annotated with the JsonIncludeAttribute but is not visible to the source generator."),
+                Setter = static (obj, value) => throw new global::System.InvalidOperationException("Setting init-only properties is not supported in source generation mode."),
                 IgnoreCondition = null,
                 HasJsonInclude = true,
                 IsExtensionData = false,
@@ -149,10 +131,11 @@ namespace DSE.Open.Observations
                 AttributeProviderFactory = static () => typeof(global::DSE.Open.Observations.Observation).GetProperty("MeasureId", InstanceMemberBindingFlags, null, typeof(global::DSE.Open.Observations.MeasureId), global::System.Array.Empty<global::System.Type>(), null),
             };
             
-            properties[4] = global::System.Text.Json.Serialization.Metadata.JsonMetadataServices.CreatePropertyInfo<global::DSE.Open.Observations.MeasureId>(options, info4);
-            properties[4].Order = -88000;
+            properties[3] = global::System.Text.Json.Serialization.Metadata.JsonMetadataServices.CreatePropertyInfo<global::DSE.Open.Observations.MeasureId>(options, info3);
+            properties[3].IsRequired = true;
+            properties[3].Order = -88000;
 
-            var info5 = new global::System.Text.Json.Serialization.Metadata.JsonPropertyInfoValues<global::System.Collections.Generic.IReadOnlyDictionary<string, object>>
+            var info4 = new global::System.Text.Json.Serialization.Metadata.JsonPropertyInfoValues<global::System.Collections.Generic.IReadOnlyDictionary<string, object>>
             {
                 IsProperty = true,
                 IsPublic = true,
@@ -170,10 +153,10 @@ namespace DSE.Open.Observations
                 AttributeProviderFactory = static () => typeof(global::DSE.Open.Serialization.DataTransfer.ImmutableDataTransferObject).GetProperty("ExtensionData", InstanceMemberBindingFlags, null, typeof(global::System.Collections.Generic.IReadOnlyDictionary<string, object>), global::System.Array.Empty<global::System.Type>(), null),
             };
             
-            properties[5] = global::System.Text.Json.Serialization.Metadata.JsonMetadataServices.CreatePropertyInfo<global::System.Collections.Generic.IReadOnlyDictionary<string, object>>(options, info5);
-            properties[5].IsGetNullable = false;
+            properties[4] = global::System.Text.Json.Serialization.Metadata.JsonMetadataServices.CreatePropertyInfo<global::System.Collections.Generic.IReadOnlyDictionary<string, object>>(options, info4);
+            properties[4].IsGetNullable = false;
 
-            var info6 = new global::System.Text.Json.Serialization.Metadata.JsonPropertyInfoValues<bool>
+            var info5 = new global::System.Text.Json.Serialization.Metadata.JsonPropertyInfoValues<bool>
             {
                 IsProperty = true,
                 IsPublic = true,
@@ -191,74 +174,43 @@ namespace DSE.Open.Observations
                 AttributeProviderFactory = static () => typeof(global::DSE.Open.Serialization.DataTransfer.ImmutableDataTransferObject).GetProperty("HasExtensionData", InstanceMemberBindingFlags, null, typeof(bool), global::System.Array.Empty<global::System.Type>(), null),
             };
             
-            properties[6] = global::System.Text.Json.Serialization.Metadata.JsonMetadataServices.CreatePropertyInfo<bool>(options, info6);
+            properties[5] = global::System.Text.Json.Serialization.Metadata.JsonMetadataServices.CreatePropertyInfo<bool>(options, info5);
 
             return properties;
-        }
-
-        // Intentionally not a static method because we create a delegate to it. Invoking delegates to instance
-        // methods is almost as fast as virtual calls. Static methods need to go through a shuffle thunk.
-        private void CountObservationSerializeHandler(global::System.Text.Json.Utf8JsonWriter writer, global::DSE.Open.Observations.CountObservation? value)
-        {
-            if (value is null)
-            {
-                writer.WriteNullValue();
-                return;
-            }
-            
-            writer.WriteStartObject();
-
-            writer.WritePropertyName(PropName_i);
-            global::System.Text.Json.JsonSerializer.Serialize(writer, ((global::DSE.Open.Observations.Observation)value).Id, ObservationId);
-            writer.WriteNumber(PropName_t, ((global::DSE.Open.Observations.Observation)value).Timestamp);
-            writer.WritePropertyName(PropName_m);
-            global::System.Text.Json.JsonSerializer.Serialize(writer, ((global::DSE.Open.Observations.Observation)value).MeasureId, MeasureId);
-            writer.WritePropertyName(PropName_v);
-            global::System.Text.Json.JsonSerializer.Serialize(writer, ((global::DSE.Open.Observations.Observation<global::DSE.Open.Values.Count>)value).Value, Count);
-
-            writer.WriteEndObject();
         }
 
         private static global::System.Text.Json.Serialization.Metadata.JsonParameterInfoValues[] CountObservationCtorParamInit() => new global::System.Text.Json.Serialization.Metadata.JsonParameterInfoValues[]
         {
             new()
             {
-                Name = "id",
-                ParameterType = typeof(global::DSE.Open.Observations.ObservationId),
-                Position = 0,
-                HasDefaultValue = false,
-                DefaultValue = null,
-                IsNullable = false,
-            },
-
-            new()
-            {
-                Name = "measureId",
-                ParameterType = typeof(global::DSE.Open.Observations.MeasureId),
-                Position = 1,
-                HasDefaultValue = false,
-                DefaultValue = null,
-                IsNullable = false,
-            },
-
-            new()
-            {
-                Name = "timestamp",
-                ParameterType = typeof(long),
-                Position = 2,
-                HasDefaultValue = false,
-                DefaultValue = null,
-                IsNullable = false,
-            },
-
-            new()
-            {
-                Name = "value",
+                Name = "Value",
                 ParameterType = typeof(global::DSE.Open.Values.Count),
+                Position = 0,
+                IsMemberInitializer = true,
+            },
+
+            new()
+            {
+                Name = "Id",
+                ParameterType = typeof(global::DSE.Open.Observations.ObservationId),
+                Position = 1,
+                IsMemberInitializer = true,
+            },
+
+            new()
+            {
+                Name = "Time",
+                ParameterType = typeof(global::System.DateTimeOffset),
+                Position = 2,
+                IsMemberInitializer = true,
+            },
+
+            new()
+            {
+                Name = "MeasureId",
+                ParameterType = typeof(global::DSE.Open.Observations.MeasureId),
                 Position = 3,
-                HasDefaultValue = false,
-                DefaultValue = null,
-                IsNullable = false,
+                IsMemberInitializer = true,
             },
         };
     }

@@ -1,7 +1,6 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.ComponentModel;
 using System.IO.Hashing;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -15,36 +14,30 @@ namespace DSE.Open.Observations;
 /// </summary>
 public record WordFrequencyObservation : Observation<BehaviorFrequency, WordId>
 {
-    protected WordFrequencyObservation(Measure measure, WordId discriminator, DateTimeOffset time, BehaviorFrequency value)
-        : base(measure, discriminator, time, value)
-    {
-    }
-
-    [JsonConstructor]
-    [Obsolete("For deserialization only", true)]
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    protected WordFrequencyObservation(ObservationId id, MeasureId measureId, WordId discriminator, long timestamp, BehaviorFrequency value)
-        : base(id, measureId, discriminator, timestamp, value)
-    {
-    }
-
     [JsonIgnore]
     public WordId WordId => Discriminator;
 
-    public static WordFrequencyObservation Create(Measure measure, WordId speechSound, BehaviorFrequency value)
+    public static WordFrequencyObservation Create(Measure measure, WordId wordId, BehaviorFrequency value)
     {
-        return Create(measure, speechSound, value, TimeProvider.System);
+        return Create(measure, wordId, value, TimeProvider.System);
     }
 
     public static WordFrequencyObservation Create(
         Measure measure,
-        WordId speechSound,
+        WordId wordId,
         BehaviorFrequency value,
         TimeProvider timeProvider)
     {
+        ArgumentNullException.ThrowIfNull(measure);
         ArgumentNullException.ThrowIfNull(timeProvider);
 
-        return new WordFrequencyObservation(measure, speechSound, timeProvider.GetUtcNow(), value);
+        return new WordFrequencyObservation
+        {
+            Time = timeProvider.GetUtcNow(),
+            MeasureId = measure.Id,
+            Value = value,
+            Discriminator = wordId
+        };
     }
 
     [SkipLocalsInit]

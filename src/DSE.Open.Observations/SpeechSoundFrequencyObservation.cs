@@ -1,7 +1,6 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.ComponentModel;
 using System.IO.Hashing;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -15,19 +14,6 @@ namespace DSE.Open.Observations;
 /// </summary>
 public record SpeechSoundFrequencyObservation : Observation<BehaviorFrequency, SpeechSound>
 {
-    protected SpeechSoundFrequencyObservation(Measure measure, SpeechSound discriminator, DateTimeOffset time, BehaviorFrequency value)
-        : base(measure, discriminator, time, value)
-    {
-    }
-
-    [JsonConstructor]
-    [Obsolete("For deserialization only", true)]
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    protected SpeechSoundFrequencyObservation(ObservationId id, MeasureId measureId, SpeechSound discriminator, long timestamp, BehaviorFrequency value)
-        : base(id, measureId, discriminator, timestamp, value)
-    {
-    }
-
     [JsonIgnore]
     public SpeechSound SpeechSound => Discriminator;
 
@@ -42,9 +28,16 @@ public record SpeechSoundFrequencyObservation : Observation<BehaviorFrequency, S
         BehaviorFrequency value,
         TimeProvider timeProvider)
     {
+        ArgumentNullException.ThrowIfNull(measure);
         ArgumentNullException.ThrowIfNull(timeProvider);
 
-        return new SpeechSoundFrequencyObservation(measure, speechSound, timeProvider.GetUtcNow(), value);
+        return new SpeechSoundFrequencyObservation
+        {
+            Time = timeProvider.GetUtcNow(),
+            MeasureId = measure.Id,
+            Value = value,
+            Discriminator = speechSound
+        };
     }
 
     [SkipLocalsInit]
