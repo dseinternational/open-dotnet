@@ -18,7 +18,7 @@ namespace DSE.Open.Values;
 ///     See: <see href="https://www.ietf.org/rfc/rfc3986.html">RFC 3986: Uniform Resource
 ///     Identifier (URI): Generic Syntax</see>
 /// </remarks>
-[ComparableValue(AllowDefaultValue = false)]
+[ComparableValue]
 [StructLayout(LayoutKind.Sequential)]
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<Tag, AsciiString>))]
 public readonly partial struct Tag

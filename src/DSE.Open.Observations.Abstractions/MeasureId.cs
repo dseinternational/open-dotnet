@@ -11,7 +11,7 @@ namespace DSE.Open.Observations;
 /// <summary>
 /// A value used to identify a <see cref="Measure"/>.
 /// </summary>
-[EquatableValue(AllowDefaultValue = false)]
+[EquatableValue]
 [JsonConverter(typeof(JsonUInt64ValueConverter<MeasureId>))]
 [StructLayout(LayoutKind.Sequential)]
 public readonly partial struct MeasureId

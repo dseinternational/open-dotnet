@@ -39,11 +39,6 @@ public partial class ValueTypesGenerator
                 writer.WriteLine("using DSE.Open.Runtime.Helpers;");
             }
 
-            if (spec.EmitEnsureNotDefault)
-            {
-                writer.WriteLine("using DSE.Open.Values;");
-            }
-
             if (spec.EmitUsingSystemGlobalization)
             {
                 writer.WriteLine("using System.Globalization;");
@@ -132,16 +127,6 @@ public partial class ValueTypesGenerator
                                     """);
             }
 
-            if (spec.EmitEnsureNotDefault)
-            {
-                writer.WriteBlock($$"""
-                                    private void EnsureIsNotDefault()
-                                    {
-                                        UninitializedValueException<{{spec.ValueTypeName}}, {{spec.ContainedValueTypeName}}>.ThrowIfUninitialized(this);
-                                    }
-                                    """);
-            }
-
             if (spec.EmitTryFromValueMethod)
             {
                 writer.WriteBlock($$"""
@@ -188,39 +173,19 @@ public partial class ValueTypesGenerator
 
             if (spec.EmitImplicitConversionToContainedTypeMethod)
             {
-                writer.WriteLine($$"""
-                                   public static implicit operator {{spec.ContainedValueTypeName}}({{spec.ValueTypeName}} value)
-                                   {
-                                   """);
-
-                if (spec.EmitEnsureNotDefault)
-                {
-                    writer.Indentation++;
-                    writer.WriteLine("value.EnsureIsNotDefault();");
-                    writer.Indentation--;
-                }
-
-                writer.WriteBlock("""
+                writer.WriteBlock($$"""
+                                  public static implicit operator {{spec.ContainedValueTypeName}}({{spec.ValueTypeName}} value)
+                                  {
                                       return value._value;
                                   }
                                   """);
             }
             else if (spec.EmitExplicitConversionToContainedType)
             {
-                writer.WriteLine($$"""
-                                   public static explicit operator {{spec.ContainedValueTypeName}}({{spec.ValueTypeName}} value)
-                                   {
-                                   """);
-
-                if (spec.EmitEnsureNotDefault)
-                {
-                    writer.Indentation++;
-                    writer.WriteLine("value.EnsureIsNotDefault();");
-                    writer.Indentation--;
-                }
-
-                writer.WriteBlock("""
-                                      return value._value;
+                writer.WriteBlock($$"""
+                                  public static explicit operator {{spec.ContainedValueTypeName}}({{spec.ValueTypeName}} value)
+                                  {
+                                     return value._value;
                                   }
                                   """);
             }
@@ -240,19 +205,9 @@ public partial class ValueTypesGenerator
 
             if (spec.EmitGetHashCodeMethod)
             {
-                writer.WriteLine("""
-                                 public override int GetHashCode()
-                                 {
-                                 """);
-
-                if (spec.EmitEnsureNotDefault)
-                {
-                    writer.Indentation++;
-                    writer.WriteLine("EnsureIsNotDefault();");
-                    writer.Indentation--;
-                }
-
                 writer.WriteBlock("""
+                                  public override int GetHashCode()
+                                  {
                                       return _value.GetHashCode();
                                   }
                                   """);
@@ -281,13 +236,6 @@ public partial class ValueTypesGenerator
                                      IFormatProvider? provider)
                                  {
                                  """);
-
-                if (spec.EmitEnsureNotDefault)
-                {
-                    writer.Indentation++;
-                    writer.WriteLine("EnsureIsNotDefault();");
-                    writer.Indentation--;
-                }
 
                 writer.WriteBlock("""
                                       return ((ISpanFormattable)_value).TryFormat(destination, out charsWritten, format, provider);
@@ -329,11 +277,6 @@ public partial class ValueTypesGenerator
                                    public string ToString(string? format, IFormatProvider? formatProvider)
                                    {
                                    """);
-
-                if (spec.EmitEnsureNotDefault)
-                {
-                    writer.WriteBlock("    EnsureIsNotDefault();");
-                }
 
                 if (spec.UseGetStringSpan)
                 {
@@ -606,19 +549,9 @@ public partial class ValueTypesGenerator
             {
                 if (ordinalSpec.EmitCompareToMethod)
                 {
-                    writer.WriteLine($$"""
-                                       public int CompareTo({{spec.ValueTypeName}} other)
-                                       {
-                                       """);
-
-                    if (spec.EmitEnsureNotDefault)
-                    {
-                        writer.Indentation++;
-                        writer.WriteBlock("EnsureIsNotDefault();");
-                        writer.Indentation--;
-                    }
-
-                    writer.WriteBlock("""
+                    writer.WriteBlock($$"""
+                                      public int CompareTo({{spec.ValueTypeName}} other)
+                                      {
                                           return _value.CompareTo(other._value);
                                       }
                                       """);

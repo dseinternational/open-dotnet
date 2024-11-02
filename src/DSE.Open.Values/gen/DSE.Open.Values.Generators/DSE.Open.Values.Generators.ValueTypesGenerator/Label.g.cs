@@ -10,7 +10,6 @@ using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using DSE.Open.Runtime.Helpers;
-using DSE.Open.Values;
 
 namespace DSE.Open.Values;
 
@@ -36,11 +35,6 @@ public readonly partial struct Label
             throw new ArgumentOutOfRangeException(nameof(value), value,
                 $"'{value}' is not a valid {nameof(Label)} value");
         }
-    }
-
-    private void EnsureIsNotDefault()
-    {
-        UninitializedValueException<Label, CharSequence>.ThrowIfUninitialized(this);
     }
 
     public static bool TryFromValue(CharSequence value, out Label result)
@@ -69,7 +63,6 @@ public readonly partial struct Label
 
     public static implicit operator CharSequence(Label value)
     {
-        value.EnsureIsNotDefault();
         return value._value;
     }
 
@@ -81,7 +74,6 @@ public readonly partial struct Label
 
     public override int GetHashCode()
     {
-        EnsureIsNotDefault();
         return _value.GetHashCode();
     }
 
@@ -99,7 +91,6 @@ public readonly partial struct Label
         ReadOnlySpan<char> format,
         IFormatProvider? provider)
     {
-        EnsureIsNotDefault();
         return ((ISpanFormattable)_value).TryFormat(destination, out charsWritten, format, provider);
     }
 
@@ -125,8 +116,6 @@ public readonly partial struct Label
     [SkipLocalsInit]
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
-        EnsureIsNotDefault();
-
         char[]? rented = null;
     
         try
@@ -230,8 +219,6 @@ public readonly partial struct Label
 
     public int CompareTo(Label other)
     {
-        EnsureIsNotDefault();
-
         return _value.CompareTo(other._value);
     }
 

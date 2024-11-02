@@ -204,8 +204,6 @@ public class EquatableValueTypeGenerationTests : ValueTypeGenerationTests
         AssertDiagnosticsCount(0, newCompilationDiagnostics);
     }
 
-
-
     [Fact]
     public void Generates_type_using_user_equals_method()
     {
@@ -249,7 +247,6 @@ public class EquatableValueTypeGenerationTests : ValueTypeGenerationTests
 
         AssertDiagnosticsCount(0, newCompilationDiagnostics);
     }
-
 
     [Fact]
     public void Generates_type_using_user_gethashcode_method()
@@ -295,7 +292,6 @@ public class EquatableValueTypeGenerationTests : ValueTypeGenerationTests
         AssertDiagnosticsCount(0, newCompilationDiagnostics);
     }
 
-
     [Fact]
     public void Generates_type_using_user_tryformat_method()
     {
@@ -308,7 +304,7 @@ public class EquatableValueTypeGenerationTests : ValueTypeGenerationTests
 
                                                                    #nullable enable
 
-                                                                   [EquatableValue(AllowDefaultValue = false)]
+                                                                   [EquatableValue]
                                                                    public readonly partial struct MyOptions : IEquatableValue<MyOptions, long>
                                                                    {
                                                                        public static readonly MyOptions Option1;
@@ -325,7 +321,6 @@ public class EquatableValueTypeGenerationTests : ValueTypeGenerationTests
                                                                            ReadOnlySpan<char> format,
                                                                            IFormatProvider? provider)
                                                                        {
-                                                                           EnsureIsNotDefault();
                                                                            return _value.TryFormat(destination, out charsWritten, format, provider);
                                                                        }}
 

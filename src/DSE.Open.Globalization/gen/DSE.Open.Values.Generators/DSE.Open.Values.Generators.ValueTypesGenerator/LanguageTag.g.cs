@@ -10,7 +10,6 @@ using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using DSE.Open.Runtime.Helpers;
-using DSE.Open.Values;
 
 namespace DSE.Open.Globalization;
 
@@ -36,11 +35,6 @@ public readonly partial struct LanguageTag
             throw new ArgumentOutOfRangeException(nameof(value), value,
                 $"'{value}' is not a valid {nameof(LanguageTag)} value");
         }
-    }
-
-    private void EnsureIsNotDefault()
-    {
-        UninitializedValueException<LanguageTag, AsciiString>.ThrowIfUninitialized(this);
     }
 
     public static bool TryFromValue(AsciiString value, out LanguageTag result)
@@ -69,7 +63,6 @@ public readonly partial struct LanguageTag
 
     public static implicit operator AsciiString(LanguageTag value)
     {
-        value.EnsureIsNotDefault();
         return value._value;
     }
 
@@ -107,8 +100,6 @@ public readonly partial struct LanguageTag
     [SkipLocalsInit]
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
-        EnsureIsNotDefault();
-
         char[]? rented = null;
     
         try

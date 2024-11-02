@@ -12,7 +12,7 @@ namespace DSE.Open.Observations;
 /// Represents the selection of a choice between "Yes", "No" and "Not sure"/"Unsure".
 /// To represent no response, use nullable.
 /// </summary>
-[EquatableValue(AllowDefaultValue = false)]
+[EquatableValue]
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<YesNoUnsure, AsciiString>))]
 [StructLayout(LayoutKind.Sequential)]
 public readonly partial struct YesNoUnsure

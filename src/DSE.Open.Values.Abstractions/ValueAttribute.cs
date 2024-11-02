@@ -12,12 +12,6 @@ public abstract class ValueAttribute : Attribute
     public int MaxSerializedCharLength { get; set; }
 
     /// <summary>
-    /// Defines whether it is valid for the type to be <c>default(T)</c>. When set to false,
-    /// the source generator will generate checks to prevent use of the default value.
-    /// </summary>
-    public bool AllowDefaultValue { get; set; } = true;
-
-    /// <summary>
     /// Defines whether to emit a method for implicit conversion to the inner value type. Defaults to <see langword="true"/>.
     /// </summary>
     public bool ImplicitDowncast { get; set; } = true;

@@ -19,13 +19,6 @@ public class YesNoTests
     }
 
     [Fact]
-    public void MustBeInitialized()
-    {
-        YesNo value = default;
-        _ = Assert.Throws<UninitializedValueException<YesNo, AsciiString>>(value.ToString);
-    }
-
-    [Fact]
     public void ToBoolean()
     {
         Assert.True(YesNo.Yes.ToBoolean());

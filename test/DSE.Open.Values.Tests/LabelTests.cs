@@ -71,23 +71,6 @@ public class LabelTests
     }
 
     [Fact]
-    public void TryFormat_WithEmptyCode_ShouldThrowUninitializedValueException()
-    {
-        // Arrange
-        var code = Label.Empty;
-        var buffer = new char[1];
-
-        // Act
-        void Act()
-        {
-            _ = code.TryFormat(buffer, out _, default, default);
-        }
-
-        // Assert
-        _ = Assert.Throws<UninitializedValueException<Label, CharSequence>>(Act);
-    }
-
-    [Fact]
     public void EqualValuesAreEqual()
     {
         var v1 = Label.Parse("A Label: 1", CultureInfo.InvariantCulture);

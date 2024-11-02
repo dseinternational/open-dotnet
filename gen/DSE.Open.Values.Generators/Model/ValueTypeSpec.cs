@@ -21,8 +21,6 @@ internal abstract class ValueTypeSpec
 
     public string ContainedValueTypeName { get; set; } = default!;
 
-    public bool EmitEnsureNotDefault { get; set; }
-
     public string ImplementedInterface => ValueTypeKind switch
     {
         ValueTypeKind.Equatable => $"{TypeNames.IEquatableValueInterfaceName}<{ValueTypeName}, {ContainedValueTypeName}>",

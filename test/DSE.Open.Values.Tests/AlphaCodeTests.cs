@@ -137,17 +137,6 @@ public sealed class AlphaCodeTests
     }
 
     [Fact]
-    public void TryFormat_WithEmptyCode_throws_UninitializedValueException()
-    {
-        // Arrange
-        var code = (AlphaCode)default;
-        var buffer = new char[1];
-
-        // Act
-        Assert.Throws<UninitializedValueException<AlphaCode, AsciiString>>(() => code.TryFormat(buffer, out var charsWritten, default, default));
-    }
-
-    [Fact]
     public void EqualValuesAreEqual()
     {
         var v1 = AlphaCode.Parse("AA", null);

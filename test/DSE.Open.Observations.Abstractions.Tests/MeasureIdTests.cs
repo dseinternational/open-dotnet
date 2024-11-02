@@ -55,16 +55,6 @@ public sealed class MeasureIdTests
     }
 
     [Fact]
-    public void ToString_WithDefault_ShouldThrowUninitialisedValue()
-    {
-        // Act
-        static void Act() => _ = default(MeasureId).ToString();
-
-        // Assert
-        Assert.Throws<UninitializedValueException<MeasureId, ulong>>(Act);
-    }
-
-    [Fact]
     public void IsValidValue_WithValueTooLarge_ShouldReturnFalse()
     {
         // Arrange

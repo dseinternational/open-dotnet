@@ -12,7 +12,7 @@ namespace DSE.Open.Values;
 /// A label. Must contain at least 2 non-whitespace characters and be no longer than 120 characters long
 /// in total, and may not start or end with whitespace characters.
 /// </summary>
-[ComparableValue(AllowDefaultValue = false)]
+[ComparableValue]
 [StructLayout(LayoutKind.Sequential)]
 [JsonConverter(typeof(JsonSpanSerializableValueConverter<Label, CharSequence>))]
 public readonly partial struct Label : IComparableValue<Label, CharSequence>

@@ -87,23 +87,6 @@ public class TagTests
     }
 
     [Fact]
-    public void TryFormat_WithEmptyCode_ShouldThrowUninitializedValueException()
-    {
-        // Arrange
-        var code = Tag.Empty;
-        var buffer = new char[1];
-
-        // Act
-        void Act()
-        {
-            _ = code.TryFormat(buffer, out var charsWritten, default, default);
-        }
-
-        // Assert
-        _ = Assert.Throws<UninitializedValueException<Tag, AsciiString>>(Act);
-    }
-
-    [Fact]
     public void TryFormat_WithBufferTooSmall_ShouldReturnFalse()
     {
         // Arrange
@@ -116,22 +99,6 @@ public class TagTests
         // Assert
         Assert.False(success);
         Assert.Equal(0, charsWritten);
-    }
-
-    [Fact]
-    public void ToString_WithEmptyTag_ShouldThrowUninitializedValueException()
-    {
-        // Arrange
-        var tag = Tag.Empty;
-
-        // Act
-        void Act()
-        {
-            _ = tag.ToString();
-        }
-
-        // Assert
-        _ = Assert.Throws<UninitializedValueException<Tag, AsciiString>>(Act);
     }
 
     [Fact]

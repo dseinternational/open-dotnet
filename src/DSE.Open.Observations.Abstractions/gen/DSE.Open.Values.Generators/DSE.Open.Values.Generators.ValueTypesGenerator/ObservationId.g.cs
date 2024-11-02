@@ -9,7 +9,6 @@
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using DSE.Open.Values;
 
 namespace DSE.Open.Observations;
 
@@ -35,11 +34,6 @@ public readonly partial struct ObservationId
             throw new ArgumentOutOfRangeException(nameof(value), value,
                 $"'{value}' is not a valid {nameof(ObservationId)} value");
         }
-    }
-
-    private void EnsureIsNotDefault()
-    {
-        UninitializedValueException<ObservationId, UInt64>.ThrowIfUninitialized(this);
     }
 
     public static bool TryFromValue(UInt64 value, out ObservationId result)
@@ -68,7 +62,6 @@ public readonly partial struct ObservationId
 
     public static implicit operator UInt64(ObservationId value)
     {
-        value.EnsureIsNotDefault();
         return value._value;
     }
 
@@ -80,7 +73,6 @@ public readonly partial struct ObservationId
 
     public override int GetHashCode()
     {
-        EnsureIsNotDefault();
         return _value.GetHashCode();
     }
 
@@ -98,7 +90,6 @@ public readonly partial struct ObservationId
         ReadOnlySpan<char> format,
         IFormatProvider? provider)
     {
-        EnsureIsNotDefault();
         return ((ISpanFormattable)_value).TryFormat(destination, out charsWritten, format, provider);
     }
 
@@ -124,8 +115,6 @@ public readonly partial struct ObservationId
     [SkipLocalsInit]
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
-        EnsureIsNotDefault();
-
         return ((IFormattable)_value).ToString(format, formatProvider);
     }
 
