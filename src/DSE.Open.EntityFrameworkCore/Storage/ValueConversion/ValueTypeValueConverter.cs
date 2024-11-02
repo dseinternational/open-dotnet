@@ -17,12 +17,18 @@ public sealed class ValueTypeValueConverter<TValue, T, TStore> : ValueConverter<
     {
     }
 
-    private static TStore ToStore(TValue value)
+    // keep public for EF Core compiled models
+#pragma warning disable CA1000 // Do not declare static members on generic types
+    public static TStore ToStore(TValue value)
+#pragma warning restore CA1000 // Do not declare static members on generic types
     {
         return (TStore)(T)value;
     }
 
-    private static TValue FromStore(TStore value)
+    // keep public for EF Core compiled models
+#pragma warning disable CA1000 // Do not declare static members on generic types
+    public static TValue FromStore(TStore value)
+#pragma warning restore CA1000 // Do not declare static members on generic types
     {
         return (TValue)(T)value;
     }
@@ -37,12 +43,18 @@ public sealed class ValueTypeValueConverter<TValue, T> : ValueConverter<TValue, 
     {
     }
 
-    private static T ToStore(TValue value)
+    // keep public for EF Core compiled models
+#pragma warning disable CA1000 // Do not declare static members on generic types
+    public static T ToStore(TValue value)
+#pragma warning restore CA1000 // Do not declare static members on generic types
     {
         return (T)value;
     }
 
-    private static TValue FromStore(T value)
+    // keep public for EF Core compiled models
+#pragma warning disable CA1000 // Do not declare static members on generic types
+    public static TValue FromStore(T value)
+#pragma warning restore CA1000 // Do not declare static members on generic types
     {
         return (TValue)value;
     }

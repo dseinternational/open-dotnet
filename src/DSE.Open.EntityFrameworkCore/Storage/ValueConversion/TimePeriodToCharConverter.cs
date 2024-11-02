@@ -15,7 +15,8 @@ public sealed class TimePeriodToCharConverter : ValueConverter<TimePeriod, char>
     {
     }
 
-    private static char ConvertToChar(TimePeriod value)
+    // keep public for EF Core compiled models
+    public static char ConvertToChar(TimePeriod value)
     {
         if (value == TimePeriod.None)
         {
@@ -52,7 +53,8 @@ public sealed class TimePeriodToCharConverter : ValueConverter<TimePeriod, char>
             : throw new InvalidOperationException("Invalid TimePeriod value: " + value);
     }
 
-    private static TimePeriod ConvertFromChar(char value)
+    // keep public for EF Core compiled models
+    public static TimePeriod ConvertFromChar(char value)
     {
         return value switch
         {

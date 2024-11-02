@@ -14,12 +14,14 @@ public sealed class DateTimeOffsetToUtcTicksConverter : ValueConverter<DateTimeO
     {
     }
 
-    private static long ToUtcTicks(DateTimeOffset value)
+    // keep public for EF Core compiled models
+    public static long ToUtcTicks(DateTimeOffset value)
     {
         return value.UtcTicks;
     }
 
-    private static DateTimeOffset FromUtcTicks(long value)
+    // keep public for EF Core compiled models
+    public static DateTimeOffset FromUtcTicks(long value)
     {
         return new(value, TimeSpan.Zero);
     }

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using DSE.Open.Values;
@@ -14,12 +14,14 @@ public sealed class AmountToDecimalConverter : ValueConverter<Amount, decimal>
     {
     }
 
-    private static decimal ConvertTo(Amount value)
+    // keep public for EF Core compiled models
+    public static decimal ConvertTo(Amount value)
     {
         return value;
     }
 
-    private static Amount ConvertFrom(decimal value)
+    // keep public for EF Core compiled models
+    public static Amount ConvertFrom(decimal value)
     {
         if (Amount.TryFromValue(value, out var result))
         {

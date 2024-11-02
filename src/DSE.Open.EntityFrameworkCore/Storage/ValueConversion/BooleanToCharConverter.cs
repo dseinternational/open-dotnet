@@ -14,12 +14,14 @@ public sealed class BooleanToCharConverter : ValueConverter<bool, char>
     {
     }
 
-    private static char ConvertToChar(bool value)
+    // keep public for EF Core compiled models
+    public static char ConvertToChar(bool value)
     {
         return value ? 'Y' : 'N';
     }
 
-    private static bool ConvertToBoolean(char value)
+    // keep public for EF Core compiled models
+    public static bool ConvertToBoolean(char value)
     {
         return value == 'Y';
     }

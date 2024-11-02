@@ -16,12 +16,14 @@ public sealed class UriAsciiPathToStringConverter : ValueConverter<UriAsciiPath,
     {
     }
 
-    private static Expression<Func<UriAsciiPath, string>> ToStore()
+    // keep public for EF Core compiled models
+    public static Expression<Func<UriAsciiPath, string>> ToStore()
     {
         return value => value.ToString();
     }
 
-    private static Expression<Func<string, UriAsciiPath>> FromStore()
+    // keep public for EF Core compiled models
+    public static Expression<Func<string, UriAsciiPath>> FromStore()
     {
         return value => new(value);
     }

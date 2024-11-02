@@ -14,12 +14,14 @@ public sealed class BinaryValueToByteArrayConverter : ValueConverter<BinaryValue
     {
     }
 
-    private static byte[] ConvertTo(BinaryValue value)
+    // keep public for EF Core compiled models
+    public static byte[] ConvertTo(BinaryValue value)
     {
         return value.ToArray();
     }
 
-    private static BinaryValue ConvertFrom(byte[] value)
+    // keep public for EF Core compiled models
+    public static BinaryValue ConvertFrom(byte[] value)
     {
         return new(value);
     }

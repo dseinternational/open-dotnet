@@ -1,4 +1,4 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
@@ -14,12 +14,14 @@ public sealed class DateTimeOffsetToUtcDateTimeConverter : ValueConverter<DateTi
     {
     }
 
-    private static DateTime ToUtcTicks(DateTimeOffset value)
+    // keep public for EF Core compiled models
+    public static DateTime ToUtcTicks(DateTimeOffset value)
     {
         return value.UtcDateTime;
     }
 
-    private static DateTimeOffset FromUtcTicks(DateTime value)
+    // keep public for EF Core compiled models
+    public static DateTimeOffset FromUtcTicks(DateTime value)
     {
         return new(value, TimeSpan.Zero);
     }

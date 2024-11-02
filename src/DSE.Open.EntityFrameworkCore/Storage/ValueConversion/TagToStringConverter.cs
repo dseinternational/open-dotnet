@@ -15,12 +15,14 @@ public sealed class TagToStringConverter : ValueConverter<Tag, string>
     {
     }
 
-    private static string ConvertToString(Tag value)
+    // keep public for EF Core compiled models
+    public static string ConvertToString(Tag value)
     {
         return value.ToString();
     }
 
-    private static Tag ConvertToUniqueId(string value)
+    // keep public for EF Core compiled models
+    public static Tag ConvertToUniqueId(string value)
     {
         return new(value);
     }

@@ -15,12 +15,14 @@ public sealed class AlphaNumericCodeToStringConverter : ValueConverter<AlphaNume
     {
     }
 
-    private static string ConvertToString(AlphaNumericCode code)
+    // keep public for EF Core compiled models
+    public static string ConvertToString(AlphaNumericCode code)
     {
         return code.ToString();
     }
 
-    private static AlphaNumericCode ConvertFromString(string code)
+    // keep public for EF Core compiled models
+    public static AlphaNumericCode ConvertFromString(string code)
     {
         if (AlphaNumericCode.TryParse(code, out var value))
         {

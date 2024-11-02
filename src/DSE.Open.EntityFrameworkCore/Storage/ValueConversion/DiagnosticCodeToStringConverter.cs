@@ -14,12 +14,14 @@ public sealed class DiagnosticCodeToStringConverter : ValueConverter<Diagnostics
     {
     }
 
-    private static string ConvertToString(Diagnostics.DiagnosticCode code)
+    // keep public for EF Core compiled models
+    public static string ConvertToString(Diagnostics.DiagnosticCode code)
     {
         return code.ToString();
     }
 
-    private static Diagnostics.DiagnosticCode ConvertFromString(string code)
+    // keep public for EF Core compiled models
+    public static Diagnostics.DiagnosticCode ConvertFromString(string code)
     {
         if (Diagnostics.DiagnosticCode.TryParse(code, out var value))
         {

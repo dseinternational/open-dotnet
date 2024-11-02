@@ -16,12 +16,14 @@ public sealed class StringToBinaryValueConverter : ValueConverter<string, byte[]
     {
     }
 
-    private static Expression<Func<string, byte[]>> ToBytes()
+    // keep public for EF Core compiled models
+    public static Expression<Func<string, byte[]>> ToBytes()
     {
         return value => Encoding.UTF8.GetBytes(value);
     }
 
-    private static Expression<Func<byte[], string>> FromBytes()
+    // keep public for EF Core compiled models
+    public static Expression<Func<byte[], string>> FromBytes()
     {
         return value => Encoding.UTF8.GetString(value);
     }

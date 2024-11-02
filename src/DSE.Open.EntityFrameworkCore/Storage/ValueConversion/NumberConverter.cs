@@ -1,4 +1,4 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Numerics;
@@ -16,12 +16,18 @@ public sealed class NumberConverter<TFrom, TTo> : ValueConverter<TFrom, TTo>
     {
     }
 
-    private static TTo ConvertTo(TFrom value)
+    // keep public for EF Core compiled models
+#pragma warning disable CA1000 // Do not declare static members on generic types
+    public static TTo ConvertTo(TFrom value)
+#pragma warning restore CA1000 // Do not declare static members on generic types
     {
         return TTo.CreateChecked(value);
     }
 
-    private static TFrom ConvertFrom(TTo value)
+    // keep public for EF Core compiled models
+#pragma warning disable CA1000 // Do not declare static members on generic types
+    public static TFrom ConvertFrom(TTo value)
+#pragma warning restore CA1000 // Do not declare static members on generic types
     {
         return TFrom.CreateChecked(value);
     }

@@ -15,12 +15,14 @@ public sealed class AgeInMonthsToStringConverter : ValueConverter<AgeInMonths, s
     {
     }
 
-    private static string ConvertToString(AgeInMonths code)
+    // keep public for EF Core compiled models
+    public static string ConvertToString(AgeInMonths code)
     {
         return code.ToString();
     }
 
-    private static AgeInMonths ConvertFromString(string code)
+    // keep public for EF Core compiled models
+    public static AgeInMonths ConvertFromString(string code)
     {
         if (AgeInMonths.TryParse(code, out var age))
         {

@@ -16,12 +16,14 @@ public sealed class ColorToBinaryValueConverter : ValueConverter<Color, byte[]>
     {
     }
 
-    private static Expression<Func<Color, byte[]>> ToBytes()
+    // keep public for EF Core compiled models
+    public static Expression<Func<Color, byte[]>> ToBytes()
     {
         return value => value.AsRrgbaBytes();
     }
 
-    private static Expression<Func<byte[], Color>> FromBytes()
+    // keep public for EF Core compiled models
+    public static Expression<Func<byte[], Color>> FromBytes()
     {
         return value => Color.FromRgba(value);
     }

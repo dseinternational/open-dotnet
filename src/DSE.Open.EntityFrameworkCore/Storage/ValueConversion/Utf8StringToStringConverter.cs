@@ -15,12 +15,14 @@ public sealed class Utf8StringToStringConverter : ValueConverter<Utf8String, str
     {
     }
 
-    private static Expression<Func<Utf8String, string>> ToStore()
+    // keep public for EF Core compiled models
+    public static Expression<Func<Utf8String, string>> ToStore()
     {
         return value => value.ToString();
     }
 
-    private static Expression<Func<string, Utf8String>> FromStore()
+    // keep public for EF Core compiled models
+    public static Expression<Func<string, Utf8String>> FromStore()
     {
         return value => new(value);
     }

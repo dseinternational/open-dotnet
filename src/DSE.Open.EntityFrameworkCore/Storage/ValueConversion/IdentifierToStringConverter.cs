@@ -15,11 +15,13 @@ public sealed class IdentifierToStringConverter : ValueConverter<Identifier, str
     {
     }
 
+    // keep public for EF Core compiled models
     public static string ConvertToString(Identifier value)
     {
         return value.ToString();
     }
 
+    // keep public for EF Core compiled models
     public static Identifier ConvertFromString(string value)
     {
         return Identifier.Parse(value, CultureInfo.InvariantCulture);

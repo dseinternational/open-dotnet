@@ -14,12 +14,14 @@ public sealed class DateMonthOnlyToDateOnlyConverter : ValueConverter<DateMonthO
     {
     }
 
-    private static DateOnly ConvertTo(DateMonthOnly value)
+    // keep public for EF Core compiled models
+    public static DateOnly ConvertTo(DateMonthOnly value)
     {
         return value.StartOfMonth;
     }
 
-    private static DateMonthOnly ConvertFrom(DateOnly value)
+    // keep public for EF Core compiled models
+    public static DateMonthOnly ConvertFrom(DateOnly value)
     {
         return new(value);
     }

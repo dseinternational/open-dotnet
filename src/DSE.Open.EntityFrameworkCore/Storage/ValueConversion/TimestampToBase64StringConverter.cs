@@ -14,12 +14,14 @@ public sealed class TimestampToBase64StringConverter : ValueConverter<Timestamp,
     {
     }
 
-    private static string ConvertToString(Timestamp value)
+    // keep public for EF Core compiled models
+    public static string ConvertToString(Timestamp value)
     {
         return value.ToBase64String();
     }
 
-    private static Timestamp ConvertFromString(string value)
+    // keep public for EF Core compiled models
+    public static Timestamp ConvertFromString(string value)
     {
         if (Timestamp.TryParse(value, null, out var timestamp))
         {

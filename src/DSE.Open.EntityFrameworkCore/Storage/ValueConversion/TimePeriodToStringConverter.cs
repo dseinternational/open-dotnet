@@ -15,12 +15,14 @@ public sealed class TimePeriodToStringConverter : ValueConverter<TimePeriod, str
     {
     }
 
-    private static string ConvertToString(TimePeriod value)
+    // keep public for EF Core compiled models
+    public static string ConvertToString(TimePeriod value)
     {
         return value.ToString();
     }
 
-    private static TimePeriod ConvertFromString(string value)
+    // keep public for EF Core compiled models
+    public static TimePeriod ConvertFromString(string value)
     {
         return TimePeriod.Parse(value);
     }

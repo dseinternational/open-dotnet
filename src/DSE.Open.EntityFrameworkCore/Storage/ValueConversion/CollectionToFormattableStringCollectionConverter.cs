@@ -25,13 +25,21 @@ public sealed class CollectionToFormattableStringCollectionConverter<T> : ValueC
 
     public IFormatProvider? FormatProvider { get; }
 
-    private static IEnumerable<string> ToCollection(ICollection<T> set, string? format, IFormatProvider? formatProvider)
+    // keep public for EF Core compiled models
+#pragma warning disable CA1000 // Do not declare static members on generic types
+    public static IEnumerable<string> ToCollection(ICollection<T> set, string? format, IFormatProvider? formatProvider)
+#pragma warning restore CA1000 // Do not declare static members on generic types
     {
         ArgumentNullException.ThrowIfNull(set);
         return set.Select(p => p.ToString(format, formatProvider) ?? string.Empty);
     }
 
-    private static List<T> FromCollection(IEnumerable<string> collection, IFormatProvider? formatProvider)
+    // keep public for EF Core compiled models
+#pragma warning disable CA1000 // Do not declare static members on generic types
+#pragma warning disable CA1002 // Do not expose generic lists
+    public static List<T> FromCollection(IEnumerable<string> collection, IFormatProvider? formatProvider)
+#pragma warning restore CA1002 // Do not expose generic lists
+#pragma warning restore CA1000 // Do not declare static members on generic types
     {
         ArgumentNullException.ThrowIfNull(collection);
         return collection.Select(s => T.Parse(s, formatProvider)).ToList();

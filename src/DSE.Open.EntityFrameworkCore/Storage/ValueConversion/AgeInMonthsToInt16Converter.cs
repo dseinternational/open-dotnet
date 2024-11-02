@@ -15,12 +15,14 @@ public sealed class AgeInMonthsToInt16Converter : ValueConverter<AgeInMonths, sh
     {
     }
 
-    private static short ConvertToInt16(AgeInMonths code)
+    // keep public for EF Core compiled models
+    public static short ConvertToInt16(AgeInMonths code)
     {
         return (short)code.TotalMonths;
     }
 
-    private static AgeInMonths ConvertFromInt16(short code)
+    // keep public for EF Core compiled models
+    public static AgeInMonths ConvertFromInt16(short code)
     {
         return new(code);
     }

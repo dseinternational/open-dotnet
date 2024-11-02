@@ -14,12 +14,14 @@ public sealed class LikePatternToStringConverter : ValueConverter<LikePattern, s
     {
     }
 
-    private static string ConvertTo(LikePattern value)
+    // keep public for EF Core compiled models
+    public static string ConvertTo(LikePattern value)
     {
         return value.ToString();
     }
 
-    private static LikePattern ConvertFrom(string value)
+    // keep public for EF Core compiled models
+    public static LikePattern ConvertFrom(string value)
     {
         return new(value);
     }

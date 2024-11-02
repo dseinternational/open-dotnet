@@ -15,12 +15,14 @@ public sealed class LanguageCode2ToStringConverter : ValueConverter<LanguageCode
     {
     }
 
-    private static string ConvertToString(LanguageCode2 code)
+    // keep public for EF Core compiled models
+    public static string ConvertToString(LanguageCode2 code)
     {
         return code.ToString();
     }
 
-    private static LanguageCode2 ConvertFromString(string code)
+    // keep public for EF Core compiled models
+    public static LanguageCode2 ConvertFromString(string code)
     {
         if (LanguageCode2.TryParse(code, null, out var result))
         {

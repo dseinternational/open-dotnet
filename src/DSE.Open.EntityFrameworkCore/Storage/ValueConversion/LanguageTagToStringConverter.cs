@@ -14,12 +14,14 @@ public sealed class LanguageTagToStringConverter : ValueConverter<LanguageTag, s
     {
     }
 
-    private static string ConvertTo(LanguageTag code)
+    // keep public for EF Core compiled models
+    public static string ConvertTo(LanguageTag code)
     {
         return code.ToStringFormatted();
     }
 
-    private static LanguageTag ConvertFrom(string code)
+    // keep public for EF Core compiled models
+    public static LanguageTag ConvertFrom(string code)
     {
         if (LanguageTag.TryParse(code, out var languageCode))
         {

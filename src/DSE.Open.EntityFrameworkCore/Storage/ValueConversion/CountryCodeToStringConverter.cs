@@ -15,12 +15,14 @@ public sealed class CountryCodeToStringConverter : ValueConverter<CountryCode, s
     {
     }
 
-    private static string ConvertToString(CountryCode code)
+    // keep public for EF Core compiled models
+    public static string ConvertToString(CountryCode code)
     {
         return code.ToStringUpper();
     }
 
-    private static CountryCode ConvertFromString(string code)
+    // keep public for EF Core compiled models
+    public static CountryCode ConvertFromString(string code)
     {
         if (CountryCode.TryParse(code, out var countryCode))
         {

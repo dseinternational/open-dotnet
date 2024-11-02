@@ -24,7 +24,10 @@ public class ObjectToJsonStringValueConverter<TModel, TSerialized> : ValueConver
     {
     }
 
-    private static string ConvertTo(TModel model, JsonSerializerOptions? jsonSerializerOptions)
+    // keep public for EF Core compiled models
+#pragma warning disable CA1000 // Do not declare static members on generic types
+    public static string ConvertTo(TModel model, JsonSerializerOptions? jsonSerializerOptions)
+#pragma warning restore CA1000 // Do not declare static members on generic types
     {
         ArgumentNullException.ThrowIfNull(model);
 
@@ -33,7 +36,11 @@ public class ObjectToJsonStringValueConverter<TModel, TSerialized> : ValueConver
         return JsonSerializer.Serialize(model, jsonSerializerOptions);
     }
 
-    private static TModel ConvertFrom(string providerValue, JsonSerializerOptions? jsonSerializerOptions)
+    // keep public for EF Core compiled models
+#pragma warning disable CA1000 // Do not declare static members on generic types
+    public static TModel ConvertFrom(string providerValue,
+#pragma warning restore CA1000 // Do not declare static members on generic types
+                                     JsonSerializerOptions? jsonSerializerOptions)
     {
         ArgumentNullException.ThrowIfNull(providerValue);
 

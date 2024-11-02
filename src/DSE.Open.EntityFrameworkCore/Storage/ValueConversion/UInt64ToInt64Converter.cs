@@ -1,4 +1,4 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
@@ -13,7 +13,8 @@ public sealed class UInt64ToInt64Converter : ValueConverter<ulong, long>
     {
     }
 
-    private static long ConvertTo(ulong value)
+    // keep public for EF Core compiled models
+    public static long ConvertTo(ulong value)
     {
         checked
         {
@@ -21,7 +22,8 @@ public sealed class UInt64ToInt64Converter : ValueConverter<ulong, long>
         }
     }
 
-    private static ulong ConvertFrom(long value)
+    // keep public for EF Core compiled models
+    public static ulong ConvertFrom(long value)
     {
         return (ulong)value;
     }

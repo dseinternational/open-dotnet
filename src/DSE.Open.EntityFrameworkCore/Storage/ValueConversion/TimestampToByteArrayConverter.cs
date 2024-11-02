@@ -14,12 +14,14 @@ public sealed class TimestampToByteArrayConverter : ValueConverter<Timestamp, by
     {
     }
 
-    private static byte[] ConvertToByteArray(Timestamp value)
+    // keep public for EF Core compiled models
+    public static byte[] ConvertToByteArray(Timestamp value)
     {
         return value.GetBytes();
     }
 
-    private static Timestamp ConvertFromByteArray(byte[] value)
+    // keep public for EF Core compiled models
+    public static Timestamp ConvertFromByteArray(byte[] value)
     {
         if (Timestamp.TryCreate(value, out var result))
         {

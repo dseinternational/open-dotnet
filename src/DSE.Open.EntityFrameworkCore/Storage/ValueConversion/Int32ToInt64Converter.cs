@@ -1,4 +1,4 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
@@ -13,12 +13,14 @@ public sealed class Int32ToInt64Converter : ValueConverter<int, long>
     {
     }
 
-    private static long ConvertTo(int value)
+    // keep public for EF Core compiled models
+    public static long ConvertTo(int value)
     {
         return value;
     }
 
-    private static int ConvertFrom(long value)
+    // keep public for EF Core compiled models
+    public static int ConvertFrom(long value)
     {
         checked
         {

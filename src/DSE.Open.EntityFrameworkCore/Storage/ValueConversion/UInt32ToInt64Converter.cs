@@ -13,12 +13,14 @@ public sealed class UInt32ToInt64Converter : ValueConverter<uint, long>
     {
     }
 
-    private static long ConvertTo(uint value)
+    // keep public for EF Core compiled models
+    public static long ConvertTo(uint value)
     {
         return value;
     }
 
-    private static uint ConvertFrom(long value)
+    // keep public for EF Core compiled models
+    public static uint ConvertFrom(long value)
     {
         checked
         {

@@ -15,12 +15,14 @@ public sealed class EmailAddressToStringConverter : ValueConverter<EmailAddress,
     {
     }
 
-    private static string ConvertToString(EmailAddress value)
+    // keep public for EF Core compiled models
+    public static string ConvertToString(EmailAddress value)
     {
         return value.ToString();
     }
 
-    private static EmailAddress ConvertFromString(string value)
+    // keep public for EF Core compiled models
+    public static EmailAddress ConvertFromString(string value)
     {
         if (EmailAddress.TryParse(value, out var result))
         {

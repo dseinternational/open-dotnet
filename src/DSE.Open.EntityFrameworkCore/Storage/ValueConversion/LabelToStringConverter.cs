@@ -14,12 +14,14 @@ public sealed class LabelToStringConverter : ValueConverter<Label, string>
     {
     }
 
-    private static string ConvertTo(Label value)
+    // keep public for EF Core compiled models
+    public static string ConvertTo(Label value)
     {
         return value.ToString();
     }
 
-    private static Label ConvertFrom(string value)
+    // keep public for EF Core compiled models
+    public static Label ConvertFrom(string value)
     {
         return new(value);
     }

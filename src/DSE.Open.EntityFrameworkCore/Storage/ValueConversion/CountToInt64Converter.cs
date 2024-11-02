@@ -14,12 +14,14 @@ public sealed class CountToInt64Converter : ValueConverter<Count, long>
     {
     }
 
-    private static long ConvertTo(Count value)
+    // keep public for EF Core compiled models
+    public static long ConvertTo(Count value)
     {
         return value;
     }
 
-    private static Count ConvertFrom(long value)
+    // keep public for EF Core compiled models
+    public static Count ConvertFrom(long value)
     {
         if (Count.TryFromValue(value, out var result))
         {
