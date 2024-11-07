@@ -8,9 +8,9 @@
     <PackageVersion Include="Azure.Core" Version="1.44.1" />
     <PackageVersion Include="Azure.Identity" Version="1.13.1" />
     <PackageVersion Include="BenchmarkDotNet" Version="0.14.0" />
-    <PackageVersion Include="CommunityToolkit.Diagnostics" Version="8.3.2" />
-    <PackageVersion Include="CommunityToolkit.HighPerformance" Version="8.3.2" />
-    <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.3.2" />
+    <PackageVersion Include="CommunityToolkit.Diagnostics" Version="8.4.0-preview1" />
+    <PackageVersion Include="CommunityToolkit.HighPerformance" Version="8.4.0-preview1" />
+    <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0-preview1" />
     <PackageVersion Include="coverlet.collector" Version="6.0.2" />
     <PackageVersion Include="FluentAssertions" Version="7.0.0-alpha.5" />
     <PackageVersion Include="Google.Protobuf" Version="3.29.0-rc2" />
@@ -57,7 +57,7 @@
     <PackageVersion Include="Polly.Extensions.Http" Version="3.0.0" />
     <PackageVersion Include="pythonnet" Version="3.1.0-preview2024-09-06" />
     <PackageVersion Include="SharpZipLib" Version="1.4.2" />
-    <PackageVersion Include="SkiaSharp" Version="3.0.0-preview.5.4" />
+    <PackageVersion Include="SkiaSharp" Version="3.118.0-preview.1.2" />
     <PackageVersion Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.10" />
     <PackageVersion Include="System.ClientModel" Version="1.2.1" />
     <PackageVersion Include="System.Collections.Immutable" Version="9.0.0-rc.2.24473.5" />
