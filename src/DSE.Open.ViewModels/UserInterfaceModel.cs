@@ -10,11 +10,23 @@ public abstract partial class UserInterfaceModel : ObservableObject, IUserInterf
     private bool _isBusy;
     private bool _isReadOnly;
     private bool _isInitialized;
-    [ObservableProperty] private CultureInfo _formatCulture = CultureInfo.CurrentCulture;
-    [ObservableProperty] private CultureInfo _presentationCulture = CultureInfo.CurrentUICulture;
+    private CultureInfo? _formatCulture;
+    private CultureInfo? _presentationCulture;
 
     protected UserInterfaceModel()
     {
+    }
+
+    public CultureInfo FormatCulture
+    {
+        get => _formatCulture ??= CultureInfo.CurrentCulture;
+        set => SetProperty(ref _formatCulture, value);
+    }
+
+    public CultureInfo PresentationCulture
+    {
+        get => _presentationCulture ??= CultureInfo.CurrentUICulture;
+        set => SetProperty(ref _presentationCulture, value);
     }
 
     /// <inheritdoc />
