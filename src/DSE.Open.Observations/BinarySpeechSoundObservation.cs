@@ -40,7 +40,7 @@ public record BinarySpeechSoundObservation : Observation<bool, SpeechSound>
     [SkipLocalsInit]
     protected override ulong GetDiscriminatorId()
     {
-        var chars = SpeechSound.ToCharSequence().AsSpan();
+        var chars = SpeechSound.ToString();
         var c = Encoding.UTF8.GetByteCount(chars);
         Span<byte> b = stackalloc byte[c];
         _ = Encoding.UTF8.GetBytes(chars, b);
