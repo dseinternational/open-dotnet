@@ -43,7 +43,7 @@ public record SentenceFrequencyObservation : Observation<BehaviorFrequency, Sent
     [SkipLocalsInit]
     protected override ulong GetDiscriminatorId()
     {
-        var chars = SentenceId.ToCharSequence().AsSpan();
+        var chars = SentenceId.ToString();
         var c = Encoding.UTF8.GetByteCount(chars);
         Span<byte> b = stackalloc byte[c];
         _ = Encoding.UTF8.GetBytes(chars, b);

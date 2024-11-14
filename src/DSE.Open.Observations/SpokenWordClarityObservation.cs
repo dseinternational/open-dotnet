@@ -38,7 +38,7 @@ public record SpokenWordClarityObservation : Observation<SpeechClarity, WordId>
 
     protected override ulong GetDiscriminatorId()
     {
-        var chars = WordId.ToCharSequence().AsSpan();
+        var chars = WordId.ToString();
         var c = Encoding.UTF8.GetByteCount(chars);
         Span<byte> b = stackalloc byte[c];
         _ = Encoding.UTF8.GetBytes(chars, b);
