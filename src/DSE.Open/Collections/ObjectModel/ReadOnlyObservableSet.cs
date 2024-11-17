@@ -9,7 +9,7 @@ namespace DSE.Open.Collections.ObjectModel;
 
 public static class ReadOnlyObservableSet
 {
-    public static IReadOnlyObservableSet<T> Empty<T>()
+    public static ReadOnlyObservableSet<T> Empty<T>()
     {
         return EmptyReadOnlyObservableSet<T>.s_value;
     }

@@ -8,7 +8,7 @@ namespace DSE.Open.Collections.ObjectModel;
 
 public static class ReadOnlyObservableList
 {
-    public static IReadOnlyObservableList<T> Empty<T>()
+    public static ReadOnlyObservableList<T> Empty<T>()
     {
         return EmptyReadOnlyObservableList<T>.s_value;
     }

@@ -11,7 +11,7 @@ public static class ObservableListExtensions
     /// <typeparam name="T"></typeparam>
     /// <param name="list"></param>
     /// <returns></returns>
-    public static IReadOnlyObservableList<T> AsReadOnlyObservableList<T>(this IObservableList<T> list)
+    public static ReadOnlyObservableList<T> AsReadOnlyObservableList<T>(this IObservableList<T> list)
     {
         return new ReadOnlyObservableList<T>(list);
     }
