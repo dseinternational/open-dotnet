@@ -1,11 +1,13 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Buffers;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Text.Json.Serialization;
 using CommunityToolkit.HighPerformance.Buffers;
 using DSE.Open.Diagnostics;
@@ -15,18 +17,19 @@ using DSE.Open.Speech.Serialization;
 namespace DSE.Open.Speech;
 
 /// <summary>
-/// 
+///
 /// </summary>
 [JsonConverter(typeof(JsonStringSpeechSymbolSequenceConverter))]
 [StructLayout(LayoutKind.Sequential)]
 [CollectionBuilder(typeof(SpeechSymbolSequence), "Create")]
 public readonly struct SpeechSymbolSequence
     : IEquatable<SpeechSymbolSequence>,
-      IEquatable<ReadOnlyMemory<SpeechSymbol>>,
-      IEqualityOperators<SpeechSymbolSequence, SpeechSymbolSequence, bool>,
-      ISpanFormattable,
-      ISpanParsable<SpeechSymbolSequence>,
-      ISpanFormatableCharCountProvider
+        IEquatable<ReadOnlyMemory<SpeechSymbol>>,
+        IEqualityOperators<SpeechSymbolSequence, SpeechSymbolSequence, bool>,
+        ISpanFormattable,
+        ISpanParsable<SpeechSymbolSequence>,
+        ISpanFormatableCharCountProvider,
+        IUtf8SpanFormattable
 {
     private readonly ReadOnlyMemory<SpeechSymbol> _value;
 
@@ -132,7 +135,7 @@ public readonly struct SpeechSymbolSequence
 
                 if (type is not null
                     || (includeInitialStressMarkers
-                        && (s == SpeechSymbol.PrimaryStress || s == SpeechSymbol.SecondaryStress)))
+                    && (s == SpeechSymbol.PrimaryStress || s == SpeechSymbol.SecondaryStress)))
                 {
                     buffer[i] = s;
                     i++;
@@ -267,6 +270,7 @@ public readonly struct SpeechSymbolSequence
                 if (l < buffer.Length - 1 && !SpeechSymbol.IsConsonantOrVowel(buffer[l]))
                 {
                     l++;
+
                     if (buffer[l] == chars[r])
                     {
                         l++;
@@ -279,6 +283,7 @@ public readonly struct SpeechSymbolSequence
                 if (r < chars.Length - 1 && !SpeechSymbol.IsConsonantOrVowel(chars[r]))
                 {
                     r++;
+
                     if (buffer[l] == chars[r])
                     {
                         l++;
@@ -401,8 +406,8 @@ public readonly struct SpeechSymbolSequence
             ReadOnlySpan<SpeechSymbol> buffer,
             ReadOnlySpan<SpeechSymbol> chars)
         {
-            var bi = 0;  // current buffer index
-            var ci = 0;  // current chars index
+            var bi = 0; // current buffer index
+            var ci = 0; // current chars index
             var i = -1; // index of first match
 
             while (bi < buffer.Length)
@@ -485,8 +490,8 @@ public readonly struct SpeechSymbolSequence
             ReadOnlySpan<char> buffer,
             ReadOnlySpan<char> chars)
         {
-            var bi = 0;  // current buffer index
-            var ci = 0;  // current chars index
+            var bi = 0; // current buffer index
+            var ci = 0; // current chars index
             var i = -1; // index of first match
 
             while (bi < buffer.Length)
@@ -576,6 +581,7 @@ public readonly struct SpeechSymbolSequence
         public bool MoveNext()
         {
             var index = _index + 1;
+
             if (index < _span.Length)
             {
                 _index = index;
@@ -736,6 +742,28 @@ public readonly struct SpeechSymbolSequence
         }
 
         charsWritten = 0;
+        return false;
+    }
+
+
+    public bool TryFormat(
+        Span<byte> destination,
+        out int charsWritten,
+        ReadOnlySpan<char> format,
+        IFormatProvider? provider)
+    {
+        if ((uint)destination.Length < (uint)_value.Length)
+        {
+            charsWritten = 0;
+            return false;
+        }
+
+        var chars = SpeechValuesMarshal.AsChars(_value.Span);
+
+        var result = Ascii.FromUtf16(chars, destination, out var bytesWritten);
+        Debug.Assert(result is OperationStatus.Done);
+
+        charsWritten = bytesWritten;
         return false;
     }
 

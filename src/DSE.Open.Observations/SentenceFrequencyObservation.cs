@@ -40,13 +40,8 @@ public record SentenceFrequencyObservation : Observation<BehaviorFrequency, Sent
         };
     }
 
-    [SkipLocalsInit]
     protected override ulong GetDiscriminatorId()
     {
-        var chars = SentenceId.ToString();
-        var c = Encoding.UTF8.GetByteCount(chars);
-        Span<byte> b = stackalloc byte[c];
-        _ = Encoding.UTF8.GetBytes(chars, b);
-        return XxHash3.HashToUInt64(b);
+        return SentenceId.ToUInt64();
     }
 }

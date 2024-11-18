@@ -18,7 +18,8 @@ namespace DSE.Open.Speech;
 public readonly struct SpeechSound
     : IEquatable<SpeechSound>,
       ISpanFormattable,
-      ISpanParsable<SpeechSound>
+      ISpanParsable<SpeechSound>,
+      IUtf8SpanFormattable
 {
     private readonly SpeechSymbolSequence _value;
 
@@ -87,12 +88,16 @@ public readonly struct SpeechSound
         ReadOnlySpan<char> format,
         IFormatProvider? provider)
     {
-        if (_value.TryFormat(destination, out charsWritten, format, provider))
-        {
-            return true;
-        }
+        return _value.TryFormat(destination, out charsWritten, format, provider);
+    }
 
-        return false;
+    public bool TryFormat(
+        Span<byte> destination,
+        out int charsWritten,
+        ReadOnlySpan<char> format,
+        IFormatProvider? provider)
+    {
+        return _value.TryFormat(destination, out charsWritten, format, provider);
     }
 
     public override string ToString()
