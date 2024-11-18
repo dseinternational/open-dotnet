@@ -40,10 +40,8 @@ public record BinarySpeechSoundObservation : Observation<bool, SpeechSound>
     [SkipLocalsInit]
     protected override ulong GetDiscriminatorId()
     {
-        var chars = SpeechSound.ToString();
-        var c = Encoding.UTF8.GetByteCount(chars);
-        Span<byte> b = stackalloc byte[c];
-        _ = Encoding.UTF8.GetBytes(chars, b);
-        return XxHash3.HashToUInt64(b);
+        Span<byte> buffer = stackalloc byte[SpeechSound.MaxLength];
+        SpeechSound.TryFormat(buffer, out var written, default, default);
+        return XxHash3.HashToUInt64(buffer[..written]);
     }
 }

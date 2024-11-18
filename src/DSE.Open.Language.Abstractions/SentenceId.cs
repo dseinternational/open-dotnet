@@ -79,17 +79,23 @@ public readonly partial struct SentenceId
         return FromInt64(value);
     }
 
-    public static long ToInt64(SentenceId value)
+    public long ToInt64()
     {
         unchecked
         {
-            return (long)value._value;
+            return (long)_value;
         }
+    }
+
+
+    public ulong ToUInt64()
+    {
+        return _value;
     }
 
     public static implicit operator long(SentenceId value)
     {
-        return ToInt64(value);
+        return value.ToInt64();
     }
 
 #pragma warning disable CA5394 // Do not use insecure randomness
