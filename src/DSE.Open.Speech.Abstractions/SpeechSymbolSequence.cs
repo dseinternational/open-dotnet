@@ -706,22 +706,12 @@ public readonly struct SpeechSymbolSequence
 
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
-        var rented = SpanOwner<char>.Empty;
-
-        Span<char> chars = MemoryThresholds.CanStackalloc<char>(_value.Length)
-            ? stackalloc char[_value.Length]
-            : (rented = SpanOwner<char>.Allocate(_value.Length)).Span;
-
-        using (rented)
+        return string.Create(_value.Length, (this, format, formatProvider), (span, state) =>
         {
-            if (TryFormat(chars, out var charsWritten, format, formatProvider))
-            {
-                return new(chars[..charsWritten]);
-            }
-
-            Expect.Unreachable();
-            return null!; // unreachable
-        }
+            var result = state.Item1.TryFormat(span, out var charsWritten, state.format, state.formatProvider);
+            Debug.Assert(charsWritten == span.Length);
+            Debug.Assert(result);
+        });
     }
 
     public bool TryFormat(
@@ -730,14 +720,11 @@ public readonly struct SpeechSymbolSequence
         ReadOnlySpan<char> format,
         IFormatProvider? provider)
     {
-        if (destination.Length >= _value.Length)
-        {
-            for (var i = 0; i < _value.Length; i++)
-            {
-                destination[i] = (char)_value.Span[i];
-            }
+        var chars = SpeechValuesMarshal.AsChars(_value.Span);
 
-            charsWritten = _value.Length;
+        if (chars.TryCopyTo(destination))
+        {
+            charsWritten = chars.Length;
             return true;
         }
 
@@ -747,23 +734,19 @@ public readonly struct SpeechSymbolSequence
 
 
     public bool TryFormat(
-        Span<byte> destination,
-        out int charsWritten,
+        Span<byte> utf8Destination,
+        out int bytesWritten,
         ReadOnlySpan<char> format,
         IFormatProvider? provider)
     {
-        if ((uint)destination.Length < (uint)_value.Length)
-        {
-            charsWritten = 0;
-            return false;
-        }
-
         var chars = SpeechValuesMarshal.AsChars(_value.Span);
 
-        var result = Ascii.FromUtf16(chars, destination, out var bytesWritten);
-        Debug.Assert(result is OperationStatus.Done);
+        if (Encoding.UTF8.TryGetBytes(chars, utf8Destination, out bytesWritten))
+        {
+            return true;
+        }
 
-        charsWritten = bytesWritten;
+        bytesWritten = 0;
         return false;
     }
 

@@ -214,6 +214,24 @@ public class SpeechSymbolSequenceTests
         Assert.True(transcription1.Equals(transcription2));
     }
 
+    [Theory]
+    [MemberData(nameof(TwentyWordTranscriptions))]
+    public void TryFormat_Parse_Roundtrip(string transcription)
+    {
+        // Arrange
+        Span<char> buffer = stackalloc char[128];
+        var sequence = SpeechSymbolSequence.Parse(transcription, CultureInfo.InvariantCulture);
+
+        // Act & Assert
+        var formatted = sequence.TryFormat(buffer, out var charsWritten);
+        Assert.True(formatted);
+
+        var parsed = SpeechSymbolSequence.Parse(buffer[..charsWritten], CultureInfo.InvariantCulture);
+        Assert.Equal(sequence, parsed);
+    }
+
+    public static TheoryData<string> TwentyWordTranscriptions => new((string[])[.. TranscriptionData.Transcriptions.RandomSelection(20)]);
+
     public static TheoryData<string> WordTranscriptions => new((string[])[.. TranscriptionData.Transcriptions]);
 
     public static TheoryData<string, string> WordTranscriptionPairs
