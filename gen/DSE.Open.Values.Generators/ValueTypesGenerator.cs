@@ -127,6 +127,9 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
         Action<Diagnostic> reportDiagnostic,
         CancellationToken ct)
     {
+        // To suppress warning
+        _ = reportDiagnostic;
+
         var specs = new List<ValueTypeSpec>();
 
         var nominalValueAttribute = compilation.GetTypeByMetadataName($"{TypeNames.EquatableValueAttributeFullName}");
