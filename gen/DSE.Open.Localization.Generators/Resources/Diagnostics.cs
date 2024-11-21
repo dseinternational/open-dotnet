@@ -41,7 +41,7 @@ internal static class Diagnostics
         var d = new DiagnosticDescriptor(
             FailedToReadFileDiagnosticId,
             "Failed to read file",
-            "Failed to read file '{0}'.",
+            "Failed to read file '{0}'. Are you missing an AdditionalFile in your project file? Some operating systems are case-sensitive.",
             Category,
             DiagnosticSeverity.Warning,
             isEnabledByDefault: true
