@@ -15,7 +15,7 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Resources\*.restext" />
-    <AdditionalFiles Include="Resources\strings.restext" />
+    <AdditionalFiles Include="Resources\Strings.restext" />
   </ItemGroup>
 
 </Project>
