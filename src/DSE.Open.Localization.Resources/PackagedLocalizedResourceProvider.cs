@@ -1,5 +1,5 @@
-// Copyright (c) Down Syndrome Education Enterprises CIC. All Rights Reserved.
-// Information contained herein is PROPRIETARY AND CONFIDENTIAL.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Diagnostics.CodeAnalysis;
 using System.Resources;
@@ -47,8 +47,13 @@ public abstract class PackagedLocalizedResourceProvider() : ILocalizedResourcePr
 
         var value = ResourceManager.GetString(name, cultureInfo);
 
-        // TODO: consider ResourceStringNotFound exception
-        return value ?? $"Resource not found: {name}";
+        if (value is not null)
+        {
+            return value;
+        }
+
+        ResourceNotFoundException.Throw(name);
+        return null!;
     }
 
     public Stream GetStream(string name, CultureInfo? cultureInfo = null)
@@ -59,12 +64,12 @@ public abstract class PackagedLocalizedResourceProvider() : ILocalizedResourcePr
 
         var value = ResourceManager.GetStream(name, cultureInfo);
 
-        if (value is null)
+        if (value is not null)
         {
-            // TODO: consider ResourceStreamNotFound exception
-            return new MemoryStream();
+            return value;
         }
 
-        return value;
+        ResourceNotFoundException.Throw(name);
+        return null!;
     }
 }

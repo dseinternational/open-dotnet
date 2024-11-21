@@ -42,7 +42,6 @@ public sealed class ResourceProviderSourceGenerator : IIncrementalGenerator
         {
             if (attr.ConstructorArguments[0].Value is not INamedTypeSymbol typeSymbol)
             {
-                // TODO: Emit diagnostic
                 continue;
             }
 
