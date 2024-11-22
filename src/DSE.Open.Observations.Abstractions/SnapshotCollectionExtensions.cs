@@ -24,7 +24,7 @@ public static class SnapshotCollectionExtensions
         TValue value)
         where TSnapshot : Snapshot<TObs, TValue>
         where TObs : Observation<TValue>
-        where TValue : IEquatable<TValue>
+        where TValue : struct, IEquatable<TValue>
     {
         return collection.Where(s => s.Observation.Value.Equals(value));
     }
@@ -35,7 +35,7 @@ public static class SnapshotCollectionExtensions
         TValue value)
         where TSnapshot : Snapshot<TObs, TValue>
         where TObs : Observation<TValue>
-        where TValue : IEquatable<TValue>
+        where TValue : struct, IEquatable<TValue>
     {
         return collection.Where(s => s.HasMeasure(measure) && s.Observation.Value.Equals(value));
     }
@@ -46,7 +46,7 @@ public static class SnapshotCollectionExtensions
         TValue value)
         where TSnapshot : Snapshot<TObs, TValue>
         where TObs : Observation<TValue>
-        where TValue : IEquatable<TValue>
+        where TValue : struct, IEquatable<TValue>
     {
         return collection.Any(s => s.HasMeasure(measure) && s.Observation.Value.Equals(value));
     }
@@ -57,7 +57,7 @@ public static class SnapshotCollectionExtensions
         TValue value)
         where TSnapshot : Snapshot<TObs, TValue>
         where TObs : Observation<TValue>
-        where TValue : IEquatable<TValue>
+        where TValue : struct, IEquatable<TValue>
     {
         return collection.Where(s => s.HasMeasureId(id) && s.Observation.Value.Equals(value));
     }
@@ -68,7 +68,7 @@ public static class SnapshotCollectionExtensions
         TDisc discriminator)
         where TSnapshot : Snapshot<TObs, TValue, TDisc>
         where TObs : Observation<TValue, TDisc>
-        where TValue : IEquatable<TValue>
+        where TValue : struct, IEquatable<TValue>
         where TDisc : IEquatable<TDisc>
     {
         return collection.Where(s => s.HasMeasurement(measure, discriminator));
@@ -81,7 +81,7 @@ public static class SnapshotCollectionExtensions
         TValue value)
         where TSnapshot : Snapshot<TObs, TValue, TDisc>
         where TObs : Observation<TValue, TDisc>
-        where TValue : IEquatable<TValue>
+        where TValue : struct, IEquatable<TValue>
         where TDisc : IEquatable<TDisc>
     {
         return collection.Where(s => s.HasMeasurement(measure, discriminator) && s.Observation.Value.Equals(value));
@@ -94,7 +94,7 @@ public static class SnapshotCollectionExtensions
         TValue value)
         where TSnapshot : Snapshot<TObs, TValue, TDisc>
         where TObs : Observation<TValue, TDisc>
-        where TValue : IEquatable<TValue>
+        where TValue : struct, IEquatable<TValue>
         where TDisc : IEquatable<TDisc>
     {
         return collection.Any(s => s.HasMeasurement(measure, discriminator) && s.Observation.Value.Equals(value));

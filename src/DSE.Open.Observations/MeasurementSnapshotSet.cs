@@ -15,7 +15,7 @@ public class MeasurementSnapshotSet<TSnapshot, TObs, TValue> : HashSet<TSnapshot
 #pragma warning restore CA1005 // Avoid excessive parameters on generic types
     where TSnapshot : Snapshot<TObs, TValue>
     where TObs : Observation<TValue>
-    where TValue : IEquatable<TValue>
+    where TValue : struct, IEquatable<TValue>
 {
     public MeasurementSnapshotSet()
         : base(SnapshotEqualityComparer<TObs, TValue>.Measurement)

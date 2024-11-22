@@ -68,7 +68,7 @@ public abstract record ObservationSet
 /// </summary>
 public abstract record ObservationSet<TObs, TValue> : ObservationSet
     where TObs : Observation<TValue>
-    where TValue : IEquatable<TValue>
+    where TValue : struct, IEquatable<TValue>
 {
     [JsonPropertyName("obs")]
     [JsonPropertyOrder(900000)]

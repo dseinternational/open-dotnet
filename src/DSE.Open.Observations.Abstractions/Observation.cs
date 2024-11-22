@@ -2,12 +2,11 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Text.Json.Serialization;
-using DSE.Open.Serialization.DataTransfer;
 using DSE.Open.Text.Json.Serialization;
 
 namespace DSE.Open.Observations;
 
-public abstract record Observation : ImmutableDataTransferObject
+public abstract record Observation
 {
     private readonly DateTimeOffset _time;
 
@@ -84,7 +83,7 @@ public abstract record Observation : ImmutableDataTransferObject
 /// </summary>
 /// <typeparam name="TValue"></typeparam>
 public abstract record Observation<TValue> : Observation
-    where TValue : IEquatable<TValue>
+    where TValue : struct, IEquatable<TValue>
 {
     [JsonPropertyName("v")]
     [JsonPropertyOrder(-1)]
@@ -92,22 +91,18 @@ public abstract record Observation<TValue> : Observation
 }
 
 /// <summary>
-/// An observation for a measure that records a single measurement value and a discriminator value.
+/// An observation for a measure that records a single discriminated measurement value.
 /// </summary>
 /// <typeparam name="TValue"></typeparam>
 /// <typeparam name="TDisc"></typeparam>
-public abstract record Observation<TValue, TDisc> : Observation<TValue>
-    where TValue : IEquatable<TValue>
+public abstract record Observation<TValue, TDisc> : Observation<Discriminated<TValue, TDisc>>
+    where TValue : struct, IEquatable<TValue>
     where TDisc : IEquatable<TDisc>
 {
-    [JsonPropertyName("d")]
-    [JsonPropertyOrder(-100)]
-    public required TDisc Discriminator { get; init; }
-
     public virtual bool HasMeasurement(Measure measure, TDisc discriminator)
     {
         ArgumentNullException.ThrowIfNull(measure);
-        return HasMeasureId(measure.Id) && Discriminator.Equals(discriminator);
+        return HasMeasureId(measure.Id) && Value.Discriminator.Equals(discriminator);
     }
 
     protected abstract ulong GetDiscriminatorId();
@@ -119,6 +114,6 @@ public abstract record Observation<TValue, TDisc> : Observation<TValue>
 
     public override int GetMeasurementHashCode()
     {
-        return HashCode.Combine(MeasureId, Discriminator);
+        return HashCode.Combine(MeasureId, Value.Discriminator);
     }
 }

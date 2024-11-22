@@ -8,7 +8,7 @@ namespace DSE.Open.Observations;
 public abstract class SnapshotEqualityComparer<TObs, TValue>
     : IEqualityComparer<Snapshot<TObs, TValue>>
     where TObs : Observation<TValue>
-    where TValue : IEquatable<TValue>
+    where TValue : struct, IEquatable<TValue>
 {
     public static readonly IEqualityComparer<Snapshot<TObs, TValue>> Measurement =
         new DiscriminatedSnapshotEqualityComparer();

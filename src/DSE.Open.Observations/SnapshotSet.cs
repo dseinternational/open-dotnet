@@ -56,7 +56,7 @@ public abstract record SnapshotSet
 public abstract record SnapshotSet<TSnapshot, TObs, TValue> : SnapshotSet
     where TSnapshot : Snapshot<TObs, TValue>
     where TObs : Observation<TValue>
-    where TValue : IEquatable<TValue>
+    where TValue : struct, IEquatable<TValue>
 {
     [JsonPropertyName("obs")]
     [JsonPropertyOrder(900000)]
@@ -66,7 +66,7 @@ public abstract record SnapshotSet<TSnapshot, TObs, TValue> : SnapshotSet
 public abstract record SnapshotSet<TSnapshot, TObs, TValue, TDisc> : SnapshotSet
     where TSnapshot : Snapshot<TObs, TValue, TDisc>
     where TObs : Observation<TValue, TDisc>
-    where TValue : IEquatable<TValue>
+    where TValue : struct, IEquatable<TValue>
     where TDisc : IEquatable<TDisc>
 {
     [JsonPropertyName("obs")]

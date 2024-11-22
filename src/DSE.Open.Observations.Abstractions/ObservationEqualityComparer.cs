@@ -7,7 +7,7 @@ namespace DSE.Open.Observations;
 
 public abstract class ObservationEqualityComparer<TObs, TValue> : IEqualityComparer<TObs>
     where TObs : Observation<TValue>
-    where TValue : IEquatable<TValue>
+    where TValue : struct, IEquatable<TValue>
 {
     public static readonly IEqualityComparer<TObs> Default = EqualityComparer<TObs>.Default;
 

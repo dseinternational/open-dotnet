@@ -23,7 +23,7 @@ public static class ObservationCollectionExtensions
         this IEnumerable<TObs> collection,
         TValue value)
         where TObs : Observation<TValue>
-        where TValue : IEquatable<TValue>
+        where TValue : struct, IEquatable<TValue>
     {
         return collection.Where(o => o.Value.Equals(value));
     }
@@ -33,7 +33,7 @@ public static class ObservationCollectionExtensions
         Measure measure,
         TValue value)
         where TObs : Observation<TValue>
-        where TValue : IEquatable<TValue>
+        where TValue : struct, IEquatable<TValue>
     {
         return collection.Where(o => o.HasMeasure(measure) && o.Value.Equals(value));
     }
@@ -43,7 +43,7 @@ public static class ObservationCollectionExtensions
         MeasureId id,
         TValue value)
         where TObs : Observation<TValue>
-        where TValue : IEquatable<TValue>
+        where TValue : struct, IEquatable<TValue>
     {
         return collection.Where(o => o.HasMeasureId(id) && o.Value.Equals(value));
     }
@@ -53,7 +53,7 @@ public static class ObservationCollectionExtensions
         Measure measure,
         TDisc discriminator)
         where TObs : Observation<TValue, TDisc>
-        where TValue : IEquatable<TValue>
+        where TValue : struct, IEquatable<TValue>
         where TDisc : IEquatable<TDisc>
     {
         return collection.Where(o => o.HasMeasurement(measure, discriminator));
@@ -65,7 +65,7 @@ public static class ObservationCollectionExtensions
         TDisc discriminator,
         TValue value)
         where TObs : Observation<TValue, TDisc>
-        where TValue : IEquatable<TValue>
+        where TValue : struct, IEquatable<TValue>
         where TDisc : IEquatable<TDisc>
     {
         return collection.Where(o => o.HasMeasurement(measure, discriminator) && o.Value.Equals(value));

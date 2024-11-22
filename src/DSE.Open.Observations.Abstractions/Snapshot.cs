@@ -2,17 +2,14 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Text.Json.Serialization;
-using DSE.Open.Serialization.DataTransfer;
 using DSE.Open.Text.Json.Serialization;
-
-#pragma warning disable CA1005 // Avoid excessive parameters on generic types
 
 namespace DSE.Open.Observations;
 
 /// <summary>
 /// Records an observation at a point in time.
 /// </summary>
-public abstract record Snapshot : ImmutableDataTransferObject
+public abstract record Snapshot
 {
     private readonly DateTimeOffset _time;
 
@@ -68,29 +65,5 @@ public abstract record Snapshot<TObs> : Snapshot
     public override int GetMeasurementHashCode()
     {
         return Observation.GetMeasurementHashCode();
-    }
-}
-
-/// <summary>
-/// Records an observation at a point in time.
-/// </summary>
-public abstract record Snapshot<TObs, TValue> : Snapshot<TObs>
-    where TObs : Observation<TValue>
-    where TValue : IEquatable<TValue>
-{
-}
-
-/// <summary>
-/// Records an observation at a point in time.
-/// </summary>
-public abstract record Snapshot<TObs, TValue, TDisc> : Snapshot<TObs, TValue>
-    where TObs : Observation<TValue, TDisc>
-    where TValue : IEquatable<TValue>
-    where TDisc : IEquatable<TDisc>
-{
-    public virtual bool HasMeasurement(Measure measure, TDisc discriminator)
-    {
-        ArgumentNullException.ThrowIfNull(measure);
-        return HasMeasureId(measure.Id) && Observation.Discriminator.Equals(discriminator);
     }
 }
