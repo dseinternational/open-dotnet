@@ -54,7 +54,7 @@ public class DomainEventDispatcherTests
 
         var bev = entity.AddFakeBackgroundEvent();
 
-        await dispatcher.PublishEventsAsync([entity], CancellationToken.None);
+        await dispatcher.PublishEventsAsync([entity], TestContext.Current.CancellationToken);
 
         var state = provider.GetRequiredService<TestState>();
 
