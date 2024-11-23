@@ -67,3 +67,12 @@ public abstract record Snapshot<TObs> : Snapshot
         return Observation.GetMeasurementHashCode();
     }
 }
+
+public static class ObservationExtensions
+{
+    public static bool HasMeasurement(this Observation observation, Measure measure)
+    {
+        ArgumentNullException.ThrowIfNull(measure);
+        return observation.HasMeasureId(measure.Id);
+    }
+}

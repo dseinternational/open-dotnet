@@ -54,7 +54,7 @@ public abstract record SnapshotSet
 #pragma warning disable CA1005 // Avoid excessive parameters on generic types
 
 public abstract record SnapshotSet<TSnapshot, TObs, TValue> : SnapshotSet
-    where TSnapshot : Snapshot<TObs, TValue>
+    where TSnapshot : Snapshot<TObs>
     where TObs : Observation<TValue>
     where TValue : struct, IEquatable<TValue>
 {
@@ -64,7 +64,7 @@ public abstract record SnapshotSet<TSnapshot, TObs, TValue> : SnapshotSet
 }
 
 public abstract record SnapshotSet<TSnapshot, TObs, TValue, TDisc> : SnapshotSet
-    where TSnapshot : Snapshot<TObs, TValue, TDisc>
+    where TSnapshot : Snapshot<TObs>
     where TObs : Observation<TValue, TDisc>
     where TValue : struct, IEquatable<TValue>
     where TDisc : IEquatable<TDisc>

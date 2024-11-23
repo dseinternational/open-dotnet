@@ -6,20 +6,20 @@ using System.Diagnostics.CodeAnalysis;
 namespace DSE.Open.Observations;
 
 public abstract class SnapshotEqualityComparer<TObs, TValue>
-    : IEqualityComparer<Snapshot<TObs, TValue>>
+    : IEqualityComparer<Snapshot<TObs>>
     where TObs : Observation<TValue>
     where TValue : struct, IEquatable<TValue>
 {
-    public static readonly IEqualityComparer<Snapshot<TObs, TValue>> Measurement =
+    public static readonly IEqualityComparer<Snapshot<TObs>> Measurement =
         new DiscriminatedSnapshotEqualityComparer();
 
-    public abstract bool Equals(Snapshot<TObs, TValue>? x, Snapshot<TObs, TValue>? y);
+    public abstract bool Equals(Snapshot<TObs>? x, Snapshot<TObs>? y);
 
-    public abstract int GetHashCode([DisallowNull] Snapshot<TObs, TValue> obj);
+    public abstract int GetHashCode([DisallowNull] Snapshot<TObs> obj);
 
     private sealed class DiscriminatedSnapshotEqualityComparer : SnapshotEqualityComparer<TObs, TValue>
     {
-        public override bool Equals(Snapshot<TObs, TValue>? x, Snapshot<TObs, TValue>? y)
+        public override bool Equals(Snapshot<TObs>? x, Snapshot<TObs>? y)
         {
             if (x is null)
             {
@@ -34,7 +34,7 @@ public abstract class SnapshotEqualityComparer<TObs, TValue>
             return x.GetMeasurementHashCode().Equals(y.GetMeasurementHashCode());
         }
 
-        public override int GetHashCode([DisallowNull] Snapshot<TObs, TValue> obj)
+        public override int GetHashCode([DisallowNull] Snapshot<TObs> obj)
         {
             return obj.GetMeasurementHashCode();
         }

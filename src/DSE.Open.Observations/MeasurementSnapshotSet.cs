@@ -13,7 +13,7 @@ namespace DSE.Open.Observations;
 #pragma warning disable CA1005 // Avoid excessive parameters on generic types
 public class MeasurementSnapshotSet<TSnapshot, TObs, TValue> : HashSet<TSnapshot>
 #pragma warning restore CA1005 // Avoid excessive parameters on generic types
-    where TSnapshot : Snapshot<TObs, TValue>
+    where TSnapshot : Snapshot<TObs>
     where TObs : Observation<TValue>
     where TValue : struct, IEquatable<TValue>
 {

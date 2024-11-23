@@ -22,7 +22,7 @@ public static class SnapshotCollectionExtensions
     public static IEnumerable<TSnapshot> WhereValue<TSnapshot, TObs, TValue>(
         this IEnumerable<TSnapshot> collection,
         TValue value)
-        where TSnapshot : Snapshot<TObs, TValue>
+        where TSnapshot : Snapshot<TObs>
         where TObs : Observation<TValue>
         where TValue : struct, IEquatable<TValue>
     {
@@ -33,7 +33,7 @@ public static class SnapshotCollectionExtensions
         this IEnumerable<TSnapshot> collection,
         Measure measure,
         TValue value)
-        where TSnapshot : Snapshot<TObs, TValue>
+        where TSnapshot : Snapshot<TObs>
         where TObs : Observation<TValue>
         where TValue : struct, IEquatable<TValue>
     {
@@ -44,7 +44,7 @@ public static class SnapshotCollectionExtensions
         this IEnumerable<TSnapshot> collection,
         Measure measure,
         TValue value)
-        where TSnapshot : Snapshot<TObs, TValue>
+        where TSnapshot : Snapshot<TObs>
         where TObs : Observation<TValue>
         where TValue : struct, IEquatable<TValue>
     {
@@ -55,7 +55,7 @@ public static class SnapshotCollectionExtensions
         this IEnumerable<TSnapshot> collection,
         MeasureId id,
         TValue value)
-        where TSnapshot : Snapshot<TObs, TValue>
+        where TSnapshot : Snapshot<TObs>
         where TObs : Observation<TValue>
         where TValue : struct, IEquatable<TValue>
     {
@@ -66,7 +66,7 @@ public static class SnapshotCollectionExtensions
         this IEnumerable<TSnapshot> collection,
         Measure measure,
         TDisc discriminator)
-        where TSnapshot : Snapshot<TObs, TValue, TDisc>
+        where TSnapshot : Snapshot<TObs>
         where TObs : Observation<TValue, TDisc>
         where TValue : struct, IEquatable<TValue>
         where TDisc : IEquatable<TDisc>
@@ -79,7 +79,7 @@ public static class SnapshotCollectionExtensions
         Measure measure,
         TDisc discriminator,
         TValue value)
-        where TSnapshot : Snapshot<TObs, TValue, TDisc>
+        where TSnapshot : Snapshot<TObs>
         where TObs : Observation<TValue, TDisc>
         where TValue : struct, IEquatable<TValue>
         where TDisc : IEquatable<TDisc>
@@ -92,7 +92,7 @@ public static class SnapshotCollectionExtensions
         Measure measure,
         TDisc discriminator,
         TValue value)
-        where TSnapshot : Snapshot<TObs, TValue, TDisc>
+        where TSnapshot : Snapshot<TObs>
         where TObs : Observation<TValue, TDisc>
         where TValue : struct, IEquatable<TValue>
         where TDisc : IEquatable<TDisc>

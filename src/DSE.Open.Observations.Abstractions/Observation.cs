@@ -40,7 +40,7 @@ public abstract record Observation
     [JsonPropertyOrder(-88000)]
     public required MeasureId MeasureId { get; init; }
 
-    public bool HasMeasure(Measure measure)
+    public virtual bool HasMeasure(Measure measure)
     {
         ArgumentNullException.ThrowIfNull(measure);
         return HasMeasureId(measure.Id);
