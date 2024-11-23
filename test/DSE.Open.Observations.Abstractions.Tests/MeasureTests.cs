@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
 
 namespace DSE.Open.Observations;
 
@@ -124,6 +125,27 @@ public class MeasureTests
 
         // Assert
         Assert.NotEqual(hash1, hash2);
+    }
+
+    [Fact]
+    public void SerializeDeserialize()
+    {
+        var uri = new Uri("https://schema-test.dseapi.app/testing/measure");
+
+        var measure1 = new Measure<bool>
+        {
+            Id = MeasureId.GetRandomId(),
+            MeasurementLevel = MeasurementLevel.Binary,
+            Uri = uri,
+            Name = "Test measure",
+            Statement = "[subject] does something"
+        };
+
+        var json = JsonSerializer.Serialize(measure1);
+
+        var measure2 = JsonSerializer.Deserialize<Measure<bool>>(json);
+
+        Assert.Equal(measure1, measure2);
     }
 }
 
