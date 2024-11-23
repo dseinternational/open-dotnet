@@ -13,7 +13,7 @@ namespace DSE.Open.EntityFrameworkCore.Models.Language.ValueGeneration;
 /// </summary>
 public sealed class TemporaryWordIdValueGenerator : ValueGenerator<WordId>
 {
-    private ulong _next = WordId.MaxIdValue;
+    private ulong _next = LanguageIds.MaxIdValue;
 
     public override bool GeneratesTemporaryValues => true;
 

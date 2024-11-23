@@ -1,4 +1,4 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Diagnostics.CodeAnalysis;
@@ -13,7 +13,7 @@ namespace DSE.Open.EntityFrameworkCore.Models.Language.ValueGeneration;
 /// </summary>
 public sealed class TemporarySentenceMeaningIdValueGenerator : ValueGenerator<SentenceMeaningId>
 {
-    private ulong _next = SentenceMeaningId.MaxIdValue;
+    private ulong _next = LanguageIds.MaxIdValue;
 
     public override bool GeneratesTemporaryValues => true;
 
