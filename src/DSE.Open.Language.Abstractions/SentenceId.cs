@@ -1,8 +1,12 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Buffers;
+using System.IO.Hashing;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Text.Json.Serialization;
+using DSE.Open.Globalization;
 using DSE.Open.Values;
 using DSE.Open.Values.Text.Json.Serialization;
 
@@ -18,9 +22,6 @@ public readonly partial struct SentenceId
     : IEquatableValue<SentenceId, ulong>,
       IUtf8SpanSerializable<SentenceId>
 {
-    public const ulong MinIdValue = 100000000001;
-    public const ulong MaxIdValue = 999999999999;
-
     public static int MaxSerializedCharLength => 16;
 
     public static int MaxSerializedByteLength => 16;
@@ -31,12 +32,12 @@ public readonly partial struct SentenceId
 
     public static bool IsValidValue(ulong value)
     {
-        return value is <= MaxIdValue and >= MinIdValue;
+        return value is <= LanguageIds.MaxIdValue and >= LanguageIds.MinIdValue;
     }
 
     public static bool IsValidValue(long value)
     {
-        return value is <= ((long)MaxIdValue) and >= ((long)MinIdValue);
+        return value is <= ((long)LanguageIds.MaxIdValue) and >= ((long)LanguageIds.MinIdValue);
     }
 
     public static bool TryFromInt64(long value, out SentenceId id)
@@ -73,7 +74,6 @@ public readonly partial struct SentenceId
         return new SentenceId(value);
     }
 
-
     public static explicit operator SentenceId(long value)
     {
         return FromInt64(value);
@@ -86,7 +86,6 @@ public readonly partial struct SentenceId
             return (long)_value;
         }
     }
-
 
     public ulong ToUInt64()
     {
@@ -101,7 +100,58 @@ public readonly partial struct SentenceId
 #pragma warning disable CA5394 // Do not use insecure randomness
     public static SentenceId GetRandomId()
     {
-        return (SentenceId)(ulong)Random.Shared.NextInt64((long)MinIdValue, (long)MaxIdValue);
+        return (SentenceId)(ulong)Random.Shared.NextInt64((long)LanguageIds.MinIdValue, (long)LanguageIds.MaxIdValue);
     }
 #pragma warning restore CA5394 // Do not use insecure randomness
+
+    /// <summary>
+    /// A sentence is a locale/language-specific string that expresses a meaning
+    /// that can be identified by a sentence meaning identifier.
+    /// </summary>
+    /// <param name="meaningId"></param>
+    /// <param name="language"></param>
+    /// <param name="sentence"></param>
+    /// <returns></returns>
+    public static SentenceId FromSentence(SentenceMeaningId meaningId, LanguageTag language, ReadOnlySpan<char> sentence)
+    {
+        if (sentence.IsEmpty || sentence.AllAreWhiteSpace())
+        {
+            ThrowHelper.ThrowArgumentOutOfRangeException(nameof(sentence), "A sentence must be provided.");
+        }
+
+        var langSpan = MemoryMarshal.AsBytes(((AsciiString)language).AsSpan());
+
+        var length = Encoding.UTF8.GetByteCount(sentence) +
+            20 // max length of UInt64
+            +
+            langSpan.Length;
+
+        byte[]? rented = null;
+
+        try
+        {
+            Span<byte> buffer = length > 256
+                ? (rented = ArrayPool<byte>.Shared.Rent(length))
+                : stackalloc byte[length];
+
+            _ = meaningId.TryFormat(buffer, out var bytesWritten, default, CultureInfo.InvariantCulture);
+
+            langSpan.CopyTo(buffer[bytesWritten..]);
+
+            bytesWritten += langSpan.Length;
+
+            var textBytes = Encoding.UTF8.GetBytes(sentence, buffer[bytesWritten..]);
+
+            bytesWritten += textBytes;
+
+            return (SentenceId)(LanguageIds.MinIdValue + (ulong)(XxHash3.HashToUInt64(buffer[..bytesWritten]) / (decimal)ulong.MaxValue * LanguageIds.MaxRange));
+        }
+        finally
+        {
+            if (rented is not null)
+            {
+                ArrayPool<byte>.Shared.Return(rented);
+            }
+        }
+    }
 }

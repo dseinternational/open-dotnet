@@ -12,7 +12,11 @@ namespace DSE.Open;
 /// <typeparam name="TDiscriminator"></typeparam>
 public readonly record struct Discriminated<TValue, TDiscriminator>
     : IEquatable<Discriminated<TValue, TDiscriminator>>
+    where TValue : struct, IEquatable<TValue>
+    where TDiscriminator : IEquatable<TDiscriminator>
 {
+    public static readonly Discriminated<TValue, TDiscriminator> Empty;
+
     /// <summary>
     /// Initializes a new value with the given value and discriminator.
     /// </summary>
@@ -60,6 +64,8 @@ public static class Discriminated
     public static Discriminated<TValue, TDiscriminator> Create<TValue, TDiscriminator>(
         TValue value,
         TDiscriminator discriminator)
+        where TValue : struct, IEquatable<TValue>
+        where TDiscriminator : IEquatable<TDiscriminator>
     {
         return new Discriminated<TValue, TDiscriminator>(value, discriminator);
     }

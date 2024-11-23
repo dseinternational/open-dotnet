@@ -14,10 +14,10 @@ public class MeasurementLevelTests
         AssertJson.Roundtrip(value);
     }
 
-    public static TheoryData<MeasurementLevel> Values { get; } = new()
-    {
+    public static TheoryData<MeasurementLevel> Values { get; } =
+    [
         MeasurementLevel.Binary,
         MeasurementLevel.ExtensiveRatio,
         MeasurementLevel.Absolute,
-    };
+    ];
 }

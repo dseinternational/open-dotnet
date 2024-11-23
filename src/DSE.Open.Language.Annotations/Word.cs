@@ -5,6 +5,7 @@ using System.Buffers;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
+using DSE.Open.Globalization;
 using DSE.Open.Runtime.Helpers;
 
 namespace DSE.Open.Language.Annotations;
@@ -16,9 +17,7 @@ namespace DSE.Open.Language.Annotations;
 /// Out token/word model is based on the CoNLL-U format and Stanza NLP
 /// data objects (<see href="https://stanfordnlp.github.io/stanza/data_objects.html#token"/>.
 /// </remarks>
-public record Word
-    : ISpanFormattable,
-      ISpanParsable<Word>
+public record Word : ISpanFormattable, ISpanParsable<Word>
 {
     /// <summary>
     /// Index of the token in the sentence.

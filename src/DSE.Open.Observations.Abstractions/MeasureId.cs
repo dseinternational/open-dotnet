@@ -9,14 +9,12 @@ using DSE.Open.Values;
 namespace DSE.Open.Observations;
 
 /// <summary>
-/// A value used to identify a <see cref="Measure"/>.
+/// A value used to identify a Measure.
 /// </summary>
 [EquatableValue]
 [JsonConverter(typeof(JsonUInt64ValueConverter<MeasureId>))]
 [StructLayout(LayoutKind.Sequential)]
-public readonly partial struct MeasureId
-    : IEquatableValue<MeasureId, ulong>,
-        IUtf8SpanSerializable<MeasureId>
+public readonly partial struct MeasureId : IEquatableValue<MeasureId, ulong>, IUtf8SpanSerializable<MeasureId>
 {
     public const ulong MinIdValue = 100000000001;
     public const ulong MaxIdValue = 999999999999;

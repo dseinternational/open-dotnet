@@ -1,8 +1,11 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.IO.Hashing;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Text.Json.Serialization;
+using DSE.Open.Globalization;
 using DSE.Open.Values;
 using DSE.Open.Values.Text.Json.Serialization;
 
@@ -18,9 +21,6 @@ public readonly partial struct WordId
     : IEquatableValue<WordId, ulong>,
       IUtf8SpanSerializable<WordId>
 {
-    public const ulong MinIdValue = 100000000001;
-    public const ulong MaxIdValue = 999999999999;
-
     public static int MaxSerializedCharLength => 16;
 
     public static int MaxSerializedByteLength => 16;
@@ -31,12 +31,12 @@ public readonly partial struct WordId
 
     public static bool IsValidValue(ulong value)
     {
-        return value is <= MaxIdValue and >= MinIdValue;
+        return value is <= LanguageIds.MaxIdValue and >= LanguageIds.MinIdValue;
     }
 
     public static bool IsValidValue(long value)
     {
-        return value is <= ((long)MaxIdValue) and >= ((long)MinIdValue);
+        return value is <= ((long)LanguageIds.MaxIdValue) and >= ((long)LanguageIds.MinIdValue);
     }
 
     public static bool TryFromInt64(long value, out WordId id)
@@ -89,7 +89,40 @@ public readonly partial struct WordId
 #pragma warning disable CA5394 // Do not use insecure randomness
     public static WordId GetRandomId()
     {
-        return (WordId)(ulong)Random.Shared.NextInt64((long)MinIdValue, (long)MaxIdValue);
+        return (WordId)(ulong)Random.Shared.NextInt64((long)LanguageIds.MinIdValue, (long)LanguageIds.MaxIdValue);
     }
 #pragma warning restore CA5394 // Do not use insecure randomness
+
+    /// <summary>
+    /// Gets an id for a word specified by the given meaning id, word and language.
+    /// </summary>
+    /// <param name="meaningId"></param>
+    /// <param name="word"></param>
+    /// <param name="language"></param>
+    /// <returns></returns>
+    public static WordId FromWord(WordMeaningId meaningId, WordText word, LanguageTag language)
+    {
+        ReadOnlySpan<char> s = [.. ((CharSequence)word).AsSpan()];
+        return FromWord(meaningId, s, language);
+    }
+
+    public static WordId FromWord(WordMeaningId meaningId, ReadOnlySpan<char> word, LanguageTag language)
+    {
+        var c = Encoding.UTF8.GetByteCount(word);
+        Span<byte> utf8 = stackalloc byte[c];
+        _ = Encoding.UTF8.GetBytes(word, utf8);
+        return FromWord(meaningId, utf8, language);
+    }
+
+    public static WordId FromWord(WordMeaningId meaningId, ReadOnlySpan<byte> wordUtf8, LanguageTag language)
+    {
+        ReadOnlySpan<byte> combined =
+        [
+            .. BitConverter.GetBytes(meaningId).AsSpan(),
+            .. wordUtf8,
+            .. ((AsciiString)language).AsSpan(),
+        ];
+
+        return (WordId)(LanguageIds.MinIdValue + (ulong)(XxHash3.HashToUInt64(combined) / (decimal)ulong.MaxValue * LanguageIds.MaxRange));
+    }
 }

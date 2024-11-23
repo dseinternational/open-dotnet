@@ -3,6 +3,7 @@
 
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
+using DSE.Open.Globalization;
 using DSE.Open.Values;
 using DSE.Open.Values.Text.Json.Serialization;
 
@@ -212,4 +213,8 @@ public readonly partial struct WordText
 
 #pragma warning restore CA2225 // Operator overloads have named alternates
 
+    public WordId GetId(WordMeaningId meaningId, LanguageTag language)
+    {
+        return WordId.FromWord(meaningId, this, language);
+    }
 }

@@ -10,14 +10,14 @@ public sealed class BinaryObservationTests
     [Fact]
     public void CanSerializeAndDeserialize()
     {
-        var obs = BinaryObservation.Create(TestMeasures.BinaryMeasure, true);
+        var obs = Observation.Create(TestMeasures.BinaryMeasure, true, TimeProvider.System);
         AssertJson.Roundtrip(obs);
     }
 
     [Fact]
     public void JsonRoundtrip_WithContext()
     {
-        var obs = BinaryObservation.Create(TestMeasures.BinaryMeasure, true);
+        var obs = Observation.Create(TestMeasures.BinaryMeasure, true, TimeProvider.System);
         AssertJson.Roundtrip(obs, JsonContext.Default);
     }
 }
