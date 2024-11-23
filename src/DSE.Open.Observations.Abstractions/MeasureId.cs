@@ -5,6 +5,8 @@ using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using DSE.Open.Values.Text.Json.Serialization;
 using DSE.Open.Values;
+using System.IO.Hashing;
+using System.Text;
 
 namespace DSE.Open.Observations;
 
@@ -18,6 +20,7 @@ public readonly partial struct MeasureId : IEquatableValue<MeasureId, ulong>, IU
 {
     public const ulong MinIdValue = 100000000001;
     public const ulong MaxIdValue = 999999999999;
+    private const ulong MaxRange = MaxIdValue - MinIdValue;
 
     public static int MaxSerializedCharLength => 16;
 
@@ -90,4 +93,18 @@ public readonly partial struct MeasureId : IEquatableValue<MeasureId, ulong>, IU
         return (MeasureId)(ulong)Random.Shared.NextInt64((long)MinIdValue, (long)MaxIdValue);
     }
 #pragma warning restore CA5394 // Do not use insecure randomness
+
+    public static MeasureId FromUri(Uri urn)
+    {
+        ArgumentNullException.ThrowIfNull(urn);
+        return FromUri(urn.ToString());
+    }
+
+    public static MeasureId FromUri(ReadOnlySpan<char> urn)
+    {
+        var c = Encoding.UTF8.GetByteCount(urn);
+        Span<byte> b = stackalloc byte[c];
+        _ = Encoding.UTF8.GetBytes(urn, b);
+        return (MeasureId)(MinIdValue + (ulong)(XxHash3.HashToUInt64(b) / (decimal)ulong.MaxValue * MaxRange));
+    }
 }

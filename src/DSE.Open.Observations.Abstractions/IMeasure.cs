@@ -8,18 +8,18 @@ public interface IMeasure
     /// <summary>
     /// An identifier for the measure. This is generated from a predictable hash of the <see cref="Uri" />.
     /// </summary>
-    MeasureId Id { get; init; }
+    MeasureId Id { get; }
 
     /// <summary>
     /// A URI that uniquely identifies the measure.
     /// </summary>
-    Uri Uri { get; init; }
+    Uri Uri { get; }
 
-    MeasurementLevel MeasurementLevel { get; init; }
+    MeasurementLevel MeasurementLevel { get; }
 
-    string Name { get; init; }
+    string Name { get; }
 
-    string Statement { get; init; }
+    string Statement { get; }
 }
 
 public interface IMeasure<TValue> : IMeasure

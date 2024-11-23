@@ -1,7 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Diagnostics.CodeAnalysis;
+using System.ComponentModel;
 using System.Text.Json.Serialization;
 
 namespace DSE.Open.Observations;
@@ -11,11 +11,17 @@ namespace DSE.Open.Observations;
 /// </summary>
 public abstract class Measure : IMeasure
 {
-    protected Measure() { }
+    protected Measure(Uri uri, MeasurementLevel measurementLevel, string name, string statement)
+        : this(MeasureId.FromUri(uri), uri, measurementLevel, name, statement)
+    {
+    }
 
-    [SetsRequiredMembers]
     protected Measure(MeasureId id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
     {
+        ArgumentNullException.ThrowIfNull(uri);
+        ArgumentException.ThrowIfNullOrWhiteSpace(name);
+        ArgumentException.ThrowIfNullOrWhiteSpace(statement);
+
         Id = id;
         Uri = uri;
         MeasurementLevel = measurementLevel;
@@ -25,20 +31,20 @@ public abstract class Measure : IMeasure
 
     /// <inheritdoc/>
     [JsonPropertyName("id")]
-    public required MeasureId Id { get; init; }
+    public MeasureId Id { get; }
 
     /// <inheritdoc/>
     [JsonPropertyName("uri")]
-    public required Uri Uri { get; init => field = Ensure.NotNull(value); }
+    public Uri Uri { get; }
 
     [JsonPropertyName("level")]
-    public required MeasurementLevel MeasurementLevel { get; init; }
+    public MeasurementLevel MeasurementLevel { get; }
 
     [JsonPropertyName("name")]
-    public required string Name { get; init => field = Ensure.NotNullOrWhitespace(value); }
+    public string Name { get; }
 
     [JsonPropertyName("statement")]
-    public required string Statement { get; init => field = Ensure.NotNullOrWhitespace(value); }
+    public string Statement { get; }
 
     public override int GetHashCode()
     {
@@ -49,11 +55,13 @@ public abstract class Measure : IMeasure
 public sealed class Measure<TValue> : Measure, IMeasure<TValue>
     where TValue : struct, IEquatable<TValue>
 {
-    public Measure()
+    public Measure(Uri uri, MeasurementLevel measurementLevel, string name, string statement)
+        : base(uri, measurementLevel, name, statement)
     {
     }
 
-    [SetsRequiredMembers]
+    [JsonConstructor]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public Measure(MeasureId id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
         : base(id, uri, measurementLevel, name, statement)
     {
@@ -70,11 +78,13 @@ public sealed class Measure<TValue, TParam> : Measure, IMeasure<TValue, TParam>
     where TValue : struct, IEquatable<TValue>
     where TParam : IEquatable<TParam>
 {
-    public Measure()
+    public Measure(Uri uri, MeasurementLevel measurementLevel, string name, string statement)
+        : base(uri, measurementLevel, name, statement)
     {
     }
 
-    [SetsRequiredMembers]
+    [JsonConstructor]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public Measure(MeasureId id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
         : base(id, uri, measurementLevel, name, statement)
     {

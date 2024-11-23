@@ -13,14 +13,14 @@ public sealed class MeasureTests
     [Fact]
     public void CanSerializeAndDeserialize_Binary()
     {
-        var measure = new Measure<bool>(MeasureId.GetRandomId(), s_measureUri, MeasurementLevel.Binary, "Test measure", "[subject] does something");
+        var measure = new Measure<bool>(s_measureUri, MeasurementLevel.Binary, "Test measure", "[subject] does something");
         AssertJson.Roundtrip(measure);
     }
 
     [Fact]
     public void JsonRoundtrip_WithContext_Binary()
     {
-        var measure = new Measure<bool>(MeasureId.GetRandomId(), s_measureUri, MeasurementLevel.Binary, "Test measure", "[subject] does something");
+        var measure = new Measure<bool>(s_measureUri, MeasurementLevel.Binary, "Test measure", "[subject] does something");
         AssertJson.Roundtrip(measure, JsonContext.Default);
     }
 
@@ -28,7 +28,7 @@ public sealed class MeasureTests
     public void CanCreateObservation_Binary()
     {
         var uri = new Uri("https://schema-test.dseapi.app/testing/measure");
-        var measure = new Measure<bool>(MeasureId.GetRandomId(), uri, MeasurementLevel.Binary, "Test measure", "[subject] does something");
+        var measure = new Measure<bool>(uri, MeasurementLevel.Binary, "Test measure", "[subject] does something");
         var obs = measure.CreateObservation<Observation<bool>, bool>(true);
         Assert.Equal(measure.Id, obs.MeasureId);
         Assert.True(obs.Value);
@@ -37,7 +37,7 @@ public sealed class MeasureTests
     public void CanSerializeAndDeserialize_Amount()
     {
         var uri = new Uri("https://schema-test.dseapi.app/testing/measure");
-        var measure = new Measure<Amount>(MeasureId.GetRandomId(), uri, MeasurementLevel.Ordinal, "Test measure", "[subject] does something");
+        var measure = new Measure<Amount>(uri, MeasurementLevel.Ordinal, "Test measure", "[subject] does something");
         AssertJson.Roundtrip(measure, JsonContext.Default);
     }
 
@@ -45,7 +45,7 @@ public sealed class MeasureTests
     public void JsonRoundtrip_WithContext_Amount()
     {
         var uri = new Uri("https://schema-test.dseapi.app/testing/measure");
-        var measure = new Measure<Amount>(MeasureId.GetRandomId(), uri, MeasurementLevel.Ordinal, "Test measure", "[subject] does something");
+        var measure = new Measure<Amount>(uri, MeasurementLevel.Ordinal, "Test measure", "[subject] does something");
         AssertJson.Roundtrip(measure, JsonContext.Default);
     }
 
@@ -53,7 +53,7 @@ public sealed class MeasureTests
     public void CanCreateObservation_Amount()
     {
         var uri = new Uri("https://schema-test.dseapi.app/testing/measure");
-        var measure = new Measure<Amount>(MeasureId.GetRandomId(), uri, MeasurementLevel.Ordinal, "Test measure", "[subject] does something");
+        var measure = new Measure<Amount>(uri, MeasurementLevel.Ordinal, "Test measure", "[subject] does something");
         var obs = measure.CreateObservation<Observation<Amount>, Amount>((Amount)42.123m);
         Assert.Equal(measure.Id, obs.MeasureId);
         Assert.Equal((Amount)42.123m, obs.Value);
@@ -64,7 +64,7 @@ public sealed class MeasureTests
     {
         var uri = new Uri("https://schema-test.dseapi.app/testing/measure");
 
-        var measure = new Measure<BehaviorFrequency>(MeasureId.GetRandomId(), uri, MeasurementLevel.Ordinal, "Test measure", "[subject] does something");
+        var measure = new Measure<BehaviorFrequency>(uri, MeasurementLevel.Ordinal, "Test measure", "[subject] does something");
 
         AssertJson.Roundtrip(measure, JsonContext.Default);
     }
