@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Text.Json;
+using DSE.Open.Speech;
 using DSE.Open.Values;
 
 namespace DSE.Open.Observations;
@@ -23,7 +24,9 @@ public sealed class ObservationTests
         Observation[] observations =
         [
             Observation.Create(TestMeasures.BinaryMeasure, true),
-            Observation.Create(TestMeasures.CountMeasure,(Count)42)
+            Observation.Create(TestMeasures.CountMeasure,(Count)42),
+            Observation.Create(TestMeasures.BinarySpeechSoundMeasure, Phonemes.English.ay.Abstraction, true),
+            Observation.Create(TestMeasures.BinarySpeechSoundMeasure, Phonemes.English.ch.Abstraction, false),
         ];
 
         var json = JsonSerializer.Serialize(observations);
@@ -31,6 +34,12 @@ public sealed class ObservationTests
         var deserialized = JsonSerializer.Deserialize<Observation[]>(json);
 
         Assert.NotNull(deserialized);
-        Assert.Equal(observations[0], deserialized[0]);
+
+        Assert.Equal(observations.Length, deserialized.Length);
+
+        for (var i = 0; i < deserialized.Length; i++)
+        {
+            Assert.Equal(observations[i], deserialized[i]);
+        }
     }
 }
