@@ -14,10 +14,13 @@ public sealed class MeasureIdTests
         const ulong value = MeasureId.MaxIdValue + 1;
 
         // Act
-        static void Act() => _ = new MeasureId(value);
+        static void Act()
+        {
+            _ = new MeasureId(value);
+        }
 
         // Assert
-        Assert.Throws<ArgumentOutOfRangeException>(Act);
+        _ = Assert.Throws<ArgumentOutOfRangeException>(Act);
     }
 
     [Fact]
@@ -27,10 +30,13 @@ public sealed class MeasureIdTests
         const ulong value = MeasureId.MinIdValue - 1;
 
         // Act
-        static void Act() => _ = new MeasureId(value);
+        static void Act()
+        {
+            _ = new MeasureId(value);
+        }
 
         // Assert
-        Assert.Throws<ArgumentOutOfRangeException>(Act);
+        _ = Assert.Throws<ArgumentOutOfRangeException>(Act);
     }
 
     [Fact]
@@ -150,10 +156,13 @@ public sealed class MeasureIdTests
         const long value = (long)(MeasureId.MinIdValue - 1);
 
         // Act
-        static void Act() => _ = MeasureId.FromInt64(value);
+        static void Act()
+        {
+            _ = MeasureId.FromInt64(value);
+        }
 
         // Assert
-        Assert.Throws<ArgumentOutOfRangeException>(Act);
+        _ = Assert.Throws<ArgumentOutOfRangeException>(Act);
     }
 
     [Fact]

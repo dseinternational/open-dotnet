@@ -10,13 +10,13 @@ public static class ObservationCollectionExtensions
     public static IEnumerable<T> WhereMeasure<T>(this IEnumerable<T> collection, Measure measure)
         where T : Observation
     {
-        return collection.Where(o => o.HasMeasure(measure));
+        return collection.Where(o => o.MeasureId == measure.Id);
     }
 
-    public static IEnumerable<T> WhereMeasure<T>(this IEnumerable<T> collection, MeasureId id)
+    public static IEnumerable<T> WhereMeasureId<T>(this IEnumerable<T> collection, MeasureId id)
         where T : Observation
     {
-        return collection.Where(o => o.HasMeasureId(id));
+        return collection.Where(o => o.MeasureId == id);
     }
 
     public static IEnumerable<TObs> WhereValue<TObs, TValue>(
@@ -35,39 +35,40 @@ public static class ObservationCollectionExtensions
         where TObs : Observation<TValue>
         where TValue : struct, IEquatable<TValue>
     {
-        return collection.Where(o => o.HasMeasure(measure) && o.Value.Equals(value));
+        return collection.Where(o => o.MeasureId == measure.Id && o.Value.Equals(value));
     }
 
-    public static IEnumerable<TObs> WhereMeasureAndValue<TObs, TValue>(
+    public static IEnumerable<TObs> WhereMeasureIdAndValue<TObs, TValue>(
         this IEnumerable<TObs> collection,
         MeasureId id,
         TValue value)
         where TObs : Observation<TValue>
         where TValue : struct, IEquatable<TValue>
     {
-        return collection.Where(o => o.HasMeasureId(id) && o.Value.Equals(value));
+        return collection.Where(o => o.MeasureId == id && o.Value.Equals(value));
     }
 
-    public static IEnumerable<TObs> WhereMeasurement<TObs, TValue, TDisc>(
+    public static IEnumerable<TObs> WhereMeasurement<TObs, TValue, TParam>(
         this IEnumerable<TObs> collection,
         Measure measure,
-        TDisc discriminator)
-        where TObs : Observation<TValue, TDisc>
+        TParam parameter)
+        where TObs : Observation<TValue, TParam>
         where TValue : struct, IEquatable<TValue>
-        where TDisc : IEquatable<TDisc>
+        where TParam : IEquatable<TParam>
     {
-        return collection.Where(o => o.HasMeasurement(measure, discriminator));
+        return collection.Where(o => o.MeasureId == measure.Id && o.Parameter.Equals(parameter));
     }
 
-    public static IEnumerable<TObs> WhereMeasurementAndValue<TObs, TValue, TDisc>(
+    public static IEnumerable<TObs> WhereMeasurementAndValue<TObs, TValue, TParam>(
         this IEnumerable<TObs> collection,
         Measure measure,
-        TDisc discriminator,
+        TParam parameter,
         TValue value)
-        where TObs : Observation<TValue, TDisc>
+        where TObs : Observation<TValue, TParam>
         where TValue : struct, IEquatable<TValue>
-        where TDisc : IEquatable<TDisc>
+        where TParam : IEquatable<TParam>
     {
-        return collection.Where(o => o.HasMeasurement(measure, discriminator) && o.Value.Equals(value));
+        return collection.Where(o => o.MeasureId == measure.Id
+            && o.Parameter.Equals(parameter) && value.Equals(value));
     }
 }

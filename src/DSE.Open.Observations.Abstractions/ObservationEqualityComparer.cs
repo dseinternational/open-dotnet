@@ -11,9 +11,6 @@ public abstract class ObservationEqualityComparer<TObs, TValue> : IEqualityCompa
 {
     public static readonly IEqualityComparer<TObs> Default = EqualityComparer<TObs>.Default;
 
-    /// <summary>
-    /// Gets an equality comparer that compares observations by <see cref="Observation{TObs, TValue}.GetMeasurementHashCode"/>
-    /// </summary>
     public static readonly IEqualityComparer<TObs> Measurement = new DiscriminatorObservationEqualityComparer();
 
     public abstract bool Equals(TObs? x, TObs? y);

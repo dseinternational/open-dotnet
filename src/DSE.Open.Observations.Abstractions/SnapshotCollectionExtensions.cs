@@ -1,7 +1,6 @@
+
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
-
-#pragma warning disable CA1005 // Avoid excessive parameters on generic types
 
 namespace DSE.Open.Observations;
 
@@ -60,53 +59,5 @@ public static class SnapshotCollectionExtensions
         where TValue : struct, IEquatable<TValue>
     {
         return collection.Where(s => s.HasMeasureId(id) && s.Observation.Value.Equals(value));
-    }
-
-    public static IEnumerable<TSnapshot> WhereMeasurement<TSnapshot, TObs, TValue, TDisc>(
-        this IEnumerable<TSnapshot> collection,
-        Measure measure,
-        TDisc discriminator)
-        where TSnapshot : Snapshot<TObs>
-        where TObs : Observation<TValue, TDisc>
-        where TValue : struct, IEquatable<TValue>
-        where TDisc : IEquatable<TDisc>
-    {
-        return collection.Where(s => s.HasMeasurement(measure, discriminator));
-    }
-
-    public static IEnumerable<TSnapshot> WhereMeasurementAndValue<TSnapshot, TObs, TValue, TDisc>(
-        this IEnumerable<TSnapshot> collection,
-        Measure measure,
-        TDisc discriminator,
-        TValue value)
-        where TSnapshot : Snapshot<TObs>
-        where TObs : Observation<TValue, TDisc>
-        where TValue : struct, IEquatable<TValue>
-        where TDisc : IEquatable<TDisc>
-    {
-        return collection.Where(s => s.HasMeasurement(measure, discriminator) && s.Observation.Value.Equals(value));
-    }
-
-    public static bool AnyWithMeasurementAndValue<TSnapshot, TObs, TValue, TDisc>(
-        this IEnumerable<TSnapshot> collection,
-        Measure measure,
-        TDisc discriminator,
-        TValue value)
-        where TSnapshot : Snapshot<TObs>
-        where TObs : Observation<TValue, TDisc>
-        where TValue : struct, IEquatable<TValue>
-        where TDisc : IEquatable<TDisc>
-    {
-        return collection.Any(s => s.HasMeasurement(measure, discriminator) && s.Observation.Value.Equals(value));
-    }
-
-    public static IEnumerable<TSnapshot> WhereObservation<TSnapshot, TObs>(
-        this IEnumerable<TSnapshot> collection,
-        Func<TObs, bool> observationPredicate)
-        where TSnapshot : Snapshot<TObs>
-        where TObs : Observation
-    {
-        ArgumentNullException.ThrowIfNull(observationPredicate);
-        return collection.Where(e => observationPredicate(e.Observation));
     }
 }

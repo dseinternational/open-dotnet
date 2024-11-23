@@ -127,11 +127,7 @@ public class MeasureTests
     }
 }
 
-public sealed record FakeBinaryObservation : Observation<bool>
-{
-}
-
-public sealed record FakeBinaryMeasure : Measure<FakeBinaryObservation, bool>
+public sealed record FakeBinaryMeasure : Measure<bool>
 {
     [SetsRequiredMembers]
     public FakeBinaryMeasure(MeasureId id, Uri uri, string name, string statement)
@@ -141,15 +137,5 @@ public sealed record FakeBinaryMeasure : Measure<FakeBinaryObservation, bool>
         MeasurementLevel = MeasurementLevel.Binary;
         Name = name;
         Statement = statement;
-    }
-
-    public override FakeBinaryObservation CreateObservation(bool value, DateTimeOffset timestamp)
-    {
-        return new FakeBinaryObservation
-        {
-            Time = timestamp,
-            MeasureId = Id,
-            Value = value
-        };
     }
 }

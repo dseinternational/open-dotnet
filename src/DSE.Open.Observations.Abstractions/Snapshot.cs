@@ -56,7 +56,7 @@ public abstract record Snapshot<TObs> : Snapshot
 
     public override bool HasMeasureId(MeasureId measureId)
     {
-        return Observation.HasMeasureId(measureId);
+        return Observation.MeasureId == measureId;
     }
 
     /// <summary>
@@ -65,14 +65,5 @@ public abstract record Snapshot<TObs> : Snapshot
     public override int GetMeasurementHashCode()
     {
         return Observation.GetMeasurementHashCode();
-    }
-}
-
-public static class ObservationExtensions
-{
-    public static bool HasMeasurement(this Observation observation, Measure measure)
-    {
-        ArgumentNullException.ThrowIfNull(measure);
-        return observation.HasMeasureId(measure.Id);
     }
 }
