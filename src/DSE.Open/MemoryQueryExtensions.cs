@@ -105,6 +105,11 @@ public static class MemoryQueryExtensions
         return values.All(char.IsAsciiLetterUpper);
     }
 
+    public static bool AllAreWhiteSpace(this ReadOnlySpan<char> values)
+    {
+        return values.All(char.IsWhiteSpace);
+    }
+
     /// <summary>
     /// Returns the number of items matching the condition specified by <paramref name="predicate"/>.
     /// </summary>

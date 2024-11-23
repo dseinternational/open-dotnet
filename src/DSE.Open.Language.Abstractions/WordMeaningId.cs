@@ -1,7 +1,10 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Buffers;
+using System.IO.Hashing;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Text.Json.Serialization;
 using DSE.Open.Values;
 using DSE.Open.Values.Text.Json.Serialization;
@@ -18,9 +21,6 @@ public readonly partial struct WordMeaningId
     : IEquatableValue<WordMeaningId, ulong>,
       IUtf8SpanSerializable<WordMeaningId>
 {
-    public const ulong MinIdValue = 100000000001;
-    public const ulong MaxIdValue = 999999999999;
-
     public static int MaxSerializedCharLength => 16;
 
     public static int MaxSerializedByteLength => 16;
@@ -31,12 +31,12 @@ public readonly partial struct WordMeaningId
 
     public static bool IsValidValue(ulong value)
     {
-        return value is <= MaxIdValue and >= MinIdValue;
+        return value is <= LanguageIds.MaxIdValue and >= LanguageIds.MinIdValue;
     }
 
     public static bool IsValidValue(long value)
     {
-        return value is <= ((long)MaxIdValue) and >= ((long)MinIdValue);
+        return value is <= ((long)LanguageIds.MaxIdValue) and >= ((long)LanguageIds.MinIdValue);
     }
 
     public static bool TryFromInt64(long value, out WordMeaningId id)
@@ -84,7 +84,55 @@ public readonly partial struct WordMeaningId
 #pragma warning disable CA5394 // Do not use insecure randomness
     public static WordMeaningId GetRandomId()
     {
-        return (WordMeaningId)(ulong)Random.Shared.NextInt64((long)MinIdValue, (long)MaxIdValue);
+        return (WordMeaningId)(ulong)Random.Shared.NextInt64((long)LanguageIds.MinIdValue, (long)LanguageIds.MaxIdValue);
     }
 #pragma warning restore CA5394 // Do not use insecure randomness
+
+    /// <summary>
+    /// Gets an id for a word meaning specified by the given label, universal POS tag and treebank POS tag.
+    /// </summary>
+    /// <param name="label"></param>
+    /// <param name="pos"></param>
+    /// <param name="altPos"></param>
+    /// <returns></returns>
+    public static WordMeaningId FromWordMeaning(ReadOnlySpan<char> label, AsciiString pos, AsciiString? altPos)
+    {
+        if (label.IsEmpty || label.AllAreWhiteSpace())
+        {
+            ThrowHelper.ThrowArgumentOutOfRangeException(nameof(label), "A label must be provided.");
+        }
+
+        var posSpan = MemoryMarshal.AsBytes(pos.AsSpan());
+        var altPosSpan = altPos is null ? default : MemoryMarshal.AsBytes(altPos.Value.AsSpan());
+
+        var length = Encoding.UTF8.GetByteCount(label) + posSpan.Length + altPosSpan.Length;
+
+        byte[]? rented = null;
+
+        try
+        {
+            Span<byte> buffer = length > 256
+                ? (rented = ArrayPool<byte>.Shared.Rent(length))
+                : stackalloc byte[length];
+
+            var charsWritten = Encoding.UTF8.GetBytes(label, buffer);
+
+            posSpan.CopyTo(buffer[charsWritten..]);
+
+            charsWritten += posSpan.Length;
+
+            altPosSpan.CopyTo(buffer[charsWritten..]);
+
+            charsWritten += altPosSpan.Length;
+
+            return (WordMeaningId)(LanguageIds.MinIdValue + (ulong)(XxHash3.HashToUInt64(buffer[..charsWritten]) / (decimal)ulong.MaxValue * LanguageIds.MaxRange));
+        }
+        finally
+        {
+            if (rented is not null)
+            {
+                ArrayPool<byte>.Shared.Return(rented);
+            }
+        }
+    }
 }
