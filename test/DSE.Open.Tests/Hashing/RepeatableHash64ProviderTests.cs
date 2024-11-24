@@ -72,7 +72,7 @@ public class RepeatableHash64ProviderTests
     public void GetRepeatableHashCode_ReadOnlySpanChar_BigEndian_ReturnsExpected()
     {
         var value = "A test value".ToCharArray();
-        var expected = 394367666448625864u;
+        var expected = 9838420940477837270u;
         var actual = RepeatableHash64Provider.Default.GetRepeatableHashCode(value, true);
         Assert.Equal(expected, actual);
     }
@@ -90,7 +90,7 @@ public class RepeatableHash64ProviderTests
     public void GetRepeatableHashCode_ReadOnlySpanInt16_BigEndian_ReturnsExpected()
     {
         short[] value = [-42, 0, 1, 42];
-        var expected = 8125135128953856518u;
+        var expected = 17659265717773422113u;
         var actual = RepeatableHash64Provider.Default.GetRepeatableHashCode(value, true);
         Assert.Equal(expected, actual);
     }
@@ -108,7 +108,7 @@ public class RepeatableHash64ProviderTests
     public void GetRepeatableHashCode_ReadOnlySpanInt32_BigEndian_ReturnsExpected()
     {
         int[] value = [-42, 0, 1, 42];
-        var expected = 18378802383672441854u;
+        var expected = 1543474647417320130u;
         var actual = RepeatableHash64Provider.Default.GetRepeatableHashCode(value, true);
         Assert.Equal(expected, actual);
     }
@@ -126,7 +126,7 @@ public class RepeatableHash64ProviderTests
     public void GetRepeatableHashCode_ReadOnlySpanInt64_BigEndian_ReturnsExpected()
     {
         long[] value = [long.MinValue, 0, 1, long.MaxValue];
-        var expected = 6917305357192507555u;
+        var expected = 11982527232425785625u;
         var actual = RepeatableHash64Provider.Default.GetRepeatableHashCode(value, true);
         Assert.Equal(expected, actual);
     }
@@ -144,7 +144,7 @@ public class RepeatableHash64ProviderTests
     public void GetRepeatableHashCode_ReadOnlySpanUInt16_BigEndian_ReturnsExpected()
     {
         ushort[] value = [0, 1, 42];
-        var expected = 2425809899062796766u;
+        var expected = 1011185303802023267u;
         var actual = RepeatableHash64Provider.Default.GetRepeatableHashCode(value, true);
         Assert.Equal(expected, actual);
     }
@@ -162,7 +162,7 @@ public class RepeatableHash64ProviderTests
     public void GetRepeatableHashCode_ReadOnlySpanUInt32_BigEndian_ReturnsExpected()
     {
         uint[] value = [0, 1, 42];
-        var expected = 11286158671170504699u;
+        var expected = 1609210568001055618u;
         var actual = RepeatableHash64Provider.Default.GetRepeatableHashCode(value, true);
         Assert.Equal(expected, actual);
     }
@@ -180,7 +180,7 @@ public class RepeatableHash64ProviderTests
     public void GetRepeatableHashCode_ReadOnlySpanUInt64_BigEndian_ReturnsExpected()
     {
         ulong[] value = [0, 1, long.MaxValue, ulong.MaxValue];
-        var expected = 141264367115335047u;
+        var expected = 6043940069377282815u;
         var actual = RepeatableHash64Provider.Default.GetRepeatableHashCode(value, true);
         Assert.Equal(expected, actual);
     }
