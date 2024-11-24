@@ -3,6 +3,7 @@
 
 using System.Buffers;
 using System.Text;
+using DSE.Open.Hashing;
 
 namespace DSE.Open;
 
@@ -94,6 +95,11 @@ public static partial class MemoryExtensions
     public static bool ContainsOnlyAsciiLettersUpper(this ReadOnlySpan<byte> value)
     {
         return ContainsOnlyCore(value, SearchBytes.s_asciiLettersUpper, AsciiChar.IsLetterUpper);
+    }
+
+    public static ulong GetRepeatableHashCode(this ReadOnlySpan<byte> value)
+    {
+        return RepeatableHash64Provider.Default.GetRepeatableHashCode(value);
     }
 
     public static bool TryCopyWhereNotWhitespace(this Span<byte> span, Span<byte> buffer, out int bytesWritten)

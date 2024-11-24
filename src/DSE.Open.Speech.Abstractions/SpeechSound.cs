@@ -241,7 +241,7 @@ public readonly struct SpeechSound
 
     public ulong GetRepeatableHashCode()
     {
-        throw new NotImplementedException();
+        return _value.GetRepeatableHashCode();
     }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates

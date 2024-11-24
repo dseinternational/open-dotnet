@@ -1,6 +1,8 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using DSE.Open.Hashing;
+
 namespace DSE.Open;
 
 public static class Int64Extensions
@@ -26,5 +28,10 @@ public static class Int64Extensions
     public static int GetDigitCount(this long number)
     {
         return (int)(uint)Math.Log10(Math.Abs(number)) + 1;
+    }
+
+    public static ulong GetRepeatableHashCode(this long number)
+    {
+        return RepeatableHash64Provider.Default.GetRepeatableHashCode(number);
     }
 }

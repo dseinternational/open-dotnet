@@ -4,6 +4,7 @@
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using CommunityToolkit.HighPerformance.Buffers;
+using DSE.Open.Hashing;
 using DSE.Open.Values.Text.Json.Serialization;
 
 namespace DSE.Open.Values;
@@ -15,7 +16,7 @@ namespace DSE.Open.Values;
 [ComparableValue]
 [StructLayout(LayoutKind.Sequential)]
 [JsonConverter(typeof(JsonSpanSerializableValueConverter<Label, CharSequence>))]
-public readonly partial struct Label : IComparableValue<Label, CharSequence>
+public readonly partial struct Label : IComparableValue<Label, CharSequence>, IRepeatableHash64
 {
     public const int MinLength = 2;
     public const int MaxLength = 120;
@@ -141,6 +142,11 @@ public readonly partial struct Label : IComparableValue<Label, CharSequence>
     public static Label FromString(string label)
     {
         return new(label);
+    }
+
+    public ulong GetRepeatableHashCode()
+    {
+        return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);
     }
 
     public static explicit operator string(Label label)

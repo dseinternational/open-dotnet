@@ -8,6 +8,7 @@ using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json.Serialization;
+using DSE.Open.Hashing;
 using DSE.Open.Text.Json.Serialization;
 
 namespace DSE.Open;
@@ -19,14 +20,15 @@ namespace DSE.Open;
 [StructLayout(LayoutKind.Sequential)]
 public readonly struct AsciiChar2
     : IComparable<AsciiChar2>,
-        IEquatable<AsciiChar2>,
-        IEqualityOperators<AsciiChar2, AsciiChar2, bool>,
-        ISpanFormattable,
-        ISpanParsable<AsciiChar2>,
-        IConvertibleTo<AsciiChar2, string>,
-        ITryConvertibleFrom<AsciiChar2, string>,
-        IUtf8SpanSerializable<AsciiChar2>,
-        ISpanFormatableCharCountProvider
+      IEquatable<AsciiChar2>,
+      IEqualityOperators<AsciiChar2, AsciiChar2, bool>,
+      ISpanFormattable,
+      ISpanParsable<AsciiChar2>,
+      IConvertibleTo<AsciiChar2, string>,
+      ITryConvertibleFrom<AsciiChar2, string>,
+      IUtf8SpanSerializable<AsciiChar2>,
+      ISpanFormatableCharCountProvider,
+      IRepeatableHash64
 {
     private const int CharCount = 2;
 
@@ -404,6 +406,11 @@ public readonly struct AsciiChar2
 
         bytesWritten = 0;
         return false;
+    }
+
+    public ulong GetRepeatableHashCode()
+    {
+        return RepeatableHash64Provider.Default.GetRepeatableHashCode([_c0, _c1]);
     }
 
     public static bool operator <(AsciiChar2 left, AsciiChar2 right)

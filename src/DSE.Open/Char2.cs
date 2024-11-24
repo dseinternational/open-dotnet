@@ -4,6 +4,7 @@
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
+using DSE.Open.Hashing;
 
 namespace DSE.Open;
 
@@ -15,7 +16,8 @@ public readonly struct Char2
     : IEquatable<Char2>,
       ISpanFormattable,
       ISpanParsable<Char2>,
-      ISpanFormatableCharCountProvider
+      ISpanFormatableCharCountProvider,
+      IRepeatableHash64
 {
     private const int CharCount = 2;
 
@@ -208,5 +210,10 @@ public readonly struct Char2
         out Char2 result)
     {
         return TryParse(s.AsSpan(), provider, out result);
+    }
+
+    public ulong GetRepeatableHashCode()
+    {
+        return RepeatableHash64Provider.Default.GetRepeatableHashCode([_c0, _c1]);
     }
 }

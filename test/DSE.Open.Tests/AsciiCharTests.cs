@@ -130,7 +130,6 @@ public class AsciiCharTests
         _ = Assert.Throws<FormatException>(Act);
     }
 
-
     [Fact]
     public void TryFormat_WithCorrectBuffer_ShouldReturnTrue()
     {

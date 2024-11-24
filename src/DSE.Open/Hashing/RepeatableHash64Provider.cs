@@ -67,6 +67,16 @@ public abstract class RepeatableHash64Provider
         return GetRepeatableHashCode(span);
     }
 
+    public ulong GetRepeatableHashCode(DateTime value)
+    {
+        return GetRepeatableHashCode(value.Ticks);
+    }
+
+    public ulong GetRepeatableHashCode(DateTimeOffset value)
+    {
+        return GetRepeatableHashCode(value.Ticks);
+    }
+
     public ulong GetRepeatableHashCode(decimal value)
     {
         Span<int> bits = stackalloc int[4];

@@ -9,6 +9,7 @@ using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using CommunityToolkit.HighPerformance.Buffers;
+using DSE.Open.Hashing;
 using DSE.Open.Values;
 using DSE.Open.Values.Text.Json.Serialization;
 
@@ -22,7 +23,8 @@ namespace DSE.Open.Globalization;
 [StructLayout(LayoutKind.Sequential)]
 public readonly partial struct LanguageTag
     : IComparableValue<LanguageTag, AsciiString>,
-      IUtf8SpanSerializable<LanguageTag>
+      IUtf8SpanSerializable<LanguageTag>,
+      IRepeatableHash64
 {
     /// <summary>
     /// Gets the maximum practical length to expect for a language code that is suitable for
@@ -451,6 +453,11 @@ public readonly partial struct LanguageTag
             .FirstOrDefault(ci => ci.Name.EndsWith(countryCode.ToStringInvariant(), StringComparison.OrdinalIgnoreCase));
 
         return match is not null ? FromCultureInfo(match) : EnglishUs;
+    }
+
+    public ulong GetRepeatableHashCode()
+    {
+        return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);
     }
 
     private static readonly FrozenDictionary<CountryCode, LanguageTag> s_languageLookup = new Dictionary<CountryCode, LanguageTag>

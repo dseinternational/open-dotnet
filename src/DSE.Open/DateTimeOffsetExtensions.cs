@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using DSE.Open.Hashing;
 using NodaTime;
 
 namespace DSE.Open;
@@ -69,5 +70,10 @@ public static class DateTimeOffsetExtensions
         }
 
         return IsWithinPastMonths(date.Value, months);
+    }
+
+    public static ulong GetRepeatableHashCode(this DateTimeOffset value)
+    {
+        return RepeatableHash64Provider.Default.GetRepeatableHashCode(value);
     }
 }

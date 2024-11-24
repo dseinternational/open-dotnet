@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
+using DSE.Open.Hashing;
 using DSE.Open.Values.Text.Json.Serialization;
 
 namespace DSE.Open.Values;
@@ -26,7 +27,8 @@ public readonly record struct EmailAddress
       ISpanParsable<EmailAddress>,
       ISpanFormattable,
       IEquatable<string>,
-      IEquatable<ReadOnlyMemory<char>>
+      IEquatable<ReadOnlyMemory<char>>,
+      IRepeatableHash64
 {
     // https://datatracker.ietf.org/doc/html/rfc5322#section-3.2.3
     private const string ATextSymbolChars = "!#$%&'*+-/=?^_`{|}~";
@@ -418,6 +420,11 @@ public readonly record struct EmailAddress
 
         charsWritten = 0;
         return false;
+    }
+
+    public ulong GetRepeatableHashCode()
+    {
+        return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value.AsSpan());
     }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates - explicit conversion operators

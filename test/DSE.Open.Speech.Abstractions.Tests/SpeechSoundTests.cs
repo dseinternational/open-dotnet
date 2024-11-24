@@ -53,6 +53,13 @@ public class SpeechSoundTests
         Assert.Equal(p, deserialized);
     }
 
+    [Fact]
+    public void GetRepeatableHashCode_ReturnsExpectedValue()
+    {
+        var value = SpeechSound.ParseInvariant("b");
+        Assert.Equal(11835835476309421758u, value.GetRepeatableHashCode());
+    }
+
     public static TheoryData<SpeechSound> SpeechSounds
     {
         get
@@ -299,7 +306,6 @@ public class SpeechSoundTests
         "ʔ", // glottal plosive
         "h", // voiceless glottal fricative
         "ɦ",  // voiced glottal fricative
-
 
         "tʃ",
         "dʒ",

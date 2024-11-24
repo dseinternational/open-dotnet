@@ -38,7 +38,6 @@ public class MemoryExtensionsTestsConcat
         Assert.True(result.AsSpan().SequenceEqual([1, 2, 3, 4]));
     }
 
-
     [Fact]
     public void Concat_Element_2()
     {

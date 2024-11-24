@@ -36,7 +36,6 @@ public class ReadOnlyValueCollectionTests
         Assert.Equal(c1, c2);
     }
 
-
     [Fact]
     public void CreateRange_WithIEnumerable_ShouldCreate()
     {
@@ -154,7 +153,6 @@ public class ReadOnlyValueCollectionTests
         // Assert
         _ = Assert.IsType<ReadOnlyValueCollection<int>.Enumerator>(enumerator);
     }
-
 
     [Fact]
     public void GetEnumerator_IEnumerableT_ShouldReturnStructEnumerator()
