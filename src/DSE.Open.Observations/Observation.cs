@@ -9,124 +9,24 @@ using DSE.Open.Values;
 
 namespace DSE.Open.Observations;
 
-public static class ObservationTypeIds
-{
-    /// <summary>
-    /// Gets the type id for an <see cref="Observation{TValue}"/> with a <see cref="bool"/> value.
-    /// </summary>
-    public const int Binary = 1510655079;
-
-    /// <summary>
-    /// Gets the type id for an <see cref="Observation{TValue, TParam}"/> with a <see cref="bool"/> value
-    /// and a <see cref="SpeechSound"/> parameter.
-    /// </summary>
-    public const int BinarySpeechSound = 856157843;
-
-    /// <summary>
-    /// Gets the type id for an <see cref="Observation{TValue, TParam}"/> with a <see cref="bool"/> value
-    /// and a <see cref="WordId"/> parameter.
-    /// </summary>
-    public const int BinaryWord = 835791406;
-
-    /// <summary>
-    /// Gets the type id for an <see cref="Observation{TValue, TParam}"/> with a <see cref="bool"/> value
-    /// and a <see cref="SentenceId"/> parameter.
-    /// </summary>
-    public const int BinarySentence = 537906445;
-
-    /// <summary>
-    /// Gets the type id for an <see cref="Observation{TValue}"/> with a <see cref="Observations.BehaviorFrequency"/> value.
-    /// </summary>
-    public const int BehaviorFrequency = 2080067532;
-
-    /// <summary>
-    /// Gets the type id for an <see cref="Observation{TValue, TParam}"/> with a <see cref="Observations.BehaviorFrequency"/> value
-    /// and a <see cref="SpeechSound"/> parameter.
-    /// </summary>
-    public const int BehaviorFrequencySpeechSound = 1907339017;
-
-    /// <summary>
-    /// Gets the type id for an <see cref="Observation{TValue, TParam}"/> with a <see cref="Observations.BehaviorFrequency"/> value
-    /// and a <see cref="WordId"/> parameter.
-    /// </summary>
-    public const int BehaviorFrequencyWord = 517292085;
-
-    /// <summary>
-    /// Gets the type id for an <see cref="Observation{TValue, TParam}"/> with a <see cref="Observations.BehaviorFrequency"/> value
-    /// and a <see cref="SentenceId"/> parameter.
-    /// </summary>
-    public const int BehaviorFrequencySentence = 1348989876;
-
-    /// <summary>
-    /// Gets the type id for an <see cref="Observation{TValue}"/> with a <see cref="Values.Count"/> value.
-    /// </summary>
-    public const int Count = 1600534029;
-
-    /// <summary>
-    /// Gets the type id for an <see cref="Observation{TValue}"/> with a <see cref="Observations.SpeechClarity"/> value.
-    /// </summary>
-    public const int SpeechClarity = 529922655;
-
-    /// <summary>
-    /// Gets the type id for an <see cref="Observation{TValue, TParam}"/> with a <see cref="Observations.SpeechClarity"/> value
-    /// and a <see cref="SpeechSound"/> parameter.
-    /// </summary>
-    public const int SpeechClaritySpeechSound = 538557670;
-
-    /// <summary>
-    /// Gets the type id for an <see cref="Observation{TValue, TParam}"/> with a <see cref="Observations.SpeechClarity"/> value
-    /// and a <see cref="WordId"/> parameter.
-    /// </summary>
-    public const int SpeechClarityWord = 1548139583;
-
-    /// <summary>
-    /// Gets the type id for an <see cref="Observation{TValue, TParam}"/> with a <see cref="Observations.SpeechClarity"/> value
-    /// and a <see cref="SentenceId"/> parameter.
-    /// </summary>
-    public const int SpeechClaritySentence = 1656979834;
-
-    /// <summary>
-    /// Gets the type id for an <see cref="Observation{TValue}"/> with a <see cref="Observations.Completeness"/> value.
-    /// </summary>
-    public const int Completeness = 28008480;
-
-    /// <summary>
-    /// Gets the type id for an <see cref="Observation{TValue, TParam}"/> with a <see cref="Observations.Completeness"/> value
-    /// and a <see cref="SpeechSound"/> parameter.
-    /// </summary>
-    public const int CompletenessSpeechSound = 1757038964;
-
-    /// <summary>
-    /// Gets the type id for an <see cref="Observation{TValue, TParam}"/> with a <see cref="Observations.Completeness"/> value
-    /// and a <see cref="WordId"/> parameter.
-    /// </summary>
-    public const int CompletenessWord = 1481569885;
-
-    /// <summary>
-    /// Gets the type id for an <see cref="Observation{TValue, TParam}"/> with a <see cref="Observations.Completeness"/> value
-    /// and a <see cref="SentenceId"/> parameter.
-    /// </summary>
-    public const int CompletenessSentence = 1174605315;
-}
-
 [JsonPolymorphic(TypeDiscriminatorPropertyName = "d")]
-[JsonDerivedType(typeof(Observation<bool>), ObservationTypeIds.Binary)]
-[JsonDerivedType(typeof(Observation<bool, SpeechSound>), ObservationTypeIds.BinarySpeechSound)]
-[JsonDerivedType(typeof(Observation<bool, WordId>), ObservationTypeIds.BinaryWord)]
-[JsonDerivedType(typeof(Observation<bool, SentenceId>), ObservationTypeIds.BinarySentence)]
-[JsonDerivedType(typeof(Observation<BehaviorFrequency>), ObservationTypeIds.BehaviorFrequency)]
-[JsonDerivedType(typeof(Observation<BehaviorFrequency, SpeechSound>), ObservationTypeIds.BehaviorFrequencySpeechSound)]
-[JsonDerivedType(typeof(Observation<BehaviorFrequency, WordId>), ObservationTypeIds.BehaviorFrequencyWord)]
-[JsonDerivedType(typeof(Observation<BehaviorFrequency, SentenceId>), ObservationTypeIds.BehaviorFrequencySentence)]
-[JsonDerivedType(typeof(Observation<Count>), ObservationTypeIds.Count)]
-[JsonDerivedType(typeof(Observation<SpeechClarity>), ObservationTypeIds.SpeechClarity)]
-[JsonDerivedType(typeof(Observation<SpeechClarity, SpeechSound>), ObservationTypeIds.SpeechClaritySpeechSound)]
-[JsonDerivedType(typeof(Observation<SpeechClarity, WordId>), ObservationTypeIds.SpeechClarityWord)]
-[JsonDerivedType(typeof(Observation<SpeechClarity, SentenceId>), ObservationTypeIds.SpeechClaritySentence)]
-[JsonDerivedType(typeof(Observation<Completeness>), ObservationTypeIds.Completeness)]
-[JsonDerivedType(typeof(Observation<Completeness, SpeechSound>), ObservationTypeIds.CompletenessSpeechSound)]
-[JsonDerivedType(typeof(Observation<Completeness, WordId>), ObservationTypeIds.CompletenessWord)]
-[JsonDerivedType(typeof(Observation<Completeness, SentenceId>), ObservationTypeIds.CompletenessSentence)]
+[JsonDerivedType(typeof(Observation<bool>), (int)ObservationType.Binary)]
+[JsonDerivedType(typeof(Observation<bool, SpeechSound>), (int)ObservationType.BinarySpeechSound)]
+[JsonDerivedType(typeof(Observation<bool, WordId>), (int)ObservationType.BinaryWord)]
+[JsonDerivedType(typeof(Observation<bool, SentenceId>), (int)ObservationType.BinarySentence)]
+[JsonDerivedType(typeof(Observation<BehaviorFrequency>), (int)ObservationType.BehaviorFrequency)]
+[JsonDerivedType(typeof(Observation<BehaviorFrequency, SpeechSound>), (int)ObservationType.BehaviorFrequencySpeechSound)]
+[JsonDerivedType(typeof(Observation<BehaviorFrequency, WordId>), (int)ObservationType.BehaviorFrequencyWord)]
+[JsonDerivedType(typeof(Observation<BehaviorFrequency, SentenceId>), (int)ObservationType.BehaviorFrequencySentence)]
+[JsonDerivedType(typeof(Observation<Count>), (int)ObservationType.Count)]
+[JsonDerivedType(typeof(Observation<SpeechClarity>), (int)ObservationType.SpeechClarity)]
+[JsonDerivedType(typeof(Observation<SpeechClarity, SpeechSound>), (int)ObservationType.SpeechClaritySpeechSound)]
+[JsonDerivedType(typeof(Observation<SpeechClarity, WordId>), (int)ObservationType.SpeechClarityWord)]
+[JsonDerivedType(typeof(Observation<SpeechClarity, SentenceId>), (int)ObservationType.SpeechClaritySentence)]
+[JsonDerivedType(typeof(Observation<Completeness>), (int)ObservationType.Completeness)]
+[JsonDerivedType(typeof(Observation<Completeness, SpeechSound>), (int)ObservationType.CompletenessSpeechSound)]
+[JsonDerivedType(typeof(Observation<Completeness, WordId>), (int)ObservationType.CompletenessWord)]
+[JsonDerivedType(typeof(Observation<Completeness, SentenceId>), (int)ObservationType.CompletenessSentence)]
 public abstract record Observation : IObservation
 {
     private static readonly DateTimeOffset s_minTime = new(2000, 1, 1, 0, 0, 0, TimeSpan.Zero);
