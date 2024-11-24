@@ -1,7 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Runtime.InteropServices;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 using DSE.Open.Hashing;
 using DSE.Open.Language;
@@ -29,10 +29,12 @@ namespace DSE.Open.Observations;
 [JsonDerivedType(typeof(Observation<Completeness, SpeechSound>), (int)ObservationType.CompletenessSpeechSound)]
 [JsonDerivedType(typeof(Observation<Completeness, WordId>), (int)ObservationType.CompletenessWord)]
 [JsonDerivedType(typeof(Observation<Completeness, SentenceId>), (int)ObservationType.CompletenessSentence)]
-public abstract record Observation : IObservation
+public abstract class Observation : IObservation, IEquatable<Observation>
 {
     private static readonly DateTimeOffset s_minTime = new(2000, 1, 1, 0, 0, 0, TimeSpan.Zero);
     private const int TimeToleranceSeconds = 60;
+
+    private ulong? _measurementHashCode;
 
     /// <summary>
     /// Initializes a new observation instance.
@@ -99,9 +101,32 @@ public abstract record Observation : IObservation
     /// For an observation with no paramaters, this is simply a repeatable hash of the <see cref="MeasureId"/>.
     /// <para>For observations with parameters, the hash should incorporate parameters with the measure id.</para>
     /// </remarks>
-    public virtual ulong GetMeasurementHashCode()
+    public ulong GetMeasurementHashCode()
+    {
+        return _measurementHashCode ??= GetMeasurementHashCodeCore();
+    }
+
+    protected virtual ulong GetMeasurementHashCodeCore()
     {
         return MeasureId.GetRepeatableHashCode();
+    }
+
+    public virtual bool Equals([NotNullWhen(true)] Observation? other)
+    {
+        return other is not null &&
+               Id == other.Id &&
+               Time == other.Time &&
+               MeasureId == other.MeasureId;
+    }
+
+    public override bool Equals([NotNullWhen(true)] object? obj)
+    {
+        return Equals(obj as Observation);
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Id, Time, MeasureId);
     }
 
     /// <summary>
@@ -181,10 +206,11 @@ public abstract record Observation : IObservation
 /// An observation with a single measurement value.
 /// </summary>
 /// <typeparam name="TValue"></typeparam>
-public sealed record Observation<TValue>
+public sealed class Observation<TValue>
     : Observation,
       IObservation<TValue>,
-      IObservationFactory<Observation<TValue>, TValue>
+      IObservationFactory<Observation<TValue>, TValue>,
+      IEquatable<Observation<TValue>>
     where TValue : struct, IEquatable<TValue>
 {
     public Observation(IMeasure measure, TValue value, TimeProvider timeProvider)
@@ -216,6 +242,28 @@ public sealed record Observation<TValue>
     [JsonPropertyOrder(-1)]
     public TValue Value { get; }
 
+    public override bool Equals([NotNullWhen(true)] object? obj)
+    {
+        return Equals(obj as Observation<TValue>);
+    }
+
+    public override bool Equals([NotNullWhen(true)] Observation? other)
+    {
+        return Equals(other as Observation<TValue>);
+    }
+
+    public bool Equals([NotNullWhen(true)] Observation<TValue>? other)
+    {
+        return other is not null &&
+               Value.Equals(other.Value) &&
+               base.Equals(other);
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Value, base.GetHashCode());
+    }
+
     static Observation<TValue> IObservationFactory<Observation<TValue>, TValue>.Create(
         IMeasure<TValue> measure,
         TValue value,
@@ -230,10 +278,11 @@ public sealed record Observation<TValue>
 /// </summary>
 /// <typeparam name="TValue"></typeparam>
 /// <typeparam name="TParam"></typeparam>
-public sealed record Observation<TValue, TParam>
+public sealed class Observation<TValue, TParam>
     : Observation,
       IObservation<TValue, TParam>,
-      IObservationFactory<Observation<TValue, TParam>, TValue, TParam>
+      IObservationFactory<Observation<TValue, TParam>, TValue, TParam>,
+      IEquatable<Observation<TValue, TParam>>
     where TValue : struct, IEquatable<TValue>
     where TParam : IEquatable<TParam>
 {
@@ -287,8 +336,31 @@ public sealed record Observation<TValue, TParam>
     [JsonPropertyOrder(-1)]
     public TValue Value { get; }
 
+    public override bool Equals([NotNullWhen(true)] object? obj)
+    {
+        return Equals(obj as Observation<TValue, TParam>);
+    }
+
+    public override bool Equals([NotNullWhen(true)] Observation? other)
+    {
+        return Equals(other as Observation<TValue, TParam>);
+    }
+
+    public bool Equals([NotNullWhen(true)] Observation<TValue, TParam>? other)
+    {
+        return other is not null &&
+               Parameter.Equals(other.Parameter) &&
+               Value.Equals(other.Value) &&
+               base.Equals(other);
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Value, base.GetHashCode());
+    }
+
     /// <inheritdoc />
-    public override ulong GetMeasurementHashCode()
+    protected override ulong GetMeasurementHashCodeCore()
     {
         if (!RepeatableHash64Provider.Default.TryGetRepeatableHashCode(Parameter, out var parameterHash))
         {
@@ -297,7 +369,7 @@ public sealed record Observation<TValue, TParam>
             return 0u;
         }
 
-        var measure = base.GetMeasurementHashCode();
+        var measure = base.GetMeasurementHashCodeCore();
 
         return RepeatableHash64Provider.Default.CombineHashCodes(measure, parameterHash);
     }

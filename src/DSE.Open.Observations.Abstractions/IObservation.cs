@@ -10,9 +10,11 @@ public interface IObservation
     MeasureId MeasureId { get; }
 
     DateTimeOffset Time { get; }
+
+    ulong GetMeasurementHashCode();
 }
 
-public interface IObservation<TValue>
+public interface IObservation<TValue> : IObservation
     where TValue : struct, IEquatable<TValue>
 {
     TValue Value { get; }

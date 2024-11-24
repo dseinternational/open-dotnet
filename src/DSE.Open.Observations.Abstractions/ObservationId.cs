@@ -3,6 +3,7 @@
 
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
+using DSE.Open.Hashing;
 using DSE.Open.Security;
 using DSE.Open.Values;
 using DSE.Open.Values.Text.Json.Serialization;
@@ -17,7 +18,8 @@ namespace DSE.Open.Observations;
 [StructLayout(LayoutKind.Sequential)]
 public readonly partial struct ObservationId
     : IEquatableValue<ObservationId, ulong>,
-      IUtf8SpanSerializable<ObservationId>
+      IUtf8SpanSerializable<ObservationId>,
+      IRepeatableHash64
 {
     public const ulong MinIdValue = 1;
     public const ulong MaxIdValue = NumberHelper.MaxJsonSafeInteger;
@@ -85,5 +87,10 @@ public readonly partial struct ObservationId
     public static ObservationId GetRandomId()
     {
         return (ObservationId)RandomValueGenerator.GetUInt64Value(MinIdValue, MaxIdValue);
+    }
+
+    public ulong GetRepeatableHashCode()
+    {
+        return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);
     }
 }
