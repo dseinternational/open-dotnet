@@ -132,6 +132,60 @@ public class RepeatableHash64ProviderTests
     }
 
     [Fact]
+    public void GetRepeatableHashCode_ReadOnlySpanUInt16_ReturnsExpected()
+    {
+        ushort[] value = [0, 1, 42];
+        var expected = 8683154451414937794u;
+        var actual = RepeatableHash64Provider.Default.GetRepeatableHashCode(value);
+        Assert.Equal(expected, actual);
+    }
+
+    [Fact]
+    public void GetRepeatableHashCode_ReadOnlySpanUInt16_BigEndian_ReturnsExpected()
+    {
+        ushort[] value = [0, 1, 42];
+        var expected = 2425809899062796766u;
+        var actual = RepeatableHash64Provider.Default.GetRepeatableHashCode(value, true);
+        Assert.Equal(expected, actual);
+    }
+
+    [Fact]
+    public void GetRepeatableHashCode_ReadOnlySpanUInt32_ReturnsExpected()
+    {
+        uint[] value = [0, 1, 42];
+        var expected = 13229281443940912080u;
+        var actual = RepeatableHash64Provider.Default.GetRepeatableHashCode(value);
+        Assert.Equal(expected, actual);
+    }
+
+    [Fact]
+    public void GetRepeatableHashCode_ReadOnlySpanUInt32_BigEndian_ReturnsExpected()
+    {
+        uint[] value = [0, 1, 42];
+        var expected = 11286158671170504699u;
+        var actual = RepeatableHash64Provider.Default.GetRepeatableHashCode(value, true);
+        Assert.Equal(expected, actual);
+    }
+
+    [Fact]
+    public void GetRepeatableHashCode_ReadOnlySpanUInt64_ReturnsExpected()
+    {
+        ulong[] value = [0, 1, long.MaxValue, ulong.MaxValue];
+        var expected = 10129015545246210565u;
+        var actual = RepeatableHash64Provider.Default.GetRepeatableHashCode(value);
+        Assert.Equal(expected, actual);
+    }
+
+    [Fact]
+    public void GetRepeatableHashCode_ReadOnlySpanUInt64_BigEndian_ReturnsExpected()
+    {
+        ulong[] value = [0, 1, long.MaxValue, ulong.MaxValue];
+        var expected = 141264367115335047u;
+        var actual = RepeatableHash64Provider.Default.GetRepeatableHashCode(value, true);
+        Assert.Equal(expected, actual);
+    }
+
+    [Fact]
     public void GetRepeatableHashCode_Int32_Dispersion()
     {
         var hashes = Enumerable.Range(0, 1000)
