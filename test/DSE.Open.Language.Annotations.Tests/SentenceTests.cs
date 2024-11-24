@@ -31,6 +31,23 @@ public class SentenceTests
         Output.WriteLine(formatted);
     }
 
+    [Fact]
+    public void GetRepeatableHashCode_ReturnsExpectedValue()
+    {
+        var tokens = TheCatIsDrinkingMilk
+            .Split("\n", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+            .Select(Token.ParseInvariant);
+
+        var sentence = new Sentence
+        {
+            Text = "He ate a dog.",
+            Tokens = [.. tokens],
+            Comments = []
+        };
+
+        Assert.Equal(9629756338239080133u, sentence.GetRepeatableHashCode());
+    }
+
     private const string TheCatIsDrinkingMilk =
         "1\tThe\tthe\tDET\tDT\tDefinite=Def|PronType=Art\t2\tdet\t_\t_" + "\n" +
         "2\tcat\tcat\tNOUN\tNN\tNumber=Sing\t4\tnsubj\t_\t_" + "\n" +

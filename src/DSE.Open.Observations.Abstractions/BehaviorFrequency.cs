@@ -3,6 +3,7 @@
 
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
+using DSE.Open.Hashing;
 using DSE.Open.Values;
 using DSE.Open.Values.Text.Json.Serialization;
 
@@ -16,7 +17,8 @@ namespace DSE.Open.Observations;
 [StructLayout(LayoutKind.Sequential)]
 public readonly partial struct BehaviorFrequency
     : IComparableValue<BehaviorFrequency, uint>,
-      IUtf8SpanSerializable<BehaviorFrequency>
+      IUtf8SpanSerializable<BehaviorFrequency>,
+      IRepeatableHash64
 {
     private const uint NeverValue = 0;
     private const uint EmergingValue = 10;
@@ -30,6 +32,11 @@ public readonly partial struct BehaviorFrequency
     public static bool IsValidValue(uint value)
     {
         return value is NeverValue or EmergingValue or DevelopingValue or AchievedValue;
+    }
+
+    public ulong GetRepeatableHashCode()
+    {
+        return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);
     }
 
     public static BehaviorFrequency Never => new(NeverValue);

@@ -383,6 +383,48 @@ public abstract class RepeatableHash64Provider
         return h0 ^ h1 ^ h2;
     }
 
+    public ulong CombineHashCodes(ulong h0, ulong h1, ulong h2, ulong h3)
+    {
+        return h0 ^ h1 ^ h2 ^ h3;
+    }
+
+    public ulong CombineHashCodes(ulong h0, ulong h1, ulong h2, ulong h3, ulong h4)
+    {
+        return h0 ^ h1 ^ h2 ^ h3 ^ h4;
+    }
+
+    public ulong CombineHashCodes(ulong h0, ulong h1, ulong h2, ulong h3, ulong h4, ulong h5)
+    {
+        return h0 ^ h1 ^ h2 ^ h3 ^ h4 ^ h5;
+    }
+
+    public ulong CombineHashCodes(ulong h0, ulong h1, ulong h2, ulong h3, ulong h4, ulong h5, ulong h6)
+    {
+        return h0 ^ h1 ^ h2 ^ h3 ^ h4 ^ h5 ^ h6;
+    }
+
+    public ulong CombineHashCodes(ulong h0, ulong h1, ulong h2, ulong h3, ulong h4, ulong h5, ulong h6, ulong h7)
+    {
+        return h0 ^ h1 ^ h2 ^ h3 ^ h4 ^ h5 ^ h6 ^ h7;
+    }
+
+    public ulong CombineHashCodes(ulong h0, ulong h1, ulong h2, ulong h3, ulong h4, ulong h5, ulong h6, ulong h7, ulong h8)
+    {
+        return h0 ^ h1 ^ h2 ^ h3 ^ h4 ^ h5 ^ h6 ^ h7 ^ h8;
+    }
+
+    public ulong CombineHashCodes(ReadOnlySpan<ulong> hashes)
+    {
+        ulong hash = 0;
+
+        foreach (var h in hashes)
+        {
+            hash ^= h;
+        }
+
+        return hash;
+    }
+
 #pragma warning restore CA1822 // Mark members as static
 
     public bool TryGetRepeatableHashCode<T>(T value, out ulong hash)

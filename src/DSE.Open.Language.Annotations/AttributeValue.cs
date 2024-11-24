@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 using DSE.Open.Collections.Generic;
+using DSE.Open.Hashing;
 using DSE.Open.Language.Annotations.Serialization;
 using DSE.Open.Values;
 
@@ -14,7 +15,8 @@ namespace DSE.Open.Language.Annotations;
 public sealed record AttributeValue
     : ISpanFormattable,
       ISpanParsable<AttributeValue>,
-      ISpanSerializable<AttributeValue>
+      ISpanSerializable<AttributeValue>,
+      IRepeatableHash64
 {
     public static int MaxSerializedCharLength { get; } = 512;
 
@@ -210,5 +212,17 @@ public sealed record AttributeValue
         [MaybeNullWhen(false)] out AttributeValue result)
     {
         return TryParse(s.AsSpan(), provider, out result);
+    }
+
+    public ulong GetRepeatableHashCode()
+    {
+        var hash = Name.GetRepeatableHashCode();
+
+        for (var i = 0; i < _values.Count; i++)
+        {
+            hash = RepeatableHash64Provider.Default.CombineHashCodes(hash, _values[i].GetRepeatableHashCode());
+        }
+
+        return hash;
     }
 }

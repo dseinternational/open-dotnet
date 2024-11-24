@@ -3,6 +3,7 @@
 
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
+using DSE.Open.Hashing;
 using DSE.Open.Values;
 using DSE.Open.Values.Text.Json.Serialization;
 
@@ -16,7 +17,8 @@ namespace DSE.Open.Observations;
 [StructLayout(LayoutKind.Sequential)]
 public readonly partial struct Completeness
     : IComparableValue<Completeness, uint>,
-      IUtf8SpanSerializable<Completeness>
+      IUtf8SpanSerializable<Completeness>,
+      IRepeatableHash64
 {
     private const uint PartialValue = 10;
     private const uint DevelopingValue = 50;
@@ -29,6 +31,11 @@ public readonly partial struct Completeness
     public static bool IsValidValue(uint value)
     {
         return value is PartialValue or DevelopingValue or CompleteValue;
+    }
+
+    public ulong GetRepeatableHashCode()
+    {
+        return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);
     }
 
     public static Completeness Partial => new(PartialValue);

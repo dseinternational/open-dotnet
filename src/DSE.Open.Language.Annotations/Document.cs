@@ -4,10 +4,11 @@
 using System.Text.Json.Serialization;
 using DSE.Open.Collections.Generic;
 using DSE.Open.Globalization;
+using DSE.Open.Hashing;
 
 namespace DSE.Open.Language.Annotations;
 
-public record Document
+public record Document : IRepeatableHash64
 {
     [JsonPropertyName("doc_id")]
     public string? Id { get; init; }
@@ -17,4 +18,18 @@ public record Document
 
     [JsonPropertyName("sentences")]
     public required ReadOnlyValueCollection<Sentence> Sentences { get; init; } = [];
+
+    public ulong GetRepeatableHashCode()
+    {
+        var hash = RepeatableHash64Provider.Default.CombineHashCodes(
+            RepeatableHash64Provider.Default.GetRepeatableHashCode(Id.AsSpan()),
+            Language?.GetRepeatableHashCode() ?? 0u);
+
+        foreach (var sentence in Sentences)
+        {
+            hash = RepeatableHash64Provider.Default.CombineHashCodes(hash, sentence.GetRepeatableHashCode());
+        }
+
+        return hash;
+    }
 }

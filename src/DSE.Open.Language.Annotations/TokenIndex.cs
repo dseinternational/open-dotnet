@@ -4,6 +4,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
+using DSE.Open.Hashing;
 using DSE.Open.Language.Annotations.Serialization;
 
 namespace DSE.Open.Language.Annotations;
@@ -15,7 +16,8 @@ public readonly struct TokenIndex
     : IComparable<TokenIndex>,
       IEquatable<TokenIndex>,
       ISpanFormattable,
-      ISpanParsable<TokenIndex>
+      ISpanParsable<TokenIndex>,
+      IRepeatableHash64
 {
     public const int MaxSerializedCharLength = 8;
 
@@ -332,6 +334,14 @@ public readonly struct TokenIndex
     public static TokenIndex FromInt32(int index)
     {
         return new(index);
+    }
+
+    public ulong GetRepeatableHashCode()
+    {
+        var h0 = RepeatableHash64Provider.Default.GetRepeatableHashCode(Start);
+        var h1 = RepeatableHash64Provider.Default.GetRepeatableHashCode(End);
+        var h2 = RepeatableHash64Provider.Default.GetRepeatableHashCode(EmptyId ?? -1);
+        return RepeatableHash64Provider.Default.CombineHashCodes(h0, h1, h2);
     }
 
     public static explicit operator TokenIndex(int index)

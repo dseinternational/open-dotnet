@@ -3,6 +3,7 @@
 
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
+using DSE.Open.Hashing;
 using DSE.Open.Values;
 using DSE.Open.Values.Text.Json.Serialization;
 
@@ -16,7 +17,8 @@ namespace DSE.Open.Observations;
 [StructLayout(LayoutKind.Sequential)]
 public readonly partial struct SpeechClarity
     : IComparableValue<SpeechClarity, uint>,
-      IUtf8SpanSerializable<SpeechClarity>
+      IUtf8SpanSerializable<SpeechClarity>,
+      IRepeatableHash64
 {
     private const uint UnclearValue = 10;
     private const uint DevelopingValue = 50;
@@ -29,6 +31,11 @@ public readonly partial struct SpeechClarity
     public static bool IsValidValue(uint value)
     {
         return value is UnclearValue or DevelopingValue or ClearValue;
+    }
+
+    public ulong GetRepeatableHashCode()
+    {
+        return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);
     }
 
     /// <summary>

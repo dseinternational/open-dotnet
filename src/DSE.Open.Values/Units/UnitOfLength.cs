@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Diagnostics.CodeAnalysis;
+using DSE.Open.Hashing;
 
 namespace DSE.Open.Values.Units;
 
@@ -9,7 +10,7 @@ namespace DSE.Open.Values.Units;
 /// A unit of measure for length. Units of measure are considered equal if the
 /// quantity of base units represented by the units of measure are equal.
 /// </summary>
-public sealed class UnitOfLength : UnitOfMeasure<double>
+public sealed class UnitOfLength : UnitOfMeasure<double>, IRepeatableHash64
 {
     public static readonly UnitOfLength Kilometre = new(1_000_000, "kilometre", "km");
     public static readonly UnitOfLength Metre = new(1_000, "metre", "m");
@@ -90,6 +91,14 @@ public sealed class UnitOfLength : UnitOfMeasure<double>
         }
 
         return unitOfLength is not null;
+    }
+
+    public ulong GetRepeatableHashCode()
+    {
+        var h0 = RepeatableHash64Provider.Default.GetRepeatableHashCode(BaseUnits);
+        var h1 = RepeatableHash64Provider.Default.GetRepeatableHashCode(Abbreviation);
+        var h2 = RepeatableHash64Provider.Default.GetRepeatableHashCode(Name);
+        return RepeatableHash64Provider.Default.CombineHashCodes(h0, h1, h2);
     }
 }
 

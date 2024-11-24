@@ -4,6 +4,7 @@
 using System.Collections.Frozen;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
+using DSE.Open.Hashing;
 using DSE.Open.Values;
 using DSE.Open.Values.Text.Json.Serialization;
 
@@ -15,7 +16,10 @@ namespace DSE.Open.Language.Annotations;
 [EquatableValue]
 [StructLayout(LayoutKind.Sequential)]
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<UniversalFeatureName, AsciiString>))]
-public readonly partial struct UniversalFeatureName : IEquatableValue<UniversalFeatureName, AsciiString>, IUtf8SpanSerializable<UniversalFeatureName>
+public readonly partial struct UniversalFeatureName
+    : IEquatableValue<UniversalFeatureName, AsciiString>,
+      IUtf8SpanSerializable<UniversalFeatureName>,
+      IRepeatableHash64
 {
     public static int MaxSerializedCharLength => 9;
 
@@ -36,6 +40,11 @@ public readonly partial struct UniversalFeatureName : IEquatableValue<UniversalF
         return !value.IsEmpty
             && value.Length <= MaxSerializedCharLength
             && s_validValues.Contains(value);
+    }
+
+    public ulong GetRepeatableHashCode()
+    {
+        return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);
     }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates - Parse

@@ -4,13 +4,17 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
+using DSE.Open.Hashing;
 using DSE.Open.Values.Text.Json.Serialization;
 
 namespace DSE.Open.Values.Units;
 
 [StructLayout(LayoutKind.Sequential)]
 [JsonConverter(typeof(JsonStringLengthConverter))]
-public readonly record struct Length : IQuantity<double, UnitOfLength>, IComparable<Length>
+public readonly record struct Length
+    : IQuantity<double, UnitOfLength>,
+      IComparable<Length>,
+      IRepeatableHash64
 {
     private Length(double valueInMillimetres)
     {
@@ -117,6 +121,11 @@ public readonly record struct Length : IQuantity<double, UnitOfLength>, ICompara
     public int CompareTo(Length other)
     {
         return Amount.CompareTo(other.Amount);
+    }
+
+    public ulong GetRepeatableHashCode()
+    {
+        throw new NotImplementedException();
     }
 
     public static bool operator <(Length left, Length right)

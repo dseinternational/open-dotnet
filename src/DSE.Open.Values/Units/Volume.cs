@@ -2,11 +2,12 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Runtime.InteropServices;
+using DSE.Open.Hashing;
 
 namespace DSE.Open.Values.Units;
 
 [StructLayout(LayoutKind.Sequential)]
-public readonly record struct Volume : IQuantity<double, UnitOfVolume>, IComparable<Volume>
+public readonly record struct Volume : IQuantity<double, UnitOfVolume>, IComparable<Volume>, IRepeatableHash64
 {
     private Volume(double amount, UnitOfVolume measure)
     {
@@ -57,6 +58,13 @@ public readonly record struct Volume : IQuantity<double, UnitOfVolume>, ICompara
     {
         ArgumentNullException.ThrowIfNull(unitOfMass);
         return Amount.ToString(format, formatProvider) + " " + unitOfMass.Abbreviation;
+    }
+
+    public ulong GetRepeatableHashCode()
+    {
+        var h0 = RepeatableHash64Provider.Default.GetRepeatableHashCode(Amount);
+        var h1 = Units.GetRepeatableHashCode();
+        return RepeatableHash64Provider.Default.CombineHashCodes(h0, h1);
     }
 
     public static bool operator <(Volume left, Volume right)

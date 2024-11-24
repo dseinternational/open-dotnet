@@ -5,13 +5,14 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json.Serialization;
+using DSE.Open.Hashing;
 using DSE.Open.Values.Text.Json.Serialization;
 
 namespace DSE.Open.Values.Units;
 
 [StructLayout(LayoutKind.Sequential)]
 [JsonConverter(typeof(JsonStringMassConverter))]
-public readonly record struct Mass : IQuantity<double, UnitOfMass>, IComparable<Mass>
+public readonly record struct Mass : IQuantity<double, UnitOfMass>, IComparable<Mass>, IRepeatableHash64
 {
     private Mass(double valueInGrams)
     {
@@ -155,6 +156,13 @@ public readonly record struct Mass : IQuantity<double, UnitOfMass>, IComparable<
     public int CompareTo(Mass other)
     {
         return Amount.CompareTo(other.Amount);
+    }
+
+    public ulong GetRepeatableHashCode()
+    {
+        var h0 = RepeatableHash64Provider.Default.GetRepeatableHashCode(Amount);
+        var h1 = Units.GetRepeatableHashCode();
+        return RepeatableHash64Provider.Default.CombineHashCodes(h0, h1);
     }
 
     public static bool operator <(Mass left, Mass right)
