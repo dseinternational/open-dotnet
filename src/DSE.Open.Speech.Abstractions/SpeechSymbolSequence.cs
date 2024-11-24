@@ -5,13 +5,12 @@ using System.Buffers;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
+using System.Reflection.Metadata.Ecma335;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json.Serialization;
-using CommunityToolkit.HighPerformance.Buffers;
-using DSE.Open.Diagnostics;
-using DSE.Open.Runtime.Helpers;
+using DSE.Open.Hashing;
 using DSE.Open.Speech.Serialization;
 
 namespace DSE.Open.Speech;
@@ -24,12 +23,13 @@ namespace DSE.Open.Speech;
 [CollectionBuilder(typeof(SpeechSymbolSequence), "Create")]
 public readonly struct SpeechSymbolSequence
     : IEquatable<SpeechSymbolSequence>,
-        IEquatable<ReadOnlyMemory<SpeechSymbol>>,
-        IEqualityOperators<SpeechSymbolSequence, SpeechSymbolSequence, bool>,
-        ISpanFormattable,
-        ISpanParsable<SpeechSymbolSequence>,
-        ISpanFormatableCharCountProvider,
-        IUtf8SpanFormattable
+      IEquatable<ReadOnlyMemory<SpeechSymbol>>,
+      IEqualityOperators<SpeechSymbolSequence, SpeechSymbolSequence, bool>,
+      ISpanFormattable,
+      ISpanParsable<SpeechSymbolSequence>,
+      ISpanFormatableCharCountProvider,
+      IUtf8SpanFormattable,
+      IRepeatableHash64
 {
     private readonly ReadOnlyMemory<SpeechSymbol> _value;
 
@@ -867,5 +867,11 @@ public readonly struct SpeechSymbolSequence
         }
 
         charsWritten = j;
+    }
+
+    public ulong GetRepeatableHashCode()
+    {
+        var chars = MemoryMarshal.Cast<SpeechSymbol, char>(_value.Span);
+        return RepeatableHash64Provider.Default.GetRepeatableHashCode(chars);
     }
 }

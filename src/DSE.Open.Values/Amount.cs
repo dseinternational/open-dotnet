@@ -3,6 +3,7 @@
 
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
+using DSE.Open.Hashing;
 using DSE.Open.Values.Text.Json.Serialization;
 
 namespace DSE.Open.Values;
@@ -13,7 +14,10 @@ namespace DSE.Open.Values;
 [DivisibleValue]
 [JsonConverter(typeof(JsonDecimalValueConverter<Amount>))]
 [StructLayout(LayoutKind.Sequential)]
-public readonly partial struct Amount : IDivisibleValue<Amount, decimal>, IUtf8SpanSerializable<Amount>
+public readonly partial struct Amount
+    : IDivisibleValue<Amount, decimal>,
+      IUtf8SpanSerializable<Amount>,
+      IRepeatableHash64
 {
     public static int MaxSerializedCharLength => 32;
 
@@ -30,4 +34,8 @@ public readonly partial struct Amount : IDivisibleValue<Amount, decimal>, IUtf8S
         return value >= Zero._value;
     }
 
+    public ulong GetRepeatableHashCode()
+    {
+        return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);
+    }
 }

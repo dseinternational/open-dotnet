@@ -11,6 +11,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json.Serialization;
 using CommunityToolkit.HighPerformance.Buffers;
+using DSE.Open.Hashing;
 using DSE.Open.Runtime.Helpers;
 using DSE.Open.Text.Json.Serialization;
 
@@ -35,7 +36,8 @@ public readonly struct AsciiString
       ISpanParsable<AsciiString>,
       IUtf8SpanFormattable,
       IUtf8SpanParsable<AsciiString>,
-      ISpanFormatableCharCountProvider
+      ISpanFormatableCharCountProvider,
+      IRepeatableHash64
 {
     private readonly ReadOnlyMemory<AsciiChar> _value;
 
@@ -601,5 +603,10 @@ public readonly struct AsciiString
     public CharSequence ToCharSequence()
     {
         return CharSequence.FromAsciiString(this);
+    }
+
+    public ulong GetRepeatableHashCode()
+    {
+        return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value.Span);
     }
 }

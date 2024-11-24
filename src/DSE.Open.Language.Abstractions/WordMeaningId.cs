@@ -6,6 +6,7 @@ using System.IO.Hashing;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json.Serialization;
+using DSE.Open.Hashing;
 using DSE.Open.Values;
 using DSE.Open.Values.Text.Json.Serialization;
 
@@ -19,7 +20,8 @@ namespace DSE.Open.Language;
 [StructLayout(LayoutKind.Sequential)]
 public readonly partial struct WordMeaningId
     : IEquatableValue<WordMeaningId, ulong>,
-      IUtf8SpanSerializable<WordMeaningId>
+      IUtf8SpanSerializable<WordMeaningId>,
+      IRepeatableHash64
 {
     public static int MaxSerializedCharLength => 16;
 
@@ -134,5 +136,10 @@ public readonly partial struct WordMeaningId
                 ArrayPool<byte>.Shared.Return(rented);
             }
         }
+    }
+
+    public ulong GetRepeatableHashCode()
+    {
+        return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);
     }
 }

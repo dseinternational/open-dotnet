@@ -3,6 +3,7 @@
 
 using System.Collections.Frozen;
 using System.Text.Json.Serialization;
+using DSE.Open.Hashing;
 using DSE.Open.Values;
 using DSE.Open.Values.Text.Json.Serialization;
 
@@ -13,7 +14,10 @@ namespace DSE.Open.Language;
 /// </summary>
 [EquatableValue]
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<SignModality, AsciiString>))]
-public readonly partial struct SignModality : IEquatableValue<SignModality, AsciiString>, IUtf8SpanSerializable<SignModality>
+public readonly partial struct SignModality
+    : IEquatableValue<SignModality, AsciiString>,
+      IUtf8SpanSerializable<SignModality>,
+      IRepeatableHash64
 {
     public static int MaxSerializedCharLength => 16;
 
@@ -32,6 +36,11 @@ public readonly partial struct SignModality : IEquatableValue<SignModality, Asci
 
     private SignModality(string value, bool skipValidation = false) : this((AsciiString)value, skipValidation)
     {
+    }
+
+    public ulong GetRepeatableHashCode()
+    {
+        return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);
     }
 
     /// <summary>

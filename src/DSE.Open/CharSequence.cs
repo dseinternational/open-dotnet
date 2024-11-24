@@ -6,6 +6,7 @@ using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using DSE.Open.Diagnostics;
+using DSE.Open.Hashing;
 using DSE.Open.Text.Json.Serialization;
 
 namespace DSE.Open;
@@ -23,7 +24,8 @@ public readonly struct CharSequence
       IComparable<CharSequence>,
       ISpanFormattable,
       ISpanParsable<CharSequence>,
-      ISpanFormatableCharCountProvider
+      ISpanFormatableCharCountProvider,
+      IRepeatableHash64
 {
     private readonly ReadOnlyMemory<char> _value;
 
@@ -391,5 +393,10 @@ public readonly struct CharSequence
     public static CharSequence FromAsciiString(AsciiString asciiString)
     {
         return new(asciiString.ToCharArray());
+    }
+
+    public ulong GetRepeatableHashCode()
+    {
+        return RepeatableHash64Provider.Default.GetRepeatableHashCode(this);
     }
 }

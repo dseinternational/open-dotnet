@@ -4,6 +4,7 @@
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using DSE.Open.Globalization;
+using DSE.Open.Hashing;
 using DSE.Open.Values;
 using DSE.Open.Values.Text.Json.Serialization;
 
@@ -27,7 +28,8 @@ namespace DSE.Open.Language;
 [JsonConverter(typeof(JsonSpanSerializableValueConverter<WordText, CharSequence>))]
 public readonly partial struct WordText
     : IComparableValue<WordText, CharSequence>,
-      ISpanSerializableValue<WordText, CharSequence>
+      ISpanSerializableValue<WordText, CharSequence>,
+      IRepeatableHash64
 {
     public static int MaxSerializedCharLength => 32;
 
@@ -216,5 +218,10 @@ public readonly partial struct WordText
     public WordId GetId(WordMeaningId meaningId, LanguageTag language)
     {
         return WordId.FromWord(meaningId, this, language);
+    }
+
+    public ulong GetRepeatableHashCode()
+    {
+        return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);
     }
 }

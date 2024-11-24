@@ -3,6 +3,7 @@
 
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
+using DSE.Open.Hashing;
 using DSE.Open.Values.Text.Json.Serialization;
 
 namespace DSE.Open.Values;
@@ -15,7 +16,8 @@ namespace DSE.Open.Values;
 [StructLayout(LayoutKind.Sequential)]
 public readonly partial struct AlphaCode
     : IComparableValue<AlphaCode, AsciiString>,
-      IUtf8SpanSerializable<AlphaCode>
+      IUtf8SpanSerializable<AlphaCode>,
+      IRepeatableHash64
 {
     public static int MaxSerializedCharLength => MaxLength;
 
@@ -102,5 +104,10 @@ public readonly partial struct AlphaCode
     public string ToStringUpper()
     {
         return _value.ToStringUpper();
+    }
+
+    public ulong GetRepeatableHashCode()
+    {
+        return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);
     }
 }

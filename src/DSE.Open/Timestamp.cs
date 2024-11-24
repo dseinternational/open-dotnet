@@ -49,6 +49,11 @@ public readonly record struct Timestamp : IComparable<Timestamp>, ISpanFormattab
         return [_b0, _b1, _b2, _b3, _b4, _b5, _b6, _b7];
     }
 
+    public ReadOnlySpan<byte> AsSpan()
+    {
+        return GetBytes();
+    }
+
     public int CompareTo(Timestamp other)
     {
         ReadOnlySpan<byte> v1 = [_b0, _b1, _b2, _b3, _b4, _b5, _b6, _b7];

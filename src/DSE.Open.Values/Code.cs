@@ -4,6 +4,7 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
+using DSE.Open.Hashing;
 using DSE.Open.Values.Text.Json.Serialization;
 
 namespace DSE.Open.Values;
@@ -17,7 +18,8 @@ public readonly record struct Code
     : IComparable<Code>,
       ISpanFormattable,
       ISpanParsable<Code>,
-      IEquatable<Code>
+      IEquatable<Code>,
+      IRepeatableHash64
 {
     public const int MaxLength = 32;
 
@@ -257,6 +259,11 @@ public readonly record struct Code
 
         result = new(s, true);
         return true;
+    }
+
+    public ulong GetRepeatableHashCode()
+    {
+        return RepeatableHash64Provider.Default.GetRepeatableHashCode(_code.AsSpan());
     }
 
     public static bool operator <(Code left, Code right)

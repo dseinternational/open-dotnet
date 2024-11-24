@@ -18,12 +18,12 @@ namespace DSE.Open;
 [StructLayout(LayoutKind.Sequential)]
 public readonly partial struct AsciiChar
     : IComparable<AsciiChar>,
-        IEquatable<AsciiChar>,
-        IEqualityOperators<AsciiChar, AsciiChar, bool>,
-        ISpanFormattable,
-        ISpanParsable<AsciiChar>,
-        IUtf8SpanSerializable<AsciiChar>,
-        ISpanFormatableCharCountProvider
+      IEquatable<AsciiChar>,
+      IEqualityOperators<AsciiChar, AsciiChar, bool>,
+      ISpanFormattable,
+      ISpanParsable<AsciiChar>,
+      IUtf8SpanSerializable<AsciiChar>,
+      ISpanFormatableCharCountProvider
 {
     private readonly byte _asciiByte;
 
