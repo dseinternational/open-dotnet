@@ -101,14 +101,24 @@ public class SnapshotSetTests
     {
         var obs1 = Observation.Create(TestMeasures.BinarySpeechSoundMeasure, Phonemes.English.d.Abstraction, true);
         await Task.Delay(1, TestContext.Current.CancellationToken);
-        var obs2 = Observation.Create(TestMeasures.BinarySpeechSoundMeasure, Phonemes.English.b.Abstraction, false);
+        var obs2 = Observation.Create(TestMeasures.BinarySpeechSoundMeasure, Phonemes.English.b.Abstraction, true);
         await Task.Delay(1, TestContext.Current.CancellationToken);
-        var obs3 = Observation.Create(TestMeasures.BinarySpeechSoundMeasure, Phonemes.English.d.Abstraction, true);
+        var obs3 = Observation.Create(TestMeasures.BinarySpeechSoundMeasure, Phonemes.English.d.Abstraction, false);
         await Task.Delay(1, TestContext.Current.CancellationToken);
         var obs4 = Observation.Create(TestMeasures.BinarySpeechSoundMeasure, Phonemes.English.b.Abstraction, false);
+
         SnapshotSet observations1 = [obs1, obs2];
         SnapshotSet observations2 = [obs3, obs4];
+
         observations1.UnionWith(observations2);
+
         Assert.Equal(2, observations1.Count);
+
+        foreach (var observation in observations1)
+        {
+            var obs = observation as Observation<bool, SpeechSound>;
+            Assert.NotNull(obs);
+            Assert.False(obs.Value);
+        }
     }
 }

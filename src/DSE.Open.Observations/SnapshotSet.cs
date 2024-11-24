@@ -171,7 +171,12 @@ public class SnapshotSet<TObs> : ISet<TObs>
 
     public void UnionWith(IEnumerable<TObs> other)
     {
-        _observations.UnionWith(other);
+        ArgumentNullException.ThrowIfNull(other);
+
+        foreach (var obs in other)
+        {
+            _ = TryAdd(obs);
+        }
     }
 
     IEnumerator IEnumerable.GetEnumerator()
