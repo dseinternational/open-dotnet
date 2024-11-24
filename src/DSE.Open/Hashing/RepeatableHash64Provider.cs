@@ -129,31 +129,64 @@ public abstract class RepeatableHash64Provider
     }
 
     [SkipLocalsInit]
-    internal ulong GetRepeatableHashCode(ReadOnlySpan<char> value, bool reverseEndianness)
+    private ulong GetRepeatableHashCodeSpan<T>(ReadOnlySpan<T> value, bool reverseEndianness) where T : unmanaged
     {
         if (!reverseEndianness)
         {
             return GetRepeatableHashCodeCore(MemoryMarshal.AsBytes(value));
         }
 
-        ushort[]? rented = null;
+        T[]? rented = null;
 
-        Span<ushort> reversed = MemoryThresholds.CanStackalloc<ushort>(value.Length)
-            ? (rented = ArrayPool<ushort>.Shared.Rent(value.Length))
-            : stackalloc ushort[value.Length];
+        Span<T> reversed = MemoryThresholds.CanStackalloc<T>(value.Length)
+            ? (rented = ArrayPool<T>.Shared.Rent(value.Length))
+            : stackalloc T[MemoryThresholds.StackallocByteThreshold / Unsafe.SizeOf<T>()];
 
         try
         {
-            BinaryPrimitives.ReverseEndianness(MemoryMarshal.Cast<char, ushort>(value), reversed);
+            if (typeof(T) == typeof(short))
+            {
+                BinaryPrimitives.ReverseEndianness(MemoryMarshal.Cast<T, short>(value), MemoryMarshal.Cast<T, short>(reversed));
+            }
+            else if (typeof(T) == typeof(ushort) || typeof(T) == typeof(char))
+            {
+                BinaryPrimitives.ReverseEndianness(MemoryMarshal.Cast<T, ushort>(value), MemoryMarshal.Cast<T, ushort>(reversed));
+            }
+            else if (typeof(T) == typeof(int))
+            {
+                BinaryPrimitives.ReverseEndianness(MemoryMarshal.Cast<T, int>(value), MemoryMarshal.Cast<T, int>(reversed));
+            }
+            else if (typeof(T) == typeof(uint))
+            {
+                BinaryPrimitives.ReverseEndianness(MemoryMarshal.Cast<T, uint>(value), MemoryMarshal.Cast<T, uint>(reversed));
+            }
+            else if (typeof(T) == typeof(long))
+            {
+                BinaryPrimitives.ReverseEndianness(MemoryMarshal.Cast<T, long>(value), MemoryMarshal.Cast<T, long>(reversed));
+            }
+            else if (typeof(T) == typeof(ulong))
+            {
+                BinaryPrimitives.ReverseEndianness(MemoryMarshal.Cast<T, ulong>(value), MemoryMarshal.Cast<T, ulong>(reversed));
+            }
+            else
+            {
+                throw new NotSupportedException($"Type '{typeof(T)}' is not supported.");
+            }
+
             return GetRepeatableHashCodeCore(MemoryMarshal.AsBytes(reversed[..value.Length]));
         }
         finally
         {
             if (rented is not null)
             {
-                ArrayPool<ushort>.Shared.Return(rented);
+                ArrayPool<T>.Shared.Return(rented);
             }
         }
+    }
+
+    internal ulong GetRepeatableHashCode(ReadOnlySpan<char> value, bool reverseEndianness)
+    {
+        return GetRepeatableHashCodeSpan(value, reverseEndianness);
     }
 
     public ulong GetRepeatableHashCode(ReadOnlySpan<short> value)
@@ -161,32 +194,9 @@ public abstract class RepeatableHash64Provider
         return GetRepeatableHashCode(value, !BitConverter.IsLittleEndian);
     }
 
-    [SkipLocalsInit]
     internal ulong GetRepeatableHashCode(ReadOnlySpan<short> value, bool reverseEndianness)
     {
-        if (!reverseEndianness)
-        {
-            return GetRepeatableHashCodeCore(MemoryMarshal.AsBytes(value));
-        }
-
-        short[]? rented = null;
-
-        Span<short> reversed = MemoryThresholds.CanStackalloc<short>(value.Length)
-            ? (rented = ArrayPool<short>.Shared.Rent(value.Length))
-            : stackalloc short[value.Length];
-
-        try
-        {
-            BinaryPrimitives.ReverseEndianness(value, reversed);
-            return GetRepeatableHashCodeCore(MemoryMarshal.AsBytes(reversed[..value.Length]));
-        }
-        finally
-        {
-            if (rented is not null)
-            {
-                ArrayPool<short>.Shared.Return(rented);
-            }
-        }
+        return GetRepeatableHashCodeSpan(value, reverseEndianness);
     }
 
     public ulong GetRepeatableHashCode(ReadOnlySpan<ushort> value)
@@ -194,32 +204,9 @@ public abstract class RepeatableHash64Provider
         return GetRepeatableHashCode(value, !BitConverter.IsLittleEndian);
     }
 
-    [SkipLocalsInit]
     internal ulong GetRepeatableHashCode(ReadOnlySpan<ushort> value, bool reverseEndianness)
     {
-        if (!reverseEndianness)
-        {
-            return GetRepeatableHashCodeCore(MemoryMarshal.AsBytes(value));
-        }
-
-        ushort[]? rented = null;
-
-        Span<ushort> reversed = MemoryThresholds.CanStackalloc<ushort>(value.Length)
-            ? (rented = ArrayPool<ushort>.Shared.Rent(value.Length))
-            : stackalloc ushort[value.Length];
-
-        try
-        {
-            BinaryPrimitives.ReverseEndianness(value, reversed);
-            return GetRepeatableHashCodeCore(MemoryMarshal.AsBytes(reversed[..value.Length]));
-        }
-        finally
-        {
-            if (rented is not null)
-            {
-                ArrayPool<ushort>.Shared.Return(rented);
-            }
-        }
+        return GetRepeatableHashCodeSpan(value, reverseEndianness);
     }
 
     public ulong GetRepeatableHashCode(ReadOnlySpan<int> value)
@@ -227,32 +214,9 @@ public abstract class RepeatableHash64Provider
         return GetRepeatableHashCode(value, !BitConverter.IsLittleEndian);
     }
 
-    [SkipLocalsInit]
     internal ulong GetRepeatableHashCode(ReadOnlySpan<int> value, bool reverseEndianness)
     {
-        if (!reverseEndianness)
-        {
-            return GetRepeatableHashCodeCore(MemoryMarshal.AsBytes(value));
-        }
-
-        int[]? rented = null;
-
-        Span<int> reversed = MemoryThresholds.CanStackalloc<int>(value.Length)
-            ? (rented = ArrayPool<int>.Shared.Rent(value.Length))
-            : stackalloc int[value.Length];
-
-        try
-        {
-            BinaryPrimitives.ReverseEndianness(value, reversed);
-            return GetRepeatableHashCodeCore(MemoryMarshal.AsBytes(reversed[..value.Length]));
-        }
-        finally
-        {
-            if (rented is not null)
-            {
-                ArrayPool<int>.Shared.Return(rented);
-            }
-        }
+        return GetRepeatableHashCodeSpan(value, reverseEndianness);
     }
 
     public ulong GetRepeatableHashCode(ReadOnlySpan<uint> value)
@@ -260,32 +224,9 @@ public abstract class RepeatableHash64Provider
         return GetRepeatableHashCode(value, !BitConverter.IsLittleEndian);
     }
 
-    [SkipLocalsInit]
     internal ulong GetRepeatableHashCode(ReadOnlySpan<uint> value, bool reverseEndianness)
     {
-        if (!reverseEndianness)
-        {
-            return GetRepeatableHashCodeCore(MemoryMarshal.AsBytes(value));
-        }
-
-        uint[]? rented = null;
-
-        Span<uint> reversed = MemoryThresholds.CanStackalloc<uint>(value.Length)
-            ? (rented = ArrayPool<uint>.Shared.Rent(value.Length))
-            : stackalloc uint[value.Length];
-
-        try
-        {
-            BinaryPrimitives.ReverseEndianness(value, reversed);
-            return GetRepeatableHashCodeCore(MemoryMarshal.AsBytes(reversed[..value.Length]));
-        }
-        finally
-        {
-            if (rented is not null)
-            {
-                ArrayPool<uint>.Shared.Return(rented);
-            }
-        }
+        return GetRepeatableHashCodeSpan(value, reverseEndianness);
     }
 
     public ulong GetRepeatableHashCode(ReadOnlySpan<long> value)
@@ -293,32 +234,9 @@ public abstract class RepeatableHash64Provider
         return GetRepeatableHashCode(value, !BitConverter.IsLittleEndian);
     }
 
-    [SkipLocalsInit]
     internal ulong GetRepeatableHashCode(ReadOnlySpan<long> value, bool reverseEndianness)
     {
-        if (!reverseEndianness)
-        {
-            return GetRepeatableHashCodeCore(MemoryMarshal.AsBytes(value));
-        }
-
-        long[]? rented = null;
-
-        Span<long> reversed = MemoryThresholds.CanStackalloc<long>(value.Length)
-            ? (rented = ArrayPool<long>.Shared.Rent(value.Length))
-            : stackalloc long[value.Length];
-
-        try
-        {
-            BinaryPrimitives.ReverseEndianness(value, reversed);
-            return GetRepeatableHashCodeCore(MemoryMarshal.AsBytes(reversed[..value.Length]));
-        }
-        finally
-        {
-            if (rented is not null)
-            {
-                ArrayPool<long>.Shared.Return(rented);
-            }
-        }
+        return GetRepeatableHashCodeSpan(value, reverseEndianness);
     }
 
     public ulong GetRepeatableHashCode(ReadOnlySpan<ulong> value)
@@ -326,37 +244,14 @@ public abstract class RepeatableHash64Provider
         return GetRepeatableHashCode(value, !BitConverter.IsLittleEndian);
     }
 
-    [SkipLocalsInit]
     internal ulong GetRepeatableHashCode(ReadOnlySpan<ulong> value, bool reverseEndianness)
     {
-        if (!reverseEndianness)
-        {
-            return GetRepeatableHashCodeCore(MemoryMarshal.AsBytes(value));
-        }
-
-        ulong[]? rented = null;
-
-        Span<ulong> reversed = MemoryThresholds.CanStackalloc<ulong>(value.Length)
-            ? (rented = ArrayPool<ulong>.Shared.Rent(value.Length))
-            : stackalloc ulong[value.Length];
-
-        try
-        {
-            BinaryPrimitives.ReverseEndianness(value, reversed);
-            return GetRepeatableHashCodeCore(MemoryMarshal.AsBytes(reversed[..value.Length]));
-        }
-        finally
-        {
-            if (rented is not null)
-            {
-                ArrayPool<ulong>.Shared.Return(rented);
-            }
-        }
+        return GetRepeatableHashCodeSpan(value, reverseEndianness);
     }
 
     public ulong GetRepeatableHashCode(ReadOnlySpan<AsciiChar> value)
     {
-        return GetRepeatableHashCode(MemoryMarshal.Cast<AsciiChar, byte>(value));
+        return GetRepeatableHashCode(ValuesMarshal.AsBytes(value));
     }
 
     public ulong GetRepeatableHashCode(BinaryValue value)
@@ -431,167 +326,98 @@ public abstract class RepeatableHash64Provider
     {
         if (value is null)
         {
-            goto Failed;
+            return Failed(out hash);
         }
 
-        if (value is IRepeatableHash64 implemented)
+        switch (value)
         {
-            hash = implemented.GetRepeatableHashCode();
-            return true;
+            case IRepeatableHash64:
+                hash = ((IRepeatableHash64)value).GetRepeatableHashCode();
+                return true;
+            case byte byteValue:
+                hash = GetRepeatableHashCode(byteValue);
+                return true;
+            case short shortValue:
+                hash = GetRepeatableHashCode(shortValue);
+                return true;
+            case ushort ushortValue:
+                hash = GetRepeatableHashCode(ushortValue);
+                return true;
+            case int intValue:
+                hash = GetRepeatableHashCode(intValue);
+                return true;
+            case uint uintValue:
+                hash = GetRepeatableHashCode(uintValue);
+                return true;
+            case long longValue:
+                hash = GetRepeatableHashCode(longValue);
+                return true;
+            case ulong ulongValue:
+                hash = GetRepeatableHashCode(ulongValue);
+                return true;
+            case decimal decimalValue:
+                hash = GetRepeatableHashCode(decimalValue);
+                return true;
+            case float floatValue:
+                hash = GetRepeatableHashCode(floatValue);
+                return true;
+            case double doubleValue:
+                hash = GetRepeatableHashCode(doubleValue);
+                return true;
+            case string stringValue:
+                hash = GetRepeatableHashCode(stringValue);
+                return true;
+            case char[] charArray:
+                hash = GetRepeatableHashCode(charArray);
+                return true;
+            case short[] shortArray:
+                hash = GetRepeatableHashCode(shortArray);
+                return true;
+            case ushort[] ushortArray:
+                hash = GetRepeatableHashCode(ushortArray);
+                return true;
+            case int[] intArray:
+                hash = GetRepeatableHashCode(intArray);
+                return true;
+            case uint[] uintArray:
+                hash = GetRepeatableHashCode(uintArray);
+                return true;
+            case long[] longArray:
+                hash = GetRepeatableHashCode(longArray);
+                return true;
+            case ulong[] ulongArray:
+                hash = GetRepeatableHashCode(ulongArray);
+                return true;
+            case ReadOnlyMemory<char> charMemory:
+                hash = GetRepeatableHashCode(charMemory.Span);
+                return true;
+            case ReadOnlyMemory<short> shortMemory:
+                hash = GetRepeatableHashCode(shortMemory.Span);
+                return true;
+            case ReadOnlyMemory<ushort> ushortMemory:
+                hash = GetRepeatableHashCode(ushortMemory.Span);
+                return true;
+            case ReadOnlyMemory<int> intMemory:
+                hash = GetRepeatableHashCode(intMemory.Span);
+                return true;
+            case ReadOnlyMemory<uint> uintMemory:
+                hash = GetRepeatableHashCode(uintMemory.Span);
+                return true;
+            case ReadOnlyMemory<long> longMemory:
+                hash = GetRepeatableHashCode(longMemory.Span);
+                return true;
+            case ReadOnlyMemory<ulong> ulongMemory:
+                hash = GetRepeatableHashCode(ulongMemory.Span);
+                return true;
+            default:
+                return Failed(out hash);
         }
 
-        if (value is byte byteValue)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        bool Failed(out ulong hash)
         {
-            hash = GetRepeatableHashCode(byteValue);
-            return true;
+            hash = 0;
+            return false;
         }
-
-        if (value is short shortValue)
-        {
-            hash = GetRepeatableHashCode(shortValue);
-            return true;
-        }
-
-        if (value is ushort ushortValue)
-        {
-            hash = GetRepeatableHashCode(ushortValue);
-            return true;
-        }
-
-        if (value is int intValue)
-        {
-            hash = GetRepeatableHashCode(intValue);
-            return true;
-        }
-
-        if (value is uint uintValue)
-        {
-            hash = GetRepeatableHashCode(uintValue);
-            return true;
-        }
-
-        if (value is long longValue)
-        {
-            hash = GetRepeatableHashCode(longValue);
-            return true;
-        }
-
-        if (value is ulong ulongValue)
-        {
-            hash = GetRepeatableHashCode(ulongValue);
-            return true;
-        }
-
-        if (value is decimal decimalValue)
-        {
-            hash = GetRepeatableHashCode(decimalValue);
-            return true;
-        }
-
-        if (value is float floatValue)
-        {
-            hash = GetRepeatableHashCode(floatValue);
-            return true;
-        }
-
-        if (value is double doubleValue)
-        {
-            hash = GetRepeatableHashCode(doubleValue);
-            return true;
-        }
-
-        if (value is string stringValue)
-        {
-            hash = GetRepeatableHashCode(stringValue);
-            return true;
-        }
-
-        if (value is char[] charArray)
-        {
-            hash = GetRepeatableHashCode(charArray);
-            return true;
-        }
-
-        if (value is short[] shortArray)
-        {
-            hash = GetRepeatableHashCode(shortArray);
-            return true;
-        }
-
-        if (value is ushort[] ushortArray)
-        {
-            hash = GetRepeatableHashCode(ushortArray);
-            return true;
-        }
-
-        if (value is int[] intArray)
-        {
-            hash = GetRepeatableHashCode(intArray);
-            return true;
-        }
-
-        if (value is uint[] uintArray)
-        {
-            hash = GetRepeatableHashCode(uintArray);
-            return true;
-        }
-
-        if (value is long[] longArray)
-        {
-            hash = GetRepeatableHashCode(longArray);
-            return true;
-        }
-
-        if (value is ulong[] ulongArray)
-        {
-            hash = GetRepeatableHashCode(ulongArray);
-            return true;
-        }
-
-        if (value is ReadOnlyMemory<char> charMemory)
-        {
-            hash = GetRepeatableHashCode(charMemory.Span);
-            return true;
-        }
-
-        if (value is ReadOnlyMemory<short> shortMemory)
-        {
-            hash = GetRepeatableHashCode(shortMemory.Span);
-            return true;
-        }
-
-        if (value is ReadOnlyMemory<ushort> ushortMemory)
-        {
-            hash = GetRepeatableHashCode(ushortMemory.Span);
-            return true;
-        }
-
-        if (value is ReadOnlyMemory<int> intMemory)
-        {
-            hash = GetRepeatableHashCode(intMemory.Span);
-            return true;
-        }
-
-        if (value is ReadOnlyMemory<uint> uintMemory)
-        {
-            hash = GetRepeatableHashCode(uintMemory.Span);
-            return true;
-        }
-
-        if (value is ReadOnlyMemory<long> longMemory)
-        {
-            hash = GetRepeatableHashCode(longMemory.Span);
-            return true;
-        }
-
-        if (value is ReadOnlyMemory<ulong> ulongMemory)
-        {
-            hash = GetRepeatableHashCode(ulongMemory.Span);
-            return true;
-        }
-
-    Failed:
-        hash = 0;
-        return false;
     }
 }
