@@ -16,7 +16,9 @@ namespace DSE.Open.Language;
 /// </summary>
 [JsonConverter(typeof(JsonStringSignConverter))]
 [StructLayout(LayoutKind.Sequential)]
-public readonly record struct Sign : ISpanFormattable, ISpanParsable<Sign>
+public readonly record struct Sign
+    : ISpanFormattable,
+      ISpanParsable<Sign>
 {
     public static readonly int MaxSerializedCharLength
         = SignModality.MaxSerializedCharLength + 1 + WordText.MaxSerializedCharLength;

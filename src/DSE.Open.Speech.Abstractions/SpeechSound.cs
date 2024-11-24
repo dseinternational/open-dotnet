@@ -5,6 +5,7 @@ using System.Collections.Frozen;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
+using DSE.Open.Hashing;
 using DSE.Open.Speech.Serialization;
 
 namespace DSE.Open.Speech;
@@ -19,7 +20,8 @@ public readonly struct SpeechSound
     : IEquatable<SpeechSound>,
       ISpanFormattable,
       ISpanParsable<SpeechSound>,
-      IUtf8SpanFormattable
+      IUtf8SpanFormattable,
+      IRepeatableHash64
 {
     private readonly SpeechSymbolSequence _value;
 
@@ -235,6 +237,11 @@ public readonly struct SpeechSound
 
         return TryParse(sound, CultureInfo.InvariantCulture, out var result)
             && IsVowel(result);
+    }
+
+    public ulong GetRepeatableHashCode()
+    {
+        return _value.GetRepeatableHashCode();
     }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates

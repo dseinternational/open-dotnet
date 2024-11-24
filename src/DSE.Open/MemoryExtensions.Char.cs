@@ -3,6 +3,7 @@
 
 using System.Buffers;
 using System.Runtime.CompilerServices;
+using DSE.Open.Hashing;
 
 namespace DSE.Open;
 
@@ -267,6 +268,11 @@ public static partial class MemoryExtensions
         }
 
         return true;
+    }
+
+    public static ulong GetRepeatableHashCode(this ReadOnlySpan<char> value)
+    {
+        return RepeatableHash64Provider.Default.GetRepeatableHashCode(value);
     }
 
     public static bool TryCopyWhereNotWhitespace(this Span<char> span, Span<char> buffer, out int charsWritten)

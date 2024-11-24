@@ -3,6 +3,7 @@
 
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
+using DSE.Open.Hashing;
 using DSE.Open.Values;
 using DSE.Open.Values.Text.Json.Serialization;
 
@@ -14,7 +15,10 @@ namespace DSE.Open.Globalization;
 [EquatableValue]
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<CountryCode3, AsciiChar3>))]
 [StructLayout(LayoutKind.Sequential)]
-public readonly partial struct CountryCode3 : IEquatableValue<CountryCode3, AsciiChar3>, IUtf8SpanSerializable<CountryCode3>
+public readonly partial struct CountryCode3
+    : IEquatableValue<CountryCode3, AsciiChar3>,
+      IUtf8SpanSerializable<CountryCode3>,
+      IRepeatableHash64
 {
     public static readonly CountryCode3 Australia = new((AsciiChar3)"AUS");
     public static readonly CountryCode3 Canada = new((AsciiChar3)"CAN");
@@ -44,5 +48,10 @@ public readonly partial struct CountryCode3 : IEquatableValue<CountryCode3, Asci
         }
 
         return IsoCountryCodes.OfficiallyAssignedAlpha3Ascii.Contains(value);
+    }
+
+    public ulong GetRepeatableHashCode()
+    {
+        return _value.GetRepeatableHashCode();
     }
 }

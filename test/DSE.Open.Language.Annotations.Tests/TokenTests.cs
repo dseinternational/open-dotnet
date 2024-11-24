@@ -130,4 +130,40 @@ public class TokenTests
 
         Assert.Equal(token, parsed);
     }
+
+    [Fact]
+    public void GetRepeatableHashCode_ReturnsExpectedValue()
+    {
+        var token = new Token
+        {
+            Text = (TokenText)"cat's",
+            Words =
+            [
+                new()
+                {
+                    Index = 1,
+                    Form = (TokenText)"cat",
+                    Lemma = (TokenText)"cat",
+                    Pos = UniversalPosTag.Noun,
+                    AltPos = TreebankPosTag.NounSingularOrMass,
+                    Features = [],
+                    HeadIndex = 0,
+                    Relation = UniversalRelationTag.PossessiveNominalModifier,
+                },
+                new()
+                {
+                    Index = 2,
+                    Form = (TokenText)"'s",
+                    Lemma = (TokenText)"'s",
+                    Pos = UniversalPosTag.Particle,
+                    AltPos = TreebankPosTag.PossessiveEnding,
+                    Features = [],
+                    HeadIndex = 0,
+                    Relation = UniversalRelationTag.CaseMarking,
+                }
+            ]
+        };
+
+        Assert.Equal(991416466718714373u, token.GetRepeatableHashCode());
+    }
 }

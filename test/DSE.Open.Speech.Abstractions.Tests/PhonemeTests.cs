@@ -20,4 +20,17 @@ public class PhonemeTests
         Assert.Equal(LanguageCode2.English, p.Language);
         Assert.Equal(SpeechSound.VoicelessBilabialPlosive, p.Abstraction);
     }
+
+    [Fact]
+    public void GetRepeatableHashCode()
+    {
+        var p = new Phoneme()
+        {
+            Language = LanguageCode2.English,
+            Abstraction = SpeechSound.VoicelessBilabialPlosive,
+            Allophones = []
+        };
+
+        Assert.Equal(64421223063237684u, p.GetRepeatableHashCode());
+    }
 }

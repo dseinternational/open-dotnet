@@ -230,6 +230,13 @@ public class SpeechSymbolSequenceTests
         Assert.Equal(sequence, parsed);
     }
 
+    [Fact]
+    public void GetRepeatableHashCode_ReturnsExpectedValue()
+    {
+        var value = SpeechSymbolSequence.Parse("hɛlɪkɒptɐ", CultureInfo.InvariantCulture);
+        Assert.Equal(3774544766252701229u, value.GetRepeatableHashCode());
+    }
+
     public static TheoryData<string> TwentyWordTranscriptions => new((string[])[.. TranscriptionData.Transcriptions.RandomSelection(20)]);
 
     public static TheoryData<string> WordTranscriptions => new((string[])[.. TranscriptionData.Transcriptions]);

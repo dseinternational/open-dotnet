@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Text.Json.Serialization;
+using DSE.Open.Hashing;
 using DSE.Open.Values;
 using DSE.Open.Values.Text.Json.Serialization;
 
@@ -13,7 +14,9 @@ namespace DSE.Open.Globalization;
 [ComparableValue]
 [JsonConverter(typeof(JsonSpanSerializableValueConverter<LanguageCode2, AsciiChar2>))]
 public readonly partial struct LanguageCode2
-    : IComparableValue<LanguageCode2, AsciiChar2>, IUtf8SpanSerializable<LanguageCode2>
+    : IComparableValue<LanguageCode2, AsciiChar2>,
+      IUtf8SpanSerializable<LanguageCode2>,
+      IRepeatableHash64
 {
     public static readonly LanguageCode2 English = new((AsciiChar2)"en");
 
@@ -41,5 +44,10 @@ public readonly partial struct LanguageCode2
     public static LanguageCode2 FromAsciiChar2(AsciiChar2 value)
     {
         return value.CastToValue<LanguageCode2, AsciiChar2>();
+    }
+
+    public ulong GetRepeatableHashCode()
+    {
+        return _value.GetRepeatableHashCode();
     }
 }

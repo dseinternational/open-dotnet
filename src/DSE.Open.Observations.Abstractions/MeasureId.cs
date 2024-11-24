@@ -7,6 +7,7 @@ using DSE.Open.Values.Text.Json.Serialization;
 using DSE.Open.Values;
 using System.IO.Hashing;
 using System.Text;
+using DSE.Open.Hashing;
 
 namespace DSE.Open.Observations;
 
@@ -16,7 +17,10 @@ namespace DSE.Open.Observations;
 [EquatableValue]
 [JsonConverter(typeof(JsonUInt64ValueConverter<MeasureId>))]
 [StructLayout(LayoutKind.Sequential)]
-public readonly partial struct MeasureId : IEquatableValue<MeasureId, ulong>, IUtf8SpanSerializable<MeasureId>
+public readonly partial struct MeasureId
+    : IEquatableValue<MeasureId, ulong>,
+      IUtf8SpanSerializable<MeasureId>,
+      IRepeatableHash64
 {
     public const ulong MinIdValue = 100000000001;
     public const ulong MaxIdValue = 999999999999;
@@ -106,5 +110,10 @@ public readonly partial struct MeasureId : IEquatableValue<MeasureId, ulong>, IU
         Span<byte> b = stackalloc byte[c];
         _ = Encoding.UTF8.GetBytes(urn, b);
         return (MeasureId)(MinIdValue + (ulong)(XxHash3.HashToUInt64(b) / (decimal)ulong.MaxValue * MaxRange));
+    }
+
+    public ulong GetRepeatableHashCode()
+    {
+        return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);
     }
 }

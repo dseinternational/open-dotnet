@@ -4,6 +4,7 @@
 using System.Text.Json.Serialization;
 using DSE.Open.Collections.Generic;
 using DSE.Open.Globalization;
+using DSE.Open.Hashing;
 using DSE.Open.Text;
 
 namespace DSE.Open.Speech;
@@ -14,7 +15,7 @@ namespace DSE.Open.Speech;
 /// of different sounds that are perceived to have the same function by speakers of the
 /// language or dialect in question.
 /// </summary>
-public sealed class Phoneme : IEquatable<Phoneme>
+public sealed class Phoneme : IEquatable<Phoneme>, IRepeatableHash64
 {
     /// <summary>
     /// The language in which the phoneme occurs.
@@ -116,6 +117,20 @@ public sealed class Phoneme : IEquatable<Phoneme>
         }
 
         return left.Equals(right);
+    }
+
+    public ulong GetRepeatableHashCode()
+    {
+        var hash = RepeatableHash64Provider.Default.CombineHashCodes(
+            Language.GetRepeatableHashCode(),
+            Abstraction.GetRepeatableHashCode());
+
+        foreach (var allophone in Allophones)
+        {
+            hash = RepeatableHash64Provider.Default.CombineHashCodes(hash, allophone.GetRepeatableHashCode());
+        }
+
+        return hash;
     }
 
     public static bool operator ==(Phoneme? left, Phoneme? right)

@@ -1,6 +1,8 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using DSE.Open.Hashing;
+
 namespace DSE.Open;
 
 public static class DateTimeExtensions
@@ -65,5 +67,10 @@ public static class DateTimeExtensions
             DateTimeTruncation.Year => new(value.Year, 1, 1, 0, 0, 0, value.Kind),
             _ => ThrowHelper.ThrowArgumentOutOfRangeException<DateTime>(nameof(truncation), $"Unsupported {nameof(DateTimeTruncation)}")
         };
+    }
+
+    public static ulong GetRepeatableHashCode(this DateTime value)
+    {
+        return RepeatableHash64Provider.Default.GetRepeatableHashCode(value);
     }
 }

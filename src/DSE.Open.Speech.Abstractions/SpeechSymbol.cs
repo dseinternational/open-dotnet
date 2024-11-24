@@ -15,6 +15,7 @@
 using System.Collections.Frozen;
 using System.Collections.Immutable;
 using System.Runtime.InteropServices;
+using DSE.Open.Hashing;
 using DSE.Open.Values;
 
 namespace DSE.Open.Speech;
@@ -26,7 +27,8 @@ namespace DSE.Open.Speech;
 [StructLayout(LayoutKind.Sequential)]
 public readonly partial struct SpeechSymbol
     : IComparableValue<SpeechSymbol, char>,
-      IUtf8SpanSerializable<SpeechSymbol>
+      IUtf8SpanSerializable<SpeechSymbol>,
+      IRepeatableHash64
 {
     public static int MaxSerializedCharLength => 1;
 
@@ -276,6 +278,11 @@ public readonly partial struct SpeechSymbol
         }
 
         return s_equivalenceMappings.TryGetValue(c, out var symbol) && symbols.Contains(symbol._value);
+    }
+
+    public ulong GetRepeatableHashCode()
+    {
+        return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);
     }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates

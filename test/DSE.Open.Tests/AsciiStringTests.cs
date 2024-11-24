@@ -98,7 +98,6 @@ public class AsciiStringTests
         Assert.True(result.All(c => c == 'A'));
     }
 
-
     [Theory]
     [InlineData("abcdefghijklmnopqrstuvwxyz", "ABCDEFGHIJKLMNOPQRSTUVWXYZ")]
     public void ToStringUpper_returns_upper_string(string value, string expected)
@@ -370,5 +369,12 @@ public class AsciiStringTests
 
         // Assert
         Assert.Equal(0, result);
+    }
+
+    [Fact]
+    public void GetRepeatableHashCode_ReturnsExpectedValue()
+    {
+        var value = AsciiString.Parse("abcdefghijklmnopqrstuvwxyza", CultureInfo.InvariantCulture);
+        Assert.Equal(10941012414329798000u, value.GetRepeatableHashCode());
     }
 }

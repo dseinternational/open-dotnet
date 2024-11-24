@@ -31,4 +31,11 @@ public class CharSequenceTests
         var c1 = CharSequence.ParseInvariant(value1);
         Assert.True(c1.Equals(value2, stringComparison));
     }
+
+    [Fact]
+    public void GetRepeatableHashCode_ReturnsExpectedValue()
+    {
+        var c = (CharSequence)"Hello";
+        Assert.Equal(6936088994997224939u, c.GetRepeatableHashCode());
+    }
 }

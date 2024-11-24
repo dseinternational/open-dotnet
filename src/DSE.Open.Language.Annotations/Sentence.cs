@@ -5,10 +5,11 @@ using System.Buffers;
 using System.Text.Json.Serialization;
 using DSE.Open.Collections.Generic;
 using DSE.Open.Globalization;
+using DSE.Open.Hashing;
 
 namespace DSE.Open.Language.Annotations;
 
-public record Sentence : ISpanFormattable
+public record Sentence : ISpanFormattable, IRepeatableHash64
 {
     private ReadOnlyValueCollection<Word>? _words;
 
@@ -205,5 +206,25 @@ public record Sentence : ISpanFormattable
         }
 
         return true;
+    }
+
+    public ulong GetRepeatableHashCode()
+    {
+        var hash = RepeatableHash64Provider.Default.CombineHashCodes(
+            RepeatableHash64Provider.Default.GetRepeatableHashCode(Index),
+            RepeatableHash64Provider.Default.GetRepeatableHashCode(Id.AsSpan()),
+            RepeatableHash64Provider.Default.GetRepeatableHashCode(DocumentId.AsSpan()),
+            Language?.GetRepeatableHashCode() ?? 0u,
+            RepeatableHash64Provider.Default.GetRepeatableHashCode(Text.AsSpan())
+            );
+
+        foreach (var t in Tokens)
+        {
+            hash = RepeatableHash64Provider.Default.CombineHashCodes(hash, t.GetRepeatableHashCode());
+        }
+
+        // ignore comments
+
+        return hash;
     }
 }

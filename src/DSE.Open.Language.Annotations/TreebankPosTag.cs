@@ -4,6 +4,7 @@
 using System.Collections.Frozen;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
+using DSE.Open.Hashing;
 using DSE.Open.Values;
 using DSE.Open.Values.Text.Json.Serialization;
 
@@ -16,7 +17,8 @@ namespace DSE.Open.Language.Annotations;
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<TreebankPosTag, AsciiString>))]
 public readonly partial struct TreebankPosTag
     : IEquatableValue<TreebankPosTag, AsciiString>,
-      IUtf8SpanSerializable<TreebankPosTag>
+      IUtf8SpanSerializable<TreebankPosTag>,
+      IRepeatableHash64
 {
     public static int MaxSerializedCharLength => 5;
 
@@ -41,6 +43,11 @@ public readonly partial struct TreebankPosTag
         return !value.IsEmpty
             && value.Length <= MaxSerializedCharLength
             && s_validValues.Contains(value);
+    }
+
+    public ulong GetRepeatableHashCode()
+    {
+        return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);
     }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates - Parse

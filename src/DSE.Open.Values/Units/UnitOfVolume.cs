@@ -1,13 +1,15 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using DSE.Open.Hashing;
+
 namespace DSE.Open.Values.Units;
 
 /// <summary>
 /// A unit of measure for volume. Units of measure are considered equal if the
 /// quantity of base units represented by the units of measure are equal.
 /// </summary>
-public sealed class UnitOfVolume : UnitOfMeasure<double>
+public sealed class UnitOfVolume : UnitOfMeasure<double>, IRepeatableHash64
 {
     public static readonly UnitOfVolume CubicMetre = new(1000000000.000000, "cubic metre", "m³");
     public static readonly UnitOfVolume CubicCentimetre = new(1000.000000, "cubic centimetre", "cm³");
@@ -34,5 +36,13 @@ public sealed class UnitOfVolume : UnitOfMeasure<double>
             "ml" or "millilitre" or "milliliter" => Millilitre,
             _ => throw new ArgumentOutOfRangeException(nameof(nameOrAbbreviation)),
         };
+    }
+
+    public ulong GetRepeatableHashCode()
+    {
+        var h0 = RepeatableHash64Provider.Default.GetRepeatableHashCode(BaseUnits);
+        var h1 = RepeatableHash64Provider.Default.GetRepeatableHashCode(Abbreviation);
+        var h2 = RepeatableHash64Provider.Default.GetRepeatableHashCode(Name);
+        return RepeatableHash64Provider.Default.CombineHashCodes(h0, h1, h2);
     }
 }

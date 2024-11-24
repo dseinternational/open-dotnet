@@ -1,7 +1,9 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
+using DSE.Open.Hashing;
 using DSE.Open.Language;
 using DSE.Open.Speech;
 using DSE.Open.Text.Json.Serialization;
@@ -88,6 +90,19 @@ public abstract record Observation : IObservation
     [JsonPropertyName("m")]
     [JsonPropertyOrder(-88000)]
     public MeasureId MeasureId { get; }
+
+    /// <summary>
+    /// Gets a repeatable hash value that represents the measurement.
+    /// </summary>
+    /// <returns>A repeatable hash value that represents the measurement</returns>
+    /// <remarks>
+    /// For an observation with no paramaters, this is simply a repeatable hash of the <see cref="MeasureId"/>.
+    /// <para>For observations with parameters, the hash should incorporate parameters with the measure id.</para>
+    /// </remarks>
+    public virtual ulong GetMeasurementHashCode()
+    {
+        return MeasureId.GetRepeatableHashCode();
+    }
 
     /// <summary>
     /// Creates an observation with a single measurement value.
@@ -271,6 +286,21 @@ public sealed record Observation<TValue, TParam>
     [JsonPropertyName("v")]
     [JsonPropertyOrder(-1)]
     public TValue Value { get; }
+
+    /// <inheritdoc />
+    public override ulong GetMeasurementHashCode()
+    {
+        if (!RepeatableHash64Provider.Default.TryGetRepeatableHashCode(Parameter, out var parameterHash))
+        {
+            ThrowHelper.ThrowInvalidOperationException(
+                "The parameter type does not support repeatable hashing.");
+            return 0u;
+        }
+
+        var measure = base.GetMeasurementHashCode();
+
+        return RepeatableHash64Provider.Default.CombineHashCodes(measure, parameterHash);
+    }
 
     static Observation<TValue, TParam> IObservationFactory<Observation<TValue, TParam>, TValue, TParam>.Create(
         IMeasure<TValue, TParam> measure,

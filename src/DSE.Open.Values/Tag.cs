@@ -4,6 +4,7 @@
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using CommunityToolkit.HighPerformance.Buffers;
+using DSE.Open.Hashing;
 using DSE.Open.Values.Text.Json.Serialization;
 
 namespace DSE.Open.Values;
@@ -23,7 +24,8 @@ namespace DSE.Open.Values;
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<Tag, AsciiString>))]
 public readonly partial struct Tag
     : IComparableValue<Tag, AsciiString>,
-      IUtf8SpanSerializable<Tag>
+      IUtf8SpanSerializable<Tag>,
+      IRepeatableHash64
 {
     public const int MinLength = 2;
     public const int MaxLength = 120;
@@ -168,6 +170,11 @@ public readonly partial struct Tag
     public bool Contains(ReadOnlySpan<byte> value)
     {
         return _value.Contains(value);
+    }
+
+    public ulong GetRepeatableHashCode()
+    {
+        return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);
     }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates

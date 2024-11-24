@@ -4,6 +4,7 @@
 using System.Buffers;
 using System.Runtime.CompilerServices;
 using System.Text;
+using DSE.Open.Hashing;
 using DSE.Open.Runtime.Helpers;
 
 namespace DSE.Open;
@@ -106,6 +107,11 @@ public static partial class MemoryExtensions
                 ArrayPool<char>.Shared.Return(rented);
             }
         }
+    }
+
+    public static ulong GetRepeatableHashCode(this ReadOnlySpan<AsciiChar> value)
+    {
+        return RepeatableHash64Provider.Default.GetRepeatableHashCode(value);
     }
 
     public static bool ContainsOnlyAsciiLetters(this ReadOnlySpan<AsciiChar> value)

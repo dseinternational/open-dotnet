@@ -337,4 +337,11 @@ public class BinaryValueTests
         Assert.True(result);
         Assert.Equal(16, charsWritten);
     }
+
+    [Fact]
+    public void GetRepeatableHashCode_ReturnsExpectedValue()
+    {
+        var value = BinaryValue.FromEncodedString("Hello World!");
+        Assert.Equal(7439449919651422933u, value.GetRepeatableHashCode());
+    }
 }

@@ -5,7 +5,7 @@ using System.Buffers;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
-using DSE.Open.Globalization;
+using DSE.Open.Hashing;
 using DSE.Open.Runtime.Helpers;
 
 namespace DSE.Open.Language.Annotations;
@@ -17,7 +17,7 @@ namespace DSE.Open.Language.Annotations;
 /// Out token/word model is based on the CoNLL-U format and Stanza NLP
 /// data objects (<see href="https://stanfordnlp.github.io/stanza/data_objects.html#token"/>.
 /// </remarks>
-public record Word : ISpanFormattable, ISpanParsable<Word>
+public record Word : ISpanFormattable, ISpanParsable<Word>, IRepeatableHash64
 {
     /// <summary>
     /// Index of the token in the sentence.
@@ -616,5 +616,29 @@ public record Word : ISpanFormattable, ISpanParsable<Word>
         }
 
         return true;
+    }
+
+    public ulong GetRepeatableHashCode()
+    {
+        var hash = RepeatableHash64Provider.Default.CombineHashCodes(
+            RepeatableHash64Provider.Default.GetRepeatableHashCode(Index),
+            RepeatableHash64Provider.Default.GetRepeatableHashCode(Form),
+            Lemma?.GetRepeatableHashCode() ?? 0u,
+            Pos.GetRepeatableHashCode(),
+            AltPos?.GetRepeatableHashCode() ?? 0u,
+            HeadIndex?.GetRepeatableHashCode() ?? 0u,
+            Relation?.GetRepeatableHashCode() ?? 0u);
+
+        foreach (var feature in Features)
+        {
+            hash = RepeatableHash64Provider.Default.CombineHashCodes(hash, feature.GetRepeatableHashCode());
+        }
+
+        foreach (var attribute in Attributes)
+        {
+            hash = RepeatableHash64Provider.Default.CombineHashCodes(hash, attribute.GetRepeatableHashCode());
+        }
+
+        return hash;
     }
 }

@@ -4,6 +4,7 @@
 using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Text.Json.Serialization;
+using DSE.Open.Hashing;
 using DSE.Open.Text.Json.Serialization;
 
 namespace DSE.Open;
@@ -12,7 +13,7 @@ namespace DSE.Open;
 /// An immutable binary data value.
 /// </summary>
 [JsonConverter(typeof(JsonStringBinaryValueBase64Converter))]
-public readonly partial record struct BinaryValue : ISpanFormattable, IUtf8SpanFormattable
+public readonly partial record struct BinaryValue : ISpanFormattable, IUtf8SpanFormattable, IRepeatableHash64
 {
     private readonly ReadOnlyMemory<byte> _value;
 
@@ -139,4 +140,8 @@ public readonly partial record struct BinaryValue : ISpanFormattable, IUtf8SpanF
         return new(bytes, noCopy: true);
     }
 
+    public ulong GetRepeatableHashCode()
+    {
+        return RepeatableHash64Provider.Default.GetRepeatableHashCode(this);
+    }
 }

@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json.Serialization;
+using DSE.Open.Hashing;
 using DSE.Open.Values.Text.Json.Serialization;
 
 namespace DSE.Open.Values;
@@ -18,7 +19,8 @@ namespace DSE.Open.Values;
 public readonly partial struct Identifier : IEquatableValue<Identifier, AsciiString>,
     IIdentifier<Identifier>,
     IEquatable<string>,
-    IUtf8SpanSerializable<Identifier>
+    IUtf8SpanSerializable<Identifier>,
+    IRepeatableHash64
 {
     public const int DefaultLength = 48;
 
@@ -291,5 +293,10 @@ public readonly partial struct Identifier : IEquatableValue<Identifier, AsciiStr
     public ReadOnlySpan<byte> AsBytes()
     {
         return ValuesMarshal.AsBytes(_value.AsSpan());
+    }
+
+    public ulong GetRepeatableHashCode()
+    {
+        return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);
     }
 }

@@ -3,6 +3,7 @@
 
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
+using DSE.Open.Hashing;
 using DSE.Open.Values;
 using DSE.Open.Values.Text.Json.Serialization;
 
@@ -13,7 +14,8 @@ namespace DSE.Open.Observations;
 [StructLayout(LayoutKind.Sequential)]
 public readonly partial struct MeasurementLevel
     : IEquatableValue<MeasurementLevel, AsciiString>,
-      IUtf8SpanSerializable<MeasurementLevel>
+      IUtf8SpanSerializable<MeasurementLevel>,
+      IRepeatableHash64
 {
     public static int MaxSerializedCharLength => 32;
 
@@ -22,6 +24,11 @@ public readonly partial struct MeasurementLevel
     public static bool IsValidValue(AsciiString value)
     {
         return value.Length is > 1 and <= 17 && Lookup.ContainsKey(value);
+    }
+
+    public ulong GetRepeatableHashCode()
+    {
+        return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);
     }
 
     /// <summary>

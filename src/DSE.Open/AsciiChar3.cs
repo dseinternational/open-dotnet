@@ -7,6 +7,7 @@ using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json.Serialization;
+using DSE.Open.Hashing;
 using DSE.Open.Text.Json.Serialization;
 
 namespace DSE.Open;
@@ -25,7 +26,8 @@ public readonly struct AsciiChar3
       IConvertibleTo<AsciiChar3, string>,
       ITryConvertibleFrom<AsciiChar3, string>,
       IUtf8SpanSerializable<AsciiChar3>,
-      ISpanFormatableCharCountProvider
+      ISpanFormatableCharCountProvider,
+      IRepeatableHash64
 {
     private const int CharCount = 3;
     public static int MaxSerializedByteLength => 3;
@@ -241,9 +243,9 @@ public readonly struct AsciiChar3
     {
         if (destination.Length >= CharCount)
         {
-            _c0.TryFormat(destination, out _, format, provider);
-            _c1.TryFormat(destination[1..], out _, format, provider);
-            _c2.TryFormat(destination[2..], out _, format, provider);
+            _ = _c0.TryFormat(destination, out _, format, provider);
+            _ = _c1.TryFormat(destination[1..], out _, format, provider);
+            _ = _c2.TryFormat(destination[2..], out _, format, provider);
             charsWritten = CharCount;
             return true;
         }
@@ -257,7 +259,7 @@ public readonly struct AsciiChar3
         return string.Create(CharCount, (this, format, formatProvider), (span, state) =>
         {
             var (value, format, formatProvider) = state;
-            value.TryFormat(span, out _, format, formatProvider);
+            _ = value.TryFormat(span, out _, format, formatProvider);
         });
     }
 
@@ -356,9 +358,9 @@ public readonly struct AsciiChar3
     {
         if (utf8Destination.Length >= CharCount)
         {
-            _c0.TryFormat(utf8Destination, out _, format, provider);
-            _c1.TryFormat(utf8Destination[1..], out _, format, provider);
-            _c2.TryFormat(utf8Destination[2..], out _, format, provider);
+            _ = _c0.TryFormat(utf8Destination, out _, format, provider);
+            _ = _c1.TryFormat(utf8Destination[1..], out _, format, provider);
+            _ = _c2.TryFormat(utf8Destination[2..], out _, format, provider);
 
             bytesWritten = CharCount;
             return true;
@@ -366,6 +368,11 @@ public readonly struct AsciiChar3
 
         bytesWritten = 0;
         return false;
+    }
+
+    public ulong GetRepeatableHashCode()
+    {
+        return RepeatableHash64Provider.Default.GetRepeatableHashCode([_c0, _c1, _c2]);
     }
 
     public static bool operator <(AsciiChar3 left, AsciiChar3 right)

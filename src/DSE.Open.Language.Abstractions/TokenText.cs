@@ -3,6 +3,7 @@
 
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
+using DSE.Open.Hashing;
 using DSE.Open.Values;
 using DSE.Open.Values.Text.Json.Serialization;
 
@@ -13,7 +14,8 @@ namespace DSE.Open.Language;
 [JsonConverter(typeof(JsonSpanSerializableValueConverter<TokenText, CharSequence>))]
 public readonly partial struct TokenText
     : IComparableValue<TokenText, CharSequence>,
-      ISpanSerializableValue<TokenText, CharSequence>
+      ISpanSerializableValue<TokenText, CharSequence>,
+      IRepeatableHash64
 {
     public static int MaxSerializedCharLength => 32;
 
@@ -72,6 +74,11 @@ public readonly partial struct TokenText
     public bool Equals(string other, StringComparison stringComparison)
     {
         return _value.Equals(other, stringComparison);
+    }
+
+    public ulong GetRepeatableHashCode()
+    {
+        return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);
     }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates

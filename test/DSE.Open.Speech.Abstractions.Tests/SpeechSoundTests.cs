@@ -3,6 +3,7 @@
 
 using System.Text.Json;
 using DSE.Open.Collections.Generic;
+using DSE.Open.Globalization;
 using DSE.Open.Text.Json;
 
 namespace DSE.Open.Speech.Abstractions.Tests;
@@ -51,6 +52,20 @@ public class SpeechSoundTests
         var json = JsonSerializer.Serialize(p, JsonSharedOptions.RelaxedJsonEscaping);
         var deserialized = JsonSerializer.Deserialize<SpeechSound>(json);
         Assert.Equal(p, deserialized);
+    }
+
+    [Fact]
+    public void GetRepeatableHashCode_ReturnsExpectedValue()
+    {
+        var value = SpeechSound.ParseInvariant("b");
+        Assert.Equal(11835835476309421758u, value.GetRepeatableHashCode());
+    }
+
+    [Fact]
+    public void GetRepeatableHashCode_ReturnsExpectedValue_2()
+    {
+        var s = SpeechSound.ParseInvariant("dʒ");
+        Assert.Equal(4428507752335513923u, s.GetRepeatableHashCode());
     }
 
     public static TheoryData<SpeechSound> SpeechSounds
@@ -299,7 +314,6 @@ public class SpeechSoundTests
         "ʔ", // glottal plosive
         "h", // voiceless glottal fricative
         "ɦ",  // voiced glottal fricative
-
 
         "tʃ",
         "dʒ",

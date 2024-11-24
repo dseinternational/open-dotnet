@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json.Serialization;
+using DSE.Open.Hashing;
 using DSE.Open.Text.Json.Serialization;
 
 namespace DSE.Open;
@@ -18,7 +19,8 @@ namespace DSE.Open;
 public readonly struct Utf8String
     : IEquatable<Utf8String>,
       ISpanFormattable,
-      ISpanParsable<Utf8String>
+      ISpanParsable<Utf8String>,
+      IRepeatableHash64
 {
     private readonly ReadOnlyMemory<byte> _utf8;
 
@@ -179,6 +181,11 @@ public readonly struct Utf8String
     public static Utf8String FromAsciiString(AsciiString value)
     {
         return new((ReadOnlyMemory<byte>)value.ToByteArray());
+    }
+
+    public ulong GetRepeatableHashCode()
+    {
+        return RepeatableHash64Provider.Default.GetRepeatableHashCode(this);
     }
 
     public static explicit operator Utf8String(AsciiString value)
