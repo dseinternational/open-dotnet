@@ -28,8 +28,9 @@ public class MeasurementSetTests
         MeasurementSet observations = [];
         var obs1 = Observation.Create(TestMeasures.CountMeasure, (Count)42);
         var obs2 = Observation.Create(TestMeasures.CountMeasure, (Count)420);
-        observations.Add(obs1);
-        _ = Assert.Throws<InvalidOperationException>(() => observations.Add(obs2));
+        _ = observations.Add(obs1);
+        _ = observations.Add(obs2);
+        _ = Assert.Single(observations);
     }
 
     [Fact]
@@ -38,7 +39,8 @@ public class MeasurementSetTests
         MeasurementSet observations = [];
         var obs1 = Observation.Create(TestMeasures.BinarySpeechSoundMeasure, Phonemes.English.ay.Abstraction, true);
         var obs2 = Observation.Create(TestMeasures.BinarySpeechSoundMeasure, Phonemes.English.ay.Abstraction, false);
-        observations.Add(obs1);
-        _ = Assert.Throws<InvalidOperationException>(() => observations.Add(obs2));
+        _ = observations.Add(obs1);
+        _ = observations.Add(obs2);
+        _ = Assert.Single(observations);
     }
 }
