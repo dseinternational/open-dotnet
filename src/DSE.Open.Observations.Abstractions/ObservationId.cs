@@ -11,7 +11,7 @@ using DSE.Open.Values.Text.Json.Serialization;
 namespace DSE.Open.Observations;
 
 /// <summary>
-/// A value used to identify a word.
+/// A value used to identify an <see cref="IObservation"/>.
 /// </summary>
 [EquatableValue]
 [JsonConverter(typeof(JsonUInt64ValueConverter<ObservationId>))]
