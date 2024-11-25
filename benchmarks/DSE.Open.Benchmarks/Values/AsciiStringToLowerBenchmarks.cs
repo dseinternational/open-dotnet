@@ -9,7 +9,7 @@ namespace DSE.Open.Benchmarks.Values;
 
 [MemoryDiagnoser]
 [DisassemblyDiagnoser]
-public class AsciiStringToLowerBenchmarks
+public class ObservationHashValueBenchmarks
 {
     private static readonly AsciiString s_value =
         AsciiString.Parse("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", CultureInfo.InvariantCulture);

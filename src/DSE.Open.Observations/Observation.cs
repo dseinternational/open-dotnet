@@ -3,6 +3,7 @@
 
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection.Metadata.Ecma335;
 using System.Text.Json.Serialization;
 using DSE.Open.Hashing;
 using DSE.Open.Language;
@@ -30,7 +31,7 @@ namespace DSE.Open.Observations;
 [JsonDerivedType(typeof(Observation<Completeness, SpeechSound>), (int)ObservationType.CompletenessSpeechSound)]
 [JsonDerivedType(typeof(Observation<Completeness, WordId>), (int)ObservationType.CompletenessWord)]
 [JsonDerivedType(typeof(Observation<Completeness, SentenceId>), (int)ObservationType.CompletenessSentence)]
-public abstract class Observation : IObservation, IEquatable<Observation>
+public abstract class Observation : IObservation, IEquatable<Observation>, IRepeatableHash64
 {
     public static readonly DateTimeOffset MinimumObservationTime = new(2000, 1, 1, 0, 0, 0, TimeSpan.Zero);
     internal const int TimeToleranceSeconds = 60;
@@ -206,6 +207,14 @@ public abstract class Observation : IObservation, IEquatable<Observation>
     {
         return new Observation<TValue, TParam>(measure, parameter, value, timeProvider);
     }
+
+    public virtual ulong GetRepeatableHashCode()
+    {
+        return RepeatableHash64Provider.Default.CombineHashCodes(
+            RepeatableHash64Provider.Default.GetRepeatableHashCode(Id),
+            RepeatableHash64Provider.Default.GetRepeatableHashCode(Time),
+            RepeatableHash64Provider.Default.GetRepeatableHashCode(MeasureId));
+    }
 }
 
 /// <summary>
@@ -275,6 +284,20 @@ public sealed class Observation<TValue>
     public override int GetHashCode()
     {
         return HashCode.Combine(Value, base.GetHashCode());
+    }
+
+    public override ulong GetRepeatableHashCode()
+    {
+        if (!RepeatableHash64Provider.Default.TryGetRepeatableHashCode(Value, out var valueHash))
+        {
+            ThrowHelper.ThrowInvalidOperationException(
+                $"The {typeof(TValue).Name} type does not support repeatable hashing.");
+            return 0u;
+        }
+
+        return RepeatableHash64Provider.Default.CombineHashCodes(
+            base.GetRepeatableHashCode(),
+            valueHash);
     }
 
     public override string ToString()
@@ -381,6 +404,20 @@ public sealed class Observation<TValue, TParam>
         return HashCode.Combine(Value, base.GetHashCode());
     }
 
+    public override ulong GetRepeatableHashCode()
+    {
+        if (!RepeatableHash64Provider.Default.TryGetRepeatableHashCode(Parameter, out var paramHash))
+        {
+            ThrowHelper.ThrowInvalidOperationException(
+                $"The {typeof(TParam).Name} type does not support repeatable hashing.");
+            return 0u;
+        }
+
+        return RepeatableHash64Provider.Default.CombineHashCodes(
+            base.GetRepeatableHashCode(),
+            paramHash);
+    }
+
     public override string ToString()
     {
         return $"{{ id: {Id}, time: {Time:u}, measure: {MeasureId}, parameter: {Parameter}, value: {Value} }}";
@@ -392,7 +429,7 @@ public sealed class Observation<TValue, TParam>
         if (!RepeatableHash64Provider.Default.TryGetRepeatableHashCode(Parameter, out var parameterHash))
         {
             ThrowHelper.ThrowInvalidOperationException(
-                "The parameter type does not support repeatable hashing.");
+                $"The {typeof(TParam).Name} type does not support repeatable hashing.");
             return 0u;
         }
 

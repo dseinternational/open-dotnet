@@ -18,6 +18,11 @@ public abstract class RepeatableHash64Provider
         return GetRepeatableHashCodeCore([value]);
     }
 
+    public ulong GetRepeatableHashCode(bool value)
+    {
+        return GetRepeatableHashCode(value ? 1 : 0);
+    }
+
     public ulong GetRepeatableHashCode(char value)
     {
         Span<byte> span = stackalloc byte[sizeof(char)];
@@ -266,6 +271,37 @@ public abstract class RepeatableHash64Provider
 
     protected abstract ulong GetRepeatableHashCodeCore(ReadOnlySpan<byte> value);
 
+    public ulong Combine(IRepeatableHash64 obj0, IRepeatableHash64 obj1)
+    {
+        ArgumentNullException.ThrowIfNull(obj0);
+        ArgumentNullException.ThrowIfNull(obj1);
+        return CombineHashCodes(obj0.GetRepeatableHashCode(), obj1.GetRepeatableHashCode());
+    }
+
+    public ulong Combine(IRepeatableHash64 obj0, IRepeatableHash64 obj1, IRepeatableHash64 obj2)
+    {
+        ArgumentNullException.ThrowIfNull(obj0);
+        ArgumentNullException.ThrowIfNull(obj1);
+        ArgumentNullException.ThrowIfNull(obj2);
+        return CombineHashCodes(
+            obj0.GetRepeatableHashCode(),
+            obj1.GetRepeatableHashCode(),
+            obj2.GetRepeatableHashCode());
+    }
+
+    public ulong Combine(IRepeatableHash64 obj0, IRepeatableHash64 obj1, IRepeatableHash64 obj2, IRepeatableHash64 obj3)
+    {
+        ArgumentNullException.ThrowIfNull(obj0);
+        ArgumentNullException.ThrowIfNull(obj1);
+        ArgumentNullException.ThrowIfNull(obj2);
+        ArgumentNullException.ThrowIfNull(obj3);
+        return CombineHashCodes(
+            obj0.GetRepeatableHashCode(),
+            obj1.GetRepeatableHashCode(),
+            obj2.GetRepeatableHashCode(),
+            obj3.GetRepeatableHashCode());
+    }
+
 #pragma warning disable CA1822 // Mark members as static
 
     public ulong CombineHashCodes(ulong h0, ulong h1)
@@ -333,6 +369,9 @@ public abstract class RepeatableHash64Provider
         {
             case IRepeatableHash64:
                 hash = ((IRepeatableHash64)value).GetRepeatableHashCode();
+                return true;
+            case bool boolValue:
+                hash = GetRepeatableHashCode(boolValue);
                 return true;
             case byte byteValue:
                 hash = GetRepeatableHashCode(byteValue);

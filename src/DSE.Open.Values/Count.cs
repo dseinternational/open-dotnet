@@ -3,6 +3,7 @@
 
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
+using DSE.Open.Hashing;
 using DSE.Open.Values.Text.Json.Serialization;
 
 namespace DSE.Open.Values;
@@ -13,7 +14,7 @@ namespace DSE.Open.Values;
 [DivisibleValue]
 [JsonConverter(typeof(JsonInt64ValueConverter<Count>))]
 [StructLayout(LayoutKind.Sequential)]
-public readonly partial struct Count : IDivisibleValue<Count, long>, IUtf8SpanSerializable<Count>
+public readonly partial struct Count : IDivisibleValue<Count, long>, IUtf8SpanSerializable<Count>, IRepeatableHash64
 {
     public const long MaxValue = NumberHelper.MaxJsonSafeInteger;
 
@@ -103,6 +104,11 @@ public readonly partial struct Count : IDivisibleValue<Count, long>, IUtf8SpanSe
     public static Count FromValue(uint value)
     {
         return new(value, true);
+    }
+
+    public ulong GetRepeatableHashCode()
+    {
+        return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);
     }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
