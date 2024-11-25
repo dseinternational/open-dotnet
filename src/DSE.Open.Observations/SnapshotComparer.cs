@@ -3,13 +3,13 @@
 
 namespace DSE.Open.Observations;
 
-public abstract class ObservationComparer : Comparer<IObservation>
+public abstract class SnapshotComparer : Comparer<ISnapshot>
 {
-    public static ObservationComparer Measurement { get; } = new MeasurementComparer();
+    public static SnapshotComparer Measurement { get; } = new MeasurementComparer();
 
-    private class MeasurementComparer : ObservationComparer
+    private class MeasurementComparer : SnapshotComparer
     {
-        public override int Compare(IObservation? x, IObservation? y)
+        public override int Compare(ISnapshot? x, ISnapshot? y)
         {
             if (x is null)
             {
@@ -21,7 +21,7 @@ public abstract class ObservationComparer : Comparer<IObservation>
                 return 1;
             }
 
-            return x.GetMeasurementHashCode().CompareTo(y.GetMeasurementHashCode());
+            return x.Observation.GetMeasurementHashCode().CompareTo(y.Observation.GetMeasurementHashCode());
         }
     }
 }

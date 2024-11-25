@@ -27,6 +27,14 @@ public abstract class Snapshot : IEquatable<Snapshot>, ISnapshot
     [JsonConverter(typeof(JsonDateTimeOffsetUnixTimeMillisecondsConverter))]
     public DateTimeOffset Time { get; }
 
+    protected abstract IObservation ObservationCore { get; }
+
+#pragma warning disable CA1033 // Interface methods should be callable by child types
+
+    IObservation ISnapshot.Observation => ObservationCore;
+
+#pragma warning restore CA1033 // Interface methods should be callable by child types
+
     public bool Equals(Snapshot? other)
     {
         return other is not null && Time.Equals(other.Time);
@@ -75,6 +83,8 @@ public sealed class Snapshot<TObs> : Snapshot, IEquatable<Snapshot<TObs>>, ISnap
 
     [JsonPropertyName("o")]
     public TObs Observation { get; }
+
+    protected override IObservation ObservationCore => Observation;
 
     public bool Equals(Snapshot<TObs>? other)
     {

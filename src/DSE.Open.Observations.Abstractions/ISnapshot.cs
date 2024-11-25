@@ -5,6 +5,8 @@ namespace DSE.Open.Observations;
 
 public interface ISnapshot
 {
+    IObservation Observation { get; }
+
     DateTimeOffset Time { get; }
 
     int GetMeasurementHashCode();
@@ -13,5 +15,5 @@ public interface ISnapshot
 public interface ISnapshot<TObs> : ISnapshot
     where TObs : IObservation
 {
-    TObs Observation { get; }
+    new TObs Observation { get; }
 }
