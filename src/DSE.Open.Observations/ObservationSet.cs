@@ -5,7 +5,23 @@ using System.Collections;
 
 namespace DSE.Open.Observations;
 
-public class ObservationSet<TObs> : IList<TObs>
+public abstract class ObservationSet
+{
+
+    public abstract int Count { get; }
+
+    public virtual bool IsReadOnly => false;
+
+    public abstract bool Contains(IObservation item);
+
+    public static ObservationSet<TObs> Create<TObs>()
+        where TObs : IObservation
+    {
+        return [];
+    }
+}
+
+public class ObservationSet<TObs> : ObservationSet, IList<TObs>
     where TObs : IObservation
 {
     private readonly OrderedDictionary<int, TObs> _observations = [];
@@ -34,9 +50,7 @@ public class ObservationSet<TObs> : IList<TObs>
         AddRange(observations);
     }
 
-    public int Count => _observations.Count;
-
-    public bool IsReadOnly => false;
+    public override int Count => _observations.Count;
 
     public TObs this[int index]
     {
@@ -70,6 +84,11 @@ public class ObservationSet<TObs> : IList<TObs>
         return true;
     }
 
+    void ICollection<TObs>.Add(TObs item)
+    {
+        _ = Add(item);
+    }
+
     public void AddRange(IEnumerable<TObs> observations)
     {
         ArgumentNullException.ThrowIfNull(observations);
@@ -89,6 +108,11 @@ public class ObservationSet<TObs> : IList<TObs>
     {
         ArgumentNullException.ThrowIfNull(item);
         return _observations.ContainsKey(GetKey(item));
+    }
+
+    public override bool Contains(IObservation item)
+    {
+        return item is TObs observation && Contains(observation);
     }
 
     public void CopyTo(TObs[] array, int arrayIndex)
@@ -127,10 +151,5 @@ public class ObservationSet<TObs> : IList<TObs>
     public void RemoveAt(int index)
     {
         _observations.RemoveAt(index);
-    }
-
-    void ICollection<TObs>.Add(TObs item)
-    {
-        throw new NotImplementedException();
     }
 }
