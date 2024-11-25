@@ -14,13 +14,13 @@ public interface IObservation
     int GetMeasurementHashCode();
 }
 
-public interface IObservation<TValue> : IObservation
+public interface IObservation<out TValue> : IObservation
     where TValue : struct, IEquatable<TValue>
 {
     TValue Value { get; }
 }
 
-public interface IObservation<TValue, TParam> : IObservation
+public interface IObservation<out TValue, out TParam> : IObservation
     where TValue : struct, IEquatable<TValue>
     where TParam : IEquatable<TParam>
 {

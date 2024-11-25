@@ -12,7 +12,7 @@ public interface ISnapshot
     int GetMeasurementHashCode();
 }
 
-public interface ISnapshot<TObs> : ISnapshot
+public interface ISnapshot<out TObs> : ISnapshot
     where TObs : IObservation
 {
     new TObs Observation { get; }
