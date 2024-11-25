@@ -3,6 +3,7 @@
 
 using System.ComponentModel;
 using System.Text.Json.Serialization;
+using DSE.Open.Text.Json.Serialization;
 
 namespace DSE.Open.Observations;
 
@@ -40,6 +41,7 @@ public sealed class Snapshot<TObs> : IEquatable<Snapshot<TObs>>, ISnapshot<TObs>
     public TObs Observation { get; }
 
     [JsonPropertyName("t")]
+    [JsonConverter(typeof(JsonDateTimeOffsetUnixTimeMillisecondsConverter))]
     public DateTimeOffset Time { get; }
 
     public bool Equals(Snapshot<TObs>? other)
