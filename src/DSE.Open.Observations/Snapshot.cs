@@ -30,9 +30,7 @@ public abstract class Snapshot : IEquatable<Snapshot>, ISnapshot
     protected abstract IObservation ObservationCore { get; }
 
 #pragma warning disable CA1033 // Interface methods should be callable by child types
-
     IObservation ISnapshot.Observation => ObservationCore;
-
 #pragma warning restore CA1033 // Interface methods should be callable by child types
 
     public bool Equals(Snapshot? other)
@@ -51,6 +49,38 @@ public abstract class Snapshot : IEquatable<Snapshot>, ISnapshot
     }
 
     public abstract int GetMeasurementHashCode();
+
+    public static Snapshot<Observation<TValue>> Create<TValue>(
+        Observation<TValue> observation)
+        where TValue : struct, IEquatable<TValue>
+    {
+        return Create(observation, TimeProvider.System);
+    }
+
+    internal static Snapshot<Observation<TValue>> Create<TValue>(
+        Observation<TValue> observation,
+        TimeProvider timeProvider)
+        where TValue : struct, IEquatable<TValue>
+    {
+        return new Snapshot<Observation<TValue>>(observation, timeProvider);
+    }
+
+    public static Snapshot<Observation<TValue, TParam>> Create<TValue, TParam>(
+        Observation<TValue, TParam> observation)
+        where TValue : struct, IEquatable<TValue>
+        where TParam : IEquatable<TParam>
+    {
+        return Create(observation, TimeProvider.System);
+    }
+
+    internal static Snapshot<Observation<TValue, TParam>> Create<TValue, TParam>(
+        Observation<TValue, TParam> observation,
+        TimeProvider timeProvider)
+        where TValue : struct, IEquatable<TValue>
+        where TParam : IEquatable<TParam>
+    {
+        return new Snapshot<Observation<TValue, TParam>>(observation, timeProvider);
+    }
 }
 
 public sealed class Snapshot<TObs> : Snapshot, IEquatable<Snapshot<TObs>>, ISnapshot<TObs>

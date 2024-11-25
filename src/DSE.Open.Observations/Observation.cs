@@ -160,7 +160,7 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
     /// <param name="value"></param>
     /// <param name="timeProvider"></param>
     /// <returns></returns>
-    public static Observation<TValue> Create<TValue>(
+    internal static Observation<TValue> Create<TValue>(
         IMeasure<TValue> measure,
         TValue value,
         TimeProvider timeProvider)
@@ -198,7 +198,7 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
     /// <param name="value"></param>
     /// <param name="timeProvider"></param>
     /// <returns></returns>
-    public static Observation<TValue, TParam> Create<TValue, TParam>(
+    internal static Observation<TValue, TParam> Create<TValue, TParam>(
         IMeasure<TValue, TParam> measure,
         TParam parameter,
         TValue value,
