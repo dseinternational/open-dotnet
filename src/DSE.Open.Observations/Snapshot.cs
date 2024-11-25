@@ -7,17 +7,53 @@ using DSE.Open.Text.Json.Serialization;
 
 namespace DSE.Open.Observations;
 
-public sealed class Snapshot<TObs> : IEquatable<Snapshot<TObs>>, ISnapshot<TObs>
+public abstract class Snapshot : IEquatable<Snapshot>, ISnapshot
+{
+    internal Snapshot(TimeProvider timeProvider)
+    {
+        Time = DateTimeOffset.FromUnixTimeMilliseconds(timeProvider.GetUtcNow().ToUnixTimeMilliseconds());
+    }
+
+    internal Snapshot(DateTimeOffset time, TimeProvider timeProvider)
+    {
+        ArgumentNullException.ThrowIfNull(timeProvider);
+        Guard.IsInRange(time, Observation.MinimumObservationTime,
+            timeProvider.GetUtcNow().AddSeconds(Observation.TimeToleranceSeconds));
+
+        Time = time;
+    }
+
+    [JsonPropertyName("t")]
+    [JsonConverter(typeof(JsonDateTimeOffsetUnixTimeMillisecondsConverter))]
+    public DateTimeOffset Time { get; }
+
+    public bool Equals(Snapshot? other)
+    {
+        return other is not null && Time.Equals(other.Time);
+    }
+
+    public override bool Equals(object? obj)
+    {
+        return Equals(obj as Snapshot);
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Time);
+    }
+}
+
+public sealed class Snapshot<TObs> : Snapshot, IEquatable<Snapshot<TObs>>, ISnapshot<TObs>
     where TObs : IObservation
 {
     public Snapshot(TObs observation) : this(observation, TimeProvider.System)
     {
     }
 
-    internal Snapshot(TObs observation, TimeProvider timeProvider)
+    internal Snapshot(TObs observation, TimeProvider timeProvider) : base(timeProvider)
     {
+        ArgumentNullException.ThrowIfNull(observation);
         Observation = observation;
-        Time = DateTimeOffset.FromUnixTimeMilliseconds(timeProvider.GetUtcNow().ToUnixTimeMilliseconds());
     }
 
     [JsonConstructor]
@@ -26,23 +62,17 @@ public sealed class Snapshot<TObs> : IEquatable<Snapshot<TObs>>, ISnapshot<TObs>
     {
     }
 
-    internal Snapshot(TObs observation, DateTimeOffset time, TimeProvider timeProvider)
+    internal Snapshot(TObs observation, DateTimeOffset time, TimeProvider timeProvider) : base(time, timeProvider)
     {
         ArgumentNullException.ThrowIfNull(observation);
-        ArgumentNullException.ThrowIfNull(timeProvider);
         Guard.IsInRange(time, Observations.Observation.MinimumObservationTime,
             timeProvider.GetUtcNow().AddSeconds(Observations.Observation.TimeToleranceSeconds));
 
         Observation = observation;
-        Time = time;
     }
 
     [JsonPropertyName("o")]
     public TObs Observation { get; }
-
-    [JsonPropertyName("t")]
-    [JsonConverter(typeof(JsonDateTimeOffsetUnixTimeMillisecondsConverter))]
-    public DateTimeOffset Time { get; }
 
     public bool Equals(Snapshot<TObs>? other)
     {

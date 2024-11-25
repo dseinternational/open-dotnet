@@ -3,10 +3,13 @@
 
 namespace DSE.Open.Observations;
 
-public interface ISnapshot<TObs>
+public interface ISnapshot
+{
+    DateTimeOffset Time { get; }
+}
+
+public interface ISnapshot<TObs> : ISnapshot
     where TObs : IObservation
 {
     TObs Observation { get; }
-
-    DateTimeOffset Time { get; }
 }
