@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 using DSE.Open.Hashing;
@@ -31,8 +32,8 @@ namespace DSE.Open.Observations;
 [JsonDerivedType(typeof(Observation<Completeness, SentenceId>), (int)ObservationType.CompletenessSentence)]
 public abstract class Observation : IObservation, IEquatable<Observation>
 {
-    private static readonly DateTimeOffset s_minTime = new(2000, 1, 1, 0, 0, 0, TimeSpan.Zero);
-    private const int TimeToleranceSeconds = 60;
+    public static readonly DateTimeOffset MinimumObservationTime = new(2000, 1, 1, 0, 0, 0, TimeSpan.Zero);
+    internal const int TimeToleranceSeconds = 60;
 
     private ulong? _measurementHashCode;
 
@@ -63,7 +64,7 @@ public abstract class Observation : IObservation, IEquatable<Observation>
         Guard.IsNotDefault(id);
         Guard.IsNotDefault(measureId);
         ArgumentNullException.ThrowIfNull(timeProvider);
-        Guard.IsInRange(time, s_minTime, timeProvider.GetUtcNow().AddSeconds(TimeToleranceSeconds));
+        Guard.IsInRange(time, MinimumObservationTime, timeProvider.GetUtcNow().AddSeconds(TimeToleranceSeconds));
 
         Id = id;
         Time = time;
@@ -127,6 +128,11 @@ public abstract class Observation : IObservation, IEquatable<Observation>
     public override int GetHashCode()
     {
         return HashCode.Combine(Id, Time, MeasureId);
+    }
+
+    public override string ToString()
+    {
+        return $"{{ id: {Id}, time: {Time:u}, measure: {MeasureId} }}";
     }
 
     /// <summary>
@@ -227,12 +233,19 @@ public sealed class Observation<TValue>
     /// <param name="measureId"></param>
     /// <param name="value"></param>
     [JsonConstructor]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public Observation(ObservationId id, DateTimeOffset time, MeasureId measureId, TValue value)
-        : this(id, time, measureId, value, TimeProvider.System)
+        : base(id, time, measureId, TimeProvider.System)
     {
+        Value = value;
     }
 
-    internal Observation(ObservationId id, DateTimeOffset time, MeasureId measureId, TValue value, TimeProvider timeProvider)
+    internal Observation(
+        ObservationId id,
+        DateTimeOffset time,
+        MeasureId measureId,
+        TValue value,
+        TimeProvider timeProvider)
         : base(id, time, measureId, timeProvider)
     {
         Value = value;
@@ -264,6 +277,11 @@ public sealed class Observation<TValue>
         return HashCode.Combine(Value, base.GetHashCode());
     }
 
+    public override string ToString()
+    {
+        return $"{{ id: {Id}, time: {Time:u}, measure: {MeasureId}, value: {Value} }}";
+    }
+
     static Observation<TValue> IObservationFactory<Observation<TValue>, TValue>.Create(
         IMeasure<TValue> measure,
         TValue value,
@@ -290,7 +308,8 @@ public sealed class Observation<TValue, TParam>
         IMeasure measure,
         TParam parameter,
         TValue value,
-        TimeProvider timeProvider) : base(measure, timeProvider)
+        TimeProvider timeProvider)
+        : base(measure, timeProvider)
     {
         Parameter = parameter;
         Value = value;
@@ -305,14 +324,17 @@ public sealed class Observation<TValue, TParam>
     /// <param name="parameter"></param>
     /// <param name="value"></param>
     [JsonConstructor]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public Observation(
         ObservationId id,
         DateTimeOffset time,
         MeasureId measureId,
         TParam parameter,
         TValue value)
-        : this(id, time, measureId, parameter, value, TimeProvider.System)
+        : base(id, time, measureId, TimeProvider.System)
     {
+        Parameter = parameter;
+        Value = value;
     }
 
     internal Observation(
@@ -357,6 +379,11 @@ public sealed class Observation<TValue, TParam>
     public override int GetHashCode()
     {
         return HashCode.Combine(Value, base.GetHashCode());
+    }
+
+    public override string ToString()
+    {
+        return $"{{ id: {Id}, time: {Time:u}, measure: {MeasureId}, parameter: {Parameter}, value: {Value} }}";
     }
 
     /// <inheritdoc />

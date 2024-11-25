@@ -1,6 +1,12 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Runtime.CompilerServices;
+namespace DSE.Open.Observations;
 
-[assembly: InternalsVisibleTo("DSE.Open.Observations.Tests")]
+public interface ISnapshot<TObs>
+    where TObs : IObservation
+{
+    TObs Observation { get; }
+
+    DateTimeOffset Time { get; }
+}
