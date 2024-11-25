@@ -4,6 +4,7 @@
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection.Metadata.Ecma335;
+using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 using DSE.Open.Hashing;
 using DSE.Open.Language;
@@ -36,7 +37,7 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
     public static readonly DateTimeOffset MinimumObservationTime = new(2000, 1, 1, 0, 0, 0, TimeSpan.Zero);
     internal const int TimeToleranceSeconds = 60;
 
-    private ulong? _measurementHashCode;
+    private int? _measurementHashCode;
 
     /// <summary>
     /// Initializes a new observation instance.
@@ -103,14 +104,14 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
     /// For an observation with no paramaters, this is simply a repeatable hash of the <see cref="MeasureId"/>.
     /// <para>For observations with parameters, the hash should incorporate parameters with the measure id.</para>
     /// </remarks>
-    public ulong GetMeasurementHashCode()
+    public int GetMeasurementHashCode()
     {
         return _measurementHashCode ??= GetMeasurementHashCodeCore();
     }
 
-    protected virtual ulong GetMeasurementHashCodeCore()
+    protected virtual int GetMeasurementHashCodeCore()
     {
-        return MeasureId.GetRepeatableHashCode();
+        return HashCode.Combine(MeasureId);
     }
 
     public virtual bool Equals([NotNullWhen(true)] Observation? other)
@@ -424,18 +425,9 @@ public sealed class Observation<TValue, TParam>
     }
 
     /// <inheritdoc />
-    protected override ulong GetMeasurementHashCodeCore()
+    protected override int GetMeasurementHashCodeCore()
     {
-        if (!RepeatableHash64Provider.Default.TryGetRepeatableHashCode(Parameter, out var parameterHash))
-        {
-            ThrowHelper.ThrowInvalidOperationException(
-                $"The {typeof(TParam).Name} type does not support repeatable hashing.");
-            return 0u;
-        }
-
-        var measure = base.GetMeasurementHashCodeCore();
-
-        return RepeatableHash64Provider.Default.CombineHashCodes(measure, parameterHash);
+        return HashCode.Combine(base.GetMeasurementHashCodeCore, Parameter);
     }
 
     static Observation<TValue, TParam> IObservationFactory<Observation<TValue, TParam>, TValue, TParam>.Create(

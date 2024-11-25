@@ -6,6 +6,8 @@ namespace DSE.Open.Observations;
 public interface ISnapshot
 {
     DateTimeOffset Time { get; }
+
+    int GetMeasurementHashCode();
 }
 
 public interface ISnapshot<TObs> : ISnapshot

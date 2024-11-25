@@ -41,6 +41,8 @@ public abstract class Snapshot : IEquatable<Snapshot>, ISnapshot
     {
         return HashCode.Combine(Time);
     }
+
+    public abstract int GetMeasurementHashCode();
 }
 
 public sealed class Snapshot<TObs> : Snapshot, IEquatable<Snapshot<TObs>>, ISnapshot<TObs>
@@ -87,6 +89,11 @@ public sealed class Snapshot<TObs> : Snapshot, IEquatable<Snapshot<TObs>>, ISnap
     public override int GetHashCode()
     {
         return HashCode.Combine(Observation, Time);
+    }
+
+    public override int GetMeasurementHashCode()
+    {
+        return Observation.GetMeasurementHashCode();
     }
 
     public override string ToString()

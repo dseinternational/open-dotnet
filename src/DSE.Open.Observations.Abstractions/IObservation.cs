@@ -11,7 +11,7 @@ public interface IObservation
 
     DateTimeOffset Time { get; }
 
-    ulong GetMeasurementHashCode();
+    int GetMeasurementHashCode();
 }
 
 public interface IObservation<TValue> : IObservation
