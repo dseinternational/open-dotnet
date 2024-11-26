@@ -180,7 +180,7 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
         TParam parameter,
         TValue value)
         where TValue : struct, IEquatable<TValue>, IObservationValue
-        where TParam : IEquatable<TParam>
+        where TParam : struct, IEquatable<TParam>
     {
         return Create(measure, parameter, value, TimeProvider.System);
     }
@@ -201,7 +201,7 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
         TValue value,
         TimeProvider timeProvider)
         where TValue : struct, IEquatable<TValue>, IObservationValue
-        where TParam : IEquatable<TParam>
+        where TParam : struct, IEquatable<TParam>
     {
         return new Observation<TValue, TParam>(measure, parameter, value, timeProvider);
     }
@@ -323,7 +323,7 @@ public sealed class Observation<TValue, TParam>
       IObservationFactory<Observation<TValue, TParam>, TValue, TParam>,
       IEquatable<Observation<TValue, TParam>>
     where TValue : struct, IEquatable<TValue>, IObservationValue
-    where TParam : IEquatable<TParam>
+    where TParam : struct, IEquatable<TParam>
 {
     internal Observation(
         IMeasure measure,

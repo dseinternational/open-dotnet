@@ -22,7 +22,7 @@ public interface IObservation<out TValue> : IObservation
 
 public interface IObservation<out TValue, out TParam> : IObservation
     where TValue : struct, IEquatable<TValue>, IObservationValue
-    where TParam : IEquatable<TParam>
+    where TParam : struct, IEquatable<TParam>
 {
     TParam Parameter { get; }
 

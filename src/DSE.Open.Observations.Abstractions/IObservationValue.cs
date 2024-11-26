@@ -93,6 +93,6 @@ public interface IObservationValue
     public static T ThrowValueMismatchException<T>()
     {
         throw new ValueTypeMismatchException(
-            "The value provider does not provide the requested value type.");
+            "The observation value does not support the requested value type.");
     }
 }

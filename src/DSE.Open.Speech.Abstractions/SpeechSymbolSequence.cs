@@ -92,6 +92,11 @@ public readonly struct SpeechSymbolSequence
         return _value.Span;
     }
 
+    public ReadOnlySpan<char> AsCharSpan()
+    {
+        return MemoryMarshal.Cast<SpeechSymbol, char>(_value.Span);
+    }
+
     /// <summary>
     /// Returns the initial sound of this <see cref="SpeechSymbolSequence"/>.
     /// </summary>

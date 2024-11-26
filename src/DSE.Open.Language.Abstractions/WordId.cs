@@ -88,12 +88,12 @@ public readonly partial struct WordId
         return value.ToInt64();
     }
 
-#pragma warning disable CA5394 // Do not use insecure randomness
     public static WordId GetRandomId()
     {
+#pragma warning disable CA5394 // Do not use insecure randomness
         return (WordId)(ulong)Random.Shared.NextInt64((long)LanguageIds.MinIdValue, (long)LanguageIds.MaxIdValue);
-    }
 #pragma warning restore CA5394 // Do not use insecure randomness
+    }
 
     /// <summary>
     /// Gets an id for a word specified by the given meaning id, word and language.

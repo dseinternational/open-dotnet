@@ -76,7 +76,7 @@ public sealed class Measure<TValue> : Measure, IMeasure<TValue>
 
 public sealed class Measure<TValue, TParam> : Measure, IMeasure<TValue, TParam>
     where TValue : struct, IEquatable<TValue>, IObservationValue
-    where TParam : IEquatable<TParam>
+    where TParam : struct, IEquatable<TParam>
 {
     public Measure(Uri uri, MeasurementLevel measurementLevel, string name, string statement)
         : base(uri, measurementLevel, name, statement)

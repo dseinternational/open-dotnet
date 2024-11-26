@@ -21,7 +21,7 @@ public interface IObservationFactory<TSelf, TValue>
 public interface IObservationFactory<TSelf, TValue, TParam>
     where TSelf : IObservation<TValue, TParam>, IObservationFactory<TSelf, TValue, TParam>
     where TValue : struct, IEquatable<TValue>, IObservationValue
-    where TParam : IEquatable<TParam>
+    where TParam : struct, IEquatable<TParam>
 {
     static TSelf Create(IMeasure<TValue, TParam> measure, TParam parameter, TValue value)
     {

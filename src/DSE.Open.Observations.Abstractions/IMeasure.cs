@@ -31,7 +31,7 @@ public interface IMeasure<TValue> : IMeasure
 
 public interface IMeasure<TValue, TParam> : IMeasure
     where TValue : struct, IEquatable<TValue>, IObservationValue
-    where TParam : IEquatable<TParam>
+    where TParam : struct, IEquatable<TParam>
 {
     TObs CreateObservation<TObs>(TParam parameter, TValue value, TimeProvider timeProvider)
         where TObs : IObservation<TValue, TParam>, IObservationFactory<TObs, TValue, TParam>;
