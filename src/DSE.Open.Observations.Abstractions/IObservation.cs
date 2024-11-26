@@ -15,13 +15,13 @@ public interface IObservation
 }
 
 public interface IObservation<out TValue> : IObservation
-    where TValue : struct, IEquatable<TValue>, IValueProvider
+    where TValue : struct, IEquatable<TValue>, IObservationValue
 {
     TValue Value { get; }
 }
 
 public interface IObservation<out TValue, out TParam> : IObservation
-    where TValue : struct, IEquatable<TValue>, IValueProvider
+    where TValue : struct, IEquatable<TValue>, IObservationValue
     where TParam : IEquatable<TParam>
 {
     TParam Parameter { get; }
@@ -32,7 +32,7 @@ public interface IObservation<out TValue, out TParam> : IObservation
 #pragma warning disable CA1005 // Avoid excessive parameters on generic types
 
 public interface IObservation<out TValue, out TParam1, out TParam2> : IObservation
-    where TValue : struct, IEquatable<TValue>, IValueProvider
+    where TValue : struct, IEquatable<TValue>, IObservationValue
     where TParam1 : IEquatable<TParam1>
     where TParam2 : IEquatable<TParam2>
 {

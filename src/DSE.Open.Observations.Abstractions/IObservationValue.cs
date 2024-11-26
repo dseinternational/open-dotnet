@@ -8,7 +8,7 @@ namespace DSE.Open.Observations;
 /// <summary>
 /// Provides the underlying value from an observation value.
 /// </summary>
-public interface IValueProvider
+public interface IObservationValue
 {
     public const ulong MinCount = 0u;
     public const ulong MaxCount = 9007199254740991u;
@@ -25,14 +25,14 @@ public interface IValueProvider
     /// <summary>
     /// Indicates the type of underlying value provided.
     /// </summary>
-    ValueType ValueType { get; }
+    ObservationValueType ValueType { get; }
 
     /// <summary>
     /// Gets a binary value.
     /// </summary>
     /// <returns>A <see cref="Boolean"/> value.</returns>
     /// <exception cref="ValueTypeMismatchException"><see cref="ValueType"/> is not
-    /// <see cref="ValueType.Binary"/>.</exception>
+    /// <see cref="ObservationValueType.Binary"/>.</exception>
     bool GetBinary();
 
     /// <summary>
@@ -42,7 +42,7 @@ public interface IValueProvider
     /// A <see cref="Byte"/> value representing a value on an ordinal scale.
     /// </returns>
     /// <exception cref="ValueTypeMismatchException"><see cref="ValueType"/> is not
-    /// <see cref="ValueType.Ordinal"/>.</exception>
+    /// <see cref="ObservationValueType.Ordinal"/>.</exception>
     byte GetOrdinal();
 
     /// <summary>
@@ -53,7 +53,7 @@ public interface IValueProvider
     /// <see cref="MaxCount"/>.
     /// </returns>
     /// <exception cref="ValueTypeMismatchException"><see cref="ValueType"/> is not
-    /// <see cref="ValueType.Count"/>.</exception>
+    /// <see cref="ObservationValueType.Count"/>.</exception>
     ulong GetCount();
 
     /// <summary>
@@ -64,7 +64,7 @@ public interface IValueProvider
     /// <see cref="MaxAmount"/>.
     /// </returns>
     /// <exception cref="ValueTypeMismatchException"><see cref="ValueType"/> is not
-    /// <see cref="ValueType.Amount"/>.</exception>
+    /// <see cref="ObservationValueType.Amount"/>.</exception>
     decimal GetAmount();
 
     /// <summary>
@@ -75,7 +75,7 @@ public interface IValueProvider
     /// <see cref="MaxRatio"/>.
     /// </returns>
     /// <exception cref="ValueTypeMismatchException"><see cref="ValueType"/> is not
-    /// <see cref="ValueType.Ratio"/>.</exception>
+    /// <see cref="ObservationValueType.Ratio"/>.</exception>
     decimal GetRatio();
 
     /// <summary>
@@ -86,7 +86,7 @@ public interface IValueProvider
     /// <see cref="MaxFrequency"/>.
     /// </returns>
     /// <exception cref="ValueTypeMismatchException"><see cref="ValueType"/> is not
-    /// <see cref="ValueType.Frequency"/>.</exception>
+    /// <see cref="ObservationValueType.Frequency"/>.</exception>
     decimal GetFrequency();
 
     [DoesNotReturn]

@@ -19,7 +19,7 @@ public readonly partial struct Ratio
     : IDivisibleValue<Ratio, decimal>,
       IUtf8SpanSerializable<Ratio>,
       IRepeatableHash64,
-      IValueProvider
+      IObservationValue
 {
     public static int MaxSerializedCharLength => 128; // TODO
 
@@ -27,7 +27,7 @@ public readonly partial struct Ratio
 
     public static Ratio Zero { get; } = new(0);
 
-    public Observations.ValueType ValueType => Observations.ValueType.Ratio;
+    public Observations.ObservationValueType ValueType => Observations.ObservationValueType.Ratio;
 
     public Ratio(decimal value) : this(value, false) { }
 
@@ -56,24 +56,24 @@ public readonly partial struct Ratio
         return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);
     }
 
-    bool IValueProvider.GetBinary()
+    bool IObservationValue.GetBinary()
     {
-        return IValueProvider.ThrowValueMismatchException<bool>();
+        return IObservationValue.ThrowValueMismatchException<bool>();
     }
 
-    byte IValueProvider.GetOrdinal()
+    byte IObservationValue.GetOrdinal()
     {
-        return IValueProvider.ThrowValueMismatchException<byte>();
+        return IObservationValue.ThrowValueMismatchException<byte>();
     }
 
-    ulong IValueProvider.GetCount()
+    ulong IObservationValue.GetCount()
     {
-        return IValueProvider.ThrowValueMismatchException<ulong>();
+        return IObservationValue.ThrowValueMismatchException<ulong>();
     }
 
-    decimal IValueProvider.GetAmount()
+    decimal IObservationValue.GetAmount()
     {
-        return IValueProvider.ThrowValueMismatchException<decimal>();
+        return IObservationValue.ThrowValueMismatchException<decimal>();
     }
 
     public decimal GetRatio()
@@ -81,8 +81,8 @@ public readonly partial struct Ratio
         return _value;
     }
 
-    decimal IValueProvider.GetFrequency()
+    decimal IObservationValue.GetFrequency()
     {
-        return IValueProvider.ThrowValueMismatchException<decimal>();
+        return IObservationValue.ThrowValueMismatchException<decimal>();
     }
 }

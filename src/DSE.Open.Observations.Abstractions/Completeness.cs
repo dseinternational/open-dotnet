@@ -19,7 +19,7 @@ public readonly partial struct Completeness
     : IComparableValue<Completeness, byte>,
       IUtf8SpanSerializable<Completeness>,
       IRepeatableHash64,
-      IValueProvider
+      IObservationValue
 {
     private const byte PartialValue = 10;
     private const byte DevelopingValue = 50;
@@ -29,7 +29,7 @@ public readonly partial struct Completeness
 
     public static int MaxSerializedByteLength => 2;
 
-    public ValueType ValueType => ValueType.Ordinal;
+    public ObservationValueType ValueType => ObservationValueType.Ordinal;
 
     public static bool IsValidValue(byte value)
     {
@@ -41,9 +41,9 @@ public readonly partial struct Completeness
         return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);
     }
 
-    bool IValueProvider.GetBinary()
+    bool IObservationValue.GetBinary()
     {
-        return IValueProvider.ThrowValueMismatchException<bool>();
+        return IObservationValue.ThrowValueMismatchException<bool>();
     }
 
     public byte GetOrdinal()
@@ -51,24 +51,24 @@ public readonly partial struct Completeness
         return _value;
     }
 
-    ulong IValueProvider.GetCount()
+    ulong IObservationValue.GetCount()
     {
-        return IValueProvider.ThrowValueMismatchException<ulong>();
+        return IObservationValue.ThrowValueMismatchException<ulong>();
     }
 
-    decimal IValueProvider.GetAmount()
+    decimal IObservationValue.GetAmount()
     {
-        return IValueProvider.ThrowValueMismatchException<decimal>();
+        return IObservationValue.ThrowValueMismatchException<decimal>();
     }
 
-    decimal IValueProvider.GetRatio()
+    decimal IObservationValue.GetRatio()
     {
-        return IValueProvider.ThrowValueMismatchException<decimal>();
+        return IObservationValue.ThrowValueMismatchException<decimal>();
     }
 
-    decimal IValueProvider.GetFrequency()
+    decimal IObservationValue.GetFrequency()
     {
-        return IValueProvider.ThrowValueMismatchException<decimal>();
+        return IObservationValue.ThrowValueMismatchException<decimal>();
     }
 
     public static Completeness Partial => new(PartialValue);

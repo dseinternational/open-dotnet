@@ -19,7 +19,7 @@ public readonly partial struct BehaviorFrequency
     : IComparableValue<BehaviorFrequency, byte>,
       IUtf8SpanSerializable<BehaviorFrequency>,
       IRepeatableHash64,
-      IValueProvider
+      IObservationValue
 {
     private const byte NeverValue = 0;
     private const byte EmergingValue = 10;
@@ -30,7 +30,7 @@ public readonly partial struct BehaviorFrequency
 
     public static int MaxSerializedByteLength => 2;
 
-    public ValueType ValueType => ValueType.Ordinal;
+    public ObservationValueType ValueType => ObservationValueType.Ordinal;
 
     public static bool IsValidValue(byte value)
     {
@@ -42,9 +42,9 @@ public readonly partial struct BehaviorFrequency
         return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);
     }
 
-    bool IValueProvider.GetBinary()
+    bool IObservationValue.GetBinary()
     {
-        return IValueProvider.ThrowValueMismatchException<bool>();
+        return IObservationValue.ThrowValueMismatchException<bool>();
     }
 
     public byte GetOrdinal()
@@ -52,24 +52,24 @@ public readonly partial struct BehaviorFrequency
         return _value;
     }
 
-    ulong IValueProvider.GetCount()
+    ulong IObservationValue.GetCount()
     {
-        return IValueProvider.ThrowValueMismatchException<ulong>();
+        return IObservationValue.ThrowValueMismatchException<ulong>();
     }
 
-    decimal IValueProvider.GetAmount()
+    decimal IObservationValue.GetAmount()
     {
-        return IValueProvider.ThrowValueMismatchException<decimal>();
+        return IObservationValue.ThrowValueMismatchException<decimal>();
     }
 
-    decimal IValueProvider.GetRatio()
+    decimal IObservationValue.GetRatio()
     {
-        return IValueProvider.ThrowValueMismatchException<decimal>();
+        return IObservationValue.ThrowValueMismatchException<decimal>();
     }
 
-    decimal IValueProvider.GetFrequency()
+    decimal IObservationValue.GetFrequency()
     {
-        return IValueProvider.ThrowValueMismatchException<decimal>();
+        return IObservationValue.ThrowValueMismatchException<decimal>();
     }
 
     public static BehaviorFrequency Never => new(NeverValue);

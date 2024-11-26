@@ -19,7 +19,7 @@ public readonly partial struct Amount
     : IDivisibleValue<Amount, decimal>,
       IUtf8SpanSerializable<Amount>,
       IRepeatableHash64,
-      IValueProvider
+      IObservationValue
 {
     public static int MaxSerializedCharLength => 32;
 
@@ -31,7 +31,7 @@ public readonly partial struct Amount
 
     public Amount(Half value) : this((decimal)value) { }
 
-    public Observations.ValueType ValueType => Observations.ValueType.Amount;
+    public Observations.ObservationValueType ValueType => Observations.ObservationValueType.Amount;
 
     public static bool IsValidValue(decimal value)
     {
@@ -43,33 +43,33 @@ public readonly partial struct Amount
         return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);
     }
 
-    bool IValueProvider.GetBinary()
+    bool IObservationValue.GetBinary()
     {
-        return IValueProvider.ThrowValueMismatchException<bool>();
+        return IObservationValue.ThrowValueMismatchException<bool>();
     }
 
-    byte IValueProvider.GetOrdinal()
+    byte IObservationValue.GetOrdinal()
     {
-        return IValueProvider.ThrowValueMismatchException<byte>();
+        return IObservationValue.ThrowValueMismatchException<byte>();
     }
 
     public ulong GetCount()
     {
-        return IValueProvider.ThrowValueMismatchException<ulong>();
+        return IObservationValue.ThrowValueMismatchException<ulong>();
     }
 
-    decimal IValueProvider.GetAmount()
+    decimal IObservationValue.GetAmount()
     {
         return _value;
     }
 
-    decimal IValueProvider.GetRatio()
+    decimal IObservationValue.GetRatio()
     {
-        return IValueProvider.ThrowValueMismatchException<decimal>();
+        return IObservationValue.ThrowValueMismatchException<decimal>();
     }
 
-    decimal IValueProvider.GetFrequency()
+    decimal IObservationValue.GetFrequency()
     {
-        return IValueProvider.ThrowValueMismatchException<decimal>();
+        return IObservationValue.ThrowValueMismatchException<decimal>();
     }
 }

@@ -144,7 +144,7 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
     public static Observation<TValue> Create<TValue>(
         IMeasure<TValue> measure,
         TValue value)
-        where TValue : struct, IEquatable<TValue>, IValueProvider
+        where TValue : struct, IEquatable<TValue>, IObservationValue
     {
         return Create(measure, value, TimeProvider.System);
     }
@@ -161,7 +161,7 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
         IMeasure<TValue> measure,
         TValue value,
         TimeProvider timeProvider)
-        where TValue : struct, IEquatable<TValue>, IValueProvider
+        where TValue : struct, IEquatable<TValue>, IObservationValue
     {
         return new Observation<TValue>(measure, value, timeProvider);
     }
@@ -179,7 +179,7 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
         IMeasure<TValue, TParam> measure,
         TParam parameter,
         TValue value)
-        where TValue : struct, IEquatable<TValue>, IValueProvider
+        where TValue : struct, IEquatable<TValue>, IObservationValue
         where TParam : IEquatable<TParam>
     {
         return Create(measure, parameter, value, TimeProvider.System);
@@ -200,7 +200,7 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
         TParam parameter,
         TValue value,
         TimeProvider timeProvider)
-        where TValue : struct, IEquatable<TValue>, IValueProvider
+        where TValue : struct, IEquatable<TValue>, IObservationValue
         where TParam : IEquatable<TParam>
     {
         return new Observation<TValue, TParam>(measure, parameter, value, timeProvider);
@@ -224,7 +224,7 @@ public sealed class Observation<TValue>
       IObservation<TValue>,
       IObservationFactory<Observation<TValue>, TValue>,
       IEquatable<Observation<TValue>>
-    where TValue : struct, IEquatable<TValue>, IValueProvider
+    where TValue : struct, IEquatable<TValue>, IObservationValue
 {
     public Observation(IMeasure measure, TValue value, TimeProvider timeProvider)
         : base(measure, timeProvider)
@@ -322,7 +322,7 @@ public sealed class Observation<TValue, TParam>
       IObservation<TValue, TParam>,
       IObservationFactory<Observation<TValue, TParam>, TValue, TParam>,
       IEquatable<Observation<TValue, TParam>>
-    where TValue : struct, IEquatable<TValue>, IValueProvider
+    where TValue : struct, IEquatable<TValue>, IObservationValue
     where TParam : IEquatable<TParam>
 {
     internal Observation(

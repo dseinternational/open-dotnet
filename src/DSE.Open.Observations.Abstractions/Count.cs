@@ -19,7 +19,7 @@ public readonly partial struct Count
     : IDivisibleValue<Count, ulong>,
       IUtf8SpanSerializable<Count>,
       IRepeatableHash64,
-      IValueProvider
+      IObservationValue
 {
     public const ulong MaxValue = NumberHelper.MaxJsonSafeInteger;
 
@@ -29,7 +29,7 @@ public readonly partial struct Count
 
     public static Count Zero { get; } = new(0);
 
-    public Observations.ValueType ValueType => Observations.ValueType.Count;
+    public Observations.ObservationValueType ValueType => Observations.ObservationValueType.Count;
 
     public Count(ulong value) : this(value, false) { }
 
@@ -112,14 +112,14 @@ public readonly partial struct Count
         return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);
     }
 
-    bool IValueProvider.GetBinary()
+    bool IObservationValue.GetBinary()
     {
-        return IValueProvider.ThrowValueMismatchException<bool>();
+        return IObservationValue.ThrowValueMismatchException<bool>();
     }
 
-    byte IValueProvider.GetOrdinal()
+    byte IObservationValue.GetOrdinal()
     {
-        return IValueProvider.ThrowValueMismatchException<byte>();
+        return IObservationValue.ThrowValueMismatchException<byte>();
     }
 
     public ulong GetCount()
@@ -127,19 +127,19 @@ public readonly partial struct Count
         return _value;
     }
 
-    decimal IValueProvider.GetAmount()
+    decimal IObservationValue.GetAmount()
     {
-        return IValueProvider.ThrowValueMismatchException<decimal>();
+        return IObservationValue.ThrowValueMismatchException<decimal>();
     }
 
-    decimal IValueProvider.GetRatio()
+    decimal IObservationValue.GetRatio()
     {
-        return IValueProvider.ThrowValueMismatchException<decimal>();
+        return IObservationValue.ThrowValueMismatchException<decimal>();
     }
 
-    decimal IValueProvider.GetFrequency()
+    decimal IObservationValue.GetFrequency()
     {
-        return IValueProvider.ThrowValueMismatchException<decimal>();
+        return IObservationValue.ThrowValueMismatchException<decimal>();
     }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates

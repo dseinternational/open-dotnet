@@ -8,7 +8,7 @@ namespace DSE.Open.Observations;
 
 public interface IObservationFactory<TSelf, TValue>
     where TSelf : IObservation<TValue>, IObservationFactory<TSelf, TValue>
-    where TValue : struct, IEquatable<TValue>, IValueProvider
+    where TValue : struct, IEquatable<TValue>, IObservationValue
 {
     static TSelf Create(IMeasure<TValue> measure, TValue value)
     {
@@ -20,7 +20,7 @@ public interface IObservationFactory<TSelf, TValue>
 
 public interface IObservationFactory<TSelf, TValue, TParam>
     where TSelf : IObservation<TValue, TParam>, IObservationFactory<TSelf, TValue, TParam>
-    where TValue : struct, IEquatable<TValue>, IValueProvider
+    where TValue : struct, IEquatable<TValue>, IObservationValue
     where TParam : IEquatable<TParam>
 {
     static TSelf Create(IMeasure<TValue, TParam> measure, TParam parameter, TValue value)

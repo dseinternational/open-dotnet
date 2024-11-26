@@ -7,7 +7,7 @@ public static class MeasureExtensions
 {
     public static TObs CreateObservation<TObs, TValue>(this IMeasure<TValue> measure, TValue value)
         where TObs : IObservation<TValue>, IObservationFactory<TObs, TValue>
-        where TValue : struct, IEquatable<TValue>, IValueProvider
+        where TValue : struct, IEquatable<TValue>, IObservationValue
     {
         ArgumentNullException.ThrowIfNull(measure);
         return measure.CreateObservation<TObs>(value, TimeProvider.System);
@@ -15,7 +15,7 @@ public static class MeasureExtensions
 
     public static TObs CreateObservation<TObs, TValue, TParam>(this IMeasure<TValue, TParam> measure, TValue value, TParam parameter)
         where TObs : IObservation<TValue, TParam>, IObservationFactory<TObs, TValue, TParam>
-        where TValue : struct, IEquatable<TValue>, IValueProvider
+        where TValue : struct, IEquatable<TValue>, IObservationValue
         where TParam : IEquatable<TParam>
     {
         ArgumentNullException.ThrowIfNull(measure);

@@ -3,7 +3,7 @@
 
 namespace DSE.Open.Observations;
 
-public enum ValueType
+public enum ObservationValueType
 {
     /// <summary>
     /// A binary value.

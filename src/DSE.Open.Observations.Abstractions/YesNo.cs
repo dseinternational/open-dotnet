@@ -19,13 +19,13 @@ public readonly partial struct YesNo
     : IEquatableValue<YesNo, AsciiString>,
       IUtf8SpanSerializable<YesNo>,
       IRepeatableHash64,
-      IValueProvider
+      IObservationValue
 {
     public static int MaxSerializedCharLength => 3;
 
     public static int MaxSerializedByteLength => 3;
 
-    public ValueType ValueType => ValueType.Binary;
+    public ObservationValueType ValueType => ObservationValueType.Binary;
 
     public static bool IsValidValue(AsciiString value)
     {
@@ -56,29 +56,29 @@ public readonly partial struct YesNo
         return ToBoolean();
     }
 
-    byte IValueProvider.GetOrdinal()
+    byte IObservationValue.GetOrdinal()
     {
-        return IValueProvider.ThrowValueMismatchException<byte>();
+        return IObservationValue.ThrowValueMismatchException<byte>();
     }
 
-    ulong IValueProvider.GetCount()
+    ulong IObservationValue.GetCount()
     {
-        return IValueProvider.ThrowValueMismatchException<ulong>();
+        return IObservationValue.ThrowValueMismatchException<ulong>();
     }
 
-    decimal IValueProvider.GetAmount()
+    decimal IObservationValue.GetAmount()
     {
-        return IValueProvider.ThrowValueMismatchException<decimal>();
+        return IObservationValue.ThrowValueMismatchException<decimal>();
     }
 
-    decimal IValueProvider.GetRatio()
+    decimal IObservationValue.GetRatio()
     {
-        return IValueProvider.ThrowValueMismatchException<decimal>();
+        return IObservationValue.ThrowValueMismatchException<decimal>();
     }
 
-    decimal IValueProvider.GetFrequency()
+    decimal IObservationValue.GetFrequency()
     {
-        return IValueProvider.ThrowValueMismatchException<decimal>();
+        return IObservationValue.ThrowValueMismatchException<decimal>();
     }
 
     public static implicit operator bool(YesNo value)
