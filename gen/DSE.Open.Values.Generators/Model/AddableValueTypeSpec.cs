@@ -18,4 +18,6 @@ internal class AddableValueTypeSpec : ComparableValueTypeSpec
     public bool EmitUnaryPlusOperator { get; set; } = true;
 
     public bool EmitUnaryNegationOperator { get; set; } = true;
+
+    public bool ImplementUnaryNegationOperator { get; set; } = true;
 }

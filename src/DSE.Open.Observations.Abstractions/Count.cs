@@ -4,6 +4,7 @@
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using DSE.Open.Hashing;
+using DSE.Open.Observations;
 using DSE.Open.Values.Text.Json.Serialization;
 
 namespace DSE.Open.Values;
@@ -12,11 +13,15 @@ namespace DSE.Open.Values;
 /// A (non-negative) count.
 /// </summary>
 [DivisibleValue]
-[JsonConverter(typeof(JsonInt64ValueConverter<Count>))]
+[JsonConverter(typeof(JsonUInt64ValueConverter<Count>))]
 [StructLayout(LayoutKind.Sequential)]
-public readonly partial struct Count : IDivisibleValue<Count, long>, IUtf8SpanSerializable<Count>, IRepeatableHash64
+public readonly partial struct Count
+    : IDivisibleValue<Count, ulong>,
+      IUtf8SpanSerializable<Count>,
+      IRepeatableHash64,
+      IValueProvider
 {
-    public const long MaxValue = NumberHelper.MaxJsonSafeInteger;
+    public const ulong MaxValue = NumberHelper.MaxJsonSafeInteger;
 
     public static int MaxSerializedCharLength => 10;
 
@@ -24,15 +29,11 @@ public readonly partial struct Count : IDivisibleValue<Count, long>, IUtf8SpanSe
 
     public static Count Zero { get; } = new(0);
 
-    public Count(long value) : this(value, false) { }
+    public Observations.ValueType ValueType => Observations.ValueType.Count;
 
     public Count(ulong value) : this(value, false) { }
 
-    public Count(int value) : this(value, false) { }
-
     public Count(uint value) : this(value, true) { }
-
-    public Count(short value) : this(value, false) { }
 
     public Count(ushort value) : this(value, true) { }
 
@@ -43,20 +44,20 @@ public readonly partial struct Count : IDivisibleValue<Count, long>, IUtf8SpanSe
             EnsureIsValidValue(value);
         }
 
-        _value = (long)value;
+        _value = value;
     }
 
     public static bool IsValidValue(long value)
     {
-        return value >= Zero._value && value <= MaxValue;
+        return value >= (long)Zero._value && value <= (long)MaxValue;
     }
 
     public static bool IsValidValue(ulong value)
     {
-        return value >= (ulong)Zero._value && value <= MaxValue;
+        return value >= Zero._value && value <= MaxValue;
     }
 
-    private static void EnsureIsValidValue(ulong value)
+    private static void EnsureIsValidValue(long value)
     {
         if (!IsValidValue(value))
         {
@@ -65,11 +66,11 @@ public readonly partial struct Count : IDivisibleValue<Count, long>, IUtf8SpanSe
         }
     }
 
-    public static bool TryFromValue(ulong value, out Count result)
+    public static bool TryFromValue(long value, out Count result)
     {
         if (IsValidValue(value))
         {
-            result = new Count(value, true);
+            result = new Count((ulong)value, true);
             return true;
         }
 
@@ -77,17 +78,17 @@ public readonly partial struct Count : IDivisibleValue<Count, long>, IUtf8SpanSe
         return false;
     }
 
-    public static Count FromValue(ulong value)
+    public static Count FromValue(long value)
     {
         EnsureIsValidValue(value);
-        return new(value, true);
+        return new((ulong)value, true);
     }
 
     public static bool TryFromValue(int value, out Count result)
     {
         if (IsValidValue(value))
         {
-            result = new Count(value, true);
+            result = new Count((ulong)value, true);
             return true;
         }
 
@@ -97,8 +98,8 @@ public readonly partial struct Count : IDivisibleValue<Count, long>, IUtf8SpanSe
 
     public static Count FromValue(int value)
     {
-        EnsureIsValidValue(value);
-        return new(value, true);
+        EnsureIsValidValue((ulong)value);
+        return new((ulong)value, true);
     }
 
     public static Count FromValue(uint value)
@@ -111,16 +112,46 @@ public readonly partial struct Count : IDivisibleValue<Count, long>, IUtf8SpanSe
         return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);
     }
 
+    bool IValueProvider.GetBinary()
+    {
+        return IValueProvider.ThrowValueMismatchException<bool>();
+    }
+
+    byte IValueProvider.GetOrdinal()
+    {
+        return IValueProvider.ThrowValueMismatchException<byte>();
+    }
+
+    public ulong GetCount()
+    {
+        return _value;
+    }
+
+    decimal IValueProvider.GetAmount()
+    {
+        return IValueProvider.ThrowValueMismatchException<decimal>();
+    }
+
+    decimal IValueProvider.GetRatio()
+    {
+        return IValueProvider.ThrowValueMismatchException<decimal>();
+    }
+
+    decimal IValueProvider.GetFrequency()
+    {
+        return IValueProvider.ThrowValueMismatchException<decimal>();
+    }
+
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
-    public static explicit operator Count(ulong value)
+    public static explicit operator Count(long value)
     {
         return FromValue(value);
     }
 
-    public static implicit operator ulong(Count value)
+    public static implicit operator long(Count value)
     {
-        return (ulong)value._value;
+        return (long)value._value;
     }
 
     public static explicit operator Count(int value)

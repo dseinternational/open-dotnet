@@ -10,37 +10,27 @@ using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace DSE.Open.Observations;
+namespace DSE.Open.Values;
 
-[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<Completeness, Byte>))]
-public readonly partial struct Completeness
+[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<Count, UInt64>))]
+public readonly partial struct Count
 {
-    private readonly Byte _value;
+    private readonly UInt64 _value;
 
-    private Completeness(Byte value, bool skipValidation = false)
-    {
-        if (!skipValidation)
-        {
-            EnsureIsValidValue(value);
-        }
-
-        _value = value;
-    }
-
-    private static void EnsureIsValidValue(Byte value)
+    private static void EnsureIsValidValue(UInt64 value)
     {
         if (!IsValidValue(value))
         {
             throw new ArgumentOutOfRangeException(nameof(value), value,
-                $"'{value}' is not a valid {nameof(Completeness)} value");
+                $"'{value}' is not a valid {nameof(Count)} value");
         }
     }
 
-    public static bool TryFromValue(Byte value, out Completeness result)
+    public static bool TryFromValue(UInt64 value, out Count result)
     {
         if (IsValidValue(value))
         {
-            result = new Completeness(value, true);
+            result = new Count(value, true);
             return true;
         }
     
@@ -48,39 +38,39 @@ public readonly partial struct Completeness
         return false;
     }
 
-    public static Completeness FromValue(Byte value)
+    public static Count FromValue(UInt64 value)
     {
         EnsureIsValidValue(value);
         return new(value, true);
     }
 
-    public static explicit operator Completeness(Byte value)
+    public static explicit operator Count(UInt64 value)
         => FromValue(value);
 
-    static Byte global::DSE.Open.IConvertibleTo<Completeness, Byte>.ConvertTo(Completeness value)
-        => (Byte)value;
+    static UInt64 global::DSE.Open.IConvertibleTo<Count, UInt64>.ConvertTo(Count value)
+        => (UInt64)value;
 
-    public static implicit operator Byte(Completeness value)
+    public static implicit operator UInt64(Count value)
     {
         return value._value;
     }
 
     // IEquatable<T>
 
-    public bool Equals(Completeness other) => _value.Equals(other._value);
+    public bool Equals(Count other) => _value.Equals(other._value);
 
-    public override bool Equals(object? obj) => obj is Completeness other && Equals(other);
+    public override bool Equals(object? obj) => obj is Count other && Equals(other);
 
     public override int GetHashCode()
     {
         return _value.GetHashCode();
     }
 
-    // IEqualityOperators<Completeness, Completeness, bool>
+    // IEqualityOperators<Count, Count, bool>
 
-    public static bool operator ==(Completeness left, Completeness right) => left.Equals(right);
+    public static bool operator ==(Count left, Count right) => left.Equals(right);
     
-    public static bool operator !=(Completeness left, Completeness right) => !(left == right);
+    public static bool operator !=(Count left, Count right) => !(left == right);
 
     // ISpanFormattable
 
@@ -110,7 +100,7 @@ public readonly partial struct Completeness
         => TryFormatInvariant(destination, out charsWritten, default);
 
     /// <summary>
-    /// Gets a representation of the <see cref="Completeness"/> value as a string with formatting options.
+    /// Gets a representation of the <see cref="Count"/> value as a string with formatting options.
     /// </summary>
     [SkipLocalsInit]
     public string ToString(string? format, IFormatProvider? formatProvider)
@@ -129,55 +119,55 @@ public readonly partial struct Completeness
     }
 
     /// <summary>
-    /// Gets a representation of the Completeness value as a string with default formatting options.
+    /// Gets a representation of the Count value as a string with default formatting options.
     /// </summary>
     /// <returns>
-    /// A representation of the Completeness value.
+    /// A representation of the Count value.
     /// </returns>
     public override string ToString()
     {
         return ToString(default, default);
     }
 
-    // ISpanParsable<Completeness>
+    // ISpanParsable<Count>
 
-    public static Completeness Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<Completeness, Byte>(s, provider);
+    public static Count Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<Count, UInt64>(s, provider);
 
-    public static Completeness ParseInvariant(ReadOnlySpan<char> s)
+    public static Count ParseInvariant(ReadOnlySpan<char> s)
         => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
 
     public static bool TryParse(
         ReadOnlySpan<char> s,
         IFormatProvider? provider,
-        out Completeness result)
-        => global::DSE.Open.Values.ValueParser.TryParse<Completeness, Byte>(s, provider, out result);
+        out Count result)
+        => global::DSE.Open.Values.ValueParser.TryParse<Count, UInt64>(s, provider, out result);
 
     public static bool TryParse(
         ReadOnlySpan<char> s,
-        out Completeness result)
+        out Count result)
         => TryParse(s, default, out result);
 
     public static bool TryParseInvariant(
         ReadOnlySpan<char> s,
-        out Completeness result)
+        out Count result)
         => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
 
-    // IParsable<Completeness>
+    // IParsable<Count>
 
-    public static Completeness Parse(string s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<Completeness, Byte>(s, provider);
+    public static Count Parse(string s, IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<Count, UInt64>(s, provider);
 
-    public static Completeness Parse(string s)
+    public static Count Parse(string s)
         => Parse(s, default);
 
-    public static Completeness ParseInvariant(string s)
+    public static Count ParseInvariant(string s)
         => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
 
     public static bool TryParse(
         string? s,
         IFormatProvider? provider,
-        out Completeness result)
+        out Count result)
     {
         if (s is null)
         {
@@ -190,12 +180,12 @@ public readonly partial struct Completeness
 
     public static bool TryParse(
         string? s,
-        out Completeness result)
+        out Count result)
         => TryParse(s, default, out result);
 
     public static bool TryParseInvariant(
         string? s,
-        out Completeness result)
+        out Count result)
         => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
 
     // IUtf8SpanFormattable
@@ -207,33 +197,53 @@ public readonly partial struct Completeness
         IFormatProvider? provider)
         => ((IUtf8SpanFormattable)_value).TryFormat(utf8Destination, out bytesWritten, format, provider);
 
-    // IUtf8SpanParsable<Completeness>
+    // IUtf8SpanParsable<Count>
 
-    public static Completeness Parse(
+    public static Count Parse(
         ReadOnlySpan<byte> utf8Source,
         IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<Completeness, Byte>(utf8Source, provider);
+        => global::DSE.Open.Values.ValueParser.Parse<Count, UInt64>(utf8Source, provider);
 
     public static bool TryParse(
         ReadOnlySpan<byte> utf8Source,
         IFormatProvider? provider,
-        out Completeness result)
-        => global::DSE.Open.Values.ValueParser.TryParse<Completeness, Byte>(utf8Source, provider, out result);
+        out Count result)
+        => global::DSE.Open.Values.ValueParser.TryParse<Count, UInt64>(utf8Source, provider, out result);
 
-    public int CompareTo(Completeness other)
+    public int CompareTo(Count other)
     {
         return _value.CompareTo(other._value);
     }
 
-    // IComparisonOperators<Completeness, Completeness, bool>
+    // IComparisonOperators<Count, Count, bool>
 
-    public static bool operator <(Completeness left, Completeness right) => left.CompareTo(right) < 0;
+    public static bool operator <(Count left, Count right) => left.CompareTo(right) < 0;
     
-    public static bool operator >(Completeness left, Completeness right) => left.CompareTo(right) > 0;
+    public static bool operator >(Count left, Count right) => left.CompareTo(right) > 0;
     
-    public static bool operator <=(Completeness left, Completeness right) => left.CompareTo(right) <= 0;
+    public static bool operator <=(Count left, Count right) => left.CompareTo(right) <= 0;
     
-    public static bool operator >=(Completeness left, Completeness right) => left.CompareTo(right) >= 0;
+    public static bool operator >=(Count left, Count right) => left.CompareTo(right) >= 0;
+
+    // IAdditionOperators<Count, Count, Count>
+
+    public static Count operator +(Count left, Count right) => (Count)(left._value + right._value);
+
+    public static Count operator --(Count value) => (Count)(value._value - 1);
+
+    public static Count operator ++(Count value) => (Count)(value._value + 1);
+
+    public static Count operator -(Count left, Count right) => (Count)(left._value - right._value);
+
+    public static Count operator +(Count value) => (Count)(+value._value);
+
+    public static Count operator -(Count value) => throw new NotImplementedException();
+
+    public static Count operator *(Count left, Count right) => (Count)(left._value * right._value);
+
+    public static Count operator /(Count left, Count right) => (Count)(left._value / right._value);
+
+    public static Count operator %(Count left, Count right) => (Count)(left._value % right._value);
 
 }
 

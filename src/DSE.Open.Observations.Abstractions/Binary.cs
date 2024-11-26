@@ -9,41 +9,38 @@ using DSE.Open.Values.Text.Json.Serialization;
 
 namespace DSE.Open.Observations;
 
-/// <summary>
-/// Represents the selection of a choice between "Yes" and "No".
-/// </summary>
 [EquatableValue]
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<YesNo, AsciiString>))]
 [StructLayout(LayoutKind.Sequential)]
-public readonly partial struct YesNo
-    : IEquatableValue<YesNo, AsciiString>,
-      IUtf8SpanSerializable<YesNo>,
+public readonly partial struct Binary
+    : IEquatableValue<Binary, byte>,
+      IUtf8SpanSerializable<Binary>,
       IRepeatableHash64,
       IValueProvider
 {
-    public static int MaxSerializedCharLength => 3;
+    public static int MaxSerializedCharLength => 1;
 
-    public static int MaxSerializedByteLength => 3;
+    public static int MaxSerializedByteLength => 1;
 
     public ValueType ValueType => ValueType.Binary;
 
-    public static bool IsValidValue(AsciiString value)
+    public static bool IsValidValue(byte value)
     {
-        return value == Yes._value || value == No._value;
+        return value < 2;
     }
 
-    public static readonly YesNo Yes = new((AsciiString)"yes", true);
+    public static readonly Binary True = new(1, true);
 
-    public static readonly YesNo No = new((AsciiString)"no", true);
+    public static readonly Binary False = new(0, true);
 
     public bool ToBoolean()
     {
-        return this == Yes;
+        return _value == 1;
     }
 
-    public static YesNo FromBoolean(bool value)
+    public static Binary FromBoolean(bool value)
     {
-        return value ? Yes : No;
+        return value ? True : False;
     }
 
     public ulong GetRepeatableHashCode()
@@ -81,12 +78,12 @@ public readonly partial struct YesNo
         return IValueProvider.ThrowValueMismatchException<decimal>();
     }
 
-    public static implicit operator bool(YesNo value)
+    public static implicit operator bool(Binary value)
     {
         return value.ToBoolean();
     }
 
-    public static implicit operator YesNo(bool value)
+    public static implicit operator Binary(bool value)
     {
         return FromBoolean(value);
     }

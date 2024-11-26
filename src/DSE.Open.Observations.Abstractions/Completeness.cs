@@ -13,22 +13,25 @@ namespace DSE.Open.Observations;
 /// A rating of completeness.
 /// </summary>
 [ComparableValue]
-[JsonConverter(typeof(JsonUInt32ValueConverter<Completeness>))]
+[JsonConverter(typeof(JsonByteValueConverter<Completeness>))]
 [StructLayout(LayoutKind.Sequential)]
 public readonly partial struct Completeness
-    : IComparableValue<Completeness, uint>,
+    : IComparableValue<Completeness, byte>,
       IUtf8SpanSerializable<Completeness>,
-      IRepeatableHash64
+      IRepeatableHash64,
+      IValueProvider
 {
-    private const uint PartialValue = 10;
-    private const uint DevelopingValue = 50;
-    private const uint CompleteValue = 90;
+    private const byte PartialValue = 10;
+    private const byte DevelopingValue = 50;
+    private const byte CompleteValue = 90;
 
     public static int MaxSerializedCharLength => 2;
 
     public static int MaxSerializedByteLength => 2;
 
-    public static bool IsValidValue(uint value)
+    public ValueType ValueType => ValueType.Ordinal;
+
+    public static bool IsValidValue(byte value)
     {
         return value is PartialValue or DevelopingValue or CompleteValue;
     }
@@ -36,6 +39,36 @@ public readonly partial struct Completeness
     public ulong GetRepeatableHashCode()
     {
         return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);
+    }
+
+    bool IValueProvider.GetBinary()
+    {
+        return IValueProvider.ThrowValueMismatchException<bool>();
+    }
+
+    public byte GetOrdinal()
+    {
+        return _value;
+    }
+
+    ulong IValueProvider.GetCount()
+    {
+        return IValueProvider.ThrowValueMismatchException<ulong>();
+    }
+
+    decimal IValueProvider.GetAmount()
+    {
+        return IValueProvider.ThrowValueMismatchException<decimal>();
+    }
+
+    decimal IValueProvider.GetRatio()
+    {
+        return IValueProvider.ThrowValueMismatchException<decimal>();
+    }
+
+    decimal IValueProvider.GetFrequency()
+    {
+        return IValueProvider.ThrowValueMismatchException<decimal>();
     }
 
     public static Completeness Partial => new(PartialValue);

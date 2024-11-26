@@ -16,7 +16,7 @@ public class SnapshotTests
         timeProvider.SetUtcNow(DateTimeOffset.UtcNow);
 
         var o = Observation.Create(TestMeasures.BinaryMeasure, true);
-        var s = new Snapshot<Observation<bool>>(o, timeProvider);
+        var s = new Snapshot<Observation<Binary>>(o, timeProvider);
 
         var roundedTime = DateTimeOffset.FromUnixTimeMilliseconds(timeProvider.GetUtcNow().ToUnixTimeMilliseconds());
 
@@ -28,11 +28,11 @@ public class SnapshotTests
     public void SerializeDeserialize()
     {
         var o = Observation.Create(TestMeasures.BinarySpeechSoundMeasure, Phonemes.English.ch.Abstraction, false);
-        var s = new Snapshot<Observation<bool, SpeechSound>>(o);
+        var s = new Snapshot<Observation<Binary, SpeechSound>>(o);
 
         var json = JsonSerializer.Serialize(s);
 
-        var s2 = JsonSerializer.Deserialize<Snapshot<Observation<bool, SpeechSound>>>(json);
+        var s2 = JsonSerializer.Deserialize<Snapshot<Observation<Binary, SpeechSound>>>(json);
 
         Assert.Equal(s, s2);
     }

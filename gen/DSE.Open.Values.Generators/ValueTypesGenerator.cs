@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Collections.Immutable;
+using System.Diagnostics;
 using DSE.Open.Values.Generators.Extensions;
 using DSE.Open.Values.Generators.Model;
 using Microsoft.CodeAnalysis;
@@ -567,6 +568,14 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
 
             ct.ThrowIfCancellationRequested();
 
+            var isUnsignedInteger = containedTypeSymbol.SpecialType is
+                SpecialType.System_Byte
+                or SpecialType.System_UInt16
+                or SpecialType.System_UInt32
+                or SpecialType.System_UInt64;
+
+            Debugger.Break();
+
             var spec = valueTypeKind switch
             {
                 ValueTypeKind.Equatable => new EquatableValueTypeSpec
@@ -578,7 +587,8 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
                 },
                 ValueTypeKind.Addable => new AddableValueTypeSpec
                 {
-                    EmitCompareToMethod = emitCompareToMethod
+                    EmitCompareToMethod = emitCompareToMethod,
+                    ImplementUnaryNegationOperator = !isUnsignedInteger,
                 },
                 ValueTypeKind.Divisible => new DivisibleValueTypeGenerationSpec
                 {

@@ -13,23 +13,26 @@ namespace DSE.Open.Observations;
 /// A rating of the frequency of an emerging behavior.
 /// </summary>
 [ComparableValue]
-[JsonConverter(typeof(JsonUInt32ValueConverter<BehaviorFrequency>))]
+[JsonConverter(typeof(JsonByteValueConverter<BehaviorFrequency>))]
 [StructLayout(LayoutKind.Sequential)]
 public readonly partial struct BehaviorFrequency
-    : IComparableValue<BehaviorFrequency, uint>,
+    : IComparableValue<BehaviorFrequency, byte>,
       IUtf8SpanSerializable<BehaviorFrequency>,
-      IRepeatableHash64
+      IRepeatableHash64,
+      IValueProvider
 {
-    private const uint NeverValue = 0;
-    private const uint EmergingValue = 10;
-    private const uint DevelopingValue = 50;
-    private const uint AchievedValue = 90;
+    private const byte NeverValue = 0;
+    private const byte EmergingValue = 10;
+    private const byte DevelopingValue = 50;
+    private const byte AchievedValue = 90;
 
     public static int MaxSerializedCharLength => 2;
 
     public static int MaxSerializedByteLength => 2;
 
-    public static bool IsValidValue(uint value)
+    public ValueType ValueType => ValueType.Ordinal;
+
+    public static bool IsValidValue(byte value)
     {
         return value is NeverValue or EmergingValue or DevelopingValue or AchievedValue;
     }
@@ -37,6 +40,36 @@ public readonly partial struct BehaviorFrequency
     public ulong GetRepeatableHashCode()
     {
         return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);
+    }
+
+    bool IValueProvider.GetBinary()
+    {
+        return IValueProvider.ThrowValueMismatchException<bool>();
+    }
+
+    public byte GetOrdinal()
+    {
+        return _value;
+    }
+
+    ulong IValueProvider.GetCount()
+    {
+        return IValueProvider.ThrowValueMismatchException<ulong>();
+    }
+
+    decimal IValueProvider.GetAmount()
+    {
+        return IValueProvider.ThrowValueMismatchException<decimal>();
+    }
+
+    decimal IValueProvider.GetRatio()
+    {
+        return IValueProvider.ThrowValueMismatchException<decimal>();
+    }
+
+    decimal IValueProvider.GetFrequency()
+    {
+        return IValueProvider.ThrowValueMismatchException<decimal>();
     }
 
     public static BehaviorFrequency Never => new(NeverValue);

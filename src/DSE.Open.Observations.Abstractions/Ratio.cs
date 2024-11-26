@@ -4,6 +4,8 @@
 using System.Runtime.InteropServices;
 using DSE.Open.Values.Text.Json.Serialization;
 using System.Text.Json.Serialization;
+using DSE.Open.Hashing;
+using DSE.Open.Observations;
 
 namespace DSE.Open.Values;
 
@@ -13,13 +15,19 @@ namespace DSE.Open.Values;
 [DivisibleValue]
 [JsonConverter(typeof(JsonDecimalValueConverter<Ratio>))]
 [StructLayout(LayoutKind.Sequential)]
-public readonly partial struct Ratio : IDivisibleValue<Ratio, decimal>, IUtf8SpanSerializable<Ratio>
+public readonly partial struct Ratio
+    : IDivisibleValue<Ratio, decimal>,
+      IUtf8SpanSerializable<Ratio>,
+      IRepeatableHash64,
+      IValueProvider
 {
     public static int MaxSerializedCharLength => 128; // TODO
 
     public static int MaxSerializedByteLength => 128; // TODO
 
     public static Ratio Zero { get; } = new(0);
+
+    public Observations.ValueType ValueType => Observations.ValueType.Ratio;
 
     public Ratio(decimal value) : this(value, false) { }
 
@@ -41,5 +49,40 @@ public readonly partial struct Ratio : IDivisibleValue<Ratio, decimal>, IUtf8Spa
     public static Ratio FromPercent(Percent value)
     {
         return new((decimal)value / 100m);
+    }
+
+    public ulong GetRepeatableHashCode()
+    {
+        return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);
+    }
+
+    bool IValueProvider.GetBinary()
+    {
+        return IValueProvider.ThrowValueMismatchException<bool>();
+    }
+
+    byte IValueProvider.GetOrdinal()
+    {
+        return IValueProvider.ThrowValueMismatchException<byte>();
+    }
+
+    ulong IValueProvider.GetCount()
+    {
+        return IValueProvider.ThrowValueMismatchException<ulong>();
+    }
+
+    decimal IValueProvider.GetAmount()
+    {
+        return IValueProvider.ThrowValueMismatchException<decimal>();
+    }
+
+    public decimal GetRatio()
+    {
+        return _value;
+    }
+
+    decimal IValueProvider.GetFrequency()
+    {
+        return IValueProvider.ThrowValueMismatchException<decimal>();
     }
 }

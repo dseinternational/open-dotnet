@@ -14,7 +14,7 @@ public sealed class ObservationTests
     {
         var observation = Observation.Create(TestMeasures.BinaryMeasure, true);
         var json = JsonSerializer.Serialize(observation);
-        var deserialized = JsonSerializer.Deserialize<Observation<bool>>(json);
+        var deserialized = JsonSerializer.Deserialize<Observation<Binary>>(json);
         Assert.Equal(observation, deserialized);
     }
 

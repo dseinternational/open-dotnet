@@ -12,12 +12,12 @@ using System.Runtime.CompilerServices;
 
 namespace DSE.Open.Observations;
 
-[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<Completeness, Byte>))]
-public readonly partial struct Completeness
+[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<Binary, Byte>))]
+public readonly partial struct Binary
 {
     private readonly Byte _value;
 
-    private Completeness(Byte value, bool skipValidation = false)
+    private Binary(Byte value, bool skipValidation = false)
     {
         if (!skipValidation)
         {
@@ -32,15 +32,15 @@ public readonly partial struct Completeness
         if (!IsValidValue(value))
         {
             throw new ArgumentOutOfRangeException(nameof(value), value,
-                $"'{value}' is not a valid {nameof(Completeness)} value");
+                $"'{value}' is not a valid {nameof(Binary)} value");
         }
     }
 
-    public static bool TryFromValue(Byte value, out Completeness result)
+    public static bool TryFromValue(Byte value, out Binary result)
     {
         if (IsValidValue(value))
         {
-            result = new Completeness(value, true);
+            result = new Binary(value, true);
             return true;
         }
     
@@ -48,39 +48,39 @@ public readonly partial struct Completeness
         return false;
     }
 
-    public static Completeness FromValue(Byte value)
+    public static Binary FromValue(Byte value)
     {
         EnsureIsValidValue(value);
         return new(value, true);
     }
 
-    public static explicit operator Completeness(Byte value)
+    public static explicit operator Binary(Byte value)
         => FromValue(value);
 
-    static Byte global::DSE.Open.IConvertibleTo<Completeness, Byte>.ConvertTo(Completeness value)
+    static Byte global::DSE.Open.IConvertibleTo<Binary, Byte>.ConvertTo(Binary value)
         => (Byte)value;
 
-    public static implicit operator Byte(Completeness value)
+    public static implicit operator Byte(Binary value)
     {
         return value._value;
     }
 
     // IEquatable<T>
 
-    public bool Equals(Completeness other) => _value.Equals(other._value);
+    public bool Equals(Binary other) => _value.Equals(other._value);
 
-    public override bool Equals(object? obj) => obj is Completeness other && Equals(other);
+    public override bool Equals(object? obj) => obj is Binary other && Equals(other);
 
     public override int GetHashCode()
     {
         return _value.GetHashCode();
     }
 
-    // IEqualityOperators<Completeness, Completeness, bool>
+    // IEqualityOperators<Binary, Binary, bool>
 
-    public static bool operator ==(Completeness left, Completeness right) => left.Equals(right);
+    public static bool operator ==(Binary left, Binary right) => left.Equals(right);
     
-    public static bool operator !=(Completeness left, Completeness right) => !(left == right);
+    public static bool operator !=(Binary left, Binary right) => !(left == right);
 
     // ISpanFormattable
 
@@ -110,7 +110,7 @@ public readonly partial struct Completeness
         => TryFormatInvariant(destination, out charsWritten, default);
 
     /// <summary>
-    /// Gets a representation of the <see cref="Completeness"/> value as a string with formatting options.
+    /// Gets a representation of the <see cref="Binary"/> value as a string with formatting options.
     /// </summary>
     [SkipLocalsInit]
     public string ToString(string? format, IFormatProvider? formatProvider)
@@ -129,55 +129,55 @@ public readonly partial struct Completeness
     }
 
     /// <summary>
-    /// Gets a representation of the Completeness value as a string with default formatting options.
+    /// Gets a representation of the Binary value as a string with default formatting options.
     /// </summary>
     /// <returns>
-    /// A representation of the Completeness value.
+    /// A representation of the Binary value.
     /// </returns>
     public override string ToString()
     {
         return ToString(default, default);
     }
 
-    // ISpanParsable<Completeness>
+    // ISpanParsable<Binary>
 
-    public static Completeness Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<Completeness, Byte>(s, provider);
+    public static Binary Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<Binary, Byte>(s, provider);
 
-    public static Completeness ParseInvariant(ReadOnlySpan<char> s)
+    public static Binary ParseInvariant(ReadOnlySpan<char> s)
         => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
 
     public static bool TryParse(
         ReadOnlySpan<char> s,
         IFormatProvider? provider,
-        out Completeness result)
-        => global::DSE.Open.Values.ValueParser.TryParse<Completeness, Byte>(s, provider, out result);
+        out Binary result)
+        => global::DSE.Open.Values.ValueParser.TryParse<Binary, Byte>(s, provider, out result);
 
     public static bool TryParse(
         ReadOnlySpan<char> s,
-        out Completeness result)
+        out Binary result)
         => TryParse(s, default, out result);
 
     public static bool TryParseInvariant(
         ReadOnlySpan<char> s,
-        out Completeness result)
+        out Binary result)
         => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
 
-    // IParsable<Completeness>
+    // IParsable<Binary>
 
-    public static Completeness Parse(string s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<Completeness, Byte>(s, provider);
+    public static Binary Parse(string s, IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<Binary, Byte>(s, provider);
 
-    public static Completeness Parse(string s)
+    public static Binary Parse(string s)
         => Parse(s, default);
 
-    public static Completeness ParseInvariant(string s)
+    public static Binary ParseInvariant(string s)
         => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
 
     public static bool TryParse(
         string? s,
         IFormatProvider? provider,
-        out Completeness result)
+        out Binary result)
     {
         if (s is null)
         {
@@ -190,12 +190,12 @@ public readonly partial struct Completeness
 
     public static bool TryParse(
         string? s,
-        out Completeness result)
+        out Binary result)
         => TryParse(s, default, out result);
 
     public static bool TryParseInvariant(
         string? s,
-        out Completeness result)
+        out Binary result)
         => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
 
     // IUtf8SpanFormattable
@@ -207,33 +207,18 @@ public readonly partial struct Completeness
         IFormatProvider? provider)
         => ((IUtf8SpanFormattable)_value).TryFormat(utf8Destination, out bytesWritten, format, provider);
 
-    // IUtf8SpanParsable<Completeness>
+    // IUtf8SpanParsable<Binary>
 
-    public static Completeness Parse(
+    public static Binary Parse(
         ReadOnlySpan<byte> utf8Source,
         IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<Completeness, Byte>(utf8Source, provider);
+        => global::DSE.Open.Values.ValueParser.Parse<Binary, Byte>(utf8Source, provider);
 
     public static bool TryParse(
         ReadOnlySpan<byte> utf8Source,
         IFormatProvider? provider,
-        out Completeness result)
-        => global::DSE.Open.Values.ValueParser.TryParse<Completeness, Byte>(utf8Source, provider, out result);
-
-    public int CompareTo(Completeness other)
-    {
-        return _value.CompareTo(other._value);
-    }
-
-    // IComparisonOperators<Completeness, Completeness, bool>
-
-    public static bool operator <(Completeness left, Completeness right) => left.CompareTo(right) < 0;
-    
-    public static bool operator >(Completeness left, Completeness right) => left.CompareTo(right) > 0;
-    
-    public static bool operator <=(Completeness left, Completeness right) => left.CompareTo(right) <= 0;
-    
-    public static bool operator >=(Completeness left, Completeness right) => left.CompareTo(right) >= 0;
+        out Binary result)
+        => global::DSE.Open.Values.ValueParser.TryParse<Binary, Byte>(utf8Source, provider, out result);
 
 }
 

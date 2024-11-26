@@ -10,14 +10,14 @@ using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace DSE.Open.Observations;
+namespace DSE.Open.Values;
 
-[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<Completeness, Byte>))]
-public readonly partial struct Completeness
+[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<Amount, Decimal>))]
+public readonly partial struct Amount
 {
-    private readonly Byte _value;
+    private readonly Decimal _value;
 
-    private Completeness(Byte value, bool skipValidation = false)
+    private Amount(Decimal value, bool skipValidation = false)
     {
         if (!skipValidation)
         {
@@ -27,20 +27,20 @@ public readonly partial struct Completeness
         _value = value;
     }
 
-    private static void EnsureIsValidValue(Byte value)
+    private static void EnsureIsValidValue(Decimal value)
     {
         if (!IsValidValue(value))
         {
             throw new ArgumentOutOfRangeException(nameof(value), value,
-                $"'{value}' is not a valid {nameof(Completeness)} value");
+                $"'{value}' is not a valid {nameof(Amount)} value");
         }
     }
 
-    public static bool TryFromValue(Byte value, out Completeness result)
+    public static bool TryFromValue(Decimal value, out Amount result)
     {
         if (IsValidValue(value))
         {
-            result = new Completeness(value, true);
+            result = new Amount(value, true);
             return true;
         }
     
@@ -48,39 +48,39 @@ public readonly partial struct Completeness
         return false;
     }
 
-    public static Completeness FromValue(Byte value)
+    public static Amount FromValue(Decimal value)
     {
         EnsureIsValidValue(value);
         return new(value, true);
     }
 
-    public static explicit operator Completeness(Byte value)
+    public static explicit operator Amount(Decimal value)
         => FromValue(value);
 
-    static Byte global::DSE.Open.IConvertibleTo<Completeness, Byte>.ConvertTo(Completeness value)
-        => (Byte)value;
+    static Decimal global::DSE.Open.IConvertibleTo<Amount, Decimal>.ConvertTo(Amount value)
+        => (Decimal)value;
 
-    public static implicit operator Byte(Completeness value)
+    public static implicit operator Decimal(Amount value)
     {
         return value._value;
     }
 
     // IEquatable<T>
 
-    public bool Equals(Completeness other) => _value.Equals(other._value);
+    public bool Equals(Amount other) => _value.Equals(other._value);
 
-    public override bool Equals(object? obj) => obj is Completeness other && Equals(other);
+    public override bool Equals(object? obj) => obj is Amount other && Equals(other);
 
     public override int GetHashCode()
     {
         return _value.GetHashCode();
     }
 
-    // IEqualityOperators<Completeness, Completeness, bool>
+    // IEqualityOperators<Amount, Amount, bool>
 
-    public static bool operator ==(Completeness left, Completeness right) => left.Equals(right);
+    public static bool operator ==(Amount left, Amount right) => left.Equals(right);
     
-    public static bool operator !=(Completeness left, Completeness right) => !(left == right);
+    public static bool operator !=(Amount left, Amount right) => !(left == right);
 
     // ISpanFormattable
 
@@ -110,7 +110,7 @@ public readonly partial struct Completeness
         => TryFormatInvariant(destination, out charsWritten, default);
 
     /// <summary>
-    /// Gets a representation of the <see cref="Completeness"/> value as a string with formatting options.
+    /// Gets a representation of the <see cref="Amount"/> value as a string with formatting options.
     /// </summary>
     [SkipLocalsInit]
     public string ToString(string? format, IFormatProvider? formatProvider)
@@ -129,55 +129,55 @@ public readonly partial struct Completeness
     }
 
     /// <summary>
-    /// Gets a representation of the Completeness value as a string with default formatting options.
+    /// Gets a representation of the Amount value as a string with default formatting options.
     /// </summary>
     /// <returns>
-    /// A representation of the Completeness value.
+    /// A representation of the Amount value.
     /// </returns>
     public override string ToString()
     {
         return ToString(default, default);
     }
 
-    // ISpanParsable<Completeness>
+    // ISpanParsable<Amount>
 
-    public static Completeness Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<Completeness, Byte>(s, provider);
+    public static Amount Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<Amount, Decimal>(s, provider);
 
-    public static Completeness ParseInvariant(ReadOnlySpan<char> s)
+    public static Amount ParseInvariant(ReadOnlySpan<char> s)
         => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
 
     public static bool TryParse(
         ReadOnlySpan<char> s,
         IFormatProvider? provider,
-        out Completeness result)
-        => global::DSE.Open.Values.ValueParser.TryParse<Completeness, Byte>(s, provider, out result);
+        out Amount result)
+        => global::DSE.Open.Values.ValueParser.TryParse<Amount, Decimal>(s, provider, out result);
 
     public static bool TryParse(
         ReadOnlySpan<char> s,
-        out Completeness result)
+        out Amount result)
         => TryParse(s, default, out result);
 
     public static bool TryParseInvariant(
         ReadOnlySpan<char> s,
-        out Completeness result)
+        out Amount result)
         => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
 
-    // IParsable<Completeness>
+    // IParsable<Amount>
 
-    public static Completeness Parse(string s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<Completeness, Byte>(s, provider);
+    public static Amount Parse(string s, IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<Amount, Decimal>(s, provider);
 
-    public static Completeness Parse(string s)
+    public static Amount Parse(string s)
         => Parse(s, default);
 
-    public static Completeness ParseInvariant(string s)
+    public static Amount ParseInvariant(string s)
         => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
 
     public static bool TryParse(
         string? s,
         IFormatProvider? provider,
-        out Completeness result)
+        out Amount result)
     {
         if (s is null)
         {
@@ -190,12 +190,12 @@ public readonly partial struct Completeness
 
     public static bool TryParse(
         string? s,
-        out Completeness result)
+        out Amount result)
         => TryParse(s, default, out result);
 
     public static bool TryParseInvariant(
         string? s,
-        out Completeness result)
+        out Amount result)
         => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
 
     // IUtf8SpanFormattable
@@ -207,33 +207,53 @@ public readonly partial struct Completeness
         IFormatProvider? provider)
         => ((IUtf8SpanFormattable)_value).TryFormat(utf8Destination, out bytesWritten, format, provider);
 
-    // IUtf8SpanParsable<Completeness>
+    // IUtf8SpanParsable<Amount>
 
-    public static Completeness Parse(
+    public static Amount Parse(
         ReadOnlySpan<byte> utf8Source,
         IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<Completeness, Byte>(utf8Source, provider);
+        => global::DSE.Open.Values.ValueParser.Parse<Amount, Decimal>(utf8Source, provider);
 
     public static bool TryParse(
         ReadOnlySpan<byte> utf8Source,
         IFormatProvider? provider,
-        out Completeness result)
-        => global::DSE.Open.Values.ValueParser.TryParse<Completeness, Byte>(utf8Source, provider, out result);
+        out Amount result)
+        => global::DSE.Open.Values.ValueParser.TryParse<Amount, Decimal>(utf8Source, provider, out result);
 
-    public int CompareTo(Completeness other)
+    public int CompareTo(Amount other)
     {
         return _value.CompareTo(other._value);
     }
 
-    // IComparisonOperators<Completeness, Completeness, bool>
+    // IComparisonOperators<Amount, Amount, bool>
 
-    public static bool operator <(Completeness left, Completeness right) => left.CompareTo(right) < 0;
+    public static bool operator <(Amount left, Amount right) => left.CompareTo(right) < 0;
     
-    public static bool operator >(Completeness left, Completeness right) => left.CompareTo(right) > 0;
+    public static bool operator >(Amount left, Amount right) => left.CompareTo(right) > 0;
     
-    public static bool operator <=(Completeness left, Completeness right) => left.CompareTo(right) <= 0;
+    public static bool operator <=(Amount left, Amount right) => left.CompareTo(right) <= 0;
     
-    public static bool operator >=(Completeness left, Completeness right) => left.CompareTo(right) >= 0;
+    public static bool operator >=(Amount left, Amount right) => left.CompareTo(right) >= 0;
+
+    // IAdditionOperators<Amount, Amount, Amount>
+
+    public static Amount operator +(Amount left, Amount right) => (Amount)(left._value + right._value);
+
+    public static Amount operator --(Amount value) => (Amount)(value._value - 1);
+
+    public static Amount operator ++(Amount value) => (Amount)(value._value + 1);
+
+    public static Amount operator -(Amount left, Amount right) => (Amount)(left._value - right._value);
+
+    public static Amount operator +(Amount value) => (Amount)(+value._value);
+
+    public static Amount operator -(Amount value) => throw new NotImplementedException();
+
+    public static Amount operator *(Amount left, Amount right) => (Amount)(left._value * right._value);
+
+    public static Amount operator /(Amount left, Amount right) => (Amount)(left._value / right._value);
+
+    public static Amount operator %(Amount left, Amount right) => (Amount)(left._value % right._value);
 
 }
 

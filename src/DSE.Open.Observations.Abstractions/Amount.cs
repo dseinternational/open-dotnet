@@ -4,6 +4,7 @@
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using DSE.Open.Hashing;
+using DSE.Open.Observations;
 using DSE.Open.Values.Text.Json.Serialization;
 
 namespace DSE.Open.Values;
@@ -17,7 +18,8 @@ namespace DSE.Open.Values;
 public readonly partial struct Amount
     : IDivisibleValue<Amount, decimal>,
       IUtf8SpanSerializable<Amount>,
-      IRepeatableHash64
+      IRepeatableHash64,
+      IValueProvider
 {
     public static int MaxSerializedCharLength => 32;
 
@@ -29,6 +31,8 @@ public readonly partial struct Amount
 
     public Amount(Half value) : this((decimal)value) { }
 
+    public Observations.ValueType ValueType => Observations.ValueType.Amount;
+
     public static bool IsValidValue(decimal value)
     {
         return value >= Zero._value;
@@ -37,5 +41,35 @@ public readonly partial struct Amount
     public ulong GetRepeatableHashCode()
     {
         return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);
+    }
+
+    bool IValueProvider.GetBinary()
+    {
+        return IValueProvider.ThrowValueMismatchException<bool>();
+    }
+
+    byte IValueProvider.GetOrdinal()
+    {
+        return IValueProvider.ThrowValueMismatchException<byte>();
+    }
+
+    public ulong GetCount()
+    {
+        return IValueProvider.ThrowValueMismatchException<ulong>();
+    }
+
+    decimal IValueProvider.GetAmount()
+    {
+        return _value;
+    }
+
+    decimal IValueProvider.GetRatio()
+    {
+        return IValueProvider.ThrowValueMismatchException<decimal>();
+    }
+
+    decimal IValueProvider.GetFrequency()
+    {
+        return IValueProvider.ThrowValueMismatchException<decimal>();
     }
 }

@@ -3,8 +3,6 @@
 
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
-using System.Reflection.Metadata.Ecma335;
-using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 using DSE.Open.Hashing;
 using DSE.Open.Language;
@@ -15,10 +13,10 @@ using DSE.Open.Values;
 namespace DSE.Open.Observations;
 
 [JsonPolymorphic(TypeDiscriminatorPropertyName = "d")]
-[JsonDerivedType(typeof(Observation<bool>), (int)ObservationType.Binary)]
-[JsonDerivedType(typeof(Observation<bool, SpeechSound>), (int)ObservationType.BinarySpeechSound)]
-[JsonDerivedType(typeof(Observation<bool, WordId>), (int)ObservationType.BinaryWord)]
-[JsonDerivedType(typeof(Observation<bool, SentenceId>), (int)ObservationType.BinarySentence)]
+[JsonDerivedType(typeof(Observation<Binary>), (int)ObservationType.Binary)]
+[JsonDerivedType(typeof(Observation<Binary, SpeechSound>), (int)ObservationType.BinarySpeechSound)]
+[JsonDerivedType(typeof(Observation<Binary, WordId>), (int)ObservationType.BinaryWord)]
+[JsonDerivedType(typeof(Observation<Binary, SentenceId>), (int)ObservationType.BinarySentence)]
 [JsonDerivedType(typeof(Observation<BehaviorFrequency>), (int)ObservationType.BehaviorFrequency)]
 [JsonDerivedType(typeof(Observation<BehaviorFrequency, SpeechSound>), (int)ObservationType.BehaviorFrequencySpeechSound)]
 [JsonDerivedType(typeof(Observation<BehaviorFrequency, WordId>), (int)ObservationType.BehaviorFrequencyWord)]
@@ -147,7 +145,7 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
     public static Observation<TValue> Create<TValue>(
         IMeasure<TValue> measure,
         TValue value)
-        where TValue : struct, IEquatable<TValue>
+        where TValue : struct, IEquatable<TValue>, IValueProvider
     {
         return Create(measure, value, TimeProvider.System);
     }
@@ -164,7 +162,7 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
         IMeasure<TValue> measure,
         TValue value,
         TimeProvider timeProvider)
-        where TValue : struct, IEquatable<TValue>
+        where TValue : struct, IEquatable<TValue>, IValueProvider
     {
         return new Observation<TValue>(measure, value, timeProvider);
     }
@@ -182,7 +180,7 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
         IMeasure<TValue, TParam> measure,
         TParam parameter,
         TValue value)
-        where TValue : struct, IEquatable<TValue>
+        where TValue : struct, IEquatable<TValue>, IValueProvider
         where TParam : IEquatable<TParam>
     {
         return Create(measure, parameter, value, TimeProvider.System);
@@ -203,7 +201,7 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
         TParam parameter,
         TValue value,
         TimeProvider timeProvider)
-        where TValue : struct, IEquatable<TValue>
+        where TValue : struct, IEquatable<TValue>, IValueProvider
         where TParam : IEquatable<TParam>
     {
         return new Observation<TValue, TParam>(measure, parameter, value, timeProvider);
@@ -227,7 +225,7 @@ public sealed class Observation<TValue>
       IObservation<TValue>,
       IObservationFactory<Observation<TValue>, TValue>,
       IEquatable<Observation<TValue>>
-    where TValue : struct, IEquatable<TValue>
+    where TValue : struct, IEquatable<TValue>, IValueProvider
 {
     public Observation(IMeasure measure, TValue value, TimeProvider timeProvider)
         : base(measure, timeProvider)
@@ -325,7 +323,7 @@ public sealed class Observation<TValue, TParam>
       IObservation<TValue, TParam>,
       IObservationFactory<Observation<TValue, TParam>, TValue, TParam>,
       IEquatable<Observation<TValue, TParam>>
-    where TValue : struct, IEquatable<TValue>
+    where TValue : struct, IEquatable<TValue>, IValueProvider
     where TParam : IEquatable<TParam>
 {
     internal Observation(

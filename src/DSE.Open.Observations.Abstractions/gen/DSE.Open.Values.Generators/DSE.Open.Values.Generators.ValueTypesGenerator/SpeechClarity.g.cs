@@ -12,12 +12,12 @@ using System.Runtime.CompilerServices;
 
 namespace DSE.Open.Observations;
 
-[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<SpeechClarity, UInt32>))]
+[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<SpeechClarity, Byte>))]
 public readonly partial struct SpeechClarity
 {
-    private readonly UInt32 _value;
+    private readonly Byte _value;
 
-    private SpeechClarity(UInt32 value, bool skipValidation = false)
+    private SpeechClarity(Byte value, bool skipValidation = false)
     {
         if (!skipValidation)
         {
@@ -27,7 +27,7 @@ public readonly partial struct SpeechClarity
         _value = value;
     }
 
-    private static void EnsureIsValidValue(UInt32 value)
+    private static void EnsureIsValidValue(Byte value)
     {
         if (!IsValidValue(value))
         {
@@ -36,7 +36,7 @@ public readonly partial struct SpeechClarity
         }
     }
 
-    public static bool TryFromValue(UInt32 value, out SpeechClarity result)
+    public static bool TryFromValue(Byte value, out SpeechClarity result)
     {
         if (IsValidValue(value))
         {
@@ -48,19 +48,19 @@ public readonly partial struct SpeechClarity
         return false;
     }
 
-    public static SpeechClarity FromValue(UInt32 value)
+    public static SpeechClarity FromValue(Byte value)
     {
         EnsureIsValidValue(value);
         return new(value, true);
     }
 
-    public static explicit operator SpeechClarity(UInt32 value)
+    public static explicit operator SpeechClarity(Byte value)
         => FromValue(value);
 
-    static UInt32 global::DSE.Open.IConvertibleTo<SpeechClarity, UInt32>.ConvertTo(SpeechClarity value)
-        => (UInt32)value;
+    static Byte global::DSE.Open.IConvertibleTo<SpeechClarity, Byte>.ConvertTo(SpeechClarity value)
+        => (Byte)value;
 
-    public static implicit operator UInt32(SpeechClarity value)
+    public static implicit operator Byte(SpeechClarity value)
     {
         return value._value;
     }
@@ -142,7 +142,7 @@ public readonly partial struct SpeechClarity
     // ISpanParsable<SpeechClarity>
 
     public static SpeechClarity Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<SpeechClarity, UInt32>(s, provider);
+        => global::DSE.Open.Values.ValueParser.Parse<SpeechClarity, Byte>(s, provider);
 
     public static SpeechClarity ParseInvariant(ReadOnlySpan<char> s)
         => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
@@ -151,7 +151,7 @@ public readonly partial struct SpeechClarity
         ReadOnlySpan<char> s,
         IFormatProvider? provider,
         out SpeechClarity result)
-        => global::DSE.Open.Values.ValueParser.TryParse<SpeechClarity, UInt32>(s, provider, out result);
+        => global::DSE.Open.Values.ValueParser.TryParse<SpeechClarity, Byte>(s, provider, out result);
 
     public static bool TryParse(
         ReadOnlySpan<char> s,
@@ -166,7 +166,7 @@ public readonly partial struct SpeechClarity
     // IParsable<SpeechClarity>
 
     public static SpeechClarity Parse(string s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<SpeechClarity, UInt32>(s, provider);
+        => global::DSE.Open.Values.ValueParser.Parse<SpeechClarity, Byte>(s, provider);
 
     public static SpeechClarity Parse(string s)
         => Parse(s, default);
@@ -212,13 +212,13 @@ public readonly partial struct SpeechClarity
     public static SpeechClarity Parse(
         ReadOnlySpan<byte> utf8Source,
         IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<SpeechClarity, UInt32>(utf8Source, provider);
+        => global::DSE.Open.Values.ValueParser.Parse<SpeechClarity, Byte>(utf8Source, provider);
 
     public static bool TryParse(
         ReadOnlySpan<byte> utf8Source,
         IFormatProvider? provider,
         out SpeechClarity result)
-        => global::DSE.Open.Values.ValueParser.TryParse<SpeechClarity, UInt32>(utf8Source, provider, out result);
+        => global::DSE.Open.Values.ValueParser.TryParse<SpeechClarity, Byte>(utf8Source, provider, out result);
 
     public int CompareTo(SpeechClarity other)
     {

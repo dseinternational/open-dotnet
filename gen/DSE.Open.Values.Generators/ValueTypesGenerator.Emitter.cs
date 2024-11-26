@@ -610,18 +610,33 @@ public partial class ValueTypesGenerator
                 {
                     writer.WriteBlock(
                         $"public static {spec.ValueTypeName} operator -({spec.ValueTypeName} left, {spec.ValueTypeName} right) => ({spec.ValueTypeName})(left._value - right._value);");
+
+                    // todo: not public if unsigned integer
                 }
 
                 if (intervalSpec.EmitUnaryPlusOperator)
                 {
                     writer.WriteBlock(
                         $"public static {spec.ValueTypeName} operator +({spec.ValueTypeName} value) => ({spec.ValueTypeName})(+value._value);");
+
+                    // todo: not public if unsigned integer
                 }
 
                 if (intervalSpec.EmitUnaryNegationOperator)
                 {
-                    writer.WriteBlock(
-                        $"public static {spec.ValueTypeName} operator -({spec.ValueTypeName} value) => ({spec.ValueTypeName})(-value._value);");
+                    // todo: 
+                    if (false) // intervalSpec.ImplementUnaryNegationOperator)
+                    {
+                        //writer.WriteBlock(
+                        //    $"public static {spec.ValueTypeName} operator -({spec.ValueTypeName} value) => ({spec.ValueTypeName})(-value._value);");
+                    }
+                    else
+                    {
+                        // todo:
+                        // for example: https://source.dot.net/#System.Private.CoreLib/src/libraries/System.Private.CoreLib/src/System/UInt64.cs,1217
+                        writer.WriteBlock(
+                            $"public static {spec.ValueTypeName} operator -({spec.ValueTypeName} value) => throw new NotImplementedException();");
+                    }
                 }
             }
 
@@ -649,8 +664,8 @@ public partial class ValueTypesGenerator
             writer.Indentation--;
             writer.WriteBlock("}");
 
-// We need to "close" each of the parent types, so write
-// the required number of '}'
+            // We need to "close" each of the parent types, so write
+            // the required number of '}'
             for (var i = 0; i < parentsCount; i++)
             {
                 writer.Indentation--;
