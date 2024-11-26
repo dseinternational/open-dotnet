@@ -3,7 +3,7 @@
 
 using System.Text.Json;
 
-namespace DSE.Open.Values.Tests;
+namespace DSE.Open.Values;
 
 public class AgeInMonthsTests
 {

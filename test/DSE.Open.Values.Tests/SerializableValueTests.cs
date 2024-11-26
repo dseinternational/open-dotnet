@@ -4,7 +4,7 @@
 using System.Text.Json;
 using DSE.Open.Values.TestValues;
 
-namespace DSE.Open.Values.Tests;
+namespace DSE.Open.Values;
 
 public class SerializableValueTests
 {

@@ -3,6 +3,7 @@
 
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
+using DSE.Open.Hashing;
 using DSE.Open.Values;
 using DSE.Open.Values.Text.Json.Serialization;
 
@@ -16,11 +17,15 @@ namespace DSE.Open.Observations;
 [StructLayout(LayoutKind.Sequential)]
 public readonly partial struct YesNo
     : IEquatableValue<YesNo, AsciiString>,
-      IUtf8SpanSerializable<YesNo>
+      IUtf8SpanSerializable<YesNo>,
+      IRepeatableHash64,
+      IObservationValue
 {
     public static int MaxSerializedCharLength => 3;
 
     public static int MaxSerializedByteLength => 3;
+
+    public ObservationValueType ValueType => ObservationValueType.Binary;
 
     public static bool IsValidValue(AsciiString value)
     {
@@ -39,6 +44,41 @@ public readonly partial struct YesNo
     public static YesNo FromBoolean(bool value)
     {
         return value ? Yes : No;
+    }
+
+    public ulong GetRepeatableHashCode()
+    {
+        return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);
+    }
+
+    public bool GetBinary()
+    {
+        return ToBoolean();
+    }
+
+    byte IObservationValue.GetOrdinal()
+    {
+        return IObservationValue.ThrowValueMismatchException<byte>();
+    }
+
+    ulong IObservationValue.GetCount()
+    {
+        return IObservationValue.ThrowValueMismatchException<ulong>();
+    }
+
+    decimal IObservationValue.GetAmount()
+    {
+        return IObservationValue.ThrowValueMismatchException<decimal>();
+    }
+
+    decimal IObservationValue.GetRatio()
+    {
+        return IObservationValue.ThrowValueMismatchException<decimal>();
+    }
+
+    decimal IObservationValue.GetFrequency()
+    {
+        return IObservationValue.ThrowValueMismatchException<decimal>();
     }
 
     public static implicit operator bool(YesNo value)

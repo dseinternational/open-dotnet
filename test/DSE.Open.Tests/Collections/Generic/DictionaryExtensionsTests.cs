@@ -1,9 +1,11 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using DSE.Open.Collections.Generic;
 
-namespace DSE.Open.Tests.Collections.Generic;
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Down Syndrome Education International and Contributors licence this file to you under the MIT license.
+
+namespace DSE.Open.Collections.Generic;
 
 public class DictionaryExtensionsTests
 {

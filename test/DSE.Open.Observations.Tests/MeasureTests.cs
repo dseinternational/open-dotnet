@@ -2,7 +2,6 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using DSE.Open.Testing.Xunit;
-using DSE.Open.Values;
 
 namespace DSE.Open.Observations;
 
@@ -13,14 +12,14 @@ public sealed class MeasureTests
     [Fact]
     public void CanSerializeAndDeserialize_Binary()
     {
-        var measure = new Measure<bool>(s_measureUri, MeasurementLevel.Binary, "Test measure", "[subject] does something");
+        var measure = new Measure<Binary>(s_measureUri, MeasurementLevel.Binary, "Test measure", "[subject] does something");
         AssertJson.Roundtrip(measure);
     }
 
     [Fact]
     public void JsonRoundtrip_WithContext_Binary()
     {
-        var measure = new Measure<bool>(s_measureUri, MeasurementLevel.Binary, "Test measure", "[subject] does something");
+        var measure = new Measure<Binary>(s_measureUri, MeasurementLevel.Binary, "Test measure", "[subject] does something");
         AssertJson.Roundtrip(measure, JsonContext.Default);
     }
 
@@ -28,8 +27,8 @@ public sealed class MeasureTests
     public void CanCreateObservation_Binary()
     {
         var uri = new Uri("https://schema-test.dseapi.app/testing/measure");
-        var measure = new Measure<bool>(uri, MeasurementLevel.Binary, "Test measure", "[subject] does something");
-        var obs = measure.CreateObservation<Observation<bool>, bool>(true);
+        var measure = new Measure<Binary>(uri, MeasurementLevel.Binary, "Test measure", "[subject] does something");
+        var obs = measure.CreateObservation<Observation<Binary>, Binary>(true);
         Assert.Equal(measure.Id, obs.MeasureId);
         Assert.True(obs.Value);
     }

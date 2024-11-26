@@ -4,7 +4,7 @@
 using System.Text.Json;
 using Microsoft.Extensions.Time.Testing;
 
-namespace DSE.Open.Tests;
+namespace DSE.Open;
 
 public class TemporalValueTests
 {

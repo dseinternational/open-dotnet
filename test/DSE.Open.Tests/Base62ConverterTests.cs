@@ -4,7 +4,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace DSE.Open.Tests;
+namespace DSE.Open;
 
 public class Base62ConverterTests
 {

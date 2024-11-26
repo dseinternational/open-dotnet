@@ -6,7 +6,7 @@ using System.Text.Json;
 using DSE.Open.Runtime.Helpers;
 using DSE.Open.Text.Json;
 
-namespace DSE.Open.Values.Tests;
+namespace DSE.Open.Values;
 
 public class UriAsciiPathTests
 {

@@ -3,7 +3,7 @@
 
 using DSE.Open.Values.TestValues;
 
-namespace DSE.Open.Values.Tests;
+namespace DSE.Open.Values;
 
 public class BinaryInt32ValueTests
 {

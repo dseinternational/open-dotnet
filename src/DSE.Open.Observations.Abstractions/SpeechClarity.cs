@@ -13,22 +13,25 @@ namespace DSE.Open.Observations;
 /// A rating of speech clarity.
 /// </summary>
 [ComparableValue]
-[JsonConverter(typeof(JsonUInt32ValueConverter<SpeechClarity>))]
+[JsonConverter(typeof(JsonByteValueConverter<SpeechClarity>))]
 [StructLayout(LayoutKind.Sequential)]
 public readonly partial struct SpeechClarity
-    : IComparableValue<SpeechClarity, uint>,
+    : IComparableValue<SpeechClarity, byte>,
       IUtf8SpanSerializable<SpeechClarity>,
-      IRepeatableHash64
+      IRepeatableHash64,
+      IObservationValue
 {
-    private const uint UnclearValue = 10;
-    private const uint DevelopingValue = 50;
-    private const uint ClearValue = 90;
+    private const byte UnclearValue = 10;
+    private const byte DevelopingValue = 50;
+    private const byte ClearValue = 90;
 
     public static int MaxSerializedCharLength => 2;
 
     public static int MaxSerializedByteLength => 2;
 
-    public static bool IsValidValue(uint value)
+    public ObservationValueType ValueType => ObservationValueType.Ordinal;
+
+    public static bool IsValidValue(byte value)
     {
         return value is UnclearValue or DevelopingValue or ClearValue;
     }
@@ -36,6 +39,36 @@ public readonly partial struct SpeechClarity
     public ulong GetRepeatableHashCode()
     {
         return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);
+    }
+
+    bool IObservationValue.GetBinary()
+    {
+        return IObservationValue.ThrowValueMismatchException<bool>();
+    }
+
+    byte IObservationValue.GetOrdinal()
+    {
+        return _value;
+    }
+
+    ulong IObservationValue.GetCount()
+    {
+        return IObservationValue.ThrowValueMismatchException<ulong>();
+    }
+
+    decimal IObservationValue.GetAmount()
+    {
+        return IObservationValue.ThrowValueMismatchException<decimal>();
+    }
+
+    decimal IObservationValue.GetRatio()
+    {
+        return IObservationValue.ThrowValueMismatchException<decimal>();
+    }
+
+    decimal IObservationValue.GetFrequency()
+    {
+        return IObservationValue.ThrowValueMismatchException<decimal>();
     }
 
     /// <summary>

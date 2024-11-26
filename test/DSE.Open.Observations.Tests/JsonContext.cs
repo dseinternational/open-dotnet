@@ -4,7 +4,6 @@
 using System.Text.Json.Serialization;
 using DSE.Open.Language;
 using DSE.Open.Speech;
-using DSE.Open.Values;
 
 namespace DSE.Open.Observations;
 
@@ -13,10 +12,10 @@ namespace DSE.Open.Observations;
 [JsonSerializable(typeof(Measure<BehaviorFrequency, SpeechSound>))]
 [JsonSerializable(typeof(Measure<BehaviorFrequency, WordId>))]
 [JsonSerializable(typeof(Measure<BehaviorFrequency>))]
-[JsonSerializable(typeof(Measure<bool, SentenceId>))]
-[JsonSerializable(typeof(Measure<bool, SpeechSound>))]
-[JsonSerializable(typeof(Measure<bool, WordId>))]
-[JsonSerializable(typeof(Measure<bool>))]
+[JsonSerializable(typeof(Measure<Binary, SentenceId>))]
+[JsonSerializable(typeof(Measure<Binary, SpeechSound>))]
+[JsonSerializable(typeof(Measure<Binary, WordId>))]
+[JsonSerializable(typeof(Measure<Binary>))]
 [JsonSerializable(typeof(Measure<Completeness, SentenceId>))]
 [JsonSerializable(typeof(Measure<Completeness>))]
 [JsonSerializable(typeof(Measure<Count>))]
@@ -28,8 +27,8 @@ namespace DSE.Open.Observations;
 [JsonSerializable(typeof(Observation<BehaviorFrequency, SpeechSound>))]
 [JsonSerializable(typeof(Observation<BehaviorFrequency, WordId>))]
 [JsonSerializable(typeof(Observation<BehaviorFrequency>))]
-[JsonSerializable(typeof(Observation<bool, SentenceId>))]
-[JsonSerializable(typeof(Observation<bool, SpeechSound>))]
-[JsonSerializable(typeof(Observation<bool, WordId>))]
-[JsonSerializable(typeof(Observation<bool>))]
+[JsonSerializable(typeof(Observation<Binary, SentenceId>))]
+[JsonSerializable(typeof(Observation<Binary, SpeechSound>))]
+[JsonSerializable(typeof(Observation<Binary, WordId>))]
+[JsonSerializable(typeof(Observation<Binary>))]
 public sealed partial class JsonContext : JsonSerializerContext;

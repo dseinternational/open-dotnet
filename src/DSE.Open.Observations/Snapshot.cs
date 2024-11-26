@@ -52,7 +52,7 @@ public abstract class Snapshot : IEquatable<Snapshot>, ISnapshot
 
     public static Snapshot<Observation<TValue>> Create<TValue>(
         Observation<TValue> observation)
-        where TValue : struct, IEquatable<TValue>
+        where TValue : struct, IEquatable<TValue>, IObservationValue
     {
         return Create(observation, TimeProvider.System);
     }
@@ -60,14 +60,14 @@ public abstract class Snapshot : IEquatable<Snapshot>, ISnapshot
     internal static Snapshot<Observation<TValue>> Create<TValue>(
         Observation<TValue> observation,
         TimeProvider timeProvider)
-        where TValue : struct, IEquatable<TValue>
+        where TValue : struct, IEquatable<TValue>, IObservationValue
     {
         return new Snapshot<Observation<TValue>>(observation, timeProvider);
     }
 
     public static Snapshot<Observation<TValue, TParam>> Create<TValue, TParam>(
         Observation<TValue, TParam> observation)
-        where TValue : struct, IEquatable<TValue>
+        where TValue : struct, IEquatable<TValue>, IObservationValue
         where TParam : IEquatable<TParam>
     {
         return Create(observation, TimeProvider.System);
@@ -76,7 +76,7 @@ public abstract class Snapshot : IEquatable<Snapshot>, ISnapshot
     internal static Snapshot<Observation<TValue, TParam>> Create<TValue, TParam>(
         Observation<TValue, TParam> observation,
         TimeProvider timeProvider)
-        where TValue : struct, IEquatable<TValue>
+        where TValue : struct, IEquatable<TValue>, IObservationValue
         where TParam : IEquatable<TParam>
     {
         return new Snapshot<Observation<TValue, TParam>>(observation, timeProvider);

@@ -4,7 +4,7 @@
 using System.Text;
 using System.Text.Json;
 
-namespace DSE.Open.Tests;
+namespace DSE.Open;
 
 public class BinaryValueTests
 {

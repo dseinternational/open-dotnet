@@ -12,12 +12,12 @@ using System.Runtime.CompilerServices;
 
 namespace DSE.Open.Observations;
 
-[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<Completeness, UInt32>))]
+[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<Completeness, Byte>))]
 public readonly partial struct Completeness
 {
-    private readonly UInt32 _value;
+    private readonly Byte _value;
 
-    private Completeness(UInt32 value, bool skipValidation = false)
+    private Completeness(Byte value, bool skipValidation = false)
     {
         if (!skipValidation)
         {
@@ -27,7 +27,7 @@ public readonly partial struct Completeness
         _value = value;
     }
 
-    private static void EnsureIsValidValue(UInt32 value)
+    private static void EnsureIsValidValue(Byte value)
     {
         if (!IsValidValue(value))
         {
@@ -36,7 +36,7 @@ public readonly partial struct Completeness
         }
     }
 
-    public static bool TryFromValue(UInt32 value, out Completeness result)
+    public static bool TryFromValue(Byte value, out Completeness result)
     {
         if (IsValidValue(value))
         {
@@ -48,19 +48,19 @@ public readonly partial struct Completeness
         return false;
     }
 
-    public static Completeness FromValue(UInt32 value)
+    public static Completeness FromValue(Byte value)
     {
         EnsureIsValidValue(value);
         return new(value, true);
     }
 
-    public static explicit operator Completeness(UInt32 value)
+    public static explicit operator Completeness(Byte value)
         => FromValue(value);
 
-    static UInt32 global::DSE.Open.IConvertibleTo<Completeness, UInt32>.ConvertTo(Completeness value)
-        => (UInt32)value;
+    static Byte global::DSE.Open.IConvertibleTo<Completeness, Byte>.ConvertTo(Completeness value)
+        => (Byte)value;
 
-    public static implicit operator UInt32(Completeness value)
+    public static implicit operator Byte(Completeness value)
     {
         return value._value;
     }
@@ -142,7 +142,7 @@ public readonly partial struct Completeness
     // ISpanParsable<Completeness>
 
     public static Completeness Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<Completeness, UInt32>(s, provider);
+        => global::DSE.Open.Values.ValueParser.Parse<Completeness, Byte>(s, provider);
 
     public static Completeness ParseInvariant(ReadOnlySpan<char> s)
         => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
@@ -151,7 +151,7 @@ public readonly partial struct Completeness
         ReadOnlySpan<char> s,
         IFormatProvider? provider,
         out Completeness result)
-        => global::DSE.Open.Values.ValueParser.TryParse<Completeness, UInt32>(s, provider, out result);
+        => global::DSE.Open.Values.ValueParser.TryParse<Completeness, Byte>(s, provider, out result);
 
     public static bool TryParse(
         ReadOnlySpan<char> s,
@@ -166,7 +166,7 @@ public readonly partial struct Completeness
     // IParsable<Completeness>
 
     public static Completeness Parse(string s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<Completeness, UInt32>(s, provider);
+        => global::DSE.Open.Values.ValueParser.Parse<Completeness, Byte>(s, provider);
 
     public static Completeness Parse(string s)
         => Parse(s, default);
@@ -212,13 +212,13 @@ public readonly partial struct Completeness
     public static Completeness Parse(
         ReadOnlySpan<byte> utf8Source,
         IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<Completeness, UInt32>(utf8Source, provider);
+        => global::DSE.Open.Values.ValueParser.Parse<Completeness, Byte>(utf8Source, provider);
 
     public static bool TryParse(
         ReadOnlySpan<byte> utf8Source,
         IFormatProvider? provider,
         out Completeness result)
-        => global::DSE.Open.Values.ValueParser.TryParse<Completeness, UInt32>(utf8Source, provider, out result);
+        => global::DSE.Open.Values.ValueParser.TryParse<Completeness, Byte>(utf8Source, provider, out result);
 
     public int CompareTo(Completeness other)
     {

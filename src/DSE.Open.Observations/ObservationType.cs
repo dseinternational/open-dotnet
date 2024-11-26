@@ -60,7 +60,7 @@ public enum ObservationType
     BehaviorFrequencySentence = 1013,
 
     /// <summary>
-    /// Gets the type id for an <see cref="Observation{TValue}"/> with a <see cref="Values.Count"/> value.
+    /// Gets the type id for an <see cref="Observation{TValue}"/> with a <see cref="Observations.Count"/> value.
     /// </summary>
     Count = 2001,
 

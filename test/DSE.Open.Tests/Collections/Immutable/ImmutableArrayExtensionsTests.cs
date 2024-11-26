@@ -2,9 +2,9 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Collections.Immutable;
-using DSE.Open.Collections.Immutable;
+using DSE.Open;
 
-namespace DSE.Open.Tests.Collections.Immutable;
+namespace DSE.Open.Collections.Immutable;
 
 public class ImmutableArrayExtensionsTests
 {

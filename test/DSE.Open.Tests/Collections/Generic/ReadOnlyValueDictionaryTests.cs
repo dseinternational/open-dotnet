@@ -2,9 +2,8 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Text.Json;
-using DSE.Open.Collections.Generic;
 
-namespace DSE.Open.Tests.Collections.Generic;
+namespace DSE.Open.Collections.Generic;
 
 public class ReadOnlyValueDictionaryTests
 {

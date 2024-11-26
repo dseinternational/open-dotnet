@@ -5,7 +5,6 @@ using BenchmarkDotNet.Attributes;
 using DSE.Open.Language;
 using DSE.Open.Observations;
 using DSE.Open.Speech;
-using DSE.Open.Values;
 
 namespace DSE.Open.Benchmarks.Observations;
 
@@ -52,49 +51,49 @@ public class ObservationHashValueBenchmarks
 
 public static class TestMeasures
 {
-    public static readonly Measure<bool> BinaryMeasure = new(
+    public static readonly Measure<Binary> BinaryMeasure = new(
         new Uri("https://schema-test.dseapi.app/testing/binary-measure"),
         MeasurementLevel.Binary,
         "Test measure",
         "[subject] does something");
 
-    public static readonly Measure<bool> BinaryMeasure2 = new(
+    public static readonly Measure<Binary> BinaryMeasure2 = new(
         new Uri("https://schema-test.dseapi.app/testing/binary-measure-2"),
         MeasurementLevel.Binary,
         "Test measure",
         "[subject] does something");
 
-    public static readonly Measure<bool, SpeechSound> BinarySpeechSoundMeasure = new(
+    public static readonly Measure<Binary, SpeechSound> BinarySpeechSoundMeasure = new(
         new Uri("https://schema-test.dseapi.app/testing/binary-speech-sound-measure"),
         MeasurementLevel.Binary,
         "Test measure",
         "[subject] does something");
 
-    public static readonly Measure<bool, SpeechSound> BinarySpeechSoundMeasure2 = new(
+    public static readonly Measure<Binary, SpeechSound> BinarySpeechSoundMeasure2 = new(
         new Uri("https://schema-test.dseapi.app/testing/binary-speech-sound-measure-2"),
         MeasurementLevel.Binary,
         "Test measure",
         "[subject] does something");
 
-    public static readonly Measure<bool, WordId> BinaryWordMeasure = new(
+    public static readonly Measure<Binary, WordId> BinaryWordMeasure = new(
         new Uri("https://schema-test.dseapi.app/testing/binary-word-measure"),
         MeasurementLevel.Binary,
         "Test measure",
         "[subject] does something");
 
-    public static readonly Measure<bool, WordId> BinaryWordMeasure2 = new(
+    public static readonly Measure<Binary, WordId> BinaryWordMeasure2 = new(
         new Uri("https://schema-test.dseapi.app/testing/binary-word-measure-2"),
         MeasurementLevel.Binary,
         "Test measure",
         "[subject] does something");
 
-    public static readonly Measure<bool, SentenceId> BinarySentenceMeasure = new(
+    public static readonly Measure<Binary, SentenceId> BinarySentenceMeasure = new(
         new Uri("https://schema-test.dseapi.app/testing/binary-word-measure"),
         MeasurementLevel.Binary,
         "Test measure",
         "[subject] does something");
 
-    public static readonly Measure<bool, SentenceId> BinarySentenceMeasure2 = new(
+    public static readonly Measure<Binary, SentenceId> BinarySentenceMeasure2 = new(
         new Uri("https://schema-test.dseapi.app/testing/binary-word-measure-2"),
         MeasurementLevel.Binary,
         "Test measure",

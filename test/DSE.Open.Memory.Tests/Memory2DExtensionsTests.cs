@@ -3,9 +3,9 @@
 
 using System.Buffers;
 using CommunityToolkit.HighPerformance;
-using DSE.Open.Memory;
+using DSE.Open;
 
-namespace DSE.Open.Tests.Memory;
+namespace DSE.Open.Memory;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
