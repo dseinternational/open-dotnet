@@ -10,7 +10,7 @@ using DSE.Open.Values.Text.Json.Serialization;
 namespace DSE.Open.Observations;
 
 [EquatableValue]
-[JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<YesNo, AsciiString>))]
+[JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<Binary, byte>))]
 [StructLayout(LayoutKind.Sequential)]
 public readonly partial struct Binary
     : IEquatableValue<Binary, byte>,
