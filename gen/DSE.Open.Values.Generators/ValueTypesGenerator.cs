@@ -574,7 +574,6 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
                 or SpecialType.System_UInt32
                 or SpecialType.System_UInt64;
 
-            Debugger.Break();
 
             var spec = valueTypeKind switch
             {
