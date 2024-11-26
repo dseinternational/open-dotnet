@@ -3,7 +3,7 @@
 
 using System.Text.Json;
 
-namespace DSE.Open.Values.Tests.Text.Json.Serialization;
+namespace DSE.Open.Values.Text.Json.Serialization;
 
 public class JsonStringUriAsciiPathConverterTests
 {

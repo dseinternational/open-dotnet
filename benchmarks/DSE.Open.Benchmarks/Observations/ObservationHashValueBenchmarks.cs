@@ -5,7 +5,6 @@ using BenchmarkDotNet.Attributes;
 using DSE.Open.Language;
 using DSE.Open.Observations;
 using DSE.Open.Speech;
-using DSE.Open.Values;
 
 namespace DSE.Open.Benchmarks.Observations;
 

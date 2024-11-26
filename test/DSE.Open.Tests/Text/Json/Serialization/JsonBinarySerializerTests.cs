@@ -5,10 +5,8 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using DSE.Open.Runtime.Helpers;
-using DSE.Open.Text.Json;
-using DSE.Open.Text.Json.Serialization;
 
-namespace DSE.Open.Tests.Text.Json.Serialization;
+namespace DSE.Open.Text.Json.Serialization;
 
 public class JsonBinarySerializerTests
 {

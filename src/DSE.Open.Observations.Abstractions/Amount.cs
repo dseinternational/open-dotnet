@@ -4,10 +4,10 @@
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using DSE.Open.Hashing;
-using DSE.Open.Observations;
+using DSE.Open.Values;
 using DSE.Open.Values.Text.Json.Serialization;
 
-namespace DSE.Open.Values;
+namespace DSE.Open.Observations;
 
 /// <summary>
 /// A (non-negative) amount.

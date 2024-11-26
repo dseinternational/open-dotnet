@@ -5,9 +5,9 @@ using System.Runtime.InteropServices;
 using DSE.Open.Values.Text.Json.Serialization;
 using System.Text.Json.Serialization;
 using DSE.Open.Hashing;
-using DSE.Open.Observations;
+using DSE.Open.Values;
 
-namespace DSE.Open.Values;
+namespace DSE.Open.Observations;
 
 /// <summary>
 /// A value that expresses a ratio as a signed value between 0 and 1 (values between -1 and 1).

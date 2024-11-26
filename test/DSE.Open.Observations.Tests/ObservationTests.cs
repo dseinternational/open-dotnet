@@ -3,7 +3,6 @@
 
 using System.Text.Json;
 using DSE.Open.Speech;
-using DSE.Open.Values;
 
 namespace DSE.Open.Observations;
 

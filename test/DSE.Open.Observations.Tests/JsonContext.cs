@@ -4,7 +4,6 @@
 using System.Text.Json.Serialization;
 using DSE.Open.Language;
 using DSE.Open.Speech;
-using DSE.Open.Values;
 
 namespace DSE.Open.Observations;
 

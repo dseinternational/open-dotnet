@@ -1,7 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-namespace DSE.Open.Values.Tests;
+namespace DSE.Open.Values;
 
 public class TagTests
 {
@@ -34,7 +34,7 @@ public class TagTests
     [Fact]
     public void Parse_WithNullString_ShouldThrowArgumentNull()
     {
-        _ = Assert.Throws<ArgumentNullException>(() => Tag.ParseInvariant((string)null!));
+        _ = Assert.Throws<ArgumentNullException>(() => Tag.ParseInvariant(null!));
     }
 
     [Fact]

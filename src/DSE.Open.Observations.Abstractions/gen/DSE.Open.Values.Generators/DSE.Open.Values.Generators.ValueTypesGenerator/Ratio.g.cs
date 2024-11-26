@@ -10,7 +10,7 @@ using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace DSE.Open.Values;
+namespace DSE.Open.Observations;
 
 [TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<Ratio, Decimal>))]
 public readonly partial struct Ratio

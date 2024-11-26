@@ -4,9 +4,8 @@
 using System.Collections.Specialized;
 using System.ComponentModel;
 using DSE.Open;
-using DSE.Open.Collections.ObjectModel;
 
-namespace DSE.Open.Tests.Collections.ObjectModel;
+namespace DSE.Open.Collections.ObjectModel;
 
 // Original from: https://github.com/dotnet/efcore/blob/main/test/EFCore.Tests/ChangeTracking/ObservableHashSetTest.cs
 // Licensed to the .NET Foundation under one or more agreements.

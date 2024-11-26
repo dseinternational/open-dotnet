@@ -1,10 +1,11 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using DSE.Open.Values;
+using DSE.Open.EntityFrameworkCore.Storage.ValueConversion;
+using DSE.Open.Observations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace DSE.Open.EntityFrameworkCore.Storage.ValueConversion;
+namespace DSE.Open.EntityFrameworkCore.Models.Observations.Storage.ValueConversion;
 
 public sealed class CountToInt64Converter : ValueConverter<Count, long>
 {

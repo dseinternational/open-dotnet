@@ -2,10 +2,11 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Runtime.InteropServices;
+using DSE.Open.Values;
 using DSE.Open.Values.Text.Json.Serialization;
 using System.Text.Json.Serialization;
 
-namespace DSE.Open.Values;
+namespace DSE.Open.Observations;
 
 /// <summary>
 /// A value that expresses a ratio as a signed value between 0 and 100 (values between -100 and 100).

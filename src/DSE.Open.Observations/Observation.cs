@@ -8,7 +8,6 @@ using DSE.Open.Hashing;
 using DSE.Open.Language;
 using DSE.Open.Speech;
 using DSE.Open.Text.Json.Serialization;
-using DSE.Open.Values;
 
 namespace DSE.Open.Observations;
 

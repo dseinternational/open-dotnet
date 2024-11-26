@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json;
 using DSE.Open.Text.Json;
 
-namespace DSE.Open.Tests;
+namespace DSE.Open;
 
 public class Utf8StringTests
 {

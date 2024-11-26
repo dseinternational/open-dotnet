@@ -3,9 +3,9 @@
 
 using System.Collections;
 using System.Text.Json;
-using DSE.Open.Collections.Generic;
+using DSE.Open;
 
-namespace DSE.Open.Tests.Collections.Generic;
+namespace DSE.Open.Collections.Generic;
 
 public class ReadOnlyValueCollectionTests
 {

@@ -1,9 +1,13 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Down Syndrome Education International and Contributors licence this file to you under the MIT license.
+
 using DSE.Open.Runtime.Helpers;
 
-namespace DSE.Open.Values.Tests;
+namespace DSE.Open.Values;
 
 public class UriPathTests
 {

@@ -2,9 +2,8 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.ComponentModel;
-using DSE.Open.Collections.ObjectModel;
 
-namespace DSE.Open.Tests.Collections.ObjectModel;
+namespace DSE.Open.Collections.ObjectModel;
 
 public class ObservableGroupingTests
 {
