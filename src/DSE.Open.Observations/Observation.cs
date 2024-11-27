@@ -93,6 +93,36 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
     [JsonPropertyOrder(-88000)]
     public MeasureId MeasureId { get; }
 
+#pragma warning disable CA1033 // Interface methods should be callable by child types
+
+    object IObservation.Value
+    {
+        get
+        {
+            var value = GetValueCore();
+
+            if (value is null)
+            {
+                return ThrowHelper.ThrowInvalidOperationException<object>(
+                    $"{nameof(Observation)}.{nameof(GetValueCore)} requires a non-null return value.");
+            }
+
+            return value;
+        }
+    }
+
+    object? IObservation.Parameter1 => GetParameter1Core();
+
+    object? IObservation.Parameter2 => GetParameter2Core();
+
+#pragma warning restore CA1033 // Interface methods should be callable by child types
+
+    protected abstract object GetValueCore();
+
+    protected abstract object? GetParameter1Core();
+
+    protected abstract object? GetParameter2Core();
+
     /// <summary>
     /// Gets a repeatable hash value that represents the measurement.
     /// </summary>
@@ -213,6 +243,11 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
             RepeatableHash64Provider.Default.GetRepeatableHashCode(Time),
             RepeatableHash64Provider.Default.GetRepeatableHashCode(MeasureId));
     }
+
+    int IObservation.GetMeasurementHashCode()
+    {
+        throw new NotImplementedException();
+    }
 }
 
 /// <summary>
@@ -310,6 +345,21 @@ public sealed class Observation<TValue>
     {
         return Create(measure, value, timeProvider);
     }
+
+    protected override object GetValueCore()
+    {
+        return Value;
+    }
+
+    protected override object? GetParameter1Core()
+    {
+        return null;
+    }
+
+    protected override object? GetParameter2Core()
+    {
+        return null;
+    }
 }
 
 /// <summary>
@@ -332,7 +382,7 @@ public sealed class Observation<TValue, TParam>
         TimeProvider timeProvider)
         : base(measure, timeProvider)
     {
-        Parameter = parameter;
+        Parameter1 = parameter;
         Value = value;
     }
 
@@ -354,7 +404,7 @@ public sealed class Observation<TValue, TParam>
         TValue value)
         : base(id, time, measureId, TimeProvider.System)
     {
-        Parameter = parameter;
+        Parameter1 = parameter;
         Value = value;
     }
 
@@ -367,13 +417,13 @@ public sealed class Observation<TValue, TParam>
         TimeProvider timeProvider)
         : base(id, time, measureId, timeProvider)
     {
-        Parameter = parameter;
+        Parameter1 = parameter;
         Value = value;
     }
 
     [JsonPropertyName("p")]
     [JsonPropertyOrder(-100)]
-    public TParam Parameter { get; }
+    public TParam Parameter1 { get; }
 
     [JsonPropertyName("v")]
     [JsonPropertyOrder(-1)]
@@ -392,7 +442,7 @@ public sealed class Observation<TValue, TParam>
     public bool Equals([NotNullWhen(true)] Observation<TValue, TParam>? other)
     {
         return other is not null &&
-               Parameter.Equals(other.Parameter) &&
+               Parameter1.Equals(other.Parameter1) &&
                Value.Equals(other.Value) &&
                base.Equals(other);
     }
@@ -404,7 +454,7 @@ public sealed class Observation<TValue, TParam>
 
     public override ulong GetRepeatableHashCode()
     {
-        if (!RepeatableHash64Provider.Default.TryGetRepeatableHashCode(Parameter, out var paramHash))
+        if (!RepeatableHash64Provider.Default.TryGetRepeatableHashCode(Parameter1, out var paramHash))
         {
             ThrowHelper.ThrowInvalidOperationException(
                 $"The {typeof(TParam).Name} type does not support repeatable hashing.");
@@ -418,13 +468,13 @@ public sealed class Observation<TValue, TParam>
 
     public override string ToString()
     {
-        return $"{{ id: {Id}, time: {Time:u}, measure: {MeasureId}, parameter: {Parameter}, value: {Value} }}";
+        return $"{{ id: {Id}, time: {Time:u}, measure: {MeasureId}, parameter: {Parameter1}, value: {Value} }}";
     }
 
     /// <inheritdoc />
     protected override int GetMeasurementHashCodeCore()
     {
-        return HashCode.Combine(base.GetMeasurementHashCodeCore, Parameter);
+        return HashCode.Combine(base.GetMeasurementHashCodeCore, Parameter1);
     }
 
     static Observation<TValue, TParam> IObservationFactory<Observation<TValue, TParam>, TValue, TParam>.Create(
@@ -434,5 +484,20 @@ public sealed class Observation<TValue, TParam>
         TimeProvider timeProvider)
     {
         return Create(measure, parameter, value, timeProvider);
+    }
+
+    protected override object GetValueCore()
+    {
+        return Value;
+    }
+
+    protected override object? GetParameter1Core()
+    {
+        return Parameter1;
+    }
+
+    protected override object? GetParameter2Core()
+    {
+        return null;
     }
 }

@@ -12,21 +12,27 @@ public interface IObservation
     DateTimeOffset Time { get; }
 
     int GetMeasurementHashCode();
+
+    object Value { get; }
+
+    object? Parameter1 { get; }
+
+    object? Parameter2 { get; }
 }
 
 public interface IObservation<out TValue> : IObservation
     where TValue : struct, IEquatable<TValue>, IObservationValue
 {
-    TValue Value { get; }
+    new TValue Value { get; }
 }
 
 public interface IObservation<out TValue, out TParam> : IObservation
     where TValue : struct, IEquatable<TValue>, IObservationValue
     where TParam : struct, IEquatable<TParam>
 {
-    TParam Parameter { get; }
+    new TParam Parameter1 { get; }
 
-    TValue Value { get; }
+    new TValue Value { get; }
 }
 
 #pragma warning disable CA1005 // Avoid excessive parameters on generic types
@@ -36,9 +42,9 @@ public interface IObservation<out TValue, out TParam1, out TParam2> : IObservati
     where TParam1 : IEquatable<TParam1>
     where TParam2 : IEquatable<TParam2>
 {
-    TParam1 Parameter1 { get; }
+    new TParam1 Parameter1 { get; }
 
-    TParam2 Parameter2 { get; }
+    new TParam2 Parameter2 { get; }
 
-    TValue Value { get; }
+    new TValue Value { get; }
 }
