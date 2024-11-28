@@ -11,6 +11,14 @@ using DSE.Open.Text.Json.Serialization;
 
 namespace DSE.Open.Observations;
 
+/// <summary>
+/// An observation records a value observed and the time of the observation, the meaning of which
+/// is defined by a measure and, optionally, one or two parameters.
+/// </summary>
+/// <remarks>
+/// Serialization and deserialization is supported for a variety of pre-specified closed generic
+/// types derived from <see cref="Observation{TValue}"/> and <see cref="Observation{TValue, TParam}"/>.
+/// </remarks>
 [JsonPolymorphic(TypeDiscriminatorPropertyName = "d")]
 [JsonDerivedType(typeof(Observation<Binary>), (int)ObservationType.Binary)]
 [JsonDerivedType(typeof(Observation<Binary, SpeechSound>), (int)ObservationType.BinarySpeechSound)]
@@ -251,9 +259,13 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
 }
 
 /// <summary>
-/// An observation with a single measurement value.
+/// An observation that records a value observed and the time of the observation, the meaning of which
+/// is defined by a measure.
 /// </summary>
 /// <typeparam name="TValue"></typeparam>
+/// <remarks>
+/// An example of this type of measure is a yes/not measure of "[subject] can sit unsupported".
+/// </remarks>
 public sealed class Observation<TValue>
     : Observation,
       IObservation<TValue>,
@@ -363,10 +375,15 @@ public sealed class Observation<TValue>
 }
 
 /// <summary>
-/// An observation with a single measurement value and a single parameter.
+/// An observation that records a value observed and the time of the observation, the meaning of which
+/// is defined by a measure and a single parameter.
 /// </summary>
 /// <typeparam name="TValue"></typeparam>
 /// <typeparam name="TParam"></typeparam>
+/// <remarks>
+/// An example of this type of measure is a yes/no measure of "[subject] can say [word] independently"
+/// (where [word] is the parameter value).
+/// </remarks>
 public sealed class Observation<TValue, TParam>
     : Observation,
       IObservation<TValue, TParam>,
