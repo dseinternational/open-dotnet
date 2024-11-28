@@ -9,29 +9,31 @@ namespace DSE.Open.Observations;
 
 public abstract class Snapshot : IEquatable<Snapshot>, ISnapshot
 {
-    internal Snapshot(TimeProvider timeProvider)
+    internal Snapshot(IObservation observation, TimeProvider timeProvider)
     {
+        ArgumentNullException.ThrowIfNull(observation);
+        ArgumentNullException.ThrowIfNull(timeProvider);
+
         Time = DateTimeOffset.FromUnixTimeMilliseconds(timeProvider.GetUtcNow().ToUnixTimeMilliseconds());
+        Observation = observation;
     }
 
-    internal Snapshot(DateTimeOffset time, TimeProvider timeProvider)
+    internal Snapshot(IObservation observation, DateTimeOffset time, TimeProvider timeProvider)
     {
+        ArgumentNullException.ThrowIfNull(observation);
         ArgumentNullException.ThrowIfNull(timeProvider);
-        Guard.IsInRange(time, Observation.MinimumObservationTime,
-            timeProvider.GetUtcNow().AddSeconds(Observation.TimeToleranceSeconds));
+        Guard.IsInRange(time, Observations.Observation.MinimumObservationTime,
+            timeProvider.GetUtcNow().AddSeconds(Observations.Observation.TimeToleranceSeconds));
 
         Time = time;
+        Observation = observation;
     }
 
     [JsonPropertyName("t")]
     [JsonConverter(typeof(JsonDateTimeOffsetUnixTimeMillisecondsConverter))]
     public DateTimeOffset Time { get; }
 
-    protected abstract IObservation ObservationCore { get; }
-
-#pragma warning disable CA1033 // Interface methods should be callable by child types
-    IObservation ISnapshot.Observation => ObservationCore;
-#pragma warning restore CA1033 // Interface methods should be callable by child types
+    public IObservation Observation { get; }
 
     public bool Equals(Snapshot? other)
     {
@@ -90,10 +92,8 @@ public sealed class Snapshot<TObs> : Snapshot, IEquatable<Snapshot<TObs>>, ISnap
     {
     }
 
-    internal Snapshot(TObs observation, TimeProvider timeProvider) : base(timeProvider)
+    internal Snapshot(TObs observation, TimeProvider timeProvider) : base(observation, timeProvider)
     {
-        ArgumentNullException.ThrowIfNull(observation);
-        Observation = observation;
     }
 
     [JsonConstructor]
@@ -102,19 +102,12 @@ public sealed class Snapshot<TObs> : Snapshot, IEquatable<Snapshot<TObs>>, ISnap
     {
     }
 
-    internal Snapshot(TObs observation, DateTimeOffset time, TimeProvider timeProvider) : base(time, timeProvider)
+    internal Snapshot(TObs observation, DateTimeOffset time, TimeProvider timeProvider) : base(observation, time, timeProvider)
     {
-        ArgumentNullException.ThrowIfNull(observation);
-        Guard.IsInRange(time, Observations.Observation.MinimumObservationTime,
-            timeProvider.GetUtcNow().AddSeconds(Observations.Observation.TimeToleranceSeconds));
-
-        Observation = observation;
     }
 
     [JsonPropertyName("o")]
-    public TObs Observation { get; }
-
-    protected override IObservation ObservationCore => Observation;
+    public new TObs Observation => (TObs)base.Observation;
 
     public bool Equals(Snapshot<TObs>? other)
     {
