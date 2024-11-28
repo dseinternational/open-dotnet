@@ -111,7 +111,7 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
         }
     }
 
-    object? IObservation.Parameter1 => GetParameter1Core();
+    object? IObservation.Parameter => GetParameterCore();
 
     object? IObservation.Parameter2 => GetParameter2Core();
 
@@ -119,7 +119,7 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
 
     protected abstract object GetValueCore();
 
-    protected abstract object? GetParameter1Core();
+    protected abstract object? GetParameterCore();
 
     protected abstract object? GetParameter2Core();
 
@@ -351,7 +351,7 @@ public sealed class Observation<TValue>
         return Value;
     }
 
-    protected override object? GetParameter1Core()
+    protected override object? GetParameterCore()
     {
         return null;
     }
@@ -370,6 +370,7 @@ public sealed class Observation<TValue>
 public sealed class Observation<TValue, TParam>
     : Observation,
       IObservation<TValue, TParam>,
+      IParameterizedObservation<TParam>,
       IObservationFactory<Observation<TValue, TParam>, TValue, TParam>,
       IEquatable<Observation<TValue, TParam>>
     where TValue : struct, IEquatable<TValue>, IObservationValue
@@ -382,7 +383,7 @@ public sealed class Observation<TValue, TParam>
         TimeProvider timeProvider)
         : base(measure, timeProvider)
     {
-        Parameter1 = parameter;
+        Parameter = parameter;
         Value = value;
     }
 
@@ -404,7 +405,7 @@ public sealed class Observation<TValue, TParam>
         TValue value)
         : base(id, time, measureId, TimeProvider.System)
     {
-        Parameter1 = parameter;
+        Parameter = parameter;
         Value = value;
     }
 
@@ -417,13 +418,13 @@ public sealed class Observation<TValue, TParam>
         TimeProvider timeProvider)
         : base(id, time, measureId, timeProvider)
     {
-        Parameter1 = parameter;
+        Parameter = parameter;
         Value = value;
     }
 
     [JsonPropertyName("p")]
     [JsonPropertyOrder(-100)]
-    public TParam Parameter1 { get; }
+    public TParam Parameter { get; }
 
     [JsonPropertyName("v")]
     [JsonPropertyOrder(-1)]
@@ -442,7 +443,7 @@ public sealed class Observation<TValue, TParam>
     public bool Equals([NotNullWhen(true)] Observation<TValue, TParam>? other)
     {
         return other is not null &&
-               Parameter1.Equals(other.Parameter1) &&
+               Parameter.Equals(other.Parameter) &&
                Value.Equals(other.Value) &&
                base.Equals(other);
     }
@@ -454,7 +455,7 @@ public sealed class Observation<TValue, TParam>
 
     public override ulong GetRepeatableHashCode()
     {
-        if (!RepeatableHash64Provider.Default.TryGetRepeatableHashCode(Parameter1, out var paramHash))
+        if (!RepeatableHash64Provider.Default.TryGetRepeatableHashCode(Parameter, out var paramHash))
         {
             ThrowHelper.ThrowInvalidOperationException(
                 $"The {typeof(TParam).Name} type does not support repeatable hashing.");
@@ -468,13 +469,13 @@ public sealed class Observation<TValue, TParam>
 
     public override string ToString()
     {
-        return $"{{ id: {Id}, time: {Time:u}, measure: {MeasureId}, parameter: {Parameter1}, value: {Value} }}";
+        return $"{{ id: {Id}, time: {Time:u}, measure: {MeasureId}, parameter: {Parameter}, value: {Value} }}";
     }
 
     /// <inheritdoc />
     protected override int GetMeasurementHashCodeCore()
     {
-        return HashCode.Combine(base.GetMeasurementHashCodeCore, Parameter1);
+        return HashCode.Combine(base.GetMeasurementHashCodeCore, Parameter);
     }
 
     static Observation<TValue, TParam> IObservationFactory<Observation<TValue, TParam>, TValue, TParam>.Create(
@@ -491,9 +492,9 @@ public sealed class Observation<TValue, TParam>
         return Value;
     }
 
-    protected override object? GetParameter1Core()
+    protected override object? GetParameterCore()
     {
-        return Parameter1;
+        return Parameter;
     }
 
     protected override object? GetParameter2Core()

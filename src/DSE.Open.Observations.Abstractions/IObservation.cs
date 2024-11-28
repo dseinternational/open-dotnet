@@ -15,7 +15,7 @@ public interface IObservation
 
     object Value { get; }
 
-    object? Parameter1 { get; }
+    object? Parameter { get; }
 
     object? Parameter2 { get; }
 }
@@ -30,7 +30,7 @@ public interface IObservation<out TValue, out TParam> : IObservation
     where TValue : struct, IEquatable<TValue>, IObservationValue
     where TParam : struct, IEquatable<TParam>
 {
-    new TParam Parameter1 { get; }
+    new TParam Parameter { get; }
 
     new TValue Value { get; }
 }
@@ -42,7 +42,7 @@ public interface IObservation<out TValue, out TParam1, out TParam2> : IObservati
     where TParam1 : IEquatable<TParam1>
     where TParam2 : IEquatable<TParam2>
 {
-    new TParam1 Parameter1 { get; }
+    new TParam1 Parameter { get; }
 
     new TParam2 Parameter2 { get; }
 
