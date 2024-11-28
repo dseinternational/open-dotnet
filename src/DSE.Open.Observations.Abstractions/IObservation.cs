@@ -56,24 +56,3 @@ public interface IObservation<out TValue, out TParam> : IObservation
 
     new TValue Value { get; }
 }
-
-#pragma warning disable CA1005 // Avoid excessive parameters on generic types
-
-/// <summary>
-/// An observation that records a value observed and the time of the observation, the meaning of which
-/// is defined by a measure and two parameters.
-/// </summary>
-/// <typeparam name="TValue"></typeparam>
-/// <typeparam name="TParam1"></typeparam>
-/// <typeparam name="TParam2"></typeparam>
-public interface IObservation<out TValue, out TParam1, out TParam2> : IObservation
-    where TValue : struct, IEquatable<TValue>, IObservationValue
-    where TParam1 : IEquatable<TParam1>
-    where TParam2 : IEquatable<TParam2>
-{
-    new TParam1 Parameter { get; }
-
-    new TParam2 Parameter2 { get; }
-
-    new TValue Value { get; }
-}
