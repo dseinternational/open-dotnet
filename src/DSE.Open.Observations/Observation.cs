@@ -387,7 +387,6 @@ public sealed class Observation<TValue>
 public sealed class Observation<TValue, TParam>
     : Observation,
       IObservation<TValue, TParam>,
-      IParameterizedObservation<TParam>,
       IObservationFactory<Observation<TValue, TParam>, TValue, TParam>,
       IEquatable<Observation<TValue, TParam>>
     where TValue : struct, IEquatable<TValue>, IObservationValue
