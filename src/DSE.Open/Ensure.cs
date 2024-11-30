@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 
 namespace DSE.Open;
 
@@ -52,12 +53,19 @@ public static class Ensure
 
     #endregion
 
-    public static T NotNull<T>([NotNull] T? value)
+    /// <summary>
+    /// Ensures the value is not <see langword="null"/> and returns the validated value.
+    /// </summary>
+    /// <typeparam name="T">The type of the value.</typeparam>
+    /// <param name="value">The value.</param>
+    /// <param name="name">The name of the value.</param>
+    /// <returns></returns>
+    public static T NotNull<T>([NotNull] T? value, [CallerArgumentExpression(nameof(value))] string? name = null)
         where T : class
     {
         if (value is null)
         {
-            ThrowHelper.ThrowArgumentNullException();
+            ThrowHelper.ThrowArgumentNullException(name);
             return default!; // unreachable
         }
 
@@ -69,12 +77,13 @@ public static class Ensure
     /// <summary>
     /// Ensures the value is not <see langword="null"/> and returns the validated value.
     /// </summary>
-    /// <param name="value"></param>
+    /// <param name="value">The value.</param>
+    /// <param name="name">The name of the value.</param>
     /// <returns>The validated value.</returns>
     /// <exception cref="ArgumentNullException"><paramref name="value"/> is <see langword="null"/>.</exception>
-    public static string NotNull([NotNull] string? value)
+    public static string NotNull([NotNull] string? value, [CallerArgumentExpression(nameof(value))] string? name = null)
     {
-        ArgumentNullException.ThrowIfNull(value);
+        ArgumentNullException.ThrowIfNull(value, name);
         return value;
     }
 
@@ -82,40 +91,46 @@ public static class Ensure
     /// Ensures the value is not <see langword="null"/>, empty or contains only whitespace, and returns
     /// the validated value.
     /// </summary>
-    /// <param name="value"></param>
+    /// <param name="value">The value.</param>
+    /// <param name="name">The name of the value.</param>
     /// <returns>The validated value.</returns>
     /// <exception cref="ArgumentNullException"><paramref name="value"/> is <see langword="null"/>.</exception>
     /// <exception cref="ArgumentException"><paramref name="value"/> is empty or contains only whitespace.</exception>
-    public static string NotNullOrWhitespace([NotNull] string? value)
+    public static string NotNullOrWhitespace([NotNull] string? value, [CallerArgumentExpression(nameof(value))] string? name = null)
     {
-        ArgumentNullException.ThrowIfNull(value);
-        ArgumentException.ThrowIfNullOrWhiteSpace(value);
+        ArgumentNullException.ThrowIfNull(value, name);
+        ArgumentException.ThrowIfNullOrWhiteSpace(value, name);
         return value;
     }
 
     /// <summary>
     /// Ensures the value is at least a minimum length.
     /// </summary>
-    /// <param name="value"></param>
+    /// <param name="value">The value.</param>
     /// <param name="minimumLength"></param>
     /// <param name="allowWhitespace"></param>
+    /// <param name="name">The name of the value.</param>
     /// <returns>The validated value.</returns>
     /// <exception cref="ArgumentNullException"><paramref name="value"/> is <see langword="null"/>.</exception>
     /// <exception cref="ArgumentException"><paramref name="allowWhitespace"/> is <see langword="false"/> and
     /// <paramref name="value"/> is empty or contains only whitespace; or, the <see cref="string.Length"/> of
     /// <paramref name="value"/> is less than <paramref name="minimumLength"/>.</exception>
-    public static string MinimumLength([NotNull] string? value, int minimumLength, bool allowWhitespace = false)
+    public static string MinimumLength(
+        [NotNull] string? value,
+        int minimumLength,
+        bool allowWhitespace = false,
+        [CallerArgumentExpression(nameof(value))] string? name = null)
     {
-        ArgumentNullException.ThrowIfNull(value);
+        ArgumentNullException.ThrowIfNull(value, name);
 
         if (!allowWhitespace)
         {
-            ArgumentException.ThrowIfNullOrWhiteSpace(value);
+            ArgumentException.ThrowIfNullOrWhiteSpace(value, name);
         }
 
         if (value.Length < minimumLength)
         {
-            ThrowHelper.ThrowArgumentException($"Value must be at least {minimumLength} characters long.", nameof(value));
+            ThrowHelper.ThrowArgumentException(name, $"Value must be at least {minimumLength} characters long.");
         }
 
         return value;
@@ -127,23 +142,28 @@ public static class Ensure
     /// <param name="value"></param>
     /// <param name="maximumLength"></param>
     /// <param name="allowWhitespace"></param>
+    /// <param name="name">The name of the value.</param>
     /// <returns>The validated value.</returns>
     /// <exception cref="ArgumentNullException"><paramref name="value"/> is <see langword="null"/>.</exception>
     /// <exception cref="ArgumentException"><paramref name="allowWhitespace"/> is <see langword="false"/> and
     /// <paramref name="value"/> is empty or contains only whitespace; or, the <see cref="string.Length"/> of
     /// <paramref name="value"/> is greater than <paramref name="maximumLength"/>.</exception>
-    public static string MaximumLength([NotNull] string? value, int maximumLength, bool allowWhitespace = false)
+    public static string MaximumLength(
+        [NotNull] string? value,
+        int maximumLength,
+        bool allowWhitespace = false,
+        [CallerArgumentExpression(nameof(value))] string? name = null)
     {
-        ArgumentNullException.ThrowIfNull(value);
+        ArgumentNullException.ThrowIfNull(value, name);
 
         if (!allowWhitespace)
         {
-            ArgumentException.ThrowIfNullOrWhiteSpace(value);
+            ArgumentException.ThrowIfNullOrWhiteSpace(value, name);
         }
 
         if (value.Length > maximumLength)
         {
-            ThrowHelper.ThrowArgumentException($"Value must be at most {maximumLength} characters long.", nameof(value));
+            ThrowHelper.ThrowArgumentException(name, $"Value must be at most {maximumLength} characters long.");
         }
 
         return value;
@@ -158,15 +178,16 @@ public static class Ensure
     /// </summary>
     /// <param name="value"></param>
     /// <param name="minimumValue"></param>
+    /// <param name="name">The name of the value.</param>
     /// <returns>The validated value.</returns>
     /// <exception cref="ArgumentException"><paramref name="value"/> is less than
     /// <paramref name="minimumValue" />.</exception>
-    public static T EqualOrGreaterThan<T>(T value, T minimumValue)
+    public static T EqualOrGreaterThan<T>(T value, T minimumValue, [CallerArgumentExpression(nameof(value))] string? name = null)
         where T : IComparable<T>
     {
         if (value.CompareTo(minimumValue) < 0)
         {
-            ThrowHelper.ThrowArgumentException($"Value must be equal to or greater than {minimumValue}.", nameof(value));
+            ThrowHelper.ThrowArgumentException($"{name} must be equal to or greater than {minimumValue}.", nameof(value));
         }
 
         return value;
@@ -177,15 +198,16 @@ public static class Ensure
     /// </summary>
     /// <param name="value"></param>
     /// <param name="maximumValue"></param>
+    /// <param name="name">The name of the value.</param>
     /// <returns>The validated value.</returns>
     /// <exception cref="ArgumentException"><paramref name="value"/> is greater than
     /// <paramref name="maximumValue" />.</exception>
-    public static T EqualOrLessThan<T>(T value, T maximumValue)
+    public static T EqualOrLessThan<T>(T value, T maximumValue, [CallerArgumentExpression(nameof(value))] string? name = null)
         where T : IComparable<T>
     {
         if (value.CompareTo(maximumValue) > 0)
         {
-            ThrowHelper.ThrowArgumentException($"Value must be equal to or less than {maximumValue}.", nameof(value));
+            ThrowHelper.ThrowArgumentException($"{name} must be equal to or less than {maximumValue}.", nameof(value));
         }
 
         return value;
@@ -197,15 +219,16 @@ public static class Ensure
     /// <param name="value"></param>
     /// <param name="start"></param>
     /// <param name="end"></param>
+    /// <param name="name">The name of the value.</param>
     /// <returns>The validated value.</returns>
     /// <exception cref="ArgumentException"><paramref name="value"/> is less than <paramref name="start"/>
     /// or is greater than <paramref name="end" />.</exception>
-    public static T InRange<T>(T value, T start, T end)
+    public static T InRange<T>(T value, T start, T end, [CallerArgumentExpression(nameof(value))] string? name = null)
         where T : IComparable<T>
     {
         if (value.CompareTo(start) < 0 || value.CompareTo(end) > 0)
         {
-            ThrowHelper.ThrowArgumentException($"Value must within the inclusive range {start} to {end}.", nameof(value));
+            ThrowHelper.ThrowArgumentException($"{name} must within the inclusive range {start} to {end}.", nameof(value));
         }
 
         return value;
