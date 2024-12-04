@@ -16,8 +16,8 @@
     <PackageVersion Include="Microsoft.Bcl.AsyncInterfaces" Version="9.0.0" />
     <PackageVersion Include="Microsoft.Bcl.TimeProvider" Version="9.0.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.Common" Version="4.12.0-3.final" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.12.0-3.final" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.Common" Version="4.12.0" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.12.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Data.SqlClient" Version="6.0.0-preview3.24332.3" />
     <PackageVersion Include="Microsoft.Diagnostics.NETCore.Client" Version="0.2.553101" />
@@ -44,7 +44,7 @@
     <PackageVersion Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.2.1" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
     <PackageVersion Include="Microsoft.NETCore.Platforms" Version="8.0.0-preview.7.23375.6" />
-    <PackageVersion Include="Microsoft.Testing.Extensions.CodeCoverage" Version="17.13.0" />
+    <PackageVersion Include="Microsoft.Testing.Extensions.CodeCoverage" Version="17.13.1" />
     <PackageVersion Include="Microsoft.Testing.Platform" Version="1.4.3" />
     <PackageVersion Include="Microsoft.Testing.Platform.MSBuild" Version="1.4.3" />
     <PackageVersion Include="Moq" Version="4.20.72" />
