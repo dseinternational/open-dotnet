@@ -28,6 +28,11 @@ public readonly struct TokenIndex
     {
         Guard.IsGreaterThan(start, 0);
 
+        if (end is not null)
+        {
+            Guard.IsGreaterThanOrEqualTo(end.Value, start);
+        }
+
         if (end is not null && emptyId is not null && end.Value != start)
         {
             ThrowHelper.ThrowArgumentException(
@@ -66,32 +71,22 @@ public readonly struct TokenIndex
     /// </summary>
     public int CompareTo(TokenIndex other)
     {
-        if (Start == other.Start)
+        if (Start != other.Start)
         {
-            if (IsMultiwordIndex)
-            {
-                if (other.IsMultiwordIndex)
-                {
-                    return End.CompareTo(other.End);
-                }
-
-                return -1; // The other is not a multi word
-            }
-
-            if (IsEmptyNode)
-            {
-                if (other.IsEmptyNode && EmptyId.HasValue && other.EmptyId.HasValue)
-                {
-                    return EmptyId.Value.CompareTo(other.EmptyId.Value);
-                }
-
-                return 1; // The other is not an empty node
-            }
-
-            return 0;
+            return Start.CompareTo(other.Start);
         }
 
-        return Start.CompareTo(other.Start);
+        if (End != other.End)
+        {
+            return End.CompareTo(other.End);
+        }
+
+        if (EmptyId != other.EmptyId)
+        {
+            return EmptyId.GetValueOrDefault().CompareTo(other.EmptyId.GetValueOrDefault());
+        }
+
+        return 0;
     }
 
     public override bool Equals(object? obj)
