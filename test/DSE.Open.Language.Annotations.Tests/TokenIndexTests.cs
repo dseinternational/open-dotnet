@@ -33,4 +33,19 @@ public class TokenIndexTests
 
         Assert.Equal(value, str);
     }
+
+    [Fact]
+    public void TryParse_WithString()
+    {
+        // Arrange
+        var expected = new TokenIndex(1, 2);
+        var indexStr = expected.ToString();
+
+        // Act
+        var result = TokenIndex.TryParse(indexStr, null, out var actual);
+
+        // Assert
+        Assert.True(result);
+        Assert.Equal(expected, actual);
+    }
 }

@@ -328,7 +328,13 @@ public readonly struct TokenIndex
         IFormatProvider? provider,
         out TokenIndex result)
     {
-        throw new NotImplementedException();
+        if (s is null)
+        {
+            result = default;
+            return false;
+        }
+
+        return TryParse(s.AsSpan(), provider, out result);
     }
 
     public static TokenIndex FromInt32(int index)
