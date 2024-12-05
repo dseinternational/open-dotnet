@@ -31,4 +31,5 @@ namespace DSE.Open.Observations;
 [JsonSerializable(typeof(Observation<Binary, SpeechSound>))]
 [JsonSerializable(typeof(Observation<Binary, WordId>))]
 [JsonSerializable(typeof(Observation<Binary>))]
+[JsonSerializable(typeof(Observation))]
 public sealed partial class JsonContext : JsonSerializerContext;

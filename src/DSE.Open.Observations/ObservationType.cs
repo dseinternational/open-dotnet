@@ -65,6 +65,11 @@ public enum ObservationType
     Count = 2001,
 
     /// <summary>
+    /// Gets the type id for an <see cref="Observation{TValue}"/> with an <see cref="Observations.Amount"/> value.
+    /// </summary>
+    Amount = 2010,
+
+    /// <summary>
     /// Gets the type id for an <see cref="Observation{TValue}"/> with a <see cref="Observations.SpeechClarity"/> value.
     /// </summary>
     SpeechClarity = 3001,
