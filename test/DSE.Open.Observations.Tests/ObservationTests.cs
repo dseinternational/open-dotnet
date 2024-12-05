@@ -3,6 +3,7 @@
 
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using DSE.Open.Language;
 using DSE.Open.Speech;
 using DSE.Open.Testing.Xunit;
 
@@ -35,5 +36,50 @@ public sealed class ObservationTests
         {
             AssertJson.Roundtrip(observation, JsonContext.Default.Observation);
         }
+    }
+
+    [Fact]
+    public void GetMeasurementHashCode_ShouldReturnMeasurementHashCode()
+    {
+        // Arrange
+        var observation = Observation.Create(TestMeasures.BinaryMeasure, true);
+        var expected = HashCode.Combine(observation.MeasureId);
+
+        // Act
+        var hashCode = observation.GetMeasurementHashCode();
+
+        // Assert
+        Assert.Equal(expected, hashCode);
+        Assert.Equal(expected, ((IObservation)observation).GetMeasurementHashCode());
+    }
+
+    [Fact]
+    public void GetMeasurementHashCode_WithParam_ShouldReturnMeasurementAndParamHashCode()
+    {
+        // Arrange
+        var obs = Observation.Create(TestMeasures.BinarySpeechSoundMeasure, Phonemes.English.ay.Abstraction, true);
+        var expected = HashCode.Combine(HashCode.Combine(obs.MeasureId), obs.Parameter);
+
+        // Act
+        var binarySpeechSoundHashCode = obs.GetMeasurementHashCode();
+
+        // Assert
+        Assert.Equal(expected, binarySpeechSoundHashCode);
+        Assert.Equal(expected, ((IObservation)obs).GetMeasurementHashCode());
+    }
+
+    [Fact]
+    public void GetMeasurementHashCode_ShouldDistinguishByParam()
+    {
+        // Arrange
+        var obs1 = Observation.Create(TestMeasures.BinarySpeechSoundMeasure, Phonemes.English.ay.Abstraction, true);
+        var obs2 = Observation.Create(TestMeasures.BinarySpeechSoundMeasure, Phonemes.English.ch.Abstraction, true);
+
+        // Act
+        var obs1HashCode = obs1.GetMeasurementHashCode();
+        var obs2HashCode = obs2.GetMeasurementHashCode();
+
+        // Assert
+        Assert.NotEqual(obs1HashCode, obs2HashCode);
     }
 }

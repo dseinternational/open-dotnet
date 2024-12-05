@@ -252,11 +252,6 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
             RepeatableHash64Provider.Default.GetRepeatableHashCode(Time),
             RepeatableHash64Provider.Default.GetRepeatableHashCode(MeasureId));
     }
-
-    int IObservation.GetMeasurementHashCode()
-    {
-        throw new NotImplementedException();
-    }
 }
 
 /// <summary>
@@ -492,7 +487,7 @@ public sealed class Observation<TValue, TParam>
     /// <inheritdoc />
     protected override int GetMeasurementHashCodeCore()
     {
-        return HashCode.Combine(base.GetMeasurementHashCodeCore, Parameter);
+        return HashCode.Combine(base.GetMeasurementHashCodeCore(), Parameter);
     }
 
     static Observation<TValue, TParam> IObservationFactory<Observation<TValue, TParam>, TValue, TParam>.Create(
