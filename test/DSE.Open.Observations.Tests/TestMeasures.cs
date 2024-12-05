@@ -68,4 +68,9 @@ public static class TestMeasures
         "Test measure",
         "[subject] does something");
 
+    public static readonly Measure<Amount> AmountMeasure = new(
+        new Uri("https://schema-test.dseapi.app/testing/amount-measure"),
+        MeasurementLevel.Interval,
+        "Test measure",
+        "[subject] does something");
 }

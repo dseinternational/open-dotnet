@@ -29,6 +29,7 @@ namespace DSE.Open.Observations;
 [JsonDerivedType(typeof(Observation<BehaviorFrequency, WordId>), (int)ObservationType.BehaviorFrequencyWord)]
 [JsonDerivedType(typeof(Observation<BehaviorFrequency, SentenceId>), (int)ObservationType.BehaviorFrequencySentence)]
 [JsonDerivedType(typeof(Observation<Count>), (int)ObservationType.Count)]
+[JsonDerivedType(typeof(Observation<Amount>), (int)ObservationType.Amount)]
 [JsonDerivedType(typeof(Observation<SpeechClarity>), (int)ObservationType.SpeechClarity)]
 [JsonDerivedType(typeof(Observation<SpeechClarity, SpeechSound>), (int)ObservationType.SpeechClaritySpeechSound)]
 [JsonDerivedType(typeof(Observation<SpeechClarity, WordId>), (int)ObservationType.SpeechClarityWord)]

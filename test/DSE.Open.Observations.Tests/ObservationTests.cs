@@ -2,7 +2,9 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using DSE.Open.Speech;
+using DSE.Open.Testing.Xunit;
 
 namespace DSE.Open.Observations;
 
@@ -18,27 +20,20 @@ public sealed class ObservationTests
     }
 
     [Fact]
-    public void SerializeDeserializeCollection()
+    public void JsonRoundtrip()
     {
         Observation[] observations =
         [
             Observation.Create(TestMeasures.BinaryMeasure, true),
-            Observation.Create(TestMeasures.CountMeasure,(Count)42),
+            Observation.Create(TestMeasures.CountMeasure, (Count)42),
+            Observation.Create(TestMeasures.AmountMeasure, (Amount)42.0m),
             Observation.Create(TestMeasures.BinarySpeechSoundMeasure, Phonemes.English.ay.Abstraction, true),
             Observation.Create(TestMeasures.BinarySpeechSoundMeasure, Phonemes.English.ch.Abstraction, false),
         ];
 
-        var json = JsonSerializer.Serialize(observations);
-
-        var deserialized = JsonSerializer.Deserialize<Observation[]>(json);
-
-        Assert.NotNull(deserialized);
-
-        Assert.Equal(observations.Length, deserialized.Length);
-
-        for (var i = 0; i < deserialized.Length; i++)
+        foreach (var observation in observations)
         {
-            Assert.Equal(observations[i], deserialized[i]);
+            AssertJson.Roundtrip(observation, JsonContext.Default.Observation);
         }
     }
 }
