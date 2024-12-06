@@ -16,7 +16,7 @@ public class DomainEventHandlerFake : IDomainEventMessageHandler<DomainEventFake
 
     public ValueTask HandleAsync(DomainEventFake message, CancellationToken cancellationToken = default)
     {
-        _state.Add(message.Instance.ToString(), message);
+        _ = _state.TryAdd(message.Instance.ToString(), message);
         return ValueTask.CompletedTask;
     }
 }
