@@ -32,4 +32,7 @@ namespace DSE.Open.Observations;
 [JsonSerializable(typeof(Observation<Binary, WordId>))]
 [JsonSerializable(typeof(Observation<Binary>))]
 [JsonSerializable(typeof(Observation))]
+[JsonSerializable(typeof(IObservation))]
+[JsonSerializable(typeof(Snapshot<Observation<Count>>))]
+[JsonSerializable(typeof(ISnapshot))]
 public sealed partial class JsonContext : JsonSerializerContext;

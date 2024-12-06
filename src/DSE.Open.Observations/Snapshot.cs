@@ -33,6 +33,7 @@ public abstract class Snapshot : IEquatable<Snapshot>, ISnapshot
     [JsonConverter(typeof(JsonDateTimeOffsetUnixTimeMillisecondsConverter))]
     public DateTimeOffset Time { get; }
 
+    [JsonPropertyName("o")]
     public IObservation Observation { get; }
 
     public bool Equals(Snapshot? other)
