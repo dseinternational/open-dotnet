@@ -1,6 +1,9 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Text.Json.Serialization;
+using DSE.Open.Text.Json.Serialization;
+
 namespace DSE.Open.Observations;
 
 /// <summary>
@@ -9,18 +12,27 @@ namespace DSE.Open.Observations;
 /// </summary>
 public interface IObservation
 {
+    [JsonPropertyName("i")]
     ObservationId Id { get; }
 
+    [JsonPropertyName("m")]
     MeasureId MeasureId { get; }
 
+    [JsonPropertyName("t")]
+    [JsonConverter(typeof(JsonDateTimeOffsetUnixTimeMillisecondsConverter))]
     DateTimeOffset Time { get; }
 
     int GetMeasurementHashCode();
 
+    [JsonPropertyName("v")]
     object Value { get; }
 
+    [JsonPropertyName("p")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     object? Parameter { get; }
 
+    [JsonPropertyName("p2")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     object? Parameter2 { get; }
 }
 
