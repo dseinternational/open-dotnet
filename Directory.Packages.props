@@ -11,7 +11,7 @@
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0-preview3" />
     <PackageVersion Include="coverlet.collector" Version="6.0.2" />
     <PackageVersion Include="FluentAssertions" Version="7.0.0" />
-    <PackageVersion Include="Google.Protobuf" Version="3.29.0" />
+    <PackageVersion Include="Google.Protobuf" Version="3.29.1" />
     <PackageVersion Include="Iced" Version="1.21.0" />
     <PackageVersion Include="Microsoft.Bcl.AsyncInterfaces" Version="9.0.0" />
     <PackageVersion Include="Microsoft.Bcl.TimeProvider" Version="9.0.0" />
@@ -39,9 +39,9 @@
     <PackageVersion Include="Microsoft.Extensions.TimeProvider.Testing" Version="9.0.0" />
     <PackageVersion Include="Microsoft.Identity.Client" Version="4.66.2" />
     <PackageVersion Include="Microsoft.Identity.Client.Extensions.Msal" Version="4.66.2" />
-    <PackageVersion Include="Microsoft.IdentityModel.Abstractions" Version="8.2.1" />
-    <PackageVersion Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.2.1" />
-    <PackageVersion Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.2.1" />
+    <PackageVersion Include="Microsoft.IdentityModel.Abstractions" Version="8.3.0" />
+    <PackageVersion Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.3.0" />
+    <PackageVersion Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.3.0" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
     <PackageVersion Include="Microsoft.NETCore.Platforms" Version="8.0.0-preview.7.23375.6" />
     <PackageVersion Include="Microsoft.Testing.Extensions.CodeCoverage" Version="17.13.1" />
@@ -56,7 +56,7 @@
     <PackageVersion Include="Polly.Extensions.Http" Version="3.0.0" />
     <PackageVersion Include="pythonnet" Version="3.1.0-preview2024-09-06" />
     <PackageVersion Include="SharpZipLib" Version="1.4.2" />
-    <PackageVersion Include="SkiaSharp" Version="3.118.0-preview.1.2" />
+    <PackageVersion Include="SkiaSharp" Version="3.118.0-preview.2.3" />
     <PackageVersion Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.10" />
     <PackageVersion Include="System.ClientModel" Version="1.2.1" />
     <PackageVersion Include="System.Collections.Immutable" Version="9.0.0" />
@@ -75,8 +75,8 @@
     <PackageVersion Include="System.Text.Encoding.CodePages" Version="9.0.0" />
     <PackageVersion Include="System.Text.Encodings.Web" Version="9.0.0" />
     <PackageVersion Include="System.Text.Json" Version="9.0.0" />
-    <PackageVersion Include="TorchSharp" Version="0.103.1" />
-    <PackageVersion Include="TorchSharp-cpu" Version="0.103.1" />
+    <PackageVersion Include="TorchSharp" Version="0.104.0" />
+    <PackageVersion Include="TorchSharp-cpu" Version="0.104.0" />
     <PackageVersion Include="Verify.XunitV3" Version="28.4.0" />
     <PackageVersion Include="xunit.analyzers" Version="1.17.0" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.0.0-pre.49" />
