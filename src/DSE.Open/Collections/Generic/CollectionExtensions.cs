@@ -6,6 +6,7 @@ using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 
 namespace DSE.Open.Collections.Generic;
+
 public static partial class CollectionExtensions
 {
     private static readonly ThreadLocal<Random> s_random =
@@ -14,6 +15,11 @@ public static partial class CollectionExtensions
     public static void AddRange<T>(this ICollection<T> collection, IEnumerable<T>? values)
     {
         ArgumentNullException.ThrowIfNull(collection);
+
+        if (collection.IsReadOnly)
+        {
+            ThrowHelper.ThrowNotSupportedException($"Cannot {nameof(AddRange)} to a read-only collection.");
+        }
 
         if (values is null)
         {
