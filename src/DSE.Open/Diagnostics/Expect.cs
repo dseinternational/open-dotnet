@@ -15,7 +15,7 @@ public static class Expect
     /// <param name="condition">The condition to check.</param>
     /// <param name="message">The message to include in the exception.</param>
     /// <exception cref="UnexpectedConditionException">Thrown when <paramref name="condition"/> is true.</exception>
-    public static void True(bool condition, [CallerArgumentExpression(nameof(condition))] string? message = null)
+    public static void True([DoesNotReturnIf(false)] bool condition, [CallerArgumentExpression(nameof(condition))] string? message = null)
     {
         UnexpectedConditionException.ThrowIf(!condition, message);
     }
@@ -26,7 +26,7 @@ public static class Expect
     /// <param name="condition">The condition to check.</param>
     /// <param name="message">The message to include in the exception.</param>
     /// <exception cref="UnexpectedConditionException">Thrown when <paramref name="condition"/> is true.</exception>
-    public static void False(bool condition, [CallerArgumentExpression(nameof(condition))] string? message = null)
+    public static void False([DoesNotReturnIf(true)] bool condition, [CallerArgumentExpression(nameof(condition))] string? message = null)
     {
         True(!condition, message);
     }
