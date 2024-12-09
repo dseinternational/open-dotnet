@@ -26,7 +26,7 @@ public class UnexpectedConditionException : Exception
         return message ?? "Encountered an unexpected condition.";
     }
 
-    public static void ThrowIf(bool condition, [CallerArgumentExpression(nameof(condition))] string? message = null)
+    public static void ThrowIf([DoesNotReturnIf(true)] bool condition, [CallerArgumentExpression(nameof(condition))] string? message = null)
     {
         if (condition)
         {
