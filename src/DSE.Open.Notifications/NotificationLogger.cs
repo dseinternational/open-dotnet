@@ -92,6 +92,35 @@ public static partial class NotificationLogger
             notification.Message);
     }
 
+    /// <summary>
+    /// Logs the notification using the specified logger, mapping the notification level to the appropriate log level.
+    /// </summary>
+    /// <param name="logger"></param>
+    /// <param name="notification"></param>
+    /// <exception cref="ArgumentOutOfRangeException">Thrown when the notification level is not recognised.</exception>
+    public static void Log(ILogger logger, INotification notification)
+    {
+        ArgumentNullException.ThrowIfNull(logger);
+        ArgumentNullException.ThrowIfNull(notification);
+
+        var logLevel = notification.Level switch
+        {
+            NotificationLevel.Trace => LogLevel.Trace,
+            NotificationLevel.Debug => LogLevel.Debug,
+            NotificationLevel.Information => LogLevel.Information,
+            NotificationLevel.Warning => LogLevel.Warning,
+            NotificationLevel.Error => LogLevel.Error,
+            NotificationLevel.Critical => LogLevel.Critical,
+            _ => throw new ArgumentOutOfRangeException(nameof(notification), notification.Level, "Invalid notification level")
+        };
+
+        Log(
+            logger,
+            logLevel,
+            notification.Code,
+            notification.Message);
+    }
+
     [LoggerMessage(message: "[{diagnosticCode}] {message}")]
     public static partial void Log(ILogger logger, LogLevel level, DiagnosticCode diagnosticCode, string message);
 }
