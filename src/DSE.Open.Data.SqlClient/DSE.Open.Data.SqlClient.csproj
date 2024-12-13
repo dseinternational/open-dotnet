@@ -21,8 +21,10 @@
     <PackageReference Include="System.Runtime.Caching" />
     <PackageReference Include="System.Text.Encoding.CodePages" />
     <PackageReference Include="System.Text.Encodings.Web" />
+    <PackageReference Include="System.Threading.Tasks.Extensions" />
     <PackageReference Include="System.Memory" />
     <PackageReference Include="System.Memory.Data" />
+    <PackageReference Include="System.Numerics.Vectors" />
     <PackageReference Include="System.Text.Json" />
   </ItemGroup>
 
