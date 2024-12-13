@@ -91,12 +91,12 @@ jobs:
         env:
           STANZA_NLP: en
 
-      # - name: Upload coverage reports to Codecov
-      #   if: matrix.configuration == 'Debug'
-      #   uses: codecov/codecov-action@v4
-      #   with:
-      #     token: ${{ secrets.CODECOV_TOKEN }}
-      #     directory: ${{ github.workspace }}/coverage
+      - name: Upload coverage reports to Codecov
+        if: matrix.configuration == 'Debug'
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          directory: ${{ github.workspace }}/coverage
 
       - name: Pack libraries and source generators
         if: matrix.configuration == 'Release' && matrix.os =='ubuntu-24.04'
