@@ -129,7 +129,7 @@ public class StandardTimeZoneInfo
         new("South Africa Standard Time", "(UTC+02:00) Harare, Pretoria", "South Africa Standard Time", "South Africa Summer Time", "02:00:00", false),
         new("FLE Standard Time", "(UTC+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius", "FLE Standard Time", "FLE Summer Time", "02:00:00", true),
         new("Israel Standard Time", "(UTC+02:00) Jerusalem", "Jerusalem Standard Time", "Jerusalem Summer Time", "02:00:00", true),
-        new("South Sudan Standard Time", "(UTC+02:00) Juba", "South Sudan Standard Time", "South Sudan Daylight Time", "02:00:00", true),
+        // new("South Sudan Standard Time", "(UTC+02:00) Juba", "South Sudan Standard Time", "South Sudan Daylight Time", "02:00:00", true),
         new("Kaliningrad Standard Time", "(UTC+02:00) Kaliningrad", "Russia TZ 1 Standard Time", "Russia TZ 1 Summer Time", "02:00:00", true),
         new("Sudan Standard Time", "(UTC+02:00) Khartoum", "Sudan Standard Time", "Sudan Daylight Time", "02:00:00", true),
         new("Libya Standard Time", "(UTC+02:00) Tripoli", "Libya Standard Time", "Libya Summer Time", "02:00:00", true),
