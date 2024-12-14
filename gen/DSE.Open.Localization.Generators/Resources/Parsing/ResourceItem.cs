@@ -30,6 +30,11 @@ public sealed record ResourceItem
         return Key.GetHashCode();
     }
 
+    public bool Equals(ResourceItem? other)
+    {
+        return other is not null && Key == other.Key;
+    }
+
     /// <summary>
     /// Creates a new <see cref="ResourceItem"/>
     /// </summary>
