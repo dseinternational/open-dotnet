@@ -115,7 +115,7 @@ public abstract class RepeatableHash64Provider
 
     public ulong GetRepeatableHashCode(CharSequence value)
     {
-        return GetRepeatableHashCode(value.AsSpan());
+        return GetRepeatableHashCode(value.Span);
     }
 
     public ulong GetRepeatableHashCode(AsciiString value)

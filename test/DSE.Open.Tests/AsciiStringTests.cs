@@ -228,7 +228,7 @@ public class AsciiStringTests
         var result = asciiString.ToCharSequence();
 
         // Assert
-        Assert.Equal(value.ToCharArray(), result.AsSpan().ToArray());
+        Assert.Equal(value.ToCharArray(), result.Span.ToArray());
     }
 
     [Fact]
@@ -266,7 +266,7 @@ public class AsciiStringTests
         var bytes = "abcdefghijklmnopqrstuvwxyz"u8;
 
         // Act
-        var result = AsciiString.TryParse(bytes, default, out var value);
+        var result = AsciiString.TryParse(bytes, default, out _);
 
         // Assert
         Assert.True(result);

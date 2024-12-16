@@ -59,14 +59,14 @@ public readonly partial struct Label : IComparableValue<Label, CharSequence>, IR
     {
         get
         {
-            var span = _value.AsSpan();
+            var span = _value.Span;
             return span.Length > MinLength && span[2..].Contains(':');
         }
     }
 
     public ReadOnlySpan<char> AsSpan()
     {
-        return _value.AsSpan();
+        return _value.Span;
     }
 
     public ReadOnlyMemory<char> AsMemory()
@@ -76,7 +76,7 @@ public readonly partial struct Label : IComparableValue<Label, CharSequence>, IR
 
     public ReadOnlySpan<char> GetPrefix()
     {
-        var span = _value.AsSpan();
+        var span = _value.Span;
 
         if (span.Length <= MinLength)
         {
@@ -111,7 +111,7 @@ public readonly partial struct Label : IComparableValue<Label, CharSequence>, IR
 
         var nonWhitespaceCount = 0;
 
-        foreach (var c in value.AsSpan())
+        foreach (var c in value.Span)
         {
             if (char.IsWhiteSpace(c))
             {
@@ -163,7 +163,7 @@ public readonly partial struct Label : IComparableValue<Label, CharSequence>, IR
 
     public static explicit operator ReadOnlySpan<char>(Label label)
     {
-        return label._value.AsSpan();
+        return label._value.Span;
     }
 
 #pragma warning restore CA2225 // Operator overloads have named alternates

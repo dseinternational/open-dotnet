@@ -26,7 +26,7 @@ public readonly partial struct ContainsPattern : IEquatableValue<ContainsPattern
             return false;
         }
 
-        foreach (var c in value.AsSpan())
+        foreach (var c in value.Span)
         {
             if (char.IsLetterOrDigit(c) || char.IsWhiteSpace(c) || s_validSymbols.Contains(c))
             {

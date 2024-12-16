@@ -104,7 +104,7 @@ public readonly partial struct WordId
     /// <returns></returns>
     public static WordId FromWord(WordMeaningId meaningId, WordText word, LanguageTag language)
     {
-        ReadOnlySpan<char> s = [.. ((CharSequence)word).AsSpan()];
+        ReadOnlySpan<char> s = [.. ((CharSequence)word).Span];
         return FromWord(meaningId, s, language);
     }
 

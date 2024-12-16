@@ -47,6 +47,8 @@ public readonly partial struct WordText
 
     public bool IsTemplate => !_value.IsEmpty && _value[0] == '{';
 
+    public ReadOnlySpan<char> Span => _value.Span;
+
     public static bool IsValidValue(CharSequence value)
     {
         if (value.IsEmpty || value.Length > MaxSerializedCharLength)

@@ -240,7 +240,7 @@ public readonly struct SpeechSymbolSequence
         CharSequence chars,
         SpeechSymbolSequenceComparison comparison = SpeechSymbolSequenceComparison.Exact)
     {
-        return Equals(chars.AsSpan(), comparison);
+        return Equals(chars.Span, comparison);
     }
 
     public bool Equals(
@@ -735,7 +735,6 @@ public readonly struct SpeechSymbolSequence
         charsWritten = 0;
         return false;
     }
-
 
     public bool TryFormat(
         Span<byte> utf8Destination,

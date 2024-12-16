@@ -84,10 +84,13 @@ public readonly struct CharSequence
         return _value;
     }
 
+    [Obsolete("Use Span property instead.")]
     public ReadOnlySpan<char> AsSpan()
     {
         return _value.Span;
     }
+
+    public ReadOnlySpan<char> Span => _value.Span;
 
     public int GetCharCount(ReadOnlySpan<char> format, IFormatProvider? provider)
     {
@@ -198,12 +201,12 @@ public readonly struct CharSequence
 
     public bool EndsWith(CharSequence value)
     {
-        return EndsWith(value.AsSpan(), StringComparison.Ordinal);
+        return EndsWith(value.Span, StringComparison.Ordinal);
     }
 
     public bool EndsWith(CharSequence value, StringComparison comparisonType)
     {
-        return _value.Span.EndsWith(value.AsSpan(), comparisonType);
+        return _value.Span.EndsWith(value.Span, comparisonType);
     }
 
     public bool StartsWith(ReadOnlySpan<char> value)
@@ -218,12 +221,12 @@ public readonly struct CharSequence
 
     public bool StartsWith(CharSequence value)
     {
-        return StartsWith(value.AsSpan(), StringComparison.Ordinal);
+        return StartsWith(value.Span, StringComparison.Ordinal);
     }
 
     public bool StartsWith(CharSequence value, StringComparison comparisonType)
     {
-        return _value.Span.StartsWith(value.AsSpan(), comparisonType);
+        return _value.Span.StartsWith(value.Span, comparisonType);
     }
 
     /// <summary>
@@ -356,14 +359,15 @@ public readonly struct CharSequence
         return !(left == right);
     }
 
-#pragma warning disable CA2225 // Operator overloads have named alternates (Parse)
+    public static CharSequence FromString(string value)
+    {
+        return Parse(value, null);
+    }
 
     public static implicit operator CharSequence(string value)
     {
         return Parse(value, null);
     }
-
-#pragma warning restore CA2225 // Operator overloads have named alternates
 
     public static bool operator <(CharSequence left, CharSequence right)
     {
