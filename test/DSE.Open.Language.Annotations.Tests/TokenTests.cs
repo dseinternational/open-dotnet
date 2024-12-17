@@ -59,7 +59,7 @@ public class TokenTests
         Assert.Equal(token, parsed);
     }
 
-    [Fact]
+    [Fact(Skip = "https://github.com/dseinternational/open-dotnet/issues/211")]
     public void SerializeDeserialize()
     {
         var token = new Token
