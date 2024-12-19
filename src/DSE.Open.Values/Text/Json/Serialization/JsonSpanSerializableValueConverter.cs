@@ -40,12 +40,14 @@ public sealed class JsonSpanSerializableValueConverter<TValue, T> : JsonConverte
         {
             var chars = reader.CopyString(buffer);
 
-            var success = TValue.TryParse(buffer[..chars], default, out var value);
+            var span = buffer[..chars];
+
+            var success = TValue.TryParse(span, default, out var value);
 
             return success switch
             {
                 true => value,
-                _ => throw new FormatException($"Could not convert {typeof(TValue).Name} value: {buffer}")
+                _ => throw new FormatException($"Could not convert {typeof(TValue).Name} value: {span}")
             };
         }
     }
