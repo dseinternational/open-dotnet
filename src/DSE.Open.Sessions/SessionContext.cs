@@ -87,4 +87,9 @@ public sealed class SessionContext
             _storageTokens[key] = value;
         }
     }
+
+    public override string ToString()
+    {
+        return $$"""SessionContext { Id = {{Id}}, Created = {{Created}}, StorageTokens.Count =  {{_storageTokens.Count}} }""";
+    }
 }
