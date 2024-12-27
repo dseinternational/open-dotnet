@@ -14,9 +14,9 @@ using DSE.Open.Values.Text.Json.Serialization;
 namespace DSE.Open.Values;
 
 [EquatableValue]
-[JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<Identifier, AsciiString>))]
+[JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<Identifier, global::DSE.Open.AsciiString>))]
 [StructLayout(LayoutKind.Sequential)]
-public readonly partial struct Identifier : IEquatableValue<Identifier, AsciiString>,
+public readonly partial struct Identifier : IEquatableValue<Identifier, global::DSE.Open.AsciiString>,
     IIdentifier<Identifier>,
     IEquatable<string>,
     IUtf8SpanSerializable<Identifier>,

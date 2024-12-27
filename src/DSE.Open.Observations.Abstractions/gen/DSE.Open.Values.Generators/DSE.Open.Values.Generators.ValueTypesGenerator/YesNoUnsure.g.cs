@@ -6,18 +6,14 @@
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
 
-using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-
 namespace DSE.Open.Observations;
 
-[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<YesNoUnsure, AsciiString>))]
+[global::System.ComponentModel.TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<YesNoUnsure, global::DSE.Open.AsciiString>))]
 public readonly partial struct YesNoUnsure
 {
-    private readonly AsciiString _value;
+    private readonly global::DSE.Open.AsciiString _value;
 
-    private YesNoUnsure(AsciiString value, bool skipValidation = false)
+    private YesNoUnsure(global::DSE.Open.AsciiString value, bool skipValidation = false)
     {
         if (!skipValidation)
         {
@@ -27,16 +23,16 @@ public readonly partial struct YesNoUnsure
         _value = value;
     }
 
-    private static void EnsureIsValidValue(AsciiString value)
+    private static void EnsureIsValidValue(global::DSE.Open.AsciiString value)
     {
         if (!IsValidValue(value))
         {
-            throw new ArgumentOutOfRangeException(nameof(value), value,
+            throw new global::System.ArgumentOutOfRangeException(nameof(value), value,
                 $"'{value}' is not a valid {nameof(YesNoUnsure)} value");
         }
     }
 
-    public static bool TryFromValue(AsciiString value, out YesNoUnsure result)
+    public static bool TryFromValue(global::DSE.Open.AsciiString value, out YesNoUnsure result)
     {
         if (IsValidValue(value))
         {
@@ -48,19 +44,19 @@ public readonly partial struct YesNoUnsure
         return false;
     }
 
-    public static YesNoUnsure FromValue(AsciiString value)
+    public static YesNoUnsure FromValue(global::DSE.Open.AsciiString value)
     {
         EnsureIsValidValue(value);
         return new(value, true);
     }
 
-    public static explicit operator YesNoUnsure(AsciiString value)
+    public static explicit operator YesNoUnsure(global::DSE.Open.AsciiString value)
         => FromValue(value);
 
-    static AsciiString global::DSE.Open.IConvertibleTo<YesNoUnsure, AsciiString>.ConvertTo(YesNoUnsure value)
-        => (AsciiString)value;
+    static global::DSE.Open.AsciiString global::DSE.Open.IConvertibleTo<YesNoUnsure, global::DSE.Open.AsciiString>.ConvertTo(YesNoUnsure value)
+        => (global::DSE.Open.AsciiString)value;
 
-    public static implicit operator AsciiString(YesNoUnsure value)
+    public static implicit operator global::DSE.Open.AsciiString(YesNoUnsure value)
     {
         return value._value;
     }
@@ -85,42 +81,42 @@ public readonly partial struct YesNoUnsure
     // ISpanFormattable
 
     public bool TryFormat(
-        Span<char> destination,
+        global::System.Span<char> destination,
         out int charsWritten,
-        ReadOnlySpan<char> format,
-        IFormatProvider? provider)
+        global::System.ReadOnlySpan<char> format,
+        global::System.IFormatProvider? provider)
     {
-        return ((ISpanFormattable)_value).TryFormat(destination, out charsWritten, format, provider);
+        return ((global::System.ISpanFormattable)_value).TryFormat(destination, out charsWritten, format, provider);
     }
 
     public bool TryFormat(
-        Span<char> destination,
+        global::System.Span<char> destination,
         out int charsWritten)
         => TryFormat(destination, out charsWritten, default, default);
 
     public bool TryFormatInvariant(
-        Span<char> destination,
+        global::System.Span<char> destination,
         out int charsWritten,
-        ReadOnlySpan<char> format)
-        => TryFormat(destination, out charsWritten, format, System.Globalization.CultureInfo.InvariantCulture);
+        global::System.Span<char> format)
+        => TryFormat(destination, out charsWritten, format, global::System.Globalization.CultureInfo.InvariantCulture);
 
     public bool TryFormatInvariant(
-        Span<char> destination,
+        global::System.Span<char> destination,
         out int charsWritten)
         => TryFormatInvariant(destination, out charsWritten, default);
 
     /// <summary>
     /// Gets a representation of the <see cref="YesNoUnsure"/> value as a string with formatting options.
     /// </summary>
-    [SkipLocalsInit]
-    public string ToString(string? format, IFormatProvider? formatProvider)
+    [global::System.Runtime.CompilerServices.SkipLocalsInit]
+    public string ToString(string? format, global::System.IFormatProvider? formatProvider)
     {
-        return ((IFormattable)_value).ToString(format, formatProvider);
+        return ((global::System.IFormattable)_value).ToString(format, formatProvider);
     }
 
     public string ToStringInvariant(string? format)
     {
-        return ToString(format, System.Globalization.CultureInfo.InvariantCulture);
+        return ToString(format, global::System.Globalization.CultureInfo.InvariantCulture);
     }
 
     public string ToStringInvariant()
@@ -141,42 +137,42 @@ public readonly partial struct YesNoUnsure
 
     // ISpanParsable<YesNoUnsure>
 
-    public static YesNoUnsure Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<YesNoUnsure, AsciiString>(s, provider);
+    public static YesNoUnsure Parse(global::System.ReadOnlySpan<char> s, global::System.IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<YesNoUnsure, global::DSE.Open.AsciiString>(s, provider);
 
-    public static YesNoUnsure ParseInvariant(ReadOnlySpan<char> s)
-        => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
+    public static YesNoUnsure ParseInvariant(global::System.ReadOnlySpan<char> s)
+        => Parse(s, global::System.Globalization.CultureInfo.InvariantCulture);
 
     public static bool TryParse(
-        ReadOnlySpan<char> s,
-        IFormatProvider? provider,
+        global::System.ReadOnlySpan<char> s,
+        global::System.IFormatProvider? provider,
         out YesNoUnsure result)
-        => global::DSE.Open.Values.ValueParser.TryParse<YesNoUnsure, AsciiString>(s, provider, out result);
+        => global::DSE.Open.Values.ValueParser.TryParse<YesNoUnsure, global::DSE.Open.AsciiString>(s, provider, out result);
 
     public static bool TryParse(
-        ReadOnlySpan<char> s,
+        global::System.ReadOnlySpan<char> s,
         out YesNoUnsure result)
         => TryParse(s, default, out result);
 
     public static bool TryParseInvariant(
-        ReadOnlySpan<char> s,
+        global::System.ReadOnlySpan<char> s,
         out YesNoUnsure result)
-        => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
+        => TryParse(s, global::System.Globalization.CultureInfo.InvariantCulture, out result);
 
     // IParsable<YesNoUnsure>
 
-    public static YesNoUnsure Parse(string s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<YesNoUnsure, AsciiString>(s, provider);
+    public static YesNoUnsure Parse(string s, global::System.IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<YesNoUnsure, global::DSE.Open.AsciiString>(s, provider);
 
     public static YesNoUnsure Parse(string s)
         => Parse(s, default);
 
     public static YesNoUnsure ParseInvariant(string s)
-        => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
+        => Parse(s, global::System.Globalization.CultureInfo.InvariantCulture);
 
     public static bool TryParse(
         string? s,
-        IFormatProvider? provider,
+        global::System.IFormatProvider? provider,
         out YesNoUnsure result)
     {
         if (s is null)
@@ -185,7 +181,7 @@ public readonly partial struct YesNoUnsure
             return false;
         }
     
-        return TryParse(s.AsSpan(), provider, out result);
+        return TryParse(global::System.MemoryExtensions.AsSpan(s), provider, out result);
     }
 
     public static bool TryParse(
@@ -196,29 +192,29 @@ public readonly partial struct YesNoUnsure
     public static bool TryParseInvariant(
         string? s,
         out YesNoUnsure result)
-        => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
+        => TryParse(s, global::System.Globalization.CultureInfo.InvariantCulture, out result);
 
     // IUtf8SpanFormattable
 
     public bool TryFormat(
-        Span<byte> utf8Destination,
+        global::System.Span<byte> utf8Destination,
         out int bytesWritten,
-        ReadOnlySpan<char> format,
-        IFormatProvider? provider)
-        => ((IUtf8SpanFormattable)_value).TryFormat(utf8Destination, out bytesWritten, format, provider);
+        global::System.ReadOnlySpan<char> format,
+        global::System.IFormatProvider? provider)
+        => ((global::System.IUtf8SpanFormattable)_value).TryFormat(utf8Destination, out bytesWritten, format, provider);
 
     // IUtf8SpanParsable<YesNoUnsure>
 
     public static YesNoUnsure Parse(
-        ReadOnlySpan<byte> utf8Source,
-        IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<YesNoUnsure, AsciiString>(utf8Source, provider);
+        global::System.ReadOnlySpan<byte> utf8Source,
+        global::System.IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<YesNoUnsure, global::DSE.Open.AsciiString>(utf8Source, provider);
 
     public static bool TryParse(
-        ReadOnlySpan<byte> utf8Source,
-        IFormatProvider? provider,
+        global::System.ReadOnlySpan<byte> utf8Source,
+        global::System.IFormatProvider? provider,
         out YesNoUnsure result)
-        => global::DSE.Open.Values.ValueParser.TryParse<YesNoUnsure, AsciiString>(utf8Source, provider, out result);
+        => global::DSE.Open.Values.ValueParser.TryParse<YesNoUnsure, global::DSE.Open.AsciiString>(utf8Source, provider, out result);
 
 }
 

@@ -6,18 +6,14 @@
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
 
-using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-
 namespace DSE.Open.Records;
 
-[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<HearingDiagnosisCode, ClinicalConceptCode>))]
+[global::System.ComponentModel.TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<HearingDiagnosisCode, global::DSE.Open.Records.ClinicalConceptCode>))]
 public readonly partial struct HearingDiagnosisCode
 {
-    private readonly ClinicalConceptCode _value;
+    private readonly global::DSE.Open.Records.ClinicalConceptCode _value;
 
-    private HearingDiagnosisCode(ClinicalConceptCode value, bool skipValidation = false)
+    private HearingDiagnosisCode(global::DSE.Open.Records.ClinicalConceptCode value, bool skipValidation = false)
     {
         if (!skipValidation)
         {
@@ -27,16 +23,16 @@ public readonly partial struct HearingDiagnosisCode
         _value = value;
     }
 
-    private static void EnsureIsValidValue(ClinicalConceptCode value)
+    private static void EnsureIsValidValue(global::DSE.Open.Records.ClinicalConceptCode value)
     {
         if (!IsValidValue(value))
         {
-            throw new ArgumentOutOfRangeException(nameof(value), value,
+            throw new global::System.ArgumentOutOfRangeException(nameof(value), value,
                 $"'{value}' is not a valid {nameof(HearingDiagnosisCode)} value");
         }
     }
 
-    public static bool TryFromValue(ClinicalConceptCode value, out HearingDiagnosisCode result)
+    public static bool TryFromValue(global::DSE.Open.Records.ClinicalConceptCode value, out HearingDiagnosisCode result)
     {
         if (IsValidValue(value))
         {
@@ -48,19 +44,19 @@ public readonly partial struct HearingDiagnosisCode
         return false;
     }
 
-    public static HearingDiagnosisCode FromValue(ClinicalConceptCode value)
+    public static HearingDiagnosisCode FromValue(global::DSE.Open.Records.ClinicalConceptCode value)
     {
         EnsureIsValidValue(value);
         return new(value, true);
     }
 
-    public static explicit operator HearingDiagnosisCode(ClinicalConceptCode value)
+    public static explicit operator HearingDiagnosisCode(global::DSE.Open.Records.ClinicalConceptCode value)
         => FromValue(value);
 
-    static ClinicalConceptCode global::DSE.Open.IConvertibleTo<HearingDiagnosisCode, ClinicalConceptCode>.ConvertTo(HearingDiagnosisCode value)
-        => (ClinicalConceptCode)value;
+    static global::DSE.Open.Records.ClinicalConceptCode global::DSE.Open.IConvertibleTo<HearingDiagnosisCode, global::DSE.Open.Records.ClinicalConceptCode>.ConvertTo(HearingDiagnosisCode value)
+        => (global::DSE.Open.Records.ClinicalConceptCode)value;
 
-    public static implicit operator ClinicalConceptCode(HearingDiagnosisCode value)
+    public static implicit operator global::DSE.Open.Records.ClinicalConceptCode(HearingDiagnosisCode value)
     {
         return value._value;
     }
@@ -85,42 +81,42 @@ public readonly partial struct HearingDiagnosisCode
     // ISpanFormattable
 
     public bool TryFormat(
-        Span<char> destination,
+        global::System.Span<char> destination,
         out int charsWritten,
-        ReadOnlySpan<char> format,
-        IFormatProvider? provider)
+        global::System.ReadOnlySpan<char> format,
+        global::System.IFormatProvider? provider)
     {
-        return ((ISpanFormattable)_value).TryFormat(destination, out charsWritten, format, provider);
+        return ((global::System.ISpanFormattable)_value).TryFormat(destination, out charsWritten, format, provider);
     }
 
     public bool TryFormat(
-        Span<char> destination,
+        global::System.Span<char> destination,
         out int charsWritten)
         => TryFormat(destination, out charsWritten, default, default);
 
     public bool TryFormatInvariant(
-        Span<char> destination,
+        global::System.Span<char> destination,
         out int charsWritten,
-        ReadOnlySpan<char> format)
-        => TryFormat(destination, out charsWritten, format, System.Globalization.CultureInfo.InvariantCulture);
+        global::System.Span<char> format)
+        => TryFormat(destination, out charsWritten, format, global::System.Globalization.CultureInfo.InvariantCulture);
 
     public bool TryFormatInvariant(
-        Span<char> destination,
+        global::System.Span<char> destination,
         out int charsWritten)
         => TryFormatInvariant(destination, out charsWritten, default);
 
     /// <summary>
     /// Gets a representation of the <see cref="HearingDiagnosisCode"/> value as a string with formatting options.
     /// </summary>
-    [SkipLocalsInit]
-    public string ToString(string? format, IFormatProvider? formatProvider)
+    [global::System.Runtime.CompilerServices.SkipLocalsInit]
+    public string ToString(string? format, global::System.IFormatProvider? formatProvider)
     {
-        return ((IFormattable)_value).ToString(format, formatProvider);
+        return ((global::System.IFormattable)_value).ToString(format, formatProvider);
     }
 
     public string ToStringInvariant(string? format)
     {
-        return ToString(format, System.Globalization.CultureInfo.InvariantCulture);
+        return ToString(format, global::System.Globalization.CultureInfo.InvariantCulture);
     }
 
     public string ToStringInvariant()
@@ -141,42 +137,42 @@ public readonly partial struct HearingDiagnosisCode
 
     // ISpanParsable<HearingDiagnosisCode>
 
-    public static HearingDiagnosisCode Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<HearingDiagnosisCode, ClinicalConceptCode>(s, provider);
+    public static HearingDiagnosisCode Parse(global::System.ReadOnlySpan<char> s, global::System.IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<HearingDiagnosisCode, global::DSE.Open.Records.ClinicalConceptCode>(s, provider);
 
-    public static HearingDiagnosisCode ParseInvariant(ReadOnlySpan<char> s)
-        => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
+    public static HearingDiagnosisCode ParseInvariant(global::System.ReadOnlySpan<char> s)
+        => Parse(s, global::System.Globalization.CultureInfo.InvariantCulture);
 
     public static bool TryParse(
-        ReadOnlySpan<char> s,
-        IFormatProvider? provider,
+        global::System.ReadOnlySpan<char> s,
+        global::System.IFormatProvider? provider,
         out HearingDiagnosisCode result)
-        => global::DSE.Open.Values.ValueParser.TryParse<HearingDiagnosisCode, ClinicalConceptCode>(s, provider, out result);
+        => global::DSE.Open.Values.ValueParser.TryParse<HearingDiagnosisCode, global::DSE.Open.Records.ClinicalConceptCode>(s, provider, out result);
 
     public static bool TryParse(
-        ReadOnlySpan<char> s,
+        global::System.ReadOnlySpan<char> s,
         out HearingDiagnosisCode result)
         => TryParse(s, default, out result);
 
     public static bool TryParseInvariant(
-        ReadOnlySpan<char> s,
+        global::System.ReadOnlySpan<char> s,
         out HearingDiagnosisCode result)
-        => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
+        => TryParse(s, global::System.Globalization.CultureInfo.InvariantCulture, out result);
 
     // IParsable<HearingDiagnosisCode>
 
-    public static HearingDiagnosisCode Parse(string s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<HearingDiagnosisCode, ClinicalConceptCode>(s, provider);
+    public static HearingDiagnosisCode Parse(string s, global::System.IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<HearingDiagnosisCode, global::DSE.Open.Records.ClinicalConceptCode>(s, provider);
 
     public static HearingDiagnosisCode Parse(string s)
         => Parse(s, default);
 
     public static HearingDiagnosisCode ParseInvariant(string s)
-        => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
+        => Parse(s, global::System.Globalization.CultureInfo.InvariantCulture);
 
     public static bool TryParse(
         string? s,
-        IFormatProvider? provider,
+        global::System.IFormatProvider? provider,
         out HearingDiagnosisCode result)
     {
         if (s is null)
@@ -185,7 +181,7 @@ public readonly partial struct HearingDiagnosisCode
             return false;
         }
     
-        return TryParse(s.AsSpan(), provider, out result);
+        return TryParse(global::System.MemoryExtensions.AsSpan(s), provider, out result);
     }
 
     public static bool TryParse(
@@ -196,29 +192,29 @@ public readonly partial struct HearingDiagnosisCode
     public static bool TryParseInvariant(
         string? s,
         out HearingDiagnosisCode result)
-        => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
+        => TryParse(s, global::System.Globalization.CultureInfo.InvariantCulture, out result);
 
     // IUtf8SpanFormattable
 
     public bool TryFormat(
-        Span<byte> utf8Destination,
+        global::System.Span<byte> utf8Destination,
         out int bytesWritten,
-        ReadOnlySpan<char> format,
-        IFormatProvider? provider)
-        => ((IUtf8SpanFormattable)_value).TryFormat(utf8Destination, out bytesWritten, format, provider);
+        global::System.ReadOnlySpan<char> format,
+        global::System.IFormatProvider? provider)
+        => ((global::System.IUtf8SpanFormattable)_value).TryFormat(utf8Destination, out bytesWritten, format, provider);
 
     // IUtf8SpanParsable<HearingDiagnosisCode>
 
     public static HearingDiagnosisCode Parse(
-        ReadOnlySpan<byte> utf8Source,
-        IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<HearingDiagnosisCode, ClinicalConceptCode>(utf8Source, provider);
+        global::System.ReadOnlySpan<byte> utf8Source,
+        global::System.IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<HearingDiagnosisCode, global::DSE.Open.Records.ClinicalConceptCode>(utf8Source, provider);
 
     public static bool TryParse(
-        ReadOnlySpan<byte> utf8Source,
-        IFormatProvider? provider,
+        global::System.ReadOnlySpan<byte> utf8Source,
+        global::System.IFormatProvider? provider,
         out HearingDiagnosisCode result)
-        => global::DSE.Open.Values.ValueParser.TryParse<HearingDiagnosisCode, ClinicalConceptCode>(utf8Source, provider, out result);
+        => global::DSE.Open.Values.ValueParser.TryParse<HearingDiagnosisCode, global::DSE.Open.Records.ClinicalConceptCode>(utf8Source, provider, out result);
 
 }
 

@@ -6,18 +6,14 @@
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
 
-using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-
 namespace DSE.Open.Speech;
 
-[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<SpeechSymbol, Char>))]
+[global::System.ComponentModel.TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<SpeechSymbol, char>))]
 public readonly partial struct SpeechSymbol
 {
-    private readonly Char _value;
+    private readonly char _value;
 
-    private SpeechSymbol(Char value, bool skipValidation = false)
+    private SpeechSymbol(char value, bool skipValidation = false)
     {
         if (!skipValidation)
         {
@@ -27,16 +23,16 @@ public readonly partial struct SpeechSymbol
         _value = value;
     }
 
-    private static void EnsureIsValidValue(Char value)
+    private static void EnsureIsValidValue(char value)
     {
         if (!IsValidValue(value))
         {
-            throw new ArgumentOutOfRangeException(nameof(value), value,
+            throw new global::System.ArgumentOutOfRangeException(nameof(value), value,
                 $"'{value}' is not a valid {nameof(SpeechSymbol)} value");
         }
     }
 
-    public static bool TryFromValue(Char value, out SpeechSymbol result)
+    public static bool TryFromValue(char value, out SpeechSymbol result)
     {
         if (IsValidValue(value))
         {
@@ -48,19 +44,19 @@ public readonly partial struct SpeechSymbol
         return false;
     }
 
-    public static SpeechSymbol FromValue(Char value)
+    public static SpeechSymbol FromValue(char value)
     {
         EnsureIsValidValue(value);
         return new(value, true);
     }
 
-    public static explicit operator SpeechSymbol(Char value)
+    public static explicit operator SpeechSymbol(char value)
         => FromValue(value);
 
-    static Char global::DSE.Open.IConvertibleTo<SpeechSymbol, Char>.ConvertTo(SpeechSymbol value)
-        => (Char)value;
+    static char global::DSE.Open.IConvertibleTo<SpeechSymbol, char>.ConvertTo(SpeechSymbol value)
+        => (char)value;
 
-    public static implicit operator Char(SpeechSymbol value)
+    public static implicit operator char(SpeechSymbol value)
     {
         return value._value;
     }
@@ -85,42 +81,42 @@ public readonly partial struct SpeechSymbol
     // ISpanFormattable
 
     public bool TryFormat(
-        Span<char> destination,
+        global::System.Span<char> destination,
         out int charsWritten,
-        ReadOnlySpan<char> format,
-        IFormatProvider? provider)
+        global::System.ReadOnlySpan<char> format,
+        global::System.IFormatProvider? provider)
     {
-        return ((ISpanFormattable)_value).TryFormat(destination, out charsWritten, format, provider);
+        return ((global::System.ISpanFormattable)_value).TryFormat(destination, out charsWritten, format, provider);
     }
 
     public bool TryFormat(
-        Span<char> destination,
+        global::System.Span<char> destination,
         out int charsWritten)
         => TryFormat(destination, out charsWritten, default, default);
 
     public bool TryFormatInvariant(
-        Span<char> destination,
+        global::System.Span<char> destination,
         out int charsWritten,
-        ReadOnlySpan<char> format)
-        => TryFormat(destination, out charsWritten, format, System.Globalization.CultureInfo.InvariantCulture);
+        global::System.Span<char> format)
+        => TryFormat(destination, out charsWritten, format, global::System.Globalization.CultureInfo.InvariantCulture);
 
     public bool TryFormatInvariant(
-        Span<char> destination,
+        global::System.Span<char> destination,
         out int charsWritten)
         => TryFormatInvariant(destination, out charsWritten, default);
 
     /// <summary>
     /// Gets a representation of the <see cref="SpeechSymbol"/> value as a string with formatting options.
     /// </summary>
-    [SkipLocalsInit]
-    public string ToString(string? format, IFormatProvider? formatProvider)
+    [global::System.Runtime.CompilerServices.SkipLocalsInit]
+    public string ToString(string? format, global::System.IFormatProvider? formatProvider)
     {
-        return ((IFormattable)_value).ToString(format, formatProvider);
+        return ((global::System.IFormattable)_value).ToString(format, formatProvider);
     }
 
     public string ToStringInvariant(string? format)
     {
-        return ToString(format, System.Globalization.CultureInfo.InvariantCulture);
+        return ToString(format, global::System.Globalization.CultureInfo.InvariantCulture);
     }
 
     public string ToStringInvariant()
@@ -141,42 +137,42 @@ public readonly partial struct SpeechSymbol
 
     // ISpanParsable<SpeechSymbol>
 
-    public static SpeechSymbol Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<SpeechSymbol, Char>(s, provider);
+    public static SpeechSymbol Parse(global::System.ReadOnlySpan<char> s, global::System.IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<SpeechSymbol, char>(s, provider);
 
-    public static SpeechSymbol ParseInvariant(ReadOnlySpan<char> s)
-        => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
+    public static SpeechSymbol ParseInvariant(global::System.ReadOnlySpan<char> s)
+        => Parse(s, global::System.Globalization.CultureInfo.InvariantCulture);
 
     public static bool TryParse(
-        ReadOnlySpan<char> s,
-        IFormatProvider? provider,
+        global::System.ReadOnlySpan<char> s,
+        global::System.IFormatProvider? provider,
         out SpeechSymbol result)
-        => global::DSE.Open.Values.ValueParser.TryParse<SpeechSymbol, Char>(s, provider, out result);
+        => global::DSE.Open.Values.ValueParser.TryParse<SpeechSymbol, char>(s, provider, out result);
 
     public static bool TryParse(
-        ReadOnlySpan<char> s,
+        global::System.ReadOnlySpan<char> s,
         out SpeechSymbol result)
         => TryParse(s, default, out result);
 
     public static bool TryParseInvariant(
-        ReadOnlySpan<char> s,
+        global::System.ReadOnlySpan<char> s,
         out SpeechSymbol result)
-        => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
+        => TryParse(s, global::System.Globalization.CultureInfo.InvariantCulture, out result);
 
     // IParsable<SpeechSymbol>
 
-    public static SpeechSymbol Parse(string s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<SpeechSymbol, Char>(s, provider);
+    public static SpeechSymbol Parse(string s, global::System.IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<SpeechSymbol, char>(s, provider);
 
     public static SpeechSymbol Parse(string s)
         => Parse(s, default);
 
     public static SpeechSymbol ParseInvariant(string s)
-        => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
+        => Parse(s, global::System.Globalization.CultureInfo.InvariantCulture);
 
     public static bool TryParse(
         string? s,
-        IFormatProvider? provider,
+        global::System.IFormatProvider? provider,
         out SpeechSymbol result)
     {
         if (s is null)
@@ -185,7 +181,7 @@ public readonly partial struct SpeechSymbol
             return false;
         }
     
-        return TryParse(s.AsSpan(), provider, out result);
+        return TryParse(global::System.MemoryExtensions.AsSpan(s), provider, out result);
     }
 
     public static bool TryParse(
@@ -196,29 +192,29 @@ public readonly partial struct SpeechSymbol
     public static bool TryParseInvariant(
         string? s,
         out SpeechSymbol result)
-        => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
+        => TryParse(s, global::System.Globalization.CultureInfo.InvariantCulture, out result);
 
     // IUtf8SpanFormattable
 
     public bool TryFormat(
-        Span<byte> utf8Destination,
+        global::System.Span<byte> utf8Destination,
         out int bytesWritten,
-        ReadOnlySpan<char> format,
-        IFormatProvider? provider)
-        => ((IUtf8SpanFormattable)_value).TryFormat(utf8Destination, out bytesWritten, format, provider);
+        global::System.ReadOnlySpan<char> format,
+        global::System.IFormatProvider? provider)
+        => ((global::System.IUtf8SpanFormattable)_value).TryFormat(utf8Destination, out bytesWritten, format, provider);
 
     // IUtf8SpanParsable<SpeechSymbol>
 
     public static SpeechSymbol Parse(
-        ReadOnlySpan<byte> utf8Source,
-        IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<SpeechSymbol, Char>(utf8Source, provider);
+        global::System.ReadOnlySpan<byte> utf8Source,
+        global::System.IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<SpeechSymbol, char>(utf8Source, provider);
 
     public static bool TryParse(
-        ReadOnlySpan<byte> utf8Source,
-        IFormatProvider? provider,
+        global::System.ReadOnlySpan<byte> utf8Source,
+        global::System.IFormatProvider? provider,
         out SpeechSymbol result)
-        => global::DSE.Open.Values.ValueParser.TryParse<SpeechSymbol, Char>(utf8Source, provider, out result);
+        => global::DSE.Open.Values.ValueParser.TryParse<SpeechSymbol, char>(utf8Source, provider, out result);
 
     public int CompareTo(SpeechSymbol other)
     {

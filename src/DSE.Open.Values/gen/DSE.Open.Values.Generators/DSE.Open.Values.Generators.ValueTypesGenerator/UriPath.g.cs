@@ -6,19 +6,14 @@
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
 
-using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using DSE.Open.Runtime.Helpers;
-
 namespace DSE.Open.Values;
 
-[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<UriPath, CharSequence>))]
+[global::System.ComponentModel.TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<UriPath, global::DSE.Open.CharSequence>))]
 public readonly partial struct UriPath
 {
-    private readonly CharSequence _value;
+    private readonly global::DSE.Open.CharSequence _value;
 
-    private UriPath(CharSequence value, bool skipValidation = false)
+    private UriPath(global::DSE.Open.CharSequence value, bool skipValidation = false)
     {
         if (!skipValidation)
         {
@@ -28,16 +23,16 @@ public readonly partial struct UriPath
         _value = value;
     }
 
-    private static void EnsureIsValidValue(CharSequence value)
+    private static void EnsureIsValidValue(global::DSE.Open.CharSequence value)
     {
         if (!IsValidValue(value))
         {
-            throw new ArgumentOutOfRangeException(nameof(value), value,
+            throw new global::System.ArgumentOutOfRangeException(nameof(value), value,
                 $"'{value}' is not a valid {nameof(UriPath)} value");
         }
     }
 
-    public static bool TryFromValue(CharSequence value, out UriPath result)
+    public static bool TryFromValue(global::DSE.Open.CharSequence value, out UriPath result)
     {
         if (IsValidValue(value))
         {
@@ -49,19 +44,19 @@ public readonly partial struct UriPath
         return false;
     }
 
-    public static UriPath FromValue(CharSequence value)
+    public static UriPath FromValue(global::DSE.Open.CharSequence value)
     {
         EnsureIsValidValue(value);
         return new(value, true);
     }
 
-    public static explicit operator UriPath(CharSequence value)
+    public static explicit operator UriPath(global::DSE.Open.CharSequence value)
         => FromValue(value);
 
-    static CharSequence global::DSE.Open.IConvertibleTo<UriPath, CharSequence>.ConvertTo(UriPath value)
-        => (CharSequence)value;
+    static global::DSE.Open.CharSequence global::DSE.Open.IConvertibleTo<UriPath, global::DSE.Open.CharSequence>.ConvertTo(UriPath value)
+        => (global::DSE.Open.CharSequence)value;
 
-    public static implicit operator CharSequence(UriPath value)
+    public static implicit operator global::DSE.Open.CharSequence(UriPath value)
     {
         return value._value;
     }
@@ -86,43 +81,43 @@ public readonly partial struct UriPath
     // ISpanFormattable
 
     public bool TryFormat(
-        Span<char> destination,
+        global::System.Span<char> destination,
         out int charsWritten,
-        ReadOnlySpan<char> format,
-        IFormatProvider? provider)
+        global::System.ReadOnlySpan<char> format,
+        global::System.IFormatProvider? provider)
     {
-        return ((ISpanFormattable)_value).TryFormat(destination, out charsWritten, format, provider);
+        return ((global::System.ISpanFormattable)_value).TryFormat(destination, out charsWritten, format, provider);
     }
 
     public bool TryFormat(
-        Span<char> destination,
+        global::System.Span<char> destination,
         out int charsWritten)
         => TryFormat(destination, out charsWritten, default, default);
 
     public bool TryFormatInvariant(
-        Span<char> destination,
+        global::System.Span<char> destination,
         out int charsWritten,
-        ReadOnlySpan<char> format)
-        => TryFormat(destination, out charsWritten, format, System.Globalization.CultureInfo.InvariantCulture);
+        global::System.Span<char> format)
+        => TryFormat(destination, out charsWritten, format, global::System.Globalization.CultureInfo.InvariantCulture);
 
     public bool TryFormatInvariant(
-        Span<char> destination,
+        global::System.Span<char> destination,
         out int charsWritten)
         => TryFormatInvariant(destination, out charsWritten, default);
 
     /// <summary>
     /// Gets a representation of the <see cref="UriPath"/> value as a string with formatting options.
     /// </summary>
-    [SkipLocalsInit]
-    public string ToString(string? format, IFormatProvider? formatProvider)
+    [global::System.Runtime.CompilerServices.SkipLocalsInit]
+    public string ToString(string? format, global::System.IFormatProvider? formatProvider)
     {
         char[]? rented = null;
     
         try
         {
-            Span<char> buffer = MemoryThresholds.CanStackalloc<char>(MaxSerializedCharLength)
+            global::System.Span<char> buffer = global::DSE.Open.Runtime.Helpers.MemoryThresholds.CanStackalloc<char>(MaxSerializedCharLength)
                 ? stackalloc char[MaxSerializedCharLength]
-                : (rented = System.Buffers.ArrayPool<char>.Shared.Rent(MaxSerializedCharLength));
+                : (rented = global::System.Buffers.ArrayPool<char>.Shared.Rent(MaxSerializedCharLength));
     
             _ = TryFormat(buffer, out var charsWritten, format, formatProvider);
     
@@ -132,14 +127,14 @@ public readonly partial struct UriPath
         {
             if (rented is not null)
             {
-                System.Buffers.ArrayPool<char>.Shared.Return(rented);
+                global::System.Buffers.ArrayPool<char>.Shared.Return(rented);
             }
         }
     }
 
     public string ToStringInvariant(string? format)
     {
-        return ToString(format, System.Globalization.CultureInfo.InvariantCulture);
+        return ToString(format, global::System.Globalization.CultureInfo.InvariantCulture);
     }
 
     public string ToStringInvariant()
@@ -160,42 +155,42 @@ public readonly partial struct UriPath
 
     // ISpanParsable<UriPath>
 
-    public static UriPath Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<UriPath, CharSequence>(s, provider);
+    public static UriPath Parse(global::System.ReadOnlySpan<char> s, global::System.IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<UriPath, global::DSE.Open.CharSequence>(s, provider);
 
-    public static UriPath ParseInvariant(ReadOnlySpan<char> s)
-        => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
+    public static UriPath ParseInvariant(global::System.ReadOnlySpan<char> s)
+        => Parse(s, global::System.Globalization.CultureInfo.InvariantCulture);
 
     public static bool TryParse(
-        ReadOnlySpan<char> s,
-        IFormatProvider? provider,
+        global::System.ReadOnlySpan<char> s,
+        global::System.IFormatProvider? provider,
         out UriPath result)
-        => global::DSE.Open.Values.ValueParser.TryParse<UriPath, CharSequence>(s, provider, out result);
+        => global::DSE.Open.Values.ValueParser.TryParse<UriPath, global::DSE.Open.CharSequence>(s, provider, out result);
 
     public static bool TryParse(
-        ReadOnlySpan<char> s,
+        global::System.ReadOnlySpan<char> s,
         out UriPath result)
         => TryParse(s, default, out result);
 
     public static bool TryParseInvariant(
-        ReadOnlySpan<char> s,
+        global::System.ReadOnlySpan<char> s,
         out UriPath result)
-        => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
+        => TryParse(s, global::System.Globalization.CultureInfo.InvariantCulture, out result);
 
     // IParsable<UriPath>
 
-    public static UriPath Parse(string s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<UriPath, CharSequence>(s, provider);
+    public static UriPath Parse(string s, global::System.IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<UriPath, global::DSE.Open.CharSequence>(s, provider);
 
     public static UriPath Parse(string s)
         => Parse(s, default);
 
     public static UriPath ParseInvariant(string s)
-        => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
+        => Parse(s, global::System.Globalization.CultureInfo.InvariantCulture);
 
     public static bool TryParse(
         string? s,
-        IFormatProvider? provider,
+        global::System.IFormatProvider? provider,
         out UriPath result)
     {
         if (s is null)
@@ -204,7 +199,7 @@ public readonly partial struct UriPath
             return false;
         }
     
-        return TryParse(s.AsSpan(), provider, out result);
+        return TryParse(global::System.MemoryExtensions.AsSpan(s), provider, out result);
     }
 
     public static bool TryParse(
@@ -215,7 +210,7 @@ public readonly partial struct UriPath
     public static bool TryParseInvariant(
         string? s,
         out UriPath result)
-        => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
+        => TryParse(s, global::System.Globalization.CultureInfo.InvariantCulture, out result);
 
     public int CompareTo(UriPath other)
     {
