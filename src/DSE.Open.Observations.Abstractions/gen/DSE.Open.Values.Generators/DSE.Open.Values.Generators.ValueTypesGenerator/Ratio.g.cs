@@ -6,18 +6,14 @@
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
 
-using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-
 namespace DSE.Open.Observations;
 
-[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<Ratio, Decimal>))]
+[global::System.ComponentModel.TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<Ratio, decimal>))]
 public readonly partial struct Ratio
 {
-    private readonly Decimal _value;
+    private readonly decimal _value;
 
-    private Ratio(Decimal value, bool skipValidation = false)
+    private Ratio(decimal value, bool skipValidation = false)
     {
         if (!skipValidation)
         {
@@ -27,16 +23,16 @@ public readonly partial struct Ratio
         _value = value;
     }
 
-    private static void EnsureIsValidValue(Decimal value)
+    private static void EnsureIsValidValue(decimal value)
     {
         if (!IsValidValue(value))
         {
-            throw new ArgumentOutOfRangeException(nameof(value), value,
+            throw new global::System.ArgumentOutOfRangeException(nameof(value), value,
                 $"'{value}' is not a valid {nameof(Ratio)} value");
         }
     }
 
-    public static bool TryFromValue(Decimal value, out Ratio result)
+    public static bool TryFromValue(decimal value, out Ratio result)
     {
         if (IsValidValue(value))
         {
@@ -48,19 +44,19 @@ public readonly partial struct Ratio
         return false;
     }
 
-    public static Ratio FromValue(Decimal value)
+    public static Ratio FromValue(decimal value)
     {
         EnsureIsValidValue(value);
         return new(value, true);
     }
 
-    public static explicit operator Ratio(Decimal value)
+    public static explicit operator Ratio(decimal value)
         => FromValue(value);
 
-    static Decimal global::DSE.Open.IConvertibleTo<Ratio, Decimal>.ConvertTo(Ratio value)
-        => (Decimal)value;
+    static decimal global::DSE.Open.IConvertibleTo<Ratio, decimal>.ConvertTo(Ratio value)
+        => (decimal)value;
 
-    public static implicit operator Decimal(Ratio value)
+    public static implicit operator decimal(Ratio value)
     {
         return value._value;
     }
@@ -85,42 +81,42 @@ public readonly partial struct Ratio
     // ISpanFormattable
 
     public bool TryFormat(
-        Span<char> destination,
+        global::System.Span<char> destination,
         out int charsWritten,
-        ReadOnlySpan<char> format,
-        IFormatProvider? provider)
+        global::System.ReadOnlySpan<char> format,
+        global::System.IFormatProvider? provider)
     {
-        return ((ISpanFormattable)_value).TryFormat(destination, out charsWritten, format, provider);
+        return ((global::System.ISpanFormattable)_value).TryFormat(destination, out charsWritten, format, provider);
     }
 
     public bool TryFormat(
-        Span<char> destination,
+        global::System.Span<char> destination,
         out int charsWritten)
         => TryFormat(destination, out charsWritten, default, default);
 
     public bool TryFormatInvariant(
-        Span<char> destination,
+        global::System.Span<char> destination,
         out int charsWritten,
-        ReadOnlySpan<char> format)
-        => TryFormat(destination, out charsWritten, format, System.Globalization.CultureInfo.InvariantCulture);
+        global::System.Span<char> format)
+        => TryFormat(destination, out charsWritten, format, global::System.Globalization.CultureInfo.InvariantCulture);
 
     public bool TryFormatInvariant(
-        Span<char> destination,
+        global::System.Span<char> destination,
         out int charsWritten)
         => TryFormatInvariant(destination, out charsWritten, default);
 
     /// <summary>
     /// Gets a representation of the <see cref="Ratio"/> value as a string with formatting options.
     /// </summary>
-    [SkipLocalsInit]
-    public string ToString(string? format, IFormatProvider? formatProvider)
+    [global::System.Runtime.CompilerServices.SkipLocalsInit]
+    public string ToString(string? format, global::System.IFormatProvider? formatProvider)
     {
-        return ((IFormattable)_value).ToString(format, formatProvider);
+        return ((global::System.IFormattable)_value).ToString(format, formatProvider);
     }
 
     public string ToStringInvariant(string? format)
     {
-        return ToString(format, System.Globalization.CultureInfo.InvariantCulture);
+        return ToString(format, global::System.Globalization.CultureInfo.InvariantCulture);
     }
 
     public string ToStringInvariant()
@@ -141,42 +137,42 @@ public readonly partial struct Ratio
 
     // ISpanParsable<Ratio>
 
-    public static Ratio Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<Ratio, Decimal>(s, provider);
+    public static Ratio Parse(global::System.ReadOnlySpan<char> s, global::System.IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<Ratio, decimal>(s, provider);
 
-    public static Ratio ParseInvariant(ReadOnlySpan<char> s)
-        => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
+    public static Ratio ParseInvariant(global::System.ReadOnlySpan<char> s)
+        => Parse(s, global::System.Globalization.CultureInfo.InvariantCulture);
 
     public static bool TryParse(
-        ReadOnlySpan<char> s,
-        IFormatProvider? provider,
+        global::System.ReadOnlySpan<char> s,
+        global::System.IFormatProvider? provider,
         out Ratio result)
-        => global::DSE.Open.Values.ValueParser.TryParse<Ratio, Decimal>(s, provider, out result);
+        => global::DSE.Open.Values.ValueParser.TryParse<Ratio, decimal>(s, provider, out result);
 
     public static bool TryParse(
-        ReadOnlySpan<char> s,
+        global::System.ReadOnlySpan<char> s,
         out Ratio result)
         => TryParse(s, default, out result);
 
     public static bool TryParseInvariant(
-        ReadOnlySpan<char> s,
+        global::System.ReadOnlySpan<char> s,
         out Ratio result)
-        => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
+        => TryParse(s, global::System.Globalization.CultureInfo.InvariantCulture, out result);
 
     // IParsable<Ratio>
 
-    public static Ratio Parse(string s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<Ratio, Decimal>(s, provider);
+    public static Ratio Parse(string s, global::System.IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<Ratio, decimal>(s, provider);
 
     public static Ratio Parse(string s)
         => Parse(s, default);
 
     public static Ratio ParseInvariant(string s)
-        => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
+        => Parse(s, global::System.Globalization.CultureInfo.InvariantCulture);
 
     public static bool TryParse(
         string? s,
-        IFormatProvider? provider,
+        global::System.IFormatProvider? provider,
         out Ratio result)
     {
         if (s is null)
@@ -185,7 +181,7 @@ public readonly partial struct Ratio
             return false;
         }
     
-        return TryParse(s.AsSpan(), provider, out result);
+        return TryParse(global::System.MemoryExtensions.AsSpan(s), provider, out result);
     }
 
     public static bool TryParse(
@@ -196,29 +192,29 @@ public readonly partial struct Ratio
     public static bool TryParseInvariant(
         string? s,
         out Ratio result)
-        => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
+        => TryParse(s, global::System.Globalization.CultureInfo.InvariantCulture, out result);
 
     // IUtf8SpanFormattable
 
     public bool TryFormat(
-        Span<byte> utf8Destination,
+        global::System.Span<byte> utf8Destination,
         out int bytesWritten,
-        ReadOnlySpan<char> format,
-        IFormatProvider? provider)
-        => ((IUtf8SpanFormattable)_value).TryFormat(utf8Destination, out bytesWritten, format, provider);
+        global::System.ReadOnlySpan<char> format,
+        global::System.IFormatProvider? provider)
+        => ((global::System.IUtf8SpanFormattable)_value).TryFormat(utf8Destination, out bytesWritten, format, provider);
 
     // IUtf8SpanParsable<Ratio>
 
     public static Ratio Parse(
-        ReadOnlySpan<byte> utf8Source,
-        IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<Ratio, Decimal>(utf8Source, provider);
+        global::System.ReadOnlySpan<byte> utf8Source,
+        global::System.IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<Ratio, decimal>(utf8Source, provider);
 
     public static bool TryParse(
-        ReadOnlySpan<byte> utf8Source,
-        IFormatProvider? provider,
+        global::System.ReadOnlySpan<byte> utf8Source,
+        global::System.IFormatProvider? provider,
         out Ratio result)
-        => global::DSE.Open.Values.ValueParser.TryParse<Ratio, Decimal>(utf8Source, provider, out result);
+        => global::DSE.Open.Values.ValueParser.TryParse<Ratio, decimal>(utf8Source, provider, out result);
 
     public int CompareTo(Ratio other)
     {
@@ -247,7 +243,7 @@ public readonly partial struct Ratio
 
     public static Ratio operator +(Ratio value) => (Ratio)(+value._value);
 
-    public static Ratio operator -(Ratio value) => throw new NotImplementedException();
+    public static Ratio operator -(Ratio value) => throw new global::System.NotImplementedException();
 
     public static Ratio operator *(Ratio left, Ratio right) => (Ratio)(left._value * right._value);
 

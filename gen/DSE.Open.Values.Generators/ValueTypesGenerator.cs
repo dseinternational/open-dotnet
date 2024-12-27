@@ -2,7 +2,6 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Collections.Immutable;
-using System.Diagnostics;
 using DSE.Open.Values.Generators.Extensions;
 using DSE.Open.Values.Generators.Model;
 using Microsoft.CodeAnalysis;
@@ -281,10 +280,12 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
             }
 
             string? containedTypeName;
+            string containedTypeFullName;
 
             if (valueTypeInterface.TypeArguments.Length == 2)
             {
                 containedTypeName = valueTypeInterface.TypeArguments[1].Name;
+                containedTypeFullName = valueTypeInterface.TypeArguments[1].ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
             }
             else
             {
@@ -597,7 +598,7 @@ public sealed partial class ValueTypesGenerator : IIncrementalGenerator
             };
 
             spec.ValueTypeName = namedTypeSymbol.Name;
-            spec.ContainedValueTypeName = containedTypeName;
+            spec.ContainedValueTypeName = containedTypeFullName;
             spec.Namespace = ns;
             spec.Accessibility = namedTypeSymbol.DeclaredAccessibility;
             spec.ParentClass = parent;

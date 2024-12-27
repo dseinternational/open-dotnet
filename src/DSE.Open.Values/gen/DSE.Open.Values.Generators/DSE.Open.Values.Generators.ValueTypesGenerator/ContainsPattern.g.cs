@@ -6,18 +6,14 @@
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
 
-using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-
 namespace DSE.Open.Values.Text;
 
-[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<ContainsPattern, CharSequence>))]
+[global::System.ComponentModel.TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<ContainsPattern, global::DSE.Open.CharSequence>))]
 public readonly partial struct ContainsPattern
 {
-    private readonly CharSequence _value;
+    private readonly global::DSE.Open.CharSequence _value;
 
-    private ContainsPattern(CharSequence value, bool skipValidation = false)
+    private ContainsPattern(global::DSE.Open.CharSequence value, bool skipValidation = false)
     {
         if (!skipValidation)
         {
@@ -27,16 +23,16 @@ public readonly partial struct ContainsPattern
         _value = value;
     }
 
-    private static void EnsureIsValidValue(CharSequence value)
+    private static void EnsureIsValidValue(global::DSE.Open.CharSequence value)
     {
         if (!IsValidValue(value))
         {
-            throw new ArgumentOutOfRangeException(nameof(value), value,
+            throw new global::System.ArgumentOutOfRangeException(nameof(value), value,
                 $"'{value}' is not a valid {nameof(ContainsPattern)} value");
         }
     }
 
-    public static bool TryFromValue(CharSequence value, out ContainsPattern result)
+    public static bool TryFromValue(global::DSE.Open.CharSequence value, out ContainsPattern result)
     {
         if (IsValidValue(value))
         {
@@ -48,19 +44,19 @@ public readonly partial struct ContainsPattern
         return false;
     }
 
-    public static ContainsPattern FromValue(CharSequence value)
+    public static ContainsPattern FromValue(global::DSE.Open.CharSequence value)
     {
         EnsureIsValidValue(value);
         return new(value, true);
     }
 
-    public static explicit operator ContainsPattern(CharSequence value)
+    public static explicit operator ContainsPattern(global::DSE.Open.CharSequence value)
         => FromValue(value);
 
-    static CharSequence global::DSE.Open.IConvertibleTo<ContainsPattern, CharSequence>.ConvertTo(ContainsPattern value)
-        => (CharSequence)value;
+    static global::DSE.Open.CharSequence global::DSE.Open.IConvertibleTo<ContainsPattern, global::DSE.Open.CharSequence>.ConvertTo(ContainsPattern value)
+        => (global::DSE.Open.CharSequence)value;
 
-    public static implicit operator CharSequence(ContainsPattern value)
+    public static implicit operator global::DSE.Open.CharSequence(ContainsPattern value)
     {
         return value._value;
     }
@@ -85,42 +81,42 @@ public readonly partial struct ContainsPattern
     // ISpanFormattable
 
     public bool TryFormat(
-        Span<char> destination,
+        global::System.Span<char> destination,
         out int charsWritten,
-        ReadOnlySpan<char> format,
-        IFormatProvider? provider)
+        global::System.ReadOnlySpan<char> format,
+        global::System.IFormatProvider? provider)
     {
-        return ((ISpanFormattable)_value).TryFormat(destination, out charsWritten, format, provider);
+        return ((global::System.ISpanFormattable)_value).TryFormat(destination, out charsWritten, format, provider);
     }
 
     public bool TryFormat(
-        Span<char> destination,
+        global::System.Span<char> destination,
         out int charsWritten)
         => TryFormat(destination, out charsWritten, default, default);
 
     public bool TryFormatInvariant(
-        Span<char> destination,
+        global::System.Span<char> destination,
         out int charsWritten,
-        ReadOnlySpan<char> format)
-        => TryFormat(destination, out charsWritten, format, System.Globalization.CultureInfo.InvariantCulture);
+        global::System.Span<char> format)
+        => TryFormat(destination, out charsWritten, format, global::System.Globalization.CultureInfo.InvariantCulture);
 
     public bool TryFormatInvariant(
-        Span<char> destination,
+        global::System.Span<char> destination,
         out int charsWritten)
         => TryFormatInvariant(destination, out charsWritten, default);
 
     /// <summary>
     /// Gets a representation of the <see cref="ContainsPattern"/> value as a string with formatting options.
     /// </summary>
-    [SkipLocalsInit]
-    public string ToString(string? format, IFormatProvider? formatProvider)
+    [global::System.Runtime.CompilerServices.SkipLocalsInit]
+    public string ToString(string? format, global::System.IFormatProvider? formatProvider)
     {
-        return ((IFormattable)_value).ToString(format, formatProvider);
+        return ((global::System.IFormattable)_value).ToString(format, formatProvider);
     }
 
     public string ToStringInvariant(string? format)
     {
-        return ToString(format, System.Globalization.CultureInfo.InvariantCulture);
+        return ToString(format, global::System.Globalization.CultureInfo.InvariantCulture);
     }
 
     public string ToStringInvariant()
@@ -130,42 +126,42 @@ public readonly partial struct ContainsPattern
 
     // ISpanParsable<ContainsPattern>
 
-    public static ContainsPattern Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<ContainsPattern, CharSequence>(s, provider);
+    public static ContainsPattern Parse(global::System.ReadOnlySpan<char> s, global::System.IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<ContainsPattern, global::DSE.Open.CharSequence>(s, provider);
 
-    public static ContainsPattern ParseInvariant(ReadOnlySpan<char> s)
-        => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
+    public static ContainsPattern ParseInvariant(global::System.ReadOnlySpan<char> s)
+        => Parse(s, global::System.Globalization.CultureInfo.InvariantCulture);
 
     public static bool TryParse(
-        ReadOnlySpan<char> s,
-        IFormatProvider? provider,
+        global::System.ReadOnlySpan<char> s,
+        global::System.IFormatProvider? provider,
         out ContainsPattern result)
-        => global::DSE.Open.Values.ValueParser.TryParse<ContainsPattern, CharSequence>(s, provider, out result);
+        => global::DSE.Open.Values.ValueParser.TryParse<ContainsPattern, global::DSE.Open.CharSequence>(s, provider, out result);
 
     public static bool TryParse(
-        ReadOnlySpan<char> s,
+        global::System.ReadOnlySpan<char> s,
         out ContainsPattern result)
         => TryParse(s, default, out result);
 
     public static bool TryParseInvariant(
-        ReadOnlySpan<char> s,
+        global::System.ReadOnlySpan<char> s,
         out ContainsPattern result)
-        => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
+        => TryParse(s, global::System.Globalization.CultureInfo.InvariantCulture, out result);
 
     // IParsable<ContainsPattern>
 
-    public static ContainsPattern Parse(string s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<ContainsPattern, CharSequence>(s, provider);
+    public static ContainsPattern Parse(string s, global::System.IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<ContainsPattern, global::DSE.Open.CharSequence>(s, provider);
 
     public static ContainsPattern Parse(string s)
         => Parse(s, default);
 
     public static ContainsPattern ParseInvariant(string s)
-        => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
+        => Parse(s, global::System.Globalization.CultureInfo.InvariantCulture);
 
     public static bool TryParse(
         string? s,
-        IFormatProvider? provider,
+        global::System.IFormatProvider? provider,
         out ContainsPattern result)
     {
         if (s is null)
@@ -174,7 +170,7 @@ public readonly partial struct ContainsPattern
             return false;
         }
     
-        return TryParse(s.AsSpan(), provider, out result);
+        return TryParse(global::System.MemoryExtensions.AsSpan(s), provider, out result);
     }
 
     public static bool TryParse(
@@ -185,7 +181,7 @@ public readonly partial struct ContainsPattern
     public static bool TryParseInvariant(
         string? s,
         out ContainsPattern result)
-        => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
+        => TryParse(s, global::System.Globalization.CultureInfo.InvariantCulture, out result);
 
 }
 

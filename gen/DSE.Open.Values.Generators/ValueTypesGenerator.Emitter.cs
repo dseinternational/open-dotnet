@@ -30,22 +30,6 @@ public partial class ValueTypesGenerator
 
                               """);
 
-            writer.WriteLine("using System;");
-            writer.WriteLine("using System.ComponentModel;");
-            writer.WriteLine("using System.Runtime.CompilerServices;");
-
-            if (spec.EmitToStringFormattableMethod && (spec.UseGetStringSpan || spec.UseGetString))
-            {
-                writer.WriteLine("using DSE.Open.Runtime.Helpers;");
-            }
-
-            if (spec.EmitUsingSystemGlobalization)
-            {
-                writer.WriteLine("using System.Globalization;");
-            }
-
-            writer.WriteLine();
-
             // If we don't have a namespace, generate the code in the "default"
             // namespace, either global:: or a different <RootNamespace>
             var hasNamespace = !string.IsNullOrEmpty(spec.Namespace);
@@ -74,7 +58,7 @@ public partial class ValueTypesGenerator
             }
 
             writer.WriteLine(
-                $"[TypeConverter(typeof({Namespaces.DseOpenValues}.ValueTypeConverter<{spec.ValueTypeName}, {spec.ContainedValueTypeName}>))]");
+                $"[{GlobalTypes.TypeConverter}(typeof({Namespaces.DseOpenValues}.ValueTypeConverter<{spec.ValueTypeName}, {spec.ContainedValueTypeName}>))]");
 
             writer.WriteLine(
                 $"{AccessibilityHelper.GetKeyword(spec.Accessibility)} readonly partial struct {spec.ValueTypeName}");
@@ -120,7 +104,7 @@ public partial class ValueTypesGenerator
                                     {
                                         if (!IsValidValue(value))
                                         {
-                                            throw new ArgumentOutOfRangeException(nameof(value), value,
+                                            throw new {{GlobalTypes.ArgumentOutOfRangeException}}(nameof(value), value,
                                                 $"'{value}' is not a valid {nameof({{spec.ValueTypeName}})} value");
                                         }
                                     }
@@ -228,41 +212,41 @@ public partial class ValueTypesGenerator
 
             if (spec.EmitTryFormatMethod)
             {
-                writer.WriteLine("""
+                writer.WriteLine($$"""
                                  public bool TryFormat(
-                                     Span<char> destination,
+                                     {{GlobalTypes.Span}}<char> destination,
                                      out int charsWritten,
-                                     ReadOnlySpan<char> format,
-                                     IFormatProvider? provider)
+                                     {{GlobalTypes.ReadOnlySpan}}<char> format,
+                                     {{GlobalTypes.IFormatProvider}}? provider)
                                  {
                                  """);
 
-                writer.WriteBlock("""
-                                      return ((ISpanFormattable)_value).TryFormat(destination, out charsWritten, format, provider);
+                writer.WriteBlock($$"""
+                                      return (({{GlobalTypes.ISpanFormattable}})_value).TryFormat(destination, out charsWritten, format, provider);
                                   }
                                   """);
 
                 // TODO: number styles for int, long, etc.?
             }
 
-            writer.WriteBlock("""
+            writer.WriteBlock($"""
                               public bool TryFormat(
-                                  Span<char> destination,
+                                  {GlobalTypes.Span}<char> destination,
                                   out int charsWritten)
                                   => TryFormat(destination, out charsWritten, default, default);
                               """);
 
-            writer.WriteBlock("""
+            writer.WriteBlock($"""
                               public bool TryFormatInvariant(
-                                  Span<char> destination,
+                                  {GlobalTypes.Span}<char> destination,
                                   out int charsWritten,
-                                  ReadOnlySpan<char> format)
-                                  => TryFormat(destination, out charsWritten, format, System.Globalization.CultureInfo.InvariantCulture);
+                                  {GlobalTypes.Span}<char> format)
+                                  => TryFormat(destination, out charsWritten, format, {GlobalTypes.CultureInfoInvariantCulture});
                               """);
 
-            writer.WriteBlock("""
+            writer.WriteBlock($"""
                               public bool TryFormatInvariant(
-                                  Span<char> destination,
+                                  {GlobalTypes.Span}<char> destination,
                                   out int charsWritten)
                                   => TryFormatInvariant(destination, out charsWritten, default);
                               """);
@@ -273,21 +257,21 @@ public partial class ValueTypesGenerator
                                    /// <summary>
                                    /// Gets a representation of the <see cref="{{spec.ValueTypeName}}"/> value as a string with formatting options.
                                    /// </summary>
-                                   [SkipLocalsInit]
-                                   public string ToString(string? format, IFormatProvider? formatProvider)
+                                   [{{GlobalTypes.SkipLocalsInit}}]
+                                   public string ToString(string? format, {{GlobalTypes.IFormatProvider}}? formatProvider)
                                    {
                                    """);
 
                 if (spec.UseGetStringSpan)
                 {
-                    writer.WriteLine("""
+                    writer.WriteLine($$"""
                                          char[]? rented = null;
 
                                          try
                                          {
-                                             Span<char> buffer = MemoryThresholds.CanStackalloc<char>(MaxSerializedCharLength)
+                                             {{GlobalTypes.Span}}<char> buffer = {{GlobalTypes.MemoryThresholds}}.CanStackalloc<char>(MaxSerializedCharLength)
                                                  ? stackalloc char[MaxSerializedCharLength]
-                                                 : (rented = System.Buffers.ArrayPool<char>.Shared.Rent(MaxSerializedCharLength));
+                                                 : (rented = {{GlobalTypes.ArrayPool}}<char>.Shared.Rent(MaxSerializedCharLength));
 
                                              _ = TryFormat(buffer, out var charsWritten, format, formatProvider);
 
@@ -297,21 +281,21 @@ public partial class ValueTypesGenerator
                                          {
                                              if (rented is not null)
                                              {
-                                                 System.Buffers.ArrayPool<char>.Shared.Return(rented);
+                                                 {{GlobalTypes.ArrayPool}}<char>.Shared.Return(rented);
                                              }
                                          }
                                      """);
                 }
                 else if (spec.UseGetString)
                 {
-                    writer.WriteLine("""
+                    writer.WriteLine($$"""
                                          char[]? rented = null;
 
                                          try
                                          {
-                                             Span<char> buffer = MemoryThresholds.CanStackalloc<char>(MaxSerializedCharLength)
+                                             {{GlobalTypes.Span}}<char> buffer = {{GlobalTypes.MemoryThresholds}}.CanStackalloc<char>(MaxSerializedCharLength)
                                                  ? stackalloc char[MaxSerializedCharLength]
-                                                 : (rented = System.Buffers.ArrayPool<char>.Shared.Rent(MaxSerializedCharLength));
+                                                 : (rented = {{GlobalTypes.ArrayPool}}<char>.Shared.Rent(MaxSerializedCharLength));
 
                                              _ = TryFormat(buffer, out var charsWritten, format, formatProvider);
 
@@ -321,22 +305,22 @@ public partial class ValueTypesGenerator
                                          {
                                              if (rented is not null)
                                              {
-                                                 System.Buffers.ArrayPool<char>.Shared.Return(rented);
+                                                 {{GlobalTypes.ArrayPool}}<char>.Shared.Return(rented);
                                              }
                                          }
                                      """);
                 }
                 else
                 {
-                    writer.WriteLine("    return ((IFormattable)_value).ToString(format, formatProvider);");
+                    writer.WriteLine($"    return (({GlobalTypes.IFormattable})_value).ToString(format, formatProvider);");
                 }
 
                 writer.WriteBlock("}");
 
-                writer.WriteBlock("""
+                writer.WriteBlock($$"""
                                   public string ToStringInvariant(string? format)
                                   {
-                                      return ToString(format, System.Globalization.CultureInfo.InvariantCulture);
+                                      return ToString(format, {{GlobalTypes.CultureInfoInvariantCulture}});
                                   }
                                   """);
 
@@ -372,13 +356,13 @@ public partial class ValueTypesGenerator
             if (spec.EmitParseSpanMethod)
             {
                 writer.WriteBlock($"""
-                                   public static {spec.ValueTypeName} Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
+                                   public static {spec.ValueTypeName} Parse({GlobalTypes.ReadOnlySpan}<char> s, {GlobalTypes.IFormatProvider}? provider)
                                        => {Namespaces.DseOpenValues}.ValueParser.Parse<{spec.ValueTypeName}, {spec.ContainedValueTypeName}>(s, provider);
                                    """);
 
                 writer.WriteBlock($"""
-                                   public static {spec.ValueTypeName} ParseInvariant(ReadOnlySpan<char> s)
-                                       => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
+                                   public static {spec.ValueTypeName} ParseInvariant({GlobalTypes.ReadOnlySpan}<char> s)
+                                       => Parse(s, {GlobalTypes.CultureInfoInvariantCulture});
                                    """);
             }
 
@@ -386,24 +370,24 @@ public partial class ValueTypesGenerator
             {
                 writer.WriteBlock($"""
                                    public static bool TryParse(
-                                       ReadOnlySpan<char> s,
-                                       IFormatProvider? provider,
+                                       {GlobalTypes.ReadOnlySpan}<char> s,
+                                       {GlobalTypes.IFormatProvider}? provider,
                                        out {spec.ValueTypeName} result)
                                        => {Namespaces.DseOpenValues}.ValueParser.TryParse<{spec.ValueTypeName}, {spec.ContainedValueTypeName}>(s, provider, out result);
                                    """);
 
                 writer.WriteBlock($"""
                                    public static bool TryParse(
-                                       ReadOnlySpan<char> s,
+                                       {GlobalTypes.ReadOnlySpan}<char> s,
                                        out {spec.ValueTypeName} result)
                                        => TryParse(s, default, out result);
                                    """);
 
                 writer.WriteBlock($"""
                                    public static bool TryParseInvariant(
-                                       ReadOnlySpan<char> s,
+                                       {GlobalTypes.ReadOnlySpan}<char> s,
                                        out {spec.ValueTypeName} result)
-                                       => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
+                                       => TryParse(s, {GlobalTypes.CultureInfoInvariantCulture}, out result);
                                    """);
             }
 
@@ -415,7 +399,7 @@ public partial class ValueTypesGenerator
             if (spec.EmitParseStringMethod)
             {
                 writer.WriteBlock($"""
-                                   public static {spec.ValueTypeName} Parse(string s, IFormatProvider? provider)
+                                   public static {spec.ValueTypeName} Parse(string s, {GlobalTypes.IFormatProvider}? provider)
                                        => {Namespaces.DseOpenValues}.ValueParser.Parse<{spec.ValueTypeName}, {spec.ContainedValueTypeName}>(s, provider);
                                    """);
 
@@ -426,7 +410,7 @@ public partial class ValueTypesGenerator
 
                 writer.WriteBlock($"""
                                    public static {spec.ValueTypeName} ParseInvariant(string s)
-                                       => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
+                                       => Parse(s, {GlobalTypes.CultureInfoInvariantCulture});
                                    """);
             }
 
@@ -435,7 +419,7 @@ public partial class ValueTypesGenerator
                 writer.WriteBlock($$"""
                                     public static bool TryParse(
                                         string? s,
-                                        IFormatProvider? provider,
+                                        {{GlobalTypes.IFormatProvider}}? provider,
                                         out {{spec.ValueTypeName}} result)
                                     {
                                         if (s is null)
@@ -444,7 +428,7 @@ public partial class ValueTypesGenerator
                                             return false;
                                         }
 
-                                        return TryParse(s.AsSpan(), provider, out result);
+                                        return TryParse({{GlobalTypes.MemoryExtensions}}.AsSpan(s), provider, out result);
                                     }
                                     """);
 
@@ -459,7 +443,7 @@ public partial class ValueTypesGenerator
                                    public static bool TryParseInvariant(
                                        string? s,
                                        out {spec.ValueTypeName} result)
-                                       => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
+                                       => TryParse(s, {GlobalTypes.CultureInfoInvariantCulture}, out result);
                                    """);
             }
 
@@ -467,9 +451,9 @@ public partial class ValueTypesGenerator
             {
                 writer.WriteBlock($"""
                                    public static bool TryParse(
-                                       ReadOnlySpan<char> s,
-                                       NumberStyles style,
-                                       IFormatProvider? provider,
+                                       {GlobalTypes.ReadOnlySpan}<char> s,
+                                       {GlobalTypes.NumberStyles} style,
+                                       {GlobalTypes.IFormatProvider}? provider,
                                        out {spec.ValueTypeName} result)
                                        // TODO: ***** NumberStyles *****
                                        => {Namespaces.DseOpenValues}.ValueParser.TryParse<{spec.ValueTypeName}, {spec.ContainedValueTypeName}>(s, provider, out result);
@@ -481,8 +465,8 @@ public partial class ValueTypesGenerator
                 writer.WriteBlock($"""
                                    public static bool TryParse(
                                        string? s,
-                                       NumberStyles style,
-                                       IFormatProvider? provider,
+                                       {GlobalTypes.NumberStyles} style,
+                                       {GlobalTypes.IFormatProvider}? provider,
                                        out {spec.ValueTypeName} result)
                                        // TODO: ***** NumberStyles *****
                                        => {Namespaces.DseOpenValues}.ValueParser.TryParse<{spec.ValueTypeName}, {spec.ContainedValueTypeName}>(s, provider, out result);
@@ -492,7 +476,7 @@ public partial class ValueTypesGenerator
             if (spec.EmitParseSpanNumberStylesMethod)
             {
                 writer.WriteBlock($"""
-                                   public static {spec.ValueTypeName} Parse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider)
+                                   public static {spec.ValueTypeName} Parse({GlobalTypes.ReadOnlySpan}<char> s, {GlobalTypes.NumberStyles} style, {GlobalTypes.IFormatProvider}? provider)
                                        => ({spec.ValueTypeName}){spec.ContainedValueTypeName}.Parse(s, style, provider); // TODO: NumberStyles
                                    """);
             }
@@ -500,7 +484,7 @@ public partial class ValueTypesGenerator
             if (spec.EmitParseStringNumberStylesMethod)
             {
                 writer.WriteBlock($"""
-                                   public static {spec.ValueTypeName} Parse(string s, NumberStyles style, IFormatProvider? provider)
+                                   public static {spec.ValueTypeName} Parse(string s, {GlobalTypes.NumberStyles} style, {GlobalTypes.IFormatProvider}? provider)
                                        => ({spec.ValueTypeName}){spec.ContainedValueTypeName}.Parse(s, style, provider); // TODO: NumberStyles
                                    """);
             }
@@ -509,13 +493,13 @@ public partial class ValueTypesGenerator
             {
                 writer.WriteBlock("// IUtf8SpanFormattable");
 
-                writer.WriteBlock("""
+                writer.WriteBlock($"""
                                   public bool TryFormat(
-                                      Span<byte> utf8Destination,
+                                      {GlobalTypes.Span}<byte> utf8Destination,
                                       out int bytesWritten,
-                                      ReadOnlySpan<char> format,
-                                      IFormatProvider? provider)
-                                      => ((IUtf8SpanFormattable)_value).TryFormat(utf8Destination, out bytesWritten, format, provider);
+                                      {GlobalTypes.ReadOnlySpan}<char> format,
+                                      {GlobalTypes.IFormatProvider}? provider)
+                                      => (({GlobalTypes.IUtf8SpanFormattable})_value).TryFormat(utf8Destination, out bytesWritten, format, provider);
                                   """);
             }
 
@@ -528,8 +512,8 @@ public partial class ValueTypesGenerator
             {
                 writer.WriteBlock($"""
                                    public static {spec.ValueTypeName} Parse(
-                                       ReadOnlySpan<byte> utf8Source,
-                                       IFormatProvider? provider)
+                                       {GlobalTypes.ReadOnlySpan}<byte> utf8Source,
+                                       {GlobalTypes.IFormatProvider}? provider)
                                        => {Namespaces.DseOpenValues}.ValueParser.Parse<{spec.ValueTypeName}, {spec.ContainedValueTypeName}>(utf8Source, provider);
                                    """);
             }
@@ -538,8 +522,8 @@ public partial class ValueTypesGenerator
             {
                 writer.WriteBlock($"""
                                    public static bool TryParse(
-                                       ReadOnlySpan<byte> utf8Source,
-                                       IFormatProvider? provider,
+                                       {GlobalTypes.ReadOnlySpan}<byte> utf8Source,
+                                       {GlobalTypes.IFormatProvider}? provider,
                                        out {spec.ValueTypeName} result)
                                        => {Namespaces.DseOpenValues}.ValueParser.TryParse<{spec.ValueTypeName}, {spec.ContainedValueTypeName}>(utf8Source, provider, out result);
                                    """);
@@ -624,7 +608,7 @@ public partial class ValueTypesGenerator
 
                 if (intervalSpec.EmitUnaryNegationOperator)
                 {
-                    // todo: 
+                    // todo:
                     if (false) // intervalSpec.ImplementUnaryNegationOperator)
                     {
                         //writer.WriteBlock(
@@ -635,7 +619,8 @@ public partial class ValueTypesGenerator
                         // todo:
                         // for example: https://source.dot.net/#System.Private.CoreLib/src/libraries/System.Private.CoreLib/src/System/UInt64.cs,1217
                         writer.WriteBlock(
-                            $"public static {spec.ValueTypeName} operator -({spec.ValueTypeName} value) => throw new NotImplementedException();");
+                            $"public static {spec.ValueTypeName} operator -({spec.ValueTypeName} value) => throw new {GlobalTypes.NotImplementedException}();");
+
                     }
                 }
             }

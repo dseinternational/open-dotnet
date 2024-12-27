@@ -6,18 +6,14 @@
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
 
-using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-
 namespace DSE.Open.Records;
 
-[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<ClinicalConceptCode, Int64>))]
+[global::System.ComponentModel.TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<ClinicalConceptCode, long>))]
 public readonly partial struct ClinicalConceptCode
 {
-    private readonly Int64 _value;
+    private readonly long _value;
 
-    private ClinicalConceptCode(Int64 value, bool skipValidation = false)
+    private ClinicalConceptCode(long value, bool skipValidation = false)
     {
         if (!skipValidation)
         {
@@ -27,16 +23,16 @@ public readonly partial struct ClinicalConceptCode
         _value = value;
     }
 
-    private static void EnsureIsValidValue(Int64 value)
+    private static void EnsureIsValidValue(long value)
     {
         if (!IsValidValue(value))
         {
-            throw new ArgumentOutOfRangeException(nameof(value), value,
+            throw new global::System.ArgumentOutOfRangeException(nameof(value), value,
                 $"'{value}' is not a valid {nameof(ClinicalConceptCode)} value");
         }
     }
 
-    public static bool TryFromValue(Int64 value, out ClinicalConceptCode result)
+    public static bool TryFromValue(long value, out ClinicalConceptCode result)
     {
         if (IsValidValue(value))
         {
@@ -48,19 +44,19 @@ public readonly partial struct ClinicalConceptCode
         return false;
     }
 
-    public static ClinicalConceptCode FromValue(Int64 value)
+    public static ClinicalConceptCode FromValue(long value)
     {
         EnsureIsValidValue(value);
         return new(value, true);
     }
 
-    public static explicit operator ClinicalConceptCode(Int64 value)
+    public static explicit operator ClinicalConceptCode(long value)
         => FromValue(value);
 
-    static Int64 global::DSE.Open.IConvertibleTo<ClinicalConceptCode, Int64>.ConvertTo(ClinicalConceptCode value)
-        => (Int64)value;
+    static long global::DSE.Open.IConvertibleTo<ClinicalConceptCode, long>.ConvertTo(ClinicalConceptCode value)
+        => (long)value;
 
-    public static implicit operator Int64(ClinicalConceptCode value)
+    public static implicit operator long(ClinicalConceptCode value)
     {
         return value._value;
     }
@@ -85,42 +81,42 @@ public readonly partial struct ClinicalConceptCode
     // ISpanFormattable
 
     public bool TryFormat(
-        Span<char> destination,
+        global::System.Span<char> destination,
         out int charsWritten,
-        ReadOnlySpan<char> format,
-        IFormatProvider? provider)
+        global::System.ReadOnlySpan<char> format,
+        global::System.IFormatProvider? provider)
     {
-        return ((ISpanFormattable)_value).TryFormat(destination, out charsWritten, format, provider);
+        return ((global::System.ISpanFormattable)_value).TryFormat(destination, out charsWritten, format, provider);
     }
 
     public bool TryFormat(
-        Span<char> destination,
+        global::System.Span<char> destination,
         out int charsWritten)
         => TryFormat(destination, out charsWritten, default, default);
 
     public bool TryFormatInvariant(
-        Span<char> destination,
+        global::System.Span<char> destination,
         out int charsWritten,
-        ReadOnlySpan<char> format)
-        => TryFormat(destination, out charsWritten, format, System.Globalization.CultureInfo.InvariantCulture);
+        global::System.Span<char> format)
+        => TryFormat(destination, out charsWritten, format, global::System.Globalization.CultureInfo.InvariantCulture);
 
     public bool TryFormatInvariant(
-        Span<char> destination,
+        global::System.Span<char> destination,
         out int charsWritten)
         => TryFormatInvariant(destination, out charsWritten, default);
 
     /// <summary>
     /// Gets a representation of the <see cref="ClinicalConceptCode"/> value as a string with formatting options.
     /// </summary>
-    [SkipLocalsInit]
-    public string ToString(string? format, IFormatProvider? formatProvider)
+    [global::System.Runtime.CompilerServices.SkipLocalsInit]
+    public string ToString(string? format, global::System.IFormatProvider? formatProvider)
     {
-        return ((IFormattable)_value).ToString(format, formatProvider);
+        return ((global::System.IFormattable)_value).ToString(format, formatProvider);
     }
 
     public string ToStringInvariant(string? format)
     {
-        return ToString(format, System.Globalization.CultureInfo.InvariantCulture);
+        return ToString(format, global::System.Globalization.CultureInfo.InvariantCulture);
     }
 
     public string ToStringInvariant()
@@ -141,42 +137,42 @@ public readonly partial struct ClinicalConceptCode
 
     // ISpanParsable<ClinicalConceptCode>
 
-    public static ClinicalConceptCode Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<ClinicalConceptCode, Int64>(s, provider);
+    public static ClinicalConceptCode Parse(global::System.ReadOnlySpan<char> s, global::System.IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<ClinicalConceptCode, long>(s, provider);
 
-    public static ClinicalConceptCode ParseInvariant(ReadOnlySpan<char> s)
-        => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
+    public static ClinicalConceptCode ParseInvariant(global::System.ReadOnlySpan<char> s)
+        => Parse(s, global::System.Globalization.CultureInfo.InvariantCulture);
 
     public static bool TryParse(
-        ReadOnlySpan<char> s,
-        IFormatProvider? provider,
+        global::System.ReadOnlySpan<char> s,
+        global::System.IFormatProvider? provider,
         out ClinicalConceptCode result)
-        => global::DSE.Open.Values.ValueParser.TryParse<ClinicalConceptCode, Int64>(s, provider, out result);
+        => global::DSE.Open.Values.ValueParser.TryParse<ClinicalConceptCode, long>(s, provider, out result);
 
     public static bool TryParse(
-        ReadOnlySpan<char> s,
+        global::System.ReadOnlySpan<char> s,
         out ClinicalConceptCode result)
         => TryParse(s, default, out result);
 
     public static bool TryParseInvariant(
-        ReadOnlySpan<char> s,
+        global::System.ReadOnlySpan<char> s,
         out ClinicalConceptCode result)
-        => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
+        => TryParse(s, global::System.Globalization.CultureInfo.InvariantCulture, out result);
 
     // IParsable<ClinicalConceptCode>
 
-    public static ClinicalConceptCode Parse(string s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<ClinicalConceptCode, Int64>(s, provider);
+    public static ClinicalConceptCode Parse(string s, global::System.IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<ClinicalConceptCode, long>(s, provider);
 
     public static ClinicalConceptCode Parse(string s)
         => Parse(s, default);
 
     public static ClinicalConceptCode ParseInvariant(string s)
-        => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
+        => Parse(s, global::System.Globalization.CultureInfo.InvariantCulture);
 
     public static bool TryParse(
         string? s,
-        IFormatProvider? provider,
+        global::System.IFormatProvider? provider,
         out ClinicalConceptCode result)
     {
         if (s is null)
@@ -185,7 +181,7 @@ public readonly partial struct ClinicalConceptCode
             return false;
         }
     
-        return TryParse(s.AsSpan(), provider, out result);
+        return TryParse(global::System.MemoryExtensions.AsSpan(s), provider, out result);
     }
 
     public static bool TryParse(
@@ -196,29 +192,29 @@ public readonly partial struct ClinicalConceptCode
     public static bool TryParseInvariant(
         string? s,
         out ClinicalConceptCode result)
-        => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
+        => TryParse(s, global::System.Globalization.CultureInfo.InvariantCulture, out result);
 
     // IUtf8SpanFormattable
 
     public bool TryFormat(
-        Span<byte> utf8Destination,
+        global::System.Span<byte> utf8Destination,
         out int bytesWritten,
-        ReadOnlySpan<char> format,
-        IFormatProvider? provider)
-        => ((IUtf8SpanFormattable)_value).TryFormat(utf8Destination, out bytesWritten, format, provider);
+        global::System.ReadOnlySpan<char> format,
+        global::System.IFormatProvider? provider)
+        => ((global::System.IUtf8SpanFormattable)_value).TryFormat(utf8Destination, out bytesWritten, format, provider);
 
     // IUtf8SpanParsable<ClinicalConceptCode>
 
     public static ClinicalConceptCode Parse(
-        ReadOnlySpan<byte> utf8Source,
-        IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<ClinicalConceptCode, Int64>(utf8Source, provider);
+        global::System.ReadOnlySpan<byte> utf8Source,
+        global::System.IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<ClinicalConceptCode, long>(utf8Source, provider);
 
     public static bool TryParse(
-        ReadOnlySpan<byte> utf8Source,
-        IFormatProvider? provider,
+        global::System.ReadOnlySpan<byte> utf8Source,
+        global::System.IFormatProvider? provider,
         out ClinicalConceptCode result)
-        => global::DSE.Open.Values.ValueParser.TryParse<ClinicalConceptCode, Int64>(utf8Source, provider, out result);
+        => global::DSE.Open.Values.ValueParser.TryParse<ClinicalConceptCode, long>(utf8Source, provider, out result);
 
 }
 

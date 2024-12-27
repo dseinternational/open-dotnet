@@ -6,18 +6,14 @@
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
 
-using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-
 namespace DSE.Open.Records;
 
-[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<EthnicityCode, Int16>))]
+[global::System.ComponentModel.TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<EthnicityCode, short>))]
 public readonly partial struct EthnicityCode
 {
-    private readonly Int16 _value;
+    private readonly short _value;
 
-    private EthnicityCode(Int16 value, bool skipValidation = false)
+    private EthnicityCode(short value, bool skipValidation = false)
     {
         if (!skipValidation)
         {
@@ -27,16 +23,16 @@ public readonly partial struct EthnicityCode
         _value = value;
     }
 
-    private static void EnsureIsValidValue(Int16 value)
+    private static void EnsureIsValidValue(short value)
     {
         if (!IsValidValue(value))
         {
-            throw new ArgumentOutOfRangeException(nameof(value), value,
+            throw new global::System.ArgumentOutOfRangeException(nameof(value), value,
                 $"'{value}' is not a valid {nameof(EthnicityCode)} value");
         }
     }
 
-    public static bool TryFromValue(Int16 value, out EthnicityCode result)
+    public static bool TryFromValue(short value, out EthnicityCode result)
     {
         if (IsValidValue(value))
         {
@@ -48,19 +44,19 @@ public readonly partial struct EthnicityCode
         return false;
     }
 
-    public static EthnicityCode FromValue(Int16 value)
+    public static EthnicityCode FromValue(short value)
     {
         EnsureIsValidValue(value);
         return new(value, true);
     }
 
-    public static explicit operator EthnicityCode(Int16 value)
+    public static explicit operator EthnicityCode(short value)
         => FromValue(value);
 
-    static Int16 global::DSE.Open.IConvertibleTo<EthnicityCode, Int16>.ConvertTo(EthnicityCode value)
-        => (Int16)value;
+    static short global::DSE.Open.IConvertibleTo<EthnicityCode, short>.ConvertTo(EthnicityCode value)
+        => (short)value;
 
-    public static implicit operator Int16(EthnicityCode value)
+    public static implicit operator short(EthnicityCode value)
     {
         return value._value;
     }
@@ -85,18 +81,18 @@ public readonly partial struct EthnicityCode
     // ISpanFormattable
 
     public bool TryFormat(
-        Span<char> destination,
+        global::System.Span<char> destination,
         out int charsWritten)
         => TryFormat(destination, out charsWritten, default, default);
 
     public bool TryFormatInvariant(
-        Span<char> destination,
+        global::System.Span<char> destination,
         out int charsWritten,
-        ReadOnlySpan<char> format)
-        => TryFormat(destination, out charsWritten, format, System.Globalization.CultureInfo.InvariantCulture);
+        global::System.Span<char> format)
+        => TryFormat(destination, out charsWritten, format, global::System.Globalization.CultureInfo.InvariantCulture);
 
     public bool TryFormatInvariant(
-        Span<char> destination,
+        global::System.Span<char> destination,
         out int charsWritten)
         => TryFormatInvariant(destination, out charsWritten, default);
 
@@ -113,26 +109,26 @@ public readonly partial struct EthnicityCode
 
     // ISpanParsable<EthnicityCode>
 
-    public static EthnicityCode Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<EthnicityCode, Int16>(s, provider);
+    public static EthnicityCode Parse(global::System.ReadOnlySpan<char> s, global::System.IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<EthnicityCode, short>(s, provider);
 
-    public static EthnicityCode ParseInvariant(ReadOnlySpan<char> s)
-        => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
+    public static EthnicityCode ParseInvariant(global::System.ReadOnlySpan<char> s)
+        => Parse(s, global::System.Globalization.CultureInfo.InvariantCulture);
 
     // IParsable<EthnicityCode>
 
-    public static EthnicityCode Parse(string s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<EthnicityCode, Int16>(s, provider);
+    public static EthnicityCode Parse(string s, global::System.IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<EthnicityCode, short>(s, provider);
 
     public static EthnicityCode Parse(string s)
         => Parse(s, default);
 
     public static EthnicityCode ParseInvariant(string s)
-        => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
+        => Parse(s, global::System.Globalization.CultureInfo.InvariantCulture);
 
     public static bool TryParse(
         string? s,
-        IFormatProvider? provider,
+        global::System.IFormatProvider? provider,
         out EthnicityCode result)
     {
         if (s is null)
@@ -141,7 +137,7 @@ public readonly partial struct EthnicityCode
             return false;
         }
     
-        return TryParse(s.AsSpan(), provider, out result);
+        return TryParse(global::System.MemoryExtensions.AsSpan(s), provider, out result);
     }
 
     public static bool TryParse(
@@ -152,7 +148,7 @@ public readonly partial struct EthnicityCode
     public static bool TryParseInvariant(
         string? s,
         out EthnicityCode result)
-        => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
+        => TryParse(s, global::System.Globalization.CultureInfo.InvariantCulture, out result);
 
 }
 

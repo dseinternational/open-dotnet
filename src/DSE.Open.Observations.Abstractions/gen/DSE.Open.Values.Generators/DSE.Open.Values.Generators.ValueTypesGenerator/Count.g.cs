@@ -6,27 +6,23 @@
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
 
-using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-
 namespace DSE.Open.Observations;
 
-[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<Count, UInt64>))]
+[global::System.ComponentModel.TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<Count, ulong>))]
 public readonly partial struct Count
 {
-    private readonly UInt64 _value;
+    private readonly ulong _value;
 
-    private static void EnsureIsValidValue(UInt64 value)
+    private static void EnsureIsValidValue(ulong value)
     {
         if (!IsValidValue(value))
         {
-            throw new ArgumentOutOfRangeException(nameof(value), value,
+            throw new global::System.ArgumentOutOfRangeException(nameof(value), value,
                 $"'{value}' is not a valid {nameof(Count)} value");
         }
     }
 
-    public static bool TryFromValue(UInt64 value, out Count result)
+    public static bool TryFromValue(ulong value, out Count result)
     {
         if (IsValidValue(value))
         {
@@ -38,19 +34,19 @@ public readonly partial struct Count
         return false;
     }
 
-    public static Count FromValue(UInt64 value)
+    public static Count FromValue(ulong value)
     {
         EnsureIsValidValue(value);
         return new(value, true);
     }
 
-    public static explicit operator Count(UInt64 value)
+    public static explicit operator Count(ulong value)
         => FromValue(value);
 
-    static UInt64 global::DSE.Open.IConvertibleTo<Count, UInt64>.ConvertTo(Count value)
-        => (UInt64)value;
+    static ulong global::DSE.Open.IConvertibleTo<Count, ulong>.ConvertTo(Count value)
+        => (ulong)value;
 
-    public static implicit operator UInt64(Count value)
+    public static implicit operator ulong(Count value)
     {
         return value._value;
     }
@@ -75,42 +71,42 @@ public readonly partial struct Count
     // ISpanFormattable
 
     public bool TryFormat(
-        Span<char> destination,
+        global::System.Span<char> destination,
         out int charsWritten,
-        ReadOnlySpan<char> format,
-        IFormatProvider? provider)
+        global::System.ReadOnlySpan<char> format,
+        global::System.IFormatProvider? provider)
     {
-        return ((ISpanFormattable)_value).TryFormat(destination, out charsWritten, format, provider);
+        return ((global::System.ISpanFormattable)_value).TryFormat(destination, out charsWritten, format, provider);
     }
 
     public bool TryFormat(
-        Span<char> destination,
+        global::System.Span<char> destination,
         out int charsWritten)
         => TryFormat(destination, out charsWritten, default, default);
 
     public bool TryFormatInvariant(
-        Span<char> destination,
+        global::System.Span<char> destination,
         out int charsWritten,
-        ReadOnlySpan<char> format)
-        => TryFormat(destination, out charsWritten, format, System.Globalization.CultureInfo.InvariantCulture);
+        global::System.Span<char> format)
+        => TryFormat(destination, out charsWritten, format, global::System.Globalization.CultureInfo.InvariantCulture);
 
     public bool TryFormatInvariant(
-        Span<char> destination,
+        global::System.Span<char> destination,
         out int charsWritten)
         => TryFormatInvariant(destination, out charsWritten, default);
 
     /// <summary>
     /// Gets a representation of the <see cref="Count"/> value as a string with formatting options.
     /// </summary>
-    [SkipLocalsInit]
-    public string ToString(string? format, IFormatProvider? formatProvider)
+    [global::System.Runtime.CompilerServices.SkipLocalsInit]
+    public string ToString(string? format, global::System.IFormatProvider? formatProvider)
     {
-        return ((IFormattable)_value).ToString(format, formatProvider);
+        return ((global::System.IFormattable)_value).ToString(format, formatProvider);
     }
 
     public string ToStringInvariant(string? format)
     {
-        return ToString(format, System.Globalization.CultureInfo.InvariantCulture);
+        return ToString(format, global::System.Globalization.CultureInfo.InvariantCulture);
     }
 
     public string ToStringInvariant()
@@ -131,42 +127,42 @@ public readonly partial struct Count
 
     // ISpanParsable<Count>
 
-    public static Count Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<Count, UInt64>(s, provider);
+    public static Count Parse(global::System.ReadOnlySpan<char> s, global::System.IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<Count, ulong>(s, provider);
 
-    public static Count ParseInvariant(ReadOnlySpan<char> s)
-        => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
+    public static Count ParseInvariant(global::System.ReadOnlySpan<char> s)
+        => Parse(s, global::System.Globalization.CultureInfo.InvariantCulture);
 
     public static bool TryParse(
-        ReadOnlySpan<char> s,
-        IFormatProvider? provider,
+        global::System.ReadOnlySpan<char> s,
+        global::System.IFormatProvider? provider,
         out Count result)
-        => global::DSE.Open.Values.ValueParser.TryParse<Count, UInt64>(s, provider, out result);
+        => global::DSE.Open.Values.ValueParser.TryParse<Count, ulong>(s, provider, out result);
 
     public static bool TryParse(
-        ReadOnlySpan<char> s,
+        global::System.ReadOnlySpan<char> s,
         out Count result)
         => TryParse(s, default, out result);
 
     public static bool TryParseInvariant(
-        ReadOnlySpan<char> s,
+        global::System.ReadOnlySpan<char> s,
         out Count result)
-        => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
+        => TryParse(s, global::System.Globalization.CultureInfo.InvariantCulture, out result);
 
     // IParsable<Count>
 
-    public static Count Parse(string s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<Count, UInt64>(s, provider);
+    public static Count Parse(string s, global::System.IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<Count, ulong>(s, provider);
 
     public static Count Parse(string s)
         => Parse(s, default);
 
     public static Count ParseInvariant(string s)
-        => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
+        => Parse(s, global::System.Globalization.CultureInfo.InvariantCulture);
 
     public static bool TryParse(
         string? s,
-        IFormatProvider? provider,
+        global::System.IFormatProvider? provider,
         out Count result)
     {
         if (s is null)
@@ -175,7 +171,7 @@ public readonly partial struct Count
             return false;
         }
     
-        return TryParse(s.AsSpan(), provider, out result);
+        return TryParse(global::System.MemoryExtensions.AsSpan(s), provider, out result);
     }
 
     public static bool TryParse(
@@ -186,29 +182,29 @@ public readonly partial struct Count
     public static bool TryParseInvariant(
         string? s,
         out Count result)
-        => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
+        => TryParse(s, global::System.Globalization.CultureInfo.InvariantCulture, out result);
 
     // IUtf8SpanFormattable
 
     public bool TryFormat(
-        Span<byte> utf8Destination,
+        global::System.Span<byte> utf8Destination,
         out int bytesWritten,
-        ReadOnlySpan<char> format,
-        IFormatProvider? provider)
-        => ((IUtf8SpanFormattable)_value).TryFormat(utf8Destination, out bytesWritten, format, provider);
+        global::System.ReadOnlySpan<char> format,
+        global::System.IFormatProvider? provider)
+        => ((global::System.IUtf8SpanFormattable)_value).TryFormat(utf8Destination, out bytesWritten, format, provider);
 
     // IUtf8SpanParsable<Count>
 
     public static Count Parse(
-        ReadOnlySpan<byte> utf8Source,
-        IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<Count, UInt64>(utf8Source, provider);
+        global::System.ReadOnlySpan<byte> utf8Source,
+        global::System.IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<Count, ulong>(utf8Source, provider);
 
     public static bool TryParse(
-        ReadOnlySpan<byte> utf8Source,
-        IFormatProvider? provider,
+        global::System.ReadOnlySpan<byte> utf8Source,
+        global::System.IFormatProvider? provider,
         out Count result)
-        => global::DSE.Open.Values.ValueParser.TryParse<Count, UInt64>(utf8Source, provider, out result);
+        => global::DSE.Open.Values.ValueParser.TryParse<Count, ulong>(utf8Source, provider, out result);
 
     public int CompareTo(Count other)
     {
@@ -237,7 +233,7 @@ public readonly partial struct Count
 
     public static Count operator +(Count value) => (Count)(+value._value);
 
-    public static Count operator -(Count value) => throw new NotImplementedException();
+    public static Count operator -(Count value) => throw new global::System.NotImplementedException();
 
     public static Count operator *(Count left, Count right) => (Count)(left._value * right._value);
 

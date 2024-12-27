@@ -123,9 +123,4 @@ internal abstract class ValueTypeSpec
     public bool EmitParseUtf8Method { get; set; }
 
     public bool EmitTryParseUtf8Method { get; set; }
-
-    public bool EmitUsingSystemGlobalization => EmitParseSpanNumberStylesMethod
-        || EmitParseStringNumberStylesMethod
-        || EmitTryParseSpanNumberStylesMethod
-        || EmitTryParseStringNumberStylesMethod;
 }

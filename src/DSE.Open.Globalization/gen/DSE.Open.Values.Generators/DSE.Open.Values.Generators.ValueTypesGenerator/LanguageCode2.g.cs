@@ -6,18 +6,14 @@
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
 
-using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-
 namespace DSE.Open.Globalization;
 
-[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<LanguageCode2, AsciiChar2>))]
+[global::System.ComponentModel.TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<LanguageCode2, global::DSE.Open.AsciiChar2>))]
 public readonly partial struct LanguageCode2
 {
-    private readonly AsciiChar2 _value;
+    private readonly global::DSE.Open.AsciiChar2 _value;
 
-    private LanguageCode2(AsciiChar2 value, bool skipValidation = false)
+    private LanguageCode2(global::DSE.Open.AsciiChar2 value, bool skipValidation = false)
     {
         if (!skipValidation)
         {
@@ -27,16 +23,16 @@ public readonly partial struct LanguageCode2
         _value = value;
     }
 
-    private static void EnsureIsValidValue(AsciiChar2 value)
+    private static void EnsureIsValidValue(global::DSE.Open.AsciiChar2 value)
     {
         if (!IsValidValue(value))
         {
-            throw new ArgumentOutOfRangeException(nameof(value), value,
+            throw new global::System.ArgumentOutOfRangeException(nameof(value), value,
                 $"'{value}' is not a valid {nameof(LanguageCode2)} value");
         }
     }
 
-    public static bool TryFromValue(AsciiChar2 value, out LanguageCode2 result)
+    public static bool TryFromValue(global::DSE.Open.AsciiChar2 value, out LanguageCode2 result)
     {
         if (IsValidValue(value))
         {
@@ -48,19 +44,19 @@ public readonly partial struct LanguageCode2
         return false;
     }
 
-    public static LanguageCode2 FromValue(AsciiChar2 value)
+    public static LanguageCode2 FromValue(global::DSE.Open.AsciiChar2 value)
     {
         EnsureIsValidValue(value);
         return new(value, true);
     }
 
-    public static explicit operator LanguageCode2(AsciiChar2 value)
+    public static explicit operator LanguageCode2(global::DSE.Open.AsciiChar2 value)
         => FromValue(value);
 
-    static AsciiChar2 global::DSE.Open.IConvertibleTo<LanguageCode2, AsciiChar2>.ConvertTo(LanguageCode2 value)
-        => (AsciiChar2)value;
+    static global::DSE.Open.AsciiChar2 global::DSE.Open.IConvertibleTo<LanguageCode2, global::DSE.Open.AsciiChar2>.ConvertTo(LanguageCode2 value)
+        => (global::DSE.Open.AsciiChar2)value;
 
-    public static implicit operator AsciiChar2(LanguageCode2 value)
+    public static implicit operator global::DSE.Open.AsciiChar2(LanguageCode2 value)
     {
         return value._value;
     }
@@ -85,42 +81,42 @@ public readonly partial struct LanguageCode2
     // ISpanFormattable
 
     public bool TryFormat(
-        Span<char> destination,
+        global::System.Span<char> destination,
         out int charsWritten,
-        ReadOnlySpan<char> format,
-        IFormatProvider? provider)
+        global::System.ReadOnlySpan<char> format,
+        global::System.IFormatProvider? provider)
     {
-        return ((ISpanFormattable)_value).TryFormat(destination, out charsWritten, format, provider);
+        return ((global::System.ISpanFormattable)_value).TryFormat(destination, out charsWritten, format, provider);
     }
 
     public bool TryFormat(
-        Span<char> destination,
+        global::System.Span<char> destination,
         out int charsWritten)
         => TryFormat(destination, out charsWritten, default, default);
 
     public bool TryFormatInvariant(
-        Span<char> destination,
+        global::System.Span<char> destination,
         out int charsWritten,
-        ReadOnlySpan<char> format)
-        => TryFormat(destination, out charsWritten, format, System.Globalization.CultureInfo.InvariantCulture);
+        global::System.Span<char> format)
+        => TryFormat(destination, out charsWritten, format, global::System.Globalization.CultureInfo.InvariantCulture);
 
     public bool TryFormatInvariant(
-        Span<char> destination,
+        global::System.Span<char> destination,
         out int charsWritten)
         => TryFormatInvariant(destination, out charsWritten, default);
 
     /// <summary>
     /// Gets a representation of the <see cref="LanguageCode2"/> value as a string with formatting options.
     /// </summary>
-    [SkipLocalsInit]
-    public string ToString(string? format, IFormatProvider? formatProvider)
+    [global::System.Runtime.CompilerServices.SkipLocalsInit]
+    public string ToString(string? format, global::System.IFormatProvider? formatProvider)
     {
-        return ((IFormattable)_value).ToString(format, formatProvider);
+        return ((global::System.IFormattable)_value).ToString(format, formatProvider);
     }
 
     public string ToStringInvariant(string? format)
     {
-        return ToString(format, System.Globalization.CultureInfo.InvariantCulture);
+        return ToString(format, global::System.Globalization.CultureInfo.InvariantCulture);
     }
 
     public string ToStringInvariant()
@@ -141,42 +137,42 @@ public readonly partial struct LanguageCode2
 
     // ISpanParsable<LanguageCode2>
 
-    public static LanguageCode2 Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<LanguageCode2, AsciiChar2>(s, provider);
+    public static LanguageCode2 Parse(global::System.ReadOnlySpan<char> s, global::System.IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<LanguageCode2, global::DSE.Open.AsciiChar2>(s, provider);
 
-    public static LanguageCode2 ParseInvariant(ReadOnlySpan<char> s)
-        => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
+    public static LanguageCode2 ParseInvariant(global::System.ReadOnlySpan<char> s)
+        => Parse(s, global::System.Globalization.CultureInfo.InvariantCulture);
 
     public static bool TryParse(
-        ReadOnlySpan<char> s,
-        IFormatProvider? provider,
+        global::System.ReadOnlySpan<char> s,
+        global::System.IFormatProvider? provider,
         out LanguageCode2 result)
-        => global::DSE.Open.Values.ValueParser.TryParse<LanguageCode2, AsciiChar2>(s, provider, out result);
+        => global::DSE.Open.Values.ValueParser.TryParse<LanguageCode2, global::DSE.Open.AsciiChar2>(s, provider, out result);
 
     public static bool TryParse(
-        ReadOnlySpan<char> s,
+        global::System.ReadOnlySpan<char> s,
         out LanguageCode2 result)
         => TryParse(s, default, out result);
 
     public static bool TryParseInvariant(
-        ReadOnlySpan<char> s,
+        global::System.ReadOnlySpan<char> s,
         out LanguageCode2 result)
-        => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
+        => TryParse(s, global::System.Globalization.CultureInfo.InvariantCulture, out result);
 
     // IParsable<LanguageCode2>
 
-    public static LanguageCode2 Parse(string s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<LanguageCode2, AsciiChar2>(s, provider);
+    public static LanguageCode2 Parse(string s, global::System.IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<LanguageCode2, global::DSE.Open.AsciiChar2>(s, provider);
 
     public static LanguageCode2 Parse(string s)
         => Parse(s, default);
 
     public static LanguageCode2 ParseInvariant(string s)
-        => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
+        => Parse(s, global::System.Globalization.CultureInfo.InvariantCulture);
 
     public static bool TryParse(
         string? s,
-        IFormatProvider? provider,
+        global::System.IFormatProvider? provider,
         out LanguageCode2 result)
     {
         if (s is null)
@@ -185,7 +181,7 @@ public readonly partial struct LanguageCode2
             return false;
         }
     
-        return TryParse(s.AsSpan(), provider, out result);
+        return TryParse(global::System.MemoryExtensions.AsSpan(s), provider, out result);
     }
 
     public static bool TryParse(
@@ -196,29 +192,29 @@ public readonly partial struct LanguageCode2
     public static bool TryParseInvariant(
         string? s,
         out LanguageCode2 result)
-        => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
+        => TryParse(s, global::System.Globalization.CultureInfo.InvariantCulture, out result);
 
     // IUtf8SpanFormattable
 
     public bool TryFormat(
-        Span<byte> utf8Destination,
+        global::System.Span<byte> utf8Destination,
         out int bytesWritten,
-        ReadOnlySpan<char> format,
-        IFormatProvider? provider)
-        => ((IUtf8SpanFormattable)_value).TryFormat(utf8Destination, out bytesWritten, format, provider);
+        global::System.ReadOnlySpan<char> format,
+        global::System.IFormatProvider? provider)
+        => ((global::System.IUtf8SpanFormattable)_value).TryFormat(utf8Destination, out bytesWritten, format, provider);
 
     // IUtf8SpanParsable<LanguageCode2>
 
     public static LanguageCode2 Parse(
-        ReadOnlySpan<byte> utf8Source,
-        IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<LanguageCode2, AsciiChar2>(utf8Source, provider);
+        global::System.ReadOnlySpan<byte> utf8Source,
+        global::System.IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<LanguageCode2, global::DSE.Open.AsciiChar2>(utf8Source, provider);
 
     public static bool TryParse(
-        ReadOnlySpan<byte> utf8Source,
-        IFormatProvider? provider,
+        global::System.ReadOnlySpan<byte> utf8Source,
+        global::System.IFormatProvider? provider,
         out LanguageCode2 result)
-        => global::DSE.Open.Values.ValueParser.TryParse<LanguageCode2, AsciiChar2>(utf8Source, provider, out result);
+        => global::DSE.Open.Values.ValueParser.TryParse<LanguageCode2, global::DSE.Open.AsciiChar2>(utf8Source, provider, out result);
 
     public int CompareTo(LanguageCode2 other)
     {

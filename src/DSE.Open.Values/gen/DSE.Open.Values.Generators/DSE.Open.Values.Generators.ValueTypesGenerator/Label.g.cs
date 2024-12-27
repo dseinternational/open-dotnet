@@ -6,19 +6,14 @@
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
 
-using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using DSE.Open.Runtime.Helpers;
-
 namespace DSE.Open.Values;
 
-[TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<Label, CharSequence>))]
+[global::System.ComponentModel.TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<Label, global::DSE.Open.CharSequence>))]
 public readonly partial struct Label
 {
-    private readonly CharSequence _value;
+    private readonly global::DSE.Open.CharSequence _value;
 
-    private Label(CharSequence value, bool skipValidation = false)
+    private Label(global::DSE.Open.CharSequence value, bool skipValidation = false)
     {
         if (!skipValidation)
         {
@@ -28,16 +23,16 @@ public readonly partial struct Label
         _value = value;
     }
 
-    private static void EnsureIsValidValue(CharSequence value)
+    private static void EnsureIsValidValue(global::DSE.Open.CharSequence value)
     {
         if (!IsValidValue(value))
         {
-            throw new ArgumentOutOfRangeException(nameof(value), value,
+            throw new global::System.ArgumentOutOfRangeException(nameof(value), value,
                 $"'{value}' is not a valid {nameof(Label)} value");
         }
     }
 
-    public static bool TryFromValue(CharSequence value, out Label result)
+    public static bool TryFromValue(global::DSE.Open.CharSequence value, out Label result)
     {
         if (IsValidValue(value))
         {
@@ -49,19 +44,19 @@ public readonly partial struct Label
         return false;
     }
 
-    public static Label FromValue(CharSequence value)
+    public static Label FromValue(global::DSE.Open.CharSequence value)
     {
         EnsureIsValidValue(value);
         return new(value, true);
     }
 
-    public static explicit operator Label(CharSequence value)
+    public static explicit operator Label(global::DSE.Open.CharSequence value)
         => FromValue(value);
 
-    static CharSequence global::DSE.Open.IConvertibleTo<Label, CharSequence>.ConvertTo(Label value)
-        => (CharSequence)value;
+    static global::DSE.Open.CharSequence global::DSE.Open.IConvertibleTo<Label, global::DSE.Open.CharSequence>.ConvertTo(Label value)
+        => (global::DSE.Open.CharSequence)value;
 
-    public static implicit operator CharSequence(Label value)
+    public static implicit operator global::DSE.Open.CharSequence(Label value)
     {
         return value._value;
     }
@@ -86,43 +81,43 @@ public readonly partial struct Label
     // ISpanFormattable
 
     public bool TryFormat(
-        Span<char> destination,
+        global::System.Span<char> destination,
         out int charsWritten,
-        ReadOnlySpan<char> format,
-        IFormatProvider? provider)
+        global::System.ReadOnlySpan<char> format,
+        global::System.IFormatProvider? provider)
     {
-        return ((ISpanFormattable)_value).TryFormat(destination, out charsWritten, format, provider);
+        return ((global::System.ISpanFormattable)_value).TryFormat(destination, out charsWritten, format, provider);
     }
 
     public bool TryFormat(
-        Span<char> destination,
+        global::System.Span<char> destination,
         out int charsWritten)
         => TryFormat(destination, out charsWritten, default, default);
 
     public bool TryFormatInvariant(
-        Span<char> destination,
+        global::System.Span<char> destination,
         out int charsWritten,
-        ReadOnlySpan<char> format)
-        => TryFormat(destination, out charsWritten, format, System.Globalization.CultureInfo.InvariantCulture);
+        global::System.Span<char> format)
+        => TryFormat(destination, out charsWritten, format, global::System.Globalization.CultureInfo.InvariantCulture);
 
     public bool TryFormatInvariant(
-        Span<char> destination,
+        global::System.Span<char> destination,
         out int charsWritten)
         => TryFormatInvariant(destination, out charsWritten, default);
 
     /// <summary>
     /// Gets a representation of the <see cref="Label"/> value as a string with formatting options.
     /// </summary>
-    [SkipLocalsInit]
-    public string ToString(string? format, IFormatProvider? formatProvider)
+    [global::System.Runtime.CompilerServices.SkipLocalsInit]
+    public string ToString(string? format, global::System.IFormatProvider? formatProvider)
     {
         char[]? rented = null;
     
         try
         {
-            Span<char> buffer = MemoryThresholds.CanStackalloc<char>(MaxSerializedCharLength)
+            global::System.Span<char> buffer = global::DSE.Open.Runtime.Helpers.MemoryThresholds.CanStackalloc<char>(MaxSerializedCharLength)
                 ? stackalloc char[MaxSerializedCharLength]
-                : (rented = System.Buffers.ArrayPool<char>.Shared.Rent(MaxSerializedCharLength));
+                : (rented = global::System.Buffers.ArrayPool<char>.Shared.Rent(MaxSerializedCharLength));
     
             _ = TryFormat(buffer, out var charsWritten, format, formatProvider);
     
@@ -132,14 +127,14 @@ public readonly partial struct Label
         {
             if (rented is not null)
             {
-                System.Buffers.ArrayPool<char>.Shared.Return(rented);
+                global::System.Buffers.ArrayPool<char>.Shared.Return(rented);
             }
         }
     }
 
     public string ToStringInvariant(string? format)
     {
-        return ToString(format, System.Globalization.CultureInfo.InvariantCulture);
+        return ToString(format, global::System.Globalization.CultureInfo.InvariantCulture);
     }
 
     public string ToStringInvariant()
@@ -160,42 +155,42 @@ public readonly partial struct Label
 
     // ISpanParsable<Label>
 
-    public static Label Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<Label, CharSequence>(s, provider);
+    public static Label Parse(global::System.ReadOnlySpan<char> s, global::System.IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<Label, global::DSE.Open.CharSequence>(s, provider);
 
-    public static Label ParseInvariant(ReadOnlySpan<char> s)
-        => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
+    public static Label ParseInvariant(global::System.ReadOnlySpan<char> s)
+        => Parse(s, global::System.Globalization.CultureInfo.InvariantCulture);
 
     public static bool TryParse(
-        ReadOnlySpan<char> s,
-        IFormatProvider? provider,
+        global::System.ReadOnlySpan<char> s,
+        global::System.IFormatProvider? provider,
         out Label result)
-        => global::DSE.Open.Values.ValueParser.TryParse<Label, CharSequence>(s, provider, out result);
+        => global::DSE.Open.Values.ValueParser.TryParse<Label, global::DSE.Open.CharSequence>(s, provider, out result);
 
     public static bool TryParse(
-        ReadOnlySpan<char> s,
+        global::System.ReadOnlySpan<char> s,
         out Label result)
         => TryParse(s, default, out result);
 
     public static bool TryParseInvariant(
-        ReadOnlySpan<char> s,
+        global::System.ReadOnlySpan<char> s,
         out Label result)
-        => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
+        => TryParse(s, global::System.Globalization.CultureInfo.InvariantCulture, out result);
 
     // IParsable<Label>
 
-    public static Label Parse(string s, IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<Label, CharSequence>(s, provider);
+    public static Label Parse(string s, global::System.IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<Label, global::DSE.Open.CharSequence>(s, provider);
 
     public static Label Parse(string s)
         => Parse(s, default);
 
     public static Label ParseInvariant(string s)
-        => Parse(s, System.Globalization.CultureInfo.InvariantCulture);
+        => Parse(s, global::System.Globalization.CultureInfo.InvariantCulture);
 
     public static bool TryParse(
         string? s,
-        IFormatProvider? provider,
+        global::System.IFormatProvider? provider,
         out Label result)
     {
         if (s is null)
@@ -204,7 +199,7 @@ public readonly partial struct Label
             return false;
         }
     
-        return TryParse(s.AsSpan(), provider, out result);
+        return TryParse(global::System.MemoryExtensions.AsSpan(s), provider, out result);
     }
 
     public static bool TryParse(
@@ -215,7 +210,7 @@ public readonly partial struct Label
     public static bool TryParseInvariant(
         string? s,
         out Label result)
-        => TryParse(s, System.Globalization.CultureInfo.InvariantCulture, out result);
+        => TryParse(s, global::System.Globalization.CultureInfo.InvariantCulture, out result);
 
     public int CompareTo(Label other)
     {
