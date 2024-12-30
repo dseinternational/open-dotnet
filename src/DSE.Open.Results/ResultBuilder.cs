@@ -17,6 +17,11 @@ public abstract class ResultBuilder<TResult>
     {
         ArgumentNullException.ThrowIfNull(result);
 
+        if (Status == ResultStatus.Unspecified && result.Status != ResultStatus.Unspecified)
+        {
+            Status = result.Status;
+        }
+
         if (result.HasNotifications)
         {
             Notifications.AddRange(result.Notifications);
