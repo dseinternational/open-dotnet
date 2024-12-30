@@ -29,6 +29,7 @@ public class CollectionValueAsyncResultBuilder<TValue>
     {
         return new()
         {
+            Status = Status,
             Value = Value ?? AsyncEnumerable.Empty<TValue>(),
             Notifications = [.. Notifications],
         };

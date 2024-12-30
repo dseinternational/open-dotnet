@@ -4,14 +4,13 @@
 using System.Text.Json.Serialization;
 using DSE.Open.Collections.Generic;
 using DSE.Open.Notifications;
-using DSE.Open.Serialization.DataTransfer;
 
 namespace DSE.Open.Results;
 
 /// <summary>
 /// Represents the result of an operation.
 /// </summary>
-public record Result : ImmutableDataTransferObject
+public record Result
 {
     public static readonly Result Empty = new();
 
@@ -19,6 +18,9 @@ public record Result : ImmutableDataTransferObject
 
     private Guid? _resultId;
     private ReadOnlyValueCollection<Notification>? _notifications;
+
+    [JsonPropertyName("status")]
+    public ResultStatus Status { get; init; }
 
     [JsonPropertyName("result_id")]
     public Guid ResultId

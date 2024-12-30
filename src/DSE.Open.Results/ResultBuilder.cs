@@ -9,11 +9,18 @@ namespace DSE.Open.Results;
 public abstract class ResultBuilder<TResult>
     where TResult : Result
 {
-    public ICollection<Notification> Notifications { get; } = new List<Notification>();
+    public virtual ResultStatus Status { get; set; }
+
+    public ICollection<Notification> Notifications { get; } = [];
 
     public virtual void MergeNotifications(Result result)
     {
         ArgumentNullException.ThrowIfNull(result);
+
+        if (Status == ResultStatus.Unspecified && result.Status != ResultStatus.Unspecified)
+        {
+            Status = result.Status;
+        }
 
         if (result.HasNotifications)
         {
@@ -30,6 +37,7 @@ public class ResultBuilder : ResultBuilder<Result>
     {
         return new()
         {
+            Status = Status,
             Notifications = [.. Notifications],
         };
     }

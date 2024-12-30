@@ -22,6 +22,7 @@ public class ValueResultBuilder<TValue> : ValueResultBuilder<ValueResult<TValue>
     {
         return new()
         {
+            Status = Status,
             Value = Value,
             Notifications = [.. Notifications],
         };
