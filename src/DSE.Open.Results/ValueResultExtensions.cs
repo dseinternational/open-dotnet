@@ -5,6 +5,7 @@ namespace DSE.Open.Results;
 
 public static class ValueResultExtensions
 {
+    [Obsolete("We have added RequiredValue() to ValueResult<T>.")]
     public static T GetRequiredValue<T>(this ValueResult<T> result)
     {
         ArgumentNullException.ThrowIfNull(result);
