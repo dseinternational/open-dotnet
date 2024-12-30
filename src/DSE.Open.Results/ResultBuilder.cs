@@ -9,7 +9,9 @@ namespace DSE.Open.Results;
 public abstract class ResultBuilder<TResult>
     where TResult : Result
 {
-    public ICollection<Notification> Notifications { get; } = new List<Notification>();
+    public virtual ResultStatus Status { get; set; }
+
+    public ICollection<Notification> Notifications { get; } = [];
 
     public virtual void MergeNotifications(Result result)
     {
@@ -30,6 +32,7 @@ public class ResultBuilder : ResultBuilder<Result>
     {
         return new()
         {
+            Status = Status,
             Notifications = [.. Notifications],
         };
     }

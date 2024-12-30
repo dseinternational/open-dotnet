@@ -38,6 +38,7 @@ public class CollectionValueResultBuilder<TValue>
     {
         return new()
         {
+            Status = Status,
             Value = [.. Items],
             Notifications = [.. Notifications],
         };

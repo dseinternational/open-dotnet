@@ -25,6 +25,7 @@ public class PaginatedCollectionValueAsyncResultBuilder<TValue> : PaginatedColle
 
         return new()
         {
+            Status = Status,
             Value = Value ?? AsyncEnumerable.Empty<TValue>(),
             Notifications = [.. Notifications],
             Pagination = Pagination,

@@ -53,6 +53,7 @@ public class PaginatedCollectionValueResultBuilder<TValue> : CollectionValueResu
     {
         return new()
         {
+            Status = Status,
             Value = [.. Items],
             Notifications = [.. Notifications],
             Pagination = Pagination,
