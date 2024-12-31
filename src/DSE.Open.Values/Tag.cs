@@ -56,7 +56,7 @@ public readonly partial struct Tag
 
         if (!skipValidation)
         {
-            EnsureIsValidValue(AsciiString.Parse(tag, CultureInfo.InvariantCulture));
+            EnsureIsValidValue(value);
         }
 
         _value = value;
