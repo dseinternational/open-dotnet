@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -47,8 +48,23 @@ public sealed class JsonUtf8SpanSerializableValueConverter<TValue, T> : JsonConv
         }
     }
 
-    [SkipLocalsInit]
+    public override TValue ReadAsPropertyName(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    {
+        return Read(ref reader, typeToConvert, options);
+    }
+
     public override void Write(Utf8JsonWriter writer, TValue value, JsonSerializerOptions options)
+    {
+        Write(writer, value, options, false);
+    }
+
+    public override void WriteAsPropertyName(Utf8JsonWriter writer, [DisallowNull] TValue value, JsonSerializerOptions options)
+    {
+        Write(writer, value, options, true);
+    }
+
+    [SkipLocalsInit]
+    private void Write(Utf8JsonWriter writer, TValue value, JsonSerializerOptions options, bool asPropertyName = false)
     {
         ArgumentNullException.ThrowIfNull(writer);
 
@@ -64,7 +80,14 @@ public sealed class JsonUtf8SpanSerializableValueConverter<TValue, T> : JsonConv
         {
             if (value.TryFormat(buffer, out var bytesWritten, default, default))
             {
-                writer.WriteStringValue(buffer[..bytesWritten]);
+                if (asPropertyName)
+                {
+                    writer.WritePropertyName(buffer[..bytesWritten]);
+                }
+                else
+                {
+                    writer.WriteStringValue(buffer[..bytesWritten]);
+                }
             }
             else
             {

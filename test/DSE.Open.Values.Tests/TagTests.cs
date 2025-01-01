@@ -1,6 +1,9 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Text.Json;
+using DSE.Open.Text.Json;
+
 namespace DSE.Open.Values;
 
 public class TagTests
@@ -162,8 +165,8 @@ public class TagTests
         Assert.Equal(tagStr, tag.ToString());
     }
 
-    public static readonly TheoryData<string> ValidTagStrings = new()
-    {
+    public static readonly TheoryData<string> ValidTagStrings =
+    [
         "tag",
         "TAG",
         "a-a",
@@ -174,5 +177,25 @@ public class TagTests
         "reading/r5-letter-sound-cards",
         "reading/r8-high-frequency-word-cards-first-100",
         "reading/r17-high-frequency-words-record-form-first-100"
-    };
+    ];
+
+    [Fact]
+    public void SerializeDeserializeAsPropertyName()
+    {
+        var dict = new Dictionary<Tag, int>
+        {
+            { Tag.ParseInvariant("tag"), 42},
+            { Tag.ParseInvariant("tag1"), 421},
+            { Tag.ParseInvariant("tag2"), 422},
+            { Tag.ParseInvariant("tag3"), 423},
+        };
+
+        var json = JsonSerializer.Serialize(dict, JsonSharedOptions.RelaxedJsonEscaping);
+
+        Assert.Equal("{\"tag\":42,\"tag1\":421,\"tag2\":422,\"tag3\":423}", json);
+
+        var deserialized = JsonSerializer.Deserialize<Dictionary<Tag, int>>(json, JsonSharedOptions.RelaxedJsonEscaping);
+
+        Assert.Equivalent(dict, deserialized);
+    }
 }
