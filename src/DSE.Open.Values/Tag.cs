@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Collections.Frozen;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using CommunityToolkit.HighPerformance.Buffers;
@@ -12,8 +13,7 @@ namespace DSE.Open.Values;
 /// <summary>
 ///     A tag consisting only of ASCII letters or digits or dashes, forward slashes,
 ///     or colons ('-', '/', ':', with only letters or digits at beginning or end).
-///     Tags are designed to be useable in URIs without escaping. A related, but
-///     more permissive, type is <see cref="Label" />.
+///     Tags are designed to be useable in URI path segments without escaping.
 /// </summary>
 /// <remarks>
 ///     See: <see href="https://www.ietf.org/rfc/rfc3986.html">RFC 3986: Uniform Resource
@@ -62,6 +62,8 @@ public readonly partial struct Tag
         _value = value;
     }
 
+    private static readonly FrozenSet<char> s_nonLetterDigitChars = ['-', ':', '/', '(', ')'];
+
     public static bool IsValidValue(AsciiString value)
     {
         if (value.Length is < MinLength or > MaxLength)
@@ -78,7 +80,7 @@ public readonly partial struct Tag
         {
             var c = value[i];
 
-            if (AsciiChar.IsLetterOrDigit(c) || c == '-' || c == '/' || c == ':')
+            if (AsciiChar.IsLetterOrDigit(c) || s_nonLetterDigitChars.Contains(c))
             {
                 continue;
             }
@@ -99,7 +101,7 @@ public readonly partial struct Tag
         return tag.Length is >= MinLength and <= MaxLength
             && char.IsAsciiLetterOrDigit(tag[0])
             && char.IsAsciiLetterOrDigit(tag[^1])
-            && tag.All((char c) => char.IsAsciiLetterOrDigit(c) || c == '-' || c == '/' || c == ':');
+            && tag.All((char c) => char.IsAsciiLetterOrDigit(c) || s_nonLetterDigitChars.Contains(c));
     }
 
     public AsciiString AsAsciiString()
@@ -184,12 +186,12 @@ public readonly partial struct Tag
         return new(tag);
     }
 
+#pragma warning restore CA2225 // Operator overloads have named alternates
+
     public static explicit operator string(Tag tag)
     {
         return tag.ToString();
     }
-
-#pragma warning restore CA2225 // Operator overloads have named alternates
 
     private static class TagStringPool
     {
