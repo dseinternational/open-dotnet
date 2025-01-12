@@ -67,6 +67,11 @@ public readonly struct AsciiString
         return _value.Span;
     }
 
+    public ReadOnlySpan<byte> AsBytes()
+    {
+        return ValuesMarshal.AsBytes(_value.Span);
+    }
+
     public int GetCharCount(ReadOnlySpan<char> format, IFormatProvider? provider)
     {
         return _value.Length;
