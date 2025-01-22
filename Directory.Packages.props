@@ -45,8 +45,8 @@
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
     <PackageVersion Include="Microsoft.NETCore.Platforms" Version="8.0.0-preview.7.23375.6" />
     <PackageVersion Include="Microsoft.Testing.Extensions.CodeCoverage" Version="17.13.1" />
-    <PackageVersion Include="Microsoft.Testing.Platform" Version="1.5.1" />
-    <PackageVersion Include="Microsoft.Testing.Platform.MSBuild" Version="1.5.1" />
+    <PackageVersion Include="Microsoft.Testing.Platform" Version="1.5.2" />
+    <PackageVersion Include="Microsoft.Testing.Platform.MSBuild" Version="1.5.2" />
     <PackageVersion Include="Moq" Version="4.20.72" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageVersion Include="NodaTime" Version="3.2.1" />
