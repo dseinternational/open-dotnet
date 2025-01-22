@@ -10,7 +10,7 @@
     <PackageVersion Include="CommunityToolkit.HighPerformance" Version="8.4.0" />
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageVersion Include="coverlet.collector" Version="6.0.2" />
-    <PackageVersion Include="FluentAssertions" Version="[7.0.0]" />
+    <PackageVersion Include="FluentAssertions" Version="[8.0.1]" />
     <PackageVersion Include="Google.Protobuf" Version="3.29.3" />
     <PackageVersion Include="Iced" Version="1.21.0" />
     <PackageVersion Include="Microsoft.Bcl.AsyncInterfaces" Version="9.0.1" />
