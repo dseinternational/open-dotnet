@@ -196,7 +196,7 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
     /// <param name="value"></param>
     /// <param name="timeProvider"></param>
     /// <returns></returns>
-    internal static Observation<TValue> Create<TValue>(
+    public static Observation<TValue> Create<TValue>(
         IMeasure<TValue> measure,
         TValue value,
         TimeProvider timeProvider)
@@ -234,7 +234,7 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
     /// <param name="value"></param>
     /// <param name="timeProvider"></param>
     /// <returns></returns>
-    internal static Observation<TValue, TParam> Create<TValue, TParam>(
+    public static Observation<TValue, TParam> Create<TValue, TParam>(
         IMeasure<TValue, TParam> measure,
         TParam parameter,
         TValue value,
@@ -388,7 +388,7 @@ public sealed class Observation<TValue, TParam>
     where TValue : struct, IEquatable<TValue>, IObservationValue
     where TParam : struct, IEquatable<TParam>
 {
-    internal Observation(
+    public Observation(
         IMeasure measure,
         TParam parameter,
         TValue value,
@@ -421,7 +421,7 @@ public sealed class Observation<TValue, TParam>
         Value = value;
     }
 
-    internal Observation(
+    public Observation(
         ObservationId id,
         DateTimeOffset time,
         MeasureId measureId,
