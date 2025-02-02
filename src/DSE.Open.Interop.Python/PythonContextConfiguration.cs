@@ -37,6 +37,21 @@ public sealed class PythonContextConfiguration
             .Where(s => s is not null)
             .ToList();
 
+        if (OperatingSystem.IsMacOS() || OperatingSystem.IsLinux())
+        {
+            searchLocations.AddRange(s_environmentVariables
+                .Select(v =>
+                {
+                    if (Environment.GetEnvironmentVariable(v) is { Length: > 0 } value)
+                    {
+                        return Path.Combine(value, "lib", filename);
+                    }
+
+                    return null;
+                })
+                .Where(s => s is not null));
+        }
+
         if (OperatingSystem.IsWindows())
         {
             searchLocations.Add(
@@ -48,7 +63,7 @@ public sealed class PythonContextConfiguration
         }
         else if (OperatingSystem.IsMacOS())
         {
-            searchLocations.Add("/Library/Frameworks/Python.framework/Versions/3.13/bin/python3.13");
+            searchLocations.Add($"/Library/Frameworks/Python.framework/Versions/3.13/lib/{filename}");
         }
 
         searchLocations.Add(filename);
