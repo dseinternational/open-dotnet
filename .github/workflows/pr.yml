@@ -6,15 +6,18 @@ jobs:
   build_test:
     name: Build and Test
 
-    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        os: [ubuntu-24.04, windows-2022]
+        configuration: [Debug, Release]
+
+    runs-on: ${{ matrix.os }}
+
     timeout-minutes: 45
+    
     defaults:
       run:
         shell: pwsh
-
-    strategy:
-      matrix:
-        configuration: [Debug, Release]
 
     steps:
       - name: Checkout
@@ -37,12 +40,12 @@ jobs:
       - name: Set Python version
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12.8"
+          python-version: "3.13.1"
           cache: "pip"
 
       - name: Install Python packages
         run: |
-          pip3 install torch>=2.5.1 --index-url https://download.pytorch.org/whl/cpu
+          pip3 install torch>=2.6.0 --index-url https://download.pytorch.org/whl/cpu
           python -m pip install -r ./requirements.txt --progress-bar off --verbose
 
       - name: Initialize Python environment
