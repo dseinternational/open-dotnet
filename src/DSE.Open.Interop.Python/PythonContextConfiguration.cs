@@ -10,16 +10,14 @@ public sealed class PythonContextConfiguration
     private static readonly string[] s_environmentVariables =
     [
         "PYTHON3_HOME",
-        "Python3_ROOT_DIR",
         "PYTHON_HOME",
-        "Python_ROOT_DIR",
         "pythonLocation"
     ];
 
     public PythonContextConfiguration()
     {
         var filename = OperatingSystem.IsWindows()
-            ? "python3.13.dll"
+            ? "python313.dll"
             : OperatingSystem.IsMacOS()
                 ? "libpython3.13.dylib"
                 : "libpython3.13.so";
