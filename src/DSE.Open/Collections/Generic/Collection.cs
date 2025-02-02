@@ -282,6 +282,11 @@ public class Collection<T> : IList<T>, IReadOnlyList<T>, IList
         return [.. _items];
     }
 
+    public override string ToString()
+    {
+        return CollectionWriter.WriteToString(this);
+    }
+
     IEnumerator IEnumerable.GetEnumerator()
     {
         return _items.GetEnumerator();

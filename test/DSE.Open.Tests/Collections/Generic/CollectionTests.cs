@@ -36,5 +36,18 @@ public class CollectionTests
         Assert.Equal(6, collection[5]);
     }
 
-    // TODO: complete
+    [Fact]
+    public void ToString_Int32()
+    {
+        Collection<int> collection = [1, 2, 3, 4, 5, 6, 7, 8];
+        Assert.Equal("[1,2,3,4,5,6,7,8]", collection.ToString());
+    }
+
+    [Fact]
+    public void ToString_Guid()
+    {
+        Collection<Guid> collection = [.. Enumerable.Range(1, 100).Select(i => Guid.NewGuid())];
+        var expected = $"[\"{string.Join("\",\"", collection.Select(i => i.ToString()))}\"]";
+        Assert.Equal(expected, collection.ToString());
+    }
 }

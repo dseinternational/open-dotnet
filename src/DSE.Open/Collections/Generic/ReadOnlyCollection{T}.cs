@@ -3,6 +3,7 @@
 
 using System.Collections;
 using System.Runtime.CompilerServices;
+using DSE.Open.Text;
 
 namespace DSE.Open.Collections.Generic;
 
@@ -186,6 +187,11 @@ public class ReadOnlyCollection<T>
     public T[] ToArray()
     {
         return [.. _items];
+    }
+
+    public override string ToString()
+    {
+        return CollectionWriter.WriteToString(this);
     }
 
     int IList.Add(object? value)
