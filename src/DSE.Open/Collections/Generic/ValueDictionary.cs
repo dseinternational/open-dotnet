@@ -125,7 +125,7 @@ public sealed class ValueDictionary<TKey, TValue>
 
     public override string ToString()
     {
-        return DictionaryWriter.WriteToString(this)!;
+        return CollectionWriter.WriteToString(this)!;
         // Only null if `this` is null, which it isn't
     }
 

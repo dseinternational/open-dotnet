@@ -148,6 +148,11 @@ public class ReadOnlyValueCollection<T>
         return new(this);
     }
 
+    public override string ToString()
+    {
+        return CollectionWriter.WriteToString(this);
+    }
+
     IEnumerator<T> IEnumerable<T>.GetEnumerator()
     {
         return GetEnumerator();

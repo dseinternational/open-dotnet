@@ -97,7 +97,7 @@ public class ReadOnlySortedValueDictionary<TKey, TValue>
 
     public override string ToString()
     {
-        return DictionaryWriter.WriteToString(this)!; // Only null if `this` is null, which it isn't.
+        return CollectionWriter.WriteToString(this);
     }
 
     public bool TryGetValue(TKey key, [MaybeNullWhen(false)] out TValue value)

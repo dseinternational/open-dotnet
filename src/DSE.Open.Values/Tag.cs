@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using CommunityToolkit.HighPerformance.Buffers;
 using DSE.Open.Hashing;
+using DSE.Open.Runtime.InteropServices;
 using DSE.Open.Values.Text.Json.Serialization;
 
 namespace DSE.Open.Values;

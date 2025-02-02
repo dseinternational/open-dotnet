@@ -86,11 +86,4 @@ public static class DictionaryExtensions
             yield return dictionary[k];
         }
     }
-
-    public static string? WriteToString<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> collection)
-        where TKey : notnull
-    {
-        return DictionaryWriter.WriteToString(collection);
-    }
-
 }

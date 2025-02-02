@@ -1,10 +1,6 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-
-// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
-// Down Syndrome Education International and Contributors licence this file to you under the MIT license.
-
 namespace DSE.Open.Collections.Generic;
 
 public class ReadOnlyCollectionTests
@@ -36,6 +32,18 @@ public class ReadOnlyCollectionTests
         Assert.Equal(6, collection[5]);
     }
 
-    // TODO: complete
+    [Fact]
+    public void ToString_Int32()
+    {
+        ReadOnlyCollection<int> collection = [1, 2, 3, 4, 5, 6, 7, 8];
+        Assert.Equal("[1,2,3,4,5,6,7,8]", collection.ToString());
+    }
 
+    [Fact]
+    public void ToString_Guid()
+    {
+        ReadOnlyCollection<Guid> collection = [.. Enumerable.Range(1, 100).Select(i => Guid.NewGuid())];
+        var expected = $"[\"{string.Join("\",\"", collection.Select(i => i.ToString()))}\"]";
+        Assert.Equal(expected, collection.ToString());
+    }
 }

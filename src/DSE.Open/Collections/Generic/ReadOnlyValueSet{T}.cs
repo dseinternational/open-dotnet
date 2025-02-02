@@ -145,6 +145,11 @@ public class ReadOnlyValueSet<T> : IReadOnlySet<T>, IEquatable<ReadOnlyValueSet<
         return other is not null && SetEquals(other);
     }
 
+    public override string ToString()
+    {
+        return CollectionWriter.WriteToString(this);
+    }
+
     IEnumerator IEnumerable.GetEnumerator()
     {
         return ((IEnumerable)_set).GetEnumerator();

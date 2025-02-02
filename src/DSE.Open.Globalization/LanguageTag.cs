@@ -10,6 +10,7 @@ using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using CommunityToolkit.HighPerformance.Buffers;
 using DSE.Open.Hashing;
+using DSE.Open.Runtime.InteropServices;
 using DSE.Open.Values;
 using DSE.Open.Values.Text.Json.Serialization;
 

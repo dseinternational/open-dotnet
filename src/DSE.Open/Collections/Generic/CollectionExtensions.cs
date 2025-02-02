@@ -566,11 +566,6 @@ public static partial class CollectionExtensions
         return [.. collection];
     }
 
-    public static string? WriteToString<T>(this IEnumerable<T>? collection)
-    {
-        return CollectionWriter.WriteToString(collection);
-    }
-
     public static uint CountUnsigned<T>(this IEnumerable<T> sequence)
     {
         if (sequence is ICollection<T> collection)

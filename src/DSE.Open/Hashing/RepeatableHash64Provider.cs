@@ -6,6 +6,7 @@ using System.Buffers.Binary;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using DSE.Open.Runtime.Helpers;
+using DSE.Open.Runtime.InteropServices;
 
 namespace DSE.Open.Hashing;
 
