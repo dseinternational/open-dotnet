@@ -55,9 +55,11 @@ public sealed class PythonContextConfiguration
 
         var location = searchLocations.FirstOrDefault(File.Exists);
 
-        Trace.WriteLine($"Using Python 3.13 library found at: {location}");
+        PythonDLL = location ?? throw new InvalidOperationException(
+            "Python 3.13 library not found. Locations searched: "
+            + string.Join(", ", searchLocations.Select(s => $"\"{s}\"")));
 
-        PythonDLL = location ?? throw new InvalidOperationException("Python 3.13 library not found.");
+        Trace.WriteLine($"Using Python 3.13 library at: {PythonDLL}");
     }
 
     public string PythonDLL { get; set; }
