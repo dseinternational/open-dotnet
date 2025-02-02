@@ -3,7 +3,7 @@
 
 using System.Runtime.InteropServices;
 
-namespace DSE.Open;
+namespace DSE.Open.Runtime.InteropServices;
 
 internal static class ValuesMarshal
 {

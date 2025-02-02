@@ -9,6 +9,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json.Serialization;
 using DSE.Open.Hashing;
+using DSE.Open.Runtime.InteropServices;
 using DSE.Open.Values.Text.Json.Serialization;
 
 namespace DSE.Open.Values;

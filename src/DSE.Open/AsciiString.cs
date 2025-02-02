@@ -13,6 +13,7 @@ using System.Text.Json.Serialization;
 using CommunityToolkit.HighPerformance.Buffers;
 using DSE.Open.Hashing;
 using DSE.Open.Runtime.Helpers;
+using DSE.Open.Runtime.InteropServices;
 using DSE.Open.Text.Json.Serialization;
 
 namespace DSE.Open;

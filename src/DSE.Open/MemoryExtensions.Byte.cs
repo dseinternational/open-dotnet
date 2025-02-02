@@ -4,6 +4,7 @@
 using System.Buffers;
 using System.Text;
 using DSE.Open.Hashing;
+using DSE.Open.Runtime.InteropServices;
 
 namespace DSE.Open;
 

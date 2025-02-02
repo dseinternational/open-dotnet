@@ -4,6 +4,7 @@
 using System.Runtime.CompilerServices;
 using CommunityToolkit.HighPerformance.Buffers;
 using DSE.Open.Runtime.Helpers;
+using DSE.Open.Runtime.InteropServices;
 
 namespace DSE.Open;
 
