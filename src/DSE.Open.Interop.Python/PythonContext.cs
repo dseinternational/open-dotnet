@@ -8,7 +8,7 @@ namespace DSE.Open.Interop.Python;
 public sealed class PythonContext : IDisposable
 {
     private static PythonContext? s_current;
-    private static readonly object s_currentLock = new();
+    private static readonly Lock s_currentLock = new();
 
     private readonly nint _threadState;
 
