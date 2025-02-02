@@ -7,10 +7,27 @@ public sealed class PythonContextConfiguration
 {
     public PythonContextConfiguration()
     {
+        string? location = null;
+
         if (OperatingSystem.IsWindows())
         {
-            PythonDLL = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            var localAppData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 "Programs\\Python\\Python313\\python313.dll");
+
+            if (File.Exists(localAppData))
+            {
+                location = localAppData;
+            }
+            else
+            {
+                var programFiles = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles),
+                    "Python313\\python313.dll");
+
+                if (File.Exists(programFiles))
+                {
+                    location = programFiles;
+                }
+            }
         }
         else
         {
@@ -20,6 +37,8 @@ public sealed class PythonContextConfiguration
                     ? "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3.13"
                     : throw new PlatformNotSupportedException();
         }
+
+        PythonDLL = location ?? throw new InvalidOperationException("Python 3.13 library not found.");
     }
 
     public string PythonDLL { get; set; }
