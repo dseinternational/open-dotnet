@@ -17,7 +17,7 @@ public sealed class ValueDictionary<TKey, TValue>
       IEquatable<ValueDictionary<TKey, TValue>>
     where TKey : notnull
 {
-    public static readonly ValueDictionary<TKey, TValue> Empty = new();
+    public static readonly ValueDictionary<TKey, TValue> Empty = [];
 
     private readonly Dictionary<TKey, TValue> _inner;
 
@@ -92,6 +92,8 @@ public sealed class ValueDictionary<TKey, TValue>
     {
         return DictionaryEqualityComparer<TKey, TValue>.Default.Equals((IDictionary<TKey, TValue>)this, other);
     }
+
+    public Lock SyncRoot { get; } = new();
 
     public static bool operator ==(ValueDictionary<TKey, TValue>? left, ValueDictionary<TKey, TValue>? right)
     {

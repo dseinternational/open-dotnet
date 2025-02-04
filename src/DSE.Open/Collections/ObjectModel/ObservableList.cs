@@ -77,7 +77,11 @@ public class ObservableList<T> : IObservableList<T>, IReadOnlyObservableList<T>,
 
     public bool IsSynchronized => false;
 
-    public object SyncRoot => this;
+    public Lock SyncRoot { get; } = new();
+
+#pragma warning disable CS9216 // A value of type 'System.Threading.Lock' converted to a different type will use likely unintended monitor-based locking in 'lock' statement.
+    object ICollection.SyncRoot => SyncRoot;
+#pragma warning restore CS9216 // A value of type 'System.Threading.Lock' converted to a different type will use likely unintended monitor-based locking in 'lock' statement.
 
     object? IList.this[int index]
     {

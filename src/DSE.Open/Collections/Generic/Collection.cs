@@ -54,9 +54,13 @@ public class Collection<T> : IList<T>, IReadOnlyList<T>, IList
 
     bool ICollection.IsSynchronized => ((ICollection)_items).IsSynchronized;
 
-    object ICollection.SyncRoot => ((ICollection)_items).SyncRoot;
-
 #pragma warning restore CA1033 // Interface methods should be callable by child types
+
+    public Lock SyncRoot { get; } = new();
+
+#pragma warning disable CS9216 // A value of type 'System.Threading.Lock' converted to a different type will use likely unintended monitor-based locking in 'lock' statement.
+    object ICollection.SyncRoot => SyncRoot;
+#pragma warning restore CS9216 // A value of type 'System.Threading.Lock' converted to a different type will use likely unintended monitor-based locking in 'lock' statement.
 
     object? IList.this[int index] { get => this[index]; set => this[index] = (T)value!; }
 
