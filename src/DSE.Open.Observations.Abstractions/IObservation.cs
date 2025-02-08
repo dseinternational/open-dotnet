@@ -34,6 +34,10 @@ public interface IObservation
     [JsonPropertyName("p2")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     object? Parameter2 { get; }
+
+    double ConvertValueToDouble();
+
+    decimal ConvertValueToDecimal();
 }
 
 /// <summary>

@@ -132,6 +132,10 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
 
     protected abstract object? GetParameter2Core();
 
+    public abstract double ConvertValueToDouble();
+
+    public abstract decimal ConvertValueToDecimal();
+
     /// <summary>
     /// Gets a repeatable hash value that represents the measurement.
     /// </summary>
@@ -368,6 +372,16 @@ public sealed class Observation<TValue>
     {
         return null;
     }
+
+    public override double ConvertValueToDouble()
+    {
+        return Value.ConvertToDouble();
+    }
+
+    public override decimal ConvertValueToDecimal()
+    {
+        return Value.ConvertToDecimal();
+    }
 }
 
 /// <summary>
@@ -512,5 +526,15 @@ public sealed class Observation<TValue, TParam>
     protected override object? GetParameter2Core()
     {
         return null;
+    }
+
+    public override double ConvertValueToDouble()
+    {
+        return Value.ConvertToDouble();
+    }
+
+    public override decimal ConvertValueToDecimal()
+    {
+        return Value.ConvertToDecimal();
     }
 }
