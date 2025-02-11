@@ -19,6 +19,7 @@ namespace DSE.Open.Collections.Concurrent;
 /// </remarks>
 [DebuggerDisplay("Count = {Count}")]
 public class ConcurrentSet<T> : IReadOnlyCollection<T>, ICollection<T>
+    where T : notnull
 {
     private const int DefaultCapacity = 31;
     private const int MaxLockNumber = 1024;
@@ -32,30 +33,26 @@ public class ConcurrentSet<T> : IReadOnlyCollection<T>, ICollection<T>
     private static int DefaultConcurrencyLevel => Environment.ProcessorCount;
 
     /// <summary>
-    /// Gets the <see cref="IEqualityComparer{T}" />
-    /// that is used to determine equality for the values in the set.
+    /// Gets the <see cref="IEqualityComparer{T}" /> that is used to determine equality for the values in the set.
     /// </summary>
     /// <value>
-    /// The <see cref="IEqualityComparer{T}" /> generic interface implementation that is used to
-    /// provide hash values and determine equality for the values in the current <see cref="ConcurrentSet{T}" />.
+    /// The <see cref="IEqualityComparer{T}" /> generic interface implementation that is used to provide hash
+    /// values and determine equality for the values in the current <see cref="ConcurrentSet{T}" />.
     /// </value>
     /// <remarks>
-    /// <see cref="ConcurrentSet{T}" /> requires an equality implementation to determine
-    /// whether values are equal. You can specify an implementation of the <see cref="IEqualityComparer{T}" />
-    /// generic interface by using a constructor that accepts a comparer parameter;
-    /// if you do not specify one, the default generic equality comparer <see cref="EqualityComparer{T}.Default" /> is used.
+    /// <see cref="ConcurrentSet{T}" /> requires an equality implementation to determine whether values are equal.
+    /// You can specify an implementation of the <see cref="IEqualityComparer{T}" /> generic interface by using
+    /// a constructor that accepts a comparer parameter; if you do not specify one, the default generic equality
+    /// comparer <see cref="EqualityComparer{T}.Default" /> is used.
     /// </remarks>
     public IEqualityComparer<T> Comparer => _comparer;
 
     /// <summary>
-    /// Gets the number of items contained in the <see
-    /// cref="ConcurrentSet{T}"/>.
+    /// Gets the number of items contained in the <see cref="ConcurrentSet{T}"/>.
     /// </summary>
-    /// <value>The number of items contained in the <see
-    /// cref="ConcurrentSet{T}"/>.</value>
-    /// <remarks>Count has snapshot semantics and represents the number of items in the <see
-    /// cref="ConcurrentSet{T}"/>
-    /// at the moment when Count was accessed.</remarks>
+    /// <value>The number of items contained in the <see cref="ConcurrentSet{T}"/>.</value>
+    /// <remarks>Count has snapshot semantics and represents the number of items in the
+    /// <see cref="ConcurrentSet{T}"/> at the moment when Count was accessed.</remarks>
     public int Count
     {
         get
@@ -84,8 +81,7 @@ public class ConcurrentSet<T> : IReadOnlyCollection<T>, ICollection<T>
     /// <summary>
     /// Gets a value that indicates whether the <see cref="ConcurrentSet{T}"/> is empty.
     /// </summary>
-    /// <value>true if the <see cref="ConcurrentSet{T}"/> is empty; otherwise,
-    /// false.</value>
+    /// <value>true if the <see cref="ConcurrentSet{T}"/> is empty; otherwise, false.</value>
     public bool IsEmpty
     {
         get
@@ -110,10 +106,9 @@ public class ConcurrentSet<T> : IReadOnlyCollection<T>, ICollection<T>
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see
-    /// cref="ConcurrentSet{T}"/>
-    /// class that is empty, has the default concurrency level, has the default initial capacity, and
-    /// uses the default comparer for the item type.
+    /// Initializes a new instance of the <see cref="ConcurrentSet{T}"/> class that is empty, has the
+    /// default concurrency level, has the default initial capacity, and uses the default comparer
+    /// for the item type.
     /// </summary>
     public ConcurrentSet()
         : this(DefaultConcurrencyLevel, DefaultCapacity, true, null)
@@ -121,15 +116,12 @@ public class ConcurrentSet<T> : IReadOnlyCollection<T>, ICollection<T>
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see
-    /// cref="ConcurrentSet{T}"/>
-    /// class that is empty, has the specified concurrency level and capacity, and uses the default
-    /// comparer for the item type.
+    /// Initializes a new instance of the <see cref="ConcurrentSet{T}"/> class that is empty, has the
+    /// specified concurrency level and capacity, and uses the default comparer for the item type.
     /// </summary>
     /// <param name="concurrencyLevel">The estimated number of threads that will update the
     /// <see cref="ConcurrentSet{T}"/> concurrently.</param>
-    /// <param name="capacity">The initial number of elements that the <see
-    /// cref="ConcurrentSet{T}"/>
+    /// <param name="capacity">The initial number of elements that the <see cref="ConcurrentSet{T}"/>
     /// can contain.</param>
     /// <exception cref="ArgumentOutOfRangeException"><paramref name="concurrencyLevel"/> is
     /// less than 1.</exception>
@@ -141,16 +133,15 @@ public class ConcurrentSet<T> : IReadOnlyCollection<T>, ICollection<T>
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="ConcurrentSet{T}"/>
-    /// class that contains elements copied from the specified <see
-    /// cref="IEnumerable{T}"/>, has the default concurrency
-    /// level, has the default initial capacity, and uses the default comparer for the item type.
+    /// Initializes a new instance of the <see cref="ConcurrentSet{T}"/> class that contains elements copied
+    /// from the specified <see cref="IEnumerable{T}"/>, has the default concurrency level, has the default
+    /// initial capacity, and uses the default comparer for the item type.
     /// </summary>
     /// <param name="collection">The <see
     /// cref="IEnumerable{T}"/> whose elements are copied to
     /// the new
     /// <see cref="ConcurrentSet{T}"/>.</param>
-    /// <exception cref="ArgumentNullException"><paramref name="collection"/> is a null reference.</exception>
+    /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
     public ConcurrentSet(IEnumerable<T> collection)
         : this(collection, null)
     {
@@ -169,20 +160,15 @@ public class ConcurrentSet<T> : IReadOnlyCollection<T>, ICollection<T>
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="ConcurrentSet{T}"/>
-    /// class that contains elements copied from the specified <see
-    /// cref="IEnumerable"/>, has the default concurrency level, has the default
-    /// initial capacity, and uses the specified
-    /// <see cref="IEqualityComparer{T}"/>.
+    /// Initializes a new instance of the <see cref="ConcurrentSet{T}"/> class that contains elements copied
+    /// from the specified <see cref="IEnumerable"/>, has the default concurrency level, has the default
+    /// initial capacity, and uses the specified <see cref="IEqualityComparer{T}"/>.
     /// </summary>
-    /// <param name="collection">The <see
-    /// cref="IEnumerable{T}"/> whose elements are copied to
-    /// the new
+    /// <param name="collection">The <see cref="IEnumerable{T}"/> whose elements are copied to the new
     /// <see cref="ConcurrentSet{T}"/>.</param>
-    /// <param name="comparer">The <see cref="IEqualityComparer{T}"/>
-    /// implementation to use when comparing items.</param>
-    /// <exception cref="ArgumentNullException"><paramref name="collection"/> is a null reference
-    /// (Nothing in Visual Basic).
+    /// <param name="comparer">The <see cref="IEqualityComparer{T}"/> implementation to use when comparing
+    /// items.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.
     /// </exception>
     public ConcurrentSet(IEnumerable<T> collection, IEqualityComparer<T>? comparer)
         : this(comparer)
@@ -205,7 +191,7 @@ public class ConcurrentSet<T> : IReadOnlyCollection<T>, ICollection<T>
     /// <param name="comparer">The <see cref="IEqualityComparer{T}"/> implementation to use
     /// when comparing items.</param>
     /// <exception cref="ArgumentNullException">
-    /// <paramref name="collection"/> is a null reference.
+    /// <paramref name="collection"/> is <see langword="null"/>.
     /// </exception>
     /// <exception cref="ArgumentOutOfRangeException">
     /// <paramref name="concurrencyLevel"/> is less than 1.
@@ -279,7 +265,6 @@ public class ConcurrentSet<T> : IReadOnlyCollection<T>, ICollection<T>
     /// contains too many items.</exception>
     public bool Add(T item)
     {
-        ArgumentNullException.ThrowIfNull(item);
         return AddInternal(item, _comparer.GetHashCode(item), true);
     }
 
@@ -336,8 +321,6 @@ public class ConcurrentSet<T> : IReadOnlyCollection<T>, ICollection<T>
     /// </remarks>
     public bool TryGetValue(T equalValue, [MaybeNullWhen(false)] out T actualValue)
     {
-        ArgumentNullException.ThrowIfNull(equalValue);
-
         var hashCode = _comparer.GetHashCode(equalValue);
 
         // We must capture the _buckets field in a local variable. It is set to a
@@ -496,7 +479,7 @@ public class ConcurrentSet<T> : IReadOnlyCollection<T>, ICollection<T>
         /// <value>The element in the collection at the current position of the enumerator.</value>
         public T Current { get; private set; }
 
-        object? IEnumerator.Current => Current;
+        readonly object? IEnumerator.Current => Current;
 
         /// <summary>
         /// Sets the enumerator to its initial position, which is before the first element in the collection.
@@ -510,7 +493,7 @@ public class ConcurrentSet<T> : IReadOnlyCollection<T>, ICollection<T>
             _state = StateUninitialized;
         }
 
-        public void Dispose() { }
+        public readonly void Dispose() { }
 
         /// <summary>
         /// Advances the enumerator to the next element of the collection.
