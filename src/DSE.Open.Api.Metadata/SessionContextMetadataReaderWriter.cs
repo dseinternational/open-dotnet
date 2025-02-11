@@ -71,12 +71,12 @@ public sealed partial class SessionContextMetadataReaderWriter : IMetadataReader
             Log.NoSessionContextInRequestMetadata(_logger, sessionContext);
         }
 
-        request.Properties.AddOrUpdate(
+        _ = request.Properties.AddOrUpdate(
             SessionContextMetadataKeys.SessionContext,
             sessionContext,
             (_, _) => sessionContext);
 
-        result.Properties.AddOrUpdate(
+        _ = result.Properties.AddOrUpdate(
             SessionContextMetadataKeys.SessionContext,
             sessionContext,
             (_, _) => sessionContext);
@@ -104,7 +104,7 @@ public sealed partial class SessionContextMetadataReaderWriter : IMetadataReader
         {
             Log.SessionContextReadFromResultMetadata(_logger, sessionContext);
 
-            result.Properties.AddOrUpdate(
+            _ = result.Properties.AddOrUpdate(
                 SessionContextMetadataKeys.SessionContext,
                 sessionContext,
                 (_, _) => sessionContext);
@@ -175,7 +175,7 @@ public sealed partial class SessionContextMetadataReaderWriter : IMetadataReader
     {
         [LoggerMessage(
             EventId = 1,
-            Level = LogLevel.Debug,
+            Level = LogLevel.Trace,
             Message = "Session context read from request metadata: {SessionContext}")]
         public static partial void SessionContextReadFromRequestMetadata(
             ILogger logger,
@@ -183,7 +183,7 @@ public sealed partial class SessionContextMetadataReaderWriter : IMetadataReader
 
         [LoggerMessage(
             EventId = 2,
-            Level = LogLevel.Debug,
+            Level = LogLevel.Trace,
             Message = "No session context in request metadata - created new context: {SessionContext}")]
         public static partial void NoSessionContextInRequestMetadata(
             ILogger logger,
@@ -191,7 +191,7 @@ public sealed partial class SessionContextMetadataReaderWriter : IMetadataReader
 
         [LoggerMessage(
             EventId = 3,
-            Level = LogLevel.Debug,
+            Level = LogLevel.Trace,
             Message = "Session context read from result metadata: {SessionContext}")]
         public static partial void SessionContextReadFromResultMetadata(
             ILogger logger,
@@ -199,7 +199,7 @@ public sealed partial class SessionContextMetadataReaderWriter : IMetadataReader
 
         [LoggerMessage(
             EventId = 5,
-            Level = LogLevel.Debug,
+            Level = LogLevel.Trace,
             Message = "Session context written to request metadata: {SessionContext}")]
         public static partial void SessionContextWrittenToRequestMetadata(
             ILogger logger,
@@ -207,7 +207,7 @@ public sealed partial class SessionContextMetadataReaderWriter : IMetadataReader
 
         [LoggerMessage(
             EventId = 6,
-            Level = LogLevel.Debug,
+            Level = LogLevel.Trace,
             Message = "Session context written to response metadata: {SessionContext}")]
         public static partial void SessionContextWrittenToResponseMetadata(
             ILogger logger,
