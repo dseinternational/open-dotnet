@@ -14,7 +14,7 @@ public sealed class ResourceProviderGeneratorTests
 
         // Act
         var provider = ResourceProvider.Default;
-        var str = provider.Test();
+        var str = provider.Test(new CultureInfo("en-GB"));
         var strUs = provider.Test(new CultureInfo("en-US"));
 
         // Assert
@@ -30,7 +30,7 @@ public sealed class ResourceProviderGeneratorTests
 
         // Act
         var provider = ResourceProvider.Default;
-        var str = provider.TestTwo();
+        var str = provider.TestTwo(new CultureInfo("en-GB"));
         var strUs = provider.TestTwo(new CultureInfo("en-US"));
 
         // Assert
@@ -49,7 +49,7 @@ public sealed class ResourceProviderGeneratorTests
 
         // Act
         var provider = ResourceProvider.Default;
-        var str = provider.FormattedStringWithTwoHoles(name1, name2);
+        var str = provider.FormattedStringWithTwoHoles(name1, name2, new CultureInfo("en-GB"));
         var strUs = provider.FormattedStringWithTwoHoles(name1, name2, new CultureInfo("en-US"));
 
         // Assert
@@ -68,7 +68,7 @@ public sealed class ResourceProviderGeneratorTests
 
         // Act
         var provider = ResourceProvider.Default;
-        var str = provider.FormattedStringWithTwoHolesAndTrailingText(name1, name2);
+        var str = provider.FormattedStringWithTwoHolesAndTrailingText(name1, name2, new CultureInfo("en-GB"));
         var strUs = provider.FormattedStringWithTwoHolesAndTrailingText(name1, name2, new CultureInfo("en-US"));
 
         // Assert
