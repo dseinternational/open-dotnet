@@ -231,7 +231,7 @@ public readonly struct AsciiString
 
         var buffer = new AsciiChar[utf8Text.Length];
 
-        utf8Text.CopyTo(ValuesMarshal.AsBytes(buffer));
+        utf8Text.CopyTo(ValuesMarshal.AsBytes((Span<AsciiChar>)buffer));
 
         result = new(buffer);
         return true;
@@ -320,14 +320,14 @@ public readonly struct AsciiString
     public AsciiString ToLower()
     {
         var result = new AsciiChar[_value.Length];
-        _ = TryFormat(ValuesMarshal.AsBytes(result), out _, "L", default);
+        _ = TryFormat(ValuesMarshal.AsBytes((Span<AsciiChar>)result), out _, "L", default);
         return new(result);
     }
 
     public AsciiString ToUpper()
     {
         var result = new AsciiChar[_value.Length];
-        _ = TryFormat(ValuesMarshal.AsBytes(result), out _, "U", default);
+        _ = TryFormat(ValuesMarshal.AsBytes((Span<AsciiChar>)result), out _, "U", default);
         return new(result);
     }
 

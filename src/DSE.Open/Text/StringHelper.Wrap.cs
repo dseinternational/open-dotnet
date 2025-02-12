@@ -97,9 +97,9 @@ public static partial class StringHelper
     {
         ArgumentNullException.ThrowIfNull(values);
 
-        if (values is List<string?> valuesList)
+        if (values is List<string> valuesList)
         {
-            return WrapRangeCore(before, after, (ReadOnlySpan<string>)CollectionsMarshal.AsSpan(valuesList));
+            return WrapRangeCore(before, after, CollectionsMarshal.AsSpan(valuesList));
         }
 
         if (values is string[] valuesArray)
