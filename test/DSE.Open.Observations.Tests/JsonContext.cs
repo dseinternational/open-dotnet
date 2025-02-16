@@ -7,6 +7,7 @@ using DSE.Open.Speech;
 
 namespace DSE.Open.Observations;
 
+[JsonSerializable(typeof(IObservation))]
 [JsonSerializable(typeof(Measure<Amount>))]
 [JsonSerializable(typeof(Measure<BehaviorFrequency, SentenceId>))]
 [JsonSerializable(typeof(Measure<BehaviorFrequency, SpeechSound>))]
@@ -23,6 +24,7 @@ namespace DSE.Open.Observations;
 [JsonSerializable(typeof(Measure<SpeechClarity, SpeechSound>))]
 [JsonSerializable(typeof(Measure<SpeechClarity, WordId>))]
 [JsonSerializable(typeof(Measure<SpeechClarity>))]
+[JsonSerializable(typeof(Observation))]
 [JsonSerializable(typeof(Observation<BehaviorFrequency, SentenceId>))]
 [JsonSerializable(typeof(Observation<BehaviorFrequency, SpeechSound>))]
 [JsonSerializable(typeof(Observation<BehaviorFrequency, WordId>))]
@@ -31,8 +33,4 @@ namespace DSE.Open.Observations;
 [JsonSerializable(typeof(Observation<Binary, SpeechSound>))]
 [JsonSerializable(typeof(Observation<Binary, WordId>))]
 [JsonSerializable(typeof(Observation<Binary>))]
-[JsonSerializable(typeof(Observation))]
-[JsonSerializable(typeof(IObservation))]
-[JsonSerializable(typeof(Snapshot<Observation<Count>>))]
-[JsonSerializable(typeof(ISnapshot))]
 public sealed partial class JsonContext : JsonSerializerContext;
