@@ -40,7 +40,9 @@ namespace DSE.Open.Observations;
 [JsonDerivedType(typeof(Observation<Completeness, SentenceId>), (int)ObservationType.CompletenessSentence)]
 public abstract class Observation : IObservation, IEquatable<Observation>, IRepeatableHash64
 {
-    public static readonly DateTimeOffset MinimumObservationTime = new(2000, 1, 1, 0, 0, 0, TimeSpan.Zero);
+    public static readonly DateTimeOffset MinimumObservationTime =
+        new(2000, 1, 1, 0, 0, 0, TimeSpan.Zero);
+
     internal const int TimeToleranceSeconds = 60;
 
     private int? _measurementHashCode;
@@ -56,7 +58,25 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
         ArgumentNullException.ThrowIfNull(timeProvider);
 
         Id = ObservationId.GetRandomId();
-        Time = DateTimeOffset.FromUnixTimeMilliseconds(timeProvider.GetUtcNow().ToUnixTimeMilliseconds());
+        Time = timeProvider.GetUtcNow().Truncate(DateTimeTruncation.Millisecond);
+        MeasureId = measure.Id;
+    }
+
+    /// <summary>
+    /// Initializes a new historic observation instance.
+    /// </summary>
+    /// <param name="measure"></param>
+    /// <param name="time"></param>
+    /// <param name="timeProvider"></param>
+    protected Observation(IMeasure measure, DateTimeOffset time, TimeProvider timeProvider)
+    {
+        ArgumentNullException.ThrowIfNull(measure);
+        ArgumentNullException.ThrowIfNull(timeProvider);
+        Guard.IsInRange(time, MinimumObservationTime, timeProvider.GetUtcNow().AddSeconds(TimeToleranceSeconds));
+
+        Id = ObservationId.GetRandomId();
+        Time = time.Truncate(DateTimeTruncation.Millisecond);
+        Recorded = timeProvider.GetUtcNow().Truncate(DateTimeTruncation.Millisecond);
         MeasureId = measure.Id;
     }
 
@@ -65,17 +85,29 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
     /// </summary>
     /// <param name="id"></param>
     /// <param name="time"></param>
+    /// <param name="recorded"></param>
     /// <param name="measureId"></param>
     /// <param name="timeProvider"></param>
-    protected Observation(ObservationId id, DateTimeOffset time, MeasureId measureId, TimeProvider timeProvider)
+    protected Observation(
+        ObservationId id,
+        DateTimeOffset time,
+        DateTimeOffset? recorded,
+        MeasureId measureId,
+        TimeProvider timeProvider)
     {
         Guard.IsNotDefault(id);
         Guard.IsNotDefault(measureId);
         ArgumentNullException.ThrowIfNull(timeProvider);
         Guard.IsInRange(time, MinimumObservationTime, timeProvider.GetUtcNow().AddSeconds(TimeToleranceSeconds));
 
+        if (recorded.HasValue)
+        {
+            Guard.IsLessThanOrEqualTo(time, recorded.Value);
+        }
+
         Id = id;
         Time = time;
+        Recorded = recorded;
         MeasureId = measureId;
     }
 
@@ -88,12 +120,23 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
     public ObservationId Id { get; }
 
     /// <summary>
-    /// The time of the observation.
+    /// The time of the observation. This is the time when the observation was made.
     /// </summary>
     [JsonPropertyName("t")]
     [JsonPropertyOrder(-89800)]
     [JsonConverter(typeof(JsonDateTimeOffsetUnixTimeMillisecondsConverter))]
     public DateTimeOffset Time { get; }
+
+    /// <summary>
+    /// The time that the observation was recorded. May be later than <see cref="Time"/> if recording
+    /// a historical observation. If <see langword="null"/>, we assume the observation was recorded
+    /// at the same time as it was made.
+    /// </summary>
+    [JsonPropertyName("r")]
+    [JsonPropertyOrder(-89000)]
+    [JsonConverter(typeof(JsonDateTimeOffsetUnixTimeMillisecondsConverter))]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public DateTimeOffset? Recorded { get; }
 
     /// <summary>
     /// The identifier for the measure.
@@ -157,9 +200,9 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
     public virtual bool Equals([NotNullWhen(true)] Observation? other)
     {
         return other is not null &&
-               Id == other.Id &&
-               Time == other.Time &&
-               MeasureId == other.MeasureId;
+            Id == other.Id &&
+            Time == other.Time &&
+            MeasureId == other.MeasureId;
     }
 
     public override bool Equals([NotNullWhen(true)] object? obj)
@@ -209,6 +252,25 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
         return new Observation<TValue>(measure, value, timeProvider);
     }
 
+    public static Observation<TValue> CreateHistorical<TValue>(
+        IMeasure<TValue> measure,
+        TValue value,
+        DateTimeOffset time)
+        where TValue : struct, IEquatable<TValue>, IObservationValue
+    {
+        return CreateHistorical(measure, value, time, TimeProvider.System);
+    }
+
+    public static Observation<TValue> CreateHistorical<TValue>(
+        IMeasure<TValue> measure,
+        TValue value,
+        DateTimeOffset time,
+        TimeProvider timeProvider)
+        where TValue : struct, IEquatable<TValue>, IObservationValue
+    {
+        return new Observation<TValue>(measure, value, time, timeProvider);
+    }
+
     /// <summary>
     /// Creates an observation with a single measurement value and a single parameter.
     /// </summary>
@@ -249,6 +311,29 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
         return new Observation<TValue, TParam>(measure, parameter, value, timeProvider);
     }
 
+    public static Observation<TValue, TParam> CreateHistorical<TValue, TParam>(
+        IMeasure<TValue, TParam> measure,
+        TParam parameter,
+        TValue value,
+        DateTimeOffset time)
+        where TValue : struct, IEquatable<TValue>, IObservationValue
+        where TParam : struct, IEquatable<TParam>
+    {
+        return CreateHistorical(measure, parameter, value, time, TimeProvider.System);
+    }
+
+    public static Observation<TValue, TParam> CreateHistorical<TValue, TParam>(
+        IMeasure<TValue, TParam> measure,
+        TParam parameter,
+        TValue value,
+        DateTimeOffset time,
+        TimeProvider timeProvider)
+        where TValue : struct, IEquatable<TValue>, IObservationValue
+        where TParam : struct, IEquatable<TParam>
+    {
+        return new Observation<TValue, TParam>(measure, parameter, value, time, timeProvider);
+    }
+
     public virtual ulong GetRepeatableHashCode()
     {
         return RepeatableHash64Provider.Default.CombineHashCodes(
@@ -279,17 +364,29 @@ public sealed class Observation<TValue>
         Value = value;
     }
 
+    public Observation(IMeasure measure, TValue value, DateTimeOffset time, TimeProvider timeProvider)
+        : base(measure, time, timeProvider)
+    {
+        Value = value;
+    }
+
     /// <summary>
     /// Initializes a new observation instance when deserializing.
     /// </summary>
     /// <param name="id"></param>
     /// <param name="time"></param>
+    /// <param name="recorded"></param>
     /// <param name="measureId"></param>
     /// <param name="value"></param>
     [JsonConstructor]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public Observation(ObservationId id, DateTimeOffset time, MeasureId measureId, TValue value)
-        : base(id, time, measureId, TimeProvider.System)
+    public Observation(
+        ObservationId id,
+        DateTimeOffset time,
+        DateTimeOffset? recorded,
+        MeasureId measureId,
+        TValue value)
+        : base(id, time, recorded, measureId, TimeProvider.System)
     {
         Value = value;
     }
@@ -300,7 +397,18 @@ public sealed class Observation<TValue>
         MeasureId measureId,
         TValue value,
         TimeProvider timeProvider)
-        : base(id, time, measureId, timeProvider)
+        : this(id, time, null, measureId, value, timeProvider)
+    {
+    }
+
+    internal Observation(
+        ObservationId id,
+        DateTimeOffset time,
+        DateTimeOffset? recorded,
+        MeasureId measureId,
+        TValue value,
+        TimeProvider timeProvider)
+        : base(id, time, recorded, measureId, timeProvider)
     {
         Value = value;
     }
@@ -413,11 +521,24 @@ public sealed class Observation<TValue, TParam>
         Value = value;
     }
 
+    public Observation(
+        IMeasure measure,
+        TParam parameter,
+        TValue value,
+        DateTimeOffset time,
+        TimeProvider timeProvider)
+        : base(measure, time, timeProvider)
+    {
+        Parameter = parameter;
+        Value = value;
+    }
+
     /// <summary>
     /// Initializes a new observation instance when deserializing.
     /// </summary>
     /// <param name="id"></param>
     /// <param name="time"></param>
+    /// <param name="recorded"></param>
     /// <param name="measureId"></param>
     /// <param name="parameter"></param>
     /// <param name="value"></param>
@@ -426,10 +547,11 @@ public sealed class Observation<TValue, TParam>
     public Observation(
         ObservationId id,
         DateTimeOffset time,
+        DateTimeOffset? recorded,
         MeasureId measureId,
         TParam parameter,
         TValue value)
-        : base(id, time, measureId, TimeProvider.System)
+        : base(id, time, recorded, measureId, TimeProvider.System)
     {
         Parameter = parameter;
         Value = value;
@@ -442,7 +564,19 @@ public sealed class Observation<TValue, TParam>
         TParam parameter,
         TValue value,
         TimeProvider timeProvider)
-        : base(id, time, measureId, timeProvider)
+        : this(id, time, null, measureId, parameter, value, timeProvider)
+    {
+    }
+
+    public Observation(
+        ObservationId id,
+        DateTimeOffset time,
+        DateTimeOffset? recorded,
+        MeasureId measureId,
+        TParam parameter,
+        TValue value,
+        TimeProvider timeProvider)
+        : base(id, time, recorded, measureId, timeProvider)
     {
         Parameter = parameter;
         Value = value;
@@ -469,9 +603,9 @@ public sealed class Observation<TValue, TParam>
     public bool Equals([NotNullWhen(true)] Observation<TValue, TParam>? other)
     {
         return other is not null &&
-               Parameter.Equals(other.Parameter) &&
-               Value.Equals(other.Value) &&
-               base.Equals(other);
+            Parameter.Equals(other.Parameter) &&
+            Value.Equals(other.Value) &&
+            base.Equals(other);
     }
 
     public override int GetHashCode()

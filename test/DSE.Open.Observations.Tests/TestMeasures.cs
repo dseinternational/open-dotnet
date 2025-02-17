@@ -73,4 +73,10 @@ public static class TestMeasures
         MeasurementLevel.Interval,
         "Test measure",
         "[subject] does something");
+
+    public static readonly Measure<BehaviorFrequency, SpeechSound> BehaviorFrequencySpeechSoundMeasure = new(
+        new Uri("https://schema-test.dseapi.app/testing/frequency-speech-sound-measure"),
+        MeasurementLevel.Ordinal,
+        "Test measure",
+        "[subject] does something");
 }

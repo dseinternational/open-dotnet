@@ -3,7 +3,6 @@
 
 using System.Collections;
 using System.Runtime.CompilerServices;
-using DSE.Open.Text;
 
 namespace DSE.Open.Collections.Generic;
 

@@ -2,8 +2,6 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using DSE.Open.Language;
 using DSE.Open.Speech;
 using DSE.Open.Testing.Xunit;
 using Microsoft.Extensions.Time.Testing;
@@ -13,12 +11,95 @@ namespace DSE.Open.Observations;
 public sealed class ObservationTests
 {
     [Fact]
+    public void Create_Binary()
+    {
+        var tp = new FakeTimeProvider();
+        var now = DateTimeOffset.Now;
+        tp.SetUtcNow(now);
+        var observation = Observation.Create(TestMeasures.BinaryMeasure, true, tp);
+        Assert.True(observation.Value);
+        Assert.Equal(now.Truncate(DateTimeTruncation.Millisecond), observation.Time);
+    }
+
+    [Fact]
+    public void Create_Binary_Historic()
+    {
+        var tp = new FakeTimeProvider();
+        var now = DateTimeOffset.Now;
+        tp.SetUtcNow(now);
+        var observation = Observation.CreateHistorical(
+            TestMeasures.BinaryMeasure,
+            true,
+            now.AddDays(-7),
+            tp);
+        Assert.True(observation.Value);
+        Assert.Equal(now.Truncate(DateTimeTruncation.Millisecond), observation.Recorded);
+        Assert.Equal(now.Truncate(DateTimeTruncation.Millisecond).AddDays(-7), observation.Time);
+    }
+
+    [Fact]
+    public void Create_SpeechSound_BehaviorFrequency()
+    {
+        var tp = new FakeTimeProvider();
+        var now = DateTimeOffset.Now;
+        tp.SetUtcNow(now);
+        var observation = Observation.Create(
+            TestMeasures.BehaviorFrequencySpeechSoundMeasure,
+            SpeechSound.CloseCentralUnroundedVowel,
+            BehaviorFrequency.Developing,
+            tp);
+        Assert.Equal(SpeechSound.CloseCentralUnroundedVowel, observation.Parameter);
+        Assert.Equal(BehaviorFrequency.Developing, observation.Value);
+        Assert.Equal(now.Truncate(DateTimeTruncation.Millisecond), observation.Time);
+    }
+
+    [Fact]
+    public void Create_SpeechSound_BehaviorFrequency_Historic()
+    {
+        var tp = new FakeTimeProvider();
+        var now = DateTimeOffset.Now;
+        tp.SetUtcNow(now);
+        var observation = Observation.CreateHistorical(
+            TestMeasures.BehaviorFrequencySpeechSoundMeasure,
+            SpeechSound.CloseCentralUnroundedVowel,
+            BehaviorFrequency.Developing,
+            now.AddDays(-7),
+            tp);
+        Assert.Equal(SpeechSound.CloseCentralUnroundedVowel, observation.Parameter);
+        Assert.Equal(BehaviorFrequency.Developing, observation.Value);
+        Assert.Equal(now.Truncate(DateTimeTruncation.Millisecond), observation.Recorded);
+        Assert.Equal(now.Truncate(DateTimeTruncation.Millisecond).AddDays(-7), observation.Time);
+    }
+
+    [Fact]
     public void SerializeDeserializeBinary()
     {
         var observation = Observation.Create(TestMeasures.BinaryMeasure, true);
         var json = JsonSerializer.Serialize(observation);
         var deserialized = JsonSerializer.Deserialize<Observation<Binary>>(json);
         Assert.Equal(observation, deserialized);
+    }
+
+    [Fact]
+    public void SerializeDeserialize_SpeechSound_BehaviorFrequency_Historic()
+    {
+        var tp = new FakeTimeProvider();
+        var now = DateTimeOffset.Now;
+        tp.SetUtcNow(now);
+        var observation = Observation.CreateHistorical(
+            TestMeasures.BehaviorFrequencySpeechSoundMeasure,
+            SpeechSound.CloseCentralUnroundedVowel,
+            BehaviorFrequency.Developing,
+            now.AddDays(-7),
+            tp);
+        var json = JsonSerializer.Serialize(observation);
+        var deserialized = JsonSerializer.Deserialize<Observation<BehaviorFrequency, SpeechSound>>(json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(observation.Id, deserialized.Id);
+        Assert.Equal(SpeechSound.CloseCentralUnroundedVowel, deserialized.Parameter);
+        Assert.Equal(BehaviorFrequency.Developing, deserialized.Value);
+        Assert.Equal(now.Truncate(DateTimeTruncation.Millisecond), deserialized.Recorded);
+        Assert.Equal(now.Truncate(DateTimeTruncation.Millisecond).AddDays(-7), deserialized.Time);
     }
 
     [Fact]
@@ -51,7 +132,7 @@ public sealed class ObservationTests
 
         // Assert
         Assert.Equal(expected, hashCode);
-        Assert.Equal(expected, ((IObservation)observation).GetMeasurementHashCode());
+        Assert.Equal(expected, observation.GetMeasurementHashCode());
     }
 
     [Fact]
@@ -66,7 +147,7 @@ public sealed class ObservationTests
 
         // Assert
         Assert.Equal(expected, binarySpeechSoundHashCode);
-        Assert.Equal(expected, ((IObservation)obs).GetMeasurementHashCode());
+        Assert.Equal(expected, obs.GetMeasurementHashCode());
     }
 
     [Fact]
@@ -107,7 +188,6 @@ public sealed class ObservationTests
         Assert.Equal(expected, json);
     }
 
-
     [Fact]
     public void JsonSmokeTest_Concrete()
     {
@@ -130,7 +210,6 @@ public sealed class ObservationTests
         // Assert
         Assert.Equal(expected, json);
     }
-
 
     [Fact]
     public void JsonSmokeTest_Param_Concrete()
@@ -156,7 +235,6 @@ public sealed class ObservationTests
         Assert.Equal(expected, json);
     }
 
-
     [Fact]
     public void JsonSmokeTest_Interface()
     {
@@ -179,7 +257,6 @@ public sealed class ObservationTests
         // Assert
         Assert.Equal(expected, json);
     }
-
 
     [Fact]
     public void JsonSmokeTest_Param_Interface()
@@ -218,7 +295,6 @@ public sealed class ObservationTests
         // Assert
         Assert.Equal(observation, deserialized);
     }
-
 
     [Fact]
     public void JsonInterfaceToConcreteRoundtrip_Param()
