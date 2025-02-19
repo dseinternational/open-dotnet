@@ -215,7 +215,7 @@ public partial class StringHelperTests
         Assert.Equal("Hello World !", result);
     }
 
-    [Fact(Skip = "TODO")]
+    [Fact]
     public void Join_Three_FinalSeparator_EmptySeparator()
     {
         var result = StringHelper.Join(string.Empty, " and ", s_helloWorldExc);

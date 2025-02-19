@@ -20,7 +20,7 @@ public class SignTests
         Assert.Equal(expected, sign.ToString());
     }
 
-    [Theory(Skip = "https://github.com/dseinternational/open-dotnet/issues/211")]
+    [Theory]
     [InlineData("spoken:ball")]
     [InlineData("written:ball")]
     [InlineData("gestured:ball")]

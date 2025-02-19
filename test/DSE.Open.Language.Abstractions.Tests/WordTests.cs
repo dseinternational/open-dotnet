@@ -7,7 +7,7 @@ namespace DSE.Open.Language.Abstractions.Tests;
 
 public class WordTests
 {
-    [Theory(Skip = "https://github.com/dseinternational/open-dotnet/issues/211")]
+    [Theory]
     [InlineData("television")]
     [InlineData("ball")]
     [InlineData("bat")]
