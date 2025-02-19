@@ -177,7 +177,16 @@ public readonly partial struct LanguageTag
         return LanguagePartEquals(otherLangPart._value.AsSpan());
     }
 
+    [Obsolete($"Renamed to {nameof(AsAsciiString)}")]
     public AsciiString ToAsciiString()
+    {
+        return _value;
+    }
+
+    /// <summary>
+    /// Gets the <see cref="AsciiString"/> representation of this <see cref="LanguageTag"/>.
+    /// </summary>
+    public AsciiString AsAsciiString()
     {
         return _value;
     }
