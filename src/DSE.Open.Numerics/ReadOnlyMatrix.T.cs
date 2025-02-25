@@ -63,13 +63,13 @@ public readonly struct ReadOnlyMatrix<T> : IEquatable<ReadOnlyMatrix<T>>
     public int ColumnCount => _data.Width;
 
     /// <summary>
-    /// Gets a <see cref="ReadOnlySpanVector{T}"/> representing the specified row of the matrix.
+    /// Gets a <see cref="ReadOnlyVector{T}"/> representing the specified row of the matrix.
     /// </summary>
     /// <param name="row"></param>
     /// <returns></returns>
-    public ReadOnlySpanVector<T> RowVector(int row)
+    public ReadOnlySpan<T> RowSpan(int row)
     {
-        return new(_data.Span.GetRowSpan(row));
+        return _data.Span.GetRowSpan(row);
     }
 
     public Matrix<T> Add(Matrix<T> other)

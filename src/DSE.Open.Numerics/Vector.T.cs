@@ -9,8 +9,12 @@ namespace DSE.Open.Numerics;
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
+/// <summary>
+/// An ordered list of numbers stored in a contiguous block of memory.
+/// </summary>
+/// <typeparam name="T"></typeparam>
 [CollectionBuilder(typeof(Vector), nameof(Vector.Create))]
-public readonly struct Vector<T> : IVector<T, Vector<T>>, IEquatable<Vector<T>>
+public readonly struct Vector<T> : IEquatable<Vector<T>>
     where T : struct, INumber<T>
 {
     private readonly Memory<T> _data;
@@ -28,26 +32,13 @@ public readonly struct Vector<T> : IVector<T, Vector<T>>, IEquatable<Vector<T>>
         _data = data;
     }
 
-    static Vector<T> IVector<T, Vector<T>>.Create(Span<T> data)
-    {
-        return new(data.ToArray());
-    }
-
-    public SpanVector<T> Span
-    {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => new(_data.Span);
-    }
-
-    public Span<T> Memory
+    public Span<T> Span
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get => _data.Span;
     }
 
     public int Length => _data.Length;
-
-    ReadOnlySpan<T> IReadOnlyVector<T, Vector<T>>.Memory => Memory;
 
     public T this[int index]
     {
@@ -81,12 +72,6 @@ public readonly struct Vector<T> : IVector<T, Vector<T>>, IEquatable<Vector<T>>
     public bool SequenceEqual(Vector<T> other)
     {
         return _data.Span.SequenceEqual(other._data.Span);
-    }
-
-    static Vector<T> IReadOnlyVector<T, Vector<T>>.Create(ReadOnlySpan<T> data)
-    {
-        // only option is to copy?
-        throw new NotImplementedException();
     }
 
     public static bool operator ==(Vector<T> left, Vector<T> right)

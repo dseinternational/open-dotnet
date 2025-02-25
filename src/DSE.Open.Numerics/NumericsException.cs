@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Numerics;
+using System.Numerics.Tensors;
 using System.Runtime.CompilerServices;
 using DSE.Open.Memory;
 
@@ -9,26 +10,26 @@ namespace DSE.Open.Numerics;
 
 public class NumericsException : Exception
 {
-    private const string s_defaultMessage = "Numerics error.";
+    private const string DefaultMessage = "Numerics error.";
 
     public NumericsException()
-        : base(s_defaultMessage)
+        : base(DefaultMessage)
     {
     }
 
     public NumericsException(string message)
-        : base(message ?? s_defaultMessage)
+        : base(message ?? DefaultMessage)
     {
     }
 
     public NumericsException(string message, Exception innerException)
-        : base(message ?? s_defaultMessage, innerException)
+        : base(message ?? DefaultMessage, innerException)
     {
     }
 
     public static void Throw()
     {
-        throw new NumericsException(s_defaultMessage);
+        throw new NumericsException(DefaultMessage);
     }
 
     public static void Throw(string message)
@@ -43,7 +44,6 @@ public class NumericsException : Exception
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void ThrowIfNotEqualLength<T>(ICollection<T> x, ICollection<T> y)
-        where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(x);
         ArgumentNullException.ThrowIfNull(y);
@@ -51,18 +51,6 @@ public class NumericsException : Exception
         if (x.Count != y.Count)
         {
             Throw("Collections must be the same length.");
-        }
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void ThrowIfNotEqualLength(IReadOnlyVector x, IReadOnlyVector y)
-    {
-        ArgumentNullException.ThrowIfNull(x);
-        ArgumentNullException.ThrowIfNull(y);
-
-        if (x.Length != y.Length)
-        {
-            Throw("Vectors must be the same length.");
         }
     }
 
@@ -77,8 +65,7 @@ public class NumericsException : Exception
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void ThrowIfNotEqualLength<T>(ReadOnlySpanVector<T> x, ReadOnlySpanVector<T> y)
-        where T : struct, INumber<T>
+    public static void ThrowIfNotEqualLength<T>(ReadOnlySpan<T> x, ReadOnlySpan<T> y)
     {
         if (x.Length != y.Length)
         {
@@ -92,15 +79,6 @@ public class NumericsException : Exception
         ArgumentNullException.ThrowIfNull(x);
         ArgumentNullException.ThrowIfNull(y);
 
-        if (x.Length != y.Length)
-        {
-            Throw("Vectors must be the same length.");
-        }
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void ThrowIfNotEqualLength<T>(ReadOnlySpan<T> x, ReadOnlySpan<T> y)
-    {
         if (x.Length != y.Length)
         {
             Throw("Vectors must be the same length.");
@@ -134,47 +112,4 @@ public class NumericsException : Exception
             Throw("Tensors must be the same shape.");
         }
     }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void ThrowIfNotSameShape<T>(ReadOnlyTensorSpan<T> x, ReadOnlyTensorSpan<T> y)
-        where T : struct, INumber<T>
-    {
-        if (x.Length != y.Length || !x.Shape.SequenceEqual(y.Shape))
-        {
-            Throw("Tensors must be the same shape.");
-        }
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void ThrowIfNotSameShape<T>(ReadOnlyTensorSpan<T> x, ReadOnlyTensorSpan<T> y, ReadOnlyTensorSpan<T> z)
-        where T : struct, INumber<T>
-    {
-        if (x.Length != y.Length || x.Length != z.Length
-            || !x.Shape.SequenceEqual(y.Shape) || !x.Shape.SequenceEqual(z.Shape))
-        {
-            Throw("Tensors must be the same shape.");
-        }
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void ThrowIfNotSameShape<T>(ReadOnlyTensor<T> x, ReadOnlyTensor<T> y)
-        where T : struct, INumber<T>
-    {
-        if (x.Length != y.Length || !x.Shape.SequenceEqual(y.Shape))
-        {
-            Throw("Tensors must be the same shape.");
-        }
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void ThrowIfNotSameShape<T>(ReadOnlyTensor<T> x, ReadOnlyTensor<T> y, ReadOnlyTensor<T> z)
-        where T : struct, INumber<T>
-    {
-        if (x.Length != y.Length || x.Length != z.Length
-            || !x.Shape.SequenceEqual(y.Shape) || !x.Shape.SequenceEqual(z.Shape))
-        {
-            Throw("Tensors must be the same shape.");
-        }
-    }
-
 }

@@ -30,13 +30,7 @@ public readonly struct ReadOnlyVector<T> : IEquatable<ReadOnlyVector<T>>
         _data = data;
     }
 
-    public ReadOnlySpanVector<T> Span
-    {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => new(_data.Span);
-    }
-
-    public ReadOnlySpan<T> Memory
+    public ReadOnlySpan<T> Span
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get => _data.Span;

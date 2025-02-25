@@ -44,7 +44,7 @@ public static partial class Matrix
 
         for (var i = 0; i < rows; i++)
         {
-            source[(i * columns)..((i * columns) + columns)].CopyTo(result.RowVector(i).Span);
+            source[(i * columns)..((i * columns) + columns)].CopyTo(result.RowSpan(i));
         }
 
         return result;

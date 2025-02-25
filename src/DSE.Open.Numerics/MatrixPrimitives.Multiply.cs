@@ -33,5 +33,4 @@ public static partial class MatrixPrimitives
             }
         }
     }
-
 }

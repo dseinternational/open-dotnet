@@ -12,13 +12,13 @@ public static partial class Vector
     public static void Add<T>(ReadOnlyVector<T> x, ReadOnlyVector<T> y, Vector<T> destination)
         where T : struct, INumber<T>
     {
-        VectorPrimitives.Add(x.Memory, y.Memory, destination.Memory);
+        VectorPrimitives.Add(x.Span, y.Span, destination.Span);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void AddInPace<T>(Vector<T> x, ReadOnlyVector<T> y)
         where T : struct, INumber<T>
     {
-        VectorPrimitives.AddInPlace(x.Memory, y.Memory);
+        VectorPrimitives.AddInPlace(x.Span, y.Span);
     }
 }

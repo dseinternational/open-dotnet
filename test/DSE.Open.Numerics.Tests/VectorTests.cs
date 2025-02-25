@@ -15,7 +15,7 @@ public partial class VectorTests
         Assert.Equal(6, v1.Length);
         Assert.Equal(6, v2.Length);
 
-        Assert.True(v1.Memory.SequenceEqual(v2.Memory));
+        Assert.True(v1.Span.SequenceEqual(v2.Span));
     }
 
     [Fact]
@@ -23,7 +23,7 @@ public partial class VectorTests
     {
         var v1 = Vector.CreateDefault<int>(6);
         Assert.Equal(6, v1.Length);
-        Assert.True(v1.Memory.SequenceEqual(new int[6]));
+        Assert.True(v1.Span.SequenceEqual(new int[6]));
     }
 
     [Fact]
@@ -31,7 +31,7 @@ public partial class VectorTests
     {
         var v1 = Vector.CreateZeroes<int>(6);
         Assert.Equal(6, v1.Length);
-        Assert.True(v1.Memory.SequenceEqual(new int[6]));
+        Assert.True(v1.Span.SequenceEqual(new int[6]));
     }
 
     [Fact]
@@ -39,6 +39,6 @@ public partial class VectorTests
     {
         var v1 = Vector.CreateOnes<int>(6);
         Assert.Equal(6, v1.Length);
-        Assert.True(v1.Memory.SequenceEqual([1, 1, 1, 1, 1, 1]));
+        Assert.True(v1.Span.SequenceEqual([1, 1, 1, 1, 1, 1]));
     }
 }

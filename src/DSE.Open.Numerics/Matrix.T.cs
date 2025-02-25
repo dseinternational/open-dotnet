@@ -81,13 +81,13 @@ public readonly struct Matrix<T> : IEquatable<Matrix<T>>
     public int ColumnCount => _data.Width;
 
     /// <summary>
-    /// Gets a <see cref="SpanVector{T}"/> representing the specified row of the matrix.
+    /// Gets a <see cref="Span{T}"/> representing the specified row of the matrix.
     /// </summary>
     /// <param name="row"></param>
     /// <returns></returns>
-    public SpanVector<T> RowVector(int row)
+    public Span<T> RowSpan(int row)
     {
-        return new(_data.Span.GetRowSpan(row));
+        return _data.Span.GetRowSpan(row);
     }
 
     /// <summary>

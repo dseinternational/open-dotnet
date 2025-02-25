@@ -1,4 +1,4 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 namespace DSE.Open.Numerics;
@@ -15,6 +15,6 @@ public class ReadOnlyVectorTests
         Assert.Equal(6, v1.Length);
         Assert.Equal(6, v2.Length);
 
-        Assert.True(v1.Memory.SequenceEqual(v2.Memory));
+        Assert.True(v1.Span.SequenceEqual(v2.Span));
     }
 }
