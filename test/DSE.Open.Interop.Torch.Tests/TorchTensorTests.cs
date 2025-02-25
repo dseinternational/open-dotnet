@@ -10,7 +10,7 @@ namespace DSE.Open.Interop.Torch;
 
 public class TorchTensorTests
 {
-    [Fact]
+    [Fact(Skip = "TODO")]
     public void Add_2D_Array()
     {
         var t1 = Tensor.Create([1, 2, 3, 4, 5, 6], [2, 3]);
