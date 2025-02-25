@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 
 namespace DSE.Open.Numerics;
 
-public readonly record struct DataPoint<TX, TY>
+public readonly record struct DataPoint<TX, TY> : IDataPoint<TX, TY>
     where TX : struct, INumber<TX>
     where TY : struct, INumber<TY>
 {

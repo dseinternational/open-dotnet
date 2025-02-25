@@ -11,7 +11,10 @@ public class DataPointArrayJsonConverter<TX, TY> : JsonConverter<DataPoint<TX, T
     where TX : struct, INumber<TX>
     where TY : struct, INumber<TY>
 {
-    public override DataPoint<TX, TY> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public override DataPoint<TX, TY> Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options)
     {
         if (reader.TokenType != JsonTokenType.StartArray)
         {
@@ -40,25 +43,8 @@ public class DataPointArrayJsonConverter<TX, TY> : JsonConverter<DataPoint<TX, T
         ArgumentNullException.ThrowIfNull(writer);
 
         writer.WriteStartArray();
-
-        if (TX.IsInteger(value.X))
-        {
-            writer.WriteNumberValue(long.CreateTruncating(value.X));
-        }
-        else
-        {
-            writer.WriteNumberValue(double.CreateTruncating(value.X));
-        }
-
-        if (TY.IsInteger(value.Y))
-        {
-            writer.WriteNumberValue(long.CreateTruncating(value.Y));
-        }
-        else
-        {
-            writer.WriteNumberValue(double.CreateTruncating(value.Y));
-        }
-
+        writer.WriteNumberValue(value.X);
+        writer.WriteNumberValue(value.Y);
         writer.WriteEndArray();
     }
 }

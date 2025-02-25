@@ -12,8 +12,7 @@ public class VectorDataSeriesSetTests : LoggedTestsBase
     private static readonly Lazy<JsonSerializerOptions> s_jsonOptions = new(() =>
     {
         var options = new JsonSerializerOptions(JsonSharedOptions.RelaxedJsonEscaping);
-        options.Converters.Add(new VectorJsonConverter<int>());
-        options.Converters.Add(new DataPointArrayJsonConverter<int, int>());
+        options.AddDefaultNumericsJsonConverters();
         return options;
     });
 
