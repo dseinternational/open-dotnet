@@ -1,8 +1,7 @@
-// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 namespace DSE.Open.Memory;
-
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
 public static partial class MemoryExtensions

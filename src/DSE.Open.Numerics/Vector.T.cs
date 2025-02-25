@@ -2,12 +2,11 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 
 namespace DSE.Open.Numerics;
-
-#pragma warning disable CA2225 // Operator overloads have named alternates
 
 /// <summary>
 /// An ordered list of numbers stored in a contiguous block of memory.
@@ -74,6 +73,11 @@ public readonly struct Vector<T> : IEquatable<Vector<T>>
         return _data.Span.SequenceEqual(other._data.Span);
     }
 
+    public T[] ToArray()
+    {
+        return _data.ToArray();
+    }
+
     public static bool operator ==(Vector<T> left, Vector<T> right)
     {
         return left.Equals(right);
@@ -85,12 +89,21 @@ public readonly struct Vector<T> : IEquatable<Vector<T>>
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates", Justification = "By design")]
+    public static implicit operator Vector<T>(T[] vector)
+    {
+        return new(vector);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates", Justification = "By design")]
     public static implicit operator Vector<T>(Memory<T> vector)
     {
         return new(vector);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates", Justification = "By design")]
     public static implicit operator ReadOnlyVector<T>(Vector<T> vector)
     {
         return new(vector._data);

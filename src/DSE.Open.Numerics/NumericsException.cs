@@ -93,23 +93,4 @@ public class NumericsException : Exception
             Throw("Vectors must be the same length.");
         }
     }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void ThrowIfNotSameShape<T>(ReadOnlyMultiSpan<T> x, ReadOnlyMultiSpan<T> y)
-    {
-        if (x.Length != y.Length || !x.Shape.SequenceEqual(y.Shape))
-        {
-            Throw("Tensors must be the same shape.");
-        }
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void ThrowIfNotSameShape<T>(ReadOnlyMultiSpan<T> x, ReadOnlyMultiSpan<T> y, ReadOnlyMultiSpan<T> z)
-    {
-        if (x.Length != y.Length || x.Length != z.Length
-            || !x.Shape.SequenceEqual(y.Shape) || !x.Shape.SequenceEqual(z.Shape))
-        {
-            Throw("Tensors must be the same shape.");
-        }
-    }
 }

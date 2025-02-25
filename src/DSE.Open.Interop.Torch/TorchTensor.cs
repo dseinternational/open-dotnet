@@ -1,15 +1,18 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using DSE.Open.Numerics;
+using System.Numerics.Tensors;
 
 namespace DSE.Open.Interop.Torch;
+
+#pragma warning disable SYSLIB5001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 
 public static class TorchTensor
 {
     public static TorchTensor<int> Create(Tensor<int> tensor)
     {
-        return Create(tensor.TensorSpan);
+        ArgumentNullException.ThrowIfNull(tensor);
+        return Create(tensor.AsTensorSpan());
     }
 
     public static TorchTensor<int> Create(TensorSpan<int> tensor)
@@ -19,7 +22,8 @@ public static class TorchTensor
 
     public static TorchTensor<float> Create(Tensor<float> tensor)
     {
-        return Create(tensor.TensorSpan);
+        ArgumentNullException.ThrowIfNull(tensor);
+        return Create(tensor.AsTensorSpan());
     }
 
     public static TorchTensor<float> Create(TensorSpan<float> tensor)
@@ -34,5 +38,4 @@ public static class TorchTensor
             || type == typeof(float)
             || type == typeof(double);
     }
-
 }

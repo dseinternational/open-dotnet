@@ -1,9 +1,8 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Buffers;
 using CommunityToolkit.HighPerformance;
-using DSE.Open;
+using System.Buffers;
 
 namespace DSE.Open.Memory;
 

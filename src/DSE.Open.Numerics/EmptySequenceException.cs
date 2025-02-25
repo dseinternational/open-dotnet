@@ -5,17 +5,17 @@ namespace DSE.Open.Numerics;
 
 public class EmptySequenceException : NumericsException
 {
-    private const string s_defaultMessage = "Sequence contains no elements.";
+    private const string DefaultMessage = "Sequence contains no elements.";
 
-    public EmptySequenceException() : base(s_defaultMessage)
+    public EmptySequenceException() : base(DefaultMessage)
     {
     }
 
-    public EmptySequenceException(string message) : base(message ?? s_defaultMessage)
+    public EmptySequenceException(string message) : base(message ?? DefaultMessage)
     {
     }
 
-    public EmptySequenceException(string message, Exception innerException) : base(message ?? s_defaultMessage, innerException)
+    public EmptySequenceException(string message, Exception innerException) : base(message ?? DefaultMessage, innerException)
     {
     }
 

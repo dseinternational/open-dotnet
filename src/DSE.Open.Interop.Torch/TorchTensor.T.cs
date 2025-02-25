@@ -3,11 +3,13 @@
 
 using System.Diagnostics;
 using System.Numerics;
+using System.Numerics.Tensors;
 using System.Runtime.InteropServices;
-using DSE.Open.Numerics;
 using TorchSharp;
 
 namespace DSE.Open.Interop.Torch;
+
+#pragma warning disable SYSLIB5001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 
 public abstract class TorchTensor<T> : IDisposable
     where T : unmanaged, INumber<T>
@@ -57,6 +59,7 @@ public abstract class TorchTensor<T> : IDisposable
             {
                 _tensor.Dispose();
             }
+
             _disposed = true;
         }
     }
