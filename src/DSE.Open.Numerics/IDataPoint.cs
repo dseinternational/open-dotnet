@@ -18,3 +18,15 @@ public interface IDataPoint<TX, TY>
         (x, y) = (X, Y);
     }
 }
+
+public interface IDataPointDouble
+{
+    double X { get; }
+
+    double Y { get; }
+
+    virtual void Deconstruct(out double x, out double y)
+    {
+        (x, y) = (X, Y);
+    }
+}

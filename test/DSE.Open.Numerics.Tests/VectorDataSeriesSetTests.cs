@@ -39,7 +39,7 @@ public class VectorDataSeriesSetTests : LoggedTestsBase
 
         Output.WriteLine(dataSetJson);
 
-        //  {"x":[[0,1,2,3,4]],"y":[[0,1,2,3,4],[0,1,2,3,4]]}
+        Assert.Equal("{\"x\":[[0,1,2,3,4]],\"y\":[[0,1,2,3,4],[0,1,2,3,4]]}", dataSetJson);
 
         var series = dataSet.GetDataSeries().ToArray();
 
@@ -49,7 +49,7 @@ public class VectorDataSeriesSetTests : LoggedTestsBase
 
         Output.WriteLine(seriesJson);
 
-        //  [{"x":[0,1,2,3,4],"y":[0,1,2,3,4]},{"x":[0,1,2,3,4],"y":[0,1,2,3,4]}]
+        Assert.Equal("[{\"x\":[0,1,2,3,4],\"y\":[0,1,2,3,4]},{\"x\":[0,1,2,3,4],\"y\":[0,1,2,3,4]}]", seriesJson);
 
         var dataPoints = dataSet.GetDataPoints().ToArray();
 
@@ -59,7 +59,7 @@ public class VectorDataSeriesSetTests : LoggedTestsBase
 
         Output.WriteLine(dataPointsJson);
 
-        // [[[0,0],[1,1],[2,2],[3,3],[4,4]],[[0,0],[1,1],[2,2],[3,3],[4,4]]]
+        Assert.Equal("[[[0,0],[1,1],[2,2],[3,3],[4,4]],[[0,0],[1,1],[2,2],[3,3],[4,4]]]", dataPointsJson);
 
         // ** without DataPointArrayJsonConverter **
 
@@ -69,6 +69,6 @@ public class VectorDataSeriesSetTests : LoggedTestsBase
 
         Output.WriteLine(dataPointsJson);
 
-        // [[{"x":0,"y":0},{"x":1,"y":1},{"x":2,"y":2},{"x":3,"y":3},{"x":4,"y":4}],[{"x":0,"y":0},{"x":1,"y":1},{"x":2,"y":2},{"x":3,"y":3},{"x":4,"y":4}]]
+        Assert.Equal("[[{\"x\":0,\"y\":0},{\"x\":1,\"y\":1},{\"x\":2,\"y\":2},{\"x\":3,\"y\":3},{\"x\":4,\"y\":4}],[{\"x\":0,\"y\":0},{\"x\":1,\"y\":1},{\"x\":2,\"y\":2},{\"x\":3,\"y\":3},{\"x\":4,\"y\":4}]]", dataPointsJson);
     }
 }
