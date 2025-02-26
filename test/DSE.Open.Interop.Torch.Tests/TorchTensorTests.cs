@@ -10,7 +10,7 @@ namespace DSE.Open.Interop.Torch;
 
 public class TorchTensorTests
 {
-    [Fact(Skip = "TODO")]
+    [Fact]
     public void Add_2D_Array()
     {
         var t1 = Tensor.Create([1, 2, 3, 4, 5, 6], [2, 3]);
@@ -28,7 +28,7 @@ public class TorchTensorTests
         Assert.Equal(6, t3.FlattenedLength);
         Assert.Equal(2, t3[[0, 0]]);
         Assert.Equal(4, t3[[0, 1]]);
-        Assert.Equal(6, t3[[1, 0]]);
-        Assert.Equal(8, t3[[1, 1]]);
+        Assert.Equal(6, t3[[0, 2]]);
+        Assert.Equal(8, t3[[1, 0]]);
     }
 }

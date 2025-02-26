@@ -51,6 +51,12 @@ public abstract class TorchTensor<T> : IDisposable
         return [.. _tensor.data<T>()];
     }
 
+    public override string ToString()
+    {
+        // todo: better string representation
+        return $"[ {string.Join(',', _tensor.data<T>())} ]";
+    }
+
     protected virtual void Dispose(bool disposing)
     {
         if (!_disposed)

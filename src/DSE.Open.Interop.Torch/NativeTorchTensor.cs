@@ -13,7 +13,7 @@ public static class NativeTorchTensor
     public static torch.Tensor Create(ReadOnlyTensorSpan<short> tensor)
     {
         var elements = new short[tensor.FlattenedLength];
-        tensor.CopyTo(elements);
+        tensor.FlattenTo(elements);
         var dimensions = tensor.Lengths.ToArray().Select(i => (long)i).ToArray();
         return torch.tensor(
             elements,
@@ -24,7 +24,7 @@ public static class NativeTorchTensor
     public static torch.Tensor Create(ReadOnlyTensorSpan<int> tensor)
     {
         var elements = new int[tensor.FlattenedLength];
-        tensor.CopyTo(elements);
+        tensor.FlattenTo(elements);
         var dimensions = tensor.Lengths.ToArray().Select(i => (long)i).ToArray();
         return torch.tensor(
             elements,
@@ -35,7 +35,7 @@ public static class NativeTorchTensor
     public static torch.Tensor Create(ReadOnlyTensorSpan<float> tensor)
     {
         var elements = new float[tensor.FlattenedLength];
-        tensor.CopyTo(elements);
+        tensor.FlattenTo(elements);
         var dimensions = tensor.Lengths.ToArray().Select(i => (long)i).ToArray();
         return torch.tensor(
             elements,
@@ -46,7 +46,7 @@ public static class NativeTorchTensor
     public static torch.Tensor Create(ReadOnlyTensorSpan<double> tensor)
     {
         var elements = new double[tensor.FlattenedLength];
-        tensor.CopyTo(elements);
+        tensor.FlattenTo(elements);
         var dimensions = tensor.Lengths.ToArray().Select(i => (long)i).ToArray();
         return torch.tensor(
             elements,
