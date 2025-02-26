@@ -8,8 +8,7 @@ using System.Text.Json.Serialization;
 namespace DSE.Open.Numerics;
 
 public readonly record struct DataPoint<TX, TY>
-    : IDataPoint<TX, TY>,
-      IDataPointDouble
+    : IDataPoint<TX, TY>
     where TX : struct, INumber<TX>
     where TY : struct, INumber<TY>
 {
@@ -24,10 +23,6 @@ public readonly record struct DataPoint<TX, TY>
 
     [JsonPropertyName("y")]
     public required TY Y { get; init; }
-
-    double IDataPointDouble.X => double.CreateTruncating(X);
-
-    double IDataPointDouble.Y => double.CreateTruncating(Y);
 
     public void Deconstruct(out TX x, out TY y)
     {
