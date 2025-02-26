@@ -4,6 +4,7 @@
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
+using System.Numerics.Tensors;
 using System.Runtime.CompilerServices;
 
 namespace DSE.Open.Numerics;
@@ -12,6 +13,9 @@ namespace DSE.Open.Numerics;
 /// An ordered list of numbers stored in a contiguous block of memory.
 /// </summary>
 /// <typeparam name="T"></typeparam>
+/// <remarks>
+/// Implements value equality.
+/// </remarks>
 [CollectionBuilder(typeof(NumericVector), nameof(NumericVector.Create))]
 public readonly struct NumericVector<T> : IEquatable<NumericVector<T>>
     where T : struct, INumber<T>
@@ -65,12 +69,12 @@ public readonly struct NumericVector<T> : IEquatable<NumericVector<T>>
 
     public bool Equals(NumericVector<T> other)
     {
-        return _data.Equals(other._data);
+        return Equals(other._data.Span);
     }
 
-    public bool SequenceEqual(NumericVector<T> other)
+    public bool Equals(ReadOnlySpan<T> other)
     {
-        return _data.Span.SequenceEqual(other._data.Span);
+        return _data.Span.SequenceEqual(other);
     }
 
     public T[] ToArray()

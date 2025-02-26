@@ -14,6 +14,6 @@ public partial class NumericVectorTests
         NumericVector.AddInPace(v1, v2);
         Assert.Equal(6, v1.Length);
         Assert.Equal(6, v2.Length);
-        Assert.True(v1.SequenceEqual(v2));
+        Assert.Equal(v1, v2);
     }
 }
