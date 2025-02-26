@@ -7,7 +7,7 @@ using CommunityToolkit.HighPerformance;
 
 namespace DSE.Open.Numerics;
 
-public static partial class MatrixPrimitives
+public static partial class NumericMatrixPrimitives
 {
     public static void Add<T>(ReadOnlySpan2D<T> x, T y, Span2D<T> destination)
         where T : IAdditionOperators<T, T, T>, IAdditiveIdentity<T, T>

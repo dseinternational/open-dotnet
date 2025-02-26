@@ -3,12 +3,12 @@
 
 namespace DSE.Open.Numerics;
 
-public class MatrixExtensionsTests
+public class NumericMatrixExtensionsTests
 {
     [Fact]
     public void Contains()
     {
-        var m = new Matrix<int>([[1, 2], [3, 4], [5, 6]]);
+        var m = new NumericMatrix<int>([[1, 2], [3, 4], [5, 6]]);
         Assert.True(m.Contains(4));
         Assert.True(m.Contains(5));
         Assert.False(m.Contains(7));
@@ -18,14 +18,14 @@ public class MatrixExtensionsTests
     [Fact]
     public void ContainsAny()
     {
-        var m = new Matrix<int>([[1, 2], [3, 4], [5, 6]]);
+        var m = new NumericMatrix<int>([[1, 2], [3, 4], [5, 6]]);
         Assert.True(m.ContainsAny([7, 4]));
     }
 
     [Fact]
     public void IndexOf()
     {
-        var m = new Matrix<int>([[1, 2], [3, 4], [5, 6]]);
+        var m = new NumericMatrix<int>([[1, 2], [3, 4], [5, 6]]);
         var l = m.IndexOf(4);
         Assert.Equal(new(1, 1), l);
     }

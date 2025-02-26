@@ -20,7 +20,7 @@ public static partial class MatrixExtensions
     /// <param name="value"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool Contains<T>(this Matrix<T> matrix, T value)
+    public static bool Contains<T>(this NumericMatrix<T> matrix, T value)
         where T : struct, INumber<T>
     {
         return matrix.Span.Contains(value);
@@ -35,7 +35,7 @@ public static partial class MatrixExtensions
     /// <param name="value"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool Contains<T>(this ReadOnlyMatrix<T> matrix, T value)
+    public static bool Contains<T>(this ReadOnlyNumericMatrix<T> matrix, T value)
         where T : struct, INumber<T>
     {
         return matrix.Span.Contains(value);
@@ -50,7 +50,7 @@ public static partial class MatrixExtensions
     /// <param name="values"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool ContainsAny<T>(this Matrix<T> matrix, ReadOnlySpan<T> values)
+    public static bool ContainsAny<T>(this NumericMatrix<T> matrix, ReadOnlySpan<T> values)
         where T : struct, INumber<T>
     {
         return matrix.Span.ContainsAny(values);
@@ -65,7 +65,7 @@ public static partial class MatrixExtensions
     /// <param name="values"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool ContainsAny<T>(this ReadOnlyMatrix<T> matrix, ReadOnlySpan<T> values)
+    public static bool ContainsAny<T>(this ReadOnlyNumericMatrix<T> matrix, ReadOnlySpan<T> values)
         where T : struct, INumber<T>
     {
         return matrix.Span.ContainsAny(values);
@@ -80,7 +80,7 @@ public static partial class MatrixExtensions
     /// <param name="values"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool ContainsAny<T>(this ReadOnlyMatrix<T> matrix, SearchValues<T> values)
+    public static bool ContainsAny<T>(this ReadOnlyNumericMatrix<T> matrix, SearchValues<T> values)
         where T : struct, INumber<T>
     {
         return matrix.Span.ContainsAny(values);
@@ -95,7 +95,7 @@ public static partial class MatrixExtensions
     /// <param name="value"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static MatrixIndex IndexOf<T>(this Matrix<T> matrix, T value)
+    public static MatrixIndex IndexOf<T>(this NumericMatrix<T> matrix, T value)
         where T : struct, INumber<T>
     {
         return matrix.Span.IndexOf(value);
@@ -110,7 +110,7 @@ public static partial class MatrixExtensions
     /// <param name="value"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static MatrixIndex IndexOf<T>(this ReadOnlyMatrix<T> matrix, T value)
+    public static MatrixIndex IndexOf<T>(this ReadOnlyNumericMatrix<T> matrix, T value)
         where T : struct, INumber<T>
     {
         return matrix.Span.IndexOf(value);
@@ -125,7 +125,7 @@ public static partial class MatrixExtensions
     /// <param name="value"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ReadOnlySpan<MatrixIndex> RowIndexesOf<T>(this Matrix<T> matrix, T value)
+    public static ReadOnlySpan<MatrixIndex> RowIndexesOf<T>(this NumericMatrix<T> matrix, T value)
         where T : struct, INumber<T>
     {
         return MemoryMarshal.Cast<Index2D, MatrixIndex>(matrix.Span.RowIndexesOf(value));
@@ -140,7 +140,7 @@ public static partial class MatrixExtensions
     /// <param name="value"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ReadOnlySpan<MatrixIndex> RowIndexesOf<T>(this ReadOnlyMatrix<T> matrix, T value)
+    public static ReadOnlySpan<MatrixIndex> RowIndexesOf<T>(this ReadOnlyNumericMatrix<T> matrix, T value)
         where T : struct, INumber<T>
     {
         return MemoryMarshal.Cast<Index2D, MatrixIndex>(matrix.Span.RowIndexesOf(value));
@@ -154,7 +154,7 @@ public static partial class MatrixExtensions
     /// <param name="values"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ReadOnlySpan<MatrixIndex> RowIndexesOfAny<T>(this Matrix<T> matrix, ReadOnlySpan<T> values)
+    public static ReadOnlySpan<MatrixIndex> RowIndexesOfAny<T>(this NumericMatrix<T> matrix, ReadOnlySpan<T> values)
         where T : struct, INumber<T>
     {
         return MemoryMarshal.Cast<Index2D, MatrixIndex>(matrix.Span.RowIndexesOfAny(values));
@@ -168,7 +168,7 @@ public static partial class MatrixExtensions
     /// <param name="values"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ReadOnlySpan<MatrixIndex> RowIndexesOfAny<T>(this ReadOnlyMatrix<T> matrix, ReadOnlySpan<T> values)
+    public static ReadOnlySpan<MatrixIndex> RowIndexesOfAny<T>(this ReadOnlyNumericMatrix<T> matrix, ReadOnlySpan<T> values)
         where T : struct, INumber<T>
     {
         return MemoryMarshal.Cast<Index2D, MatrixIndex>(matrix.Span.RowIndexesOfAny(values));
@@ -182,7 +182,7 @@ public static partial class MatrixExtensions
     /// <param name="values"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ReadOnlySpan<MatrixIndex> RowIndexesOfAny<T>(this Matrix<T> matrix, SearchValues<T> values)
+    public static ReadOnlySpan<MatrixIndex> RowIndexesOfAny<T>(this NumericMatrix<T> matrix, SearchValues<T> values)
         where T : struct, INumber<T>
     {
         return MemoryMarshal.Cast<Index2D, MatrixIndex>(matrix.Span.RowIndexesOfAny(values));
@@ -196,7 +196,7 @@ public static partial class MatrixExtensions
     /// <param name="values"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ReadOnlySpan<MatrixIndex> RowIndexesOfAny<T>(this ReadOnlyMatrix<T> matrix, SearchValues<T> values)
+    public static ReadOnlySpan<MatrixIndex> RowIndexesOfAny<T>(this ReadOnlyNumericMatrix<T> matrix, SearchValues<T> values)
         where T : struct, INumber<T>
     {
         return MemoryMarshal.Cast<Index2D, MatrixIndex>(matrix.Span.RowIndexesOfAny(values));

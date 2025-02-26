@@ -17,27 +17,27 @@ namespace DSE.Open.Numerics;
 /// <remarks>This is an <b>experimental</b> exploration of a matrix type implemented over
 /// <see cref="ReadOnlyMemory2D{T}"/> and utilising <see cref="TensorPrimitives"/>.
 /// </remarks>
-public readonly struct ReadOnlyMatrix<T> : IEquatable<ReadOnlyMatrix<T>>
+public readonly struct ReadOnlyNumericMatrix<T> : IEquatable<ReadOnlyNumericMatrix<T>>
     where T : struct, INumber<T>
 {
     private readonly ReadOnlyMemory2D<T> _data;
 
     public static readonly ReadOnlyMemory2D<T> Empty;
 
-    public ReadOnlyMatrix(int rows, int columns)
+    public ReadOnlyNumericMatrix(int rows, int columns)
         : this(new ReadOnlyMemory2D<T>(new T[rows * columns], rows, columns))
     {
     }
 
-    public ReadOnlyMatrix(T[,] data) : this(new Memory2D<T>(data))
+    public ReadOnlyNumericMatrix(T[,] data) : this(new Memory2D<T>(data))
     {
     }
 
-    public ReadOnlyMatrix(T[] data, int rows, int columns) : this(new Memory2D<T>(data, rows, columns))
+    public ReadOnlyNumericMatrix(T[] data, int rows, int columns) : this(new Memory2D<T>(data, rows, columns))
     {
     }
 
-    public ReadOnlyMatrix(ReadOnlyMemory2D<T> values)
+    public ReadOnlyNumericMatrix(ReadOnlyMemory2D<T> values)
     {
         _data = values;
     }
@@ -63,7 +63,7 @@ public readonly struct ReadOnlyMatrix<T> : IEquatable<ReadOnlyMatrix<T>>
     public int ColumnCount => _data.Width;
 
     /// <summary>
-    /// Gets a <see cref="ReadOnlyVector{T}"/> representing the specified row of the matrix.
+    /// Gets a <see cref="ReadOnlyNumericVector{T}"/> representing the specified row of the matrix.
     /// </summary>
     /// <param name="row"></param>
     /// <returns></returns>
@@ -72,21 +72,21 @@ public readonly struct ReadOnlyMatrix<T> : IEquatable<ReadOnlyMatrix<T>>
         return _data.Span.GetRowSpan(row);
     }
 
-    public Matrix<T> Add(Matrix<T> other)
+    public NumericMatrix<T> Add(NumericMatrix<T> other)
     {
-        var destination = new Matrix<T>(RowCount, ColumnCount);
+        var destination = new NumericMatrix<T>(RowCount, ColumnCount);
         Matrix.Add(this, other, destination);
         return destination;
     }
 
-    public bool Equals(ReadOnlyMatrix<T> other)
+    public bool Equals(ReadOnlyNumericMatrix<T> other)
     {
         return _data.Equals(other._data);
     }
 
     public override bool Equals(object? obj)
     {
-        return obj is ReadOnlyMatrix<T> matrix && Equals(matrix);
+        return obj is ReadOnlyNumericMatrix<T> matrix && Equals(matrix);
     }
 
     public override int GetHashCode()
@@ -103,12 +103,12 @@ public readonly struct ReadOnlyMatrix<T> : IEquatable<ReadOnlyMatrix<T>>
         return _data.ToArray();
     }
 
-    public static bool operator ==(ReadOnlyMatrix<T> left, ReadOnlyMatrix<T> right)
+    public static bool operator ==(ReadOnlyNumericMatrix<T> left, ReadOnlyNumericMatrix<T> right)
     {
         return left.Equals(right);
     }
 
-    public static bool operator !=(ReadOnlyMatrix<T> left, ReadOnlyMatrix<T> right)
+    public static bool operator !=(ReadOnlyNumericMatrix<T> left, ReadOnlyNumericMatrix<T> right)
     {
         return !(left == right);
     }

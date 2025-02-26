@@ -12,21 +12,21 @@ namespace DSE.Open.Numerics;
 /// An ordered list of numbers stored in a contiguous block of memory.
 /// </summary>
 /// <typeparam name="T"></typeparam>
-[CollectionBuilder(typeof(Vector), nameof(Vector.Create))]
-public readonly struct Vector<T> : IEquatable<Vector<T>>
+[CollectionBuilder(typeof(NumericVector), nameof(NumericVector.Create))]
+public readonly struct NumericVector<T> : IEquatable<NumericVector<T>>
     where T : struct, INumber<T>
 {
     private readonly Memory<T> _data;
 
-    public Vector(T[] data) : this(new Memory<T>(data))
+    public NumericVector(T[] data) : this(new Memory<T>(data))
     {
     }
 
-    public Vector(T[] data, int start, int length) : this(new Memory<T>(data, start, length))
+    public NumericVector(T[] data, int start, int length) : this(new Memory<T>(data, start, length))
     {
     }
 
-    public Vector(Memory<T> data)
+    public NumericVector(Memory<T> data)
     {
         _data = data;
     }
@@ -49,7 +49,7 @@ public readonly struct Vector<T> : IEquatable<Vector<T>>
 
     public override bool Equals(object? obj)
     {
-        return obj is Vector<T> vector && Equals(vector);
+        return obj is NumericVector<T> vector && Equals(vector);
     }
 
     public MemoryEnumerator<T> GetEnumerator()
@@ -63,12 +63,12 @@ public readonly struct Vector<T> : IEquatable<Vector<T>>
         return _data.GetHashCode();
     }
 
-    public bool Equals(Vector<T> other)
+    public bool Equals(NumericVector<T> other)
     {
         return _data.Equals(other._data);
     }
 
-    public bool SequenceEqual(Vector<T> other)
+    public bool SequenceEqual(NumericVector<T> other)
     {
         return _data.Span.SequenceEqual(other._data.Span);
     }
@@ -78,33 +78,33 @@ public readonly struct Vector<T> : IEquatable<Vector<T>>
         return _data.ToArray();
     }
 
-    public static bool operator ==(Vector<T> left, Vector<T> right)
+    public static bool operator ==(NumericVector<T> left, NumericVector<T> right)
     {
         return left.Equals(right);
     }
 
-    public static bool operator !=(Vector<T> left, Vector<T> right)
+    public static bool operator !=(NumericVector<T> left, NumericVector<T> right)
     {
         return !(left == right);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates", Justification = "By design")]
-    public static implicit operator Vector<T>(T[] vector)
+    public static implicit operator NumericVector<T>(T[] vector)
     {
         return new(vector);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates", Justification = "By design")]
-    public static implicit operator Vector<T>(Memory<T> vector)
+    public static implicit operator NumericVector<T>(Memory<T> vector)
     {
         return new(vector);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates", Justification = "By design")]
-    public static implicit operator ReadOnlyVector<T>(Vector<T> vector)
+    public static implicit operator ReadOnlyNumericVector<T>(NumericVector<T> vector)
     {
         return new(vector._data);
     }

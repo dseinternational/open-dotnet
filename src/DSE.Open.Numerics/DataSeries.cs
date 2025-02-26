@@ -17,10 +17,10 @@ public class DataSeries<TX, TY>
     where TY : struct, INumber<TY>
 {
     [JsonPropertyName("x")]
-    public Vector<TX> X { get; init; }
+    public NumericVector<TX> X { get; init; }
 
     [JsonPropertyName("y")]
-    public Vector<TY> Y { get; init; }
+    public NumericVector<TY> Y { get; init; }
 
     public IEnumerable<DataPoint<TX, TY>> CreateDataPoints()
     {

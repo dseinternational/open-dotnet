@@ -6,17 +6,17 @@ using System.Runtime.CompilerServices;
 
 namespace DSE.Open.Numerics;
 
-public static partial class Vector
+public static partial class NumericVector
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void Add<T>(ReadOnlyVector<T> x, ReadOnlyVector<T> y, Vector<T> destination)
+    public static void Add<T>(ReadOnlyNumericVector<T> x, ReadOnlyNumericVector<T> y, NumericVector<T> destination)
         where T : struct, INumber<T>
     {
         VectorPrimitives.Add(x.Span, y.Span, destination.Span);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void AddInPace<T>(Vector<T> x, ReadOnlyVector<T> y)
+    public static void AddInPace<T>(NumericVector<T> x, ReadOnlyNumericVector<T> y)
         where T : struct, INumber<T>
     {
         VectorPrimitives.AddInPlace(x.Span, y.Span);

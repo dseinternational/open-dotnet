@@ -8,37 +8,37 @@ using DSE.Open.Collections.Generic;
 
 namespace DSE.Open.Numerics;
 
-public class VectorList<T> : IList<Vector<T>>, IReadOnlyList<Vector<T>>
+public class NumericVectorList<T> : IList<NumericVector<T>>, IReadOnlyList<NumericVector<T>>
     where T : struct, INumber<T>
 {
-    private readonly Collection<Vector<T>> _collection;
+    private readonly Collection<NumericVector<T>> _collection;
 
-    public VectorList()
+    public NumericVectorList()
     {
         _collection = [];
     }
 
-    public VectorList(IEnumerable<T[]> vectors)
+    public NumericVectorList(IEnumerable<T[]> vectors)
     {
         _collection = [.. vectors];
     }
 
-    public VectorList(IEnumerable<Vector<T>> vectors)
+    public NumericVectorList(IEnumerable<NumericVector<T>> vectors)
     {
         _collection = [.. vectors];
     }
 
-    public VectorList(IEnumerable<Memory<T>> vectors)
+    public NumericVectorList(IEnumerable<Memory<T>> vectors)
     {
         _collection = [.. vectors];
     }
 
-    public VectorList(T[][] vectors)
+    public NumericVectorList(T[][] vectors)
     {
         _collection = [.. vectors];
     }
 
-    public Vector<T> this[int index]
+    public NumericVector<T> this[int index]
     {
         get => _collection[index];
         set => _collection[index] = value;
@@ -48,9 +48,9 @@ public class VectorList<T> : IList<Vector<T>>, IReadOnlyList<Vector<T>>
 
     protected virtual bool IsReadOnly => false;
 
-    bool ICollection<Vector<T>>.IsReadOnly => IsReadOnly;
+    bool ICollection<NumericVector<T>>.IsReadOnly => IsReadOnly;
 
-    public virtual void Add(Vector<T> vector)
+    public virtual void Add(NumericVector<T> vector)
     {
         _collection.Add(vector);
     }
@@ -80,22 +80,22 @@ public class VectorList<T> : IList<Vector<T>>, IReadOnlyList<Vector<T>>
         _collection.Clear();
     }
 
-    public bool Contains(Vector<T> vector)
+    public bool Contains(NumericVector<T> vector)
     {
         return _collection.Contains(vector);
     }
 
-    protected virtual void CopyTo(Vector<T>[] array, int arrayIndex)
+    protected virtual void CopyTo(NumericVector<T>[] array, int arrayIndex)
     {
         _collection.CopyTo(array, arrayIndex);
     }
 
-    void ICollection<Vector<T>>.CopyTo(Vector<T>[] array, int arrayIndex)
+    void ICollection<NumericVector<T>>.CopyTo(NumericVector<T>[] array, int arrayIndex)
     {
         CopyTo(array, arrayIndex);
     }
 
-    public IEnumerator<Vector<T>> GetEnumerator()
+    public IEnumerator<NumericVector<T>> GetEnumerator()
     {
         return _collection.GetEnumerator();
     }
@@ -105,17 +105,17 @@ public class VectorList<T> : IList<Vector<T>>, IReadOnlyList<Vector<T>>
         return _collection.GetEnumerator();
     }
 
-    public int IndexOf(Vector<T> vector)
+    public int IndexOf(NumericVector<T> vector)
     {
         return _collection.IndexOf(vector);
     }
 
-    public virtual void Insert(int index, Vector<T> vector)
+    public virtual void Insert(int index, NumericVector<T> vector)
     {
         _collection.Insert(index, vector);
     }
 
-    public bool Remove(Vector<T> vector)
+    public bool Remove(NumericVector<T> vector)
     {
         return _collection.Remove(vector);
     }

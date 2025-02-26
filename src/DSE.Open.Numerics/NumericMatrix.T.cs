@@ -20,32 +20,32 @@ namespace DSE.Open.Numerics;
 /// <see cref="Memory2D{T}"/> and utilising <see cref="TensorPrimitives"/>.
 /// </remarks>
 [CollectionBuilder(typeof(Matrix), "Create")]
-public readonly struct Matrix<T> : IEquatable<Matrix<T>>
+public readonly struct NumericMatrix<T> : IEquatable<NumericMatrix<T>>
     where T : struct, INumber<T>
 {
     private readonly Memory2D<T> _data;
 
-    public static readonly Matrix<T> Empty;
+    public static readonly NumericMatrix<T> Empty;
 
-    public Matrix(int rows, int columns) : this(new Memory2D<T>(new T[rows * columns], rows, columns))
+    public NumericMatrix(int rows, int columns) : this(new Memory2D<T>(new T[rows * columns], rows, columns))
     {
     }
 
-    public Matrix(T[,] data) : this(new Memory2D<T>(data))
+    public NumericMatrix(T[,] data) : this(new Memory2D<T>(data))
     {
     }
 
-    public Matrix(T[] data, int rows, int columns)
+    public NumericMatrix(T[] data, int rows, int columns)
         : this(new Memory2D<T>(data, rows, columns))
     {
     }
 
-    public Matrix(T[][] data)
+    public NumericMatrix(T[][] data)
         : this(new Memory2D<T>(data.ToArray2D()))
     {
     }
 
-    public Matrix(Memory2D<T> values)
+    public NumericMatrix(Memory2D<T> values)
     {
         _data = values;
     }
@@ -96,21 +96,21 @@ public readonly struct Matrix<T> : IEquatable<Matrix<T>>
     /// </summary>
     /// <param name="other">The other matrix to add to this matrix.</param>
     /// <returns></returns>
-    public Matrix<T> Add(Matrix<T> other)
+    public NumericMatrix<T> Add(NumericMatrix<T> other)
     {
-        var destination = new Matrix<T>(RowCount, ColumnCount);
+        var destination = new NumericMatrix<T>(RowCount, ColumnCount);
         Matrix.Add(this, other, destination);
         return destination;
     }
 
-    public bool Equals(Matrix<T> other)
+    public bool Equals(NumericMatrix<T> other)
     {
         return _data.Equals(other._data);
     }
 
     public override bool Equals(object? obj)
     {
-        return obj is Matrix<T> matrix && Equals(matrix);
+        return obj is NumericMatrix<T> matrix && Equals(matrix);
     }
 
     public override int GetHashCode()
@@ -127,18 +127,18 @@ public readonly struct Matrix<T> : IEquatable<Matrix<T>>
         return _data.ToArray();
     }
 
-    public static bool operator ==(Matrix<T> left, Matrix<T> right)
+    public static bool operator ==(NumericMatrix<T> left, NumericMatrix<T> right)
     {
         return left.Equals(right);
     }
 
-    public static bool operator !=(Matrix<T> left, Matrix<T> right)
+    public static bool operator !=(NumericMatrix<T> left, NumericMatrix<T> right)
     {
         return !(left == right);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static implicit operator ReadOnlyMatrix<T>(Matrix<T> matrix)
+    public static implicit operator ReadOnlyNumericMatrix<T>(NumericMatrix<T> matrix)
     {
         return new(matrix._data);
     }

@@ -8,7 +8,7 @@ using CommunityToolkit.HighPerformance;
 
 namespace DSE.Open.Numerics;
 
-public static partial class MatrixPrimitives
+public static partial class NumericMatrixPrimitives
 {
     public static void Multiply<T>(ReadOnlySpan2D<T> x, ReadOnlySpan2D<T> y, Span2D<T> destination)
         where T : struct, INumber<T>

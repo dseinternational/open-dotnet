@@ -55,7 +55,7 @@ public class NumericsException : Exception
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void ThrowIfNotEqualLength<T>(ReadOnlyVector<T> x, ReadOnlyVector<T> y)
+    public static void ThrowIfNotEqualLength<T>(ReadOnlyNumericVector<T> x, ReadOnlyNumericVector<T> y)
         where T : struct, INumber<T>
     {
         if (x.Length != y.Length)

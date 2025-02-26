@@ -5,15 +5,15 @@ using System.Numerics;
 
 namespace DSE.Open.Numerics;
 
-public static partial class Vector
+public static partial class NumericVector
 {
-    public static Vector<T> Create<T>(ReadOnlySpan<T> sequence)
+    public static NumericVector<T> Create<T>(ReadOnlySpan<T> sequence)
         where T : struct, INumber<T>
     {
         return new(sequence.ToArray());
     }
 
-    public static Vector<T> Create<T>(int length, T scalar)
+    public static NumericVector<T> Create<T>(int length, T scalar)
         where T : struct, INumber<T>
     {
         var data = new T[length];
@@ -21,19 +21,19 @@ public static partial class Vector
         return new(data);
     }
 
-    public static Vector<T> CreateDefault<T>(int length)
+    public static NumericVector<T> CreateDefault<T>(int length)
         where T : struct, INumber<T>
     {
         return new(new T[length]);
     }
 
-    public static Vector<T> CreateZeroes<T>(int length)
+    public static NumericVector<T> CreateZeroes<T>(int length)
         where T : struct, INumber<T>
     {
         return Create<T>(length, T.Zero);
     }
 
-    public static Vector<T> CreateOnes<T>(int length)
+    public static NumericVector<T> CreateOnes<T>(int length)
         where T : struct, INumber<T>
     {
         return Create<T>(length, T.One);

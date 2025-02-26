@@ -16,20 +16,20 @@ public static partial class Matrix
     /// <param name="rows"></param>
     /// <param name="columns"></param>
     /// <returns></returns>
-    public static Matrix<T> Create<T>(Span<T> source, int rows, int columns)
+    public static NumericMatrix<T> Create<T>(Span<T> source, int rows, int columns)
         where T : struct, INumber<T>
     {
         return Create((ReadOnlySpan<T>)source, rows, columns);
     }
 
-    public static Matrix<T> Create<T>(ReadOnlySpan<T> source, int rows, int columns)
+    public static NumericMatrix<T> Create<T>(ReadOnlySpan<T> source, int rows, int columns)
         where T : struct, INumber<T>
     {
         if (source.Length == 0)
         {
             if (rows == 0 && columns == 0)
             {
-                return Matrix<T>.Empty;
+                return NumericMatrix<T>.Empty;
             }
         }
 
@@ -40,7 +40,7 @@ public static partial class Matrix
             return default; // unreachable
         }
 
-        var result = new Matrix<T>(rows, columns);
+        var result = new NumericMatrix<T>(rows, columns);
 
         for (var i = 0; i < rows; i++)
         {
@@ -50,20 +50,20 @@ public static partial class Matrix
         return result;
     }
 
-    public static Matrix<T> Create<T>(IReadOnlyList<IReadOnlyList<T>> source)
+    public static NumericMatrix<T> Create<T>(IReadOnlyList<IReadOnlyList<T>> source)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(source);
 
         if (source.Count == 0)
         {
-            return Matrix<T>.Empty;
+            return NumericMatrix<T>.Empty;
         }
 
         var rows = source.Count;
         var columns = source[0].Count;
 
-        var result = new Matrix<T>(rows, columns);
+        var result = new NumericMatrix<T>(rows, columns);
 
         for (var i = 0; i < rows; i++)
         {

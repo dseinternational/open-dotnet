@@ -15,7 +15,7 @@ public static class JsonSerializerOptionsExtensions
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(converters);
-        converters.Add(new VectorJsonConverter<T>());
+        converters.Add(new NumericVectorJsonConverter<T>());
     }
 
     public static void AddDataPointArrayJsonConverter<TX, TY>(this IList<JsonConverter> converters)

@@ -3,7 +3,7 @@
 
 namespace DSE.Open.Numerics;
 
-public partial class VectorPrimitivesTests_Subtract
+public partial class VectorPrimitivesTests
 {
     [Fact]
     public void Subtract_Int32_Array_Int32()

@@ -6,10 +6,10 @@ using System.Runtime.CompilerServices;
 
 namespace DSE.Open.Numerics;
 
-public static partial class VectorSum
+public static partial class NumericVector
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static T Sum<T>(ReadOnlyVector<T> elements)
+    public static T Sum<T>(ReadOnlyNumericVector<T> elements)
         where T : struct, INumber<T>
     {
         return VectorPrimitives.Sum(elements.Span);

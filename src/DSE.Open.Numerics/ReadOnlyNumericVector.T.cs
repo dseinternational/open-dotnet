@@ -9,23 +9,23 @@ namespace DSE.Open.Numerics;
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
-[CollectionBuilder(typeof(ReadOnlyVector), nameof(ReadOnlyVector.Create))]
-public readonly struct ReadOnlyVector<T> : IEquatable<ReadOnlyVector<T>>
+[CollectionBuilder(typeof(ReadOnlyNumericVector), nameof(ReadOnlyNumericVector.Create))]
+public readonly struct ReadOnlyNumericVector<T> : IEquatable<ReadOnlyNumericVector<T>>
     where T : struct, INumber<T>
 {
     private readonly ReadOnlyMemory<T> _data;
 
-    public ReadOnlyVector(T[] data)
+    public ReadOnlyNumericVector(T[] data)
         : this(new ReadOnlyMemory<T>(data))
     {
     }
 
-    public ReadOnlyVector(T[] data, int start, int length)
+    public ReadOnlyNumericVector(T[] data, int start, int length)
         : this(new ReadOnlyMemory<T>(data, start, length))
     {
     }
 
-    public ReadOnlyVector(ReadOnlyMemory<T> data)
+    public ReadOnlyNumericVector(ReadOnlyMemory<T> data)
     {
         _data = data;
     }
@@ -46,7 +46,7 @@ public readonly struct ReadOnlyVector<T> : IEquatable<ReadOnlyVector<T>>
 
     public override bool Equals(object? obj)
     {
-        return obj is Vector<T> vector && Equals(vector);
+        return obj is NumericVector<T> vector && Equals(vector);
     }
 
     public ReadOnlyMemoryEnumerator<T> GetEnumerator()
@@ -60,29 +60,29 @@ public readonly struct ReadOnlyVector<T> : IEquatable<ReadOnlyVector<T>>
         return _data.GetHashCode();
     }
 
-    public bool Equals(ReadOnlyVector<T> other)
+    public bool Equals(ReadOnlyNumericVector<T> other)
     {
         return _data.Equals(other._data);
     }
 
-    public static bool operator ==(ReadOnlyVector<T> left, ReadOnlyVector<T> right)
+    public static bool operator ==(ReadOnlyNumericVector<T> left, ReadOnlyNumericVector<T> right)
     {
         return left.Equals(right);
     }
 
-    public static bool operator !=(ReadOnlyVector<T> left, ReadOnlyVector<T> right)
+    public static bool operator !=(ReadOnlyNumericVector<T> left, ReadOnlyNumericVector<T> right)
     {
         return !(left == right);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static implicit operator ReadOnlyVector<T>(T[] vector)
+    public static implicit operator ReadOnlyNumericVector<T>(T[] vector)
     {
         return new(vector);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static implicit operator ReadOnlyVector<T>(ReadOnlyMemory<T> vector)
+    public static implicit operator ReadOnlyNumericVector<T>(ReadOnlyMemory<T> vector)
     {
         return new(vector);
     }

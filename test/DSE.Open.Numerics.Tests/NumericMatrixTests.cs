@@ -3,7 +3,7 @@
 
 namespace DSE.Open.Numerics;
 
-public class MatrixTests
+public class NumericMatrixTests
 {
     [Theory]
     [InlineData(0, 0)]
@@ -15,7 +15,7 @@ public class MatrixTests
     {
         var array = new int[rows * columns];
 
-        var m = new Matrix<int>(array, rows, columns);
+        var m = new NumericMatrix<int>(array, rows, columns);
 
         Assert.Equal(rows, m.RowCount);
         Assert.Equal(columns, m.ColumnCount);
@@ -24,7 +24,7 @@ public class MatrixTests
     [Fact]
     public void Can_init_with_jagged_array()
     {
-        var m = new Matrix<int>([[1, 2], [3, 4], [5, 6]]);
+        var m = new NumericMatrix<int>([[1, 2], [3, 4], [5, 6]]);
 
         Assert.Equal(3, m.RowCount);
         Assert.Equal(2, m.ColumnCount);

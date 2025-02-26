@@ -3,7 +3,7 @@
 
 namespace DSE.Open.Numerics;
 
-public class VectorListTests
+public class NumericVectorListTests
 {
     [Fact]
     public void ToTensor()
@@ -11,7 +11,7 @@ public class VectorListTests
         int[] x = [.. Enumerable.Range(0, 5)];
         int[] y = [.. Enumerable.Range(0, 5)];
 
-        VectorList<int> vector = [x, y];
+        NumericVectorList<int> vector = [x, y];
 
         var tensor = vector.ToTensor();
 

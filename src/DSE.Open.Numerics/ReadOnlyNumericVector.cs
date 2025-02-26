@@ -5,15 +5,15 @@ using System.Numerics;
 
 namespace DSE.Open.Numerics;
 
-public static partial class ReadOnlyVector
+public static partial class ReadOnlyNumericVector
 {
-    public static ReadOnlyVector<T> Create<T>(ReadOnlyMemory<T> sequence)
+    public static ReadOnlyNumericVector<T> Create<T>(ReadOnlyMemory<T> sequence)
         where T : struct, INumber<T>
     {
         return new(sequence);
     }
 
-    public static ReadOnlyVector<T> Create<T>(ReadOnlySpan<T> sequence)
+    public static ReadOnlyNumericVector<T> Create<T>(ReadOnlySpan<T> sequence)
         where T : struct, INumber<T>
     {
         return new(sequence.ToArray());

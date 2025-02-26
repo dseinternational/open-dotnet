@@ -1,4 +1,4 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Numerics;
@@ -12,15 +12,15 @@ namespace DSE.Open.Numerics;
 /// </summary>
 /// <typeparam name="TX"></typeparam>
 /// <typeparam name="TY"></typeparam>
-public class VectorDataSeriesSet<TX, TY> : DataSeriesSet<TX, TY>
+public class NumericVectorDataSeriesSet<TX, TY> : DataSeriesSet<TX, TY>
     where TX : struct, INumber<TX>
     where TY : struct, INumber<TY>
 {
     [JsonPropertyName("x")]
-    public VectorList<TX> VectorsX { get; init; } = [];
+    public NumericVectorList<TX> VectorsX { get; init; } = [];
 
     [JsonPropertyName("y")]
-    public VectorList<TY> VectorsY { get; init; } = [];
+    public NumericVectorList<TY> VectorsY { get; init; } = [];
 
     public override IEnumerable<DataSeries<TX, TY>> GetDataSeries()
     {

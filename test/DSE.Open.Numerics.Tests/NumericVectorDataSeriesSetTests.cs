@@ -7,7 +7,7 @@ using DSE.Open.Text.Json;
 
 namespace DSE.Open.Numerics;
 
-public class VectorDataSeriesSetTests : LoggedTestsBase
+public class NumericVectorDataSeriesSetTests : LoggedTestsBase
 {
     private static readonly Lazy<JsonSerializerOptions> s_jsonOptions = new(() =>
     {
@@ -16,7 +16,7 @@ public class VectorDataSeriesSetTests : LoggedTestsBase
         return options;
     });
 
-    public VectorDataSeriesSetTests(ITestOutputHelper output) : base(output)
+    public NumericVectorDataSeriesSetTests(ITestOutputHelper output) : base(output)
     {
     }
 
@@ -27,7 +27,7 @@ public class VectorDataSeriesSetTests : LoggedTestsBase
         int[] y0 = [.. Enumerable.Range(0, 5)];
         int[] y1 = [.. Enumerable.Range(0, 5)];
 
-        var dataSet = new VectorDataSeriesSet<int, int>
+        var dataSet = new NumericVectorDataSeriesSet<int, int>
         {
             VectorsX = [x],
             VectorsY = [y0, y1],

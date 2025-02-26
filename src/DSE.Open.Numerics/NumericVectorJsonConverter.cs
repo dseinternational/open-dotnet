@@ -1,4 +1,4 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Numerics;
@@ -7,10 +7,10 @@ using System.Text.Json.Serialization;
 
 namespace DSE.Open.Numerics;
 
-public class VectorJsonConverter<T> : JsonConverter<Vector<T>>
+public class NumericVectorJsonConverter<T> : JsonConverter<NumericVector<T>>
     where T : struct, INumber<T>
 {
-    public override Vector<T> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public override NumericVector<T> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         if (reader.TokenType != JsonTokenType.StartArray)
         {
@@ -43,10 +43,10 @@ public class VectorJsonConverter<T> : JsonConverter<Vector<T>>
             }
         }
 
-        return new Vector<T>([.. list]);
+        return new NumericVector<T>([.. list]);
     }
 
-    public override void Write(Utf8JsonWriter writer, Vector<T> value, JsonSerializerOptions options)
+    public override void Write(Utf8JsonWriter writer, NumericVector<T> value, JsonSerializerOptions options)
     {
         ArgumentNullException.ThrowIfNull(writer);
 
