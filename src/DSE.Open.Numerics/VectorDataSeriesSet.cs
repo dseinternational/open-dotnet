@@ -12,7 +12,7 @@ namespace DSE.Open.Numerics;
 /// </summary>
 /// <typeparam name="TX"></typeparam>
 /// <typeparam name="TY"></typeparam>
-public class NumericVectorDataSeriesSet<TX, TY> : DataSeriesSet<TX, TY>
+public class VectorDataSeriesSet<TX, TY> : DataSeriesSet<TX, TY>
     where TX : struct, INumber<TX>
     where TY : struct, INumber<TY>
 {

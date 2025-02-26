@@ -7,7 +7,7 @@ using DSE.Open.Text.Json;
 
 namespace DSE.Open.Numerics;
 
-public class NumericVectorDataSeriesSetTests : LoggedTestsBase
+public class VectorDataSeriesSetTests : LoggedTestsBase
 {
     private static readonly Lazy<JsonSerializerOptions> s_jsonOptions = new(() =>
     {
@@ -16,7 +16,7 @@ public class NumericVectorDataSeriesSetTests : LoggedTestsBase
         return options;
     });
 
-    public NumericVectorDataSeriesSetTests(ITestOutputHelper output) : base(output)
+    public VectorDataSeriesSetTests(ITestOutputHelper output) : base(output)
     {
     }
 
@@ -27,7 +27,7 @@ public class NumericVectorDataSeriesSetTests : LoggedTestsBase
         byte[] y0 = [0, 1, 2, 3, 4];
         byte[] y1 = [0, 1, 2, 3, 4];
 
-        var dataSet = new NumericVectorDataSeriesSet<byte, byte>
+        var dataSet = new VectorDataSeriesSet<byte, byte>
         {
             VectorsX = [x],
             VectorsY = [y0, y1],
@@ -39,7 +39,7 @@ public class NumericVectorDataSeriesSetTests : LoggedTestsBase
 
         Output.WriteLine(dataSetJson);
 
-        var deserialized = JsonSerializer.Deserialize<NumericVectorDataSeriesSet<byte, byte>>(dataSetJson, s_jsonOptions.Value);
+        var deserialized = JsonSerializer.Deserialize<VectorDataSeriesSet<byte, byte>>(dataSetJson, s_jsonOptions.Value);
 
         Assert.NotNull(deserialized);
 
@@ -58,7 +58,7 @@ public class NumericVectorDataSeriesSetTests : LoggedTestsBase
         short[] y0 = [0, 1, 2, 3, 4];
         short[] y1 = [0, 1, 2, 3, 4];
 
-        var dataSet = new NumericVectorDataSeriesSet<short, short>
+        var dataSet = new VectorDataSeriesSet<short, short>
         {
             VectorsX = [x],
             VectorsY = [y0, y1],
@@ -70,7 +70,7 @@ public class NumericVectorDataSeriesSetTests : LoggedTestsBase
 
         Output.WriteLine(dataSetJson);
 
-        var deserialized = JsonSerializer.Deserialize<NumericVectorDataSeriesSet<short, short>>(dataSetJson, s_jsonOptions.Value);
+        var deserialized = JsonSerializer.Deserialize<VectorDataSeriesSet<short, short>>(dataSetJson, s_jsonOptions.Value);
 
         Assert.NotNull(deserialized);
 
@@ -89,7 +89,7 @@ public class NumericVectorDataSeriesSetTests : LoggedTestsBase
         ushort[] y0 = [0, 1, 2, 3, 4];
         ushort[] y1 = [0, 1, 2, 3, 4];
 
-        var dataSet = new NumericVectorDataSeriesSet<ushort, ushort>
+        var dataSet = new VectorDataSeriesSet<ushort, ushort>
         {
             VectorsX = [x],
             VectorsY = [y0, y1],
@@ -101,7 +101,7 @@ public class NumericVectorDataSeriesSetTests : LoggedTestsBase
 
         Output.WriteLine(dataSetJson);
 
-        var deserialized = JsonSerializer.Deserialize<NumericVectorDataSeriesSet<ushort, ushort>>(dataSetJson, s_jsonOptions.Value);
+        var deserialized = JsonSerializer.Deserialize<VectorDataSeriesSet<ushort, ushort>>(dataSetJson, s_jsonOptions.Value);
 
         Assert.NotNull(deserialized);
 
@@ -120,7 +120,7 @@ public class NumericVectorDataSeriesSetTests : LoggedTestsBase
         int[] y0 = [0, 1, 2, 3, 4];
         int[] y1 = [0, 1, 2, 3, 4];
 
-        var dataSet = new NumericVectorDataSeriesSet<int, int>
+        var dataSet = new VectorDataSeriesSet<int, int>
         {
             VectorsX = [x],
             VectorsY = [y0, y1],
@@ -132,7 +132,7 @@ public class NumericVectorDataSeriesSetTests : LoggedTestsBase
 
         Output.WriteLine(dataSetJson);
 
-        var deserialized = JsonSerializer.Deserialize<NumericVectorDataSeriesSet<int, int>>(dataSetJson, s_jsonOptions.Value);
+        var deserialized = JsonSerializer.Deserialize<VectorDataSeriesSet<int, int>>(dataSetJson, s_jsonOptions.Value);
 
         Assert.NotNull(deserialized);
 
@@ -151,7 +151,7 @@ public class NumericVectorDataSeriesSetTests : LoggedTestsBase
         uint[] y0 = [0, 1, 2, 3, 4];
         uint[] y1 = [0, 1, 2, 3, 4];
 
-        var dataSet = new NumericVectorDataSeriesSet<uint, uint>
+        var dataSet = new VectorDataSeriesSet<uint, uint>
         {
             VectorsX = [x],
             VectorsY = [y0, y1],
@@ -163,7 +163,7 @@ public class NumericVectorDataSeriesSetTests : LoggedTestsBase
 
         Output.WriteLine(dataSetJson);
 
-        var deserialized = JsonSerializer.Deserialize<NumericVectorDataSeriesSet<uint, uint>>(dataSetJson, s_jsonOptions.Value);
+        var deserialized = JsonSerializer.Deserialize<VectorDataSeriesSet<uint, uint>>(dataSetJson, s_jsonOptions.Value);
 
         Assert.NotNull(deserialized);
 
@@ -182,7 +182,7 @@ public class NumericVectorDataSeriesSetTests : LoggedTestsBase
         long[] y0 = [0, 1, 2, 3, 4];
         long[] y1 = [0, 1, 2, 3, 4];
 
-        var dataSet = new NumericVectorDataSeriesSet<long, long>
+        var dataSet = new VectorDataSeriesSet<long, long>
         {
             VectorsX = [x],
             VectorsY = [y0, y1],
@@ -194,7 +194,7 @@ public class NumericVectorDataSeriesSetTests : LoggedTestsBase
 
         Output.WriteLine(dataSetJson);
 
-        var deserialized = JsonSerializer.Deserialize<NumericVectorDataSeriesSet<long, long>>(dataSetJson, s_jsonOptions.Value);
+        var deserialized = JsonSerializer.Deserialize<VectorDataSeriesSet<long, long>>(dataSetJson, s_jsonOptions.Value);
 
         Assert.NotNull(deserialized);
 
@@ -213,7 +213,7 @@ public class NumericVectorDataSeriesSetTests : LoggedTestsBase
         ulong[] y0 = [0, 1, 2, 3, 4];
         ulong[] y1 = [0, 1, 2, 3, 4];
 
-        var dataSet = new NumericVectorDataSeriesSet<ulong, ulong>
+        var dataSet = new VectorDataSeriesSet<ulong, ulong>
         {
             VectorsX = [x],
             VectorsY = [y0, y1],
@@ -225,7 +225,7 @@ public class NumericVectorDataSeriesSetTests : LoggedTestsBase
 
         Output.WriteLine(dataSetJson);
 
-        var deserialized = JsonSerializer.Deserialize<NumericVectorDataSeriesSet<ulong, ulong>>(dataSetJson, s_jsonOptions.Value);
+        var deserialized = JsonSerializer.Deserialize<VectorDataSeriesSet<ulong, ulong>>(dataSetJson, s_jsonOptions.Value);
 
         Assert.NotNull(deserialized);
 
@@ -244,7 +244,7 @@ public class NumericVectorDataSeriesSetTests : LoggedTestsBase
         int[] y0 = [.. Enumerable.Range(0, 5)];
         int[] y1 = [.. Enumerable.Range(0, 5)];
 
-        var dataSet = new NumericVectorDataSeriesSet<int, int>
+        var dataSet = new VectorDataSeriesSet<int, int>
         {
             VectorsX = [x],
             VectorsY = [y0, y1],
