@@ -49,6 +49,7 @@ public class NumericVectorJsonConverter<T> : JsonConverter<NumericVector<T>>
     public override void Write(Utf8JsonWriter writer, NumericVector<T> value, JsonSerializerOptions options)
     {
         ArgumentNullException.ThrowIfNull(writer);
+        ArgumentNullException.ThrowIfNull(value);
 
         writer.WriteStartArray();
 

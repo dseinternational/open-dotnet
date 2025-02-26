@@ -12,6 +12,7 @@ public static partial class NumericVector
     public static void Add<T>(ReadOnlyNumericVector<T> x, ReadOnlyNumericVector<T> y, NumericVector<T> destination)
         where T : struct, INumber<T>
     {
+        ArgumentNullException.ThrowIfNull(destination);
         VectorPrimitives.Add(x.Span, y.Span, destination.Span);
     }
 
@@ -19,6 +20,7 @@ public static partial class NumericVector
     public static void AddInPace<T>(NumericVector<T> x, ReadOnlyNumericVector<T> y)
         where T : struct, INumber<T>
     {
+        ArgumentNullException.ThrowIfNull(x);
         VectorPrimitives.AddInPlace(x.Span, y.Span);
     }
 }
