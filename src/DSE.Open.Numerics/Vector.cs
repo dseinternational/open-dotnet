@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Numerics;
 using System.Text.Json.Serialization;
 
 namespace DSE.Open.Numerics;
@@ -38,19 +39,4 @@ public abstract class Vector
     {
         return new Vector<T>(data, start, length);
     }
-}
-
-public readonly record struct Date64
-{
-    public Date64(long millisecondsSinceUnixEpoch)
-    {
-        TotalMilliseconds = millisecondsSinceUnixEpoch;
-    }
-
-    public Date64(DateTimeOffset dateTime)
-    {
-        TotalMilliseconds = dateTime.ToUnixTimeMilliseconds();
-    }
-
-    public long TotalMilliseconds { get; }
 }
