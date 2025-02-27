@@ -13,10 +13,4 @@ public static partial class VectorPrimitives
     {
         return TensorPrimitives.Min(span);
     }
-
-    public static T MinimumFloatingPoint<T>(ReadOnlySpan<T> span)
-        where T : IFloatingPointIeee754<T>
-    {
-        return TensorPrimitives.Min(span);
-    }
 }

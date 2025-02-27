@@ -98,6 +98,12 @@ public abstract class Series<T, TVector> : Series
 
     [JsonPropertyName("refs")]
     public IDictionary<T, Variant> References { get; }
+
+    [JsonIgnore]
+    public bool IsEmpty => Values.Length == 0;
+
+    [JsonIgnore]
+    public int Length => Values.Length;
 }
 
 public sealed class Series<T> : Series<T, Vector<T>>
@@ -107,19 +113,6 @@ public sealed class Series<T> : Series<T, Vector<T>>
     public Series(
         string? name,
         Vector<T> values,
-        IDictionary<T, Variant>? references)
-        : base(name, values, references)
-    {
-    }
-}
-
-public sealed class NumericSeries<T> : Series<T, NumericVector<T>>
-   where T : struct, INumber<T>
-{
-    [JsonConstructor]
-    public NumericSeries(
-        string? name,
-        NumericVector<T> values,
         IDictionary<T, Variant>? references)
         : base(name, values, references)
     {

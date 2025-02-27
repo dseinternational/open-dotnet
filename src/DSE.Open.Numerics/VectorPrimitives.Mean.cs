@@ -7,6 +7,20 @@ namespace DSE.Open.Numerics;
 
 public static partial class VectorPrimitives
 {
+    public static T Mean<T>(NumericVector<T> vector)
+        where T : struct, INumber<T>
+    {
+        ArgumentNullException.ThrowIfNull(vector);
+        return Mean<T, T>(vector.Span);
+    }
+
+    public static T Mean<T>(NumericSeries<T> series)
+        where T : struct, INumber<T>
+    {
+        ArgumentNullException.ThrowIfNull(series);
+        return Mean<T, T>(series.Values.Span);
+    }
+
     /// <summary>
     /// Return the sample arithmetic mean of a sequence. If the sequence is empty, an
     /// <see cref="EmptySequenceException"/> is thrown.

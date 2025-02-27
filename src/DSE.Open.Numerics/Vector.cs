@@ -28,16 +28,16 @@ public static class Vector
         return new Vector<T>(data, start, length);
     }
 
-    public static NumericVector<T> CreateNumeric<T>(T[] data)
+    public static NumericVector<T> CreateNumeric<T>(T[] data, bool copy = false)
         where T : struct, INumber<T>
     {
-        return new NumericVector<T>(data);
+        return new NumericVector<T>(copy ? [.. data] : data);
     }
 
-    public static NumericVector<T> CreateNumeric<T>(Memory<T> data)
+    public static NumericVector<T> CreateNumeric<T>(Memory<T> data, bool copy = false)
         where T : struct, INumber<T>
     {
-        return new NumericVector<T>(data);
+        return new NumericVector<T>(copy ? data.ToArray() : data);
     }
 
     public static NumericVector<T> CreateNumeric<T>(ReadOnlySpan<T> data)
