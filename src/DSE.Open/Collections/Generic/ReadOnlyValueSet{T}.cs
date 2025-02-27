@@ -16,6 +16,7 @@ namespace DSE.Open.Collections.Generic;
 [CollectionBuilder(typeof(ReadOnlyValueSet), nameof(ReadOnlyValueSet.Create))]
 public class ReadOnlyValueSet<T> : IReadOnlySet<T>, IEquatable<ReadOnlyValueSet<T>>, ICollection<T>
 {
+#pragma warning disable IDE0306 // Simplify collection initialization
     public static readonly ReadOnlyValueSet<T> Empty = new(Enumerable.Empty<T>());
 #pragma warning restore IDE0306 // Simplify collection initialization
 
