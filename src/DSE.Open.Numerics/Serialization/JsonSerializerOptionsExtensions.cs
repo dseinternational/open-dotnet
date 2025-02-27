@@ -5,7 +5,7 @@ using System.Numerics;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace DSE.Open.Numerics;
+namespace DSE.Open.Numerics.Serialization;
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
 

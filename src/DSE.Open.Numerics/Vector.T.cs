@@ -15,15 +15,15 @@ namespace DSE.Open.Numerics;
 public class Vector<T> : Vector, IEquatable<Vector<T>>
     where T : notnull
 {
-    public Vector(T[] data) : this(new Memory<T>(data))
+    internal Vector(T[] data) : this(new Memory<T>(data))
     {
     }
 
-    public Vector(T[] data, int start, int length) : this(new Memory<T>(data, start, length))
+    internal Vector(T[] data, int start, int length) : this(new Memory<T>(data, start, length))
     {
     }
 
-    public Vector(Memory<T> data)
+    internal Vector(Memory<T> data)
     {
         Memory = data;
     }

@@ -25,6 +25,10 @@ namespace DSE.Open.Numerics;
 [JsonDerivedType(typeof(NumericVector<ushort>), "uint16")]
 public abstract class Vector
 {
+    protected internal Vector()
+    {
+    }
+
     public static Vector Create<T>(T[] data)
         where T : notnull
     {

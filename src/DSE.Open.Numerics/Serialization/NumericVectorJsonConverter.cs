@@ -5,7 +5,7 @@ using System.Numerics;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace DSE.Open.Numerics;
+namespace DSE.Open.Numerics.Serialization;
 
 public class NumericVectorJsonConverter<T> : JsonConverter<NumericVector<T>>
     where T : struct, INumber<T>
