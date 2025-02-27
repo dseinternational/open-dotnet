@@ -56,7 +56,7 @@ public class VectorTests : LoggedTestsBase
         var deserialized = JsonSerializer.Deserialize<Vector<T>>(json, s_jsonOptions.Value);
 
         Assert.NotNull(deserialized);
-        Assert.Equal(vector.Length, deserialized.Length);
+        Assert.Equivalent(vector, deserialized);
     }
 
     private void TestSerializeDeserializeNumeric<T>(T[] elements)
@@ -73,7 +73,7 @@ public class VectorTests : LoggedTestsBase
         var deserialized = JsonSerializer.Deserialize<NumericVector<T>>(json, s_jsonOptions.Value);
 
         Assert.NotNull(deserialized);
-        Assert.Equal(vector.Length, deserialized.Length);
+        Assert.Equivalent(vector, deserialized);
     }
 
     [Fact]

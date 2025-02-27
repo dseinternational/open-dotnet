@@ -290,7 +290,7 @@ public sealed class ObservationTests
 
         // Act
         var json = JsonSerializer.Serialize(observation, JsonContext.Default.IObservation);
-        var deserialized = JsonSerializer.Deserialize<Observation<Binary>>(json, JsonContext.Default.ObservationBinary);
+        var deserialized = JsonSerializer.Deserialize(json, JsonContext.Default.ObservationBinary);
 
         // Assert
         Assert.Equal(observation, deserialized);

@@ -69,13 +69,13 @@ public static class Vector
     public static NumericVector<T> CreateZeroes<T>(int length)
         where T : struct, INumber<T>
     {
-        return CreateNumeric<T>(length, T.Zero);
+        return CreateNumeric(length, T.Zero);
     }
 
     public static NumericVector<T> CreateOnes<T>(int length)
         where T : struct, INumber<T>
     {
-        return CreateNumeric<T>(length, T.One);
+        return CreateNumeric(length, T.One);
     }
 
     internal static void EnsureKnownNumericType(Type type)

@@ -26,6 +26,6 @@ public class ReadOnlyValueSetCreateBenchmarks
     public ReadOnlyValueSet<int> Create_Span()
     {
         var span = CollectionsMarshal.AsSpan(s_items);
-        return ReadOnlyValueSet.Create<int>(span);
+        return ReadOnlyValueSet.Create(span);
     }
 }
