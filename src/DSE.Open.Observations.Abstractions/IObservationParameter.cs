@@ -17,15 +17,15 @@ public interface IObservationParameter
 
     /// <summary>
     /// Gets an integer to identify the parameter. The value must be greater than or equal to
-    /// <see cref="IObservationParameter.MinIntegerId"/> and less than or equal to
-    /// <see cref="IObservationParameter.MaxIntegerId"/>.
+    /// <see cref="MinIntegerId"/> and less than or equal to
+    /// <see cref="MaxIntegerId"/>.
     /// </summary>
     /// <returns></returns>
     ulong GetIntegerId();
 
     /// <summary>
     /// Gets a text value to identify the parameter. The value must not be empty and must be no
-    /// longer than <see cref="IObservationParameter.MaxTextLength"/> UTF-16 characters.
+    /// longer than <see cref="MaxTextLength"/> UTF-16 characters.
     /// </summary>
     /// <returns></returns>
     ReadOnlySpan<char> GetTextId();

@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Text.Json;
+using DSE.Open.Numerics.Serialization;
 using DSE.Open.Testing.Xunit;
 using DSE.Open.Text.Json;
 

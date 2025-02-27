@@ -30,6 +30,18 @@ public static class EnumerableExtensions
         {
             span = CollectionsMarshal.AsSpan(Unsafe.As<List<TSource>>(source));
         }
+        else if (source.GetType() == typeof(Collection<TSource>))
+        {
+            span = Unsafe.As<Collection<TSource>>(source).AsSpan();
+        }
+        else if (source.GetType() == typeof(ReadOnlyCollection<TSource>))
+        {
+            span = Unsafe.As<ReadOnlyCollection<TSource>>(source).AsSpan();
+        }
+        else if (source.GetType() == typeof(ValueCollection<TSource>))
+        {
+            span = Unsafe.As<ReadOnlyValueCollection<TSource>>(source).AsSpan();
+        }
         else if (source.GetType() == typeof(ReadOnlyValueCollection<TSource>))
         {
             span = Unsafe.As<ReadOnlyValueCollection<TSource>>(source).AsSpan();

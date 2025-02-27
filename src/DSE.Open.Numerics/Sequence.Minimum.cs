@@ -48,7 +48,7 @@ public static partial class Sequence
     {
         if (values.TryGetSpan(out var span))
         {
-            return VectorPrimitives.MinimumFloatingPoint(span);
+            return VectorPrimitives.Minimum(span);
         }
 
         ArgumentNullException.ThrowIfNull(values);

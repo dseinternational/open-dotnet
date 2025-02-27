@@ -479,8 +479,6 @@ public static class Phonemes
             Allophones = []
         };
 
-
-
         // ---------------------------------------------------------------------
         // Vowels - back
 
@@ -720,7 +718,6 @@ public static class Phonemes
             Abstraction = SpeechSound.ParseInvariant("juː"),
             Allophones = []
         };
-
 
         // ---------------------------------------------------------------------
 

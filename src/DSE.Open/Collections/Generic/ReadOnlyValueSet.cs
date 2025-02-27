@@ -32,5 +32,4 @@ public static class ReadOnlyValueSet
 
         return new(set);
     }
-
 }

@@ -15,7 +15,7 @@ public abstract class SequenceSumFloatingPointBenchmarksBase<T> : SequenceSumBen
     [Benchmark]
     public T TensorPrimitives_Sum_Array()
     {
-        return TensorPrimitives.Sum<T>(ValuesArray);
+        return TensorPrimitives.Sum(ValuesArray);
     }
 
     [Benchmark]

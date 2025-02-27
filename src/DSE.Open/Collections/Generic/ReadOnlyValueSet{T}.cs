@@ -16,18 +16,20 @@ namespace DSE.Open.Collections.Generic;
 [CollectionBuilder(typeof(ReadOnlyValueSet), nameof(ReadOnlyValueSet.Create))]
 public class ReadOnlyValueSet<T> : IReadOnlySet<T>, IEquatable<ReadOnlyValueSet<T>>, ICollection<T>
 {
+#pragma warning disable IDE0306 // Simplify collection initialization
     public static readonly ReadOnlyValueSet<T> Empty = new(Enumerable.Empty<T>());
+#pragma warning restore IDE0306 // Simplify collection initialization
 
     private readonly HashSet<T> _set;
 
-    public ReadOnlyValueSet()
+    public ReadOnlyValueSet() : this([])
     {
-        _set = [];
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
     internal ReadOnlyValueSet(HashSet<T> set)
     {
+        Debug.Assert(set is not null);
         _set = set;
     }
 
@@ -50,8 +52,10 @@ public class ReadOnlyValueSet<T> : IReadOnlySet<T>, IEquatable<ReadOnlyValueSet<
         {
             _set = other._set;
         }
-
-        _set = new(set);
+        else
+        {
+            _set = [.. set];
+        }
     }
 
     public int Count => _set.Count;
@@ -159,32 +163,32 @@ public class ReadOnlyValueSet<T> : IReadOnlySet<T>, IEquatable<ReadOnlyValueSet<
 
     public static explicit operator ReadOnlyValueSet<T>(T[] collection)
     {
-        return new(collection);
+        return [.. collection];
     }
 
     public static explicit operator ReadOnlyValueSet<T>(ReadOnlyCollection<T> collection)
     {
-        return new(collection);
+        return [.. collection];
     }
 
     public static explicit operator ReadOnlyValueSet<T>(Collection<T> collection)
     {
-        return new(collection);
+        return [.. collection];
     }
 
     public static explicit operator ReadOnlyValueSet<T>(System.Collections.ObjectModel.ReadOnlyCollection<T> collection)
     {
-        return new(collection);
+        return [.. collection];
     }
 
     public static explicit operator ReadOnlyValueSet<T>(System.Collections.ObjectModel.Collection<T> collection)
     {
-        return new(collection);
+        return [.. collection];
     }
 
     public static explicit operator ReadOnlyValueSet<T>(HashSet<T> collection)
     {
-        return new((IEnumerable<T>)collection);
+        return [.. (IEnumerable<T>)collection];
     }
 
 #pragma warning restore CA2225 // Operator overloads have named alternates

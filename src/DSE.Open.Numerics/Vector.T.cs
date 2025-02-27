@@ -12,18 +12,18 @@ namespace DSE.Open.Numerics;
 /// with value equality semantics.
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public class Vector<T> : Vector, IEquatable<Vector<T>>
+public class Vector<T> : IEquatable<Vector<T>>
     where T : notnull
 {
-    public Vector(T[] data) : this(new Memory<T>(data))
+    internal Vector(T[] data) : this(new Memory<T>(data))
     {
     }
 
-    public Vector(T[] data, int start, int length) : this(new Memory<T>(data, start, length))
+    internal Vector(T[] data, int start, int length) : this(new Memory<T>(data, start, length))
     {
     }
 
-    public Vector(Memory<T> data)
+    internal Vector(Memory<T> data)
     {
         Memory = data;
     }
@@ -106,5 +106,12 @@ public class Vector<T> : Vector, IEquatable<Vector<T>>
     public static implicit operator Vector<T>(Memory<T> vector)
     {
         return new(vector);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates", Justification = "By design")]
+    public static implicit operator Memory<T>(Vector<T> vector)
+    {
+        return vector is not null ? vector.Memory : default;
     }
 }

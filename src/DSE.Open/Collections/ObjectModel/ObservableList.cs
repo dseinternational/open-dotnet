@@ -467,7 +467,7 @@ public class ObservableList<T> : IObservableList<T>, IReadOnlyObservableList<T>,
 
         CheckReentrancy();
 
-        var targetItems = collection as IList<T> ?? new List<T>(collection);
+        var targetItems = collection as IList<T> ?? [.. collection];
 
         if (targetItems.Count == 0)
         {

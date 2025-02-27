@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Collections;
+using System.Runtime.InteropServices;
 
 namespace DSE.Open.Collections.Generic;
 
@@ -78,7 +79,12 @@ public class Collection<T> : IList<T>, IReadOnlyList<T>, IList
 
     public ReadOnlyCollection<T> AsReadOnly()
     {
-        return new(this);
+        return [.. this];
+    }
+
+    public ReadOnlySpan<T> AsSpan()
+    {
+        return CollectionsMarshal.AsSpan(_items);
     }
 
     public int BinarySearch(T item)

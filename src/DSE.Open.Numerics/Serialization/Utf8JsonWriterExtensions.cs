@@ -4,7 +4,7 @@
 using System.Numerics;
 using System.Text.Json;
 
-namespace DSE.Open.Numerics;
+namespace DSE.Open.Numerics.Serialization;
 
 public static class Utf8JsonWriterExtensions
 {

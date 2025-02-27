@@ -29,7 +29,7 @@ public readonly partial struct Count
 
     public static Count Zero { get; } = new(0);
 
-    public Observations.ObservationValueType ValueType => Observations.ObservationValueType.Count;
+    public ObservationValueType ValueType => Observations.ObservationValueType.Count;
 
     public Count(ulong value) : this(value, false) { }
 

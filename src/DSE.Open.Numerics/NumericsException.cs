@@ -55,6 +55,31 @@ public class NumericsException : Exception
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void ThrowIfNotEqualLength<T>(NumericVector<T> x, ReadOnlySpan<T> y)
+        where T : struct, INumber<T>
+    {
+        ArgumentNullException.ThrowIfNull(x);
+
+        if (x.Length != y.Length)
+        {
+            Throw("Vectors must be the same length.");
+        }
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void ThrowIfNotEqualLength<T>(NumericVector<T> x, NumericVector<T> y)
+        where T : struct, INumber<T>
+    {
+        ArgumentNullException.ThrowIfNull(x);
+        ArgumentNullException.ThrowIfNull(y);
+
+        if (x.Length != y.Length)
+        {
+            Throw("Vectors must be the same length.");
+        }
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void ThrowIfNotEqualLength<T>(ReadOnlyNumericVector<T> x, ReadOnlyNumericVector<T> y)
         where T : struct, INumber<T>
     {
@@ -80,6 +105,29 @@ public class NumericsException : Exception
         ArgumentNullException.ThrowIfNull(y);
 
         if (x.Length != y.Length)
+        {
+            Throw("Vectors must be the same length.");
+        }
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void ThrowIfNotEqualLength<T>(NumericVector<T> x, NumericVector<T> y, ReadOnlySpan<T> z)
+        where T : struct, INumber<T>
+    {
+        ArgumentNullException.ThrowIfNull(x);
+        ArgumentNullException.ThrowIfNull(y);
+
+        if (x.Length != y.Length || x.Length != z.Length)
+        {
+            Throw("Vectors must be the same length.");
+        }
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void ThrowIfNotEqualLength<T>(ReadOnlyNumericVector<T> x, ReadOnlyNumericVector<T> y, ReadOnlySpan<T> z)
+        where T : struct, INumber<T>
+    {
+        if (x.Length != y.Length || x.Length != z.Length)
         {
             Throw("Vectors must be the same length.");
         }

@@ -9,21 +9,21 @@ public class AssertSequenceMemoryTests
     public void TrueForAll()
     {
         AssertSequence.TrueForAll<int>(v => v < 101, Enumerable.Range(1, 100).ToArray().AsMemory());
-        AssertSequence.TrueForAll<int>(v => v < 101, Enumerable.Range(1, 100).ToArray().AsSpan());
+        AssertSequence.TrueForAll(v => v < 101, Enumerable.Range(1, 100).ToArray().AsSpan());
     }
 
     [Fact]
     public void TrueForAny()
     {
         AssertSequence.TrueForAny<int>(v => v > 99, Enumerable.Range(1, 100).ToArray().AsMemory());
-        AssertSequence.TrueForAny<int>(v => v > 99, Enumerable.Range(1, 100).ToArray().AsSpan());
+        AssertSequence.TrueForAny(v => v > 99, Enumerable.Range(1, 100).ToArray().AsSpan());
     }
 
     [Fact]
     public void Empty()
     {
         AssertSequence.Empty<int>(Enumerable.Empty<int>().ToArray().AsMemory());
-        AssertSequence.Empty<int>(Enumerable.Empty<int>().ToArray().AsSpan());
+        AssertSequence.Empty(Enumerable.Empty<int>().ToArray().AsSpan());
     }
 
     [Fact]
@@ -32,28 +32,28 @@ public class AssertSequenceMemoryTests
         _ = Assert.Throws<SequenceException>(() =>
             AssertSequence.Empty<int>(Enumerable.Range(1, 10).ToArray().AsMemory()));
         _ = Assert.Throws<SequenceException>(() =>
-            AssertSequence.Empty<int>(Enumerable.Range(1, 10).ToArray().AsSpan()));
+            AssertSequence.Empty(Enumerable.Range(1, 10).ToArray().AsSpan()));
     }
 
     [Fact]
     public void NotEmpty()
     {
         AssertSequence.NotEmpty<int>(Enumerable.Range(1, 10).ToArray().AsMemory());
-        AssertSequence.NotEmpty<int>(Enumerable.Range(1, 10).ToArray().AsSpan());
+        AssertSequence.NotEmpty(Enumerable.Range(1, 10).ToArray().AsSpan());
     }
 
     [Fact]
     public void CountEqual()
     {
         AssertSequence.CountEqual<int>(10, Enumerable.Range(1, 10).ToArray().AsMemory());
-        AssertSequence.CountEqual<int>(10, Enumerable.Range(1, 10).ToArray().AsSpan());
+        AssertSequence.CountEqual(10, Enumerable.Range(1, 10).ToArray().AsSpan());
     }
 
     [Fact]
     public void CountGreaterThan()
     {
         AssertSequence.CountGreaterThan<int>(9, Enumerable.Range(1, 10).ToArray().AsMemory());
-        AssertSequence.CountGreaterThan<int>(9, Enumerable.Range(1, 10).ToArray().AsSpan());
+        AssertSequence.CountGreaterThan(9, Enumerable.Range(1, 10).ToArray().AsSpan());
     }
 
     [Fact]
@@ -62,9 +62,9 @@ public class AssertSequenceMemoryTests
         AssertSequence.AllZero<long>(Enumerable.Range(1, 10).Select(i => 0L).ToArray().AsMemory());
         AssertSequence.AllZero<double>(Enumerable.Range(1, 10).Select(i => 0.0).ToArray().AsMemory());
         AssertSequence.AllZero<decimal>(Enumerable.Range(1, 10).Select(i => 0m).ToArray().AsMemory());
-        AssertSequence.AllZero<long>(Enumerable.Range(1, 10).Select(i => 0L).ToArray().AsSpan());
-        AssertSequence.AllZero<double>(Enumerable.Range(1, 10).Select(i => 0.0).ToArray().AsSpan());
-        AssertSequence.AllZero<decimal>(Enumerable.Range(1, 10).Select(i => 0m).ToArray().AsSpan());
+        AssertSequence.AllZero(Enumerable.Range(1, 10).Select(i => 0L).ToArray().AsSpan());
+        AssertSequence.AllZero(Enumerable.Range(1, 10).Select(i => 0.0).ToArray().AsSpan());
+        AssertSequence.AllZero(Enumerable.Range(1, 10).Select(i => 0m).ToArray().AsSpan());
     }
 
     [Fact]
