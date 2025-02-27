@@ -25,7 +25,7 @@ public static class SeriesCollectionExtensions
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(series);
-        series.Add(Series.Create(name, Vector.CreateNumeric(vector)));
+        series.Add(Series.CreateNumeric(name, Vector.CreateNumeric(vector)));
     }
 
     public static void AddNumeric<T>(this ICollection<Series> series, string name, T[] vector, IDictionary<T, Variant> references)
