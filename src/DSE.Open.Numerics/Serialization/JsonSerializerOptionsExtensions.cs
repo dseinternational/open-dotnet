@@ -12,9 +12,18 @@ namespace DSE.Open.Numerics.Serialization;
 public static class JsonSerializerOptionsExtensions
 {
     public static void AddVectorJsonConverter<T>(this IList<JsonConverter> converters)
+        where T : notnull
+    {
+        ArgumentNullException.ThrowIfNull(converters);
+        Vector.EnsureNotKnownNumericType(typeof(T));
+        converters.Add(new VectorJsonConverter<T>());
+    }
+
+    public static void AddNumericVectorJsonConverter<T>(this IList<JsonConverter> converters)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(converters);
+        Vector.EnsureKnownNumericType(typeof(T));
         converters.Add(new NumericVectorJsonConverter<T>());
     }
 
@@ -30,15 +39,28 @@ public static class JsonSerializerOptionsExtensions
     {
         ArgumentNullException.ThrowIfNull(options);
 
-        options.Converters.AddVectorJsonConverter<byte>();
-        options.Converters.AddVectorJsonConverter<short>();
-        options.Converters.AddVectorJsonConverter<int>();
-        options.Converters.AddVectorJsonConverter<long>();
-        options.Converters.AddVectorJsonConverter<ushort>();
-        options.Converters.AddVectorJsonConverter<uint>();
-        options.Converters.AddVectorJsonConverter<ulong>();
-        options.Converters.AddVectorJsonConverter<float>();
-        options.Converters.AddVectorJsonConverter<double>();
+        options.Converters.AddVectorJsonConverter<char>();
+        options.Converters.AddVectorJsonConverter<string>();
+        options.Converters.AddVectorJsonConverter<DateTime>();
+        options.Converters.AddVectorJsonConverter<DateTimeOffset>();
+        options.Converters.AddVectorJsonConverter<DateOnly>();
+        options.Converters.AddVectorJsonConverter<TimeOnly>();
+        options.Converters.AddVectorJsonConverter<Guid>();
+
+        options.Converters.AddNumericVectorJsonConverter<byte>();
+        options.Converters.AddNumericVectorJsonConverter<Date64>();
+        options.Converters.AddNumericVectorJsonConverter<decimal>();
+        options.Converters.AddNumericVectorJsonConverter<double>();
+        options.Converters.AddNumericVectorJsonConverter<float>();
+        options.Converters.AddNumericVectorJsonConverter<int>();
+        options.Converters.AddNumericVectorJsonConverter<Int128>();
+        options.Converters.AddNumericVectorJsonConverter<long>();
+        options.Converters.AddNumericVectorJsonConverter<sbyte>();
+        options.Converters.AddNumericVectorJsonConverter<short>();
+        options.Converters.AddNumericVectorJsonConverter<uint>();
+        options.Converters.AddNumericVectorJsonConverter<UInt128>();
+        options.Converters.AddNumericVectorJsonConverter<ulong>();
+        options.Converters.AddNumericVectorJsonConverter<ushort>();
 
         options.Converters.AddDataPointArrayJsonConverter<byte, byte>();
         options.Converters.AddDataPointArrayJsonConverter<short, short>();
@@ -47,5 +69,7 @@ public static class JsonSerializerOptionsExtensions
         options.Converters.AddDataPointArrayJsonConverter<ushort, ushort>();
         options.Converters.AddDataPointArrayJsonConverter<uint, uint>();
         options.Converters.AddDataPointArrayJsonConverter<ulong, ulong>();
+        options.Converters.AddDataPointArrayJsonConverter<float, float>();
+        options.Converters.AddDataPointArrayJsonConverter<double, double>();
     }
 }

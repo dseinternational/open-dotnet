@@ -7,10 +7,10 @@ using System.Text.Json.Serialization;
 
 namespace DSE.Open.Numerics.Serialization;
 
-public class NumericVectorJsonConverter<T> : JsonConverter<NumericVector<T>>
-    where T : struct, INumber<T>
+public class VectorJsonConverter<T> : JsonConverter<Vector<T>>
+    where T : notnull
 {
-    public override NumericVector<T>? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public override Vector<T>? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         ArgumentNullException.ThrowIfNull(options);
 
@@ -18,13 +18,13 @@ public class NumericVectorJsonConverter<T> : JsonConverter<NumericVector<T>>
             && typeInfo.Converter is JsonConverter<Memory<T>> jsonConverter)
         {
             var data = jsonConverter.Read(ref reader, typeof(Memory<T>), options);
-            return new NumericVector<T>(data);
+            return new Vector<T>(data);
         }
 
         throw new JsonException();
     }
 
-    public override void Write(Utf8JsonWriter writer, NumericVector<T> value, JsonSerializerOptions options)
+    public override void Write(Utf8JsonWriter writer, Vector<T> value, JsonSerializerOptions options)
     {
         ArgumentNullException.ThrowIfNull(options);
 

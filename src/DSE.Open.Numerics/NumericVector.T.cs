@@ -1,10 +1,8 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
-using System.Numerics.Tensors;
 using System.Runtime.CompilerServices;
 
 namespace DSE.Open.Numerics;
@@ -16,7 +14,7 @@ namespace DSE.Open.Numerics;
 /// <remarks>
 /// Implements value equality.
 /// </remarks>
-[CollectionBuilder(typeof(NumericVector), nameof(NumericVector.Create))]
+[CollectionBuilder(typeof(Vector), nameof(Vector.CreateNumeric))]
 public class NumericVector<T> : Vector<T>
     where T : struct, INumber<T>
 {

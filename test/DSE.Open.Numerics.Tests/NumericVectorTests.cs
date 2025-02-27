@@ -21,7 +21,7 @@ public partial class NumericVectorTests
     [Fact]
     public void CreateDefault()
     {
-        var v1 = NumericVector.CreateDefault<int>(6);
+        var v1 = Vector.CreateNumeric<int>(6);
         Assert.Equal(6, v1.Length);
         Assert.True(v1.Span.SequenceEqual(new int[6]));
     }
@@ -29,7 +29,7 @@ public partial class NumericVectorTests
     [Fact]
     public void CreateZeroes()
     {
-        var v1 = NumericVector.CreateZeroes<int>(6);
+        var v1 = Vector.CreateZeroes<int>(6);
         Assert.Equal(6, v1.Length);
         Assert.True(v1.Span.SequenceEqual(new int[6]));
     }
@@ -37,7 +37,7 @@ public partial class NumericVectorTests
     [Fact]
     public void CreateOnes()
     {
-        var v1 = NumericVector.CreateOnes<int>(6);
+        var v1 = Vector.CreateOnes<int>(6);
         Assert.Equal(6, v1.Length);
         Assert.True(v1.Span.SequenceEqual([1, 1, 1, 1, 1, 1]));
     }
