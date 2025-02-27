@@ -530,13 +530,13 @@ public static partial class CollectionExtensions
     public static Collection<T> ToCollection<T>(this IEnumerable<T> collection)
     {
         ArgumentNullException.ThrowIfNull(collection);
-        return new(collection);
+        return [.. collection];
     }
 
     public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> collection)
     {
         ArgumentNullException.ThrowIfNull(collection);
-        return new(collection);
+        return [.. collection];
     }
 
     public static ObservableCollection<T> ToObservableCollection<T>(this List<T> list)

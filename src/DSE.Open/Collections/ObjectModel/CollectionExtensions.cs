@@ -7,6 +7,6 @@ public static class CollectionExtensions
 {
     public static ObservableList<T> ToObservableList<T>(this IEnumerable<T> values)
     {
-        return new(values);
+        return [.. values];
     }
 }

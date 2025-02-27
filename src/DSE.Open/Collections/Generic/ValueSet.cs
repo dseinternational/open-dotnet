@@ -47,7 +47,7 @@ public static class ValueSet
 [CollectionBuilder(typeof(ValueSet), nameof(ValueSet.Create))]
 public class ValueSet<T> : ISet<T>, IEquatable<ValueSet<T>>, ICollection<T>
 {
-    public static readonly ValueSet<T> Empty = new(Enumerable.Empty<T>());
+    public static readonly ValueSet<T> Empty = [.. Enumerable.Empty<T>()];
 
     private readonly HashSet<T> _set;
 

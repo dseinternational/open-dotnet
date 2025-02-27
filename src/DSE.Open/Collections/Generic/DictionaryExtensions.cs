@@ -28,7 +28,9 @@ public static class DictionaryExtensions
         where TKey : IEquatable<TKey>
     {
         ArgumentNullException.ThrowIfNull(dictionary);
+#pragma warning disable IDE0306 // Simplify collection initialization
         return new(dictionary);
+#pragma warning restore IDE0306 // Simplify collection initialization
     }
 
     public static void AddOrSet<TKey, TValue>(

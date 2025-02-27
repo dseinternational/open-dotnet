@@ -27,7 +27,9 @@ public sealed class ValueDictionary<TKey, TValue>
 
     public ValueDictionary(IEnumerable<KeyValuePair<TKey, TValue>> collection)
     {
+#pragma warning disable IDE0306 // Simplify collection initialization
         _inner = new(collection);
+#pragma warning restore IDE0306 // Simplify collection initialization
     }
 
     public ValueDictionary(IDictionary<TKey, TValue> source)

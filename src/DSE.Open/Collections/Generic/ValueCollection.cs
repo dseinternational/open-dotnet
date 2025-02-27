@@ -13,7 +13,7 @@ public sealed class ValueCollection<T>
     {
     }
 
-    public ValueCollection(IEnumerable<T> list) : base(new List<T>(list))
+    public ValueCollection(IEnumerable<T> list) : base([.. list])
     {
     }
 

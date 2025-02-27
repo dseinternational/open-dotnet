@@ -3,6 +3,7 @@
 
 using System.Collections;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace DSE.Open.Collections.Generic;
 
@@ -81,6 +82,11 @@ public class ReadOnlyCollection<T>
     {
         get => this[index];
         set => throw new InvalidOperationException("Cannot change a read-only collection.");
+    }
+
+    public ReadOnlySpan<T> AsSpan()
+    {
+        return CollectionsMarshal.AsSpan(_items);
     }
 
     public bool Contains(T item)
