@@ -121,7 +121,7 @@ public class VectorTests : LoggedTestsBase
     [Fact]
     public void SerializeDeserialize_Date64()
     {
-        var elements = Enumerable.Range(1, 20).Select(i => new Date64(i * 1000L * 60 * 60 * 24 * 365)).ToArray();
+        var elements = Enumerable.Range(1, 20).Select(i => new DateTime64(i * 1000L * 60 * 60 * 24 * 365)).ToArray();
         TestSerializeDeserializeNumeric(elements);
     }
 }

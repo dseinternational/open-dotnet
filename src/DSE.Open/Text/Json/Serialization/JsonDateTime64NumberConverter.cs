@@ -6,21 +6,21 @@ using System.Text.Json.Serialization;
 
 namespace DSE.Open.Text.Json.Serialization;
 
-public class JsonDate64NumberConverter : JsonConverter<Date64>
+public class JsonDateTime64NumberConverter : JsonConverter<DateTime64>
 {
-    public override Date64 Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public override DateTime64 Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         var value = reader.GetInt64();
 
-        if (value is < Date64.MinMilliseconds or > Date64.MaxMilliseconds)
+        if (value is < DateTime64.MinMilliseconds or > DateTime64.MaxMilliseconds)
         {
-            throw new JsonException($"The value is not valid for a {nameof(Date64)}.");
+            throw new JsonException($"The value is not valid for a {nameof(DateTime64)}.");
         }
 
-        return new Date64(value);
+        return new DateTime64(value);
     }
 
-    public override void Write(Utf8JsonWriter writer, Date64 value, JsonSerializerOptions options)
+    public override void Write(Utf8JsonWriter writer, DateTime64 value, JsonSerializerOptions options)
     {
         ArgumentNullException.ThrowIfNull(writer);
         writer.WriteNumberValue(value.TotalMilliseconds);

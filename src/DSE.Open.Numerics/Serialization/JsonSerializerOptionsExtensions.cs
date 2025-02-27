@@ -48,7 +48,7 @@ public static class JsonSerializerOptionsExtensions
         options.Converters.AddVectorJsonConverter<Guid>();
 
         options.Converters.AddNumericVectorJsonConverter<byte>();
-        options.Converters.AddNumericVectorJsonConverter<Date64>();
+        options.Converters.AddNumericVectorJsonConverter<DateTime64>();
         options.Converters.AddNumericVectorJsonConverter<decimal>();
         options.Converters.AddNumericVectorJsonConverter<double>();
         options.Converters.AddNumericVectorJsonConverter<float>();

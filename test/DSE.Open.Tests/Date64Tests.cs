@@ -16,7 +16,7 @@ public class Date64Tests
     [InlineData(253402300799999)]
     public void Create_Milliseconds(long milliseconds)
     {
-        var date = new Date64(milliseconds);
+        var date = new DateTime64(milliseconds);
         Assert.Equal(milliseconds, date.TotalMilliseconds);
         Assert.Equal(DateTimeOffset.FromUnixTimeMilliseconds(milliseconds), date);
     }
@@ -31,7 +31,7 @@ public class Date64Tests
     public void Create_DateTimeOffset(long milliseconds)
     {
         var dateTimeOffset = DateTimeOffset.FromUnixTimeMilliseconds(milliseconds);
-        var date = new Date64(milliseconds);
+        var date = new DateTime64(milliseconds);
         Assert.Equal(milliseconds, date.TotalMilliseconds);
         Assert.Equal(dateTimeOffset, date);
     }
@@ -39,7 +39,7 @@ public class Date64Tests
     [Fact]
     public void Serialize()
     {
-        var date = new Date64(1619827200000);
+        var date = new DateTime64(1619827200000);
         var json = JsonSerializer.Serialize(date);
         Assert.Equal("1619827200000", json);
     }
@@ -47,7 +47,7 @@ public class Date64Tests
     [Fact]
     public void Deserialize()
     {
-        var date = JsonSerializer.Deserialize<Date64>("1619827200000");
+        var date = JsonSerializer.Deserialize<DateTime64>("1619827200000");
         Assert.Equal(1619827200000, date.TotalMilliseconds);
     }
 

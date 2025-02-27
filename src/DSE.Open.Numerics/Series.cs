@@ -14,7 +14,7 @@ namespace DSE.Open.Numerics;
 [JsonDerivedType(typeof(Series<DateTimeOffset>), "datetimeoffset")]
 [JsonDerivedType(typeof(Series<Guid>), "uuid")]
 [JsonDerivedType(typeof(NumericSeries<byte>), "uint8")]
-[JsonDerivedType(typeof(NumericSeries<Date64>), "date64")]
+[JsonDerivedType(typeof(NumericSeries<DateTime64>), "datetime64")]
 [JsonDerivedType(typeof(NumericSeries<double>), "float64")]
 [JsonDerivedType(typeof(NumericSeries<float>), "float32")]
 [JsonDerivedType(typeof(NumericSeries<int>), "int32")]

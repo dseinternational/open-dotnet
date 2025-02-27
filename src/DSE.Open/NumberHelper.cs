@@ -19,7 +19,7 @@ public static partial class NumberHelper
     private static readonly FrozenSet<Type> s_knownNumberTypes = FrozenSet.Create(
     [
         typeof(byte),
-        typeof(Date64),
+        typeof(DateTime64),
         typeof(decimal),
         typeof(double),
         typeof(float),
