@@ -4,8 +4,8 @@
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using DSE.Open.Numerics.Serialization;
 using System.Text.Json.Serialization;
+using DSE.Open.Numerics.Serialization;
 
 namespace DSE.Open.Numerics;
 

@@ -1,11 +1,11 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Text.Json;
 
 namespace DSE.Open.Numerics.Serialization;
 
-public static class JsonVectorReader
+public static class VectorJsonReader
 {
     public static NumericVector<T> ReadNumericVector<T>(ref Utf8JsonReader reader, int length, VectorJsonFormat format = default)
         where T : struct, System.Numerics.INumber<T>
@@ -30,6 +30,8 @@ public static class JsonVectorReader
                     throw new JsonException();
                 }
 
+                // if rented buffer (length < 0), ToMemory() copies to new array of correct length,
+                // otherwise the Memory<T> simply references the owned buffer so no copying here
                 return Vector.CreateNumeric(builder.ToMemory());
             }
 

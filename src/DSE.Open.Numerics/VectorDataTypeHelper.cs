@@ -64,6 +64,24 @@ public static class VectorDataTypeHelper
         .ToDictionary(kvp => kvp.Value, kvp => kvp.Key)
         .ToFrozenDictionary();
 
+    private static readonly FrozenSet<VectorDataType> s_numericTypes = new VectorDataType[]
+    {
+        VectorDataType.DateTime64,
+        VectorDataType.Float32,
+        VectorDataType.Float64,
+        VectorDataType.Uuid,
+        VectorDataType.Int128,
+        VectorDataType.Int16,
+        VectorDataType.Int32,
+        VectorDataType.Int64,
+        VectorDataType.Int8,
+        VectorDataType.UInt128,
+        VectorDataType.UInt32,
+        VectorDataType.UInt64,
+        VectorDataType.UInt8,
+
+    }.ToFrozenSet();
+
     public static string GetLabel(VectorDataType dataType)
     {
         return s_labelLookup[dataType];
@@ -107,5 +125,20 @@ public static class VectorDataTypeHelper
     public static bool TryGetVectorDataType(Type type, out VectorDataType vectorDataType)
     {
         return s_vectorTypeLookup.TryGetValue(type, out vectorDataType);
+    }
+
+    public static bool IsNumericType(VectorDataType vectorDataType)
+    {
+        return s_numericTypes.Contains(vectorDataType);
+    }
+
+    public static bool IsNumericType(Type type)
+    {
+        return IsNumericType(GetVectorDataType(type));
+    }
+
+    public static bool IsNumericType<T>()
+    {
+        return IsNumericType(typeof(T));
     }
 }

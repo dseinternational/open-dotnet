@@ -76,6 +76,7 @@ internal ref struct ArrayBuilder<T>
     /// <param name="index">The index into the array.</param>
     public readonly T this[int index]
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get
         {
             Guard.IsInRange(index, 0, _count);
@@ -87,6 +88,7 @@ internal ref struct ArrayBuilder<T>
     /// Adds an item to the backing array, resizing it if necessary.
     /// </summary>
     /// <param name="item">The item to add.</param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Add(T item)
     {
         if (_count == Capacity)
@@ -97,46 +99,10 @@ internal ref struct ArrayBuilder<T>
         UncheckedAdd(item);
     }
 
-    /// <summary>
-    /// Gets the first item in this builder.
-    /// </summary>
-    public readonly T First()
-    {
-        if (Count == 0)
-        {
-            ThrowHelper.ThrowInvalidOperationException("The builder is empty.");
-            return default; // unreachable
-        }
-
-        return _buffer[0];
-    }
-
-    /// <summary>
-    /// Gets the last item in this builder.
-    /// </summary>
-    public readonly T Last()
-    {
-        if (Count == 0)
-        {
-            ThrowHelper.ThrowInvalidOperationException("The builder is empty.");
-            return default; // unreachable
-        }
-
-        return _buffer[_count - 1];
-    }
-
-    /// <summary>
-    /// Adds an item to the backing array, without checking if there is room.
-    /// </summary>
-    /// <param name="item">The item to add.</param>
-    /// <remarks>
-    /// Use this method if you know there is enough space in the <see cref="ArrayBuilder{T}"/>
-    /// for another item, and you are writing performance-sensitive code.
-    /// </remarks>
-    public void UncheckedAdd(T item)
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private void UncheckedAdd(T item)
     {
         Debug.Assert(_count < Capacity);
-
         _buffer[_count++] = item;
     }
 
