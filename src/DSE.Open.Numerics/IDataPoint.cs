@@ -5,15 +5,14 @@ using System.Numerics;
 
 namespace DSE.Open.Numerics;
 
-public interface IDataPoint<TX, TY>
-    where TX : INumber<TX>
-    where TY : INumber<TY>
+public interface IDataPoint<T>
+    where T : INumber<T>
 {
-    TX X { get; }
+    T X { get; }
 
-    TY Y { get; }
+    T Y { get; }
 
-    virtual void Deconstruct(out TX x, out TY y)
+    virtual void Deconstruct(out T x, out T y)
     {
         (x, y) = (X, Y);
     }

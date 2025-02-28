@@ -4,6 +4,8 @@
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using DSE.Open.Numerics.Serialization;
+using System.Text.Json.Serialization;
 
 namespace DSE.Open.Numerics;
 
@@ -12,9 +14,12 @@ namespace DSE.Open.Numerics;
 /// with value equality semantics.
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public class Vector<T> : IEquatable<Vector<T>>
-    where T : notnull
+[CollectionBuilder(typeof(Vector), nameof(Create))]
+[JsonConverter(typeof(VectorJsonConverter))]
+public class Vector<T> : Vector, IEquatable<Vector<T>>
 {
+    public static readonly Vector<T> Empty = new([]);
+
     internal Vector(T[] data) : this(new Memory<T>(data))
     {
     }
@@ -23,7 +28,7 @@ public class Vector<T> : IEquatable<Vector<T>>
     {
     }
 
-    internal Vector(Memory<T> data)
+    internal Vector(Memory<T> data) : base(VectorDataTypeHelper.GetVectorDataType<T>(), typeof(T), data.Length)
     {
         Memory = data;
     }
@@ -35,8 +40,6 @@ public class Vector<T> : IEquatable<Vector<T>>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get => Memory.Span;
     }
-
-    public int Length => Memory.Length;
 
     public T this[int index]
     {
@@ -95,21 +98,24 @@ public class Vector<T> : IEquatable<Vector<T>>
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates", Justification = "By design")]
+    [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",
+        Justification = "By design")]
     public static implicit operator Vector<T>(T[] vector)
     {
         return new(vector);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates", Justification = "By design")]
+    [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",
+        Justification = "By design")]
     public static implicit operator Vector<T>(Memory<T> vector)
     {
         return new(vector);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates", Justification = "By design")]
+    [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",
+        Justification = "By design")]
     public static implicit operator Memory<T>(Vector<T> vector)
     {
         return vector is not null ? vector.Memory : default;

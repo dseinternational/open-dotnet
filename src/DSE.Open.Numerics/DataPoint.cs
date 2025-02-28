@@ -7,24 +7,22 @@ using System.Text.Json.Serialization;
 
 namespace DSE.Open.Numerics;
 
-public readonly record struct DataPoint<TX, TY>
-    : IDataPoint<TX, TY>
-    where TX : struct, INumber<TX>
-    where TY : struct, INumber<TY>
+public readonly record struct DataPoint<T> : IDataPoint<T>
+    where T : struct, INumber<T>
 {
     [SetsRequiredMembers]
-    public DataPoint(TX x, TY y)
+    public DataPoint(T x, T y)
     {
         (X, Y) = (x, y);
     }
 
     [JsonPropertyName("x")]
-    public required TX X { get; init; }
+    public required T X { get; init; }
 
     [JsonPropertyName("y")]
-    public required TY Y { get; init; }
+    public required T Y { get; init; }
 
-    public void Deconstruct(out TX x, out TY y)
+    public void Deconstruct(out T x, out T y)
     {
         (x, y) = (X, Y);
     }

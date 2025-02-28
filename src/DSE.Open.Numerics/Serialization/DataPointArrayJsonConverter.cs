@@ -7,11 +7,10 @@ using System.Text.Json.Serialization;
 
 namespace DSE.Open.Numerics.Serialization;
 
-public class DataPointArrayJsonConverter<TX, TY> : JsonConverter<DataPoint<TX, TY>>
-    where TX : struct, INumber<TX>
-    where TY : struct, INumber<TY>
+public class DataPointArrayJsonConverter<T> : JsonConverter<DataPoint<T>>
+    where T : struct, INumber<T>
 {
-    public override DataPoint<TX, TY> Read(
+    public override DataPoint<T> Read(
         ref Utf8JsonReader reader,
         Type typeToConvert,
         JsonSerializerOptions options)
@@ -23,22 +22,22 @@ public class DataPointArrayJsonConverter<TX, TY> : JsonConverter<DataPoint<TX, T
 
         _ = reader.Read();
 
-        if (!reader.TryGetNumber<TX>(out var x))
+        if (!reader.TryGetNumber<T>(out var x))
         {
             throw new JsonException("Failed to read x value.");
         }
 
         _ = reader.Read();
 
-        if (!reader.TryGetNumber<TY>(out var y))
+        if (!reader.TryGetNumber<T>(out var y))
         {
             throw new JsonException("Failed to read y value.");
         }
 
-        return new DataPoint<TX, TY>(x, y);
+        return new DataPoint<T>(x, y);
     }
 
-    public override void Write(Utf8JsonWriter writer, DataPoint<TX, TY> value, JsonSerializerOptions options)
+    public override void Write(Utf8JsonWriter writer, DataPoint<T> value, JsonSerializerOptions options)
     {
         ArgumentNullException.ThrowIfNull(writer);
 

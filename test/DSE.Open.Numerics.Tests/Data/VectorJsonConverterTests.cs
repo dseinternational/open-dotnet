@@ -1,4 +1,4 @@
-// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Text.Json;
@@ -6,9 +6,9 @@ using DSE.Open.Numerics.Serialization;
 using DSE.Open.Testing.Xunit;
 using DSE.Open.Text.Json;
 
-namespace DSE.Open.Numerics;
+namespace DSE.Open.Numerics.Data;
 
-public class SeriesTests : LoggedTestsBase
+public class VectorJsonConverterTests : LoggedTestsBase
 {
     private static readonly Lazy<JsonSerializerOptions> s_jsonOptions = new(() =>
     {
@@ -17,7 +17,7 @@ public class SeriesTests : LoggedTestsBase
         return options;
     });
 
-    public SeriesTests(ITestOutputHelper output) : base(output)
+    public VectorJsonConverterTests(ITestOutputHelper output) : base(output)
     {
     }
 
@@ -36,22 +36,5 @@ public class SeriesTests : LoggedTestsBase
 
         Assert.NotNull(deserialized);
         Assert.Equivalent(series, deserialized);
-    }
-    [Fact]
-    public void SerializeDeserialize_Polymorphic()
-    {
-        var series = (Series)Series.CreateNumeric("test", [1, 2, 3, 4, 5]);
-
-        var json = JsonSerializer.Serialize(series, s_jsonOptions.Value);
-
-        Output.WriteLine(json);
-
-        Assert.NotNull(json);
-
-        var deserialized = JsonSerializer.Deserialize<Series>(json, s_jsonOptions.Value);
-
-        Assert.NotNull(deserialized);
-        var series2 = Assert.IsType<NumericSeries<int>>(deserialized);
-        Assert.Equivalent(series, series2);
     }
 }
