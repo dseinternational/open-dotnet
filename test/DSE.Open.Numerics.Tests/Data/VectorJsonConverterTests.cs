@@ -1,8 +1,8 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Runtime.CompilerServices;
 using System.Text.Json;
-using DSE.Open.Numerics.Serialization;
 using DSE.Open.Testing.Xunit;
 using DSE.Open.Text.Json;
 
@@ -13,7 +13,7 @@ public class VectorJsonConverterTests : LoggedTestsBase
     private static readonly Lazy<JsonSerializerOptions> s_jsonOptions = new(() =>
     {
         var options = new JsonSerializerOptions(JsonSharedOptions.RelaxedJsonEscaping);
-        options.AddDefaultNumericsJsonConverters();
+        // options.AddDefaultNumericsJsonConverters();
         return options;
     });
 
@@ -21,20 +21,63 @@ public class VectorJsonConverterTests : LoggedTestsBase
     {
     }
 
-    [Fact]
-    public void SerializeDeserialize()
+    [Theory]
+    [InlineData("{ \"dtype\": \"int32\", \"values\": [] }")]
+    [InlineData("{ \"dtype\": \"int32\", \"values\": [0] }")]
+    [InlineData("{ \"dtype\": \"int32\", \"values\": [0,1] }")]
+    [InlineData("{ \"dtype\": \"int32\", \"values\": [0,1,2,5,-9,-283590] }")]
+    [InlineData("{ \"dtype\": \"int32\", \"length\": 0, \"values\": [] }")]
+    [InlineData("{ \"dtype\": \"int32\", \"length\": 1, \"values\": [0] }")]
+    [InlineData("{ \"dtype\": \"int32\", \"length\": 2, \"values\": [0,1] }")]
+    [InlineData("{ \"dtype\": \"int32\", \"length\": 6, \"values\": [0,1,2,5,-9,-283590] }")]
+    public void DeserializeNumericVectorOfInt32(string json)
     {
-        var series = Series.CreateNumeric("test", [1, 2, 3, 4, 5]);
-
-        var json = JsonSerializer.Serialize(series, s_jsonOptions.Value);
-
-        Output.WriteLine(json);
-
-        Assert.NotNull(json);
-
-        var deserialized = JsonSerializer.Deserialize<NumericSeries<int>>(json, s_jsonOptions.Value);
-
+        var deserialized = JsonSerializer.Deserialize<NumericVector<int>>(json, s_jsonOptions.Value);
         Assert.NotNull(deserialized);
-        Assert.Equivalent(series, deserialized);
+    }
+
+    [Theory]
+    [InlineData("{ \"dtype\": \"int64\", \"values\": [] }")]
+    [InlineData("{ \"dtype\": \"int64\", \"values\": [0] }")]
+    [InlineData("{ \"dtype\": \"int64\", \"values\": [0,1] }")]
+    [InlineData("{ \"dtype\": \"int64\", \"values\": [0,1,2,5,-9,-283590] }")]
+    [InlineData("{ \"dtype\": \"int64\", \"length\": 0, \"values\": [] }")]
+    [InlineData("{ \"dtype\": \"int64\", \"length\": 1, \"values\": [0] }")]
+    [InlineData("{ \"dtype\": \"int64\", \"length\": 2, \"values\": [0,1] }")]
+    [InlineData("{ \"dtype\": \"int64\", \"length\": 6, \"values\": [0,1,2,5,-9,-283590] }")]
+    public void DeserializeNumericVectorOfInt64(string json)
+    {
+        var deserialized = JsonSerializer.Deserialize<NumericVector<long>>(json, s_jsonOptions.Value);
+        Assert.NotNull(deserialized);
+    }
+
+    [Theory]
+    [InlineData("{ \"dtype\": \"uint32\", \"values\": [] }")]
+    [InlineData("{ \"dtype\": \"uint32\", \"values\": [0] }")]
+    [InlineData("{ \"dtype\": \"uint32\", \"values\": [0,1] }")]
+    [InlineData("{ \"dtype\": \"uint32\", \"values\": [0,1,2,5,9,283590] }")]
+    [InlineData("{ \"dtype\": \"uint32\", \"length\": 0, \"values\": [] }")]
+    [InlineData("{ \"dtype\": \"uint32\", \"length\": 1, \"values\": [0] }")]
+    [InlineData("{ \"dtype\": \"uint32\", \"length\": 2, \"values\": [0,1] }")]
+    [InlineData("{ \"dtype\": \"uint32\", \"length\": 6, \"values\": [0,1,2,5,9,283590] }")]
+    public void DeserializeNumericVectorOfUInt32(string json)
+    {
+        var deserialized = JsonSerializer.Deserialize<NumericVector<uint>>(json, s_jsonOptions.Value);
+        Assert.NotNull(deserialized);
+    }
+
+    [Theory]
+    [InlineData("{ \"dtype\": \"uint64\", \"values\": [] }")]
+    [InlineData("{ \"dtype\": \"uint64\", \"values\": [0] }")]
+    [InlineData("{ \"dtype\": \"uint64\", \"values\": [0,1] }")]
+    [InlineData("{ \"dtype\": \"uint64\", \"values\": [0,1,2,5,9,283590] }")]
+    [InlineData("{ \"dtype\": \"uint64\", \"length\": 0, \"values\": [] }")]
+    [InlineData("{ \"dtype\": \"uint64\", \"length\": 1, \"values\": [0] }")]
+    [InlineData("{ \"dtype\": \"uint64\", \"length\": 2, \"values\": [0,1] }")]
+    [InlineData("{ \"dtype\": \"uint64\", \"length\": 6, \"values\": [0,1,2,5,9,283590] }")]
+    public void DeserializeNumericVectorOfUInt64(string json)
+    {
+        var deserialized = JsonSerializer.Deserialize<NumericVector<ulong>>(json, s_jsonOptions.Value);
+        Assert.NotNull(deserialized);
     }
 }

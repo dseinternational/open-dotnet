@@ -49,6 +49,18 @@ public abstract class Vector
         return new Vector<T>(data);
     }
 
+    public static Vector<T> Create<T>(ReadOnlySpan<T> data)
+    {
+        if (data.Length == 0)
+        {
+#pragma warning disable IDE0301 // Simplify collection initialization
+            return Vector<T>.Empty;
+#pragma warning restore IDE0301 // Simplify collection initialization
+        }
+
+        return new Vector<T>(data.ToArray());
+    }
+
     public static Vector<T> Create<T>(T[] data, int start, int length)
     {
         EnsureNotKnownNumericType(typeof(T));
@@ -70,6 +82,13 @@ public abstract class Vector
     public static NumericVector<T> CreateNumeric<T>(ReadOnlySpan<T> data)
         where T : struct, INumber<T>
     {
+        if (data.Length == 0)
+        {
+#pragma warning disable IDE0301 // Simplify collection initialization
+            return NumericVector<T>.Empty;
+#pragma warning restore IDE0301 // Simplify collection initialization
+        }
+
         return new NumericVector<T>(data.ToArray());
     }
 

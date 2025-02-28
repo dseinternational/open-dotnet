@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Diagnostics;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -12,6 +13,8 @@ public class VectorJsonConverter : JsonConverter<Vector>
     public const string LengthPropertyName = "length";
     public const string ValuesPropertyName = "values";
 
+    public VectorJsonConverter() : this(default) { }
+
     public VectorJsonConverter(VectorJsonFormat format = default)
     {
         Format = format;
@@ -19,10 +22,14 @@ public class VectorJsonConverter : JsonConverter<Vector>
 
     public VectorJsonFormat Format { get; }
 
+    public override bool CanConvert(Type typeToConvert)
+    {
+        Debug.Assert(typeToConvert is not null);
+        return typeToConvert.IsAssignableTo(typeof(Vector));
+    }
+
     public override Vector? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        ArgumentNullException.ThrowIfNull(options);
-
         if (reader.TokenType != JsonTokenType.StartObject)
         {
             throw new JsonException("Expected start of object");
@@ -36,7 +43,7 @@ public class VectorJsonConverter : JsonConverter<Vector>
         {
             if (reader.TokenType == JsonTokenType.EndObject)
             {
-                return null;
+                break;
             }
 
             if (reader.TokenType == JsonTokenType.PropertyName)
@@ -100,11 +107,13 @@ public class VectorJsonConverter : JsonConverter<Vector>
                         VectorDataType.Bool => ReadVector<bool>(ref reader, length),
                         VectorDataType.Char => ReadVector<char>(ref reader, length),
                         VectorDataType.String => JsonVectorReader.ReadStringVector(ref reader, length),
-                        _ => throw new JsonException()
+                        _ => throw new JsonException($"Unsupported data type: {dtype}")
                     };
                 }
             }
         }
+
+        Debug.Assert(vector is not null);
 
         return vector;
     }
