@@ -4,6 +4,8 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using System.Runtime.CompilerServices;
+using DSE.Open.Numerics.Serialization;
+using System.Text.Json.Serialization;
 
 namespace DSE.Open.Numerics;
 
@@ -14,10 +16,13 @@ namespace DSE.Open.Numerics;
 /// <remarks>
 /// Implements value equality.
 /// </remarks>
-[CollectionBuilder(typeof(Vector), nameof(Vector.CreateNumeric))]
+[CollectionBuilder(typeof(Vector), nameof(CreateNumeric))]
+[JsonConverter(typeof(VectorJsonConverter))]
 public class NumericVector<T> : Vector<T>
     where T : struct, INumber<T>
 {
+    public static new readonly NumericVector<T> Empty = new([]);
+
     public NumericVector(T[] data) : base(data)
     {
     }

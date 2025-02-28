@@ -1,19 +1,18 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Numerics;
 
 namespace DSE.Open.Numerics;
 
-public interface IHighLowDataPoint<TX, TY> : IDataPoint<TX, TY>
-    where TX : INumber<TX>
-    where TY : INumber<TY>
+public interface IHighLowDataPoint<T> : IDataPoint<T>
+    where T : INumber<T>
 {
-    TY High { get; }
+    T High { get; }
 
-    TY Low { get; }
+    T Low { get; }
 
-    virtual void Deconstruct(out TX x, out TY y, out TY high, out TY low)
+    virtual void Deconstruct(out T x, out T y, out T high, out T low)
     {
         (x, y, high, low) = (X, Y, High, Low);
     }

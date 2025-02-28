@@ -4,28 +4,28 @@
 using System.Numerics;
 using System.Text.Json.Serialization;
 
-namespace DSE.Open.Numerics;
+namespace DSE.Open.Numerics.Data;
 
 [JsonPolymorphic(TypeDiscriminatorPropertyName = "dtype")]
-[JsonDerivedType(typeof(Series<bool>), "bool")]
-[JsonDerivedType(typeof(Series<char>), "char")]
-[JsonDerivedType(typeof(Series<string>), "string")]
-[JsonDerivedType(typeof(Series<DateTime>), "datetime")]
-[JsonDerivedType(typeof(Series<DateTimeOffset>), "datetimeoffset")]
-[JsonDerivedType(typeof(Series<Guid>), "uuid")]
-[JsonDerivedType(typeof(NumericSeries<byte>), "uint8")]
-[JsonDerivedType(typeof(NumericSeries<DateTime64>), "datetime64")]
-[JsonDerivedType(typeof(NumericSeries<double>), "float64")]
-[JsonDerivedType(typeof(NumericSeries<float>), "float32")]
-[JsonDerivedType(typeof(NumericSeries<int>), "int32")]
-[JsonDerivedType(typeof(NumericSeries<Int128>), "int128")]
-[JsonDerivedType(typeof(NumericSeries<long>), "int64")]
-[JsonDerivedType(typeof(NumericSeries<sbyte>), "int8")]
-[JsonDerivedType(typeof(NumericSeries<short>), "int16")]
-[JsonDerivedType(typeof(NumericSeries<uint>), "uint32")]
-[JsonDerivedType(typeof(NumericSeries<ulong>), "uint64")]
-[JsonDerivedType(typeof(NumericSeries<UInt128>), "uint128")]
-[JsonDerivedType(typeof(NumericSeries<ushort>), "uint16")]
+[JsonDerivedType(typeof(Series<bool>), VectorDataTypeLabels.Bool)]
+[JsonDerivedType(typeof(Series<char>), VectorDataTypeLabels.Char)]
+[JsonDerivedType(typeof(Series<string>), VectorDataTypeLabels.String)]
+[JsonDerivedType(typeof(Series<DateTime>), VectorDataTypeLabels.DateTime)]
+[JsonDerivedType(typeof(Series<DateTimeOffset>), VectorDataTypeLabels.DateTimeOffset)]
+[JsonDerivedType(typeof(Series<Guid>), VectorDataTypeLabels.Uuid)]
+[JsonDerivedType(typeof(NumericSeries<byte>), VectorDataTypeLabels.UInt8)]
+[JsonDerivedType(typeof(NumericSeries<sbyte>), VectorDataTypeLabels.Int8)]
+[JsonDerivedType(typeof(NumericSeries<short>), VectorDataTypeLabels.Int16)]
+[JsonDerivedType(typeof(NumericSeries<ushort>), VectorDataTypeLabels.UInt16)]
+[JsonDerivedType(typeof(NumericSeries<int>), VectorDataTypeLabels.Int32)]
+[JsonDerivedType(typeof(NumericSeries<uint>), VectorDataTypeLabels.UInt32)]
+[JsonDerivedType(typeof(NumericSeries<long>), VectorDataTypeLabels.Int64)]
+[JsonDerivedType(typeof(NumericSeries<ulong>), VectorDataTypeLabels.UInt64)]
+[JsonDerivedType(typeof(NumericSeries<Int128>), VectorDataTypeLabels.Int128)]
+[JsonDerivedType(typeof(NumericSeries<UInt128>), VectorDataTypeLabels.UInt128)]
+[JsonDerivedType(typeof(NumericSeries<float>), VectorDataTypeLabels.Float32)]
+[JsonDerivedType(typeof(NumericSeries<double>), VectorDataTypeLabels.Float64)]
+[JsonDerivedType(typeof(NumericSeries<DateTime64>), VectorDataTypeLabels.DateTime64)]
 public abstract class Series
 {
     protected Series(string? name)
@@ -50,7 +50,7 @@ public abstract class Series
         return Create(name, values, null);
     }
 
-    public static Series<T> Create<T>(string? name, Vector<T> values, IDictionary<T, Variant>? references)
+    public static Series<T> Create<T>(string? name, Vector<T> values, IDictionary<Variant, Variant>? references)
         where T : notnull
     {
         return new Series<T>(name, values, references);
@@ -74,7 +74,7 @@ public abstract class Series
         return CreateNumeric(name, values, null);
     }
 
-    public static NumericSeries<T> CreateNumeric<T>(string? name, NumericVector<T> values, IDictionary<T, Variant>? references)
+    public static NumericSeries<T> CreateNumeric<T>(string? name, NumericVector<T> values, IDictionary<Variant, Variant>? references)
         where T : struct, INumber<T>
     {
         return new NumericSeries<T>(name, values, references);
@@ -82,38 +82,36 @@ public abstract class Series
 }
 
 public abstract class Series<T, TVector> : Series
-   where T : notnull
     where TVector : Vector<T>
 {
-    protected Series(string? name, TVector values, IDictionary<T, Variant>? references) : base(name)
+    protected Series(string? name, TVector values, IDictionary<Variant, Variant>? references) : base(name)
     {
         ArgumentNullException.ThrowIfNull(values);
 
         Values = values;
-        References = references ?? new Dictionary<T, Variant>();
+        References = references ?? new Dictionary<Variant, Variant>();
     }
 
     [JsonPropertyName("values")]
     public TVector Values { get; }
 
     [JsonPropertyName("refs")]
-    public IDictionary<T, Variant> References { get; }
+    public IDictionary<Variant, Variant> References { get; }
 
     [JsonIgnore]
-    public bool IsEmpty => Values.Length == 0;
+    public bool IsEmpty => Length == 0;
 
-    [JsonIgnore]
+    [JsonPropertyName("length")]
     public int Length => Values.Length;
 }
 
 public sealed class Series<T> : Series<T, Vector<T>>
-   where T : notnull
 {
     [JsonConstructor]
     public Series(
         string? name,
         Vector<T> values,
-        IDictionary<T, Variant>? references)
+        IDictionary<Variant, Variant>? references)
         : base(name, values, references)
     {
     }

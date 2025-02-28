@@ -1,28 +1,67 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Diagnostics;
 using System.Numerics;
+using System.Text.Json.Serialization;
+using DSE.Open.Numerics.Serialization;
 
 namespace DSE.Open.Numerics;
 
-public static class Vector
+[JsonConverter(typeof(VectorJsonConverter))]
+public abstract class Vector
 {
+    protected Vector(VectorDataType dataType, Type itemType, int length)
+    {
+        ArgumentNullException.ThrowIfNull(itemType);
+
+        DataType = dataType;
+
+#if DEBUG
+        if (VectorDataTypeHelper.TryGetVectorDataType(itemType, out var expectedDataType)
+            && dataType != expectedDataType)
+        {
+            Debug.Fail($"Expected data type {expectedDataType} for " +
+                $"item type {itemType.Name} but given {dataType}.");
+        }
+#endif
+
+        ItemType = itemType;
+
+        Length = length;
+    }
+
+    public int Length { get; }
+
+    public Type ItemType { get; }
+
+    public VectorDataType DataType { get; }
+
     public static Vector<T> Create<T>(T[] data)
-        where T : notnull
     {
         EnsureNotKnownNumericType(typeof(T));
         return new Vector<T>(data);
     }
 
     public static Vector<T> Create<T>(Memory<T> data)
-        where T : notnull
     {
         EnsureNotKnownNumericType(typeof(T));
         return new Vector<T>(data);
     }
 
+    public static Vector<T> Create<T>(ReadOnlySpan<T> data)
+    {
+        if (data.Length == 0)
+        {
+#pragma warning disable IDE0301 // Simplify collection initialization
+            return Vector<T>.Empty;
+#pragma warning restore IDE0301 // Simplify collection initialization
+        }
+
+        return new Vector<T>(data.ToArray());
+    }
+
     public static Vector<T> Create<T>(T[] data, int start, int length)
-        where T : notnull
     {
         EnsureNotKnownNumericType(typeof(T));
         return new Vector<T>(data, start, length);
@@ -43,6 +82,13 @@ public static class Vector
     public static NumericVector<T> CreateNumeric<T>(ReadOnlySpan<T> data)
         where T : struct, INumber<T>
     {
+        if (data.Length == 0)
+        {
+#pragma warning disable IDE0301 // Simplify collection initialization
+            return NumericVector<T>.Empty;
+#pragma warning restore IDE0301 // Simplify collection initialization
+        }
+
         return new NumericVector<T>(data.ToArray());
     }
 
