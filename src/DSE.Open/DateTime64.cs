@@ -339,54 +339,74 @@ public readonly record struct DateTime64 : INumber<DateTime64>
         return TotalMilliseconds.CompareTo(other.TotalMilliseconds);
     }
 
+    public DateTime64 Add(DateTime64 value)
+    {
+        return new(TotalMilliseconds + value.TotalMilliseconds);
+    }
+
+    private DateTime64 Divide(DateTime64 value)
+    {
+        return new(TotalMilliseconds / value.TotalMilliseconds);
+    }
+
+    private DateTime64 Multiply(DateTime64 value)
+    {
+        return new(TotalMilliseconds * value.TotalMilliseconds);
+    }
+
+    private DateTime64 Subtract(DateTime64 value)
+    {
+        return new(TotalMilliseconds - value.TotalMilliseconds);
+    }
+
     static DateTime64 IUnaryPlusOperators<DateTime64, DateTime64>.operator +(DateTime64 value)
     {
-        throw new NotImplementedException();
+        return value;
     }
 
     static DateTime64 IAdditionOperators<DateTime64, DateTime64, DateTime64>.operator +(DateTime64 left, DateTime64 right)
     {
-        throw new NotImplementedException();
+        return left.Add(right);
     }
 
     static DateTime64 IUnaryNegationOperators<DateTime64, DateTime64>.operator -(DateTime64 value)
     {
-        throw new NotImplementedException();
+        return value.Subtract(One);
     }
 
     static DateTime64 ISubtractionOperators<DateTime64, DateTime64, DateTime64>.operator -(DateTime64 left, DateTime64 right)
     {
-        throw new NotImplementedException();
+        return left.Subtract(right);
     }
 
     static DateTime64 IIncrementOperators<DateTime64>.operator ++(DateTime64 value)
     {
-        throw new NotImplementedException();
+        return value.Add(One);
     }
 
     static DateTime64 IDecrementOperators<DateTime64>.operator --(DateTime64 value)
     {
-        throw new NotImplementedException();
+        return value.Subtract(One);
     }
 
     static DateTime64 IMultiplyOperators<DateTime64, DateTime64, DateTime64>.operator *(DateTime64 left, DateTime64 right)
     {
-        throw new NotImplementedException();
+        return left.Multiply(right);
     }
 
     static DateTime64 IDivisionOperators<DateTime64, DateTime64, DateTime64>.operator /(DateTime64 left, DateTime64 right)
     {
-        throw new NotImplementedException();
+        return left.Divide(right);
     }
 
     static bool IEqualityOperators<DateTime64, DateTime64, bool>.operator ==(DateTime64 left, DateTime64 right)
     {
-        throw new NotImplementedException();
+        return left.TotalMilliseconds == right.TotalMilliseconds;
     }
 
     static bool IEqualityOperators<DateTime64, DateTime64, bool>.operator !=(DateTime64 left, DateTime64 right)
     {
-        throw new NotImplementedException();
+        return left.TotalMilliseconds != right.TotalMilliseconds;
     }
 
     public static bool operator >(DateTime64 left, DateTime64 right)
