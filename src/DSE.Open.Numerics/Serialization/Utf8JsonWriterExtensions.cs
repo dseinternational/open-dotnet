@@ -13,9 +13,53 @@ public static class Utf8JsonWriterExtensions
     {
         ArgumentNullException.ThrowIfNull(writer);
 
-        if (value.GetType() == typeof(ulong))
+        if (value is ulong uint64)
         {
-            writer.WriteNumberValue(ulong.CreateChecked(value));
+            writer.WriteNumberValue(uint64);
+        }
+        else if (value is long int64)
+        {
+            writer.WriteNumberValue(int64);
+        }
+        else if (value is uint uint32)
+        {
+            writer.WriteNumberValue(uint32);
+        }
+        else if (value is int int32)
+        {
+            writer.WriteNumberValue(int32);
+        }
+        else if (value is ushort uint16)
+        {
+            writer.WriteNumberValue(uint16);
+        }
+        else if (value is short int16)
+        {
+            writer.WriteNumberValue(int16);
+        }
+        else if (value is byte uint8)
+        {
+            writer.WriteNumberValue(uint8);
+        }
+        else if (value is sbyte int8)
+        {
+            writer.WriteNumberValue(int8);
+        }
+        else if (value is float single)
+        {
+            writer.WriteNumberValue(single);
+        }
+        else if (value is double doubleVal)
+        {
+            writer.WriteNumberValue(doubleVal);
+        }
+        else if (value is decimal decimalVal)
+        {
+            writer.WriteNumberValue(decimalVal);
+        }
+        else if (value is DateTime64 dateTime64)
+        {
+            writer.WriteNumberValue(dateTime64.TotalMilliseconds);
         }
         else if (T.IsInteger(value))
         {
