@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Diagnostics;
+using System.Numerics;
 using System.Text.Json;
 
 namespace DSE.Open.Numerics.Serialization;
@@ -51,7 +52,7 @@ public static class VectorJsonWriter
     }
 
     public static void Write<T>(Utf8JsonWriter writer, NumericVector<T> vector, JsonSerializerOptions options)
-        where T : struct, System.Numerics.INumber<T>
+        where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(writer);
         ArgumentNullException.ThrowIfNull(vector);
@@ -75,8 +76,50 @@ public static class VectorJsonWriter
         writer.WriteEndObject();
     }
 
+    public static void Write<T>(Utf8JsonWriter writer, CategoricalVector<T> vector, JsonSerializerOptions options)
+        where T : struct, IComparable<T>, IEquatable<T>, IBinaryInteger<T>, IMinMaxValue<T>
+    {
+        ArgumentNullException.ThrowIfNull(writer);
+        ArgumentNullException.ThrowIfNull(vector);
+        JsonExceptionHelper.ThrowIfLengthExceedsSerializationLimit(vector.Length);
+
+        writer.WriteStartObject();
+        writer.WriteString(VectorJsonPropertyNames.DataType, VectorDataTypeHelper.GetLabel(vector.DataType));
+        writer.WriteNumber(VectorJsonPropertyNames.Length, vector.Length);
+        writer.WritePropertyName(VectorJsonPropertyNames.Values);
+
+        // todo: error if no categories and > 0 data values ??
+
+        if (vector.CategoryData.Length > 0)
+        {
+            writer.WritePropertyName(VectorJsonPropertyNames.Categories);
+
+            writer.WriteStartObject();
+
+            foreach (var kvp in vector.CategoryData)
+            {
+                writer.WritePropertyName(kvp.Key);
+                writer.WriteNumberValue(kvp.Value);
+            }
+
+            writer.WriteEndObject();
+        }
+
+        if (vector.Length == 0)
+        {
+            writer.WriteStartArray();
+            writer.WriteEndArray();
+        }
+        else
+        {
+            WriteNumberArray(writer, vector.Span);
+        }
+
+        writer.WriteEndObject();
+    }
+
     private static void WriteNumberArray<T>(Utf8JsonWriter writer, ReadOnlySpan<T> vector)
-        where T : struct, System.Numerics.INumber<T>
+        where T : struct, INumber<T>
     {
         Debug.Assert(vector.Length > 0);
 

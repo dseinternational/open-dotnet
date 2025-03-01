@@ -418,6 +418,66 @@ public class VectorJsonConverter : JsonConverter<Vector>
             return;
         }
 
+        if (value is CategoricalVector<int> intCategoricalVector)
+        {
+            VectorJsonWriter.Write(writer, intCategoricalVector, options);
+            return;
+        }
+
+        if (value is CategoricalVector<long> longCategoricalVector)
+        {
+            VectorJsonWriter.Write(writer, longCategoricalVector, options);
+            return;
+        }
+
+        if (value is CategoricalVector<uint> uintCategoricalVector)
+        {
+            VectorJsonWriter.Write(writer, uintCategoricalVector, options);
+            return;
+        }
+
+        if (value is CategoricalVector<ulong> uint64CategoricalVector)
+        {
+            VectorJsonWriter.Write(writer, uint64CategoricalVector, options);
+            return;
+        }
+
+        if (value is CategoricalVector<short> shortCategoricalVector)
+        {
+            VectorJsonWriter.Write(writer, shortCategoricalVector, options);
+            return;
+        }
+
+        if (value is CategoricalVector<ushort> ushortCategoricalVector)
+        {
+            VectorJsonWriter.Write(writer, ushortCategoricalVector, options);
+            return;
+        }
+
+        if (value is CategoricalVector<sbyte> sbyteCategoricalVector)
+        {
+            VectorJsonWriter.Write(writer, sbyteCategoricalVector, options);
+            return;
+        }
+
+        if (value is CategoricalVector<byte> byteCategoricalVector)
+        {
+            VectorJsonWriter.Write(writer, byteCategoricalVector, options);
+            return;
+        }
+
+        if (value is CategoricalVector<Int128> int128CategoricalVector)
+        {
+            VectorJsonWriter.Write(writer, int128CategoricalVector, options);
+            return;
+        }
+
+        if (value is CategoricalVector<UInt128> uint128CategoricalVector)
+        {
+            VectorJsonWriter.Write(writer, uint128CategoricalVector, options);
+            return;
+        }
+
         if (value is Vector<string> stringVector)
         {
             VectorJsonWriter.Write(writer, stringVector, options);

@@ -93,7 +93,7 @@ public class ReadOnlyVector<T> : ReadOnlyVector, IEquatable<ReadOnlyVector<T>>, 
 
     IEnumerator<T> IEnumerable<T>.GetEnumerator()
     {
-        return MemoryMarshal.ToEnumerable<T>(Data).GetEnumerator();
+        return MemoryMarshal.ToEnumerable(Data).GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()
