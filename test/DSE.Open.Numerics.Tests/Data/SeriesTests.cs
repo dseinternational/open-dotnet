@@ -37,6 +37,7 @@ public class SeriesTests : LoggedTestsBase
         Assert.NotNull(deserialized);
         Assert.Equivalent(series, deserialized);
     }
+
     [Fact]
     public void SerializeDeserialize_Polymorphic()
     {

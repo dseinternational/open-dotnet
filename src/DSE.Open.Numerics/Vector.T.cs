@@ -1,9 +1,11 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using DSE.Open.Numerics.Serialization;
 
@@ -16,7 +18,7 @@ namespace DSE.Open.Numerics;
 /// <typeparam name="T"></typeparam>
 [CollectionBuilder(typeof(Vector), nameof(Create))]
 [JsonConverter(typeof(VectorJsonConverter))]
-public class Vector<T> : Vector, IEquatable<Vector<T>>
+public class Vector<T> : Vector, IEquatable<Vector<T>>, IReadOnlyList<T>
 {
     public static readonly Vector<T> Empty = new([]);
 
@@ -33,13 +35,9 @@ public class Vector<T> : Vector, IEquatable<Vector<T>>
         Memory = data;
     }
 
-    protected Memory<T> Memory { get; }
-
-    public Span<T> Span
-    {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => Memory.Span;
-    }
+#pragma warning disable CA1033 // Interface methods should be callable by child types
+    int IReadOnlyCollection<T>.Count => Length;
+#pragma warning restore CA1033 // Interface methods should be callable by child types
 
     public T this[int index]
     {
@@ -47,6 +45,14 @@ public class Vector<T> : Vector, IEquatable<Vector<T>>
         get => Memory.Span[index];
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         set => Memory.Span[index] = value;
+    }
+
+    protected Memory<T> Memory { get; }
+
+    public Span<T> Span
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => Memory.Span;
     }
 
     public override bool Equals(object? obj)
@@ -85,6 +91,16 @@ public class Vector<T> : Vector, IEquatable<Vector<T>>
     public T[] ToArray()
     {
         return Memory.ToArray();
+    }
+
+    IEnumerator<T> IEnumerable<T>.GetEnumerator()
+    {
+        return MemoryMarshal.ToEnumerable<T>(Memory).GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return ((IEnumerable<T>)this).GetEnumerator();
     }
 
     public static bool operator ==(Vector<T> left, Vector<T> right)

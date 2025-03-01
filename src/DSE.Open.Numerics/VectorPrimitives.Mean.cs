@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Numerics;
+using DSE.Open.Numerics.Data;
 
 namespace DSE.Open.Numerics;
 
@@ -18,7 +19,7 @@ public static partial class VectorPrimitives
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(series);
-        return Mean<T, T>(series.Values.Span);
+        return Mean<T, T>(series.Data.Span);
     }
 
     /// <summary>

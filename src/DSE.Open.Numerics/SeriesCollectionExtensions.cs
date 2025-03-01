@@ -15,11 +15,11 @@ public static class SeriesCollectionExtensions
         series.Add(Series.Create(name, Vector.Create(vector)));
     }
 
-    public static void Add<T>(this ICollection<Series> series, string name, T[] vector, IDictionary<Variant, Variant> references)
+    public static void Add<T>(this ICollection<Series> series, string name, T[] vector, IDictionary<string, Variant>? annotations)
         where T : notnull
     {
         ArgumentNullException.ThrowIfNull(series);
-        series.Add(Series.Create(name, Vector.Create(vector), references));
+        series.Add(Series.Create(name, Vector.Create(vector), annotations));
     }
 
     public static void AddNumeric<T>(this ICollection<Series> series, string name, T[] vector)
@@ -29,10 +29,10 @@ public static class SeriesCollectionExtensions
         series.Add(Series.CreateNumeric(name, Vector.CreateNumeric(vector)));
     }
 
-    public static void AddNumeric<T>(this ICollection<Series> series, string name, T[] vector, IDictionary<Variant, Variant> references)
+    public static void AddNumeric<T>(this ICollection<Series> series, string name, T[] vector, IDictionary<string, Variant>? annotations)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(series);
-        series.Add(Series.CreateNumeric(name, Vector.CreateNumeric(vector), references));
+        series.Add(Series.CreateNumeric(name, Vector.CreateNumeric(vector), annotations));
     }
 }

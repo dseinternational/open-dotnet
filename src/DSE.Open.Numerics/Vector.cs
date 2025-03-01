@@ -15,8 +15,6 @@ public abstract class Vector
     {
         ArgumentNullException.ThrowIfNull(itemType);
 
-        DataType = dataType;
-
 #if DEBUG
         if (VectorDataTypeHelper.TryGetVectorDataType(itemType, out var expectedDataType)
             && dataType != expectedDataType)
@@ -26,12 +24,18 @@ public abstract class Vector
         }
 #endif
 
+        DataType = dataType;
+
+        IsNumeric = NumberHelper.IsKnownNumberType(itemType);
+
         ItemType = itemType;
 
         Length = length;
     }
 
     public int Length { get; }
+
+    public bool IsNumeric { get; }
 
     public Type ItemType { get; }
 

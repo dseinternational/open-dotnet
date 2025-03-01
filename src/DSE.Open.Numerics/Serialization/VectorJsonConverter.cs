@@ -9,6 +9,8 @@ namespace DSE.Open.Numerics.Serialization;
 
 public class VectorJsonConverter : JsonConverter<Vector>
 {
+    public static VectorJsonConverter Default { get; } = new();
+
     public VectorJsonConverter() : this(default) { }
 
     public VectorJsonConverter(VectorJsonFormat format = default)

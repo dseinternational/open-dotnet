@@ -3,116 +3,189 @@
 
 using System.Numerics;
 using System.Text.Json.Serialization;
+using DSE.Open.Numerics.Serialization;
 
 namespace DSE.Open.Numerics.Data;
 
-[JsonPolymorphic(TypeDiscriminatorPropertyName = "dtype")]
-[JsonDerivedType(typeof(Series<bool>), VectorDataTypeLabels.Bool)]
-[JsonDerivedType(typeof(Series<char>), VectorDataTypeLabels.Char)]
-[JsonDerivedType(typeof(Series<string>), VectorDataTypeLabels.String)]
-[JsonDerivedType(typeof(Series<DateTime>), VectorDataTypeLabels.DateTime)]
-[JsonDerivedType(typeof(Series<DateTimeOffset>), VectorDataTypeLabels.DateTimeOffset)]
-[JsonDerivedType(typeof(Series<Guid>), VectorDataTypeLabels.Uuid)]
-[JsonDerivedType(typeof(NumericSeries<byte>), VectorDataTypeLabels.UInt8)]
-[JsonDerivedType(typeof(NumericSeries<sbyte>), VectorDataTypeLabels.Int8)]
-[JsonDerivedType(typeof(NumericSeries<short>), VectorDataTypeLabels.Int16)]
-[JsonDerivedType(typeof(NumericSeries<ushort>), VectorDataTypeLabels.UInt16)]
-[JsonDerivedType(typeof(NumericSeries<int>), VectorDataTypeLabels.Int32)]
-[JsonDerivedType(typeof(NumericSeries<uint>), VectorDataTypeLabels.UInt32)]
-[JsonDerivedType(typeof(NumericSeries<long>), VectorDataTypeLabels.Int64)]
-[JsonDerivedType(typeof(NumericSeries<ulong>), VectorDataTypeLabels.UInt64)]
-[JsonDerivedType(typeof(NumericSeries<Int128>), VectorDataTypeLabels.Int128)]
-[JsonDerivedType(typeof(NumericSeries<UInt128>), VectorDataTypeLabels.UInt128)]
-[JsonDerivedType(typeof(NumericSeries<float>), VectorDataTypeLabels.Float32)]
-[JsonDerivedType(typeof(NumericSeries<double>), VectorDataTypeLabels.Float64)]
-[JsonDerivedType(typeof(NumericSeries<DateTime64>), VectorDataTypeLabels.DateTime64)]
+/// <summary>
+/// A serializable sequence of data with a label.
+/// </summary>
+[JsonConverter(typeof(SeriesJsonConverter))]
 public abstract class Series
 {
-    protected Series(string? name)
+    protected Series(string? name, IDictionary<string, Variant>? annotations)
     {
         Name = name;
+        Annotations = annotations;
     }
 
-    [JsonPropertyName("name")]
-    [JsonPropertyOrder(-1000)]
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Name { get; set; }
 
-    public static Series<T> Create<T>(Vector<T> values)
+    public IDictionary<string, Variant>? Annotations { get; }
+
+    internal abstract Vector GetData();
+
+    public static Series Create(Vector data)
+    {
+        return Create(null, data, null);
+    }
+
+    public static Series Create(string? name, Vector data)
+    {
+        return Create(name, data, null);
+    }
+
+    public static Series Create(string? name, Vector data, IDictionary<string, Variant>? annotations)
+    {
+        ArgumentNullException.ThrowIfNull(data);
+
+        if (data is NumericVector<int> intVector)
+        {
+            return CreateNumeric(name, intVector, annotations);
+        }
+
+        if (data is NumericVector<long> longVector)
+        {
+            return CreateNumeric(name, longVector, annotations);
+        }
+
+        if (data is NumericVector<short> shortVector)
+        {
+            return CreateNumeric(name, shortVector, annotations);
+        }
+
+        if (data is NumericVector<float> floatVector)
+        {
+            return CreateNumeric(name, floatVector, annotations);
+        }
+
+        if (data is NumericVector<double> doubleVector)
+        {
+            return CreateNumeric(name, doubleVector, annotations);
+        }
+
+        if (data is NumericVector<uint> uintVector)
+        {
+            return CreateNumeric(name, uintVector, annotations);
+        }
+
+        if (data is NumericVector<ulong> ulongVector)
+        {
+            return CreateNumeric(name, ulongVector, annotations);
+        }
+
+        if (data is NumericVector<ushort> ushortVector)
+        {
+            return CreateNumeric(name, ushortVector, annotations);
+        }
+
+        if (data is NumericVector<DateTime64> dateTime64Vector)
+        {
+            return CreateNumeric(name, dateTime64Vector, annotations);
+        }
+
+        if (data is Vector<string> stringVector)
+        {
+            return Create(name, stringVector, annotations);
+        }
+
+        if (data is Vector<char> charVector)
+        {
+            return Create(name, charVector, annotations);
+        }
+
+        if (data is Vector<bool> boolVector)
+        {
+            return Create(name, boolVector, annotations);
+        }
+
+        if (data is Vector<Guid> guidVector)
+        {
+            return Create(name, guidVector, annotations);
+        }
+
+        if (data is Vector<DateTime> DateTimeVector)
+        {
+            return Create(name, DateTimeVector, annotations);
+        }
+
+        if (data is Vector<DateTimeOffset> DateTimeOffsetVector)
+        {
+            return Create(name, DateTimeOffsetVector, annotations);
+        }
+
+        throw new InvalidOperationException($"Unsupported data type {data.GetType().Name}");
+    }
+
+    public static Series<T> Create<T>(Vector<T> data)
         where T : notnull
     {
-        return Create(null, values);
+        return Create(null, data);
     }
 
-    public static Series<T> Create<T>(string? name, Vector<T> values)
+    public static Series<T> Create<T>(string? name, Vector<T> data)
         where T : notnull
     {
-        return Create(name, values, null);
+        return Create(name, data, null);
     }
 
-    public static Series<T> Create<T>(string? name, Vector<T> values, IDictionary<Variant, Variant>? references)
+    public static Series<T> Create<T>(string? name, Vector<T> data, IDictionary<string, Variant>? annotations)
         where T : notnull
     {
-        return new Series<T>(name, values, references);
+        return new Series<T>(name, data, annotations);
     }
 
-    public static NumericSeries<T> CreateNumeric<T>(Memory<T> values)
+    public static NumericSeries<T> CreateNumeric<T>(Memory<T> data)
         where T : struct, INumber<T>
     {
-        return CreateNumeric(null, Vector.CreateNumeric(values), null);
+        return CreateNumeric(null, Vector.CreateNumeric(data), null);
     }
 
-    public static NumericSeries<T> CreateNumeric<T>(NumericVector<T> values)
+    public static NumericSeries<T> CreateNumeric<T>(NumericVector<T> data)
         where T : struct, INumber<T>
     {
-        return CreateNumeric(null, values);
+        return CreateNumeric(null, data);
     }
 
-    public static NumericSeries<T> CreateNumeric<T>(string? name, NumericVector<T> values)
+    public static NumericSeries<T> CreateNumeric<T>(string? name, NumericVector<T> data)
         where T : struct, INumber<T>
     {
-        return CreateNumeric(name, values, null);
+        return CreateNumeric(name, data, null);
     }
 
-    public static NumericSeries<T> CreateNumeric<T>(string? name, NumericVector<T> values, IDictionary<Variant, Variant>? references)
+    public static NumericSeries<T> CreateNumeric<T>(string? name, NumericVector<T> data, IDictionary<string, Variant>? annotations)
         where T : struct, INumber<T>
     {
-        return new NumericSeries<T>(name, values, references);
+        return new NumericSeries<T>(name, data, annotations);
     }
 }
 
+[JsonConverter(typeof(SeriesJsonConverter))]
 public abstract class Series<T, TVector> : Series
     where TVector : Vector<T>
 {
-    protected Series(string? name, TVector values, IDictionary<Variant, Variant>? references) : base(name)
+    protected Series(string? name, TVector data, IDictionary<string, Variant>? annotations) : base(name, annotations)
     {
-        ArgumentNullException.ThrowIfNull(values);
-
-        Values = values;
-        References = references ?? new Dictionary<Variant, Variant>();
+        ArgumentNullException.ThrowIfNull(data);
+        Data = data;
     }
 
-    [JsonPropertyName("values")]
-    public TVector Values { get; }
+    public TVector Data { get; }
 
-    [JsonPropertyName("refs")]
-    public IDictionary<Variant, Variant> References { get; }
-
-    [JsonIgnore]
-    public bool IsEmpty => Length == 0;
-
-    [JsonPropertyName("length")]
-    public int Length => Values.Length;
+    internal override Vector GetData()
+    {
+        return Data;
+    }
 }
 
+[JsonConverter(typeof(SeriesJsonConverter))]
 public sealed class Series<T> : Series<T, Vector<T>>
 {
-    [JsonConstructor]
     public Series(
         string? name,
-        Vector<T> values,
-        IDictionary<Variant, Variant>? references)
-        : base(name, values, references)
+        Vector<T> data,
+        IDictionary<string, Variant>? annotations)
+        : base(name, data, annotations)
     {
     }
 }
