@@ -4,8 +4,11 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using System.Text.Json;
+using DSE.Open.Memory;
 
 namespace DSE.Open.Numerics.Serialization;
+
+#pragma warning disable DSEOPEN001 // ArrayBuilder ref struct warning
 
 public static class VectorJsonReader
 {

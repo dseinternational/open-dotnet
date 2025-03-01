@@ -1,11 +1,14 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using System.Text.Json;
+using DSE.Open.Memory;
 
 namespace DSE.Open.Numerics.Serialization;
+
+#pragma warning disable DSEOPEN001 // ArrayBuilder ref struct warning
 
 public static class ReadOnlyVectorJsonReader
 {

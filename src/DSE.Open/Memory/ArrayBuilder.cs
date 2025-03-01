@@ -3,35 +3,43 @@
 
 using System.Buffers;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
-namespace DSE.Open.Numerics;
+namespace DSE.Open.Memory;
+
+public static class ArrayBuilder
+{
+    internal const int DefaultOwnedCapacity = 256;
+    internal const int DefaultRentedCapacity = 1024;
+}
 
 /// <summary>
 /// Supports the construction of arrays using stack-allocated, pooled and owned buffers.
-/// <b>Important:</b> only pass this struct by reference.
+/// <b>⚠ Warning:</b> only pass this struct by reference.
 /// </summary>
 /// <typeparam name="T"></typeparam>
-internal ref struct ArrayBuilder<T>
+[Experimental(DiagnosticIds.ArrayBuilderRefStructWarning,
+    UrlFormat = "https://github.com/dseinternational/open-dotnet/blob/main/src/DSE.Open/Memory/ArrayBuilder.cs")]
+public ref struct ArrayBuilder<T>
 {
-    private const int DefaultOwnedCapacity = 256;
-    private const int DefaultRentedCapacity = 1024;
-
     private T[]? _pooledBuffer;
     private T[]? _ownedBuffer;
     private Span<T> _buffer;
     private int _count;
     private bool _rentFromPool;
 
-    public ArrayBuilder(bool rentFromPool = false)
-        : this(rentFromPool ? DefaultRentedCapacity : DefaultOwnedCapacity, rentFromPool) { }
+    public ArrayBuilder() : this(false) { }
+
+    public ArrayBuilder(bool rentFromPool)
+        : this(rentFromPool ? ArrayBuilder.DefaultRentedCapacity : ArrayBuilder.DefaultOwnedCapacity, rentFromPool) { }
 
     /// <summary>
     /// Initializes the <see cref="ArrayBuilder{T}"/> with a specified capacity.
     /// </summary>
     /// <param name="capacity">The capacity of the array to allocate.</param>
     /// <param name="rentFromPool">Whether the buffer should be rented from the shared ArrayPool.</param>
-    public ArrayBuilder(int capacity, bool rentFromPool = false) : this()
+    public ArrayBuilder(int capacity, bool rentFromPool = false)
     {
         Guard.IsGreaterThanOrEqualTo(capacity, 0);
 
@@ -51,12 +59,14 @@ internal ref struct ArrayBuilder<T>
         _rentFromPool = rentFromPool;
     }
 
+    public ArrayBuilder(Span<T> initialBuffer) : this(initialBuffer, false) { }
+
     /// <summary>
     /// Initializes the <see cref="ArrayBuilder{T}"/> with a specified initial buffer.
     /// </summary>
     /// <param name="initialBuffer"></param>
     /// <param name="rentFromPool">Whether new buffers should be rented from the shared ArrayPool.</param>
-    public ArrayBuilder(Span<T> initialBuffer, bool rentFromPool = false) : this()
+    public ArrayBuilder(Span<T> initialBuffer, bool rentFromPool)
     {
         _buffer = initialBuffer;
         _rentFromPool = rentFromPool;
@@ -81,6 +91,28 @@ internal ref struct ArrayBuilder<T>
         {
             Guard.IsInRange(index, 0, _count);
             return _buffer[index];
+        }
+    }
+
+    /// <summary>
+    /// Indicated if a buffer has been allocated by the ArrayBuilder. This will be false
+    /// if an initial buffer was provided and its capacity has not been exceeded.
+    /// </summary>
+    public readonly bool BufferAllocated => _ownedBuffer is not null || _pooledBuffer is not null;
+
+    /// <summary>
+    /// Gets a <see cref="Span{T}"/> over the items currently added to the builder.
+    /// </summary>
+    public readonly Span<T> Span
+    {
+        get
+        {
+            if (_buffer.IsEmpty)
+            {
+                return _buffer;
+            }
+
+            return _buffer[.._count];
         }
     }
 
@@ -111,7 +143,7 @@ internal ref struct ArrayBuilder<T>
         Debug.Assert(minimum > Capacity);
 
         var capacity = Capacity;
-        var newCapacity = capacity == 0 ? DefaultOwnedCapacity : 2 * capacity;
+        var newCapacity = capacity == 0 ? ArrayBuilder.DefaultOwnedCapacity : 2 * capacity;
 
         if ((uint)newCapacity > (uint)Array.MaxLength)
         {

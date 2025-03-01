@@ -6,8 +6,11 @@ using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using DSE.Open.Memory;
 
 namespace DSE.Open.Numerics.Serialization;
+
+#pragma warning disable DSEOPEN001 // ArrayBuilder ref struct warning
 
 public class VectorJsonConverter : JsonConverter<Vector>
 {
