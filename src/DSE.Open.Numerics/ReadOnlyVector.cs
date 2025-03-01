@@ -144,7 +144,7 @@ public abstract class ReadOnlyVector
         return new(copy ? [.. data] : data);
     }
 
-    public static ReadOnlyNumericVector<T> CreateNumeric<T>(Memory<T> data, bool copy = false)
+    public static ReadOnlyNumericVector<T> CreateNumeric<T>(ReadOnlyMemory<T> data, bool copy = false)
         where T : struct, INumber<T>
     {
         return new(copy ? data.ToArray() : data);
@@ -209,14 +209,14 @@ public abstract class ReadOnlyVector
     /// values (the length of <paramref name="data"/>). To check if there is a label for each unique
     /// value in <paramref name="data"/>, call <see cref="CategoricalVector{T}.IsValid"/>.
     /// </remarks>
-    public static CategoricalVector<T> CreateCategorical<T>(
+    public static ReadOnlyCategoricalVector<T> CreateCategorical<T>(
         T[] data,
-        Memory<KeyValuePair<string, T>> categories,
+        ReadOnlyMemory<KeyValuePair<string, T>> categories,
         bool copyData = false,
         bool copyCatgories = false)
         where T : struct, IComparable<T>, IEquatable<T>, IBinaryInteger<T>, IMinMaxValue<T>
     {
-        return new CategoricalVector<T>(copyData ? [.. data] : data, copyCatgories ? categories.ToArray() : categories);
+        return new ReadOnlyCategoricalVector<T>(copyData ? [.. data] : data, copyCatgories ? categories.ToArray() : categories);
     }
 
     /// <summary>
@@ -233,14 +233,14 @@ public abstract class ReadOnlyVector
     /// values (the length of <paramref name="data"/>). To check if there is a label for each unique
     /// value in <paramref name="data"/>, call <see cref="CategoricalVector{T}.IsValid"/>.
     /// </remarks>
-    public static CategoricalVector<T> CreateCategorical<T>(
-        Memory<T> data,
-        Memory<KeyValuePair<string, T>> categories,
+    public static ReadOnlyCategoricalVector<T> CreateCategorical<T>(
+        ReadOnlyMemory<T> data,
+        ReadOnlyMemory<KeyValuePair<string, T>> categories,
         bool copyData = false,
         bool copyCatgories = false)
         where T : struct, IComparable<T>, IEquatable<T>, IBinaryInteger<T>, IMinMaxValue<T>
     {
-        return new CategoricalVector<T>(copyData ? data.ToArray() : data, copyCatgories ? categories.ToArray() : categories);
+        return new(copyData ? data.ToArray() : data, copyCatgories ? categories.ToArray() : categories);
     }
 
     /// <summary>
@@ -255,7 +255,7 @@ public abstract class ReadOnlyVector
     /// values (the length of <paramref name="data"/>). To check if there is a label for each unique
     /// value in <paramref name="data"/>, call <see cref="CategoricalVector{T}.IsValid"/>.
     /// </remarks>
-    public static CategoricalVector<T> CreateCategorical<T>(
+    public static ReadOnlyCategoricalVector<T> CreateCategorical<T>(
         ReadOnlySpan<T> data,
         ReadOnlySpan<KeyValuePair<string, T>> categories)
         where T : struct, IComparable<T>, IEquatable<T>, IBinaryInteger<T>, IMinMaxValue<T>
@@ -263,11 +263,11 @@ public abstract class ReadOnlyVector
         if (data.Length == 0)
         {
 #pragma warning disable IDE0301 // Simplify collection initialization
-            return CategoricalVector<T>.Empty;
+            return ReadOnlyCategoricalVector<T>.Empty;
 #pragma warning restore IDE0301 // Simplify collection initialization
         }
 
-        return new CategoricalVector<T>(data.ToArray(), categories.ToArray());
+        return new(data.ToArray(), categories.ToArray());
     }
 
     internal static void EnsureNotKnownNumericType(Type type)

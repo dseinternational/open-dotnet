@@ -168,6 +168,24 @@ internal ref struct ArrayBuilder<T>
         }
     }
 
+    /// <summary>
+    /// If the buffer is owned (rather than rented from the pool), returns a <see cref="Memory{T}"/>
+    /// over the owned array, otherwise returns a <see cref="Memory{T}"/> over a new array into which
+    /// the items are copied.
+    /// </summary>
+    /// <returns></returns>
+    public readonly ReadOnlyMemory<T> ToReadOnlyMemory()
+    {
+        if (_ownedBuffer is not null)
+        {
+            return new ReadOnlyMemory<T>(_ownedBuffer, 0, _count);
+        }
+        else
+        {
+            return _buffer[.._count].ToArray();
+        }
+    }
+
     public readonly ReadOnlySpan<T> Buffer => _buffer;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
