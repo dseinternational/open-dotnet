@@ -17,7 +17,7 @@ public ref struct ReadOnlyMemoryEnumerator<T>
         _index = -1;
     }
 
-    public T Current
+    public readonly T Current
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get => _span[_index];

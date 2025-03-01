@@ -81,6 +81,9 @@ public class NumericsException : Exception
     public static void ThrowIfNotEqualLength<T>(ReadOnlyNumericVector<T> x, ReadOnlyNumericVector<T> y)
         where T : struct, INumber<T>
     {
+        ArgumentNullException.ThrowIfNull(x);
+        ArgumentNullException.ThrowIfNull(y);
+
         if (x.Length != y.Length)
         {
             Throw("Vectors must be the same length.");
@@ -125,6 +128,9 @@ public class NumericsException : Exception
     public static void ThrowIfNotEqualLength<T>(ReadOnlyNumericVector<T> x, ReadOnlyNumericVector<T> y, ReadOnlySpan<T> z)
         where T : struct, INumber<T>
     {
+        ArgumentNullException.ThrowIfNull(x);
+        ArgumentNullException.ThrowIfNull(y);
+
         if (x.Length != y.Length || x.Length != z.Length)
         {
             Throw("Vectors must be the same length.");

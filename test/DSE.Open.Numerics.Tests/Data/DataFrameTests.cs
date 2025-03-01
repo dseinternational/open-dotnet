@@ -22,6 +22,20 @@ public class DataFrameTests : LoggedTestsBase
     }
 
     [Fact]
+    public void Indexer_Get()
+    {
+        var series1 = Series.CreateNumeric("series1", [1, 2, 3, 4, 5]);
+        var series2 = Series.CreateNumeric("series2", [5, 4, 3, 2, 1]);
+
+        var frame = new DataFrame();
+        frame.Columns.Add(series1);
+        frame.Columns.Add(series2);
+
+        Assert.Same(series1, frame[0]);
+        Assert.Same(series2, frame[1]);
+    }
+
+    [Fact]
     public void SerializeDeserialize()
     {
         var series1 = Series.CreateNumeric("series1", [1, 2, 3, 4, 5]);

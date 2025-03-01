@@ -53,7 +53,7 @@ public class NumericVector<T> : Vector<T>
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates", Justification = "By design")]
     public static implicit operator ReadOnlyNumericVector<T>(NumericVector<T> vector)
     {
-        ArgumentNullException.ThrowIfNull(vector);
-        return new(vector.Data);
+        return vector is not null ? vector.Data : default;
     }
 }
+

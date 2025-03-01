@@ -3,6 +3,7 @@
 
 using System.Text.Json.Serialization;
 using DSE.Open.Collections.Generic;
+using DSE.Open.Memory;
 
 namespace DSE.Open.Numerics.Data;
 
@@ -24,4 +25,10 @@ public class DataFrame
 
     [JsonPropertyName("columns")]
     public Collection<Series> Columns { get; }
+
+    public Series this[int index]
+    {
+        get => Columns[index];
+        set => Columns[index] = value;
+    }
 }

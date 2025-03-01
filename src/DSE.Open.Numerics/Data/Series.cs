@@ -170,6 +170,8 @@ public abstract class Series<T, TVector> : Series
         Data = data;
     }
 
+    public T this[int index] => Data[index];
+
     public TVector Data { get; }
 
     internal override Vector GetData()
