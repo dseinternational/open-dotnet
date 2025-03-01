@@ -212,31 +212,41 @@ public readonly record struct DateTime64 : INumber<DateTime64>
 
     static bool INumberBase<DateTime64>.TryConvertFromSaturating<TOther>(TOther value, out DateTime64 result)
     {
-        // todo: add implementation to NumberHelper
-        throw new NotImplementedException();
+        if (NumberHelper.TryConvertToInt64Saturating(value, out var ms))
+        {
+            result = new DateTime64(ms);
+            return true;
+        }
+
+        result = default;
+        return false;
     }
 
     static bool INumberBase<DateTime64>.TryConvertFromTruncating<TOther>(TOther value, out DateTime64 result)
     {
-        // todo: add implementation to NumberHelper
-        throw new NotImplementedException();
+        if (NumberHelper.TryConvertToInt64Truncating(value, out var ms))
+        {
+            result = new DateTime64(ms);
+            return true;
+        }
+
+        result = default;
+        return false;
     }
 
     static bool INumberBase<DateTime64>.TryConvertToChecked<TOther>(DateTime64 value, out TOther result)
     {
-        // todo: add implementation to NumberHelper
-        throw new NotImplementedException();
+        return TOther.TryConvertFromChecked(value.TotalMilliseconds, out result!);
     }
 
     static bool INumberBase<DateTime64>.TryConvertToSaturating<TOther>(DateTime64 value, out TOther result)
     {
-        // todo: add implementation to NumberHelper
-        throw new NotImplementedException();
+        return TOther.TryConvertFromSaturating(value.TotalMilliseconds, out result!);
     }
 
     static bool INumberBase<DateTime64>.TryConvertToTruncating<TOther>(DateTime64 value, out TOther result)
     {
-        throw new NotImplementedException();
+        return TOther.TryConvertFromTruncating(value.TotalMilliseconds, out result!);
     }
 
     public static bool TryParse(
