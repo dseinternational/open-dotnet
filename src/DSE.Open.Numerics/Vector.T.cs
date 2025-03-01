@@ -32,7 +32,7 @@ public class Vector<T> : Vector, IEquatable<Vector<T>>, IReadOnlyList<T>
 
     internal Vector(Memory<T> data) : base(VectorDataTypeHelper.GetVectorDataType<T>(), typeof(T), data.Length)
     {
-        Memory = data;
+        Data = data;
     }
 
 #pragma warning disable CA1033 // Interface methods should be callable by child types
@@ -42,17 +42,17 @@ public class Vector<T> : Vector, IEquatable<Vector<T>>, IReadOnlyList<T>
     public T this[int index]
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => Memory.Span[index];
+        get => Data.Span[index];
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        set => Memory.Span[index] = value;
+        set => Data.Span[index] = value;
     }
 
-    protected Memory<T> Memory { get; }
+    protected Memory<T> Data { get; }
 
     public Span<T> Span
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => Memory.Span;
+        get => Data.Span;
     }
 
     public override bool Equals(object? obj)
@@ -62,7 +62,7 @@ public class Vector<T> : Vector, IEquatable<Vector<T>>, IReadOnlyList<T>
 
     public MemoryEnumerator<T> GetEnumerator()
     {
-        return Memory.GetEnumerator();
+        return Data.GetEnumerator();
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -80,22 +80,22 @@ public class Vector<T> : Vector, IEquatable<Vector<T>>, IReadOnlyList<T>
 
     public bool Equals(Vector<T>? other)
     {
-        return other is not null && Equals(other.Memory.Span);
+        return other is not null && Equals(other.Data.Span);
     }
 
     public bool Equals(ReadOnlySpan<T> other)
     {
-        return Memory.Span.SequenceEqual(other);
+        return Data.Span.SequenceEqual(other);
     }
 
     public T[] ToArray()
     {
-        return Memory.ToArray();
+        return Data.ToArray();
     }
 
     IEnumerator<T> IEnumerable<T>.GetEnumerator()
     {
-        return MemoryMarshal.ToEnumerable<T>(Memory).GetEnumerator();
+        return MemoryMarshal.ToEnumerable<T>(Data).GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()
@@ -134,6 +134,6 @@ public class Vector<T> : Vector, IEquatable<Vector<T>>, IReadOnlyList<T>
         Justification = "By design")]
     public static implicit operator Memory<T>(Vector<T> vector)
     {
-        return vector is not null ? vector.Memory : default;
+        return vector is not null ? vector.Data : default;
     }
 }

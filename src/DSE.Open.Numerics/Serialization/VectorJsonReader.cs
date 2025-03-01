@@ -1,14 +1,19 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Diagnostics.CodeAnalysis;
+using System.Numerics;
 using System.Text.Json;
 
 namespace DSE.Open.Numerics.Serialization;
 
 public static class VectorJsonReader
 {
-    public static NumericVector<T> ReadNumericVector<T>(ref Utf8JsonReader reader, int length, VectorJsonFormat format = default)
-        where T : struct, System.Numerics.INumber<T>
+    public static NumericVector<T> ReadNumericVector<T>(
+        ref Utf8JsonReader reader,
+        int length,
+        VectorJsonFormat format = default)
+        where T : struct, INumber<T>
     {
         if (length == 0)
         {
@@ -30,9 +35,49 @@ public static class VectorJsonReader
                     throw new JsonException();
                 }
 
-                // if rented buffer (length < 0), ToMemory() copies to new array of correct length,
-                // otherwise the Memory<T> simply references the owned buffer so no copying here
                 return Vector.CreateNumeric(builder.ToMemory());
+            }
+
+            if (reader.TokenType == JsonTokenType.Number)
+            {
+                if (reader.TryGetNumber(out T number))
+                {
+                    builder.Add(number);
+                }
+            }
+        }
+
+        throw new JsonException();
+    }
+
+    public static CategoricalVector<T> ReadCategoryVector<T>(
+        ref Utf8JsonReader reader,
+        int length,
+        Memory<KeyValuePair<string, T>> categories,
+        VectorJsonFormat format = default)
+        where T : struct, IComparable<T>, IEquatable<T>, IBinaryInteger<T>, IMinMaxValue<T>
+    {
+        if (length == 0)
+        {
+#pragma warning disable IDE0301 // Simplify collection initialization
+            return CategoricalVector<T>.Empty;
+#pragma warning restore IDE0301 // Simplify collection initialization
+        }
+
+        using var builder = length > -1
+            ? new ArrayBuilder<T>(length, rentFromPool: false)
+            : new ArrayBuilder<T>(rentFromPool: true);
+
+        while (reader.Read())
+        {
+            if (reader.TokenType == JsonTokenType.EndArray)
+            {
+                if (length > -1 && builder.Count != length)
+                {
+                    throw new JsonException();
+                }
+
+                return new CategoricalVector<T>(builder.ToMemory(), categories);
             }
 
             if (reader.TokenType == JsonTokenType.Number)
@@ -113,5 +158,101 @@ public static class VectorJsonReader
         }
 
         throw new JsonException();
+    }
+
+    public static Vector<T> ReadSpanParseableVector<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(ref Utf8JsonReader reader, int length, VectorJsonFormat format = default)
+        where T : notnull, ISpanParsable<T>
+    {
+        if (length == 0)
+        {
+#pragma warning disable IDE0301 // Simplify collection initialization
+            return Vector<T>.Empty;
+#pragma warning restore IDE0301 // Simplify collection initialization
+        }
+
+        using var builder = length > -1
+            ? new ArrayBuilder<T>(length, rentFromPool: false)
+            : new ArrayBuilder<T>(rentFromPool: true);
+
+        while (reader.Read())
+        {
+            if (reader.TokenType == JsonTokenType.EndArray)
+            {
+                if (length > -1 && builder.Count != length)
+                {
+                    throw new JsonException();
+                }
+
+                return Vector.Create(builder.ToMemory());
+            }
+
+            if (reader.TokenType == JsonTokenType.String)
+            {
+                var value = reader.GetString();
+
+                if (!T.TryParse(value, CultureInfo.InvariantCulture, out var result))
+                {
+                    throw new JsonException($"Failed to convert value: \"{value}\" to {typeof(T).Name}");
+                }
+
+                builder.Add(result);
+            }
+        }
+
+        return Vector.Create(builder.ToMemory());
+    }
+
+    public static Vector<T?> ReadNullableSpanParseableVector<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(ref Utf8JsonReader reader, int length, VectorJsonFormat format = default)
+        where T : ISpanParsable<T>
+    {
+        if (length == 0)
+        {
+#pragma warning disable IDE0301 // Simplify collection initialization
+            return Vector<T?>.Empty;
+#pragma warning restore IDE0301 // Simplify collection initialization
+        }
+
+        using var builder = length > -1
+            ? new ArrayBuilder<T?>(length, rentFromPool: false)
+            : new ArrayBuilder<T?>(rentFromPool: true);
+
+        while (reader.Read())
+        {
+            if (reader.TokenType == JsonTokenType.EndArray)
+            {
+                if (length > -1 && builder.Count != length)
+                {
+                    throw new JsonException();
+                }
+
+                return Vector.Create(builder.ToMemory());
+            }
+
+            if (reader.TokenType == JsonTokenType.Null)
+            {
+                builder.Add(default);
+                continue;
+            }
+
+            if (reader.TokenType == JsonTokenType.String)
+            {
+                var value = reader.GetString();
+
+                if (value is null)
+                {
+                    builder.Add(default);
+                    continue;
+                }
+
+                if (!T.TryParse(value, CultureInfo.InvariantCulture, out var result))
+                {
+                    throw new JsonException($"Failed to convert value: \"{value}\" to {typeof(T).Name}");
+                }
+
+                builder.Add(result);
+            }
+        }
+
+        return Vector.Create(builder.ToMemory());
     }
 }

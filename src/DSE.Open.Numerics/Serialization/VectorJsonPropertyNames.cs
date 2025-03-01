@@ -8,4 +8,5 @@ public static class VectorJsonPropertyNames
     public const string DataType = "dtype";
     public const string Length = "length";
     public const string Values = "values";
+    public const string Categories = "categories";
 }

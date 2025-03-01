@@ -89,4 +89,20 @@ public class VectorTests : LoggedTestsBase
         var elements = Enumerable.Range(1, 20).Select(i => new DateTime64(i * 1000L * 60 * 60 * 24 * 365)).ToArray();
         TestSerializeDeserializeNumeric(elements);
     }
+
+    [Fact]
+    public void CreateWithKnownNumericTypeReturnsNumericVectorInt32()
+    {
+        var vector = Vector.Create([1, 2, 3, 4, 5]);
+        var numVector = Assert.IsType<NumericVector<int>>(vector);
+        Assert.NotNull(numVector);
+    }
+
+    [Fact]
+    public void CreateWithKnownNumericTypeReturnsNumericVectorDouble()
+    {
+        var vector = Vector.Create([1.0, 2.84685, -0.000083, 4, 5]);
+        var numVector = Assert.IsType<NumericVector<double>>(vector);
+        Assert.NotNull(numVector);
+    }
 }

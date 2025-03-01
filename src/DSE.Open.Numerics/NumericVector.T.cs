@@ -23,15 +23,15 @@ public class NumericVector<T> : Vector<T>
 {
     public static new readonly NumericVector<T> Empty = new([]);
 
-    public NumericVector(T[] data) : base(data)
+    internal NumericVector(T[] data) : base(data)
     {
     }
 
-    public NumericVector(Memory<T> data) : base(data)
+    internal NumericVector(Memory<T> data) : base(data)
     {
     }
 
-    public NumericVector(T[] data, int start, int length) : base(data, start, length)
+    internal NumericVector(T[] data, int start, int length) : base(data, start, length)
     {
     }
 
@@ -54,6 +54,6 @@ public class NumericVector<T> : Vector<T>
     public static implicit operator ReadOnlyNumericVector<T>(NumericVector<T> vector)
     {
         ArgumentNullException.ThrowIfNull(vector);
-        return new(vector.Memory);
+        return new(vector.Data);
     }
 }

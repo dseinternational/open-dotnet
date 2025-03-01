@@ -2,7 +2,9 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
+using System.Reflection;
 using System.Text.Json.Serialization;
 using DSE.Open.Numerics.Serialization;
 
@@ -33,28 +35,66 @@ public abstract class Vector
         Length = length;
     }
 
+    /// <summary>
+    /// Gets the number of items in the vector.
+    /// </summary>
     public int Length { get; }
 
+    /// <summary>
+    /// Indicates if the item type is a known numeric type.
+    /// </summary>
     public bool IsNumeric { get; }
 
+    /// <summary>
+    /// Gets the type of the items in the vector.
+    /// </summary>
     public Type ItemType { get; }
 
+    /// <summary>
+    /// Gets the data type of the vector.
+    /// </summary>
     public VectorDataType DataType { get; }
 
-    public static Vector<T> Create<T>(T[] data)
+    [RequiresDynamicCode("Calls System.Type.MakeGenericType(params Type[])")]
+    private static bool TryCreateNumericVector(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type dataType,
+        object data,
+        [NotNullWhen(true)] out Vector? vector)
     {
-        EnsureNotKnownNumericType(typeof(T));
-        return new Vector<T>(data);
+        var constructedType = typeof(NumericVector<>).MakeGenericType(dataType);
+
+        object[] args = [data];
+
+        vector = Activator.CreateInstance(
+            constructedType,
+            BindingFlags.Instance | BindingFlags.NonPublic,
+            null,
+            args,
+            null) as Vector;
+
+        return vector is not null;
     }
 
-    public static Vector<T> Create<T>(Memory<T> data)
+    /// <summary>
+    /// Creates a vector from the given data.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="data"></param>
+    /// <returns></returns>
+    [UnconditionalSuppressMessage("AOT", "IL3050:Calling members annotated with 'RequiresDynamicCodeAttribute' may break functionality when AOT compiling.",
+        Justification = "Type T will not be trimmed and the use of NumericVector<> can be statically determined.")]
+    public static Vector<T> Create<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(T[] data)
     {
-        EnsureNotKnownNumericType(typeof(T));
-        return new Vector<T>(data);
-    }
+        ArgumentNullException.ThrowIfNull(data);
 
-    public static Vector<T> Create<T>(ReadOnlySpan<T> data)
-    {
+        if (NumberHelper.IsKnownNumberType(typeof(T)))
+        {
+            if (TryCreateNumericVector(typeof(T), data, out var vector))
+            {
+                return (Vector<T>)vector;
+            }
+        }
+
         if (data.Length == 0)
         {
 #pragma warning disable IDE0301 // Simplify collection initialization
@@ -62,7 +102,34 @@ public abstract class Vector
 #pragma warning restore IDE0301 // Simplify collection initialization
         }
 
-        return new Vector<T>(data.ToArray());
+        return new Vector<T>(data);
+    }
+
+    [UnconditionalSuppressMessage("AOT", "IL3050:Calling members annotated with 'RequiresDynamicCodeAttribute' may break functionality when AOT compiling.",
+        Justification = "Type T will not be trimmed and the use of NumericVector<> can be statically determined.")]
+    public static Vector<T> Create<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(Memory<T> data)
+    {
+        if (NumberHelper.IsKnownNumberType(typeof(T)))
+        {
+            if (TryCreateNumericVector(typeof(T), data, out var vector))
+            {
+                return (Vector<T>)vector;
+            }
+        }
+
+        if (data.Length == 0)
+        {
+#pragma warning disable IDE0301 // Simplify collection initialization
+            return Vector<T>.Empty;
+#pragma warning restore IDE0301 // Simplify collection initialization
+        }
+
+        return new Vector<T>(data);
+    }
+
+    public static Vector<T> Create<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(ReadOnlySpan<T> data)
+    {
+        return Create(data.ToArray());
     }
 
     public static Vector<T> Create<T>(T[] data, int start, int length)
@@ -128,13 +195,79 @@ public abstract class Vector
         return CreateNumeric(length, T.One);
     }
 
-    internal static void EnsureKnownNumericType(Type type)
+    /// <summary>
+    /// Creates a categorical vector from the given data and categories.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="data"></param>
+    /// <param name="categories"></param>
+    /// <param name="copyData"></param>
+    /// <param name="copyCatgories"></param>
+    /// <returns></returns>
+    /// <remarks>
+    /// The category labels are not validated beyond checking that there are not more labels than
+    /// values (the length of <paramref name="data"/>). To check if there is a label for each unique
+    /// value in <paramref name="data"/>, call <see cref="CategoricalVector{T}.IsValid"/>.
+    /// </remarks>
+    public static CategoricalVector<T> CreateCategorical<T>(
+        T[] data,
+        Memory<KeyValuePair<string, T>> categories,
+        bool copyData = false,
+        bool copyCatgories = false)
+        where T : struct, IComparable<T>, IEquatable<T>, IBinaryInteger<T>, IMinMaxValue<T>
     {
-        if (!NumberHelper.IsKnownNumberType(type))
+        return new CategoricalVector<T>(copyData ? [.. data] : data, copyCatgories ? categories.ToArray() : categories);
+    }
+
+    /// <summary>
+    /// Creates a categorical vector from the given data and categories.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="data"></param>
+    /// <param name="categories"></param>
+    /// <param name="copyData"></param>
+    /// <param name="copyCatgories"></param>
+    /// <returns></returns>
+    /// <remarks>
+    /// The category labels are not validated beyond checking that there are not more labels than
+    /// values (the length of <paramref name="data"/>). To check if there is a label for each unique
+    /// value in <paramref name="data"/>, call <see cref="CategoricalVector{T}.IsValid"/>.
+    /// </remarks>
+    public static CategoricalVector<T> CreateCategorical<T>(
+        Memory<T> data,
+        Memory<KeyValuePair<string, T>> categories,
+        bool copyData = false,
+        bool copyCatgories = false)
+        where T : struct, IComparable<T>, IEquatable<T>, IBinaryInteger<T>, IMinMaxValue<T>
+    {
+        return new CategoricalVector<T>(copyData ? data.ToArray() : data, copyCatgories ? categories.ToArray() : categories);
+    }
+
+    /// <summary>
+    /// Creates a categorical vector from the given data and categories.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="data"></param>
+    /// <param name="categories"></param>
+    /// <returns></returns>
+    /// <remarks>
+    /// The category labels are not validated beyond checking that there are not more labels than
+    /// values (the length of <paramref name="data"/>). To check if there is a label for each unique
+    /// value in <paramref name="data"/>, call <see cref="CategoricalVector{T}.IsValid"/>.
+    /// </remarks>
+    public static CategoricalVector<T> CreateCategorical<T>(
+        ReadOnlySpan<T> data,
+        ReadOnlySpan<KeyValuePair<string, T>> categories)
+        where T : struct, IComparable<T>, IEquatable<T>, IBinaryInteger<T>, IMinMaxValue<T>
+    {
+        if (data.Length == 0)
         {
-            ThrowHelper.ThrowInvalidOperationException(
-                $"Expected numeric type but {type.Name} is not numeric.");
+#pragma warning disable IDE0301 // Simplify collection initialization
+            return CategoricalVector<T>.Empty;
+#pragma warning restore IDE0301 // Simplify collection initialization
         }
+
+        return new CategoricalVector<T>(data.ToArray(), categories.ToArray());
     }
 
     internal static void EnsureNotKnownNumericType(Type type)

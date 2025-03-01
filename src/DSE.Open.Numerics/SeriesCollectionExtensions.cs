@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using DSE.Open.Numerics.Data;
 
@@ -8,14 +9,21 @@ namespace DSE.Open.Numerics;
 
 public static class SeriesCollectionExtensions
 {
-    public static void Add<T>(this ICollection<Series> series, string name, T[] vector)
+    public static void Add<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(
+        this ICollection<Series> series,
+        string name,
+        T[] vector)
         where T : notnull
     {
         ArgumentNullException.ThrowIfNull(series);
         series.Add(Series.Create(name, Vector.Create(vector)));
     }
 
-    public static void Add<T>(this ICollection<Series> series, string name, T[] vector, IDictionary<string, Variant>? annotations)
+    public static void Add<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(
+        this ICollection<Series> series,
+        string name,
+        T[] vector,
+        IDictionary<string, Variant>? annotations)
         where T : notnull
     {
         ArgumentNullException.ThrowIfNull(series);
