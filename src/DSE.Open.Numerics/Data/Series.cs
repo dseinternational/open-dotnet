@@ -79,6 +79,16 @@ public abstract class Series
             return CreateNumeric(name, ushortVector, annotations);
         }
 
+        if (data is NumericVector<byte> byteVector)
+        {
+            return CreateNumeric(name, byteVector, annotations);
+        }
+
+        if (data is NumericVector<sbyte> sbyteVector)
+        {
+            return CreateNumeric(name, sbyteVector, annotations);
+        }
+
         if (data is NumericVector<DateTime64> dateTime64Vector)
         {
             return CreateNumeric(name, dateTime64Vector, annotations);
