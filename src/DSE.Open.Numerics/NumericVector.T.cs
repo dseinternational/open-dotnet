@@ -18,7 +18,10 @@ namespace DSE.Open.Numerics;
 /// </remarks>
 [CollectionBuilder(typeof(Vector), nameof(CreateNumeric))]
 [JsonConverter(typeof(VectorJsonConverter))]
-public class NumericVector<T> : Vector<T>
+public class NumericVector<T>
+    : Vector<T>,
+      INumericVector<T>,
+      IReadOnlyNumericVector<T>
     where T : struct, INumber<T>
 {
     public static new readonly NumericVector<T> Empty = new([]);

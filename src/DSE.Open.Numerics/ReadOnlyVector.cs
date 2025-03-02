@@ -11,7 +11,7 @@ using DSE.Open.Numerics.Serialization;
 namespace DSE.Open.Numerics;
 
 [JsonConverter(typeof(VectorJsonConverter))]
-public abstract class ReadOnlyVector
+public abstract class ReadOnlyVector : IReadOnlyVector
 {
     protected ReadOnlyVector(VectorDataType dataType, Type itemType, int length)
     {

@@ -7,9 +7,12 @@ using System.Text.Json;
 
 namespace DSE.Open.Numerics.Serialization;
 
+/// <summary>
+/// Writes a vector types to JSON.
+/// </summary>
 public static class VectorJsonWriter
 {
-    public static void Write<T>(Utf8JsonWriter writer, Vector<T> vector, JsonSerializerOptions options)
+    public static void Write<T>(Utf8JsonWriter writer, IReadOnlyVector<T> vector, JsonSerializerOptions options)
     {
         ArgumentNullException.ThrowIfNull(writer);
         ArgumentNullException.ThrowIfNull(vector);
@@ -25,23 +28,23 @@ public static class VectorJsonWriter
             writer.WriteStartArray();
             writer.WriteEndArray();
         }
-        else if (vector is Vector<string> stringVector)
+        else if (vector is IReadOnlyVector<string> stringVector)
         {
             WriteStringArray(writer, stringVector.Span);
         }
-        else if (vector is Vector<char> charVector)
+        else if (vector is IReadOnlyVector<char> charVector)
         {
             WriteCharArray(writer, charVector.Span);
         }
-        else if (vector is Vector<Guid> guidVector)
+        else if (vector is IReadOnlyVector<Guid> guidVector)
         {
             WriteGuidArray(writer, guidVector.Span);
         }
-        else if (vector is Vector<DateTime> dateTimeVector)
+        else if (vector is IReadOnlyVector<DateTime> dateTimeVector)
         {
             WriteDateTimeArray(writer, dateTimeVector.Span);
         }
-        else if (vector is Vector<DateTimeOffset> dateTimeOffsetVector)
+        else if (vector is IReadOnlyVector<DateTimeOffset> dateTimeOffsetVector)
         {
             WriteDateTimeOffsetArray(writer, dateTimeOffsetVector.Span);
         }
@@ -51,7 +54,7 @@ public static class VectorJsonWriter
         writer.WriteEndObject();
     }
 
-    public static void Write<T>(Utf8JsonWriter writer, NumericVector<T> vector, JsonSerializerOptions options)
+    public static void Write<T>(Utf8JsonWriter writer, IReadOnlyNumericVector<T> vector, JsonSerializerOptions options)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(writer);
@@ -76,7 +79,7 @@ public static class VectorJsonWriter
         writer.WriteEndObject();
     }
 
-    public static void Write<T>(Utf8JsonWriter writer, CategoricalVector<T> vector, JsonSerializerOptions options)
+    public static void Write<T>(Utf8JsonWriter writer, IReadOnlyCategoricalVector<T> vector, JsonSerializerOptions options)
         where T : struct, IComparable<T>, IEquatable<T>, IBinaryInteger<T>, IMinMaxValue<T>
     {
         ArgumentNullException.ThrowIfNull(writer);

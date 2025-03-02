@@ -340,163 +340,163 @@ public class VectorJsonConverter : JsonConverter<Vector>
         ArgumentNullException.ThrowIfNull(writer);
         ArgumentNullException.ThrowIfNull(value);
 
-        if (value is NumericVector<int> intVector)
+        if (value is IReadOnlyNumericVector<int> intVector)
         {
             VectorJsonWriter.Write(writer, intVector, options);
             return;
         }
 
-        if (value is NumericVector<long> longVector)
+        if (value is IReadOnlyNumericVector<long> longVector)
         {
             VectorJsonWriter.Write(writer, longVector, options);
             return;
         }
 
-        if (value is NumericVector<float> floatVector)
+        if (value is IReadOnlyNumericVector<float> floatVector)
         {
             VectorJsonWriter.Write(writer, floatVector, options);
             return;
         }
 
-        if (value is NumericVector<double> doubleVector)
+        if (value is IReadOnlyNumericVector<double> doubleVector)
         {
             VectorJsonWriter.Write(writer, doubleVector, options);
             return;
         }
 
-        if (value is NumericVector<uint> uintVector)
+        if (value is IReadOnlyNumericVector<uint> uintVector)
         {
             VectorJsonWriter.Write(writer, uintVector, options);
             return;
         }
 
-        if (value is NumericVector<ulong> uuidVector)
+        if (value is IReadOnlyNumericVector<ulong> uuidVector)
         {
             VectorJsonWriter.Write(writer, uuidVector, options);
             return;
         }
 
-        if (value is NumericVector<DateTime64> dateTime64Vector)
+        if (value is IReadOnlyNumericVector<DateTime64> dateTime64Vector)
         {
             VectorJsonWriter.Write(writer, dateTime64Vector, options);
             return;
         }
 
-        if (value is NumericVector<short> shortVector)
+        if (value is IReadOnlyNumericVector<short> shortVector)
         {
             VectorJsonWriter.Write(writer, shortVector, options);
             return;
         }
 
-        if (value is NumericVector<ushort> ushortVector)
+        if (value is IReadOnlyNumericVector<ushort> ushortVector)
         {
             VectorJsonWriter.Write(writer, ushortVector, options);
             return;
         }
 
-        if (value is NumericVector<sbyte> sbyteVector)
+        if (value is IReadOnlyNumericVector<sbyte> sbyteVector)
         {
             VectorJsonWriter.Write(writer, sbyteVector, options);
             return;
         }
 
-        if (value is NumericVector<byte> byteVector)
+        if (value is IReadOnlyNumericVector<byte> byteVector)
         {
             VectorJsonWriter.Write(writer, byteVector, options);
             return;
         }
 
-        if (value is NumericVector<Int128> int128Vector)
+        if (value is IReadOnlyNumericVector<Int128> int128Vector)
         {
             VectorJsonWriter.Write(writer, int128Vector, options);
             return;
         }
 
-        if (value is NumericVector<UInt128> uint128Vector)
+        if (value is IReadOnlyNumericVector<UInt128> uint128Vector)
         {
             VectorJsonWriter.Write(writer, uint128Vector, options);
             return;
         }
 
-        if (value is CategoricalVector<int> intCategoricalVector)
+        if (value is IReadOnlyCategoricalVector<int> intCategoricalVector)
         {
             VectorJsonWriter.Write(writer, intCategoricalVector, options);
             return;
         }
 
-        if (value is CategoricalVector<long> longCategoricalVector)
+        if (value is IReadOnlyCategoricalVector<long> longCategoricalVector)
         {
             VectorJsonWriter.Write(writer, longCategoricalVector, options);
             return;
         }
 
-        if (value is CategoricalVector<uint> uintCategoricalVector)
+        if (value is IReadOnlyCategoricalVector<uint> uintCategoricalVector)
         {
             VectorJsonWriter.Write(writer, uintCategoricalVector, options);
             return;
         }
 
-        if (value is CategoricalVector<ulong> uint64CategoricalVector)
+        if (value is IReadOnlyCategoricalVector<ulong> uint64CategoricalVector)
         {
             VectorJsonWriter.Write(writer, uint64CategoricalVector, options);
             return;
         }
 
-        if (value is CategoricalVector<short> shortCategoricalVector)
+        if (value is IReadOnlyCategoricalVector<short> shortCategoricalVector)
         {
             VectorJsonWriter.Write(writer, shortCategoricalVector, options);
             return;
         }
 
-        if (value is CategoricalVector<ushort> ushortCategoricalVector)
+        if (value is IReadOnlyCategoricalVector<ushort> ushortCategoricalVector)
         {
             VectorJsonWriter.Write(writer, ushortCategoricalVector, options);
             return;
         }
 
-        if (value is CategoricalVector<sbyte> sbyteCategoricalVector)
+        if (value is IReadOnlyCategoricalVector<sbyte> sbyteCategoricalVector)
         {
             VectorJsonWriter.Write(writer, sbyteCategoricalVector, options);
             return;
         }
 
-        if (value is CategoricalVector<byte> byteCategoricalVector)
+        if (value is IReadOnlyCategoricalVector<byte> byteCategoricalVector)
         {
             VectorJsonWriter.Write(writer, byteCategoricalVector, options);
             return;
         }
 
-        if (value is CategoricalVector<Int128> int128CategoricalVector)
+        if (value is IReadOnlyCategoricalVector<Int128> int128CategoricalVector)
         {
             VectorJsonWriter.Write(writer, int128CategoricalVector, options);
             return;
         }
 
-        if (value is CategoricalVector<UInt128> uint128CategoricalVector)
+        if (value is IReadOnlyCategoricalVector<UInt128> uint128CategoricalVector)
         {
             VectorJsonWriter.Write(writer, uint128CategoricalVector, options);
             return;
         }
 
-        if (value is Vector<string> stringVector)
+        if (value is IReadOnlyVector<string> stringVector)
         {
             VectorJsonWriter.Write(writer, stringVector, options);
             return;
         }
 
-        if (value is Vector<char> charVector)
+        if (value is IReadOnlyVector<char> charVector)
         {
             VectorJsonWriter.Write(writer, charVector, options);
             return;
         }
 
-        if (value is Vector<bool> boolVector)
+        if (value is IReadOnlyVector<bool> boolVector)
         {
             VectorJsonWriter.Write(writer, boolVector, options);
             return;
         }
 
-        if (value is Vector<DateTime> dateTimeVector)
+        if (value is IReadOnlyVector<DateTime> dateTimeVector)
         {
             VectorJsonWriter.Write(writer, dateTimeVector, options);
             return;

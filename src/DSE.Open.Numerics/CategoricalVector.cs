@@ -15,7 +15,7 @@ namespace DSE.Open.Numerics;
 /// </summary>
 /// <typeparam name="T"></typeparam>
 [JsonConverter(typeof(VectorJsonConverter))]
-public sealed class CategoricalVector<T> : Vector<T>
+public sealed class CategoricalVector<T> : Vector<T>, ICategoricalVector<T>, IReadOnlyCategoricalVector<T>
     where T : struct,
               IComparable<T>,
               IEquatable<T>,
@@ -96,6 +96,8 @@ public sealed class CategoricalVector<T> : Vector<T>
     public Memory<KeyValuePair<string, T>> CategoryData { get; }
 
     public ImmutableDictionary<string, T> Categories => _categories ??= CreateCategories();
+
+    ReadOnlyMemory<KeyValuePair<string, T>> IReadOnlyCategoricalVector<T>.CategoryData => CategoryData;
 
     private ImmutableDictionary<string, T> CreateCategories()
     {

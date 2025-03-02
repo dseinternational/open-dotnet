@@ -16,9 +16,9 @@ namespace DSE.Open.Numerics;
 /// with value equality semantics.
 /// </summary>
 /// <typeparam name="T"></typeparam>
-[CollectionBuilder(typeof(Vector), nameof(Create))]
+[CollectionBuilder(typeof(ReadOnlyVector), nameof(Create))]
 [JsonConverter(typeof(VectorJsonConverter))]
-public class ReadOnlyVector<T> : ReadOnlyVector, IEquatable<ReadOnlyVector<T>>, IReadOnlyList<T>
+public class ReadOnlyVector<T> : ReadOnlyVector, IReadOnlyVector<T>
 {
     public static readonly ReadOnlyVector<T> Empty = new([]);
 
@@ -78,12 +78,17 @@ public class ReadOnlyVector<T> : ReadOnlyVector, IEquatable<ReadOnlyVector<T>>, 
 
     public bool Equals(ReadOnlyVector<T>? other)
     {
-        return other is not null && Equals(other.Data.Span);
+        return other is not null && Equals(other.Span);
+    }
+
+    public bool Equals(IReadOnlyVector<T>? other)
+    {
+        return other is not null && Equals(other.Span);
     }
 
     public bool Equals(ReadOnlySpan<T> other)
     {
-        return Data.Span.SequenceEqual(other);
+        return Span.SequenceEqual(other);
     }
 
     public T[] ToArray()
@@ -101,12 +106,12 @@ public class ReadOnlyVector<T> : ReadOnlyVector, IEquatable<ReadOnlyVector<T>>, 
         return ((IEnumerable<T>)this).GetEnumerator();
     }
 
-    public static bool operator ==(ReadOnlyVector<T> left, ReadOnlyVector<T> right)
+    public static bool operator ==(ReadOnlyVector<T>? left, ReadOnlyVector<T>? right)
     {
         return left is not null && (right is null || left.Equals(right));
     }
 
-    public static bool operator !=(ReadOnlyVector<T> left, ReadOnlyVector<T> right)
+    public static bool operator !=(ReadOnlyVector<T>? left, ReadOnlyVector<T>? right)
     {
         return !(left == right);
     }
