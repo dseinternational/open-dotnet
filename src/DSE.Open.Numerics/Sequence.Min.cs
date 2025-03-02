@@ -8,12 +8,12 @@ namespace DSE.Open.Numerics;
 
 public static partial class Sequence
 {
-    public static T Minimum<T>(IEnumerable<T> values)
+    public static T Min<T>(IEnumerable<T> values)
         where T : struct, INumber<T>
     {
         if (values.TryGetSpan(out var span))
         {
-            return VectorPrimitives.Minimum(span);
+            return VectorPrimitives.Min(span);
         }
 
         ArgumentNullException.ThrowIfNull(values);
@@ -43,12 +43,12 @@ public static partial class Sequence
         return result;
     }
 
-    public static T MinimumFloatingPoint<T>(this IEnumerable<T> values)
+    public static T MinFloatingPoint<T>(this IEnumerable<T> values)
         where T : struct, IFloatingPointIeee754<T>
     {
         if (values.TryGetSpan(out var span))
         {
-            return VectorPrimitives.Minimum(span);
+            return VectorPrimitives.Min(span);
         }
 
         ArgumentNullException.ThrowIfNull(values);

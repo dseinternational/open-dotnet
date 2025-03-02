@@ -8,12 +8,12 @@ namespace DSE.Open.Numerics;
 
 public static partial class Sequence
 {
-    public static T Maximum<T>(IEnumerable<T> values)
+    public static T Max<T>(IEnumerable<T> values)
         where T : struct, INumber<T>
     {
         if (values.TryGetSpan(out var span))
         {
-            return VectorPrimitives.Maximum(span);
+            return VectorPrimitives.Max(span);
         }
 
         ArgumentNullException.ThrowIfNull(values);
@@ -43,12 +43,12 @@ public static partial class Sequence
         return result;
     }
 
-    public static T MaximumFloatingPoint<T>(this IEnumerable<T> values)
+    public static T MaxFloatingPoint<T>(this IEnumerable<T> values)
         where T : struct, IFloatingPointIeee754<T>
     {
         if (values.TryGetSpan(out var span))
         {
-            return VectorPrimitives.MaximumFloatingPoint(span);
+            return VectorPrimitives.MaxFloatingPoint(span);
         }
 
         ArgumentNullException.ThrowIfNull(values);

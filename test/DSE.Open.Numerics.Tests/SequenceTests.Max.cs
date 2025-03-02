@@ -9,7 +9,7 @@ public partial class SequenceTests
     public void Max_Array_Int32()
     {
         var sequence = Enumerable.Range(1, 500).Union(Enumerable.Range(0, 100)).ToArray();
-        var max = Sequence.Maximum(sequence);
+        var max = Sequence.Max(sequence);
         Assert.Equal(500, max);
     }
 
@@ -17,7 +17,7 @@ public partial class SequenceTests
     public void Max_Enumerable_Int32()
     {
         var sequence = Enumerable.Range(1, 500).Union(Enumerable.Range(0, 100));
-        var max = Sequence.Maximum(sequence);
+        var max = Sequence.Max(sequence);
         Assert.Equal(500, max);
     }
 
@@ -27,7 +27,7 @@ public partial class SequenceTests
         var sequence = Enumerable.Range(1, 500).Union(Enumerable.Range(0, 100))
             .Select(i => i / 3.33)
             .ToArray();
-        var max = Sequence.MaximumFloatingPoint(sequence);
+        var max = Sequence.MaxFloatingPoint(sequence);
         Assert.Equal(150.15015015015015, max);
     }
 
@@ -37,7 +37,7 @@ public partial class SequenceTests
         var sequence = Enumerable.Range(1, 500).Union(Enumerable.Range(0, 100))
             .Select(i => i / 3.33m)
             .ToArray();
-        var max = Sequence.Maximum(sequence);
+        var max = Sequence.Max(sequence);
         Assert.Equal(150.15015015015015015015015015m, max);
     }
 }

@@ -9,12 +9,6 @@ namespace DSE.Open.Numerics;
 
 public static partial class VectorPrimitives
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="span"></param>
-    /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static T Sum<T>(ReadOnlySpan<T> span)
         where T : struct, INumberBase<T>
