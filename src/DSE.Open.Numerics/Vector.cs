@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using System.Reflection;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using DSE.Open.Numerics.Serialization;
 
@@ -54,6 +55,11 @@ public abstract class Vector : IVector
     /// Gets the data type of the vector.
     /// </summary>
     public VectorDataType DataType { get; }
+
+    public virtual string ToJson(VectorJsonFormat format = default)
+    {
+        return "TODO";
+    }
 
     [RequiresDynamicCode("Calls System.Type.MakeGenericType(params Type[])")]
     private static bool TryCreateNumericVector(

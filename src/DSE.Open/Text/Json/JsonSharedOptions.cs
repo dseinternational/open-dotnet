@@ -3,6 +3,7 @@
 
 using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using DSE.Open.Text.Json.Serialization;
 using NodaTime;
 using NodaTime.Serialization.SystemTextJson;
@@ -109,5 +110,25 @@ public static class JsonSharedOptions
         _ = options.ConfigureForNodaTime(DateTimeZoneProviders.Tzdb);
 
         options.WriteIndented = writeIndented;
+    }
+
+    /// <summary>
+    /// Creates the default JsonSerializerOptions with the specified
+    /// <see cref="JsonSerializerContext"/> instances registered as type info resolvers.
+    /// </summary>
+    /// <param name="contexts"></param>
+    public static JsonSerializerOptions CreateWithContexts(
+        params ReadOnlySpan<JsonSerializerContext> contexts)
+    {
+        var options = Create();
+
+        foreach (var context in contexts)
+        {
+            options.TypeInfoResolverChain.Add(context);
+        }
+
+        options.MakeReadOnly();
+
+        return options;
     }
 }

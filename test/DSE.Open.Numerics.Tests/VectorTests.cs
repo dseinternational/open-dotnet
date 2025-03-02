@@ -5,19 +5,11 @@ using System.Numerics;
 using System.Text.Json;
 using DSE.Open.Numerics.Serialization;
 using DSE.Open.Testing.Xunit;
-using DSE.Open.Text.Json;
 
 namespace DSE.Open.Numerics;
 
 public class VectorTests : LoggedTestsBase
 {
-    private static readonly Lazy<JsonSerializerOptions> s_jsonOptions = new(() =>
-    {
-        var options = new JsonSerializerOptions(JsonSharedOptions.RelaxedJsonEscaping);
-        options.AddDefaultNumericsJsonConverters();
-        return options;
-    });
-
     public VectorTests(ITestOutputHelper output) : base(output)
     {
     }
@@ -42,52 +34,81 @@ public class VectorTests : LoggedTestsBase
         Assert.Equivalent(elements, vector.ToArray());
     }
 
-    private void TestSerializeDeserializeNumeric<T>(T[] elements)
+    private void TestSerializeDeserializeNumeric<T>(T[] elements, JsonSerializerOptions serializerOptions)
         where T : struct, INumber<T>
     {
         var vector = Vector.CreateNumeric(elements);
 
-        var json = JsonSerializer.Serialize(vector, s_jsonOptions.Value);
+        var json = JsonSerializer.Serialize(vector, serializerOptions);
 
         Assert.NotNull(json);
 
         Output.WriteLine(json);
 
-        var deserialized = JsonSerializer.Deserialize<NumericVector<T>>(json, s_jsonOptions.Value);
+        var deserialized = JsonSerializer.Deserialize<NumericVector<T>>(json, serializerOptions);
 
         Assert.NotNull(deserialized);
         Assert.Equivalent(vector, deserialized);
     }
 
-    [Fact(Skip = "TODO")]
+    [Fact]
     public void Create_Char()
     {
         TestCreate(['a', 'b', 'c', 'd', 'e']);
     }
 
     [Fact]
-    public void CreateNumeric_Int32()
+    public void CreateString()
+    {
+        TestCreate(["one", "two", "three", "four", "five"]);
+    }
+
+    [Fact]
+    public void CreateNumericInt32()
     {
         TestCreateNumeric([0, 1, 2, 3, 4]);
     }
 
     [Fact]
-    public void CreateNumeric_Float()
+    public void CreateNumericFloat()
     {
         TestCreateNumeric([0.496f, 1.235f, 200.8469874f, -4682.169845f, 981635.123548715f]);
     }
 
     [Fact]
-    public void SerializeDeserialize_Float()
+    public void CreateNumericDouble()
     {
-        TestSerializeDeserializeNumeric([0.496f, 1.235f, 200.8469874f, -4682.169845f, 981635.123548715f]);
+        TestCreateNumeric([0.496, 1.235, 200.8469874, -4682.169845, 981635.123548715]);
     }
 
-    [Fact(Skip = "TODO")]
-    public void SerializeDeserialize_Date64()
+    [Fact]
+    public void SerializeDeserializeReflectedFloat()
+    {
+        TestSerializeDeserializeNumeric(
+            [0.496f, 1.235f, 200.8469874f, -4682.169845f, 981635.123548715f],
+            NumericsJsonSharedOptions.Reflected);
+    }
+
+    [Fact]
+    public void SerializeDeserializeSourceGeneratedFloat()
+    {
+        TestSerializeDeserializeNumeric(
+            [0.496f, 1.235f, 200.8469874f, -4682.169845f, 981635.123548715f],
+            NumericsJsonSharedOptions.SourceGenerated);
+    }
+
+    [Fact]
+    public void SerializeDeserializeReflectedDate64()
     {
         var elements = Enumerable.Range(1, 20).Select(i => new DateTime64(i * 1000L * 60 * 60 * 24 * 365)).ToArray();
-        TestSerializeDeserializeNumeric(elements);
+        TestSerializeDeserializeNumeric(elements, NumericsJsonSharedOptions.Reflected);
+    }
+
+    [Fact]
+    public void SerializeDeserializeSourceGeneratedDate64()
+    {
+        var elements = Enumerable.Range(1, 20).Select(i => new DateTime64(i * 1000L * 60 * 60 * 24 * 365)).ToArray();
+        TestSerializeDeserializeNumeric(elements, NumericsJsonSharedOptions.SourceGenerated);
     }
 
     [Fact]
