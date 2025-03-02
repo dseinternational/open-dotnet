@@ -11,7 +11,7 @@ namespace DSE.Open.Numerics.Data;
 /// A serializable sequence of data with a label.
 /// </summary>
 [JsonConverter(typeof(SeriesJsonConverter))]
-public abstract class Series
+public abstract class Series : ISeries
 {
     protected Series(string? name, IDictionary<string, Variant>? annotations)
     {
@@ -167,37 +167,5 @@ public abstract class Series
         where T : struct, INumber<T>
     {
         return new NumericSeries<T>(name, data, annotations);
-    }
-}
-
-[JsonConverter(typeof(SeriesJsonConverter))]
-public abstract class Series<T, TVector> : Series
-    where TVector : Vector<T>
-{
-    protected Series(string? name, TVector data, IDictionary<string, Variant>? annotations) : base(name, annotations)
-    {
-        ArgumentNullException.ThrowIfNull(data);
-        Data = data;
-    }
-
-    public T this[int index] => Data[index];
-
-    public TVector Data { get; }
-
-    internal override Vector GetData()
-    {
-        return Data;
-    }
-}
-
-[JsonConverter(typeof(SeriesJsonConverter))]
-public sealed class Series<T> : Series<T, Vector<T>>
-{
-    public Series(
-        string? name,
-        Vector<T> data,
-        IDictionary<string, Variant>? annotations)
-        : base(name, data, annotations)
-    {
     }
 }
