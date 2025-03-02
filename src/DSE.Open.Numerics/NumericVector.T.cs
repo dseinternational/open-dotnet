@@ -21,7 +21,11 @@ namespace DSE.Open.Numerics;
 public class NumericVector<T>
     : Vector<T>,
       INumericVector<T>,
-      IReadOnlyNumericVector<T>
+      IReadOnlyNumericVector<T>,
+      IAdditionOperators<NumericVector<T>, NumericVector<T>, NumericVector<T>>,
+      IAdditionOperators<NumericVector<T>, T, NumericVector<T>>,
+      ISubtractionOperators<NumericVector<T>, NumericVector<T>, NumericVector<T>>,
+      ISubtractionOperators<NumericVector<T>, T, NumericVector<T>>
     where T : struct, INumber<T>
 {
     public static new readonly NumericVector<T> Empty = new([]);
@@ -38,18 +42,90 @@ public class NumericVector<T>
     {
     }
 
+    public NumericVector<T> Add(IReadOnlyNumericVector<T> vector)
+    {
+        var destination = CreateNumeric<T>(Length);
+        VectorPrimitives.Add(this, vector, destination);
+        return destination;
+    }
+
+    public NumericVector<T> Add(T scalar)
+    {
+        var destination = CreateNumeric<T>(Length);
+        VectorPrimitives.Add(this, scalar, destination);
+        return destination;
+    }
+
+    public void AddInPlace(IReadOnlyNumericVector<T> vector)
+    {
+        VectorPrimitives.AddInPlace(this, vector);
+    }
+
+    public void AddInPlace(T scalar)
+    {
+        VectorPrimitives.AddInPlace(this, scalar);
+    }
+
+    public NumericVector<T> Subtract(IReadOnlyNumericVector<T> vector)
+    {
+        var destination = CreateNumeric<T>(Length);
+        VectorPrimitives.Subtract(this, vector, destination);
+        return destination;
+    }
+
+    public NumericVector<T> Subtract(T scalar)
+    {
+        var destination = CreateNumeric<T>(Length);
+        VectorPrimitives.Subtract(this, scalar, destination);
+        return destination;
+    }
+
+    public void SubtractInPlace(IReadOnlyNumericVector<T> vector)
+    {
+        VectorPrimitives.SubtractInPlace(this, vector);
+    }
+
+    public void SubtractInPlace(T scalar)
+    {
+        VectorPrimitives.SubtractInPlace(this, scalar);
+    }
+
+    public static NumericVector<T> operator +(NumericVector<T> left, NumericVector<T> right)
+    {
+        ArgumentNullException.ThrowIfNull(left);
+        return left.Add(right);
+    }
+
+    public static NumericVector<T> operator +(NumericVector<T> left, T right)
+    {
+        ArgumentNullException.ThrowIfNull(left);
+        return left.Add(right);
+    }
+
+    public static NumericVector<T> operator -(NumericVector<T> left, NumericVector<T> right)
+    {
+        ArgumentNullException.ThrowIfNull(left);
+        return left.Subtract(right);
+    }
+
+    public static NumericVector<T> operator -(NumericVector<T> left, T right)
+    {
+        ArgumentNullException.ThrowIfNull(left);
+        return left.Subtract(right);
+    }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates", Justification = "By design")]
     public static implicit operator NumericVector<T>(T[] vector)
     {
-        return new(vector);
+        return CreateNumeric(vector);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates", Justification = "By design")]
     public static implicit operator NumericVector<T>(Memory<T> vector)
     {
-        return new(vector);
+        return CreateNumeric(vector);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -40,4 +40,28 @@ public static partial class VectorPrimitives
         NumericsException.ThrowIfNotEqualLength(x, y);
         TensorPrimitives.Add(x.Span, y, x.Span);
     }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void Add<T>(IReadOnlyNumericVector<T> x, T y, INumericVector<T> destination)
+        where T : struct, INumber<T>
+    {
+        NumericsException.ThrowIfNotEqualLength(x, destination);
+        Add(x, y, destination.Span);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void Add<T>(IReadOnlyNumericVector<T> x, T y, Span<T> destination)
+        where T : struct, INumber<T>
+    {
+        NumericsException.ThrowIfNotEqualLength(x, destination);
+        TensorPrimitives.Add(x.Span, y, destination);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void AddInPlace<T>(INumericVector<T> x, T y)
+        where T : struct, INumber<T>
+    {
+        ArgumentNullException.ThrowIfNull(x);
+        TensorPrimitives.Add(x.Span, y, x.Span);
+    }
 }

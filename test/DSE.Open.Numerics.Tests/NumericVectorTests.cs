@@ -41,4 +41,50 @@ public partial class NumericVectorTests
         Assert.Equal(6, v1.Length);
         Assert.True(v1.Span.SequenceEqual([1, 1, 1, 1, 1, 1]));
     }
+
+    [Fact]
+    public void Equality()
+    {
+        var v1 = Vector.CreateOnes<int>(6);
+        var v2 = Vector.CreateOnes<int>(6);
+        Assert.Equal(v1, v2);
+    }
+
+    [Fact]
+    public void AdditionOperator()
+    {
+        var v1 = Vector.CreateOnes<int>(6);
+        var v2 = Vector.CreateOnes<int>(6);
+        var v3 = v1 + v2;
+        Assert.Equal(6, v3.Length);
+        Assert.True(v3.Span.SequenceEqual([2, 2, 2, 2, 2, 2]));
+    }
+
+    [Fact]
+    public void AdditionOperatorScalar()
+    {
+        var v1 = Vector.CreateOnes<int>(6);
+        var v2 = v1 + 1;
+        Assert.Equal(6, v2.Length);
+        Assert.True(v2.Span.SequenceEqual([2, 2, 2, 2, 2, 2]));
+    }
+
+    [Fact]
+    public void SubtractionOperator()
+    {
+        var v1 = Vector.CreateOnes<int>(6);
+        var v2 = Vector.CreateOnes<int>(6);
+        var v3 = v1 - v2;
+        Assert.Equal(6, v3.Length);
+        Assert.True(v3.Span.SequenceEqual([0, 0, 0, 0, 0, 0]));
+    }
+
+    [Fact]
+    public void SubtractionOperatorScalar()
+    {
+        var v1 = Vector.CreateOnes<int>(6);
+        var v2 = v1 - 1;
+        Assert.Equal(6, v2.Length);
+        Assert.True(v2.Span.SequenceEqual([0, 0, 0, 0, 0, 0]));
+    }
 }
