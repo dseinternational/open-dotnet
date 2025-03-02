@@ -101,22 +101,6 @@ public ref struct ArrayBuilder<T>
     public readonly bool BufferAllocated => _ownedBuffer is not null || _pooledBuffer is not null;
 
     /// <summary>
-    /// Gets a <see cref="Span{T}"/> over the items currently added to the builder.
-    /// </summary>
-    public readonly Span<T> Span
-    {
-        get
-        {
-            if (_buffer.IsEmpty)
-            {
-                return _buffer;
-            }
-
-            return _buffer[.._count];
-        }
-    }
-
-    /// <summary>
     /// Adds an item to the backing array, resizing it if necessary.
     /// </summary>
     /// <param name="item">The item to add.</param>
@@ -129,6 +113,16 @@ public ref struct ArrayBuilder<T>
         }
 
         UncheckedAdd(item);
+    }
+
+    public void AddRange(IEnumerable<T> items)
+    {
+        ArgumentNullException.ThrowIfNull(items);
+
+        foreach (var item in items)
+        {
+            Add(item);
+        }
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

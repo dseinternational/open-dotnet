@@ -3,30 +3,8 @@
 
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
-using System.Text.Json.Serialization;
 
 namespace DSE.Open.Numerics;
-
-public readonly record struct DataPoint<T> : IDataPoint<T>
-    where T : struct, INumber<T>
-{
-    [SetsRequiredMembers]
-    public DataPoint(T x, T y)
-    {
-        (X, Y) = (x, y);
-    }
-
-    [JsonPropertyName("x")]
-    public required T X { get; init; }
-
-    [JsonPropertyName("y")]
-    public required T Y { get; init; }
-
-    public void Deconstruct(out T x, out T y)
-    {
-        (x, y) = (X, Y);
-    }
-}
 
 public static class DataPoint
 {
@@ -40,5 +18,32 @@ public static class DataPoint
         where T : struct, INumber<T>
     {
         return new DataPoint3D<T>(x, y, z);
+    }
+
+    public static IEnumerable<DataPoint<T>> CreateRange<T>(
+        [NotNull] IReadOnlyList<T> x,
+        [NotNull] IReadOnlyList<T> y)
+        where T : struct, INumber<T>
+    {
+        NumericsException.ThrowIfNotEqualLength(x, y);
+
+        for (var i = 0; i < x.Count; i++)
+        {
+            yield return new DataPoint<T>(x[i], y[i]);
+        }
+    }
+
+    public static IEnumerable<DataPoint3D<T>> CreateRange<T>(
+        [NotNull] IReadOnlyList<T> x,
+        [NotNull] IReadOnlyList<T> y,
+        [NotNull] IReadOnlyList<T> z)
+        where T : struct, INumber<T>
+    {
+        NumericsException.ThrowIfNotEqualLength(x, y, z);
+
+        for (var i = 0; i < x.Count; i++)
+        {
+            yield return new DataPoint3D<T>(x[i], y[i], z[i]);
+        }
     }
 }

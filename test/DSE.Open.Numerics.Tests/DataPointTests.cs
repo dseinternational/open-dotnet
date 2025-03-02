@@ -22,6 +22,23 @@ public class DataPointTests : LoggedTestsBase
     }
 
     [Fact]
+    public void CreateRange()
+    {
+        var x = new[] { 1, 2, 3 };
+        var y = new[] { 4, 5, 6 };
+
+        var points = DataPoint.CreateRange(x, y).ToArray();
+
+        Assert.Equal(3, points.Length);
+
+        for (var i = 0; i < points.Length; i++)
+        {
+            Assert.Equal(x[i], points[i].X);
+            Assert.Equal(y[i], points[i].Y);
+        }
+    }
+
+    [Fact]
     public void SerializeDeserializeReflected()
     {
         var point = DataPoint.Create(1, 2);
