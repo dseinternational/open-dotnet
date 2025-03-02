@@ -4,7 +4,7 @@
 using System.Text.Json.Serialization;
 using DSE.Open.Numerics.Data;
 
-namespace DSE.Open.Numerics;
+namespace DSE.Open.Numerics.Serialization;
 
 [JsonSourceGenerationOptions(
     UseStringEnumConverter = true,
@@ -55,4 +55,34 @@ namespace DSE.Open.Numerics;
 [JsonSerializable(typeof(NumericSeries<double>))]
 [JsonSerializable(typeof(NumericSeries<decimal>))]
 [JsonSerializable(typeof(NumericSeries<DateTime64>))]
+[JsonSerializable(typeof(DataPoint<byte>))]
+[JsonSerializable(typeof(DataPoint<sbyte>))]
+[JsonSerializable(typeof(DataPoint<short>))]
+[JsonSerializable(typeof(DataPoint<ushort>))]
+[JsonSerializable(typeof(DataPoint<int>))]
+[JsonSerializable(typeof(DataPoint<uint>))]
+[JsonSerializable(typeof(DataPoint<long>))]
+[JsonSerializable(typeof(DataPoint<ulong>))]
+[JsonSerializable(typeof(DataPoint<Int128>))]
+[JsonSerializable(typeof(DataPoint<UInt128>))]
+[JsonSerializable(typeof(DataPoint<Half>))]
+[JsonSerializable(typeof(DataPoint<float>))]
+[JsonSerializable(typeof(DataPoint<double>))]
+[JsonSerializable(typeof(DataPoint<decimal>))]
+[JsonSerializable(typeof(DataPoint<DateTime64>))]
+[JsonSerializable(typeof(DataPoint3D<byte>))]
+[JsonSerializable(typeof(DataPoint3D<sbyte>))]
+[JsonSerializable(typeof(DataPoint3D<short>))]
+[JsonSerializable(typeof(DataPoint3D<ushort>))]
+[JsonSerializable(typeof(DataPoint3D<int>))]
+[JsonSerializable(typeof(DataPoint3D<uint>))]
+[JsonSerializable(typeof(DataPoint3D<long>))]
+[JsonSerializable(typeof(DataPoint3D<ulong>))]
+[JsonSerializable(typeof(DataPoint3D<Int128>))]
+[JsonSerializable(typeof(DataPoint3D<UInt128>))]
+[JsonSerializable(typeof(DataPoint3D<Half>))]
+[JsonSerializable(typeof(DataPoint3D<float>))]
+[JsonSerializable(typeof(DataPoint3D<double>))]
+[JsonSerializable(typeof(DataPoint3D<decimal>))]
+[JsonSerializable(typeof(DataPoint3D<DateTime64>))]
 public sealed partial class NumericsJsonSerializationContext : JsonSerializerContext;

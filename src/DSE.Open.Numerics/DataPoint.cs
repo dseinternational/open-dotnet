@@ -27,3 +27,18 @@ public readonly record struct DataPoint<T> : IDataPoint<T>
         (x, y) = (X, Y);
     }
 }
+
+public static class DataPoint
+{
+    public static DataPoint<T> Create<T>(T x, T y)
+        where T : struct, INumber<T>
+    {
+        return new DataPoint<T>(x, y);
+    }
+
+    public static DataPoint3D<T> Create<T>(T x, T y, T z)
+        where T : struct, INumber<T>
+    {
+        return new DataPoint3D<T>(x, y, z);
+    }
+}
