@@ -88,9 +88,6 @@ public static class VectorJsonWriter
 
         writer.WriteStartObject();
         writer.WriteString(VectorJsonPropertyNames.DataType, VectorDataTypeHelper.GetLabel(vector.DataType));
-        writer.WriteNumber(VectorJsonPropertyNames.Length, vector.Length);
-        writer.WritePropertyName(VectorJsonPropertyNames.Values);
-
         // todo: error if no categories and > 0 data values ??
 
         if (vector.CategoryData.Length > 0)
@@ -107,6 +104,10 @@ public static class VectorJsonWriter
 
             writer.WriteEndObject();
         }
+
+        writer.WriteNumber(VectorJsonPropertyNames.Length, vector.Length);
+
+        writer.WritePropertyName(VectorJsonPropertyNames.Values);
 
         if (vector.Length == 0)
         {

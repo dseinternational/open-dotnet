@@ -95,7 +95,10 @@ public static class VectorJsonReader
         throw new JsonException();
     }
 
-    public static Vector<string> ReadStringVector(ref Utf8JsonReader reader, int length, VectorJsonFormat format = default)
+    public static Vector<string> ReadStringVector(
+        ref Utf8JsonReader reader,
+        int length,
+        VectorJsonFormat format = default)
     {
         if (length == 0)
         {
@@ -129,7 +132,10 @@ public static class VectorJsonReader
         throw new JsonException();
     }
 
-    public static Vector<string?> ReadNullableStringVector(ref Utf8JsonReader reader, int length, VectorJsonFormat format = default)
+    public static Vector<string?> ReadNullableStringVector(
+        ref Utf8JsonReader reader,
+        int length,
+        VectorJsonFormat format = default)
     {
         if (length == 0)
         {
@@ -163,7 +169,10 @@ public static class VectorJsonReader
         throw new JsonException();
     }
 
-    public static Vector<T> ReadSpanParseableVector<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(ref Utf8JsonReader reader, int length, VectorJsonFormat format = default)
+    public static Vector<T> ReadSpanParseableVector<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(
+        ref Utf8JsonReader reader,
+        int length,
+        VectorJsonFormat format = default)
         where T : notnull, ISpanParsable<T>
     {
         if (length == 0)
@@ -205,7 +214,10 @@ public static class VectorJsonReader
         return Vector.Create(builder.ToMemory());
     }
 
-    public static Vector<T?> ReadNullableSpanParseableVector<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(ref Utf8JsonReader reader, int length, VectorJsonFormat format = default)
+    public static Vector<T?> ReadNullableSpanParseableVector<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(
+        ref Utf8JsonReader reader,
+        int length,
+        VectorJsonFormat format = default)
         where T : ISpanParsable<T>
     {
         if (length == 0)
