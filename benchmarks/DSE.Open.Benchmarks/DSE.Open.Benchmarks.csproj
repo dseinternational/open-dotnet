@@ -10,7 +10,6 @@
     <PackageReference Include="Azure.Identity" />
     <PackageReference Include="BenchmarkDotNet" />
     <PackageReference Include="Iced" />
-    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" />
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
