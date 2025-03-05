@@ -8,12 +8,12 @@
 
 namespace DSE.Open.Observations;
 
-[global::System.ComponentModel.TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<MeasureParameterValueType, global::DSE.Open.AsciiString>))]
-public readonly partial struct MeasureParameterValueType
+[global::System.ComponentModel.TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<MeasureParameterType, global::DSE.Open.AsciiString>))]
+public readonly partial struct MeasureParameterType
 {
     private readonly global::DSE.Open.AsciiString _value;
 
-    private MeasureParameterValueType(global::DSE.Open.AsciiString value, bool skipValidation = false)
+    private MeasureParameterType(global::DSE.Open.AsciiString value, bool skipValidation = false)
     {
         if (!skipValidation)
         {
@@ -28,15 +28,15 @@ public readonly partial struct MeasureParameterValueType
         if (!IsValidValue(value))
         {
             throw new global::System.ArgumentOutOfRangeException(nameof(value), value,
-                $"'{value}' is not a valid {nameof(MeasureParameterValueType)} value");
+                $"'{value}' is not a valid {nameof(MeasureParameterType)} value");
         }
     }
 
-    public static bool TryFromValue(global::DSE.Open.AsciiString value, out MeasureParameterValueType result)
+    public static bool TryFromValue(global::DSE.Open.AsciiString value, out MeasureParameterType result)
     {
         if (IsValidValue(value))
         {
-            result = new MeasureParameterValueType(value, true);
+            result = new MeasureParameterType(value, true);
             return true;
         }
     
@@ -44,39 +44,39 @@ public readonly partial struct MeasureParameterValueType
         return false;
     }
 
-    public static MeasureParameterValueType FromValue(global::DSE.Open.AsciiString value)
+    public static MeasureParameterType FromValue(global::DSE.Open.AsciiString value)
     {
         EnsureIsValidValue(value);
         return new(value, true);
     }
 
-    public static explicit operator MeasureParameterValueType(global::DSE.Open.AsciiString value)
+    public static explicit operator MeasureParameterType(global::DSE.Open.AsciiString value)
         => FromValue(value);
 
-    static global::DSE.Open.AsciiString global::DSE.Open.IConvertibleTo<MeasureParameterValueType, global::DSE.Open.AsciiString>.ConvertTo(MeasureParameterValueType value)
+    static global::DSE.Open.AsciiString global::DSE.Open.IConvertibleTo<MeasureParameterType, global::DSE.Open.AsciiString>.ConvertTo(MeasureParameterType value)
         => (global::DSE.Open.AsciiString)value;
 
-    public static implicit operator global::DSE.Open.AsciiString(MeasureParameterValueType value)
+    public static implicit operator global::DSE.Open.AsciiString(MeasureParameterType value)
     {
         return value._value;
     }
 
     // IEquatable<T>
 
-    public bool Equals(MeasureParameterValueType other) => _value.Equals(other._value);
+    public bool Equals(MeasureParameterType other) => _value.Equals(other._value);
 
-    public override bool Equals(object? obj) => obj is MeasureParameterValueType other && Equals(other);
+    public override bool Equals(object? obj) => obj is MeasureParameterType other && Equals(other);
 
     public override int GetHashCode()
     {
         return _value.GetHashCode();
     }
 
-    // IEqualityOperators<MeasureParameterValueType, MeasureParameterValueType, bool>
+    // IEqualityOperators<MeasureParameterType, MeasureParameterType, bool>
 
-    public static bool operator ==(MeasureParameterValueType left, MeasureParameterValueType right) => left.Equals(right);
+    public static bool operator ==(MeasureParameterType left, MeasureParameterType right) => left.Equals(right);
     
-    public static bool operator !=(MeasureParameterValueType left, MeasureParameterValueType right) => !(left == right);
+    public static bool operator !=(MeasureParameterType left, MeasureParameterType right) => !(left == right);
 
     // ISpanFormattable
 
@@ -106,7 +106,7 @@ public readonly partial struct MeasureParameterValueType
         => TryFormatInvariant(destination, out charsWritten, default);
 
     /// <summary>
-    /// Gets a representation of the <see cref="MeasureParameterValueType"/> value as a string with formatting options.
+    /// Gets a representation of the <see cref="MeasureParameterType"/> value as a string with formatting options.
     /// </summary>
     [global::System.Runtime.CompilerServices.SkipLocalsInit]
     public string ToString(string? format, global::System.IFormatProvider? formatProvider)
@@ -125,55 +125,55 @@ public readonly partial struct MeasureParameterValueType
     }
 
     /// <summary>
-    /// Gets a representation of the MeasureParameterValueType value as a string with default formatting options.
+    /// Gets a representation of the MeasureParameterType value as a string with default formatting options.
     /// </summary>
     /// <returns>
-    /// A representation of the MeasureParameterValueType value.
+    /// A representation of the MeasureParameterType value.
     /// </returns>
     public override string ToString()
     {
         return ToString(default, default);
     }
 
-    // ISpanParsable<MeasureParameterValueType>
+    // ISpanParsable<MeasureParameterType>
 
-    public static MeasureParameterValueType Parse(global::System.ReadOnlySpan<char> s, global::System.IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<MeasureParameterValueType, global::DSE.Open.AsciiString>(s, provider);
+    public static MeasureParameterType Parse(global::System.ReadOnlySpan<char> s, global::System.IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<MeasureParameterType, global::DSE.Open.AsciiString>(s, provider);
 
-    public static MeasureParameterValueType ParseInvariant(global::System.ReadOnlySpan<char> s)
+    public static MeasureParameterType ParseInvariant(global::System.ReadOnlySpan<char> s)
         => Parse(s, global::System.Globalization.CultureInfo.InvariantCulture);
 
     public static bool TryParse(
         global::System.ReadOnlySpan<char> s,
         global::System.IFormatProvider? provider,
-        out MeasureParameterValueType result)
-        => global::DSE.Open.Values.ValueParser.TryParse<MeasureParameterValueType, global::DSE.Open.AsciiString>(s, provider, out result);
+        out MeasureParameterType result)
+        => global::DSE.Open.Values.ValueParser.TryParse<MeasureParameterType, global::DSE.Open.AsciiString>(s, provider, out result);
 
     public static bool TryParse(
         global::System.ReadOnlySpan<char> s,
-        out MeasureParameterValueType result)
+        out MeasureParameterType result)
         => TryParse(s, default, out result);
 
     public static bool TryParseInvariant(
         global::System.ReadOnlySpan<char> s,
-        out MeasureParameterValueType result)
+        out MeasureParameterType result)
         => TryParse(s, global::System.Globalization.CultureInfo.InvariantCulture, out result);
 
-    // IParsable<MeasureParameterValueType>
+    // IParsable<MeasureParameterType>
 
-    public static MeasureParameterValueType Parse(string s, global::System.IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<MeasureParameterValueType, global::DSE.Open.AsciiString>(s, provider);
+    public static MeasureParameterType Parse(string s, global::System.IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<MeasureParameterType, global::DSE.Open.AsciiString>(s, provider);
 
-    public static MeasureParameterValueType Parse(string s)
+    public static MeasureParameterType Parse(string s)
         => Parse(s, default);
 
-    public static MeasureParameterValueType ParseInvariant(string s)
+    public static MeasureParameterType ParseInvariant(string s)
         => Parse(s, global::System.Globalization.CultureInfo.InvariantCulture);
 
     public static bool TryParse(
         string? s,
         global::System.IFormatProvider? provider,
-        out MeasureParameterValueType result)
+        out MeasureParameterType result)
     {
         if (s is null)
         {
@@ -186,12 +186,12 @@ public readonly partial struct MeasureParameterValueType
 
     public static bool TryParse(
         string? s,
-        out MeasureParameterValueType result)
+        out MeasureParameterType result)
         => TryParse(s, default, out result);
 
     public static bool TryParseInvariant(
         string? s,
-        out MeasureParameterValueType result)
+        out MeasureParameterType result)
         => TryParse(s, global::System.Globalization.CultureInfo.InvariantCulture, out result);
 
 }
