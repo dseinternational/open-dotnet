@@ -15,6 +15,7 @@
     <ProjectReference Include="..\..\gen\DSE.Open.Values.Generators\DSE.Open.Values.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\DSE.Open.Records.Abstractions\DSE.Open.Records.Abstractions.csproj" />
     <ProjectReference Include="..\DSE.Open.Serialization.DataTransfer\DSE.Open.Serialization.DataTransfer.csproj" />
+    <ProjectReference Include="..\DSE.Open.Language.Abstractions\DSE.Open.Language.Abstractions.csproj" />
     <ProjectReference Include="..\DSE.Open.Speech.Abstractions\DSE.Open.Speech.Abstractions.csproj" />
     <ProjectReference Include="..\DSE.Open.Values\DSE.Open.Values.csproj" />
   </ItemGroup>
