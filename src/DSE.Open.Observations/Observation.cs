@@ -354,7 +354,6 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
 public sealed class Observation<TValue>
     : Observation,
       IObservation<TValue>,
-      IObservationFactory<Observation<TValue>, TValue>,
       IEquatable<Observation<TValue>>
     where TValue : struct, IEquatable<TValue>, IObservationValue
 {
@@ -458,14 +457,6 @@ public sealed class Observation<TValue>
         return $"{{ id: {Id}, time: {Time:u}, measure: {MeasureId}, value: {Value} }}";
     }
 
-    static Observation<TValue> IObservationFactory<Observation<TValue>, TValue>.Create(
-        IMeasure<TValue> measure,
-        TValue value,
-        TimeProvider timeProvider)
-    {
-        return Create(measure, value, timeProvider);
-    }
-
     protected override object GetValueCore()
     {
         return Value;
@@ -505,7 +496,6 @@ public sealed class Observation<TValue>
 public sealed class Observation<TValue, TParam>
     : Observation,
       IObservation<TValue, TParam>,
-      IObservationFactory<Observation<TValue, TParam>, TValue, TParam>,
       IEquatable<Observation<TValue, TParam>>
     where TValue : struct, IEquatable<TValue>, IObservationValue
     where TParam : struct, IEquatable<TParam>
@@ -636,15 +626,6 @@ public sealed class Observation<TValue, TParam>
     protected override int GetMeasurementHashCodeCore()
     {
         return HashCode.Combine(base.GetMeasurementHashCodeCore(), Parameter);
-    }
-
-    static Observation<TValue, TParam> IObservationFactory<Observation<TValue, TParam>, TValue, TParam>.Create(
-        IMeasure<TValue, TParam> measure,
-        TParam parameter,
-        TValue value,
-        TimeProvider timeProvider)
-    {
-        return Create(measure, parameter, value, timeProvider);
     }
 
     protected override object GetValueCore()
