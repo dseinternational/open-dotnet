@@ -1,9 +1,9 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 namespace DSE.Open.Observations;
 
-public enum ObservationParameterType
+public enum MeasurementParameterType
 {
     /// <summary>
     /// Provides an integer to identify the parameter. The value must be greater than or equal to

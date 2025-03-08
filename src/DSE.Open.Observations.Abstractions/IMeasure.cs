@@ -25,14 +25,22 @@ public interface IMeasure
 public interface IMeasure<TValue> : IMeasure
     where TValue : struct, IEquatable<TValue>, IObservationValue
 {
-    TObs CreateObservation<TObs>(TValue value, TimeProvider timeProvider)
-        where TObs : IObservation<TValue>, IObservationFactory<TObs, TValue>;
+    IObservation<TValue> CreateObservation(TValue value)
+    {
+        return CreateObservation(value, TimeProvider.System);
+    }
+
+    IObservation<TValue> CreateObservation(TValue value, TimeProvider timeProvider);
 }
 
 public interface IMeasure<TValue, TParam> : IMeasure
     where TValue : struct, IEquatable<TValue>, IObservationValue
     where TParam : struct, IEquatable<TParam>
 {
-    TObs CreateObservation<TObs>(TParam parameter, TValue value, TimeProvider timeProvider)
-        where TObs : IObservation<TValue, TParam>, IObservationFactory<TObs, TValue, TParam>;
+    IObservation<TValue, TParam> CreateObservation(TParam parameter, TValue value)
+    {
+        return CreateObservation(parameter, value, TimeProvider.System);
+    }
+
+    IObservation<TValue, TParam> CreateObservation(TParam parameter, TValue value, TimeProvider timeProvider);
 }

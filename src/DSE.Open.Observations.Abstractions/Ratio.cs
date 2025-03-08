@@ -27,7 +27,7 @@ public readonly partial struct Ratio
 
     public static Ratio Zero { get; } = new(0);
 
-    public ObservationValueType ValueType => Observations.ObservationValueType.Ratio;
+    public MeasurementValueType ValueType => Observations.MeasurementValueType.Ratio;
 
     public Ratio(decimal value) : this(value, false) { }
 

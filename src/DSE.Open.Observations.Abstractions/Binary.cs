@@ -22,7 +22,7 @@ public readonly partial struct Binary
 
     public static int MaxSerializedByteLength => 1;
 
-    public ObservationValueType ValueType => ObservationValueType.Binary;
+    public MeasurementValueType ValueType => MeasurementValueType.Binary;
 
     public static bool IsValidValue(byte value)
     {

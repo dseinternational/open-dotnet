@@ -29,7 +29,7 @@ public readonly partial struct SpeechClarity
 
     public static int MaxSerializedByteLength => 2;
 
-    public ObservationValueType ValueType => ObservationValueType.Ordinal;
+    public MeasurementValueType ValueType => MeasurementValueType.Ordinal;
 
     public static bool IsValidValue(byte value)
     {

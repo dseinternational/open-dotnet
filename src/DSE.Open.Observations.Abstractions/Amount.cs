@@ -31,7 +31,7 @@ public readonly partial struct Amount
 
     public Amount(Half value) : this((decimal)value) { }
 
-    public ObservationValueType ValueType => Observations.ObservationValueType.Amount;
+    public MeasurementValueType ValueType => Observations.MeasurementValueType.Amount;
 
     public static bool IsValidValue(decimal value)
     {

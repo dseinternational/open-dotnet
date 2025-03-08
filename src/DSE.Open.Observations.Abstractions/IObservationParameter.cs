@@ -13,7 +13,7 @@ public interface IObservationParameter
     public const int MinTextLength = 1;
     public const int MaxTextLength = 16;
 
-    ObservationParameterType ParameterType { get; }
+    MeasurementParameterType ParameterType { get; }
 
     /// <summary>
     /// Gets an integer to identify the parameter. The value must be greater than or equal to

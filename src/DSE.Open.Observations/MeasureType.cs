@@ -9,7 +9,7 @@ namespace DSE.Open.Observations;
 /// <summary>
 /// Identifies types of observations.
 /// </summary>
-public enum ObservationType
+public enum MeasureType
 {
     Unknown,
 

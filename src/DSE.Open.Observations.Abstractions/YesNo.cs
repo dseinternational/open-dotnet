@@ -25,7 +25,7 @@ public readonly partial struct YesNo
 
     public static int MaxSerializedByteLength => 3;
 
-    public ObservationValueType ValueType => ObservationValueType.Binary;
+    public MeasurementValueType ValueType => MeasurementValueType.Binary;
 
     public static bool IsValidValue(AsciiString value)
     {

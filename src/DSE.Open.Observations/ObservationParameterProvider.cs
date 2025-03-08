@@ -1,4 +1,4 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using DSE.Open.Language;
@@ -11,7 +11,7 @@ public sealed class ObservationParameterProvider<TParam>
 {
     public static readonly ObservationParameterProvider<TParam> Default = new();
 
-    public ObservationParameterType GetParameterType(TParam param)
+    public MeasurementParameterType GetParameterType(TParam param)
     {
         if (typeof(TParam).IsAssignableTo(typeof(IObservationParameter)))
         {
@@ -23,12 +23,12 @@ public sealed class ObservationParameterProvider<TParam>
             || typeof(TParam) == typeof(SentenceId)
             || typeof(TParam) == typeof(SentenceMeaningId))
         {
-            return ObservationParameterType.Integer;
+            return MeasurementParameterType.Integer;
         }
 
         if (typeof(TParam) == typeof(SpeechSound))
         {
-            return ObservationParameterType.Text;
+            return MeasurementParameterType.Text;
         }
 
         ThrowHelper.ThrowInvalidOperationException();

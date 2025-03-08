@@ -25,14 +25,14 @@ public interface IObservationValue
     /// <summary>
     /// Indicates the type of underlying value provided.
     /// </summary>
-    ObservationValueType ValueType { get; }
+    MeasurementValueType ValueType { get; }
 
     /// <summary>
     /// Gets a binary value.
     /// </summary>
     /// <returns>A <see cref="Boolean"/> value.</returns>
     /// <exception cref="ValueTypeMismatchException"><see cref="ValueType"/> is not
-    /// <see cref="ObservationValueType.Binary"/>.</exception>
+    /// <see cref="MeasurementValueType.Binary"/>.</exception>
     bool GetBinary();
 
     /// <summary>
@@ -42,7 +42,7 @@ public interface IObservationValue
     /// A <see cref="Byte"/> value representing a value on an ordinal scale.
     /// </returns>
     /// <exception cref="ValueTypeMismatchException"><see cref="ValueType"/> is not
-    /// <see cref="ObservationValueType.Ordinal"/>.</exception>
+    /// <see cref="MeasurementValueType.Ordinal"/>.</exception>
     byte GetOrdinal();
 
     /// <summary>
@@ -53,7 +53,7 @@ public interface IObservationValue
     /// <see cref="MaxCount"/>.
     /// </returns>
     /// <exception cref="ValueTypeMismatchException"><see cref="ValueType"/> is not
-    /// <see cref="ObservationValueType.Count"/>.</exception>
+    /// <see cref="MeasurementValueType.Count"/>.</exception>
     ulong GetCount();
 
     /// <summary>
@@ -64,7 +64,7 @@ public interface IObservationValue
     /// <see cref="MaxAmount"/>.
     /// </returns>
     /// <exception cref="ValueTypeMismatchException"><see cref="ValueType"/> is not
-    /// <see cref="ObservationValueType.Amount"/>.</exception>
+    /// <see cref="MeasurementValueType.Amount"/>.</exception>
     decimal GetAmount();
 
     /// <summary>
@@ -75,7 +75,7 @@ public interface IObservationValue
     /// <see cref="MaxRatio"/>.
     /// </returns>
     /// <exception cref="ValueTypeMismatchException"><see cref="ValueType"/> is not
-    /// <see cref="ObservationValueType.Ratio"/>.</exception>
+    /// <see cref="MeasurementValueType.Ratio"/>.</exception>
     decimal GetRatio();
 
     /// <summary>
@@ -86,7 +86,7 @@ public interface IObservationValue
     /// <see cref="MaxFrequency"/>.
     /// </returns>
     /// <exception cref="ValueTypeMismatchException"><see cref="ValueType"/> is not
-    /// <see cref="ObservationValueType.Frequency"/>.</exception>
+    /// <see cref="MeasurementValueType.Frequency"/>.</exception>
     decimal GetFrequency();
 
     [DoesNotReturn]
