@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 using DSE.Open.Hashing;
@@ -43,6 +44,9 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
     public static readonly DateTimeOffset MinimumObservationTime =
         new(2000, 1, 1, 0, 0, 0, TimeSpan.Zero);
 
+    public static readonly DateTimeOffset MinimumRecordedTime =
+        new(2025, 1, 1, 0, 0, 0, TimeSpan.Zero);
+
     internal const int TimeToleranceSeconds = 60;
 
     private int? _measurementHashCode;
@@ -72,12 +76,17 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
     {
         ArgumentNullException.ThrowIfNull(measure);
         ArgumentNullException.ThrowIfNull(timeProvider);
-        Guard.IsInRange(time, MinimumObservationTime, timeProvider.GetUtcNow().AddSeconds(TimeToleranceSeconds));
+
+        var now = timeProvider.GetUtcNow();
+
+        Guard.IsInRange(time, MinimumObservationTime, now.AddSeconds(TimeToleranceSeconds));
 
         Id = ObservationId.GetRandomId();
         Time = time.Truncate(DateTimeTruncation.Millisecond);
-        Recorded = timeProvider.GetUtcNow().Truncate(DateTimeTruncation.Millisecond);
+        Recorded = now.Truncate(DateTimeTruncation.Millisecond);
         MeasureId = measure.Id;
+
+        Guard.IsLessThanOrEqualTo(time, Recorded.Value);
     }
 
     /// <summary>
