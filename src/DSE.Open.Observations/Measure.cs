@@ -32,12 +32,12 @@ namespace DSE.Open.Observations;
 [JsonDerivedType(typeof(Measure<Completeness, SentenceId>), (int)MeasureType.CompletenessSentence)]
 public abstract class Measure : IMeasure
 {
-    protected Measure(Uri uri, MeasurementLevel measurementLevel, string name, string statement)
-        : this(MeasureId.FromUri(uri), uri, measurementLevel, name, statement)
+    protected Measure(Uri uri, MeasurementLevel measurementLevel, string name, string statement, uint sequence)
+        : this(MeasureId.FromUri(uri), uri, measurementLevel, name, statement, sequence)
     {
     }
 
-    protected Measure(MeasureId id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
+    protected Measure(MeasureId id, Uri uri, MeasurementLevel measurementLevel, string name, string statement, uint sequence)
     {
         ArgumentNullException.ThrowIfNull(uri);
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
@@ -48,6 +48,7 @@ public abstract class Measure : IMeasure
         MeasurementLevel = measurementLevel;
         Name = name;
         Statement = statement;
+        Sequence = sequence;
     }
 
     /// <inheritdoc/>
@@ -67,6 +68,10 @@ public abstract class Measure : IMeasure
     [JsonPropertyName("statement")]
     public string Statement { get; }
 
+    [JsonPropertyName("sequence")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public uint Sequence { get; }
+
     public override int GetHashCode()
     {
         return HashCode.Combine(Id);
@@ -76,15 +81,15 @@ public abstract class Measure : IMeasure
 public sealed class Measure<TValue> : Measure, IMeasure<TValue>
     where TValue : struct, IEquatable<TValue>, IObservationValue
 {
-    public Measure(Uri uri, MeasurementLevel measurementLevel, string name, string statement)
-        : base(uri, measurementLevel, name, statement)
+    public Measure(Uri uri, MeasurementLevel measurementLevel, string name, string statement, uint sequence = default)
+        : base(uri, measurementLevel, name, statement, sequence)
     {
     }
 
     [JsonConstructor]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public Measure(MeasureId id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
-        : base(id, uri, measurementLevel, name, statement)
+    public Measure(MeasureId id, Uri uri, MeasurementLevel measurementLevel, string name, string statement, uint sequence)
+        : base(id, uri, measurementLevel, name, statement, sequence)
     {
     }
 
@@ -104,15 +109,15 @@ public sealed class Measure<TValue, TParam> : Measure, IMeasure<TValue, TParam>
     where TValue : struct, IEquatable<TValue>, IObservationValue
     where TParam : struct, IEquatable<TParam>
 {
-    public Measure(Uri uri, MeasurementLevel measurementLevel, string name, string statement)
-        : base(uri, measurementLevel, name, statement)
+    public Measure(Uri uri, MeasurementLevel measurementLevel, string name, string statement, uint sequence = default)
+        : base(uri, measurementLevel, name, statement, sequence)
     {
     }
 
     [JsonConstructor]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public Measure(MeasureId id, Uri uri, MeasurementLevel measurementLevel, string name, string statement)
-        : base(id, uri, measurementLevel, name, statement)
+    public Measure(MeasureId id, Uri uri, MeasurementLevel measurementLevel, string name, string statement, uint sequence)
+        : base(id, uri, measurementLevel, name, statement, sequence)
     {
     }
 
