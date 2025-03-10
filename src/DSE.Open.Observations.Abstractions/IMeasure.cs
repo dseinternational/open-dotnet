@@ -20,6 +20,11 @@ public interface IMeasure
     string Name { get; }
 
     string Statement { get; }
+
+    /// <summary>
+    /// The order in which the measure should be displayed.
+    /// </summary>
+    uint Sequence { get; }
 }
 
 public interface IMeasure<TValue> : IMeasure
