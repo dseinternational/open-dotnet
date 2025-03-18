@@ -78,12 +78,12 @@
     <PackageVersion Include="System.Threading.Tasks.Extensions" Version="4.6.1" />
     <PackageVersion Include="TorchSharp" Version="0.105.0" />
     <PackageVersion Include="TorchSharp-cpu" Version="0.105.0" />
-    <PackageVersion Include="Verify.XunitV3" Version="28.16.0" />
+    <PackageVersion Include="Verify.XunitV3" Version="[28.13.0]" />
     <PackageVersion Include="xunit.analyzers" Version="1.20.0" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.0.2" />
-    <PackageVersion Include="xunit.v3" Version="2.0.0" />
-    <PackageVersion Include="xunit.v3.assert" Version="2.0.0" />
+    <PackageVersion Include="xunit.v3" Version="[1.1.0]" />
+    <PackageVersion Include="xunit.v3.assert" Version="[1.1.0]" />
     <PackageVersion Include="xunit.v3.core" Version="1.1.0" />
-    <PackageVersion Include="xunit.v3.extensibility.core" Version="2.0.0" />
+    <PackageVersion Include="xunit.v3.extensibility.core" Version="[1.1.0]" />
   </ItemGroup>
 </Project>
