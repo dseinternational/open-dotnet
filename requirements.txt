@@ -3,5 +3,5 @@
 # linux+cpu: pip3 install torch>=2.6.0 torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
 # mac: pip3 install torch>=2.6.0 torchvision torchaudio --upgrade
 
-numpy>=2.2.3
+numpy>=2.2.4
 stanza>=1.10.1
