@@ -62,7 +62,7 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
         ArgumentNullException.ThrowIfNull(timeProvider);
 
         Id = ObservationId.GetRandomId();
-        Time = timeProvider.GetUtcNow().Truncate(DateTimeTruncation.Millisecond);
+        Time = timeProvider.GetUtcNow();
         MeasureId = measure.Id;
     }
 
@@ -82,8 +82,8 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
         Guard.IsInRange(time, MinimumObservationTime, now.AddSeconds(TimeToleranceSeconds));
 
         Id = ObservationId.GetRandomId();
-        Time = time.Truncate(DateTimeTruncation.Millisecond);
-        Recorded = now.Truncate(DateTimeTruncation.Millisecond);
+        Time = time;
+        Recorded = now;
         MeasureId = measure.Id;
 
         Guard.IsLessThanOrEqualTo(time, Recorded.Value);
@@ -134,7 +134,10 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
     [JsonPropertyName("t")]
     [JsonPropertyOrder(-89800)]
     [JsonConverter(typeof(JsonDateTimeOffsetUnixTimeMillisecondsConverter))]
-    public DateTimeOffset Time { get; }
+    public DateTimeOffset Time
+    {
+        get; private set => field = value.Truncate(DateTimeTruncation.Millisecond);
+    }
 
     /// <summary>
     /// The time that the observation was recorded. May be later than <see cref="Time"/> if recording
@@ -145,7 +148,7 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
     [JsonPropertyOrder(-89000)]
     [JsonConverter(typeof(JsonDateTimeOffsetUnixTimeMillisecondsConverter))]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-    public DateTimeOffset? Recorded { get; }
+    public DateTimeOffset? Recorded { get; private set => field = value?.Truncate(DateTimeTruncation.Millisecond); }
 
     /// <summary>
     /// The identifier for the measure.
