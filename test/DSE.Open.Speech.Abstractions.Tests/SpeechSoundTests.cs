@@ -150,25 +150,9 @@ public class SpeechSoundTests
         Assert.False(SpeechSound.IsVowel(sound));
     }
 
-    public static TheoryData<string> Consonants
-    {
-        get
-        {
-            var data = new TheoryData<string>();
-            s_consonants.ForEach(data.Add);
-            return data;
-        }
-    }
+    public static TheoryData<string> Consonants => [.. s_consonants];
 
-    public static TheoryData<string> Vowels
-    {
-        get
-        {
-            var data = new TheoryData<string>();
-            s_vowels.ForEach(data.Add);
-            return data;
-        }
-    }
+    public static TheoryData<string> Vowels => [.. s_vowels];
 
     private static readonly string[] s_vowels =
     [
