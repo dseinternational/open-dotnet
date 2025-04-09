@@ -309,4 +309,24 @@ public sealed class ObservationTests
         // Assert
         Assert.Equal(observation, deserialized);
     }
+
+    [Fact]
+    public void New_WithTime_ShouldTruncateToMilliseconds()
+    {
+        // Arrange
+        var time = DateTimeOffset.Now;
+        var recorded = time.AddMilliseconds(123);
+
+        // Act
+        var observation = new Observation<Binary>(
+            ObservationId.GetRandomId(),
+            time,
+            recorded,
+            TestMeasures.BinaryMeasure.Id,
+            true);
+
+        // Assert
+        Assert.Equal(time.Truncate(DateTimeTruncation.Millisecond), observation.Time);
+        Assert.Equal(recorded.Truncate(DateTimeTruncation.Millisecond), observation.Recorded);
+    }
 }
