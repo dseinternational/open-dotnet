@@ -1,13 +1,9 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-
-// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
-// Down Syndrome Education International and Contributors licence this file to you under the MIT license.
-
 namespace DSE.Open.Collections.ObjectModel;
 
-public class ObservableListTests
+public sealed class ObservableListTests
 {
     [Fact]
     public void Initialise()
@@ -96,5 +92,64 @@ public class ObservableListTests
         Assert.Equal(2, list.Count);
         Assert.Equal("three", list[0]);
         Assert.Equal("four", list[1]);
+    }
+
+    [Fact]
+    public void SetRange_WithPreviouslyEmpty_ShouldAddAll()
+    {
+        // Arrange
+        string[] items = ["one", "two", "three", "four"];
+        var list = new ObservableList<string>();
+
+        // Act
+        list.SetRange(items);
+
+        // Assert
+        Assert.Equal(4, list.Count);
+        Assert.True(list.SequenceEqual(items));
+    }
+
+    [Fact]
+    public void SetRange_WithPreviousNoOverlap_ShouldReplace()
+    {
+        // Arrange
+        string[] items = ["one", "two", "three", "four"];
+        var list = new ObservableList<string>(["five", "six"]);
+
+        // Act
+        list.SetRange(items);
+
+        // Assert
+        Assert.Equal(4, list.Count);
+        Assert.True(list.SequenceEqual(items));
+    }
+
+    [Fact]
+    public void SetRange_WithPreviousOverlap_ShouldReplace()
+    {
+        // Arrange
+        string[] items = ["one", "two", "three", "four"];
+        var list = new ObservableList<string>(["one", "two", "five", "six"]);
+
+        // Act
+        list.SetRange(items);
+
+        // Assert
+        Assert.Equal(4, list.Count);
+        Assert.True(list.SequenceEqual(items));
+    }
+
+    [Fact]
+    public void SetRange_WithPreviousItemsAndEmpty_ShouldClear()
+    {
+        // Arrange
+        string[] items = [];
+        var list = new ObservableList<string>(["one", "two", "five", "six"]);
+
+        // Act
+        list.SetRange(items);
+
+        // Assert
+        Assert.Empty(list);
     }
 }

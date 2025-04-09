@@ -471,6 +471,7 @@ public class ObservableList<T> : IObservableList<T>, IReadOnlyObservableList<T>,
 
         if (targetItems.Count == 0)
         {
+            Clear();
             return;
         }
 
