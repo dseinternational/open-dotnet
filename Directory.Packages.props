@@ -62,11 +62,11 @@
     <PackageVersion Include="System.Configuration.ConfigurationManager" Version="9.0.4" />
     <PackageVersion Include="System.Diagnostics.DiagnosticSource" Version="9.0.4" />
     <PackageVersion Include="System.IO.Hashing" Version="9.0.4" />
-    <PackageVersion Include="System.Linq.AsyncEnumerable" Version="10.0.0-preview.2.25163.2" />
+    <PackageVersion Include="System.Linq.AsyncEnumerable" Version="10.0.0-preview.3.25171.5" />
     <PackageVersion Include="System.Management" Version="9.0.4" />
     <PackageVersion Include="System.Memory" Version="4.6.3" />
     <PackageVersion Include="System.Memory.Data" Version="9.0.4" />
-    <PackageVersion Include="System.Numerics.Tensors" Version="10.0.0-preview.2.25163.2" />
+    <PackageVersion Include="System.Numerics.Tensors" Version="10.0.0-preview.3.25171.5" />
     <PackageVersion Include="System.Numerics.Vectors" Version="4.6.1" />
     <PackageVersion Include="System.Reflection.Emit" Version="4.7.0" />
     <PackageVersion Include="System.Reflection.Metadata" Version="9.0.4" />
