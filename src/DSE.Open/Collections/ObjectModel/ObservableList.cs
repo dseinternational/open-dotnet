@@ -460,14 +460,14 @@ public class ObservableList<T> : IObservableList<T>, IReadOnlyObservableList<T>,
     /// Sets the items in the instance to match those in the specified collection -
     /// adding and removing existing items as appropriate. Does not apply any sort.
     /// </summary>
-    /// <param name="collection"></param>
-    public void SetRange(IEnumerable<T> collection)
+    /// <param name="items"></param>
+    public void SetRange(IEnumerable<T> items)
     {
-        ArgumentNullException.ThrowIfNull(collection);
+        ArgumentNullException.ThrowIfNull(items);
 
         CheckReentrancy();
 
-        var targetItems = collection as IList<T> ?? [.. collection];
+        var targetItems = items as IList<T> ?? [.. items];
 
         if (targetItems.Count == 0)
         {
