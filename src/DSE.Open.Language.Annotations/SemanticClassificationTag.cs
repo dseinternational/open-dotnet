@@ -55,7 +55,7 @@ public readonly partial struct SemanticClassificationTag
     public static readonly SemanticClassificationTag ActionObject = new("action-object", true);
 
     /// <summary>
-    /// Indicates a <b>verb + noun</b> <c>[(NOUN|PROPN)+NOUN]</c> (agent + object)
+    /// Indicates a <b>noun or pronoun + noun</b> <c>[(NOUN|PROPN)+NOUN]</c> (agent + object)
     /// construction - for example "daddy toy" (daddy get the toy),
     /// "baby ball" (give the baby the ball).
     /// </summary>
@@ -77,6 +77,7 @@ public readonly partial struct SemanticClassificationTag
     /// Indicates a <b>preposition + noun</b> or <b>noun + preposition</b>
     /// <c>[ADP+NOUN]</c> (location, position/place) construction - for example
     /// "on chair", "in kitchen", "under table".
+    /// <c>[NOUN+ADP+NOUN|VERB+ADP+NOUN]</c> "toy in box", "hide under bed"
     public static readonly SemanticClassificationTag Location = new("location", true);
 
     /// <summary>
@@ -122,11 +123,10 @@ public readonly partial struct SemanticClassificationTag
     /// </summary>
     public static readonly SemanticClassificationTag Recurrence = new("recurrence", true);
 
+    /// <summary>
+    /// Non-existence, denial, or rejection of an object or action. "no ball", "no juice", "no eat", "all gone", "no more".
+    /// </summary>
     public static readonly SemanticClassificationTag NonExistence = new("non-existence", true);
-
-    public static readonly SemanticClassificationTag Rejection = new("rejection", true);
-
-    public static readonly SemanticClassificationTag Denial = new("denial", true);
 
     /// <summary>
     /// Indicates a <b>noun + verb + noun</b> <c>[(NOUN|PROPN)+VERB+(NOUN|PROPN)]</c>
@@ -145,11 +145,6 @@ public readonly partial struct SemanticClassificationTag
     /// </summary>
     public static readonly SemanticClassificationTag ActionObjectLocation = new("action-object-location", true);
 
-    /// <summary>
-    /// <c>[NOUN+ADP+NOUN|VERB+ADP+NOUN]</c> "toy in box", "hide under bed"
-    /// </summary>
-    public static readonly SemanticClassificationTag Preposition = new("preposition", true);
-
     // TODO: complete
 
     public static readonly FrozenSet<SemanticClassificationTag> All = FrozenSet.ToFrozenSet(
@@ -164,15 +159,12 @@ public readonly partial struct SemanticClassificationTag
         AttributeEntity,
         Conjunctive,
         DemonstrativeEntity,
-        Denial,
         EntityLocation,
         Location,
         NonExistence,
         PossessorPossession,
-        Preposition,
         Quantitative,
         Recurrence,
-        Rejection,
         Temporal,
     ]);
 
