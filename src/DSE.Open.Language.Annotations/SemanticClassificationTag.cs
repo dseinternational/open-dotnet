@@ -42,7 +42,6 @@ public readonly partial struct SemanticClassificationTag
         return new(value);
     }
 
-
     /// <summary>
     /// Indicates a <b>noun + verb</b> <c>[(NOUN|PROPN)+VERB]</c> (agent + action)
     /// construction - for example "dog bark", "baby eat".
@@ -110,12 +109,6 @@ public readonly partial struct SemanticClassificationTag
     /// </summary>
     public static readonly SemanticClassificationTag Conjunctive = new("conjunctive", true);
 
-
-    public static readonly SemanticClassificationTag Declarative = new("declarative", true);
-
-
-    public static readonly SemanticClassificationTag Imperative = new("imperative", true);
-
     /// <summary>
     /// Indicates a <b>determiner + noun</b> <c>DET+NOUN</c> (existence)
     /// construction  - for example, "that ball", "this toy".
@@ -150,7 +143,7 @@ public readonly partial struct SemanticClassificationTag
     /// <summary>
     /// TODO
     /// </summary>
-    public static readonly SemanticClassificationTag AgentObjectLocation = new("agent-object-location", true);
+    public static readonly SemanticClassificationTag ActionObjectLocation = new("action-object-location", true);
 
     /// <summary>
     /// <c>[NOUN+ADP+NOUN|VERB+ADP+NOUN]</c> "toy in box", "hide under bed"
@@ -167,14 +160,12 @@ public readonly partial struct SemanticClassificationTag
         AgentActionLocation,
         AgentActionObject,
         AgentObject,
-        AgentObjectLocation,
+        ActionObjectLocation,
         AttributeEntity,
         Conjunctive,
-        Declarative,
         DemonstrativeEntity,
         Denial,
         EntityLocation,
-        Imperative,
         Location,
         NonExistence,
         PossessorPossession,
