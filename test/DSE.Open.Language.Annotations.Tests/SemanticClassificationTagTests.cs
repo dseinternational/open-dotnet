@@ -11,7 +11,7 @@ public class SemanticClassificationTagTests
     [MemberData(nameof(Tags))]
     public void Parse_valid_tags(string tagStr)
     {
-        var tag = SemanticClassificationTag.ParseInvariant(tagStr);
+        var tag = SemanticClassification.ParseInvariant(tagStr);
         Assert.NotEqual(default, tag);
     }
 
@@ -19,7 +19,7 @@ public class SemanticClassificationTagTests
     [MemberData(nameof(Tags))]
     public void Serialize_deserialize(string tagStr)
     {
-        var tag = SemanticClassificationTag.ParseInvariant(tagStr);
+        var tag = SemanticClassification.ParseInvariant(tagStr);
         AssertJson.Roundtrip(tag);
     }
 

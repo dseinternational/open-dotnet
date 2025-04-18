@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DSE.Open.EntityFrameworkCore.Models.Language.Storage.ValueConversion;
 
-public sealed class SemanticClassificationTagToStringConverter : ValueConverter<SemanticClassificationTag, string>
+public sealed class SemanticClassificationTagToStringConverter : ValueConverter<SemanticClassification, string>
 {
     public static readonly SemanticClassificationTagToStringConverter Default = new();
 
@@ -17,20 +17,20 @@ public sealed class SemanticClassificationTagToStringConverter : ValueConverter<
     }
 
     // public for EF Core model compilation
-    public static string ConvertToString(SemanticClassificationTag code)
+    public static string ConvertToString(SemanticClassification code)
     {
         return code.ToString();
     }
 
     // public for EF Core model compilation
-    public static SemanticClassificationTag ConvertFromString(string code)
+    public static SemanticClassification ConvertFromString(string code)
     {
-        if (SemanticClassificationTag.TryParse(code, out var alphaCode))
+        if (SemanticClassification.TryParse(code, out var alphaCode))
         {
             return alphaCode;
         }
 
-        ValueConversionException.Throw($"Could not convert string '{code}' to {nameof(SemanticClassificationTag)}");
+        ValueConversionException.Throw($"Could not convert string '{code}' to {nameof(SemanticClassification)}");
         return default; // unreachable
     }
 }

@@ -8,12 +8,12 @@
 
 namespace DSE.Open.Language.Annotations;
 
-[global::System.ComponentModel.TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<SemanticClassificationTag, global::DSE.Open.AsciiString>))]
-public readonly partial struct SemanticClassificationTag
+[global::System.ComponentModel.TypeConverter(typeof(global::DSE.Open.Values.ValueTypeConverter<SemanticClassification, global::DSE.Open.AsciiString>))]
+public readonly partial struct SemanticClassification
 {
     private readonly global::DSE.Open.AsciiString _value;
 
-    private SemanticClassificationTag(global::DSE.Open.AsciiString value, bool skipValidation = false)
+    private SemanticClassification(global::DSE.Open.AsciiString value, bool skipValidation = false)
     {
         if (!skipValidation)
         {
@@ -28,15 +28,15 @@ public readonly partial struct SemanticClassificationTag
         if (!IsValidValue(value))
         {
             throw new global::System.ArgumentOutOfRangeException(nameof(value), value,
-                $"'{value}' is not a valid {nameof(SemanticClassificationTag)} value");
+                $"'{value}' is not a valid {nameof(SemanticClassification)} value");
         }
     }
 
-    public static bool TryFromValue(global::DSE.Open.AsciiString value, out SemanticClassificationTag result)
+    public static bool TryFromValue(global::DSE.Open.AsciiString value, out SemanticClassification result)
     {
         if (IsValidValue(value))
         {
-            result = new SemanticClassificationTag(value, true);
+            result = new SemanticClassification(value, true);
             return true;
         }
     
@@ -44,39 +44,39 @@ public readonly partial struct SemanticClassificationTag
         return false;
     }
 
-    public static SemanticClassificationTag FromValue(global::DSE.Open.AsciiString value)
+    public static SemanticClassification FromValue(global::DSE.Open.AsciiString value)
     {
         EnsureIsValidValue(value);
         return new(value, true);
     }
 
-    public static explicit operator SemanticClassificationTag(global::DSE.Open.AsciiString value)
+    public static explicit operator SemanticClassification(global::DSE.Open.AsciiString value)
         => FromValue(value);
 
-    static global::DSE.Open.AsciiString global::DSE.Open.IConvertibleTo<SemanticClassificationTag, global::DSE.Open.AsciiString>.ConvertTo(SemanticClassificationTag value)
+    static global::DSE.Open.AsciiString global::DSE.Open.IConvertibleTo<SemanticClassification, global::DSE.Open.AsciiString>.ConvertTo(SemanticClassification value)
         => (global::DSE.Open.AsciiString)value;
 
-    public static implicit operator global::DSE.Open.AsciiString(SemanticClassificationTag value)
+    public static implicit operator global::DSE.Open.AsciiString(SemanticClassification value)
     {
         return value._value;
     }
 
     // IEquatable<T>
 
-    public bool Equals(SemanticClassificationTag other) => _value.Equals(other._value);
+    public bool Equals(SemanticClassification other) => _value.Equals(other._value);
 
-    public override bool Equals(object? obj) => obj is SemanticClassificationTag other && Equals(other);
+    public override bool Equals(object? obj) => obj is SemanticClassification other && Equals(other);
 
     public override int GetHashCode()
     {
         return _value.GetHashCode();
     }
 
-    // IEqualityOperators<SemanticClassificationTag, SemanticClassificationTag, bool>
+    // IEqualityOperators<SemanticClassification, SemanticClassification, bool>
 
-    public static bool operator ==(SemanticClassificationTag left, SemanticClassificationTag right) => left.Equals(right);
+    public static bool operator ==(SemanticClassification left, SemanticClassification right) => left.Equals(right);
     
-    public static bool operator !=(SemanticClassificationTag left, SemanticClassificationTag right) => !(left == right);
+    public static bool operator !=(SemanticClassification left, SemanticClassification right) => !(left == right);
 
     // ISpanFormattable
 
@@ -106,7 +106,7 @@ public readonly partial struct SemanticClassificationTag
         => TryFormatInvariant(destination, out charsWritten, default);
 
     /// <summary>
-    /// Gets a representation of the <see cref="SemanticClassificationTag"/> value as a string with formatting options.
+    /// Gets a representation of the <see cref="SemanticClassification"/> value as a string with formatting options.
     /// </summary>
     [global::System.Runtime.CompilerServices.SkipLocalsInit]
     public string ToString(string? format, global::System.IFormatProvider? formatProvider)
@@ -125,55 +125,55 @@ public readonly partial struct SemanticClassificationTag
     }
 
     /// <summary>
-    /// Gets a representation of the SemanticClassificationTag value as a string with default formatting options.
+    /// Gets a representation of the SemanticClassification value as a string with default formatting options.
     /// </summary>
     /// <returns>
-    /// A representation of the SemanticClassificationTag value.
+    /// A representation of the SemanticClassification value.
     /// </returns>
     public override string ToString()
     {
         return ToString(default, default);
     }
 
-    // ISpanParsable<SemanticClassificationTag>
+    // ISpanParsable<SemanticClassification>
 
-    public static SemanticClassificationTag Parse(global::System.ReadOnlySpan<char> s, global::System.IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<SemanticClassificationTag, global::DSE.Open.AsciiString>(s, provider);
+    public static SemanticClassification Parse(global::System.ReadOnlySpan<char> s, global::System.IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<SemanticClassification, global::DSE.Open.AsciiString>(s, provider);
 
-    public static SemanticClassificationTag ParseInvariant(global::System.ReadOnlySpan<char> s)
+    public static SemanticClassification ParseInvariant(global::System.ReadOnlySpan<char> s)
         => Parse(s, global::System.Globalization.CultureInfo.InvariantCulture);
 
     public static bool TryParse(
         global::System.ReadOnlySpan<char> s,
         global::System.IFormatProvider? provider,
-        out SemanticClassificationTag result)
-        => global::DSE.Open.Values.ValueParser.TryParse<SemanticClassificationTag, global::DSE.Open.AsciiString>(s, provider, out result);
+        out SemanticClassification result)
+        => global::DSE.Open.Values.ValueParser.TryParse<SemanticClassification, global::DSE.Open.AsciiString>(s, provider, out result);
 
     public static bool TryParse(
         global::System.ReadOnlySpan<char> s,
-        out SemanticClassificationTag result)
+        out SemanticClassification result)
         => TryParse(s, default, out result);
 
     public static bool TryParseInvariant(
         global::System.ReadOnlySpan<char> s,
-        out SemanticClassificationTag result)
+        out SemanticClassification result)
         => TryParse(s, global::System.Globalization.CultureInfo.InvariantCulture, out result);
 
-    // IParsable<SemanticClassificationTag>
+    // IParsable<SemanticClassification>
 
-    public static SemanticClassificationTag Parse(string s, global::System.IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<SemanticClassificationTag, global::DSE.Open.AsciiString>(s, provider);
+    public static SemanticClassification Parse(string s, global::System.IFormatProvider? provider)
+        => global::DSE.Open.Values.ValueParser.Parse<SemanticClassification, global::DSE.Open.AsciiString>(s, provider);
 
-    public static SemanticClassificationTag Parse(string s)
+    public static SemanticClassification Parse(string s)
         => Parse(s, default);
 
-    public static SemanticClassificationTag ParseInvariant(string s)
+    public static SemanticClassification ParseInvariant(string s)
         => Parse(s, global::System.Globalization.CultureInfo.InvariantCulture);
 
     public static bool TryParse(
         string? s,
         global::System.IFormatProvider? provider,
-        out SemanticClassificationTag result)
+        out SemanticClassification result)
     {
         if (s is null)
         {
@@ -186,12 +186,12 @@ public readonly partial struct SemanticClassificationTag
 
     public static bool TryParse(
         string? s,
-        out SemanticClassificationTag result)
+        out SemanticClassification result)
         => TryParse(s, default, out result);
 
     public static bool TryParseInvariant(
         string? s,
-        out SemanticClassificationTag result)
+        out SemanticClassification result)
         => TryParse(s, global::System.Globalization.CultureInfo.InvariantCulture, out result);
 
     // IUtf8SpanFormattable
@@ -203,18 +203,18 @@ public readonly partial struct SemanticClassificationTag
         global::System.IFormatProvider? provider)
         => ((global::System.IUtf8SpanFormattable)_value).TryFormat(utf8Destination, out bytesWritten, format, provider);
 
-    // IUtf8SpanParsable<SemanticClassificationTag>
+    // IUtf8SpanParsable<SemanticClassification>
 
-    public static SemanticClassificationTag Parse(
+    public static SemanticClassification Parse(
         global::System.ReadOnlySpan<byte> utf8Source,
         global::System.IFormatProvider? provider)
-        => global::DSE.Open.Values.ValueParser.Parse<SemanticClassificationTag, global::DSE.Open.AsciiString>(utf8Source, provider);
+        => global::DSE.Open.Values.ValueParser.Parse<SemanticClassification, global::DSE.Open.AsciiString>(utf8Source, provider);
 
     public static bool TryParse(
         global::System.ReadOnlySpan<byte> utf8Source,
         global::System.IFormatProvider? provider,
-        out SemanticClassificationTag result)
-        => global::DSE.Open.Values.ValueParser.TryParse<SemanticClassificationTag, global::DSE.Open.AsciiString>(utf8Source, provider, out result);
+        out SemanticClassification result)
+        => global::DSE.Open.Values.ValueParser.TryParse<SemanticClassification, global::DSE.Open.AsciiString>(utf8Source, provider, out result);
 
 }
 
