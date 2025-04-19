@@ -3,7 +3,7 @@
 
 using DSE.Open.Testing.Xunit;
 
-namespace DSE.Open.Language.Abstractions.Tests;
+namespace DSE.Open.Language;
 
 public class SignTests
 {
