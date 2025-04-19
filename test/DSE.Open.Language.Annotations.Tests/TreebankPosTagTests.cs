@@ -23,8 +23,8 @@ public class TreebankPosTagTests
         AssertJson.Roundtrip(tag);
     }
 
-    public static readonly TheoryData<string> Tags = new()
-    {
+    public static readonly TheoryData<string> Tags =
+    [
         "CC",
         "CD",
         "DT",
@@ -61,6 +61,6 @@ public class TreebankPosTagTests
         "WP",
         "WP$",
         "WRB",
-    };
+    ];
 
 }

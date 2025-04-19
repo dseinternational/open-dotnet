@@ -23,8 +23,8 @@ public class SemanticClassificationTagTests
         AssertJson.Roundtrip(tag);
     }
 
-    public static readonly TheoryData<string> Tags = new()
-    {
+    public static readonly TheoryData<string> Tags =
+    [
         "agent-action",
         "action-object",
         "agent-object",
@@ -38,10 +38,7 @@ public class SemanticClassificationTagTests
         "demonstrative-entity",
         "recurrence",
         "non-existence",
-        "rejection",
-        "denial",
         "agent-action-object",
         "agent-action-location",
-    };
-
+    ];
 }

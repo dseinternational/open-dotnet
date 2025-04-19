@@ -25,12 +25,12 @@ public class UniversalFeatureTests
         Assert.Equal(tag, deserialized);
     }
 
-    public static readonly TheoryData<string> Tags = new()
-    {
+    public static readonly TheoryData<string> Tags =
+    [
         "PronType",
         "PronType",
         "PronType",
         "PronType",
-    };
+    ];
 
 }

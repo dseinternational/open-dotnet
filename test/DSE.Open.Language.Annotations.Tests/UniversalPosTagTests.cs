@@ -25,8 +25,8 @@ public class UniversalPosTagTests
         Assert.Equal(tag, deserialized);
     }
 
-    public static readonly TheoryData<string> Tags = new()
-    {
+    public static readonly TheoryData<string> Tags =
+    [
         "ADJ",
         "ADP",
         "ADV",
@@ -44,5 +44,5 @@ public class UniversalPosTagTests
         "SYM",
         "VERB",
         "X"
-    };
+    ];
 }
