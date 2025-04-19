@@ -2,7 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using DSE.Open.EntityFrameworkCore.Storage.ValueConversion;
-using DSE.Open.Language.Annotations;
+using DSE.Open.Language;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DSE.Open.EntityFrameworkCore.Models.Language.Storage.ValueConversion;

@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 using DSE.Open.Values;
 using DSE.Open.Values.Text.Json.Serialization;
 
-namespace DSE.Open.Language.Annotations;
+namespace DSE.Open.Language;
 
 [EquatableValue]
 [StructLayout(LayoutKind.Sequential)]
