@@ -5,7 +5,7 @@ using DSE.Open.Testing.Xunit;
 
 namespace DSE.Open.Language.Annotations;
 
-public class SemanticClassificationTagTests
+public class SemanticClassificationTests
 {
     [Theory]
     [MemberData(nameof(Tags))]

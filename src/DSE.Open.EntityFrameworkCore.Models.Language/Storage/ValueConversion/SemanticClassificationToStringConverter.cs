@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DSE.Open.EntityFrameworkCore.Models.Language.Storage.ValueConversion;
 
-public sealed class SemanticClassificationTagToStringConverter : ValueConverter<SemanticClassification, string>
+public sealed class SemanticClassificationToStringConverter : ValueConverter<SemanticClassification, string>
 {
-    public static readonly SemanticClassificationTagToStringConverter Default = new();
+    public static readonly SemanticClassificationToStringConverter Default = new();
 
-    public SemanticClassificationTagToStringConverter()
+    public SemanticClassificationToStringConverter()
         : base(c => ConvertToString(c), s => ConvertFromString(s))
     {
     }
