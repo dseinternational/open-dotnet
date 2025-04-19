@@ -5,13 +5,13 @@ using DSE.Open.Testing.Xunit;
 
 namespace DSE.Open.Language.Annotations;
 
-public class SemanticClassificationTests
+public class SemanticRelationTests
 {
     [Theory]
     [MemberData(nameof(Tags))]
     public void Parse_valid_tags(string tagStr)
     {
-        var tag = SemanticClassification.ParseInvariant(tagStr);
+        var tag = SemanticRelation.ParseInvariant(tagStr);
         Assert.NotEqual(default, tag);
     }
 
@@ -19,7 +19,7 @@ public class SemanticClassificationTests
     [MemberData(nameof(Tags))]
     public void Serialize_deserialize(string tagStr)
     {
-        var tag = SemanticClassification.ParseInvariant(tagStr);
+        var tag = SemanticRelation.ParseInvariant(tagStr);
         AssertJson.Roundtrip(tag);
     }
 

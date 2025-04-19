@@ -7,30 +7,30 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DSE.Open.EntityFrameworkCore.Models.Language.Storage.ValueConversion;
 
-public sealed class SemanticClassificationToStringConverter : ValueConverter<SemanticClassification, string>
+public sealed class SemanticRelationToStringConverter : ValueConverter<SemanticRelation, string>
 {
-    public static readonly SemanticClassificationToStringConverter Default = new();
+    public static readonly SemanticRelationToStringConverter Default = new();
 
-    public SemanticClassificationToStringConverter()
+    public SemanticRelationToStringConverter()
         : base(c => ConvertToString(c), s => ConvertFromString(s))
     {
     }
 
     // public for EF Core model compilation
-    public static string ConvertToString(SemanticClassification code)
+    public static string ConvertToString(SemanticRelation code)
     {
         return code.ToString();
     }
 
     // public for EF Core model compilation
-    public static SemanticClassification ConvertFromString(string code)
+    public static SemanticRelation ConvertFromString(string code)
     {
-        if (SemanticClassification.TryParse(code, out var alphaCode))
+        if (SemanticRelation.TryParse(code, out var alphaCode))
         {
             return alphaCode;
         }
 
-        ValueConversionException.Throw($"Could not convert string '{code}' to {nameof(SemanticClassification)}");
+        ValueConversionException.Throw($"Could not convert string '{code}' to {nameof(SemanticRelation)}");
         return default; // unreachable
     }
 }
