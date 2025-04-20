@@ -243,7 +243,7 @@ public record Word : ISpanFormattable, ISpanParsable<Word>, IRepeatableHash64
         {
             relation = null;
         }
-        else if (relationSpan == "ROOT" || relationSpan == "root")
+        else if (relationSpan.Equals("ROOT", StringComparison.OrdinalIgnoreCase))
         {
             relation = null;
         }
