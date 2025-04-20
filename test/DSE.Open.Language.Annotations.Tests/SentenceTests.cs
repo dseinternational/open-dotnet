@@ -59,7 +59,7 @@ public class SentenceTests
     [Fact]
     public void ReadConllu_HeCanSwimAndMustPractiseEveryDay()
     {
-        var sentence = Sentence.ReadConllu(ExampleSentenceDefinitions.HeCanSwimAndMustPractiseEveryDay);
+        var sentence = Sentence.FromConllu(ExampleSentenceDefinitions.HeCanSwimAndMustPractiseEveryDay);
         Assert.Equal("He can swim and must practise every day, but he might rest tomorrow.", sentence.Text);
         Assert.Equal(15, sentence.Tokens.Count);
     }
@@ -67,7 +67,7 @@ public class SentenceTests
     [Fact]
     public void ReadConllu_TheDogIsRunningAndTheHorseIsWalking()
     {
-        var sentence = Sentence.ReadConllu(ExampleSentenceDefinitions.TheDogIsRunningAndTheHorseIsWalking);
+        var sentence = Sentence.FromConllu(ExampleSentenceDefinitions.TheDogIsRunningAndTheHorseIsWalking);
         Assert.Equal("The dog is running and the horse is walking, but the snail is crawling and the duck is swimming and the bird is flying.", sentence.Text);
         Assert.Equal(26, sentence.Tokens.Count);
     }

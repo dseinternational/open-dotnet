@@ -6,8 +6,8 @@ namespace DSE.Open.Language.Annotations;
 public static class ExampleSentences
 {
     public static Sentence HeCanSwimAndMustPractiseEveryDay =>
-        Sentence.ReadConllu(ExampleSentenceDefinitions.HeCanSwimAndMustPractiseEveryDay);
+        Sentence.FromConllu(ExampleSentenceDefinitions.HeCanSwimAndMustPractiseEveryDay);
 
     public static Sentence TheDogIsRunningAndTheHorseIsWalking =>
-        Sentence.ReadConllu(ExampleSentenceDefinitions.TheDogIsRunningAndTheHorseIsWalking);
+        Sentence.FromConllu(ExampleSentenceDefinitions.TheDogIsRunningAndTheHorseIsWalking);
 }

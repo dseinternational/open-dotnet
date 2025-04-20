@@ -228,7 +228,13 @@ public record Sentence : ISpanFormattable, IRepeatableHash64
         return hash;
     }
 
+    [Obsolete("Use FromConllu instead.")]
     public static Sentence ReadConllu(string conlluDefintion)
+    {
+        return FromConllu(conlluDefintion);
+    }
+
+    public static Sentence FromConllu(string conlluDefintion)
     {
         ArgumentNullException.ThrowIfNull(conlluDefintion);
 
