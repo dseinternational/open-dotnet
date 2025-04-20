@@ -238,15 +238,12 @@ public record Word : ISpanFormattable, ISpanParsable<Word>, IRepeatableHash64
         UniversalRelationTag? relation;
         var relationSpan = s[fields[ConlluFieldIndex.Relation]];
 
+#pragma warning disable IDE0078 // Use pattern matching
         if (relationSpan.Length == 1 && relationSpan[0] == '_')
         {
             relation = null;
         }
-        else if (relationSpan.Length == 4
-            && (relationSpan[0] == 'R' || relationSpan[0] == 'r')
-            && (relationSpan[1] == 'O' || relationSpan[1] == 'o')
-            && (relationSpan[2] == 'O' || relationSpan[2] == 'o')
-            && (relationSpan[3] == 'T' || relationSpan[3] == 't'))
+        else if (relationSpan == "ROOT" || relationSpan == "root")
         {
             relation = null;
         }
@@ -261,6 +258,7 @@ public record Word : ISpanFormattable, ISpanParsable<Word>, IRepeatableHash64
                 return Fail(out result);
             }
         }
+#pragma warning restore IDE0078 // Use pattern matching
 
         // TODO: DEPS
 
