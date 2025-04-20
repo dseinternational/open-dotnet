@@ -58,4 +58,24 @@ public static class ExampleSentenceDefinitions
         25	flying	fly	VERB	VBG	Tense=Pres|VerbForm=Part	20	conj	_	_
         26	.	.	PUNCT	.	_	4	punct	_	_
         """;
+
+    public const string TheCakeWasEatenByTheChildren = """
+        # text = The cake was eaten by the children, who were praised by their teacher.
+        # 
+        1	The	the	DET	DT	Definite=Def|PronType=Art	2	det	_	_
+        2	cake	cake	NOUN	NN	Number=Sing	4	nsubj:pass	_	_
+        3	was	be	AUX	VBD	Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin	4	aux:pass	_	_
+        4	eaten	eat	VERB	VBN	Tense=Past|VerbForm=Part|Voice=Pass	0	root	_	_
+        5	by	by	ADP	IN	_	7	case	_	_
+        6	the	the	DET	DT	Definite=Def|PronType=Art	7	det	_	_
+        7	children	child	NOUN	NNS	Number=Plur	4	obl:agent	_	_
+        8	,	,	PUNCT	,	_	11	punct	_	_
+        9	who	who	PRON	WP	PronType=Rel	11	nsubj:pass	_	_
+        10	were	be	AUX	VBD	Mood=Ind|Number=Plur|Person=3|Tense=Past|VerbForm=Fin	11	aux:pass	_	_
+        11	praised	praise	VERB	VBN	Tense=Past|VerbForm=Part|Voice=Pass	7	acl:relcl	_	_
+        12	by	by	ADP	IN	_	14	case	_	_
+        13	their	their	PRON	PRP$	Case=Gen|Number=Plur|Person=3|Poss=Yes|PronType=Prs	14	nmod:poss	_	_
+        14	teacher	teacher	NOUN	NN	Number=Sing	11	obl:agent	_	_
+        15	.	.	PUNCT	.	_	4	punct	_	_
+        """;
 }

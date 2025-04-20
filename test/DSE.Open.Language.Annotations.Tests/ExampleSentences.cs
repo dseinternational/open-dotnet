@@ -10,4 +10,7 @@ public static class ExampleSentences
 
     public static Sentence TheDogIsRunningAndTheHorseIsWalking =>
         Sentence.FromConllu(ExampleSentenceDefinitions.TheDogIsRunningAndTheHorseIsWalking);
+
+    public static Sentence TheCakeWasEatenByTheChildren =>
+        Sentence.FromConllu(ExampleSentenceDefinitions.TheCakeWasEatenByTheChildren);
 }

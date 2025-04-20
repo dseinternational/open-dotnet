@@ -283,6 +283,7 @@ public readonly partial struct UniversalRelationTag
         ReduplicatedCompounds,
         ReflexiveCliticWithReflexiveverb,
         ReflexivePronounReflexivePassive,
+        RelativeClauseModifier,
         Root,
         SerialVerbCompounds,
         TemporalModifier,

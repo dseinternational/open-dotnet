@@ -57,7 +57,7 @@ public class SentenceTests
         "6\t.\t.\tPUNCT\t.\t_\t4\tpunct\t_\t_" + "\n";
 
     [Fact]
-    public void ReadConllu_HeCanSwimAndMustPractiseEveryDay()
+    public void FromConllu_HeCanSwimAndMustPractiseEveryDay()
     {
         var sentence = Sentence.FromConllu(ExampleSentenceDefinitions.HeCanSwimAndMustPractiseEveryDay);
         Assert.Equal("He can swim and must practise every day, but he might rest tomorrow.", sentence.Text);
@@ -65,10 +65,18 @@ public class SentenceTests
     }
 
     [Fact]
-    public void ReadConllu_TheDogIsRunningAndTheHorseIsWalking()
+    public void FromConllu_TheDogIsRunningAndTheHorseIsWalking()
     {
         var sentence = Sentence.FromConllu(ExampleSentenceDefinitions.TheDogIsRunningAndTheHorseIsWalking);
         Assert.Equal("The dog is running and the horse is walking, but the snail is crawling and the duck is swimming and the bird is flying.", sentence.Text);
         Assert.Equal(26, sentence.Tokens.Count);
+    }
+
+    [Fact]
+    public void FromConllu_TheCakeWasEatenByTheChildren()
+    {
+        var sentence = Sentence.FromConllu(ExampleSentenceDefinitions.TheCakeWasEatenByTheChildren);
+        Assert.Equal("The cake was eaten by the children, who were praised by their teacher.", sentence.Text);
+        Assert.Equal(15, sentence.Tokens.Count);
     }
 }
