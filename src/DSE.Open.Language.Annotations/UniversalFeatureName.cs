@@ -54,6 +54,26 @@ public readonly partial struct UniversalFeatureName
         return new(value);
     }
 
+    public static UniversalFeatureName FromAlphaNumericCode(AlphaNumericCode value)
+    {
+        return new(value);
+    }
+
+    public static explicit operator UniversalFeatureName(AlphaNumericCode value)
+    {
+        return FromAlphaNumericCode(value);
+    }
+
+    public AlphaNumericCode ToAlphaNumericCode()
+    {
+        return new AlphaNumericCode(this);
+    }
+
+    public static explicit operator AlphaNumericCode(UniversalFeatureName value)
+    {
+        return value.ToAlphaNumericCode();
+    }
+
     public static readonly UniversalFeatureName Abbr = new("Abbr", true);
 
     public static readonly UniversalFeatureName Animacy = new("Animacy", true);
