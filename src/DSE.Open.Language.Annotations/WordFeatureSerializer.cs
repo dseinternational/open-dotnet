@@ -15,7 +15,7 @@ public static class WordFeatureSerializer
         out int charsWritten)
     {
         ArgumentNullException.ThrowIfNull(features);
-        return TrySerialize(destination, features.ToArray(), out charsWritten);
+        return TrySerialize(destination, [.. features], out charsWritten);
     }
 
     public static bool TrySerialize(

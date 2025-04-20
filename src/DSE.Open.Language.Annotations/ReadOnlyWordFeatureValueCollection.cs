@@ -41,7 +41,9 @@ public sealed class ReadOnlyWordFeatureValueCollection
 
         list.AddRange(items);
 
+#pragma warning disable IDE0306 // Simplify collection initialization
         return new(list);
+#pragma warning restore IDE0306 // Simplify collection initialization
     }
 
     public static ReadOnlyWordFeatureValueCollection Create(Span<WordFeature> items)
@@ -76,9 +78,9 @@ public sealed class ReadOnlyWordFeatureValueCollection
     {
         if (WordFeatureSerializer.TryDeserialize(s, out var features))
         {
-            result = new(features);
+            result = [.. features];
             return true;
-        };
+        }
 
         result = default;
         return false;

@@ -227,4 +227,47 @@ public record Sentence : ISpanFormattable, IRepeatableHash64
 
         return hash;
     }
+
+    public static Sentence ReadConllu(string conlluDefintion)
+    {
+        ArgumentNullException.ThrowIfNull(conlluDefintion);
+
+        var lines = conlluDefintion.Split("\n", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+        var tokens = ParseTokens(lines);
+
+        var text = lines.FirstOrDefault(l => l.StartsWith("# text = "))?.Split('=', 2)[1].Trim()
+            ?? string.Join(' ', tokens.Select(t => t.Text));
+
+        return new Sentence
+        {
+            Text = text,
+            Tokens = [.. tokens],
+            Comments = []
+        };
+    }
+
+    private static IEnumerable<Token> ParseTokens(string[] lines)
+    {
+        foreach (var line in lines)
+        {
+            if (line.StartsWith("#"))
+            {
+                continue;
+            }
+
+            Token token;
+
+            try
+            {
+                token = Token.ParseInvariant(line);
+            }
+            catch (FormatException ex)
+            {
+                throw new FormatException($"Invalid token format: {line}", ex);
+            }
+
+            yield return token;
+        }
+    }
 }

@@ -41,7 +41,9 @@ public sealed class ReadOnlyAttributeValueCollection
 
         list.AddRange(items);
 
+#pragma warning disable IDE0306 // Simplify collection initialization
         return new(list);
+#pragma warning restore IDE0306 // Simplify collection initialization
     }
 
     public static ReadOnlyAttributeValueCollection Create(Span<AttributeValue> items)
@@ -76,7 +78,7 @@ public sealed class ReadOnlyAttributeValueCollection
     {
         if (AttributeValueSerializer.TryDeserialize(s, out var features))
         {
-            result = new(features);
+            result = [.. features];
             return true;
         };
 

@@ -28,7 +28,7 @@ public sealed class WordFeatureCollection
     {
         ArgumentNullException.ThrowIfNull(features);
 
-        _features = new(features);
+        _features = [.. features];
     }
 
     public static WordFeatureCollection Create(ReadOnlySpan<WordFeature> items)
@@ -37,7 +37,9 @@ public sealed class WordFeatureCollection
 
         list.AddRange(items);
 
+#pragma warning disable IDE0028 // Simplify collection initialization
         return new(list);
+#pragma warning restore IDE0028 // Simplify collection initialization
     }
 
     public static WordFeatureCollection Create(Span<WordFeature> items)
@@ -108,7 +110,7 @@ public sealed class WordFeatureCollection
 
     public ReadOnlyWordFeatureCollection AsReadOnly()
     {
-        return new(this);
+        return [.. this];
     }
 
     public IEnumerator<WordFeature> GetEnumerator()
@@ -154,7 +156,7 @@ public sealed class WordFeatureCollection
     {
         if (WordFeatureSerializer.TryDeserialize(s, out var features))
         {
-            result = new(features);
+            result = [.. features];
             return true;
         };
 

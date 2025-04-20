@@ -55,4 +55,20 @@ public class SentenceTests
         "4\tdrinking\tdrink\tVERB\tVBG\tTense=Pres|VerbForm=Part\t0\troot\t_\t_" + "\n" +
         "5\tmilk\tmilk\tNOUN\tNN\tNumber=Sing\t4\tobj\t_\t_" + "\n" +
         "6\t.\t.\tPUNCT\t.\t_\t4\tpunct\t_\t_" + "\n";
+
+    [Fact]
+    public void ReadConllu_HeCanSwimAndMustPractiseEveryDay()
+    {
+        var sentence = Sentence.ReadConllu(ExampleSentenceDefinitions.HeCanSwimAndMustPractiseEveryDay);
+        Assert.Equal("He can swim and must practise every day, but he might rest tomorrow.", sentence.Text);
+        Assert.Equal(15, sentence.Tokens.Count);
+    }
+
+    [Fact]
+    public void ReadConllu_TheDogIsRunningAndTheHorseIsWalking()
+    {
+        var sentence = Sentence.ReadConllu(ExampleSentenceDefinitions.TheDogIsRunningAndTheHorseIsWalking);
+        Assert.Equal("The dog is running and the horse is walking, but the snail is crawling and the duck is swimming and the bird is flying.", sentence.Text);
+        Assert.Equal(26, sentence.Tokens.Count);
+    }
 }

@@ -170,11 +170,40 @@ public readonly partial struct UniversalRelationTag
 
     public static readonly UniversalRelationTag AgentModifier = new("obl:agent", true);
 
+    /// <summary>
+    /// <see href="https://universaldependencies.org/en/dep/obl-arg.html"> <c>obl:tmod</c></see>:
+    /// The relation <c>obl:arg</c> is used for oblique arguments and distinguishes them from adjuncts,
+    /// which use the plain <c>obl</c> relation
+    /// </summary>
     public static readonly UniversalRelationTag ObliqueArgument = new("obl:arg", true);
 
     public static readonly UniversalRelationTag LocativeModifier = new("obl:lmod", true);
 
-    public static readonly UniversalRelationTag TemporalModifier2 = new("obl:tmod", true);
+    /// <summary>
+    /// <see href="https://universaldependencies.org/en/dep/obl-tmod.html"> <c>obl:tmod</c></see>:
+    /// A temporal modifier is a subtype of the obl relation: if the modifier is specifying a time,
+    /// it is labeled as <c>tmod</c>.
+    /// </summary>
+    [Obsolete("Beginning with the version 2.15 release, most English corpora will use the new obl:unmarked relation instead.")]
+    public static readonly UniversalRelationTag ObliqueTemporalModifier = new("obl:tmod", true);
+
+    /// <summary>
+    /// <see href="https://universaldependencies.org/en/dep/obl-npmod.html"> <c>obl:tmod</c></see>
+    /// </summary>
+    [Obsolete("Beginning with the version 2.15 release, most English corpora will use the new obl:unmarked relation instead.")]
+    public static readonly UniversalRelationTag ObliqueNounPhraseAdverbialModifier = new("obl:npmod", true);
+
+    /// <summary>
+    /// <see href="https://universaldependencies.org/en/dep/obl-unmarked.html"> <c>obl:unmarked</c></see>:
+    /// A subtype of the obl relation that applies when an oblique takes the form of a nominal lacking a
+    /// preposition (a.k.a. a noun phrase). It is 'unmarked' in that, unlike most obliques, it has no
+    /// adposition.
+    /// </summary>
+    /// <remarks>
+    /// Prior to release 2.15, temporal adverbials (see (i)) had a separate subtype called obl:tmod,
+    /// and obl:npmod was used for the non-temporal ones.
+    /// </remarks>
+    public static readonly UniversalRelationTag ObliqueAdpositionless = new("obl:unmarked", true);
 
     public static readonly UniversalRelationTag Orphan = new("orphan", true);
 
@@ -231,8 +260,13 @@ public readonly partial struct UniversalRelationTag
         NumericModifier,
         NumericModifierGoverningNoun,
         Object,
+        ObliqueAdpositionless,
         ObliqueArgument,
         ObliqueNominal,
+#pragma warning disable CS0618 // Type or member is obsolete
+        ObliqueNounPhraseAdverbialModifier,
+        ObliqueTemporalModifier,
+#pragma warning restore CS0618 // Type or member is obsolete
         OpenClausalComplement,
         Orphan,
         OverriddenDisfluency,
@@ -252,7 +286,6 @@ public readonly partial struct UniversalRelationTag
         Root,
         SerialVerbCompounds,
         TemporalModifier,
-        TemporalModifier2,
         UnspecifiedDependency,
         Vocative,
     ]);
