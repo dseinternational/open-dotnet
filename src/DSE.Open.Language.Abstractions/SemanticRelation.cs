@@ -74,12 +74,6 @@ public readonly partial struct SemanticRelation
     /// </summary>
     public static readonly SemanticRelation AttributeEntity = new("attribute-entity", true);
 
-    /// Indicates a <b>preposition + noun</b> or <b>noun + preposition</b>
-    /// <c>[ADP+NOUN]</c> (location, position/place) construction - for example
-    /// "on chair", "in kitchen", "under table".
-    /// <c>[NOUN+ADP+NOUN|VERB+ADP+NOUN]</c> "toy in box", "hide under bed"
-    public static readonly SemanticRelation Location = new("location", true);
-
     /// <summary>
     /// e.g. "sit chair"
     /// </summary>
@@ -160,7 +154,6 @@ public readonly partial struct SemanticRelation
         Conjunctive,
         DemonstrativeEntity,
         EntityLocation,
-        Location,
         NonExistence,
         PossessorPossession,
         Quantitative,
