@@ -13,6 +13,9 @@ namespace DSE.Open.Language.Annotations;
 /// <summary>
 /// Names of universal features (<see href="https://universaldependencies.org/u/feat/index.html"/>).
 /// </summary>
+/// <remarks>
+/// See also <see cref="UniversalFeatureValues"/>.
+/// </remarks>
 [EquatableValue]
 [StructLayout(LayoutKind.Sequential)]
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<UniversalFeatureName, AsciiString>))]
@@ -69,7 +72,7 @@ public readonly partial struct UniversalFeatureName
         return new AlphaNumericCode(this);
     }
 
-    public static explicit operator AlphaNumericCode(UniversalFeatureName value)
+    public static implicit operator AlphaNumericCode(UniversalFeatureName value)
     {
         return value.ToAlphaNumericCode();
     }
