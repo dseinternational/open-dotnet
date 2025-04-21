@@ -214,4 +214,165 @@ public static class UniversalFeatureValues
     /// See <see href="https://universaldependencies.org/u/feat/NumType.html"><c>NumType</c>: numeral type</see>
     /// </remarks>
     public static readonly AlphaNumericCode NumeralTypeOrdinal = new("Ord");
+
+    /// <summary>
+    /// <c>Mult</c>: multiplicative numeral or corresponding interrogative / relative / indefinite / demonstrative word
+    /// </summary>
+    /// <remarks>
+    /// See <see href="https://universaldependencies.org/u/feat/NumType.html"><c>NumType</c>: numeral type</see>
+    /// </remarks>
+    public static readonly AlphaNumericCode NumeralTypeMultiplicative = new("Mult");
+
+    /// <summary>
+    /// <c>Frac</c>: fraction
+    /// </summary>
+    /// <remarks>
+    /// See <see href="https://universaldependencies.org/u/feat/NumType.html"><c>NumType</c>: numeral type</see>
+    /// </remarks>
+    public static readonly AlphaNumericCode NumeralTypeFraction = new("Frac");
+
+    /// <summary>
+    /// <c>Yes</c>: it is possessive
+    /// </summary>
+    /// <remarks>
+    /// See <see href="https://universaldependencies.org/u/feat/Poss.html"><c>Poss</c>: possessive</see>
+    /// </remarks>
+    public static readonly AlphaNumericCode PossessiveYes = new("Yes");
+
+    /// <summary>
+    /// <c>0</c>: zero person
+    /// </summary>
+    /// <remarks>
+    /// See <see href="https://universaldependencies.org/u/feat/Person.html"><c>Person</c>: person</see>
+    /// </remarks>
+    public static readonly AlphaNumericCode PersonZero = new("0");
+
+    /// <summary>
+    /// 1: first person
+    /// </summary>
+    /// <remarks>
+    /// See <see href="https://universaldependencies.org/u/feat/Person.html"><c>Person</c>: person</see>
+    /// </remarks>
+    public static readonly AlphaNumericCode PersonFirst = new("1");
+
+    /// <summary>
+    /// 2: second person
+    /// </summary>
+    /// <remarks>
+    /// See <see href="https://universaldependencies.org/u/feat/Person.html"><c>Person</c>: person</see>
+    /// </remarks>
+    public static readonly AlphaNumericCode PersonSecond = new("2");
+
+    /// <summary>
+    /// 3: third person
+    /// </summary>
+    /// <remarks>
+    /// See <see href="https://universaldependencies.org/u/feat/Person.html"><c>Person</c>: person</see>
+    /// </remarks>
+    public static readonly AlphaNumericCode PersonThird = new("3");
+
+    /// <summary>
+    /// 4: fourth person
+    /// </summary>
+    /// <remarks>
+    /// See <see href="https://universaldependencies.org/u/feat/Person.html"><c>Person</c>: person</see>
+    /// </remarks>
+    public static readonly AlphaNumericCode PersonFourth = new("4");
+
+    /// <summary>
+    /// <c>Pos</c>: positive, first degree
+    /// </summary>
+    /// <remarks>
+    /// See <see href="https://universaldependencies.org/u/feat/Degree.html"><c>Degree</c>: degree</see>
+    /// </remarks>
+    public static readonly AlphaNumericCode DegreePositive = new("Pos");
+
+    /// <summary>
+    /// <c>Equ</c>: equative
+    /// </summary>
+    /// <remarks>
+    /// See <see href="https://universaldependencies.org/u/feat/Degree.html"><c>Degree</c>: degree</see>
+    /// </remarks>
+    public static readonly AlphaNumericCode DegreeEquative = new("Equ");
+
+    /// <summary>
+    /// <c>Cmp</c>: comparative, second degree
+    /// </summary>
+    /// <remarks>
+    /// See <see href="https://universaldependencies.org/u/feat/Degree.html"><c>Degree</c>: degree</see>
+    /// </remarks>
+    public static readonly AlphaNumericCode DegreeComparative = new("Cmp");
+
+    /// <summary>
+    /// <c>Sup</c>: superlative, third degree
+    /// </summary>
+    /// <remarks>
+    /// See <see href="https://universaldependencies.org/u/feat/Degree.html"><c>Degree</c>: degree</see>
+    /// </remarks>
+    public static readonly AlphaNumericCode DegreeSuperlative = new("Sup");
+
+    /// <summary>
+    /// <c>Nom</c>: nominative / direct
+    /// </summary>
+    /// <remarks>
+    /// See <see href="https://universaldependencies.org/u/feat/Case.html"><c>Case</c>: case</see>
+    /// </remarks>
+    public static readonly AlphaNumericCode CaseNominative = new("Nom");
+
+    /// <summary>
+    /// <c>Acc</c>: accusative / oblique
+    /// </summary>
+    /// <remarks>
+    /// See <see href="https://universaldependencies.org/u/feat/Case.html"><c>Case</c>: case</see>
+    /// </remarks>
+    public static readonly AlphaNumericCode CaseAccusative = new("Acc");
+
+    /// <summary>
+    /// <c>Abs</c>: absolutive
+    /// </summary>
+    /// <remarks>
+    /// See <see href="https://universaldependencies.org/u/feat/Case.html"><c>Case</c>: case</see>
+    /// </remarks>
+    public static readonly AlphaNumericCode CaseAbsolutive = new("Abs");
+
+    /// <summary>
+    /// <c>Ind</c>: indicative or realis
+    /// </summary>
+    /// <remarks>
+    /// See <see href="https://universaldependencies.org/u/feat/Mood.html"><c>Mood</c>: mood</see>
+    /// </remarks>
+    public static readonly AlphaNumericCode MoodIndicative = new("Ind");
+
+    /// <summary>
+    /// <c>Imp</c>: imperative
+    /// </summary>
+    /// <remarks>
+    /// See <see href="https://universaldependencies.org/u/feat/Mood.html"><c>Mood</c>: mood</see>
+    /// </remarks>
+    public static readonly AlphaNumericCode MoodImperative = new("Ind");
+
+    /// <summary>
+    /// <c>Cnd</c>: conditional
+    /// </summary>
+    /// <remarks>
+    /// See <see href="https://universaldependencies.org/u/feat/Mood.html"><c>Mood</c>: mood</see>
+    /// </remarks>
+    public static readonly AlphaNumericCode MoodConditional = new("Cnd");
+
+    /// <summary>
+    /// Pot: potential
+    /// </summary>
+    /// <remarks>
+    /// See <see href="https://universaldependencies.org/u/feat/Mood.html"><c>Mood</c>: mood</see>
+    /// </remarks>
+    public static readonly AlphaNumericCode MoodPotential = new("Cnd");
+
+    /// <summary>
+    /// Sub: subjunctive / conjunctive
+    /// </summary>
+    /// <remarks>
+    /// See <see href="https://universaldependencies.org/u/feat/Mood.html"><c>Mood</c>: mood</see>
+    /// </remarks>
+    public static readonly AlphaNumericCode MoodSubjective = new("Sub");
+
 }
