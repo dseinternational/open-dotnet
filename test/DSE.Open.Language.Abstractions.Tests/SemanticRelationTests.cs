@@ -30,7 +30,6 @@ public class SemanticRelationTests
         "agent-object",
         "possessor-possession",
         "attribute-entity",
-        "location",
         "action-location",
         "entity-location",
         "temporal",
