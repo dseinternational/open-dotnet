@@ -1,7 +1,7 @@
 # torch with appropriate acceleration https://pytorch.org/get-started/locally/
-# windows+cuda: pip3 install torch>=2.6.0 torchvision torchaudio --index-url https://download.pytorch.org/whl/cu126 --upgrade
-# linux+cpu: pip3 install torch>=2.6.0 torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu --upgrade
-# mac: pip3 install torch>=2.6.0 torchvision torchaudio --upgrade
+# windows+cuda: pip3 install torch>=2.7.0 torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128 --upgrade
+# linux+cpu: pip3 install torch>=2.7.0 torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu --upgrade
+# mac: pip3 install torch>=2.7.0 torchvision torchaudio --upgrade
 
 numpy>=2.2.5
 stanza>=1.10.1
