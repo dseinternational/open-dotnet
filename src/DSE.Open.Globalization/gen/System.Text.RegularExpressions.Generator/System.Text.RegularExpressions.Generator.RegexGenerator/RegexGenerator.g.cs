@@ -270,7 +270,7 @@ namespace System.Text.RegularExpressions.Generated
             base.factory = new RunnerFactory();
             base.capsize = 1;
         }
-    
+            
         /// <summary>Provides a factory for creating <see cref="RegexRunner"/> instances to be used by methods on <see cref="Regex"/>.</summary>
         private sealed class RunnerFactory : RegexRunnerFactory
         {
