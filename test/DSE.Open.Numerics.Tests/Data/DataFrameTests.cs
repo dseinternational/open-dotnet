@@ -30,8 +30,8 @@ public class DataFrameTests : LoggedTestsBase
     [Fact]
     public void SerializeDeserializeReflectedInt32()
     {
-        var series1 = Series.CreateNumeric("series1", [1, 2, 3, 4, 5]);
-        var series2 = Series.CreateNumeric("series2", [5, 4, 3, 2, 1]);
+        var series1 = Series.CreateNumeric("series1", [.. Enumerable.Range(0, 100)]);
+        var series2 = Series.CreateNumeric("series2", [.. Enumerable.Range(0, 100)]);
 
         var frame = new DataFrame();
         frame.Columns.Add(series1);
