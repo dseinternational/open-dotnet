@@ -145,6 +145,12 @@ public abstract class Series : ISeries
         return new Series<T>(name, data, annotations);
     }
 
+    public static NumericSeries<T> CreateNumeric<T>(T[] data)
+        where T : struct, INumber<T>
+    {
+        return CreateNumeric(null, Vector.CreateNumeric(data), null);
+    }
+
     public static NumericSeries<T> CreateNumeric<T>(Memory<T> data)
         where T : struct, INumber<T>
     {
@@ -155,6 +161,18 @@ public abstract class Series : ISeries
         where T : struct, INumber<T>
     {
         return CreateNumeric(null, data);
+    }
+
+    public static NumericSeries<T> CreateNumeric<T>(string? name, T[] data)
+        where T : struct, INumber<T>
+    {
+        return CreateNumeric(name, Vector.CreateNumeric(data), null);
+    }
+
+    public static NumericSeries<T> CreateNumeric<T>(string? name, Memory<T> data)
+        where T : struct, INumber<T>
+    {
+        return CreateNumeric(name, Vector.CreateNumeric(data), null);
     }
 
     public static NumericSeries<T> CreateNumeric<T>(string? name, NumericVector<T> data)
