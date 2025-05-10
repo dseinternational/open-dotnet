@@ -3,7 +3,7 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
   <ItemGroup>
-    <PackageVersion Include="Azure.Core" Version="1.46.0" />
+    <PackageVersion Include="Azure.Core" Version="1.46.1" />
     <PackageVersion Include="Azure.Identity" Version="1.13.2" />
     <PackageVersion Include="BenchmarkDotNet" Version="0.14.0" />
     <PackageVersion Include="CommunityToolkit.Diagnostics" Version="8.4.0" />
@@ -37,7 +37,7 @@
     <PackageVersion Include="Microsoft.Extensions.Options" Version="9.0.4" />
     <PackageVersion Include="Microsoft.Extensions.TimeProvider.Testing" Version="9.4.0" />
     <PackageVersion Include="Microsoft.Identity.Client" Version="4.71.1" />
-    <PackageVersion Include="Microsoft.Identity.Client.Extensions.Msal" Version="4.71.1" />
+    <PackageVersion Include="Microsoft.Identity.Client.Extensions.Msal" Version="4.72.0" />
     <PackageVersion Include="Microsoft.IdentityModel.Abstractions" Version="8.9.0" />
     <PackageVersion Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.9.0" />
     <PackageVersion Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.9.0" />
@@ -57,7 +57,7 @@
     <PackageVersion Include="SharpZipLib" Version="1.4.2" />
     <PackageVersion Include="SkiaSharp" Version="3.119.0" />
     <PackageVersion Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.11" />
-    <PackageVersion Include="System.ClientModel" Version="1.4.0" />
+    <PackageVersion Include="System.ClientModel" Version="1.4.1" />
     <PackageVersion Include="System.Collections.Immutable" Version="9.0.4" />
     <PackageVersion Include="System.Configuration.ConfigurationManager" Version="9.0.4" />
     <PackageVersion Include="System.Diagnostics.DiagnosticSource" Version="9.0.4" />
