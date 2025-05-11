@@ -13,4 +13,8 @@ public class DataSet
 {
     [JsonPropertyName("frames")]
     public Collection<DataFrame> DataFrames { get; init; } = [];
+
+    [JsonPropertyName("name")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? Name { get; }
 }

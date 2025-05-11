@@ -3,7 +3,6 @@
 
 using System.Text.Json.Serialization;
 using DSE.Open.Collections.Generic;
-using DSE.Open.Memory;
 
 namespace DSE.Open.Numerics.Data;
 
@@ -22,6 +21,10 @@ public class DataFrame
         ArgumentNullException.ThrowIfNull(columns);
         Columns = columns;
     }
+
+    [JsonPropertyName("name")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? Name { get; }
 
     [JsonPropertyName("columns")]
     public Collection<Series> Columns { get; }
