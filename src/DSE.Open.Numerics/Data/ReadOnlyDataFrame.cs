@@ -14,24 +14,43 @@ namespace DSE.Open.Numerics.Data;
 [JsonConverter(typeof(ReadOnlyDataFrameJsonConverter))]
 public class ReadOnlyDataFrame : IReadOnlyList<Vector>
 {
-    private readonly Collection<Vector> _columnVectors;
-    private readonly Collection<string> _columnNames;
+    public static readonly ReadOnlyDataFrame Empty = new();
 
-    public ReadOnlyDataFrame() : this([])
+    private readonly ReadOnlyCollection<Vector> _columnVectors;
+    private readonly ReadOnlyCollection<string> _columnNames;
+
+    private ReadOnlyDataFrame() : this([])
     {
     }
 
-    public ReadOnlyDataFrame(Collection<Vector> columns)
+    public ReadOnlyDataFrame(ReadOnlyCollection<Vector> vectors)
     {
-        ArgumentNullException.ThrowIfNull(columns);
+        ArgumentNullException.ThrowIfNull(vectors);
 
-        _columnVectors = columns;
-        _columnNames = new Collection<string>(columns.Count);
+        _columnVectors = vectors;
 
-        for (var i = 0; i < columns.Count; i++)
+        var names = new string[vectors.Count];
+
+        for (var i = 0; i < vectors.Count; i++)
         {
-            _columnNames[i] = i.ToStringInvariant();
+            names[i] = i.ToStringInvariant();
         }
+
+        _columnNames = [.. names];
+    }
+
+    public ReadOnlyDataFrame(ReadOnlyCollection<Vector> vectors, ReadOnlyCollection<string> columnNames)
+    {
+        ArgumentNullException.ThrowIfNull(vectors);
+        ArgumentNullException.ThrowIfNull(columnNames);
+
+        if (vectors.Count != columnNames.Count)
+        {
+            throw new ArgumentException("Vectors and column names must have the same count.");
+        }
+
+        _columnVectors = vectors;
+        _columnNames = columnNames;
     }
 
     public Vector this[int index] => _columnVectors[index];
