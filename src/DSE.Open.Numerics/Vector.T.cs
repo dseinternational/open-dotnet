@@ -12,7 +12,7 @@ using DSE.Open.Numerics.Serialization;
 namespace DSE.Open.Numerics;
 
 /// <summary>
-/// A serializable sequence of values of known length of type <typeparamref name="T"/> 
+/// A serializable sequence of values of known length of type <typeparamref name="T"/>
 /// with value equality semantics.
 /// </summary>
 /// <typeparam name="T"></typeparam>
@@ -95,6 +95,16 @@ public class Vector<T> : Vector, IVector<T>, IReadOnlyVector<T>
         }
 
         return hash.ToHashCode();
+    }
+
+    public new ReadOnlyVector<T> AsReadOnly()
+    {
+        return new ReadOnlyVector<T>(Data);
+    }
+
+    protected override ReadOnlyVector CreateReadOnly()
+    {
+        return AsReadOnly();
     }
 
     public bool Equals(Vector<T>? other)

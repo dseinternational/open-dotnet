@@ -283,4 +283,11 @@ public abstract class Vector : IVector
                 $"Expected non-numeric type but {type.Name} is numeric.");
         }
     }
+
+    protected abstract ReadOnlyVector CreateReadOnly();
+
+    public ReadOnlyVector AsReadOnly()
+    {
+        return CreateReadOnly();
+    }
 }
