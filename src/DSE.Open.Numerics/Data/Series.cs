@@ -13,15 +13,22 @@ namespace DSE.Open.Numerics.Data;
 [JsonConverter(typeof(SeriesJsonConverter))]
 public abstract class Series : ISeries
 {
-    protected Series(string? name, IDictionary<string, Variant>? annotations)
+    protected Series(string? name, IVector data, IDictionary<string, Variant>? annotations)
     {
+        ArgumentNullException.ThrowIfNull(data);
+
         Name = name;
+        Data = data;
         Annotations = annotations;
     }
 
     public string? Name { get; set; }
 
+    public IVector Data { get; }
+
     public IDictionary<string, Variant>? Annotations { get; }
+
+    IReadOnlyDictionary<string, Variant>? IReadOnlySeries.Annotations => Annotations?.AsReadOnly();
 
     internal abstract Vector GetData();
 

@@ -7,11 +7,14 @@ public interface IReadOnlySeries
 {
     string? Name { get; }
 
+    IReadOnlyVector Data { get; }
+
     IReadOnlyDictionary<string, Variant>? Annotations { get; }
 }
 
-public interface IReadOnlySeries<T, TVector> : ISeries
+public interface IReadOnlySeries<T, TVector> : IReadOnlySeries
     where TVector : IReadOnlyVector<T>
 {
+    new TVector Data { get; }
 }
 

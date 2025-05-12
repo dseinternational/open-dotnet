@@ -2,7 +2,6 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Text.Json;
-using DSE.Open.Collections.Generic;
 using DSE.Open.Text.Json;
 
 namespace DSE.Open.Speech.Abstractions.Tests;
