@@ -16,6 +16,8 @@ public interface IVector<T>
       IReadOnlyVector<T>,
       IEquatable<IVector<T>>
 {
+    new Memory<T> Data { get; }
+
     new T this[int index] { get; set; }
 
     bool IsReadOnly { get; }

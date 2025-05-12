@@ -11,7 +11,7 @@ using DSE.Open.Numerics.Serialization;
 namespace DSE.Open.Numerics;
 
 /// <summary>
-/// A serializable sequence of values of known length of type <typeparamref name="T"/> 
+/// A serializable sequence of values of known length of type <typeparamref name="T"/>
 /// with value equality semantics.
 /// </summary>
 /// <typeparam name="T"></typeparam>
@@ -23,10 +23,20 @@ public class ReadOnlyVector<T> : ReadOnlyVector, IReadOnlyVector<T>
 
     internal readonly T[] _data;
 
-    internal ReadOnlyVector(T[] data) : base(VectorDataTypeHelper.GetVectorDataType<T>(), typeof(T), data.Length)
+    internal ReadOnlyVector(
+        T[] data,
+        string? name = null,
+        IReadOnlyDictionary<string, T>? categories = null,
+        IReadOnlyDictionary<string, Variant>? annotations = null)
+        : base(VectorDataTypeHelper.GetVectorDataType<T>(), typeof(T), data.Length, name, annotations)
     {
         _data = data;
+        Categories = categories ?? new Dictionary<string, T>();
     }
+
+    public ReadOnlyMemory<T> Data => _data;
+
+    public IReadOnlyDictionary<string, T> Categories { get; }
 
 #pragma warning disable CA1033 // Interface methods should be callable by child types
     int IReadOnlyCollection<T>.Count => Length;

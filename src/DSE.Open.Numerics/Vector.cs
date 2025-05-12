@@ -25,8 +25,8 @@ public abstract class Vector : IVector
         if (VectorDataTypeHelper.TryGetVectorDataType(itemType, out var expectedDataType)
             && dataType != expectedDataType)
         {
-            Debug.Fail($"Expected data type {expectedDataType} for " +
-                $"item type {itemType.Name} but given {dataType}.");
+            Debug.Fail($"Expected data type {expectedDataType} for "
+                + $"item type {itemType.Name} but given {dataType}.");
         }
 #endif
 
@@ -73,23 +73,13 @@ public abstract class Vector : IVector
     /// <typeparam name="T"></typeparam>
     /// <param name="data"></param>
     /// <returns></returns>
-    [UnconditionalSuppressMessage("AOT", "IL3050:Calling members annotated with 'RequiresDynamicCodeAttribute' may break functionality when AOT compiling.",
-        Justification = "Type T will not be trimmed and the use of Vector<> can be statically determined.")]
-    public static Vector<T> Create<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(T[] data)
+    public static Vector<T> Create<T>(T[] data)
     {
         ArgumentNullException.ThrowIfNull(data);
-
-        if (data.Length == 0)
-        {
-#pragma warning disable IDE0301 // Simplify collection initialization
-            return Vector<T>.Empty;
-#pragma warning restore IDE0301 // Simplify collection initialization
-        }
-
         return new Vector<T>(data);
     }
 
-    public static Vector<T> Create<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(ReadOnlySpan<T> data)
+    public static Vector<T> Create<T>(ReadOnlySpan<T> data)
     {
         return Create(data.ToArray());
     }
@@ -99,13 +89,13 @@ public abstract class Vector : IVector
     {
         var data = new T[length];
         data.AsSpan().Fill(scalar);
-        return new(data);
+        return new Vector<T>(data);
     }
 
     public static Vector<T> Create<T>(int length)
         where T : struct, INumber<T>
     {
-        return new(new T[length]);
+        return new Vector<T>(new T[length]);
     }
 
     public static Vector<T> CreateZeroes<T>(int length)

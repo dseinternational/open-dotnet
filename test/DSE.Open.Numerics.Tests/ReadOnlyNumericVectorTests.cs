@@ -12,7 +12,7 @@ public sealed class ReadOnlyNumericVectorTests
     {
         ReadOnlyVector<int> v1 = [1, 2, 3, 4, 5, 6];
 
-        var v2 = ReadOnlyVector.CreateNumeric([1, 2, 3, 4, 5, 6]);
+        var v2 = ReadOnlyVector.Create([1, 2, 3, 4, 5, 6]);
 
         Assert.Equal(6, v1.Length);
         Assert.Equal(6, v2.Length);
@@ -28,7 +28,7 @@ public sealed class ReadOnlyNumericVectorTests
 
         // Act
         var json = JsonSerializer.Serialize(vector);
-        var deserializedVector = JsonSerializer.Deserialize<ReadOnlyNumericVector<int>>(json);
+        var deserializedVector = JsonSerializer.Deserialize<ReadOnlyVector<int>>(json);
 
         // Assert
         Assert.NotNull(deserializedVector);

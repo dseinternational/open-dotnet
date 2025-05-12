@@ -8,13 +8,13 @@ using DSE.Open.Text.Json.Serialization;
 
 namespace DSE.Open.Numerics.Serialization;
 
-public class VectorJsonConverter : JsonConverter<Vector>
+public class SeriesJsonConverter : JsonConverter<Vector>
 {
-    public VectorJsonConverter() : this(VectorJsonFormat.Default)
+    public SeriesJsonConverter() : this(VectorJsonFormat.Default)
     {
     }
 
-    public VectorJsonConverter(VectorJsonFormat vectorFormat)
+    public SeriesJsonConverter(VectorJsonFormat vectorFormat)
     {
         VectorFormat = vectorFormat;
     }
@@ -45,49 +45,51 @@ public class VectorJsonConverter : JsonConverter<Vector>
                 break;
             }
 
-            if (reader.TokenType == JsonTokenType.PropertyName)
+            if (reader.TokenType != JsonTokenType.PropertyName)
             {
-                var propertyName = reader.GetString();
+                continue;
+            }
 
-                if (propertyName == VectorJsonPropertyNames.Name)
-                {
-                    _ = reader.Read();
-                    name = reader.GetString();
-                }
-                else if (propertyName == VectorJsonPropertyNames.Annotations)
-                {
-                    annotations = [];
+            var propertyName = reader.GetString();
 
-                    if (reader.Read() && reader.TokenType == JsonTokenType.StartObject)
+            if (propertyName == VectorJsonPropertyNames.Name)
+            {
+                _ = reader.Read();
+                name = reader.GetString();
+            }
+            else if (propertyName == VectorJsonPropertyNames.Annotations)
+            {
+                annotations = [];
+
+                if (reader.Read() && reader.TokenType == JsonTokenType.StartObject)
+                {
+                    while (reader.Read())
                     {
-                        while (reader.Read())
+                        if (reader.TokenType == JsonTokenType.EndObject)
                         {
-                            if (reader.TokenType == JsonTokenType.EndObject)
+                            break;
+                        }
+
+                        if (reader.TokenType == JsonTokenType.PropertyName)
+                        {
+                            var key = reader.GetString();
+
+                            if (key is null)
                             {
-                                break;
+                                throw new JsonException("Annotation key must be specified");
                             }
 
-                            if (reader.TokenType == JsonTokenType.PropertyName)
-                            {
-                                var key = reader.GetString();
+                            var value = ReadValue(ref reader);
 
-                                if (key is null)
-                                {
-                                    throw new JsonException("Annotation key must be specified");
-                                }
-
-                                var value = JsonVariantConverter.Default.Read(ref reader, typeof(Variant), options);
-
-                                annotations.Add(key, value);
-                            }
+                            annotations.Add(key, value);
                         }
                     }
                 }
-                else if (propertyName == VectorJsonPropertyNames.Data)
-                {
-                    _ = reader.Read();
-                    data = VectorJsonConverter.Default.Read(ref reader, typeof(Vector), options);
-                }
+            }
+            else if (propertyName == VectorJsonPropertyNames.Data)
+            {
+                _ = reader.Read();
+                data = VectorJsonConverter.Default.Read(ref reader, typeof(Vector), options);
             }
         }
 
@@ -96,7 +98,21 @@ public class VectorJsonConverter : JsonConverter<Vector>
             throw new JsonException("Data must be specified");
         }
 
-        return Vector.Create(name, data, annotations);
+        return data;
+    }
+
+    private static Variant ReadValue(ref Utf8JsonReader reader)
+    {
+        return reader.TokenType switch
+        {
+            JsonTokenType.Null => Variant.Null,
+            JsonTokenType.True => true,
+            JsonTokenType.False => false,
+            JsonTokenType.Number when reader.TryGetInt64(out var integer) => integer,
+            JsonTokenType.Number => reader.GetDouble(),
+            JsonTokenType.String => (Variant)(reader.GetString() ?? string.Empty),
+            _ => throw new JsonException("Unable to read Variant value.")
+        };
     }
 
     public override void Write(Utf8JsonWriter writer, Vector value, JsonSerializerOptions options)
@@ -126,7 +142,7 @@ public class VectorJsonConverter : JsonConverter<Vector>
 
         writer.WritePropertyName(VectorJsonPropertyNames.Data);
 
-        VectorJsonConverter.Default.Write(writer, value.Data, options);
+        VectorJsonConverter.Default.Write(writer, value, options);
 
         writer.WriteEndObject();
     }

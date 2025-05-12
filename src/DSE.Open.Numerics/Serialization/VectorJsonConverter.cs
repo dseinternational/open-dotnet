@@ -16,7 +16,9 @@ public class VectorJsonConverter : JsonConverter<IReadOnlyVector>
 {
     public static VectorJsonConverter Default { get; } = new();
 
-    public VectorJsonConverter() : this(default) { }
+    public VectorJsonConverter() : this(default)
+    {
+    }
 
     public VectorJsonConverter(VectorJsonFormat format = default)
     {
@@ -50,113 +52,125 @@ public class VectorJsonConverter : JsonConverter<IReadOnlyVector>
                 break;
             }
 
-            if (reader.TokenType == JsonTokenType.PropertyName)
+            if (reader.TokenType != JsonTokenType.PropertyName)
             {
-                var propertyName = reader.GetString();
+                continue;
+            }
 
-                if (propertyName == VectorJsonPropertyNames.DataType)
+            var propertyName = reader.GetString();
+
+            if (propertyName == VectorJsonPropertyNames.DataType)
+            {
+                _ = reader.Read();
+                dataType = reader.GetString();
+
+                if (dataType is null)
                 {
-                    _ = reader.Read();
-                    dataType = reader.GetString();
-
-                    if (dataType is null)
-                    {
-                        throw new JsonException("Data type must be specified");
-                    }
+                    throw new JsonException("Data type must be specified");
                 }
-                else if (propertyName == VectorJsonPropertyNames.Length)
+            }
+            else if (propertyName == VectorJsonPropertyNames.Length)
+            {
+                _ = reader.Read();
+                length = reader.GetInt32();
+
+                if (length < 0)
                 {
-                    _ = reader.Read();
-                    length = reader.GetInt32();
-
-                    if (length < 0)
-                    {
-                        throw new JsonException("Length must be greater than or equal to zero");
-                    }
-
-                    if (length > Array.MaxLength)
-                    {
-                        throw new JsonException("Length must be less than or equal to " + Array.MaxLength);
-                    }
+                    throw new JsonException("Length must be greater than or equal to zero");
                 }
-                else if (propertyName == VectorJsonPropertyNames.Categories)
+
+                if (length > Array.MaxLength)
                 {
-                    if (dataType is null)
-                    {
-                        throw new JsonException("Cannot read categories without data type");
-                    }
-
-                    var dtype = VectorDataTypeHelper.GetVectorDataType(dataType);
-
-                    _ = reader.Read();
-
-                    if (reader.TokenType != JsonTokenType.StartObject)
-                    {
-                        throw new JsonException("Expected start of categories object");
-                    }
-
-                    categories = ReadCategories(ref reader, dtype, -1);
+                    throw new JsonException("Length must be less than or equal to " + Array.MaxLength);
                 }
-                else if (propertyName == VectorJsonPropertyNames.Values)
+            }
+            else if (propertyName == VectorJsonPropertyNames.Categories)
+            {
+                if (dataType is null)
                 {
-                    if (dataType is null)
-                    {
-                        throw new JsonException("Cannot read values without data type");
-                    }
+                    throw new JsonException("Cannot read categories without data type");
+                }
 
-                    var dtype = VectorDataTypeHelper.GetVectorDataType(dataType);
+                var dtype = VectorDataTypeHelper.GetVectorDataType(dataType);
 
-                    _ = reader.Read();
+                _ = reader.Read();
 
-                    if (reader.TokenType != JsonTokenType.StartArray)
-                    {
-                        throw new JsonException("Expected start of array");
-                    }
+                if (reader.TokenType != JsonTokenType.StartObject)
+                {
+                    throw new JsonException("Expected start of categories object");
+                }
 
-                    if (categories is null)
+                categories = ReadCategories(ref reader, dtype, -1);
+            }
+            else if (propertyName == VectorJsonPropertyNames.Values)
+            {
+                if (dataType is null)
+                {
+                    throw new JsonException("Cannot read values without data type");
+                }
+
+                var dtype = VectorDataTypeHelper.GetVectorDataType(dataType);
+
+                _ = reader.Read();
+
+                if (reader.TokenType != JsonTokenType.StartArray)
+                {
+                    throw new JsonException("Expected start of array");
+                }
+
+                if (categories is null)
+                {
+                    vector = dtype switch
                     {
-                        vector = dtype switch
-                        {
-                            VectorDataType.Float64 => VectorJsonReader.ReadVector<double>(ref reader, length, Format),
-                            VectorDataType.Float32 => VectorJsonReader.ReadVector<float>(ref reader, length, Format),
-                            VectorDataType.Int64 => VectorJsonReader.ReadVector<long>(ref reader, length, Format),
-                            VectorDataType.UInt64 => VectorJsonReader.ReadVector<ulong>(ref reader, length, Format),
-                            VectorDataType.Int32 => VectorJsonReader.ReadVector<int>(ref reader, length, Format),
-                            VectorDataType.UInt32 => VectorJsonReader.ReadVector<uint>(ref reader, length, Format),
-                            VectorDataType.Int16 => VectorJsonReader.ReadVector<short>(ref reader, length, Format),
-                            VectorDataType.UInt16 => VectorJsonReader.ReadVector<ushort>(ref reader, length, Format),
-                            VectorDataType.Int8 => VectorJsonReader.ReadVector<sbyte>(ref reader, length, Format),
-                            VectorDataType.UInt8 => VectorJsonReader.ReadVector<byte>(ref reader, length, Format),
-                            VectorDataType.Int128 => VectorJsonReader.ReadVector<Int128>(ref reader, length, Format),
-                            VectorDataType.UInt128 => VectorJsonReader.ReadVector<UInt128>(ref reader, length, Format),
-                            VectorDataType.DateTime64 => VectorJsonReader.ReadVector<DateTime64>(ref reader, length, Format),
-                            VectorDataType.DateTime => ReadVector<DateTime>(ref reader, length),
-                            VectorDataType.DateTimeOffset => ReadVector<DateTimeOffset>(ref reader, length),
-                            VectorDataType.Uuid => ReadVector<Guid>(ref reader, length),
-                            VectorDataType.Bool => ReadVector<bool>(ref reader, length),
-                            VectorDataType.Char => ReadVector<char>(ref reader, length),
-                            VectorDataType.String => VectorJsonReader.ReadStringVector(ref reader, length),
-                            _ => throw new JsonException($"Unsupported data type: {dtype}")
-                        };
-                    }
-                    else
-                    {
+                        VectorDataType.Float64 => VectorJsonReader.ReadVector<double>(ref reader, length, Format),
+                        VectorDataType.Float32 => VectorJsonReader.ReadVector<float>(ref reader, length, Format),
+                        VectorDataType.Int64 => VectorJsonReader.ReadVector<long>(ref reader, length, Format),
+                        VectorDataType.UInt64 => VectorJsonReader.ReadVector<ulong>(ref reader, length, Format),
+                        VectorDataType.Int32 => VectorJsonReader.ReadVector<int>(ref reader, length, Format),
+                        VectorDataType.UInt32 => VectorJsonReader.ReadVector<uint>(ref reader, length, Format),
+                        VectorDataType.Int16 => VectorJsonReader.ReadVector<short>(ref reader, length, Format),
+                        VectorDataType.UInt16 => VectorJsonReader.ReadVector<ushort>(ref reader, length, Format),
+                        VectorDataType.Int8 => VectorJsonReader.ReadVector<sbyte>(ref reader, length, Format),
+                        VectorDataType.UInt8 => VectorJsonReader.ReadVector<byte>(ref reader, length, Format),
+                        VectorDataType.Int128 => VectorJsonReader.ReadVector<Int128>(ref reader, length, Format),
+                        VectorDataType.UInt128 => VectorJsonReader.ReadVector<UInt128>(ref reader, length, Format),
+                        VectorDataType.DateTime64 =>
+                            VectorJsonReader.ReadVector<DateTime64>(ref reader, length, Format),
+                        VectorDataType.DateTime => ReadVector<DateTime>(ref reader, length),
+                        VectorDataType.DateTimeOffset => ReadVector<DateTimeOffset>(ref reader, length),
+                        VectorDataType.Uuid => ReadVector<Guid>(ref reader, length),
+                        VectorDataType.Bool => ReadVector<bool>(ref reader, length),
+                        VectorDataType.Char => ReadVector<char>(ref reader, length),
+                        VectorDataType.String => VectorJsonReader.ReadStringVector(ref reader, length),
+                        _ => throw new JsonException($"Unsupported data type: {dtype}")
+                    };
+                }
+                else
+                {
 #pragma warning disable IDE0072 // Add missing cases
-                        vector = dtype switch
-                        {
-                            VectorDataType.Int64 => VectorJsonReader.ReadCategoryVector(ref reader, length, (Memory<KeyValuePair<string, long>>)categories, Format),
-                            VectorDataType.UInt64 => VectorJsonReader.ReadCategoryVector(ref reader, length, (Memory<KeyValuePair<string, ulong>>)categories, Format),
-                            VectorDataType.Int32 => VectorJsonReader.ReadCategoryVector(ref reader, length, (Memory<KeyValuePair<string, int>>)categories, Format),
-                            VectorDataType.UInt32 => VectorJsonReader.ReadCategoryVector(ref reader, length, (Memory<KeyValuePair<string, uint>>)categories, Format),
-                            VectorDataType.Int16 => VectorJsonReader.ReadCategoryVector(ref reader, length, (Memory<KeyValuePair<string, short>>)categories, Format),
-                            VectorDataType.Int8 => VectorJsonReader.ReadCategoryVector(ref reader, length, (Memory<KeyValuePair<string, sbyte>>)categories, Format),
-                            VectorDataType.UInt8 => VectorJsonReader.ReadCategoryVector(ref reader, length, (Memory<KeyValuePair<string, byte>>)categories, Format),
-                            VectorDataType.Int128 => VectorJsonReader.ReadCategoryVector(ref reader, length, (Memory<KeyValuePair<string, Int128>>)categories, Format),
-                            VectorDataType.UInt128 => VectorJsonReader.ReadCategoryVector(ref reader, length, (Memory<KeyValuePair<string, UInt128>>)categories, Format),
-                            _ => throw new JsonException($"Unsupported data type: {dtype}")
-                        };
+                    vector = dtype switch
+                    {
+                        VectorDataType.Int64 => VectorJsonReader.ReadCategoryVector(ref reader, length,
+                            (Dictionary<string, long>)categories, Format),
+                        VectorDataType.UInt64 => VectorJsonReader.ReadCategoryVector(ref reader, length,
+                            (Dictionary<string, ulong>)categories, Format),
+                        VectorDataType.Int32 => VectorJsonReader.ReadCategoryVector(ref reader, length,
+                            (Dictionary<string, int>)categories, Format),
+                        VectorDataType.UInt32 => VectorJsonReader.ReadCategoryVector(ref reader, length,
+                            (Dictionary<string, uint>)categories, Format),
+                        VectorDataType.Int16 => VectorJsonReader.ReadCategoryVector(ref reader, length,
+                            (Dictionary<string, short>)categories, Format),
+                        VectorDataType.Int8 => VectorJsonReader.ReadCategoryVector(ref reader, length,
+                            (Dictionary<string, sbyte>)categories, Format),
+                        VectorDataType.UInt8 => VectorJsonReader.ReadCategoryVector(ref reader, length,
+                            (Dictionary<string, byte>)categories, Format),
+                        VectorDataType.Int128 => VectorJsonReader.ReadCategoryVector(ref reader, length,
+                            (Dictionary<string, Int128>)categories, Format),
+                        VectorDataType.UInt128 => VectorJsonReader.ReadCategoryVector(ref reader, length,
+                            (Dictionary<string, UInt128>)categories, Format),
+                        _ => throw new JsonException($"Unsupported data type: {dtype}")
+                    };
 #pragma warning restore IDE0072 // Add missing cases
-                    }
                 }
             }
         }
@@ -168,65 +182,28 @@ public class VectorJsonConverter : JsonConverter<IReadOnlyVector>
 
     private static object ReadCategories(ref Utf8JsonReader reader, VectorDataType dtype, int length)
     {
-        if (dtype == VectorDataType.Int32)
+        return dtype switch
         {
-            return ReadNumberCategories<int>(ref reader, length);
-        }
-
-        if (dtype == VectorDataType.UInt32)
-        {
-            return ReadNumberCategories<uint>(ref reader, length);
-        }
-
-        if (dtype == VectorDataType.Int64)
-        {
-            return ReadNumberCategories<long>(ref reader, length);
-        }
-
-        if (dtype == VectorDataType.UInt64)
-        {
-            return ReadNumberCategories<ulong>(ref reader, length);
-        }
-
-        if (dtype == VectorDataType.Int16)
-        {
-            return ReadNumberCategories<short>(ref reader, length);
-        }
-
-        if (dtype == VectorDataType.UInt16)
-        {
-            return ReadNumberCategories<ushort>(ref reader, length);
-        }
-
-        if (dtype == VectorDataType.Int8)
-        {
-            return ReadNumberCategories<sbyte>(ref reader, length);
-        }
-
-        if (dtype == VectorDataType.UInt8)
-        {
-            return ReadNumberCategories<byte>(ref reader, length);
-        }
-
-        if (dtype == VectorDataType.Int128)
-        {
-            return ReadNumberCategories<Int128>(ref reader, length);
-        }
-
-        if (dtype == VectorDataType.UInt128)
-        {
-            return ReadNumberCategories<UInt128>(ref reader, length);
-        }
-
-        throw new JsonException($"Unsupported data type: {dtype}");
+            VectorDataType.Int32 => ReadNumberCategories<int>(ref reader, length),
+            VectorDataType.UInt32 => ReadNumberCategories<uint>(ref reader, length),
+            VectorDataType.Int64 => ReadNumberCategories<long>(ref reader, length),
+            VectorDataType.UInt64 => ReadNumberCategories<ulong>(ref reader, length),
+            VectorDataType.Int16 => ReadNumberCategories<short>(ref reader, length),
+            VectorDataType.UInt16 => ReadNumberCategories<ushort>(ref reader, length),
+            VectorDataType.Int8 => ReadNumberCategories<sbyte>(ref reader, length),
+            VectorDataType.UInt8 => ReadNumberCategories<byte>(ref reader, length),
+            VectorDataType.Int128 => ReadNumberCategories<Int128>(ref reader, length),
+            VectorDataType.UInt128 => ReadNumberCategories<UInt128>(ref reader, length),
+            _ => throw new JsonException($"Unsupported data type: {dtype}")
+        };
     }
 
-    private static Memory<KeyValuePair<string, T>> ReadNumberCategories<T>(ref Utf8JsonReader reader, int length)
+    private static Dictionary<string, T> ReadNumberCategories<T>(ref Utf8JsonReader reader, int length)
         where T : struct, IComparable<T>, IEquatable<T>, IBinaryInteger<T>, IMinMaxValue<T>
     {
-        using var builder = length > -1
-            ? new ArrayBuilder<KeyValuePair<string, T>>(length, rentFromPool: false)
-            : new ArrayBuilder<KeyValuePair<string, T>>(rentFromPool: true);
+        var dictionary = length > -1
+            ? new Dictionary<string, T>(length, StringComparer.Ordinal)
+            : new Dictionary<string, T>(StringComparer.Ordinal);
 
         while (reader.Read())
         {
@@ -251,20 +228,20 @@ public class VectorJsonConverter : JsonConverter<IReadOnlyVector>
 
             if (reader.TryGetNumber(out T value))
             {
-                builder.Add(new KeyValuePair<string, T>(key, value));
+                dictionary.Add(key, value);
             }
         }
 
-        return builder.ToMemory();
+        return dictionary;
     }
 
-    private static Vector<T> ReadVector<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(ref Utf8JsonReader reader, int length)
+    private static Vector<T> ReadVector<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(
+        ref Utf8JsonReader reader,
+        int length)
     {
         if (length == 0)
         {
-#pragma warning disable IDE0301 // Simplify collection initialization
-            return Vector<T>.Empty;
-#pragma warning restore IDE0301 // Simplify collection initialization
+            return new Vector<T>([]);
         }
 
         using var builder = length > -1
@@ -273,19 +250,20 @@ public class VectorJsonConverter : JsonConverter<IReadOnlyVector>
 
         while (reader.Read())
         {
-            if (reader.TokenType == JsonTokenType.EndArray)
+            switch (reader.TokenType)
             {
-                if (length > -1 && builder.Count != length)
+                case JsonTokenType.EndArray:
                 {
-                    throw new JsonException();
+                    if (length > -1 && builder.Count != length)
+                    {
+                        throw new JsonException();
+                    }
+
+                    return Vector.Create(builder.ToArray());
                 }
-
-                return Vector.Create(builder.ToMemory());
-            }
-
-            if (reader.TokenType == JsonTokenType.Number)
-            {
-                // todo
+                case JsonTokenType.Number:
+                    // todo
+                    break;
             }
         }
 
@@ -297,168 +275,61 @@ public class VectorJsonConverter : JsonConverter<IReadOnlyVector>
         ArgumentNullException.ThrowIfNull(writer);
         ArgumentNullException.ThrowIfNull(value);
 
-        if (value is IReadOnlyVector<int> intVector)
+        switch (value)
         {
-            VectorJsonWriter.Write(writer, intVector, options);
-            return;
+            case IReadOnlyVector<int> intVector:
+                VectorJsonWriter.Write(writer, intVector, options);
+                return;
+            case IReadOnlyVector<long> longVector:
+                VectorJsonWriter.Write(writer, longVector, options);
+                return;
+            case IReadOnlyVector<float> floatVector:
+                VectorJsonWriter.Write(writer, floatVector, options);
+                return;
+            case IReadOnlyVector<double> doubleVector:
+                VectorJsonWriter.Write(writer, doubleVector, options);
+                return;
+            case IReadOnlyVector<uint> uintVector:
+                VectorJsonWriter.Write(writer, uintVector, options);
+                return;
+            case IReadOnlyVector<ulong> uuidVector:
+                VectorJsonWriter.Write(writer, uuidVector, options);
+                return;
+            case IReadOnlyVector<DateTime64> dateTime64Vector:
+                VectorJsonWriter.Write(writer, dateTime64Vector, options);
+                return;
+            case IReadOnlyVector<short> shortVector:
+                VectorJsonWriter.Write(writer, shortVector, options);
+                return;
+            case IReadOnlyVector<ushort> ushortVector:
+                VectorJsonWriter.Write(writer, ushortVector, options);
+                return;
+            case IReadOnlyVector<sbyte> sbyteVector:
+                VectorJsonWriter.Write(writer, sbyteVector, options);
+                return;
+            case IReadOnlyVector<byte> byteVector:
+                VectorJsonWriter.Write(writer, byteVector, options);
+                return;
+            case IReadOnlyVector<Int128> int128Vector:
+                VectorJsonWriter.Write(writer, int128Vector, options);
+                return;
+            case IReadOnlyVector<UInt128> uint128Vector:
+                VectorJsonWriter.Write(writer, uint128Vector, options);
+                return;
+            case IReadOnlyVector<string> stringVector:
+                VectorJsonWriter.Write(writer, stringVector, options);
+                return;
+            case IReadOnlyVector<char> charVector:
+                VectorJsonWriter.Write(writer, charVector, options);
+                return;
+            case IReadOnlyVector<bool> boolVector:
+                VectorJsonWriter.Write(writer, boolVector, options);
+                return;
+            case IReadOnlyVector<DateTime> dateTimeVector:
+                VectorJsonWriter.Write(writer, dateTimeVector, options);
+                return;
+            default:
+                throw new JsonException("Unsupported vector type");
         }
-
-        if (value is IReadOnlyVector<long> longVector)
-        {
-            VectorJsonWriter.Write(writer, longVector, options);
-            return;
-        }
-
-        if (value is IReadOnlyVector<float> floatVector)
-        {
-            VectorJsonWriter.Write(writer, floatVector, options);
-            return;
-        }
-
-        if (value is IReadOnlyVector<double> doubleVector)
-        {
-            VectorJsonWriter.Write(writer, doubleVector, options);
-            return;
-        }
-
-        if (value is IReadOnlyVector<uint> uintVector)
-        {
-            VectorJsonWriter.Write(writer, uintVector, options);
-            return;
-        }
-
-        if (value is IReadOnlyVector<ulong> uuidVector)
-        {
-            VectorJsonWriter.Write(writer, uuidVector, options);
-            return;
-        }
-
-        if (value is IReadOnlyVector<DateTime64> dateTime64Vector)
-        {
-            VectorJsonWriter.Write(writer, dateTime64Vector, options);
-            return;
-        }
-
-        if (value is IReadOnlyVector<short> shortVector)
-        {
-            VectorJsonWriter.Write(writer, shortVector, options);
-            return;
-        }
-
-        if (value is IReadOnlyVector<ushort> ushortVector)
-        {
-            VectorJsonWriter.Write(writer, ushortVector, options);
-            return;
-        }
-
-        if (value is IReadOnlyVector<sbyte> sbyteVector)
-        {
-            VectorJsonWriter.Write(writer, sbyteVector, options);
-            return;
-        }
-
-        if (value is IReadOnlyVector<byte> byteVector)
-        {
-            VectorJsonWriter.Write(writer, byteVector, options);
-            return;
-        }
-
-        if (value is IReadOnlyVector<Int128> int128Vector)
-        {
-            VectorJsonWriter.Write(writer, int128Vector, options);
-            return;
-        }
-
-        if (value is IReadOnlyVector<UInt128> uint128Vector)
-        {
-            VectorJsonWriter.Write(writer, uint128Vector, options);
-            return;
-        }
-
-        if (value is IReadOnlyCategoricalVector<int> intCategoricalVector)
-        {
-            VectorJsonWriter.Write(writer, intCategoricalVector, options);
-            return;
-        }
-
-        if (value is IReadOnlyCategoricalVector<long> longCategoricalVector)
-        {
-            VectorJsonWriter.Write(writer, longCategoricalVector, options);
-            return;
-        }
-
-        if (value is IReadOnlyCategoricalVector<uint> uintCategoricalVector)
-        {
-            VectorJsonWriter.Write(writer, uintCategoricalVector, options);
-            return;
-        }
-
-        if (value is IReadOnlyCategoricalVector<ulong> uint64CategoricalVector)
-        {
-            VectorJsonWriter.Write(writer, uint64CategoricalVector, options);
-            return;
-        }
-
-        if (value is IReadOnlyCategoricalVector<short> shortCategoricalVector)
-        {
-            VectorJsonWriter.Write(writer, shortCategoricalVector, options);
-            return;
-        }
-
-        if (value is IReadOnlyCategoricalVector<ushort> ushortCategoricalVector)
-        {
-            VectorJsonWriter.Write(writer, ushortCategoricalVector, options);
-            return;
-        }
-
-        if (value is IReadOnlyCategoricalVector<sbyte> sbyteCategoricalVector)
-        {
-            VectorJsonWriter.Write(writer, sbyteCategoricalVector, options);
-            return;
-        }
-
-        if (value is IReadOnlyCategoricalVector<byte> byteCategoricalVector)
-        {
-            VectorJsonWriter.Write(writer, byteCategoricalVector, options);
-            return;
-        }
-
-        if (value is IReadOnlyCategoricalVector<Int128> int128CategoricalVector)
-        {
-            VectorJsonWriter.Write(writer, int128CategoricalVector, options);
-            return;
-        }
-
-        if (value is IReadOnlyCategoricalVector<UInt128> uint128CategoricalVector)
-        {
-            VectorJsonWriter.Write(writer, uint128CategoricalVector, options);
-            return;
-        }
-
-        if (value is IReadOnlyVector<string> stringVector)
-        {
-            VectorJsonWriter.Write(writer, stringVector, options);
-            return;
-        }
-
-        if (value is IReadOnlyVector<char> charVector)
-        {
-            VectorJsonWriter.Write(writer, charVector, options);
-            return;
-        }
-
-        if (value is IReadOnlyVector<bool> boolVector)
-        {
-            VectorJsonWriter.Write(writer, boolVector, options);
-            return;
-        }
-
-        if (value is IReadOnlyVector<DateTime> dateTimeVector)
-        {
-            VectorJsonWriter.Write(writer, dateTimeVector, options);
-            return;
-        }
-
-        throw new JsonException("Unsupported vector type");
     }
 }

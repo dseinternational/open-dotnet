@@ -23,6 +23,8 @@ public interface IReadOnlyVector<T>
 {
     IReadOnlyDictionary<string, T> Categories { get; }
 
+    public ReadOnlyMemory<T> Data { get; }
+
     /// <summary>
     /// Gets a span over the contents of the vector.
     /// </summary>

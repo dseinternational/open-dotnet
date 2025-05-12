@@ -20,18 +20,26 @@ namespace DSE.Open.Numerics;
 [JsonConverter(typeof(VectorJsonConverter))]
 public class Vector<T> : Vector, IVector<T>, IReadOnlyVector<T>
 {
-    public static readonly Vector<T> Empty = new([], null, null);
-
     internal readonly T[] _data;
 
     internal Vector(
         T[] data,
         string? name = null,
+        IDictionary<string, T>? categories = null,
         IReadOnlyDictionary<string, Variant>? annotations = null)
         : base(VectorDataTypeHelper.GetVectorDataType<T>(), typeof(T), data.Length, name, annotations)
     {
         _data = data;
+        Categories = categories ?? new Dictionary<string, T>();
     }
+
+    public IDictionary<string, T> Categories { get; }
+
+    public Memory<T> Data => _data;
+
+    IReadOnlyDictionary<string, T> IReadOnlyVector<T>.Categories => Categories.AsReadOnly();
+
+    ReadOnlyMemory<T> IReadOnlyVector<T>.Data => _data;
 
 #pragma warning disable CA1033 // Interface methods should be callable by child types
     int IReadOnlyCollection<T>.Count => Length;
@@ -83,7 +91,7 @@ public class Vector<T> : Vector, IVector<T>, IReadOnlyVector<T>
 
     public new ReadOnlyVector<T> AsReadOnly()
     {
-        return new ReadOnlyVector<T>(Data);
+        return new ReadOnlyVector<T>(_data);
     }
 
     protected override ReadOnlyVector CreateReadOnly()
