@@ -47,23 +47,27 @@ public class Vector<T> : Vector, IVector<T>, IReadOnlyVector<T>
         set => Data.Span[index] = value;
     }
 
-    protected Memory<T> Data { get; }
+    public Memory<T> Data { get; }
 
     /// <summary>
     /// Gets a span over the contents of the vector.
     /// </summary>
-    public Span<T> Span
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Span<T> AsSpan()
     {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => Data.Span;
+        return Data.Span;
     }
 
-    ReadOnlySpan<T> IReadOnlyVector<T>.Span => Span;
-
-    public ReadOnlyVector<T> AsReadOnly()
+#pragma warning disable CA1033 // Interface methods should be callable by child types
+    ReadOnlySpan<T> IReadOnlyVector<T>.AsReadOnlySpan()
+#pragma warning restore CA1033 // Interface methods should be callable by child types
     {
-        return new((ReadOnlyMemory<T>)Data);
+        return AsSpan();
     }
+
+    public bool IsReadOnly { get; private set; }
+
+    ReadOnlyMemory<T> IReadOnlyVector<T>.Data => Data;
 
     public override bool Equals(object? obj)
     {
@@ -95,22 +99,22 @@ public class Vector<T> : Vector, IVector<T>, IReadOnlyVector<T>
 
     public bool Equals(Vector<T>? other)
     {
-        return other is not null && Equals(other.Span);
+        return other is not null && Equals(other.AsSpan());
     }
 
     public bool Equals(IVector<T>? other)
     {
-        return other is not null && Equals(other.Span);
+        return other is not null && Equals(other.AsSpan());
     }
 
     public bool Equals(IReadOnlyVector<T>? other)
     {
-        return other is not null && Equals(other.Span);
+        return other is not null && Equals(other.AsReadOnlySpan());
     }
 
     public bool Equals(ReadOnlySpan<T> other)
     {
-        return Span.SequenceEqual(other);
+        return AsSpan().SequenceEqual(other);
     }
 
     public T[] ToArray()

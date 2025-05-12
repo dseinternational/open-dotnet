@@ -34,4 +34,44 @@ public class DataFrame
         get => Columns[index];
         set => Columns[index] = value;
     }
+
+    public Series? this[string name]
+    {
+        get => Columns.FirstOrDefault(s => s.Name == name);
+        set
+        {
+            var index = Columns.FindIndex(s => s.Name == name);
+
+            if (index >= 0)
+            {
+                if (value is not null)
+                {
+                    Columns[index] = value;
+                }
+                else
+                {
+                    Columns.RemoveAt(index);
+                }
+            }
+            else
+            {
+                if (value is not null)
+                {
+                    Columns.Add(value);
+                }
+            }
+        }
+    }
+
+    public bool TryGetColumn(string name, out Series? column)
+    {
+        column = Columns.FirstOrDefault(s => s.Name == name);
+        return column != null;
+    }
+
+    public bool TryGetColumn<T>(string name, out Series<T>? column)
+    {
+        column = Columns.OfType<Series<T>>().FirstOrDefault(s => s.Name == name);
+        return column != null;
+    }
 }

@@ -14,7 +14,7 @@ public static partial class VectorPrimitives
         where T : struct, INumber<T>
     {
         NumericsException.ThrowIfNotEqualLength(x, y, destination);
-        Add(x, y, destination.Span);
+        Add(x, y, destination.AsSpan());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -22,7 +22,7 @@ public static partial class VectorPrimitives
         where T : struct, INumber<T>
     {
         NumericsException.ThrowIfNotEqualLength(x, y, destination);
-        TensorPrimitives.Add(x.Span, y.Span, destination);
+        TensorPrimitives.Add(x.AsReadOnlySpan(), y.AsReadOnlySpan(), destination);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -30,7 +30,7 @@ public static partial class VectorPrimitives
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(y);
-        AddInPlace(x, y.Span);
+        AddInPlace(x, y.AsReadOnlySpan());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -38,7 +38,7 @@ public static partial class VectorPrimitives
         where T : struct, INumber<T>
     {
         NumericsException.ThrowIfNotEqualLength(x, y);
-        TensorPrimitives.Add(x.Span, y, x.Span);
+        TensorPrimitives.Add(x.AsSpan(), y, x.AsSpan());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -46,7 +46,7 @@ public static partial class VectorPrimitives
         where T : struct, INumber<T>
     {
         NumericsException.ThrowIfNotEqualLength(x, destination);
-        Add(x, y, destination.Span);
+        Add(x, y, destination.AsSpan());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -54,7 +54,7 @@ public static partial class VectorPrimitives
         where T : struct, INumber<T>
     {
         NumericsException.ThrowIfNotEqualLength(x, destination);
-        TensorPrimitives.Add(x.Span, y, destination);
+        TensorPrimitives.Add(x.AsReadOnlySpan(), y, destination);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -62,6 +62,6 @@ public static partial class VectorPrimitives
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        TensorPrimitives.Add(x.Span, y, x.Span);
+        TensorPrimitives.Add(x.AsSpan(), y, x.AsSpan());
     }
 }

@@ -20,7 +20,7 @@ namespace DSE.Open.Numerics;
 /// </remarks>
 [CollectionBuilder(typeof(ReadOnlyVector), nameof(CreateNumeric))]
 [JsonConverter(typeof(VectorJsonConverter))]
-public class ReadOnlyNumericVector<T> : ReadOnlyVector<T>
+public class ReadOnlyNumericVector<T> : ReadOnlyVector<T>, IReadOnlyNumericVector<T>
     where T : struct, INumber<T>
 {
     public static new readonly ReadOnlyNumericVector<T> Empty = new([]);

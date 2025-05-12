@@ -20,7 +20,12 @@ public interface IReadOnlyVector<T>
     /// <summary>
     /// Gets a span over the contents of the vector.
     /// </summary>
-    ReadOnlySpan<T> Span { get; }
+    ReadOnlySpan<T> AsReadOnlySpan();
+
+    /// <summary>
+    /// Gets the underlying data.
+    /// </summary>
+    ReadOnlyMemory<T> Data { get; }
 
     new ReadOnlyMemoryEnumerator<T> GetEnumerator();
 

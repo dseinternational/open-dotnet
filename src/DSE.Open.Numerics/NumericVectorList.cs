@@ -131,7 +131,7 @@ public class NumericVectorList<T> : IList<NumericVector<T>>, IReadOnlyList<Numer
 
         for (var i = 0; i < _collection.Count; i++)
         {
-            array[i] = _collection[i].ToArray();
+            array[i] = [.. _collection[i]];
         }
 
         return array;
@@ -152,7 +152,7 @@ public class NumericVectorList<T> : IList<NumericVector<T>>, IReadOnlyList<Numer
 
         for (var i = 0; i < _collection.Count; i++)
         {
-            _collection[i].Span.CopyTo(values.AsSpan(offset));
+            _collection[i].AsSpan().CopyTo(values.AsSpan(offset));
             offset += maxLength;
         }
 

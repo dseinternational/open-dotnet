@@ -72,7 +72,7 @@ public sealed class CategoricalVector<T> : Vector<T>, ICategoricalVector<T>, IRe
 
         var values = new HashSet<T>();
 
-        foreach (var v in Span)
+        foreach (var v in AsSpan())
         {
             _ = values.Add(v);
         }

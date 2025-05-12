@@ -15,7 +15,7 @@ public partial class NumericVectorTests
         Assert.Equal(6, v1.Length);
         Assert.Equal(6, v2.Length);
 
-        Assert.True(v1.Span.SequenceEqual(v2.Span));
+        Assert.True(v1.AsSpan().SequenceEqual(v2.AsSpan()));
     }
 
     [Fact]
@@ -23,7 +23,7 @@ public partial class NumericVectorTests
     {
         var v1 = Vector.CreateNumeric<int>(6);
         Assert.Equal(6, v1.Length);
-        Assert.True(v1.Span.SequenceEqual(new int[6]));
+        Assert.True(v1.AsSpan().SequenceEqual(new int[6]));
     }
 
     [Fact]
@@ -31,7 +31,7 @@ public partial class NumericVectorTests
     {
         var v1 = Vector.CreateZeroes<int>(6);
         Assert.Equal(6, v1.Length);
-        Assert.True(v1.Span.SequenceEqual(new int[6]));
+        Assert.True(v1.AsSpan().SequenceEqual(new int[6]));
     }
 
     [Fact]
@@ -39,7 +39,7 @@ public partial class NumericVectorTests
     {
         var v1 = Vector.CreateOnes<int>(6);
         Assert.Equal(6, v1.Length);
-        Assert.True(v1.Span.SequenceEqual([1, 1, 1, 1, 1, 1]));
+        Assert.True(v1.AsSpan().SequenceEqual([1, 1, 1, 1, 1, 1]));
     }
 
     [Fact]
@@ -57,7 +57,7 @@ public partial class NumericVectorTests
         var v2 = Vector.CreateOnes<int>(6);
         var v3 = v1 + v2;
         Assert.Equal(6, v3.Length);
-        Assert.True(v3.Span.SequenceEqual([2, 2, 2, 2, 2, 2]));
+        Assert.True(v3.AsSpan().SequenceEqual([2, 2, 2, 2, 2, 2]));
     }
 
     [Fact]
@@ -66,7 +66,7 @@ public partial class NumericVectorTests
         var v1 = Vector.CreateOnes<int>(6);
         var v2 = v1 + 1;
         Assert.Equal(6, v2.Length);
-        Assert.True(v2.Span.SequenceEqual([2, 2, 2, 2, 2, 2]));
+        Assert.True(v2.AsSpan().SequenceEqual([2, 2, 2, 2, 2, 2]));
     }
 
     [Fact]
@@ -76,7 +76,7 @@ public partial class NumericVectorTests
         var v2 = Vector.CreateOnes<int>(6);
         var v3 = v1 - v2;
         Assert.Equal(6, v3.Length);
-        Assert.True(v3.Span.SequenceEqual([0, 0, 0, 0, 0, 0]));
+        Assert.True(v3.AsSpan().SequenceEqual([0, 0, 0, 0, 0, 0]));
     }
 
     [Fact]
@@ -85,6 +85,6 @@ public partial class NumericVectorTests
         var v1 = Vector.CreateOnes<int>(6);
         var v2 = v1 - 1;
         Assert.Equal(6, v2.Length);
-        Assert.True(v2.Span.SequenceEqual([0, 0, 0, 0, 0, 0]));
+        Assert.True(v2.AsSpan().SequenceEqual([0, 0, 0, 0, 0, 0]));
     }
 }

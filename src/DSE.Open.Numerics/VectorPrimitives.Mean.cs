@@ -12,14 +12,14 @@ public static partial class VectorPrimitives
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(vector);
-        return Mean<T, T>(vector.Span);
+        return Mean<T, T>(vector.AsSpan());
     }
 
     public static T Mean<T>(NumericSeries<T> series)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(series);
-        return Mean<T, T>(series.Data.Span);
+        return Mean<T, T>(series.Data.AsSpan());
     }
 
     /// <summary>

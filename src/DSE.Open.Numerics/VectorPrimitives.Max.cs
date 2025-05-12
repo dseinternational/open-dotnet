@@ -13,7 +13,7 @@ public static partial class VectorPrimitives
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(vector);
-        return Max(vector.Span);
+        return Max(vector.AsReadOnlySpan());
     }
 
     public static T Max<T>(ReadOnlySpan<T> values)
@@ -26,7 +26,7 @@ public static partial class VectorPrimitives
         where T : struct, IFloatingPointIeee754<T>
     {
         ArgumentNullException.ThrowIfNull(vector);
-        return MaxFloatingPoint(vector.Span);
+        return MaxFloatingPoint(vector.AsReadOnlySpan());
     }
 
     public static T MaxFloatingPoint<T>(ReadOnlySpan<T> values)

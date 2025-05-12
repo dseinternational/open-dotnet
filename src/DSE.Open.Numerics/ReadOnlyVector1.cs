@@ -47,10 +47,12 @@ public class ReadOnlyVector<T> : ReadOnlyVector, IReadOnlyVector<T>
 
     protected ReadOnlyMemory<T> Data { get; }
 
-    public ReadOnlySpan<T> Span
+    ReadOnlyMemory<T> IReadOnlyVector<T>.Data => Data;
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public ReadOnlySpan<T> AsReadOnlySpan()
     {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => Data.Span;
+        return Data.Span;
     }
 
     public override bool Equals(object? obj)
@@ -78,17 +80,17 @@ public class ReadOnlyVector<T> : ReadOnlyVector, IReadOnlyVector<T>
 
     public bool Equals(ReadOnlyVector<T>? other)
     {
-        return other is not null && Equals(other.Span);
+        return other is not null && Equals(other.AsReadOnlySpan());
     }
 
     public bool Equals(IReadOnlyVector<T>? other)
     {
-        return other is not null && Equals(other.Span);
+        return other is not null && Equals(other.AsReadOnlySpan());
     }
 
     public bool Equals(ReadOnlySpan<T> other)
     {
-        return Span.SequenceEqual(other);
+        return AsReadOnlySpan().SequenceEqual(other);
     }
 
     public T[] ToArray()

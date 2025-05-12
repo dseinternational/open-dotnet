@@ -9,11 +9,11 @@ namespace DSE.Open.Numerics.Data;
 [JsonConverter(typeof(SeriesJsonConverter))]
 public abstract class Series<T, TVector>
     : Series,
-      ISeries<T, TVector>,
-      IReadOnlySeries<T, TVector>
+      ISeries<T, TVector>
     where TVector : Vector<T>
 {
-    protected Series(string? name, TVector data, IDictionary<string, Variant>? annotations) : base(name, annotations)
+    protected Series(string? name, TVector data, IDictionary<string, Variant>? annotations)
+        : base(name, data, annotations)
     {
         ArgumentNullException.ThrowIfNull(data);
         Data = data;
@@ -21,7 +21,9 @@ public abstract class Series<T, TVector>
 
     public T this[int index] => Data[index];
 
-    public TVector Data { get; }
+    public new TVector Data { get; }
+
+    TVector IReadOnlySeries<T, TVector>.Data => throw new NotImplementedException();
 
     internal override Vector GetData()
     {

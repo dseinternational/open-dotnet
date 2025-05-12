@@ -3,14 +3,15 @@
 
 namespace DSE.Open.Numerics.Data;
 
-public interface ISeries
+public interface ISeries : IReadOnlySeries
 {
-    string? Name { get; }
+    new IVector Data { get; }
 
-    IDictionary<string, Variant>? Annotations { get; }
+    new IDictionary<string, Variant>? Annotations { get; }
 }
 
-public interface ISeries<T, TVector> : ISeries
+public interface ISeries<T, TVector> : ISeries, IReadOnlySeries<T, TVector>
     where TVector : IVector<T>
 {
+    new TVector Data { get; }
 }

@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using System.Reflection;
-using System.Text.Json;
 using System.Text.Json.Serialization;
 using DSE.Open.Numerics.Serialization;
 

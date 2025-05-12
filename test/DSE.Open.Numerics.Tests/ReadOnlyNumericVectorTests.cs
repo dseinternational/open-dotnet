@@ -15,6 +15,6 @@ public class ReadOnlyNumericVectorTests
         Assert.Equal(6, v1.Length);
         Assert.Equal(6, v2.Length);
 
-        Assert.True(v1.Span.SequenceEqual(v2.Span));
+        Assert.True(v1.AsReadOnlySpan().SequenceEqual(v2.AsReadOnlySpan()));
     }
 }

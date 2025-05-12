@@ -4,7 +4,6 @@
 using System.Text.Json;
 using DSE.Open.Numerics.Serialization;
 using DSE.Open.Testing.Xunit;
-using DSE.Open.Text.Json;
 
 namespace DSE.Open.Numerics.Data;
 
