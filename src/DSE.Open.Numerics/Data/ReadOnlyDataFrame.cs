@@ -11,7 +11,8 @@ namespace DSE.Open.Numerics.Data;
 /// </summary>
 public class ReadOnlyDataFrame : IReadOnlyList<Vector>
 {
-    private readonly Collection<Vector> _columns;
+    private readonly Collection<Vector> _columnVectors;
+    private readonly Collection<string> _columnNames;
 
     public ReadOnlyDataFrame() : this([])
     {
@@ -20,27 +21,49 @@ public class ReadOnlyDataFrame : IReadOnlyList<Vector>
     public ReadOnlyDataFrame(Collection<Vector> columns)
     {
         ArgumentNullException.ThrowIfNull(columns);
-        _columns = columns;
+
+        _columnVectors = columns;
+        _columnNames = new Collection<string>(columns.Count);
+
+        for (var i = 0; i < columns.Count; i++)
+        {
+            _columnNames[i] = i.ToStringInvariant();
+        }
     }
 
-    public Vector this[int index] => _columns[index];
+    public Vector this[int index] => _columnVectors[index];
 
-    public Vector? this[string name] => null; // TODO
+    public Vector? this[string name]
+    {
+        get
+        {
+            var index = _columnNames.IndexOf(name);
+
+            if (index < 0)
+            {
+                return null;
+            }
+
+            return _columnVectors[index];
+        }
+    }
 
     /// <summary>
     /// A name for the data frame (optional).
     /// </summary>
     public string? Name { get; }
 
-    public int Count => _columns.Count;
+    public IReadOnlyList<string> Columns => _columnNames;
+
+    public int Count => _columnVectors.Count;
 
     public IEnumerator<Vector> GetEnumerator()
     {
-        return _columns.GetEnumerator();
+        return _columnVectors.GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()
     {
-        return ((IEnumerable)_columns).GetEnumerator();
+        return ((IEnumerable)_columnVectors).GetEnumerator();
     }
 }
