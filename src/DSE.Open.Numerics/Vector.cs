@@ -2,7 +2,6 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using System.Text.Json.Serialization;
 using DSE.Open.Numerics.Serialization;
@@ -15,9 +14,7 @@ public abstract class Vector : IVector
     protected internal Vector(
         VectorDataType dataType,
         Type itemType,
-        int length,
-        string? name,
-        IReadOnlyDictionary<string, Variant>? annotations)
+        int length)
     {
         ArgumentNullException.ThrowIfNull(itemType);
 
@@ -34,8 +31,6 @@ public abstract class Vector : IVector
         IsNumeric = NumberHelper.IsKnownNumberType(itemType);
         ItemType = itemType;
         Length = length;
-        Name = name;
-        Annotations = annotations;
     }
 
     /// <summary>
@@ -57,10 +52,6 @@ public abstract class Vector : IVector
     /// Gets the data type of the vector.
     /// </summary>
     public VectorDataType DataType { get; }
-
-    public string? Name { get; set; }
-
-    public IReadOnlyDictionary<string, Variant>? Annotations { get; set; }
 
     public virtual string ToJson(VectorJsonFormat format = default)
     {

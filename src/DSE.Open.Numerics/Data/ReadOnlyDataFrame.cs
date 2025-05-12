@@ -25,7 +25,7 @@ public class ReadOnlyDataFrame : IReadOnlyList<Vector>
 
     public Vector this[int index] => _columns[index];
 
-    public Vector? this[string name] => _columns.FirstOrDefault(s => s.Name == name);
+    public Vector? this[string name] => null; // TODO
 
     /// <summary>
     /// A name for the data frame (optional).

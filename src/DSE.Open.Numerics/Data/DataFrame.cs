@@ -32,24 +32,16 @@ public class DataFrame : IDataFrame
 
     public bool IsReadOnly => false;
 
+    public Vector? this[string name]
+    {
+        get => null; // TODO
+        set => throw new NotImplementedException();
+    }
+
     public Vector this[int index]
     {
         get => _columns[index];
         set => _columns[index] = value;
-    }
-
-    public Vector? this[string name] => _columns.FirstOrDefault(s => s.Name == name);
-
-    public bool TryGetColumn(string name, out Vector? column)
-    {
-        column = _columns.FirstOrDefault(s => s.Name == name);
-        return column != null;
-    }
-
-    public bool TryGetColumn<T>(string name, out Vector<T>? column)
-    {
-        column = _columns.OfType<Vector<T>>().FirstOrDefault(s => s.Name == name);
-        return column != null;
     }
 
     public int IndexOf(Vector item)

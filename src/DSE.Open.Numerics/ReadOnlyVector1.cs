@@ -25,10 +25,8 @@ public class ReadOnlyVector<T> : ReadOnlyVector, IReadOnlyVector<T>
 
     internal ReadOnlyVector(
         T[] data,
-        string? name = null,
-        IReadOnlyDictionary<string, T>? categories = null,
-        IReadOnlyDictionary<string, Variant>? annotations = null)
-        : base(VectorDataTypeHelper.GetVectorDataType<T>(), typeof(T), data.Length, name, annotations)
+        IReadOnlyDictionary<string, T>? categories = null)
+        : base(VectorDataTypeHelper.GetVectorDataType<T>(), typeof(T), data.Length)
     {
         _data = data;
         Categories = categories ?? new Dictionary<string, T>();

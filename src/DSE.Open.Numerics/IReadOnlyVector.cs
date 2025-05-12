@@ -5,15 +5,11 @@ namespace DSE.Open.Numerics;
 
 public interface IReadOnlyVector
 {
-    string? Name { get; }
-
     int Length { get; }
 
     bool IsNumeric { get; }
 
     VectorDataType DataType { get; }
-
-    IReadOnlyDictionary<string, Variant>? Annotations { get; }
 }
 
 public interface IReadOnlyVector<T>
@@ -23,7 +19,7 @@ public interface IReadOnlyVector<T>
 {
     IReadOnlyDictionary<string, T> Categories { get; }
 
-    public ReadOnlyMemory<T> Data { get; }
+    ReadOnlyMemory<T> Data { get; }
 
     /// <summary>
     /// Gets a span over the contents of the vector.

@@ -24,14 +24,14 @@ public class Vector<T> : Vector, IVector<T>, IReadOnlyVector<T>
 
     internal Vector(
         T[] data,
-        string? name = null,
-        IDictionary<string, T>? categories = null,
-        IReadOnlyDictionary<string, Variant>? annotations = null)
-        : base(VectorDataTypeHelper.GetVectorDataType<T>(), typeof(T), data.Length, name, annotations)
+        IDictionary<string, T>? categories = null)
+        : base(VectorDataTypeHelper.GetVectorDataType<T>(), typeof(T), data.Length)
     {
         _data = data;
         Categories = categories ?? new Dictionary<string, T>();
     }
+
+    // TODO: consider lazy init or nullable?
 
     public IDictionary<string, T> Categories { get; }
 

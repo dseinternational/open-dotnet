@@ -15,9 +15,7 @@ public abstract class ReadOnlyVector : IReadOnlyVector
     protected ReadOnlyVector(
         VectorDataType dataType,
         Type itemType,
-        int length,
-        string? name,
-        IReadOnlyDictionary<string, Variant>? annotations)
+        int length)
     {
         ArgumentNullException.ThrowIfNull(itemType);
 
@@ -34,11 +32,7 @@ public abstract class ReadOnlyVector : IReadOnlyVector
         IsNumeric = NumberHelper.IsKnownNumberType(itemType);
         ItemType = itemType;
         Length = length;
-        Name = name;
-        Annotations = annotations;
     }
-
-    public string? Name { get; }
 
     /// <summary>
     /// Gets the number of items in the vector.
@@ -59,8 +53,6 @@ public abstract class ReadOnlyVector : IReadOnlyVector
     /// Gets the data type of the vector.
     /// </summary>
     public VectorDataType DataType { get; }
-
-    public IReadOnlyDictionary<string, Variant>? Annotations { get; }
 
     /// <summary>
     /// Creates a vector from the given data.
