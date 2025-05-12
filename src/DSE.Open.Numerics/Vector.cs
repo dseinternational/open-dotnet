@@ -13,7 +13,7 @@ namespace DSE.Open.Numerics;
 [JsonConverter(typeof(VectorJsonConverter))]
 public abstract class Vector : IVector
 {
-    protected Vector(VectorDataType dataType, Type itemType, int length)
+    protected internal Vector(VectorDataType dataType, Type itemType, int length)
     {
         ArgumentNullException.ThrowIfNull(itemType);
 

@@ -108,6 +108,12 @@ public class ReadOnlyVector<T> : ReadOnlyVector, IReadOnlyVector<T>
         return ((IEnumerable<T>)this).GetEnumerator();
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public ReadOnlySpan<T> Slice(int start, int length)
+    {
+        return AsReadOnlySpan().Slice(start, length);
+    }
+
     public static bool operator ==(ReadOnlyVector<T>? left, ReadOnlyVector<T>? right)
     {
         return left is not null && (right is null || left.Equals(right));

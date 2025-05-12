@@ -1,18 +1,17 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 using DSE.Open.Numerics.Serialization;
 
 namespace DSE.Open.Numerics.Data;
 
 [JsonConverter(typeof(SeriesJsonConverter))]
-public abstract class Series<T, TVector>
-    : Series,
-      ISeries<T, TVector>
+public abstract class Series<T, TVector> : Series, ISeries<T, TVector>
     where TVector : Vector<T>
 {
-    protected Series(string? name, TVector data, IDictionary<string, Variant>? annotations)
+    protected internal Series(string? name, TVector data, IDictionary<string, Variant>? annotations)
         : base(name, data, annotations)
     {
         ArgumentNullException.ThrowIfNull(data);
@@ -25,9 +24,34 @@ public abstract class Series<T, TVector>
 
     TVector IReadOnlySeries<T, TVector>.Data => throw new NotImplementedException();
 
-    internal override Vector GetData()
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Span<T> AsSpan()
     {
-        return Data;
+        return Data.AsSpan();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Span<T> Slice(int start)
+    {
+        return AsSpan()[start..];
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Span<T> Slice(int start, int length)
+    {
+        return AsSpan().Slice(start, length);
+    }
+
+#pragma warning disable CA1033 // Interface methods should be callable by child types
+    ReadOnlySpan<T> IReadOnlySeries<T, TVector>.AsReadOnlySpan()
+#pragma warning restore CA1033 // Interface methods should be callable by child types
+    {
+        return AsSpan();
+    }
+
+    ReadOnlySpan<T> IReadOnlySeries<T, TVector>.Slice(int start, int length)
+    {
+        return Slice(start, length);
     }
 }
 

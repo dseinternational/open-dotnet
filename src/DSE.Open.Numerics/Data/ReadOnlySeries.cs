@@ -12,7 +12,7 @@ namespace DSE.Open.Numerics.Data;
 [JsonConverter(typeof(SeriesJsonConverter))]
 public abstract class ReadOnlySeries : IReadOnlySeries
 {
-    protected ReadOnlySeries(string? name, IReadOnlyVector data, IReadOnlyDictionary<string, Variant>? annotations)
+    protected internal ReadOnlySeries(string? name, IReadOnlyVector data, IReadOnlyDictionary<string, Variant>? annotations)
     {
         ArgumentNullException.ThrowIfNull(data);
 

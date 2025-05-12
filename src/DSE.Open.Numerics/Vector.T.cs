@@ -132,6 +132,24 @@ public class Vector<T> : Vector, IVector<T>, IReadOnlyVector<T>
         return ((IEnumerable<T>)this).GetEnumerator();
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Span<T> Slice(int start)
+    {
+        return AsSpan()[start..];
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Span<T> Slice(int start, int length)
+    {
+        return AsSpan().Slice(start, length);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    ReadOnlySpan<T> IReadOnlyVector<T>.Slice(int start, int length)
+    {
+        return Slice(start, length);
+    }
+
     public static bool operator ==(Vector<T>? left, Vector<T>? right)
     {
         return left is not null && (right is null || left.Equals(right));

@@ -29,6 +29,8 @@ public interface IReadOnlyVector<T>
 
     new ReadOnlyMemoryEnumerator<T> GetEnumerator();
 
+    ReadOnlySpan<T> Slice(int start, int length);
+
     /// <summary>
     /// Copies the elements of the <see cref="IReadOnlyVector{T}"/> to a new array.
     /// </summary>

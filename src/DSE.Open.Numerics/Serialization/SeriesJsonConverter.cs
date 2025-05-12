@@ -126,7 +126,7 @@ public class SeriesJsonConverter : JsonConverter<Series>
 
         writer.WritePropertyName(SeriesJsonPropertyNames.Data);
 
-        VectorJsonConverter.Default.Write(writer, value.GetData(), options);
+        VectorJsonConverter.Default.Write(writer, value.Data, options);
 
         writer.WriteEndObject();
     }

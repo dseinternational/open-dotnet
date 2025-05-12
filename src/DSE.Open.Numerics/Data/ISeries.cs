@@ -14,4 +14,8 @@ public interface ISeries<T, TVector> : ISeries, IReadOnlySeries<T, TVector>
     where TVector : IVector<T>
 {
     new TVector Data { get; }
+
+    Span<T> AsSpan();
+
+    new Span<T> Slice(int start, int length);
 }

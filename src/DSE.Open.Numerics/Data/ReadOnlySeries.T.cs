@@ -7,12 +7,10 @@ using DSE.Open.Numerics.Serialization;
 namespace DSE.Open.Numerics.Data;
 
 [JsonConverter(typeof(SeriesJsonConverter))]
-public abstract class ReadOnlySeries<T, TVector>
-    : ReadOnlySeries,
-      IReadOnlySeries<T, TVector>
+public abstract class ReadOnlySeries<T, TVector> : ReadOnlySeries, IReadOnlySeries<T, TVector>
     where TVector : ReadOnlyVector<T>
 {
-    protected ReadOnlySeries(string? name, TVector data, IReadOnlyDictionary<string, Variant>? annotations)
+    protected internal ReadOnlySeries(string? name, TVector data, IReadOnlyDictionary<string, Variant>? annotations)
         : base(name, data, annotations)
     {
         ArgumentNullException.ThrowIfNull(data);
@@ -22,6 +20,16 @@ public abstract class ReadOnlySeries<T, TVector>
     public T this[int index] => Data[index];
 
     public new TVector Data { get; }
+
+    public ReadOnlySpan<T> AsReadOnlySpan()
+    {
+        return Data.AsReadOnlySpan();
+    }
+
+    public ReadOnlySpan<T> Slice(int start, int length)
+    {
+        return AsReadOnlySpan().Slice(start, length);
+    }
 }
 
 [JsonConverter(typeof(SeriesJsonConverter))]

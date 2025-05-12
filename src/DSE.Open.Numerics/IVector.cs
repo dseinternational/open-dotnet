@@ -22,4 +22,6 @@ public interface IVector<T>
     Span<T> AsSpan();
 
     new MemoryEnumerator<T> GetEnumerator();
+
+    new Span<T> Slice(int start, int length);
 }
