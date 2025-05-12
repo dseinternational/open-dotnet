@@ -8,13 +8,9 @@ using DSE.Open.Testing.Xunit;
 
 namespace DSE.Open.Numerics;
 
-public class VectorTests : LoggedTestsBase
+public sealed class VectorTests : LoggedTestsBase
 {
-    public VectorTests(ITestOutputHelper output) : base(output)
-    {
-    }
-
-    private void TestCreate<T>(T[] elements)
+    private static void TestCreate<T>(T[] elements)
         where T : notnull
     {
         var vector = Vector.Create(elements);
@@ -24,26 +20,24 @@ public class VectorTests : LoggedTestsBase
         Assert.Equivalent(elements, vector.ToArray());
     }
 
-    private void TestCreateNumeric<T>(T[] elements)
+    private static void TestCreateNumeric<T>(T[] elements)
         where T : struct, INumber<T>
     {
-        var vector = Vector.CreateNumeric(elements);
+        var vector = Vector.Create(elements);
 
         Assert.NotNull(vector);
         Assert.Equal(elements.Length, vector.Length);
         Assert.Equivalent(elements, vector.ToArray());
     }
 
-    private void TestSerializeDeserializeNumeric<T>(T[] elements, JsonSerializerOptions serializerOptions)
+    private static void TestSerializeDeserializeNumeric<T>(T[] elements, JsonSerializerOptions serializerOptions)
         where T : struct, INumber<T>
     {
-        var vector = Vector.CreateNumeric(elements);
+        var vector = Vector.Create(elements);
 
         var json = JsonSerializer.Serialize(vector, serializerOptions);
 
         Assert.NotNull(json);
-
-        Output.WriteLine(json);
 
         var deserialized = JsonSerializer.Deserialize<Vector<T>>(json, serializerOptions);
 

@@ -3,6 +3,7 @@
 
 using System.Diagnostics;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 
 namespace DSE.Open.Numerics.Serialization;
@@ -23,12 +24,36 @@ public static class VectorJsonWriter
         writer.WriteNumber(VectorJsonPropertyNames.Length, vector.Length);
         writer.WritePropertyName(VectorJsonPropertyNames.Values);
 
+        if (vector.Categories.Count > 0)
+        {
+            writer.WritePropertyName(VectorJsonPropertyNames.Categories);
+
+            writer.WriteStartObject();
+
+            foreach (var kvp in vector.Categories)
+            {
+                writer.WritePropertyName(kvp.Key);
+                // TODO: Figure out type and write value
+                // writer.WriteNumberValue(kvp.Value);
+            }
+
+            writer.WriteEndObject();
+        }
+
         if (vector.Length == 0)
         {
             writer.WriteStartArray();
             writer.WriteEndArray();
+            writer.WriteEndObject();
+            return;
         }
-        else if (vector is IReadOnlyVector<string> stringVector)
+
+        if (typeof(T).IsAssignableFrom(typeof(INumber<>).MakeGenericType(typeof(T))))
+        {
+            WriteNumberArray(writer, vector);
+        }
+
+        if (vector is IReadOnlyVector<string> stringVector)
         {
             WriteStringArray(writer, stringVector.AsReadOnlySpan());
         }
@@ -54,142 +79,110 @@ public static class VectorJsonWriter
         writer.WriteEndObject();
     }
 
-    public static void Write<T>(Utf8JsonWriter writer, IReadOnlyVector<T> vector, JsonSerializerOptions options)
-        where T : struct, INumber<T>
+    private static void WriteNumberArray<T>(Utf8JsonWriter writer, IReadOnlyVector<T> vector)
     {
-        ArgumentNullException.ThrowIfNull(writer);
-        ArgumentNullException.ThrowIfNull(vector);
-        JsonExceptionHelper.ThrowIfLengthExceedsSerializationLimit(vector.Length);
-
-        writer.WriteStartObject();
-        writer.WriteString(VectorJsonPropertyNames.DataType, VectorDataTypeHelper.GetLabel(vector.DataType));
-        writer.WriteNumber(VectorJsonPropertyNames.Length, vector.Length);
-        writer.WritePropertyName(VectorJsonPropertyNames.Values);
-
-        if (vector.Length == 0)
+        if (typeof(T) == typeof(byte))
         {
-            writer.WriteStartArray();
-            writer.WriteEndArray();
+            WriteNumberSpan(writer, ((IReadOnlyVector<byte>)vector).AsReadOnlySpan());
+        }
+        else if (typeof(T) == typeof(sbyte))
+        {
+            WriteNumberSpan(writer, ((IReadOnlyVector<sbyte>)vector).AsReadOnlySpan());
+        }
+        else if (typeof(T) == typeof(short))
+        {
+            WriteNumberSpan(writer, ((IReadOnlyVector<short>)vector).AsReadOnlySpan());
+        }
+        else if (typeof(T) == typeof(ushort))
+        {
+            WriteNumberSpan(writer, ((IReadOnlyVector<ushort>)vector).AsReadOnlySpan());
+        }
+        else if (typeof(T) == typeof(int))
+        {
+            WriteNumberSpan(writer, ((IReadOnlyVector<int>)vector).AsReadOnlySpan());
+        }
+        else if (typeof(T) == typeof(uint))
+        {
+            WriteNumberSpan(writer, ((IReadOnlyVector<uint>)vector).AsReadOnlySpan());
+        }
+        else if (typeof(T) == typeof(long))
+        {
+            WriteNumberSpan(writer, ((IReadOnlyVector<long>)vector).AsReadOnlySpan());
+        }
+        else if (typeof(T) == typeof(ulong))
+        {
+            WriteNumberSpan(writer, ((IReadOnlyVector<ulong>)vector).AsReadOnlySpan());
+        }
+        else if (typeof(T) == typeof(float))
+        {
+            WriteNumberSpan(writer, ((IReadOnlyVector<float>)vector).AsReadOnlySpan());
+        }
+        else if (typeof(T) == typeof(double))
+        {
+            WriteNumberSpan(writer, ((IReadOnlyVector<double>)vector).AsReadOnlySpan());
+        }
+        else if (typeof(T) == typeof(decimal))
+        {
+            WriteNumberSpan(writer, ((IReadOnlyVector<decimal>)vector).AsReadOnlySpan());
+        }
+        else if (typeof(T) == typeof(Half))
+        {
+            WriteNumberSpan(writer, ((IReadOnlyVector<Half>)vector).AsReadOnlySpan());
+        }
+        else if (typeof(T) == typeof(BigInteger))
+        {
+            WriteNumberSpan(writer, ((IReadOnlyVector<BigInteger>)vector).AsReadOnlySpan());
         }
         else
         {
-            WriteNumberArray(writer, vector.AsReadOnlySpan());
+            throw new NotSupportedException($"The type `{typeof(T)}` is a not supported numeric type.");
         }
 
-        writer.WriteEndObject();
-    }
 
-    public static void Write<T>(Utf8JsonWriter writer, IReadOnlyCategoricalVector<T> vector, JsonSerializerOptions options)
-        where T : struct, IComparable<T>, IEquatable<T>, IBinaryInteger<T>, IMinMaxValue<T>
-    {
-        ArgumentNullException.ThrowIfNull(writer);
-        ArgumentNullException.ThrowIfNull(vector);
-        JsonExceptionHelper.ThrowIfLengthExceedsSerializationLimit(vector.Length);
-
-        writer.WriteStartObject();
-        writer.WriteString(VectorJsonPropertyNames.DataType, VectorDataTypeHelper.GetLabel(vector.DataType));
-        // todo: error if no categories and > 0 data values ??
-
-        if (vector.CategoryData.Length > 0)
+        static void WriteNumberSpan<TNumber>(Utf8JsonWriter writer, ReadOnlySpan<TNumber> vector)
+            where TNumber : struct, INumber<TNumber>
         {
-            writer.WritePropertyName(VectorJsonPropertyNames.Categories);
-
-            writer.WriteStartObject();
-
-            foreach (var kvp in vector.CategoryData)
-            {
-                writer.WritePropertyName(kvp.Key);
-                writer.WriteNumberValue(kvp.Value);
-            }
-
-            writer.WriteEndObject();
+            Debug.Assert(vector.Length > 0);
+            WriteArray(writer, vector, static (writer, value) => writer.WriteNumberValue(value));
         }
-
-        writer.WriteNumber(VectorJsonPropertyNames.Length, vector.Length);
-
-        writer.WritePropertyName(VectorJsonPropertyNames.Values);
-
-        if (vector.Length == 0)
-        {
-            writer.WriteStartArray();
-            writer.WriteEndArray();
-        }
-        else
-        {
-            WriteNumberArray(writer, vector.AsReadOnlySpan());
-        }
-
-        writer.WriteEndObject();
-    }
-
-    private static void WriteNumberArray<T>(Utf8JsonWriter writer, ReadOnlySpan<T> vector)
-        where T : struct, INumber<T>
-    {
-        Debug.Assert(vector.Length > 0);
-
-        writer.WriteStartArray();
-
-        foreach (var value in vector)
-        {
-            writer.WriteNumberValue(value);
-        }
-
-        writer.WriteEndArray();
     }
 
     private static void WriteCharArray(Utf8JsonWriter writer, ReadOnlySpan<char> vector)
     {
-        writer.WriteStartArray();
-
-        foreach (var value in vector)
-        {
-            writer.WriteStringValue(value.ToString());
-        }
-
-        writer.WriteEndArray();
+        WriteArray(writer, vector, static (writer, value) => writer.WriteStringValue(value.ToString()));
     }
 
     private static void WriteStringArray(Utf8JsonWriter writer, ReadOnlySpan<string> vector)
     {
-        writer.WriteStartArray();
-
-        foreach (var value in vector)
-        {
-            writer.WriteStringValue(value);
-        }
-
-        writer.WriteEndArray();
+        WriteArray(writer, vector, static (writer, value) => writer.WriteStringValue(value));
     }
 
     private static void WriteGuidArray(Utf8JsonWriter writer, ReadOnlySpan<Guid> vector)
     {
-        writer.WriteStartArray();
-
-        foreach (var value in vector)
-        {
-            writer.WriteStringValue(value);
-        }
-
-        writer.WriteEndArray();
+        WriteArray(writer, vector, static (writer, value) => writer.WriteStringValue(value));
     }
 
     private static void WriteDateTimeArray(Utf8JsonWriter writer, ReadOnlySpan<DateTime> vector)
     {
-        writer.WriteStartArray();
-        foreach (var value in vector)
-        {
-            writer.WriteStringValue(value);
-        }
-
-        writer.WriteEndArray();
+        WriteArray(writer, vector, static (writer, value) => writer.WriteStringValue(value));
     }
 
     private static void WriteDateTimeOffsetArray(Utf8JsonWriter writer, ReadOnlySpan<DateTimeOffset> vector)
     {
+        WriteArray(writer, vector, static (writer, value) => writer.WriteStringValue(value));
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static void WriteArray<T>(
+        Utf8JsonWriter writer,
+        ReadOnlySpan<T> vector,
+        Action<Utf8JsonWriter, T> writeValue)
+    {
         writer.WriteStartArray();
+
         foreach (var value in vector)
         {
-            writer.WriteStringValue(value);
+            writeValue(writer, value);
         }
 
         writer.WriteEndArray();
