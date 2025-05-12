@@ -21,7 +21,7 @@ public sealed class NumericSeries<T>
     public NumericSeries(
         string? name,
         NumericVector<T> values,
-        IDictionary<Variant, T>? annotations)
+        IDictionary<string, Variant>? annotations)
         : base(name, values, annotations)
     {
     }

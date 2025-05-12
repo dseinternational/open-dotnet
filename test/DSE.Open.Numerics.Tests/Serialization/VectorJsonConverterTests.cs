@@ -52,7 +52,7 @@ public class VectorJsonConverterTests : LoggedTestsBase
         var deserialized2 = JsonSerializer.Deserialize<NumericVector<int>>(serialized, s_jsonOptions.Value);
         Assert.NotNull(deserialized2);
 
-        Assert.True(deserialized.Span.SequenceEqual(deserialized2.Span));
+        Assert.True(deserialized.AsSpan().SequenceEqual(deserialized2.AsSpan()));
     }
 
     [Theory]
@@ -87,7 +87,7 @@ public class VectorJsonConverterTests : LoggedTestsBase
         var deserialized2 = JsonSerializer.Deserialize<NumericVector<long>>(serialized, s_jsonOptions.Value);
         Assert.NotNull(deserialized2);
 
-        Assert.True(deserialized.Span.SequenceEqual(deserialized2.Span));
+        Assert.True(deserialized.AsSpan().SequenceEqual(deserialized2.AsSpan()));
     }
 
     [Theory]
@@ -122,7 +122,7 @@ public class VectorJsonConverterTests : LoggedTestsBase
         var deserialized2 = JsonSerializer.Deserialize<NumericVector<uint>>(serialized, s_jsonOptions.Value);
         Assert.NotNull(deserialized2);
 
-        Assert.True(deserialized.Span.SequenceEqual(deserialized2.Span));
+        Assert.True(deserialized.AsSpan().SequenceEqual(deserialized2.AsSpan()));
     }
 
     [Theory]

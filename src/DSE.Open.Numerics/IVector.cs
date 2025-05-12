@@ -14,10 +14,12 @@ public interface IVector<T>
 {
     new T this[int index] { get; set; }
 
+    bool IsReadOnly { get; }
+
     /// <summary>
     /// Gets a span over the contents of the vector.
     /// </summary>
-    new Span<T> Span { get; }
+    Span<T> AsSpan();
 
     new MemoryEnumerator<T> GetEnumerator();
 }

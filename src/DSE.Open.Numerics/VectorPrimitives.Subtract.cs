@@ -17,7 +17,7 @@ public static partial class VectorPrimitives
         where T : struct, INumber<T>
     {
         NumericsException.ThrowIfNotEqualLength(x, y, destination);
-        Subtract(x.Span, y.Span, destination.Span);
+        Subtract(x.AsReadOnlySpan(), y.AsReadOnlySpan(), destination.AsSpan());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -28,7 +28,7 @@ public static partial class VectorPrimitives
         where T : struct, INumber<T>
     {
         NumericsException.ThrowIfNotEqualLength(x, y, destination);
-        Subtract(x.Span, y.Span, destination);
+        Subtract(x.AsReadOnlySpan(), y.AsReadOnlySpan(), destination);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -47,7 +47,7 @@ public static partial class VectorPrimitives
         where T : struct, INumber<T>
     {
         NumericsException.ThrowIfNotEqualLength(x, destination);
-        Subtract(x.Span, y, destination.Span);
+        Subtract(x.AsReadOnlySpan(), y, destination.AsSpan());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -58,7 +58,7 @@ public static partial class VectorPrimitives
         where T : struct, INumber<T>
     {
         NumericsException.ThrowIfNotEqualLength(x, destination);
-        Subtract(x.Span, y, destination);
+        Subtract(x.AsReadOnlySpan(), y, destination);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -74,7 +74,7 @@ public static partial class VectorPrimitives
         where T : struct, INumber<T>
     {
         NumericsException.ThrowIfNotEqualLength(y, x);
-        SubtractInPlace(x.Span, y.Span);
+        SubtractInPlace(x.AsSpan(), y.AsReadOnlySpan());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -82,7 +82,7 @@ public static partial class VectorPrimitives
         where T : struct, INumber<T>
     {
         NumericsException.ThrowIfNotEqualLength(y, x);
-        SubtractInPlace(x, y.Span);
+        SubtractInPlace(x, y.AsReadOnlySpan());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -98,7 +98,7 @@ public static partial class VectorPrimitives
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        SubtractInPlace(x.Span, y);
+        SubtractInPlace(x.AsSpan(), y);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

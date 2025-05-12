@@ -1,4 +1,4 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Collections.Immutable;
@@ -72,7 +72,7 @@ public sealed class ReadOnlyCategoricalVector<T> : ReadOnlyVector<T>
 
         var values = new HashSet<T>();
 
-        foreach (var v in Span)
+        foreach (var v in AsReadOnlySpan())
         {
             _ = values.Add(v);
         }

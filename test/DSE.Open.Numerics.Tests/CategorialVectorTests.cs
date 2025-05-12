@@ -34,7 +34,7 @@ public partial class CategorialVectorTests : LoggedTestsBase
             ]);
 
         Assert.Equal(18, vector.Length);
-        Assert.True(vector.Span.SequenceEqual([1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6]));
+        Assert.True(vector.AsSpan().SequenceEqual([1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6]));
         Assert.Equal(6, vector.CategoryData.Length);
         Assert.True(vector.IsValid());
     }
@@ -64,7 +64,7 @@ public partial class CategorialVectorTests : LoggedTestsBase
         Assert.NotNull(deserialized);
 
         Assert.Equal(18, deserialized.Length);
-        Assert.True(deserialized.Span.SequenceEqual([1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6]));
+        Assert.True(deserialized.AsSpan().SequenceEqual([1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6]));
         Assert.Equal(6, deserialized.CategoryData.Length);
         Assert.True(deserialized.IsValid());
     }

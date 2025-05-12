@@ -30,23 +30,23 @@ public static class VectorJsonWriter
         }
         else if (vector is IReadOnlyVector<string> stringVector)
         {
-            WriteStringArray(writer, stringVector.Span);
+            WriteStringArray(writer, stringVector.AsReadOnlySpan());
         }
         else if (vector is IReadOnlyVector<char> charVector)
         {
-            WriteCharArray(writer, charVector.Span);
+            WriteCharArray(writer, charVector.AsReadOnlySpan());
         }
         else if (vector is IReadOnlyVector<Guid> guidVector)
         {
-            WriteGuidArray(writer, guidVector.Span);
+            WriteGuidArray(writer, guidVector.AsReadOnlySpan());
         }
         else if (vector is IReadOnlyVector<DateTime> dateTimeVector)
         {
-            WriteDateTimeArray(writer, dateTimeVector.Span);
+            WriteDateTimeArray(writer, dateTimeVector.AsReadOnlySpan());
         }
         else if (vector is IReadOnlyVector<DateTimeOffset> dateTimeOffsetVector)
         {
-            WriteDateTimeOffsetArray(writer, dateTimeOffsetVector.Span);
+            WriteDateTimeOffsetArray(writer, dateTimeOffsetVector.AsReadOnlySpan());
         }
 
         // todo: add support for other types
@@ -73,7 +73,7 @@ public static class VectorJsonWriter
         }
         else
         {
-            WriteNumberArray(writer, vector.Span);
+            WriteNumberArray(writer, vector.AsReadOnlySpan());
         }
 
         writer.WriteEndObject();
@@ -116,7 +116,7 @@ public static class VectorJsonWriter
         }
         else
         {
-            WriteNumberArray(writer, vector.Span);
+            WriteNumberArray(writer, vector.AsReadOnlySpan());
         }
 
         writer.WriteEndObject();

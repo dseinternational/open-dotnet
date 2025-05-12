@@ -28,6 +28,8 @@ public abstract class Series : ISeries
 
     public IDictionary<string, Variant>? Annotations { get; }
 
+    IReadOnlyVector IReadOnlySeries.Data => Data;
+
     IReadOnlyDictionary<string, Variant>? IReadOnlySeries.Annotations => Annotations?.AsReadOnly();
 
     internal abstract Vector GetData();

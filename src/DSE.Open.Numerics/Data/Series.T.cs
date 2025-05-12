@@ -40,7 +40,7 @@ public sealed class Series<T>
     public Series(
         string? name,
         Vector<T> data,
-        IDictionary<Variant, T>? annotations)
+        IDictionary<string, Variant>? annotations)
         : base(name, data, annotations)
     {
     }

@@ -21,7 +21,6 @@ namespace DSE.Open.Numerics;
 public class NumericVector<T>
     : Vector<T>,
       INumericVector<T>,
-      IReadOnlyNumericVector<T>,
       IAdditionOperators<NumericVector<T>, NumericVector<T>, NumericVector<T>>,
       IAdditionOperators<NumericVector<T>, T, NumericVector<T>>,
       ISubtractionOperators<NumericVector<T>, NumericVector<T>, NumericVector<T>>,
@@ -135,4 +134,3 @@ public class NumericVector<T>
         return vector is not null ? vector.Data : default;
     }
 }
-
