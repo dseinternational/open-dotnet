@@ -5,5 +5,7 @@ namespace DSE.Open.Numerics.Data;
 
 public interface IReadOnlyDataFrame : IReadOnlyList<Vector>
 {
+    Vector? this[string name] { get; }
+
     string? Name { get; }
 }

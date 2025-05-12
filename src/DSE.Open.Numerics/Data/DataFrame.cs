@@ -38,33 +38,7 @@ public class DataFrame : IDataFrame
         set => _columns[index] = value;
     }
 
-    public Vector? this[string name]
-    {
-        get => _columns.FirstOrDefault(s => s.Name == name);
-        set
-        {
-            var index = _columns.FindIndex(s => s.Name == name);
-
-            if (index >= 0)
-            {
-                if (value is not null)
-                {
-                    _columns[index] = value;
-                }
-                else
-                {
-                    _columns.RemoveAt(index);
-                }
-            }
-            else
-            {
-                if (value is not null)
-                {
-                    _columns.Add(value);
-                }
-            }
-        }
-    }
+    public Vector? this[string name] => _columns.FirstOrDefault(s => s.Name == name);
 
     public bool TryGetColumn(string name, out Vector? column)
     {
