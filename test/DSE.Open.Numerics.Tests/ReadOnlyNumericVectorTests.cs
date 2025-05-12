@@ -10,9 +10,9 @@ public sealed class ReadOnlyNumericVectorTests
     [Fact]
     public void Init()
     {
-        ReadOnlyVector<int> v1 = [1, 2, 3, 4, 5, 6];
+        ReadOnlySeries<int> v1 = [1, 2, 3, 4, 5, 6];
 
-        var v2 = ReadOnlyVector.Create([1, 2, 3, 4, 5, 6]);
+        var v2 = ReadOnlySeries.Create([1, 2, 3, 4, 5, 6]);
 
         Assert.Equal(6, v1.Length);
         Assert.Equal(6, v2.Length);
@@ -24,11 +24,11 @@ public sealed class ReadOnlyNumericVectorTests
     public void JsonRoundtrip()
     {
         // Arrange
-        var vector = ReadOnlyVector.Create([1, 2, 3, 4, 5, 6]);
+        var vector = ReadOnlySeries.Create([1, 2, 3, 4, 5, 6]);
 
         // Act
         var json = JsonSerializer.Serialize(vector);
-        var deserializedVector = JsonSerializer.Deserialize<ReadOnlyVector<int>>(json);
+        var deserializedVector = JsonSerializer.Deserialize<ReadOnlySeries<int>>(json);
 
         // Assert
         Assert.NotNull(deserializedVector);

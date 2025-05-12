@@ -3,7 +3,7 @@
 
 namespace DSE.Open.Numerics.Serialization;
 
-internal static class VectorJsonConstants
+internal static class SeriesJsonConstants
 {
     public const int MaximumSerializedLength = 100000;
 }

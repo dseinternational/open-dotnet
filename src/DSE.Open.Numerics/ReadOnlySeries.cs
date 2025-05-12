@@ -10,10 +10,10 @@ using DSE.Open.Numerics.Serialization;
 namespace DSE.Open.Numerics;
 
 [JsonConverter(typeof(ReadOnlyVectorJsonConverter))]
-public abstract class ReadOnlyVector : IReadOnlyVector
+public abstract class ReadOnlySeries : IReadOnlySeries
 {
-    protected ReadOnlyVector(
-        VectorDataType dataType,
+    protected ReadOnlySeries(
+        SeriesDataType dataType,
         Type itemType,
         int length)
     {
@@ -52,7 +52,7 @@ public abstract class ReadOnlyVector : IReadOnlyVector
     /// <summary>
     /// Gets the data type of the vector.
     /// </summary>
-    public VectorDataType DataType { get; }
+    public SeriesDataType DataType { get; }
 
     /// <summary>
     /// Creates a vector from the given data.
@@ -62,26 +62,26 @@ public abstract class ReadOnlyVector : IReadOnlyVector
     /// <returns></returns>
     [UnconditionalSuppressMessage("AOT", "IL3050:Calling members annotated with 'RequiresDynamicCodeAttribute' may break functionality when AOT compiling.",
         Justification = "Type T will not be trimmed and the use of Vector<> can be statically determined.")]
-    public static ReadOnlyVector<T> Create<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(T[] data)
+    public static ReadOnlySeries<T> Create<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(T[] data)
     {
         ArgumentNullException.ThrowIfNull(data);
 
         if (data.Length == 0)
         {
 #pragma warning disable IDE0301 // Simplify collection initialization
-            return ReadOnlyVector<T>.Empty;
+            return ReadOnlySeries<T>.Empty;
 #pragma warning restore IDE0301 // Simplify collection initialization
         }
 
-        return new ReadOnlyVector<T>(data);
+        return new ReadOnlySeries<T>(data);
     }
 
-    public static ReadOnlyVector<T> Create<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(ReadOnlySpan<T> data)
+    public static ReadOnlySeries<T> Create<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(ReadOnlySpan<T> data)
     {
         return Create(data.ToArray());
     }
 
-    public static ReadOnlyVector<T> Create<T>(int length, T scalar)
+    public static ReadOnlySeries<T> Create<T>(int length, T scalar)
         where T : struct, INumber<T>
     {
         var data = new T[length];
@@ -89,19 +89,19 @@ public abstract class ReadOnlyVector : IReadOnlyVector
         return new(data);
     }
 
-    public static ReadOnlyVector<T> Create<T>(int length)
+    public static ReadOnlySeries<T> Create<T>(int length)
         where T : struct, INumber<T>
     {
         return new(new T[length]);
     }
 
-    public static ReadOnlyVector<T> CreateZeroes<T>(int length)
+    public static ReadOnlySeries<T> CreateZeroes<T>(int length)
         where T : struct, INumber<T>
     {
         return Create(length, T.Zero);
     }
 
-    public static ReadOnlyVector<T> CreateOnes<T>(int length)
+    public static ReadOnlySeries<T> CreateOnes<T>(int length)
         where T : struct, INumber<T>
     {
         return Create(length, T.One);

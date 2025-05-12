@@ -1,4 +1,4 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Diagnostics;
@@ -7,30 +7,30 @@ using System.Text.Json.Serialization;
 
 namespace DSE.Open.Numerics.Serialization;
 
-public sealed class ReadOnlyVectorJsonConverter : JsonConverter<IReadOnlyVector>
+public sealed class ReadOnlyVectorJsonConverter : JsonConverter<IReadOnlySeries>
 {
     public static ReadOnlyVectorJsonConverter Default { get; } = new();
 
-    private readonly VectorJsonConverter _inner;
+    private readonly SeriesJsonConverter _inner;
 
     public ReadOnlyVectorJsonConverter() : this(default)
     {
     }
 
-    public ReadOnlyVectorJsonConverter(VectorJsonFormat format = default)
+    public ReadOnlyVectorJsonConverter(SeriesJsonFormat format = default)
     {
-        _inner = new VectorJsonConverter(format);
+        _inner = new SeriesJsonConverter(format);
     }
 
-    public VectorJsonFormat Format => _inner.Format;
+    public SeriesJsonFormat Format => _inner.Format;
 
     public override bool CanConvert(Type typeToConvert)
     {
         Debug.Assert(typeToConvert is not null);
-        return typeToConvert.IsAssignableTo(typeof(IReadOnlyVector));
+        return typeToConvert.IsAssignableTo(typeof(IReadOnlySeries));
     }
 
-    public override IReadOnlyVector Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public override IReadOnlySeries Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         Debug.Assert(typeToConvert is not null);
 
@@ -44,7 +44,7 @@ public sealed class ReadOnlyVectorJsonConverter : JsonConverter<IReadOnlyVector>
         return vector.AsReadOnly();
     }
 
-    public override void Write(Utf8JsonWriter writer, IReadOnlyVector value, JsonSerializerOptions options)
+    public override void Write(Utf8JsonWriter writer, IReadOnlySeries value, JsonSerializerOptions options)
     {
         _inner.Write(writer, value, options);
     }

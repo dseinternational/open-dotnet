@@ -3,7 +3,7 @@
 
 namespace DSE.Open.Numerics.Serialization;
 
-public static class VectorJsonPropertyNames
+public static class SeriesJsonPropertyNames
 {
     public const string DataType = "dtype";
     public const string Length = "length";

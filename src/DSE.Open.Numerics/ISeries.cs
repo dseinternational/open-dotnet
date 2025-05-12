@@ -3,18 +3,18 @@
 
 namespace DSE.Open.Numerics;
 
-public interface IVector : IReadOnlyVector
+public interface ISeries : IReadOnlySeries
 {
     /// <summary>
     /// Gets a read-only view of the vector.
     /// </summary>
-    ReadOnlyVector AsReadOnly();
+    ReadOnlySeries AsReadOnly();
 }
 
-public interface IVector<T>
-    : IVector,
-      IReadOnlyVector<T>,
-      IEquatable<IVector<T>>
+public interface ISeries<T>
+    : ISeries,
+      IReadOnlySeries<T>,
+      IEquatable<ISeries<T>>
 {
     new Memory<T> Data { get; }
 
@@ -27,7 +27,7 @@ public interface IVector<T>
     /// <summary>
     /// Gets a read-only view of the vector.
     /// </summary>
-    new ReadOnlyVector<T> AsReadOnly();
+    new ReadOnlySeries<T> AsReadOnly();
 
     /// <summary>
     /// Gets a span over the contents of the vector.

@@ -9,7 +9,7 @@ namespace DSE.Open.Numerics;
 
 public static partial class VectorPrimitives
 {
-    public static T Min<T>([NotNull] IReadOnlyVector<T> vector)
+    public static T Min<T>([NotNull] IReadOnlySeries<T> vector)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(vector);

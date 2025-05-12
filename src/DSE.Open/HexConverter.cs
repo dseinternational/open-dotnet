@@ -73,7 +73,7 @@ internal static class HexConverter
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static void ToBytesBuffer(byte value, Span<byte> buffer, int startingIndex = 0, Casing casing = Casing.Upper)
     {
-        var difference = (((uint)value & 0xF0U) << 4) + ((uint)value & 0x0FU) - 0x8989U;
+        var difference = ((value & 0xF0U) << 4) + (value & 0x0FU) - 0x8989U;
         var packedResult = ((((uint)(-(int)difference) & 0x7070U) >> 4) + difference + 0xB9B9U) | (uint)casing;
 
         buffer[startingIndex + 1] = (byte)packedResult;
@@ -83,7 +83,7 @@ internal static class HexConverter
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static void ToCharsBuffer(byte value, Span<char> buffer, int startingIndex = 0, Casing casing = Casing.Upper)
     {
-        var difference = (((uint)value & 0xF0U) << 4) + ((uint)value & 0x0FU) - 0x8989U;
+        var difference = ((value & 0xF0U) << 4) + (value & 0x0FU) - 0x8989U;
         var packedResult = ((((uint)(-(int)difference) & 0x7070U) >> 4) + difference + 0xB9B9U) | (uint)casing;
 
         buffer[startingIndex + 1] = (char)(packedResult & 0xFF);

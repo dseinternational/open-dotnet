@@ -11,22 +11,22 @@ namespace DSE.Open.Numerics.Serialization;
 /// <summary>
 /// Writes a vector types to JSON.
 /// </summary>
-public static class VectorJsonWriter
+public static class SeriesJsonWriter
 {
-    public static void Write<T>(Utf8JsonWriter writer, IReadOnlyVector<T> vector, JsonSerializerOptions options)
+    public static void Write<T>(Utf8JsonWriter writer, IReadOnlySeries<T> vector, JsonSerializerOptions options)
     {
         ArgumentNullException.ThrowIfNull(writer);
         ArgumentNullException.ThrowIfNull(vector);
         JsonExceptionHelper.ThrowIfLengthExceedsSerializationLimit(vector.Length);
 
         writer.WriteStartObject();
-        writer.WriteString(VectorJsonPropertyNames.DataType, VectorDataTypeHelper.GetLabel(vector.DataType));
-        writer.WriteNumber(VectorJsonPropertyNames.Length, vector.Length);
-        writer.WritePropertyName(VectorJsonPropertyNames.Values);
+        writer.WriteString(SeriesJsonPropertyNames.DataType, VectorDataTypeHelper.GetLabel(vector.DataType));
+        writer.WriteNumber(SeriesJsonPropertyNames.Length, vector.Length);
+        writer.WritePropertyName(SeriesJsonPropertyNames.Values);
 
         if (vector.Categories.Count > 0)
         {
-            writer.WritePropertyName(VectorJsonPropertyNames.Categories);
+            writer.WritePropertyName(SeriesJsonPropertyNames.Categories);
 
             writer.WriteStartObject();
 
@@ -53,23 +53,23 @@ public static class VectorJsonWriter
             WriteNumberArray(writer, vector);
         }
 
-        if (vector is IReadOnlyVector<string> stringVector)
+        if (vector is IReadOnlySeries<string> stringVector)
         {
             WriteStringArray(writer, stringVector.AsReadOnlySpan());
         }
-        else if (vector is IReadOnlyVector<char> charVector)
+        else if (vector is IReadOnlySeries<char> charVector)
         {
             WriteCharArray(writer, charVector.AsReadOnlySpan());
         }
-        else if (vector is IReadOnlyVector<Guid> guidVector)
+        else if (vector is IReadOnlySeries<Guid> guidVector)
         {
             WriteGuidArray(writer, guidVector.AsReadOnlySpan());
         }
-        else if (vector is IReadOnlyVector<DateTime> dateTimeVector)
+        else if (vector is IReadOnlySeries<DateTime> dateTimeVector)
         {
             WriteDateTimeArray(writer, dateTimeVector.AsReadOnlySpan());
         }
-        else if (vector is IReadOnlyVector<DateTimeOffset> dateTimeOffsetVector)
+        else if (vector is IReadOnlySeries<DateTimeOffset> dateTimeOffsetVector)
         {
             WriteDateTimeOffsetArray(writer, dateTimeOffsetVector.AsReadOnlySpan());
         }
@@ -79,59 +79,59 @@ public static class VectorJsonWriter
         writer.WriteEndObject();
     }
 
-    private static void WriteNumberArray<T>(Utf8JsonWriter writer, IReadOnlyVector<T> vector)
+    private static void WriteNumberArray<T>(Utf8JsonWriter writer, IReadOnlySeries<T> vector)
     {
         if (typeof(T) == typeof(byte))
         {
-            WriteNumberSpan(writer, ((IReadOnlyVector<byte>)vector).AsReadOnlySpan());
+            WriteNumberSpan(writer, ((IReadOnlySeries<byte>)vector).AsReadOnlySpan());
         }
         else if (typeof(T) == typeof(sbyte))
         {
-            WriteNumberSpan(writer, ((IReadOnlyVector<sbyte>)vector).AsReadOnlySpan());
+            WriteNumberSpan(writer, ((IReadOnlySeries<sbyte>)vector).AsReadOnlySpan());
         }
         else if (typeof(T) == typeof(short))
         {
-            WriteNumberSpan(writer, ((IReadOnlyVector<short>)vector).AsReadOnlySpan());
+            WriteNumberSpan(writer, ((IReadOnlySeries<short>)vector).AsReadOnlySpan());
         }
         else if (typeof(T) == typeof(ushort))
         {
-            WriteNumberSpan(writer, ((IReadOnlyVector<ushort>)vector).AsReadOnlySpan());
+            WriteNumberSpan(writer, ((IReadOnlySeries<ushort>)vector).AsReadOnlySpan());
         }
         else if (typeof(T) == typeof(int))
         {
-            WriteNumberSpan(writer, ((IReadOnlyVector<int>)vector).AsReadOnlySpan());
+            WriteNumberSpan(writer, ((IReadOnlySeries<int>)vector).AsReadOnlySpan());
         }
         else if (typeof(T) == typeof(uint))
         {
-            WriteNumberSpan(writer, ((IReadOnlyVector<uint>)vector).AsReadOnlySpan());
+            WriteNumberSpan(writer, ((IReadOnlySeries<uint>)vector).AsReadOnlySpan());
         }
         else if (typeof(T) == typeof(long))
         {
-            WriteNumberSpan(writer, ((IReadOnlyVector<long>)vector).AsReadOnlySpan());
+            WriteNumberSpan(writer, ((IReadOnlySeries<long>)vector).AsReadOnlySpan());
         }
         else if (typeof(T) == typeof(ulong))
         {
-            WriteNumberSpan(writer, ((IReadOnlyVector<ulong>)vector).AsReadOnlySpan());
+            WriteNumberSpan(writer, ((IReadOnlySeries<ulong>)vector).AsReadOnlySpan());
         }
         else if (typeof(T) == typeof(float))
         {
-            WriteNumberSpan(writer, ((IReadOnlyVector<float>)vector).AsReadOnlySpan());
+            WriteNumberSpan(writer, ((IReadOnlySeries<float>)vector).AsReadOnlySpan());
         }
         else if (typeof(T) == typeof(double))
         {
-            WriteNumberSpan(writer, ((IReadOnlyVector<double>)vector).AsReadOnlySpan());
+            WriteNumberSpan(writer, ((IReadOnlySeries<double>)vector).AsReadOnlySpan());
         }
         else if (typeof(T) == typeof(decimal))
         {
-            WriteNumberSpan(writer, ((IReadOnlyVector<decimal>)vector).AsReadOnlySpan());
+            WriteNumberSpan(writer, ((IReadOnlySeries<decimal>)vector).AsReadOnlySpan());
         }
         else if (typeof(T) == typeof(Half))
         {
-            WriteNumberSpan(writer, ((IReadOnlyVector<Half>)vector).AsReadOnlySpan());
+            WriteNumberSpan(writer, ((IReadOnlySeries<Half>)vector).AsReadOnlySpan());
         }
         else if (typeof(T) == typeof(BigInteger))
         {
-            WriteNumberSpan(writer, ((IReadOnlyVector<BigInteger>)vector).AsReadOnlySpan());
+            WriteNumberSpan(writer, ((IReadOnlySeries<BigInteger>)vector).AsReadOnlySpan());
         }
         else
         {

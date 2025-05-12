@@ -3,7 +3,6 @@
 
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
-using DSE.Open.Numerics.Data;
 
 namespace DSE.Open.Numerics;
 

@@ -3,19 +3,19 @@
 
 namespace DSE.Open.Numerics;
 
-public interface IReadOnlyVector
+public interface IReadOnlySeries
 {
     int Length { get; }
 
     bool IsNumeric { get; }
 
-    VectorDataType DataType { get; }
+    SeriesDataType DataType { get; }
 }
 
-public interface IReadOnlyVector<T>
-    : IReadOnlyVector,
+public interface IReadOnlySeries<T>
+    : IReadOnlySeries,
       IReadOnlyList<T>,
-      IEquatable<IReadOnlyVector<T>>
+      IEquatable<IReadOnlySeries<T>>
 {
     IReadOnlyDictionary<string, T> Categories { get; }
 
@@ -29,7 +29,7 @@ public interface IReadOnlyVector<T>
     ReadOnlySpan<T> Slice(int start, int length);
 
     /// <summary>
-    /// Copies the elements of the <see cref="IReadOnlyVector{T}"/> to a new array.
+    /// Copies the elements of the <see cref="IReadOnlySeries{T}"/> to a new array.
     /// </summary>
     /// <returns></returns>
     T[] ToArray();

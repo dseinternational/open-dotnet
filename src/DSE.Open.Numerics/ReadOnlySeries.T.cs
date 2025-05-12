@@ -15,16 +15,16 @@ namespace DSE.Open.Numerics;
 /// with value equality semantics.
 /// </summary>
 /// <typeparam name="T"></typeparam>
-[CollectionBuilder(typeof(ReadOnlyVector), nameof(Create))]
-[JsonConverter(typeof(VectorJsonConverter))]
-public class ReadOnlyVector<T> : ReadOnlyVector, IReadOnlyVector<T>
+[CollectionBuilder(typeof(ReadOnlySeries), nameof(Create))]
+[JsonConverter(typeof(SeriesJsonConverter))]
+public class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
 {
-    public static readonly ReadOnlyVector<T> Empty = new([]);
+    public static readonly ReadOnlySeries<T> Empty = new(default);
 
-    internal readonly T[] _data;
+    internal readonly ReadOnlyMemory<T> _data;
 
-    internal ReadOnlyVector(
-        T[] data,
+    internal ReadOnlySeries(
+        ReadOnlyMemory<T> data,
         IReadOnlyDictionary<string, T>? categories = null)
         : base(VectorDataTypeHelper.GetVectorDataType<T>(), typeof(T), data.Length)
     {
@@ -43,18 +43,18 @@ public class ReadOnlyVector<T> : ReadOnlyVector, IReadOnlyVector<T>
     public T this[int index]
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => _data[index];
+        get => _data.Span[index];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ReadOnlySpan<T> AsReadOnlySpan()
     {
-        return _data;
+        return _data.Span;
     }
 
     public override bool Equals(object? obj)
     {
-        return obj is Vector<T> vector && Equals(vector);
+        return obj is Series<T> vector && Equals(vector);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -70,12 +70,12 @@ public class ReadOnlyVector<T> : ReadOnlyVector, IReadOnlyVector<T>
         return hash.ToHashCode();
     }
 
-    public bool Equals(ReadOnlyVector<T>? other)
+    public bool Equals(ReadOnlySeries<T>? other)
     {
         return other is not null && Equals(other.AsReadOnlySpan());
     }
 
-    public bool Equals(IReadOnlyVector<T>? other)
+    public bool Equals(IReadOnlySeries<T>? other)
     {
         return other is not null && Equals(other.AsReadOnlySpan());
     }
@@ -90,9 +90,15 @@ public class ReadOnlyVector<T> : ReadOnlyVector, IReadOnlyVector<T>
         return [.. _data];
     }
 
-    public IEnumerator<T> GetEnumerator()
+    public ReadOnlyMemoryEnumerator<T> GetEnumerator()
     {
-        return ((IEnumerable<T>)_data).GetEnumerator();
+        return _data.GetEnumerator();
+    }
+
+    IEnumerator<T> IEnumerable<T>.GetEnumerator()
+    {
+        // TODO
+        throw new NotImplementedException();
     }
 
     IEnumerator IEnumerable.GetEnumerator()
@@ -106,12 +112,12 @@ public class ReadOnlyVector<T> : ReadOnlyVector, IReadOnlyVector<T>
         return AsReadOnlySpan().Slice(start, length);
     }
 
-    public static bool operator ==(ReadOnlyVector<T>? left, ReadOnlyVector<T>? right)
+    public static bool operator ==(ReadOnlySeries<T>? left, ReadOnlySeries<T>? right)
     {
         return left is not null && (right is null || left.Equals(right));
     }
 
-    public static bool operator !=(ReadOnlyVector<T>? left, ReadOnlyVector<T>? right)
+    public static bool operator !=(ReadOnlySeries<T>? left, ReadOnlySeries<T>? right)
     {
         return !(left == right);
     }
@@ -119,7 +125,7 @@ public class ReadOnlyVector<T> : ReadOnlyVector, IReadOnlyVector<T>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",
         Justification = "By design")]
-    public static implicit operator ReadOnlyVector<T>(T[] vector)
+    public static implicit operator ReadOnlySeries<T>(T[] vector)
     {
         ArgumentNullException.ThrowIfNull(vector);
         return new(vector);
@@ -128,7 +134,7 @@ public class ReadOnlyVector<T> : ReadOnlyVector, IReadOnlyVector<T>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",
         Justification = "By design")]
-    public static implicit operator ReadOnlyMemory<T>(ReadOnlyVector<T> vector)
+    public static implicit operator ReadOnlyMemory<T>(ReadOnlySeries<T> vector)
     {
         return vector is not null ? vector._data : default;
     }

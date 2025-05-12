@@ -2,7 +2,6 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Numerics;
-using DSE.Open.Numerics.Data;
 
 namespace DSE.Open.Numerics;
 
@@ -13,7 +12,7 @@ public static partial class VectorPrimitives
     /// </summary>
     /// <param name="vector">The vector to calculate the mean of.</param>
     /// <typeparam name="T">The type of the elements in the vector.</typeparam>
-    public static T Mean<T>(Vector<T> vector)
+    public static T Mean<T>(Series<T> vector)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(vector);

@@ -107,8 +107,11 @@ public readonly record struct Variant : ISpanFormattable
         }
         else
         {
-            var text = Text is not null ? (ReadOnlySpan<char>)Text
-                : (ReadOnlySpan<char>)(Boolean is not null ? Boolean.Value ? TrueString : FalseString : NullString);
+            var text = Text is not null
+                ? Text
+                : (ReadOnlySpan<char>)(Boolean is not null
+                    ? Boolean.Value ? TrueString
+                    : FalseString : NullString);
 
             if (text.TryCopyTo(destination))
             {

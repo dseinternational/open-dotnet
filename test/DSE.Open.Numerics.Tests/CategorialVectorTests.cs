@@ -22,7 +22,7 @@ public partial class CategorialVectorTests : LoggedTestsBase
     [Fact]
     public void Init()
     {
-        var vector = Vector.CreateCategorical(
+        var vector = Series.CreateCategorical(
             [1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6],
             [
                 KeyValuePair.Create("one", 1),
@@ -42,7 +42,7 @@ public partial class CategorialVectorTests : LoggedTestsBase
     [Fact]
     public void SerializeDeserialize()
     {
-        var vector = Vector.CreateCategorical(
+        var vector = Series.CreateCategorical(
             [1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6],
             [
                 KeyValuePair.Create("one", 1),
@@ -74,7 +74,7 @@ public partial class CategorialVectorTests : LoggedTestsBase
     public void AsReadOnly_ShouldReturnReadOnlyCategoricalVector()
     {
         // Arrange
-        var vector = Vector.CreateCategorical([1, 1, 2, 3, 2],
+        var vector = Series.CreateCategorical([1, 1, 2, 3, 2],
         [
             KeyValuePair.Create("one", 1),
             KeyValuePair.Create("two", 2),

@@ -13,7 +13,7 @@ public partial class VectorTests : LoggedTestsBase
     private static void TestCreate<T>(T[] elements)
         where T : notnull
     {
-        var vector = Vector.Create(elements);
+        var vector = Series.Create(elements);
 
         Assert.NotNull(vector);
         Assert.Equal(elements.Length, vector.Length);
@@ -23,7 +23,7 @@ public partial class VectorTests : LoggedTestsBase
     private static void TestCreateNumeric<T>(T[] elements)
         where T : struct, INumber<T>
     {
-        var vector = Vector.Create(elements);
+        var vector = Series.Create(elements);
 
         Assert.NotNull(vector);
         Assert.Equal(elements.Length, vector.Length);
@@ -33,13 +33,13 @@ public partial class VectorTests : LoggedTestsBase
     private static void TestSerializeDeserializeNumeric<T>(T[] elements, JsonSerializerOptions serializerOptions)
         where T : struct, INumber<T>
     {
-        var vector = Vector.Create(elements);
+        var vector = Series.Create(elements);
 
         var json = JsonSerializer.Serialize(vector, serializerOptions);
 
         Assert.NotNull(json);
 
-        var deserialized = JsonSerializer.Deserialize<Vector<T>>(json, serializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Series<T>>(json, serializerOptions);
 
         Assert.NotNull(deserialized);
         Assert.Equivalent(vector, deserialized);
@@ -108,16 +108,16 @@ public partial class VectorTests : LoggedTestsBase
     [Fact]
     public void CreateWithKnownNumericTypeReturnsVectorInt32()
     {
-        var vector = Vector.Create([1, 2, 3, 4, 5]);
-        var numVector = Assert.IsType<Vector<int>>(vector);
+        var vector = Series.Create([1, 2, 3, 4, 5]);
+        var numVector = Assert.IsType<Series<int>>(vector);
         Assert.NotNull(numVector);
     }
 
     [Fact]
     public void CreateWithKnownNumericTypeReturnsVectorDouble()
     {
-        var vector = Vector.Create([1.0, 2.84685, -0.000083, 4, 5]);
-        var numVector = Assert.IsType<Vector<double>>(vector);
+        var vector = Series.Create([1.0, 2.84685, -0.000083, 4, 5]);
+        var numVector = Assert.IsType<Series<double>>(vector);
         Assert.NotNull(numVector);
     }
 }
