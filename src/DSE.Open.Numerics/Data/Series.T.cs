@@ -9,7 +9,7 @@ namespace DSE.Open.Numerics.Data;
 
 [JsonConverter(typeof(SeriesJsonConverter))]
 public abstract class Series<T, TVector> : Series, ISeries<T, TVector>
-    where TVector : Vector<T>
+    where TVector : IVector<T>
 {
     protected internal Series(string? name, TVector data, IDictionary<string, Variant>? annotations)
         : base(name, data, annotations)

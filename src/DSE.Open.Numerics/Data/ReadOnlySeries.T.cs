@@ -8,7 +8,7 @@ namespace DSE.Open.Numerics.Data;
 
 [JsonConverter(typeof(SeriesJsonConverter))]
 public abstract class ReadOnlySeries<T, TVector> : ReadOnlySeries, IReadOnlySeries<T, TVector>
-    where TVector : ReadOnlyVector<T>
+    where TVector : IReadOnlyVector<T>
 {
     protected internal ReadOnlySeries(string? name, TVector data, IReadOnlyDictionary<string, Variant>? annotations)
         : base(name, data, annotations)

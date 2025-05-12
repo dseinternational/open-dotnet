@@ -21,4 +21,3 @@ public interface IReadOnlySeries<T, TVector> : IReadOnlySeries
 
     ReadOnlySpan<T> Slice(int start, int length);
 }
-
