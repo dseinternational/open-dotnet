@@ -115,4 +115,14 @@ public sealed class CategoricalVector<T> : Vector<T>, ICategoricalVector<T>, IRe
 
         return builder.ToImmutable();
     }
+
+    public new ReadOnlyCategoricalVector<T> AsReadOnly()
+    {
+        return new ReadOnlyCategoricalVector<T>(Data, CategoryData);
+    }
+
+    protected override ReadOnlyVector CreateReadOnly()
+    {
+        return AsReadOnly();
+    }
 }

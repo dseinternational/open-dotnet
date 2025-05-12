@@ -87,4 +87,17 @@ public partial class NumericVectorTests
         Assert.Equal(6, v2.Length);
         Assert.True(v2.AsSpan().SequenceEqual([0, 0, 0, 0, 0, 0]));
     }
+
+    [Fact]
+    public void AsReadOnly_ShouldReturnReadOnlyNumericVector()
+    {
+        // Arrange
+        var vector = Vector.CreateNumeric([1, 2, 3, 4, 5]);
+
+        // Act
+        var readOnlyVector = vector.AsReadOnly();
+
+        // Assert
+        Assert.IsType<ReadOnlyNumericVector<int>>(readOnlyVector);
+    }
 }

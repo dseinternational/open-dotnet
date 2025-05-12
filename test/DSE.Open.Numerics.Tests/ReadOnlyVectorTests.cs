@@ -8,13 +8,13 @@ using DSE.Open.Testing.Xunit;
 
 namespace DSE.Open.Numerics;
 
-public class ReadOnlyVectorTests : LoggedTestsBase
+public sealed class ReadOnlyVectorTests : LoggedTestsBase
 {
     public ReadOnlyVectorTests(ITestOutputHelper output) : base(output)
     {
     }
 
-    private void TestCreate<T>(T[] elements)
+    private static void TestCreate<T>(T[] elements)
         where T : notnull
     {
         var vector = Vector.Create(elements).AsReadOnly();
@@ -24,7 +24,7 @@ public class ReadOnlyVectorTests : LoggedTestsBase
         Assert.Equivalent(elements, vector.ToArray());
     }
 
-    private void TestCreateNumeric<T>(T[] elements)
+    private static void TestCreateNumeric<T>(T[] elements)
         where T : struct, INumber<T>
     {
         var vector = Vector.CreateNumeric(elements).AsReadOnly();
@@ -46,6 +46,23 @@ public class ReadOnlyVectorTests : LoggedTestsBase
         Output.WriteLine(json);
 
         var deserialized = JsonSerializer.Deserialize<NumericVector<T>>(json, serializerOptions);
+
+        Assert.NotNull(deserialized);
+        Assert.Equivalent(vector, deserialized);
+    }
+
+    private void TestSerializeDeserializeReadOnlyNumeric<T>(T[] elements, JsonSerializerOptions serializerOptions)
+        where T : struct, INumber<T>
+    {
+        var vector = Vector.CreateNumeric(elements).AsReadOnly();
+
+        var json = JsonSerializer.Serialize(vector, serializerOptions);
+
+        Assert.NotNull(json);
+
+        Output.WriteLine(json);
+
+        var deserialized = JsonSerializer.Deserialize<ReadOnlyNumericVector<T>>(json, serializerOptions);
 
         Assert.NotNull(deserialized);
         Assert.Equivalent(vector, deserialized);
@@ -90,9 +107,25 @@ public class ReadOnlyVectorTests : LoggedTestsBase
     }
 
     [Fact]
+    public void SerializeDeserializeReflectedFloatReadOnly()
+    {
+        TestSerializeDeserializeReadOnlyNumeric(
+            [0.496f, 1.235f, 200.8469874f, -4682.169845f, 981635.123548715f],
+            NumericsJsonSharedOptions.Reflected);
+    }
+
+    [Fact]
     public void SerializeDeserializeSourceGeneratedFloat()
     {
         TestSerializeDeserializeNumeric(
+            [0.496f, 1.235f, 200.8469874f, -4682.169845f, 981635.123548715f],
+            NumericsJsonSharedOptions.SourceGenerated);
+    }
+
+    [Fact]
+    public void SerializeDeserializeSourceGeneratedFloatReadOnly()
+    {
+        TestSerializeDeserializeReadOnlyNumeric(
             [0.496f, 1.235f, 200.8469874f, -4682.169845f, 981635.123548715f],
             NumericsJsonSharedOptions.SourceGenerated);
     }

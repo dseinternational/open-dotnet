@@ -1,9 +1,11 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Text.Json;
+
 namespace DSE.Open.Numerics;
 
-public class ReadOnlyNumericVectorTests
+public sealed class ReadOnlyNumericVectorTests
 {
     [Fact]
     public void Init()
@@ -16,5 +18,20 @@ public class ReadOnlyNumericVectorTests
         Assert.Equal(6, v2.Length);
 
         Assert.True(v1.AsReadOnlySpan().SequenceEqual(v2.AsReadOnlySpan()));
+    }
+
+    [Fact]
+    public void JsonRoundtrip()
+    {
+        // Arrange
+        var vector = ReadOnlyVector.Create([1, 2, 3, 4, 5, 6]);
+
+        // Act
+        var json = JsonSerializer.Serialize(vector);
+        var deserializedVector = JsonSerializer.Deserialize<ReadOnlyNumericVector<int>>(json);
+
+        // Assert
+        Assert.NotNull(deserializedVector);
+        Assert.True(vector.SequenceEqual(deserializedVector));
     }
 }

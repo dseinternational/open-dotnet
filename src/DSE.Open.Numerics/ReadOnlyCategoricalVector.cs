@@ -9,12 +9,12 @@ using DSE.Open.Numerics.Serialization;
 namespace DSE.Open.Numerics;
 
 /// <summary>
-/// An ordered list of numbers, representing catagorical variables, stored in a contiguous
+/// An ordered list of numbers, representing categorical variables, stored in a contiguous
 /// block of memory, together with a set of string labels. The numbers must be integers and
 /// the labels must be strings. There should be a label for each unique integer value.
 /// </summary>
 /// <typeparam name="T"></typeparam>
-[JsonConverter(typeof(VectorJsonConverter))]
+[JsonConverter(typeof(ReadOnlyVectorJsonConverter))]
 public sealed class ReadOnlyCategoricalVector<T> : ReadOnlyVector<T>
     where T : struct,
               IComparable<T>,

@@ -41,6 +41,16 @@ public class NumericVector<T>
     {
     }
 
+    public new ReadOnlyNumericVector<T> AsReadOnly()
+    {
+        return new ReadOnlyNumericVector<T>(Data);
+    }
+
+    protected override ReadOnlyVector CreateReadOnly()
+    {
+        return AsReadOnly();
+    }
+
     public NumericVector<T> Add(IReadOnlyNumericVector<T> vector)
     {
         var destination = CreateNumeric<T>(Length);

@@ -19,7 +19,7 @@ namespace DSE.Open.Numerics;
 /// Implements value equality.
 /// </remarks>
 [CollectionBuilder(typeof(ReadOnlyVector), nameof(CreateNumeric))]
-[JsonConverter(typeof(VectorJsonConverter))]
+[JsonConverter(typeof(ReadOnlyVectorJsonConverter))]
 public class ReadOnlyNumericVector<T> : ReadOnlyVector<T>, IReadOnlyNumericVector<T>
     where T : struct, INumber<T>
 {

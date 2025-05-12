@@ -5,6 +5,10 @@ namespace DSE.Open.Numerics;
 
 public interface IVector : IReadOnlyVector
 {
+    /// <summary>
+    /// Gets a read-only view of the vector.
+    /// </summary>
+    public ReadOnlyVector AsReadOnly();
 }
 
 public interface IVector<T>
@@ -15,6 +19,11 @@ public interface IVector<T>
     new T this[int index] { get; set; }
 
     bool IsReadOnly { get; }
+
+    /// <summary>
+    /// Gets a read-only view of the vector.
+    /// </summary>
+    public new ReadOnlyVector<T> AsReadOnly();
 
     /// <summary>
     /// Gets a span over the contents of the vector.

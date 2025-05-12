@@ -68,4 +68,24 @@ public partial class CategorialVectorTests : LoggedTestsBase
         Assert.Equal(6, deserialized.CategoryData.Length);
         Assert.True(deserialized.IsValid());
     }
+
+
+    [Fact]
+    public void AsReadOnly_ShouldReturnReadOnlyCategoricalVector()
+    {
+        // Arrange
+        var vector = Vector.CreateCategorical([1, 1, 2, 3, 2],
+        [
+            KeyValuePair.Create("one", 1),
+            KeyValuePair.Create("two", 2),
+            KeyValuePair.Create("three", 3),
+        ]);
+
+
+        // Act
+        var readOnlyVector = vector.AsReadOnly();
+
+        // Assert
+        Assert.IsType<ReadOnlyCategoricalVector<int>>(readOnlyVector);
+    }
 }
