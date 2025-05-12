@@ -8,7 +8,7 @@ using DSE.Open.Testing.Xunit;
 
 namespace DSE.Open.Numerics;
 
-public sealed class VectorTests : LoggedTestsBase
+public partial class VectorTests : LoggedTestsBase
 {
     private static void TestCreate<T>(T[] elements)
         where T : notnull
