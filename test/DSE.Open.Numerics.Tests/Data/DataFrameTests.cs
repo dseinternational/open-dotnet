@@ -20,8 +20,8 @@ public class DataFrameTests : LoggedTestsBase
         var series2 = Series.CreateNumeric("series2", [5, 4, 3, 2, 1]);
 
         var frame = new DataFrame();
-        frame.Columns.Add(series1);
-        frame.Columns.Add(series2);
+        frame._columns.Add(series1);
+        frame._columns.Add(series2);
 
         Assert.Same(series1, frame[0]);
         Assert.Same(series2, frame[1]);
@@ -34,8 +34,8 @@ public class DataFrameTests : LoggedTestsBase
         var series2 = Series.CreateNumeric("series2", [.. Enumerable.Range(0, 100)]);
 
         var frame = new DataFrame();
-        frame.Columns.Add(series1);
-        frame.Columns.Add(series2);
+        frame._columns.Add(series1);
+        frame._columns.Add(series2);
 
         var json = JsonSerializer.Serialize(frame, NumericsJsonSharedOptions.Reflected);
 
@@ -56,8 +56,8 @@ public class DataFrameTests : LoggedTestsBase
         var series2 = Series.CreateNumeric("series2", [.. Enumerable.Range(-77777, 50).Select(i => i / 333f), float.MinValue, float.MaxValue]);
 
         var frame = new DataFrame();
-        frame.Columns.Add(series1);
-        frame.Columns.Add(series2);
+        frame._columns.Add(series1);
+        frame._columns.Add(series2);
 
         var json = JsonSerializer.Serialize(frame, NumericsJsonSharedOptions.Reflected);
 
@@ -78,8 +78,8 @@ public class DataFrameTests : LoggedTestsBase
         var series2 = Series.CreateNumeric("series2", [.. Enumerable.Range(-7777777, 50).Select(i => i / 333.3), double.MinValue, double.MaxValue]);
 
         var frame = new DataFrame();
-        frame.Columns.Add(series1);
-        frame.Columns.Add(series2);
+        frame._columns.Add(series1);
+        frame._columns.Add(series2);
 
         var json = JsonSerializer.Serialize(frame, NumericsJsonSharedOptions.Reflected);
 
@@ -102,8 +102,8 @@ public class DataFrameTests : LoggedTestsBase
 
         var frame = new DataFrame();
 
-        frame.Columns.Add(series1);
-        frame.Columns.Add(series2);
+        frame._columns.Add(series1);
+        frame._columns.Add(series2);
 
         var json = JsonSerializer.Serialize(frame, NumericsJsonSharedOptions.Reflected);
 
@@ -128,10 +128,10 @@ public class DataFrameTests : LoggedTestsBase
 
         var frame = new DataFrame();
 
-        frame.Columns.Add(series1);
-        frame.Columns.Add(series2);
-        frame.Columns.Add(series3);
-        frame.Columns.Add(series4);
+        frame._columns.Add(series1);
+        frame._columns.Add(series2);
+        frame._columns.Add(series3);
+        frame._columns.Add(series4);
 
         var json = JsonSerializer.Serialize(frame, NumericsJsonSharedOptions.Reflected);
 
@@ -152,8 +152,8 @@ public class DataFrameTests : LoggedTestsBase
         var series2 = Series.CreateNumeric("series2", [5, 4, 3, 2, 1]);
 
         var frame = new DataFrame();
-        frame.Columns.Add(series1);
-        frame.Columns.Add(series2);
+        frame._columns.Add(series1);
+        frame._columns.Add(series2);
 
         var json = JsonSerializer.Serialize(frame, NumericsJsonSharedOptions.SourceGenerated);
 
@@ -174,8 +174,8 @@ public class DataFrameTests : LoggedTestsBase
         var series2 = Series.CreateNumeric("series2", [.. Enumerable.Range(-77777, 50).Select(i => i / 333f), float.MinValue, float.MaxValue]);
 
         var frame = new DataFrame();
-        frame.Columns.Add(series1);
-        frame.Columns.Add(series2);
+        frame._columns.Add(series1);
+        frame._columns.Add(series2);
 
         var json = JsonSerializer.Serialize(frame, NumericsJsonSharedOptions.SourceGenerated);
 
@@ -196,8 +196,8 @@ public class DataFrameTests : LoggedTestsBase
         var series2 = Series.CreateNumeric("series2", [.. Enumerable.Range(-7777777, 50).Select(i => i / 333.3), double.MinValue, double.MaxValue]);
 
         var frame = new DataFrame();
-        frame.Columns.Add(series1);
-        frame.Columns.Add(series2);
+        frame._columns.Add(series1);
+        frame._columns.Add(series2);
 
         var json = JsonSerializer.Serialize(frame, NumericsJsonSharedOptions.SourceGenerated);
 
@@ -220,8 +220,8 @@ public class DataFrameTests : LoggedTestsBase
 
         var frame = new DataFrame();
 
-        frame.Columns.Add(series1);
-        frame.Columns.Add(series2);
+        frame._columns.Add(series1);
+        frame._columns.Add(series2);
 
         var json = JsonSerializer.Serialize(frame, NumericsJsonSharedOptions.SourceGenerated);
 
@@ -246,10 +246,10 @@ public class DataFrameTests : LoggedTestsBase
 
         var frame = new DataFrame();
 
-        frame.Columns.Add(series1);
-        frame.Columns.Add(series2);
-        frame.Columns.Add(series3);
-        frame.Columns.Add(series4);
+        frame._columns.Add(series1);
+        frame._columns.Add(series2);
+        frame._columns.Add(series3);
+        frame._columns.Add(series4);
 
         var json = JsonSerializer.Serialize(frame, NumericsJsonSharedOptions.SourceGenerated);
 
