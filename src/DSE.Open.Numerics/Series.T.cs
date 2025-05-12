@@ -23,25 +23,25 @@ public sealed class Series<T> : Series, ISeries<T>, IReadOnlySeries<T>
 {
     public static readonly Series<T> Empty = new(default);
 
-    private readonly Memory<T> _data;
+    private readonly Memory<T> _vector;
     private readonly Memory<KeyValuePair<string, T>> _categories;
     private IDictionary<string, T>? _categoriesLookup;
 
     public Series(
-        Memory<T> data,
+        Memory<T> vector,
         string? name = null,
         Memory<Variant> labels = default,
         Memory<KeyValuePair<string, T>> categories = default)
-        : base(VectorDataTypeHelper.GetVectorDataType<T>(), typeof(T), data.Length, name, labels)
+        : base(VectorDataTypeHelper.GetVectorDataType<T>(), typeof(T), vector.Length, name, labels)
     {
-        _data = data;
+        _vector = vector;
         _categories = categories;
         // TODO: check if categories are valid
     }
 
-    public Memory<T> Data => _data;
+    public Memory<T> Vector => _vector;
 
-    ReadOnlyMemory<T> IReadOnlySeries<T>.Data => _data;
+    ReadOnlyMemory<T> IReadOnlySeries<T>.Vector => _vector;
 
 #pragma warning disable CA1033 // Interface methods should be callable by child types
     int IReadOnlyCollection<T>.Count => Length;
@@ -50,9 +50,9 @@ public sealed class Series<T> : Series, ISeries<T>, IReadOnlySeries<T>
     public T this[int index]
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => _data.Span[index];
+        get => _vector.Span[index];
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        set => _data.Span[index] = value;
+        set => _vector.Span[index] = value;
     }
 
     public bool IsReadOnly { get; private set; }
@@ -83,7 +83,7 @@ public sealed class Series<T> : Series, ISeries<T>, IReadOnlySeries<T>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Span<T> AsSpan()
     {
-        return _data.Span;
+        return _vector.Span;
     }
 
 #pragma warning disable CA1033 // Interface methods should be callable by child types
@@ -113,7 +113,7 @@ public sealed class Series<T> : Series, ISeries<T>, IReadOnlySeries<T>
 
     public new ReadOnlySeries<T> AsReadOnly()
     {
-        return new ReadOnlySeries<T>(_data);
+        return new ReadOnlySeries<T>(_vector);
     }
 
     protected override ReadOnlySeries CreateReadOnly()
@@ -143,12 +143,12 @@ public sealed class Series<T> : Series, ISeries<T>, IReadOnlySeries<T>
 
     public T[] ToArray()
     {
-        return [.. _data];
+        return [.. _vector];
     }
 
     public MemoryEnumerator<T> GetEnumerator()
     {
-        return _data.GetEnumerator();
+        return _vector.GetEnumerator();
     }
 
     IEnumerator<T> IEnumerable<T>.GetEnumerator()
@@ -202,7 +202,7 @@ public sealed class Series<T> : Series, ISeries<T>, IReadOnlySeries<T>
         Justification = "By design")]
     public static implicit operator Memory<T>(Series<T>? vector)
     {
-        return vector is not null ? vector._data : default;
+        return vector is not null ? vector._vector : default;
     }
 
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",

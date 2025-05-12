@@ -16,7 +16,7 @@ public interface ISeries<T>
       IReadOnlySeries<T>,
       IEquatable<ISeries<T>>
 {
-    new Memory<T> Data { get; }
+    new Memory<T> Vector { get; }
 
     new T this[int index] { get; set; }
 

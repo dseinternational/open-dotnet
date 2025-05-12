@@ -19,7 +19,7 @@ public interface IReadOnlySeries<T>
 {
     IReadOnlyDictionary<string, T> Categories { get; }
 
-    ReadOnlyMemory<T> Data { get; }
+    ReadOnlyMemory<T> Vector { get; }
 
     /// <summary>
     /// Gets a span over the contents of the vector.

@@ -17,24 +17,26 @@ namespace DSE.Open.Numerics;
 /// <typeparam name="T"></typeparam>
 [CollectionBuilder(typeof(ReadOnlySeries), nameof(Create))]
 [JsonConverter(typeof(SeriesJsonConverter))]
-public class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
+public sealed class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
 {
     public static readonly ReadOnlySeries<T> Empty = new(default);
 
-    internal readonly ReadOnlyMemory<T> _data;
+    private readonly ReadOnlyMemory<T> _vector;
+    private readonly Memory<KeyValuePair<string, T>> _categories;
+    private IReadOnlyDictionary<string, T>? _categoriesLookup;
 
-    internal ReadOnlySeries(
-        ReadOnlyMemory<T> data,
-        IReadOnlyDictionary<string, T>? categories = null)
-        : base(VectorDataTypeHelper.GetVectorDataType<T>(), typeof(T), data.Length)
+    public ReadOnlySeries(
+        ReadOnlyMemory<T> vector,
+        string? name = null,
+        Memory<Variant> labels = default,
+        Memory<KeyValuePair<string, T>> categories = default)
+        : base(VectorDataTypeHelper.GetVectorDataType<T>(), typeof(T), vector.Length, name, labels)
     {
-        _data = data;
-        Categories = categories ?? new Dictionary<string, T>();
+        _vector = vector;
+        _categories = categories;
     }
 
-    public ReadOnlyMemory<T> Data => _data;
-
-    public IReadOnlyDictionary<string, T> Categories { get; }
+    public ReadOnlyMemory<T> Vector => _vector;
 
 #pragma warning disable CA1033 // Interface methods should be callable by child types
     int IReadOnlyCollection<T>.Count => Length;
@@ -43,13 +45,34 @@ public class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
     public T this[int index]
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => _data.Span[index];
+        get => _vector.Span[index];
+    }
+
+    public IReadOnlyDictionary<string, T> Categories
+    {
+        get
+        {
+            if (_categoriesLookup is null)
+            {
+                var categoriesLookup = new Dictionary<string, T>(_categories.Span.Length);
+
+                foreach (var kvp in _categories.Span)
+                {
+                    categoriesLookup[kvp.Key] = kvp.Value;
+                }
+
+                _categoriesLookup = categoriesLookup;
+            }
+
+            return _categoriesLookup;
+
+        }
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ReadOnlySpan<T> AsReadOnlySpan()
     {
-        return _data.Span;
+        return _vector.Span;
     }
 
     public override bool Equals(object? obj)
@@ -87,12 +110,12 @@ public class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
 
     public T[] ToArray()
     {
-        return [.. _data];
+        return [.. _vector];
     }
 
     public ReadOnlyMemoryEnumerator<T> GetEnumerator()
     {
-        return _data.GetEnumerator();
+        return _vector.GetEnumerator();
     }
 
     IEnumerator<T> IEnumerable<T>.GetEnumerator()
@@ -136,6 +159,6 @@ public class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
         Justification = "By design")]
     public static implicit operator ReadOnlyMemory<T>(ReadOnlySeries<T> vector)
     {
-        return vector is not null ? vector._data : default;
+        return vector is not null ? vector._vector : default;
     }
 }

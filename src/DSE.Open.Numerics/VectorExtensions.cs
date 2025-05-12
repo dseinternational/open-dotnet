@@ -13,7 +13,7 @@ public static partial class VectorExtensions
         where T : IEquatable<T>
     {
         ArgumentNullException.ThrowIfNull(vector);
-        return vector.Data.Span.IndexOf(value);
+        return vector.Vector.Span.IndexOf(value);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -21,7 +21,7 @@ public static partial class VectorExtensions
         where T : IEquatable<T>
     {
         ArgumentNullException.ThrowIfNull(vector);
-        return vector.Data.Span.IndexOf(value);
+        return vector.Vector.Span.IndexOf(value);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -29,6 +29,6 @@ public static partial class VectorExtensions
         where T : IEquatable<T>
     {
         ArgumentNullException.ThrowIfNull(vector);
-        return vector.Data.Span.LastIndexOf(value);
+        return vector.Vector.Span.LastIndexOf(value);
     }
 }

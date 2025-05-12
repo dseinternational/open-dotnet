@@ -15,7 +15,9 @@ public abstract class ReadOnlySeries : IReadOnlySeries
     protected ReadOnlySeries(
         SeriesDataType dataType,
         Type itemType,
-        int length)
+        int length,
+        string? name = null,
+        ReadOnlyMemory<Variant> labels = default)
     {
         ArgumentNullException.ThrowIfNull(itemType);
 
@@ -35,7 +37,7 @@ public abstract class ReadOnlySeries : IReadOnlySeries
     }
 
     /// <summary>
-    /// Gets the number of items in the vector.
+    /// Gets the number of items in the series.
     /// </summary>
     public int Length { get; }
 
@@ -45,38 +47,54 @@ public abstract class ReadOnlySeries : IReadOnlySeries
     public bool IsNumeric { get; }
 
     /// <summary>
-    /// Gets the type of the items in the vector.
+    /// Gets the type of the items in the series.
     /// </summary>
     public Type ItemType { get; }
 
     /// <summary>
-    /// Gets the data type of the vector.
+    /// Gets the data type of the series.
     /// </summary>
     public SeriesDataType DataType { get; }
 
     /// <summary>
-    /// Creates a vector from the given data.
+    /// Creates a series from the given data.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    /// <param name="data"></param>
+    /// <param name="vector"></param>
     /// <returns></returns>
-    [UnconditionalSuppressMessage("AOT", "IL3050:Calling members annotated with 'RequiresDynamicCodeAttribute' may break functionality when AOT compiling.",
-        Justification = "Type T will not be trimmed and the use of Vector<> can be statically determined.")]
-    public static ReadOnlySeries<T> Create<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(T[] data)
+    public static ReadOnlySeries<T> Create<T>(ReadOnlyMemory<T> vector)
     {
-        ArgumentNullException.ThrowIfNull(data);
-
-        if (data.Length == 0)
+        if (vector.Length == 0)
         {
 #pragma warning disable IDE0301 // Simplify collection initialization
             return ReadOnlySeries<T>.Empty;
 #pragma warning restore IDE0301 // Simplify collection initialization
         }
 
-        return new ReadOnlySeries<T>(data);
+        return new ReadOnlySeries<T>(vector);
     }
 
-    public static ReadOnlySeries<T> Create<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(ReadOnlySpan<T> data)
+    /// <summary>
+    /// Creates a series from the given data.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="array"></param>
+    /// <returns></returns>
+    public static ReadOnlySeries<T> Create<T>(T[] array)
+    {
+        ArgumentNullException.ThrowIfNull(array);
+
+        if (array.Length == 0)
+        {
+#pragma warning disable IDE0301 // Simplify collection initialization
+            return ReadOnlySeries<T>.Empty;
+#pragma warning restore IDE0301 // Simplify collection initialization
+        }
+
+        return new ReadOnlySeries<T>(array);
+    }
+
+    public static ReadOnlySeries<T> Create<T>(ReadOnlySpan<T> data)
     {
         return Create(data.ToArray());
     }
