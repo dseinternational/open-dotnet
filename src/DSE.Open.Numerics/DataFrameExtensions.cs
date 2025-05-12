@@ -3,7 +3,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-namespace DSE.Open.Numerics.Data;
+namespace DSE.Open.Numerics;
 
 public static class DataFrameExtensions
 {

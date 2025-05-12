@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 using DSE.Open.Collections.Generic;
 using DSE.Open.Numerics.Serialization;
 
-namespace DSE.Open.Numerics.Data;
+namespace DSE.Open.Numerics;
 
 [JsonConverter(typeof(ReadOnlyDataSetJsonConverter))]
 public class ReadOnlyDataSet : IReadOnlyDataSet
