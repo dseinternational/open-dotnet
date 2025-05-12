@@ -90,4 +90,3 @@ public static partial class VectorExtensions
     }
     */
 }
-

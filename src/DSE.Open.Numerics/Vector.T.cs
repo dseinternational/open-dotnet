@@ -4,6 +4,7 @@
 using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Numerics.Tensors;
 using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 using DSE.Open.Numerics.Serialization;
@@ -173,5 +174,22 @@ public class Vector<T> : Vector, IVector<T>, IReadOnlyVector<T>
     public static implicit operator ReadOnlyVector<T>(Vector<T> vector)
     {
         return vector is not null ? vector.AsReadOnly() : [];
+    }
+
+#pragma warning disable SYSLIB5001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+
+    public Tensor<T> AsTensor()
+    {
+        return Tensor.Create(_data, [_data.Length]);
+    }
+
+    public Tensor<T> AsTensor(scoped ReadOnlySpan<nint> lengths)
+    {
+        return Tensor.Create(_data, lengths);
+    }
+
+    public Tensor<T> AsTensor(scoped ReadOnlySpan<nint> lengths, scoped ReadOnlySpan<nint> strides)
+    {
+        return Tensor.Create(_data, lengths, strides);
     }
 }
