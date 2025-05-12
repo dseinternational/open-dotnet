@@ -8,13 +8,13 @@ using DSE.Open.Text.Json.Serialization;
 
 namespace DSE.Open.Numerics.Serialization;
 
-public class SeriesJsonConverter : JsonConverter<Series>
+public class VectorJsonConverter : JsonConverter<Vector>
 {
-    public SeriesJsonConverter() : this(VectorJsonFormat.Default)
+    public VectorJsonConverter() : this(VectorJsonFormat.Default)
     {
     }
 
-    public SeriesJsonConverter(VectorJsonFormat vectorFormat)
+    public VectorJsonConverter(VectorJsonFormat vectorFormat)
     {
         VectorFormat = vectorFormat;
     }
@@ -24,10 +24,10 @@ public class SeriesJsonConverter : JsonConverter<Series>
     public override bool CanConvert(Type typeToConvert)
     {
         ArgumentNullException.ThrowIfNull(typeToConvert);
-        return typeToConvert.IsAssignableTo(typeof(Series));
+        return typeToConvert.IsAssignableTo(typeof(Vector));
     }
 
-    public override Series? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public override Vector? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         if (reader.TokenType != JsonTokenType.StartObject)
         {
@@ -49,12 +49,12 @@ public class SeriesJsonConverter : JsonConverter<Series>
             {
                 var propertyName = reader.GetString();
 
-                if (propertyName == SeriesJsonPropertyNames.Name)
+                if (propertyName == VectorJsonPropertyNames.Name)
                 {
                     _ = reader.Read();
                     name = reader.GetString();
                 }
-                else if (propertyName == SeriesJsonPropertyNames.Annotations)
+                else if (propertyName == VectorJsonPropertyNames.Annotations)
                 {
                     annotations = [];
 
@@ -83,7 +83,7 @@ public class SeriesJsonConverter : JsonConverter<Series>
                         }
                     }
                 }
-                else if (propertyName == SeriesJsonPropertyNames.Data)
+                else if (propertyName == VectorJsonPropertyNames.Data)
                 {
                     _ = reader.Read();
                     data = VectorJsonConverter.Default.Read(ref reader, typeof(Vector), options);
@@ -96,10 +96,10 @@ public class SeriesJsonConverter : JsonConverter<Series>
             throw new JsonException("Data must be specified");
         }
 
-        return Series.Create(name, data, annotations);
+        return Vector.Create(name, data, annotations);
     }
 
-    public override void Write(Utf8JsonWriter writer, Series value, JsonSerializerOptions options)
+    public override void Write(Utf8JsonWriter writer, Vector value, JsonSerializerOptions options)
     {
         ArgumentNullException.ThrowIfNull(writer);
         ArgumentNullException.ThrowIfNull(value);
@@ -108,12 +108,12 @@ public class SeriesJsonConverter : JsonConverter<Series>
 
         if (value.Name is not null)
         {
-            writer.WriteString(SeriesJsonPropertyNames.Name, value.Name);
+            writer.WriteString(VectorJsonPropertyNames.Name, value.Name);
         }
 
         if (value.Annotations is not null && value.Annotations.Count > 0)
         {
-            writer.WriteStartObject(SeriesJsonPropertyNames.Annotations);
+            writer.WriteStartObject(VectorJsonPropertyNames.Annotations);
 
             foreach (var (key, annotation) in value.Annotations)
             {
@@ -124,7 +124,7 @@ public class SeriesJsonConverter : JsonConverter<Series>
             writer.WriteEndObject();
         }
 
-        writer.WritePropertyName(SeriesJsonPropertyNames.Data);
+        writer.WritePropertyName(VectorJsonPropertyNames.Data);
 
         VectorJsonConverter.Default.Write(writer, value.Data, options);
 

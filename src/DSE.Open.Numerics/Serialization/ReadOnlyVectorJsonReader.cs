@@ -12,7 +12,7 @@ namespace DSE.Open.Numerics.Serialization;
 
 public static class ReadOnlyVectorJsonReader
 {
-    public static ReadOnlyNumericVector<T> ReadNumericVector<T>(
+    public static ReadOnlyVector<T> ReadVector<T>(
         ref Utf8JsonReader reader,
         int length,
         VectorJsonFormat format = default)
@@ -21,7 +21,7 @@ public static class ReadOnlyVectorJsonReader
         if (length == 0)
         {
 #pragma warning disable IDE0301 // Simplify collection initialization
-            return ReadOnlyNumericVector<T>.Empty;
+            return ReadOnlyVector<T>.Empty;
 #pragma warning restore IDE0301 // Simplify collection initialization
         }
 

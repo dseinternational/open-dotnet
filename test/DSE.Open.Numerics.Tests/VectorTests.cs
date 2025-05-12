@@ -45,7 +45,7 @@ public class VectorTests : LoggedTestsBase
 
         Output.WriteLine(json);
 
-        var deserialized = JsonSerializer.Deserialize<NumericVector<T>>(json, serializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Vector<T>>(json, serializerOptions);
 
         Assert.NotNull(deserialized);
         Assert.Equivalent(vector, deserialized);
@@ -112,18 +112,18 @@ public class VectorTests : LoggedTestsBase
     }
 
     [Fact]
-    public void CreateWithKnownNumericTypeReturnsNumericVectorInt32()
+    public void CreateWithKnownNumericTypeReturnsVectorInt32()
     {
         var vector = Vector.Create([1, 2, 3, 4, 5]);
-        var numVector = Assert.IsType<NumericVector<int>>(vector);
+        var numVector = Assert.IsType<Vector<int>>(vector);
         Assert.NotNull(numVector);
     }
 
     [Fact]
-    public void CreateWithKnownNumericTypeReturnsNumericVectorDouble()
+    public void CreateWithKnownNumericTypeReturnsVectorDouble()
     {
         var vector = Vector.Create([1.0, 2.84685, -0.000083, 4, 5]);
-        var numVector = Assert.IsType<NumericVector<double>>(vector);
+        var numVector = Assert.IsType<Vector<double>>(vector);
         Assert.NotNull(numVector);
     }
 }

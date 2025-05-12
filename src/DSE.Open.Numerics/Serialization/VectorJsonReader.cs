@@ -12,7 +12,7 @@ namespace DSE.Open.Numerics.Serialization;
 
 public static class VectorJsonReader
 {
-    public static NumericVector<T> ReadNumericVector<T>(
+    public static Vector<T> ReadVector<T>(
         ref Utf8JsonReader reader,
         int length,
         VectorJsonFormat format = default)
@@ -21,7 +21,7 @@ public static class VectorJsonReader
         if (length == 0)
         {
 #pragma warning disable IDE0301 // Simplify collection initialization
-            return NumericVector<T>.Empty;
+            return Vector<T>.Empty;
 #pragma warning restore IDE0301 // Simplify collection initialization
         }
 
@@ -39,48 +39,6 @@ public static class VectorJsonReader
                 }
 
                 return Vector.CreateNumeric(builder.ToMemory());
-            }
-
-            if (reader.TokenType == JsonTokenType.Number)
-            {
-                if (reader.TryGetNumber(out T number))
-                {
-                    builder.Add(number);
-                }
-            }
-        }
-
-        throw new JsonException();
-    }
-
-    public static CategoricalVector<T> ReadCategoryVector<T>(
-        ref Utf8JsonReader reader,
-        int length,
-        Memory<KeyValuePair<string, T>> categories,
-        VectorJsonFormat format = default)
-        where T : struct, IComparable<T>, IEquatable<T>, IBinaryInteger<T>, IMinMaxValue<T>
-    {
-        if (length == 0)
-        {
-#pragma warning disable IDE0301 // Simplify collection initialization
-            return CategoricalVector<T>.Empty;
-#pragma warning restore IDE0301 // Simplify collection initialization
-        }
-
-        using var builder = length > -1
-            ? new ArrayBuilder<T>(length, rentFromPool: false)
-            : new ArrayBuilder<T>(rentFromPool: true);
-
-        while (reader.Read())
-        {
-            if (reader.TokenType == JsonTokenType.EndArray)
-            {
-                if (length > -1 && builder.Count != length)
-                {
-                    throw new JsonException();
-                }
-
-                return new CategoricalVector<T>(builder.ToMemory(), categories);
             }
 
             if (reader.TokenType == JsonTokenType.Number)

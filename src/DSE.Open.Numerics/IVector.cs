@@ -8,7 +8,7 @@ public interface IVector : IReadOnlyVector
     /// <summary>
     /// Gets a read-only view of the vector.
     /// </summary>
-    public ReadOnlyVector AsReadOnly();
+    ReadOnlyVector AsReadOnly();
 }
 
 public interface IVector<T>
@@ -20,17 +20,17 @@ public interface IVector<T>
 
     bool IsReadOnly { get; }
 
+    new IDictionary<string, T> Categories { get; }
+
     /// <summary>
     /// Gets a read-only view of the vector.
     /// </summary>
-    public new ReadOnlyVector<T> AsReadOnly();
+    new ReadOnlyVector<T> AsReadOnly();
 
     /// <summary>
     /// Gets a span over the contents of the vector.
     /// </summary>
     Span<T> AsSpan();
-
-    new MemoryEnumerator<T> GetEnumerator();
 
     new Span<T> Slice(int start, int length);
 }

@@ -5,7 +5,6 @@ using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using DSE.Open.Numerics.Serialization;
 
@@ -20,19 +19,17 @@ namespace DSE.Open.Numerics;
 [JsonConverter(typeof(VectorJsonConverter))]
 public class Vector<T> : Vector, IVector<T>, IReadOnlyVector<T>
 {
-    public static readonly Vector<T> Empty = new([]);
+    public static readonly Vector<T> Empty = new([], null, null);
 
-    internal Vector(T[] data) : this(new Memory<T>(data))
-    {
-    }
+    internal readonly T[] _data;
 
-    internal Vector(T[] data, int start, int length) : this(new Memory<T>(data, start, length))
+    internal Vector(
+        T[] data,
+        string? name = null,
+        IReadOnlyDictionary<string, Variant>? annotations = null)
+        : base(VectorDataTypeHelper.GetVectorDataType<T>(), typeof(T), data.Length, name, annotations)
     {
-    }
-
-    internal Vector(Memory<T> data) : base(VectorDataTypeHelper.GetVectorDataType<T>(), typeof(T), data.Length)
-    {
-        Data = data;
+        _data = data;
     }
 
 #pragma warning disable CA1033 // Interface methods should be callable by child types
@@ -42,12 +39,10 @@ public class Vector<T> : Vector, IVector<T>, IReadOnlyVector<T>
     public T this[int index]
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => Data.Span[index];
+        get => _data[index];
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        set => Data.Span[index] = value;
+        set => _data[index] = value;
     }
-
-    public Memory<T> Data { get; }
 
     /// <summary>
     /// Gets a span over the contents of the vector.
@@ -55,7 +50,7 @@ public class Vector<T> : Vector, IVector<T>, IReadOnlyVector<T>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Span<T> AsSpan()
     {
-        return Data.Span;
+        return _data;
     }
 
 #pragma warning disable CA1033 // Interface methods should be callable by child types
@@ -67,21 +62,9 @@ public class Vector<T> : Vector, IVector<T>, IReadOnlyVector<T>
 
     public bool IsReadOnly { get; private set; }
 
-    ReadOnlyMemory<T> IReadOnlyVector<T>.Data => Data;
-
     public override bool Equals(object? obj)
     {
         return obj is Vector<T> vector && Equals(vector);
-    }
-
-    public MemoryEnumerator<T> GetEnumerator()
-    {
-        return Data.GetEnumerator();
-    }
-
-    ReadOnlyMemoryEnumerator<T> IReadOnlyVector<T>.GetEnumerator()
-    {
-        return ((ReadOnlyMemory<T>)Data).GetEnumerator();
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -129,12 +112,12 @@ public class Vector<T> : Vector, IVector<T>, IReadOnlyVector<T>
 
     public T[] ToArray()
     {
-        return Data.ToArray();
+        return [.. _data];
     }
 
-    IEnumerator<T> IEnumerable<T>.GetEnumerator()
+    public IEnumerator<T> GetEnumerator()
     {
-        return MemoryMarshal.ToEnumerable<T>(Data).GetEnumerator();
+        return ((IReadOnlyCollection<T>)_data).GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()
@@ -174,13 +157,7 @@ public class Vector<T> : Vector, IVector<T>, IReadOnlyVector<T>
         Justification = "By design")]
     public static implicit operator Vector<T>(T[] vector)
     {
-        return new(vector);
-    }
-
-    [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",
-        Justification = "By design")]
-    public static implicit operator Vector<T>(Memory<T> vector)
-    {
+        ArgumentNullException.ThrowIfNull(vector);
         return new(vector);
     }
 
@@ -188,7 +165,7 @@ public class Vector<T> : Vector, IVector<T>, IReadOnlyVector<T>
         Justification = "By design")]
     public static implicit operator Memory<T>(Vector<T> vector)
     {
-        return vector is not null ? vector.Data : default;
+        return vector is not null ? vector._data : default;
     }
 
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",

@@ -8,7 +8,7 @@ namespace DSE.Open.Numerics;
 
 public static partial class VectorPrimitives
 {
-    public static T Mean<T>(NumericVector<T> vector)
+    public static T Mean<T>(Vector<T> vector)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(vector);

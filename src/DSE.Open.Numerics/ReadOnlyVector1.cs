@@ -5,7 +5,6 @@ using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using DSE.Open.Numerics.Serialization;
 
@@ -22,17 +21,11 @@ public class ReadOnlyVector<T> : ReadOnlyVector, IReadOnlyVector<T>
 {
     public static readonly ReadOnlyVector<T> Empty = new([]);
 
-    internal ReadOnlyVector(T[] data) : this(new ReadOnlyMemory<T>(data))
-    {
-    }
+    internal readonly T[] _data;
 
-    internal ReadOnlyVector(T[] data, int start, int length) : this(new ReadOnlyMemory<T>(data, start, length))
+    internal ReadOnlyVector(T[] data) : base(VectorDataTypeHelper.GetVectorDataType<T>(), typeof(T), data.Length)
     {
-    }
-
-    internal ReadOnlyVector(ReadOnlyMemory<T> data) : base(VectorDataTypeHelper.GetVectorDataType<T>(), typeof(T), data.Length)
-    {
-        Data = data;
+        _data = data;
     }
 
 #pragma warning disable CA1033 // Interface methods should be callable by child types
@@ -42,27 +35,18 @@ public class ReadOnlyVector<T> : ReadOnlyVector, IReadOnlyVector<T>
     public T this[int index]
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => Data.Span[index];
+        get => _data[index];
     }
-
-    protected ReadOnlyMemory<T> Data { get; }
-
-    ReadOnlyMemory<T> IReadOnlyVector<T>.Data => Data;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ReadOnlySpan<T> AsReadOnlySpan()
     {
-        return Data.Span;
+        return _data;
     }
 
     public override bool Equals(object? obj)
     {
         return obj is Vector<T> vector && Equals(vector);
-    }
-
-    public ReadOnlyMemoryEnumerator<T> GetEnumerator()
-    {
-        return Data.GetEnumerator();
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -95,12 +79,12 @@ public class ReadOnlyVector<T> : ReadOnlyVector, IReadOnlyVector<T>
 
     public T[] ToArray()
     {
-        return Data.ToArray();
+        return [.. _data];
     }
 
-    IEnumerator<T> IEnumerable<T>.GetEnumerator()
+    public IEnumerator<T> GetEnumerator()
     {
-        return MemoryMarshal.ToEnumerable(Data).GetEnumerator();
+        return ((IEnumerable<T>)_data).GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()
@@ -129,14 +113,7 @@ public class ReadOnlyVector<T> : ReadOnlyVector, IReadOnlyVector<T>
         Justification = "By design")]
     public static implicit operator ReadOnlyVector<T>(T[] vector)
     {
-        return new(vector);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",
-        Justification = "By design")]
-    public static implicit operator ReadOnlyVector<T>(ReadOnlyMemory<T> vector)
-    {
+        ArgumentNullException.ThrowIfNull(vector);
         return new(vector);
     }
 
@@ -145,6 +122,6 @@ public class ReadOnlyVector<T> : ReadOnlyVector, IReadOnlyVector<T>
         Justification = "By design")]
     public static implicit operator ReadOnlyMemory<T>(ReadOnlyVector<T> vector)
     {
-        return vector is not null ? vector.Data : default;
+        return vector is not null ? vector._data : default;
     }
 }

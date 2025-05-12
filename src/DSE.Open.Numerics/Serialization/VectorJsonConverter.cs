@@ -117,19 +117,19 @@ public class VectorJsonConverter : JsonConverter<IReadOnlyVector>
                     {
                         vector = dtype switch
                         {
-                            VectorDataType.Float64 => VectorJsonReader.ReadNumericVector<double>(ref reader, length, Format),
-                            VectorDataType.Float32 => VectorJsonReader.ReadNumericVector<float>(ref reader, length, Format),
-                            VectorDataType.Int64 => VectorJsonReader.ReadNumericVector<long>(ref reader, length, Format),
-                            VectorDataType.UInt64 => VectorJsonReader.ReadNumericVector<ulong>(ref reader, length, Format),
-                            VectorDataType.Int32 => VectorJsonReader.ReadNumericVector<int>(ref reader, length, Format),
-                            VectorDataType.UInt32 => VectorJsonReader.ReadNumericVector<uint>(ref reader, length, Format),
-                            VectorDataType.Int16 => VectorJsonReader.ReadNumericVector<short>(ref reader, length, Format),
-                            VectorDataType.UInt16 => VectorJsonReader.ReadNumericVector<ushort>(ref reader, length, Format),
-                            VectorDataType.Int8 => VectorJsonReader.ReadNumericVector<sbyte>(ref reader, length, Format),
-                            VectorDataType.UInt8 => VectorJsonReader.ReadNumericVector<byte>(ref reader, length, Format),
-                            VectorDataType.Int128 => VectorJsonReader.ReadNumericVector<Int128>(ref reader, length, Format),
-                            VectorDataType.UInt128 => VectorJsonReader.ReadNumericVector<UInt128>(ref reader, length, Format),
-                            VectorDataType.DateTime64 => VectorJsonReader.ReadNumericVector<DateTime64>(ref reader, length, Format),
+                            VectorDataType.Float64 => VectorJsonReader.ReadVector<double>(ref reader, length, Format),
+                            VectorDataType.Float32 => VectorJsonReader.ReadVector<float>(ref reader, length, Format),
+                            VectorDataType.Int64 => VectorJsonReader.ReadVector<long>(ref reader, length, Format),
+                            VectorDataType.UInt64 => VectorJsonReader.ReadVector<ulong>(ref reader, length, Format),
+                            VectorDataType.Int32 => VectorJsonReader.ReadVector<int>(ref reader, length, Format),
+                            VectorDataType.UInt32 => VectorJsonReader.ReadVector<uint>(ref reader, length, Format),
+                            VectorDataType.Int16 => VectorJsonReader.ReadVector<short>(ref reader, length, Format),
+                            VectorDataType.UInt16 => VectorJsonReader.ReadVector<ushort>(ref reader, length, Format),
+                            VectorDataType.Int8 => VectorJsonReader.ReadVector<sbyte>(ref reader, length, Format),
+                            VectorDataType.UInt8 => VectorJsonReader.ReadVector<byte>(ref reader, length, Format),
+                            VectorDataType.Int128 => VectorJsonReader.ReadVector<Int128>(ref reader, length, Format),
+                            VectorDataType.UInt128 => VectorJsonReader.ReadVector<UInt128>(ref reader, length, Format),
+                            VectorDataType.DateTime64 => VectorJsonReader.ReadVector<DateTime64>(ref reader, length, Format),
                             VectorDataType.DateTime => ReadVector<DateTime>(ref reader, length),
                             VectorDataType.DateTimeOffset => ReadVector<DateTimeOffset>(ref reader, length),
                             VectorDataType.Uuid => ReadVector<Guid>(ref reader, length),
@@ -297,79 +297,79 @@ public class VectorJsonConverter : JsonConverter<IReadOnlyVector>
         ArgumentNullException.ThrowIfNull(writer);
         ArgumentNullException.ThrowIfNull(value);
 
-        if (value is IReadOnlyNumericVector<int> intVector)
+        if (value is IReadOnlyVector<int> intVector)
         {
             VectorJsonWriter.Write(writer, intVector, options);
             return;
         }
 
-        if (value is IReadOnlyNumericVector<long> longVector)
+        if (value is IReadOnlyVector<long> longVector)
         {
             VectorJsonWriter.Write(writer, longVector, options);
             return;
         }
 
-        if (value is IReadOnlyNumericVector<float> floatVector)
+        if (value is IReadOnlyVector<float> floatVector)
         {
             VectorJsonWriter.Write(writer, floatVector, options);
             return;
         }
 
-        if (value is IReadOnlyNumericVector<double> doubleVector)
+        if (value is IReadOnlyVector<double> doubleVector)
         {
             VectorJsonWriter.Write(writer, doubleVector, options);
             return;
         }
 
-        if (value is IReadOnlyNumericVector<uint> uintVector)
+        if (value is IReadOnlyVector<uint> uintVector)
         {
             VectorJsonWriter.Write(writer, uintVector, options);
             return;
         }
 
-        if (value is IReadOnlyNumericVector<ulong> uuidVector)
+        if (value is IReadOnlyVector<ulong> uuidVector)
         {
             VectorJsonWriter.Write(writer, uuidVector, options);
             return;
         }
 
-        if (value is IReadOnlyNumericVector<DateTime64> dateTime64Vector)
+        if (value is IReadOnlyVector<DateTime64> dateTime64Vector)
         {
             VectorJsonWriter.Write(writer, dateTime64Vector, options);
             return;
         }
 
-        if (value is IReadOnlyNumericVector<short> shortVector)
+        if (value is IReadOnlyVector<short> shortVector)
         {
             VectorJsonWriter.Write(writer, shortVector, options);
             return;
         }
 
-        if (value is IReadOnlyNumericVector<ushort> ushortVector)
+        if (value is IReadOnlyVector<ushort> ushortVector)
         {
             VectorJsonWriter.Write(writer, ushortVector, options);
             return;
         }
 
-        if (value is IReadOnlyNumericVector<sbyte> sbyteVector)
+        if (value is IReadOnlyVector<sbyte> sbyteVector)
         {
             VectorJsonWriter.Write(writer, sbyteVector, options);
             return;
         }
 
-        if (value is IReadOnlyNumericVector<byte> byteVector)
+        if (value is IReadOnlyVector<byte> byteVector)
         {
             VectorJsonWriter.Write(writer, byteVector, options);
             return;
         }
 
-        if (value is IReadOnlyNumericVector<Int128> int128Vector)
+        if (value is IReadOnlyVector<Int128> int128Vector)
         {
             VectorJsonWriter.Write(writer, int128Vector, options);
             return;
         }
 
-        if (value is IReadOnlyNumericVector<UInt128> uint128Vector)
+        if (value is IReadOnlyVector<UInt128> uint128Vector)
         {
             VectorJsonWriter.Write(writer, uint128Vector, options);
             return;

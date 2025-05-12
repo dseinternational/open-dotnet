@@ -54,7 +54,7 @@ public static class VectorJsonWriter
         writer.WriteEndObject();
     }
 
-    public static void Write<T>(Utf8JsonWriter writer, IReadOnlyNumericVector<T> vector, JsonSerializerOptions options)
+    public static void Write<T>(Utf8JsonWriter writer, IReadOnlyVector<T> vector, JsonSerializerOptions options)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(writer);

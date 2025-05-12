@@ -10,7 +10,7 @@ public sealed class ReadOnlyNumericVectorTests
     [Fact]
     public void Init()
     {
-        ReadOnlyNumericVector<int> v1 = [1, 2, 3, 4, 5, 6];
+        ReadOnlyVector<int> v1 = [1, 2, 3, 4, 5, 6];
 
         var v2 = ReadOnlyVector.CreateNumeric([1, 2, 3, 4, 5, 6]);
 

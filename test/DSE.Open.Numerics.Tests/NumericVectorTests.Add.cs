@@ -3,7 +3,7 @@
 
 namespace DSE.Open.Numerics;
 
-public partial class NumericVectorTests
+public partial class VectorTests
 {
 
     [Fact]

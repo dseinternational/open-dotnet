@@ -5,11 +5,15 @@ namespace DSE.Open.Numerics;
 
 public interface IReadOnlyVector
 {
+    string? Name { get; }
+
     int Length { get; }
 
     bool IsNumeric { get; }
 
     VectorDataType DataType { get; }
+
+    IReadOnlyDictionary<string, Variant>? Annotations { get; }
 }
 
 public interface IReadOnlyVector<T>
@@ -17,17 +21,12 @@ public interface IReadOnlyVector<T>
       IReadOnlyList<T>,
       IEquatable<IReadOnlyVector<T>>
 {
+    IReadOnlyDictionary<string, T> Categories { get; }
+
     /// <summary>
     /// Gets a span over the contents of the vector.
     /// </summary>
     ReadOnlySpan<T> AsReadOnlySpan();
-
-    /// <summary>
-    /// Gets the underlying data.
-    /// </summary>
-    ReadOnlyMemory<T> Data { get; }
-
-    new ReadOnlyMemoryEnumerator<T> GetEnumerator();
 
     ReadOnlySpan<T> Slice(int start, int length);
 

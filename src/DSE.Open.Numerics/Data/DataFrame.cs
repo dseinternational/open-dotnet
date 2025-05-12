@@ -7,7 +7,7 @@ using DSE.Open.Collections.Generic;
 namespace DSE.Open.Numerics.Data;
 
 /// <summary>
-/// Stores related data as a collection of columns (<see cref="Series"/>).
+/// Stores related data as a collection of columns (<see cref="Vector"/>).
 /// </summary>
 public class DataFrame
 {
@@ -16,7 +16,7 @@ public class DataFrame
     }
 
     [JsonConstructor]
-    public DataFrame(Collection<Series> columns)
+    public DataFrame(Collection<Vector> columns)
     {
         ArgumentNullException.ThrowIfNull(columns);
         Columns = columns;
@@ -27,15 +27,15 @@ public class DataFrame
     public string? Name { get; }
 
     [JsonPropertyName("columns")]
-    public Collection<Series> Columns { get; }
+    public Collection<Vector> Columns { get; }
 
-    public Series this[int index]
+    public Vector this[int index]
     {
         get => Columns[index];
         set => Columns[index] = value;
     }
 
-    public Series? this[string name]
+    public Vector? this[string name]
     {
         get => Columns.FirstOrDefault(s => s.Name == name);
         set
@@ -63,15 +63,15 @@ public class DataFrame
         }
     }
 
-    public bool TryGetColumn(string name, out Series? column)
+    public bool TryGetColumn(string name, out Vector? column)
     {
         column = Columns.FirstOrDefault(s => s.Name == name);
         return column != null;
     }
 
-    public bool TryGetColumn<T>(string name, out Series<T>? column)
+    public bool TryGetColumn<T>(string name, out Vector<T>? column)
     {
-        column = Columns.OfType<Series<T>>().FirstOrDefault(s => s.Name == name);
+        column = Columns.OfType<Vector<T>>().FirstOrDefault(s => s.Name == name);
         return column != null;
     }
 }

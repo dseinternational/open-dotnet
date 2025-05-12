@@ -3,12 +3,12 @@
 
 namespace DSE.Open.Numerics;
 
-public partial class NumericVectorTests
+public partial class VectorTests
 {
     [Fact]
     public void Init()
     {
-        NumericVector<int> v1 = [1, 2, 3, 4, 5, 6];
+        Vector<int> v1 = [1, 2, 3, 4, 5, 6];
 
         var v2 = Vector.CreateNumeric([1, 2, 3, 4, 5, 6]);
 
