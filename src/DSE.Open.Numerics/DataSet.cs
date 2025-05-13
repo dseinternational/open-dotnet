@@ -16,6 +16,10 @@ public class DataSet : IList<DataFrame>
 {
     private readonly Collection<DataFrame> _dataFrames;
 
+    public DataSet(string? name = null) : this([], name)
+    {
+    }
+
     public DataSet(Collection<DataFrame> dataFrames, string? name = null)
     {
         ArgumentNullException.ThrowIfNull(dataFrames);

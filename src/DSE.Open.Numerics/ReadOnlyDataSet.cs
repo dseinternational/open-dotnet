@@ -13,7 +13,13 @@ namespace DSE.Open.Numerics;
 [CollectionBuilder(typeof(ReadOnlyDataSet), nameof(Create))]
 public class ReadOnlyDataSet : IReadOnlyList<ReadOnlyDataFrame>
 {
+    public static readonly ReadOnlyDataSet Empty = new();
+
     private readonly ReadOnlyCollection<ReadOnlyDataFrame> _dataFrames;
+
+    private ReadOnlyDataSet() : this([])
+    {
+    }
 
     public ReadOnlyDataSet(ReadOnlyCollection<ReadOnlyDataFrame> dataFrames, string? name = null)
     {

@@ -16,33 +16,22 @@ public class DataFrame : IDataFrame
     private readonly Collection<Vector> _columns;
     private readonly Collection<string> _columnNames;
 
-    public DataFrame() : this([])
+    public DataFrame(string? name = null, Collection<string>? columnNames = null) : this([], name, columnNames)
     {
     }
 
-    public DataFrame(Collection<Vector> columns, string? name = null, IEnumerable<string>? columnNames = null)
+    public DataFrame(Collection<Vector> columns, string? name = null, Collection<string>? columnNames = null)
     {
         ArgumentNullException.ThrowIfNull(columns);
 
+        if (columnNames is not null && columns.Count != columnNames.Count)
+        {
+            throw new ArgumentException("Columns and column names must have the same count.");
+        }
+
+        Name = name;
         _columns = columns;
-        _columnNames = columnNames is not null ? [.. columnNames] : new(columns.Count);
-    }
-
-    /// <summary>
-    /// A name for the data frame (optional).
-    /// </summary>
-    public string? Name { get; set; }
-
-    /// <summary>
-    /// Gets the number of columns in the data frame.
-    /// </summary>
-    public int Count => _columns.Count;
-
-    public bool IsReadOnly => false;
-
-    public ReadOnlyDataFrame AsReadOnly()
-    {
-        return new ReadOnlyDataFrame([.. _columns.Select(v => v.AsReadOnly())]);
+        _columnNames = columnNames is not null ? columnNames : new(columns.Count);
     }
 
     public Vector? this[string name]
@@ -80,6 +69,25 @@ public class DataFrame : IDataFrame
     {
         get => _columns[index];
         set => _columns[index] = value;
+    }
+
+    /// <summary>
+    /// A name for the data frame (optional).
+    /// </summary>
+    public string? Name { get; set; }
+
+    public IReadOnlyList<string> ColumnNames => _columnNames;
+
+    /// <summary>
+    /// Gets the number of columns in the data frame.
+    /// </summary>
+    public int Count => _columns.Count;
+
+    public bool IsReadOnly => false;
+
+    public ReadOnlyDataFrame AsReadOnly()
+    {
+        return new ReadOnlyDataFrame([.. _columns.Select(v => v.AsReadOnly())]);
     }
 
     public int IndexOf(Vector item)

@@ -25,34 +25,18 @@ public class ReadOnlyDataFrame : IReadOnlyList<ReadOnlyVector>
     {
     }
 
-    public ReadOnlyDataFrame(ReadOnlyCollection<ReadOnlyVector> columns)
+    public ReadOnlyDataFrame(ReadOnlyCollection<ReadOnlyVector> columns, string? name = null, ReadOnlyCollection<string>? columnNames = null)
     {
         ArgumentNullException.ThrowIfNull(columns);
 
-        _columns = columns;
-
-        var names = new string[columns.Count];
-
-        for (var i = 0; i < columns.Count; i++)
+        if (columnNames is not null && columns.Count != columnNames.Count)
         {
-            names[i] = i.ToStringInvariant();
+            throw new ArgumentException("Columns and column names must have the same count.");
         }
 
-        _columnNames = [.. names];
-    }
-
-    public ReadOnlyDataFrame(ReadOnlyCollection<ReadOnlyVector> columns, ReadOnlyCollection<string> columnNames)
-    {
-        ArgumentNullException.ThrowIfNull(columns);
-        ArgumentNullException.ThrowIfNull(columnNames);
-
-        if (columns.Count != columnNames.Count)
-        {
-            throw new ArgumentException("Vectors and column names must have the same count.");
-        }
-
+        Name = name;
         _columns = columns;
-        _columnNames = columnNames;
+        _columnNames = columnNames is not null ? columnNames : [];
     }
 
     public ReadOnlyVector this[int index] => _columns[index];
@@ -77,7 +61,7 @@ public class ReadOnlyDataFrame : IReadOnlyList<ReadOnlyVector>
     /// </summary>
     public string? Name { get; }
 
-    public IReadOnlyList<string> Columns => _columnNames;
+    public IReadOnlyList<string> ColumnNames => _columnNames;
 
     public int Count => _columns.Count;
 
