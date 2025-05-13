@@ -24,20 +24,10 @@ public sealed class ReadOnlyVectorTests : LoggedTestsBase
         Assert.Equivalent(elements, vector.ToArray());
     }
 
-    private static void TestCreateNumeric<T>(T[] elements)
-        where T : struct, INumber<T>
-    {
-        var vector = Vector.CreateNumeric(elements).AsReadOnly();
-
-        Assert.NotNull(vector);
-        Assert.Equal(elements.Length, vector.Length);
-        Assert.Equivalent(elements, vector.ToArray());
-    }
-
     private void TestSerializeDeserializeNumeric<T>(T[] elements, JsonSerializerOptions serializerOptions)
         where T : struct, INumber<T>
     {
-        var vector = Vector.CreateNumeric(elements).AsReadOnly();
+        var vector = Vector.Create(elements).AsReadOnly();
 
         var json = JsonSerializer.Serialize(vector, serializerOptions);
 
@@ -45,7 +35,7 @@ public sealed class ReadOnlyVectorTests : LoggedTestsBase
 
         Output.WriteLine(json);
 
-        var deserialized = JsonSerializer.Deserialize<NumericVector<T>>(json, serializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Vector<T>>(json, serializerOptions);
 
         Assert.NotNull(deserialized);
         Assert.Equivalent(vector, deserialized);
@@ -54,7 +44,7 @@ public sealed class ReadOnlyVectorTests : LoggedTestsBase
     private void TestSerializeDeserializeReadOnlyNumeric<T>(T[] elements, JsonSerializerOptions serializerOptions)
         where T : struct, INumber<T>
     {
-        var vector = Vector.CreateNumeric(elements).AsReadOnly();
+        var vector = Vector.Create(elements).AsReadOnly();
 
         var json = JsonSerializer.Serialize(vector, serializerOptions);
 
@@ -62,7 +52,7 @@ public sealed class ReadOnlyVectorTests : LoggedTestsBase
 
         Output.WriteLine(json);
 
-        var deserialized = JsonSerializer.Deserialize<ReadOnlyNumericVector<T>>(json, serializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ReadOnlyVector<T>>(json, serializerOptions);
 
         Assert.NotNull(deserialized);
         Assert.Equivalent(vector, deserialized);
@@ -81,21 +71,21 @@ public sealed class ReadOnlyVectorTests : LoggedTestsBase
     }
 
     [Fact]
-    public void CreateNumericInt32()
+    public void CreateInt32()
     {
-        TestCreateNumeric([0, 1, 2, 3, 4]);
+        TestCreate([0, 1, 2, 3, 4]);
     }
 
     [Fact]
-    public void CreateNumericFloat()
+    public void CreateFloat()
     {
-        TestCreateNumeric([0.496f, 1.235f, 200.8469874f, -4682.169845f, 981635.123548715f]);
+        TestCreate([0.496f, 1.235f, 200.8469874f, -4682.169845f, 981635.123548715f]);
     }
 
     [Fact]
-    public void CreateNumericDouble()
+    public void CreateDouble()
     {
-        TestCreateNumeric([0.496, 1.235, 200.8469874, -4682.169845, 981635.123548715]);
+        TestCreate([0.496, 1.235, 200.8469874, -4682.169845, 981635.123548715]);
     }
 
     [Fact]
@@ -145,18 +135,48 @@ public sealed class ReadOnlyVectorTests : LoggedTestsBase
     }
 
     [Fact]
-    public void CreateWithKnownNumericTypeReturnsNumericVectorInt32()
+    public void CreateWithKnownNumericTypeReturnsVectorInt32()
     {
         var vector = Vector.Create([1, 2, 3, 4, 5]);
-        var numVector = Assert.IsType<NumericVector<int>>(vector);
+        var numVector = Assert.IsType<Vector<int>>(vector);
         Assert.NotNull(numVector);
     }
 
     [Fact]
-    public void CreateWithKnownNumericTypeReturnsNumericVectorDouble()
+    public void CreateWithKnownNumericTypeReturnsVectorDouble()
     {
         var vector = Vector.Create([1.0, 2.84685, -0.000083, 4, 5]);
-        var numVector = Assert.IsType<NumericVector<double>>(vector);
+        var numVector = Assert.IsType<Vector<double>>(vector);
         Assert.NotNull(numVector);
+    }
+    [Fact]
+    public void Init()
+    {
+        ReadOnlyVector<int> v1 = [1, 2, 3, 4, 5, 6];
+
+        var v2 = ReadOnlyVector.Create([1, 2, 3, 4, 5, 6]);
+
+        Assert.Equal(6, v1.Length);
+        Assert.Equal(6, v2.Length);
+
+        Assert.True(v1.AsReadOnlySpan().SequenceEqual(v2.AsReadOnlySpan()));
+    }
+
+    [Fact]
+    public void JsonRoundtrip()
+    {
+        // Arrange
+        var vector = ReadOnlyVector.Create([1, 2, 3, 4, 5, 6]);
+
+        // Act
+        var json = JsonSerializer.Serialize(vector);
+
+        Output.WriteLine(json);
+
+        var deserializedVector = JsonSerializer.Deserialize<ReadOnlyVector<int>>(json);
+
+        // Assert
+        Assert.NotNull(deserializedVector);
+        Assert.True(vector.SequenceEqual(deserializedVector));
     }
 }

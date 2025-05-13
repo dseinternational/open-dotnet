@@ -9,4 +9,7 @@ public static class VectorJsonPropertyNames
     public const string Length = "length";
     public const string Values = "values";
     public const string Categories = "categories";
+    public const string Name = "name";
+    public const string Annotations = "annotations";
+    public const string Data = "data";
 }

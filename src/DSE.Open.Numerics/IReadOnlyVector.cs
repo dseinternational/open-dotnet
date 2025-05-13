@@ -3,6 +3,11 @@
 
 namespace DSE.Open.Numerics;
 
+/// <summary>
+/// A serializable, contiguous, fixed-length sequence of read-only values with value
+/// equality semantics. Optionally named, labelled or categorised for use with
+/// a <see cref="IReadOnlyDataFrame"/>.
+/// </summary>
 public interface IReadOnlyVector
 {
     int Length { get; }
@@ -12,28 +17,29 @@ public interface IReadOnlyVector
     VectorDataType DataType { get; }
 }
 
+/// <summary>
+/// A serializable, contiguous, fixed-length sequence of read-only values of data type <typeparamref name="T"/>
+/// with value equality semantics. Optionally named, labelled or categorised for use with
+/// a <see cref="IReadOnlyDataFrame"/>.
+/// </summary>
 public interface IReadOnlyVector<T>
     : IReadOnlyVector,
       IReadOnlyList<T>,
       IEquatable<IReadOnlyVector<T>>
 {
+    IReadOnlyDictionary<string, T> Categories { get; }
+
+    bool HasCategories { get; }
+
+    /// <summary>
+    /// Gets a read-only view of the vector.
+    /// </summary>
+    ReadOnlyMemory<T> Data { get; }
+
     /// <summary>
     /// Gets a span over the contents of the vector.
     /// </summary>
     ReadOnlySpan<T> AsReadOnlySpan();
 
-    /// <summary>
-    /// Gets the underlying data.
-    /// </summary>
-    ReadOnlyMemory<T> Data { get; }
-
-    new ReadOnlyMemoryEnumerator<T> GetEnumerator();
-
-    ReadOnlySpan<T> Slice(int start, int length);
-
-    /// <summary>
-    /// Copies the elements of the <see cref="IReadOnlyVector{T}"/> to a new array.
-    /// </summary>
-    /// <returns></returns>
-    T[] ToArray();
+    ReadOnlyMemory<T> Slice(int start, int length);
 }

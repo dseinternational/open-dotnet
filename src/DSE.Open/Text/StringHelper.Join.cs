@@ -30,7 +30,7 @@ public static partial class StringHelper
     public static string Join(string? separator, string? finalSeparator, IEnumerable<string?> values)
     {
         ArgumentNullException.ThrowIfNull(values);
-        return Join((ReadOnlySpan<char>)separator, (ReadOnlySpan<char>)finalSeparator, values);
+        return Join(separator, (ReadOnlySpan<char>)finalSeparator, values);
     }
 
     /// <summary>

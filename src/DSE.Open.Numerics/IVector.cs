@@ -3,34 +3,44 @@
 
 namespace DSE.Open.Numerics;
 
+/// <summary>
+/// A serializable, contiguous sequence of values of known length and data type with value equality semantics.
+/// Optionally named, labelled or categorised for use with a <see cref="DataFrame"/>.
+/// </summary>
 public interface IVector : IReadOnlyVector
 {
     /// <summary>
     /// Gets a read-only view of the vector.
     /// </summary>
-    public ReadOnlyVector AsReadOnly();
+    IReadOnlyVector AsReadOnly();
+
+    bool IsReadOnly { get; }
 }
 
+/// <summary>
+/// A serializable, contiguous sequence of values of known length and data type with value equality semantics.
+/// Optionally named, labelled or categorised for use with a <see cref="DataFrame"/>.
+/// </summary>
 public interface IVector<T>
     : IVector,
       IReadOnlyVector<T>,
       IEquatable<IVector<T>>
 {
+    new Memory<T> Data { get; }
+
     new T this[int index] { get; set; }
 
-    bool IsReadOnly { get; }
+    new IDictionary<string, T> Categories { get; }
 
     /// <summary>
     /// Gets a read-only view of the vector.
     /// </summary>
-    public new ReadOnlyVector<T> AsReadOnly();
+    new ReadOnlyVector<T> AsReadOnly();
 
     /// <summary>
     /// Gets a span over the contents of the vector.
     /// </summary>
     Span<T> AsSpan();
 
-    new MemoryEnumerator<T> GetEnumerator();
-
-    new Span<T> Slice(int start, int length);
+    new Memory<T> Slice(int start, int length);
 }

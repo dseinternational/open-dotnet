@@ -63,7 +63,7 @@ public readonly struct ReadOnlyNumericMatrix<T> : IEquatable<ReadOnlyNumericMatr
     public int ColumnCount => _data.Width;
 
     /// <summary>
-    /// Gets a <see cref="ReadOnlyNumericVector{T}"/> representing the specified row of the matrix.
+    /// Gets a <see cref="ReadOnlyVector{T}"/> representing the specified row of the matrix.
     /// </summary>
     /// <param name="row"></param>
     /// <returns></returns>

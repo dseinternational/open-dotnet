@@ -8,13 +8,13 @@ using DSE.Open.Testing.Xunit;
 
 namespace DSE.Open.Numerics;
 
-public class VectorTests : LoggedTestsBase
+public partial class VectorTests : LoggedTestsBase
 {
     public VectorTests(ITestOutputHelper output) : base(output)
     {
     }
 
-    private void TestCreate<T>(T[] elements)
+    private static void TestCreate<T>(T[] elements)
         where T : notnull
     {
         var vector = Vector.Create(elements);
@@ -24,28 +24,26 @@ public class VectorTests : LoggedTestsBase
         Assert.Equivalent(elements, vector.ToArray());
     }
 
-    private void TestCreateNumeric<T>(T[] elements)
+    private static void TestCreateNumeric<T>(T[] elements)
         where T : struct, INumber<T>
     {
-        var vector = Vector.CreateNumeric(elements);
+        var vector = Vector.Create(elements);
 
         Assert.NotNull(vector);
         Assert.Equal(elements.Length, vector.Length);
         Assert.Equivalent(elements, vector.ToArray());
     }
 
-    private void TestSerializeDeserializeNumeric<T>(T[] elements, JsonSerializerOptions serializerOptions)
+    private static void TestSerializeDeserializeNumeric<T>(T[] elements, JsonSerializerOptions serializerOptions)
         where T : struct, INumber<T>
     {
-        var vector = Vector.CreateNumeric(elements);
+        var vector = Vector.Create(elements);
 
         var json = JsonSerializer.Serialize(vector, serializerOptions);
 
         Assert.NotNull(json);
 
-        Output.WriteLine(json);
-
-        var deserialized = JsonSerializer.Deserialize<NumericVector<T>>(json, serializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Vector<T>>(json, serializerOptions);
 
         Assert.NotNull(deserialized);
         Assert.Equivalent(vector, deserialized);
@@ -112,18 +110,172 @@ public class VectorTests : LoggedTestsBase
     }
 
     [Fact]
-    public void CreateWithKnownNumericTypeReturnsNumericVectorInt32()
+    public void CreateWithKnownNumericTypeReturnsVectorInt32()
     {
         var vector = Vector.Create([1, 2, 3, 4, 5]);
-        var numVector = Assert.IsType<NumericVector<int>>(vector);
+        var numVector = Assert.IsType<Vector<int>>(vector);
         Assert.NotNull(numVector);
     }
 
     [Fact]
-    public void CreateWithKnownNumericTypeReturnsNumericVectorDouble()
+    public void CreateWithKnownNumericTypeReturnsVectorDouble()
     {
         var vector = Vector.Create([1.0, 2.84685, -0.000083, 4, 5]);
-        var numVector = Assert.IsType<NumericVector<double>>(vector);
+        var numVector = Assert.IsType<Vector<double>>(vector);
         Assert.NotNull(numVector);
+    }
+    [Fact]
+    public void Init()
+    {
+        Vector<int> v1 = [1, 2, 3, 4, 5, 6];
+
+        var v2 = Vector.Create([1, 2, 3, 4, 5, 6]);
+
+        Assert.Equal(6, v1.Length);
+        Assert.Equal(6, v2.Length);
+
+        Assert.True(v1.AsSpan().SequenceEqual(v2.AsSpan()));
+    }
+
+    [Fact]
+    public void CreateDefault()
+    {
+        var v1 = Vector.Create<int>(6);
+        Assert.Equal(6, v1.Length);
+        Assert.True(v1.AsSpan().SequenceEqual(new int[6]));
+    }
+
+    [Fact]
+    public void CreateZeroes()
+    {
+        var v1 = Vector.CreateZeroes<int>(6);
+        Assert.Equal(6, v1.Length);
+        Assert.True(v1.AsSpan().SequenceEqual(new int[6]));
+    }
+
+    [Fact]
+    public void CreateOnes()
+    {
+        var v1 = Vector.CreateOnes<int>(6);
+        Assert.Equal(6, v1.Length);
+        Assert.True(v1.AsSpan().SequenceEqual([1, 1, 1, 1, 1, 1]));
+    }
+
+    [Fact]
+    public void Equality()
+    {
+        var v1 = Vector.CreateOnes<int>(6);
+        var v2 = Vector.CreateOnes<int>(6);
+        Assert.Equal(v1, v2);
+    }
+    /*
+    [Fact]
+    public void AdditionOperator()
+    {
+        var v1 = Series.CreateOnes<int>(6);
+        var v2 = Series.CreateOnes<int>(6);
+        var v3 = v1 + v2;
+        Assert.Equal(6, v3.Length);
+        Assert.True(v3.AsSpan().SequenceEqual([2, 2, 2, 2, 2, 2]));
+    }
+
+    [Fact]
+    public void AdditionOperatorScalar()
+    {
+        var v1 = Series.CreateOnes<int>(6);
+        var v2 = v1 + 1;
+        Assert.Equal(6, v2.Length);
+        Assert.True(v2.AsSpan().SequenceEqual([2, 2, 2, 2, 2, 2]));
+    }
+
+    [Fact]
+    public void SubtractionOperator()
+    {
+        var v1 = Series.CreateOnes<int>(6);
+        var v2 = Series.CreateOnes<int>(6);
+        var v3 = v1 - v2;
+        Assert.Equal(6, v3.Length);
+        Assert.True(v3.AsSpan().SequenceEqual([0, 0, 0, 0, 0, 0]));
+    }
+
+    [Fact]
+    public void SubtractionOperatorScalar()
+    {
+        var v1 = Series.CreateOnes<int>(6);
+        var v2 = v1 - 1;
+        Assert.Equal(6, v2.Length);
+        Assert.True(v2.AsSpan().SequenceEqual([0, 0, 0, 0, 0, 0]));
+    }
+    */
+
+
+    [Fact]
+    public void SerializeDeserializeReflected()
+    {
+        var series = Vector.Create("test", [1, 2, 3, 4, 5]);
+
+        var json = JsonSerializer.Serialize(series, NumericsJsonSharedOptions.Reflected);
+
+        Output.WriteLine(json);
+
+        Assert.NotNull(json);
+
+        var deserialized = JsonSerializer.Deserialize<Vector<int>>(json, NumericsJsonSharedOptions.Reflected);
+
+        Assert.NotNull(deserialized);
+        Assert.Equivalent(series, deserialized);
+    }
+
+    [Fact]
+    public void SerializeDeserializeSourceGenerated()
+    {
+        var series = Vector.Create("test", [1, 2, 3, 4, 5]);
+
+        var json = JsonSerializer.Serialize(series, NumericsJsonSharedOptions.Reflected);
+
+        Output.WriteLine(json);
+
+        Assert.NotNull(json);
+
+        var deserialized = JsonSerializer.Deserialize<Vector<int>>(json, NumericsJsonSharedOptions.SourceGenerated);
+
+        Assert.NotNull(deserialized);
+        Assert.Equivalent(series, deserialized);
+    }
+
+    [Fact]
+    public void SerializeDeserializeReflectedPolymorphic()
+    {
+        var series = Vector.Create("test", [1, 2, 3, 4, 5]);
+
+        var json = JsonSerializer.Serialize(series, NumericsJsonSharedOptions.Reflected);
+
+        Output.WriteLine(json);
+
+        Assert.NotNull(json);
+
+        var deserialized = JsonSerializer.Deserialize<Vector>(json, NumericsJsonSharedOptions.Reflected);
+
+        Assert.NotNull(deserialized);
+        var series2 = Assert.IsType<Vector<int>>(deserialized);
+        Assert.Equivalent(series, series2);
+    }
+
+    [Fact]
+    public void SerializeDeserializeSourceGeneratedPolymorphic()
+    {
+        var series = Vector.Create("test", [1, 2, 3, 4, 5]);
+
+        var json = JsonSerializer.Serialize(series, NumericsJsonSharedOptions.Reflected);
+
+        Output.WriteLine(json);
+
+        Assert.NotNull(json);
+
+        var deserialized = JsonSerializer.Deserialize<Vector>(json, NumericsJsonSharedOptions.SourceGenerated);
+
+        Assert.NotNull(deserialized);
+        var series2 = Assert.IsType<Vector<int>>(deserialized);
+        Assert.Equivalent(series, series2);
     }
 }

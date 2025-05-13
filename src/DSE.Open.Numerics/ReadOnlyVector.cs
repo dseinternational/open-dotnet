@@ -2,18 +2,25 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
-using System.Reflection;
 using System.Text.Json.Serialization;
 using DSE.Open.Numerics.Serialization;
 
 namespace DSE.Open.Numerics;
 
+/// <summary>
+/// A serializable, fixed-length, contiguous sequence of read-only values 
+/// with value equality semantics.
+/// </summary>
 [JsonConverter(typeof(ReadOnlyVectorJsonConverter))]
 public abstract class ReadOnlyVector : IReadOnlyVector
 {
-    protected ReadOnlyVector(VectorDataType dataType, Type itemType, int length)
+    protected ReadOnlyVector(
+        VectorDataType dataType,
+        Type itemType,
+        int length,
+        string? name = null,
+        ReadOnlyMemory<Variant> labels = default)
     {
         ArgumentNullException.ThrowIfNull(itemType);
 
@@ -27,16 +34,13 @@ public abstract class ReadOnlyVector : IReadOnlyVector
 #endif
 
         DataType = dataType;
-
         IsNumeric = NumberHelper.IsKnownNumberType(itemType);
-
         ItemType = itemType;
-
         Length = length;
     }
 
     /// <summary>
-    /// Gets the number of items in the vector.
+    /// Gets the number of items in the series.
     /// </summary>
     public int Length { get; }
 
@@ -46,130 +50,59 @@ public abstract class ReadOnlyVector : IReadOnlyVector
     public bool IsNumeric { get; }
 
     /// <summary>
-    /// Gets the type of the items in the vector.
+    /// Gets the type of the items in the series.
     /// </summary>
     public Type ItemType { get; }
 
     /// <summary>
-    /// Gets the data type of the vector.
+    /// Gets the data type of the series.
     /// </summary>
     public VectorDataType DataType { get; }
 
-    [RequiresDynamicCode("Calls System.Type.MakeGenericType(params Type[])")]
-    private static bool TryCreateNumericVector(
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type dataType,
-        object data,
-        [NotNullWhen(true)] out ReadOnlyVector? vector)
+    /// <summary>
+    /// Creates a series from the given data.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="vector"></param>
+    /// <returns></returns>
+    public static ReadOnlyVector<T> Create<T>(ReadOnlyMemory<T> vector)
     {
-        var constructedType = typeof(ReadOnlyNumericVector<>).MakeGenericType(dataType);
+        if (vector.Length == 0)
+        {
+#pragma warning disable IDE0301 // Simplify collection initialization
+            return ReadOnlyVector<T>.Empty;
+#pragma warning restore IDE0301 // Simplify collection initialization
+        }
 
-        object[] args = [data];
-
-        vector = Activator.CreateInstance(
-            constructedType,
-            BindingFlags.Instance | BindingFlags.NonPublic,
-            null,
-            args,
-            null) as ReadOnlyVector;
-
-        return vector is not null;
+        return new ReadOnlyVector<T>(vector);
     }
 
     /// <summary>
-    /// Creates a vector from the given data.
+    /// Creates a series from the given data.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    /// <param name="data"></param>
+    /// <param name="array"></param>
     /// <returns></returns>
-    [UnconditionalSuppressMessage("AOT", "IL3050:Calling members annotated with 'RequiresDynamicCodeAttribute' may break functionality when AOT compiling.",
-        Justification = "Type T will not be trimmed and the use of NumericVector<> can be statically determined.")]
-    public static ReadOnlyVector<T> Create<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(T[] data)
+    public static ReadOnlyVector<T> Create<T>(T[] array)
     {
-        ArgumentNullException.ThrowIfNull(data);
+        ArgumentNullException.ThrowIfNull(array);
 
-        if (NumberHelper.IsKnownNumberType(typeof(T)))
-        {
-            if (TryCreateNumericVector(typeof(T), data, out var vector))
-            {
-                return (ReadOnlyVector<T>)vector;
-            }
-        }
-
-        if (data.Length == 0)
+        if (array.Length == 0)
         {
 #pragma warning disable IDE0301 // Simplify collection initialization
             return ReadOnlyVector<T>.Empty;
 #pragma warning restore IDE0301 // Simplify collection initialization
         }
 
-        return new ReadOnlyVector<T>(data);
+        return new ReadOnlyVector<T>(array);
     }
 
-    [UnconditionalSuppressMessage("AOT", "IL3050:Calling members annotated with 'RequiresDynamicCodeAttribute' may break functionality when AOT compiling.",
-        Justification = "Type T will not be trimmed and the use of NumericVector<> can be statically determined.")]
-    public static ReadOnlyVector<T> Create<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(ReadOnlyMemory<T> data)
-    {
-        if (NumberHelper.IsKnownNumberType(typeof(T)))
-        {
-            if (TryCreateNumericVector(typeof(T), data, out var vector))
-            {
-                return (ReadOnlyVector<T>)vector;
-            }
-        }
-
-        if (data.Length == 0)
-        {
-#pragma warning disable IDE0301 // Simplify collection initialization
-            return ReadOnlyVector<T>.Empty;
-#pragma warning restore IDE0301 // Simplify collection initialization
-        }
-
-        return new ReadOnlyVector<T>(data);
-    }
-
-    public static ReadOnlyVector<T> Create<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(ReadOnlySpan<T> data)
+    public static ReadOnlyVector<T> Create<T>(ReadOnlySpan<T> data)
     {
         return Create(data.ToArray());
     }
 
-    public static ReadOnlyVector<T> Create<T>(T[] data, int start, int length)
-    {
-        EnsureNotKnownNumericType(typeof(T));
-        return new(data, start, length);
-    }
-
-    public static ReadOnlyNumericVector<T> CreateNumeric<T>(T[] data, bool copy = false)
-        where T : struct, INumber<T>
-    {
-        return new(copy ? [.. data] : data);
-    }
-
-    public static ReadOnlyNumericVector<T> CreateNumeric<T>(ReadOnlyMemory<T> data, bool copy = false)
-        where T : struct, INumber<T>
-    {
-        return new(copy ? data.ToArray() : data);
-    }
-
-    public static ReadOnlyNumericVector<T> CreateNumeric<T>(ReadOnlySpan<T> data)
-        where T : struct, INumber<T>
-    {
-        if (data.Length == 0)
-        {
-#pragma warning disable IDE0301 // Simplify collection initialization
-            return ReadOnlyNumericVector<T>.Empty;
-#pragma warning restore IDE0301 // Simplify collection initialization
-        }
-
-        return new(data.ToArray());
-    }
-
-    public static ReadOnlyNumericVector<T> CreateNumeric<T>(T[] data, int start, int length)
-        where T : struct, INumber<T>
-    {
-        return new(data, start, length);
-    }
-
-    public static ReadOnlyNumericVector<T> CreateNumeric<T>(int length, T scalar)
+    public static ReadOnlyVector<T> Create<T>(int length, T scalar)
         where T : struct, INumber<T>
     {
         var data = new T[length];
@@ -177,105 +110,21 @@ public abstract class ReadOnlyVector : IReadOnlyVector
         return new(data);
     }
 
-    public static ReadOnlyNumericVector<T> CreateNumeric<T>(int length)
+    public static ReadOnlyVector<T> Create<T>(int length)
         where T : struct, INumber<T>
     {
         return new(new T[length]);
     }
 
-    public static ReadOnlyNumericVector<T> CreateZeroes<T>(int length)
+    public static ReadOnlyVector<T> CreateZeroes<T>(int length)
         where T : struct, INumber<T>
     {
-        return CreateNumeric(length, T.Zero);
+        return Create(length, T.Zero);
     }
 
-    public static ReadOnlyNumericVector<T> CreateOnes<T>(int length)
+    public static ReadOnlyVector<T> CreateOnes<T>(int length)
         where T : struct, INumber<T>
     {
-        return CreateNumeric(length, T.One);
-    }
-
-    /// <summary>
-    /// Creates a categorical vector from the given data and categories.
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="data"></param>
-    /// <param name="categories"></param>
-    /// <param name="copyData"></param>
-    /// <param name="copyCatgories"></param>
-    /// <returns></returns>
-    /// <remarks>
-    /// The category labels are not validated beyond checking that there are not more labels than
-    /// values (the length of <paramref name="data"/>). To check if there is a label for each unique
-    /// value in <paramref name="data"/>, call <see cref="CategoricalVector{T}.IsValid"/>.
-    /// </remarks>
-    public static ReadOnlyCategoricalVector<T> CreateCategorical<T>(
-        T[] data,
-        ReadOnlyMemory<KeyValuePair<string, T>> categories,
-        bool copyData = false,
-        bool copyCatgories = false)
-        where T : struct, IComparable<T>, IEquatable<T>, IBinaryInteger<T>, IMinMaxValue<T>
-    {
-        return new ReadOnlyCategoricalVector<T>(copyData ? [.. data] : data, copyCatgories ? categories.ToArray() : categories);
-    }
-
-    /// <summary>
-    /// Creates a categorical vector from the given data and categories.
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="data"></param>
-    /// <param name="categories"></param>
-    /// <param name="copyData"></param>
-    /// <param name="copyCatgories"></param>
-    /// <returns></returns>
-    /// <remarks>
-    /// The category labels are not validated beyond checking that there are not more labels than
-    /// values (the length of <paramref name="data"/>). To check if there is a label for each unique
-    /// value in <paramref name="data"/>, call <see cref="CategoricalVector{T}.IsValid"/>.
-    /// </remarks>
-    public static ReadOnlyCategoricalVector<T> CreateCategorical<T>(
-        ReadOnlyMemory<T> data,
-        ReadOnlyMemory<KeyValuePair<string, T>> categories,
-        bool copyData = false,
-        bool copyCatgories = false)
-        where T : struct, IComparable<T>, IEquatable<T>, IBinaryInteger<T>, IMinMaxValue<T>
-    {
-        return new(copyData ? data.ToArray() : data, copyCatgories ? categories.ToArray() : categories);
-    }
-
-    /// <summary>
-    /// Creates a categorical vector from the given data and categories.
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="data"></param>
-    /// <param name="categories"></param>
-    /// <returns></returns>
-    /// <remarks>
-    /// The category labels are not validated beyond checking that there are not more labels than
-    /// values (the length of <paramref name="data"/>). To check if there is a label for each unique
-    /// value in <paramref name="data"/>, call <see cref="CategoricalVector{T}.IsValid"/>.
-    /// </remarks>
-    public static ReadOnlyCategoricalVector<T> CreateCategorical<T>(
-        ReadOnlySpan<T> data,
-        ReadOnlySpan<KeyValuePair<string, T>> categories)
-        where T : struct, IComparable<T>, IEquatable<T>, IBinaryInteger<T>, IMinMaxValue<T>
-    {
-        if (data.Length == 0)
-        {
-#pragma warning disable IDE0301 // Simplify collection initialization
-            return ReadOnlyCategoricalVector<T>.Empty;
-#pragma warning restore IDE0301 // Simplify collection initialization
-        }
-
-        return new(data.ToArray(), categories.ToArray());
-    }
-
-    internal static void EnsureNotKnownNumericType(Type type)
-    {
-        if (NumberHelper.IsKnownNumberType(type))
-        {
-            ThrowHelper.ThrowInvalidOperationException(
-                $"Expected non-numeric type but {type.Name} is numeric.");
-        }
+        return Create(length, T.One);
     }
 }

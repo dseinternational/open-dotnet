@@ -9,7 +9,7 @@ namespace DSE.Open.Numerics;
 
 public static partial class VectorPrimitives
 {
-    public static T Max<T>([NotNull] IReadOnlyNumericVector<T> vector)
+    public static T Max<T>([NotNull] IReadOnlyVector<T> vector)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(vector);
@@ -22,7 +22,7 @@ public static partial class VectorPrimitives
         return TensorPrimitives.Max(values);
     }
 
-    public static T MaxFloatingPoint<T>([NotNull] IReadOnlyNumericVector<T> vector)
+    public static T MaxFloatingPoint<T>([NotNull] IReadOnlyVector<T> vector)
         where T : struct, IFloatingPointIeee754<T>
     {
         ArgumentNullException.ThrowIfNull(vector);

@@ -14,7 +14,7 @@ public static class Predicates
         {
             return range.End is not null
                 ? (e => range.Start.Value.CompareTo(e) <= 0 && range.End.Value.CompareTo(e) >= 0)
-                : (Expression<Func<T, bool>>?)(e => range.Start.Value.CompareTo(e) <= 0);
+                : (e => range.Start.Value.CompareTo(e) <= 0);
         }
         else
         {

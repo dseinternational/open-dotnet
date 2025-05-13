@@ -3,7 +3,8 @@
 
 namespace DSE.Open.Numerics.Serialization;
 
-public enum VectorJsonFormat
+internal static class DataFrameJsonPropertyNames
 {
-    Default,
+    public const string Name = "name";
+    public const string Columns = "columns";
 }

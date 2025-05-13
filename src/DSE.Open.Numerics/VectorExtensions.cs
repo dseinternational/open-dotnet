@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 
 namespace DSE.Open.Numerics;
 
-public static class VectorExtensions
+public static partial class VectorExtensions
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int IndexOf<T>(this IReadOnlyVector<T> vector, T value)
