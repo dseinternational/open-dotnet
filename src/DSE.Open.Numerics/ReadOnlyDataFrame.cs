@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Collections;
+using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 using DSE.Open.Collections.Generic;
 using DSE.Open.Numerics.Serialization;
@@ -12,26 +13,27 @@ namespace DSE.Open.Numerics;
 /// Stores related data as a collection of columns (<see cref="Vector"/>).
 /// </summary>
 [JsonConverter(typeof(ReadOnlyDataFrameJsonConverter))]
+[CollectionBuilder(typeof(ReadOnlyDataFrame), nameof(Create))]
 public class ReadOnlyDataFrame : IReadOnlyList<ReadOnlyVector>
 {
     public static readonly ReadOnlyDataFrame Empty = new();
 
-    private readonly ReadOnlyCollection<ReadOnlyVector> _columnVectors;
+    private readonly ReadOnlyCollection<ReadOnlyVector> _columns;
     private readonly ReadOnlyCollection<string> _columnNames;
 
     private ReadOnlyDataFrame() : this([])
     {
     }
 
-    public ReadOnlyDataFrame(ReadOnlyCollection<ReadOnlyVector> vectors)
+    public ReadOnlyDataFrame(ReadOnlyCollection<ReadOnlyVector> columns)
     {
-        ArgumentNullException.ThrowIfNull(vectors);
+        ArgumentNullException.ThrowIfNull(columns);
 
-        _columnVectors = vectors;
+        _columns = columns;
 
-        var names = new string[vectors.Count];
+        var names = new string[columns.Count];
 
-        for (var i = 0; i < vectors.Count; i++)
+        for (var i = 0; i < columns.Count; i++)
         {
             names[i] = i.ToStringInvariant();
         }
@@ -39,21 +41,21 @@ public class ReadOnlyDataFrame : IReadOnlyList<ReadOnlyVector>
         _columnNames = [.. names];
     }
 
-    public ReadOnlyDataFrame(ReadOnlyCollection<ReadOnlyVector> vectors, ReadOnlyCollection<string> columnNames)
+    public ReadOnlyDataFrame(ReadOnlyCollection<ReadOnlyVector> columns, ReadOnlyCollection<string> columnNames)
     {
-        ArgumentNullException.ThrowIfNull(vectors);
+        ArgumentNullException.ThrowIfNull(columns);
         ArgumentNullException.ThrowIfNull(columnNames);
 
-        if (vectors.Count != columnNames.Count)
+        if (columns.Count != columnNames.Count)
         {
             throw new ArgumentException("Vectors and column names must have the same count.");
         }
 
-        _columnVectors = vectors;
+        _columns = columns;
         _columnNames = columnNames;
     }
 
-    public ReadOnlyVector this[int index] => _columnVectors[index];
+    public ReadOnlyVector this[int index] => _columns[index];
 
     public ReadOnlyVector? this[string name]
     {
@@ -66,7 +68,7 @@ public class ReadOnlyDataFrame : IReadOnlyList<ReadOnlyVector>
                 return null;
             }
 
-            return _columnVectors[index];
+            return _columns[index];
         }
     }
 
@@ -77,15 +79,20 @@ public class ReadOnlyDataFrame : IReadOnlyList<ReadOnlyVector>
 
     public IReadOnlyList<string> Columns => _columnNames;
 
-    public int Count => _columnVectors.Count;
+    public int Count => _columns.Count;
 
     public IEnumerator<ReadOnlyVector> GetEnumerator()
     {
-        return _columnVectors.GetEnumerator();
+        return _columns.GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()
     {
-        return ((IEnumerable)_columnVectors).GetEnumerator();
+        return ((IEnumerable)_columns).GetEnumerator();
+    }
+
+    public static ReadOnlyDataFrame Create(ReadOnlySpan<ReadOnlyVector> columns)
+    {
+        return new ReadOnlyDataFrame([.. columns.ToArray()]);
     }
 }

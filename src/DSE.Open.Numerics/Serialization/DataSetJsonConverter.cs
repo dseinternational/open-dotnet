@@ -1,15 +1,17 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using DSE.Open.Collections.Generic;
 
 namespace DSE.Open.Numerics.Serialization;
 
 public class DataSetJsonConverter : JsonConverter<DataSet>
 {
+    public static readonly DataSetJsonConverter Default = new();
+
     public override bool CanConvert(Type typeToConvert)
     {
         Debug.Assert(typeToConvert is not null);
@@ -73,11 +75,32 @@ public class DataSetJsonConverter : JsonConverter<DataSet>
             }
         }
 
-        return new DataSet(dataFrames);
+        return new DataSet(dataFrames, name);
     }
 
     public override void Write(Utf8JsonWriter writer, DataSet value, JsonSerializerOptions options)
     {
-        throw new NotImplementedException();
+        ArgumentNullException.ThrowIfNull(writer);
+        ArgumentNullException.ThrowIfNull(value);
+
+        writer.WriteStartObject();
+
+        if (value.Name is not null)
+        {
+            writer.WriteString(DataSetJsonPropertyNames.Name, value.Name);
+        }
+
+        writer.WritePropertyName(DataSetJsonPropertyNames.Frames);
+
+        writer.WriteStartArray();
+
+        foreach (var frame in value)
+        {
+            DataFrameJsonConverter.Default.Write(writer, frame, options);
+        }
+
+        writer.WriteEndArray();
+
+        writer.WriteEndObject();
     }
 }

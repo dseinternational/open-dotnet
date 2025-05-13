@@ -16,10 +16,11 @@ public class DataSet : IList<DataFrame>
 {
     private readonly Collection<DataFrame> _dataFrames;
 
-    public DataSet(IEnumerable<DataFrame> dataFrames)
+    public DataSet(Collection<DataFrame> dataFrames, string? name = null)
     {
         ArgumentNullException.ThrowIfNull(dataFrames);
-        _dataFrames = [.. dataFrames];
+        _dataFrames = dataFrames;
+        Name = name;
     }
 
     public DataFrame this[int index] { get => _dataFrames[index]; set => _dataFrames[index] = value; }

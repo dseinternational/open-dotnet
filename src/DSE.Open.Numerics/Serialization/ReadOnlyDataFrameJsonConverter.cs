@@ -19,16 +19,32 @@ public class ReadOnlyDataFrameJsonConverter : JsonConverter<ReadOnlyDataFrame>
 
     public override ReadOnlyDataFrame Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        if (reader.TokenType != JsonTokenType.StartObject)
-        {
-            throw new JsonException("Expected start of object");
-        }
-
-        throw new NotImplementedException();
+        return DataFrameJsonConverter.Default.Read(ref reader, typeToConvert, options).AsReadOnly();
     }
 
     public override void Write(Utf8JsonWriter writer, ReadOnlyDataFrame value, JsonSerializerOptions options)
     {
-        throw new NotImplementedException();
+        ArgumentNullException.ThrowIfNull(writer);
+        ArgumentNullException.ThrowIfNull(value);
+
+        writer.WriteStartObject();
+
+        if (value.Name is not null)
+        {
+            writer.WriteString(DataFrameJsonPropertyNames.Name, value.Name);
+        }
+
+        writer.WritePropertyName(DataFrameJsonPropertyNames.Columns);
+
+        writer.WriteStartArray();
+
+        foreach (var column in value)
+        {
+            ReadOnlyVectorJsonConverter.Default.Write(writer, column, options);
+        }
+
+        writer.WriteEndArray();
+
+        writer.WriteEndObject();
     }
 }

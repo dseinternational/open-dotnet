@@ -11,7 +11,9 @@ namespace DSE.Open.Numerics.Serialization;
     DictionaryKeyPolicy = JsonKnownNamingPolicy.SnakeCaseLower,
     WriteIndented = false)]
 [JsonSerializable(typeof(DataSet))]
+[JsonSerializable(typeof(ReadOnlyDataSet))]
 [JsonSerializable(typeof(DataFrame))]
+[JsonSerializable(typeof(ReadOnlyDataFrame))]
 [JsonSerializable(typeof(Vector))]
 [JsonSerializable(typeof(Vector<char>))]
 [JsonSerializable(typeof(Vector<string>))]
