@@ -36,8 +36,8 @@
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.4" />
     <PackageVersion Include="Microsoft.Extensions.Options" Version="9.0.4" />
     <PackageVersion Include="Microsoft.Extensions.TimeProvider.Testing" Version="9.4.0" />
-    <PackageVersion Include="Microsoft.Identity.Client" Version="4.71.1" />
-    <PackageVersion Include="Microsoft.Identity.Client.Extensions.Msal" Version="4.71.1" />
+    <PackageVersion Include="Microsoft.Identity.Client" Version="4.72.0" />
+    <PackageVersion Include="Microsoft.Identity.Client.Extensions.Msal" Version="4.72.0" />
     <PackageVersion Include="Microsoft.IdentityModel.Abstractions" Version="8.9.0" />
     <PackageVersion Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.9.0" />
     <PackageVersion Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.9.0" />
@@ -62,11 +62,11 @@
     <PackageVersion Include="System.Configuration.ConfigurationManager" Version="9.0.4" />
     <PackageVersion Include="System.Diagnostics.DiagnosticSource" Version="9.0.4" />
     <PackageVersion Include="System.IO.Hashing" Version="9.0.4" />
-    <PackageVersion Include="System.Linq.AsyncEnumerable" Version="10.0.0-preview.3.25171.5" />
+    <PackageVersion Include="System.Linq.AsyncEnumerable" Version="10.0.0-preview.4.25258.110" />
     <PackageVersion Include="System.Management" Version="9.0.4" />
     <PackageVersion Include="System.Memory" Version="4.6.3" />
     <PackageVersion Include="System.Memory.Data" Version="9.0.4" />
-    <PackageVersion Include="System.Numerics.Tensors" Version="10.0.0-preview.3.25171.5" />
+    <PackageVersion Include="System.Numerics.Tensors" Version="10.0.0-preview.4.25258.110" />
     <PackageVersion Include="System.Numerics.Vectors" Version="4.6.1" />
     <PackageVersion Include="System.Reflection.Emit" Version="4.7.0" />
     <PackageVersion Include="System.Reflection.Metadata" Version="9.0.4" />
@@ -78,7 +78,7 @@
     <PackageVersion Include="System.Threading.Tasks.Extensions" Version="4.6.3" />
     <PackageVersion Include="TorchSharp" Version="0.105.0" />
     <PackageVersion Include="TorchSharp-cpu" Version="0.105.0" />
-    <PackageVersion Include="Verify.XunitV3" Version="30.0.0" />
+    <PackageVersion Include="Verify.XunitV3" Version="30.1.0" />
     <PackageVersion Include="xunit.analyzers" Version="1.21.0" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.0" />
     <PackageVersion Include="xunit.v3" Version="2.0.2" />
