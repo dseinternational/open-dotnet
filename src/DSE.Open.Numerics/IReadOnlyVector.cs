@@ -8,7 +8,7 @@ namespace DSE.Open.Numerics;
 /// equality semantics. Optionally named, labelled or categorised for use with
 /// a <see cref="IReadOnlyDataFrame"/>.
 /// </summary>
-public interface IReadOnlySeries
+public interface IReadOnlyVector
 {
     int Length { get; }
 
@@ -23,7 +23,7 @@ public interface IReadOnlySeries
 /// a <see cref="IReadOnlyDataFrame"/>.
 /// </summary>
 public interface IReadOnlyVector<T>
-    : IReadOnlySeries,
+    : IReadOnlyVector,
       IReadOnlyList<T>,
       IEquatable<IReadOnlyVector<T>>
 {

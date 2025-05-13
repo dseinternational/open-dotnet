@@ -13,7 +13,7 @@ namespace DSE.Open.Numerics;
 /// with value equality semantics.
 /// </summary>
 [JsonConverter(typeof(ReadOnlyVectorJsonConverter))]
-public abstract class ReadOnlyVector : IReadOnlySeries
+public abstract class ReadOnlyVector : IReadOnlyVector
 {
     protected ReadOnlyVector(
         VectorDataType dataType,

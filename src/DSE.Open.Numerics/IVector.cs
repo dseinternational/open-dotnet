@@ -7,12 +7,12 @@ namespace DSE.Open.Numerics;
 /// A serializable, contiguous sequence of values of known length and data type with value equality semantics.
 /// Optionally named, labelled or categorised for use with a <see cref="DataFrame"/>.
 /// </summary>
-public interface IVector : IReadOnlySeries
+public interface IVector : IReadOnlyVector
 {
     /// <summary>
     /// Gets a read-only view of the vector.
     /// </summary>
-    IReadOnlySeries AsReadOnly();
+    IReadOnlyVector AsReadOnly();
 
     bool IsReadOnly { get; }
 }

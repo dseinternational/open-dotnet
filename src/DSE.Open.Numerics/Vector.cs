@@ -180,7 +180,7 @@ public abstract class Vector : IVector
         return CreateReadOnly();
     }
 
-    IReadOnlySeries IVector.AsReadOnly()
+    IReadOnlyVector IVector.AsReadOnly()
     {
         return AsReadOnly();
     }

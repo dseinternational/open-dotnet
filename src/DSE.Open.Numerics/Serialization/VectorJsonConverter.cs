@@ -12,7 +12,7 @@ namespace DSE.Open.Numerics.Serialization;
 
 #pragma warning disable DSEOPEN001 // ArrayBuilder ref struct warning
 
-public class VectorJsonConverter : JsonConverter<IReadOnlySeries>
+public class VectorJsonConverter : JsonConverter<IReadOnlyVector>
 {
     public static VectorJsonConverter Default { get; } = new();
 
@@ -30,7 +30,7 @@ public class VectorJsonConverter : JsonConverter<IReadOnlySeries>
     public override bool CanConvert(Type typeToConvert)
     {
         Debug.Assert(typeToConvert is not null);
-        return typeToConvert.IsAssignableTo(typeof(IReadOnlySeries));
+        return typeToConvert.IsAssignableTo(typeof(IReadOnlyVector));
     }
 
     public override Vector? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
@@ -272,7 +272,7 @@ public class VectorJsonConverter : JsonConverter<IReadOnlySeries>
         throw new JsonException();
     }
 
-    public override void Write(Utf8JsonWriter writer, IReadOnlySeries value, JsonSerializerOptions options)
+    public override void Write(Utf8JsonWriter writer, IReadOnlyVector value, JsonSerializerOptions options)
     {
         ArgumentNullException.ThrowIfNull(writer);
         ArgumentNullException.ThrowIfNull(value);

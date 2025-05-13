@@ -129,12 +129,17 @@ public sealed class Vector<T> : Vector, IVector<T>, IReadOnlyVector<T>
 
     public new ReadOnlyVector<T> AsReadOnly()
     {
-        return new ReadOnlyVector<T>(_vector);
+        ReadOnlyMemory<KeyValuePair<string, T>> categories =
+            _categoriesLookup is not null && _categoriesLookup.Count > 0
+                ? _categoriesLookup.ToArray()
+                : _categories;
+
+        return new ReadOnlyVector<T>(_vector, Name, Labels, categories);
     }
 
     ReadOnlyVector<T> IVector<T>.AsReadOnly()
     {
-        return new ReadOnlyVector<T>(_vector);
+        return AsReadOnly();
     }
 
     protected override ReadOnlyVector CreateReadOnly()

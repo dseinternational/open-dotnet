@@ -18,7 +18,7 @@ namespace DSE.Open.Numerics;
 /// </summary>
 /// <typeparam name="T"></typeparam>
 [CollectionBuilder(typeof(ReadOnlyVector), nameof(Create))]
-[JsonConverter(typeof(VectorJsonConverter))]
+[JsonConverter(typeof(ReadOnlyVectorJsonConverter))]
 public sealed class ReadOnlyVector<T> : ReadOnlyVector, IReadOnlyVector<T>
 {
     public static readonly ReadOnlyVector<T> Empty = new();
