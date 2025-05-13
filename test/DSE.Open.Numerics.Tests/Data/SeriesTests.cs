@@ -16,7 +16,7 @@ public class SeriesTests : LoggedTestsBase
     [Fact]
     public void SerializeDeserializeReflected()
     {
-        var series = Series.CreateNumeric("test", [1, 2, 3, 4, 5]);
+        var series = Series.Create("test", [1, 2, 3, 4, 5]);
 
         var json = JsonSerializer.Serialize(series, NumericsJsonSharedOptions.Reflected);
 
@@ -24,7 +24,7 @@ public class SeriesTests : LoggedTestsBase
 
         Assert.NotNull(json);
 
-        var deserialized = JsonSerializer.Deserialize<NumericSeries<int>>(json, NumericsJsonSharedOptions.Reflected);
+        var deserialized = JsonSerializer.Deserialize<Series<int>>(json, NumericsJsonSharedOptions.Reflected);
 
         Assert.NotNull(deserialized);
         Assert.Equivalent(series, deserialized);
@@ -33,7 +33,7 @@ public class SeriesTests : LoggedTestsBase
     [Fact]
     public void SerializeDeserializeSourceGenerated()
     {
-        var series = Series.CreateNumeric("test", [1, 2, 3, 4, 5]);
+        var series = Series.Create("test", [1, 2, 3, 4, 5]);
 
         var json = JsonSerializer.Serialize(series, NumericsJsonSharedOptions.Reflected);
 
@@ -41,7 +41,7 @@ public class SeriesTests : LoggedTestsBase
 
         Assert.NotNull(json);
 
-        var deserialized = JsonSerializer.Deserialize<NumericSeries<int>>(json, NumericsJsonSharedOptions.SourceGenerated);
+        var deserialized = JsonSerializer.Deserialize<Series<int>>(json, NumericsJsonSharedOptions.SourceGenerated);
 
         Assert.NotNull(deserialized);
         Assert.Equivalent(series, deserialized);
@@ -50,7 +50,7 @@ public class SeriesTests : LoggedTestsBase
     [Fact]
     public void SerializeDeserializeReflectedPolymorphic()
     {
-        var series = (Series)Series.CreateNumeric("test", [1, 2, 3, 4, 5]);
+        var series = (Series)Series.Create("test", [1, 2, 3, 4, 5]);
 
         var json = JsonSerializer.Serialize(series, NumericsJsonSharedOptions.Reflected);
 
@@ -61,14 +61,14 @@ public class SeriesTests : LoggedTestsBase
         var deserialized = JsonSerializer.Deserialize<Series>(json, NumericsJsonSharedOptions.Reflected);
 
         Assert.NotNull(deserialized);
-        var series2 = Assert.IsType<NumericSeries<int>>(deserialized);
+        var series2 = Assert.IsType<Series<int>>(deserialized);
         Assert.Equivalent(series, series2);
     }
 
     [Fact]
     public void SerializeDeserializeSourceGeneratedPolymorphic()
     {
-        var series = (Series)Series.CreateNumeric("test", [1, 2, 3, 4, 5]);
+        var series = (Series)Series.Create("test", [1, 2, 3, 4, 5]);
 
         var json = JsonSerializer.Serialize(series, NumericsJsonSharedOptions.Reflected);
 
@@ -79,7 +79,7 @@ public class SeriesTests : LoggedTestsBase
         var deserialized = JsonSerializer.Deserialize<Series>(json, NumericsJsonSharedOptions.SourceGenerated);
 
         Assert.NotNull(deserialized);
-        var series2 = Assert.IsType<NumericSeries<int>>(deserialized);
+        var series2 = Assert.IsType<Series<int>>(deserialized);
         Assert.Equivalent(series, series2);
     }
 }

@@ -10,6 +10,10 @@ namespace DSE.Open.Numerics;
 
 public partial class VectorTests : LoggedTestsBase
 {
+    public VectorTests(ITestOutputHelper output) : base(output)
+    {
+    }
+
     private static void TestCreate<T>(T[] elements)
         where T : notnull
     {
@@ -120,4 +124,88 @@ public partial class VectorTests : LoggedTestsBase
         var numVector = Assert.IsType<Series<double>>(vector);
         Assert.NotNull(numVector);
     }
+    [Fact]
+    public void Init()
+    {
+        Series<int> v1 = [1, 2, 3, 4, 5, 6];
+
+        var v2 = Series.Create([1, 2, 3, 4, 5, 6]);
+
+        Assert.Equal(6, v1.Length);
+        Assert.Equal(6, v2.Length);
+
+        Assert.True(v1.AsSpan().SequenceEqual(v2.AsSpan()));
+    }
+
+    [Fact]
+    public void CreateDefault()
+    {
+        var v1 = Series.Create<int>(6);
+        Assert.Equal(6, v1.Length);
+        Assert.True(v1.AsSpan().SequenceEqual(new int[6]));
+    }
+
+    [Fact]
+    public void CreateZeroes()
+    {
+        var v1 = Series.CreateZeroes<int>(6);
+        Assert.Equal(6, v1.Length);
+        Assert.True(v1.AsSpan().SequenceEqual(new int[6]));
+    }
+
+    [Fact]
+    public void CreateOnes()
+    {
+        var v1 = Series.CreateOnes<int>(6);
+        Assert.Equal(6, v1.Length);
+        Assert.True(v1.AsSpan().SequenceEqual([1, 1, 1, 1, 1, 1]));
+    }
+
+    [Fact]
+    public void Equality()
+    {
+        var v1 = Series.CreateOnes<int>(6);
+        var v2 = Series.CreateOnes<int>(6);
+        Assert.Equal(v1, v2);
+    }
+    /*
+    [Fact]
+    public void AdditionOperator()
+    {
+        var v1 = Series.CreateOnes<int>(6);
+        var v2 = Series.CreateOnes<int>(6);
+        var v3 = v1 + v2;
+        Assert.Equal(6, v3.Length);
+        Assert.True(v3.AsSpan().SequenceEqual([2, 2, 2, 2, 2, 2]));
+    }
+
+    [Fact]
+    public void AdditionOperatorScalar()
+    {
+        var v1 = Series.CreateOnes<int>(6);
+        var v2 = v1 + 1;
+        Assert.Equal(6, v2.Length);
+        Assert.True(v2.AsSpan().SequenceEqual([2, 2, 2, 2, 2, 2]));
+    }
+
+    [Fact]
+    public void SubtractionOperator()
+    {
+        var v1 = Series.CreateOnes<int>(6);
+        var v2 = Series.CreateOnes<int>(6);
+        var v3 = v1 - v2;
+        Assert.Equal(6, v3.Length);
+        Assert.True(v3.AsSpan().SequenceEqual([0, 0, 0, 0, 0, 0]));
+    }
+
+    [Fact]
+    public void SubtractionOperatorScalar()
+    {
+        var v1 = Series.CreateOnes<int>(6);
+        var v2 = v1 - 1;
+        Assert.Equal(6, v2.Length);
+        Assert.True(v2.AsSpan().SequenceEqual([0, 0, 0, 0, 0, 0]));
+    }
+    */
+
 }

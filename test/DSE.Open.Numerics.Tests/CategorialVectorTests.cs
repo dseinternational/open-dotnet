@@ -1,9 +1,9 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Text.Json;
 using DSE.Open.Testing.Xunit;
 using DSE.Open.Text.Json;
-using System.Text.Json;
 
 namespace DSE.Open.Numerics;
 
@@ -22,7 +22,7 @@ public partial class CategorialVectorTests : LoggedTestsBase
     [Fact]
     public void Init()
     {
-        var vector = Series.CreateCategorical(
+        var vector = Series.Create(
             [1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6],
             [
                 KeyValuePair.Create("one", 1),
@@ -35,14 +35,13 @@ public partial class CategorialVectorTests : LoggedTestsBase
 
         Assert.Equal(18, vector.Length);
         Assert.True(vector.AsSpan().SequenceEqual([1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6]));
-        Assert.Equal(6, vector.CategoryData.Length);
-        Assert.True(vector.IsValid());
+        Assert.Equal(6, vector.Categories.Count);
     }
 
     [Fact]
     public void SerializeDeserialize()
     {
-        var vector = Series.CreateCategorical(
+        var vector = Series.Create(
             [1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6],
             [
                 KeyValuePair.Create("one", 1),
@@ -59,33 +58,30 @@ public partial class CategorialVectorTests : LoggedTestsBase
 
         Assert.NotNull(json);
 
-        var deserialized = JsonSerializer.Deserialize<CategoricalVector<int>>(json, s_jsonOptions.Value);
+        var deserialized = JsonSerializer.Deserialize<Series<int>>(json, s_jsonOptions.Value);
 
         Assert.NotNull(deserialized);
 
         Assert.Equal(18, deserialized.Length);
         Assert.True(deserialized.AsSpan().SequenceEqual([1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6]));
-        Assert.Equal(6, deserialized.CategoryData.Length);
-        Assert.True(deserialized.IsValid());
+        Assert.Equal(6, deserialized.Categories.Count);
     }
 
-
     [Fact]
-    public void AsReadOnly_ShouldReturnReadOnlyCategoricalVector()
+    public void AsReadOnly_ShouldReturnReadOnlySeries()
     {
         // Arrange
-        var vector = Series.CreateCategorical([1, 1, 2, 3, 2],
+        var vector = Series.Create([1, 1, 2, 3, 2],
         [
             KeyValuePair.Create("one", 1),
             KeyValuePair.Create("two", 2),
             KeyValuePair.Create("three", 3),
         ]);
 
-
         // Act
         var readOnlyVector = vector.AsReadOnly();
 
         // Assert
-        Assert.IsType<ReadOnlyCategoricalVector<int>>(readOnlyVector);
+        _ = Assert.IsType<ReadOnlySeries<int>>(readOnlyVector);
     }
 }

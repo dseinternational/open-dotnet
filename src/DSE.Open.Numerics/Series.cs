@@ -4,7 +4,6 @@
 using System.Diagnostics;
 using System.Numerics;
 using System.Text.Json.Serialization;
-using DSE.Open.Collections.Generic;
 using DSE.Open.Numerics.Serialization;
 
 namespace DSE.Open.Numerics;
@@ -104,12 +103,41 @@ public abstract class Series : ISeries
     /// Creates a series from the given data.
     /// </summary>
     /// <typeparam name="T"></typeparam>
+    /// <param name="name"></param>
+    /// <param name="data"></param>
+    /// <returns></returns>
+    public static Series<T> Create<T>(string name, T[] data)
+    {
+        ArgumentNullException.ThrowIfNull(data);
+        return new Series<T>(data, name);
+    }
+
+    /// <summary>
+    /// Creates a series from the given data.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     /// <param name="data"></param>
     /// <returns></returns>
     public static Series<T> Create<T>(T[] data)
     {
         ArgumentNullException.ThrowIfNull(data);
         return new Series<T>(data);
+    }
+
+    public static Series<T> Create<T>(T[] data, IReadOnlyDictionary<string, T> categories)
+    {
+        return Create(data, [.. categories]);
+    }
+
+    public static Series<T> Create<T>(T[] data, KeyValuePair<string, T>[] categories)
+    {
+        return Create(data, categories.AsMemory());
+    }
+
+    public static Series<T> Create<T>(T[] data, Memory<KeyValuePair<string, T>> categories)
+    {
+        ArgumentNullException.ThrowIfNull(data);
+        return new Series<T>(data, null, default, categories);
     }
 
     public static Series<T> Create<T>(ReadOnlySpan<T> data)
