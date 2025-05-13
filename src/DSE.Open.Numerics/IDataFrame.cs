@@ -3,7 +3,7 @@
 
 namespace DSE.Open.Numerics;
 
-public interface IDataFrame : IReadOnlyDataFrame, IList<Series>
+public interface IDataFrame : IReadOnlyDataFrame, IList<Vector>
 {
-    new Series? this[string name] { get; set; }
+    new Vector? this[string name] { get; set; }
 }

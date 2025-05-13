@@ -9,9 +9,9 @@ public partial class VectorTestsSubtract
     [Fact]
     public void SubtractInPlace_Int32_Zeroes_Ones()
     {
-        var v1 = Series.CreateOnes<int>(6);
-        var v2 = Series.CreateOnes<int>(6);
-        var v3 = Series.CreateZeroes<int>(6);
+        var v1 = Vector.CreateOnes<int>(6);
+        var v2 = Vector.CreateOnes<int>(6);
+        var v3 = Vector.CreateZeroes<int>(6);
         VectorPrimitives.SubtractInPlace(v1, v2);
         Assert.Equal(6, v1.Length);
         Assert.Equal(6, v2.Length);

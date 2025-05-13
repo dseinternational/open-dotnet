@@ -18,9 +18,9 @@ namespace DSE.Open.Numerics;
 /// a <see cref="DataFrame"/>.
 /// </summary>
 /// <typeparam name="T"></typeparam>
-[CollectionBuilder(typeof(Series), nameof(Create))]
-[JsonConverter(typeof(SeriesJsonConverter))]
-public sealed class Series<T> : Series, ISeries<T>, IReadOnlySeries<T>
+[CollectionBuilder(typeof(Vector), nameof(Create))]
+[JsonConverter(typeof(VectorJsonConverter))]
+public sealed class Vector<T> : Vector, IVector<T>, IReadOnlyVector<T>
 {
     private readonly Memory<T> _vector;
     private readonly Memory<KeyValuePair<string, T>> _categories;
@@ -29,11 +29,11 @@ public sealed class Series<T> : Series, ISeries<T>, IReadOnlySeries<T>
     /// <summary>
     /// Creates an empty series.
     /// </summary>
-    public Series() : this(Memory<T>.Empty, null, null, null)
+    public Vector() : this(Memory<T>.Empty, null, null, null)
     {
     }
 
-    public Series(
+    public Vector(
         T[] vector,
         string? name = null,
         Memory<Variant> labels = default,
@@ -42,21 +42,21 @@ public sealed class Series<T> : Series, ISeries<T>, IReadOnlySeries<T>
     {
     }
 
-    public Series(
+    public Vector(
         Memory<T> vector,
         string? name = null,
         Memory<Variant> labels = default,
         Memory<KeyValuePair<string, T>> categories = default)
-        : base(SeriesDataTypeHelper.GetSeriesDataType<T>(), typeof(T), vector.Length, name, labels)
+        : base(VectorDataTypeHelper.GetSeriesDataType<T>(), typeof(T), vector.Length, name, labels)
     {
         _vector = vector;
         _categories = categories;
         // TODO: check if categories are valid
     }
 
-    public Memory<T> Vector => _vector;
+    public Memory<T> Data => _vector;
 
-    ReadOnlyMemory<T> IReadOnlySeries<T>.Vector => _vector;
+    ReadOnlyMemory<T> IReadOnlyVector<T>.Data => _vector;
 
 #pragma warning disable CA1033 // Interface methods should be callable by child types
     int IReadOnlyCollection<T>.Count => Length;
@@ -70,7 +70,8 @@ public sealed class Series<T> : Series, ISeries<T>, IReadOnlySeries<T>
         set => _vector.Span[index] = value;
     }
 
-    public bool IsReadOnly { get; private set; }
+    public bool HasCategories => _categories.Length > 0
+        || (_categoriesLookup is not null && _categoriesLookup.Count > 0);
 
     public IDictionary<string, T> Categories
     {
@@ -90,7 +91,7 @@ public sealed class Series<T> : Series, ISeries<T>, IReadOnlySeries<T>
         }
     }
 
-    IReadOnlyDictionary<string, T> IReadOnlySeries<T>.Categories => Categories.AsReadOnly();
+    IReadOnlyDictionary<string, T> IReadOnlyVector<T>.Categories => Categories.AsReadOnly();
 
     /// <summary>
     /// Gets a span over the contents of the vector.
@@ -102,7 +103,7 @@ public sealed class Series<T> : Series, ISeries<T>, IReadOnlySeries<T>
     }
 
 #pragma warning disable CA1033 // Interface methods should be callable by child types
-    ReadOnlySpan<T> IReadOnlySeries<T>.AsReadOnlySpan()
+    ReadOnlySpan<T> IReadOnlyVector<T>.AsReadOnlySpan()
 #pragma warning restore CA1033 // Interface methods should be callable by child types
     {
         return AsSpan();
@@ -110,7 +111,7 @@ public sealed class Series<T> : Series, ISeries<T>, IReadOnlySeries<T>
 
     public override bool Equals(object? obj)
     {
-        return obj is Series<T> vector && Equals(vector);
+        return obj is Vector<T> vector && Equals(vector);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -126,32 +127,32 @@ public sealed class Series<T> : Series, ISeries<T>, IReadOnlySeries<T>
         return hash.ToHashCode();
     }
 
-    public new ReadOnlySeries<T> AsReadOnly()
+    public new ReadOnlyVector<T> AsReadOnly()
     {
-        return new ReadOnlySeries<T>(_vector);
+        return new ReadOnlyVector<T>(_vector);
     }
 
-    ReadOnlySeries<T> ISeries<T>.AsReadOnly()
+    ReadOnlyVector<T> IVector<T>.AsReadOnly()
     {
-        return new ReadOnlySeries<T>(_vector);
+        return new ReadOnlyVector<T>(_vector);
     }
 
-    protected override ReadOnlySeries CreateReadOnly()
+    protected override ReadOnlyVector CreateReadOnly()
     {
         return AsReadOnly();
     }
 
-    public bool Equals(Series<T>? other)
+    public bool Equals(Vector<T>? other)
     {
         return other is not null && Equals(other.AsSpan());
     }
 
-    public bool Equals(ISeries<T>? other)
+    public bool Equals(IVector<T>? other)
     {
         return other is not null && Equals(other.AsSpan());
     }
 
-    public bool Equals(IReadOnlySeries<T>? other)
+    public bool Equals(IReadOnlyVector<T>? other)
     {
         return other is not null && Equals(other.AsReadOnlySpan());
     }
@@ -168,7 +169,7 @@ public sealed class Series<T> : Series, ISeries<T>, IReadOnlySeries<T>
 
     IEnumerator<T> IEnumerable<T>.GetEnumerator()
     {
-        return MemoryMarshal.ToEnumerable((ReadOnlyMemory<T>)Vector).GetEnumerator();
+        return MemoryMarshal.ToEnumerable((ReadOnlyMemory<T>)Data).GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()
@@ -189,24 +190,24 @@ public sealed class Series<T> : Series, ISeries<T>, IReadOnlySeries<T>
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    ReadOnlyMemory<T> IReadOnlySeries<T>.Slice(int start, int length)
+    ReadOnlyMemory<T> IReadOnlyVector<T>.Slice(int start, int length)
     {
         return Slice(start, length);
     }
 
-    public static bool operator ==(Series<T>? left, Series<T>? right)
+    public static bool operator ==(Vector<T>? left, Vector<T>? right)
     {
         return left is not null && (right is null || left.Equals(right));
     }
 
-    public static bool operator !=(Series<T>? left, Series<T>? right)
+    public static bool operator !=(Vector<T>? left, Vector<T>? right)
     {
         return !(left == right);
     }
 
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",
         Justification = "By design")]
-    public static implicit operator Series<T>(T[] vector)
+    public static implicit operator Vector<T>(T[] vector)
     {
         ArgumentNullException.ThrowIfNull(vector);
         return new(vector);
@@ -214,14 +215,14 @@ public sealed class Series<T> : Series, ISeries<T>, IReadOnlySeries<T>
 
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",
         Justification = "By design")]
-    public static implicit operator Memory<T>(Series<T>? vector)
+    public static implicit operator Memory<T>(Vector<T>? vector)
     {
         return vector is not null ? vector._vector : default;
     }
 
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",
         Justification = "By design")]
-    public static implicit operator ReadOnlySeries<T>(Series<T> vector)
+    public static implicit operator ReadOnlyVector<T>(Vector<T> vector)
     {
         return vector is not null ? vector.AsReadOnly() : [];
     }

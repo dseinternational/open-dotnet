@@ -9,16 +9,16 @@ using DSE.Open.Numerics.Serialization;
 namespace DSE.Open.Numerics;
 
 /// <summary>
-/// A serializable sequence of values of known length and data type with value equality semantics.
+/// A serializable, contiguous sequence of values of known length and data type with value equality semantics.
 /// Optionally named, labelled or categorised for use with a <see cref="DataFrame"/>.
 /// </summary>
-[JsonConverter(typeof(SeriesJsonConverter))]
-public abstract class Series : ISeries
+[JsonConverter(typeof(VectorJsonConverter))]
+public abstract class Vector : IVector
 {
     private Memory<Variant> _labels;
 
-    protected internal Series(
-        SeriesDataType dataType,
+    protected internal Vector(
+        VectorDataType dataType,
         Type itemType,
         int length,
         string? name = null,
@@ -34,7 +34,7 @@ public abstract class Series : ISeries
         }
 
 #if DEBUG
-        if (SeriesDataTypeHelper.TryGetVectorDataType(itemType, out var expectedDataType)
+        if (VectorDataTypeHelper.TryGetVectorDataType(itemType, out var expectedDataType)
             && dataType != expectedDataType)
         {
             Debug.Fail($"Expected data type {expectedDataType} for "
@@ -70,12 +70,14 @@ public abstract class Series : ISeries
     /// <summary>
     /// Gets the data type of the series.
     /// </summary>
-    public SeriesDataType DataType { get; }
+    public VectorDataType DataType { get; }
 
     /// <summary>
     /// Gets or sets a name for the series (optional).
     /// </summary>
     public string? Name { get; set; }
+
+    public virtual bool IsReadOnly { get; }
 
     public Memory<Variant> Labels
     {
@@ -106,10 +108,10 @@ public abstract class Series : ISeries
     /// <param name="name"></param>
     /// <param name="data"></param>
     /// <returns></returns>
-    public static Series<T> Create<T>(string name, T[] data)
+    public static Vector<T> Create<T>(string name, T[] data)
     {
         ArgumentNullException.ThrowIfNull(data);
-        return new Series<T>(data, name);
+        return new Vector<T>(data, name);
     }
 
     /// <summary>
@@ -118,67 +120,67 @@ public abstract class Series : ISeries
     /// <typeparam name="T"></typeparam>
     /// <param name="data"></param>
     /// <returns></returns>
-    public static Series<T> Create<T>(T[] data)
+    public static Vector<T> Create<T>(T[] data)
     {
         ArgumentNullException.ThrowIfNull(data);
-        return new Series<T>(data);
+        return new Vector<T>(data);
     }
 
-    public static Series<T> Create<T>(T[] data, IReadOnlyDictionary<string, T> categories)
+    public static Vector<T> Create<T>(T[] data, IReadOnlyDictionary<string, T> categories)
     {
         return Create(data, [.. categories]);
     }
 
-    public static Series<T> Create<T>(T[] data, KeyValuePair<string, T>[] categories)
+    public static Vector<T> Create<T>(T[] data, KeyValuePair<string, T>[] categories)
     {
         return Create(data, categories.AsMemory());
     }
 
-    public static Series<T> Create<T>(T[] data, Memory<KeyValuePair<string, T>> categories)
+    public static Vector<T> Create<T>(T[] data, Memory<KeyValuePair<string, T>> categories)
     {
         ArgumentNullException.ThrowIfNull(data);
-        return new Series<T>(data, null, default, categories);
+        return new Vector<T>(data, null, default, categories);
     }
 
-    public static Series<T> Create<T>(ReadOnlySpan<T> data)
+    public static Vector<T> Create<T>(ReadOnlySpan<T> data)
     {
         return Create(data.ToArray());
     }
 
-    public static Series<T> Create<T>(int length, T scalar)
+    public static Vector<T> Create<T>(int length, T scalar)
         where T : struct, INumber<T>
     {
         var data = new T[length];
         data.AsSpan().Fill(scalar);
-        return new Series<T>(data);
+        return new Vector<T>(data);
     }
 
-    public static Series<T> Create<T>(int length)
+    public static Vector<T> Create<T>(int length)
         where T : struct, INumber<T>
     {
-        return new Series<T>(new T[length]);
+        return new Vector<T>(new T[length]);
     }
 
-    public static Series<T> CreateZeroes<T>(int length)
+    public static Vector<T> CreateZeroes<T>(int length)
         where T : struct, INumber<T>
     {
         return Create(length, T.Zero);
     }
 
-    public static Series<T> CreateOnes<T>(int length)
+    public static Vector<T> CreateOnes<T>(int length)
         where T : struct, INumber<T>
     {
         return Create(length, T.One);
     }
 
-    protected abstract ReadOnlySeries CreateReadOnly();
+    protected abstract ReadOnlyVector CreateReadOnly();
 
-    public ReadOnlySeries AsReadOnly()
+    public ReadOnlyVector AsReadOnly()
     {
         return CreateReadOnly();
     }
 
-    IReadOnlySeries ISeries.AsReadOnly()
+    IReadOnlySeries IVector.AsReadOnly()
     {
         return AsReadOnly();
     }

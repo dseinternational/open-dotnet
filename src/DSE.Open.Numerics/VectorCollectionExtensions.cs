@@ -3,7 +3,7 @@
 
 namespace DSE.Open.Numerics;
 
-public static class SeriesCollectionExtensions
+public static class VectorCollectionExtensions
 {
     // public static void Add<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(
     //     this ICollection<Series> series,

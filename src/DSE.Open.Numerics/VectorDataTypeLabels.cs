@@ -6,10 +6,10 @@ using System.Diagnostics.CodeAnalysis;
 namespace DSE.Open.Numerics;
 
 /// <summary>
-/// Provides labels for the data types supported by <see cref="Series{T}"/>.
+/// Provides labels for the data types supported by <see cref="Vector{T}"/>.
 /// </summary>
 [SuppressMessage("Naming", "CA1720:Identifier contains type name", Justification = "By design")]
-public static class SeriesDataTypeLabels
+public static class VectorDataTypeLabels
 {
     public const string Bool = "bool";
     public const string Char = "char";

@@ -22,7 +22,7 @@ public partial class CategorialVectorTests : LoggedTestsBase
     [Fact]
     public void Init()
     {
-        var vector = Series.Create(
+        var vector = Vector.Create(
             [1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6],
             [
                 KeyValuePair.Create("one", 1),
@@ -41,7 +41,7 @@ public partial class CategorialVectorTests : LoggedTestsBase
     [Fact]
     public void SerializeDeserialize()
     {
-        var vector = Series.Create(
+        var vector = Vector.Create(
             [1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6],
             [
                 KeyValuePair.Create("one", 1),
@@ -58,7 +58,7 @@ public partial class CategorialVectorTests : LoggedTestsBase
 
         Assert.NotNull(json);
 
-        var deserialized = JsonSerializer.Deserialize<Series<int>>(json, s_jsonOptions.Value);
+        var deserialized = JsonSerializer.Deserialize<Vector<int>>(json, s_jsonOptions.Value);
 
         Assert.NotNull(deserialized);
 
@@ -71,7 +71,7 @@ public partial class CategorialVectorTests : LoggedTestsBase
     public void AsReadOnly_ShouldReturnReadOnlySeries()
     {
         // Arrange
-        var vector = Series.Create([1, 1, 2, 3, 2],
+        var vector = Vector.Create([1, 1, 2, 3, 2],
         [
             KeyValuePair.Create("one", 1),
             KeyValuePair.Create("two", 2),
@@ -82,6 +82,6 @@ public partial class CategorialVectorTests : LoggedTestsBase
         var readOnlyVector = vector.AsReadOnly();
 
         // Assert
-        _ = Assert.IsType<ReadOnlySeries<int>>(readOnlyVector);
+        _ = Assert.IsType<ReadOnlyVector<int>>(readOnlyVector);
     }
 }

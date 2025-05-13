@@ -11,18 +11,18 @@ public sealed class ReadOnlyVectorJsonConverter : JsonConverter<IReadOnlySeries>
 {
     public static ReadOnlyVectorJsonConverter Default { get; } = new();
 
-    private readonly SeriesJsonConverter _inner;
+    private readonly VectorJsonConverter _inner;
 
     public ReadOnlyVectorJsonConverter() : this(default)
     {
     }
 
-    public ReadOnlyVectorJsonConverter(SeriesJsonFormat format = default)
+    public ReadOnlyVectorJsonConverter(VectorJsonFormat format = default)
     {
-        _inner = new SeriesJsonConverter(format);
+        _inner = new VectorJsonConverter(format);
     }
 
-    public SeriesJsonFormat Format => _inner.Format;
+    public VectorJsonFormat Format => _inner.Format;
 
     public override bool CanConvert(Type typeToConvert)
     {

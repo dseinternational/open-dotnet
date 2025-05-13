@@ -9,17 +9,17 @@ namespace DSE.Open.Numerics.Serialization;
 
 #pragma warning disable DSEOPEN001 // ArrayBuilder ref struct warning
 
-public static class SeriesJsonReader
+public static class VectorJsonReader
 {
-    public static Series<T> ReadSeries<T>(
+    public static Vector<T> ReadSeries<T>(
         ref Utf8JsonReader reader,
         int length,
-        SeriesJsonFormat format = default)
+        VectorJsonFormat format = default)
         where T : struct, INumber<T>
     {
         if (length == 0)
         {
-            return new Series<T>();
+            return new Vector<T>();
         }
 
         using var builder = length > -1
@@ -35,7 +35,7 @@ public static class SeriesJsonReader
                     throw new JsonException();
                 }
 
-                return Series.Create(builder.ToArray());
+                return Vector.Create(builder.ToArray());
             }
 
             if (reader.TokenType == JsonTokenType.Number)
@@ -50,16 +50,16 @@ public static class SeriesJsonReader
         throw new JsonException();
     }
 
-    public static Series<T> ReadCategorySeries<T>(
+    public static Vector<T> ReadCategorySeries<T>(
         ref Utf8JsonReader reader,
         int length,
         KeyValuePair<string, T>[] categories,
-        SeriesJsonFormat format = default)
+        VectorJsonFormat format = default)
         where T : struct, IComparable<T>, IEquatable<T>, IBinaryInteger<T>, IMinMaxValue<T>
     {
         if (length == 0)
         {
-            return new Series<T>();
+            return new Vector<T>();
         }
 
         using var builder = length > -1
@@ -75,7 +75,7 @@ public static class SeriesJsonReader
                     throw new JsonException();
                 }
 
-                return new Series<T>(builder.ToArray(), categories: categories);
+                return new Vector<T>(builder.ToArray(), categories: categories);
             }
 
             if (reader.TokenType == JsonTokenType.Number)
@@ -90,14 +90,14 @@ public static class SeriesJsonReader
         throw new JsonException();
     }
 
-    public static Series<string> ReadStringSeries(
+    public static Vector<string> ReadStringSeries(
         ref Utf8JsonReader reader,
         int length,
-        SeriesJsonFormat format = default)
+        VectorJsonFormat format = default)
     {
         if (length == 0)
         {
-            return new Series<string>();
+            return new Vector<string>();
         }
 
         using var builder = length > -1
@@ -113,7 +113,7 @@ public static class SeriesJsonReader
                     throw new JsonException();
                 }
 
-                return Series.Create(builder.ToArray());
+                return Vector.Create(builder.ToArray());
             }
 
             if (reader.TokenType == JsonTokenType.String)

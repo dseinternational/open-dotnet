@@ -8,11 +8,15 @@ using DSE.Open.Numerics.Serialization;
 
 namespace DSE.Open.Numerics;
 
+/// <summary>
+/// A serializable, fixed-length, contiguous sequence of read-only values 
+/// with value equality semantics.
+/// </summary>
 [JsonConverter(typeof(ReadOnlyVectorJsonConverter))]
-public abstract class ReadOnlySeries : IReadOnlySeries
+public abstract class ReadOnlyVector : IReadOnlySeries
 {
-    protected ReadOnlySeries(
-        SeriesDataType dataType,
+    protected ReadOnlyVector(
+        VectorDataType dataType,
         Type itemType,
         int length,
         string? name = null,
@@ -21,7 +25,7 @@ public abstract class ReadOnlySeries : IReadOnlySeries
         ArgumentNullException.ThrowIfNull(itemType);
 
 #if DEBUG
-        if (SeriesDataTypeHelper.TryGetVectorDataType(itemType, out var expectedDataType)
+        if (VectorDataTypeHelper.TryGetVectorDataType(itemType, out var expectedDataType)
             && dataType != expectedDataType)
         {
             Debug.Fail($"Expected data type {expectedDataType} for " +
@@ -53,7 +57,7 @@ public abstract class ReadOnlySeries : IReadOnlySeries
     /// <summary>
     /// Gets the data type of the series.
     /// </summary>
-    public SeriesDataType DataType { get; }
+    public VectorDataType DataType { get; }
 
     /// <summary>
     /// Creates a series from the given data.
@@ -61,16 +65,16 @@ public abstract class ReadOnlySeries : IReadOnlySeries
     /// <typeparam name="T"></typeparam>
     /// <param name="vector"></param>
     /// <returns></returns>
-    public static ReadOnlySeries<T> Create<T>(ReadOnlyMemory<T> vector)
+    public static ReadOnlyVector<T> Create<T>(ReadOnlyMemory<T> vector)
     {
         if (vector.Length == 0)
         {
 #pragma warning disable IDE0301 // Simplify collection initialization
-            return ReadOnlySeries<T>.Empty;
+            return ReadOnlyVector<T>.Empty;
 #pragma warning restore IDE0301 // Simplify collection initialization
         }
 
-        return new ReadOnlySeries<T>(vector);
+        return new ReadOnlyVector<T>(vector);
     }
 
     /// <summary>
@@ -79,26 +83,26 @@ public abstract class ReadOnlySeries : IReadOnlySeries
     /// <typeparam name="T"></typeparam>
     /// <param name="array"></param>
     /// <returns></returns>
-    public static ReadOnlySeries<T> Create<T>(T[] array)
+    public static ReadOnlyVector<T> Create<T>(T[] array)
     {
         ArgumentNullException.ThrowIfNull(array);
 
         if (array.Length == 0)
         {
 #pragma warning disable IDE0301 // Simplify collection initialization
-            return ReadOnlySeries<T>.Empty;
+            return ReadOnlyVector<T>.Empty;
 #pragma warning restore IDE0301 // Simplify collection initialization
         }
 
-        return new ReadOnlySeries<T>(array);
+        return new ReadOnlyVector<T>(array);
     }
 
-    public static ReadOnlySeries<T> Create<T>(ReadOnlySpan<T> data)
+    public static ReadOnlyVector<T> Create<T>(ReadOnlySpan<T> data)
     {
         return Create(data.ToArray());
     }
 
-    public static ReadOnlySeries<T> Create<T>(int length, T scalar)
+    public static ReadOnlyVector<T> Create<T>(int length, T scalar)
         where T : struct, INumber<T>
     {
         var data = new T[length];
@@ -106,19 +110,19 @@ public abstract class ReadOnlySeries : IReadOnlySeries
         return new(data);
     }
 
-    public static ReadOnlySeries<T> Create<T>(int length)
+    public static ReadOnlyVector<T> Create<T>(int length)
         where T : struct, INumber<T>
     {
         return new(new T[length]);
     }
 
-    public static ReadOnlySeries<T> CreateZeroes<T>(int length)
+    public static ReadOnlyVector<T> CreateZeroes<T>(int length)
         where T : struct, INumber<T>
     {
         return Create(length, T.Zero);
     }
 
-    public static ReadOnlySeries<T> CreateOnes<T>(int length)
+    public static ReadOnlyVector<T> CreateOnes<T>(int length)
         where T : struct, INumber<T>
     {
         return Create(length, T.One);

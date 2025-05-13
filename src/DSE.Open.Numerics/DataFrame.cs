@@ -11,14 +11,14 @@ namespace DSE.Open.Numerics;
 [JsonConverter(typeof(DataFrameJsonConverter))]
 public class DataFrame : IDataFrame
 {
-    private readonly Collection<Series> _columnVectors;
+    private readonly Collection<Vector> _columnVectors;
     private readonly Collection<string> _columnNames;
 
     public DataFrame() : this([])
     {
     }
 
-    public DataFrame(Collection<Series> columns)
+    public DataFrame(Collection<Vector> columns)
     {
         ArgumentNullException.ThrowIfNull(columns);
 
@@ -38,7 +38,7 @@ public class DataFrame : IDataFrame
 
     public bool IsReadOnly => false;
 
-    public Series? this[string name]
+    public Vector? this[string name]
     {
         get
         {
@@ -69,18 +69,18 @@ public class DataFrame : IDataFrame
         }
     }
 
-    public Series this[int index]
+    public Vector this[int index]
     {
         get => _columnVectors[index];
         set => _columnVectors[index] = value;
     }
 
-    public int IndexOf(Series item)
+    public int IndexOf(Vector item)
     {
         return _columnVectors.IndexOf(item);
     }
 
-    public void Insert(int index, Series item)
+    public void Insert(int index, Vector item)
     {
         _columnVectors.Insert(index, item);
     }
@@ -90,7 +90,7 @@ public class DataFrame : IDataFrame
         _columnVectors.RemoveAt(index);
     }
 
-    public void Add(Series item)
+    public void Add(Vector item)
     {
         _columnVectors.Add(item);
     }
@@ -100,22 +100,22 @@ public class DataFrame : IDataFrame
         _columnVectors.Clear();
     }
 
-    public bool Contains(Series item)
+    public bool Contains(Vector item)
     {
         return _columnVectors.Contains(item);
     }
 
-    public void CopyTo(Series[] array, int arrayIndex)
+    public void CopyTo(Vector[] array, int arrayIndex)
     {
         _columnVectors.CopyTo(array, arrayIndex);
     }
 
-    public bool Remove(Series item)
+    public bool Remove(Vector item)
     {
         return _columnVectors.Remove(item);
     }
 
-    public IEnumerator<Series> GetEnumerator()
+    public IEnumerator<Vector> GetEnumerator()
     {
         return _columnVectors.GetEnumerator();
     }

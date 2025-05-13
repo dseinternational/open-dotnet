@@ -9,9 +9,9 @@ internal static class JsonExceptionHelper
 {
     public static void ThrowIfLengthExceedsSerializationLimit(int length)
     {
-        if (length > SeriesJsonConstants.MaximumSerializedLength)
+        if (length > VectorJsonConstants.MaximumSerializedLength)
         {
-            throw new JsonException($"Vector length exceeds maximum serialization limit of {SeriesJsonConstants.MaximumSerializedLength}");
+            throw new JsonException($"Vector length exceeds maximum serialization limit of {VectorJsonConstants.MaximumSerializedLength}");
         }
     }
 }

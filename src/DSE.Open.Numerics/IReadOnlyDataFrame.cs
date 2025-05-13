@@ -3,9 +3,9 @@
 
 namespace DSE.Open.Numerics;
 
-public interface IReadOnlyDataFrame : IReadOnlyList<Series>
+public interface IReadOnlyDataFrame : IReadOnlyList<Vector>
 {
-    Series? this[string name] { get; }
+    Vector? this[string name] { get; }
 
     string? Name { get; }
 }

@@ -3,7 +3,7 @@
 
 namespace DSE.Open.Numerics.Serialization;
 
-public enum SeriesJsonFormat
+public enum VectorJsonFormat
 {
     Default,
 }
