@@ -11,7 +11,7 @@ namespace DSE.Open.Numerics.Serialization;
 
 public static class VectorJsonReader
 {
-    public static Vector<T> ReadSeries<T>(
+    public static Vector<T> ReadVector<T>(
         ref Utf8JsonReader reader,
         int length,
         VectorJsonFormat format = default)
@@ -50,7 +50,7 @@ public static class VectorJsonReader
         throw new JsonException();
     }
 
-    public static Vector<T> ReadCategorySeries<T>(
+    public static Vector<T> ReadCategoryVector<T>(
         ref Utf8JsonReader reader,
         int length,
         KeyValuePair<string, T>[] categories,
@@ -90,7 +90,7 @@ public static class VectorJsonReader
         throw new JsonException();
     }
 
-    public static Vector<string> ReadStringSeries(
+    public static Vector<string> ReadStringVector(
         ref Utf8JsonReader reader,
         int length,
         VectorJsonFormat format = default)

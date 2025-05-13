@@ -18,18 +18,18 @@ public class DataFrame : IDataFrame
     {
     }
 
-    public DataFrame(Collection<Vector> columns)
+    public DataFrame(Collection<Vector> columns, string? name = null, IEnumerable<string>? columnNames = null)
     {
         ArgumentNullException.ThrowIfNull(columns);
 
         _columnVectors = columns;
-        _columnNames = new Collection<string>(columns.Count);
+        _columnNames = columnNames is not null ? [.. columnNames] : new(columns.Count);
     }
 
     /// <summary>
     /// A name for the data frame (optional).
     /// </summary>
-    public string? Name { get; }
+    public string? Name { get; set; }
 
     /// <summary>
     /// Gets the number of columns in the data frame.
