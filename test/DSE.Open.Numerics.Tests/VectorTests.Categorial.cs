@@ -2,12 +2,11 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Text.Json;
-using DSE.Open.Testing.Xunit;
 using DSE.Open.Text.Json;
 
 namespace DSE.Open.Numerics;
 
-public partial class CategorialVectorTests : LoggedTestsBase
+public partial class VectorTests
 {
     private static readonly Lazy<JsonSerializerOptions> s_jsonOptions = new(() =>
     {
@@ -15,12 +14,8 @@ public partial class CategorialVectorTests : LoggedTestsBase
         return options;
     });
 
-    public CategorialVectorTests(ITestOutputHelper output) : base(output)
-    {
-    }
-
     [Fact]
-    public void Init()
+    public void Init_Categorial()
     {
         var vector = Vector.Create(
             [1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6],
