@@ -10,7 +10,7 @@ namespace DSE.Open.Numerics;
 
 /// <summary>
 /// A serializable, fixed-length, contiguous sequence of read-only values 
-/// with value equality semantics.
+///.
 /// </summary>
 [JsonConverter(typeof(ReadOnlyVectorJsonConverter))]
 public abstract class ReadOnlyVector : IReadOnlyVector
@@ -37,12 +37,15 @@ public abstract class ReadOnlyVector : IReadOnlyVector
         IsNumeric = NumberHelper.IsKnownNumberType(itemType);
         ItemType = itemType;
         Length = length;
+        Name = name;
     }
 
     /// <summary>
     /// Gets the number of items in the series.
     /// </summary>
     public int Length { get; }
+
+    public string? Name { get; }
 
     /// <summary>
     /// Indicates if the item type is a known numeric type.
@@ -99,6 +102,13 @@ public abstract class ReadOnlyVector : IReadOnlyVector
 
     public static ReadOnlyVector<T> Create<T>(ReadOnlySpan<T> data)
     {
+        if (data.Length == 0)
+        {
+#pragma warning disable IDE0301 // Simplify collection initialization
+            return ReadOnlyVector<T>.Empty;
+#pragma warning restore IDE0301 // Simplify collection initialization
+        }
+
         return Create(data.ToArray());
     }
 

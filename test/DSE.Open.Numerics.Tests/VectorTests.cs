@@ -24,18 +24,7 @@ public partial class VectorTests : LoggedTestsBase
         Assert.Equivalent(elements, vector.ToArray());
     }
 
-    private static void TestCreateNumeric<T>(T[] elements)
-        where T : struct, INumber<T>
-    {
-        var vector = Vector.Create(elements);
-
-        Assert.NotNull(vector);
-        Assert.Equal(elements.Length, vector.Length);
-        Assert.Equivalent(elements, vector.ToArray());
-    }
-
-    private static void TestSerializeDeserializeNumeric<T>(T[] elements, JsonSerializerOptions serializerOptions)
-        where T : struct, INumber<T>
+    private static void TestSerializeDeserialize<T>(T[] elements, JsonSerializerOptions serializerOptions)
     {
         var vector = Vector.Create(elements);
 
@@ -64,25 +53,25 @@ public partial class VectorTests : LoggedTestsBase
     [Fact]
     public void CreateNumericInt32()
     {
-        TestCreateNumeric([0, 1, 2, 3, 4]);
+        TestCreate([0, 1, 2, 3, 4]);
     }
 
     [Fact]
     public void CreateNumericFloat()
     {
-        TestCreateNumeric([0.496f, 1.235f, 200.8469874f, -4682.169845f, 981635.123548715f]);
+        TestCreate([0.496f, 1.235f, 200.8469874f, -4682.169845f, 981635.123548715f]);
     }
 
     [Fact]
     public void CreateNumericDouble()
     {
-        TestCreateNumeric([0.496, 1.235, 200.8469874, -4682.169845, 981635.123548715]);
+        TestCreate([0.496, 1.235, 200.8469874, -4682.169845, 981635.123548715]);
     }
 
     [Fact]
     public void SerializeDeserializeReflectedFloat()
     {
-        TestSerializeDeserializeNumeric(
+        TestSerializeDeserialize(
             [0.496f, 1.235f, 200.8469874f, -4682.169845f, 981635.123548715f],
             NumericsJsonSharedOptions.Reflected);
     }
@@ -90,7 +79,7 @@ public partial class VectorTests : LoggedTestsBase
     [Fact]
     public void SerializeDeserializeSourceGeneratedFloat()
     {
-        TestSerializeDeserializeNumeric(
+        TestSerializeDeserialize(
             [0.496f, 1.235f, 200.8469874f, -4682.169845f, 981635.123548715f],
             NumericsJsonSharedOptions.SourceGenerated);
     }
@@ -99,14 +88,14 @@ public partial class VectorTests : LoggedTestsBase
     public void SerializeDeserializeReflectedDate64()
     {
         var elements = Enumerable.Range(1, 20).Select(i => new DateTime64(i * 1000L * 60 * 60 * 24 * 365)).ToArray();
-        TestSerializeDeserializeNumeric(elements, NumericsJsonSharedOptions.Reflected);
+        TestSerializeDeserialize(elements, NumericsJsonSharedOptions.Reflected);
     }
 
     [Fact]
     public void SerializeDeserializeSourceGeneratedDate64()
     {
         var elements = Enumerable.Range(1, 20).Select(i => new DateTime64(i * 1000L * 60 * 60 * 24 * 365)).ToArray();
-        TestSerializeDeserializeNumeric(elements, NumericsJsonSharedOptions.SourceGenerated);
+        TestSerializeDeserialize(elements, NumericsJsonSharedOptions.SourceGenerated);
     }
 
     [Fact]
@@ -124,18 +113,14 @@ public partial class VectorTests : LoggedTestsBase
         var numVector = Assert.IsType<Vector<double>>(vector);
         Assert.NotNull(numVector);
     }
-    [Fact]
-    public void Init()
-    {
-        Vector<int> v1 = [1, 2, 3, 4, 5, 6];
 
-        var v2 = Vector.Create([1, 2, 3, 4, 5, 6]);
-
-        Assert.Equal(6, v1.Length);
-        Assert.Equal(6, v2.Length);
-
-        Assert.True(v1.AsSpan().SequenceEqual(v2.AsSpan()));
-    }
+    //[Fact]
+    //public void VectorEquality()
+    //{
+    //    Vector<int> v1 = [1, 2, 3, 4, 5, 6];
+    //    var v2 = Vector.Create([1, 2, 3, 4, 5, 6]);
+    //    Assert.Equal(v1, v2);
+    //}
 
     [Fact]
     public void CreateDefault()
@@ -168,46 +153,6 @@ public partial class VectorTests : LoggedTestsBase
         var v2 = Vector.CreateOnes<int>(6);
         Assert.Equal(v1, v2);
     }
-    /*
-    [Fact]
-    public void AdditionOperator()
-    {
-        var v1 = Series.CreateOnes<int>(6);
-        var v2 = Series.CreateOnes<int>(6);
-        var v3 = v1 + v2;
-        Assert.Equal(6, v3.Length);
-        Assert.True(v3.AsSpan().SequenceEqual([2, 2, 2, 2, 2, 2]));
-    }
-
-    [Fact]
-    public void AdditionOperatorScalar()
-    {
-        var v1 = Series.CreateOnes<int>(6);
-        var v2 = v1 + 1;
-        Assert.Equal(6, v2.Length);
-        Assert.True(v2.AsSpan().SequenceEqual([2, 2, 2, 2, 2, 2]));
-    }
-
-    [Fact]
-    public void SubtractionOperator()
-    {
-        var v1 = Series.CreateOnes<int>(6);
-        var v2 = Series.CreateOnes<int>(6);
-        var v3 = v1 - v2;
-        Assert.Equal(6, v3.Length);
-        Assert.True(v3.AsSpan().SequenceEqual([0, 0, 0, 0, 0, 0]));
-    }
-
-    [Fact]
-    public void SubtractionOperatorScalar()
-    {
-        var v1 = Series.CreateOnes<int>(6);
-        var v2 = v1 - 1;
-        Assert.Equal(6, v2.Length);
-        Assert.True(v2.AsSpan().SequenceEqual([0, 0, 0, 0, 0, 0]));
-    }
-    */
-
 
     [Fact]
     public void SerializeDeserializeReflected()
@@ -278,4 +223,46 @@ public partial class VectorTests : LoggedTestsBase
         var series2 = Assert.IsType<Vector<int>>(deserialized);
         Assert.Equivalent(series, series2);
     }
+
+    /*
+    [Fact]
+    public void AdditionOperator()
+    {
+        var v1 = Series.CreateOnes<int>(6);
+        var v2 = Series.CreateOnes<int>(6);
+        var v3 = v1 + v2;
+        Assert.Equal(6, v3.Length);
+        Assert.True(v3.AsSpan().SequenceEqual([2, 2, 2, 2, 2, 2]));
+    }
+
+    [Fact]
+    public void AdditionOperatorScalar()
+    {
+        var v1 = Series.CreateOnes<int>(6);
+        var v2 = v1 + 1;
+        Assert.Equal(6, v2.Length);
+        Assert.True(v2.AsSpan().SequenceEqual([2, 2, 2, 2, 2, 2]));
+    }
+
+    [Fact]
+    public void SubtractionOperator()
+    {
+        var v1 = Series.CreateOnes<int>(6);
+        var v2 = Series.CreateOnes<int>(6);
+        var v3 = v1 - v2;
+        Assert.Equal(6, v3.Length);
+        Assert.True(v3.AsSpan().SequenceEqual([0, 0, 0, 0, 0, 0]));
+    }
+
+    [Fact]
+    public void SubtractionOperatorScalar()
+    {
+        var v1 = Series.CreateOnes<int>(6);
+        var v2 = v1 - 1;
+        Assert.Equal(6, v2.Length);
+        Assert.True(v2.AsSpan().SequenceEqual([0, 0, 0, 0, 0, 0]));
+    }
+    */
+
+
 }

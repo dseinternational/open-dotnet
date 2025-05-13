@@ -4,12 +4,13 @@
 using System.Diagnostics;
 using System.Numerics;
 using System.Text.Json.Serialization;
+using CommunityToolkit.HighPerformance;
 using DSE.Open.Numerics.Serialization;
 
 namespace DSE.Open.Numerics;
 
 /// <summary>
-/// A serializable, contiguous sequence of values of known length and data type with value equality semantics.
+/// A serializable, contiguous sequence of values of known length and data type.
 /// Optionally named, labelled or categorised for use with a <see cref="DataFrame"/>.
 /// </summary>
 [JsonConverter(typeof(VectorJsonConverter))]
@@ -101,8 +102,85 @@ public abstract class Vector : IVector
         }
     }
 
+    protected abstract ReadOnlyVector CreateReadOnly();
+
+    public ReadOnlyVector AsReadOnly()
+    {
+        return CreateReadOnly();
+    }
+
+    IReadOnlyVector IVector.AsReadOnly()
+    {
+        return AsReadOnly();
+    }
+
     /// <summary>
-    /// Creates a series from the given data.
+    /// Creates a vector from the given data.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="data"></param>
+    /// <returns></returns>
+    public static Vector<T> Create<T>(Memory<T> data)
+    {
+        return new Vector<T>(data);
+    }
+
+    public static Vector<T> Create<T>(Memory<T> data, Memory<Variant> labels)
+    {
+        return new Vector<T>(data, labels: labels);
+    }
+
+    /// <summary>
+    /// Creates a vector from the given data with the specified name.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="name"></param>
+    /// <param name="data"></param>
+    /// <returns></returns>
+    public static Vector<T> Create<T>(string name, Memory<T> data)
+    {
+        return new Vector<T>(data, name);
+    }
+
+    public static Vector<T> Create<T>(string name, Memory<T> data, Memory<Variant> labels)
+    {
+        return new Vector<T>(data, name, labels);
+    }
+
+    public static Vector<T> Create<T>(string name, Memory<T> data, Memory<Variant> labels, Memory<KeyValuePair<string, T>> categories)
+    {
+        return new Vector<T>(data, name, labels, categories);
+    }
+
+    public static Vector<T> Create<T>(string name, Memory<T> data, IReadOnlyDictionary<string, T> categories)
+    {
+        return Create(name, data, [.. categories]);
+    }
+
+    public static Vector<T> Create<T>(string name, Memory<T> data, KeyValuePair<string, T>[] categories)
+    {
+        return Create(name, data, categories.AsMemory());
+    }
+
+    public static Vector<T> Create<T>(string name, Memory<T> data, Memory<KeyValuePair<string, T>> categories)
+    {
+        return new Vector<T>(data, name, default, categories);
+    }
+
+    /// <summary>
+    /// Creates a vector from the given data.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="data"></param>
+    /// <returns></returns>
+    public static Vector<T> Create<T>(T[] data)
+    {
+        ArgumentNullException.ThrowIfNull(data);
+        return new Vector<T>(data);
+    }
+
+    /// <summary>
+    /// Creates a vector from the given data with the specified name.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="name"></param>
@@ -112,18 +190,6 @@ public abstract class Vector : IVector
     {
         ArgumentNullException.ThrowIfNull(data);
         return new Vector<T>(data, name);
-    }
-
-    /// <summary>
-    /// Creates a series from the given data.
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="data"></param>
-    /// <returns></returns>
-    public static Vector<T> Create<T>(T[] data)
-    {
-        ArgumentNullException.ThrowIfNull(data);
-        return new Vector<T>(data);
     }
 
     public static Vector<T> Create<T>(T[] data, IReadOnlyDictionary<string, T> categories)
@@ -139,12 +205,92 @@ public abstract class Vector : IVector
     public static Vector<T> Create<T>(T[] data, Memory<KeyValuePair<string, T>> categories)
     {
         ArgumentNullException.ThrowIfNull(data);
-        return new Vector<T>(data, null, default, categories);
+        return new Vector<T>(data.AsMemory(), null, default, categories);
+    }
+
+    public static Vector<T> Create<T>(string name, T[] data, IReadOnlyDictionary<string, T> categories)
+    {
+        return Create(name, data.AsMemory(), [.. categories]);
+    }
+
+    public static Vector<T> Create<T>(string name, T[] data, KeyValuePair<string, T>[] categories)
+    {
+        return new(data.AsMemory(), name, categories: categories.AsMemory());
+    }
+
+    public static Vector<T> Create<T>(string name, T[] data, Memory<KeyValuePair<string, T>> categories)
+    {
+        ArgumentNullException.ThrowIfNull(data);
+        return new(data.AsMemory(), name, categories: categories);
+    }
+
+    public static Vector<T> Create<T>(
+        string name,
+        T[] data,
+        Memory<Variant> labels,
+        IReadOnlyDictionary<string, T> categories)
+    {
+        ArgumentNullException.ThrowIfNull(data);
+        return Create(name, data, labels, [.. categories]);
+    }
+
+    public static Vector<T> Create<T>(
+        string name,
+        T[] data,
+        Memory<Variant> labels,
+        KeyValuePair<string, T>[] categories)
+    {
+        ArgumentNullException.ThrowIfNull(data);
+        return new(data.AsMemory(), name, labels, categories.AsMemory());
+    }
+
+    public static Vector<T> Create<T>(
+        string name,
+        T[] data,
+        Memory<Variant> labels,
+        Memory<KeyValuePair<string, T>> categories)
+    {
+        ArgumentNullException.ThrowIfNull(data);
+        return new(data.AsMemory(), name, labels, categories);
     }
 
     public static Vector<T> Create<T>(ReadOnlySpan<T> data)
     {
-        return Create(data.ToArray());
+        return new(data.ToArray());
+    }
+
+    public static Vector<T> Create<T>(string name, ReadOnlySpan<T> data)
+    {
+        return new(data.ToArray());
+    }
+
+    public static Vector<T> Create<T>(string name, ReadOnlySpan<T> data, ReadOnlySpan<KeyValuePair<string, T>> categories)
+    {
+        return new(data.ToArray(), name, categories: categories.ToArray());
+    }
+
+    public static ReadOnlyVector<T> CreateReadOnly<T>(ReadOnlySpan<T> data)
+    {
+        return new(data.ToArray());
+    }
+
+    public static ReadOnlyVector<T> CreateReadOnly<T>(string name, ReadOnlySpan<T> data)
+    {
+        return new(data.ToArray(), name);
+    }
+
+    public static ReadOnlyVector<T> CreateReadOnly<T>(
+        string name,
+        ReadOnlySpan<T> data,
+        ReadOnlySpan<KeyValuePair<string, T>> categories)
+    {
+        return new(data.ToArray(), name, categories: categories.ToArray());
+    }
+
+    public static Vector<T> Create<T>(int length)
+        where T : struct, INumber<T>
+    {
+        return new Vector<T>(new T[length]);
     }
 
     public static Vector<T> Create<T>(int length, T scalar)
@@ -153,12 +299,6 @@ public abstract class Vector : IVector
         var data = new T[length];
         data.AsSpan().Fill(scalar);
         return new Vector<T>(data);
-    }
-
-    public static Vector<T> Create<T>(int length)
-        where T : struct, INumber<T>
-    {
-        return new Vector<T>(new T[length]);
     }
 
     public static Vector<T> CreateZeroes<T>(int length)
@@ -173,15 +313,9 @@ public abstract class Vector : IVector
         return Create(length, T.One);
     }
 
-    protected abstract ReadOnlyVector CreateReadOnly();
-
-    public ReadOnlyVector AsReadOnly()
+    public static Vector<T> Create<T>(string name, int length)
+        where T : struct, INumber<T>
     {
-        return CreateReadOnly();
-    }
-
-    IReadOnlyVector IVector.AsReadOnly()
-    {
-        return AsReadOnly();
+        return new Vector<T>(new T[length], name);
     }
 }

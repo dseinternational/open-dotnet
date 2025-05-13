@@ -14,13 +14,13 @@ namespace DSE.Open.Numerics;
 
 /// <summary>
 /// A serializable sequence of values of known length of type <typeparamref name="T"/>
-/// with value equality semantics. Optionally named, labelled or categorised for use with
+///. Optionally named, labelled or categorised for use with
 /// a <see cref="DataFrame"/>.
 /// </summary>
 /// <typeparam name="T"></typeparam>
 [CollectionBuilder(typeof(Vector), nameof(Create))]
 [JsonConverter(typeof(VectorJsonConverter))]
-public sealed class Vector<T> : Vector, IVector<T>, IReadOnlyVector<T>
+public sealed class Vector<T> : Vector, IVector<T>, IReadOnlyVector<T>, IEquatable<Vector<T>>
 {
     private readonly Memory<T> _vector;
     private readonly Memory<KeyValuePair<string, T>> _categories;
@@ -159,10 +159,35 @@ public sealed class Vector<T> : Vector, IVector<T>, IReadOnlyVector<T>
 
     public bool Equals(IReadOnlyVector<T>? other)
     {
-        return other is not null && Equals(other.AsReadOnlySpan());
+        return other is not null && Name == other.Name && SequenceEqual(other.AsReadOnlySpan());
     }
 
     public bool Equals(ReadOnlySpan<T> other)
+    {
+        return SequenceEqual(other);
+    }
+
+    public bool Equals(Memory<T> other)
+    {
+        return _vector.Equals(other);
+    }
+
+    public bool SequenceEqual(Vector<T>? other)
+    {
+        return other is not null && Equals(other.AsSpan());
+    }
+
+    public bool SequenceEqual(IVector<T>? other)
+    {
+        return other is not null && Equals(other.AsSpan());
+    }
+
+    public bool SequenceEqual(IReadOnlyVector<T>? other)
+    {
+        return other is not null && Equals(other.AsReadOnlySpan());
+    }
+
+    public bool SequenceEqual(ReadOnlySpan<T> other)
     {
         return AsSpan().SequenceEqual(other);
     }
@@ -200,18 +225,17 @@ public sealed class Vector<T> : Vector, IVector<T>, IReadOnlyVector<T>
         return Slice(start, length);
     }
 
-    public static bool operator ==(Vector<T>? left, Vector<T>? right)
+    [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",
+        Justification = "By design")]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static implicit operator Vector<T>(Memory<T> vector)
     {
-        return left is not null && (right is null || left.Equals(right));
-    }
-
-    public static bool operator !=(Vector<T>? left, Vector<T>? right)
-    {
-        return !(left == right);
+        return new(vector);
     }
 
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",
         Justification = "By design")]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator Vector<T>(T[] vector)
     {
         ArgumentNullException.ThrowIfNull(vector);
@@ -220,6 +244,7 @@ public sealed class Vector<T> : Vector, IVector<T>, IReadOnlyVector<T>
 
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",
         Justification = "By design")]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator Memory<T>(Vector<T>? vector)
     {
         return vector is not null ? vector._vector : default;
@@ -227,6 +252,7 @@ public sealed class Vector<T> : Vector, IVector<T>, IReadOnlyVector<T>
 
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",
         Justification = "By design")]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator ReadOnlyVector<T>(Vector<T> vector)
     {
         return vector is not null ? vector.AsReadOnly() : [];

@@ -4,7 +4,7 @@
 namespace DSE.Open.Numerics;
 
 /// <summary>
-/// A serializable, contiguous sequence of values of known length and data type with value equality semantics.
+/// A serializable, contiguous sequence of values of known length and data type.
 /// Optionally named, labelled or categorised for use with a <see cref="DataFrame"/>.
 /// </summary>
 public interface IVector : IReadOnlyVector
@@ -18,7 +18,7 @@ public interface IVector : IReadOnlyVector
 }
 
 /// <summary>
-/// A serializable, contiguous sequence of values of known length and data type with value equality semantics.
+/// A serializable, contiguous sequence of values of known length and data type.
 /// Optionally named, labelled or categorised for use with a <see cref="DataFrame"/>.
 /// </summary>
 public interface IVector<T>

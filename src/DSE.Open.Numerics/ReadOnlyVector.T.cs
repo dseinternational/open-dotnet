@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
@@ -13,7 +14,7 @@ namespace DSE.Open.Numerics;
 
 /// <summary>
 /// A serializable, contiguous, fixed-length sequence of read-only values of data type <typeparamref name="T"/>
-/// with value equality semantics. Optionally named, labelled or categorised for use with
+///. Optionally named, labelled or categorised for use with
 /// a <see cref="IReadOnlyDataFrame"/>.
 /// </summary>
 /// <typeparam name="T"></typeparam>
@@ -161,6 +162,14 @@ public sealed class ReadOnlyVector<T> : ReadOnlyVector, IReadOnlyVector<T>
     public static bool operator !=(ReadOnlyVector<T>? left, ReadOnlyVector<T>? right)
     {
         return !(left == right);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",
+        Justification = "By design")]
+    public static implicit operator ReadOnlyVector<T>(ReadOnlyMemory<T> vector)
+    {
+        return new(vector);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

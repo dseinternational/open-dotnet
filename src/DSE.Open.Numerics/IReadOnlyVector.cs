@@ -10,6 +10,8 @@ namespace DSE.Open.Numerics;
 /// </summary>
 public interface IReadOnlyVector
 {
+    string? Name { get; }
+
     int Length { get; }
 
     bool IsNumeric { get; }
@@ -19,7 +21,7 @@ public interface IReadOnlyVector
 
 /// <summary>
 /// A serializable, contiguous, fixed-length sequence of read-only values of data type <typeparamref name="T"/>
-/// with value equality semantics. Optionally named, labelled or categorised for use with
+///. Optionally named, labelled or categorised for use with
 /// a <see cref="IReadOnlyDataFrame"/>.
 /// </summary>
 public interface IReadOnlyVector<T>
