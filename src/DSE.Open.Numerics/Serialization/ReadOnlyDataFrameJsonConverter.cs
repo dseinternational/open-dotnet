@@ -7,15 +7,17 @@ using System.Text.Json.Serialization;
 
 namespace DSE.Open.Numerics.Serialization;
 
-public class ReadOnlyDataFrameJsonConverter : JsonConverter<IReadOnlyDataFrame>
+public class ReadOnlyDataFrameJsonConverter : JsonConverter<ReadOnlyDataFrame>
 {
+    public static readonly ReadOnlyDataFrameJsonConverter Default = new();
+
     public override bool CanConvert(Type typeToConvert)
     {
         Debug.Assert(typeToConvert is not null);
-        return typeToConvert.IsAssignableTo(typeof(IReadOnlyDataFrame));
+        return typeToConvert.IsAssignableTo(typeof(ReadOnlyDataFrame));
     }
 
-    public override IReadOnlyDataFrame Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public override ReadOnlyDataFrame Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         if (reader.TokenType != JsonTokenType.StartObject)
         {
@@ -25,7 +27,7 @@ public class ReadOnlyDataFrameJsonConverter : JsonConverter<IReadOnlyDataFrame>
         throw new NotImplementedException();
     }
 
-    public override void Write(Utf8JsonWriter writer, IReadOnlyDataFrame value, JsonSerializerOptions options)
+    public override void Write(Utf8JsonWriter writer, ReadOnlyDataFrame value, JsonSerializerOptions options)
     {
         throw new NotImplementedException();
     }

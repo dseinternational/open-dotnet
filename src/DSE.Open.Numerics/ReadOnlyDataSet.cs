@@ -9,25 +9,25 @@ using DSE.Open.Numerics.Serialization;
 namespace DSE.Open.Numerics;
 
 [JsonConverter(typeof(ReadOnlyDataSetJsonConverter))]
-public class ReadOnlyDataSet : IReadOnlyDataSet
+public class ReadOnlyDataSet : IReadOnlyList<ReadOnlyDataFrame>
 {
-    private readonly Collection<DataFrame> _dataFrames;
+    private readonly ReadOnlyCollection<ReadOnlyDataFrame> _dataFrames;
 
-    public ReadOnlyDataSet(IEnumerable<DataFrame> dataFrames)
+    public ReadOnlyDataSet(ReadOnlyCollection<ReadOnlyDataFrame> dataFrames)
     {
         ArgumentNullException.ThrowIfNull(dataFrames);
-        _dataFrames = [.. dataFrames];
+        _dataFrames = dataFrames;
     }
 
-    public DataFrame this[int index] => ((IReadOnlyList<DataFrame>)_dataFrames)[index];
+    public ReadOnlyDataFrame this[int index] => _dataFrames[index];
 
     public string? Name { get; }
 
-    public int Count => ((IReadOnlyCollection<DataFrame>)_dataFrames).Count;
+    public int Count => _dataFrames.Count;
 
-    public IEnumerator<DataFrame> GetEnumerator()
+    public IEnumerator<ReadOnlyDataFrame> GetEnumerator()
     {
-        return ((IEnumerable<DataFrame>)_dataFrames).GetEnumerator();
+        return _dataFrames.GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()

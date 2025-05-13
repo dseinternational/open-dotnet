@@ -12,18 +12,18 @@ namespace DSE.Open.Numerics;
 /// Stores related data as a collection of columns (<see cref="Vector"/>).
 /// </summary>
 [JsonConverter(typeof(ReadOnlyDataFrameJsonConverter))]
-public class ReadOnlyDataFrame : IReadOnlyList<Vector>
+public class ReadOnlyDataFrame : IReadOnlyList<ReadOnlyVector>
 {
     public static readonly ReadOnlyDataFrame Empty = new();
 
-    private readonly ReadOnlyCollection<Vector> _columnVectors;
+    private readonly ReadOnlyCollection<ReadOnlyVector> _columnVectors;
     private readonly ReadOnlyCollection<string> _columnNames;
 
     private ReadOnlyDataFrame() : this([])
     {
     }
 
-    public ReadOnlyDataFrame(ReadOnlyCollection<Vector> vectors)
+    public ReadOnlyDataFrame(ReadOnlyCollection<ReadOnlyVector> vectors)
     {
         ArgumentNullException.ThrowIfNull(vectors);
 
@@ -39,7 +39,7 @@ public class ReadOnlyDataFrame : IReadOnlyList<Vector>
         _columnNames = [.. names];
     }
 
-    public ReadOnlyDataFrame(ReadOnlyCollection<Vector> vectors, ReadOnlyCollection<string> columnNames)
+    public ReadOnlyDataFrame(ReadOnlyCollection<ReadOnlyVector> vectors, ReadOnlyCollection<string> columnNames)
     {
         ArgumentNullException.ThrowIfNull(vectors);
         ArgumentNullException.ThrowIfNull(columnNames);
@@ -53,9 +53,9 @@ public class ReadOnlyDataFrame : IReadOnlyList<Vector>
         _columnNames = columnNames;
     }
 
-    public Vector this[int index] => _columnVectors[index];
+    public ReadOnlyVector this[int index] => _columnVectors[index];
 
-    public Vector? this[string name]
+    public ReadOnlyVector? this[string name]
     {
         get
         {
@@ -79,7 +79,7 @@ public class ReadOnlyDataFrame : IReadOnlyList<Vector>
 
     public int Count => _columnVectors.Count;
 
-    public IEnumerator<Vector> GetEnumerator()
+    public IEnumerator<ReadOnlyVector> GetEnumerator()
     {
         return _columnVectors.GetEnumerator();
     }

@@ -12,7 +12,7 @@ namespace DSE.Open.Numerics;
 /// A set of data frames (<see cref="DataFrame"/>).
 /// </summary>
 [JsonConverter(typeof(DataSetJsonConverter))]
-public class DataSet : IDataSet
+public class DataSet : IList<DataFrame>
 {
     private readonly Collection<DataFrame> _dataFrames;
 
@@ -29,6 +29,11 @@ public class DataSet : IDataSet
     public int Count => _dataFrames.Count;
 
     public bool IsReadOnly => _dataFrames.IsReadOnly;
+
+    public ReadOnlyDataSet AsReadOnly()
+    {
+        return new ReadOnlyDataSet([.. _dataFrames.Select(df => df.AsReadOnly())]);
+    }
 
     public void Add(DataFrame item)
     {

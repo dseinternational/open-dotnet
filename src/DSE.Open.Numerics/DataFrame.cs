@@ -38,6 +38,11 @@ public class DataFrame : IDataFrame
 
     public bool IsReadOnly => false;
 
+    public ReadOnlyDataFrame AsReadOnly()
+    {
+        return new ReadOnlyDataFrame([.. _columnVectors.Select(v => v.AsReadOnly())]);
+    }
+
     public Vector? this[string name]
     {
         get
