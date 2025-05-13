@@ -19,7 +19,7 @@ public static class VectorJsonReader
     {
         if (length == 0)
         {
-            return Vector<T>.Empty;
+            return [];
         }
 
         using var builder = length > -1

@@ -122,7 +122,6 @@ public class VectorJsonConverter : JsonConverter<Vector>
                     VectorDataType.String => VectorJsonReader.ReadStringVector(ref reader, length),
                     _ => throw new JsonException($"Unsupported data type: {dtype}")
                 };
-#pragma warning restore IDE0072 // Add missing cases
             }
         }
 

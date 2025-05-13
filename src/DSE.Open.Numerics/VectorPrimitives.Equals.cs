@@ -8,17 +8,17 @@ namespace DSE.Open.Numerics;
 public static partial class VectorPrimitives
 {
     public static bool SequenceEqual<T>(
-        [NotNull] IReadOnlySeries<T> vector1,
-        [NotNull] IReadOnlySeries<T> vector2)
+        [NotNull] IReadOnlyVector<T> vector1,
+        [NotNull] IReadOnlyVector<T> vector2)
     {
         ArgumentNullException.ThrowIfNull(vector1);
         ArgumentNullException.ThrowIfNull(vector2);
-        return vector1.AsReadOnlySpan().SequenceEqual(vector2.AsReadOnlySpan());
+        return vector1.AsSpan().SequenceEqual(vector2.AsSpan());
     }
 
-    public static IReadOnlySeries<bool> Equals<T>(
-        [NotNull] IReadOnlySeries<T> vector1,
-        [NotNull] IReadOnlySeries<T> vector2)
+    public static IReadOnlyVector<bool> Equals<T>(
+        [NotNull] IReadOnlyVector<T> vector1,
+        [NotNull] IReadOnlyVector<T> vector2)
         where T : IEquatable<T>
     {
         ArgumentNullException.ThrowIfNull(vector1);
@@ -36,6 +36,6 @@ public static partial class VectorPrimitives
             result[i] = vector1[i].Equals(vector2[i]);
         }
 
-        return new Series<bool>(result);
+        return new Vector<bool>(result);
     }
 }

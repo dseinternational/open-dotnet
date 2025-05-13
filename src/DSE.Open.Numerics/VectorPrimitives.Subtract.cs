@@ -11,24 +11,24 @@ public static partial class VectorPrimitives
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void Subtract<T>(
-        IReadOnlySeries<T> x,
-        IReadOnlySeries<T> y,
-        ISeries<T> destination)
+        IReadOnlyVector<T> x,
+        IReadOnlyVector<T> y,
+        IVector<T> destination)
         where T : struct, INumber<T>
     {
         NumericsException.ThrowIfNotEqualLength(x, y, destination);
-        Subtract(x.AsReadOnlySpan(), y.AsReadOnlySpan(), destination.AsSpan());
+        Subtract(x.AsSpan(), y.AsSpan(), destination.AsSpan());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void Subtract<T>(
-        IReadOnlySeries<T> x,
-        IReadOnlySeries<T> y,
+        IReadOnlyVector<T> x,
+        IReadOnlyVector<T> y,
         Span<T> destination)
         where T : struct, INumber<T>
     {
         NumericsException.ThrowIfNotEqualLength(x, y, destination);
-        Subtract(x.AsReadOnlySpan(), y.AsReadOnlySpan(), destination);
+        Subtract(x.AsSpan(), y.AsSpan(), destination);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -41,24 +41,24 @@ public static partial class VectorPrimitives
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void Subtract<T>(
-        IReadOnlySeries<T> x,
+        IReadOnlyVector<T> x,
         T y,
-        ISeries<T> destination)
+        IVector<T> destination)
         where T : struct, INumber<T>
     {
         NumericsException.ThrowIfNotEqualLength(x, destination);
-        Subtract(x.AsReadOnlySpan(), y, destination.AsSpan());
+        Subtract(x.AsSpan(), y, destination.AsSpan());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void Subtract<T>(
-        IReadOnlySeries<T> x,
+        IReadOnlyVector<T> x,
         T y,
         Span<T> destination)
         where T : struct, INumber<T>
     {
         NumericsException.ThrowIfNotEqualLength(x, destination);
-        Subtract(x.AsReadOnlySpan(), y, destination);
+        Subtract(x.AsSpan(), y, destination);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -70,19 +70,19 @@ public static partial class VectorPrimitives
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void SubtractInPlace<T>(ISeries<T> x, IReadOnlySeries<T> y)
+    public static void SubtractInPlace<T>(IVector<T> x, IReadOnlyVector<T> y)
         where T : struct, INumber<T>
     {
         NumericsException.ThrowIfNotEqualLength(y, x);
-        SubtractInPlace(x.AsSpan(), y.AsReadOnlySpan());
+        SubtractInPlace(x.AsSpan(), y.AsSpan());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void SubtractInPlace<T>(Span<T> x, IReadOnlySeries<T> y)
+    public static void SubtractInPlace<T>(Span<T> x, IReadOnlyVector<T> y)
         where T : struct, INumber<T>
     {
         NumericsException.ThrowIfNotEqualLength(y, x);
-        SubtractInPlace(x, y.AsReadOnlySpan());
+        SubtractInPlace(x, y.AsSpan());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -94,7 +94,7 @@ public static partial class VectorPrimitives
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void SubtractInPlace<T>(ISeries<T> x, T y)
+    public static void SubtractInPlace<T>(IVector<T> x, T y)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(x);

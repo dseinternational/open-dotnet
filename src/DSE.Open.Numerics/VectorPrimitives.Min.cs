@@ -9,11 +9,11 @@ namespace DSE.Open.Numerics;
 
 public static partial class VectorPrimitives
 {
-    public static T Min<T>([NotNull] IReadOnlySeries<T> vector)
+    public static T Min<T>([NotNull] IReadOnlyVector<T> vector)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(vector);
-        return Min(vector.AsReadOnlySpan());
+        return Min(vector.AsSpan());
     }
 
     public static T Min<T>(ReadOnlySpan<T> span)

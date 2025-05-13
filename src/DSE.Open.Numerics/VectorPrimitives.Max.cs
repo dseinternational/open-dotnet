@@ -9,11 +9,11 @@ namespace DSE.Open.Numerics;
 
 public static partial class VectorPrimitives
 {
-    public static T Max<T>([NotNull] IReadOnlySeries<T> vector)
+    public static T Max<T>([NotNull] IReadOnlyVector<T> vector)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(vector);
-        return Max(vector.AsReadOnlySpan());
+        return Max(vector.AsSpan());
     }
 
     public static T Max<T>(ReadOnlySpan<T> values)
@@ -22,11 +22,11 @@ public static partial class VectorPrimitives
         return TensorPrimitives.Max(values);
     }
 
-    public static T MaxFloatingPoint<T>([NotNull] IReadOnlySeries<T> vector)
+    public static T MaxFloatingPoint<T>([NotNull] IReadOnlyVector<T> vector)
         where T : struct, IFloatingPointIeee754<T>
     {
         ArgumentNullException.ThrowIfNull(vector);
-        return MaxFloatingPoint(vector.AsReadOnlySpan());
+        return MaxFloatingPoint(vector.AsSpan());
     }
 
     public static T MaxFloatingPoint<T>(ReadOnlySpan<T> values)
