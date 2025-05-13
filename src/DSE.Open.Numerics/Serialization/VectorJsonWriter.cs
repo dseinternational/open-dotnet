@@ -22,23 +22,13 @@ public static class VectorJsonWriter
         writer.WriteStartObject();
         writer.WriteString(VectorJsonPropertyNames.DataType, VectorDataTypeHelper.GetLabel(vector.DataType));
         writer.WriteNumber(VectorJsonPropertyNames.Length, vector.Length);
-        writer.WritePropertyName(VectorJsonPropertyNames.Values);
 
         if (vector.HasCategories)
         {
-            writer.WritePropertyName(VectorJsonPropertyNames.Categories);
-
-            writer.WriteStartObject();
-
-            foreach (var kvp in vector.Categories)
-            {
-                writer.WritePropertyName(kvp.Key);
-                // TODO: Figure out type and write value
-                // writer.WriteNumberValue(kvp.Value);
-            }
-
-            writer.WriteEndObject();
+            WriteCategories(writer, vector);
         }
+
+        writer.WritePropertyName(VectorJsonPropertyNames.Values);
 
         if (vector.Length == 0)
         {
@@ -54,8 +44,7 @@ public static class VectorJsonWriter
         {
             WriteNumberArray(writer, vector);
         }
-
-        if (vector is IReadOnlyVector<string> stringVector)
+        else if (vector is IReadOnlyVector<string> stringVector)
         {
             WriteStringArray(writer, stringVector.AsReadOnlySpan());
         }
@@ -77,6 +66,99 @@ public static class VectorJsonWriter
         }
 
         // todo: add support for other types
+
+        writer.WriteEndObject();
+    }
+
+    private static void WriteCategories<T>(Utf8JsonWriter writer, IReadOnlyVector<T> vector)
+    {
+        writer.WritePropertyName(VectorJsonPropertyNames.Categories);
+
+        writer.WriteStartObject();
+
+        foreach (var kvp in vector.Categories)
+        {
+            writer.WritePropertyName(kvp.Key);
+            // TODO: Figure out type and write value
+            // writer.WriteNumberValue(kvp.Value);
+
+            if (kvp.Value is byte byteValue)
+            {
+                writer.WriteNumberValue(byteValue);
+            }
+            else if (kvp.Value is sbyte sbyteValue)
+            {
+                writer.WriteNumberValue(sbyteValue);
+            }
+            else if (kvp.Value is short shortValue)
+            {
+                writer.WriteNumberValue(shortValue);
+            }
+            else if (kvp.Value is ushort ushortValue)
+            {
+                writer.WriteNumberValue(ushortValue);
+            }
+            else if (kvp.Value is int intValue)
+            {
+                writer.WriteNumberValue(intValue);
+            }
+            else if (kvp.Value is uint uintValue)
+            {
+                writer.WriteNumberValue(uintValue);
+            }
+            else if (kvp.Value is long longValue)
+            {
+                writer.WriteNumberValue(longValue);
+            }
+            else if (kvp.Value is ulong ulongValue)
+            {
+                writer.WriteNumberValue(ulongValue);
+            }
+            else if (kvp.Value is float floatValue)
+            {
+                writer.WriteNumberValue(floatValue);
+            }
+            else if (kvp.Value is double doubleValue)
+            {
+                writer.WriteNumberValue(doubleValue);
+            }
+            else if (kvp.Value is decimal decimalValue)
+            {
+                writer.WriteNumberValue(decimalValue);
+            }
+            else if (kvp.Value is DateTime64 dateTime64Value)
+            {
+                writer.WriteNumberValue(dateTime64Value);
+            }
+            else if (kvp.Value is Half halfValue)
+            {
+                writer.WriteNumberValue(halfValue);
+            }
+            else if (kvp.Value is string stringValue)
+            {
+                writer.WriteStringValue(stringValue);
+            }
+            else if (kvp.Value is char charValue)
+            {
+                writer.WriteStringValue(charValue.ToString());
+            }
+            else if (kvp.Value is Guid guidValue)
+            {
+                writer.WriteStringValue(guidValue);
+            }
+            else if (kvp.Value is DateTime dateTimeValue)
+            {
+                writer.WriteStringValue(dateTimeValue);
+            }
+            else if (kvp.Value is DateTimeOffset dateTimeOffsetValue)
+            {
+                writer.WriteStringValue(dateTimeOffsetValue);
+            }
+            else
+            {
+                throw new JsonException($"The type `{typeof(T)}` is a not supported category value type.");
+            }
+        }
 
         writer.WriteEndObject();
     }
@@ -141,7 +223,7 @@ public static class VectorJsonWriter
         }
         else
         {
-            throw new NotSupportedException($"The type `{typeof(T)}` is a not supported numeric type.");
+            throw new JsonException($"The type `{typeof(T)}` is a not supported numeric type.");
         }
 
         static void WriteNumberSpan<TNumber>(Utf8JsonWriter writer, ReadOnlySpan<TNumber> vector)
