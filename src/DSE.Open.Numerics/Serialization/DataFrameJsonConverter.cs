@@ -8,15 +8,17 @@ using DSE.Open.Collections.Generic;
 
 namespace DSE.Open.Numerics.Serialization;
 
-public class DataFrameJsonConverter : JsonConverter<IDataFrame>
+public class DataFrameJsonConverter : JsonConverter<DataFrame>
 {
+    public static readonly DataFrameJsonConverter Default = new();
+
     public override bool CanConvert(Type typeToConvert)
     {
         Debug.Assert(typeToConvert is not null);
-        return typeToConvert.IsAssignableTo(typeof(IDataFrame));
+        return typeToConvert.IsAssignableTo(typeof(DataFrame));
     }
 
-    public override IDataFrame Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public override DataFrame Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         if (reader.TokenType != JsonTokenType.StartObject)
         {
@@ -76,7 +78,7 @@ public class DataFrameJsonConverter : JsonConverter<IDataFrame>
         return new DataFrame(columns, name, null); // TODO: add column names
     }
 
-    public override void Write(Utf8JsonWriter writer, IDataFrame value, JsonSerializerOptions options)
+    public override void Write(Utf8JsonWriter writer, DataFrame value, JsonSerializerOptions options)
     {
         ArgumentNullException.ThrowIfNull(writer);
         ArgumentNullException.ThrowIfNull(value);

@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 
 namespace DSE.Open.Numerics.Serialization;
 
-public sealed class ReadOnlyVectorJsonConverter : JsonConverter<IReadOnlyVector>
+public sealed class ReadOnlyVectorJsonConverter : JsonConverter<ReadOnlyVector>
 {
     public static ReadOnlyVectorJsonConverter Default { get; } = new();
 
@@ -27,10 +27,10 @@ public sealed class ReadOnlyVectorJsonConverter : JsonConverter<IReadOnlyVector>
     public override bool CanConvert(Type typeToConvert)
     {
         Debug.Assert(typeToConvert is not null);
-        return typeToConvert.IsAssignableTo(typeof(IReadOnlyVector));
+        return typeToConvert.IsAssignableTo(typeof(ReadOnlyVector));
     }
 
-    public override IReadOnlyVector Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public override ReadOnlyVector Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         Debug.Assert(typeToConvert is not null);
 
@@ -44,8 +44,8 @@ public sealed class ReadOnlyVectorJsonConverter : JsonConverter<IReadOnlyVector>
         return vector.AsReadOnly();
     }
 
-    public override void Write(Utf8JsonWriter writer, IReadOnlyVector value, JsonSerializerOptions options)
+    public override void Write(Utf8JsonWriter writer, ReadOnlyVector value, JsonSerializerOptions options)
     {
-        _inner.Write(writer, value, options);
+        VectorJsonWriter.Write(writer, value, options);
     }
 }

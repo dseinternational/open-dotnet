@@ -13,6 +13,69 @@ namespace DSE.Open.Numerics.Serialization;
 /// </summary>
 public static class VectorJsonWriter
 {
+    public static void Write(Utf8JsonWriter writer, IReadOnlyVector vector, JsonSerializerOptions options)
+    {
+        ArgumentNullException.ThrowIfNull(writer);
+        ArgumentNullException.ThrowIfNull(vector);
+
+        switch (vector)
+        {
+            case IReadOnlyVector<int> intSeries:
+                Write(writer, intSeries, options);
+                return;
+            case IReadOnlyVector<long> longSeries:
+                Write(writer, longSeries, options);
+                return;
+            case IReadOnlyVector<float> floatSeries:
+                Write(writer, floatSeries, options);
+                return;
+            case IReadOnlyVector<double> doubleSeries:
+                Write(writer, doubleSeries, options);
+                return;
+            case IReadOnlyVector<uint> uintSeries:
+                Write(writer, uintSeries, options);
+                return;
+            case IReadOnlyVector<ulong> uuidSeries:
+                Write(writer, uuidSeries, options);
+                return;
+            case IReadOnlyVector<DateTime64> dateTime64Series:
+                Write(writer, dateTime64Series, options);
+                return;
+            case IReadOnlyVector<short> shortSeries:
+                Write(writer, shortSeries, options);
+                return;
+            case IReadOnlyVector<ushort> ushortSeries:
+                Write(writer, ushortSeries, options);
+                return;
+            case IReadOnlyVector<sbyte> sbyteSeries:
+                Write(writer, sbyteSeries, options);
+                return;
+            case IReadOnlyVector<byte> byteSeries:
+                Write(writer, byteSeries, options);
+                return;
+            case IReadOnlyVector<Int128> int128Series:
+                Write(writer, int128Series, options);
+                return;
+            case IReadOnlyVector<UInt128> uint128Series:
+                Write(writer, uint128Series, options);
+                return;
+            case IReadOnlyVector<string> stringSeries:
+                Write(writer, stringSeries, options);
+                return;
+            case IReadOnlyVector<char> charSeries:
+                Write(writer, charSeries, options);
+                return;
+            case IReadOnlyVector<bool> boolSeries:
+                Write(writer, boolSeries, options);
+                return;
+            case IReadOnlyVector<DateTime> dateTimeSeries:
+                Write(writer, dateTimeSeries, options);
+                return;
+            default:
+                throw new JsonException("Unsupported series type");
+        }
+    }
+
     public static void Write<T>(Utf8JsonWriter writer, IReadOnlyVector<T> vector, JsonSerializerOptions options)
     {
         ArgumentNullException.ThrowIfNull(writer);

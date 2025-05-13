@@ -12,7 +12,7 @@ namespace DSE.Open.Numerics.Serialization;
 
 #pragma warning disable DSEOPEN001 // ArrayBuilder ref struct warning
 
-public class VectorJsonConverter : JsonConverter<IReadOnlyVector>
+public class VectorJsonConverter : JsonConverter<Vector>
 {
     public static VectorJsonConverter Default { get; } = new();
 
@@ -30,7 +30,7 @@ public class VectorJsonConverter : JsonConverter<IReadOnlyVector>
     public override bool CanConvert(Type typeToConvert)
     {
         Debug.Assert(typeToConvert is not null);
-        return typeToConvert.IsAssignableTo(typeof(IReadOnlyVector));
+        return typeToConvert.IsAssignableTo(typeof(Vector));
     }
 
     public override Vector? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
@@ -272,66 +272,8 @@ public class VectorJsonConverter : JsonConverter<IReadOnlyVector>
         throw new JsonException();
     }
 
-    public override void Write(Utf8JsonWriter writer, IReadOnlyVector value, JsonSerializerOptions options)
+    public override void Write(Utf8JsonWriter writer, Vector value, JsonSerializerOptions options)
     {
-        ArgumentNullException.ThrowIfNull(writer);
-        ArgumentNullException.ThrowIfNull(value);
-
-        switch (value)
-        {
-            case IReadOnlyVector<int> intSeries:
-                VectorJsonWriter.Write(writer, intSeries, options);
-                return;
-            case IReadOnlyVector<long> longSeries:
-                VectorJsonWriter.Write(writer, longSeries, options);
-                return;
-            case IReadOnlyVector<float> floatSeries:
-                VectorJsonWriter.Write(writer, floatSeries, options);
-                return;
-            case IReadOnlyVector<double> doubleSeries:
-                VectorJsonWriter.Write(writer, doubleSeries, options);
-                return;
-            case IReadOnlyVector<uint> uintSeries:
-                VectorJsonWriter.Write(writer, uintSeries, options);
-                return;
-            case IReadOnlyVector<ulong> uuidSeries:
-                VectorJsonWriter.Write(writer, uuidSeries, options);
-                return;
-            case IReadOnlyVector<DateTime64> dateTime64Series:
-                VectorJsonWriter.Write(writer, dateTime64Series, options);
-                return;
-            case IReadOnlyVector<short> shortSeries:
-                VectorJsonWriter.Write(writer, shortSeries, options);
-                return;
-            case IReadOnlyVector<ushort> ushortSeries:
-                VectorJsonWriter.Write(writer, ushortSeries, options);
-                return;
-            case IReadOnlyVector<sbyte> sbyteSeries:
-                VectorJsonWriter.Write(writer, sbyteSeries, options);
-                return;
-            case IReadOnlyVector<byte> byteSeries:
-                VectorJsonWriter.Write(writer, byteSeries, options);
-                return;
-            case IReadOnlyVector<Int128> int128Series:
-                VectorJsonWriter.Write(writer, int128Series, options);
-                return;
-            case IReadOnlyVector<UInt128> uint128Series:
-                VectorJsonWriter.Write(writer, uint128Series, options);
-                return;
-            case IReadOnlyVector<string> stringSeries:
-                VectorJsonWriter.Write(writer, stringSeries, options);
-                return;
-            case IReadOnlyVector<char> charSeries:
-                VectorJsonWriter.Write(writer, charSeries, options);
-                return;
-            case IReadOnlyVector<bool> boolSeries:
-                VectorJsonWriter.Write(writer, boolSeries, options);
-                return;
-            case IReadOnlyVector<DateTime> dateTimeSeries:
-                VectorJsonWriter.Write(writer, dateTimeSeries, options);
-                return;
-            default:
-                throw new JsonException("Unsupported series type");
-        }
+        VectorJsonWriter.Write(writer, value, options);
     }
 }
