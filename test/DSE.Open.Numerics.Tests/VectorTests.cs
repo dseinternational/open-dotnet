@@ -1,7 +1,6 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Numerics;
 using System.Text.Json;
 using DSE.Open.Numerics.Serialization;
 using DSE.Open.Testing.Xunit;
@@ -17,23 +16,18 @@ public partial class VectorTests : LoggedTestsBase
     private static void TestCreate<T>(T[] elements)
         where T : notnull
     {
-        var vector = Vector.Create(elements);
-
-        Assert.NotNull(vector);
+        Vector<T> vector = [.. elements];
         Assert.Equal(elements.Length, vector.Length);
         Assert.Equivalent(elements, vector.ToArray());
     }
 
     private static void TestSerializeDeserialize<T>(T[] elements, JsonSerializerOptions serializerOptions)
     {
-        var vector = Vector.Create(elements);
-
+        Vector<T> vector = [.. elements];
         var json = JsonSerializer.Serialize(vector, serializerOptions);
-
         Assert.NotNull(json);
 
         var deserialized = JsonSerializer.Deserialize<Vector<T>>(json, serializerOptions);
-
         Assert.NotNull(deserialized);
         Assert.Equivalent(vector, deserialized);
     }
