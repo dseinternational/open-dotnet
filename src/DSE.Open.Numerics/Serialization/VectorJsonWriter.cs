@@ -127,6 +127,10 @@ public static class VectorJsonWriter
         {
             WriteNumberSpan(writer, ((IReadOnlyVector<decimal>)vector).AsReadOnlySpan());
         }
+        else if (typeof(T) == typeof(DateTime64))
+        {
+            WriteNumberSpan(writer, ((IReadOnlyVector<DateTime64>)vector).AsReadOnlySpan());
+        }
         else if (typeof(T) == typeof(Half))
         {
             WriteNumberSpan(writer, ((IReadOnlyVector<Half>)vector).AsReadOnlySpan());
