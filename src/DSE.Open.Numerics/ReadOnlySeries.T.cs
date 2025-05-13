@@ -1,7 +1,6 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
@@ -18,21 +17,21 @@ namespace DSE.Open.Numerics;
 /// a <see cref="IReadOnlyDataFrame"/>.
 /// </summary>
 /// <typeparam name="T"></typeparam>
-[CollectionBuilder(typeof(ReadOnlyVector), nameof(Create))]
+[CollectionBuilder(typeof(ReadOnlySeries), nameof(Create))]
 [JsonConverter(typeof(ReadOnlyVectorJsonConverter))]
-public sealed class ReadOnlyVector<T> : ReadOnlyVector, IReadOnlyVector<T>
+public sealed class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
 {
-    public static readonly ReadOnlyVector<T> Empty = new();
+    public static readonly ReadOnlySeries<T> Empty = new();
 
     private readonly ReadOnlyMemory<T> _vector;
     private readonly ReadOnlyMemory<KeyValuePair<string, T>> _categories;
     private IReadOnlyDictionary<string, T>? _categoriesLookup;
 
-    public ReadOnlyVector() : this(Memory<T>.Empty, null, null, null)
+    public ReadOnlySeries() : this(Memory<T>.Empty, null, null, null)
     {
     }
 
-    public ReadOnlyVector(
+    public ReadOnlySeries(
         T[] vector,
         string? name = null,
         ReadOnlyMemory<Variant> labels = default,
@@ -41,12 +40,12 @@ public sealed class ReadOnlyVector<T> : ReadOnlyVector, IReadOnlyVector<T>
     {
     }
 
-    public ReadOnlyVector(
+    public ReadOnlySeries(
         ReadOnlyMemory<T> vector,
         string? name = null,
         ReadOnlyMemory<Variant> labels = default,
         ReadOnlyMemory<KeyValuePair<string, T>> categories = default)
-        : base(VectorDataTypeHelper.GetSeriesDataType<T>(), typeof(T), vector.Length, name, labels)
+        : base(VectorDataTypeHelper.GetVectorDataType<T>(), typeof(T), vector.Length, name, labels)
     {
         _vector = vector;
         _categories = categories;
@@ -96,7 +95,7 @@ public sealed class ReadOnlyVector<T> : ReadOnlyVector, IReadOnlyVector<T>
 
     public override bool Equals(object? obj)
     {
-        return obj is Vector<T> vector && Equals(vector);
+        return obj is Series<T> vector && Equals(vector);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -112,12 +111,12 @@ public sealed class ReadOnlyVector<T> : ReadOnlyVector, IReadOnlyVector<T>
         return hash.ToHashCode();
     }
 
-    public bool Equals(ReadOnlyVector<T>? other)
+    public bool Equals(ReadOnlySeries<T>? other)
     {
         return other is not null && Equals(other.AsReadOnlySpan());
     }
 
-    public bool Equals(IReadOnlyVector<T>? other)
+    public bool Equals(IReadOnlySeries<T>? other)
     {
         return other is not null && Equals(other.AsReadOnlySpan());
     }
@@ -154,12 +153,12 @@ public sealed class ReadOnlyVector<T> : ReadOnlyVector, IReadOnlyVector<T>
         return _vector.Slice(start, length);
     }
 
-    public static bool operator ==(ReadOnlyVector<T>? left, ReadOnlyVector<T>? right)
+    public static bool operator ==(ReadOnlySeries<T>? left, ReadOnlySeries<T>? right)
     {
         return left is not null && (right is null || left.Equals(right));
     }
 
-    public static bool operator !=(ReadOnlyVector<T>? left, ReadOnlyVector<T>? right)
+    public static bool operator !=(ReadOnlySeries<T>? left, ReadOnlySeries<T>? right)
     {
         return !(left == right);
     }
@@ -167,7 +166,7 @@ public sealed class ReadOnlyVector<T> : ReadOnlyVector, IReadOnlyVector<T>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",
         Justification = "By design")]
-    public static implicit operator ReadOnlyVector<T>(ReadOnlyMemory<T> vector)
+    public static implicit operator ReadOnlySeries<T>(ReadOnlyMemory<T> vector)
     {
         return new(vector);
     }
@@ -175,7 +174,7 @@ public sealed class ReadOnlyVector<T> : ReadOnlyVector, IReadOnlyVector<T>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",
         Justification = "By design")]
-    public static implicit operator ReadOnlyVector<T>(T[] vector)
+    public static implicit operator ReadOnlySeries<T>(T[] vector)
     {
         ArgumentNullException.ThrowIfNull(vector);
         return new(vector);
@@ -184,7 +183,7 @@ public sealed class ReadOnlyVector<T> : ReadOnlyVector, IReadOnlyVector<T>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",
         Justification = "By design")]
-    public static implicit operator ReadOnlyMemory<T>(ReadOnlyVector<T> vector)
+    public static implicit operator ReadOnlyMemory<T>(ReadOnlySeries<T> vector)
     {
         return vector is not null ? vector._vector : default;
     }

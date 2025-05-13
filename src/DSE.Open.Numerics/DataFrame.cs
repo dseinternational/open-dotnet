@@ -13,14 +13,14 @@ namespace DSE.Open.Numerics;
 [CollectionBuilder(typeof(DataFrame), nameof(Create))]
 public class DataFrame : IDataFrame
 {
-    private readonly Collection<Vector> _columns;
+    private readonly Collection<Series> _columns;
     private readonly Collection<string> _columnNames;
 
     public DataFrame(string? name = null, Collection<string>? columnNames = null) : this([], name, columnNames)
     {
     }
 
-    public DataFrame(Collection<Vector> columns, string? name = null, Collection<string>? columnNames = null)
+    public DataFrame(Collection<Series> columns, string? name = null, Collection<string>? columnNames = null)
     {
         ArgumentNullException.ThrowIfNull(columns);
 
@@ -34,7 +34,7 @@ public class DataFrame : IDataFrame
         _columnNames = columnNames is not null ? columnNames : new(columns.Count);
     }
 
-    public Vector? this[string name]
+    public Series? this[string name]
     {
         get
         {
@@ -65,7 +65,7 @@ public class DataFrame : IDataFrame
         }
     }
 
-    public Vector this[int index]
+    public Series this[int index]
     {
         get => _columns[index];
         set => _columns[index] = value;
@@ -90,12 +90,12 @@ public class DataFrame : IDataFrame
         return new ReadOnlyDataFrame([.. _columns.Select(v => v.AsReadOnly())]);
     }
 
-    public int IndexOf(Vector item)
+    public int IndexOf(Series item)
     {
         return _columns.IndexOf(item);
     }
 
-    public void Insert(int index, Vector item)
+    public void Insert(int index, Series item)
     {
         _columns.Insert(index, item);
     }
@@ -105,7 +105,7 @@ public class DataFrame : IDataFrame
         _columns.RemoveAt(index);
     }
 
-    public void Add(Vector item)
+    public void Add(Series item)
     {
         _columns.Add(item);
     }
@@ -115,22 +115,22 @@ public class DataFrame : IDataFrame
         _columns.Clear();
     }
 
-    public bool Contains(Vector item)
+    public bool Contains(Series item)
     {
         return _columns.Contains(item);
     }
 
-    public void CopyTo(Vector[] array, int arrayIndex)
+    public void CopyTo(Series[] array, int arrayIndex)
     {
         _columns.CopyTo(array, arrayIndex);
     }
 
-    public bool Remove(Vector item)
+    public bool Remove(Series item)
     {
         return _columns.Remove(item);
     }
 
-    public IEnumerator<Vector> GetEnumerator()
+    public IEnumerator<Series> GetEnumerator()
     {
         return _columns.GetEnumerator();
     }
@@ -140,7 +140,7 @@ public class DataFrame : IDataFrame
         return ((IEnumerable)_columns).GetEnumerator();
     }
 
-    public static DataFrame Create(ReadOnlySpan<Vector> columns)
+    public static DataFrame Create(ReadOnlySpan<Series> columns)
     {
         return new DataFrame([.. columns.ToArray()]);
     }

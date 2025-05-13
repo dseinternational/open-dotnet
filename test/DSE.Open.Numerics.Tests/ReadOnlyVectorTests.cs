@@ -17,7 +17,7 @@ public sealed class ReadOnlyVectorTests : LoggedTestsBase
     private static void TestCreate<T>(T[] elements)
         where T : notnull
     {
-        var vector = Vector.Create(elements).AsReadOnly();
+        var vector = Series.Create(elements).AsReadOnly();
 
         Assert.NotNull(vector);
         Assert.Equal(elements.Length, vector.Length);
@@ -27,7 +27,7 @@ public sealed class ReadOnlyVectorTests : LoggedTestsBase
     private void TestSerializeDeserializeNumeric<T>(T[] elements, JsonSerializerOptions serializerOptions)
         where T : struct, INumber<T>
     {
-        var vector = Vector.Create(elements).AsReadOnly();
+        var vector = Series.Create(elements).AsReadOnly();
 
         var json = JsonSerializer.Serialize(vector, serializerOptions);
 
@@ -35,7 +35,7 @@ public sealed class ReadOnlyVectorTests : LoggedTestsBase
 
         Output.WriteLine(json);
 
-        var deserialized = JsonSerializer.Deserialize<Vector<T>>(json, serializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Series<T>>(json, serializerOptions);
 
         Assert.NotNull(deserialized);
         Assert.Equivalent(vector, deserialized);
@@ -44,7 +44,7 @@ public sealed class ReadOnlyVectorTests : LoggedTestsBase
     private void TestSerializeDeserializeReadOnlyNumeric<T>(T[] elements, JsonSerializerOptions serializerOptions)
         where T : struct, INumber<T>
     {
-        var vector = Vector.Create(elements).AsReadOnly();
+        var vector = Series.Create(elements).AsReadOnly();
 
         var json = JsonSerializer.Serialize(vector, serializerOptions);
 
@@ -52,7 +52,7 @@ public sealed class ReadOnlyVectorTests : LoggedTestsBase
 
         Output.WriteLine(json);
 
-        var deserialized = JsonSerializer.Deserialize<ReadOnlyVector<T>>(json, serializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ReadOnlySeries<T>>(json, serializerOptions);
 
         Assert.NotNull(deserialized);
         Assert.Equivalent(vector, deserialized);
@@ -137,24 +137,24 @@ public sealed class ReadOnlyVectorTests : LoggedTestsBase
     [Fact]
     public void CreateWithKnownNumericTypeReturnsVectorInt32()
     {
-        var vector = Vector.Create([1, 2, 3, 4, 5]);
-        var numVector = Assert.IsType<Vector<int>>(vector);
+        var vector = Series.Create([1, 2, 3, 4, 5]);
+        var numVector = Assert.IsType<Series<int>>(vector);
         Assert.NotNull(numVector);
     }
 
     [Fact]
     public void CreateWithKnownNumericTypeReturnsVectorDouble()
     {
-        var vector = Vector.Create([1.0, 2.84685, -0.000083, 4, 5]);
-        var numVector = Assert.IsType<Vector<double>>(vector);
+        var vector = Series.Create([1.0, 2.84685, -0.000083, 4, 5]);
+        var numVector = Assert.IsType<Series<double>>(vector);
         Assert.NotNull(numVector);
     }
     [Fact]
     public void Init()
     {
-        ReadOnlyVector<int> v1 = [1, 2, 3, 4, 5, 6];
+        ReadOnlySeries<int> v1 = [1, 2, 3, 4, 5, 6];
 
-        var v2 = ReadOnlyVector.Create([1, 2, 3, 4, 5, 6]);
+        var v2 = ReadOnlySeries.Create([1, 2, 3, 4, 5, 6]);
 
         Assert.Equal(6, v1.Length);
         Assert.Equal(6, v2.Length);
@@ -166,14 +166,14 @@ public sealed class ReadOnlyVectorTests : LoggedTestsBase
     public void JsonRoundtrip()
     {
         // Arrange
-        var vector = ReadOnlyVector.Create([1, 2, 3, 4, 5, 6]);
+        var vector = ReadOnlySeries.Create([1, 2, 3, 4, 5, 6]);
 
         // Act
         var json = JsonSerializer.Serialize(vector);
 
         Output.WriteLine(json);
 
-        var deserializedVector = JsonSerializer.Deserialize<ReadOnlyVector<int>>(json);
+        var deserializedVector = JsonSerializer.Deserialize<ReadOnlySeries<int>>(json);
 
         // Assert
         Assert.NotNull(deserializedVector);

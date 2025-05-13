@@ -26,7 +26,7 @@ public class DataFrameJsonConverter : JsonConverter<DataFrame>
         }
 
         string? name = null;
-        Collection<Vector> columns = [];
+        Collection<Series> columns = [];
 
         while (reader.Read())
         {
@@ -63,7 +63,7 @@ public class DataFrameJsonConverter : JsonConverter<DataFrame>
                         break;
                     }
 
-                    var vector = VectorJsonConverter.Default.Read(ref reader, typeof(Vector), options);
+                    var vector = SeriesJsonConverter.Default.Read(ref reader, typeof(Series), options);
 
                     if (vector is null)
                     {
@@ -96,7 +96,7 @@ public class DataFrameJsonConverter : JsonConverter<DataFrame>
 
         foreach (var column in value)
         {
-            VectorJsonConverter.Default.Write(writer, column, options);
+            SeriesJsonConverter.Default.Write(writer, column, options);
         }
 
         writer.WriteEndArray();

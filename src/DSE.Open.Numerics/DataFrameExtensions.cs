@@ -7,7 +7,7 @@ namespace DSE.Open.Numerics;
 
 public static class DataFrameExtensions
 {
-    public static bool TryGetVector(this IReadOnlyDataFrame dataFrame, string name, [NotNullWhen(true)] out Vector? vector)
+    public static bool TryGetVector(this IReadOnlyDataFrame dataFrame, string name, [NotNullWhen(true)] out Series? vector)
     {
         ArgumentNullException.ThrowIfNull(dataFrame);
 

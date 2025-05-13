@@ -9,8 +9,8 @@ public partial class VectorTests
     [Fact]
     public void AddInPlace_Int32_Zeroes_Ones()
     {
-        var v1 = Vector.CreateZeroes<int>(6);
-        var v2 = Vector.CreateOnes<int>(6);
+        var v1 = Series.CreateZeroes<int>(6);
+        var v2 = Series.CreateOnes<int>(6);
         VectorPrimitives.AddInPlace(v1, v2);
         Assert.Equal(6, v1.Length);
         Assert.Equal(6, v2.Length);
@@ -20,8 +20,8 @@ public partial class VectorTests
     [Fact]
     public void AddInPlace_Int32_Ones()
     {
-        var v1 = Vector.Create([.. Enumerable.Range(0, 100)]);
-        var v2 = Vector.CreateOnes<int>(100);
+        var v1 = Series.Create([.. Enumerable.Range(0, 100)]);
+        var v2 = Series.CreateOnes<int>(100);
         VectorPrimitives.AddInPlace(v1, v2);
         Assert.Equal(100, v1.Length);
         Assert.Equal(100, v2.Length);

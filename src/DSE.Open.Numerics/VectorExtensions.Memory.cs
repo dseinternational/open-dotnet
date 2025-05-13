@@ -8,13 +8,13 @@ namespace DSE.Open.Numerics;
 public static partial class VectorExtensions
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector<T> ToVector<T>(this Memory<T> memory)
+    public static Series<T> ToVector<T>(this Memory<T> memory)
     {
         return memory;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ReadOnlyVector<T> ToReadOnlyVector<T>(this ReadOnlyMemory<T> memory)
+    public static ReadOnlySeries<T> ToReadOnlyVector<T>(this ReadOnlyMemory<T> memory)
     {
         if (memory.IsEmpty)
         {
@@ -25,13 +25,13 @@ public static partial class VectorExtensions
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector<T> ToVector<T>(this Span<T> span)
+    public static Series<T> ToVector<T>(this Span<T> span)
     {
         return span.ToArray();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ReadOnlyVector<T> ToReadOnlyVector<T>(this ReadOnlySpan<T> span)
+    public static ReadOnlySeries<T> ToReadOnlyVector<T>(this ReadOnlySpan<T> span)
     {
         if (span.IsEmpty)
         {

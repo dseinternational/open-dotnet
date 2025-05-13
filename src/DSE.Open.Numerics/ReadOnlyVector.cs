@@ -1,140 +1,175 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Diagnostics;
-using System.Numerics;
+using System.Collections;
+using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using DSE.Open.Numerics.Serialization;
 
 namespace DSE.Open.Numerics;
 
 /// <summary>
-/// A serializable, fixed-length, contiguous sequence of read-only values 
-///.
+/// A serializable, contiguous sequence of values of known length and data type.
 /// </summary>
 [JsonConverter(typeof(ReadOnlyVectorJsonConverter))]
-public abstract class ReadOnlyVector : IReadOnlyVector
+public abstract class ReadOnlyVector : VectorBase, IReadOnlyVector
 {
-    protected ReadOnlyVector(
-        VectorDataType dataType,
-        Type itemType,
-        int length,
-        string? name = null,
-        ReadOnlyMemory<Variant> labels = default)
+    protected internal ReadOnlyVector(VectorDataType dataType, Type itemType, int length)
+        : base(dataType, itemType, length, true)
     {
-        ArgumentNullException.ThrowIfNull(itemType);
-
-#if DEBUG
-        if (VectorDataTypeHelper.TryGetVectorDataType(itemType, out var expectedDataType)
-            && dataType != expectedDataType)
-        {
-            Debug.Fail($"Expected data type {expectedDataType} for " +
-                $"item type {itemType.Name} but given {dataType}.");
-        }
-#endif
-
-        DataType = dataType;
-        IsNumeric = NumberHelper.IsKnownNumberType(itemType);
-        ItemType = itemType;
-        Length = length;
-        Name = name;
     }
 
-    /// <summary>
-    /// Gets the number of items in the series.
-    /// </summary>
-    public int Length { get; }
-
-    public string? Name { get; }
-
-    /// <summary>
-    /// Indicates if the item type is a known numeric type.
-    /// </summary>
-    public bool IsNumeric { get; }
-
-    /// <summary>
-    /// Gets the type of the items in the series.
-    /// </summary>
-    public Type ItemType { get; }
-
-    /// <summary>
-    /// Gets the data type of the series.
-    /// </summary>
-    public VectorDataType DataType { get; }
-
-    /// <summary>
-    /// Creates a series from the given data.
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="vector"></param>
-    /// <returns></returns>
-    public static ReadOnlyVector<T> Create<T>(ReadOnlyMemory<T> vector)
+    public static ReadOnlyVector<T> Create<T>(ReadOnlySpan<T> span)
     {
-        if (vector.Length == 0)
+        if (span.IsEmpty)
         {
 #pragma warning disable IDE0301 // Simplify collection initialization
             return ReadOnlyVector<T>.Empty;
 #pragma warning restore IDE0301 // Simplify collection initialization
         }
 
-        return new ReadOnlyVector<T>(vector);
+        return new ReadOnlyVector<T>(span.ToArray().AsMemory());
+    }
+}
+
+/// <summary>
+/// A serializable, contiguous, fixed-length sequence of read-only values of data type <typeparamref name="T"/>
+/// </summary>
+/// <typeparam name="T"></typeparam>
+[CollectionBuilder(typeof(ReadOnlyVector), nameof(Create))]
+[JsonConverter(typeof(ReadOnlyVectorJsonConverter))]
+public sealed class ReadOnlyVector<T> : ReadOnlyVector, IReadOnlyVector<T>
+{
+    public static readonly ReadOnlyVector<T> Empty = new(Memory<T>.Empty);
+
+    private readonly ReadOnlyMemory<T> _memory;
+
+    public ReadOnlyVector(T[] array) : this(array.AsMemory())
+    {
     }
 
-    /// <summary>
-    /// Creates a series from the given data.
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="array"></param>
-    /// <returns></returns>
-    public static ReadOnlyVector<T> Create<T>(T[] array)
+    public ReadOnlyVector(ReadOnlyMemory<T> memory)
+        : base(VectorDataTypeHelper.GetVectorDataType<T>(), typeof(T), memory.Length)
     {
-        ArgumentNullException.ThrowIfNull(array);
+        _memory = memory;
+    }
 
-        if (array.Length == 0)
+#pragma warning disable CA1033 // Interface methods should be callable by child types
+    int IReadOnlyCollection<T>.Count => Length;
+#pragma warning restore CA1033 // Interface methods should be callable by child types
+
+    public T this[int index]
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => _memory.Span[index];
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public ReadOnlySpan<T> AsSpan()
+    {
+        return _memory.Span;
+    }
+
+    public override bool Equals(object? obj)
+    {
+        return obj is Vector<T> vector && Equals(vector);
+    }
+
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public override int GetHashCode()
+    {
+        var hash = new HashCode();
+
+        foreach (var i in this)
         {
-#pragma warning disable IDE0301 // Simplify collection initialization
-            return ReadOnlyVector<T>.Empty;
-#pragma warning restore IDE0301 // Simplify collection initialization
+            hash.Add(i);
         }
 
-        return new ReadOnlyVector<T>(array);
+        return hash.ToHashCode();
     }
 
-    public static ReadOnlyVector<T> Create<T>(ReadOnlySpan<T> data)
+    public bool Equals(ReadOnlyVector<T>? other)
     {
-        if (data.Length == 0)
-        {
-#pragma warning disable IDE0301 // Simplify collection initialization
-            return ReadOnlyVector<T>.Empty;
-#pragma warning restore IDE0301 // Simplify collection initialization
-        }
-
-        return Create(data.ToArray());
+        return other is not null && Equals(other.AsSpan());
     }
 
-    public static ReadOnlyVector<T> Create<T>(int length, T scalar)
-        where T : struct, INumber<T>
+    public bool Equals(IReadOnlyVector<T>? other)
     {
-        var data = new T[length];
-        data.AsSpan().Fill(scalar);
-        return new(data);
+        return other is not null && Equals(other.AsSpan());
     }
 
-    public static ReadOnlyVector<T> Create<T>(int length)
-        where T : struct, INumber<T>
+    public bool Equals(ReadOnlySpan<T> other)
     {
-        return new(new T[length]);
+        return AsSpan().SequenceEqual(other);
     }
 
-    public static ReadOnlyVector<T> CreateZeroes<T>(int length)
-        where T : struct, INumber<T>
+    public ReadOnlyMemoryEnumerator<T> GetEnumerator()
     {
-        return Create(length, T.Zero);
+        return _memory.GetEnumerator();
     }
 
-    public static ReadOnlyVector<T> CreateOnes<T>(int length)
-        where T : struct, INumber<T>
+    IEnumerator<T> IEnumerable<T>.GetEnumerator()
     {
-        return Create(length, T.One);
+        return MemoryMarshal.ToEnumerable(_memory).GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return ((IEnumerable<T>)this).GetEnumerator();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public ReadOnlyVector<T> Slice(int start)
+    {
+        return _memory[start..];
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public ReadOnlyVector<T> Slice(int start, int length)
+    {
+        return _memory.Slice(start, length);
+    }
+
+    IReadOnlyVector<T> IReadOnlyVector<T>.Slice(int start, int length)
+    {
+        return Slice(start, length);
+    }
+
+    public static bool operator ==(ReadOnlyVector<T>? left, ReadOnlyVector<T>? right)
+    {
+        return left is not null && (right is null || left.Equals(right));
+    }
+
+    public static bool operator !=(ReadOnlyVector<T>? left, ReadOnlyVector<T>? right)
+    {
+        return !(left == right);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",
+        Justification = "By design")]
+    public static implicit operator ReadOnlyVector<T>(ReadOnlyMemory<T> vector)
+    {
+        return new(vector);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",
+        Justification = "By design")]
+    public static implicit operator ReadOnlyVector<T>(T[] vector)
+    {
+        ArgumentNullException.ThrowIfNull(vector);
+        return new(vector);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",
+        Justification = "By design")]
+    public static implicit operator ReadOnlyMemory<T>(ReadOnlyVector<T> vector)
+    {
+        return vector is not null ? vector._memory : default;
     }
 }

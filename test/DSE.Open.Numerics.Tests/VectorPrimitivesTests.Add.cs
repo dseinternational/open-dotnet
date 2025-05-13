@@ -8,8 +8,8 @@ public partial class VectorPrimitivesTests
     [Fact]
     public void Add_Int32_Array_Int32()
     {
-        var v1 = Vector.Create([1, 2, 3, 4, 5]);
-        var v2 = Vector.Create([1, 2, 3, 4, 5]);
+        var v1 = Series.Create([1, 2, 3, 4, 5]);
+        var v2 = Series.Create([1, 2, 3, 4, 5]);
         var sum = new int[5];
 
         VectorPrimitives.Add(v1, v2, sum);

@@ -19,7 +19,7 @@ public static class VectorJsonReader
     {
         if (length == 0)
         {
-            return new Vector<T>();
+            return Vector<T>.Empty;
         }
 
         using var builder = length > -1
@@ -59,7 +59,7 @@ public static class VectorJsonReader
     {
         if (length == 0)
         {
-            return new Vector<T>();
+            return [];
         }
 
         using var builder = length > -1
@@ -75,7 +75,7 @@ public static class VectorJsonReader
                     throw new JsonException();
                 }
 
-                return new Vector<T>(builder.ToArray(), categories: categories);
+                return new Vector<T>(builder.ToArray());
             }
 
             if (reader.TokenType == JsonTokenType.Number)
@@ -97,7 +97,7 @@ public static class VectorJsonReader
     {
         if (length == 0)
         {
-            return new Vector<string>();
+            return [];
         }
 
         using var builder = length > -1

@@ -63,7 +63,7 @@ public class DataSetJsonConverter : JsonConverter<DataSet>
                         break;
                     }
 
-                    var dataFrame = DataFrameJsonConverter.Default.Read(ref reader, typeof(Vector), options);
+                    var dataFrame = DataFrameJsonConverter.Default.Read(ref reader, typeof(Series), options);
 
                     if (dataFrame is null)
                     {

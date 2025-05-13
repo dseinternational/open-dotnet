@@ -5,13 +5,10 @@ namespace DSE.Open.Numerics;
 
 /// <summary>
 /// A serializable, contiguous, fixed-length sequence of read-only values with value
-/// equality semantics. Optionally named, labelled or categorised for use with
-/// a <see cref="IReadOnlyDataFrame"/>.
+/// equality semantics.
 /// </summary>
 public interface IReadOnlyVector
 {
-    string? Name { get; }
-
     int Length { get; }
 
     bool IsNumeric { get; }
@@ -20,28 +17,18 @@ public interface IReadOnlyVector
 }
 
 /// <summary>
-/// A serializable, contiguous, fixed-length sequence of read-only values of data type <typeparamref name="T"/>
-///. Optionally named, labelled or categorised for use with
-/// a <see cref="IReadOnlyDataFrame"/>.
+/// A serializable, contiguous, fixed-length sequence of read-only values with value
+/// equality semantics.
 /// </summary>
 public interface IReadOnlyVector<T>
     : IReadOnlyVector,
       IReadOnlyList<T>,
       IEquatable<IReadOnlyVector<T>>
 {
-    IReadOnlyDictionary<string, T> Categories { get; }
-
-    bool HasCategories { get; }
-
-    /// <summary>
-    /// Gets a read-only view of the vector.
-    /// </summary>
-    ReadOnlyMemory<T> Data { get; }
-
     /// <summary>
     /// Gets a span over the contents of the vector.
     /// </summary>
-    ReadOnlySpan<T> AsReadOnlySpan();
+    ReadOnlySpan<T> AsSpan();
 
-    ReadOnlyMemory<T> Slice(int start, int length);
+    IReadOnlyVector<T> Slice(int start, int length);
 }

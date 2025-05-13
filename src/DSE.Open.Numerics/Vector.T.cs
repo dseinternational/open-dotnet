@@ -13,50 +13,27 @@ using DSE.Open.Numerics.Serialization;
 namespace DSE.Open.Numerics;
 
 /// <summary>
-/// A serializable sequence of values of known length of type <typeparamref name="T"/>
-///. Optionally named, labelled or categorised for use with
+/// A serializable sequence of values of known length of type <typeparamref name="T"/>.
 /// a <see cref="DataFrame"/>.
 /// </summary>
 /// <typeparam name="T"></typeparam>
 [CollectionBuilder(typeof(Vector), nameof(Create))]
-[JsonConverter(typeof(VectorJsonConverter))]
+[JsonConverter(typeof(SeriesJsonConverter))]
 public sealed class Vector<T> : Vector, IVector<T>, IReadOnlyVector<T>, IEquatable<Vector<T>>
 {
-    private readonly Memory<T> _vector;
-    private readonly Memory<KeyValuePair<string, T>> _categories;
-    private IDictionary<string, T>? _categoriesLookup;
+    public static readonly Vector<T> Empty = new(Memory<T>.Empty);
 
-    /// <summary>
-    /// Creates an empty series.
-    /// </summary>
-    public Vector() : this(Memory<T>.Empty, null, null, null)
+    private readonly Memory<T> _memory;
+
+    public Vector(T[] array) : this(array.AsMemory())
     {
     }
 
-    public Vector(
-        T[] vector,
-        string? name = null,
-        Memory<Variant> labels = default,
-        Memory<KeyValuePair<string, T>> categories = default)
-        : this(vector.AsMemory(), name, labels, categories)
+    public Vector(Memory<T> memory)
+        : base(VectorDataTypeHelper.GetVectorDataType<T>(), typeof(T), memory.Length)
     {
+        _memory = memory;
     }
-
-    public Vector(
-        Memory<T> vector,
-        string? name = null,
-        Memory<Variant> labels = default,
-        Memory<KeyValuePair<string, T>> categories = default)
-        : base(VectorDataTypeHelper.GetSeriesDataType<T>(), typeof(T), vector.Length, name, labels)
-    {
-        _vector = vector;
-        _categories = categories;
-        // TODO: check if categories are valid
-    }
-
-    public Memory<T> Data => _vector;
-
-    ReadOnlyMemory<T> IReadOnlyVector<T>.Data => _vector;
 
 #pragma warning disable CA1033 // Interface methods should be callable by child types
     int IReadOnlyCollection<T>.Count => Length;
@@ -65,33 +42,10 @@ public sealed class Vector<T> : Vector, IVector<T>, IReadOnlyVector<T>, IEquatab
     public T this[int index]
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => _vector.Span[index];
+        get => _memory.Span[index];
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        set => _vector.Span[index] = value;
+        set => _memory.Span[index] = value;
     }
-
-    public bool HasCategories => _categories.Length > 0
-        || (_categoriesLookup is not null && _categoriesLookup.Count > 0);
-
-    public IDictionary<string, T> Categories
-    {
-        get
-        {
-            if (_categoriesLookup is null)
-            {
-                _categoriesLookup = new Dictionary<string, T>(_categories.Span.Length);
-
-                foreach (var kvp in _categories.Span)
-                {
-                    _categoriesLookup[kvp.Key] = kvp.Value;
-                }
-            }
-
-            return _categoriesLookup;
-        }
-    }
-
-    IReadOnlyDictionary<string, T> IReadOnlyVector<T>.Categories => Categories.AsReadOnly();
 
     /// <summary>
     /// Gets a span over the contents of the vector.
@@ -99,11 +53,11 @@ public sealed class Vector<T> : Vector, IVector<T>, IReadOnlyVector<T>, IEquatab
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Span<T> AsSpan()
     {
-        return _vector.Span;
+        return _memory.Span;
     }
 
 #pragma warning disable CA1033 // Interface methods should be callable by child types
-    ReadOnlySpan<T> IReadOnlyVector<T>.AsReadOnlySpan()
+    ReadOnlySpan<T> IReadOnlyVector<T>.AsSpan()
 #pragma warning restore CA1033 // Interface methods should be callable by child types
     {
         return AsSpan();
@@ -129,17 +83,7 @@ public sealed class Vector<T> : Vector, IVector<T>, IReadOnlyVector<T>, IEquatab
 
     public new ReadOnlyVector<T> AsReadOnly()
     {
-        ReadOnlyMemory<KeyValuePair<string, T>> categories =
-            _categoriesLookup is not null && _categoriesLookup.Count > 0
-                ? _categoriesLookup.ToArray()
-                : _categories;
-
-        return new ReadOnlyVector<T>(_vector, Name, Labels, categories);
-    }
-
-    ReadOnlyVector<T> IVector<T>.AsReadOnly()
-    {
-        return AsReadOnly();
+        return new ReadOnlyVector<T>(_memory);
     }
 
     protected override ReadOnlyVector CreateReadOnly()
@@ -159,47 +103,22 @@ public sealed class Vector<T> : Vector, IVector<T>, IReadOnlyVector<T>, IEquatab
 
     public bool Equals(IReadOnlyVector<T>? other)
     {
-        return other is not null && Name == other.Name && SequenceEqual(other.AsReadOnlySpan());
+        return other is not null && Equals(other.AsSpan());
     }
 
     public bool Equals(ReadOnlySpan<T> other)
-    {
-        return SequenceEqual(other);
-    }
-
-    public bool Equals(Memory<T> other)
-    {
-        return _vector.Equals(other);
-    }
-
-    public bool SequenceEqual(Vector<T>? other)
-    {
-        return other is not null && Equals(other.AsSpan());
-    }
-
-    public bool SequenceEqual(IVector<T>? other)
-    {
-        return other is not null && Equals(other.AsSpan());
-    }
-
-    public bool SequenceEqual(IReadOnlyVector<T>? other)
-    {
-        return other is not null && Equals(other.AsReadOnlySpan());
-    }
-
-    public bool SequenceEqual(ReadOnlySpan<T> other)
     {
         return AsSpan().SequenceEqual(other);
     }
 
     public MemoryEnumerator<T> GetEnumerator()
     {
-        return _vector.GetEnumerator();
+        return _memory.GetEnumerator();
     }
 
     IEnumerator<T> IEnumerable<T>.GetEnumerator()
     {
-        return MemoryMarshal.ToEnumerable((ReadOnlyMemory<T>)Data).GetEnumerator();
+        return MemoryMarshal.ToEnumerable((ReadOnlyMemory<T>)_memory).GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()
@@ -208,19 +127,24 @@ public sealed class Vector<T> : Vector, IVector<T>, IReadOnlyVector<T>, IEquatab
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Memory<T> Slice(int start)
+    public Vector<T> Slice(int start)
     {
-        return _vector[start..];
+        return _memory[start..];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Memory<T> Slice(int start, int length)
+    public Vector<T> Slice(int start, int length)
     {
-        return _vector.Slice(start, length);
+        return _memory.Slice(start, length);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    ReadOnlyMemory<T> IReadOnlyVector<T>.Slice(int start, int length)
+    IReadOnlyVector<T> IReadOnlyVector<T>.Slice(int start, int length)
+    {
+        return Slice(start, length).AsReadOnly();
+    }
+
+    IVector<T> IVector<T>.Slice(int start, int length)
     {
         return Slice(start, length);
     }
@@ -247,7 +171,7 @@ public sealed class Vector<T> : Vector, IVector<T>, IReadOnlyVector<T>, IEquatab
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator Memory<T>(Vector<T>? vector)
     {
-        return vector is not null ? vector._vector : default;
+        return vector is not null ? vector._memory : default;
     }
 
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",

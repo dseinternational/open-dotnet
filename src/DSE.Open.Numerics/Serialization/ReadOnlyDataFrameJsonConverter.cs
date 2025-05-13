@@ -40,7 +40,7 @@ public class ReadOnlyDataFrameJsonConverter : JsonConverter<ReadOnlyDataFrame>
 
         foreach (var column in value)
         {
-            ReadOnlyVectorJsonConverter.Default.Write(writer, column, options);
+            //ReadOnlyVectorJsonConverter.Default.Write(writer, column, options);
         }
 
         writer.WriteEndArray();
