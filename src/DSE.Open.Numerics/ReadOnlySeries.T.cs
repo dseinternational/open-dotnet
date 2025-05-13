@@ -5,6 +5,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using DSE.Open.Numerics.Serialization;
 
@@ -19,21 +20,35 @@ namespace DSE.Open.Numerics;
 [JsonConverter(typeof(SeriesJsonConverter))]
 public sealed class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
 {
-    public static readonly ReadOnlySeries<T> Empty = new(default);
+    public static readonly ReadOnlySeries<T> Empty = new();
 
     private readonly ReadOnlyMemory<T> _vector;
-    private readonly Memory<KeyValuePair<string, T>> _categories;
+    private readonly ReadOnlyMemory<KeyValuePair<string, T>> _categories;
     private IReadOnlyDictionary<string, T>? _categoriesLookup;
+
+    public ReadOnlySeries() : this(Memory<T>.Empty, null, null, null)
+    {
+    }
+
+    public ReadOnlySeries(
+        T[] vector,
+        string? name = null,
+        ReadOnlyMemory<Variant> labels = default,
+        ReadOnlyMemory<KeyValuePair<string, T>> categories = default)
+        : this(vector.AsMemory(), name, labels, categories)
+    {
+    }
 
     public ReadOnlySeries(
         ReadOnlyMemory<T> vector,
         string? name = null,
-        Memory<Variant> labels = default,
-        Memory<KeyValuePair<string, T>> categories = default)
-        : base(VectorDataTypeHelper.GetVectorDataType<T>(), typeof(T), vector.Length, name, labels)
+        ReadOnlyMemory<Variant> labels = default,
+        ReadOnlyMemory<KeyValuePair<string, T>> categories = default)
+        : base(SeriesDataTypeHelper.GetSeriesDataType<T>(), typeof(T), vector.Length, name, labels)
     {
         _vector = vector;
         _categories = categories;
+        // TODO: check if categories are valid
     }
 
     public ReadOnlyMemory<T> Vector => _vector;
@@ -108,11 +123,6 @@ public sealed class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
         return AsReadOnlySpan().SequenceEqual(other);
     }
 
-    public T[] ToArray()
-    {
-        return [.. _vector];
-    }
-
     public ReadOnlyMemoryEnumerator<T> GetEnumerator()
     {
         return _vector.GetEnumerator();
@@ -120,8 +130,7 @@ public sealed class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
 
     IEnumerator<T> IEnumerable<T>.GetEnumerator()
     {
-        // TODO
-        throw new NotImplementedException();
+        return MemoryMarshal.ToEnumerable(Vector).GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()
@@ -130,9 +139,15 @@ public sealed class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ReadOnlySpan<T> Slice(int start, int length)
+    public ReadOnlyMemory<T> Slice(int start)
     {
-        return AsReadOnlySpan().Slice(start, length);
+        return _vector[start..];
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public ReadOnlyMemory<T> Slice(int start, int length)
+    {
+        return _vector.Slice(start, length);
     }
 
     public static bool operator ==(ReadOnlySeries<T>? left, ReadOnlySeries<T>? right)

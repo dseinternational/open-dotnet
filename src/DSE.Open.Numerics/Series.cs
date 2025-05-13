@@ -35,7 +35,7 @@ public abstract class Series : ISeries
         }
 
 #if DEBUG
-        if (VectorDataTypeHelper.TryGetVectorDataType(itemType, out var expectedDataType)
+        if (SeriesDataTypeHelper.TryGetVectorDataType(itemType, out var expectedDataType)
             && dataType != expectedDataType)
         {
             Debug.Fail($"Expected data type {expectedDataType} for "
@@ -100,11 +100,6 @@ public abstract class Series : ISeries
         }
     }
 
-    public virtual string ToJson(SeriesJsonFormat format = default)
-    {
-        return "TODO";
-    }
-
     /// <summary>
     /// Creates a series from the given data.
     /// </summary>
@@ -153,5 +148,10 @@ public abstract class Series : ISeries
     public ReadOnlySeries AsReadOnly()
     {
         return CreateReadOnly();
+    }
+
+    IReadOnlySeries ISeries.AsReadOnly()
+    {
+        return AsReadOnly();
     }
 }

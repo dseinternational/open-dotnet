@@ -19,6 +19,9 @@ public interface IReadOnlySeries<T>
 {
     IReadOnlyDictionary<string, T> Categories { get; }
 
+    /// <summary>
+    /// Gets a read-only view of the vector.
+    /// </summary>
     ReadOnlyMemory<T> Vector { get; }
 
     /// <summary>
@@ -26,11 +29,5 @@ public interface IReadOnlySeries<T>
     /// </summary>
     ReadOnlySpan<T> AsReadOnlySpan();
 
-    ReadOnlySpan<T> Slice(int start, int length);
-
-    /// <summary>
-    /// Copies the elements of the <see cref="IReadOnlySeries{T}"/> to a new array.
-    /// </summary>
-    /// <returns></returns>
-    T[] ToArray();
+    ReadOnlyMemory<T> Slice(int start, int length);
 }

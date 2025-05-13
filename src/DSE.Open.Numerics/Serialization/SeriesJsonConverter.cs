@@ -91,7 +91,7 @@ public class SeriesJsonConverter : JsonConverter<IReadOnlySeries>
                     throw new JsonException("Cannot read categories without data type");
                 }
 
-                var dtype = VectorDataTypeHelper.GetVectorDataType(dataType);
+                var dtype = SeriesDataTypeHelper.GetSeriesDataType(dataType);
 
                 _ = reader.Read();
 
@@ -109,7 +109,7 @@ public class SeriesJsonConverter : JsonConverter<IReadOnlySeries>
                     throw new JsonException("Cannot read values without data type");
                 }
 
-                var dtype = VectorDataTypeHelper.GetVectorDataType(dataType);
+                var dtype = SeriesDataTypeHelper.GetSeriesDataType(dataType);
 
                 _ = reader.Read();
 
@@ -122,26 +122,25 @@ public class SeriesJsonConverter : JsonConverter<IReadOnlySeries>
                 {
                     vector = dtype switch
                     {
-                        SeriesDataType.Float64 => SeriesJsonReader.ReadVector<double>(ref reader, length, Format),
-                        SeriesDataType.Float32 => SeriesJsonReader.ReadVector<float>(ref reader, length, Format),
-                        SeriesDataType.Int64 => SeriesJsonReader.ReadVector<long>(ref reader, length, Format),
-                        SeriesDataType.UInt64 => SeriesJsonReader.ReadVector<ulong>(ref reader, length, Format),
-                        SeriesDataType.Int32 => SeriesJsonReader.ReadVector<int>(ref reader, length, Format),
-                        SeriesDataType.UInt32 => SeriesJsonReader.ReadVector<uint>(ref reader, length, Format),
-                        SeriesDataType.Int16 => SeriesJsonReader.ReadVector<short>(ref reader, length, Format),
-                        SeriesDataType.UInt16 => SeriesJsonReader.ReadVector<ushort>(ref reader, length, Format),
-                        SeriesDataType.Int8 => SeriesJsonReader.ReadVector<sbyte>(ref reader, length, Format),
-                        SeriesDataType.UInt8 => SeriesJsonReader.ReadVector<byte>(ref reader, length, Format),
-                        SeriesDataType.Int128 => SeriesJsonReader.ReadVector<Int128>(ref reader, length, Format),
-                        SeriesDataType.UInt128 => SeriesJsonReader.ReadVector<UInt128>(ref reader, length, Format),
-                        SeriesDataType.DateTime64 =>
-                            SeriesJsonReader.ReadVector<DateTime64>(ref reader, length, Format),
-                        SeriesDataType.DateTime => ReadVector<DateTime>(ref reader, length),
-                        SeriesDataType.DateTimeOffset => ReadVector<DateTimeOffset>(ref reader, length),
-                        SeriesDataType.Uuid => ReadVector<Guid>(ref reader, length),
-                        SeriesDataType.Bool => ReadVector<bool>(ref reader, length),
-                        SeriesDataType.Char => ReadVector<char>(ref reader, length),
-                        SeriesDataType.String => SeriesJsonReader.ReadStringVector(ref reader, length),
+                        SeriesDataType.Float64 => SeriesJsonReader.ReadSeries<double>(ref reader, length, Format),
+                        SeriesDataType.Float32 => SeriesJsonReader.ReadSeries<float>(ref reader, length, Format),
+                        SeriesDataType.Int64 => SeriesJsonReader.ReadSeries<long>(ref reader, length, Format),
+                        SeriesDataType.UInt64 => SeriesJsonReader.ReadSeries<ulong>(ref reader, length, Format),
+                        SeriesDataType.Int32 => SeriesJsonReader.ReadSeries<int>(ref reader, length, Format),
+                        SeriesDataType.UInt32 => SeriesJsonReader.ReadSeries<uint>(ref reader, length, Format),
+                        SeriesDataType.Int16 => SeriesJsonReader.ReadSeries<short>(ref reader, length, Format),
+                        SeriesDataType.UInt16 => SeriesJsonReader.ReadSeries<ushort>(ref reader, length, Format),
+                        SeriesDataType.Int8 => SeriesJsonReader.ReadSeries<sbyte>(ref reader, length, Format),
+                        SeriesDataType.UInt8 => SeriesJsonReader.ReadSeries<byte>(ref reader, length, Format),
+                        SeriesDataType.Int128 => SeriesJsonReader.ReadSeries<Int128>(ref reader, length, Format),
+                        SeriesDataType.UInt128 => SeriesJsonReader.ReadSeries<UInt128>(ref reader, length, Format),
+                        SeriesDataType.DateTime64 => SeriesJsonReader.ReadSeries<DateTime64>(ref reader, length, Format),
+                        SeriesDataType.DateTime => ReadSeries<DateTime>(ref reader, length),
+                        SeriesDataType.DateTimeOffset => ReadSeries<DateTimeOffset>(ref reader, length),
+                        SeriesDataType.Uuid => ReadSeries<Guid>(ref reader, length),
+                        SeriesDataType.Bool => ReadSeries<bool>(ref reader, length),
+                        SeriesDataType.Char => ReadSeries<char>(ref reader, length),
+                        SeriesDataType.String => SeriesJsonReader.ReadStringSeries(ref reader, length),
                         _ => throw new JsonException($"Unsupported data type: {dtype}")
                     };
                 }
@@ -150,24 +149,24 @@ public class SeriesJsonConverter : JsonConverter<IReadOnlySeries>
 #pragma warning disable IDE0072 // Add missing cases
                     vector = dtype switch
                     {
-                        SeriesDataType.Int64 => SeriesJsonReader.ReadCategoryVector(ref reader, length,
-                            (Dictionary<string, long>)categories, Format),
-                        SeriesDataType.UInt64 => SeriesJsonReader.ReadCategoryVector(ref reader, length,
-                            (Dictionary<string, ulong>)categories, Format),
-                        SeriesDataType.Int32 => SeriesJsonReader.ReadCategoryVector(ref reader, length,
-                            (Dictionary<string, int>)categories, Format),
-                        SeriesDataType.UInt32 => SeriesJsonReader.ReadCategoryVector(ref reader, length,
-                            (Dictionary<string, uint>)categories, Format),
-                        SeriesDataType.Int16 => SeriesJsonReader.ReadCategoryVector(ref reader, length,
-                            (Dictionary<string, short>)categories, Format),
-                        SeriesDataType.Int8 => SeriesJsonReader.ReadCategoryVector(ref reader, length,
-                            (Dictionary<string, sbyte>)categories, Format),
-                        SeriesDataType.UInt8 => SeriesJsonReader.ReadCategoryVector(ref reader, length,
-                            (Dictionary<string, byte>)categories, Format),
-                        SeriesDataType.Int128 => SeriesJsonReader.ReadCategoryVector(ref reader, length,
-                            (Dictionary<string, Int128>)categories, Format),
-                        SeriesDataType.UInt128 => SeriesJsonReader.ReadCategoryVector(ref reader, length,
-                            (Dictionary<string, UInt128>)categories, Format),
+                        SeriesDataType.Int64 => SeriesJsonReader.ReadCategorySeries(ref reader, length,
+                            (KeyValuePair<string, long>[])categories, Format),
+                        SeriesDataType.UInt64 => SeriesJsonReader.ReadCategorySeries(ref reader, length,
+                            (KeyValuePair<string, ulong>[])categories, Format),
+                        SeriesDataType.Int32 => SeriesJsonReader.ReadCategorySeries(ref reader, length,
+                            (KeyValuePair<string, int>[])categories, Format),
+                        SeriesDataType.UInt32 => SeriesJsonReader.ReadCategorySeries(ref reader, length,
+                            (KeyValuePair<string, uint>[])categories, Format),
+                        SeriesDataType.Int16 => SeriesJsonReader.ReadCategorySeries(ref reader, length,
+                            (KeyValuePair<string, short>[])categories, Format),
+                        SeriesDataType.Int8 => SeriesJsonReader.ReadCategorySeries(ref reader, length,
+                            (KeyValuePair<string, sbyte>[])categories, Format),
+                        SeriesDataType.UInt8 => SeriesJsonReader.ReadCategorySeries(ref reader, length,
+                            (KeyValuePair<string, byte>[])categories, Format),
+                        SeriesDataType.Int128 => SeriesJsonReader.ReadCategorySeries(ref reader, length,
+                            (KeyValuePair<string, Int128>[])categories, Format),
+                        SeriesDataType.UInt128 => SeriesJsonReader.ReadCategorySeries(ref reader, length,
+                            (KeyValuePair<string, UInt128>[])categories, Format),
                         _ => throw new JsonException($"Unsupported data type: {dtype}")
                     };
 #pragma warning restore IDE0072 // Add missing cases
@@ -198,7 +197,10 @@ public class SeriesJsonConverter : JsonConverter<IReadOnlySeries>
         };
     }
 
-    private static Dictionary<string, T> ReadNumberCategories<T>(ref Utf8JsonReader reader, int length)
+    // TODO: consider if we should use an array builder instead of a dictionary - less overhead,
+    // but no duplicate keys check
+
+    private static KeyValuePair<string, T>[] ReadNumberCategories<T>(ref Utf8JsonReader reader, int length)
         where T : struct, IComparable<T>, IEquatable<T>, IBinaryInteger<T>, IMinMaxValue<T>
     {
         var dictionary = length > -1
@@ -232,16 +234,16 @@ public class SeriesJsonConverter : JsonConverter<IReadOnlySeries>
             }
         }
 
-        return dictionary;
+        return [.. dictionary];
     }
 
-    private static Series<T> ReadVector<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(
+    private static Series<T> ReadSeries<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(
         ref Utf8JsonReader reader,
         int length)
     {
         if (length == 0)
         {
-            return new Series<T>(default);
+            return new Series<T>();
         }
 
         using var builder = length > -1
@@ -277,59 +279,59 @@ public class SeriesJsonConverter : JsonConverter<IReadOnlySeries>
 
         switch (value)
         {
-            case IReadOnlySeries<int> intVector:
-                SeriesJsonWriter.Write(writer, intVector, options);
+            case IReadOnlySeries<int> intSeries:
+                SeriesJsonWriter.Write(writer, intSeries, options);
                 return;
-            case IReadOnlySeries<long> longVector:
-                SeriesJsonWriter.Write(writer, longVector, options);
+            case IReadOnlySeries<long> longSeries:
+                SeriesJsonWriter.Write(writer, longSeries, options);
                 return;
-            case IReadOnlySeries<float> floatVector:
-                SeriesJsonWriter.Write(writer, floatVector, options);
+            case IReadOnlySeries<float> floatSeries:
+                SeriesJsonWriter.Write(writer, floatSeries, options);
                 return;
-            case IReadOnlySeries<double> doubleVector:
-                SeriesJsonWriter.Write(writer, doubleVector, options);
+            case IReadOnlySeries<double> doubleSeries:
+                SeriesJsonWriter.Write(writer, doubleSeries, options);
                 return;
-            case IReadOnlySeries<uint> uintVector:
-                SeriesJsonWriter.Write(writer, uintVector, options);
+            case IReadOnlySeries<uint> uintSeries:
+                SeriesJsonWriter.Write(writer, uintSeries, options);
                 return;
-            case IReadOnlySeries<ulong> uuidVector:
-                SeriesJsonWriter.Write(writer, uuidVector, options);
+            case IReadOnlySeries<ulong> uuidSeries:
+                SeriesJsonWriter.Write(writer, uuidSeries, options);
                 return;
-            case IReadOnlySeries<DateTime64> dateTime64Vector:
-                SeriesJsonWriter.Write(writer, dateTime64Vector, options);
+            case IReadOnlySeries<DateTime64> dateTime64Series:
+                SeriesJsonWriter.Write(writer, dateTime64Series, options);
                 return;
-            case IReadOnlySeries<short> shortVector:
-                SeriesJsonWriter.Write(writer, shortVector, options);
+            case IReadOnlySeries<short> shortSeries:
+                SeriesJsonWriter.Write(writer, shortSeries, options);
                 return;
-            case IReadOnlySeries<ushort> ushortVector:
-                SeriesJsonWriter.Write(writer, ushortVector, options);
+            case IReadOnlySeries<ushort> ushortSeries:
+                SeriesJsonWriter.Write(writer, ushortSeries, options);
                 return;
-            case IReadOnlySeries<sbyte> sbyteVector:
-                SeriesJsonWriter.Write(writer, sbyteVector, options);
+            case IReadOnlySeries<sbyte> sbyteSeries:
+                SeriesJsonWriter.Write(writer, sbyteSeries, options);
                 return;
-            case IReadOnlySeries<byte> byteVector:
-                SeriesJsonWriter.Write(writer, byteVector, options);
+            case IReadOnlySeries<byte> byteSeries:
+                SeriesJsonWriter.Write(writer, byteSeries, options);
                 return;
-            case IReadOnlySeries<Int128> int128Vector:
-                SeriesJsonWriter.Write(writer, int128Vector, options);
+            case IReadOnlySeries<Int128> int128Series:
+                SeriesJsonWriter.Write(writer, int128Series, options);
                 return;
-            case IReadOnlySeries<UInt128> uint128Vector:
-                SeriesJsonWriter.Write(writer, uint128Vector, options);
+            case IReadOnlySeries<UInt128> uint128Series:
+                SeriesJsonWriter.Write(writer, uint128Series, options);
                 return;
-            case IReadOnlySeries<string> stringVector:
-                SeriesJsonWriter.Write(writer, stringVector, options);
+            case IReadOnlySeries<string> stringSeries:
+                SeriesJsonWriter.Write(writer, stringSeries, options);
                 return;
-            case IReadOnlySeries<char> charVector:
-                SeriesJsonWriter.Write(writer, charVector, options);
+            case IReadOnlySeries<char> charSeries:
+                SeriesJsonWriter.Write(writer, charSeries, options);
                 return;
-            case IReadOnlySeries<bool> boolVector:
-                SeriesJsonWriter.Write(writer, boolVector, options);
+            case IReadOnlySeries<bool> boolSeries:
+                SeriesJsonWriter.Write(writer, boolSeries, options);
                 return;
-            case IReadOnlySeries<DateTime> dateTimeVector:
-                SeriesJsonWriter.Write(writer, dateTimeVector, options);
+            case IReadOnlySeries<DateTime> dateTimeSeries:
+                SeriesJsonWriter.Write(writer, dateTimeSeries, options);
                 return;
             default:
-                throw new JsonException("Unsupported vector type");
+                throw new JsonException("Unsupported series type");
         }
     }
 }

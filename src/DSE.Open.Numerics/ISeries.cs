@@ -8,7 +8,7 @@ public interface ISeries : IReadOnlySeries
     /// <summary>
     /// Gets a read-only view of the vector.
     /// </summary>
-    ReadOnlySeries AsReadOnly();
+    IReadOnlySeries AsReadOnly();
 }
 
 public interface ISeries<T>
@@ -34,5 +34,5 @@ public interface ISeries<T>
     /// </summary>
     Span<T> AsSpan();
 
-    new Span<T> Slice(int start, int length);
+    new Memory<T> Slice(int start, int length);
 }

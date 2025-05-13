@@ -22,7 +22,7 @@ public abstract class ReadOnlySeries : IReadOnlySeries
         ArgumentNullException.ThrowIfNull(itemType);
 
 #if DEBUG
-        if (VectorDataTypeHelper.TryGetVectorDataType(itemType, out var expectedDataType)
+        if (SeriesDataTypeHelper.TryGetVectorDataType(itemType, out var expectedDataType)
             && dataType != expectedDataType)
         {
             Debug.Fail($"Expected data type {expectedDataType} for " +

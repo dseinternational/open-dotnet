@@ -11,7 +11,7 @@ namespace DSE.Open.Numerics.Serialization;
 
 public static class SeriesJsonReader
 {
-    public static Series<T> ReadVector<T>(
+    public static Series<T> ReadSeries<T>(
         ref Utf8JsonReader reader,
         int length,
         SeriesJsonFormat format = default)
@@ -19,7 +19,7 @@ public static class SeriesJsonReader
     {
         if (length == 0)
         {
-            return new Series<T>(default);
+            return new Series<T>();
         }
 
         using var builder = length > -1
@@ -50,16 +50,16 @@ public static class SeriesJsonReader
         throw new JsonException();
     }
 
-    public static Series<T> ReadCategoryVector<T>(
+    public static Series<T> ReadCategorySeries<T>(
         ref Utf8JsonReader reader,
         int length,
-        Dictionary<string, T> categories,
+        KeyValuePair<string, T>[] categories,
         SeriesJsonFormat format = default)
         where T : struct, IComparable<T>, IEquatable<T>, IBinaryInteger<T>, IMinMaxValue<T>
     {
         if (length == 0)
         {
-            return new Series<T>(default);
+            return new Series<T>();
         }
 
         using var builder = length > -1
@@ -90,14 +90,14 @@ public static class SeriesJsonReader
         throw new JsonException();
     }
 
-    public static Series<string> ReadStringVector(
+    public static Series<string> ReadStringSeries(
         ref Utf8JsonReader reader,
         int length,
         SeriesJsonFormat format = default)
     {
         if (length == 0)
         {
-            return Series<string>.Empty;
+            return new Series<string>();
         }
 
         using var builder = length > -1

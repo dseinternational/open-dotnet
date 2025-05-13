@@ -20,7 +20,7 @@ public static class SeriesJsonWriter
         JsonExceptionHelper.ThrowIfLengthExceedsSerializationLimit(vector.Length);
 
         writer.WriteStartObject();
-        writer.WriteString(SeriesJsonPropertyNames.DataType, VectorDataTypeHelper.GetLabel(vector.DataType));
+        writer.WriteString(SeriesJsonPropertyNames.DataType, SeriesDataTypeHelper.GetLabel(vector.DataType));
         writer.WriteNumber(SeriesJsonPropertyNames.Length, vector.Length);
         writer.WritePropertyName(SeriesJsonPropertyNames.Values);
 
@@ -137,7 +137,6 @@ public static class SeriesJsonWriter
         {
             throw new NotSupportedException($"The type `{typeof(T)}` is a not supported numeric type.");
         }
-
 
         static void WriteNumberSpan<TNumber>(Utf8JsonWriter writer, ReadOnlySpan<TNumber> vector)
             where TNumber : struct, INumber<TNumber>

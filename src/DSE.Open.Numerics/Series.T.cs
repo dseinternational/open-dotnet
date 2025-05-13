@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics.Tensors;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using DSE.Open.Numerics.Serialization;
 
@@ -21,18 +22,32 @@ namespace DSE.Open.Numerics;
 [JsonConverter(typeof(SeriesJsonConverter))]
 public sealed class Series<T> : Series, ISeries<T>, IReadOnlySeries<T>
 {
-    public static readonly Series<T> Empty = new(default);
-
     private readonly Memory<T> _vector;
     private readonly Memory<KeyValuePair<string, T>> _categories;
     private IDictionary<string, T>? _categoriesLookup;
+
+    /// <summary>
+    /// Creates an empty series.
+    /// </summary>
+    public Series() : this(Memory<T>.Empty, null, null, null)
+    {
+    }
+
+    public Series(
+        T[] vector,
+        string? name = null,
+        Memory<Variant> labels = default,
+        Memory<KeyValuePair<string, T>> categories = default)
+        : this(vector.AsMemory(), name, labels, categories)
+    {
+    }
 
     public Series(
         Memory<T> vector,
         string? name = null,
         Memory<Variant> labels = default,
         Memory<KeyValuePair<string, T>> categories = default)
-        : base(VectorDataTypeHelper.GetVectorDataType<T>(), typeof(T), vector.Length, name, labels)
+        : base(SeriesDataTypeHelper.GetSeriesDataType<T>(), typeof(T), vector.Length, name, labels)
     {
         _vector = vector;
         _categories = categories;
@@ -116,6 +131,11 @@ public sealed class Series<T> : Series, ISeries<T>, IReadOnlySeries<T>
         return new ReadOnlySeries<T>(_vector);
     }
 
+    ReadOnlySeries<T> ISeries<T>.AsReadOnly()
+    {
+        return new ReadOnlySeries<T>(_vector);
+    }
+
     protected override ReadOnlySeries CreateReadOnly()
     {
         return AsReadOnly();
@@ -141,11 +161,6 @@ public sealed class Series<T> : Series, ISeries<T>, IReadOnlySeries<T>
         return AsSpan().SequenceEqual(other);
     }
 
-    public T[] ToArray()
-    {
-        return [.. _vector];
-    }
-
     public MemoryEnumerator<T> GetEnumerator()
     {
         return _vector.GetEnumerator();
@@ -153,8 +168,7 @@ public sealed class Series<T> : Series, ISeries<T>, IReadOnlySeries<T>
 
     IEnumerator<T> IEnumerable<T>.GetEnumerator()
     {
-        // TODO
-        throw new NotImplementedException();
+        return MemoryMarshal.ToEnumerable((ReadOnlyMemory<T>)Vector).GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()
@@ -163,19 +177,19 @@ public sealed class Series<T> : Series, ISeries<T>, IReadOnlySeries<T>
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Span<T> Slice(int start)
+    public Memory<T> Slice(int start)
     {
-        return AsSpan()[start..];
+        return _vector[start..];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Span<T> Slice(int start, int length)
+    public Memory<T> Slice(int start, int length)
     {
-        return AsSpan().Slice(start, length);
+        return _vector.Slice(start, length);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    ReadOnlySpan<T> IReadOnlySeries<T>.Slice(int start, int length)
+    ReadOnlyMemory<T> IReadOnlySeries<T>.Slice(int start, int length)
     {
         return Slice(start, length);
     }

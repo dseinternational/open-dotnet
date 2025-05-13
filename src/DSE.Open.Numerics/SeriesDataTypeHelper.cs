@@ -6,7 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace DSE.Open.Numerics;
 
-public static class VectorDataTypeHelper
+public static class SeriesDataTypeHelper
 {
     private static readonly FrozenDictionary<SeriesDataType, string> s_labelLookup = new Dictionary<SeriesDataType, string>()
     {
@@ -87,17 +87,17 @@ public static class VectorDataTypeHelper
         return s_labelLookup[dataType];
     }
 
-    public static SeriesDataType GetVectorDataType(string label)
+    public static SeriesDataType GetSeriesDataType(string label)
     {
         return s_vectorDataTypeLookup[label];
     }
 
-    public static SeriesDataType GetVectorDataType<T>()
+    public static SeriesDataType GetSeriesDataType<T>()
     {
-        return GetVectorDataType(typeof(T));
+        return GetSeriesDataType(typeof(T));
     }
 
-    public static SeriesDataType GetVectorDataType(Type type)
+    public static SeriesDataType GetSeriesDataType(Type type)
     {
         if (TryGetVectorDataType(type, out var vectorDataType))
         {
@@ -134,7 +134,7 @@ public static class VectorDataTypeHelper
 
     public static bool IsNumericType(Type type)
     {
-        return IsNumericType(GetVectorDataType(type));
+        return IsNumericType(GetSeriesDataType(type));
     }
 
     public static bool IsNumericType<T>()
