@@ -2,7 +2,6 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Collections;
-using DSE.Open.Collections.Generic;
 
 namespace DSE.Open.Numerics;
 
@@ -11,93 +10,33 @@ namespace DSE.Open.Numerics;
 public sealed class DataLabelCollection<TData> : DataLabelCollectionBase<TData>, IDataLabelCollection<TData>
     where TData : IEquatable<TData>
 {
-    private Dictionary<ulong, int>? _dataIndexLookup;
-    private Dictionary<string, int>? _labelIndexLookup;
-
-    private readonly Collection<DataLabel<TData>> _dataLabels;
-
-    public DataLabelCollection()
+    public DataLabelCollection() : this([])
     {
-        _dataLabels = [];
     }
 
-    public DataLabelCollection(IEnumerable<DataLabel<TData>> dataLabels)
+    public DataLabelCollection(IEnumerable<DataLabel<TData>> dataLabels) : base([.. dataLabels])
     {
-        ArgumentNullException.ThrowIfNull(dataLabels);
-        _dataLabels = [.. dataLabels];
-    }
-
-    private Dictionary<ulong, int> DataIndexLookup
-    {
-        get
-        {
-            if (_dataIndexLookup is not null)
-            {
-                return _dataIndexLookup;
-            }
-
-            _dataIndexLookup = new Dictionary<ulong, int>(_dataLabels.Count);
-
-            for (var i = 0; i < _dataLabels.Count; i++)
-            {
-                _dataIndexLookup.Add(GetHash(_dataLabels[i].Data), i);
-            }
-
-            return _dataIndexLookup;
-        }
-    }
-
-    private Dictionary<string, int> LabelIndexLookup
-    {
-        get
-        {
-            if (_labelIndexLookup is not null)
-            {
-                return _labelIndexLookup;
-            }
-
-            _labelIndexLookup = new Dictionary<string, int>(_dataLabels.Count);
-
-            for (var i = 0; i < _dataLabels.Count; i++)
-            {
-                _labelIndexLookup.Add(_dataLabels[i].Label, i);
-            }
-
-            return _labelIndexLookup;
-        }
     }
 
     public string this[TData data]
     {
         get
         {
-            if (_dataLabels.Count == 0)
+            if (DataLabels.Count == 0)
             {
                 throw new KeyNotFoundException($"Data {data} not found.");
             }
 
-            return _dataLabels[DataIndexLookup[GetHash(data)]].Label;
+            return DataLabels[DataIndexLookup[GetHash(data)]].Label;
         }
         set => Add(new DataLabel<TData>(data, value));
     }
-
-    public int Count => _dataLabels.Count;
 
     bool ICollection<DataLabel<TData>>.IsReadOnly => false;
 
     public void Add(DataLabel<TData> label)
     {
-        var key = GetHash(label.Data);
-
-        if (DataIndexLookup.ContainsKey(key))
-        {
-            throw new ArgumentException($"Label already included for label {label}", nameof(label));
-        }
-
-        _dataLabels.Add(label);
-
-        DataIndexLookup.Add(key, _dataLabels.Count - 1);
-        LabelIndexLookup.Add(label.Label, _dataLabels.Count - 1);
+        AddCore(label);
     }
 
     public void Add(TData data, string label)
@@ -108,50 +47,7 @@ public sealed class DataLabelCollection<TData> : DataLabelCollectionBase<TData>,
 
     public void Clear()
     {
-        _dataLabels.Clear();
-        _dataIndexLookup?.Clear();
-        _labelIndexLookup?.Clear();
-    }
-
-    public bool Contains(DataLabel<TData> item)
-    {
-        if (_dataLabels.Count == 0)
-        {
-            return false;
-        }
-
-        var key = GetHash(item.Data);
-
-        if (!DataIndexLookup.TryGetValue(key, out var index))
-        {
-            return false;
-        }
-
-        return _dataLabels[index].Equals(item);
-    }
-
-    public bool ContainsLabel(string label)
-    {
-        ArgumentNullException.ThrowIfNull(label);
-
-        if (_dataLabels.Count == 0)
-        {
-            return false;
-        }
-
-        return LabelIndexLookup.ContainsKey(label);
-    }
-
-    public bool ContainsDataValue(TData value)
-    {
-        if (_dataLabels.Count == 0)
-        {
-            return false;
-        }
-
-        var key = GetHash(value);
-
-        return DataIndexLookup.ContainsKey(key);
+        ClearCore();
     }
 
     void ICollection<DataLabel<TData>>.CopyTo(DataLabel<TData>[] array, int arrayIndex)
@@ -159,106 +55,25 @@ public sealed class DataLabelCollection<TData> : DataLabelCollectionBase<TData>,
         ArgumentNullException.ThrowIfNull(array);
         ArgumentOutOfRangeException.ThrowIfNegative(arrayIndex);
 
-        if (array.Length - arrayIndex < _dataLabels.Count)
+        if (array.Length - arrayIndex < DataLabels.Count)
         {
             throw new ArgumentException(
                 "The destination array is not long enough to copy all the items in the collection.");
         }
 
-        for (var i = 0; i < _dataLabels.Count; i++)
+        for (var i = 0; i < DataLabels.Count; i++)
         {
-            array[arrayIndex + i] = _dataLabels[i];
+            array[arrayIndex + i] = DataLabels[i];
         }
     }
 
-    public IEnumerator<DataLabel<TData>> GetEnumerator()
+    public bool Remove(DataLabel<TData> dataLabel)
     {
-        for (var i = 0; i < _dataLabels.Count; i++)
-        {
-            yield return _dataLabels[i];
-        }
-    }
-
-    public bool Remove(DataLabel<TData> item)
-    {
-        if (_dataLabels.Count == 0)
-        {
-            return false;
-        }
-
-        var key = GetHash(item.Data);
-
-        if (!DataIndexLookup.TryGetValue(key, out var index))
-        {
-            return false;
-        }
-
-        if (!_dataLabels[index].Equals(item))
-        {
-            return false;
-        }
-
-        var label = _dataLabels[index].Label;
-
-        _ = DataIndexLookup.Remove(key);
-        _ = LabelIndexLookup.Remove(label);
-
-        _dataLabels.RemoveAt(index);
-
-        for (var i = index; i < _dataLabels.Count; i++)
-        {
-            DataIndexLookup[GetHash(_dataLabels[i].Data)] = i;
-            LabelIndexLookup[label] = i;
-        }
-
-        return true;
+        return RemoveCore(dataLabel);
     }
 
     IEnumerator IEnumerable.GetEnumerator()
     {
         return GetEnumerator();
-    }
-
-    public bool TryGetLabel(TData data, out string label)
-    {
-        if (_dataLabels.Count == 0)
-        {
-            label = string.Empty;
-            return false;
-        }
-
-        var key = GetHash(data);
-
-        if (DataIndexLookup.TryGetValue(key, out var index))
-        {
-            label = _dataLabels[index].Label;
-            return true;
-        }
-
-        label = string.Empty;
-        return false;
-    }
-
-    public bool TryGetDataValue(string label, out TData data)
-    {
-        ArgumentNullException.ThrowIfNull(label);
-
-        if (_dataLabels.Count == 0)
-        {
-            data = default!;
-            return false;
-        }
-
-        for (var i = 0; i < _dataLabels.Count; i++)
-        {
-            if (_dataLabels[i].Label == label)
-            {
-                data = _dataLabels[i].Data;
-                return true;
-            }
-        }
-
-        data = default!;
-        return false;
     }
 }

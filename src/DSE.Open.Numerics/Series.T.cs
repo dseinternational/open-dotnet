@@ -28,19 +28,18 @@ public class Series<T> : Series, ISeries<T>, IReadOnlySeries<T>, IEquatable<Seri
 #pragma warning restore IDE1006 // Naming Styles
 
     private readonly Vector<T> _vector;
+    private readonly DataLabelCollection<T> _labels;
 
     internal Series(
         [NotNull] Vector<T> vector,
         string? name,
-        Index? index)
+        Index? index,
+        DataLabelCollection<T>? labels = null)
         : base(vector, name, index)
     {
         _vector = vector;
+        _labels = labels ?? [];
     }
-
-#pragma warning disable CA1033 // Interface methods should be callable by child types
-    int IReadOnlyCollection<T>.Count => Length;
-#pragma warning restore CA1033 // Interface methods should be callable by child types
 
     public T this[int index]
     {
@@ -49,6 +48,18 @@ public class Series<T> : Series, ISeries<T>, IReadOnlySeries<T>, IEquatable<Seri
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         set => _vector[index] = value;
     }
+
+#pragma warning disable CA1033 // Interface methods should be callable by child types
+    int IReadOnlyCollection<T>.Count => Length;
+#pragma warning restore CA1033 // Interface methods should be callable by child types
+
+    public DataLabelCollection<T> Labels => _labels;
+
+    IDataLabelCollection<T> ISeries<T>.Labels => Labels;
+
+    IReadOnlyDataLabelCollection<T> IReadOnlySeries<T>.Labels => Labels;
+
+    public IEnumerable<string> LabelledValues => new LabelledSeriesValueEnumerable<T>(this);
 
     /// <summary>
     /// Gets a span over the contents of the vector.

@@ -25,25 +25,35 @@ public class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
     public static readonly ReadOnlySeries<T> Empty = new([], null, null);
 
     private readonly ReadOnlyVector<T> _vector;
+    private readonly ReadOnlyDataLabelCollection<T> _labels;
 
     internal ReadOnlySeries(
         [NotNull] ReadOnlyVector<T> vector,
         string? name = null,
-        Index? index = null)
+        Index? index = null,
+        ReadOnlyDataLabelCollection<T>? labels = null)
         : base(vector, name, index)
     {
         _vector = vector;
+        _labels = labels ?? [];
     }
-
-#pragma warning disable CA1033 // Interface methods should be callable by child types
-    int IReadOnlyCollection<T>.Count => Length;
-#pragma warning restore CA1033 // Interface methods should be callable by child types
 
     public T this[int index]
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get => _vector[index];
     }
+
+#pragma warning disable CA1033 // Interface methods should be callable by child types
+    int IReadOnlyCollection<T>.Count => Length;
+
+#pragma warning restore CA1033 // Interface methods should be callable by child types
+
+    public ReadOnlyDataLabelCollection<T> Labels => _labels;
+
+    IReadOnlyDataLabelCollection<T> IReadOnlySeries<T>.Labels => Labels;
+
+    public IEnumerable<string> LabelledValues => new LabelledSeriesValueEnumerable<T>(this);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ReadOnlySpan<T> AsReadOnlySpan()
