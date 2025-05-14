@@ -60,25 +60,3 @@ public class SeriesJsonConverter : JsonConverter<Series>
         SeriesJsonWriter.Write(writer, value, options);
     }
 }
-
-internal static class SeriesJsonWriter
-{
-    public static void Write(Utf8JsonWriter writer, IReadOnlySeries series, JsonSerializerOptions options)
-    {
-        ArgumentNullException.ThrowIfNull(writer);
-        ArgumentNullException.ThrowIfNull(series);
-
-        writer.WriteStartObject();
-
-        if (series.Name is not null)
-        {
-            writer.WriteString(SeriesJsonPropertyNames.Name, series.Name);
-        }
-
-        writer.WritePropertyName(SeriesJsonPropertyNames.Data);
-
-        VectorJsonWriter.Write(writer, series.Data, options);
-
-        writer.WriteEndObject();
-    }
-}
