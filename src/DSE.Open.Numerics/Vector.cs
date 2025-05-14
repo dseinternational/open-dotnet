@@ -9,9 +9,9 @@ using DSE.Open.Numerics.Serialization;
 namespace DSE.Open.Numerics;
 
 /// <summary>
-/// A serializable, contiguous sequence of values of known length and data type.
+/// A serializable, fixed-length, contiguous sequence of values.
 /// </summary>
-[JsonConverter(typeof(SeriesJsonConverter))]
+[JsonConverter(typeof(VectorJsonConverter))]
 public abstract class Vector : VectorBase, IVector
 {
     protected internal Vector(VectorDataType dataType, Type itemType, int length)

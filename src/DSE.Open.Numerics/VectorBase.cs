@@ -16,6 +16,8 @@ public abstract class VectorBase
         ArgumentNullException.ThrowIfNull(itemType);
         Ensure.EqualOrGreaterThan(length, 0);
 
+        IsEmpty = length == 0;
+
 #if DEBUG
         if (VectorDataTypeHelper.TryGetVectorDataType(itemType, out var expectedDataType)
             && dataType != expectedDataType)
@@ -33,9 +35,11 @@ public abstract class VectorBase
     }
 
     /// <summary>
-    /// Gets the number of items in the series.
+    /// Gets the number of items in the vector.
     /// </summary>
     public int Length { get; }
+
+    public bool IsEmpty { get; }
 
     /// <summary>
     /// Indicates if the item type is a known numeric type.
@@ -43,12 +47,12 @@ public abstract class VectorBase
     public bool IsNumeric { get; }
 
     /// <summary>
-    /// Gets the type of the items in the series.
+    /// Gets the type of the items in the vector.
     /// </summary>
     public Type ItemType { get; }
 
     /// <summary>
-    /// Gets the data type of the series.
+    /// Gets the data type of the vector.
     /// </summary>
     public VectorDataType DataType { get; }
 

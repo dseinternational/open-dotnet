@@ -31,7 +31,7 @@ public class VectorJsonConverterTests : LoggedTestsBase
     [InlineData("{\"dtype\":\"int32\",\"length\":6,\"values\":[0,1,2,5,-9,-283590]}")]
     public void DeserializeVectorOfInt32(string json)
     {
-        var deserialized = JsonSerializer.Deserialize<Series<int>>(json, s_jsonOptions.Value);
+        var deserialized = JsonSerializer.Deserialize<Vector<int>>(json, s_jsonOptions.Value);
         Assert.NotNull(deserialized);
     }
 
@@ -42,14 +42,14 @@ public class VectorJsonConverterTests : LoggedTestsBase
     [InlineData("{\"dtype\":\"int32\",\"length\":6,\"values\":[0,1,2,5,-9,-283590]}")]
     public void DeserializeSerializeVectorOfInt32(string json)
     {
-        var deserialized = JsonSerializer.Deserialize<Series<int>>(json, s_jsonOptions.Value);
+        var deserialized = JsonSerializer.Deserialize<Vector<int>>(json, s_jsonOptions.Value);
         Assert.NotNull(deserialized);
 
         var serialized = JsonSerializer.Serialize(deserialized, s_jsonOptions.Value);
         Assert.NotNull(serialized);
         Assert.Equal(json, serialized);
 
-        var deserialized2 = JsonSerializer.Deserialize<Series<int>>(serialized, s_jsonOptions.Value);
+        var deserialized2 = JsonSerializer.Deserialize<Vector<int>>(serialized, s_jsonOptions.Value);
         Assert.NotNull(deserialized2);
 
         Assert.True(deserialized.AsSpan().SequenceEqual(deserialized2.AsSpan()));
@@ -66,7 +66,7 @@ public class VectorJsonConverterTests : LoggedTestsBase
     [InlineData("{\"dtype\":\"int64\",\"length\":6,\"values\":[0,1,2,5,-9,-283590]}")]
     public void DeserializeVectorOfInt64(string json)
     {
-        var deserialized = JsonSerializer.Deserialize<Series<long>>(json, s_jsonOptions.Value);
+        var deserialized = JsonSerializer.Deserialize<Vector<long>>(json, s_jsonOptions.Value);
         Assert.NotNull(deserialized);
     }
 
@@ -77,14 +77,14 @@ public class VectorJsonConverterTests : LoggedTestsBase
     [InlineData("{\"dtype\":\"int64\",\"length\":6,\"values\":[0,1,2,5,-9,-283590]}")]
     public void DeserializeSerializeVectorOfInt64(string json)
     {
-        var deserialized = JsonSerializer.Deserialize<Series<long>>(json, s_jsonOptions.Value);
+        var deserialized = JsonSerializer.Deserialize<Vector<long>>(json, s_jsonOptions.Value);
         Assert.NotNull(deserialized);
 
         var serialized = JsonSerializer.Serialize(deserialized, s_jsonOptions.Value);
         Assert.NotNull(serialized);
         Assert.Equal(json, serialized);
 
-        var deserialized2 = JsonSerializer.Deserialize<Series<long>>(serialized, s_jsonOptions.Value);
+        var deserialized2 = JsonSerializer.Deserialize<Vector<long>>(serialized, s_jsonOptions.Value);
         Assert.NotNull(deserialized2);
 
         Assert.True(deserialized.AsSpan().SequenceEqual(deserialized2.AsSpan()));
@@ -101,7 +101,7 @@ public class VectorJsonConverterTests : LoggedTestsBase
     [InlineData("{\"dtype\":\"uint32\",\"length\":6,\"values\":[0,1,2,5,9,283590]}")]
     public void DeserializeVectorOfUInt32(string json)
     {
-        var deserialized = JsonSerializer.Deserialize<Series<uint>>(json, s_jsonOptions.Value);
+        var deserialized = JsonSerializer.Deserialize<Vector<uint>>(json, s_jsonOptions.Value);
         Assert.NotNull(deserialized);
     }
 
@@ -112,14 +112,14 @@ public class VectorJsonConverterTests : LoggedTestsBase
     [InlineData("{\"dtype\":\"uint32\",\"length\":6,\"values\":[0,1,2,5,9,283590]}")]
     public void DeserializeSerializeVectorOfUInt32(string json)
     {
-        var deserialized = JsonSerializer.Deserialize<Series<uint>>(json, s_jsonOptions.Value);
+        var deserialized = JsonSerializer.Deserialize<Vector<uint>>(json, s_jsonOptions.Value);
         Assert.NotNull(deserialized);
 
         var serialized = JsonSerializer.Serialize(deserialized, s_jsonOptions.Value);
         Assert.NotNull(serialized);
         Assert.Equal(json, serialized);
 
-        var deserialized2 = JsonSerializer.Deserialize<Series<uint>>(serialized, s_jsonOptions.Value);
+        var deserialized2 = JsonSerializer.Deserialize<Vector<uint>>(serialized, s_jsonOptions.Value);
         Assert.NotNull(deserialized2);
 
         Assert.True(deserialized.AsSpan().SequenceEqual(deserialized2.AsSpan()));
@@ -136,7 +136,7 @@ public class VectorJsonConverterTests : LoggedTestsBase
     [InlineData("{\"dtype\":\"uint64\",\"length\":6,\"values\":[0,1,2,5,9,283590]}")]
     public void DeserializeVectorOfUInt64(string json)
     {
-        var deserialized = JsonSerializer.Deserialize<Series<ulong>>(json, s_jsonOptions.Value);
+        var deserialized = JsonSerializer.Deserialize<Vector<ulong>>(json, s_jsonOptions.Value);
         Assert.NotNull(deserialized);
     }
 }

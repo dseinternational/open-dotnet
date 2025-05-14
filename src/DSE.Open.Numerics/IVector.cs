@@ -4,16 +4,14 @@
 namespace DSE.Open.Numerics;
 
 /// <summary>
-/// A serializable, contiguous, fixed-length sequence of read-only values with value
-/// equality semantics.
+/// A serializable, fixed-length, contiguous sequence of values.
 /// </summary>
 public interface IVector : IReadOnlyVector
 {
 }
 
 /// <summary>
-/// A serializable, contiguous, fixed-length sequence of read-only values with value
-/// equality semantics.
+/// A serializable, fixed-length, contiguous sequence of values of type <typeparamref name="T"/>.
 /// </summary>
 public interface IVector<T> : IVector, IReadOnlyVector<T>
 {

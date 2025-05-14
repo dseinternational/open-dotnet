@@ -4,27 +4,28 @@
 namespace DSE.Open.Numerics;
 
 /// <summary>
-/// A serializable, contiguous, fixed-length sequence of read-only values with value
-/// equality semantics.
+/// A serializable, fixed-length, contiguous sequence of read-only values.
 /// </summary>
 public interface IReadOnlyVector
 {
-    int Length { get; }
+    VectorDataType DataType { get; }
+
+    bool IsEmpty { get; }
 
     bool IsNumeric { get; }
 
-    VectorDataType DataType { get; }
+    int Length { get; }
 }
 
 /// <summary>
-/// A serializable, contiguous, fixed-length sequence of read-only values with value
-/// equality semantics.
+/// A serializable, fixed-length, contiguous sequence of read-only values of type <typeparamref name="T"/>.
 /// </summary>
 public interface IReadOnlyVector<T>
     : IReadOnlyVector,
       IReadOnlyList<T>,
       IEquatable<IReadOnlyVector<T>>
 {
+
     /// <summary>
     /// Gets a span over the contents of the vector.
     /// </summary>

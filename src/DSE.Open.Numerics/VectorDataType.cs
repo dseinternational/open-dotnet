@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 namespace DSE.Open.Numerics;
 
 /// <summary>
-/// Identifies the type of data stored in a <see cref="Series{T}"/>.
+/// Identifies the type of data stored in a <see cref="IVector{T}"/> or  <see cref="IReadOnlyVector{T}"/>.
 /// </summary>
 [JsonConverter(typeof(JsonStringEnumConverter<VectorDataType>))]
 public enum VectorDataType

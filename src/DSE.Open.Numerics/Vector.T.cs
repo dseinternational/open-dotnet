@@ -13,14 +13,16 @@ using DSE.Open.Numerics.Serialization;
 namespace DSE.Open.Numerics;
 
 /// <summary>
-/// A serializable sequence of values of known length of type <typeparamref name="T"/>.
-/// a <see cref="DataFrame"/>.
+/// A serializable, fixed-length, contiguous sequence of values of type <typeparamref name="T"/>.
 /// </summary>
 /// <typeparam name="T"></typeparam>
 [CollectionBuilder(typeof(Vector), nameof(Create))]
-[JsonConverter(typeof(SeriesJsonConverter))]
+[JsonConverter(typeof(VectorJsonConverter))]
 public sealed class Vector<T> : Vector, IVector<T>, IReadOnlyVector<T>, IEquatable<Vector<T>>
 {
+    /// <summary>
+    /// Gets an empty vector.
+    /// </summary>
     public static readonly Vector<T> Empty = new(Memory<T>.Empty);
 
     private readonly Memory<T> _memory;

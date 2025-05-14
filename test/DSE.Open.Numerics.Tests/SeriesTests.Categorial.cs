@@ -6,7 +6,7 @@ using DSE.Open.Text.Json;
 
 namespace DSE.Open.Numerics;
 
-public partial class VectorTests
+public partial class SeriesTests
 {
     private static readonly Lazy<JsonSerializerOptions> s_jsonOptions = new(() =>
     {
