@@ -1,7 +1,6 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Diagnostics;
 using System.Numerics;
 using System.Text.Json.Serialization;
 using CommunityToolkit.HighPerformance;
@@ -14,93 +13,25 @@ namespace DSE.Open.Numerics;
 /// Optionally named, labelled or categorised for use with a <see cref="DataFrame"/>.
 /// </summary>
 [JsonConverter(typeof(SeriesJsonConverter))]
-public abstract class Series : ISeries
+public abstract class Series : SeriesBase, ISeries
 {
-    private Memory<Variant> _labels;
-
-    protected internal Series(
-        VectorDataType dataType,
-        Type itemType,
-        int length,
-        string? name = null,
-        Memory<Variant> labels = default)
+    protected internal Series(Vector vector, string? name = null, Index? index = null)
+        : base(vector)
     {
-        ArgumentNullException.ThrowIfNull(itemType);
-        Ensure.EqualOrGreaterThan(length, 0);
-
-        if (!labels.IsEmpty && length != labels.Length)
-        {
-            throw new ArgumentException($"Labels length {labels.Length} does not match "
-                + $"series length {length}.");
-        }
-
-#if DEBUG
-        if (VectorDataTypeHelper.TryGetVectorDataType(itemType, out var expectedDataType)
-            && dataType != expectedDataType)
-        {
-            Debug.Fail($"Expected data type {expectedDataType} for "
-                + $"item type {itemType.Name} but given {dataType}.");
-        }
-#endif
-
-        DataType = dataType;
-        IsNumeric = NumberHelper.IsKnownNumberType(itemType);
-        ItemType = itemType;
-        Length = length;
+        ArgumentNullException.ThrowIfNull(vector);
         Name = name;
-
-        // if empty, leave empty until accessed
-        _labels = labels;
+        Index = index!;
     }
-
-    /// <summary>
-    /// Gets the number of items in the series.
-    /// </summary>
-    public int Length { get; }
-
-    /// <summary>
-    /// Indicates if the item type is a known numeric type.
-    /// </summary>
-    public bool IsNumeric { get; }
-
-    /// <summary>
-    /// Gets the type of the items in the series.
-    /// </summary>
-    public Type ItemType { get; }
-
-    /// <summary>
-    /// Gets the data type of the series.
-    /// </summary>
-    public VectorDataType DataType { get; }
 
     /// <summary>
     /// Gets or sets a name for the series (optional).
     /// </summary>
     public string? Name { get; set; }
 
-    public virtual bool IsReadOnly { get; }
-
-    public Memory<Variant> Labels
-    {
-        get
-        {
-            if (_labels.Length == Length)
-            {
-                return _labels;
-            }
-
-            var labels = new Variant[Length];
-
-            for (var i = 0; i < Length; i++)
-            {
-                labels[i] = new Variant(i);
-            }
-
-            _labels = labels;
-
-            return _labels;
-        }
-    }
+    /// <summary>
+    /// Reserved for future use.
+    /// </summary>
+    public Index Index { get; }
 
     protected abstract ReadOnlySeries CreateReadOnly();
 
@@ -121,50 +52,15 @@ public abstract class Series : ISeries
     /// <param name="data"></param>
     /// <returns></returns>
     public static Series<T> Create<T>(Memory<T> data)
+        where T : IEquatable<T>
     {
         return new Series<T>(data);
     }
 
-    public static Series<T> Create<T>(Memory<T> data, Memory<Variant> labels)
-    {
-        return new Series<T>(data, labels: labels);
-    }
-
-    /// <summary>
-    /// Creates a vector from the given data with the specified name.
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="name"></param>
-    /// <param name="data"></param>
-    /// <returns></returns>
     public static Series<T> Create<T>(string name, Memory<T> data)
+        where T : IEquatable<T>
     {
         return new Series<T>(data, name);
-    }
-
-    public static Series<T> Create<T>(string name, Memory<T> data, Memory<Variant> labels)
-    {
-        return new Series<T>(data, name, labels);
-    }
-
-    public static Series<T> Create<T>(string name, Memory<T> data, Memory<Variant> labels, Memory<KeyValuePair<string, T>> categories)
-    {
-        return new Series<T>(data, name, labels, categories);
-    }
-
-    public static Series<T> Create<T>(string name, Memory<T> data, IReadOnlyDictionary<string, T> categories)
-    {
-        return Create(name, data, [.. categories]);
-    }
-
-    public static Series<T> Create<T>(string name, Memory<T> data, KeyValuePair<string, T>[] categories)
-    {
-        return Create(name, data, categories.AsMemory());
-    }
-
-    public static Series<T> Create<T>(string name, Memory<T> data, Memory<KeyValuePair<string, T>> categories)
-    {
-        return new Series<T>(data, name, default, categories);
     }
 
     /// <summary>
@@ -174,6 +70,7 @@ public abstract class Series : ISeries
     /// <param name="data"></param>
     /// <returns></returns>
     public static Series<T> Create<T>(T[] data)
+        where T : IEquatable<T>
     {
         ArgumentNullException.ThrowIfNull(data);
         return new Series<T>(data);
@@ -187,104 +84,22 @@ public abstract class Series : ISeries
     /// <param name="data"></param>
     /// <returns></returns>
     public static Series<T> Create<T>(string name, T[] data)
+        where T : IEquatable<T>
     {
         ArgumentNullException.ThrowIfNull(data);
         return new Series<T>(data, name);
     }
 
-    public static Series<T> Create<T>(T[] data, IReadOnlyDictionary<string, T> categories)
-    {
-        return Create(data, [.. categories]);
-    }
-
-    public static Series<T> Create<T>(T[] data, KeyValuePair<string, T>[] categories)
-    {
-        return Create(data, categories.AsMemory());
-    }
-
-    public static Series<T> Create<T>(T[] data, Memory<KeyValuePair<string, T>> categories)
-    {
-        ArgumentNullException.ThrowIfNull(data);
-        return new Series<T>(data.AsMemory(), null, default, categories);
-    }
-
-    public static Series<T> Create<T>(string name, T[] data, IReadOnlyDictionary<string, T> categories)
-    {
-        return Create(name, data.AsMemory(), [.. categories]);
-    }
-
-    public static Series<T> Create<T>(string name, T[] data, KeyValuePair<string, T>[] categories)
-    {
-        return new(data.AsMemory(), name, categories: categories.AsMemory());
-    }
-
-    public static Series<T> Create<T>(string name, T[] data, Memory<KeyValuePair<string, T>> categories)
-    {
-        ArgumentNullException.ThrowIfNull(data);
-        return new(data.AsMemory(), name, categories: categories);
-    }
-
-    public static Series<T> Create<T>(
-        string name,
-        T[] data,
-        Memory<Variant> labels,
-        IReadOnlyDictionary<string, T> categories)
-    {
-        ArgumentNullException.ThrowIfNull(data);
-        return Create(name, data, labels, [.. categories]);
-    }
-
-    public static Series<T> Create<T>(
-        string name,
-        T[] data,
-        Memory<Variant> labels,
-        KeyValuePair<string, T>[] categories)
-    {
-        ArgumentNullException.ThrowIfNull(data);
-        return new(data.AsMemory(), name, labels, categories.AsMemory());
-    }
-
-    public static Series<T> Create<T>(
-        string name,
-        T[] data,
-        Memory<Variant> labels,
-        Memory<KeyValuePair<string, T>> categories)
-    {
-        ArgumentNullException.ThrowIfNull(data);
-        return new(data.AsMemory(), name, labels, categories);
-    }
-
     public static Series<T> Create<T>(ReadOnlySpan<T> data)
+        where T : IEquatable<T>
     {
         return new(data.ToArray());
     }
 
     public static Series<T> Create<T>(string name, ReadOnlySpan<T> data)
+        where T : IEquatable<T>
     {
         return new(data.ToArray());
-    }
-
-    public static Series<T> Create<T>(string name, ReadOnlySpan<T> data, ReadOnlySpan<KeyValuePair<string, T>> categories)
-    {
-        return new(data.ToArray(), name, categories: categories.ToArray());
-    }
-
-    public static ReadOnlySeries<T> CreateReadOnly<T>(ReadOnlySpan<T> data)
-    {
-        return new(data.ToArray());
-    }
-
-    public static ReadOnlySeries<T> CreateReadOnly<T>(string name, ReadOnlySpan<T> data)
-    {
-        return new(data.ToArray(), name);
-    }
-
-    public static ReadOnlySeries<T> CreateReadOnly<T>(
-        string name,
-        ReadOnlySpan<T> data,
-        ReadOnlySpan<KeyValuePair<string, T>> categories)
-    {
-        return new(data.ToArray(), name, categories: categories.ToArray());
     }
 
     public static Series<T> Create<T>(int length)

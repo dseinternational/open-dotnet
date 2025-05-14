@@ -27,21 +27,13 @@ public interface IReadOnlySeries
 public interface IReadOnlySeries<T>
     : IReadOnlySeries,
       IReadOnlyList<T>,
-      IEquatable<IReadOnlySeries<T>>
+      IEquatable<IReadOnlySeries<T>?>
+    where T : IEquatable<T>
 {
-    IReadOnlyDictionary<string, T> Categories { get; }
-
-    bool HasCategories { get; }
-
-    /// <summary>
-    /// Gets a read-only view of the vector.
-    /// </summary>
-    ReadOnlyMemory<T> Data { get; }
-
     /// <summary>
     /// Gets a span over the contents of the vector.
     /// </summary>
     ReadOnlySpan<T> AsReadOnlySpan();
 
-    ReadOnlyMemory<T> Slice(int start, int length);
+    IReadOnlySeries<T> Slice(int start, int length);
 }

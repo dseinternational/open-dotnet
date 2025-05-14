@@ -14,6 +14,7 @@ public interface IVector : IReadOnlyVector
 /// A serializable, fixed-length, contiguous sequence of values of type <typeparamref name="T"/>.
 /// </summary>
 public interface IVector<T> : IVector, IReadOnlyVector<T>
+    where T : IEquatable<T>
 {
     new T this[int index] { get; set; }
 

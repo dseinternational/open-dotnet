@@ -1,7 +1,6 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Diagnostics;
 using System.Numerics;
 using System.Text.Json.Serialization;
 using DSE.Open.Numerics.Serialization;
@@ -13,54 +12,29 @@ namespace DSE.Open.Numerics;
 ///.
 /// </summary>
 [JsonConverter(typeof(ReadOnlyVectorJsonConverter))]
-public abstract class ReadOnlySeries : IReadOnlySeries
+public abstract class ReadOnlySeries : SeriesBase, IReadOnlySeries
 {
     protected ReadOnlySeries(
-        VectorDataType dataType,
-        Type itemType,
-        int length,
+        ReadOnlyVector vector,
         string? name = null,
-        ReadOnlyMemory<Variant> labels = default)
+        Index? index = null)
+        : base(vector)
     {
-        ArgumentNullException.ThrowIfNull(itemType);
+        ArgumentNullException.ThrowIfNull(vector);
 
-#if DEBUG
-        if (VectorDataTypeHelper.TryGetVectorDataType(itemType, out var expectedDataType)
-            && dataType != expectedDataType)
-        {
-            Debug.Fail($"Expected data type {expectedDataType} for " +
-                $"item type {itemType.Name} but given {dataType}.");
-        }
-#endif
-
-        DataType = dataType;
-        IsNumeric = NumberHelper.IsKnownNumberType(itemType);
-        ItemType = itemType;
-        Length = length;
         Name = name;
+        Index = index!;
     }
 
     /// <summary>
-    /// Gets the number of items in the series.
+    /// Gets or sets a name for the series (optional).
     /// </summary>
-    public int Length { get; }
-
-    public string? Name { get; }
+    public string? Name { get; set; }
 
     /// <summary>
-    /// Indicates if the item type is a known numeric type.
+    /// Reserved for future use.
     /// </summary>
-    public bool IsNumeric { get; }
-
-    /// <summary>
-    /// Gets the type of the items in the series.
-    /// </summary>
-    public Type ItemType { get; }
-
-    /// <summary>
-    /// Gets the data type of the series.
-    /// </summary>
-    public VectorDataType DataType { get; }
+    public Index Index { get; }
 
     /// <summary>
     /// Creates a series from the given data.
@@ -69,6 +43,7 @@ public abstract class ReadOnlySeries : IReadOnlySeries
     /// <param name="vector"></param>
     /// <returns></returns>
     public static ReadOnlySeries<T> Create<T>(ReadOnlyMemory<T> vector)
+        where T : IEquatable<T>
     {
         if (vector.Length == 0)
         {
@@ -87,6 +62,7 @@ public abstract class ReadOnlySeries : IReadOnlySeries
     /// <param name="array"></param>
     /// <returns></returns>
     public static ReadOnlySeries<T> Create<T>(T[] array)
+        where T : IEquatable<T>
     {
         ArgumentNullException.ThrowIfNull(array);
 
@@ -101,6 +77,7 @@ public abstract class ReadOnlySeries : IReadOnlySeries
     }
 
     public static ReadOnlySeries<T> Create<T>(ReadOnlySpan<T> data)
+        where T : IEquatable<T>
     {
         if (data.Length == 0)
         {

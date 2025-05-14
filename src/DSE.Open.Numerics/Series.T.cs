@@ -20,43 +20,36 @@ namespace DSE.Open.Numerics;
 /// <typeparam name="T"></typeparam>
 [CollectionBuilder(typeof(Series), nameof(Create))]
 [JsonConverter(typeof(SeriesJsonConverter))]
-public sealed class Series<T> : Series, ISeries<T>, IReadOnlySeries<T>, IEquatable<Series<T>>
+public class Series<T> : Series, ISeries<T>, IReadOnlySeries<T>, IEquatable<Series<T>>, IEquatable<ReadOnlySeries<T>>
+    where T : IEquatable<T>
 {
-    private readonly Memory<T> _vector;
-    private readonly Memory<KeyValuePair<string, T>> _categories;
-    private IDictionary<string, T>? _categoriesLookup;
+#pragma warning disable IDE1006 // Naming Styles
+    internal static readonly Series<T> Empty = new([]);
+#pragma warning restore IDE1006 // Naming Styles
 
-    /// <summary>
-    /// Creates an empty series.
-    /// </summary>
-    public Series() : this(Memory<T>.Empty, null, null, null)
-    {
-    }
+    private readonly Vector<T> _vector;
 
     public Series(
         T[] vector,
-        string? name = null,
-        Memory<Variant> labels = default,
-        Memory<KeyValuePair<string, T>> categories = default)
-        : this(vector.AsMemory(), name, labels, categories)
+        string? name = null)
+        : this(Vector.Create(vector), name)
     {
     }
 
     public Series(
         Memory<T> vector,
-        string? name = null,
-        Memory<Variant> labels = default,
-        Memory<KeyValuePair<string, T>> categories = default)
-        : base(VectorDataTypeHelper.GetVectorDataType<T>(), typeof(T), vector.Length, name, labels)
+        string? name = null)
+        : this(Vector.Create(vector), name)
     {
-        _vector = vector;
-        _categories = categories;
-        // TODO: check if categories are valid
     }
 
-    public Memory<T> Data => _vector;
-
-    ReadOnlyMemory<T> IReadOnlySeries<T>.Data => _vector;
+    public Series(
+        Vector<T> vector,
+        string? name = null)
+        : base(vector)
+    {
+        _vector = vector;
+    }
 
 #pragma warning disable CA1033 // Interface methods should be callable by child types
     int IReadOnlyCollection<T>.Count => Length;
@@ -65,33 +58,10 @@ public sealed class Series<T> : Series, ISeries<T>, IReadOnlySeries<T>, IEquatab
     public T this[int index]
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => _vector.Span[index];
+        get => _vector[index];
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        set => _vector.Span[index] = value;
+        set => _vector[index] = value;
     }
-
-    public bool HasCategories => _categories.Length > 0
-        || (_categoriesLookup is not null && _categoriesLookup.Count > 0);
-
-    public IDictionary<string, T> Categories
-    {
-        get
-        {
-            if (_categoriesLookup is null)
-            {
-                _categoriesLookup = new Dictionary<string, T>(_categories.Span.Length);
-
-                foreach (var kvp in _categories.Span)
-                {
-                    _categoriesLookup[kvp.Key] = kvp.Value;
-                }
-            }
-
-            return _categoriesLookup;
-        }
-    }
-
-    IReadOnlyDictionary<string, T> IReadOnlySeries<T>.Categories => Categories.AsReadOnly();
 
     /// <summary>
     /// Gets a span over the contents of the vector.
@@ -99,7 +69,7 @@ public sealed class Series<T> : Series, ISeries<T>, IReadOnlySeries<T>, IEquatab
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Span<T> AsSpan()
     {
-        return _vector.Span;
+        return _vector.AsSpan();
     }
 
 #pragma warning disable CA1033 // Interface methods should be callable by child types
@@ -129,12 +99,7 @@ public sealed class Series<T> : Series, ISeries<T>, IReadOnlySeries<T>, IEquatab
 
     public new ReadOnlySeries<T> AsReadOnly()
     {
-        ReadOnlyMemory<KeyValuePair<string, T>> categories =
-            _categoriesLookup is not null && _categoriesLookup.Count > 0
-                ? _categoriesLookup.ToArray()
-                : _categories;
-
-        return new ReadOnlySeries<T>(_vector, Name, Labels, categories);
+        return new ReadOnlySeries<T>(_vector, Name);
     }
 
     ReadOnlySeries<T> ISeries<T>.AsReadOnly()
@@ -149,42 +114,17 @@ public sealed class Series<T> : Series, ISeries<T>, IReadOnlySeries<T>, IEquatab
 
     public bool Equals(Series<T>? other)
     {
-        return other is not null && Equals(other.AsSpan());
+        return other is not null && Name == other.Name && AsSpan().SequenceEqual(other.AsSpan());
     }
 
-    public bool Equals(ISeries<T>? other)
+    public bool Equals(ReadOnlySeries<T>? other)
     {
-        return other is not null && Equals(other.AsSpan());
+        return other is not null && Name == other.Name && AsSpan().SequenceEqual(other.AsReadOnlySpan());
     }
 
-    public bool Equals(IReadOnlySeries<T>? other)
+    bool IEquatable<IReadOnlySeries<T>?>.Equals(IReadOnlySeries<T>? other)
     {
-        return other is not null && Name == other.Name && SequenceEqual(other.AsReadOnlySpan());
-    }
-
-    public bool Equals(ReadOnlySpan<T> other)
-    {
-        return SequenceEqual(other);
-    }
-
-    public bool Equals(Memory<T> other)
-    {
-        return _vector.Equals(other);
-    }
-
-    public bool SequenceEqual(Series<T>? other)
-    {
-        return other is not null && Equals(other.AsSpan());
-    }
-
-    public bool SequenceEqual(ISeries<T>? other)
-    {
-        return other is not null && Equals(other.AsSpan());
-    }
-
-    public bool SequenceEqual(IReadOnlySeries<T>? other)
-    {
-        return other is not null && Equals(other.AsReadOnlySpan());
+        return other is not null && Name == other.Name && AsSpan().SequenceEqual(other.AsReadOnlySpan());
     }
 
     public bool SequenceEqual(ReadOnlySpan<T> other)
@@ -199,7 +139,7 @@ public sealed class Series<T> : Series, ISeries<T>, IReadOnlySeries<T>, IEquatab
 
     IEnumerator<T> IEnumerable<T>.GetEnumerator()
     {
-        return MemoryMarshal.ToEnumerable((ReadOnlyMemory<T>)Data).GetEnumerator();
+        return MemoryMarshal.ToEnumerable((ReadOnlyMemory<T>)(Memory<T>)_vector).GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()
@@ -208,19 +148,27 @@ public sealed class Series<T> : Series, ISeries<T>, IReadOnlySeries<T>, IEquatab
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Memory<T> Slice(int start)
+    public Series<T> Slice(int start)
     {
-        return _vector[start..];
+        // todo: labels, categories
+        return new Series<T>(_vector[start..], Name);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Memory<T> Slice(int start, int length)
+    public Series<T> Slice(int start, int length)
     {
-        return _vector.Slice(start, length);
+        // todo: labels, categories
+        return new Series<T>(_vector.Slice(start, length), Name);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    ReadOnlyMemory<T> IReadOnlySeries<T>.Slice(int start, int length)
+    IReadOnlySeries<T> IReadOnlySeries<T>.Slice(int start, int length)
+    {
+        return Slice(start, length);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    ISeries<T> ISeries<T>.Slice(int start, int length)
     {
         return Slice(start, length);
     }

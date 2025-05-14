@@ -19,6 +19,7 @@ namespace DSE.Open.Numerics;
 [CollectionBuilder(typeof(Vector), nameof(Create))]
 [JsonConverter(typeof(VectorJsonConverter))]
 public sealed class Vector<T> : Vector, IVector<T>, IReadOnlyVector<T>, IEquatable<Vector<T>>
+    where T : IEquatable<T>
 {
     /// <summary>
     /// Gets an empty vector.

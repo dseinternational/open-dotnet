@@ -191,6 +191,7 @@ public class VectorJsonConverter : JsonConverter<Vector>
     private static Vector<T> ReadVector<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(
         ref Utf8JsonReader reader,
         int length)
+        where T : IEquatable<T>
     {
         if (length == 0)
         {

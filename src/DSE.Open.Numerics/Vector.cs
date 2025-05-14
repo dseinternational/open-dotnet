@@ -27,6 +27,7 @@ public abstract class Vector : VectorBase, IVector
     }
 
     public static Vector<T> Create<T>(Memory<T> memory)
+        where T : IEquatable<T>
     {
         if (memory.IsEmpty)
         {
@@ -37,6 +38,7 @@ public abstract class Vector : VectorBase, IVector
     }
 
     public static Vector<T> Create<T>(T[] array)
+        where T : IEquatable<T>
     {
         ArgumentNullException.ThrowIfNull(array);
 
@@ -49,6 +51,7 @@ public abstract class Vector : VectorBase, IVector
     }
 
     public static Vector<T> Create<T>(ReadOnlySpan<T> span)
+        where T : IEquatable<T>
     {
         if (span.IsEmpty)
         {

@@ -13,45 +13,26 @@ namespace DSE.Open.Numerics;
 
 /// <summary>
 /// A serializable, contiguous, fixed-length sequence of read-only values of data type <typeparamref name="T"/>
-///. Optionally named, labelled or categorised for use with
-/// a <see cref="IReadOnlyDataFrame"/>.
 /// </summary>
 /// <typeparam name="T"></typeparam>
-[CollectionBuilder(typeof(ReadOnlySeries), nameof(Create))]
+[CollectionBuilder(typeof(ReadOnlyVector), nameof(Create))]
 [JsonConverter(typeof(ReadOnlyVectorJsonConverter))]
-public sealed class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
+public sealed class ReadOnlyVector<T> : ReadOnlyVector, IReadOnlyVector<T>
     where T : IEquatable<T>
 {
-    public static readonly ReadOnlySeries<T> Empty = new(Memory<T>.Empty, null);
+    public static readonly ReadOnlyVector<T> Empty = new(Memory<T>.Empty);
 
-    private readonly ReadOnlyVector<T> _vector;
+    private readonly ReadOnlyMemory<T> _memory;
 
-    public ReadOnlySeries(
-        T[] vector,
-        string? name = null,
-        Index? index = null)
-        : this(ReadOnlyVector.Create(vector), name, index)
+    public ReadOnlyVector(T[] array) : this(array.AsMemory())
     {
     }
 
-    public ReadOnlySeries(
-        ReadOnlyMemory<T> vector,
-        string? name = null,
-        Index? index = null)
-        : this(ReadOnlyVector.Create(vector), name, index)
+    public ReadOnlyVector(ReadOnlyMemory<T> memory)
+        : base(VectorDataTypeHelper.GetVectorDataType<T>(), typeof(T), memory.Length)
     {
+        _memory = memory;
     }
-
-    public ReadOnlySeries(
-        ReadOnlyVector<T> vector,
-        string? name = null,
-        Index? index = null)
-        : base(vector, name, index)
-    {
-        _vector = vector;
-    }
-
-    public ReadOnlyMemory<T> Data => _vector;
 
 #pragma warning disable CA1033 // Interface methods should be callable by child types
     int IReadOnlyCollection<T>.Count => Length;
@@ -60,18 +41,18 @@ public sealed class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
     public T this[int index]
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => _vector[index];
+        get => _memory.Span[index];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ReadOnlySpan<T> AsReadOnlySpan()
+    public ReadOnlySpan<T> AsSpan()
     {
-        return _vector.AsSpan();
+        return _memory.Span;
     }
 
     public override bool Equals(object? obj)
     {
-        return obj is Series<T> vector && Equals(vector);
+        return obj is Vector<T> vector && Equals(vector);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -87,29 +68,29 @@ public sealed class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
         return hash.ToHashCode();
     }
 
-    public bool Equals(ReadOnlySeries<T>? other)
+    public bool Equals(ReadOnlyVector<T>? other)
     {
-        return other is not null && Equals(other.AsReadOnlySpan());
+        return other is not null && Equals(other.AsSpan());
     }
 
-    public bool Equals(IReadOnlySeries<T>? other)
+    public bool Equals(IReadOnlyVector<T>? other)
     {
-        return other is not null && Equals(other.AsReadOnlySpan());
+        return other is not null && Equals(other.AsSpan());
     }
 
     public bool Equals(ReadOnlySpan<T> other)
     {
-        return AsReadOnlySpan().SequenceEqual(other);
+        return AsSpan().SequenceEqual(other);
     }
 
     public ReadOnlyMemoryEnumerator<T> GetEnumerator()
     {
-        return _vector.GetEnumerator();
+        return _memory.GetEnumerator();
     }
 
     IEnumerator<T> IEnumerable<T>.GetEnumerator()
     {
-        return MemoryMarshal.ToEnumerable(Data).GetEnumerator();
+        return MemoryMarshal.ToEnumerable(_memory).GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()
@@ -118,28 +99,28 @@ public sealed class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ReadOnlySeries<T> Slice(int start)
+    public ReadOnlyVector<T> Slice(int start)
     {
-        return new(_vector[start..], Name);
+        return _memory[start..];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ReadOnlySeries<T> Slice(int start, int length)
+    public ReadOnlyVector<T> Slice(int start, int length)
     {
-        return new(_vector.Slice(start, length), Name);
+        return _memory.Slice(start, length);
     }
 
-    IReadOnlySeries<T> IReadOnlySeries<T>.Slice(int start, int length)
+    IReadOnlyVector<T> IReadOnlyVector<T>.Slice(int start, int length)
     {
         return Slice(start, length);
     }
 
-    public static bool operator ==(ReadOnlySeries<T>? left, ReadOnlySeries<T>? right)
+    public static bool operator ==(ReadOnlyVector<T>? left, ReadOnlyVector<T>? right)
     {
         return left is not null && (right is null || left.Equals(right));
     }
 
-    public static bool operator !=(ReadOnlySeries<T>? left, ReadOnlySeries<T>? right)
+    public static bool operator !=(ReadOnlyVector<T>? left, ReadOnlyVector<T>? right)
     {
         return !(left == right);
     }
@@ -147,7 +128,7 @@ public sealed class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",
         Justification = "By design")]
-    public static implicit operator ReadOnlySeries<T>(ReadOnlyMemory<T> vector)
+    public static implicit operator ReadOnlyVector<T>(ReadOnlyMemory<T> vector)
     {
         return new(vector);
     }
@@ -155,7 +136,7 @@ public sealed class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",
         Justification = "By design")]
-    public static implicit operator ReadOnlySeries<T>(T[] vector)
+    public static implicit operator ReadOnlyVector<T>(T[] vector)
     {
         ArgumentNullException.ThrowIfNull(vector);
         return new(vector);
@@ -164,8 +145,8 @@ public sealed class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",
         Justification = "By design")]
-    public static implicit operator ReadOnlyMemory<T>(ReadOnlySeries<T> vector)
+    public static implicit operator ReadOnlyMemory<T>(ReadOnlyVector<T> vector)
     {
-        return vector is not null ? (ReadOnlyMemory<T>)vector._vector : default;
+        return vector is not null ? vector._memory : default;
     }
 }

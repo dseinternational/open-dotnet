@@ -77,6 +77,7 @@ public static class VectorJsonWriter
     }
 
     public static void Write<T>(Utf8JsonWriter writer, IReadOnlyVector<T> vector, JsonSerializerOptions options)
+        where T : IEquatable<T>
     {
         ArgumentNullException.ThrowIfNull(writer);
         ArgumentNullException.ThrowIfNull(vector);
@@ -128,6 +129,7 @@ public static class VectorJsonWriter
     }
 
     private static void WriteNumberArray<T>(Utf8JsonWriter writer, IReadOnlyVector<T> vector)
+        where T : IEquatable<T>
     {
         if (typeof(T) == typeof(byte))
         {

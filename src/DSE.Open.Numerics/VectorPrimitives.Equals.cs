@@ -10,6 +10,7 @@ public static partial class VectorPrimitives
     public static bool SequenceEqual<T>(
         [NotNull] IReadOnlyVector<T> vector1,
         [NotNull] IReadOnlyVector<T> vector2)
+        where T : IEquatable<T>
     {
         ArgumentNullException.ThrowIfNull(vector1);
         ArgumentNullException.ThrowIfNull(vector2);

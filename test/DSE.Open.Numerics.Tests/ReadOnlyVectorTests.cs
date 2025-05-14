@@ -15,7 +15,7 @@ public sealed class ReadOnlyVectorTests : LoggedTestsBase
     }
 
     private static void TestCreate<T>(T[] elements)
-        where T : notnull
+        where T : notnull, IEquatable<T>
     {
         var vector = Vector.Create(elements).AsReadOnly();
 

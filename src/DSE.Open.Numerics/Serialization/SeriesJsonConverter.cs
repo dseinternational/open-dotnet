@@ -195,10 +195,11 @@ public class SeriesJsonConverter : JsonConverter<Series>
     private static Series<T> ReadSeries<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(
         ref Utf8JsonReader reader,
         int length)
+        where T : IEquatable<T>
     {
         if (length == 0)
         {
-            return new Series<T>();
+            return Series<T>.Empty;
         }
 
         using var builder = length > -1

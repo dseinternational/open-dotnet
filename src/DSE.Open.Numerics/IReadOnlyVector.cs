@@ -14,6 +14,8 @@ public interface IReadOnlyVector
 
     bool IsNumeric { get; }
 
+    Type ItemType { get; }
+
     int Length { get; }
 }
 
@@ -23,7 +25,8 @@ public interface IReadOnlyVector
 public interface IReadOnlyVector<T>
     : IReadOnlyVector,
       IReadOnlyList<T>,
-      IEquatable<IReadOnlyVector<T>>
+      IEquatable<IReadOnlyVector<T>?>
+    where T : IEquatable<T>
 {
 
     /// <summary>

@@ -1,13 +1,13 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Text.Json;
-using DSE.Open.Text.Json;
-
 namespace DSE.Open.Numerics;
 
 public partial class SeriesTests
 {
+    /*
+     * TODO
+     * 
     private static readonly Lazy<JsonSerializerOptions> s_jsonOptions = new(() =>
     {
         var options = new JsonSerializerOptions(JsonSharedOptions.RelaxedJsonEscaping);
@@ -79,4 +79,5 @@ public partial class SeriesTests
         // Assert
         _ = Assert.IsType<ReadOnlySeries<int>>(readOnlyVector);
     }
+    */
 }

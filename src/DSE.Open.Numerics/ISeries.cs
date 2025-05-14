@@ -15,8 +15,6 @@ public interface ISeries : IReadOnlySeries
     /// Gets a read-only view of the vector.
     /// </summary>
     IReadOnlySeries AsReadOnly();
-
-    bool IsReadOnly { get; }
 }
 
 /// <summary>
@@ -25,14 +23,10 @@ public interface ISeries : IReadOnlySeries
 /// </summary>
 public interface ISeries<T>
     : ISeries,
-      IReadOnlySeries<T>,
-      IEquatable<ISeries<T>>
+      IReadOnlySeries<T>
+    where T : IEquatable<T>
 {
-    new Memory<T> Data { get; }
-
     new T this[int index] { get; set; }
-
-    new IDictionary<string, T> Categories { get; }
 
     /// <summary>
     /// Gets a read-only view of the vector.
@@ -44,5 +38,5 @@ public interface ISeries<T>
     /// </summary>
     Span<T> AsSpan();
 
-    new Memory<T> Slice(int start, int length);
+    new ISeries<T> Slice(int start, int length);
 }

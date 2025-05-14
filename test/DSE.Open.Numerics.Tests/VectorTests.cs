@@ -14,7 +14,7 @@ public partial class VectorTests : LoggedTestsBase
     }
 
     private static void TestCreate<T>(T[] elements)
-        where T : notnull
+        where T : notnull, IEquatable<T>
     {
         Vector<T> vector = [.. elements];
         Assert.Equal(elements.Length, vector.Length);
@@ -22,6 +22,7 @@ public partial class VectorTests : LoggedTestsBase
     }
 
     private static void TestSerializeDeserialize<T>(T[] elements, JsonSerializerOptions serializerOptions)
+        where T : notnull, IEquatable<T>
     {
         Vector<T> vector = [.. elements];
         var json = JsonSerializer.Serialize(vector, serializerOptions);
