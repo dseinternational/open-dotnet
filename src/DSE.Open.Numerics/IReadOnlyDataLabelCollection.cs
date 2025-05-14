@@ -3,7 +3,13 @@
 
 namespace DSE.Open.Numerics;
 
-public interface IReadOnlyDataLabelCollection<TData> : IReadOnlyCollection<DataLabel<TData>>
+#pragma warning disable CA1040 // Avoid empty interfaces
+public interface IReadOnlyDataLabelCollection
+#pragma warning restore CA1040 // Avoid empty interfaces
+{
+}
+
+public interface IReadOnlyDataLabelCollection<TData> : IReadOnlyDataLabelCollection, IReadOnlyCollection<DataLabel<TData>>
     where TData : IEquatable<TData>
 {
     /// <summary>
