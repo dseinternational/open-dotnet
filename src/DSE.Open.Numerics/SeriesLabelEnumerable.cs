@@ -6,12 +6,12 @@ using System.Diagnostics;
 
 namespace DSE.Open.Numerics;
 
-internal sealed class LabelledSeriesValueEnumerable<T> : IEnumerable<string>
+internal sealed class SeriesLabelEnumerable<T> : IEnumerable<string>
     where T : IEquatable<T>
 {
     private readonly IReadOnlySeries<T> _series;
 
-    public LabelledSeriesValueEnumerable(IReadOnlySeries<T> series)
+    public SeriesLabelEnumerable(IReadOnlySeries<T> series)
     {
         Debug.Assert(series is not null);
         _series = series;

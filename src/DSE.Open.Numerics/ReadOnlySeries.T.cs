@@ -53,7 +53,7 @@ public class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
 
     IReadOnlyDataLabelCollection<T> IReadOnlySeries<T>.Labels => Labels;
 
-    public IEnumerable<string> LabelledValues => new LabelledSeriesValueEnumerable<T>(this);
+    public IEnumerable<string> LabelledValues => new SeriesLabelEnumerable<T>(this);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ReadOnlySpan<T> AsReadOnlySpan()

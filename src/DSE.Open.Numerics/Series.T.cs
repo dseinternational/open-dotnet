@@ -59,7 +59,7 @@ public class Series<T> : Series, ISeries<T>, IReadOnlySeries<T>, IEquatable<Seri
 
     IReadOnlyDataLabelCollection<T> IReadOnlySeries<T>.Labels => Labels;
 
-    public IEnumerable<string> LabelledValues => new LabelledSeriesValueEnumerable<T>(this);
+    public IEnumerable<string> LabelledValues => new SeriesLabelEnumerable<T>(this);
 
     /// <summary>
     /// Gets a span over the contents of the vector.
