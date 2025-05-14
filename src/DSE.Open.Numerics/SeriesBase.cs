@@ -25,6 +25,8 @@ public abstract class SeriesBase
 #endif
     }
 
+    protected IReadOnlyVector BaseVector => _vector;
+
     /// <summary>
     /// Gets the number of items in the series.
     /// </summary>

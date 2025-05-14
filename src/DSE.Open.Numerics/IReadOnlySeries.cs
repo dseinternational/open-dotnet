@@ -17,4 +17,6 @@ public interface IReadOnlySeries
     bool IsNumeric { get; }
 
     VectorDataType DataType { get; }
+
+    IReadOnlyVector Data { get; }
 }

@@ -3,9 +3,8 @@
 
 namespace DSE.Open.Numerics.Serialization;
 
-internal static class VectorJsonPropertyNames
+internal static class SeriesJsonPropertyNames
 {
-    public const string DataType = "dtype";
-    public const string Length = "length";
-    public const string Values = "values";
+    public const string Name = "name";
+    public const string Data = "data";
 }
