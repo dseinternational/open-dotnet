@@ -19,39 +19,21 @@ namespace DSE.Open.Numerics;
 /// <typeparam name="T"></typeparam>
 [CollectionBuilder(typeof(ReadOnlySeries), nameof(Create))]
 [JsonConverter(typeof(ReadOnlyVectorJsonConverter))]
-public sealed class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
+public class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
     where T : IEquatable<T>
 {
-    public static readonly ReadOnlySeries<T> Empty = new(Memory<T>.Empty, null);
+    public static readonly ReadOnlySeries<T> Empty = new([], null, null);
 
     private readonly ReadOnlyVector<T> _vector;
 
-    public ReadOnlySeries(
-        T[] vector,
-        string? name = null,
-        Index? index = null)
-        : this(ReadOnlyVector.Create(vector), name, index)
-    {
-    }
-
-    public ReadOnlySeries(
-        ReadOnlyMemory<T> vector,
-        string? name = null,
-        Index? index = null)
-        : this(ReadOnlyVector.Create(vector), name, index)
-    {
-    }
-
-    public ReadOnlySeries(
-        ReadOnlyVector<T> vector,
+    internal ReadOnlySeries(
+        [NotNull] ReadOnlyVector<T> vector,
         string? name = null,
         Index? index = null)
         : base(vector, name, index)
     {
         _vector = vector;
     }
-
-    public ReadOnlyMemory<T> Data => _vector;
 
 #pragma warning disable CA1033 // Interface methods should be callable by child types
     int IReadOnlyCollection<T>.Count => Length;
@@ -109,7 +91,7 @@ public sealed class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
 
     IEnumerator<T> IEnumerable<T>.GetEnumerator()
     {
-        return MemoryMarshal.ToEnumerable(Data).GetEnumerator();
+        return MemoryMarshal.ToEnumerable((ReadOnlyMemory<T>)_vector).GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()

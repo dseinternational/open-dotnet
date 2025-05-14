@@ -7,12 +7,22 @@ namespace DSE.Open.Numerics;
 /// A serializable, contiguous sequence of values of known length and data type.
 /// Optionally named, labelled or categorised for use with a <see cref="DataFrame"/>.
 /// </summary>
-public interface ISeries : IReadOnlySeries
+public interface ISeries<T>
+    : ISeries,
+      IReadOnlySeries<T>
+    where T : IEquatable<T>
 {
-    new string? Name { get; set; }
+    new T this[int index] { get; set; }
 
     /// <summary>
     /// Gets a read-only view of the vector.
     /// </summary>
-    IReadOnlySeries AsReadOnly();
+    new ReadOnlySeries<T> AsReadOnly();
+
+    /// <summary>
+    /// Gets a span over the contents of the vector.
+    /// </summary>
+    Span<T> AsSpan();
+
+    new ISeries<T> Slice(int start, int length);
 }

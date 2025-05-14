@@ -24,29 +24,16 @@ public class Series<T> : Series, ISeries<T>, IReadOnlySeries<T>, IEquatable<Seri
     where T : IEquatable<T>
 {
 #pragma warning disable IDE1006 // Naming Styles
-    internal static readonly Series<T> Empty = new([]);
+    internal static readonly Series<T> Empty = new([], null, null);
 #pragma warning restore IDE1006 // Naming Styles
 
     private readonly Vector<T> _vector;
 
-    public Series(
-        T[] vector,
-        string? name = null)
-        : this(Vector.Create(vector), name)
-    {
-    }
-
-    public Series(
-        Memory<T> vector,
-        string? name = null)
-        : this(Vector.Create(vector), name)
-    {
-    }
-
-    public Series(
-        Vector<T> vector,
-        string? name = null)
-        : base(vector)
+    internal Series(
+        [NotNull] Vector<T> vector,
+        string? name,
+        Index? index)
+        : base(vector, name, index)
     {
         _vector = vector;
     }
@@ -150,15 +137,13 @@ public class Series<T> : Series, ISeries<T>, IReadOnlySeries<T>, IEquatable<Seri
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Series<T> Slice(int start)
     {
-        // todo: labels, categories
-        return new Series<T>(_vector[start..], Name);
+        return new Series<T>(_vector[start..], Name, null);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Series<T> Slice(int start, int length)
     {
-        // todo: labels, categories
-        return new Series<T>(_vector.Slice(start, length), Name);
+        return new Series<T>(_vector.Slice(start, length), Name, null);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -178,7 +163,7 @@ public class Series<T> : Series, ISeries<T>, IReadOnlySeries<T>, IEquatable<Seri
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator Series<T>(Memory<T> vector)
     {
-        return new(vector);
+        return new(vector, null, null);
     }
 
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",
@@ -187,7 +172,7 @@ public class Series<T> : Series, ISeries<T>, IReadOnlySeries<T>, IEquatable<Seri
     public static implicit operator Series<T>(T[] vector)
     {
         ArgumentNullException.ThrowIfNull(vector);
-        return new(vector);
+        return new(vector, null, null);
     }
 
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",

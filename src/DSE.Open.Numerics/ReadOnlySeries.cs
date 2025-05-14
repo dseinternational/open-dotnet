@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using System.Text.Json.Serialization;
 using DSE.Open.Numerics.Serialization;
@@ -15,7 +16,7 @@ namespace DSE.Open.Numerics;
 public abstract class ReadOnlySeries : SeriesBase, IReadOnlySeries
 {
     protected ReadOnlySeries(
-        ReadOnlyVector vector,
+        [NotNull] ReadOnlyVector vector,
         string? name = null,
         Index? index = null)
         : base(vector)

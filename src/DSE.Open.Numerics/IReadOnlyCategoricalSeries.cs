@@ -3,14 +3,8 @@
 
 namespace DSE.Open.Numerics;
 
-/// <summary>
-/// TODO
-/// </summary>
-/// <typeparam name="T"></typeparam>
-public sealed class CategorySeries<T> : Series<T>
+public interface IReadOnlyCategoricalSeries<T>
+    : IReadOnlySeries<T>
     where T : IEquatable<T>
 {
-    public CategorySeries(T[] vector, string? name = null) : base(vector, name)
-    {
-    }
 }

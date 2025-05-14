@@ -15,7 +15,7 @@ namespace DSE.Open.Numerics;
 [JsonConverter(typeof(SeriesJsonConverter))]
 public abstract class Series : SeriesBase, ISeries
 {
-    protected internal Series(Vector vector, string? name = null, Index? index = null)
+    protected internal Series(Vector vector, string? name, Index? index)
         : base(vector)
     {
         ArgumentNullException.ThrowIfNull(vector);
@@ -54,13 +54,13 @@ public abstract class Series : SeriesBase, ISeries
     public static Series<T> Create<T>(Memory<T> data)
         where T : IEquatable<T>
     {
-        return new Series<T>(data);
+        return new Series<T>(data, null, null);
     }
 
     public static Series<T> Create<T>(string name, Memory<T> data)
         where T : IEquatable<T>
     {
-        return new Series<T>(data, name);
+        return new Series<T>(data, name, null);
     }
 
     /// <summary>
@@ -73,7 +73,7 @@ public abstract class Series : SeriesBase, ISeries
         where T : IEquatable<T>
     {
         ArgumentNullException.ThrowIfNull(data);
-        return new Series<T>(data);
+        return new Series<T>(data, null, null);
     }
 
     /// <summary>
@@ -87,25 +87,25 @@ public abstract class Series : SeriesBase, ISeries
         where T : IEquatable<T>
     {
         ArgumentNullException.ThrowIfNull(data);
-        return new Series<T>(data, name);
+        return new Series<T>(data, name, null);
     }
 
     public static Series<T> Create<T>(ReadOnlySpan<T> data)
         where T : IEquatable<T>
     {
-        return new(data.ToArray());
+        return Create(data.ToArray());
     }
 
     public static Series<T> Create<T>(string name, ReadOnlySpan<T> data)
         where T : IEquatable<T>
     {
-        return new(data.ToArray());
+        return Create(name, data.ToArray());
     }
 
     public static Series<T> Create<T>(int length)
         where T : struct, INumber<T>
     {
-        return new Series<T>(new T[length]);
+        return Create(new T[length]);
     }
 
     public static Series<T> Create<T>(int length, T scalar)
@@ -113,7 +113,7 @@ public abstract class Series : SeriesBase, ISeries
     {
         var data = new T[length];
         data.AsSpan().Fill(scalar);
-        return new Series<T>(data);
+        return Create(data);
     }
 
     public static Series<T> CreateZeroes<T>(int length)
@@ -131,6 +131,6 @@ public abstract class Series : SeriesBase, ISeries
     public static Series<T> Create<T>(string name, int length)
         where T : struct, INumber<T>
     {
-        return new Series<T>(new T[length], name);
+        return Create(name, new T[length]);
     }
 }
