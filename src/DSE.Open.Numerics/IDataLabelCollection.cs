@@ -7,22 +7,20 @@ namespace DSE.Open.Numerics;
 /// A collection of data labels.
 /// </summary>
 /// <typeparam name="TData"></typeparam>
-/// <typeparam name="TLabel"></typeparam>
-public interface IDataLabelCollection<TData, TLabel> : ICollection<DataLabel<TData, TLabel>>
+public interface IDataLabelCollection<TData> : IReadOnlyDataLabelCollection<TData>, ICollection<DataLabel<TData>>
     where TData : IEquatable<TData>
-    where TLabel : IEquatable<TLabel>
 {
     /// <summary>
     /// Gets or sets the label for the specified data.
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>
-    TLabel this[TData data] { get; set; }
+    new string this[TData data] { get; set; }
 
     /// <summary>
     /// Adds a label for the specified data.
     /// </summary>
     /// <param name="data"></param>
     /// <param name="label"></param>
-    void Add(TData data, TLabel label);
+    void Add(TData data, string label);
 }

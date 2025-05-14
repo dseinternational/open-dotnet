@@ -3,6 +3,10 @@
 
 namespace DSE.Open.Numerics;
 
+/// <summary>
+/// TODO - a read-only series than may only contain values from a defined set.
+/// </summary>
+/// <typeparam name="T"></typeparam>
 public interface IReadOnlyCategoricalSeries<T>
     : IReadOnlySeries<T>
     where T : IEquatable<T>

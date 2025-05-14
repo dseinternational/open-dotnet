@@ -4,7 +4,7 @@
 namespace DSE.Open.Numerics;
 
 /// <summary>
-/// TODO
+/// TODO - a read-only series than may only contain values from a defined set.
 /// </summary>
 /// <typeparam name="T"></typeparam>
 public sealed class ReadOnlyCategoricalSeries<T> : ReadOnlySeries<T>, IReadOnlyCategoricalSeries<T>

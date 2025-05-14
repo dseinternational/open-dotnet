@@ -3,9 +3,17 @@
 
 namespace DSE.Open.Numerics;
 
-public interface IReadOnlyDataLabelCollection<TData, TLabel> : IReadOnlyCollection<DataLabel<TData, TLabel>>
+public interface IReadOnlyDataLabelCollection<TData> : IReadOnlyCollection<DataLabel<TData>>
     where TData : IEquatable<TData>
-    where TLabel : IEquatable<TLabel>
 {
+    /// <summary>
+    /// Gets the label for the specified data value.
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
+    string this[TData data] { get; }
 
+    bool TryGetLabel(TData data, out string label);
+
+    bool TryGetData(string label, out TData data);
 }

@@ -2,162 +2,239 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Collections;
-using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using DSE.Open.Collections.Generic;
+using DSE.Open.Hashing;
 
 namespace DSE.Open.Numerics;
 
-public sealed class DataLabelCollection<TData, TLabel> : IDataLabelCollection<TData, TLabel>
+// todo: json converter to output as a dictionary values [ { "label": data } ]
+
+public sealed class DataLabelCollection<TData> : IDataLabelCollection<TData>
     where TData : IEquatable<TData>
-    where TLabel : IEquatable<TLabel>
 {
-    // we cannot use a Dictionary here because we may want to support null TData
+    private Dictionary<ulong, int>? _dataIndexLookup;
+    private Dictionary<string, int>? _labelIndexLookup;
 
-    private readonly HashSet<TData> _dataHashset;
-    private readonly Collection<TData> _data;
-    private readonly Collection<TLabel> _labels;
-
-    // todo: consider Dictionary<int, DataLabel<TData, TLabel>> where int is the hashcode of TData
+    private readonly Collection<DataLabel<TData>> _dataLabels;
 
     public DataLabelCollection()
     {
-        _dataHashset = [];
-        _data = [];
-        _labels = [];
+        _dataLabels = [];
     }
 
-    public DataLabelCollection(IEnumerable<DataLabel<TData, TLabel>> dataLabels)
+    public DataLabelCollection(IEnumerable<DataLabel<TData>> dataLabels)
     {
         ArgumentNullException.ThrowIfNull(dataLabels);
+        _dataLabels = [.. dataLabels];
+    }
 
-        if (dataLabels is IReadOnlyCollection<DataLabel<TData, TLabel>> dataLabelCol)
+    private static ulong GetHash(TData data)
+    {
+        if (data is IRepeatableHash64 hash64)
         {
-            _dataHashset = new HashSet<TData>(dataLabelCol.Count);
-            _data = new Collection<TData>(dataLabelCol.Count);
-            _labels = new Collection<TLabel>(dataLabelCol.Count);
-        }
-        else
-        {
-            _dataHashset = [];
-            _data = [];
-            _labels = [];
+            return hash64.GetRepeatableHashCode();
         }
 
-        foreach (var label in dataLabels)
+        return HashU64_SplitMix(data.GetHashCode());
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static ulong HashU64_SplitMix(int value)
+    {
+        unchecked
         {
-            Add(label);
+            var z = (uint)value + 0x9E3779B97F4A7C15UL;
+            z = (z ^ (z >> 30)) * 0xBF58476D1CE4E5B9UL;
+            z = (z ^ (z >> 27)) * 0x94D049BB133111EBUL;
+            z ^= z >> 31;
+            return z;
         }
     }
 
-    public TLabel this[TData data]
+    private Dictionary<ulong, int> DataIndexLookup
     {
         get
         {
-            var index = _data.IndexOf(data);
+            if (_dataIndexLookup is not null)
+            {
+                return _dataIndexLookup;
+            }
 
-            if (index < 0)
+            _dataIndexLookup = new Dictionary<ulong, int>(_dataLabels.Count);
+
+            for (var i = 0; i < _dataLabels.Count; i++)
+            {
+                _dataIndexLookup.Add(GetHash(_dataLabels[i].Data), i);
+            }
+
+            return _dataIndexLookup;
+        }
+    }
+
+    private Dictionary<string, int> LabelIndexLookup
+    {
+        get
+        {
+            if (_labelIndexLookup is not null)
+            {
+                return _labelIndexLookup;
+            }
+
+            _labelIndexLookup = new Dictionary<string, int>(_dataLabels.Count);
+
+            for (var i = 0; i < _dataLabels.Count; i++)
+            {
+                _labelIndexLookup.Add(_dataLabels[i].Label, i);
+            }
+
+            return _labelIndexLookup;
+        }
+    }
+
+    public string this[TData data]
+    {
+        get
+        {
+            if (_dataLabels.Count == 0)
             {
                 throw new KeyNotFoundException($"Data {data} not found.");
             }
 
-            return _labels[index];
+            return _dataLabels[DataIndexLookup[GetHash(data)]].Label;
         }
-        set => Add(new DataLabel<TData, TLabel>(data, value));
+        set => Add(new DataLabel<TData>(data, value));
     }
 
-    public int Count => _data.Count;
+    public int Count => _dataLabels.Count;
 
-    bool ICollection<DataLabel<TData, TLabel>>.IsReadOnly => false;
+    bool ICollection<DataLabel<TData>>.IsReadOnly => false;
 
-    public void Add(DataLabel<TData, TLabel> label)
+    public void Add(DataLabel<TData> label)
     {
-        Add(label.Data, label.Label);
+        var key = GetHash(label.Data);
+
+        if (DataIndexLookup.ContainsKey(key))
+        {
+            throw new ArgumentException($"Label already included for label {label}", nameof(label));
+        }
+
+        _dataLabels.Add(label);
+
+        DataIndexLookup.Add(key, _dataLabels.Count - 1);
+        LabelIndexLookup.Add(label.Label, _dataLabels.Count - 1);
     }
 
-    public void Add(TData data, TLabel label)
+    public void Add(TData data, string label)
     {
-        if (_dataHashset.Add(data))
-        {
-            _data.Add(data);
-            _labels.Add(label);
-        }
-        else
-        {
-            var index = _data.IndexOf(data);
-
-            if (index >= 0)
-            {
-                _labels[index] = label;
-            }
-        }
-
-        Debug.Assert(_data.Count == _labels.Count, "Data and labels count mismatch.");
-        Debug.Assert(_dataHashset.Count == _data.Count, "Data hashset and data count mismatch.");
+        ArgumentNullException.ThrowIfNull(label);
+        Add((data, label));
     }
 
     public void Clear()
     {
-        _dataHashset.Clear();
-        _data.Clear();
-        _labels.Clear();
+        _dataLabels.Clear();
+        _dataIndexLookup?.Clear();
+        _labelIndexLookup?.Clear();
     }
 
-    public bool Contains(DataLabel<TData, TLabel> item)
+    public bool Contains(DataLabel<TData> item)
     {
-        if (!_dataHashset.Contains(item.Data))
+        if (_dataLabels.Count == 0)
         {
             return false;
         }
 
-        var index = _data.IndexOf(item.Data);
+        var key = GetHash(item.Data);
 
-        Debug.Assert(index >= 0, "Data not found in collection.");
+        if (!DataIndexLookup.TryGetValue(key, out var index))
+        {
+            return false;
+        }
 
-        return _labels[index].Equals(item.Label);
-
+        return _dataLabels[index].Equals(item);
     }
 
-    void ICollection<DataLabel<TData, TLabel>>.CopyTo(DataLabel<TData, TLabel>[] array, int arrayIndex)
+    public bool ContainsLabel(string label)
+    {
+        ArgumentNullException.ThrowIfNull(label);
+
+        if (_dataLabels.Count == 0)
+        {
+            return false;
+        }
+
+        return LabelIndexLookup.ContainsKey(label);
+    }
+
+    public bool ContainsDataValue(TData data)
+    {
+        if (_dataLabels.Count == 0)
+        {
+            return false;
+        }
+
+        var key = GetHash(data);
+
+        return DataIndexLookup.ContainsKey(key);
+    }
+
+    void ICollection<DataLabel<TData>>.CopyTo(DataLabel<TData>[] array, int arrayIndex)
     {
         ArgumentNullException.ThrowIfNull(array);
         ArgumentOutOfRangeException.ThrowIfNegative(arrayIndex);
 
-        if (array.Length - arrayIndex < _data.Count)
+        if (array.Length - arrayIndex < _dataLabels.Count)
         {
             throw new ArgumentException(
                 "The destination array is not long enough to copy all the items in the collection.");
         }
 
-        for (var i = 0; i < _data.Count; i++)
+        for (var i = 0; i < _dataLabels.Count; i++)
         {
-            array[arrayIndex + i] = new DataLabel<TData, TLabel>(_data[i], _labels[i]);
+            array[arrayIndex + i] = _dataLabels[i];
         }
     }
 
-    public IEnumerator<DataLabel<TData, TLabel>> GetEnumerator()
+    public IEnumerator<DataLabel<TData>> GetEnumerator()
     {
-        for (var i = 0; i < _data.Count; i++)
+        for (var i = 0; i < _dataLabels.Count; i++)
         {
-            yield return new DataLabel<TData, TLabel>(_data[i], _labels[i]);
+            yield return _dataLabels[i];
         }
     }
 
-    public bool Remove(DataLabel<TData, TLabel> item)
+    public bool Remove(DataLabel<TData> item)
     {
-        if (!_dataHashset.Remove(item.Data))
+        if (_dataLabels.Count == 0)
         {
             return false;
         }
 
-        var index = _data.IndexOf(item.Data);
+        var key = GetHash(item.Data);
 
-        Debug.Assert(index >= 0, "Data not found in collection.");
+        if (!DataIndexLookup.TryGetValue(key, out var index))
+        {
+            return false;
+        }
 
-        _data.RemoveAt(index);
-        _labels.RemoveAt(index);
+        if (!_dataLabels[index].Equals(item))
+        {
+            return false;
+        }
 
-        Debug.Assert(_data.Count == _labels.Count, "Data and labels count mismatch.");
-        Debug.Assert(_dataHashset.Count == _data.Count, "Data hashset and data count mismatch.");
+        var label = _dataLabels[index].Label;
+
+        _ = DataIndexLookup.Remove(key);
+        _ = LabelIndexLookup.Remove(label);
+
+        _dataLabels.RemoveAt(index);
+
+        for (var i = index; i < _dataLabels.Count; i++)
+        {
+            DataIndexLookup[GetHash(_dataLabels[i].Data)] = i;
+            LabelIndexLookup[label] = i;
+        }
 
         return true;
     }
@@ -165,5 +242,48 @@ public sealed class DataLabelCollection<TData, TLabel> : IDataLabelCollection<TD
     IEnumerator IEnumerable.GetEnumerator()
     {
         return GetEnumerator();
+    }
+
+    public bool TryGetLabel(TData data, out string label)
+    {
+        if (_dataLabels.Count == 0)
+        {
+            label = string.Empty;
+            return false;
+        }
+
+        var key = GetHash(data);
+
+        if (DataIndexLookup.TryGetValue(key, out var index))
+        {
+            label = _dataLabels[index].Label;
+            return true;
+        }
+
+        label = string.Empty;
+        return false;
+    }
+
+    public bool TryGetData(string label, out TData data)
+    {
+        ArgumentNullException.ThrowIfNull(label);
+
+        if (_dataLabels.Count == 0)
+        {
+            data = default!;
+            return false;
+        }
+
+        for (var i = 0; i < _dataLabels.Count; i++)
+        {
+            if (_dataLabels[i].Label == label)
+            {
+                data = _dataLabels[i].Data;
+                return true;
+            }
+        }
+
+        data = default!;
+        return false;
     }
 }
