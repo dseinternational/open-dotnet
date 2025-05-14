@@ -4,7 +4,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="Azure.Core" Version="1.46.1" />
-    <PackageVersion Include="Azure.Identity" Version="1.13.2" />
+    <PackageVersion Include="Azure.Identity" Version="1.14.0" />
     <PackageVersion Include="BenchmarkDotNet" Version="0.14.0" />
     <PackageVersion Include="CommunityToolkit.Diagnostics" Version="8.4.0" />
     <PackageVersion Include="CommunityToolkit.HighPerformance" Version="8.4.0" />
@@ -13,7 +13,7 @@
     <PackageVersion Include="FluentAssertions" Version="[7.2.0,8.0.0)" />
     <PackageVersion Include="Google.Protobuf" Version="3.30.2" />
     <PackageVersion Include="Iced" Version="1.21.0" />
-    <PackageVersion Include="Microsoft.Bcl.TimeProvider" Version="9.0.4" />
+    <PackageVersion Include="Microsoft.Bcl.TimeProvider" Version="9.0.5" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Common" Version="4.13.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.13.0" />
@@ -22,20 +22,20 @@
     <PackageVersion Include="Microsoft.Diagnostics.NETCore.Client" Version="0.2.621003" />
     <PackageVersion Include="Microsoft.Diagnostics.Runtime" Version="4.0.0-beta.24360.3" />
     <PackageVersion Include="Microsoft.Diagnostics.Tracing.TraceEvent" Version="3.1.21" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="9.0.4" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.4" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.4" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer.HierarchyId" Version="9.0.4" />
-    <PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="9.0.4" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.4" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyModel" Version="9.0.4" />
-    <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="9.0.4" />
-    <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="9.0.4" />
-    <PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="9.0.4" />
-    <PackageVersion Include="Microsoft.Extensions.Logging" Version="9.0.4" />
-    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.4" />
-    <PackageVersion Include="Microsoft.Extensions.Options" Version="9.0.4" />
-    <PackageVersion Include="Microsoft.Extensions.TimeProvider.Testing" Version="9.4.0" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="9.0.5" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.5" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.5" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer.HierarchyId" Version="9.0.5" />
+    <PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="9.0.5" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.5" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyModel" Version="9.0.5" />
+    <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="9.0.5" />
+    <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="9.0.5" />
+    <PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="9.0.5" />
+    <PackageVersion Include="Microsoft.Extensions.Logging" Version="9.0.5" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.5" />
+    <PackageVersion Include="Microsoft.Extensions.Options" Version="9.0.5" />
+    <PackageVersion Include="Microsoft.Extensions.TimeProvider.Testing" Version="9.5.0" />
     <PackageVersion Include="Microsoft.Identity.Client" Version="4.72.0" />
     <PackageVersion Include="Microsoft.Identity.Client.Extensions.Msal" Version="4.72.0" />
     <PackageVersion Include="Microsoft.IdentityModel.Abstractions" Version="8.9.0" />
@@ -58,23 +58,23 @@
     <PackageVersion Include="SkiaSharp" Version="3.119.0" />
     <PackageVersion Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.11" />
     <PackageVersion Include="System.ClientModel" Version="1.4.1" />
-    <PackageVersion Include="System.Collections.Immutable" Version="9.0.4" />
-    <PackageVersion Include="System.Configuration.ConfigurationManager" Version="9.0.4" />
-    <PackageVersion Include="System.Diagnostics.DiagnosticSource" Version="9.0.4" />
-    <PackageVersion Include="System.IO.Hashing" Version="9.0.4" />
+    <PackageVersion Include="System.Collections.Immutable" Version="9.0.5" />
+    <PackageVersion Include="System.Configuration.ConfigurationManager" Version="9.0.5" />
+    <PackageVersion Include="System.Diagnostics.DiagnosticSource" Version="9.0.5" />
+    <PackageVersion Include="System.IO.Hashing" Version="9.0.5" />
     <PackageVersion Include="System.Linq.AsyncEnumerable" Version="10.0.0-preview.4.25258.110" />
-    <PackageVersion Include="System.Management" Version="9.0.4" />
+    <PackageVersion Include="System.Management" Version="9.0.5" />
     <PackageVersion Include="System.Memory" Version="4.6.3" />
-    <PackageVersion Include="System.Memory.Data" Version="9.0.4" />
+    <PackageVersion Include="System.Memory.Data" Version="9.0.5" />
     <PackageVersion Include="System.Numerics.Tensors" Version="10.0.0-preview.4.25258.110" />
     <PackageVersion Include="System.Numerics.Vectors" Version="4.6.1" />
     <PackageVersion Include="System.Reflection.Emit" Version="4.7.0" />
-    <PackageVersion Include="System.Reflection.Metadata" Version="9.0.4" />
-    <PackageVersion Include="System.Runtime.Caching" Version="9.0.4" />
+    <PackageVersion Include="System.Reflection.Metadata" Version="9.0.5" />
+    <PackageVersion Include="System.Runtime.Caching" Version="9.0.5" />
     <PackageVersion Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.0" />
-    <PackageVersion Include="System.Text.Encoding.CodePages" Version="9.0.4" />
-    <PackageVersion Include="System.Text.Encodings.Web" Version="9.0.4" />
-    <PackageVersion Include="System.Text.Json" Version="9.0.4" />
+    <PackageVersion Include="System.Text.Encoding.CodePages" Version="9.0.5" />
+    <PackageVersion Include="System.Text.Encodings.Web" Version="9.0.5" />
+    <PackageVersion Include="System.Text.Json" Version="9.0.5" />
     <PackageVersion Include="System.Threading.Tasks.Extensions" Version="4.6.3" />
     <PackageVersion Include="TorchSharp" Version="0.105.0" />
     <PackageVersion Include="TorchSharp-cpu" Version="0.105.0" />
