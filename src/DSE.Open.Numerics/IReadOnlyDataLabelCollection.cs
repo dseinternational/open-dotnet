@@ -13,7 +13,7 @@ public interface IReadOnlyDataLabelCollection<TData> : IReadOnlyCollection<DataL
     /// <returns></returns>
     string this[TData data] { get; }
 
-    bool TryGetLabel(TData data, out string label);
+    bool TryGetLabel(TData value, out string label);
 
-    bool TryGetData(string label, out TData data);
+    bool TryGetDataValue(string label, out TData value);
 }

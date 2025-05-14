@@ -8,7 +8,9 @@ namespace DSE.Open.Numerics;
 
 // todo: json converter to output as a dictionary values [ { "label": data } ]
 
-public sealed class DataLabelCollection<TData> : DataLabelCollectionBase<TData>, IDataLabelCollection<TData>
+public sealed class ReadOnlyDataLabelCollection<TData>
+    : DataLabelCollectionBase<TData>,
+      IReadOnlyDataLabelCollection<TData>
     where TData : IEquatable<TData>
 {
     private Dictionary<ulong, int>? _dataIndexLookup;
@@ -16,12 +18,12 @@ public sealed class DataLabelCollection<TData> : DataLabelCollectionBase<TData>,
 
     private readonly Collection<DataLabel<TData>> _dataLabels;
 
-    public DataLabelCollection()
+    public ReadOnlyDataLabelCollection()
     {
         _dataLabels = [];
     }
 
-    public DataLabelCollection(IEnumerable<DataLabel<TData>> dataLabels)
+    public ReadOnlyDataLabelCollection(IEnumerable<DataLabel<TData>> dataLabels)
     {
         ArgumentNullException.ThrowIfNull(dataLabels);
         _dataLabels = [.. dataLabels];
@@ -78,40 +80,9 @@ public sealed class DataLabelCollection<TData> : DataLabelCollectionBase<TData>,
 
             return _dataLabels[DataIndexLookup[GetHash(data)]].Label;
         }
-        set => Add(new DataLabel<TData>(data, value));
     }
 
     public int Count => _dataLabels.Count;
-
-    bool ICollection<DataLabel<TData>>.IsReadOnly => false;
-
-    public void Add(DataLabel<TData> label)
-    {
-        var key = GetHash(label.Data);
-
-        if (DataIndexLookup.ContainsKey(key))
-        {
-            throw new ArgumentException($"Label already included for label {label}", nameof(label));
-        }
-
-        _dataLabels.Add(label);
-
-        DataIndexLookup.Add(key, _dataLabels.Count - 1);
-        LabelIndexLookup.Add(label.Label, _dataLabels.Count - 1);
-    }
-
-    public void Add(TData data, string label)
-    {
-        ArgumentNullException.ThrowIfNull(label);
-        Add((data, label));
-    }
-
-    public void Clear()
-    {
-        _dataLabels.Clear();
-        _dataIndexLookup?.Clear();
-        _labelIndexLookup?.Clear();
-    }
 
     public bool Contains(DataLabel<TData> item)
     {
@@ -154,64 +125,12 @@ public sealed class DataLabelCollection<TData> : DataLabelCollectionBase<TData>,
         return DataIndexLookup.ContainsKey(key);
     }
 
-    void ICollection<DataLabel<TData>>.CopyTo(DataLabel<TData>[] array, int arrayIndex)
-    {
-        ArgumentNullException.ThrowIfNull(array);
-        ArgumentOutOfRangeException.ThrowIfNegative(arrayIndex);
-
-        if (array.Length - arrayIndex < _dataLabels.Count)
-        {
-            throw new ArgumentException(
-                "The destination array is not long enough to copy all the items in the collection.");
-        }
-
-        for (var i = 0; i < _dataLabels.Count; i++)
-        {
-            array[arrayIndex + i] = _dataLabels[i];
-        }
-    }
-
     public IEnumerator<DataLabel<TData>> GetEnumerator()
     {
         for (var i = 0; i < _dataLabels.Count; i++)
         {
             yield return _dataLabels[i];
         }
-    }
-
-    public bool Remove(DataLabel<TData> item)
-    {
-        if (_dataLabels.Count == 0)
-        {
-            return false;
-        }
-
-        var key = GetHash(item.Data);
-
-        if (!DataIndexLookup.TryGetValue(key, out var index))
-        {
-            return false;
-        }
-
-        if (!_dataLabels[index].Equals(item))
-        {
-            return false;
-        }
-
-        var label = _dataLabels[index].Label;
-
-        _ = DataIndexLookup.Remove(key);
-        _ = LabelIndexLookup.Remove(label);
-
-        _dataLabels.RemoveAt(index);
-
-        for (var i = index; i < _dataLabels.Count; i++)
-        {
-            DataIndexLookup[GetHash(_dataLabels[i].Data)] = i;
-            LabelIndexLookup[label] = i;
-        }
-
-        return true;
     }
 
     IEnumerator IEnumerable.GetEnumerator()

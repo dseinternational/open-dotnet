@@ -20,7 +20,7 @@ public interface IDataLabelCollection<TData> : IReadOnlyDataLabelCollection<TDat
     /// <summary>
     /// Adds a label for the specified data.
     /// </summary>
-    /// <param name="data"></param>
+    /// <param name="value"></param>
     /// <param name="label"></param>
-    void Add(TData data, string label);
+    void Add(TData value, string label);
 }
