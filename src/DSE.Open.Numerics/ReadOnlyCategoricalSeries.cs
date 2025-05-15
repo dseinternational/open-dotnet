@@ -10,7 +10,13 @@ namespace DSE.Open.Numerics;
 public sealed class ReadOnlyCategoricalSeries<T> : ReadOnlySeries<T>, IReadOnlyCategoricalSeries<T>
     where T : IEquatable<T>
 {
+    private readonly ReadOnlyCategorySet<T> _categories = [];
+
     internal ReadOnlyCategoricalSeries(T[] vector, string? name = null, Index? index = null) : base(vector, name, index)
     {
     }
+
+    public ReadOnlyCategorySet<T> Categories => _categories;
+
+    IReadOnlyCategorySet<T> IReadOnlyCategoricalSeries<T>.Categories => Categories;
 }

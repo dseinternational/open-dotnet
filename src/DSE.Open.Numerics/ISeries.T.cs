@@ -23,7 +23,7 @@ public interface ISeries<T>
     /// <summary>
     /// Gets a read-only view of the vector.
     /// </summary>
-    new ReadOnlySeries<T> AsReadOnly();
+    new IReadOnlySeries<T> AsReadOnly();
 
     /// <summary>
     /// Gets a span over the contents of the vector.

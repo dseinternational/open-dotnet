@@ -100,7 +100,7 @@ public class Series<T> : Series, ISeries<T>, IReadOnlySeries<T>, IEquatable<Seri
         return new ReadOnlySeries<T>(_vector, Name);
     }
 
-    ReadOnlySeries<T> ISeries<T>.AsReadOnly()
+    IReadOnlySeries<T> ISeries<T>.AsReadOnly()
     {
         return AsReadOnly();
     }

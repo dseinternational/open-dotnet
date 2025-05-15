@@ -12,4 +12,8 @@ public interface ICategoricalSeries<T>
       IReadOnlyCategoricalSeries<T>
     where T : IEquatable<T>
 {
+    /// <summary>
+    /// Specifies the permitted values for a categorical series.
+    /// </summary>
+    new ICategorySet<T> Categories { get; }
 }
