@@ -4,7 +4,6 @@
 using DSE.Open.Testing.Xunit;
 
 namespace DSE.Open.Numerics;
-
 public class CategorySetTests : LoggedTestsBase
 {
     public CategorySetTests(ITestOutputHelper output) : base(output)

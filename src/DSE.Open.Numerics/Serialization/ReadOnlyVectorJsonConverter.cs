@@ -46,6 +46,6 @@ public sealed class ReadOnlyVectorJsonConverter : JsonConverter<ReadOnlyVector>
 
     public override void Write(Utf8JsonWriter writer, ReadOnlyVector value, JsonSerializerOptions options)
     {
-        VectorJsonWriter.Write(writer, value, options);
+        VectorJsonWriter.WriteVector(writer, value, options);
     }
 }

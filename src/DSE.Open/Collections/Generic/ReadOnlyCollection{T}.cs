@@ -20,7 +20,7 @@ public class ReadOnlyCollection<T>
       ICollection<T>,
       IList
 {
-    public static readonly ReadOnlyCollection<T> Empty = [];
+    public static readonly ReadOnlyCollection<T> Empty = new([]);
 
     internal readonly List<T> _items;
 
@@ -32,7 +32,7 @@ public class ReadOnlyCollection<T>
     public ReadOnlyCollection(IEnumerable<T> items)
     {
         ArgumentNullException.ThrowIfNull(items);
-        _items = new(items);
+        _items = [.. items];
     }
 
     /// <summary>

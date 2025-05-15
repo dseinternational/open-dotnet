@@ -1,9 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Numerics;
 using System.Text.Json;
-using DSE.Open.Threading.Tasks;
 
 namespace DSE.Open.Numerics.Serialization;
 
@@ -25,7 +23,7 @@ internal static class SeriesJsonWriter
 
         writer.WritePropertyName(SeriesJsonPropertyNames.Data);
 
-        VectorJsonWriter.Write(writer, series.Vector, options);
+        VectorJsonWriter.WriteVector(writer, series.Vector, options);
 
         writer.WriteEndObject();
     }

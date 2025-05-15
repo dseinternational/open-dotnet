@@ -1,6 +1,8 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Text.Json.Serialization;
+
 namespace DSE.Open.Numerics;
 
 /// <summary>
@@ -13,14 +15,17 @@ public readonly record struct ValueLabel<T> : IValueLabel<T>
     // note: we may want to support vectors of nullable types in the future
     // so T is not constrained to notnull
 
+    [JsonConstructor]
     public ValueLabel(T value, string label)
     {
         Value = value;
         Label = label;
     }
 
+    [JsonPropertyName("value")]
     public T Value { get; }
 
+    [JsonPropertyName("label")]
     public string Label { get; }
 
     object? IValueLabel.Value => Value;

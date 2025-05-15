@@ -226,6 +226,6 @@ public class VectorJsonConverter : JsonConverter<Vector>
 
     public override void Write(Utf8JsonWriter writer, Vector value, JsonSerializerOptions options)
     {
-        VectorJsonWriter.Write(writer, value, options);
+        VectorJsonWriter.WriteVector(writer, value, options);
     }
 }

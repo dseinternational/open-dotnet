@@ -2,11 +2,8 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-using System.Numerics;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using DSE.Open.Memory;
 
 namespace DSE.Open.Numerics.Serialization;
 
