@@ -2,11 +2,8 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace DSE.Open.Numerics.Serialization;
-
-// as per system json serializer, serialize like dictionary with label as property...
 
 internal static class ValueLabelCollectionJsonWriter
 {
@@ -88,6 +85,18 @@ internal static class ValueLabelCollectionJsonWriter
 
         writer.WriteStartObject();
 
+        writer.WriteString(
+            VectorJsonPropertyNames.DataType,
+            VectorDataTypeHelper.GetLabel(VectorDataTypeHelper.GetVectorDataType<T>()));
+
+        writer.WriteNumber(
+            VectorJsonPropertyNames.Length,
+            labels.Count);
+
+        writer.WritePropertyName("labels");
+
+        writer.WriteStartObject();
+
         foreach (var dataLabel in labels)
         {
             writer.WritePropertyName(dataLabel.Label);
@@ -95,33 +104,7 @@ internal static class ValueLabelCollectionJsonWriter
         }
 
         writer.WriteEndObject();
-    }
-}
-public class ValueLabelCollectionJsonConverter : JsonConverter<ValueLabelCollection>
-{
-    public override ValueLabelCollection Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-    {
-        throw new NotImplementedException("Deserialization not implemented.");
-    }
 
-    public override void Write(Utf8JsonWriter writer, ValueLabelCollection value, JsonSerializerOptions options)
-    {
-        ArgumentNullException.ThrowIfNull(writer);
-        ArgumentNullException.ThrowIfNull(value);
-        ValueLabelCollectionJsonWriter.WriteCollection(writer, value, options);
-    }
-}
-public class ReadOnlyValueLabelCollectionJsonConverter : JsonConverter<ReadOnlyValueLabelCollection>
-{
-    public override ReadOnlyValueLabelCollection Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-    {
-        throw new NotImplementedException("Deserialization not implemented.");
-    }
-
-    public override void Write(Utf8JsonWriter writer, ReadOnlyValueLabelCollection value, JsonSerializerOptions options)
-    {
-        ArgumentNullException.ThrowIfNull(writer);
-        ArgumentNullException.ThrowIfNull(value);
-        ValueLabelCollectionJsonWriter.WriteCollection(writer, value, options);
+        writer.WriteEndObject();
     }
 }

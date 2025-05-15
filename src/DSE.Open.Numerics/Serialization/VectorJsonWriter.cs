@@ -84,8 +84,11 @@ public static class VectorJsonWriter
         JsonExceptionHelper.ThrowIfLengthExceedsSerializationLimit(vector.Length);
 
         writer.WriteStartObject();
+
         writer.WriteString(VectorJsonPropertyNames.DataType, VectorDataTypeHelper.GetLabel(vector.DataType));
+
         writer.WriteNumber(VectorJsonPropertyNames.Length, vector.Length);
+
         writer.WritePropertyName(VectorJsonPropertyNames.Values);
 
         if (vector.Length == 0)

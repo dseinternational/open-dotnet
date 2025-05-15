@@ -5,6 +5,21 @@ using System.Text.Json;
 
 namespace DSE.Open.Numerics.Serialization;
 
+internal static class SeriesJsonReader
+{
+    public static Series? Read(ref Utf8JsonReader reader, JsonSerializerOptions options)
+    {
+        if (reader.TokenType != JsonTokenType.StartObject)
+        {
+            throw new JsonException("Expected start of object");
+        }
+
+        Series? series = null;
+
+        return series;
+    }
+}
+
 internal static class SeriesJsonWriter
 {
     public static void Write(Utf8JsonWriter writer, IReadOnlySeries series, JsonSerializerOptions options)
@@ -86,7 +101,7 @@ internal static class SeriesJsonWriter
 
         ValueLabelCollectionJsonWriter.WriteCollection(writer, series.ValueLabels, options);
 
-        writer.WritePropertyName(SeriesJsonPropertyNames.Data);
+        writer.WritePropertyName(SeriesJsonPropertyNames.Values);
 
         VectorJsonWriter.WriteVector(writer, series.Vector, options);
 
