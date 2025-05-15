@@ -3,6 +3,7 @@
 
 using System.Numerics;
 using System.Text.Json;
+using DSE.Open.Threading.Tasks;
 
 namespace DSE.Open.Numerics.Serialization;
 
@@ -24,7 +25,7 @@ internal static class SeriesJsonWriter
 
         writer.WritePropertyName(SeriesJsonPropertyNames.Data);
 
-        VectorJsonWriter.Write(writer, series.Data, options);
+        VectorJsonWriter.Write(writer, series.Vector, options);
 
         writer.WriteEndObject();
     }

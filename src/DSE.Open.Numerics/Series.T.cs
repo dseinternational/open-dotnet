@@ -53,11 +53,13 @@ public class Series<T> : Series, ISeries<T>, IReadOnlySeries<T>, IEquatable<Seri
     int IReadOnlyCollection<T>.Count => Length;
 #pragma warning restore CA1033 // Interface methods should be callable by child types
 
-    public ValueLabelCollection<T> DataLabels => _labels;
+    public ValueLabelCollection<T> ValueLabels => _labels;
 
-    IValueLabelCollection<T> ISeries<T>.DataLabels => DataLabels;
+    IValueLabelCollection<T> ISeries<T>.ValueLabels => ValueLabels;
 
-    IReadOnlyValueLabelCollection<T> IReadOnlySeries<T>.DataLabels => DataLabels;
+    IReadOnlyValueLabelCollection<T> IReadOnlySeries<T>.ValueLabels => ValueLabels;
+
+    public new ReadOnlyVector<T> Vector => _vector;
 
     public IEnumerable<string> GetLabelledData()
     {

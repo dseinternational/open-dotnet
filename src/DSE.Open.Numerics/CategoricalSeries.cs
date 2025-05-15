@@ -109,6 +109,28 @@ public sealed class CategoricalSeries<T> : Series<T>, ICategoricalSeries<T>
 
     public override bool IsCategorical { get; } = true;
 
+    public CategorySet<T> Categories => _categories;
+
+    ICategorySet<T> ICategoricalSeries<T>.Categories => Categories;
+
+    IReadOnlyCategorySet<T> IReadOnlyCategoricalSeries<T>.Categories => Categories;
+
+    public new ReadOnlyCategoricalSeries<T> AsReadOnly()
+    {
+        return new ReadOnlyCategoricalSeries<T>(
+            Vector,
+            Name,
+            null,
+            ValueLabels.AsReadOnly(),
+            _categories.AsReadOnly(),
+            true);
+    }
+
+    protected override ReadOnlySeries CreateReadOnly()
+    {
+        return AsReadOnly();
+    }
+
     private void EnsureValid()
     {
         if (Length == 0)
@@ -124,10 +146,4 @@ public sealed class CategoricalSeries<T> : Series<T>, ICategoricalSeries<T>
             }
         }
     }
-
-    public CategorySet<T> Categories => _categories;
-
-    ICategorySet<T> ICategoricalSeries<T>.Categories => Categories;
-
-    IReadOnlyCategorySet<T> IReadOnlyCategoricalSeries<T>.Categories => Categories;
 }

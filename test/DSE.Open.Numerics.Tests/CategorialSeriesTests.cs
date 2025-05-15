@@ -3,7 +3,7 @@
 
 namespace DSE.Open.Numerics;
 
-public partial class SeriesTests
+public partial class CategorialSeriesTests
 {
     [Fact]
     public void CreateCategorial_WithCategories()
@@ -28,7 +28,7 @@ public partial class SeriesTests
         Assert.Equal(18, series.Length);
         Assert.True(series.AsSpan().SequenceEqual([1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6]));
         Assert.Equal(6, series.Categories.Count);
-        Assert.Equal(2, series.DataLabels.Count);
+        Assert.Equal(2, series.ValueLabels.Count);
 
         var labels = series.GetLabelledData().ToArray();
 

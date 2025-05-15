@@ -20,5 +20,5 @@ public interface IReadOnlySeries
 
     VectorDataType DataType { get; }
 
-    IReadOnlyVector Data { get; }
+    IReadOnlyVector Vector { get; }
 }

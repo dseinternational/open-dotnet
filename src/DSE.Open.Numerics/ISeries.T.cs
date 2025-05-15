@@ -18,7 +18,7 @@ public interface ISeries<T>
     /// Provides labels for data values in the series. There is no guarantee that every data value is
     /// labelled, nor that every label is associated with a data value.
     /// </summary>
-    new IValueLabelCollection<T> DataLabels { get; }
+    new IValueLabelCollection<T> ValueLabels { get; }
 
     /// <summary>
     /// Gets a read-only view of the vector.
@@ -31,5 +31,4 @@ public interface ISeries<T>
     Span<T> AsSpan();
 
     new ISeries<T> Slice(int start, int length);
-
 }

@@ -46,12 +46,13 @@ public class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
 
 #pragma warning disable CA1033 // Interface methods should be callable by child types
     int IReadOnlyCollection<T>.Count => Length;
-
 #pragma warning restore CA1033 // Interface methods should be callable by child types
 
-    public ReadOnlyValueLabelCollection<T> DataLabels => _labels;
+    public ReadOnlyValueLabelCollection<T> ValueLabels => _labels;
 
-    IReadOnlyValueLabelCollection<T> IReadOnlySeries<T>.DataLabels => DataLabels;
+    IReadOnlyValueLabelCollection<T> IReadOnlySeries<T>.ValueLabels => ValueLabels;
+
+    public new ReadOnlyVector<T> Vector => _vector;
 
     public IEnumerable<string> GetLabelledData()
     {

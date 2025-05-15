@@ -39,10 +39,6 @@ public abstract class ReadOnlySeries : SeriesBase, IReadOnlySeries
 
     internal ReadOnlyVector Data => (ReadOnlyVector)BaseVector;
 
-#pragma warning disable CA1033 // Interface methods should be callable by child types
-    IReadOnlyVector IReadOnlySeries.Data => BaseVector;
-#pragma warning restore CA1033 // Interface methods should be callable by child types
-
     /// <summary>
     /// Creates a series from the given data.
     /// </summary>

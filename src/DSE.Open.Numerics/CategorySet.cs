@@ -40,4 +40,9 @@ public sealed class CategorySet<T> : Set<T>, ICategorySet<T>
     public CategorySet(ISet<T> set) : base(set)
     {
     }
+
+    public new ReadOnlyCategorySet<T> AsReadOnly()
+    {
+        return new ReadOnlyCategorySet<T>(this);
+    }
 }

@@ -18,11 +18,11 @@ public interface IReadOnlySeries<T>
     /// Provides labels for data values in the series. There is no guarantee that every data value is
     /// labelled, nor that every label is associated with a data value.
     /// </summary>
-    IReadOnlyValueLabelCollection<T> DataLabels { get; }
+    IReadOnlyValueLabelCollection<T> ValueLabels { get; }
 
     /// <summary>
     /// Gets a read-only view of the labelled values in the series. Values for which there is no
-    /// corresponding label in <see cref="DataLabels"/> are labelled by calling <see cref="object.ToString()"/>
+    /// corresponding label in <see cref="ValueLabels"/> are labelled by calling <see cref="object.ToString()"/>
     /// on the value.
     /// </summary>
     IEnumerable<string> GetLabelledData();
@@ -33,4 +33,6 @@ public interface IReadOnlySeries<T>
     ReadOnlySpan<T> AsReadOnlySpan();
 
     IReadOnlySeries<T> Slice(int start, int length);
+
+    new ReadOnlyVector<T> Vector { get; }
 }

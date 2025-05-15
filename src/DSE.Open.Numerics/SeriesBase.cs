@@ -50,4 +50,7 @@ public abstract class SeriesBase
     /// Gets the data type of the series.
     /// </summary>
     public VectorDataType DataType => _vector.DataType;
+
+    public IReadOnlyVector Vector => _vector;
+
 }

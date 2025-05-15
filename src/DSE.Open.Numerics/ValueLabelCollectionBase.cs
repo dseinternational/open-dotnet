@@ -23,7 +23,7 @@ public abstract class ValueLabelCollectionBase<T> : IEnumerable<ValueLabel<T>>
 
     public int Count => _valueLabels.Count;
 
-    protected IReadOnlyList<ValueLabel<T>> ValueLabels => _valueLabels;
+    protected Collection<ValueLabel<T>> ValueLabels => _valueLabels;
 
     protected void AddCore(ValueLabel<T> label)
     {

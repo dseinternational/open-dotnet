@@ -45,6 +45,11 @@ public sealed class ValueLabelCollection<T> : ValueLabelCollectionBase<T>, IValu
         Add((data, label));
     }
 
+    public ReadOnlyValueLabelCollection<T> AsReadOnly()
+    {
+        return new ReadOnlyValueLabelCollection<T>(ValueLabels);
+    }
+
     public void Clear()
     {
         ClearCore();
