@@ -52,5 +52,4 @@ public abstract class SeriesBase
     public VectorDataType DataType => _vector.DataType;
 
     public IReadOnlyVector Vector => _vector;
-
 }

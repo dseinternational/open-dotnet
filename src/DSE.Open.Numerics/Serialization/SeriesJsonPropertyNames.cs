@@ -5,6 +5,7 @@ namespace DSE.Open.Numerics.Serialization;
 
 internal static class SeriesJsonPropertyNames
 {
-    public const string Name = "name";
     public const string Data = "data";
+    public const string Labels = "labels";
+    public const string Name = "name";
 }
