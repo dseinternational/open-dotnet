@@ -22,16 +22,16 @@ namespace DSE.Open.Numerics;
 public class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
     where T : IEquatable<T>
 {
-    public static readonly ReadOnlySeries<T> Empty = new([], null, null);
+    public static readonly ReadOnlySeries<T> Empty = new([], null, null, null);
 
     private readonly ReadOnlyVector<T> _vector;
     private readonly ReadOnlyDataLabelCollection<T> _labels;
 
     internal ReadOnlySeries(
         [NotNull] ReadOnlyVector<T> vector,
-        string? name = null,
-        Index? index = null,
-        ReadOnlyDataLabelCollection<T>? labels = null)
+        string? name,
+        Index? index,
+        ReadOnlyDataLabelCollection<T>? labels)
         : base(vector, name, index)
     {
         _vector = vector;
@@ -54,6 +54,8 @@ public class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
     IReadOnlyDataLabelCollection<T> IReadOnlySeries<T>.Labels => Labels;
 
     public IEnumerable<string> LabelledValues => new SeriesLabelEnumerable<T>(this);
+
+    // protected ReadOnlyVector<T> Vector => _vector;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ReadOnlySpan<T> AsReadOnlySpan()
@@ -112,13 +114,13 @@ public class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ReadOnlySeries<T> Slice(int start)
     {
-        return new(_vector[start..], Name);
+        return new(_vector[start..], Name, null, null);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ReadOnlySeries<T> Slice(int start, int length)
     {
-        return new(_vector.Slice(start, length), Name);
+        return new(_vector.Slice(start, length), Name, null, null);
     }
 
     IReadOnlySeries<T> IReadOnlySeries<T>.Slice(int start, int length)
@@ -141,7 +143,7 @@ public class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
         Justification = "By design")]
     public static implicit operator ReadOnlySeries<T>(ReadOnlyMemory<T> vector)
     {
-        return new(vector);
+        return new(vector, null, null, null);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -150,7 +152,7 @@ public class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
     public static implicit operator ReadOnlySeries<T>(T[] vector)
     {
         ArgumentNullException.ThrowIfNull(vector);
-        return new(vector);
+        return new(vector, null, null, null);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -39,6 +39,8 @@ public abstract class SeriesBase
     /// </summary>
     public bool IsNumeric => _vector.IsNumeric;
 
+    public virtual bool IsCategorical { get; }
+
     /// <summary>
     /// Gets the type of the items in the series.
     /// </summary>

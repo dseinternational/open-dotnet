@@ -8,7 +8,7 @@ namespace DSE.Open.Collections.Generic;
 
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming",
     "CA1716:Identifiers should not match keywords", Justification = "Preferred name.")]
-public abstract class Set
+public static class Set
 {
     public static Set<T> Create<T>(ISet<T> set)
         where T : IEquatable<T>
@@ -33,10 +33,10 @@ public abstract class Set
     }
 }
 
-[CollectionBuilder(typeof(Set), nameof(Create))]
+[CollectionBuilder(typeof(Set), nameof(Set.Create))]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming",
     "CA1716:Identifiers should not match keywords", Justification = "Preferred name.")]
-public class Set<T> : Set, ISet<T>
+public class Set<T> : ISet<T>
 {
     private ISet<T>? _inner;
 

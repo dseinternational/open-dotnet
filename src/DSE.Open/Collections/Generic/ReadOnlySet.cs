@@ -5,31 +5,48 @@ using System.Runtime.CompilerServices;
 
 namespace DSE.Open.Collections.Generic;
 
-public abstract class ReadOnlySet
+public static class ReadOnlySet
 {
     public static ReadOnlySet<T> Create<T>(IReadOnlySet<T> set)
         where T : IEquatable<T>
     {
+        ArgumentNullException.ThrowIfNull(set);
+
+        if (set.Count == 0)
+        {
+#pragma warning disable IDE0301 // Simplify collection initialization
+            return ReadOnlySet<T>.Empty;
+#pragma warning restore IDE0301 // Simplify collection initialization
+        }
+
         return new ReadOnlySet<T>(set);
     }
 
     public static ReadOnlySet<T> Create<T>(ReadOnlySpan<T> span)
         where T : IEquatable<T>
     {
+        if (span.Length == 0)
+        {
+#pragma warning disable IDE0301 // Simplify collection initialization
+            return ReadOnlySet<T>.Empty;
+#pragma warning restore IDE0301 // Simplify collection initialization
+        }
+
         var set = new HashSet<T>(span.Length);
 
         for (var i = 0; i < span.Length; i++)
         {
             _ = set.Add(span[i]);
         }
+
 #pragma warning disable IDE0028 // Simplify collection initialization
         return new ReadOnlySet<T>(set);
 #pragma warning restore IDE0028 // Simplify collection initialization
     }
 }
 
-[CollectionBuilder(typeof(ReadOnlySet), nameof(Create))]
-public class ReadOnlySet<T> : Set, IReadOnlySet<T>
+[CollectionBuilder(typeof(ReadOnlySet), nameof(ReadOnlySet.Create))]
+public class ReadOnlySet<T> : IReadOnlySet<T>
 {
     public static readonly ReadOnlySet<T> Empty = new(new HashSet<T>());
 

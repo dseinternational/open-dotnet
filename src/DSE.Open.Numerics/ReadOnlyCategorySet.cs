@@ -11,11 +11,32 @@ public static class ReadOnlyCategorySet
     public static ReadOnlyCategorySet<T> Create<T>(IReadOnlySet<T> set)
         where T : IEquatable<T>
     {
+        ArgumentNullException.ThrowIfNull(set);
+
+        if (set is ReadOnlyCategorySet<T> readOnlyCategorySet)
+        {
+            return readOnlyCategorySet;
+        }
+
+        if (set.Count == 0)
+        {
+#pragma warning disable IDE0301 // Simplify collection initialization
+            return ReadOnlyCategorySet<T>.Empty;
+#pragma warning restore IDE0301 // Simplify collection initialization
+        }
+
         return new ReadOnlyCategorySet<T>(set);
     }
     public static ReadOnlyCategorySet<T> Create<T>(ReadOnlySpan<T> span)
         where T : IEquatable<T>
     {
+        if (span.Length == 0)
+        {
+#pragma warning disable IDE0301 // Simplify collection initialization
+            return ReadOnlyCategorySet<T>.Empty;
+#pragma warning restore IDE0301 // Simplify collection initialization
+        }
+
         return new ReadOnlyCategorySet<T>(span.ToArray());
     }
 }
@@ -24,6 +45,8 @@ public static class ReadOnlyCategorySet
 public sealed class ReadOnlyCategorySet<T> : ReadOnlySet<T>, IReadOnlyCategorySet<T>
     where T : IEquatable<T>
 {
+    public static new readonly ReadOnlyCategorySet<T> Empty = new(new HashSet<T>());
+
     public ReadOnlyCategorySet()
     {
     }

@@ -59,7 +59,7 @@ public abstract class ReadOnlySeries : SeriesBase, IReadOnlySeries
 #pragma warning restore IDE0301 // Simplify collection initialization
         }
 
-        return new ReadOnlySeries<T>(vector);
+        return new ReadOnlySeries<T>(vector, null, null, null);
     }
 
     /// <summary>
@@ -80,7 +80,7 @@ public abstract class ReadOnlySeries : SeriesBase, IReadOnlySeries
 #pragma warning restore IDE0301 // Simplify collection initialization
         }
 
-        return new ReadOnlySeries<T>(array);
+        return new ReadOnlySeries<T>(array, null, null, null);
     }
 
     public static ReadOnlySeries<T> Create<T>(ReadOnlySpan<T> data)
@@ -101,13 +101,13 @@ public abstract class ReadOnlySeries : SeriesBase, IReadOnlySeries
     {
         var data = new T[length];
         data.AsSpan().Fill(scalar);
-        return new(data);
+        return new(data, null, null, null);
     }
 
     public static ReadOnlySeries<T> Create<T>(int length)
         where T : struct, INumber<T>
     {
-        return new(new T[length]);
+        return new(new T[length], null, null, null);
     }
 
     public static ReadOnlySeries<T> CreateZeroes<T>(int length)

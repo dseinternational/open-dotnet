@@ -60,13 +60,13 @@ public abstract class Series : SeriesBase, ISeries
     public static Series<T> Create<T>(Memory<T> data)
         where T : IEquatable<T>
     {
-        return new Series<T>(data, null, null);
+        return new Series<T>(data, null, null, null);
     }
 
     public static Series<T> Create<T>(string name, Memory<T> data)
         where T : IEquatable<T>
     {
-        return new Series<T>(data, name, null);
+        return new Series<T>(data, name, null, null);
     }
 
     /// <summary>
@@ -79,7 +79,7 @@ public abstract class Series : SeriesBase, ISeries
         where T : IEquatable<T>
     {
         ArgumentNullException.ThrowIfNull(data);
-        return new Series<T>(data, null, null);
+        return new Series<T>(data, null, null, null);
     }
 
     /// <summary>
@@ -93,7 +93,7 @@ public abstract class Series : SeriesBase, ISeries
         where T : IEquatable<T>
     {
         ArgumentNullException.ThrowIfNull(data);
-        return new Series<T>(data, name, null);
+        return new Series<T>(data, name, null, null);
     }
 
     public static Series<T> Create<T>(ReadOnlySpan<T> data)

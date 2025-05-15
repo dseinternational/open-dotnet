@@ -14,6 +14,8 @@ public interface IReadOnlySeries
 
     int Length { get; }
 
+    bool IsCategorical { get; }
+
     bool IsNumeric { get; }
 
     VectorDataType DataType { get; }
