@@ -18,14 +18,14 @@ public interface IReadOnlySeries<T>
     /// Provides labels for data values in the series. There is no guarantee that every data value is
     /// labelled, nor that every label is associated with a data value.
     /// </summary>
-    IReadOnlyDataLabelCollection<T> Labels { get; }
+    IReadOnlyValueLabelCollection<T> DataLabels { get; }
 
     /// <summary>
     /// Gets a read-only view of the labelled values in the series. Values for which there is no
-    /// corresponding label in <see cref="Labels"/> are labelled by calling <see cref="object.ToString()"/>
+    /// corresponding label in <see cref="DataLabels"/> are labelled by calling <see cref="object.ToString()"/>
     /// on the value.
     /// </summary>
-    IEnumerable<string> LabelledValues { get; }
+    IEnumerable<string> GetLabelledData();
 
     /// <summary>
     /// Gets a span over the contents of the vector.

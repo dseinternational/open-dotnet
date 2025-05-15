@@ -4,22 +4,22 @@
 namespace DSE.Open.Numerics;
 
 #pragma warning disable CA1040 // Avoid empty interfaces
-public interface IReadOnlyDataLabelCollection
+public interface IReadOnlyValueLabelCollection
 #pragma warning restore CA1040 // Avoid empty interfaces
 {
 }
 
-public interface IReadOnlyDataLabelCollection<TData> : IReadOnlyDataLabelCollection, IReadOnlyCollection<DataLabel<TData>>
-    where TData : IEquatable<TData>
+public interface IReadOnlyValueLabelCollection<T> : IReadOnlyValueLabelCollection, IReadOnlyCollection<ValueLabel<T>>
+    where T : IEquatable<T>
 {
     /// <summary>
     /// Gets the label for the specified data value.
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>
-    string this[TData data] { get; }
+    string this[T data] { get; }
 
-    bool TryGetLabel(TData value, out string label);
+    bool TryGetLabel(T value, out string label);
 
-    bool TryGetDataValue(string label, out TData value);
+    bool TryGetValue(string label, out T value);
 }

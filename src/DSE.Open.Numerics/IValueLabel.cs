@@ -3,15 +3,15 @@
 
 namespace DSE.Open.Numerics;
 
-public interface IDataLabel
+public interface IValueLabel
 {
-    object? Data { get; }
+    object? Value { get; }
 
     string Label { get; }
 }
 
-public interface IDataLabel<T> : IDataLabel
+public interface IValueLabel<T> : IValueLabel
     where T : IEquatable<T>
 {
-    new T Data { get; }
+    new T Value { get; }
 }

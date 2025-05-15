@@ -19,29 +19,46 @@ public static class ReadOnlyCategoricalSeries
 
     public static ReadOnlyCategoricalSeries<T> Create<T>(
         [NotNull] ReadOnlyVector<T> vector,
-        string? name,
         ReadOnlyCategorySet<T>? categories)
         where T : IBinaryNumber<T>
     {
-        return Create(vector, name, null, null, categories);
+        return Create(vector, null, null, categories, null);
     }
 
     public static ReadOnlyCategoricalSeries<T> Create<T>(
         [NotNull] ReadOnlyVector<T> vector,
         string? name,
-        ReadOnlyDataLabelCollection<T>? labels,
         ReadOnlyCategorySet<T>? categories)
         where T : IBinaryNumber<T>
     {
-        return Create(vector, name, null, labels, categories);
+        return Create(vector, name, null, categories, null);
+    }
+
+    public static ReadOnlyCategoricalSeries<T> Create<T>(
+        [NotNull] ReadOnlyVector<T> vector,
+        ReadOnlyCategorySet<T>? categories,
+        ReadOnlyValueLabelCollection<T>? labels)
+        where T : IBinaryNumber<T>
+    {
+        return Create(vector, null, null, categories, labels);
+    }
+
+    public static ReadOnlyCategoricalSeries<T> Create<T>(
+        [NotNull] ReadOnlyVector<T> vector,
+        string? name,
+        ReadOnlyCategorySet<T>? categories,
+        ReadOnlyValueLabelCollection<T>? labels)
+        where T : IBinaryNumber<T>
+    {
+        return Create(vector, name, null, categories, labels);
     }
 
     public static ReadOnlyCategoricalSeries<T> Create<T>(
         [NotNull] ReadOnlyVector<T> vector,
         string? name,
         Index? index,
-        ReadOnlyDataLabelCollection<T>? labels,
-        ReadOnlyCategorySet<T>? categories)
+        ReadOnlyCategorySet<T>? categories,
+        ReadOnlyValueLabelCollection<T>? labels)
         where T : IBinaryNumber<T>
     {
         return new ReadOnlyCategoricalSeries<T>(vector, name, index, labels, categories, false);
@@ -64,7 +81,7 @@ public sealed class ReadOnlyCategoricalSeries<T> : ReadOnlySeries<T>, IReadOnlyC
         [NotNull] ReadOnlyVector<T> vector,
         string? name,
         Index? index,
-        ReadOnlyDataLabelCollection<T>? labels,
+        ReadOnlyValueLabelCollection<T>? labels,
         ReadOnlyCategorySet<T>? categories,
         bool skipValidation)
         : base(vector, name, index, labels)

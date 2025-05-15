@@ -5,9 +5,39 @@ namespace DSE.Open.Numerics;
 
 public partial class SeriesTests
 {
+    [Fact]
+    public void CreateCategorial_WithCategories()
+    {
+        var series = CategoricalSeries.Create(
+            [1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6],
+            [1, 2, 3, 4, 5, 6]);
+
+        Assert.Equal(18, series.Length);
+        Assert.True(series.AsSpan().SequenceEqual([1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6]));
+        Assert.Equal(6, series.Categories.Count);
+    }
+
+    [Fact]
+    public void CreateCategorial_WithCategoriesAndLabels()
+    {
+        var series = CategoricalSeries.Create(
+            [1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6],
+            [1, 2, 3, 4, 5, 6],
+            [(1, "one"), (2, "two")]);
+
+        Assert.Equal(18, series.Length);
+        Assert.True(series.AsSpan().SequenceEqual([1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6]));
+        Assert.Equal(6, series.Categories.Count);
+        Assert.Equal(2, series.DataLabels.Count);
+
+        var labels = series.GetLabelledData().ToArray();
+
+        Assert.Equal("one", labels[0]);
+        Assert.Equal("two", labels[1]);
+        Assert.Equal("3", labels[2]);
+    }
+
     /*
-     * TODO
-     * 
     private static readonly Lazy<JsonSerializerOptions> s_jsonOptions = new(() =>
     {
         var options = new JsonSerializerOptions(JsonSharedOptions.RelaxedJsonEscaping);
@@ -15,28 +45,9 @@ public partial class SeriesTests
     });
 
     [Fact]
-    public void Init_Categorial()
-    {
-        var vector = Series.Create(
-            [1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6],
-            [
-                KeyValuePair.Create("one", 1),
-                KeyValuePair.Create("two", 2),
-                KeyValuePair.Create("three", 3),
-                KeyValuePair.Create("four", 4),
-                KeyValuePair.Create("five", 5),
-                KeyValuePair.Create("six", 6)
-            ]);
-
-        Assert.Equal(18, vector.Length);
-        Assert.True(vector.AsSpan().SequenceEqual([1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6]));
-        Assert.Equal(6, vector.Categories.Count);
-    }
-
-    [Fact]
     public void SerializeDeserialize()
     {
-        var vector = Series.Create(
+        var series = Series.Create(
             [1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6],
             [
                 KeyValuePair.Create("one", 1),
@@ -47,7 +58,7 @@ public partial class SeriesTests
                 KeyValuePair.Create("six", 6)
             ]);
 
-        var json = JsonSerializer.Serialize(vector, s_jsonOptions.Value);
+        var json = JsonSerializer.Serialize(series, s_jsonOptions.Value);
 
         Output.WriteLine(json);
 
@@ -66,7 +77,7 @@ public partial class SeriesTests
     public void AsReadOnly_ShouldReturnReadOnlySeries()
     {
         // Arrange
-        var vector = Series.Create([1, 1, 2, 3, 2],
+        var series = Series.Create([1, 1, 2, 3, 2],
         [
             KeyValuePair.Create("one", 1),
             KeyValuePair.Create("two", 2),
@@ -74,7 +85,7 @@ public partial class SeriesTests
         ]);
 
         // Act
-        var readOnlyVector = vector.AsReadOnly();
+        var readOnlyVector = series.AsReadOnly();
 
         // Assert
         _ = Assert.IsType<ReadOnlySeries<int>>(readOnlyVector);

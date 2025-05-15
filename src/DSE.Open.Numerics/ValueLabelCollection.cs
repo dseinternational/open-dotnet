@@ -7,39 +7,39 @@ namespace DSE.Open.Numerics;
 
 // todo: json converter to output as a dictionary values [ { "label": data } ]
 
-public sealed class DataLabelCollection<TData> : DataLabelCollectionBase<TData>, IDataLabelCollection<TData>
-    where TData : IEquatable<TData>
+public sealed class ValueLabelCollection<T> : ValueLabelCollectionBase<T>, IValueLabelCollection<T>
+    where T : IEquatable<T>
 {
-    public DataLabelCollection() : this([])
+    public ValueLabelCollection() : this([])
     {
     }
 
-    public DataLabelCollection(IEnumerable<DataLabel<TData>> dataLabels) : base([.. dataLabels])
+    public ValueLabelCollection(IEnumerable<ValueLabel<T>> dataLabels) : base([.. dataLabels])
     {
     }
 
-    public string this[TData data]
+    public string this[T data]
     {
         get
         {
-            if (DataLabels.Count == 0)
+            if (ValueLabels.Count == 0)
             {
                 throw new KeyNotFoundException($"Data {data} not found.");
             }
 
-            return DataLabels[DataIndexLookup[GetHash(data)]].Label;
+            return ValueLabels[ValueIndexLookup[GetHash(data)]].Label;
         }
-        set => Add(new DataLabel<TData>(data, value));
+        set => Add(new ValueLabel<T>(data, value));
     }
 
-    bool ICollection<DataLabel<TData>>.IsReadOnly => false;
+    bool ICollection<ValueLabel<T>>.IsReadOnly => false;
 
-    public void Add(DataLabel<TData> label)
+    public void Add(ValueLabel<T> label)
     {
         AddCore(label);
     }
 
-    public void Add(TData data, string label)
+    public void Add(T data, string label)
     {
         ArgumentNullException.ThrowIfNull(label);
         Add((data, label));
@@ -50,24 +50,24 @@ public sealed class DataLabelCollection<TData> : DataLabelCollectionBase<TData>,
         ClearCore();
     }
 
-    void ICollection<DataLabel<TData>>.CopyTo(DataLabel<TData>[] array, int arrayIndex)
+    void ICollection<ValueLabel<T>>.CopyTo(ValueLabel<T>[] array, int arrayIndex)
     {
         ArgumentNullException.ThrowIfNull(array);
         ArgumentOutOfRangeException.ThrowIfNegative(arrayIndex);
 
-        if (array.Length - arrayIndex < DataLabels.Count)
+        if (array.Length - arrayIndex < ValueLabels.Count)
         {
             throw new ArgumentException(
                 "The destination array is not long enough to copy all the items in the collection.");
         }
 
-        for (var i = 0; i < DataLabels.Count; i++)
+        for (var i = 0; i < ValueLabels.Count; i++)
         {
-            array[arrayIndex + i] = DataLabels[i];
+            array[arrayIndex + i] = ValueLabels[i];
         }
     }
 
-    public bool Remove(DataLabel<TData> dataLabel)
+    public bool Remove(ValueLabel<T> dataLabel)
     {
         return RemoveCore(dataLabel);
     }

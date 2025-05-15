@@ -12,7 +12,7 @@ internal static class DataLabelCollectionJsonWriter
 {
     public static void Write<T>(
         Utf8JsonWriter writer,
-        IReadOnlyDataLabelCollection<T> labels,
+        IReadOnlyValueLabelCollection<T> labels,
         JsonSerializerOptions options)
         where T : IEquatable<T>
     {

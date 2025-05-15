@@ -25,13 +25,13 @@ public class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
     public static readonly ReadOnlySeries<T> Empty = new([], null, null, null);
 
     private readonly ReadOnlyVector<T> _vector;
-    private readonly ReadOnlyDataLabelCollection<T> _labels;
+    private readonly ReadOnlyValueLabelCollection<T> _labels;
 
     internal ReadOnlySeries(
         [NotNull] ReadOnlyVector<T> vector,
         string? name,
         Index? index,
-        ReadOnlyDataLabelCollection<T>? labels)
+        ReadOnlyValueLabelCollection<T>? labels)
         : base(vector, name, index)
     {
         _vector = vector;
@@ -49,11 +49,14 @@ public class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
 
 #pragma warning restore CA1033 // Interface methods should be callable by child types
 
-    public ReadOnlyDataLabelCollection<T> Labels => _labels;
+    public ReadOnlyValueLabelCollection<T> DataLabels => _labels;
 
-    IReadOnlyDataLabelCollection<T> IReadOnlySeries<T>.Labels => Labels;
+    IReadOnlyValueLabelCollection<T> IReadOnlySeries<T>.DataLabels => DataLabels;
 
-    public IEnumerable<string> LabelledValues => new SeriesLabelEnumerable<T>(this);
+    public IEnumerable<string> GetLabelledData()
+    {
+        return new SeriesLabelEnumerable<T>(this);
+    }
 
     // protected ReadOnlyVector<T> Vector => _vector;
 

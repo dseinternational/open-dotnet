@@ -4,47 +4,47 @@
 namespace DSE.Open.Numerics;
 
 /// <summary>
-/// Specifies a label for a data data.
+/// Specifies a label for a data value.
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public readonly record struct DataLabel<T> : IDataLabel<T>
+public readonly record struct ValueLabel<T> : IValueLabel<T>
     where T : IEquatable<T>
 {
     // note: we may want to support vectors of nullable types in the future
     // so T is not constrained to notnull
 
-    public DataLabel(T data, string label)
+    public ValueLabel(T value, string label)
     {
-        Data = data;
+        Value = value;
         Label = label;
     }
 
-    public T Data { get; }
+    public T Value { get; }
 
     public string Label { get; }
 
-    object? IDataLabel.Data => Data;
+    object? IValueLabel.Value => Value;
 
     /// <summary>
-    /// Deconstructs the <see cref="DataLabel{T}"/> into its components.
+    /// Deconstructs the <see cref="ValueLabel{T}"/> into its components.
     /// </summary>
-    /// <param name="data">The data component.</param>
+    /// <param name="value">The value component.</param>
     /// <param name="label">The label component.</param>
-    public void Deconstruct(out T data, out string label)
+    public void Deconstruct(out T value, out string label)
     {
-        data = Data;
+        value = Value;
         label = Label;
     }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
-    public static implicit operator DataLabel<T>((T data, string label) tuple)
+    public static implicit operator ValueLabel<T>((T value, string label) tuple)
     {
-        return new(tuple.data, tuple.label);
+        return new(tuple.value, tuple.label);
     }
 
-    public static implicit operator (T data, string label)(DataLabel<T> dataLabel)
+    public static implicit operator (T value, string label)(ValueLabel<T> valueLabel)
     {
-        return (dataLabel.Data, dataLabel.Label);
+        return (valueLabel.Value, valueLabel.Label);
     }
 }

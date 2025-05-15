@@ -19,29 +19,46 @@ public static class CategoricalSeries
 
     public static CategoricalSeries<T> Create<T>(
         [NotNull] Vector<T> vector,
-        string? name,
         CategorySet<T>? categories)
         where T : IBinaryNumber<T>
     {
-        return Create(vector, name, null, null, categories);
+        return Create(vector, null, null, categories, null);
     }
 
     public static CategoricalSeries<T> Create<T>(
         [NotNull] Vector<T> vector,
         string? name,
-        DataLabelCollection<T>? labels,
         CategorySet<T>? categories)
         where T : IBinaryNumber<T>
     {
-        return Create(vector, name, null, labels, categories);
+        return Create(vector, name, null, categories, null);
+    }
+
+    public static CategoricalSeries<T> Create<T>(
+        [NotNull] Vector<T> vector,
+        CategorySet<T>? categories,
+        ValueLabelCollection<T>? labels)
+        where T : IBinaryNumber<T>
+    {
+        return Create(vector, null, null, categories, labels);
+    }
+
+    public static CategoricalSeries<T> Create<T>(
+        [NotNull] Vector<T> vector,
+        string? name,
+        CategorySet<T>? categories,
+        ValueLabelCollection<T>? labels)
+        where T : IBinaryNumber<T>
+    {
+        return Create(vector, name, null, categories, labels);
     }
 
     public static CategoricalSeries<T> Create<T>(
         [NotNull] Vector<T> vector,
         string? name,
         Index? index,
-        DataLabelCollection<T>? labels,
-        CategorySet<T>? categories)
+        CategorySet<T>? categories,
+        ValueLabelCollection<T>? labels)
         where T : IBinaryNumber<T>
     {
         return new CategoricalSeries<T>(vector, name, index, labels, categories, false);
@@ -61,7 +78,7 @@ public sealed class CategoricalSeries<T> : Series<T>, ICategoricalSeries<T>
         Vector<T> vector,
         string? name,
         Index? index,
-        DataLabelCollection<T>? labels,
+        ValueLabelCollection<T>? labels,
         CategorySet<T>? categories,
         bool skipValidation)
         : base(vector, name, index, labels)

@@ -19,11 +19,11 @@ internal sealed class SeriesLabelEnumerable<T> : IEnumerable<string>
 
     public IEnumerator<string> GetEnumerator()
     {
-        if (_series.Labels.Count > 0)
+        if (_series.DataLabels.Count > 0)
         {
             foreach (var value in _series)
             {
-                if (_series.Labels.TryGetLabel(value, out var label))
+                if (_series.DataLabels.TryGetLabel(value, out var label))
                 {
                     yield return label;
                 }

@@ -5,14 +5,14 @@ using DSE.Open.Testing.Xunit;
 
 namespace DSE.Open.Numerics;
 
-public class CategorySetTests : LoggedTestsBase
+public class ReadOnlyCategorySetTests : LoggedTestsBase
 {
-    public CategorySetTests(ITestOutputHelper output) : base(output)
+    public ReadOnlyCategorySetTests(ITestOutputHelper output) : base(output)
     {
     }
 
-    private static CategorySet<int> Empty => [];
-    private static CategorySet<int> NonEmpty => [1];
+    private static ReadOnlyCategorySet<int> Empty => [];
+    private static ReadOnlyCategorySet<int> NonEmpty => [1];
 
     [Fact]  // ∅ ⊆ ∅  → true
     public void Empty_IsSubsetOf_Empty()
