@@ -5,5 +5,5 @@ namespace DSE.Open.Numerics;
 
 public interface IDataFrame : IReadOnlyDataFrame, IList<Series>
 {
-    new Series? this[string name] { get; set; }
+    new ISeries? this[string name] { get; set; }
 }

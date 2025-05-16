@@ -24,27 +24,6 @@ public class ReadOnlyDataFrameJsonConverter : JsonConverter<ReadOnlyDataFrame>
 
     public override void Write(Utf8JsonWriter writer, ReadOnlyDataFrame value, JsonSerializerOptions options)
     {
-        ArgumentNullException.ThrowIfNull(writer);
-        ArgumentNullException.ThrowIfNull(value);
-
-        writer.WriteStartObject();
-
-        if (value.Name is not null)
-        {
-            writer.WriteString(DataFrameJsonPropertyNames.Name, value.Name);
-        }
-
-        writer.WritePropertyName(DataFrameJsonPropertyNames.Columns);
-
-        writer.WriteStartArray();
-
-        foreach (var column in value)
-        {
-            //ReadOnlyVectorJsonConverter.Default.Write(writer, column, options);
-        }
-
-        writer.WriteEndArray();
-
-        writer.WriteEndObject();
+        DataFrameJsonWriter.Write(writer, value, options);
     }
 }

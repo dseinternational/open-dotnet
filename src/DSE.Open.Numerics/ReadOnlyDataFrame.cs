@@ -14,7 +14,7 @@ namespace DSE.Open.Numerics;
 /// </summary>
 [JsonConverter(typeof(ReadOnlyDataFrameJsonConverter))]
 [CollectionBuilder(typeof(ReadOnlyDataFrame), nameof(Create))]
-public class ReadOnlyDataFrame : IReadOnlyList<ReadOnlySeries>
+public class ReadOnlyDataFrame : IReadOnlyDataFrame
 {
     public static readonly ReadOnlyDataFrame Empty = new();
 
@@ -65,6 +65,10 @@ public class ReadOnlyDataFrame : IReadOnlyList<ReadOnlySeries>
 
     public int Count => _columns.Count;
 
+    IReadOnlySeries IReadOnlyList<IReadOnlySeries>.this[int index] => throw new NotImplementedException();
+
+    IReadOnlySeries? IReadOnlyDataFrame.this[string name] => throw new NotImplementedException();
+
     public IEnumerator<ReadOnlySeries> GetEnumerator()
     {
         return _columns.GetEnumerator();
@@ -78,5 +82,10 @@ public class ReadOnlyDataFrame : IReadOnlyList<ReadOnlySeries>
     public static ReadOnlyDataFrame Create(ReadOnlySpan<ReadOnlySeries> columns)
     {
         return new ReadOnlyDataFrame([.. columns.ToArray()]);
+    }
+
+    IEnumerator<IReadOnlySeries> IEnumerable<IReadOnlySeries>.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }

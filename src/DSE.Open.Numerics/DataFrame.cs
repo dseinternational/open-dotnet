@@ -34,6 +34,8 @@ public class DataFrame : IDataFrame
         _columnNames = columnNames is not null ? columnNames : new(columns.Count);
     }
 
+    IReadOnlySeries IReadOnlyList<IReadOnlySeries>.this[int index] => this[index];
+
     public Series? this[string name]
     {
         get
@@ -64,6 +66,10 @@ public class DataFrame : IDataFrame
             }
         }
     }
+
+    IReadOnlySeries? IReadOnlyDataFrame.this[string name] => this[name];
+
+    ISeries? IDataFrame.this[string name] { get => this[name]; set => this[name] = (Series?)value; }
 
     public Series this[int index]
     {
@@ -143,5 +149,10 @@ public class DataFrame : IDataFrame
     public static DataFrame Create(ReadOnlySpan<Series> columns)
     {
         return new DataFrame([.. columns.ToArray()]);
+    }
+
+    IEnumerator<IReadOnlySeries> IEnumerable<IReadOnlySeries>.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }
