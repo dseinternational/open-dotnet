@@ -6,7 +6,7 @@ using System.Numerics;
 namespace DSE.Open.Numerics;
 
 /// <summary>
-/// TODO - a series than may only contain values from a defined set.
+/// TODO - a series that may only contain values from a defined set.
 /// </summary>
 /// <typeparam name="T"></typeparam>
 public interface ICategoricalSeries<T>
