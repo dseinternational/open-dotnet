@@ -65,6 +65,40 @@ public static class CategoricalSeries
     {
         return new CategoricalSeries<T>(vector, name, index, labels, categories, false);
     }
+
+    internal static Series CreateUntyped(
+        [NotNull] Vector data,
+        string? name,
+        Index? index,
+        ICategorySet? categories,
+        object? labels) // todo
+    {
+        ArgumentNullException.ThrowIfNull(data);
+
+        return data.DataType switch
+        {
+            VectorDataType.Int64 => new CategoricalSeries<long>((Vector<long>)data, name, index, labels as ValueLabelCollection<long>, categories as CategorySet<long>, false),
+            VectorDataType.UInt64 => new CategoricalSeries<ulong>((Vector<ulong>)data, name, index, labels as ValueLabelCollection<ulong>, categories as CategorySet<ulong>, false),
+            VectorDataType.Int32 => new CategoricalSeries<int>((Vector<int>)data, name, index, labels as ValueLabelCollection<int>, categories as CategorySet<int>, false),
+            VectorDataType.UInt32 => new CategoricalSeries<uint>((Vector<uint>)data, name, index, labels as ValueLabelCollection<uint>, categories as CategorySet<uint>, false),
+            VectorDataType.Int16 => new CategoricalSeries<short>((Vector<short>)data, name, index, labels as ValueLabelCollection<short>, categories as CategorySet<short>, false),
+            VectorDataType.UInt16 => new CategoricalSeries<ushort>((Vector<ushort>)data, name, index, labels as ValueLabelCollection<ushort>, categories as CategorySet<ushort>, false),
+            VectorDataType.Int8 => new CategoricalSeries<sbyte>((Vector<sbyte>)data, name, index, labels as ValueLabelCollection<sbyte>, categories as CategorySet<sbyte>, false),
+            VectorDataType.UInt8 => new CategoricalSeries<byte>((Vector<byte>)data, name, index, labels as ValueLabelCollection<byte>, categories as CategorySet<byte>, false),
+            VectorDataType.Int128 => new CategoricalSeries<Int128>((Vector<Int128>)data, name, index, labels as ValueLabelCollection<Int128>, categories as CategorySet<Int128>, false),
+            VectorDataType.UInt128 => new CategoricalSeries<UInt128>((Vector<UInt128>)data, name, index, labels as ValueLabelCollection<UInt128>, categories as CategorySet<UInt128>, false),
+            VectorDataType.Float64 => throw new InvalidOperationException("Only binary integer values may be used for a categorical series"),
+            VectorDataType.Float32 => throw new InvalidOperationException("Only binary integer values may be used for a categorical series"),
+            VectorDataType.DateTime64 => throw new InvalidOperationException("Only binary integer values may be used for a categorical series"),
+            VectorDataType.DateTime => throw new InvalidOperationException("Only binary integer values may be used for a categorical series"),
+            VectorDataType.DateTimeOffset => throw new InvalidOperationException("Only binary integer values may be used for a categorical series"),
+            VectorDataType.Uuid => throw new InvalidOperationException("Only binary integer values may be used for a categorical series"),
+            VectorDataType.Bool => throw new InvalidOperationException("Only binary integer values may be used for a categorical series"),
+            VectorDataType.Char => throw new InvalidOperationException("Only binary integer values may be used for a categorical series"),
+            VectorDataType.String => throw new InvalidOperationException("Only binary integer values may be used for a categorical series"),
+            _ => throw new InvalidOperationException("Unsupported data type: " + data.DataType),
+        };
+    }
 }
 
 /// <summary>

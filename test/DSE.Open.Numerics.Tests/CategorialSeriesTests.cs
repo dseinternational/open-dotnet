@@ -65,7 +65,7 @@ public partial class CategorialSeriesTests : LoggedTestsBase
 
         Assert.NotNull(json);
 
-        var deserialized = JsonSerializer.Deserialize<Series<int>>(json, s_jsonOptions.Value);
+        var deserialized = JsonSerializer.Deserialize<CategoricalSeries<int>>(json, s_jsonOptions.Value);
 
         Assert.NotNull(deserialized);
 

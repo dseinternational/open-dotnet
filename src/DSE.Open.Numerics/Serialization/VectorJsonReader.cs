@@ -68,7 +68,7 @@ public static class VectorJsonReader
             {
                 if (dataType is null)
                 {
-                    throw new JsonException("Cannot read values without data type");
+                    throw new JsonException("Cannot read vector without data type");
                 }
 
                 var dtype = VectorDataTypeHelper.GetVectorDataType(dataType);
@@ -104,6 +104,10 @@ public static class VectorJsonReader
                     _ => throw new JsonException($"Unsupported data type: {dtype}")
                 };
             }
+            else
+            {
+                throw new JsonException($"Unexpected property name: {propertyName}");
+            }
         }
 
         Debug.Assert(vector is not null);
@@ -130,7 +134,9 @@ public static class VectorJsonReader
             return [];
         }
 
-        using var builder = new ArrayBuilder<T>(length, rentFromPool: false);
+        using var builder = length > -1
+            ? new ArrayBuilder<T>(length, rentFromPool: false)
+            : new ArrayBuilder<T>(rentFromPool: true);
 
         while (reader.Read())
         {
@@ -144,13 +150,16 @@ public static class VectorJsonReader
                 return Vector.Create(builder.ToMemory());
             }
 
-            if (reader.TokenType == JsonTokenType.Number)
+            if (reader.TokenType is JsonTokenType.Number
+                or JsonTokenType.String
+                or JsonTokenType.True
+                or JsonTokenType.False)
             {
                 builder.Add(valueReader(ref reader));
             }
         }
 
-        throw new JsonException();
+        throw new JsonException("Expected end of array");
     }
 
     public static Vector<T> ReadNumberVector<T>(

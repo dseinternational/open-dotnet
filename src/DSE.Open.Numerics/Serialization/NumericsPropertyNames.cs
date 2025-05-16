@@ -11,4 +11,5 @@ internal static class NumericsPropertyNames
     public const string Length = "length";
     public const string Name = "name";
     public const string Values = "values";
+    public const string Vector = "vector";
 }

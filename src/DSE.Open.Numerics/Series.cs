@@ -1,7 +1,9 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Net.Http.Headers;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 using CommunityToolkit.HighPerformance;
 using DSE.Open.Numerics.Serialization;
@@ -45,6 +47,60 @@ public abstract class Series : SeriesBase, ISeries
     IReadOnlySeries ISeries.AsReadOnly()
     {
         return AsReadOnly();
+    }
+
+    internal static Series CreateUntyped(
+        string? name,
+        Vector data,
+        Index? index,
+        object? labels) // todo
+    {
+        ArgumentNullException.ThrowIfNull(data);
+
+        return data.DataType switch
+        {
+            VectorDataType.Float64 => new Series<double>((Vector<double>)data, name, index, labels as ValueLabelCollection<double>),
+            VectorDataType.Float32 => new Series<float>((Vector<float>)data, name, index, labels as ValueLabelCollection<float>),
+            VectorDataType.Int64 => new Series<long>((Vector<long>)data, name, index, labels as ValueLabelCollection<long>),
+            VectorDataType.UInt64 => new Series<ulong>((Vector<ulong>)data, name, index, labels as ValueLabelCollection<ulong>),
+            VectorDataType.Int32 => new Series<int>((Vector<int>)data, name, index, labels as ValueLabelCollection<int>),
+            VectorDataType.UInt32 => new Series<uint>((Vector<uint>)data, name, index, labels as ValueLabelCollection<uint>),
+            VectorDataType.Int16 => new Series<short>((Vector<short>)data, name, index, labels as ValueLabelCollection<short>),
+            VectorDataType.UInt16 => new Series<ushort>((Vector<ushort>)data, name, index, labels as ValueLabelCollection<ushort>),
+            VectorDataType.Int8 => new Series<sbyte>((Vector<sbyte>)data, name, index, labels as ValueLabelCollection<sbyte>),
+            VectorDataType.UInt8 => new Series<byte>((Vector<byte>)data, name, index, labels as ValueLabelCollection<byte>),
+            VectorDataType.Int128 => new Series<Int128>((Vector<Int128>)data, name, index, labels as ValueLabelCollection<Int128>),
+            VectorDataType.UInt128 => new Series<UInt128>((Vector<UInt128>)data, name, index, labels as ValueLabelCollection<UInt128>),
+            VectorDataType.DateTime64 => new Series<DateTime64>((Vector<DateTime64>)data, name, index, labels as ValueLabelCollection<DateTime64>),
+            VectorDataType.DateTime => new Series<DateTime>((Vector<DateTime>)data, name, index, labels as ValueLabelCollection<DateTime>),
+            VectorDataType.DateTimeOffset => new Series<DateTimeOffset>((Vector<DateTimeOffset>)data, name, index, labels as ValueLabelCollection<DateTimeOffset>),
+            VectorDataType.Uuid => new Series<Guid>((Vector<Guid>)data, name, index, labels as ValueLabelCollection<Guid>),
+            VectorDataType.Bool => new Series<bool>((Vector<bool>)data, name, index, labels as ValueLabelCollection<bool>),
+            VectorDataType.Char => new Series<char>((Vector<char>)data, name, index, labels as ValueLabelCollection<char>),
+            VectorDataType.String => new Series<string>((Vector<string>)data, name, index, labels as ValueLabelCollection<string>),
+            _ => throw new InvalidOperationException("Unsupported data type: " + data.DataType),
+        };
+    }
+
+    [OverloadResolutionPriority(1)]
+    public static Series<T> Create<T>(Vector<T> data)
+        where T : IEquatable<T>
+    {
+        return new Series<T>(data, null, null, null);
+    }
+
+    [OverloadResolutionPriority(1)]
+    public static Series<T> Create<T>(string name, Vector<T> data)
+        where T : IEquatable<T>
+    {
+        return new Series<T>(data, name, null, null);
+    }
+
+    [OverloadResolutionPriority(1)]
+    public static Series<T> Create<T>(string name, Vector<T> data, ValueLabelCollection<T> labels)
+        where T : IEquatable<T>
+    {
+        return new Series<T>(data, name, null, labels);
     }
 
     /// <summary>

@@ -5,8 +5,7 @@ using System.Numerics;
 using System.Text.Json;
 
 namespace DSE.Open.Numerics.Serialization;
-
-public static class CategorySetWriter
+public static class CategorySetJsonWriter
 {
     public static void WriteCategorySet(
         Utf8JsonWriter writer,

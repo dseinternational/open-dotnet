@@ -98,7 +98,7 @@ internal static class ValueLabelCollectionJsonWriter
 
         if (labels.Count > 0)
         {
-            writer.WritePropertyName("labels");
+            writer.WritePropertyName(NumericsPropertyNames.Values);
 
             writer.WriteStartObject();
 

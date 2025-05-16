@@ -3,6 +3,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 using DSE.Open.Numerics.Serialization;
 
@@ -28,16 +29,38 @@ public abstract class ReadOnlySeries : SeriesBase, IReadOnlySeries
     }
 
     /// <summary>
-    /// Gets or sets a name for the series (optional).
+    /// Gets a name for the series (optional).
     /// </summary>
-    public string? Name { get; set; }
+    public string? Name { get; }
 
     /// <summary>
     /// Reserved for future use.
     /// </summary>
-    public Index Index { get; }
+    public Index Index { get; } // todo: readonly
 
     internal ReadOnlyVector Data => (ReadOnlyVector)BaseVector;
+
+    /// <summary>
+    /// Creates a series from the given data.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="vector"></param>
+    /// <returns></returns>
+    [OverloadResolutionPriority(1)]
+    public static ReadOnlySeries<T> Create<T>(ReadOnlyVector<T> vector)
+        where T : IEquatable<T>
+    {
+        ArgumentNullException.ThrowIfNull(vector);
+
+        if (vector.Length == 0)
+        {
+#pragma warning disable IDE0301 // Simplify collection initialization
+            return ReadOnlySeries<T>.Empty;
+#pragma warning restore IDE0301 // Simplify collection initialization
+        }
+
+        return new ReadOnlySeries<T>(vector, null, null, null);
+    }
 
     /// <summary>
     /// Creates a series from the given data.

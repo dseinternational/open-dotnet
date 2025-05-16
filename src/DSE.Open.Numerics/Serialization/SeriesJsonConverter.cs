@@ -32,24 +32,7 @@ public class SeriesJsonConverter : JsonConverter<Series>
 
     public override Series? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        if (reader.TokenType != JsonTokenType.StartObject)
-        {
-            throw new JsonException("Expected start of object");
-        }
-
-        Series? series = null;
-
-        while (reader.Read())
-        {
-            if (reader.TokenType == JsonTokenType.EndObject)
-            {
-                break;
-            }
-        }
-
-        // SDebug.Assert(vector is not null);
-
-        return series;
+        return SeriesJsonReader.Read(ref reader, options);
     }
 
     public override void Write(Utf8JsonWriter writer, Series value, JsonSerializerOptions options)
