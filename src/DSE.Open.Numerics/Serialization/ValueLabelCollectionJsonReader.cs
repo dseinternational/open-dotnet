@@ -59,7 +59,7 @@ internal static class ValueLabelCollectionJsonReader
                         throw new JsonException("Data type must be specified");
                     }
                 }
-                else if (property == "labels")
+                else if (property == NumericsPropertyNames.Values)
                 {
                     if (length < 0)
                     {

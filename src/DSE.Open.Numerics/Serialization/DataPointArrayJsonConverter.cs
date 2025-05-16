@@ -4,6 +4,7 @@
 using System.Numerics;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using DSE.Open.Text.Json;
 
 namespace DSE.Open.Numerics.Serialization;
 
