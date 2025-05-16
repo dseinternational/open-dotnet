@@ -5,16 +5,24 @@ using System.Numerics;
 
 namespace DSE.Open.Numerics;
 
+public interface IReadOnlyCategoricalSeries
+{
+    bool IsEmpty { get; }
+
+    IReadOnlyCategorySet Categories { get; }
+}
+
 /// <summary>
 /// TODO - a read-only series than may only contain values from a defined set.
 /// </summary>
 /// <typeparam name="T"></typeparam>
 public interface IReadOnlyCategoricalSeries<T>
-    : IReadOnlySeries<T>
-    where T : IBinaryNumber<T>
+    : IReadOnlyCategoricalSeries,
+      IReadOnlySeries<T>
+    where T : struct, IBinaryNumber<T>
 {
     /// <summary>
     /// Specifies the permitted values for a categorical series.
     /// </summary>
-    IReadOnlyCategorySet<T> Categories { get; }
+    new IReadOnlyCategorySet<T> Categories { get; }
 }

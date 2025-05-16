@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
+using DSE.Open.Text.Json;
 
 namespace DSE.Open.Numerics.Serialization;
 
@@ -85,11 +86,11 @@ public static class VectorJsonWriter
 
         writer.WriteStartObject();
 
-        writer.WriteString(VectorJsonPropertyNames.DataType, VectorDataTypeHelper.GetLabel(vector.DataType));
+        writer.WriteString(NumericsPropertyNames.DataType, VectorDataTypeHelper.GetLabel(vector.DataType));
 
-        writer.WriteNumber(VectorJsonPropertyNames.Length, vector.Length);
+        writer.WriteNumber(NumericsPropertyNames.Length, vector.Length);
 
-        writer.WritePropertyName(VectorJsonPropertyNames.Values);
+        writer.WritePropertyName(NumericsPropertyNames.Values);
 
         if (vector.Length == 0)
         {
@@ -296,7 +297,7 @@ public static class VectorJsonWriter
     private static void WriteArray<T>(
         Utf8JsonWriter writer,
         ReadOnlySpan<T> vector,
-        Action<Utf8JsonWriter, T> writeValue)
+        JsonValueWriter<T> writeValue)
     {
         writer.WriteStartArray();
 

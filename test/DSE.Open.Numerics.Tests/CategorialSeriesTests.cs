@@ -1,10 +1,24 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Text.Json;
+using DSE.Open.Testing.Xunit;
+using DSE.Open.Text.Json;
+
 namespace DSE.Open.Numerics;
 
-public partial class CategorialSeriesTests
+public partial class CategorialSeriesTests : LoggedTestsBase
 {
+    private static readonly Lazy<JsonSerializerOptions> s_jsonOptions = new(() =>
+    {
+        var options = new JsonSerializerOptions(JsonSharedOptions.RelaxedJsonEscaping);
+        return options;
+    });
+
+    public CategorialSeriesTests(ITestOutputHelper output) : base(output)
+    {
+    }
+
     [Fact]
     public void CreateCategorial_WithCategories()
     {
@@ -37,26 +51,13 @@ public partial class CategorialSeriesTests
         Assert.Equal("3", labels[2]);
     }
 
-    /*
-    private static readonly Lazy<JsonSerializerOptions> s_jsonOptions = new(() =>
-    {
-        var options = new JsonSerializerOptions(JsonSharedOptions.RelaxedJsonEscaping);
-        return options;
-    });
-
     [Fact]
     public void SerializeDeserialize()
     {
-        var series = Series.Create(
+        var series = CategoricalSeries.Create(
             [1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6],
-            [
-                KeyValuePair.Create("one", 1),
-                KeyValuePair.Create("two", 2),
-                KeyValuePair.Create("three", 3),
-                KeyValuePair.Create("four", 4),
-                KeyValuePair.Create("five", 5),
-                KeyValuePair.Create("six", 6)
-            ]);
+            [1, 2, 3, 4, 5, 6],
+            [(1, "one"), (2, "two")]);
 
         var json = JsonSerializer.Serialize(series, s_jsonOptions.Value);
 
@@ -68,10 +69,18 @@ public partial class CategorialSeriesTests
 
         Assert.NotNull(deserialized);
 
-        Assert.Equal(18, deserialized.Length);
-        Assert.True(deserialized.AsSpan().SequenceEqual([1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6]));
-        Assert.Equal(6, deserialized.Categories.Count);
+        Assert.Equal(18, series.Length);
+        Assert.True(series.AsSpan().SequenceEqual([1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6]));
+        Assert.Equal(6, series.Categories.Count);
+        Assert.Equal(2, series.ValueLabels.Count);
+
+        var labels = series.GetLabelledData().ToArray();
+
+        Assert.Equal("one", labels[0]);
+        Assert.Equal("two", labels[1]);
+        Assert.Equal("3", labels[2]);
     }
+    /*
 
     [Fact]
     public void AsReadOnly_ShouldReturnReadOnlySeries()

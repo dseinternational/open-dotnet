@@ -4,6 +4,7 @@
 using System.Numerics;
 using System.Text.Json;
 using DSE.Open.Memory;
+using DSE.Open.Text.Json;
 
 namespace DSE.Open.Numerics.Serialization;
 
@@ -33,7 +34,7 @@ internal static class ValueLabelCollectionJsonReader
             {
                 var property = reader.GetString();
 
-                if (property == VectorJsonPropertyNames.Length)
+                if (property == NumericsPropertyNames.Length)
                 {
                     _ = reader.Read();
                     length = reader.GetInt32();
@@ -43,12 +44,12 @@ internal static class ValueLabelCollectionJsonReader
                         throw new JsonException("Length must be greater than or equal to zero");
                     }
 
-                    if (length > Array.MaxLength)
+                    if (length > VectorJsonConstants.MaximumSerializedLength)
                     {
-                        throw new JsonException("Length must be less than or equal to " + Array.MaxLength);
+                        throw new JsonException("Length must be less than or equal to " + VectorJsonConstants.MaximumSerializedLength);
                     }
                 }
-                else if (property == VectorJsonPropertyNames.DataType)
+                else if (property == NumericsPropertyNames.DataType)
                 {
                     _ = reader.Read();
                     dataType = reader.GetString();
@@ -114,10 +115,13 @@ internal static class ValueLabelCollectionJsonReader
                             labels = ReadNumberLabels<DateTime64>(ref reader, length);
                             break;
                         case VectorDataType.DateTime:
+                            labels = ReadDateTimeLabels(ref reader, length);
                             break;
                         case VectorDataType.DateTimeOffset:
+                            labels = ReadDateTimeOffsetLabels(ref reader, length);
                             break;
                         case VectorDataType.Uuid:
+                            labels = ReadGuidLabels(ref reader, length);
                             break;
                         case VectorDataType.Bool:
                             labels = ReadBooleanLabels(ref reader, length);
@@ -163,6 +167,21 @@ internal static class ValueLabelCollectionJsonReader
     private static ValueLabelCollection<bool> ReadBooleanLabels(ref Utf8JsonReader reader, int length)
     {
         return ReadLabels(ref reader, length, (ref r) => r.GetBoolean());
+    }
+
+    private static ValueLabelCollection<Guid> ReadGuidLabels(ref Utf8JsonReader reader, int length)
+    {
+        return ReadLabels(ref reader, length, (ref r) => r.GetGuid());
+    }
+
+    private static ValueLabelCollection<DateTime> ReadDateTimeLabels(ref Utf8JsonReader reader, int length)
+    {
+        return ReadLabels(ref reader, length, (ref r) => r.GetDateTime());
+    }
+
+    private static ValueLabelCollection<DateTimeOffset> ReadDateTimeOffsetLabels(ref Utf8JsonReader reader, int length)
+    {
+        return ReadLabels(ref reader, length, (ref r) => r.GetDateTimeOffset());
     }
 
     private static ValueLabelCollection<T> ReadLabels<T>(ref Utf8JsonReader reader, int length, JsonValueReader<T> valueReader)

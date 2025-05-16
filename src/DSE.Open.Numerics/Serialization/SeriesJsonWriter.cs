@@ -94,16 +94,24 @@ internal static class SeriesJsonWriter
 
         if (series.Name is not null)
         {
-            writer.WriteString(SeriesJsonPropertyNames.Name, series.Name);
+            writer.WriteString(NumericsPropertyNames.Name, series.Name);
         }
 
-        writer.WritePropertyName(SeriesJsonPropertyNames.Labels);
+        if (series is IReadOnlyCategoricalSeries categorical)
+        {
+            writer.WritePropertyName(NumericsPropertyNames.Categories);
+            CategorySetWriter.WriteCategorySet(writer, categorical.Categories, options);
+        }
 
-        ValueLabelCollectionJsonWriter.WriteCollection(writer, series.ValueLabels, options);
-
-        writer.WritePropertyName(SeriesJsonPropertyNames.Values);
+        writer.WritePropertyName(NumericsPropertyNames.Values);
 
         VectorJsonWriter.WriteVector(writer, series.Vector, options);
+
+        if (series.HasValueLabels)
+        {
+            writer.WritePropertyName(NumericsPropertyNames.Labels);
+            ValueLabelCollectionJsonWriter.WriteCollection(writer, series.ValueLabels, options);
+        }
 
         writer.WriteEndObject();
     }

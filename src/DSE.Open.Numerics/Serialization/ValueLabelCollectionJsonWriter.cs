@@ -68,6 +68,9 @@ internal static class ValueLabelCollectionJsonWriter
             case IReadOnlyValueLabelCollection<DateTime> dateTimeValueLabel:
                 WriteCollection(writer, dateTimeValueLabel, options);
                 return;
+            case IReadOnlyValueLabelCollection<DateTimeOffset> dateTimeOffsetValueLabel:
+                WriteCollection(writer, dateTimeOffsetValueLabel, options);
+                return;
             default:
                 throw new JsonException("Unsupported series type");
 
@@ -86,24 +89,27 @@ internal static class ValueLabelCollectionJsonWriter
         writer.WriteStartObject();
 
         writer.WriteString(
-            VectorJsonPropertyNames.DataType,
+            NumericsPropertyNames.DataType,
             VectorDataTypeHelper.GetLabel(VectorDataTypeHelper.GetVectorDataType<T>()));
 
         writer.WriteNumber(
-            VectorJsonPropertyNames.Length,
+            NumericsPropertyNames.Length,
             labels.Count);
 
-        writer.WritePropertyName("labels");
-
-        writer.WriteStartObject();
-
-        foreach (var dataLabel in labels)
+        if (labels.Count > 0)
         {
-            writer.WritePropertyName(dataLabel.Label);
-            VectorJsonWriter.WriteValue(writer, dataLabel.Value, options);
-        }
+            writer.WritePropertyName("labels");
 
-        writer.WriteEndObject();
+            writer.WriteStartObject();
+
+            foreach (var dataLabel in labels)
+            {
+                writer.WritePropertyName(dataLabel.Label);
+                VectorJsonWriter.WriteValue(writer, dataLabel.Value, options);
+            }
+
+            writer.WriteEndObject();
+        }
 
         writer.WriteEndObject();
     }

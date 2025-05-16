@@ -48,6 +48,8 @@ public class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
     int IReadOnlyCollection<T>.Count => Length;
 #pragma warning restore CA1033 // Interface methods should be callable by child types
 
+    public bool HasValueLabels => _labels.Count > 0;
+
     public ReadOnlyValueLabelCollection<T> ValueLabels => _labels;
 
     IReadOnlyValueLabelCollection<T> IReadOnlySeries<T>.ValueLabels => ValueLabels;

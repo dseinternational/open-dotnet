@@ -20,6 +20,8 @@ public interface IReadOnlySeries<T>
     /// </summary>
     IReadOnlyValueLabelCollection<T> ValueLabels { get; }
 
+    bool HasValueLabels { get; }
+
     /// <summary>
     /// Gets a read-only view of the labelled values in the series. Values for which there is no
     /// corresponding label in <see cref="ValueLabels"/> are labelled by calling <see cref="object.ToString()"/>

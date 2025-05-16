@@ -3,7 +3,9 @@
 
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
+using System.Text.Json.Serialization;
 using DSE.Open.Collections.Generic;
+using DSE.Open.Numerics.Serialization;
 
 namespace DSE.Open.Numerics;
 
@@ -12,7 +14,7 @@ public static class CategoricalSeries
     public static CategoricalSeries<T> Create<T>(
         [NotNull] Vector<T> vector,
         string? name)
-        where T : IBinaryNumber<T>
+        where T : struct, IBinaryNumber<T>
     {
         return Create(vector, name, null, null, null);
     }
@@ -20,7 +22,7 @@ public static class CategoricalSeries
     public static CategoricalSeries<T> Create<T>(
         [NotNull] Vector<T> vector,
         CategorySet<T>? categories)
-        where T : IBinaryNumber<T>
+        where T : struct, IBinaryNumber<T>
     {
         return Create(vector, null, null, categories, null);
     }
@@ -29,7 +31,7 @@ public static class CategoricalSeries
         [NotNull] Vector<T> vector,
         string? name,
         CategorySet<T>? categories)
-        where T : IBinaryNumber<T>
+        where T : struct, IBinaryNumber<T>
     {
         return Create(vector, name, null, categories, null);
     }
@@ -38,7 +40,7 @@ public static class CategoricalSeries
         [NotNull] Vector<T> vector,
         CategorySet<T>? categories,
         ValueLabelCollection<T>? labels)
-        where T : IBinaryNumber<T>
+        where T : struct, IBinaryNumber<T>
     {
         return Create(vector, null, null, categories, labels);
     }
@@ -48,7 +50,7 @@ public static class CategoricalSeries
         string? name,
         CategorySet<T>? categories,
         ValueLabelCollection<T>? labels)
-        where T : IBinaryNumber<T>
+        where T : struct, IBinaryNumber<T>
     {
         return Create(vector, name, null, categories, labels);
     }
@@ -59,7 +61,7 @@ public static class CategoricalSeries
         Index? index,
         CategorySet<T>? categories,
         ValueLabelCollection<T>? labels)
-        where T : IBinaryNumber<T>
+        where T : struct, IBinaryNumber<T>
     {
         return new CategoricalSeries<T>(vector, name, index, labels, categories, false);
     }
@@ -69,8 +71,9 @@ public static class CategoricalSeries
 /// TODO - a series than may only contain values from a defined set.
 /// </summary>
 /// <typeparam name="T"></typeparam>
+[JsonConverter(typeof(SeriesJsonConverter))]
 public sealed class CategoricalSeries<T> : Series<T>, ICategoricalSeries<T>
-    where T : IBinaryNumber<T>
+    where T : struct, IBinaryNumber<T>
 {
     private readonly CategorySet<T> _categories;
 
@@ -114,6 +117,8 @@ public sealed class CategoricalSeries<T> : Series<T>, ICategoricalSeries<T>
     ICategorySet<T> ICategoricalSeries<T>.Categories => Categories;
 
     IReadOnlyCategorySet<T> IReadOnlyCategoricalSeries<T>.Categories => Categories;
+
+    IReadOnlyCategorySet IReadOnlyCategoricalSeries.Categories => Categories;
 
     public new ReadOnlyCategoricalSeries<T> AsReadOnly()
     {

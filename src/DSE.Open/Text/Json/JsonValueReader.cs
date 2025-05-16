@@ -3,6 +3,6 @@
 
 using System.Text.Json;
 
-namespace DSE.Open.Numerics.Serialization;
+namespace DSE.Open.Text.Json;
 
-internal delegate T JsonValueReader<T>(ref Utf8JsonReader reader);
+public delegate T JsonValueReader<T>(ref Utf8JsonReader reader);

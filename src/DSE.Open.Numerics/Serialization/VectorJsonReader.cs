@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Numerics;
 using System.Text.Json;
 using DSE.Open.Memory;
+using DSE.Open.Text.Json;
 
 namespace DSE.Open.Numerics.Serialization;
 
@@ -37,7 +38,7 @@ public static class VectorJsonReader
 
             var propertyName = reader.GetString();
 
-            if (propertyName == VectorJsonPropertyNames.DataType)
+            if (propertyName == NumericsPropertyNames.DataType)
             {
                 _ = reader.Read();
                 dataType = reader.GetString();
@@ -47,7 +48,7 @@ public static class VectorJsonReader
                     throw new JsonException("Data type must be specified");
                 }
             }
-            else if (propertyName == VectorJsonPropertyNames.Length)
+            else if (propertyName == NumericsPropertyNames.Length)
             {
                 _ = reader.Read();
                 length = reader.GetInt32();
@@ -57,12 +58,13 @@ public static class VectorJsonReader
                     throw new JsonException("Length must be greater than or equal to zero");
                 }
 
-                if (length > Array.MaxLength)
+                if (length > VectorJsonConstants.MaximumSerializedLength)
                 {
-                    throw new JsonException("Length must be less than or equal to " + Array.MaxLength);
+                    throw new JsonException("Length must be less than or equal to "
+                        + VectorJsonConstants.MaximumSerializedLength);
                 }
             }
-            else if (propertyName == VectorJsonPropertyNames.Values)
+            else if (propertyName == NumericsPropertyNames.Values)
             {
                 if (dataType is null)
                 {
@@ -93,11 +95,11 @@ public static class VectorJsonReader
                     VectorDataType.Int128 => ReadNumberVector<Int128>(ref reader, length, format),
                     VectorDataType.UInt128 => ReadNumberVector<UInt128>(ref reader, length, format),
                     VectorDataType.DateTime64 => ReadNumberVector<DateTime64>(ref reader, length, format),
-                    VectorDataType.DateTime => throw new NotImplementedException(),
-                    VectorDataType.DateTimeOffset => throw new NotImplementedException(),
-                    VectorDataType.Uuid => throw new NotImplementedException(),
+                    VectorDataType.DateTime => ReadDateTimeVector(ref reader, length, format),
+                    VectorDataType.DateTimeOffset => ReadDateTimeOffsetVector(ref reader, length, format),
+                    VectorDataType.Uuid => ReadGuidVector(ref reader, length, format),
                     VectorDataType.Bool => ReadBooleanVector(ref reader, length),
-                    VectorDataType.Char => throw new NotImplementedException(),
+                    VectorDataType.Char => ReadCharVector(ref reader, length, format),
                     VectorDataType.String => ReadStringVector(ref reader, length),
                     _ => throw new JsonException($"Unsupported data type: {dtype}")
                 };
@@ -109,20 +111,26 @@ public static class VectorJsonReader
         return vector;
     }
 
-    public static Vector<T> ReadNumberVector<T>(
+    internal static Vector<T> ReadVector<T>(
         ref Utf8JsonReader reader,
         int length,
-        VectorJsonFormat format = default)
-        where T : struct, INumber<T>
+        VectorJsonFormat format,
+        JsonValueReader<T> valueReader)
+        where T : IEquatable<T>
     {
+        ArgumentNullException.ThrowIfNull(valueReader);
+
+        if (format != VectorJsonFormat.Default)
+        {
+            throw new NotSupportedException($"Unsupported format: {format}");
+        }
+
         if (length == 0)
         {
             return [];
         }
 
-        using var builder = length > -1
-            ? new ArrayBuilder<T>(length, rentFromPool: false)
-            : new ArrayBuilder<T>(rentFromPool: true);
+        using var builder = new ArrayBuilder<T>(length, rentFromPool: false);
 
         while (reader.Read())
         {
@@ -133,19 +141,33 @@ public static class VectorJsonReader
                     throw new JsonException();
                 }
 
-                return Vector.Create(builder.ToArray());
+                return Vector.Create(builder.ToMemory());
             }
 
             if (reader.TokenType == JsonTokenType.Number)
             {
-                if (reader.TryGetNumber(out T number))
-                {
-                    builder.Add(number);
-                }
+                builder.Add(valueReader(ref reader));
             }
         }
 
         throw new JsonException();
+    }
+
+    public static Vector<T> ReadNumberVector<T>(
+        ref Utf8JsonReader reader,
+        int length,
+        VectorJsonFormat format = default)
+        where T : struct, INumber<T>
+    {
+        return ReadVector(ref reader, length, format, (ref r) =>
+        {
+            if (r.TryGetNumber<T>(out var num))
+            {
+                return num;
+            }
+
+            throw new JsonException("Expected number value");
+        });
     }
 
     public static Vector<string> ReadStringVector(
@@ -153,41 +175,57 @@ public static class VectorJsonReader
         int length,
         VectorJsonFormat format = default)
     {
-        if (length == 0)
-        {
-            return [];
-        }
-
-        using var builder = length > -1
-            ? new ArrayBuilder<string>(length, rentFromPool: false)
-            : new ArrayBuilder<string>(rentFromPool: true);
-
-        while (reader.Read())
-        {
-            if (reader.TokenType == JsonTokenType.EndArray)
-            {
-                if (length > -1 && builder.Count != length)
-                {
-                    throw new JsonException();
-                }
-
-                return Vector.Create(builder.ToArray());
-            }
-
-            if (reader.TokenType == JsonTokenType.String)
-            {
-                builder.Add(reader.GetString() ?? string.Empty);
-            }
-        }
-
-        throw new JsonException();
+        return ReadVector(ref reader, length, format, (ref r) => r.GetString() ?? throw new JsonException());
     }
 
-    private static Vector<bool> ReadBooleanVector(
+    public static Vector<DateTime> ReadDateTimeVector(
         ref Utf8JsonReader reader,
-        int length)
+        int length,
+        VectorJsonFormat format = default)
     {
-        return ReadVector(ref reader, length, (ref Utf8JsonReader r) =>
+        return ReadVector(ref reader, length, format, (ref r) => r.GetDateTime());
+    }
+
+    public static Vector<DateTimeOffset> ReadDateTimeOffsetVector(
+        ref Utf8JsonReader reader,
+        int length,
+        VectorJsonFormat format = default)
+    {
+        return ReadVector(ref reader, length, format, (ref r) => r.GetDateTimeOffset());
+    }
+
+    public static Vector<Guid> ReadGuidVector(
+        ref Utf8JsonReader reader,
+        int length,
+        VectorJsonFormat format = default)
+    {
+        return ReadVector(ref reader, length, format, (ref r) => r.GetGuid());
+    }
+
+    public static Vector<char> ReadCharVector(
+        ref Utf8JsonReader reader,
+        int length,
+        VectorJsonFormat format = default)
+    {
+        return ReadVector(ref reader, length, format, (ref r) =>
+        {
+            var s = r.GetString();
+
+            if (s is null || s.Length != 1)
+            {
+                throw new JsonException("Expected non-null string with single character.");
+            }
+
+            return s[0];
+        });
+    }
+
+    public static Vector<bool> ReadBooleanVector(
+        ref Utf8JsonReader reader,
+        int length,
+        VectorJsonFormat format = default)
+    {
+        return ReadVector(ref reader, length, format, (ref r) =>
         {
             if (r.TokenType == JsonTokenType.True)
             {
@@ -201,40 +239,5 @@ public static class VectorJsonReader
 
             throw new JsonException("Expected boolean value");
         });
-    }
-
-    private static Vector<T> ReadVector<T>(
-        ref Utf8JsonReader reader,
-        int length,
-        JsonValueReader<T> valueReader)
-        where T : IEquatable<T>
-    {
-        ArgumentNullException.ThrowIfNull(valueReader);
-
-        if (length == 0)
-        {
-            return [];
-        }
-
-        using var builder = length > -1
-            ? new ArrayBuilder<T>(length, rentFromPool: false)
-            : new ArrayBuilder<T>(rentFromPool: true);
-
-        while (reader.Read())
-        {
-            if (reader.TokenType == JsonTokenType.EndArray)
-            {
-                if (length > -1 && builder.Count != length)
-                {
-                    throw new JsonException();
-                }
-
-                return Vector.Create(builder.ToArray());
-            }
-
-            builder.Add(valueReader(ref reader));
-        }
-
-        throw new JsonException();
     }
 }

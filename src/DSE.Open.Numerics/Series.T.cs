@@ -28,7 +28,7 @@ public class Series<T> : Series, ISeries<T>, IReadOnlySeries<T>, IEquatable<Seri
 #pragma warning restore IDE1006 // Naming Styles
 
     private readonly Vector<T> _vector;
-    private readonly ValueLabelCollection<T> _labels;
+    private ValueLabelCollection<T>? _labels;
 
     internal Series(
         [NotNull] Vector<T> vector,
@@ -38,7 +38,7 @@ public class Series<T> : Series, ISeries<T>, IReadOnlySeries<T>, IEquatable<Seri
         : base(vector, name, index)
     {
         _vector = vector;
-        _labels = labels ?? [];
+        _labels = labels;
     }
 
     public T this[int index]
@@ -53,7 +53,9 @@ public class Series<T> : Series, ISeries<T>, IReadOnlySeries<T>, IEquatable<Seri
     int IReadOnlyCollection<T>.Count => Length;
 #pragma warning restore CA1033 // Interface methods should be callable by child types
 
-    public ValueLabelCollection<T> ValueLabels => _labels;
+    public bool HasValueLabels => _labels is not null && _labels.Count > 0;
+
+    public ValueLabelCollection<T> ValueLabels => _labels ??= [];
 
     IValueLabelCollection<T> ISeries<T>.ValueLabels => ValueLabels;
 

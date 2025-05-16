@@ -12,7 +12,7 @@ namespace DSE.Open.Numerics;
 public interface ICategoricalSeries<T>
     : ISeries<T>,
       IReadOnlyCategoricalSeries<T>
-    where T : IBinaryNumber<T>
+    where T : struct, IBinaryNumber<T>
 {
     /// <summary>
     /// Specifies the permitted values for a categorical series.
