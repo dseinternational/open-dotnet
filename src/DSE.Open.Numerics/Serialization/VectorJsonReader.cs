@@ -183,19 +183,42 @@ public static class VectorJsonReader
         throw new JsonException();
     }
 
-    public static Vector<bool> ReadBooleanVector(
+    private static Vector<bool> ReadBooleanVector(
+        ref Utf8JsonReader reader,
+        int length)
+    {
+        return ReadVector(ref reader, length, (ref Utf8JsonReader r) =>
+        {
+            if (r.TokenType == JsonTokenType.True)
+            {
+                return true;
+            }
+
+            if (r.TokenType == JsonTokenType.False)
+            {
+                return false;
+            }
+
+            throw new JsonException("Expected boolean value");
+        });
+    }
+
+    private static Vector<T> ReadVector<T>(
         ref Utf8JsonReader reader,
         int length,
-        VectorJsonFormat format = default)
+        JsonValueReader<T> valueReader)
+        where T : IEquatable<T>
     {
+        ArgumentNullException.ThrowIfNull(valueReader);
+
         if (length == 0)
         {
             return [];
         }
 
         using var builder = length > -1
-            ? new ArrayBuilder<bool>(length, rentFromPool: false)
-            : new ArrayBuilder<bool>(rentFromPool: true);
+            ? new ArrayBuilder<T>(length, rentFromPool: false)
+            : new ArrayBuilder<T>(rentFromPool: true);
 
         while (reader.Read())
         {
@@ -209,14 +232,7 @@ public static class VectorJsonReader
                 return Vector.Create(builder.ToArray());
             }
 
-            if (reader.TokenType == JsonTokenType.True)
-            {
-                builder.Add(true);
-            }
-            else if (reader.TokenType == JsonTokenType.False)
-            {
-                builder.Add(false);
-            }
+            builder.Add(valueReader(ref reader));
         }
 
         throw new JsonException();
