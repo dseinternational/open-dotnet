@@ -5,6 +5,22 @@ using System.Text.Json.Serialization;
 
 namespace DSE.Open.Numerics;
 
+public static class ValueLabel
+{
+    /// <summary>
+    /// Creates a new <see cref="ValueLabel{T}"/> from the specified value and label.
+    /// </summary>
+    /// <typeparam name="T">The type of the value.</typeparam>
+    /// <param name="value">The value.</param>
+    /// <param name="label">The label.</param>
+    /// <returns>A new <see cref="ValueLabel{T}"/> instance.</returns>
+    public static ValueLabel<T> Create<T>(T value, string label)
+        where T : IEquatable<T>
+    {
+        return new(value, label);
+    }
+}
+
 /// <summary>
 /// Specifies a label for a data value.
 /// </summary>
