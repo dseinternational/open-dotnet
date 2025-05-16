@@ -13,7 +13,7 @@ public interface IReadOnlyCategoricalSeries
 }
 
 /// <summary>
-/// TODO - a read-only series than may only contain values from a defined set.
+/// TODO - a read-only series that may only contain values from a defined set.
 /// </summary>
 /// <typeparam name="T"></typeparam>
 public interface IReadOnlyCategoricalSeries<T>
