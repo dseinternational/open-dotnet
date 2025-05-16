@@ -18,21 +18,11 @@ public class ArrayBuilderTests
     [Fact]
     public void InitialiseWithBuffer()
     {
-        using var builder = new ArrayBuilder<int>([1, 2, 3, 4, 5, 6]);
-        Assert.Equal(6, builder.Count);
-        Assert.False(builder.BufferAllocated);
+        Span<int> buffer = stackalloc int[6];
 
-        for (var i = 0; i < builder.Count; i++)
-        {
-            Assert.Equal(i + 1, builder[i]);
-        }
+        using var builder = new ArrayBuilder<int>(buffer);
 
-        builder.Add(7);
-
-        Assert.Equal(7, builder.Count);
-
-        var array = builder.ToArray();
-
-        Assert.Equal(7, array.Length);
+        Assert.Equal(0, builder.Count);
+        Assert.Equal(6, builder.Capacity);
     }
 }
