@@ -12,7 +12,7 @@ public interface ISeries : IReadOnlySeries
     new string? Name { get; set; }
 
     /// <summary>
-    /// Gets a read-only view of the vector.
+    /// Gets a read-only view of the series.
     /// </summary>
     IReadOnlySeries AsReadOnly();
 }
