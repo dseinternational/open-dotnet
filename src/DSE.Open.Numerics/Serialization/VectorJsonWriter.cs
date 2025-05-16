@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
+using DSE.Open.Text.Json;
 
 namespace DSE.Open.Numerics.Serialization;
 
@@ -13,85 +14,83 @@ namespace DSE.Open.Numerics.Serialization;
 /// </summary>
 public static class VectorJsonWriter
 {
-    public static void Write(Utf8JsonWriter writer, IReadOnlyVector vector, JsonSerializerOptions options)
+    public static void WriteVector(Utf8JsonWriter writer, IReadOnlyVector vector, JsonSerializerOptions options)
     {
         ArgumentNullException.ThrowIfNull(writer);
         ArgumentNullException.ThrowIfNull(vector);
 
         switch (vector)
         {
-            case IReadOnlyVector<int> intSeries:
-                Write(writer, intSeries, options);
+            case IReadOnlyVector<int> intVector:
+                WriteVector(writer, intVector, options);
                 return;
-            case IReadOnlyVector<long> longSeries:
-                Write(writer, longSeries, options);
+            case IReadOnlyVector<long> longVector:
+                WriteVector(writer, longVector, options);
                 return;
-            case IReadOnlyVector<float> floatSeries:
-                Write(writer, floatSeries, options);
+            case IReadOnlyVector<float> floatVector:
+                WriteVector(writer, floatVector, options);
                 return;
-            case IReadOnlyVector<double> doubleSeries:
-                Write(writer, doubleSeries, options);
+            case IReadOnlyVector<double> doubleVector:
+                WriteVector(writer, doubleVector, options);
                 return;
-            case IReadOnlyVector<uint> uintSeries:
-                Write(writer, uintSeries, options);
+            case IReadOnlyVector<uint> uintVector:
+                WriteVector(writer, uintVector, options);
                 return;
-            case IReadOnlyVector<ulong> uuidSeries:
-                Write(writer, uuidSeries, options);
+            case IReadOnlyVector<ulong> uuidVector:
+                WriteVector(writer, uuidVector, options);
                 return;
-            case IReadOnlyVector<DateTime64> dateTime64Series:
-                Write(writer, dateTime64Series, options);
+            case IReadOnlyVector<DateTime64> dateTime64Vector:
+                WriteVector(writer, dateTime64Vector, options);
                 return;
-            case IReadOnlyVector<short> shortSeries:
-                Write(writer, shortSeries, options);
+            case IReadOnlyVector<short> shortVector:
+                WriteVector(writer, shortVector, options);
                 return;
-            case IReadOnlyVector<ushort> ushortSeries:
-                Write(writer, ushortSeries, options);
+            case IReadOnlyVector<ushort> ushortVector:
+                WriteVector(writer, ushortVector, options);
                 return;
-            case IReadOnlyVector<sbyte> sbyteSeries:
-                Write(writer, sbyteSeries, options);
+            case IReadOnlyVector<sbyte> sbyteVector:
+                WriteVector(writer, sbyteVector, options);
                 return;
-            case IReadOnlyVector<byte> byteSeries:
-                Write(writer, byteSeries, options);
+            case IReadOnlyVector<byte> byteVector:
+                WriteVector(writer, byteVector, options);
                 return;
-            case IReadOnlyVector<Int128> int128Series:
-                Write(writer, int128Series, options);
+            case IReadOnlyVector<Int128> int128Vector:
+                WriteVector(writer, int128Vector, options);
                 return;
-            case IReadOnlyVector<UInt128> uint128Series:
-                Write(writer, uint128Series, options);
+            case IReadOnlyVector<UInt128> uint128Vector:
+                WriteVector(writer, uint128Vector, options);
                 return;
-            case IReadOnlyVector<string> stringSeries:
-                Write(writer, stringSeries, options);
+            case IReadOnlyVector<string> stringVector:
+                WriteVector(writer, stringVector, options);
                 return;
-            case IReadOnlyVector<char> charSeries:
-                Write(writer, charSeries, options);
+            case IReadOnlyVector<char> charVector:
+                WriteVector(writer, charVector, options);
                 return;
-            case IReadOnlyVector<bool> boolSeries:
-                Write(writer, boolSeries, options);
+            case IReadOnlyVector<bool> boolVector:
+                WriteVector(writer, boolVector, options);
                 return;
-            case IReadOnlyVector<DateTime> dateTimeSeries:
-                Write(writer, dateTimeSeries, options);
+            case IReadOnlyVector<DateTime> dateTimeVector:
+                WriteVector(writer, dateTimeVector, options);
                 return;
             default:
                 throw new JsonException("Unsupported series type");
         }
     }
 
-    public static void Write<T>(Utf8JsonWriter writer, IReadOnlyVector<T> vector, JsonSerializerOptions options)
+    public static void WriteVector<T>(Utf8JsonWriter writer, IReadOnlyVector<T> vector, JsonSerializerOptions options)
+        where T : IEquatable<T>
     {
         ArgumentNullException.ThrowIfNull(writer);
         ArgumentNullException.ThrowIfNull(vector);
         JsonExceptionHelper.ThrowIfLengthExceedsSerializationLimit(vector.Length);
 
         writer.WriteStartObject();
-        writer.WriteString(VectorJsonPropertyNames.DataType, VectorDataTypeHelper.GetLabel(vector.DataType));
-        writer.WriteNumber(VectorJsonPropertyNames.Length, vector.Length);
 
-        if (vector.HasCategories)
-        {
-            WriteCategories(writer, vector);
-        }
+        writer.WriteString(NumericsPropertyNames.DataType, VectorDataTypeHelper.GetLabel(vector.DataType));
 
-        writer.WritePropertyName(VectorJsonPropertyNames.Values);
+        writer.WriteNumber(NumericsPropertyNames.Length, vector.Length);
+
+        writer.WritePropertyName(NumericsPropertyNames.Values);
 
         if (vector.Length == 0)
         {
@@ -109,23 +108,23 @@ public static class VectorJsonWriter
         }
         else if (vector is IReadOnlyVector<string> stringVector)
         {
-            WriteStringArray(writer, stringVector.AsReadOnlySpan());
+            WriteStringArray(writer, stringVector.AsSpan());
         }
         else if (vector is IReadOnlyVector<char> charVector)
         {
-            WriteCharArray(writer, charVector.AsReadOnlySpan());
+            WriteCharArray(writer, charVector.AsSpan());
         }
         else if (vector is IReadOnlyVector<Guid> guidVector)
         {
-            WriteGuidArray(writer, guidVector.AsReadOnlySpan());
+            WriteGuidArray(writer, guidVector.AsSpan());
         }
         else if (vector is IReadOnlyVector<DateTime> dateTimeVector)
         {
-            WriteDateTimeArray(writer, dateTimeVector.AsReadOnlySpan());
+            WriteDateTimeArray(writer, dateTimeVector.AsSpan());
         }
         else if (vector is IReadOnlyVector<DateTimeOffset> dateTimeOffsetVector)
         {
-            WriteDateTimeOffsetArray(writer, dateTimeOffsetVector.AsReadOnlySpan());
+            WriteDateTimeOffsetArray(writer, dateTimeOffsetVector.AsSpan());
         }
 
         // todo: add support for other types
@@ -133,160 +132,132 @@ public static class VectorJsonWriter
         writer.WriteEndObject();
     }
 
-    private static void WriteCategories<T>(Utf8JsonWriter writer, IReadOnlyVector<T> vector)
+    public static void WriteValue<T>(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
     {
-        writer.WritePropertyName(VectorJsonPropertyNames.Categories);
+        ArgumentNullException.ThrowIfNull(writer);
+        ArgumentNullException.ThrowIfNull(value);
 
-        writer.WriteStartObject();
-
-        foreach (var kvp in vector.Categories)
+        switch (value)
         {
-            writer.WritePropertyName(kvp.Key);
-            // TODO: Figure out type and write value
-            // writer.WriteNumberValue(kvp.Value);
-
-            if (kvp.Value is byte byteValue)
-            {
+            case byte byteValue:
                 writer.WriteNumberValue(byteValue);
-            }
-            else if (kvp.Value is sbyte sbyteValue)
-            {
+                return;
+            case sbyte sbyteValue:
                 writer.WriteNumberValue(sbyteValue);
-            }
-            else if (kvp.Value is short shortValue)
-            {
+                return;
+            case short shortValue:
                 writer.WriteNumberValue(shortValue);
-            }
-            else if (kvp.Value is ushort ushortValue)
-            {
+                return;
+            case ushort ushortValue:
                 writer.WriteNumberValue(ushortValue);
-            }
-            else if (kvp.Value is int intValue)
-            {
+                return;
+            case int intValue:
                 writer.WriteNumberValue(intValue);
-            }
-            else if (kvp.Value is uint uintValue)
-            {
+                return;
+            case uint uintValue:
                 writer.WriteNumberValue(uintValue);
-            }
-            else if (kvp.Value is long longValue)
-            {
+                return;
+            case long longValue:
                 writer.WriteNumberValue(longValue);
-            }
-            else if (kvp.Value is ulong ulongValue)
-            {
+                return;
+            case ulong ulongValue:
                 writer.WriteNumberValue(ulongValue);
-            }
-            else if (kvp.Value is float floatValue)
-            {
+                return;
+            case Int128 int128Value:
+                writer.WriteNumberValue(int128Value);
+                return;
+            case float floatValue:
                 writer.WriteNumberValue(floatValue);
-            }
-            else if (kvp.Value is double doubleValue)
-            {
+                return;
+            case double doubleValue:
                 writer.WriteNumberValue(doubleValue);
-            }
-            else if (kvp.Value is decimal decimalValue)
-            {
+                return;
+            case decimal decimalValue:
                 writer.WriteNumberValue(decimalValue);
-            }
-            else if (kvp.Value is DateTime64 dateTime64Value)
-            {
+                return;
+            case DateTime64 dateTime64Value:
                 writer.WriteNumberValue(dateTime64Value);
-            }
-            else if (kvp.Value is Half halfValue)
-            {
+                return;
+            case Half halfValue:
                 writer.WriteNumberValue(halfValue);
-            }
-            else if (kvp.Value is string stringValue)
-            {
-                writer.WriteStringValue(stringValue);
-            }
-            else if (kvp.Value is char charValue)
-            {
-                writer.WriteStringValue(charValue.ToString());
-            }
-            else if (kvp.Value is Guid guidValue)
-            {
-                writer.WriteStringValue(guidValue);
-            }
-            else if (kvp.Value is DateTime dateTimeValue)
-            {
+                return;
+            case BigInteger bigIntegerValue:
+                writer.WriteNumberValue(bigIntegerValue);
+                return;
+            case DateTime dateTimeValue:
                 writer.WriteStringValue(dateTimeValue);
-            }
-            else if (kvp.Value is DateTimeOffset dateTimeOffsetValue)
-            {
+                return;
+            case DateTimeOffset dateTimeOffsetValue:
                 writer.WriteStringValue(dateTimeOffsetValue);
-            }
-            else
-            {
-                throw new JsonException($"The type `{typeof(T)}` is a not supported category value type.");
-            }
+                return;
+            case Guid guidValue:
+                writer.WriteStringValue(guidValue);
+                return;
+            case string stringValue:
+                writer.WriteStringValue(stringValue);
+                return;
+            default:
+                break;
         }
 
-        writer.WriteEndObject();
+        throw new JsonException($"Unsupported value type: {typeof(T)}");
     }
 
     private static void WriteNumberArray<T>(Utf8JsonWriter writer, IReadOnlyVector<T> vector)
+        where T : IEquatable<T>
     {
-        if (typeof(T) == typeof(byte))
+        switch (vector)
         {
-            WriteNumberSpan(writer, ((IReadOnlyVector<byte>)vector).AsReadOnlySpan());
-        }
-        else if (typeof(T) == typeof(sbyte))
-        {
-            WriteNumberSpan(writer, ((IReadOnlyVector<sbyte>)vector).AsReadOnlySpan());
-        }
-        else if (typeof(T) == typeof(short))
-        {
-            WriteNumberSpan(writer, ((IReadOnlyVector<short>)vector).AsReadOnlySpan());
-        }
-        else if (typeof(T) == typeof(ushort))
-        {
-            WriteNumberSpan(writer, ((IReadOnlyVector<ushort>)vector).AsReadOnlySpan());
-        }
-        else if (typeof(T) == typeof(int))
-        {
-            WriteNumberSpan(writer, ((IReadOnlyVector<int>)vector).AsReadOnlySpan());
-        }
-        else if (typeof(T) == typeof(uint))
-        {
-            WriteNumberSpan(writer, ((IReadOnlyVector<uint>)vector).AsReadOnlySpan());
-        }
-        else if (typeof(T) == typeof(long))
-        {
-            WriteNumberSpan(writer, ((IReadOnlyVector<long>)vector).AsReadOnlySpan());
-        }
-        else if (typeof(T) == typeof(ulong))
-        {
-            WriteNumberSpan(writer, ((IReadOnlyVector<ulong>)vector).AsReadOnlySpan());
-        }
-        else if (typeof(T) == typeof(float))
-        {
-            WriteNumberSpan(writer, ((IReadOnlyVector<float>)vector).AsReadOnlySpan());
-        }
-        else if (typeof(T) == typeof(double))
-        {
-            WriteNumberSpan(writer, ((IReadOnlyVector<double>)vector).AsReadOnlySpan());
-        }
-        else if (typeof(T) == typeof(decimal))
-        {
-            WriteNumberSpan(writer, ((IReadOnlyVector<decimal>)vector).AsReadOnlySpan());
-        }
-        else if (typeof(T) == typeof(DateTime64))
-        {
-            WriteNumberSpan(writer, ((IReadOnlyVector<DateTime64>)vector).AsReadOnlySpan());
-        }
-        else if (typeof(T) == typeof(Half))
-        {
-            WriteNumberSpan(writer, ((IReadOnlyVector<Half>)vector).AsReadOnlySpan());
-        }
-        else if (typeof(T) == typeof(BigInteger))
-        {
-            WriteNumberSpan(writer, ((IReadOnlyVector<BigInteger>)vector).AsReadOnlySpan());
-        }
-        else
-        {
-            throw new JsonException($"The type `{typeof(T)}` is a not supported numeric type.");
+            case IReadOnlyVector<byte> byteVector:
+                WriteNumberSpan(writer, byteVector.AsSpan());
+                break;
+            case IReadOnlyVector<sbyte> sbyteVector:
+                WriteNumberSpan(writer, sbyteVector.AsSpan());
+                break;
+            case IReadOnlyVector<short> shortVector:
+                WriteNumberSpan(writer, shortVector.AsSpan());
+                break;
+            case IReadOnlyVector<ushort> ushortVector:
+                WriteNumberSpan(writer, ushortVector.AsSpan());
+                break;
+            case IReadOnlyVector<int> intVector:
+                WriteNumberSpan(writer, intVector.AsSpan());
+                break;
+            case IReadOnlyVector<uint> uintVector:
+                WriteNumberSpan(writer, uintVector.AsSpan());
+                break;
+            case IReadOnlyVector<long> longVector:
+                WriteNumberSpan(writer, longVector.AsSpan());
+                break;
+            case IReadOnlyVector<ulong> ulongVector:
+                WriteNumberSpan(writer, ulongVector.AsSpan());
+                break;
+            case IReadOnlyVector<float> floatVector:
+                WriteNumberSpan(writer, floatVector.AsSpan());
+                break;
+            case IReadOnlyVector<double> doubleVector:
+                WriteNumberSpan(writer, doubleVector.AsSpan());
+                break;
+            case IReadOnlyVector<decimal> decimalVector:
+                WriteNumberSpan(writer, decimalVector.AsSpan());
+                break;
+            case IReadOnlyVector<Half> halfVector:
+                WriteNumberSpan(writer, halfVector.AsSpan());
+                break;
+            case IReadOnlyVector<DateTime64> dateTime64Vector:
+                WriteNumberSpan(writer, dateTime64Vector.AsSpan());
+                break;
+            case IReadOnlyVector<Int128> int128Vector:
+                WriteNumberSpan(writer, int128Vector.AsSpan());
+                break;
+            case IReadOnlyVector<UInt128> uint128Vector:
+                WriteNumberSpan(writer, uint128Vector.AsSpan());
+                break;
+            case IReadOnlyVector<BigInteger> bigIntegerVector:
+                WriteNumberSpan(writer, bigIntegerVector.AsSpan());
+                break;
+            default:
+                throw new JsonException($"Unsupported numeric vector type: {typeof(T)}");
         }
 
         static void WriteNumberSpan<TNumber>(Utf8JsonWriter writer, ReadOnlySpan<TNumber> vector)
@@ -326,7 +297,7 @@ public static class VectorJsonWriter
     private static void WriteArray<T>(
         Utf8JsonWriter writer,
         ReadOnlySpan<T> vector,
-        Action<Utf8JsonWriter, T> writeValue)
+        JsonValueWriter<T> writeValue)
     {
         writer.WriteStartArray();
 

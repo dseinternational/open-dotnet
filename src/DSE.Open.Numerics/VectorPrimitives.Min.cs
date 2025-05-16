@@ -13,7 +13,7 @@ public static partial class VectorPrimitives
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(vector);
-        return Min(vector.AsReadOnlySpan());
+        return Min(vector.AsSpan());
     }
 
     public static T Min<T>(ReadOnlySpan<T> span)

@@ -10,22 +10,22 @@ using DSE.Open.Numerics.Serialization;
 namespace DSE.Open.Numerics;
 
 /// <summary>
-/// Stores related data as a collection of columns (<see cref="Vector"/>).
+/// Stores related data as a collection of columns (<see cref="Series"/>).
 /// </summary>
 [JsonConverter(typeof(ReadOnlyDataFrameJsonConverter))]
 [CollectionBuilder(typeof(ReadOnlyDataFrame), nameof(Create))]
-public class ReadOnlyDataFrame : IReadOnlyList<ReadOnlyVector>
+public class ReadOnlyDataFrame : IReadOnlyDataFrame
 {
     public static readonly ReadOnlyDataFrame Empty = new();
 
-    private readonly ReadOnlyCollection<ReadOnlyVector> _columns;
+    private readonly ReadOnlyCollection<ReadOnlySeries> _columns;
     private readonly ReadOnlyCollection<string> _columnNames;
 
     private ReadOnlyDataFrame() : this([])
     {
     }
 
-    public ReadOnlyDataFrame(ReadOnlyCollection<ReadOnlyVector> columns, string? name = null, ReadOnlyCollection<string>? columnNames = null)
+    public ReadOnlyDataFrame(ReadOnlyCollection<ReadOnlySeries> columns, string? name = null, ReadOnlyCollection<string>? columnNames = null)
     {
         ArgumentNullException.ThrowIfNull(columns);
 
@@ -39,9 +39,9 @@ public class ReadOnlyDataFrame : IReadOnlyList<ReadOnlyVector>
         _columnNames = columnNames is not null ? columnNames : [];
     }
 
-    public ReadOnlyVector this[int index] => _columns[index];
+    public ReadOnlySeries this[int index] => _columns[index];
 
-    public ReadOnlyVector? this[string name]
+    public ReadOnlySeries? this[string name]
     {
         get
         {
@@ -65,7 +65,11 @@ public class ReadOnlyDataFrame : IReadOnlyList<ReadOnlyVector>
 
     public int Count => _columns.Count;
 
-    public IEnumerator<ReadOnlyVector> GetEnumerator()
+    IReadOnlySeries IReadOnlyList<IReadOnlySeries>.this[int index] => throw new NotImplementedException();
+
+    IReadOnlySeries? IReadOnlyDataFrame.this[string name] => throw new NotImplementedException();
+
+    public IEnumerator<ReadOnlySeries> GetEnumerator()
     {
         return _columns.GetEnumerator();
     }
@@ -75,8 +79,13 @@ public class ReadOnlyDataFrame : IReadOnlyList<ReadOnlyVector>
         return ((IEnumerable)_columns).GetEnumerator();
     }
 
-    public static ReadOnlyDataFrame Create(ReadOnlySpan<ReadOnlyVector> columns)
+    public static ReadOnlyDataFrame Create(ReadOnlySpan<ReadOnlySeries> columns)
     {
         return new ReadOnlyDataFrame([.. columns.ToArray()]);
+    }
+
+    IEnumerator<IReadOnlySeries> IEnumerable<IReadOnlySeries>.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }

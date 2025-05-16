@@ -1,0 +1,14 @@
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Down Syndrome Education International and Contributors licence this file to you under the MIT license.
+
+namespace DSE.Open.Numerics;
+
+/// <summary>
+/// Reserved for future use (axis labels).
+/// </summary>
+public abstract class Index
+{
+    protected internal Index()
+    {
+    }
+}

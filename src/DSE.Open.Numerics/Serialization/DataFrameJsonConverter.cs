@@ -26,7 +26,7 @@ public class DataFrameJsonConverter : JsonConverter<DataFrame>
         }
 
         string? name = null;
-        Collection<Vector> columns = [];
+        Collection<Series> columns = [];
 
         while (reader.Read())
         {
@@ -63,7 +63,7 @@ public class DataFrameJsonConverter : JsonConverter<DataFrame>
                         break;
                     }
 
-                    var vector = VectorJsonConverter.Default.Read(ref reader, typeof(Vector), options);
+                    var vector = SeriesJsonConverter.Default.Read(ref reader, typeof(Series), options);
 
                     if (vector is null)
                     {
@@ -80,27 +80,6 @@ public class DataFrameJsonConverter : JsonConverter<DataFrame>
 
     public override void Write(Utf8JsonWriter writer, DataFrame value, JsonSerializerOptions options)
     {
-        ArgumentNullException.ThrowIfNull(writer);
-        ArgumentNullException.ThrowIfNull(value);
-
-        writer.WriteStartObject();
-
-        if (value.Name is not null)
-        {
-            writer.WriteString(DataFrameJsonPropertyNames.Name, value.Name);
-        }
-
-        writer.WritePropertyName(DataFrameJsonPropertyNames.Columns);
-
-        writer.WriteStartArray();
-
-        foreach (var column in value)
-        {
-            VectorJsonConverter.Default.Write(writer, column, options);
-        }
-
-        writer.WriteEndArray();
-
-        writer.WriteEndObject();
+        DataFrameJsonWriter.Write(writer, value, options);
     }
 }

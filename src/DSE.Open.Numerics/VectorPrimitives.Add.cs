@@ -22,7 +22,7 @@ public static partial class VectorPrimitives
         where T : struct, INumber<T>
     {
         NumericsException.ThrowIfNotEqualLength(x, y, destination);
-        TensorPrimitives.Add(x.AsReadOnlySpan(), y.AsReadOnlySpan(), destination);
+        TensorPrimitives.Add(x.AsSpan(), y.AsSpan(), destination);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -30,7 +30,7 @@ public static partial class VectorPrimitives
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(y);
-        AddInPlace(x, y.AsReadOnlySpan());
+        AddInPlace(x, y.AsSpan());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -54,7 +54,7 @@ public static partial class VectorPrimitives
         where T : struct, INumber<T>
     {
         NumericsException.ThrowIfNotEqualLength(x, destination);
-        TensorPrimitives.Add(x.AsReadOnlySpan(), y, destination);
+        TensorPrimitives.Add(x.AsSpan(), y, destination);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -48,7 +48,6 @@ public ref struct ArrayBuilder<T>
             if (rentFromPool)
             {
                 _buffer = _pooledBuffer = ArrayPool<T>.Shared.Rent(capacity);
-                _buffer = _pooledBuffer;
             }
             else
             {
@@ -70,7 +69,6 @@ public ref struct ArrayBuilder<T>
     {
         _buffer = initialBuffer;
         _rentFromPool = rentFromPool;
-        _count = initialBuffer.Length;
     }
 
     /// <summary>
@@ -167,6 +165,11 @@ public ref struct ArrayBuilder<T>
         if (_count == 0)
         {
             return [];
+        }
+
+        if (_ownedBuffer is not null && _ownedBuffer.Length == _count)
+        {
+            return _ownedBuffer;
         }
 
         var toReturn = new T[_count];

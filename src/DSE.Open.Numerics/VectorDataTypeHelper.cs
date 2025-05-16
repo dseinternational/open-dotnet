@@ -87,17 +87,17 @@ public static class VectorDataTypeHelper
         return s_labelLookup[dataType];
     }
 
-    public static VectorDataType GetSeriesDataType(string label)
+    public static VectorDataType GetVectorDataType(string label)
     {
         return s_vectorDataTypeLookup[label];
     }
 
-    public static VectorDataType GetSeriesDataType<T>()
+    public static VectorDataType GetVectorDataType<T>()
     {
-        return GetSeriesDataType(typeof(T));
+        return GetVectorDataType(typeof(T));
     }
 
-    public static VectorDataType GetSeriesDataType(Type type)
+    public static VectorDataType GetVectorDataType(Type type)
     {
         if (TryGetVectorDataType(type, out var vectorDataType))
         {
@@ -134,7 +134,7 @@ public static class VectorDataTypeHelper
 
     public static bool IsNumericType(Type type)
     {
-        return IsNumericType(GetSeriesDataType(type));
+        return IsNumericType(GetVectorDataType(type));
     }
 
     public static bool IsNumericType<T>()

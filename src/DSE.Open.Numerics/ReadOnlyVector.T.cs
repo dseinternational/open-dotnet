@@ -13,46 +13,26 @@ namespace DSE.Open.Numerics;
 
 /// <summary>
 /// A serializable, contiguous, fixed-length sequence of read-only values of data type <typeparamref name="T"/>
-/// with value equality semantics. Optionally named, labelled or categorised for use with
-/// a <see cref="IReadOnlyDataFrame"/>.
 /// </summary>
 /// <typeparam name="T"></typeparam>
 [CollectionBuilder(typeof(ReadOnlyVector), nameof(Create))]
 [JsonConverter(typeof(ReadOnlyVectorJsonConverter))]
 public sealed class ReadOnlyVector<T> : ReadOnlyVector, IReadOnlyVector<T>
+    where T : IEquatable<T>
 {
-    public static readonly ReadOnlyVector<T> Empty = new();
+    public static readonly ReadOnlyVector<T> Empty = new(Memory<T>.Empty);
 
-    private readonly ReadOnlyMemory<T> _vector;
-    private readonly ReadOnlyMemory<KeyValuePair<string, T>> _categories;
-    private IReadOnlyDictionary<string, T>? _categoriesLookup;
+    private readonly ReadOnlyMemory<T> _memory;
 
-    public ReadOnlyVector() : this(Memory<T>.Empty, null, null, null)
+    public ReadOnlyVector(T[] array) : this(array.AsMemory())
     {
     }
 
-    public ReadOnlyVector(
-        T[] vector,
-        string? name = null,
-        ReadOnlyMemory<Variant> labels = default,
-        ReadOnlyMemory<KeyValuePair<string, T>> categories = default)
-        : this(vector.AsMemory(), name, labels, categories)
+    public ReadOnlyVector(ReadOnlyMemory<T> memory)
+        : base(VectorDataTypeHelper.GetVectorDataType<T>(), typeof(T), memory.Length)
     {
+        _memory = memory;
     }
-
-    public ReadOnlyVector(
-        ReadOnlyMemory<T> vector,
-        string? name = null,
-        ReadOnlyMemory<Variant> labels = default,
-        ReadOnlyMemory<KeyValuePair<string, T>> categories = default)
-        : base(VectorDataTypeHelper.GetSeriesDataType<T>(), typeof(T), vector.Length, name, labels)
-    {
-        _vector = vector;
-        _categories = categories;
-        // TODO: check if categories are valid
-    }
-
-    public ReadOnlyMemory<T> Data => _vector;
 
 #pragma warning disable CA1033 // Interface methods should be callable by child types
     int IReadOnlyCollection<T>.Count => Length;
@@ -61,36 +41,13 @@ public sealed class ReadOnlyVector<T> : ReadOnlyVector, IReadOnlyVector<T>
     public T this[int index]
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => _vector.Span[index];
-    }
-
-    public bool HasCategories => _categories.Length > 0
-        || (_categoriesLookup is not null && _categoriesLookup.Count > 0);
-
-    public IReadOnlyDictionary<string, T> Categories
-    {
-        get
-        {
-            if (_categoriesLookup is null)
-            {
-                var categoriesLookup = new Dictionary<string, T>(_categories.Span.Length);
-
-                foreach (var kvp in _categories.Span)
-                {
-                    categoriesLookup[kvp.Key] = kvp.Value;
-                }
-
-                _categoriesLookup = categoriesLookup;
-            }
-
-            return _categoriesLookup;
-        }
+        get => _memory.Span[index];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ReadOnlySpan<T> AsReadOnlySpan()
+    public ReadOnlySpan<T> AsSpan()
     {
-        return _vector.Span;
+        return _memory.Span;
     }
 
     public override bool Equals(object? obj)
@@ -113,27 +70,27 @@ public sealed class ReadOnlyVector<T> : ReadOnlyVector, IReadOnlyVector<T>
 
     public bool Equals(ReadOnlyVector<T>? other)
     {
-        return other is not null && Equals(other.AsReadOnlySpan());
+        return other is not null && Equals(other.AsSpan());
     }
 
     public bool Equals(IReadOnlyVector<T>? other)
     {
-        return other is not null && Equals(other.AsReadOnlySpan());
+        return other is not null && Equals(other.AsSpan());
     }
 
     public bool Equals(ReadOnlySpan<T> other)
     {
-        return AsReadOnlySpan().SequenceEqual(other);
+        return AsSpan().SequenceEqual(other);
     }
 
     public ReadOnlyMemoryEnumerator<T> GetEnumerator()
     {
-        return _vector.GetEnumerator();
+        return _memory.GetEnumerator();
     }
 
     IEnumerator<T> IEnumerable<T>.GetEnumerator()
     {
-        return MemoryMarshal.ToEnumerable(Data).GetEnumerator();
+        return MemoryMarshal.ToEnumerable(_memory).GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()
@@ -142,15 +99,20 @@ public sealed class ReadOnlyVector<T> : ReadOnlyVector, IReadOnlyVector<T>
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ReadOnlyMemory<T> Slice(int start)
+    public ReadOnlyVector<T> Slice(int start)
     {
-        return _vector[start..];
+        return _memory[start..];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ReadOnlyMemory<T> Slice(int start, int length)
+    public ReadOnlyVector<T> Slice(int start, int length)
     {
-        return _vector.Slice(start, length);
+        return _memory.Slice(start, length);
+    }
+
+    IReadOnlyVector<T> IReadOnlyVector<T>.Slice(int start, int length)
+    {
+        return Slice(start, length);
     }
 
     public static bool operator ==(ReadOnlyVector<T>? left, ReadOnlyVector<T>? right)
@@ -161,6 +123,14 @@ public sealed class ReadOnlyVector<T> : ReadOnlyVector, IReadOnlyVector<T>
     public static bool operator !=(ReadOnlyVector<T>? left, ReadOnlyVector<T>? right)
     {
         return !(left == right);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",
+        Justification = "By design")]
+    public static implicit operator ReadOnlyVector<T>(ReadOnlyMemory<T> vector)
+    {
+        return new(vector);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -177,6 +147,6 @@ public sealed class ReadOnlyVector<T> : ReadOnlyVector, IReadOnlyVector<T>
         Justification = "By design")]
     public static implicit operator ReadOnlyMemory<T>(ReadOnlyVector<T> vector)
     {
-        return vector is not null ? vector._vector : default;
+        return vector is not null ? vector._memory : default;
     }
 }

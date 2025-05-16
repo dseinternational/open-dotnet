@@ -15,7 +15,7 @@ public sealed class ReadOnlyVectorTests : LoggedTestsBase
     }
 
     private static void TestCreate<T>(T[] elements)
-        where T : notnull
+        where T : notnull, IEquatable<T>
     {
         var vector = Vector.Create(elements).AsReadOnly();
 
@@ -149,17 +149,17 @@ public sealed class ReadOnlyVectorTests : LoggedTestsBase
         var numVector = Assert.IsType<Vector<double>>(vector);
         Assert.NotNull(numVector);
     }
+
     [Fact]
     public void Init()
     {
         ReadOnlyVector<int> v1 = [1, 2, 3, 4, 5, 6];
-
         var v2 = ReadOnlyVector.Create([1, 2, 3, 4, 5, 6]);
 
         Assert.Equal(6, v1.Length);
         Assert.Equal(6, v2.Length);
 
-        Assert.True(v1.AsReadOnlySpan().SequenceEqual(v2.AsReadOnlySpan()));
+        Assert.True(v1.AsSpan().SequenceEqual(v2.AsSpan()));
     }
 
     [Fact]

@@ -17,7 +17,7 @@ public static partial class VectorPrimitives
         where T : struct, INumber<T>
     {
         NumericsException.ThrowIfNotEqualLength(x, y, destination);
-        Subtract(x.AsReadOnlySpan(), y.AsReadOnlySpan(), destination.AsSpan());
+        Subtract(x.AsSpan(), y.AsSpan(), destination.AsSpan());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -28,7 +28,7 @@ public static partial class VectorPrimitives
         where T : struct, INumber<T>
     {
         NumericsException.ThrowIfNotEqualLength(x, y, destination);
-        Subtract(x.AsReadOnlySpan(), y.AsReadOnlySpan(), destination);
+        Subtract(x.AsSpan(), y.AsSpan(), destination);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -47,7 +47,7 @@ public static partial class VectorPrimitives
         where T : struct, INumber<T>
     {
         NumericsException.ThrowIfNotEqualLength(x, destination);
-        Subtract(x.AsReadOnlySpan(), y, destination.AsSpan());
+        Subtract(x.AsSpan(), y, destination.AsSpan());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -58,7 +58,7 @@ public static partial class VectorPrimitives
         where T : struct, INumber<T>
     {
         NumericsException.ThrowIfNotEqualLength(x, destination);
-        Subtract(x.AsReadOnlySpan(), y, destination);
+        Subtract(x.AsSpan(), y, destination);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -74,7 +74,7 @@ public static partial class VectorPrimitives
         where T : struct, INumber<T>
     {
         NumericsException.ThrowIfNotEqualLength(y, x);
-        SubtractInPlace(x.AsSpan(), y.AsReadOnlySpan());
+        SubtractInPlace(x.AsSpan(), y.AsSpan());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -82,7 +82,7 @@ public static partial class VectorPrimitives
         where T : struct, INumber<T>
     {
         NumericsException.ThrowIfNotEqualLength(y, x);
-        SubtractInPlace(x, y.AsReadOnlySpan());
+        SubtractInPlace(x, y.AsSpan());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -1,164 +1,80 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Diagnostics;
 using System.Numerics;
 using System.Text.Json.Serialization;
+using CommunityToolkit.HighPerformance;
 using DSE.Open.Numerics.Serialization;
 
 namespace DSE.Open.Numerics;
 
 /// <summary>
-/// A serializable, contiguous sequence of values of known length and data type with value equality semantics.
-/// Optionally named, labelled or categorised for use with a <see cref="DataFrame"/>.
+/// A serializable, fixed-length, contiguous sequence of values.
 /// </summary>
 [JsonConverter(typeof(VectorJsonConverter))]
-public abstract class Vector : IVector
+public abstract class Vector : VectorBase, IVector
 {
-    private Memory<Variant> _labels;
-
-    protected internal Vector(
-        VectorDataType dataType,
-        Type itemType,
-        int length,
-        string? name = null,
-        Memory<Variant> labels = default)
+    protected internal Vector(VectorDataType dataType, Type itemType, int length)
+        : base(dataType, itemType, length, false)
     {
-        ArgumentNullException.ThrowIfNull(itemType);
-        Ensure.EqualOrGreaterThan(length, 0);
+    }
 
-        if (!labels.IsEmpty && length != labels.Length)
+    protected abstract ReadOnlyVector CreateReadOnly();
+
+    public ReadOnlyVector AsReadOnly()
+    {
+        return CreateReadOnly();
+    }
+
+    public static Vector<T> Create<T>(Memory<T> memory)
+        where T : IEquatable<T>
+    {
+        if (memory.IsEmpty)
         {
-            throw new ArgumentException($"Labels length {labels.Length} does not match "
-                + $"series length {length}.");
+            return [];
         }
 
-#if DEBUG
-        if (VectorDataTypeHelper.TryGetVectorDataType(itemType, out var expectedDataType)
-            && dataType != expectedDataType)
+        return new Vector<T>(memory);
+    }
+
+    public static Vector<T> Create<T>(T[] array)
+        where T : IEquatable<T>
+    {
+        ArgumentNullException.ThrowIfNull(array);
+
+        if (array.Length == 0)
         {
-            Debug.Fail($"Expected data type {expectedDataType} for "
-                + $"item type {itemType.Name} but given {dataType}.");
+            return [];
         }
-#endif
 
-        DataType = dataType;
-        IsNumeric = NumberHelper.IsKnownNumberType(itemType);
-        ItemType = itemType;
-        Length = length;
-        Name = name;
-
-        // if empty, leave empty until accessed
-        _labels = labels;
+        return new Vector<T>(array.AsMemory());
     }
 
-    /// <summary>
-    /// Gets the number of items in the series.
-    /// </summary>
-    public int Length { get; }
-
-    /// <summary>
-    /// Indicates if the item type is a known numeric type.
-    /// </summary>
-    public bool IsNumeric { get; }
-
-    /// <summary>
-    /// Gets the type of the items in the series.
-    /// </summary>
-    public Type ItemType { get; }
-
-    /// <summary>
-    /// Gets the data type of the series.
-    /// </summary>
-    public VectorDataType DataType { get; }
-
-    /// <summary>
-    /// Gets or sets a name for the series (optional).
-    /// </summary>
-    public string? Name { get; set; }
-
-    public virtual bool IsReadOnly { get; }
-
-    public Memory<Variant> Labels
+    public static Vector<T> Create<T>(ReadOnlySpan<T> span)
+        where T : IEquatable<T>
     {
-        get
+        if (span.IsEmpty)
         {
-            if (_labels.Length == Length)
-            {
-                return _labels;
-            }
-
-            var labels = new Variant[Length];
-
-            for (var i = 0; i < Length; i++)
-            {
-                labels[i] = new Variant(i);
-            }
-
-            _labels = labels;
-
-            return _labels;
+#pragma warning disable IDE0301 // Simplify collection initialization
+            return Vector<T>.Empty;
+#pragma warning restore IDE0301 // Simplify collection initialization
         }
-    }
 
-    /// <summary>
-    /// Creates a series from the given data.
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="name"></param>
-    /// <param name="data"></param>
-    /// <returns></returns>
-    public static Vector<T> Create<T>(string name, T[] data)
-    {
-        ArgumentNullException.ThrowIfNull(data);
-        return new Vector<T>(data, name);
-    }
-
-    /// <summary>
-    /// Creates a series from the given data.
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="data"></param>
-    /// <returns></returns>
-    public static Vector<T> Create<T>(T[] data)
-    {
-        ArgumentNullException.ThrowIfNull(data);
-        return new Vector<T>(data);
-    }
-
-    public static Vector<T> Create<T>(T[] data, IReadOnlyDictionary<string, T> categories)
-    {
-        return Create(data, [.. categories]);
-    }
-
-    public static Vector<T> Create<T>(T[] data, KeyValuePair<string, T>[] categories)
-    {
-        return Create(data, categories.AsMemory());
-    }
-
-    public static Vector<T> Create<T>(T[] data, Memory<KeyValuePair<string, T>> categories)
-    {
-        ArgumentNullException.ThrowIfNull(data);
-        return new Vector<T>(data, null, default, categories);
-    }
-
-    public static Vector<T> Create<T>(ReadOnlySpan<T> data)
-    {
-        return Create(data.ToArray());
-    }
-
-    public static Vector<T> Create<T>(int length, T scalar)
-        where T : struct, INumber<T>
-    {
-        var data = new T[length];
-        data.AsSpan().Fill(scalar);
-        return new Vector<T>(data);
+        return new Vector<T>(span.ToArray().AsMemory());
     }
 
     public static Vector<T> Create<T>(int length)
         where T : struct, INumber<T>
     {
         return new Vector<T>(new T[length]);
+    }
+
+    public static Vector<T> Create<T>(int length, T scalar)
+        where T : struct, INumber<T>
+    {
+        var array = new T[length];
+        array.AsSpan().Fill(scalar);
+        return new Vector<T>(array);
     }
 
     public static Vector<T> CreateZeroes<T>(int length)
@@ -171,17 +87,5 @@ public abstract class Vector : IVector
         where T : struct, INumber<T>
     {
         return Create(length, T.One);
-    }
-
-    protected abstract ReadOnlyVector CreateReadOnly();
-
-    public ReadOnlyVector AsReadOnly()
-    {
-        return CreateReadOnly();
-    }
-
-    IReadOnlyVector IVector.AsReadOnly()
-    {
-        return AsReadOnly();
     }
 }

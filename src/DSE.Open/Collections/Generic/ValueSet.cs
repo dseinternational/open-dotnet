@@ -35,7 +35,9 @@ public static class ValueSet
             _ = set.Add(item);
         }
 
+#pragma warning disable IDE0028 // Simplify collection initialization
         return new(set);
+#pragma warning restore IDE0028 // Simplify collection initialization
     }
 }
 
@@ -82,7 +84,7 @@ public class ValueSet<T> : ISet<T>, IEquatable<ValueSet<T>>, ICollection<T>
             _set = other._set;
         }
 
-        _set = new(set);
+        _set = [.. set];
     }
 
     public int Count => _set.Count;

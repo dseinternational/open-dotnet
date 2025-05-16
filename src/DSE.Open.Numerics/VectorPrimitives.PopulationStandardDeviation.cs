@@ -7,7 +7,6 @@ namespace DSE.Open.Numerics;
 
 public static partial class VectorPrimitives
 {
-
     public static T PopulationStandardDeviation<T>(ReadOnlySpan<T> span)
         where T : struct, INumberBase<T>
     {

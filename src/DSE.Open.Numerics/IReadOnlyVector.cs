@@ -4,42 +4,35 @@
 namespace DSE.Open.Numerics;
 
 /// <summary>
-/// A serializable, contiguous, fixed-length sequence of read-only values with value
-/// equality semantics. Optionally named, labelled or categorised for use with
-/// a <see cref="IReadOnlyDataFrame"/>.
+/// A serializable, fixed-length, contiguous sequence of read-only values.
 /// </summary>
 public interface IReadOnlyVector
 {
-    int Length { get; }
+    VectorDataType DataType { get; }
+
+    bool IsEmpty { get; }
 
     bool IsNumeric { get; }
 
-    VectorDataType DataType { get; }
+    Type ItemType { get; }
+
+    int Length { get; }
 }
 
 /// <summary>
-/// A serializable, contiguous, fixed-length sequence of read-only values of data type <typeparamref name="T"/>
-/// with value equality semantics. Optionally named, labelled or categorised for use with
-/// a <see cref="IReadOnlyDataFrame"/>.
+/// A serializable, fixed-length, contiguous sequence of read-only values of type <typeparamref name="T"/>.
 /// </summary>
 public interface IReadOnlyVector<T>
     : IReadOnlyVector,
       IReadOnlyList<T>,
-      IEquatable<IReadOnlyVector<T>>
+      IEquatable<IReadOnlyVector<T>?>
+    where T : IEquatable<T>
 {
-    IReadOnlyDictionary<string, T> Categories { get; }
-
-    bool HasCategories { get; }
-
-    /// <summary>
-    /// Gets a read-only view of the vector.
-    /// </summary>
-    ReadOnlyMemory<T> Data { get; }
 
     /// <summary>
     /// Gets a span over the contents of the vector.
     /// </summary>
-    ReadOnlySpan<T> AsReadOnlySpan();
+    ReadOnlySpan<T> AsSpan();
 
-    ReadOnlyMemory<T> Slice(int start, int length);
+    IReadOnlyVector<T> Slice(int start, int length);
 }
