@@ -6,7 +6,7 @@ namespace DSE.Open.Numerics;
 /// <summary>
 /// A collection of data labels.
 /// </summary>
-/// <typeparam name="TData"></typeparam>
+/// <typeparam name="TData">The type of data associated with labels in the collection.</typeparam>
 public interface IValueLabelCollection<TData> : IReadOnlyValueLabelCollection<TData>, ICollection<ValueLabel<TData>>
     where TData : IEquatable<TData>
 {
