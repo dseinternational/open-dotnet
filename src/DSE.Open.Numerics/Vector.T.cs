@@ -166,7 +166,7 @@ public sealed class Vector<T> : Vector, IVector<T>, IReadOnlyVector<T>, IEquatab
     public static implicit operator Vector<T>(T[] vector)
     {
         ArgumentNullException.ThrowIfNull(vector);
-        return new(vector);
+        return [.. vector];
     }
 
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",

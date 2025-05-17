@@ -67,7 +67,7 @@ public abstract partial class Vector : VectorBase, IVector
     public static Vector<T> Create<T>(int length)
         where T : IEquatable<T>
     {
-        return new Vector<T>(new T[length]);
+        return [.. new T[length]];
     }
 
     public static Vector<T> Create<T>(int length, T scalar)
@@ -75,7 +75,7 @@ public abstract partial class Vector : VectorBase, IVector
     {
         var array = new T[length];
         array.AsSpan().Fill(scalar);
-        return new Vector<T>(array);
+        return [.. array];
     }
 
     public static Vector<T> CreateZeroes<T>(int length)
