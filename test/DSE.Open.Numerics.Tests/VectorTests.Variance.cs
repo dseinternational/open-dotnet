@@ -3,13 +3,13 @@
 
 namespace DSE.Open.Numerics;
 
-public partial class VectorPrimitivesTests
+public partial class VectorTests
 {
     [Fact]
     public void Variance_Span_Double()
     {
         ReadOnlySpan<double> sequence = [1, 2, 3, 4, 5];
-        var variance = VectorPrimitives.Variance(sequence);
+        var variance = Vector.Variance(sequence);
         Assert.Equal(2.5, variance);
     }
 
@@ -17,7 +17,7 @@ public partial class VectorPrimitivesTests
     public void Variance_Span_Double_2()
     {
         ReadOnlySpan<double> sequence = [10, 12, 23, 23, 16, 23, 21, 16];
-        var variance = VectorPrimitives.Variance(sequence);
+        var variance = Vector.Variance(sequence);
         Assert.Equal(27.428571428571, variance, 0.000000000001);
     }
 }

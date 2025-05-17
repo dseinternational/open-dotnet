@@ -11,7 +11,7 @@ public partial class VectorTests
     {
         var v1 = Vector.CreateZeroes<int>(6);
         var v2 = Vector.CreateOnes<int>(6);
-        VectorPrimitives.AddInPlace(v1, v2);
+        Vector.AddInPlace(v1, v2);
         Assert.Equal(6, v1.Length);
         Assert.Equal(6, v2.Length);
         Assert.Equal(v1, v2);
@@ -24,7 +24,7 @@ public partial class VectorTests
         var v2 = Vector.Create<NullableNumber<int>>([1, 2, 3, 4, 5, 6]);
         var v3 = Vector.Create<NullableNumber<int>>([2, 4, 6, 8, 10, 12]);
 
-        VectorPrimitives.AddInPlace(v1, v2);
+        Vector.AddInPlace(v1, v2);
         Assert.Equal(6, v1.Length);
         Assert.Equal(6, v2.Length);
         Assert.Equal(v1, v3);
@@ -37,7 +37,7 @@ public partial class VectorTests
         var v2 = Vector.Create<NullableNumber<int>>([1, null, 3, 4, 5, 6]);
         var v3 = Vector.Create<NullableNumber<int>>([2, null, 6, 8, null, 12]);
 
-        VectorPrimitives.AddInPlace(v1, v2);
+        Vector.AddInPlace(v1, v2);
 
         Assert.Equal(6, v1.Length);
         Assert.Equal(6, v2.Length);
@@ -50,7 +50,27 @@ public partial class VectorTests
     {
         var v1 = Vector.Create([.. Enumerable.Range(0, 100)]);
         var v2 = Vector.CreateOnes<int>(100);
-        VectorPrimitives.AddInPlace(v1, v2);
+
+        Vector.AddInPlace(v1, v2);
+
+        Assert.Equal(100, v1.Length);
+        Assert.Equal(100, v2.Length);
+        Assert.NotEqual(v1, v2);
+
+        for (var i = 0; i < v1.Length; i++)
+        {
+            Assert.Equal(v1[i], i + 1);
+        }
+    }
+
+    [Fact]
+    public void AddInPlace_Int32_Nullable_Ones()
+    {
+        var v1 = Vector.Create<NullableNumber<int>>([.. Enumerable.Range(0, 100)]);
+        var v2 = Vector.CreateOnes<NullableNumber<int>>(100);
+
+        Vector.AddInPlace(v1, v2);
+
         Assert.Equal(100, v1.Length);
         Assert.Equal(100, v2.Length);
         Assert.NotEqual(v1, v2);

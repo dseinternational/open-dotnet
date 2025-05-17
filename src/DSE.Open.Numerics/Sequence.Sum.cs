@@ -78,7 +78,7 @@ public static partial class Sequence
         if (sequence.TryGetSpan(out var span))
         {
             size = span.Length;
-            return VectorPrimitives.Sum<T, TResult>(span);
+            return Vector.Sum<T, TResult>(span);
         }
 
         ArgumentNullException.ThrowIfNull(sequence);
@@ -137,7 +137,7 @@ public static partial class Sequence
     {
         if (sequence.TryGetSpan(out var span))
         {
-            return VectorPrimitives.SumFloatingPoint<T, TResult>(span, summation);
+            return Vector.SumFloatingPoint<T, TResult>(span, summation);
         }
 
         ArgumentNullException.ThrowIfNull(sequence);

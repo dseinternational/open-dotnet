@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 
 namespace DSE.Open.Numerics;
 
-public static partial class VectorPrimitives
+public partial class Vector
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void Add<T>(IReadOnlyVector<T> x, IReadOnlyVector<T> y, IVector<T> destination)

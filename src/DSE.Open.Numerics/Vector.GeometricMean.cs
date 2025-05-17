@@ -5,18 +5,23 @@ using System.Numerics;
 
 namespace DSE.Open.Numerics;
 
-public static partial class VectorPrimitives
+public partial class Vector
 {
-    public static T StandardDeviation<T>(ReadOnlySpan<T> span)
+    public static T GeometricMean<T>(ReadOnlySpan<T> sequence)
         where T : struct, INumberBase<T>
     {
-        return StandardDeviation<T, T>(span);
+        return Mean<T, T>(sequence);
     }
 
-    public static TResult StandardDeviation<T, TResult>(ReadOnlySpan<T> span)
+    public static TResult GeometricMean<T, TResult>(ReadOnlySpan<T> sequence)
         where T : struct, INumberBase<T>
         where TResult : struct, INumberBase<TResult>
     {
+        EmptySequenceException.ThrowIfEmpty(sequence);
+
+        // https://en.wikipedia.org/wiki/Geometric_mean
+        // https://github.com/python/cpython/blob/3.12/Lib/statistics.py#L526
+
         throw new NotImplementedException();
     }
 }

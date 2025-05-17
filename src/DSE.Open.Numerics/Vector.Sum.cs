@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 
 namespace DSE.Open.Numerics;
 
-public static partial class VectorPrimitives
+public partial class Vector
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static T Sum<T>(ReadOnlySpan<T> span)

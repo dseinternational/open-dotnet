@@ -2,9 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Numerics;
-using System.Numerics.Tensors;
 using System.Text.Json.Serialization;
-using CommunityToolkit.HighPerformance;
 using DSE.Open.Numerics.Serialization;
 
 namespace DSE.Open.Numerics;
@@ -13,7 +11,7 @@ namespace DSE.Open.Numerics;
 /// A serializable, fixed-length, contiguous sequence of values.
 /// </summary>
 [JsonConverter(typeof(VectorJsonConverter))]
-public abstract class Vector : VectorBase, IVector
+public abstract partial class Vector : VectorBase, IVector
 {
     protected internal Vector(VectorDataType dataType, Type itemType, int length)
         : base(dataType, itemType, length, false)
@@ -25,49 +23,6 @@ public abstract class Vector : VectorBase, IVector
     public ReadOnlyVector AsReadOnly()
     {
         return CreateReadOnly();
-    }
-
-    public static bool Equals<T>(Vector<T>? v1, Vector<T>? v2)
-        where T : IEquatable<T>
-    {
-        if (ReferenceEquals(v1, v2))
-        {
-            return true;
-        }
-
-        if (v1 is null || v2 is null)
-        {
-            return false;
-        }
-
-        if (v1.Length != v2.Length)
-        {
-            return false;
-        }
-
-        return v1.AsSpan().SequenceEqual(v2.AsSpan());
-    }
-
-    public static void ElementsEquals<T>(Vector<T> v1, Vector<T> v2, Span<bool> result)
-        where T : IEquatable<T>
-    {
-        ArgumentNullException.ThrowIfNull(v1);
-        ArgumentNullException.ThrowIfNull(v2);
-
-        if (v1.Length != v2.Length)
-        {
-            throw new ArgumentException("Vectors must be of the same length.");
-        }
-
-        if (result.Length != v1.Length)
-        {
-            throw new ArgumentException("Result span must be of the same length as the vectors.");
-        }
-
-        for (var i = 0; i < v1.Length; i++)
-        {
-            result[i] = v1[i].Equals(v2[i]);
-        }
     }
 
     // -------- Factory methods --------

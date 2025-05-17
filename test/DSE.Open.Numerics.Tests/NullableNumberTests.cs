@@ -13,6 +13,20 @@ public class NullableNumberTests
     }
 
     [Fact]
+    public void InitializeWithNull()
+    {
+        NullableNumber<int> value = null;
+        Assert.False(value.HasValue);
+    }
+
+    [Fact]
+    public void Null_ToString_NA()
+    {
+        NullableNumber<int> value = null;
+        Assert.Equal(NullableNumber.NoValueLabel, value.ToString());
+    }
+
+    [Fact]
     public void EqualValues_AreEqual()
     {
         NullableNumber<int> v2 = 1;
