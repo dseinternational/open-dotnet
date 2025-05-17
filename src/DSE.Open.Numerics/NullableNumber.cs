@@ -64,9 +64,14 @@ public readonly partial struct NullableNumber<T> :
         _hasValue = true;
     }
 
-    public static implicit operator NullableNumber<T>(T value)
+    public static implicit operator NullableNumber<T>(T? value)
     {
-        return new(value);
+        if (value is null)
+        {
+            return default;
+        }
+
+        return new(value.Value);
     }
 
     public static explicit operator T(NullableNumber<T> value)

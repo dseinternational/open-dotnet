@@ -20,12 +20,29 @@ public partial class VectorTests
     [Fact]
     public void AddInPlace_Nullable_Int32()
     {
-        var v1 = Vector.Create<NullableNumber<int>>(6);
-        var v2 = Vector.Create<NullableNumber<int>>(6);
+        var v1 = Vector.Create<NullableNumber<int>>([1, 2, 3, 4, 5, 6]);
+        var v2 = Vector.Create<NullableNumber<int>>([1, 2, 3, 4, 5, 6]);
+        var v3 = Vector.Create<NullableNumber<int>>([2, 4, 6, 8, 10, 12]);
+
         VectorPrimitives.AddInPlace(v1, v2);
         Assert.Equal(6, v1.Length);
         Assert.Equal(6, v2.Length);
-        Assert.Equal(v1, v2);
+        Assert.Equal(v1, v3);
+    }
+
+    [Fact]
+    public void AddInPlace_Nullable_Int32_NullValues()
+    {
+        var v1 = Vector.Create<NullableNumber<int>>([1, 2, 3, 4, null, 6]);
+        var v2 = Vector.Create<NullableNumber<int>>([1, null, 3, 4, 5, 6]);
+        var v3 = Vector.Create<NullableNumber<int>>([2, null, 6, 8, null, 12]);
+
+        VectorPrimitives.AddInPlace(v1, v2);
+
+        Assert.Equal(6, v1.Length);
+        Assert.Equal(6, v2.Length);
+        // vectors containing NAs are not equal to any other vector
+        Assert.NotEqual(v1, v3);
     }
 
     [Fact]

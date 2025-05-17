@@ -61,8 +61,13 @@ public readonly struct NullableValue<T> :
         _hasValue = true;
     }
 
-    public static implicit operator NullableValue<T>(T value)
+    public static implicit operator NullableValue<T>(T? value)
     {
+        if (value is null)
+        {
+            return default;
+        }
+
         return new(value);
     }
 
