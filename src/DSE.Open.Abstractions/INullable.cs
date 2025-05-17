@@ -15,7 +15,7 @@ namespace DSE.Open;
 [SuppressMessage("Design", "CA1000:Do not declare static members on generic types", Justification = "Required for static interface methods")]
 public interface INullable<TSelf, T> : IEquatable<TSelf>, IEqualityOperators<TSelf, TSelf, bool>
     where T : IEquatable<T>
-    where TSelf : struct, INullable<TSelf, T>
+    where TSelf : INullable<TSelf, T>
 {
     /// <summary>
     /// Gets a value that represents the 'null' or 'no value' state.

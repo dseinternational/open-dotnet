@@ -18,6 +18,17 @@ public partial class VectorTests
     }
 
     [Fact]
+    public void AddInPlace_Nullable_Int32()
+    {
+        var v1 = Vector.Create<NullableNumber<int>>(6);
+        var v2 = Vector.Create<NullableNumber<int>>(6);
+        VectorPrimitives.AddInPlace(v1, v2);
+        Assert.Equal(6, v1.Length);
+        Assert.Equal(6, v2.Length);
+        Assert.Equal(v1, v2);
+    }
+
+    [Fact]
     public void AddInPlace_Int32_Ones()
     {
         var v1 = Vector.Create([.. Enumerable.Range(0, 100)]);

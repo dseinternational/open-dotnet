@@ -57,6 +57,25 @@ public static class VectorDataTypeHelper
         [VectorDataType.UInt64] = typeof(ulong),
         [VectorDataType.UInt8] = typeof(byte),
 
+        [VectorDataType.NullableBool] = typeof(NullableValue<bool>),
+        [VectorDataType.NullableChar] = typeof(NullablePrimitiveValue<char>),
+        [VectorDataType.NullableDateTime] = typeof(NullablePrimitiveValue<DateTime>),
+        [VectorDataType.NullableDateTime64] = typeof(NullablePrimitiveValue<DateTime64>),
+        [VectorDataType.NullableDateTimeOffset] = typeof(NullablePrimitiveValue<DateTimeOffset>),
+        [VectorDataType.NullableFloat32] = typeof(NullableNumber<float>),
+        [VectorDataType.NullableFloat64] = typeof(NullableNumber<double>),
+        [VectorDataType.NullableUuid] = typeof(NullablePrimitiveValue<Guid>),
+        [VectorDataType.NullableInt128] = typeof(NullableNumber<Int128>),
+        [VectorDataType.NullableInt16] = typeof(NullableNumber<short>),
+        [VectorDataType.NullableInt32] = typeof(NullableNumber<int>),
+        [VectorDataType.NullableInt64] = typeof(NullableNumber<long>),
+        [VectorDataType.NullableInt8] = typeof(NullableNumber<sbyte>),
+        [VectorDataType.NullableString] = typeof(NullableValue<string>),
+        [VectorDataType.NullableUInt128] = typeof(NullableNumber<UInt128>),
+        [VectorDataType.NullableUInt32] = typeof(NullableNumber<uint>),
+        [VectorDataType.NullableUInt64] = typeof(NullableNumber<ulong>),
+        [VectorDataType.NullableUInt8] = typeof(NullableNumber<byte>),
+
     }.ToFrozenDictionary();
 
     private static readonly FrozenDictionary<Type, VectorDataType> s_vectorTypeLookup =
@@ -79,6 +98,20 @@ public static class VectorDataTypeHelper
         VectorDataType.UInt32,
         VectorDataType.UInt64,
         VectorDataType.UInt8,
+
+        VectorDataType.NullableDateTime64,
+        VectorDataType.NullableFloat32,
+        VectorDataType.NullableFloat64,
+        VectorDataType.NullableUuid,
+        VectorDataType.NullableInt128,
+        VectorDataType.NullableInt16,
+        VectorDataType.NullableInt32,
+        VectorDataType.NullableInt64,
+        VectorDataType.NullableInt8,
+        VectorDataType.NullableUInt128,
+        VectorDataType.NullableUInt32,
+        VectorDataType.NullableUInt64,
+        VectorDataType.NullableUInt8,
 
     }.ToFrozenSet();
 
