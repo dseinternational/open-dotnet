@@ -64,7 +64,7 @@ public abstract class Vector : VectorBase, IVector
     }
 
     public static Vector<T> Create<T>(int length)
-        where T : struct, INumber<T>
+        where T : IEquatable<T>
     {
         return new Vector<T>(new T[length]);
     }
