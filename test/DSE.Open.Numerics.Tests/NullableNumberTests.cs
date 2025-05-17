@@ -6,9 +6,16 @@ namespace DSE.Open.Numerics;
 public class NullableNumberTests
 {
     [Fact]
-    public void InitializeWithValue()
+    public void InitializeWithValue_Int32()
     {
         NullableNumber<int> value = 1;
+        Assert.True(value.HasValue);
+    }
+
+    [Fact]
+    public void InitializeWithValue_Double()
+    {
+        NullableNumber<double> value = double.NaN;
         Assert.True(value.HasValue);
     }
 

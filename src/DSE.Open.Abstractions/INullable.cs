@@ -1,19 +1,38 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Diagnostics.CodeAnalysis;
-
 using System.Numerics;
 
 namespace DSE.Open;
 
 /// <summary>
-/// Encapsulates a value that may be 'null' (have no value).
+/// A value that may be 'null' (have no value).
+/// </summary>
+public interface INullable
+{
+    /// <summary>
+    /// Indicates if the current value has been set.
+    /// </summary>
+    bool HasValue { get; }
+
+    /// <summary>
+    /// If the value is set (<see cref="HasValue"/>), then returns that value, otherwise throws
+    /// a <see cref="NullValueException"/>.
+    /// </summary>
+    /// <exception cref="NullValueException">Thrown if no value is available
+    /// (<see cref="HasValue"/> is false).</exception>
+    object Value { get; }
+}
+
+/// <summary>
+/// A value that may be 'null' (have no value).
 /// </summary>
 /// <typeparam name="TSelf"></typeparam>
 /// <typeparam name="T"></typeparam>
-[SuppressMessage("Design", "CA1000:Do not declare static members on generic types", Justification = "Required for static interface methods")]
-public interface INullable<TSelf, T> : IEquatable<TSelf>, IEqualityOperators<TSelf, TSelf, bool>
+public interface INullable<TSelf, T>
+    : INullable,
+      IEquatable<TSelf>,
+      IEqualityOperators<TSelf, TSelf, bool>
     where T : IEquatable<T>
     where TSelf : INullable<TSelf, T>
 {
@@ -23,27 +42,26 @@ public interface INullable<TSelf, T> : IEquatable<TSelf>, IEqualityOperators<TSe
     static virtual TSelf Null => default!;
 
     /// <summary>
-    /// If the value can be represented as a value of type <typeparamref name="T"/> (<see cref="HasValue"/>),
-    /// then returns that value, otherwise throws an <see cref="InvalidOperationException"/>.
+    /// If the value is set (<see cref="INullable.HasValue"/>), then returns that value, otherwise
+    /// throws a <see cref="NullValueException"/>.
     /// </summary>
-    /// <exception cref="InvalidOperationException">Thrown if no value is available
-    /// (<see cref="HasValue"/> is false).</exception>
-    T Value { get; }
+    /// <exception cref="NullValueException">Thrown if no value is available
+    /// (<see cref="INullable.HasValue"/> is false).</exception>
+    new T Value { get; }
 
-    /// <summary>
-    /// Indicates if the current value can be represented as a value of type <typeparamref name="T"/>.
-    /// </summary>
-    bool HasValue { get; }
+    object INullable.Value => Value;
 
     new bool Equals(TSelf other)
     {
         return TSelf.Equals((TSelf)this, other);
     }
 
+    // Note: as for Nullable<T>
+
     static virtual bool Equals(TSelf v1, TSelf v2)
     {
         return v1.HasValue
-            ? v2.HasValue && EqualityComparer<T>.Default.Equals(v1.Value, v2.Value)
+            ? v2.HasValue && v1.Value.Equals(v2.Value)
             : !v2.HasValue;
     }
 
