@@ -13,7 +13,9 @@ namespace DSE.Open.Numerics;
 
 [StructLayout(LayoutKind.Sequential)]
 public readonly struct NaInteger<T>
-    : INumber<NaInteger<T>>
+    : INumber<NaInteger<T>>,
+      IMinMaxValue<T>,
+      INullable<NaInteger<T>, T>
       where T : struct, IBinaryInteger<T>, IMinMaxValue<T>
 {
     private static readonly T s_sentinel = T.MinValue;
@@ -58,11 +60,15 @@ public readonly struct NaInteger<T>
     public static explicit operator T(NaInteger<T> value)
     {
         return value.IsNa
-                ? throw new InvalidOperationException("Value is NA")
-                : value._value;
+            ? throw new UnknownValueException()
+            : value._value;
     }
 
     public bool IsNa => _value == s_sentinel;
+
+    T INullable<NaInteger<T>, T>.Value => (T)this;
+
+    bool INullable.HasValue => !IsNa;
 
     public bool Equals(NaInteger<T> other)
     {
@@ -100,6 +106,10 @@ public readonly struct NaInteger<T>
     public static NaInteger<T> Zero => T.Zero;
 
     public static NaInteger<T> MultiplicativeIdentity => T.MultiplicativeIdentity;
+
+    public static T MaxValue => T.MaxValue;
+
+    public static T MinValue => T.MinValue + T.One;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static NaInteger<T> Ternary(NaInteger<T> x, NaInteger<T> y, Func<T, T, T> op)
@@ -154,119 +164,204 @@ public readonly struct NaInteger<T>
         return IsNa ? "NA" : _value.ToString();
     }
 
-    public NaInteger<T> ToNaNumber()
-    {
-        throw new NotImplementedException();
-    }
-
     public static NaInteger<T> Abs(NaInteger<T> value)
     {
+        if (value.IsNa)
+        {
+            return Na;
+        }
+
         return T.Abs(value._value);
     }
 
     public static bool IsCanonical(NaInteger<T> value)
     {
+        if (value.IsNa)
+        {
+            return false;
+        }
+
         return T.IsCanonical(value._value);
     }
 
     public static bool IsComplexNumber(NaInteger<T> value)
     {
+        if (value.IsNa)
+        {
+            return false;
+        }
+
         return T.IsComplexNumber(value._value);
     }
 
     public static bool IsEvenInteger(NaInteger<T> value)
     {
+        if (value.IsNa)
+        {
+            return false;
+        }
+
         return T.IsEvenInteger(value._value);
     }
 
     public static bool IsFinite(NaInteger<T> value)
     {
+        if (value.IsNa)
+        {
+            return false;
+        }
+
         return T.IsFinite(value._value);
     }
 
     public static bool IsImaginaryNumber(NaInteger<T> value)
     {
+        if (value.IsNa)
+        {
+            return false;
+        }
+
         return T.IsImaginaryNumber(value._value);
     }
 
     public static bool IsInfinity(NaInteger<T> value)
     {
+        if (value.IsNa)
+        {
+            return false;
+        }
+
         return T.IsInfinity(value._value);
     }
 
     public static bool IsInteger(NaInteger<T> value)
     {
+        if (value.IsNa)
+        {
+            return false;
+        }
+
         return T.IsInteger(value._value);
     }
 
     public static bool IsNaN(NaInteger<T> value)
     {
+        if (value.IsNa)
+        {
+            return true;
+        }
+
         return T.IsNaN(value._value);
     }
 
     public static bool IsNegative(NaInteger<T> value)
     {
+        if (value.IsNa)
+        {
+            return false;
+        }
+
         return T.IsNegative(value._value);
     }
 
     public static bool IsNegativeInfinity(NaInteger<T> value)
     {
+        if (value.IsNa)
+        {
+            return false;
+        }
+
         return T.IsNegativeInfinity(value._value);
     }
 
     public static bool IsNormal(NaInteger<T> value)
     {
+        if (value.IsNa)
+        {
+            return false;
+        }
+
         return T.IsNormal(value._value);
     }
 
     public static bool IsOddInteger(NaInteger<T> value)
     {
+        if (value.IsNa)
+        {
+            return false;
+        }
+
         return T.IsOddInteger(value._value);
     }
 
     public static bool IsPositive(NaInteger<T> value)
     {
+        if (value.IsNa)
+        {
+            return false;
+        }
+
         return T.IsPositive(value._value);
     }
 
     public static bool IsPositiveInfinity(NaInteger<T> value)
     {
+        if (value.IsNa)
+        {
+            return false;
+        }
+
         return T.IsPositiveInfinity(value._value);
     }
 
     public static bool IsRealNumber(NaInteger<T> value)
     {
+        if (value.IsNa)
+        {
+            return false;
+        }
+
         return T.IsRealNumber(value._value);
     }
 
     public static bool IsSubnormal(NaInteger<T> value)
     {
+        if (value.IsNa)
+        {
+            return false;
+        }
+
         return T.IsSubnormal(value._value);
     }
 
     public static bool IsZero(NaInteger<T> value)
     {
+        if (value.IsNa)
+        {
+            return false;
+        }
+
         return T.IsZero(value._value);
     }
 
     public static NaInteger<T> MaxMagnitude(NaInteger<T> x, NaInteger<T> y)
     {
-        return T.MaxMagnitude(x._value, y._value);
+        return Ternary(x, y, T.MaxMagnitude);
     }
 
     public static NaInteger<T> MaxMagnitudeNumber(NaInteger<T> x, NaInteger<T> y)
     {
-        return T.MaxMagnitudeNumber(x._value, y._value);
+        return Ternary(x, y, T.MaxMagnitudeNumber);
     }
 
     public static NaInteger<T> MinMagnitude(NaInteger<T> x, NaInteger<T> y)
     {
-        return T.MinMagnitude(x._value, y._value);
+        return Ternary(x, y, T.MinMagnitude);
     }
 
     public static NaInteger<T> MinMagnitudeNumber(NaInteger<T> x, NaInteger<T> y)
     {
-        return T.MinMagnitudeNumber(x._value, y._value);
+        return Ternary(x, y, T.MinMagnitudeNumber);
     }
 
     public static NaInteger<T> Parse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider)
@@ -279,7 +374,9 @@ public readonly struct NaInteger<T>
         return T.Parse(s, style, provider);
     }
 
-    public static bool TryConvertFromChecked<TOther>(TOther value, [MaybeNullWhen(false)] out NaInteger<T> result) where TOther : INumberBase<TOther>
+    public static bool TryConvertFromChecked<TOther>(
+        TOther value,
+        [MaybeNullWhen(false)] out NaInteger<T> result) where TOther : INumberBase<TOther>
     {
         if (T.TryConvertFromChecked(value, out var val))
         {
@@ -297,7 +394,9 @@ public readonly struct NaInteger<T>
         return false;
     }
 
-    public static bool TryConvertFromSaturating<TOther>(TOther value, [MaybeNullWhen(false)] out NaInteger<T> result) where TOther : INumberBase<TOther>
+    public static bool TryConvertFromSaturating<TOther>(
+        TOther value,
+        [MaybeNullWhen(false)] out NaInteger<T> result) where TOther : INumberBase<TOther>
     {
         if (T.TryConvertFromSaturating(value, out var val))
         {
