@@ -15,11 +15,13 @@ public interface INullable
     /// </summary>
     bool HasValue { get; }
 
+    virtual bool IsUnknown => !HasValue;
+
     /// <summary>
     /// If the value is set (<see cref="HasValue"/>), then returns that value, otherwise throws
-    /// a <see cref="NullValueException"/>.
+    /// a <see cref="UnknownValueException"/>.
     /// </summary>
-    /// <exception cref="NullValueException">Thrown if no value is available
+    /// <exception cref="UnknownValueException">Thrown if no value is available
     /// (<see cref="HasValue"/> is false).</exception>
     object Value { get; }
 }
@@ -43,9 +45,9 @@ public interface INullable<TSelf, T>
 
     /// <summary>
     /// If the value is set (<see cref="INullable.HasValue"/>), then returns that value, otherwise
-    /// throws a <see cref="NullValueException"/>.
+    /// throws a <see cref="UnknownValueException"/>.
     /// </summary>
-    /// <exception cref="NullValueException">Thrown if no value is available
+    /// <exception cref="UnknownValueException">Thrown if no value is available
     /// (<see cref="INullable.HasValue"/> is false).</exception>
     new T Value { get; }
 
@@ -56,7 +58,14 @@ public interface INullable<TSelf, T>
         return TSelf.Equals((TSelf)this, other);
     }
 
-    // Note: as for Nullable<T>
+    // Note: as for Nullable<T> and consistent with IEquatable<TSelf>.Equals:
+    // -----------------------
+    // v1      v2    result
+    // -----------------------
+    // null    null  true
+    // null    1     false
+    // 1       null  false
+    // 1       1     true
 
     static virtual bool Equals(TSelf v1, TSelf v2)
     {
@@ -67,11 +76,11 @@ public interface INullable<TSelf, T>
 
     static virtual bool operator ==(TSelf left, TSelf right)
     {
-        return left.Equals(right);
+        return TSelf.Equals(left, right);
     }
 
     static virtual bool operator !=(TSelf left, TSelf right)
     {
-        return !left.Equals(right);
+        return !TSelf.Equals(left, right);
     }
 }

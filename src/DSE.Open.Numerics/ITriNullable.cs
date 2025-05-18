@@ -3,13 +3,14 @@
 
 using System.Numerics;
 
-namespace DSE.Open;
+namespace DSE.Open.Numerics;
+
 
 /// <summary>
 /// A value that may be missing or unknown. Unlike <see cref="INullable"/> or <see cref="Nullable{T}"/>,
-/// with <see cref="IMissingNullable"/>, 'unknown' == 'unknown' is <see langword="false"/>.
+/// with <see cref="ITriNullable"/>, 'unknown' == 'unknown' is <see langword="false"/>.
 /// </summary>
-public interface IMissingNullable
+public interface ITriNullable
 {
     /// <summary>
     /// Indicates if the current value has been set.
@@ -20,16 +21,16 @@ public interface IMissingNullable
 
     /// <summary>
     /// If the value is set (<see cref="HasValue"/>), then returns that value, otherwise throws
-    /// a <see cref="NullValueException"/>.
+    /// a <see cref="Open.UnknownValueException"/>.
     /// </summary>
-    /// <exception cref="NullValueException">Thrown if no value is available
+    /// <exception cref="Open.UnknownValueException">Thrown if no value is available
     /// (<see cref="HasValue"/> is false).</exception>
     object Value { get; }
 }
 
 /// <summary>
 /// A value that may be missing or unknown. Unlike <see cref="INullable"/> or <see cref="Nullable{T}"/>,
-/// with <see cref="IMissingNullable"/>, 'unknown' == 'unknown' is <see langword="false"/>.
+/// with <see cref="ITriNullable"/>, 'unknown' == 'unknown' is <see langword="false"/>.
 /// </summary>
 /// <typeparam name="TSelf"></typeparam>
 /// <typeparam name="T"></typeparam>
@@ -43,7 +44,7 @@ public interface IMissingNullable
 /// (<c>missing1 == missing2 == false</c> as in <c>float.NaN == float.Nan == false</c>).
 /// </remarks>
 public interface IMissingNullable<TSelf, T>
-    : IMissingNullable,
+    : ITriNullable,
       IEquatable<TSelf>,
       IEqualityOperators<TSelf, TSelf, bool>
     where T : IEquatable<T>
@@ -55,14 +56,14 @@ public interface IMissingNullable<TSelf, T>
     static virtual TSelf Null => default!;
 
     /// <summary>
-    /// If the value is set (<see cref="IMissingNullable.HasValue"/>), then returns that value, otherwise
-    /// throws a <see cref="NullValueException"/>.
+    /// If the value is set (<see cref="ITriNullable.HasValue"/>), then returns that value, otherwise
+    /// throws a <see cref="Open.UnknownValueException"/>.
     /// </summary>
-    /// <exception cref="NullValueException">Thrown if no value is available
-    /// (<see cref="IMissingNullable.HasValue"/> is false).</exception>
+    /// <exception cref="Open.UnknownValueException">Thrown if no value is available
+    /// (<see cref="ITriNullable.HasValue"/> is false).</exception>
     new T Value { get; }
 
-    object IMissingNullable.Value => Value;
+    object ITriNullable.Value => Value;
 
     static virtual bool Equals(TSelf v1, TSelf v2)
     {
