@@ -44,11 +44,7 @@ public static class NullableNumber
 
 public readonly partial struct NullableNumber<T> :
     INumber<NullableNumber<T>>,
-    INullable<NullableNumber<T>, T>,
-    IComparable<NullableNumber<T>>,
-    IComparable,
-    ISpanParsable<NullableNumber<T>>,
-    ISpanFormattable
+    INullable<NullableNumber<T>, T>
     where T : struct, INumber<T>
 {
     private readonly bool _hasValue;
