@@ -6,7 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace DSE.Open.Numerics;
 
-public static class VectorDataTypeHelper
+public partial class Vector
 {
     private static readonly FrozenDictionary<VectorDataType, string> s_labelLookup = new Dictionary<VectorDataType, string>()
     {
@@ -60,10 +60,10 @@ public static class VectorDataTypeHelper
         [VectorDataType.NullableBool] = typeof(NaValue<bool>),
         [VectorDataType.NullableChar] = typeof(NaValue<char>),
         [VectorDataType.NullableDateTime] = typeof(NaValue<DateTime>),
-        [VectorDataType.NullableDateTime64] = typeof(NaValue<DateTime64>),
+        [VectorDataType.NullableDateTime64] = typeof(NaInt<DateTime64>),
         [VectorDataType.NullableDateTimeOffset] = typeof(NaValue<DateTimeOffset>),
-        //[VectorDataType.NullableFloat32] = typeof(NaInteger<float>),
-        //[VectorDataType.NullableFloat64] = typeof(NaInteger<double>),
+        [VectorDataType.NullableFloat32] = typeof(NaFloat<float>),
+        [VectorDataType.NullableFloat64] = typeof(NaFloat<double>),
         [VectorDataType.NullableUuid] = typeof(NaValue<Guid>),
         [VectorDataType.NullableInt128] = typeof(NaInt<Int128>),
         [VectorDataType.NullableInt16] = typeof(NaInt<short>),

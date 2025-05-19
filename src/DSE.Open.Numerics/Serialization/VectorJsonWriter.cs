@@ -86,7 +86,7 @@ public static class VectorJsonWriter
 
         writer.WriteStartObject();
 
-        writer.WriteString(NumericsPropertyNames.DataType, VectorDataTypeHelper.GetLabel(vector.DataType));
+        writer.WriteString(NumericsPropertyNames.DataType, Vector.GetLabel(vector.DataType));
 
         writer.WriteNumber(NumericsPropertyNames.Length, vector.Length);
 
@@ -141,6 +141,17 @@ public static class VectorJsonWriter
         {
             case byte byteValue:
                 writer.WriteNumberValue(byteValue);
+                return;
+            case NaInt<byte> nabyteValue:
+                if (nabyteValue.IsNa)
+                {
+                    writer.WriteNullValue();
+                }
+                else
+                {
+                    writer.WriteNumberValue(nabyteValue);
+                }
+
                 return;
             case sbyte sbyteValue:
                 writer.WriteNumberValue(sbyteValue);
@@ -298,24 +309,6 @@ public static class VectorJsonWriter
         Utf8JsonWriter writer,
         ReadOnlySpan<T> vector,
         JsonValueWriter<T> writeValue)
-    {
-        writer.WriteStartArray();
-
-        foreach (var value in vector)
-        {
-            writeValue(writer, value);
-        }
-
-        writer.WriteEndArray();
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static void WriteArray<TSelf, T>(
-        Utf8JsonWriter writer,
-        ReadOnlySpan<T> vector,
-        JsonValueWriter<T> writeValue)
-        where TSelf : INullable<TSelf, T>
-        where T : IEquatable<T>
     {
         writer.WriteStartArray();
 

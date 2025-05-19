@@ -130,9 +130,9 @@ public readonly struct NaInt<T>
 
     public static NaInt<T> MultiplicativeIdentity => T.MultiplicativeIdentity;
 
-    public static T MaxValue => T.MaxValue;
+    public static NaInt<T> MaxValue { get; } = T.MaxValue - T.One;
 
-    public static T MinValue => T.MinValue + T.One;
+    public static NaInt<T> MinValue { get; } = T.MinValue;
 
     static NaInt<T> INullable<NaInt<T>, T>.Null => Na;
 

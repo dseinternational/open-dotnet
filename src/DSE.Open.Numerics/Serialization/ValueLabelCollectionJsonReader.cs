@@ -71,7 +71,7 @@ internal static class ValueLabelCollectionJsonReader
                         throw new JsonException();
                     }
 
-                    var type = VectorDataTypeHelper.GetVectorDataType(dataType);
+                    var type = Vector.GetVectorDataType(dataType);
 
                     switch (type)
                     {

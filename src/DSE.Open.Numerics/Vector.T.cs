@@ -4,7 +4,6 @@
 using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
-using System.Numerics.Tensors;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
@@ -33,7 +32,7 @@ public sealed class Vector<T> : Vector, IVector<T>, IReadOnlyVector<T>, IEquatab
     }
 
     public Vector(Memory<T> memory)
-        : base(VectorDataTypeHelper.GetVectorDataType<T>(), typeof(T), memory.Length)
+        : base(Vector.GetVectorDataType<T>(), typeof(T), memory.Length)
     {
         _memory = memory;
     }

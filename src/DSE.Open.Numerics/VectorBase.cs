@@ -19,7 +19,7 @@ public abstract class VectorBase
         IsEmpty = length == 0;
 
 #if DEBUG
-        if (VectorDataTypeHelper.TryGetVectorDataType(itemType, out var expectedDataType)
+        if (Vector.TryGetVectorDataType(itemType, out var expectedDataType)
             && dataType != expectedDataType)
         {
             Debug.Fail($"Expected data type {expectedDataType} for "
@@ -32,6 +32,7 @@ public abstract class VectorBase
         ItemType = itemType;
         Length = length;
         IsReadOnly = isReadOnly;
+        IsNullable = dataType >= VectorDataType.NullableFloat64;
     }
 
     /// <summary>
@@ -45,6 +46,8 @@ public abstract class VectorBase
     /// Indicates if the item type is a known numeric type.
     /// </summary>
     public bool IsNumeric { get; }
+
+    public bool IsNullable { get; }
 
     /// <summary>
     /// Gets the type of the items in the vector.

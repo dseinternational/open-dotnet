@@ -9,6 +9,10 @@ using DSE.Open.Numerics.Serialization;
 
 namespace DSE.Open.Numerics;
 
+/// <summary>
+/// A set of related data, organised as a collection of columns (<see cref="Series"/>) of equal length,
+/// optimised for serialization.
+/// </summary>
 [JsonConverter(typeof(DataFrameJsonConverter))]
 [CollectionBuilder(typeof(DataFrame), nameof(Create))]
 public class DataFrame : IDataFrame

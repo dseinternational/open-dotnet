@@ -16,7 +16,7 @@ public abstract class SeriesBase
         _vector = vector;
 
 #if DEBUG
-        if (VectorDataTypeHelper.TryGetVectorDataType(vector.ItemType, out var expectedDataType)
+        if (Numerics.Vector.TryGetVectorDataType(vector.ItemType, out var expectedDataType)
             && vector.DataType != expectedDataType)
         {
             Debug.Fail($"Expected data type {expectedDataType} for "
