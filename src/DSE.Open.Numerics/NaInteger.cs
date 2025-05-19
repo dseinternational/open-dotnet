@@ -18,7 +18,7 @@ public readonly struct NaInteger<T>
       INullable<NaInteger<T>, T>
       where T : struct, IBinaryInteger<T>, IMinMaxValue<T>
 {
-    private static readonly T s_sentinel = T.MinValue;
+    private static readonly T s_sentinel = T.MaxValue;
 
     public static T Sentinel => s_sentinel;
 
