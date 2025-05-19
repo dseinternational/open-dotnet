@@ -71,7 +71,7 @@ public static class VectorJsonReader
                     throw new JsonException("Cannot read vector without data type");
                 }
 
-                var dtype = VectorDataTypeHelper.GetVectorDataType(dataType);
+                var dtype = Vector.GetVectorDataType(dataType);
 
                 _ = reader.Read();
 

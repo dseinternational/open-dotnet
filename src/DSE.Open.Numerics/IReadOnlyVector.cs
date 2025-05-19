@@ -14,6 +14,8 @@ public interface IReadOnlyVector
 
     bool IsNumeric { get; }
 
+    bool IsNullable { get; }
+
     Type ItemType { get; }
 
     int Length { get; }

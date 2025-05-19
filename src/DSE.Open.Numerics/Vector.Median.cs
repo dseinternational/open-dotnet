@@ -5,7 +5,7 @@ using System.Numerics;
 
 namespace DSE.Open.Numerics;
 
-public static partial class VectorPrimitives
+public partial class Vector
 {
     /// <summary>
     /// Gets the median (middle value) value of a numeric sequence.

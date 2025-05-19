@@ -7,7 +7,7 @@ using System.Numerics.Tensors;
 
 namespace DSE.Open.Numerics;
 
-public static partial class VectorPrimitives
+public partial class Vector
 {
     public static T Max<T>([NotNull] IReadOnlyVector<T> vector)
         where T : struct, INumber<T>

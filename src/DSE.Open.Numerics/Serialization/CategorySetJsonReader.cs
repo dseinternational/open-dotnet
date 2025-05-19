@@ -67,7 +67,7 @@ public static class CategorySetJsonReader
                     throw new JsonException("Cannot read category set without data type");
                 }
 
-                var dtype = VectorDataTypeHelper.GetVectorDataType(dataType);
+                var dtype = Vector.GetVectorDataType(dataType);
 
                 _ = reader.Read();
 

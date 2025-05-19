@@ -5,7 +5,7 @@ using System.Numerics;
 
 namespace DSE.Open.Numerics;
 
-public static partial class VectorPrimitives
+public partial class Vector
 {
     public static T Mode<T>(ReadOnlySpan<T> span)
         where T : struct, INumberBase<T>

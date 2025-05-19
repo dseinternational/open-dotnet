@@ -13,7 +13,7 @@ public static partial class Sequence
     {
         if (values.TryGetSpan(out var span))
         {
-            return VectorPrimitives.Max(span);
+            return Vector.Max(span);
         }
 
         ArgumentNullException.ThrowIfNull(values);
@@ -48,7 +48,7 @@ public static partial class Sequence
     {
         if (values.TryGetSpan(out var span))
         {
-            return VectorPrimitives.MaxFloatingPoint(span);
+            return Vector.MaxFloatingPoint(span);
         }
 
         ArgumentNullException.ThrowIfNull(values);

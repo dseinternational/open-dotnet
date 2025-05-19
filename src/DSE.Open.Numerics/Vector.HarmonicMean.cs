@@ -5,22 +5,22 @@ using System.Numerics;
 
 namespace DSE.Open.Numerics;
 
-public static partial class VectorPrimitives
+public partial class Vector
 {
-    public static T GeometricMean<T>(ReadOnlySpan<T> sequence)
+    public static T HarmonicMean<T>(ReadOnlySpan<T> sequence)
         where T : struct, INumberBase<T>
     {
         return Mean<T, T>(sequence);
     }
 
-    public static TResult GeometricMean<T, TResult>(ReadOnlySpan<T> sequence)
+    public static TResult HarmonicMean<T, TResult>(ReadOnlySpan<T> sequence)
         where T : struct, INumberBase<T>
         where TResult : struct, INumberBase<TResult>
     {
         EmptySequenceException.ThrowIfEmpty(sequence);
 
-        // https://en.wikipedia.org/wiki/Geometric_mean
-        // https://github.com/python/cpython/blob/3.12/Lib/statistics.py#L526
+        // https://en.wikipedia.org/wiki/Harmonic_mean
+        // https://github.com/python/cpython/blob/3.12/Lib/statistics.py#L545
 
         throw new NotImplementedException();
     }

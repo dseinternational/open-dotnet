@@ -30,4 +30,24 @@ public static class VectorDataTypeLabels
     public const string UInt64 = "uint64";
     public const string UInt128 = "uint128";
     public const string UInt16 = "uint16";
+
+    public const string NullableBool = "bool_n";
+    public const string NullableChar = "char_n";
+    public const string NullableString = "string_n";
+    public const string NullableDateTime = "datetime_n";
+    public const string NullableDateTimeOffset = "datetimeoffset_n";
+    public const string NullableUuid = "uuid_n";
+    public const string NullableUInt8 = "uint8_n";
+    public const string NullableDateTime64 = "datetime64_n";
+    public const string NullableFloat64 = "float64_n";
+    public const string NullableFloat32 = "float32_n";
+    public const string NullableInt32 = "int32_n";
+    public const string NullableInt128 = "int128_n";
+    public const string NullableInt64 = "int64_n";
+    public const string NullableInt8 = "int8_n";
+    public const string NullableInt16 = "int16_n";
+    public const string NullableUInt32 = "uint32_n";
+    public const string NullableUInt64 = "uint64_n";
+    public const string NullableUInt128 = "uint128_n";
+    public const string NullableUInt16 = "uint16_n";
 }

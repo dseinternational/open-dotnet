@@ -5,15 +5,15 @@ using System.Numerics;
 
 namespace DSE.Open.Numerics;
 
-public static partial class VectorPrimitives
+public partial class Vector
 {
-    public static T PopulationStandardDeviation<T>(ReadOnlySpan<T> span)
+    public static T StandardDeviation<T>(ReadOnlySpan<T> span)
         where T : struct, INumberBase<T>
     {
-        return PopulationStandardDeviation<T, T>(span);
+        return StandardDeviation<T, T>(span);
     }
 
-    public static TResult PopulationStandardDeviation<T, TResult>(ReadOnlySpan<T> span)
+    public static TResult StandardDeviation<T, TResult>(ReadOnlySpan<T> span)
         where T : struct, INumberBase<T>
         where TResult : struct, INumberBase<TResult>
     {

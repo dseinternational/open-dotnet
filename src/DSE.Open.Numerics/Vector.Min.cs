@@ -7,7 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace DSE.Open.Numerics;
 
-public static partial class VectorPrimitives
+public partial class Vector
 {
     public static T Min<T>([NotNull] IReadOnlyVector<T> vector)
         where T : struct, INumber<T>

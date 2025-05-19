@@ -5,19 +5,24 @@ using System.Numerics;
 
 namespace DSE.Open.Numerics;
 
-public static partial class VectorPrimitives
+public partial class Vector
 {
     /// <summary>
-    /// Divide data into n continuous intervals with equal probability. Returns a list of n - 1
-    /// cut points separating the intervals.
+    /// Gets the sample variance of a sequence of at least two numbers.
     /// </summary>
     /// <typeparam name="T">The type of the elements in the sequence.</typeparam>
     /// <param name="span">The sequence of elements to use for the calculation.</param>
-    /// <param name="n"></param>
+    /// <param name="mean"></param>
     /// <returns></returns>
-    /// <exception cref="NotImplementedException"></exception>
-    public static ReadOnlySpan<T> Quantiles<T>(ReadOnlySpan<T> span, int n = 4)
+    public static T PopulationVariance<T>(ReadOnlySpan<T> span, T? mean = default)
         where T : struct, INumberBase<T>
+    {
+        return PopulationVariance<T, T>(span, mean);
+    }
+
+    public static TResult PopulationVariance<T, TResult>(ReadOnlySpan<T> span, T? mean = default)
+        where T : struct, INumberBase<T>
+        where TResult : struct, INumberBase<TResult>
     {
         throw new NotImplementedException();
     }

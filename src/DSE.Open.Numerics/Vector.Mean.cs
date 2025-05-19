@@ -5,7 +5,7 @@ using System.Numerics;
 
 namespace DSE.Open.Numerics;
 
-public static partial class VectorPrimitives
+public partial class Vector
 {
     /// <summary>
     /// Calculates the sample arithmetic mean of a sequence. If the sequence is empty, an <see cref="EmptySequenceException"/> is thrown.

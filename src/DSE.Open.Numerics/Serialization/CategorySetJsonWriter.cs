@@ -3,7 +3,6 @@
 
 using System.Numerics;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using DSE.Open.Text.Json;
 
 namespace DSE.Open.Numerics.Serialization;
@@ -85,7 +84,7 @@ public static class CategorySetJsonWriter
 
         writer.WriteString(
             NumericsPropertyNames.DataType,
-            VectorDataTypeHelper.GetLabel(VectorDataTypeHelper.GetVectorDataType<T>()));
+            Vector.GetLabel(Vector.GetVectorDataType<T>()));
 
         writer.WriteNumber(NumericsPropertyNames.Length, categorySet.Count);
 

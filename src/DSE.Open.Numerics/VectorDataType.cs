@@ -49,4 +49,43 @@ public enum VectorDataType
     Char,
     [JsonStringEnumMemberName(VectorDataTypeLabels.String)]
     String,
+
+    [JsonStringEnumMemberName(VectorDataTypeLabels.NullableFloat64)]
+    NullableFloat64,
+    [JsonStringEnumMemberName(VectorDataTypeLabels.NullableFloat32)]
+    NullableFloat32,
+    [JsonStringEnumMemberName(VectorDataTypeLabels.NullableInt64)]
+    NullableInt64,
+    [JsonStringEnumMemberName(VectorDataTypeLabels.NullableUInt64)]
+    NullableUInt64,
+    [JsonStringEnumMemberName(VectorDataTypeLabels.NullableInt32)]
+    NullableInt32,
+    [JsonStringEnumMemberName(VectorDataTypeLabels.NullableUInt32)]
+    NullableUInt32,
+    [JsonStringEnumMemberName(VectorDataTypeLabels.NullableInt16)]
+    NullableInt16,
+    [JsonStringEnumMemberName(VectorDataTypeLabels.NullableUInt16)]
+    NullableUInt16,
+    [JsonStringEnumMemberName(VectorDataTypeLabels.NullableInt8)]
+    NullableInt8,
+    [JsonStringEnumMemberName(VectorDataTypeLabels.NullableUInt8)]
+    NullableUInt8,
+    [JsonStringEnumMemberName(VectorDataTypeLabels.NullableInt128)]
+    NullableInt128,
+    [JsonStringEnumMemberName(VectorDataTypeLabels.NullableUInt128)]
+    NullableUInt128,
+    [JsonStringEnumMemberName(VectorDataTypeLabels.NullableDateTime64)]
+    NullableDateTime64,
+    [JsonStringEnumMemberName(VectorDataTypeLabels.NullableDateTime)]
+    NullableDateTime,
+    [JsonStringEnumMemberName(VectorDataTypeLabels.NullableDateTimeOffset)]
+    NullableDateTimeOffset,
+    [JsonStringEnumMemberName(VectorDataTypeLabels.NullableUuid)]
+    NullableUuid,
+    [JsonStringEnumMemberName(VectorDataTypeLabels.NullableBool)]
+    NullableBool,
+    [JsonStringEnumMemberName(VectorDataTypeLabels.NullableChar)]
+    NullableChar,
+    [JsonStringEnumMemberName(VectorDataTypeLabels.NullableString)]
+    NullableString,
 }

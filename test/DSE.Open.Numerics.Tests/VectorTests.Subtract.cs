@@ -3,18 +3,38 @@
 
 namespace DSE.Open.Numerics;
 
-public partial class VectorTestsSubtract
+public partial class VectorTests
 {
+    [Fact]
+    public void Subtract_Int32_Array_Int32()
+    {
+        int[] s1 = [1, 2, 3, 4, 5];
+        int[] s2 = [1, 2, 3, 4, 5];
+        var difference = new int[5];
+
+        Vector.Subtract(s1, s2, difference);
+
+        Assert.Equal(0, difference[0]);
+        Assert.Equal(0, difference[1]);
+        Assert.Equal(0, difference[2]);
+        Assert.Equal(0, difference[3]);
+        Assert.Equal(0, difference[4]);
+    }
 
     [Fact]
-    public void SubtractInPlace_Int32_Zeroes_Ones()
+    public void Subtract_Int32_Span_Int32()
     {
-        var v1 = Vector.CreateOnes<int>(6);
-        var v2 = Vector.CreateOnes<int>(6);
-        var v3 = Vector.CreateZeroes<int>(6);
-        VectorPrimitives.SubtractInPlace(v1, v2);
-        Assert.Equal(6, v1.Length);
-        Assert.Equal(6, v2.Length);
-        Assert.Equal(v1, v3);
+        Span<int> s1 = [1, 2, 3, 4, 5];
+        Span<int> s2 = [1, 2, 3, 4, 5];
+
+        Span<int> difference = stackalloc int[5];
+
+        Vector.Subtract(s1, s2, difference);
+
+        Assert.Equal(0, difference[0]);
+        Assert.Equal(0, difference[1]);
+        Assert.Equal(0, difference[2]);
+        Assert.Equal(0, difference[3]);
+        Assert.Equal(0, difference[4]);
     }
 }

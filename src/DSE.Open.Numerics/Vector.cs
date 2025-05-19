@@ -3,7 +3,6 @@
 
 using System.Numerics;
 using System.Text.Json.Serialization;
-using CommunityToolkit.HighPerformance;
 using DSE.Open.Numerics.Serialization;
 
 namespace DSE.Open.Numerics;
@@ -12,7 +11,7 @@ namespace DSE.Open.Numerics;
 /// A serializable, fixed-length, contiguous sequence of values.
 /// </summary>
 [JsonConverter(typeof(VectorJsonConverter))]
-public abstract class Vector : VectorBase, IVector
+public abstract partial class Vector : VectorBase, IVector
 {
     protected internal Vector(VectorDataType dataType, Type itemType, int length)
         : base(dataType, itemType, length, false)
@@ -25,6 +24,8 @@ public abstract class Vector : VectorBase, IVector
     {
         return CreateReadOnly();
     }
+
+    // -------- Factory methods --------
 
     public static Vector<T> Create<T>(Memory<T> memory)
         where T : IEquatable<T>
@@ -64,9 +65,9 @@ public abstract class Vector : VectorBase, IVector
     }
 
     public static Vector<T> Create<T>(int length)
-        where T : struct, INumber<T>
+        where T : IEquatable<T>
     {
-        return new Vector<T>(new T[length]);
+        return [.. new T[length]];
     }
 
     public static Vector<T> Create<T>(int length, T scalar)
@@ -74,7 +75,7 @@ public abstract class Vector : VectorBase, IVector
     {
         var array = new T[length];
         array.AsSpan().Fill(scalar);
-        return new Vector<T>(array);
+        return [.. array];
     }
 
     public static Vector<T> CreateZeroes<T>(int length)

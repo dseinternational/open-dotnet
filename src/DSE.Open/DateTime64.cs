@@ -11,14 +11,14 @@ namespace DSE.Open;
 /// Represents a date as the whole number of milliseconds since the Unix epoch (1970-01-01T00:00:00Z).
 /// </summary>
 [JsonConverter(typeof(JsonDateTime64NumberConverter))]
-public readonly record struct DateTime64 : INumber<DateTime64>
+public readonly record struct DateTime64 : IBinaryInteger<DateTime64>, IMinMaxValue<DateTime64>
 {
     internal const long MinMilliseconds = -62135596800000L;
     internal const long MaxMilliseconds = 253402300799999L;
 
-    public static readonly DateTime64 MinValue = new(MinMilliseconds);
+    public static DateTime64 MinValue { get; } = new(MinMilliseconds);
 
-    public static readonly DateTime64 MaxValue = new(MaxMilliseconds);
+    public static DateTime64 MaxValue { get; } = new(MaxMilliseconds);
 
     public DateTime64(long millisecondsSinceUnixEpoch)
     {
@@ -444,13 +444,98 @@ public readonly record struct DateTime64 : INumber<DateTime64>
         return value.ToDateTimeOffset();
     }
 
+    public static implicit operator DateTime64(DateTimeOffset value)
+    {
+        return FromDateTimeOffset(value);
+    }
+
     public static DateTime64 FromDateTimeOffset(DateTimeOffset value)
     {
         return new(value);
     }
 
-    public static implicit operator DateTime64(DateTimeOffset value)
+    int IBinaryInteger<DateTime64>.GetByteCount()
     {
-        return FromDateTimeOffset(value);
+        return ((IBinaryInteger<long>)TotalMilliseconds).GetByteCount();
+    }
+
+    int IBinaryInteger<DateTime64>.GetShortestBitLength()
+    {
+        return ((IBinaryInteger<long>)TotalMilliseconds).GetShortestBitLength();
+    }
+
+    static DateTime64 IBinaryInteger<DateTime64>.PopCount(DateTime64 value)
+    {
+        return new DateTime64(long.PopCount(value.TotalMilliseconds));
+    }
+
+    static DateTime64 IBinaryInteger<DateTime64>.TrailingZeroCount(DateTime64 value)
+    {
+        return new DateTime64(long.TrailingZeroCount(value.TotalMilliseconds));
+    }
+
+    static bool IBinaryInteger<DateTime64>.TryReadBigEndian(ReadOnlySpan<byte> source, bool isUnsigned, out DateTime64 value)
+    {
+        throw new NotImplementedException();
+    }
+
+    static bool IBinaryInteger<DateTime64>.TryReadLittleEndian(ReadOnlySpan<byte> source, bool isUnsigned, out DateTime64 value)
+    {
+        throw new NotImplementedException();
+    }
+
+    bool IBinaryInteger<DateTime64>.TryWriteBigEndian(Span<byte> destination, out int bytesWritten)
+    {
+        throw new NotImplementedException();
+    }
+
+    bool IBinaryInteger<DateTime64>.TryWriteLittleEndian(Span<byte> destination, out int bytesWritten)
+    {
+        throw new NotImplementedException();
+    }
+
+    static bool IBinaryNumber<DateTime64>.IsPow2(DateTime64 value)
+    {
+        return long.IsPow2(value.TotalMilliseconds);
+    }
+
+    static DateTime64 IBinaryNumber<DateTime64>.Log2(DateTime64 value)
+    {
+        return new DateTime64(long.Log2(value.TotalMilliseconds));
+    }
+
+    static DateTime64 IBitwiseOperators<DateTime64, DateTime64, DateTime64>.operator &(DateTime64 left, DateTime64 right)
+    {
+        throw new NotImplementedException();
+    }
+
+    static DateTime64 IBitwiseOperators<DateTime64, DateTime64, DateTime64>.operator |(DateTime64 left, DateTime64 right)
+    {
+        throw new NotImplementedException();
+    }
+
+    static DateTime64 IBitwiseOperators<DateTime64, DateTime64, DateTime64>.operator ^(DateTime64 left, DateTime64 right)
+    {
+        throw new NotImplementedException();
+    }
+
+    static DateTime64 IBitwiseOperators<DateTime64, DateTime64, DateTime64>.operator ~(DateTime64 value)
+    {
+        throw new NotImplementedException();
+    }
+
+    static DateTime64 IShiftOperators<DateTime64, int, DateTime64>.operator <<(DateTime64 value, int shiftAmount)
+    {
+        throw new NotImplementedException();
+    }
+
+    static DateTime64 IShiftOperators<DateTime64, int, DateTime64>.operator >>(DateTime64 value, int shiftAmount)
+    {
+        throw new NotImplementedException();
+    }
+
+    static DateTime64 IShiftOperators<DateTime64, int, DateTime64>.operator >>>(DateTime64 value, int shiftAmount)
+    {
+        throw new NotImplementedException();
     }
 }
