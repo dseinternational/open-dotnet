@@ -11,7 +11,7 @@ public partial class Vector
     /// <summary>
     /// Determines whether two vectors are equal by comparing the elements using
     /// <see cref="IEquatable{T}.Equals(T)"/>. This comparison considers corresponding
-    /// unknown values (<see langword="null"/> or <see cref="INullable{TSelf, T}.Null"/> or
+    /// unknown values (<see langword="null"/> or <see cref="INaValue{TSelf, T}.Na"/> or
     /// <see cref="IFloatingPointIeee754{TSelf}.NaN"/>) to be equal. 
     /// </summary>
     /// <typeparam name="T"></typeparam>
@@ -31,7 +31,7 @@ public partial class Vector
     /// <summary>
     /// Determines whether two vectors are equal by comparing the elements using
     /// <see cref="IEquatable{T}.Equals(T)"/>. This comparison considers corresponding
-    /// unknown values (<see langword="null"/> or <see cref="INullable{TSelf, T}.Null"/> or
+    /// unknown values (<see langword="null"/> or <see cref="INaValue{TSelf, T}.Na"/> or
     /// <see cref="IFloatingPointIeee754{TSelf}.NaN"/>) to be equal. 
     /// </summary>
     /// <typeparam name="T"></typeparam>
@@ -77,8 +77,8 @@ public partial class Vector
             var e2 = v2[i];
 
             if (e1 is null || e2 is null
-                || (e1 is INullable n1 && n1.IsUnknown)
-                || (e2 is INullable n2 && n2.IsUnknown)
+                || (e1 is INaValue n1 && n1.IsNa)
+                || (e2 is INaValue n2 && n2.IsNa)
                 || !e1.Equals(e2))
             {
                 return false;

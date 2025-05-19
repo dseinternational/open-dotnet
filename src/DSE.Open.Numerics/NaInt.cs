@@ -58,15 +58,15 @@ public readonly struct NaInt<T>
     public static explicit operator T(NaInt<T> value)
     {
         return value.IsNa
-            ? throw new UnknownValueException()
+            ? throw new NaValueException()
             : value._value;
     }
 
     public bool IsNa => _value == s_sentinel;
 
-    T INullable<NaInt<T>, T>.Value => (T)this;
+    T INaValue<NaInt<T>, T>.Value => (T)this;
 
-    bool INullable.HasValue => !IsNa;
+    bool INaValue.HasValue => !IsNa;
 
     bool IEquatable<NaInt<T>>.Equals(NaInt<T> other)
     {
@@ -82,7 +82,7 @@ public readonly struct NaInt<T>
     {
         if (IsNa || other.IsNa)
         {
-            return Trilean.Unknown;
+            return Trilean.Na;
         }
 
         return _value == other._value ? Trilean.True : Trilean.False;
@@ -134,7 +134,7 @@ public readonly struct NaInt<T>
 
     public static NaInt<T> MinValue { get; } = T.MinValue;
 
-    static NaInt<T> INullable<NaInt<T>, T>.Null => Na;
+    static NaInt<T> INaValue<NaInt<T>, T>.Na => Na;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static NaInt<T> ResultIfNotNa(NaInt<T> x, NaInt<T> y, Func<T, T, T> op)
@@ -219,7 +219,7 @@ public readonly struct NaInt<T>
     {
         if (x.IsNa || y.IsNa)
         {
-            return Trilean.Unknown;
+            return Trilean.Na;
         }
 
         return x._value < y._value;
@@ -229,7 +229,7 @@ public readonly struct NaInt<T>
     {
         if (x.IsNa || y.IsNa)
         {
-            return Trilean.Unknown;
+            return Trilean.Na;
         }
 
         return x._value > y._value;

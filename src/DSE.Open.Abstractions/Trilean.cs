@@ -12,7 +12,7 @@ namespace DSE.Open;
 public readonly struct Trilean
     : IEquatable<Trilean>,
       ITriEquatable<Trilean>,
-      INullable,
+      INaValue,
       ISpanFormattable,
       ISpanParsable<Trilean>
 {
@@ -39,7 +39,7 @@ public readonly struct Trilean
     /// <summary>
     /// A value that is unknown.
     /// </summary>
-    public static readonly Trilean Unknown = new(UnknownValue);
+    public static readonly Trilean Na = new(UnknownValue);
 
     private readonly byte _value;
 
@@ -51,9 +51,9 @@ public readonly struct Trilean
     private Trilean(bool value) : this(value ? TrueValue : FalseValue) { }
 
     /// <summary>
-    /// Indicates whether the value is <see cref="Unknown"/>.
+    /// Indicates whether the value is <see cref="Na"/>.
     /// </summary>
-    public bool IsUnknown => _value == UnknownValue;
+    public bool IsNa => _value == UnknownValue;
 
     /// <summary>
     /// Indicates whether the value is <see cref="True"/>.
@@ -65,13 +65,13 @@ public readonly struct Trilean
     /// </summary>
     public bool IsFalse => _value == FalseValue;
 
-    bool INullable.HasValue => !IsUnknown;
+    bool INaValue.HasValue => !IsNa;
 
-    object INullable.Value => _value switch
+    object INaValue.Value => _value switch
     {
         TrueValue => True,
         FalseValue => False,
-        _ => Unknown,
+        _ => Na,
     };
 
     public void Deconstruct(out bool? value)
@@ -90,9 +90,9 @@ public readonly struct Trilean
 
         // if both values are unknown, return true.
 
-        if (IsUnknown)
+        if (IsNa)
         {
-            return other.IsUnknown;
+            return other.IsNa;
         }
 
         // if both values are known, return true if equal or false if not equal.
@@ -101,17 +101,17 @@ public readonly struct Trilean
 
     public bool EqualOrBothUnknown(Trilean other)
     {
-        return Tri.EqualOrBothUnknown(this, other);
+        return Tri.EqualOrBothNa(this, other);
     }
 
     public bool EqualOrEitherUnknown(Trilean other)
     {
-        return Tri.EqualOrEitherUnknown(this, other);
+        return Tri.EqualOrEitherNa(this, other);
     }
 
     public bool EqualAndNeitherUnknown(Trilean other)
     {
-        return Tri.EqualAndNeitherUnknown(this, other);
+        return Tri.EqualAndNeitherNa(this, other);
     }
 
     public override bool Equals(object? obj)
@@ -131,7 +131,7 @@ public readonly struct Trilean
     /// <returns>
     /// A signed number that is equal to <see cref="INumberBase{TSelf}.One"/> if <see cref="IsTrue"/>,
     /// equal to <see cref="INumberBase{TSelf}.Zero"/> if <see cref="IsFalse"/>, or equal to
-    /// <see cref="ISignedNumber{TSelf}.NegativeOne"/> if <see cref="IsUnknown"/>.
+    /// <see cref="ISignedNumber{TSelf}.NegativeOne"/> if <see cref="IsNa"/>.
     /// </returns>
     public T ToSignedNumber<T>()
         where T : struct, ISignedNumber<T>
@@ -151,7 +151,7 @@ public readonly struct Trilean
     /// <returns>
     /// An unsigned number that is equal to <see cref="INumberBase{T}.One"/> if <see cref="IsTrue"/>,
     /// equal to <see cref="INumberBase{T}.Zero"/> if <see cref="IsFalse"/>, or equal to
-    /// <see cref="INumberBase{T}.One"/> + <see cref="INumberBase{T}.One"/> if <see cref="IsUnknown"/>.
+    /// <see cref="INumberBase{T}.One"/> + <see cref="INumberBase{T}.One"/> if <see cref="IsNa"/>.
     /// </returns>
     public T ToUnsignedNumber<T>()
         where T : struct, IUnsignedNumber<T>
@@ -175,8 +175,8 @@ public readonly struct Trilean
         {
             TrueValue => true,
             FalseValue => false,
-            _ => throw new UnknownValueException(
-                $"Cannot convert {nameof(Unknown)} {nameof(Trilean)} to boolean value.")
+            _ => throw new NaValueException(
+                $"Cannot convert {nameof(Na)} {nameof(Trilean)} to boolean value.")
         };
     }
 
@@ -252,7 +252,7 @@ public readonly struct Trilean
         {
             { } v when v == T.One => True,
             { } v when v == T.Zero => False,
-            { } v when v == T.NegativeOne => Unknown,
+            { } v when v == T.NegativeOne => Na,
             _ => throw new InvalidOperationException("Cannot convert value to Trilean.")
         };
     }
@@ -262,7 +262,7 @@ public readonly struct Trilean
     {
         return value switch
         {
-            { } v when v == T.Zero => Unknown,
+            { } v when v == T.Zero => Na,
             { } v when v == T.One => True,
             { } v when v == T.One + T.One => false,
             _ => throw new InvalidOperationException("Cannot convert value to Trilean.")
@@ -291,19 +291,19 @@ public readonly struct Trilean
 
     public static Trilean FromBoolean(bool? value)
     {
-        return value.HasValue ? FromBoolean(value.Value) : Unknown;
+        return value.HasValue ? FromBoolean(value.Value) : Na;
     }
 
     public static Trilean FromSignedNumber<T>(T? value)
         where T : struct, ISignedNumber<T>
     {
-        return value.HasValue ? FromSignedNumber(value.Value) : Unknown;
+        return value.HasValue ? FromSignedNumber(value.Value) : Na;
     }
 
     public static Trilean FromUnsignedNumber<T>(T? value)
         where T : struct, IUnsignedNumber<T>
     {
-        return value.HasValue ? FromUnsignedNumber(value.Value) : Unknown;
+        return value.HasValue ? FromUnsignedNumber(value.Value) : Na;
     }
 
     public static explicit operator bool(Trilean t)
@@ -329,7 +329,7 @@ public readonly struct Trilean
 
     public static Trilean Equals(Trilean left, Trilean right)
     {
-        if (left.IsUnknown || right.IsUnknown)
+        if (left.IsNa || right.IsNa)
         {
             return null;
         }
@@ -383,7 +383,7 @@ public readonly struct Trilean
         {
             TrueValue => False,
             FalseValue => True,
-            _ => Unknown
+            _ => Na
         };
     }
 
@@ -404,7 +404,7 @@ public readonly struct Trilean
             return true;
         }
 
-        return Unknown;
+        return Na;
     }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates - LogicalAnd
@@ -426,7 +426,7 @@ public readonly struct Trilean
             return False;
         }
 
-        return Unknown;
+        return Na;
     }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates - LogicalOr
@@ -440,7 +440,7 @@ public readonly struct Trilean
     {
         if (left._value == UnknownValue || right._value == UnknownValue)
         {
-            return Unknown;
+            return Na;
         }
 
         return (left._value == TrueValue ^ right._value == TrueValue) ? True : False;
@@ -485,7 +485,7 @@ public readonly struct Trilean
             || s.Equals(NullStringValue, StringComparison.OrdinalIgnoreCase)
             || s.IsEmpty)
         {
-            result = Unknown;
+            result = Na;
             return true;
         }
 
@@ -505,7 +505,7 @@ public readonly struct Trilean
 
             if (s[0] == '0')
             {
-                result = Unknown;
+                result = Na;
                 return true;
             }
         }

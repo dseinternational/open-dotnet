@@ -73,11 +73,11 @@ public static class Utf8JsonWriterExtensions
 
     public static void WriteNullableValue<TSelf, T>(this Utf8JsonWriter writer, TSelf value)
         where T : IEquatable<T>
-        where TSelf : INullable<TSelf, T>
+        where TSelf : INaValue<TSelf, T>
     {
         ArgumentNullException.ThrowIfNull(writer);
 
-        if (value.IsUnknown || value.Value is null)
+        if (value.IsNa || value.Value is null)
         {
             writer.WriteNullValue();
         }
@@ -157,11 +157,11 @@ public static class Utf8JsonWriterExtensions
 
     public static void WriteNullableNumberValue<TSelf, T>(this Utf8JsonWriter writer, TSelf value)
         where T : struct, INumber<T>
-        where TSelf : INullable<TSelf, T>
+        where TSelf : INaValue<TSelf, T>
     {
         ArgumentNullException.ThrowIfNull(writer);
 
-        if (value.IsUnknown)
+        if (value.IsNa)
         {
             writer.WriteNullValue();
         }

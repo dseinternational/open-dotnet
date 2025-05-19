@@ -8,7 +8,7 @@ namespace DSE.Open.Numerics;
 public interface INaNumber<TSelf, T>
     : INumber<TSelf>,
       IMinMaxValue<TSelf>,
-      INullable<TSelf, T>,
+      INaValue<TSelf, T>,
       ITriEquatable<TSelf>
     where TSelf : INaNumber<TSelf, T>
     where T : struct, INumber<T>, IMinMaxValue<T>

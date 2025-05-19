@@ -7,7 +7,7 @@ namespace DSE.Open.Numerics;
 
 
 /// <summary>
-/// A value that may be missing or unknown. Unlike <see cref="INullable"/> or <see cref="Nullable{T}"/>,
+/// A value that may be missing or unknown. Unlike <see cref="INaValue"/> or <see cref="Nullable{T}"/>,
 /// with <see cref="ITriNullable"/>, 'unknown' == 'unknown' is <see langword="false"/>.
 /// </summary>
 public interface ITriNullable
@@ -21,15 +21,15 @@ public interface ITriNullable
 
     /// <summary>
     /// If the value is set (<see cref="HasValue"/>), then returns that value, otherwise throws
-    /// a <see cref="Open.UnknownValueException"/>.
+    /// a <see cref="Open.NaValueException"/>.
     /// </summary>
-    /// <exception cref="Open.UnknownValueException">Thrown if no value is available
+    /// <exception cref="Open.NaValueException">Thrown if no value is available
     /// (<see cref="HasValue"/> is false).</exception>
     object Value { get; }
 }
 
 /// <summary>
-/// A value that may be missing or unknown. Unlike <see cref="INullable"/> or <see cref="Nullable{T}"/>,
+/// A value that may be missing or unknown. Unlike <see cref="INaValue"/> or <see cref="Nullable{T}"/>,
 /// with <see cref="ITriNullable"/>, 'unknown' == 'unknown' is <see langword="false"/>.
 /// </summary>
 /// <typeparam name="TSelf"></typeparam>
@@ -57,9 +57,9 @@ public interface IMissingNullable<TSelf, T>
 
     /// <summary>
     /// If the value is set (<see cref="ITriNullable.HasValue"/>), then returns that value, otherwise
-    /// throws a <see cref="Open.UnknownValueException"/>.
+    /// throws a <see cref="Open.NaValueException"/>.
     /// </summary>
-    /// <exception cref="Open.UnknownValueException">Thrown if no value is available
+    /// <exception cref="Open.NaValueException">Thrown if no value is available
     /// (<see cref="ITriNullable.HasValue"/> is false).</exception>
     new T Value { get; }
 

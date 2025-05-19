@@ -7,35 +7,35 @@ namespace DSE.Open;
 /// An exception that is throw when attempting to access a value that is unknown or is missing.
 /// </summary>
 /// <remarks>
-/// <para>Examples include attempting to access the value of an <see cref="INullable"/>
-/// where <see cref="INullable.HasValue"/> is <see langword="false"/>, or casting a
-/// <see cref="Trilean"/> to a <see cref="bool"/> when <see cref="Trilean.IsUnknown"/> is
+/// <para>Examples include attempting to access the value of an <see cref="INaValue"/>
+/// where <see cref="INaValue.HasValue"/> is <see langword="false"/>, or casting a
+/// <see cref="Trilean"/> to a <see cref="bool"/> when <see cref="Trilean.IsNa"/> is
 /// <see langword="true"/>.</para>
 /// </remarks>
-public class UnknownValueException : InvalidOperationException
+public class NaValueException : InvalidOperationException
 {
     private const string DefaultMessage = "Cannot access value as the value is unknown.";
 
-    public UnknownValueException() : base(DefaultMessage)
+    public NaValueException() : base(DefaultMessage)
     {
     }
 
-    public UnknownValueException(string message) : base(message ?? DefaultMessage)
+    public NaValueException(string message) : base(message ?? DefaultMessage)
     {
     }
 
-    public UnknownValueException(string message, Exception innerException)
+    public NaValueException(string message, Exception innerException)
         : base(message ?? DefaultMessage, innerException)
     {
     }
 
-    public static void ThrowIfNull(INullable value, string? message = null)
+    public static void ThrowIfNull(INaValue value, string? message = null)
     {
         ArgumentNullException.ThrowIfNull(value);
 
         if (!value.HasValue)
         {
-            throw new UnknownValueException(message!);
+            throw new NaValueException(message!);
         }
     }
 
@@ -43,15 +43,15 @@ public class UnknownValueException : InvalidOperationException
     {
         if (value is null)
         {
-            throw new UnknownValueException(message!);
+            throw new NaValueException(message!);
         }
     }
 
     public static void ThrowIfUnknown(Trilean value, string? message = null)
     {
-        if (value.IsUnknown)
+        if (value.IsNa)
         {
-            throw new UnknownValueException(message!);
+            throw new NaValueException(message!);
         }
     }
 }

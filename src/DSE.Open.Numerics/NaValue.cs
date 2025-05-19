@@ -42,13 +42,13 @@ public static class NullableValue
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
 public readonly struct NaValue<T> :
-    INullable<NaValue<T>, T>,
+    INaValue<NaValue<T>, T>,
     IComparable<NaValue<T>>,
     IComparable,
     ISpanParsable<NaValue<T>>
     where T : IEquatable<T>, IComparable<T>, ISpanParsable<T>
 {
-    static NaValue<T> INullable<NaValue<T>, T>.Null { get; }
+    static NaValue<T> INaValue<NaValue<T>, T>.Na { get; }
 
     private readonly bool _hasValue;
     private readonly T _value;

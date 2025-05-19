@@ -1,6 +1,8 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Data.SqlTypes;
+
 namespace DSE.Open;
 
 /// <summary>
@@ -8,6 +10,39 @@ namespace DSE.Open;
 /// </summary>
 public static class Tri
 {
+    /// <summary>
+    /// Compares two nullable value types for equality and returns a <see cref="Trilean"/>
+    /// value indicating the result.
+    /// </summary>
+    /// <typeparam name="TSelf"></typeparam>
+    /// <typeparam name="T">The type of the values to compare. Must be a value type that
+    /// implements <see cref="IEquatable{T}"/>.</typeparam>
+    /// <param name="left">The first value to compare. Can be <see langword="null"/>.</param>
+    /// <param name="right">The second value to compare. Can be <see langword="null"/>.</param>
+    /// <returns>A <see cref="Trilean"/> indicating the result of the comparison:
+    /// <see langword="null"/> if either value is <see langword="null"/>, <see cref="Trilean.True"/>
+    /// if the values are not null and equal, or  <see cref="Trilean.False"/> if the
+    /// values are not null and not equal.</returns>
+    public static Trilean Equals<TSelf, T>(TSelf left, TSelf right)
+        where T : notnull, IEquatable<T>
+        where TSelf : notnull, INaValue<TSelf, T>
+    {
+        ArgumentNullException.ThrowIfNull(left);
+        ArgumentNullException.ThrowIfNull(right);
+
+        if (left.IsNa || right.IsNa)
+        {
+            return Trilean.Na;
+        }
+
+        if (left.Value.Equals(right.Value))
+        {
+            return Trilean.True;
+        }
+
+        return Trilean.False;
+    }
+
     /// <summary>
     /// Compares two nullable value types for equality and returns a <see cref="Trilean"/>
     /// value indicating the result.
@@ -25,7 +60,7 @@ public static class Tri
     {
         if (left is null || right is null)
         {
-            return null;
+            return Trilean.Na;
         }
 
         if (left.Value.Equals(right.Value))
@@ -43,20 +78,23 @@ public static class Tri
     /// <param name="right">The second value to compare.</param>
     /// <returns>A <see cref="Trilean"/> value indicating the result of the comparison:
     /// <see cref="Trilean.True"/> if the values are equal, <see cref="Trilean.False"/> if they are not equal,
-    /// or <see cref="Trilean.Unknown"/> if either value is unknown.</returns>
+    /// or <see cref="Trilean.Na"/> if either value is unknown.</returns>
     public static Trilean Equals<T>(T left, T right)
-        where T : struct, INullable, IEquatable<T>
+        where T : struct, INaValue, IEquatable<T>
     {
         // if either value is unknown, return unknown.
         if (!(left.HasValue && right.HasValue))
         {
-            return Trilean.Unknown;
+            return Trilean.Na;
         }
 
         // if both values are known, return true if equal or false if not equal.
         return left.Equals(right);
     }
 
+    /*
+     * TODO: Not sure about this
+     * 
     /// <summary>
     /// Determines whether two objects are equal and returns a <see cref="Trilean"/>
     /// value indicating the result.
@@ -81,23 +119,26 @@ public static class Tri
 
         return Trilean.False;
     }
+    */
 
-    public static bool EqualAndNeitherUnknown<T>(T left, T right)
-        where T : struct, INullable, IEquatable<T>
+    public static bool EqualAndNeitherNa<T>(T left, T right)
+        where T : struct, INaValue, IEquatable<T>
     {
         return Equals(left, right).IsTrue;
     }
 
-    public static bool EqualAndNeitherUnknown<T>(T? left, T? right)
+    public static bool EqualAndNeitherNa<T>(T? left, T? right)
         where T : struct, IEquatable<T>
     {
         return Equals(left, right).IsTrue;
     }
 
-    public static bool EqualAndNeitherUnknown(object? left, object? right)
+    /*
+    public static bool EqualAndNeitherNa(object? left, object? right)
     {
         return Equals(left, right).IsTrue;
     }
+    */
 
     /// <summary>
     /// Compares two nullable value types for equality.
@@ -111,14 +152,14 @@ public static class Tri
     /// <remarks>
     /// This is the default behavior for <see cref="IEquatable{T}.Equals"/> and <see cref="Nullable{T}.Equals"/>.
     /// </remarks>
-    public static bool EqualOrBothUnknown<T>(T left, T right)
-        where T : struct, INullable, IEquatable<T>
+    public static bool EqualOrBothNa<T>(T left, T right)
+        where T : struct, INaValue, IEquatable<T>
     {
         // if both values are unknown, return true.
 
-        if (left.IsUnknown)
+        if (left.IsNa)
         {
-            return right.IsUnknown;
+            return right.IsNa;
         }
 
         // if both values are known, return true if equal or false if not equal.
@@ -137,7 +178,7 @@ public static class Tri
     /// <remarks>
     /// This is the default behavior for <see cref="IEquatable{T}.Equals"/> and <see cref="Nullable{T}.Equals"/>.
     /// </remarks>
-    public static bool EqualOrBothUnknown<T>(T? left, T? right)
+    public static bool EqualOrBothNa<T>(T? left, T? right)
         where T : struct, IEquatable<T>
     {
         // if both values are unknown, return true.
@@ -156,18 +197,20 @@ public static class Tri
         return left.Equals(right);
     }
 
-    public static bool EqualOrBothUnknown(object? left, object? right)
+    /*
+    public static bool EqualOrBothNa(object? left, object? right)
     {
         // if both values are unknown, return true.
 
-        if (left is null || (left is INullable ln && ln.IsUnknown))
+        if (left is null || (left is INaValue ln && ln.IsNa))
         {
-            return right is null || (right is INullable rn && rn.IsUnknown);
+            return right is null || (right is INaValue rn && rn.IsNa);
         }
 
         // if both values are known, return true if equal or false if not equal.
         return left.Equals(right);
     }
+    */
 
     /// <summary>
     /// Compares two nullable value types for equality.
@@ -178,12 +221,12 @@ public static class Tri
     /// <returns>
     /// <see langword="true"/> if both values are equal or either value is unknown, otherwise <see langword="false"/>.
     /// </returns>
-    public static bool EqualOrEitherUnknown<T>(T left, T right)
-        where T : struct, INullable, IEquatable<T>
+    public static bool EqualOrEitherNa<T>(T left, T right)
+        where T : struct, INaValue, IEquatable<T>
     {
         // if either values are unknown, return true.
 
-        if (left.IsUnknown || right.IsUnknown)
+        if (left.IsNa || right.IsNa)
         {
             return true;
         }
@@ -201,7 +244,7 @@ public static class Tri
     /// <returns>
     /// <see langword="true"/> if both values are equal or either value is unknown, otherwise <see langword="false"/>.
     /// </returns>
-    public static bool EqualOrEitherUnknown<T>(T? left, T? right)
+    public static bool EqualOrEitherNa<T>(T? left, T? right)
         where T : struct, IEquatable<T>
     {
         // if either values are unknown, return true.

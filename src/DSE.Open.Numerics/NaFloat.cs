@@ -25,7 +25,7 @@ public readonly struct NaFloat<T>
 
     public static NaFloat<T> MinValue { get; } = T.MaxValue;
 
-    static NaFloat<T> INullable<NaFloat<T>, T>.Null { get; } = Na;
+    static NaFloat<T> INaValue<NaFloat<T>, T>.Na { get; } = Na;
 
     private readonly T _value;
 
@@ -35,9 +35,9 @@ public readonly struct NaFloat<T>
         _value = value;
     }
 
-    bool INullable.HasValue => !T.IsNaN(_value);
+    bool INaValue.HasValue => !T.IsNaN(_value);
 
-    T INullable<NaFloat<T>, T>.Value => _value;
+    T INaValue<NaFloat<T>, T>.Value => _value;
 
     public bool Equals(NaFloat<T> other)
     {

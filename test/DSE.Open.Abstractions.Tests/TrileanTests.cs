@@ -14,7 +14,7 @@ public class TrileanTests
     [Fact]
     public void DefaultValueIsUnknown()
     {
-        Assert.Equal(Trilean.Unknown, default);
+        Assert.Equal(Trilean.Na, default);
     }
 
     [Theory]
@@ -22,7 +22,7 @@ public class TrileanTests
     public void ImplicitBoolConversion_CreatesExpectedTrilean(bool input, Trilean expected)
     {
         Trilean t = input;
-        Assert.False(t.IsUnknown);
+        Assert.False(t.IsNa);
         Assert.True(t.IsTrue == input);
         Assert.True(t.IsFalse == !input);
         Assert.True(t.IsTrue || t.IsFalse);
@@ -36,7 +36,7 @@ public class TrileanTests
     {
         bool? n = null;
         Trilean t = n;
-        Assert.True(t.IsUnknown);
+        Assert.True(t.IsNa);
     }
 
     [Fact]
@@ -44,13 +44,13 @@ public class TrileanTests
     {
         Assert.True(Trilean.True.ToNullableBoolean());
         Assert.False(Trilean.False.ToNullableBoolean());
-        Assert.Null(Trilean.Unknown.ToNullableBoolean());
+        Assert.Null(Trilean.Na.ToNullableBoolean());
     }
 
     [Fact]
     public void ToBoolean_ThrowsOnUnknown()
     {
-        _ = Assert.Throws<UnknownValueException>(() => Trilean.Unknown.ToBoolean());
+        _ = Assert.Throws<NaValueException>(() => Trilean.Na.ToBoolean());
     }
 
     [Theory]
