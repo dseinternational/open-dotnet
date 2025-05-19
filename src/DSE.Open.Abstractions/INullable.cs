@@ -41,7 +41,7 @@ public interface INullable<TSelf, T>
     /// <summary>
     /// Gets a value that represents the 'null' or 'no value' state.
     /// </summary>
-    static virtual TSelf Null => default!;
+    static abstract TSelf Null { get; }
 
     /// <summary>
     /// If the value is set (<see cref="INullable.HasValue"/>), then returns that value, otherwise
@@ -52,35 +52,4 @@ public interface INullable<TSelf, T>
     new T Value { get; }
 
     object INullable.Value => Value;
-
-    new bool Equals(TSelf other)
-    {
-        return TSelf.Equals((TSelf)this, other);
-    }
-
-    // Note: as for Nullable<T> and consistent with IEquatable<TSelf>.Equals:
-    // -----------------------
-    // v1      v2    result
-    // -----------------------
-    // null    null  true
-    // null    1     false
-    // 1       null  false
-    // 1       1     true
-
-    static virtual bool Equals(TSelf v1, TSelf v2)
-    {
-        return v1.HasValue
-            ? v2.HasValue && v1.Value.Equals(v2.Value)
-            : !v2.HasValue;
-    }
-
-    static virtual bool operator ==(TSelf left, TSelf right)
-    {
-        return TSelf.Equals(left, right);
-    }
-
-    static virtual bool operator !=(TSelf left, TSelf right)
-    {
-        return !TSelf.Equals(left, right);
-    }
 }

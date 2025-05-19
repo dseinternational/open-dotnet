@@ -9,19 +9,19 @@ public static class NullableValue
 {
     public const string NoValueLabel = "NA";
 
-    public static bool Equals<T>(NullableValue<T> n1, T n2)
+    public static bool Equals<T>(NaValue<T> n1, T n2)
         where T : IEquatable<T>, IComparable<T>, ISpanParsable<T>
     {
         return n1.HasValue && n2.Equals(n1.Value);
     }
 
-    public static bool Equals<T>(NullableValue<T> n1, NullableValue<T> n2)
+    public static bool Equals<T>(NaValue<T> n1, NaValue<T> n2)
         where T : IEquatable<T>, IComparable<T>, ISpanParsable<T>
     {
         return n2.HasValue && n1.HasValue && n2.Value.Equals(n1.Value);
     }
 
-    public static int Compare<T>(NullableValue<T> n1, NullableValue<T> n2)
+    public static int Compare<T>(NaValue<T> n1, NaValue<T> n2)
         where T : IEquatable<T>, IComparable<T>, ISpanParsable<T>
     {
         if (!n1.HasValue)
@@ -41,13 +41,15 @@ public static class NullableValue
 #pragma warning disable CA1000 // Do not declare static members on generic types
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
-public readonly struct NullableValue<T> :
-    INullable<NullableValue<T>, T>,
-    IComparable<NullableValue<T>>,
+public readonly struct NaValue<T> :
+    INullable<NaValue<T>, T>,
+    IComparable<NaValue<T>>,
     IComparable,
-    ISpanParsable<NullableValue<T>>
+    ISpanParsable<NaValue<T>>
     where T : IEquatable<T>, IComparable<T>, ISpanParsable<T>
 {
+    static NaValue<T> INullable<NaValue<T>, T>.Null { get; }
+
     private readonly bool _hasValue;
     private readonly T _value;
 
@@ -55,13 +57,13 @@ public readonly struct NullableValue<T> :
 
     public T Value => HasValue ? _value : throw new InvalidOperationException();
 
-    private NullableValue(T value)
+    private NaValue(T value)
     {
         _value = value;
         _hasValue = true;
     }
 
-    public static implicit operator NullableValue<T>(T? value)
+    public static implicit operator NaValue<T>(T? value)
     {
         if (value is null)
         {
@@ -71,7 +73,7 @@ public readonly struct NullableValue<T> :
         return new(value);
     }
 
-    public static explicit operator T(NullableValue<T> value)
+    public static explicit operator T(NaValue<T> value)
     {
         return value.Value;
     }
@@ -86,7 +88,7 @@ public readonly struct NullableValue<T> :
         return _hasValue ? _value.GetHashCode() : 0;
     }
 
-    public bool Equals(NullableValue<T> other)
+    public bool Equals(NaValue<T> other)
     {
         return NullableValue.Equals(this, other);
     }
@@ -98,53 +100,53 @@ public readonly struct NullableValue<T> :
 
     public override bool Equals(object? obj)
     {
-        return (obj is NullableValue<T> other && Equals(other))
+        return (obj is NaValue<T> other && Equals(other))
             || (obj is T n && Equals(n));
     }
 
-    public int CompareTo(NullableValue<T> other)
+    public int CompareTo(NaValue<T> other)
     {
         return NullableValue.Compare(this, other);
     }
 
     int IComparable.CompareTo(object? obj)
     {
-        return obj is NullableValue<T> other
+        return obj is NaValue<T> other
             ? CompareTo(other)
             : throw new ArgumentException($"Object is not a {nameof(NullableValue)}", nameof(obj));
     }
 
-    public static bool operator ==(NullableValue<T> left, NullableValue<T> right)
+    public static bool operator ==(NaValue<T> left, NaValue<T> right)
     {
         return NullableValue.Equals(left, right);
     }
 
-    public static bool operator !=(NullableValue<T> left, NullableValue<T> right)
+    public static bool operator !=(NaValue<T> left, NaValue<T> right)
     {
         return !(left == right);
     }
 
-    public static bool operator >(NullableValue<T> left, NullableValue<T> right)
+    public static bool operator >(NaValue<T> left, NaValue<T> right)
     {
         return NullableValue.Compare(left, right) > 0;
     }
 
-    public static bool operator >=(NullableValue<T> left, NullableValue<T> right)
+    public static bool operator >=(NaValue<T> left, NaValue<T> right)
     {
         return NullableValue.Compare(left, right) >= 0;
     }
 
-    public static bool operator <(NullableValue<T> left, NullableValue<T> right)
+    public static bool operator <(NaValue<T> left, NaValue<T> right)
     {
         return NullableValue.Compare(left, right) < 0;
     }
 
-    public static bool operator <=(NullableValue<T> left, NullableValue<T> right)
+    public static bool operator <=(NaValue<T> left, NaValue<T> right)
     {
         return NullableValue.Compare(left, right) <= 0;
     }
 
-    public static NullableValue<T> Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
+    public static NaValue<T> Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
     {
         if (TryParse(s, provider, out var value))
         {
@@ -158,7 +160,7 @@ public readonly struct NullableValue<T> :
     public static bool TryParse(
         ReadOnlySpan<char> s,
         IFormatProvider? provider,
-        [MaybeNullWhen(false)] out NullableValue<T> result)
+        [MaybeNullWhen(false)] out NaValue<T> result)
     {
         if (s == NullableValue.NoValueLabel)
         {
@@ -176,12 +178,12 @@ public readonly struct NullableValue<T> :
         return false;
     }
 
-    public static NullableValue<T> Parse(string s, IFormatProvider? provider)
+    public static NaValue<T> Parse(string s, IFormatProvider? provider)
     {
         throw new NotImplementedException();
     }
 
-    public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, [MaybeNullWhen(false)] out NullableValue<T> result)
+    public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, [MaybeNullWhen(false)] out NaValue<T> result)
     {
         throw new NotImplementedException();
     }

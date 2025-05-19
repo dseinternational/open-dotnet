@@ -8,29 +8,29 @@ public class NullableValueTests
     [Fact]
     public void InitializeWithValue()
     {
-        NullableValue<string> value = "A";
+        NaValue<string> value = "A";
         Assert.True(value.HasValue);
     }
 
     [Fact]
     public void InitializeWithNull()
     {
-        NullableValue<string> value = null;
+        NaValue<string> value = null;
         Assert.False(value.HasValue);
     }
 
     [Fact]
     public void Null_ToString_NA()
     {
-        NullableValue<string> value = null;
+        NaValue<string> value = null;
         Assert.Equal(NullableValue.NoValueLabel, value.ToString());
     }
 
     [Fact]
     public void EqualValues_AreEqual()
     {
-        NullableValue<string> v2 = "A";
-        NullableValue<string> v1 = "A";
+        NaValue<string> v2 = "A";
+        NaValue<string> v1 = "A";
         Assert.Equal(v1, v2);
         Assert.True(v1.Equals(v2));
     }
@@ -38,8 +38,8 @@ public class NullableValueTests
     [Fact]
     public void NullAndValue_NotEqual()
     {
-        NullableValue<string> v2 = "A";
-        NullableValue<string> v1 = null;
+        NaValue<string> v2 = "A";
+        NaValue<string> v1 = null;
         Assert.NotEqual(v1, v2);
         Assert.False(v1.Equals(v2));
     }
@@ -47,8 +47,8 @@ public class NullableValueTests
     [Fact]
     public void NullAndNull_NotEqual()
     {
-        NullableValue<string> v2 = null;
-        NullableValue<string> v1 = null;
+        NaValue<string> v2 = null;
+        NaValue<string> v1 = null;
         Assert.NotEqual(v1, v2);
         Assert.False(v1.Equals(v2));
     }

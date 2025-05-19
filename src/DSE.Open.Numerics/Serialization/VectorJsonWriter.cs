@@ -308,4 +308,22 @@ public static class VectorJsonWriter
 
         writer.WriteEndArray();
     }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static void WriteArray<TSelf, T>(
+        Utf8JsonWriter writer,
+        ReadOnlySpan<T> vector,
+        JsonValueWriter<T> writeValue)
+        where TSelf : INullable<TSelf, T>
+        where T : IEquatable<T>
+    {
+        writer.WriteStartArray();
+
+        foreach (var value in vector)
+        {
+            writeValue(writer, value);
+        }
+
+        writer.WriteEndArray();
+    }
 }

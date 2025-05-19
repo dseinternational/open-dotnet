@@ -13,9 +13,7 @@ namespace DSE.Open.Numerics;
 
 [StructLayout(LayoutKind.Sequential)]
 public readonly struct NaInteger<T>
-    : INumber<NaInteger<T>>,
-      IMinMaxValue<T>,
-      INullable<NaInteger<T>, T>
+    : INaNumber<NaInteger<T>, T>
       where T : struct, IBinaryInteger<T>, IMinMaxValue<T>
 {
     private static readonly T s_sentinel = T.MaxValue;
@@ -70,9 +68,39 @@ public readonly struct NaInteger<T>
 
     bool INullable.HasValue => !IsNa;
 
-    public bool Equals(NaInteger<T> other)
+    bool IEquatable<NaInteger<T>>.Equals(NaInteger<T> other)
     {
-        return !IsNa & !other.IsNa && _value == other._value;
+        return EqualOrBothUnknown(other);
+    }
+
+    public override bool Equals(object? obj)
+    {
+        return obj is NaInteger<T> n && EqualOrBothUnknown(n);
+    }
+
+    public Trilean Equals(NaInteger<T> other)
+    {
+        if (IsNa || other.IsNa)
+        {
+            return Trilean.Unknown;
+        }
+
+        return _value == other._value ? Trilean.True : Trilean.False;
+    }
+
+    public bool EqualAndNeitherUnknown(NaInteger<T> other)
+    {
+        return !IsNa && !other.IsNa && _value == other._value;
+    }
+
+    public bool EqualOrBothUnknown(NaInteger<T> other)
+    {
+        return (IsNa && other.IsNa) || _value == other._value;
+    }
+
+    public bool EqualOrEitherUnknown(NaInteger<T> other)
+    {
+        return IsNa || other.IsNa || _value == other._value;
     }
 
     public int CompareTo(NaInteger<T> other)
@@ -85,11 +113,6 @@ public readonly struct NaInteger<T>
         return obj is NaInteger<T> other
             ? CompareTo(other)
             : throw new ArgumentException($"Object is not a {nameof(NaInteger<>)}", nameof(obj));
-    }
-
-    public override bool Equals(object? obj)
-    {
-        return obj is NaInteger<T> n && Equals(n);
     }
 
     public override int GetHashCode()
@@ -111,25 +134,48 @@ public readonly struct NaInteger<T>
 
     public static T MinValue => T.MinValue + T.One;
 
+    static NaInteger<T> INullable<NaInteger<T>, T>.Null => Na;
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static NaInteger<T> Ternary(NaInteger<T> x, NaInteger<T> y, Func<T, T, T> op)
+    private static NaInteger<T> ResultIfNotNa(NaInteger<T> x, NaInteger<T> y, Func<T, T, T> op)
     {
         return x.IsNa | y.IsNa ? Na : new(op(x._value, y._value), true);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static NaInteger<T> ResultIfNotNa(NaInteger<T> x, T y, Func<T, T, T> op)
+    {
+        return x.IsNa ? Na : new(op(x._value, y), true);
+    }
+
     public static NaInteger<T> operator +(NaInteger<T> x, NaInteger<T> y)
     {
-        return Ternary(x, y, static (a, b) => a + b);
+        return ResultIfNotNa(x, y, static (a, b) => a + b);
+    }
+
+    public static NaInteger<T> operator +(NaInteger<T> x, T y)
+    {
+        return ResultIfNotNa(x, y, static (a, b) => a + b);
     }
 
     public static NaInteger<T> operator -(NaInteger<T> x, NaInteger<T> y)
     {
-        return Ternary(x, y, static (a, b) => a - b);
+        return ResultIfNotNa(x, y, static (a, b) => a - b);
+    }
+
+    public static NaInteger<T> operator -(NaInteger<T> x, T y)
+    {
+        return ResultIfNotNa(x, y, static (a, b) => a - b);
     }
 
     public static NaInteger<T> operator *(NaInteger<T> x, NaInteger<T> y)
     {
-        return Ternary(x, y, static (a, b) => a * b);
+        return ResultIfNotNa(x, y, static (a, b) => a * b);
+    }
+
+    public static NaInteger<T> operator *(NaInteger<T> x, T y)
+    {
+        return ResultIfNotNa(x, y, static (a, b) => a * b);
     }
 
     public static NaInteger<T> operator /(NaInteger<T> x, NaInteger<T> y)
@@ -139,22 +185,62 @@ public readonly struct NaInteger<T>
             : new(x._value / y._value, true);
     }
 
-    public static bool operator ==(NaInteger<T> x, NaInteger<T> y)
+    public static NaInteger<T> operator /(NaInteger<T> x, T y)
+    {
+        return x.IsNa | (y == T.Zero)
+            ? Na
+            : new(x._value / y, true);
+    }
+
+    public static Trilean operator ==(NaInteger<T> x, NaInteger<T> y)
     {
         return x.Equals(y);
     }
 
-    public static bool operator !=(NaInteger<T> x, NaInteger<T> y)
+    public static Trilean operator !=(NaInteger<T> x, NaInteger<T> y)
     {
         return !(x == y);
     }
 
-    public static bool operator <(NaInteger<T> x, NaInteger<T> y)
+    static bool IEqualityOperators<NaInteger<T>, NaInteger<T>, bool>.operator ==(NaInteger<T> left, NaInteger<T> right)
+    {
+        // bool == operator is false for NaInteger<T> Na == NaInteger<T> Na
+        // bool Equals(T) is true for NaInteger<T> Na == NaInteger<T> Na
+        // as https://learn.microsoft.com/en-us/dotnet/core/compatibility/core-libraries/7.0/equals-nan
+        return left.EqualAndNeitherUnknown(right);
+    }
+
+    static bool IEqualityOperators<NaInteger<T>, NaInteger<T>, bool>.operator !=(NaInteger<T> left, NaInteger<T> right)
+    {
+        return !left.EqualAndNeitherUnknown(right);
+    }
+
+    public static Trilean operator <(NaInteger<T> x, NaInteger<T> y)
+    {
+        if (x.IsNa || y.IsNa)
+        {
+            return Trilean.Unknown;
+        }
+
+        return x._value < y._value;
+    }
+
+    public static Trilean operator >(NaInteger<T> x, NaInteger<T> y)
+    {
+        if (x.IsNa || y.IsNa)
+        {
+            return Trilean.Unknown;
+        }
+
+        return x._value > y._value;
+    }
+
+    static bool IComparisonOperators<NaInteger<T>, NaInteger<T>, bool>.operator <(NaInteger<T> x, NaInteger<T> y)
     {
         return !x.IsNa & !y.IsNa && x._value < y._value;
     }
 
-    public static bool operator >(NaInteger<T> x, NaInteger<T> y)
+    static bool IComparisonOperators<NaInteger<T>, NaInteger<T>, bool>.operator >(NaInteger<T> x, NaInteger<T> y)
     {
         return !x.IsNa & !y.IsNa && x._value > y._value;
     }
@@ -346,22 +432,22 @@ public readonly struct NaInteger<T>
 
     public static NaInteger<T> MaxMagnitude(NaInteger<T> x, NaInteger<T> y)
     {
-        return Ternary(x, y, T.MaxMagnitude);
+        return ResultIfNotNa(x, y, T.MaxMagnitude);
     }
 
     public static NaInteger<T> MaxMagnitudeNumber(NaInteger<T> x, NaInteger<T> y)
     {
-        return Ternary(x, y, T.MaxMagnitudeNumber);
+        return ResultIfNotNa(x, y, T.MaxMagnitudeNumber);
     }
 
     public static NaInteger<T> MinMagnitude(NaInteger<T> x, NaInteger<T> y)
     {
-        return Ternary(x, y, T.MinMagnitude);
+        return ResultIfNotNa(x, y, T.MinMagnitude);
     }
 
     public static NaInteger<T> MinMagnitudeNumber(NaInteger<T> x, NaInteger<T> y)
     {
-        return Ternary(x, y, T.MinMagnitudeNumber);
+        return ResultIfNotNa(x, y, T.MinMagnitudeNumber);
     }
 
     public static NaInteger<T> Parse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider)

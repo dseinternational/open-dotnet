@@ -15,7 +15,7 @@ public class NaIntegerTests
         NaInteger<int>[] sequence1 = [1, 2, 3, 4, 5];
         NaInteger<int>[] sequence2 = [1, 2, 3, 4, 5];
         var dest = new NaInteger<int>[5];
-        NaNumberPrimitives.Add(sequence1, sequence2, dest);
+        NaIntegerPrimitives.Add(sequence1, sequence2, dest);
 
         Assert.Equal([2, 4, 6, 8, 10], dest);
     }
@@ -26,7 +26,7 @@ public class NaIntegerTests
         NaInteger<int>[] sequence1 = [1, 2, 3, 4, 5];
         NaInteger<int>[] sequence2 = [1, 2, 3, 4, NaInteger<int>.Na];
         var dest = new NaInteger<int>[5];
-        NaNumberPrimitives.Add(sequence1, sequence2, dest);
+        NaIntegerPrimitives.Add(sequence1, sequence2, dest);
 
         Assert.Equal([2, 4, 6, 8, NaInteger<int>.Sentinel], MemoryMarshal.Cast<NaInteger<int>, int>(dest));
     }
@@ -35,7 +35,7 @@ public class NaIntegerTests
     public void Sum()
     {
         NaInteger<int>[] sequence = [1, 2, 3, 4, 5];
-        var sum = NaNumberPrimitives.Sum(sequence);
+        var sum = NaIntegerPrimitives.Sum(sequence);
         Assert.Equal(15, sum);
     }
 
@@ -43,12 +43,12 @@ public class NaIntegerTests
     public void Sum_Na()
     {
         NaInteger<int>[] sequence = [1, 2, 3, NaInteger<int>.Na, 4, 5, null, 6, 7, 8];
-        var sum = NaNumberPrimitives.Sum(sequence);
+        var sum = NaIntegerPrimitives.Sum(sequence);
         Assert.Equal("NA", sum.ToString());
     }
 }
 
-public static class NaNumberPrimitives
+public static class NaIntegerPrimitives
 {
     public static void Add<T>(ReadOnlySpan<NaInteger<T>> x, ReadOnlySpan<NaInteger<T>> y, Span<NaInteger<T>> destination)
         where T : struct, IBinaryInteger<T>, IMinMaxValue<T>
