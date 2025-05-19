@@ -144,12 +144,12 @@ public static class Tri
 
         if (left is null)
         {
-            return right is null || right.IsUnknown;
+            return right is null || right.IsUnknown();
         }
 
-        if (left.IsUnknown)
+        if (left.IsUnknown())
         {
-            return right.IsUnknown;
+            return right.IsUnknown();
         }
 
         // if both values are known, return true if equal or false if not equal.
@@ -206,7 +206,7 @@ public static class Tri
     {
         // if either values are unknown, return true.
 
-        if (left is null || right is null || left.IsUnknown || right.IsUnknown)
+        if (left is null || right is null || left.IsUnknown() || right.IsUnknown())
         {
             return true;
         }
