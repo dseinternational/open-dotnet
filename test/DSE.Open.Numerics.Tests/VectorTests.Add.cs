@@ -20,9 +20,9 @@ public partial class VectorTests
     [Fact]
     public void AddInPlace_Nullable_Int32()
     {
-        var v1 = Vector.Create<NaInteger<int>>([1, 2, 3, 4, 5, 6]);
-        var v2 = Vector.Create<NaInteger<int>>([1, 2, 3, 4, 5, 6]);
-        var v3 = Vector.Create<NaInteger<int>>([2, 4, 6, 8, 10, 12]);
+        var v1 = Vector.Create<NaInt<int>>([1, 2, 3, 4, 5, 6]);
+        var v2 = Vector.Create<NaInt<int>>([1, 2, 3, 4, 5, 6]);
+        var v3 = Vector.Create<NaInt<int>>([2, 4, 6, 8, 10, 12]);
 
         Vector.AddInPlace(v1, v2);
         Assert.Equal(6, v1.Length);
@@ -33,33 +33,35 @@ public partial class VectorTests
     [Fact]
     public void AddInPlace_Nullable_Int32_NullValues()
     {
-        var v1 = Vector.Create<NaInteger<int>>([1, 2, 3, 4, null, 6]);
-        var v2 = Vector.Create<NaInteger<int>>([1, null, 3, 4, 5, 6]);
-        var v3 = Vector.Create<NaInteger<int>>([2, null, 6, 8, null, 12]);
+        var v1 = Vector.Create<NaInt<int>>([1, 2, 3, 4, null, 6]);
+        var v2 = Vector.Create<NaInt<int>>([1, null, 3, 4, 5, 6]);
+        var v3 = Vector.Create<NaInt<int>>([2, null, 6, 8, null, 12]);
 
         Vector.AddInPlace(v1, v2);
 
         Assert.Equal(6, v1.Length);
         Assert.Equal(6, v2.Length);
         // vectors containing NaNs are not equal to any other vector
+        // Assert.False(v1 == v3);
+        // however, IEquatable<T>.Equals considers null/NaN to be equal
         Assert.Equal(v1, v3);
-        Assert.NotEqual(v1, v3);
     }
 
     [Fact]
     public void AddInPlace_Float_NaValues()
     {
-        var v1 = Vector.Create<float>([1, 2, 3, 4, float.NaN, 6]);
-        var v2 = Vector.Create<float>([1, float.NaN, 3, 4, 5, 6]);
-        var v3 = Vector.Create<float>([2, float.NaN, 6, 8, float.NaN, 12]);
+        var v1 = Vector.Create([1, 2, 3, 4, float.NaN, 6]);
+        var v2 = Vector.Create([1, float.NaN, 3, 4, 5, 6]);
+        var v3 = Vector.Create([2, float.NaN, 6, 8, float.NaN, 12]);
 
         Vector.AddInPlace(v1, v2);
 
         Assert.Equal(6, v1.Length);
         Assert.Equal(6, v2.Length);
         // vectors containing NaNs are not equal to any other vector
+        // Assert.False(v1 == v3);
+        // however, IEquatable<T>.Equals considers null/NaN to be equal
         Assert.Equal(v1, v3);
-        Assert.NotEqual(v1, v3);
     }
 
     [Fact]
@@ -83,8 +85,8 @@ public partial class VectorTests
     [Fact]
     public void AddInPlace_Int32_Nullable_Ones()
     {
-        var v1 = Vector.Create<NaInteger<int>>([.. Enumerable.Range(0, 100)]);
-        var v2 = Vector.CreateOnes<NaInteger<int>>(100);
+        var v1 = Vector.Create<NaInt<int>>([.. Enumerable.Range(0, 100)]);
+        var v2 = Vector.CreateOnes<NaInt<int>>(100);
 
         Vector.AddInPlace(v1, v2);
 

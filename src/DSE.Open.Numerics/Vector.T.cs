@@ -96,22 +96,17 @@ public sealed class Vector<T> : Vector, IVector<T>, IReadOnlyVector<T>, IEquatab
 
     public bool Equals(Vector<T>? other)
     {
-        return other is not null && Equals(other.AsSpan());
-    }
-
-    public bool Equals(IVector<T>? other)
-    {
-        return other is not null && Equals(other.AsSpan());
+        return other is not null && SequenceEqual(this, other);
     }
 
     public bool Equals(IReadOnlyVector<T>? other)
     {
-        return other is not null && Equals(other.AsSpan());
+        return other is not null && SequenceEqual(this, other);
     }
 
     public bool Equals(ReadOnlySpan<T> other)
     {
-        return AsSpan().SequenceEqual(other);
+        return SequenceEqual(this, other);
     }
 
     public MemoryEnumerator<T> GetEnumerator()

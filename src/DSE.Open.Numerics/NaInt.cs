@@ -12,27 +12,27 @@ namespace DSE.Open.Numerics;
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
 [StructLayout(LayoutKind.Sequential)]
-public readonly struct NaInteger<T>
-    : INaNumber<NaInteger<T>, T>
+public readonly struct NaInt<T>
+    : INaNumber<NaInt<T>, T>
       where T : struct, IBinaryInteger<T>, IMinMaxValue<T>
 {
     private static readonly T s_sentinel = T.MaxValue;
 
     public static T Sentinel => s_sentinel;
 
-    public static NaInteger<T> Na => new(s_sentinel, true);
+    public static NaInt<T> Na => new(s_sentinel, true);
 
     private readonly T _value;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #pragma warning disable IDE0060 // Remove unused parameter
-    private NaInteger(T value, bool skipCheck)
+    private NaInt(T value, bool skipCheck)
 #pragma warning restore IDE0060 // Remove unused parameter
     {
         _value = value;
     }
 
-    public NaInteger(T value)
+    public NaInt(T value)
     {
         _value = (value == s_sentinel)
             ? throw new ArgumentOutOfRangeException(nameof(value),
@@ -40,12 +40,12 @@ public readonly struct NaInteger<T>
             : value;
     }
 
-    public static implicit operator NaInteger<T>(T value)
+    public static implicit operator NaInt<T>(T value)
     {
         return new(value);
     }
 
-    public static implicit operator NaInteger<T>(T? value)
+    public static implicit operator NaInt<T>(T? value)
     {
         if (value is null)
         {
@@ -55,7 +55,7 @@ public readonly struct NaInteger<T>
         return new(value.Value);
     }
 
-    public static explicit operator T(NaInteger<T> value)
+    public static explicit operator T(NaInt<T> value)
     {
         return value.IsNa
             ? throw new UnknownValueException()
@@ -64,21 +64,21 @@ public readonly struct NaInteger<T>
 
     public bool IsNa => _value == s_sentinel;
 
-    T INullable<NaInteger<T>, T>.Value => (T)this;
+    T INullable<NaInt<T>, T>.Value => (T)this;
 
     bool INullable.HasValue => !IsNa;
 
-    bool IEquatable<NaInteger<T>>.Equals(NaInteger<T> other)
+    bool IEquatable<NaInt<T>>.Equals(NaInt<T> other)
     {
         return EqualOrBothUnknown(other);
     }
 
     public override bool Equals(object? obj)
     {
-        return obj is NaInteger<T> n && EqualOrBothUnknown(n);
+        return obj is NaInt<T> n && EqualOrBothUnknown(n);
     }
 
-    public Trilean Equals(NaInteger<T> other)
+    public Trilean Equals(NaInt<T> other)
     {
         if (IsNa || other.IsNa)
         {
@@ -88,31 +88,31 @@ public readonly struct NaInteger<T>
         return _value == other._value ? Trilean.True : Trilean.False;
     }
 
-    public bool EqualAndNeitherUnknown(NaInteger<T> other)
+    public bool EqualAndNeitherUnknown(NaInt<T> other)
     {
         return !IsNa && !other.IsNa && _value == other._value;
     }
 
-    public bool EqualOrBothUnknown(NaInteger<T> other)
+    public bool EqualOrBothUnknown(NaInt<T> other)
     {
         return (IsNa && other.IsNa) || _value == other._value;
     }
 
-    public bool EqualOrEitherUnknown(NaInteger<T> other)
+    public bool EqualOrEitherUnknown(NaInt<T> other)
     {
         return IsNa || other.IsNa || _value == other._value;
     }
 
-    public int CompareTo(NaInteger<T> other)
+    public int CompareTo(NaInt<T> other)
     {
         return IsNa | other.IsNa ? 0 : _value.CompareTo(other._value);
     }
 
     int IComparable.CompareTo(object? obj)
     {
-        return obj is NaInteger<T> other
+        return obj is NaInt<T> other
             ? CompareTo(other)
-            : throw new ArgumentException($"Object is not a {nameof(NaInteger<>)}", nameof(obj));
+            : throw new ArgumentException($"Object is not a {nameof(NaInt<>)}", nameof(obj));
     }
 
     public override int GetHashCode()
@@ -120,89 +120,89 @@ public readonly struct NaInteger<T>
         return IsNa ? 0 : _value.GetHashCode();
     }
 
-    public static NaInteger<T> AdditiveIdentity => T.AdditiveIdentity;
+    public static NaInt<T> AdditiveIdentity => T.AdditiveIdentity;
 
-    public static NaInteger<T> One => T.One;
+    public static NaInt<T> One => T.One;
 
     public static int Radix => T.Radix;
 
-    public static NaInteger<T> Zero => T.Zero;
+    public static NaInt<T> Zero => T.Zero;
 
-    public static NaInteger<T> MultiplicativeIdentity => T.MultiplicativeIdentity;
+    public static NaInt<T> MultiplicativeIdentity => T.MultiplicativeIdentity;
 
     public static T MaxValue => T.MaxValue;
 
     public static T MinValue => T.MinValue + T.One;
 
-    static NaInteger<T> INullable<NaInteger<T>, T>.Null => Na;
+    static NaInt<T> INullable<NaInt<T>, T>.Null => Na;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static NaInteger<T> ResultIfNotNa(NaInteger<T> x, NaInteger<T> y, Func<T, T, T> op)
+    private static NaInt<T> ResultIfNotNa(NaInt<T> x, NaInt<T> y, Func<T, T, T> op)
     {
         return x.IsNa | y.IsNa ? Na : new(op(x._value, y._value), true);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static NaInteger<T> ResultIfNotNa(NaInteger<T> x, T y, Func<T, T, T> op)
+    private static NaInt<T> ResultIfNotNa(NaInt<T> x, T y, Func<T, T, T> op)
     {
         return x.IsNa ? Na : new(op(x._value, y), true);
     }
 
-    public static NaInteger<T> operator +(NaInteger<T> x, NaInteger<T> y)
+    public static NaInt<T> operator +(NaInt<T> x, NaInt<T> y)
     {
         return ResultIfNotNa(x, y, static (a, b) => a + b);
     }
 
-    public static NaInteger<T> operator +(NaInteger<T> x, T y)
+    public static NaInt<T> operator +(NaInt<T> x, T y)
     {
         return ResultIfNotNa(x, y, static (a, b) => a + b);
     }
 
-    public static NaInteger<T> operator -(NaInteger<T> x, NaInteger<T> y)
+    public static NaInt<T> operator -(NaInt<T> x, NaInt<T> y)
     {
         return ResultIfNotNa(x, y, static (a, b) => a - b);
     }
 
-    public static NaInteger<T> operator -(NaInteger<T> x, T y)
+    public static NaInt<T> operator -(NaInt<T> x, T y)
     {
         return ResultIfNotNa(x, y, static (a, b) => a - b);
     }
 
-    public static NaInteger<T> operator *(NaInteger<T> x, NaInteger<T> y)
+    public static NaInt<T> operator *(NaInt<T> x, NaInt<T> y)
     {
         return ResultIfNotNa(x, y, static (a, b) => a * b);
     }
 
-    public static NaInteger<T> operator *(NaInteger<T> x, T y)
+    public static NaInt<T> operator *(NaInt<T> x, T y)
     {
         return ResultIfNotNa(x, y, static (a, b) => a * b);
     }
 
-    public static NaInteger<T> operator /(NaInteger<T> x, NaInteger<T> y)
+    public static NaInt<T> operator /(NaInt<T> x, NaInt<T> y)
     {
         return x.IsNa | y.IsNa | (y._value == T.Zero)
             ? Na
             : new(x._value / y._value, true);
     }
 
-    public static NaInteger<T> operator /(NaInteger<T> x, T y)
+    public static NaInt<T> operator /(NaInt<T> x, T y)
     {
         return x.IsNa | (y == T.Zero)
             ? Na
             : new(x._value / y, true);
     }
 
-    public static Trilean operator ==(NaInteger<T> x, NaInteger<T> y)
+    public static Trilean operator ==(NaInt<T> x, NaInt<T> y)
     {
         return x.Equals(y);
     }
 
-    public static Trilean operator !=(NaInteger<T> x, NaInteger<T> y)
+    public static Trilean operator !=(NaInt<T> x, NaInt<T> y)
     {
         return !(x == y);
     }
 
-    static bool IEqualityOperators<NaInteger<T>, NaInteger<T>, bool>.operator ==(NaInteger<T> left, NaInteger<T> right)
+    static bool IEqualityOperators<NaInt<T>, NaInt<T>, bool>.operator ==(NaInt<T> left, NaInt<T> right)
     {
         // bool == operator is false for NaInteger<T> Na == NaInteger<T> Na
         // bool Equals(T) is true for NaInteger<T> Na == NaInteger<T> Na
@@ -210,12 +210,12 @@ public readonly struct NaInteger<T>
         return left.EqualAndNeitherUnknown(right);
     }
 
-    static bool IEqualityOperators<NaInteger<T>, NaInteger<T>, bool>.operator !=(NaInteger<T> left, NaInteger<T> right)
+    static bool IEqualityOperators<NaInt<T>, NaInt<T>, bool>.operator !=(NaInt<T> left, NaInt<T> right)
     {
         return !left.EqualAndNeitherUnknown(right);
     }
 
-    public static Trilean operator <(NaInteger<T> x, NaInteger<T> y)
+    public static Trilean operator <(NaInt<T> x, NaInt<T> y)
     {
         if (x.IsNa || y.IsNa)
         {
@@ -225,7 +225,7 @@ public readonly struct NaInteger<T>
         return x._value < y._value;
     }
 
-    public static Trilean operator >(NaInteger<T> x, NaInteger<T> y)
+    public static Trilean operator >(NaInt<T> x, NaInt<T> y)
     {
         if (x.IsNa || y.IsNa)
         {
@@ -235,12 +235,12 @@ public readonly struct NaInteger<T>
         return x._value > y._value;
     }
 
-    static bool IComparisonOperators<NaInteger<T>, NaInteger<T>, bool>.operator <(NaInteger<T> x, NaInteger<T> y)
+    static bool IComparisonOperators<NaInt<T>, NaInt<T>, bool>.operator <(NaInt<T> x, NaInt<T> y)
     {
         return !x.IsNa & !y.IsNa && x._value < y._value;
     }
 
-    static bool IComparisonOperators<NaInteger<T>, NaInteger<T>, bool>.operator >(NaInteger<T> x, NaInteger<T> y)
+    static bool IComparisonOperators<NaInt<T>, NaInt<T>, bool>.operator >(NaInt<T> x, NaInt<T> y)
     {
         return !x.IsNa & !y.IsNa && x._value > y._value;
     }
@@ -250,7 +250,7 @@ public readonly struct NaInteger<T>
         return IsNa ? "NA" : _value.ToString();
     }
 
-    public static NaInteger<T> Abs(NaInteger<T> value)
+    public static NaInt<T> Abs(NaInt<T> value)
     {
         if (value.IsNa)
         {
@@ -260,7 +260,7 @@ public readonly struct NaInteger<T>
         return T.Abs(value._value);
     }
 
-    public static bool IsCanonical(NaInteger<T> value)
+    public static bool IsCanonical(NaInt<T> value)
     {
         if (value.IsNa)
         {
@@ -270,7 +270,7 @@ public readonly struct NaInteger<T>
         return T.IsCanonical(value._value);
     }
 
-    public static bool IsComplexNumber(NaInteger<T> value)
+    public static bool IsComplexNumber(NaInt<T> value)
     {
         if (value.IsNa)
         {
@@ -280,7 +280,7 @@ public readonly struct NaInteger<T>
         return T.IsComplexNumber(value._value);
     }
 
-    public static bool IsEvenInteger(NaInteger<T> value)
+    public static bool IsEvenInteger(NaInt<T> value)
     {
         if (value.IsNa)
         {
@@ -290,7 +290,7 @@ public readonly struct NaInteger<T>
         return T.IsEvenInteger(value._value);
     }
 
-    public static bool IsFinite(NaInteger<T> value)
+    public static bool IsFinite(NaInt<T> value)
     {
         if (value.IsNa)
         {
@@ -300,7 +300,7 @@ public readonly struct NaInteger<T>
         return T.IsFinite(value._value);
     }
 
-    public static bool IsImaginaryNumber(NaInteger<T> value)
+    public static bool IsImaginaryNumber(NaInt<T> value)
     {
         if (value.IsNa)
         {
@@ -310,7 +310,7 @@ public readonly struct NaInteger<T>
         return T.IsImaginaryNumber(value._value);
     }
 
-    public static bool IsInfinity(NaInteger<T> value)
+    public static bool IsInfinity(NaInt<T> value)
     {
         if (value.IsNa)
         {
@@ -320,7 +320,7 @@ public readonly struct NaInteger<T>
         return T.IsInfinity(value._value);
     }
 
-    public static bool IsInteger(NaInteger<T> value)
+    public static bool IsInteger(NaInt<T> value)
     {
         if (value.IsNa)
         {
@@ -330,7 +330,7 @@ public readonly struct NaInteger<T>
         return T.IsInteger(value._value);
     }
 
-    public static bool IsNaN(NaInteger<T> value)
+    public static bool IsNaN(NaInt<T> value)
     {
         if (value.IsNa)
         {
@@ -340,7 +340,7 @@ public readonly struct NaInteger<T>
         return T.IsNaN(value._value);
     }
 
-    public static bool IsNegative(NaInteger<T> value)
+    public static bool IsNegative(NaInt<T> value)
     {
         if (value.IsNa)
         {
@@ -350,7 +350,7 @@ public readonly struct NaInteger<T>
         return T.IsNegative(value._value);
     }
 
-    public static bool IsNegativeInfinity(NaInteger<T> value)
+    public static bool IsNegativeInfinity(NaInt<T> value)
     {
         if (value.IsNa)
         {
@@ -360,7 +360,7 @@ public readonly struct NaInteger<T>
         return T.IsNegativeInfinity(value._value);
     }
 
-    public static bool IsNormal(NaInteger<T> value)
+    public static bool IsNormal(NaInt<T> value)
     {
         if (value.IsNa)
         {
@@ -370,7 +370,7 @@ public readonly struct NaInteger<T>
         return T.IsNormal(value._value);
     }
 
-    public static bool IsOddInteger(NaInteger<T> value)
+    public static bool IsOddInteger(NaInt<T> value)
     {
         if (value.IsNa)
         {
@@ -380,7 +380,7 @@ public readonly struct NaInteger<T>
         return T.IsOddInteger(value._value);
     }
 
-    public static bool IsPositive(NaInteger<T> value)
+    public static bool IsPositive(NaInt<T> value)
     {
         if (value.IsNa)
         {
@@ -390,7 +390,7 @@ public readonly struct NaInteger<T>
         return T.IsPositive(value._value);
     }
 
-    public static bool IsPositiveInfinity(NaInteger<T> value)
+    public static bool IsPositiveInfinity(NaInt<T> value)
     {
         if (value.IsNa)
         {
@@ -400,7 +400,7 @@ public readonly struct NaInteger<T>
         return T.IsPositiveInfinity(value._value);
     }
 
-    public static bool IsRealNumber(NaInteger<T> value)
+    public static bool IsRealNumber(NaInt<T> value)
     {
         if (value.IsNa)
         {
@@ -410,7 +410,7 @@ public readonly struct NaInteger<T>
         return T.IsRealNumber(value._value);
     }
 
-    public static bool IsSubnormal(NaInteger<T> value)
+    public static bool IsSubnormal(NaInt<T> value)
     {
         if (value.IsNa)
         {
@@ -420,7 +420,7 @@ public readonly struct NaInteger<T>
         return T.IsSubnormal(value._value);
     }
 
-    public static bool IsZero(NaInteger<T> value)
+    public static bool IsZero(NaInt<T> value)
     {
         if (value.IsNa)
         {
@@ -430,39 +430,39 @@ public readonly struct NaInteger<T>
         return T.IsZero(value._value);
     }
 
-    public static NaInteger<T> MaxMagnitude(NaInteger<T> x, NaInteger<T> y)
+    public static NaInt<T> MaxMagnitude(NaInt<T> x, NaInt<T> y)
     {
         return ResultIfNotNa(x, y, T.MaxMagnitude);
     }
 
-    public static NaInteger<T> MaxMagnitudeNumber(NaInteger<T> x, NaInteger<T> y)
+    public static NaInt<T> MaxMagnitudeNumber(NaInt<T> x, NaInt<T> y)
     {
         return ResultIfNotNa(x, y, T.MaxMagnitudeNumber);
     }
 
-    public static NaInteger<T> MinMagnitude(NaInteger<T> x, NaInteger<T> y)
+    public static NaInt<T> MinMagnitude(NaInt<T> x, NaInt<T> y)
     {
         return ResultIfNotNa(x, y, T.MinMagnitude);
     }
 
-    public static NaInteger<T> MinMagnitudeNumber(NaInteger<T> x, NaInteger<T> y)
+    public static NaInt<T> MinMagnitudeNumber(NaInt<T> x, NaInt<T> y)
     {
         return ResultIfNotNa(x, y, T.MinMagnitudeNumber);
     }
 
-    public static NaInteger<T> Parse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider)
+    public static NaInt<T> Parse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider)
     {
         return T.Parse(s, style, provider);
     }
 
-    public static NaInteger<T> Parse(string s, NumberStyles style, IFormatProvider? provider)
+    public static NaInt<T> Parse(string s, NumberStyles style, IFormatProvider? provider)
     {
         return T.Parse(s, style, provider);
     }
 
     public static bool TryConvertFromChecked<TOther>(
         TOther value,
-        [MaybeNullWhen(false)] out NaInteger<T> result) where TOther : INumberBase<TOther>
+        [MaybeNullWhen(false)] out NaInt<T> result) where TOther : INumberBase<TOther>
     {
         if (T.TryConvertFromChecked(value, out var val))
         {
@@ -482,7 +482,7 @@ public readonly struct NaInteger<T>
 
     public static bool TryConvertFromSaturating<TOther>(
         TOther value,
-        [MaybeNullWhen(false)] out NaInteger<T> result) where TOther : INumberBase<TOther>
+        [MaybeNullWhen(false)] out NaInt<T> result) where TOther : INumberBase<TOther>
     {
         if (T.TryConvertFromSaturating(value, out var val))
         {
@@ -502,7 +502,7 @@ public readonly struct NaInteger<T>
 
     public static bool TryConvertFromTruncating<TOther>(
         TOther value,
-        [MaybeNullWhen(false)] out NaInteger<T> result)
+        [MaybeNullWhen(false)] out NaInt<T> result)
         where TOther : INumberBase<TOther>
     {
         if (T.TryConvertFromTruncating(value, out var val))
@@ -522,7 +522,7 @@ public readonly struct NaInteger<T>
     }
 
     public static bool TryConvertToChecked<TOther>(
-        NaInteger<T> value,
+        NaInt<T> value,
         [MaybeNullWhen(false)] out TOther result)
         where TOther : INumberBase<TOther>
     {
@@ -530,7 +530,7 @@ public readonly struct NaInteger<T>
     }
 
     public static bool TryConvertToSaturating<TOther>(
-        NaInteger<T> value,
+        NaInt<T> value,
         [MaybeNullWhen(false)] out TOther result)
         where TOther : INumberBase<TOther>
     {
@@ -538,7 +538,7 @@ public readonly struct NaInteger<T>
     }
 
     public static bool TryConvertToTruncating<TOther>(
-        NaInteger<T> value,
+        NaInt<T> value,
         [MaybeNullWhen(false)] out TOther result)
         where TOther : INumberBase<TOther>
     {
@@ -549,7 +549,7 @@ public readonly struct NaInteger<T>
         ReadOnlySpan<char> s,
         NumberStyles style,
         IFormatProvider? provider,
-        [MaybeNullWhen(false)] out NaInteger<T> result)
+        [MaybeNullWhen(false)] out NaInt<T> result)
     {
         if (T.TryParse(s, style, provider, out var value) && value != Sentinel)
         {
@@ -565,7 +565,7 @@ public readonly struct NaInteger<T>
         [NotNullWhen(true)] string? s,
         NumberStyles style,
         IFormatProvider? provider,
-        [MaybeNullWhen(false)] out NaInteger<T> result)
+        [MaybeNullWhen(false)] out NaInt<T> result)
     {
         return TryParse(s.AsSpan(), style, provider, out result);
     }
@@ -584,7 +584,7 @@ public readonly struct NaInteger<T>
         return _value.ToString(format, formatProvider);
     }
 
-    public static NaInteger<T> Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
+    public static NaInt<T> Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
     {
         return T.Parse(s, provider);
     }
@@ -592,7 +592,7 @@ public readonly struct NaInteger<T>
     public static bool TryParse(
         ReadOnlySpan<char> s,
         IFormatProvider? provider,
-        [MaybeNullWhen(false)] out NaInteger<T> result)
+        [MaybeNullWhen(false)] out NaInt<T> result)
     {
         if (T.TryParse(s, provider, out var value) && value != Sentinel)
         {
@@ -604,7 +604,7 @@ public readonly struct NaInteger<T>
         return false;
     }
 
-    public static NaInteger<T> Parse(string s, IFormatProvider? provider)
+    public static NaInt<T> Parse(string s, IFormatProvider? provider)
     {
         return T.Parse(s, provider);
     }
@@ -612,42 +612,42 @@ public readonly struct NaInteger<T>
     public static bool TryParse(
         [NotNullWhen(true)] string? s,
         IFormatProvider? provider,
-        [MaybeNullWhen(false)] out NaInteger<T> result)
+        [MaybeNullWhen(false)] out NaInt<T> result)
     {
         return TryParse(s.AsSpan(), provider, out result);
     }
 
-    public static bool operator <=(NaInteger<T> left, NaInteger<T> right)
+    public static bool operator <=(NaInt<T> left, NaInt<T> right)
     {
         return left.CompareTo(right) <= 0;
     }
 
-    public static bool operator >=(NaInteger<T> left, NaInteger<T> right)
+    public static bool operator >=(NaInt<T> left, NaInt<T> right)
     {
         return left.CompareTo(right) >= 0;
     }
 
-    public static NaInteger<T> operator %(NaInteger<T> left, NaInteger<T> right)
+    public static NaInt<T> operator %(NaInt<T> left, NaInt<T> right)
     {
         return left % right;
     }
 
-    public static NaInteger<T> operator --(NaInteger<T> value)
+    public static NaInt<T> operator --(NaInt<T> value)
     {
         return --value;
     }
 
-    public static NaInteger<T> operator ++(NaInteger<T> value)
+    public static NaInt<T> operator ++(NaInt<T> value)
     {
         return ++value;
     }
 
-    public static NaInteger<T> operator -(NaInteger<T> value)
+    public static NaInt<T> operator -(NaInt<T> value)
     {
         return -value;
     }
 
-    public static NaInteger<T> operator +(NaInteger<T> value)
+    public static NaInt<T> operator +(NaInt<T> value)
     {
         return +value;
     }
