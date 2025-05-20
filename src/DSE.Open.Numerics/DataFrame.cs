@@ -18,55 +18,43 @@ namespace DSE.Open.Numerics;
 public class DataFrame : IDataFrame
 {
     private readonly Collection<Series> _columns;
-    private readonly Collection<string> _columnNames;
 
-    public DataFrame(string? name = null, Collection<string>? columnNames = null) : this([], name, columnNames)
+    public DataFrame(string? name = null) : this([], null)
     {
     }
 
-    public DataFrame(Collection<Series> columns, string? name = null, Collection<string>? columnNames = null)
+    public DataFrame(Collection<Series> columns, string? name = null)
     {
         ArgumentNullException.ThrowIfNull(columns);
 
-        if (columnNames is not null && columns.Count != columnNames.Count)
-        {
-            throw new ArgumentException("Columns and column names must have the same count.");
-        }
-
         Name = name;
         _columns = columns;
-        _columnNames = columnNames is not null ? columnNames : new(columns.Count);
+
+        for (var i = 0; i < _columns.Count; i++)
+        {
+            _columns[i].Name ??= i.ToStringInvariant();
+        }
     }
 
     IReadOnlySeries IReadOnlyList<IReadOnlySeries>.this[int index] => this[index];
 
     public Series? this[string name]
     {
-        get
-        {
-            var index = _columnNames.IndexOf(name);
-
-            if (index < 0)
-            {
-                return null;
-            }
-
-            return _columns[index];
-        }
+        get => _columns.FirstOrDefault(s => s.Name == name);
         set
         {
             ArgumentNullException.ThrowIfNull(value);
 
-            var index = _columnNames.IndexOf(name);
+            var index = _columns.FindIndex(s => s.Name == name);
 
             if (index < 0)
             {
-                _columnNames.Add(name);
                 _columns.Add(value);
             }
             else
             {
                 _columns[index] = value;
+                value.Name ??= index.ToStringInvariant();
             }
         }
     }
@@ -86,7 +74,10 @@ public class DataFrame : IDataFrame
     /// </summary>
     public string? Name { get; set; }
 
-    public IReadOnlyList<string> ColumnNames => _columnNames;
+    public IReadOnlyList<string> ColumnNames()
+    {
+        return (IReadOnlyList<string>)_columns.Select(s => s.Name);
+    }
 
     /// <summary>
     /// Gets the number of columns in the data frame.
@@ -107,7 +98,9 @@ public class DataFrame : IDataFrame
 
     public void Insert(int index, Series item)
     {
+        ArgumentNullException.ThrowIfNull(item);
         _columns.Insert(index, item);
+        item.Name ??= index.ToStringInvariant();
     }
 
     public void RemoveAt(int index)
@@ -117,7 +110,9 @@ public class DataFrame : IDataFrame
 
     public void Add(Series item)
     {
+        ArgumentNullException.ThrowIfNull(item);
         _columns.Add(item);
+        item.Name ??= (_columns.Count - 1).ToStringInvariant();
     }
 
     public void Clear()

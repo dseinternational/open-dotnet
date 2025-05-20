@@ -75,7 +75,7 @@ public class DataFrameJsonConverter : JsonConverter<DataFrame>
             }
         }
 
-        return new DataFrame(columns, name, null); // TODO: add column names
+        return new DataFrame(columns, name);
     }
 
     public override void Write(Utf8JsonWriter writer, DataFrame value, JsonSerializerOptions options)
