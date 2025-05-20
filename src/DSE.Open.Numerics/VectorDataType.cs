@@ -9,7 +9,7 @@ namespace DSE.Open.Numerics;
 /// Identifies the type of data stored in a <see cref="IVector{T}"/> or  <see cref="IReadOnlyVector{T}"/>.
 /// </summary>
 [JsonConverter(typeof(JsonStringEnumConverter<VectorDataType>))]
-public enum VectorDataType
+public enum VectorDataType : byte
 {
     [JsonStringEnumMemberName(VectorDataTypeLabels.Float64)]
     Float64,
