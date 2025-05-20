@@ -58,7 +58,7 @@ public partial class Vector
         [VectorDataType.DateTime] = typeof(DateTime),
         [VectorDataType.DateTime64] = typeof(DateTime64),
         [VectorDataType.DateTimeOffset] = typeof(DateTimeOffset),
-        [VectorDataType.Float16] = typeof(float),
+        [VectorDataType.Float16] = typeof(Half),
         [VectorDataType.Float32] = typeof(float),
         [VectorDataType.Float64] = typeof(double),
         [VectorDataType.Int16] = typeof(short),
@@ -68,6 +68,7 @@ public partial class Vector
         [VectorDataType.String] = typeof(string),
         [VectorDataType.UInt32] = typeof(uint),
         [VectorDataType.UInt64] = typeof(ulong),
+        [VectorDataType.UInt16] = typeof(ushort),
         [VectorDataType.UInt8] = typeof(byte),
 
         [VectorDataType.NaBool] = typeof(NaValue<bool>),
@@ -85,6 +86,7 @@ public partial class Vector
         [VectorDataType.NaString] = typeof(NaValue<string>),
         [VectorDataType.NaUInt32] = typeof(NaInt<uint>),
         [VectorDataType.NaUInt64] = typeof(NaInt<ulong>),
+        [VectorDataType.NaUInt16] = typeof(NaInt<ushort>),
         [VectorDataType.NaUInt8] = typeof(NaInt<byte>),
 
     }.ToFrozenDictionary();

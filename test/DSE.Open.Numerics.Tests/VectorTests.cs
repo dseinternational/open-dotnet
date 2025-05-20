@@ -46,25 +46,155 @@ public partial class VectorTests : LoggedTestsBase
     }
 
     [Fact]
-    public void CreateNumericInt32()
+    public void CreateInt8()
     {
-        TestCreate([0, 1, 2, 3, 4]);
+        TestCreate<sbyte>([0, 1, 2, 3, -4]);
     }
 
     [Fact]
-    public void CreateNumericFloat()
+    public void CreateInt16()
+    {
+        TestCreate<short>([0, 1, 2, 3, -4]);
+    }
+
+    [Fact]
+    public void CreateInt32()
+    {
+        TestCreate([0, 1, 2, 3, -4]);
+    }
+
+    [Fact]
+    public void CreateInt64()
+    {
+        TestCreate<long>([0, 1, 2, 3, -4]);
+    }
+
+    [Fact]
+    public void CreateUInt16()
+    {
+        TestCreate<ushort>([0, 1, 2, 3, 4]);
+    }
+
+    [Fact]
+    public void CreateUInt32()
+    {
+        TestCreate<uint>([0, 1, 2, 3, 4]);
+    }
+
+    [Fact]
+    public void CreateUInt64()
+    {
+        TestCreate<ulong>([0, 1, 2, 3, 4]);
+    }
+
+    [Fact]
+    public void CreateFloat16()
+    {
+        TestCreate([(Half)0.496f, (Half)1.235f, (Half)200.8469874f, (Half)(-4682.169845f), (Half)981635.123548715f]);
+    }
+
+    [Fact]
+    public void CreateFloat32()
     {
         TestCreate([0.496f, 1.235f, 200.8469874f, -4682.169845f, 981635.123548715f]);
     }
 
     [Fact]
-    public void CreateNumericDouble()
+    public void CreateFloat64()
     {
         TestCreate([0.496, 1.235, 200.8469874, -4682.169845, 981635.123548715]);
     }
 
     [Fact]
-    public void SerializeDeserializeReflectedFloat()
+    public void CreateNaInt8()
+    {
+        TestCreate<NaInt<sbyte>>([0, 1, 2, 3, -4, null]);
+    }
+
+    [Fact]
+    public void CreateNaInt32()
+    {
+        TestCreate<NaInt<int>>([0, 1, 2, 3, -4, null]);
+    }
+
+    [Fact]
+    public void CreateNaInt64()
+    {
+        TestCreate<NaInt<long>>([0, 1, 2, 3, -4, null]);
+    }
+
+    [Fact]
+    public void CreateNaUInt16()
+    {
+        TestCreate<NaInt<ushort>>([0, 1, 2, 3, 4, null]);
+    }
+
+    [Fact]
+    public void SerializeDeserializeReflectedInt8()
+    {
+        TestSerializeDeserialize(
+            [.. Enumerable.Range(-10, 120).Select(i => (sbyte)i)],
+            NumericsJsonSharedOptions.Reflected);
+    }
+
+    [Fact]
+    public void SerializeDeserializeSourceGeneratedInt8()
+    {
+        TestSerializeDeserialize(
+            [.. Enumerable.Range(-10, 120).Select(i => (sbyte)i)],
+            NumericsJsonSharedOptions.SourceGenerated);
+    }
+
+    [Fact]
+    public void SerializeDeserializeReflectedInt16()
+    {
+        TestSerializeDeserialize(
+            [.. Enumerable.Range(-10, 500).Select(i => (short)i)],
+            NumericsJsonSharedOptions.Reflected);
+    }
+
+    [Fact]
+    public void SerializeDeserializeSourceGeneratedInt16()
+    {
+        TestSerializeDeserialize(
+            [.. Enumerable.Range(-10, 500).Select(i => (short)i)],
+            NumericsJsonSharedOptions.SourceGenerated);
+    }
+
+    [Fact]
+    public void SerializeDeserializeReflectedInt32()
+    {
+        TestSerializeDeserialize(
+            [.. Enumerable.Range(-10, 500)],
+            NumericsJsonSharedOptions.Reflected);
+    }
+
+    [Fact]
+    public void SerializeDeserializeSourceGeneratedInt32()
+    {
+        TestSerializeDeserialize(
+            [.. Enumerable.Range(-10, 500)],
+            NumericsJsonSharedOptions.SourceGenerated);
+    }
+
+    [Fact]
+    public void SerializeDeserializeReflectedInt64()
+    {
+        TestSerializeDeserialize(
+            [.. Enumerable.Range(-10, 500).Select(i => (long)i)],
+            NumericsJsonSharedOptions.Reflected);
+    }
+
+    [Fact]
+    public void SerializeDeserializeSourceGeneratedInt64()
+    {
+        TestSerializeDeserialize(
+            [.. Enumerable.Range(-10, 500).Select(i => (long)i)],
+            NumericsJsonSharedOptions.SourceGenerated);
+    }
+
+    [Fact]
+    public void SerializeDeserializeReflectedFloat32()
     {
         TestSerializeDeserialize(
             [0.496f, 1.235f, 200.8469874f, -4682.169845f, 981635.123548715f],
@@ -72,10 +202,26 @@ public partial class VectorTests : LoggedTestsBase
     }
 
     [Fact]
-    public void SerializeDeserializeSourceGeneratedFloat()
+    public void SerializeDeserializeSourceGeneratedFloat32()
     {
         TestSerializeDeserialize(
             [0.496f, 1.235f, 200.8469874f, -4682.169845f, 981635.123548715f],
+            NumericsJsonSharedOptions.SourceGenerated);
+    }
+
+    [Fact]
+    public void SerializeDeserializeReflectedFloat64()
+    {
+        TestSerializeDeserialize(
+            [0.496, 1.235, 200.8469874, -4682.169845, 981635.123548715],
+            NumericsJsonSharedOptions.Reflected);
+    }
+
+    [Fact]
+    public void SerializeDeserializeSourceGeneratedFloat64()
+    {
+        TestSerializeDeserialize(
+            [0.496, 1.235, 200.8469874, -4682.169845, 981635.123548715],
             NumericsJsonSharedOptions.SourceGenerated);
     }
 
@@ -93,6 +239,22 @@ public partial class VectorTests : LoggedTestsBase
         TestSerializeDeserialize(elements, NumericsJsonSharedOptions.SourceGenerated);
     }
 
+    [Fact(Skip = "TODO")]
+    public void SerializeDeserializeReflectedNaInt32()
+    {
+        TestSerializeDeserialize(
+            [.. Enumerable.Range(-10, 500).Select(i => (NaInt<int>)i)],
+            NumericsJsonSharedOptions.Reflected);
+    }
+
+    [Fact(Skip = "TODO")]
+    public void SerializeDeserializeSourceGeneratedNaInt32()
+    {
+        TestSerializeDeserialize(
+            [.. Enumerable.Range(-10, 500).Select(i => (NaInt<int>)i)],
+            NumericsJsonSharedOptions.SourceGenerated);
+    }
+
     [Fact]
     public void CreateWithKnownNumericTypeReturnsVectorInt32()
     {
@@ -108,14 +270,6 @@ public partial class VectorTests : LoggedTestsBase
         var numVector = Assert.IsType<Vector<double>>(vector);
         Assert.NotNull(numVector);
     }
-
-    //[Fact]
-    //public void VectorEquality()
-    //{
-    //    Vector<int> v1 = [1, 2, 3, 4, 5, 6];
-    //    var v2 = Vector.Create([1, 2, 3, 4, 5, 6]);
-    //    Assert.Equal(v1, v2);
-    //}
 
     [Fact]
     public void CreateDefault()
@@ -146,6 +300,14 @@ public partial class VectorTests : LoggedTestsBase
     {
         var v1 = Vector.CreateOnes<int>(6);
         var v2 = Vector.CreateOnes<int>(6);
+        Assert.Equal(v1, v2);
+    }
+
+    [Fact]
+    public void Equality_2()
+    {
+        Vector<int> v1 = [1, 2, 3, 4, 5, 6];
+        var v2 = Vector.Create([1, 2, 3, 4, 5, 6]);
         Assert.Equal(v1, v2);
     }
 
@@ -258,6 +420,5 @@ public partial class VectorTests : LoggedTestsBase
         Assert.True(v2.AsSpan().SequenceEqual([0, 0, 0, 0, 0, 0]));
     }
     */
-
 
 }
