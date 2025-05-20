@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Data.SqlTypes;
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 
@@ -180,6 +181,16 @@ public readonly struct Trilean
         };
     }
 
+    public SqlBoolean ToSqlBoolean()
+    {
+        return _value switch
+        {
+            TrueValue => SqlBoolean.True,
+            FalseValue => SqlBoolean.False,
+            _ => SqlBoolean.Null
+        };
+    }
+
     /// <summary>
     /// Returns a nullable boolean value that is equal to <see langword="true"/> if <see cref="IsTrue"/>,
     /// equal to <see langword="false"/> if <see cref="IsFalse"/>, or else <see cref="Nullable{T}.HasValue"/>
@@ -309,6 +320,18 @@ public readonly struct Trilean
     public static explicit operator bool(Trilean t)
     {
         return t.ToBoolean();
+    }
+
+#pragma warning disable CA2225 // Operator overloads have named alternates
+    public static implicit operator bool?(Trilean t)
+#pragma warning restore CA2225 // Operator overloads have named alternates
+    {
+        return t.ToNullableBoolean();
+    }
+
+    public static implicit operator SqlBoolean(Trilean t)
+    {
+        return t.ToSqlBoolean();
     }
 
     public static implicit operator Trilean(bool b)
