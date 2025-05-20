@@ -10,24 +10,39 @@ public partial class Vector
 {
     private static readonly FrozenDictionary<VectorDataType, string> s_labelLookup = new Dictionary<VectorDataType, string>()
     {
-        [VectorDataType.Bool] = VectorDataTypeLabels.Bool,
-        [VectorDataType.Char] = VectorDataTypeLabels.Char,
-        [VectorDataType.DateTime] = VectorDataTypeLabels.DateTime,
-        [VectorDataType.DateTime64] = VectorDataTypeLabels.DateTime64,
-        [VectorDataType.DateTimeOffset] = VectorDataTypeLabels.DateTimeOffset,
-        [VectorDataType.Float32] = VectorDataTypeLabels.Float32,
-        [VectorDataType.Float64] = VectorDataTypeLabels.Float64,
-        [VectorDataType.Uuid] = VectorDataTypeLabels.Uuid,
-        [VectorDataType.Int128] = VectorDataTypeLabels.Int128,
-        [VectorDataType.Int16] = VectorDataTypeLabels.Int16,
-        [VectorDataType.Int32] = VectorDataTypeLabels.Int32,
-        [VectorDataType.Int64] = VectorDataTypeLabels.Int64,
-        [VectorDataType.Int8] = VectorDataTypeLabels.Int8,
-        [VectorDataType.String] = VectorDataTypeLabels.String,
-        [VectorDataType.UInt128] = VectorDataTypeLabels.UInt128,
-        [VectorDataType.UInt32] = VectorDataTypeLabels.UInt32,
-        [VectorDataType.UInt64] = VectorDataTypeLabels.UInt64,
-        [VectorDataType.UInt8] = VectorDataTypeLabels.UInt8,
+        [VectorDataType.Bool] = VectorDataTypeLabel.Bool,
+        [VectorDataType.Char] = VectorDataTypeLabel.Char,
+        [VectorDataType.DateTime] = VectorDataTypeLabel.DateTime,
+        [VectorDataType.DateTime64] = VectorDataTypeLabel.DateTime64,
+        [VectorDataType.DateTimeOffset] = VectorDataTypeLabel.DateTimeOffset,
+        [VectorDataType.Float16] = VectorDataTypeLabel.Float16,
+        [VectorDataType.Float32] = VectorDataTypeLabel.Float32,
+        [VectorDataType.Float64] = VectorDataTypeLabel.Float64,
+        [VectorDataType.Int16] = VectorDataTypeLabel.Int16,
+        [VectorDataType.Int32] = VectorDataTypeLabel.Int32,
+        [VectorDataType.Int64] = VectorDataTypeLabel.Int64,
+        [VectorDataType.Int8] = VectorDataTypeLabel.Int8,
+        [VectorDataType.String] = VectorDataTypeLabel.String,
+        [VectorDataType.UInt32] = VectorDataTypeLabel.UInt32,
+        [VectorDataType.UInt64] = VectorDataTypeLabel.UInt64,
+        [VectorDataType.UInt8] = VectorDataTypeLabel.UInt8,
+
+        [VectorDataType.NaBool] = VectorDataTypeLabel.NaBool,
+        [VectorDataType.NaChar] = VectorDataTypeLabel.NaChar,
+        [VectorDataType.NaDateTime] = VectorDataTypeLabel.NaDateTime,
+        [VectorDataType.NaDateTime64] = VectorDataTypeLabel.NaDateTime64,
+        [VectorDataType.NaDateTimeOffset] = VectorDataTypeLabel.NaDateTimeOffset,
+        [VectorDataType.NaFloat16] = VectorDataTypeLabel.NaFloat16,
+        [VectorDataType.NaFloat32] = VectorDataTypeLabel.NaFloat32,
+        [VectorDataType.NaFloat64] = VectorDataTypeLabel.NaFloat64,
+        [VectorDataType.NaInt16] = VectorDataTypeLabel.NaInt16,
+        [VectorDataType.NaInt32] = VectorDataTypeLabel.NaInt32,
+        [VectorDataType.NaInt64] = VectorDataTypeLabel.NaInt64,
+        [VectorDataType.NaInt8] = VectorDataTypeLabel.NaInt8,
+        [VectorDataType.NaString] = VectorDataTypeLabel.NaString,
+        [VectorDataType.NaUInt32] = VectorDataTypeLabel.NaUInt32,
+        [VectorDataType.NaUInt64] = VectorDataTypeLabel.NaUInt64,
+        [VectorDataType.NaUInt8] = VectorDataTypeLabel.NaUInt8,
 
     }.ToFrozenDictionary();
 
@@ -43,38 +58,36 @@ public partial class Vector
         [VectorDataType.DateTime] = typeof(DateTime),
         [VectorDataType.DateTime64] = typeof(DateTime64),
         [VectorDataType.DateTimeOffset] = typeof(DateTimeOffset),
+        [VectorDataType.Float16] = typeof(Half),
         [VectorDataType.Float32] = typeof(float),
         [VectorDataType.Float64] = typeof(double),
-        [VectorDataType.Uuid] = typeof(Guid),
-        [VectorDataType.Int128] = typeof(Int128),
         [VectorDataType.Int16] = typeof(short),
         [VectorDataType.Int32] = typeof(int),
         [VectorDataType.Int64] = typeof(long),
         [VectorDataType.Int8] = typeof(sbyte),
         [VectorDataType.String] = typeof(string),
-        [VectorDataType.UInt128] = typeof(UInt128),
         [VectorDataType.UInt32] = typeof(uint),
         [VectorDataType.UInt64] = typeof(ulong),
+        [VectorDataType.UInt16] = typeof(ushort),
         [VectorDataType.UInt8] = typeof(byte),
 
-        [VectorDataType.NullableBool] = typeof(NaValue<bool>),
-        [VectorDataType.NullableChar] = typeof(NaValue<char>),
-        [VectorDataType.NullableDateTime] = typeof(NaValue<DateTime>),
-        [VectorDataType.NullableDateTime64] = typeof(NaInt<DateTime64>),
-        [VectorDataType.NullableDateTimeOffset] = typeof(NaValue<DateTimeOffset>),
-        [VectorDataType.NullableFloat32] = typeof(NaFloat<float>),
-        [VectorDataType.NullableFloat64] = typeof(NaFloat<double>),
-        [VectorDataType.NullableUuid] = typeof(NaValue<Guid>),
-        [VectorDataType.NullableInt128] = typeof(NaInt<Int128>),
-        [VectorDataType.NullableInt16] = typeof(NaInt<short>),
-        [VectorDataType.NullableInt32] = typeof(NaInt<int>),
-        [VectorDataType.NullableInt64] = typeof(NaInt<long>),
-        [VectorDataType.NullableInt8] = typeof(NaInt<sbyte>),
-        [VectorDataType.NullableString] = typeof(NaValue<string>),
-        [VectorDataType.NullableUInt128] = typeof(NaInt<UInt128>),
-        [VectorDataType.NullableUInt32] = typeof(NaInt<uint>),
-        [VectorDataType.NullableUInt64] = typeof(NaInt<ulong>),
-        [VectorDataType.NullableUInt8] = typeof(NaInt<byte>),
+        [VectorDataType.NaBool] = typeof(NaValue<bool>),
+        [VectorDataType.NaChar] = typeof(NaValue<char>),
+        [VectorDataType.NaDateTime] = typeof(NaValue<DateTime>),
+        [VectorDataType.NaDateTime64] = typeof(NaInt<DateTime64>),
+        [VectorDataType.NaDateTimeOffset] = typeof(NaValue<DateTimeOffset>),
+        [VectorDataType.NaFloat16] = typeof(NaFloat<Half>),
+        [VectorDataType.NaFloat32] = typeof(NaFloat<float>),
+        [VectorDataType.NaFloat64] = typeof(NaFloat<double>),
+        [VectorDataType.NaInt16] = typeof(NaInt<short>),
+        [VectorDataType.NaInt32] = typeof(NaInt<int>),
+        [VectorDataType.NaInt64] = typeof(NaInt<long>),
+        [VectorDataType.NaInt8] = typeof(NaInt<sbyte>),
+        [VectorDataType.NaString] = typeof(NaValue<string>),
+        [VectorDataType.NaUInt32] = typeof(NaInt<uint>),
+        [VectorDataType.NaUInt64] = typeof(NaInt<ulong>),
+        [VectorDataType.NaUInt16] = typeof(NaInt<ushort>),
+        [VectorDataType.NaUInt8] = typeof(NaInt<byte>),
 
     }.ToFrozenDictionary();
 
@@ -86,53 +99,48 @@ public partial class Vector
     private static readonly FrozenSet<VectorDataType> s_numericTypes = new VectorDataType[]
     {
         VectorDataType.DateTime64,
+        VectorDataType.Float16,
         VectorDataType.Float32,
         VectorDataType.Float64,
-        VectorDataType.Uuid,
-        VectorDataType.Int128,
         VectorDataType.Int16,
         VectorDataType.Int32,
         VectorDataType.Int64,
         VectorDataType.Int8,
-        VectorDataType.UInt128,
         VectorDataType.UInt32,
         VectorDataType.UInt64,
         VectorDataType.UInt8,
-
-        VectorDataType.NullableDateTime64,
-        VectorDataType.NullableFloat32,
-        VectorDataType.NullableFloat64,
-        VectorDataType.NullableUuid,
-        VectorDataType.NullableInt128,
-        VectorDataType.NullableInt16,
-        VectorDataType.NullableInt32,
-        VectorDataType.NullableInt64,
-        VectorDataType.NullableInt8,
-        VectorDataType.NullableUInt128,
-        VectorDataType.NullableUInt32,
-        VectorDataType.NullableUInt64,
-        VectorDataType.NullableUInt8,
+        VectorDataType.NaDateTime64,
+        VectorDataType.NaFloat16,
+        VectorDataType.NaFloat32,
+        VectorDataType.NaFloat64,
+        VectorDataType.NaInt16,
+        VectorDataType.NaInt32,
+        VectorDataType.NaInt64,
+        VectorDataType.NaInt8,
+        VectorDataType.NaUInt32,
+        VectorDataType.NaUInt64,
+        VectorDataType.NaUInt8,
 
     }.ToFrozenSet();
 
-    public static string GetLabel(VectorDataType dataType)
+    public static string GetDataTypeLabel(VectorDataType dataType)
     {
         return s_labelLookup[dataType];
     }
 
-    public static VectorDataType GetVectorDataType(string label)
+    public static VectorDataType GetDataType(string label)
     {
         return s_vectorDataTypeLookup[label];
     }
 
-    public static VectorDataType GetVectorDataType<T>()
+    public static VectorDataType GetDataType<T>()
     {
-        return GetVectorDataType(typeof(T));
+        return GetDataType(typeof(T));
     }
 
-    public static VectorDataType GetVectorDataType(Type type)
+    public static VectorDataType GetDataType(Type type)
     {
-        if (TryGetVectorDataType(type, out var vectorDataType))
+        if (TryGetDataType(type, out var vectorDataType))
         {
             return vectorDataType;
         }
@@ -140,9 +148,9 @@ public partial class Vector
         throw new ArgumentException($"Type {type} is not a supported data type.");
     }
 
-    public static Type GetItemType(VectorDataType vectorDataType)
+    public static Type GetType(VectorDataType vectorDataType)
     {
-        if (TryGetItemType(vectorDataType, out var type))
+        if (TryGetType(vectorDataType, out var type))
         {
             return type;
         }
@@ -150,12 +158,12 @@ public partial class Vector
         throw new ArgumentException($"VectorDataType {vectorDataType} is not a supported data type.");
     }
 
-    public static bool TryGetItemType(VectorDataType vectorDataType, [NotNullWhen(true)] out Type? type)
+    public static bool TryGetType(VectorDataType vectorDataType, [NotNullWhen(true)] out Type? type)
     {
         return s_typeLookup.TryGetValue(vectorDataType, out type);
     }
 
-    public static bool TryGetVectorDataType(Type type, out VectorDataType vectorDataType)
+    public static bool TryGetDataType(Type type, out VectorDataType vectorDataType)
     {
         return s_vectorTypeLookup.TryGetValue(type, out vectorDataType);
     }
@@ -167,7 +175,7 @@ public partial class Vector
 
     public static bool IsNumericType(Type type)
     {
-        return IsNumericType(GetVectorDataType(type));
+        return IsNumericType(GetDataType(type));
     }
 
     public static bool IsNumericType<T>()

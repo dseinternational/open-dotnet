@@ -32,7 +32,7 @@ public sealed class Vector<T> : Vector, IVector<T>, IReadOnlyVector<T>, IEquatab
     }
 
     public Vector(Memory<T> memory)
-        : base(Vector.GetVectorDataType<T>(), typeof(T), memory.Length)
+        : base(Vector.GetDataType<T>(), typeof(T), memory.Length)
     {
         _memory = memory;
     }

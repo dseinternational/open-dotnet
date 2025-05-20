@@ -9,83 +9,75 @@ namespace DSE.Open.Numerics;
 /// Identifies the type of data stored in a <see cref="IVector{T}"/> or  <see cref="IReadOnlyVector{T}"/>.
 /// </summary>
 [JsonConverter(typeof(JsonStringEnumConverter<VectorDataType>))]
-public enum VectorDataType
+public enum VectorDataType : byte
 {
-    [JsonStringEnumMemberName(VectorDataTypeLabels.Float64)]
+    [JsonStringEnumMemberName(VectorDataTypeLabel.Float64)]
     Float64,
-    [JsonStringEnumMemberName(VectorDataTypeLabels.Float32)]
+    [JsonStringEnumMemberName(VectorDataTypeLabel.Float32)]
     Float32,
-    [JsonStringEnumMemberName(VectorDataTypeLabels.Int64)]
+    [JsonStringEnumMemberName(VectorDataTypeLabel.Float16)]
+    Float16,
+    [JsonStringEnumMemberName(VectorDataTypeLabel.Int64)]
     Int64,
-    [JsonStringEnumMemberName(VectorDataTypeLabels.UInt64)]
+    [JsonStringEnumMemberName(VectorDataTypeLabel.UInt64)]
     UInt64,
-    [JsonStringEnumMemberName(VectorDataTypeLabels.Int32)]
+    [JsonStringEnumMemberName(VectorDataTypeLabel.Int32)]
     Int32,
-    [JsonStringEnumMemberName(VectorDataTypeLabels.UInt32)]
+    [JsonStringEnumMemberName(VectorDataTypeLabel.UInt32)]
     UInt32,
-    [JsonStringEnumMemberName(VectorDataTypeLabels.Int16)]
+    [JsonStringEnumMemberName(VectorDataTypeLabel.Int16)]
     Int16,
-    [JsonStringEnumMemberName(VectorDataTypeLabels.UInt16)]
+    [JsonStringEnumMemberName(VectorDataTypeLabel.UInt16)]
     UInt16,
-    [JsonStringEnumMemberName(VectorDataTypeLabels.Int8)]
+    [JsonStringEnumMemberName(VectorDataTypeLabel.Int8)]
     Int8,
-    [JsonStringEnumMemberName(VectorDataTypeLabels.UInt8)]
+    [JsonStringEnumMemberName(VectorDataTypeLabel.UInt8)]
     UInt8,
-    [JsonStringEnumMemberName(VectorDataTypeLabels.Int128)]
-    Int128,
-    [JsonStringEnumMemberName(VectorDataTypeLabels.UInt128)]
-    UInt128,
-    [JsonStringEnumMemberName(VectorDataTypeLabels.DateTime64)]
+    [JsonStringEnumMemberName(VectorDataTypeLabel.DateTime64)]
     DateTime64,
-    [JsonStringEnumMemberName(VectorDataTypeLabels.DateTime)]
+    [JsonStringEnumMemberName(VectorDataTypeLabel.DateTime)]
     DateTime,
-    [JsonStringEnumMemberName(VectorDataTypeLabels.DateTimeOffset)]
+    [JsonStringEnumMemberName(VectorDataTypeLabel.DateTimeOffset)]
     DateTimeOffset,
-    [JsonStringEnumMemberName(VectorDataTypeLabels.Uuid)]
-    Uuid,
-    [JsonStringEnumMemberName(VectorDataTypeLabels.Bool)]
+    [JsonStringEnumMemberName(VectorDataTypeLabel.Bool)]
     Bool,
-    [JsonStringEnumMemberName(VectorDataTypeLabels.Char)]
+    [JsonStringEnumMemberName(VectorDataTypeLabel.Char)]
     Char,
-    [JsonStringEnumMemberName(VectorDataTypeLabels.String)]
+    [JsonStringEnumMemberName(VectorDataTypeLabel.String)]
     String,
 
-    [JsonStringEnumMemberName(VectorDataTypeLabels.NullableFloat64)]
-    NullableFloat64,
-    [JsonStringEnumMemberName(VectorDataTypeLabels.NullableFloat32)]
-    NullableFloat32,
-    [JsonStringEnumMemberName(VectorDataTypeLabels.NullableInt64)]
-    NullableInt64,
-    [JsonStringEnumMemberName(VectorDataTypeLabels.NullableUInt64)]
-    NullableUInt64,
-    [JsonStringEnumMemberName(VectorDataTypeLabels.NullableInt32)]
-    NullableInt32,
-    [JsonStringEnumMemberName(VectorDataTypeLabels.NullableUInt32)]
-    NullableUInt32,
-    [JsonStringEnumMemberName(VectorDataTypeLabels.NullableInt16)]
-    NullableInt16,
-    [JsonStringEnumMemberName(VectorDataTypeLabels.NullableUInt16)]
-    NullableUInt16,
-    [JsonStringEnumMemberName(VectorDataTypeLabels.NullableInt8)]
-    NullableInt8,
-    [JsonStringEnumMemberName(VectorDataTypeLabels.NullableUInt8)]
-    NullableUInt8,
-    [JsonStringEnumMemberName(VectorDataTypeLabels.NullableInt128)]
-    NullableInt128,
-    [JsonStringEnumMemberName(VectorDataTypeLabels.NullableUInt128)]
-    NullableUInt128,
-    [JsonStringEnumMemberName(VectorDataTypeLabels.NullableDateTime64)]
-    NullableDateTime64,
-    [JsonStringEnumMemberName(VectorDataTypeLabels.NullableDateTime)]
-    NullableDateTime,
-    [JsonStringEnumMemberName(VectorDataTypeLabels.NullableDateTimeOffset)]
-    NullableDateTimeOffset,
-    [JsonStringEnumMemberName(VectorDataTypeLabels.NullableUuid)]
-    NullableUuid,
-    [JsonStringEnumMemberName(VectorDataTypeLabels.NullableBool)]
-    NullableBool,
-    [JsonStringEnumMemberName(VectorDataTypeLabels.NullableChar)]
-    NullableChar,
-    [JsonStringEnumMemberName(VectorDataTypeLabels.NullableString)]
-    NullableString,
+    [JsonStringEnumMemberName(VectorDataTypeLabel.NaFloat64)]
+    NaFloat64,
+    [JsonStringEnumMemberName(VectorDataTypeLabel.NaFloat32)]
+    NaFloat32,
+    [JsonStringEnumMemberName(VectorDataTypeLabel.NaFloat16)]
+    NaFloat16,
+    [JsonStringEnumMemberName(VectorDataTypeLabel.NaInt64)]
+    NaInt64,
+    [JsonStringEnumMemberName(VectorDataTypeLabel.NaUInt64)]
+    NaUInt64,
+    [JsonStringEnumMemberName(VectorDataTypeLabel.NaInt32)]
+    NaInt32,
+    [JsonStringEnumMemberName(VectorDataTypeLabel.NaUInt32)]
+    NaUInt32,
+    [JsonStringEnumMemberName(VectorDataTypeLabel.NaInt16)]
+    NaInt16,
+    [JsonStringEnumMemberName(VectorDataTypeLabel.NaUInt16)]
+    NaUInt16,
+    [JsonStringEnumMemberName(VectorDataTypeLabel.NaInt8)]
+    NaInt8,
+    [JsonStringEnumMemberName(VectorDataTypeLabel.NaUInt8)]
+    NaUInt8,
+    [JsonStringEnumMemberName(VectorDataTypeLabel.NaDateTime64)]
+    NaDateTime64,
+    [JsonStringEnumMemberName(VectorDataTypeLabel.NaDateTime)]
+    NaDateTime,
+    [JsonStringEnumMemberName(VectorDataTypeLabel.NaDateTimeOffset)]
+    NaDateTimeOffset,
+    [JsonStringEnumMemberName(VectorDataTypeLabel.NaBool)]
+    NaBool,
+    [JsonStringEnumMemberName(VectorDataTypeLabel.NaChar)]
+    NaChar,
+    [JsonStringEnumMemberName(VectorDataTypeLabel.NaString)]
+    NaString,
 }

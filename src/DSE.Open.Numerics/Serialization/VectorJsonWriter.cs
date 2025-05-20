@@ -14,10 +14,28 @@ namespace DSE.Open.Numerics.Serialization;
 /// </summary>
 public static class VectorJsonWriter
 {
+    /// <summary>
+    /// Writes a vector to JSON.
+    /// </summary>
+    /// <param name="writer">The <see cref="Utf8JsonWriter"/> used to write the JSON.</param>
+    /// <param name="vector">The vector to serialize.</param>
+    /// <param name="options"></param>
+    /// <exception cref="ArgumentNullException"><paramref name="writer"/> is <see langword="null"/>,
+    /// <paramref name="vector"/> is <see langword="null"/>, or
+    /// <paramref name="options"/> is <see langword="null"/>.</exception>
     public static void WriteVector(Utf8JsonWriter writer, IReadOnlyVector vector, JsonSerializerOptions options)
     {
         ArgumentNullException.ThrowIfNull(writer);
         ArgumentNullException.ThrowIfNull(vector);
+        ArgumentNullException.ThrowIfNull(options);
+
+        if (vector.IsNullable)
+        {
+            WriteNaVector(writer, vector, options);
+            return;
+        }
+
+        // switches over non-na vector types
 
         switch (vector)
         {
@@ -32,6 +50,9 @@ public static class VectorJsonWriter
                 return;
             case IReadOnlyVector<double> doubleVector:
                 WriteVector(writer, doubleVector, options);
+                return;
+            case IReadOnlyVector<Half> halfVector:
+                WriteVector(writer, halfVector, options);
                 return;
             case IReadOnlyVector<uint> uintVector:
                 WriteVector(writer, uintVector, options);
@@ -54,12 +75,6 @@ public static class VectorJsonWriter
             case IReadOnlyVector<byte> byteVector:
                 WriteVector(writer, byteVector, options);
                 return;
-            case IReadOnlyVector<Int128> int128Vector:
-                WriteVector(writer, int128Vector, options);
-                return;
-            case IReadOnlyVector<UInt128> uint128Vector:
-                WriteVector(writer, uint128Vector, options);
-                return;
             case IReadOnlyVector<string> stringVector:
                 WriteVector(writer, stringVector, options);
                 return;
@@ -69,7 +84,73 @@ public static class VectorJsonWriter
             case IReadOnlyVector<bool> boolVector:
                 WriteVector(writer, boolVector, options);
                 return;
+            case IReadOnlyVector<DateTimeOffset> dateTimeOffsetVector:
+                WriteVector(writer, dateTimeOffsetVector, options);
+                return;
             case IReadOnlyVector<DateTime> dateTimeVector:
+                WriteVector(writer, dateTimeVector, options);
+                return;
+            default:
+                throw new JsonException("Unsupported series type");
+        }
+    }
+
+    // switches over na vector types
+    private static void WriteNaVector(Utf8JsonWriter writer, IReadOnlyVector vector, JsonSerializerOptions options)
+    {
+        Debug.Assert(vector.IsNullable);
+
+        switch (vector)
+        {
+            case IReadOnlyVector<NaInt<int>> intVector:
+                WriteVector(writer, intVector, options);
+                return;
+            case IReadOnlyVector<NaInt<long>> longVector:
+                WriteVector(writer, longVector, options);
+                return;
+            case IReadOnlyVector<NaFloat<float>> floatVector:
+                WriteVector(writer, floatVector, options);
+                return;
+            case IReadOnlyVector<NaFloat<double>> doubleVector:
+                WriteVector(writer, doubleVector, options);
+                return;
+            case IReadOnlyVector<NaFloat<Half>> halfVector:
+                WriteVector(writer, halfVector, options);
+                return;
+            case IReadOnlyVector<NaInt<uint>> uintVector:
+                WriteVector(writer, uintVector, options);
+                return;
+            case IReadOnlyVector<NaInt<ulong>> uuidVector:
+                WriteVector(writer, uuidVector, options);
+                return;
+            case IReadOnlyVector<NaInt<DateTime64>> dateTime64Vector:
+                WriteVector(writer, dateTime64Vector, options);
+                return;
+            case IReadOnlyVector<NaInt<short>> shortVector:
+                WriteVector(writer, shortVector, options);
+                return;
+            case IReadOnlyVector<NaInt<ushort>> ushortVector:
+                WriteVector(writer, ushortVector, options);
+                return;
+            case IReadOnlyVector<NaInt<sbyte>> sbyteVector:
+                WriteVector(writer, sbyteVector, options);
+                return;
+            case IReadOnlyVector<NaInt<byte>> byteVector:
+                WriteVector(writer, byteVector, options);
+                return;
+            case IReadOnlyVector<NaValue<string>> stringVector:
+                WriteVector(writer, stringVector, options);
+                return;
+            case IReadOnlyVector<NaValue<char>> charVector:
+                WriteVector(writer, charVector, options);
+                return;
+            case IReadOnlyVector<NaValue<bool>> boolVector:
+                WriteVector(writer, boolVector, options);
+                return;
+            case IReadOnlyVector<NaValue<DateTimeOffset>> dateTimeOffsetVector:
+                WriteVector(writer, dateTimeOffsetVector, options);
+                return;
+            case IReadOnlyVector<NaValue<DateTime>> dateTimeVector:
                 WriteVector(writer, dateTimeVector, options);
                 return;
             default:
@@ -86,13 +167,13 @@ public static class VectorJsonWriter
 
         if (vector.IsNullable)
         {
-            WriteNullableVector(writer, vector);
+            WriteNaVector(writer, vector);
             return;
         }
 
         writer.WriteStartObject();
 
-        writer.WriteString(NumericsPropertyNames.DataType, Vector.GetLabel(vector.DataType));
+        writer.WriteString(NumericsPropertyNames.DataType, Vector.GetDataTypeLabel(vector.DataType));
 
         writer.WriteNumber(NumericsPropertyNames.Length, vector.Length);
 
@@ -120,10 +201,6 @@ public static class VectorJsonWriter
         {
             WriteCharArray(writer, charVector.AsSpan());
         }
-        else if (vector is IReadOnlyVector<Guid> guidVector)
-        {
-            WriteGuidArray(writer, guidVector.AsSpan());
-        }
         else if (vector is IReadOnlyVector<DateTime> dateTimeVector)
         {
             WriteDateTimeArray(writer, dateTimeVector.AsSpan());
@@ -133,12 +210,10 @@ public static class VectorJsonWriter
             WriteDateTimeOffsetArray(writer, dateTimeOffsetVector.AsSpan());
         }
 
-        // todo: add support for other types
-
         writer.WriteEndObject();
     }
 
-    private static void WriteNullableVector<T>(
+    private static void WriteNaVector<T>(
         Utf8JsonWriter writer,
         IReadOnlyVector<T> vector)
         where T : IEquatable<T>
@@ -149,7 +224,7 @@ public static class VectorJsonWriter
 
         writer.WriteStartObject();
 
-        writer.WriteString(NumericsPropertyNames.DataType, Vector.GetLabel(vector.DataType));
+        writer.WriteString(NumericsPropertyNames.DataType, Vector.GetDataTypeLabel(vector.DataType));
 
         writer.WriteNumber(NumericsPropertyNames.Length, vector.Length);
 
@@ -177,10 +252,6 @@ public static class VectorJsonWriter
         {
             WriteNaCharArray(writer, charVector.AsSpan());
         }
-        else if (vector is IReadOnlyVector<NaValue<Guid>> guidVector)
-        {
-            WriteNaGuidArray(writer, guidVector.AsSpan());
-        }
         else if (vector is IReadOnlyVector<NaValue<DateTime>> dateTimeVector)
         {
             WriteNaDateTimeArray(writer, dateTimeVector.AsSpan());
@@ -190,12 +261,19 @@ public static class VectorJsonWriter
             WriteNaDateTimeOffsetArray(writer, dateTimeOffsetVector.AsSpan());
         }
 
-        // todo: add support for other types
-
         writer.WriteEndObject();
     }
 
+    /// <summary>
+    /// Writes a vector data value to JSON.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="writer"></param>
+    /// <param name="value"></param>
+    /// <param name="options"></param>
+    /// <exception cref="JsonException"></exception>
     public static void WriteValue<T>(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
+        where T : IEquatable<T>
     {
         ArgumentNullException.ThrowIfNull(writer);
         ArgumentNullException.ThrowIfNull(value);
@@ -250,9 +328,6 @@ public static class VectorJsonWriter
             case DateTimeOffset dateTimeOffsetValue:
                 writer.WriteStringValue(dateTimeOffsetValue);
                 return;
-            case Guid guidValue:
-                writer.WriteStringValue(guidValue);
-                return;
             case string stringValue:
                 writer.WriteStringValue(stringValue);
                 return;
@@ -300,9 +375,6 @@ public static class VectorJsonWriter
                 return;
             case NaValue<DateTimeOffset> dateTimeOffsetValue:
                 writer.WriteNullableValue<NaValue<DateTimeOffset>, DateTimeOffset>(dateTimeOffsetValue);
-                return;
-            case NaValue<Guid> guidValue:
-                writer.WriteNullableValue<NaValue<Guid>, Guid>(guidValue);
                 return;
             case NaValue<string> stringValue:
                 writer.WriteNullableValue<NaValue<string>, string>(stringValue);
@@ -392,52 +464,52 @@ public static class VectorJsonWriter
         switch (vector)
         {
             case IReadOnlyVector<NaInt<byte>> byteVector:
-                WriteNullableNumberSpan<NaInt<byte>, byte>(writer, byteVector.AsSpan());
+                WriteNaNumberSpan<NaInt<byte>, byte>(writer, byteVector.AsSpan());
                 break;
             case IReadOnlyVector<NaInt<sbyte>> sbyteVector:
-                WriteNullableNumberSpan<NaInt<sbyte>, sbyte>(writer, sbyteVector.AsSpan());
+                WriteNaNumberSpan<NaInt<sbyte>, sbyte>(writer, sbyteVector.AsSpan());
                 break;
             case IReadOnlyVector<NaInt<short>> shortVector:
-                WriteNullableNumberSpan<NaInt<short>, short>(writer, shortVector.AsSpan());
+                WriteNaNumberSpan<NaInt<short>, short>(writer, shortVector.AsSpan());
                 break;
             case IReadOnlyVector<NaInt<ushort>> ushortVector:
-                WriteNullableNumberSpan<NaInt<ushort>, ushort>(writer, ushortVector.AsSpan());
+                WriteNaNumberSpan<NaInt<ushort>, ushort>(writer, ushortVector.AsSpan());
                 break;
             case IReadOnlyVector<NaInt<int>> intVector:
-                WriteNullableNumberSpan<NaInt<int>, int>(writer, intVector.AsSpan());
+                WriteNaNumberSpan<NaInt<int>, int>(writer, intVector.AsSpan());
                 break;
             case IReadOnlyVector<NaInt<uint>> uintVector:
-                WriteNullableNumberSpan<NaInt<uint>, uint>(writer, uintVector.AsSpan());
+                WriteNaNumberSpan<NaInt<uint>, uint>(writer, uintVector.AsSpan());
                 break;
             case IReadOnlyVector<NaInt<long>> longVector:
-                WriteNullableNumberSpan<NaInt<long>, long>(writer, longVector.AsSpan());
+                WriteNaNumberSpan<NaInt<long>, long>(writer, longVector.AsSpan());
                 break;
             case IReadOnlyVector<NaInt<ulong>> ulongVector:
-                WriteNullableNumberSpan<NaInt<ulong>, ulong>(writer, ulongVector.AsSpan());
+                WriteNaNumberSpan<NaInt<ulong>, ulong>(writer, ulongVector.AsSpan());
                 break;
             case IReadOnlyVector<NaFloat<float>> floatVector:
-                WriteNullableNumberSpan<NaFloat<float>, float>(writer, floatVector.AsSpan());
+                WriteNaNumberSpan<NaFloat<float>, float>(writer, floatVector.AsSpan());
                 break;
             case IReadOnlyVector<NaFloat<double>> doubleVector:
-                WriteNullableNumberSpan<NaFloat<double>, double>(writer, doubleVector.AsSpan());
+                WriteNaNumberSpan<NaFloat<double>, double>(writer, doubleVector.AsSpan());
                 break;
             case IReadOnlyVector<NaFloat<Half>> halfVector:
-                WriteNullableNumberSpan<NaFloat<Half>, Half>(writer, halfVector.AsSpan());
+                WriteNaNumberSpan<NaFloat<Half>, Half>(writer, halfVector.AsSpan());
                 break;
             case IReadOnlyVector<NaValue<DateTime64>> dateTime64Vector:
-                WriteNullableNumberSpan<NaValue<DateTime64>, DateTime64>(writer, dateTime64Vector.AsSpan());
+                WriteNaNumberSpan<NaValue<DateTime64>, DateTime64>(writer, dateTime64Vector.AsSpan());
                 break;
             case IReadOnlyVector<NaInt<Int128>> int128Vector:
-                WriteNullableNumberSpan<NaInt<Int128>, Int128>(writer, int128Vector.AsSpan());
+                WriteNaNumberSpan<NaInt<Int128>, Int128>(writer, int128Vector.AsSpan());
                 break;
             case IReadOnlyVector<NaInt<UInt128>> uint128Vector:
-                WriteNullableNumberSpan<NaInt<UInt128>, UInt128>(writer, uint128Vector.AsSpan());
+                WriteNaNumberSpan<NaInt<UInt128>, UInt128>(writer, uint128Vector.AsSpan());
                 break;
             default:
                 throw new JsonException($"Unsupported numeric vector type: {typeof(T)}");
         }
 
-        static void WriteNullableNumberSpan<TSelf, TNum>(Utf8JsonWriter writer, ReadOnlySpan<TSelf> vector)
+        static void WriteNaNumberSpan<TSelf, TNum>(Utf8JsonWriter writer, ReadOnlySpan<TSelf> vector)
             where TNum : struct, INumber<TNum>
             where TSelf : INaValue<TSelf, TNum>
         {
@@ -464,26 +536,6 @@ public static class VectorJsonWriter
     private static void WriteNaStringArray(Utf8JsonWriter writer, ReadOnlySpan<NaValue<string>> vector)
     {
         WriteArray(writer, vector, static (writer, value) => writer.WriteStringValue(value.HasValue ? value.Value : null));
-    }
-
-    private static void WriteGuidArray(Utf8JsonWriter writer, ReadOnlySpan<Guid> vector)
-    {
-        WriteArray(writer, vector, static (writer, value) => writer.WriteStringValue(value));
-    }
-
-    private static void WriteNaGuidArray(Utf8JsonWriter writer, ReadOnlySpan<NaValue<Guid>> vector)
-    {
-        WriteArray(writer, vector, static (writer, value) =>
-        {
-            if (!value.HasValue)
-            {
-                writer.WriteNullValue();
-            }
-            else
-            {
-                writer.WriteStringValue(value.Value);
-            }
-        });
     }
 
     private static void WriteDateTimeArray(Utf8JsonWriter writer, ReadOnlySpan<DateTime> vector)

@@ -90,7 +90,7 @@ internal static class ValueLabelCollectionJsonWriter
 
         writer.WriteString(
             NumericsPropertyNames.DataType,
-            Vector.GetLabel(Vector.GetVectorDataType<T>()));
+            Vector.GetDataTypeLabel(Vector.GetDataType<T>()));
 
         writer.WriteNumber(
             NumericsPropertyNames.Length,
