@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using DSE.Open.Text.Json;
 
 namespace DSE.Open.Numerics.Serialization;
@@ -10,14 +11,20 @@ public static class NumericsJsonSharedOptions
 {
     private static readonly Lazy<JsonSerializerOptions> s_reflected = new(() =>
     {
-        var options = new JsonSerializerOptions(JsonSharedOptions.RelaxedJsonEscaping);
+        var options = new JsonSerializerOptions(JsonSharedOptions.RelaxedJsonEscaping)
+        {
+            NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals
+        };
         options.AddDefaultNumericsJsonConverters();
         return options;
     });
 
     private static readonly Lazy<JsonSerializerOptions> s_sourceGenerated = new(() =>
     {
-        var options = new JsonSerializerOptions(s_reflected.Value);
+        var options = new JsonSerializerOptions(s_reflected.Value)
+        {
+            NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals
+        };
         options.TypeInfoResolverChain.Add(NumericsJsonSerializationContext.Default);
         options.MakeReadOnly();
         return options;

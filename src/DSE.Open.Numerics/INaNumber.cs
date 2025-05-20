@@ -13,5 +13,5 @@ public interface INaNumber<TSelf, T>
     where TSelf : INaNumber<TSelf, T>
     where T : struct, INumber<T>, IMinMaxValue<T>
 {
-
+    static abstract TSelf FromValue(T value);
 }

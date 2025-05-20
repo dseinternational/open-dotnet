@@ -35,6 +35,11 @@ public readonly struct NaFloat<T>
         _value = value;
     }
 
+    public static NaFloat<T> FromValue(T value)
+    {
+        return new(value);
+    }
+
     bool INaValue.HasValue => !T.IsNaN(_value);
 
     T INaValue<NaFloat<T>, T>.Value => _value;
@@ -388,6 +393,11 @@ public readonly struct NaFloat<T>
     }
 
     static bool IParsable<NaFloat<T>>.TryParse(string? s, IFormatProvider? provider, out NaFloat<T> result)
+    {
+        throw new NotImplementedException();
+    }
+
+    static NaFloat<T> INaNumber<NaFloat<T>, T>.FromValue(T value)
     {
         throw new NotImplementedException();
     }

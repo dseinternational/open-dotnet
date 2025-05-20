@@ -38,6 +38,14 @@ public class JsonValueObjectConverter : JsonConverter<object>
             JsonTokenType.Number => reader.GetDouble(),
             JsonTokenType.String when reader.TryGetDateTime(out var datetime) => datetime,
             JsonTokenType.String => reader.GetString()!,
+            JsonTokenType.None => throw new NotImplementedException(),
+            JsonTokenType.StartObject => throw new NotImplementedException(),
+            JsonTokenType.EndObject => throw new NotImplementedException(),
+            JsonTokenType.StartArray => throw new NotImplementedException(),
+            JsonTokenType.EndArray => throw new NotImplementedException(),
+            JsonTokenType.PropertyName => throw new NotImplementedException(),
+            JsonTokenType.Comment => throw new NotImplementedException(),
+            JsonTokenType.Null => throw new NotImplementedException(),
             _ => JsonDocument.ParseValue(ref reader).RootElement.Clone()
         };
     }
@@ -50,21 +58,6 @@ public class JsonValueObjectConverter : JsonConverter<object>
     {
         ArgumentNullException.ThrowIfNull(writer);
 
-        if (value is decimal decimalValue)
-        {
-            writer.WriteNumberValue(decimalValue, true);
-        }
-        else if (value is double doubleValue)
-        {
-            writer.WriteNumberValue(doubleValue, true);
-        }
-        else if (value is float singleValue)
-        {
-            writer.WriteNumberValue(singleValue, true);
-        }
-        else
-        {
-            JsonSerializer.Serialize(writer, value, value?.GetType() ?? typeof(string), options);
-        }
+        JsonSerializer.Serialize(writer, value, value?.GetType() ?? typeof(string), options);
     }
 }

@@ -23,7 +23,7 @@ public class NullableValueTests
     public void Null_ToString_NA()
     {
         NaValue<string> value = null;
-        Assert.Equal(NullableValue.NoValueLabel, value.ToString());
+        Assert.Equal(NaValue.NaValueLabel, value.ToString());
     }
 
     [Fact]

@@ -8,7 +8,10 @@ namespace DSE.Open.Text.Json;
 
 public static class Utf8JsonWriterExtensions
 {
-    public static void WriteNumberValue<T>(this Utf8JsonWriter writer, T value)
+    public static void WriteNumberValue<T>(
+        this Utf8JsonWriter writer,
+        T value,
+        bool allowNamedFloatingPointLiterals = false)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(writer);
@@ -47,11 +50,45 @@ public static class Utf8JsonWriterExtensions
         }
         else if (value is float single)
         {
-            writer.WriteNumberValue(single);
+            if (allowNamedFloatingPointLiterals
+                && (float.IsNaN(single)
+                    || float.PositiveInfinity.Equals(single)
+                    || float.NegativeInfinity.Equals(single)))
+            {
+                writer.WriteStringValue(single.ToStringInvariant("G"));
+            }
+            else
+            {
+                writer.WriteNumberValue(single);
+            }
         }
         else if (value is double doubleVal)
         {
-            writer.WriteNumberValue(doubleVal);
+            if (allowNamedFloatingPointLiterals
+                && (double.IsNaN(doubleVal)
+                    || double.PositiveInfinity.Equals(doubleVal)
+                    || double.NegativeInfinity.Equals(doubleVal)))
+            {
+                writer.WriteStringValue(doubleVal.ToStringInvariant("G"));
+            }
+            else
+            {
+                writer.WriteNumberValue(doubleVal);
+            }
+        }
+        else if (value is Half halfVal)
+        {
+            if (allowNamedFloatingPointLiterals
+                && (Half.IsNaN(halfVal)
+                    || Half.PositiveInfinity.Equals(halfVal)
+                    || Half.NegativeInfinity.Equals(halfVal)))
+            {
+                writer.WriteStringValue(halfVal.ToStringInvariant("G"));
+            }
+            else
+            {
+                writer.WriteNumberValue(halfVal);
+            }
         }
         else if (value is decimal decimalVal)
         {
@@ -71,7 +108,10 @@ public static class Utf8JsonWriterExtensions
         }
     }
 
-    public static void WriteNullableValue<TSelf, T>(this Utf8JsonWriter writer, TSelf value)
+    public static void WriteNullableValue<TSelf, T>(
+        this Utf8JsonWriter writer,
+        TSelf value,
+        bool allowNamedFloatingPointLiterals = false)
         where T : IEquatable<T>
         where TSelf : INaValue<TSelf, T>
     {
@@ -139,11 +179,15 @@ public static class Utf8JsonWriterExtensions
         }
         else if (value.Value is float single)
         {
-            writer.WriteNumberValue(single);
+            writer.WriteNumberValue(single, allowNamedFloatingPointLiterals);
         }
         else if (value.Value is double doubleVal)
         {
-            writer.WriteNumberValue(doubleVal);
+            writer.WriteNumberValue(doubleVal, allowNamedFloatingPointLiterals);
+        }
+        else if (value.Value is Half halfVal)
+        {
+            writer.WriteNumberValue(halfVal, allowNamedFloatingPointLiterals);
         }
         else if (value.Value is decimal decimalVal)
         {
@@ -155,7 +199,10 @@ public static class Utf8JsonWriterExtensions
         }
     }
 
-    public static void WriteNullableNumberValue<TSelf, T>(this Utf8JsonWriter writer, TSelf value)
+    public static void WriteNullableNumberValue<TSelf, T>(
+        this Utf8JsonWriter writer,
+        TSelf value,
+        bool allowNamedFloatingPointLiterals = false)
         where T : struct, INumber<T>
         where TSelf : INaValue<TSelf, T>
     {
@@ -199,11 +246,15 @@ public static class Utf8JsonWriterExtensions
         }
         else if (value.Value is float single)
         {
-            writer.WriteNumberValue(single);
+            writer.WriteNumberValue(single, allowNamedFloatingPointLiterals);
         }
         else if (value.Value is double doubleVal)
         {
-            writer.WriteNumberValue(doubleVal);
+            writer.WriteNumberValue(doubleVal, allowNamedFloatingPointLiterals);
+        }
+        else if (value.Value is Half halfVal)
+        {
+            writer.WriteNumberValue(halfVal, allowNamedFloatingPointLiterals);
         }
         else if (value.Value is decimal decimalVal)
         {
@@ -220,48 +271,6 @@ public static class Utf8JsonWriterExtensions
         else
         {
             writer.WriteNumberValue(double.CreateChecked(value.Value));
-        }
-    }
-
-    public static void WriteNumberValue(this Utf8JsonWriter writer, decimal value, bool ensureFloatingPoint)
-    {
-        ArgumentNullException.ThrowIfNull(writer);
-
-        if (ensureFloatingPoint && !value.HasDecimalPlaces())
-        {
-            writer.WriteRawValue(value.ToStringInvariant("F1"));
-        }
-        else
-        {
-            writer.WriteNumberValue(value);
-        }
-    }
-
-    public static void WriteNumberValue(this Utf8JsonWriter writer, double value, bool ensureFloatingPoint)
-    {
-        ArgumentNullException.ThrowIfNull(writer);
-
-        if (ensureFloatingPoint && !value.HasDecimalPlaces())
-        {
-            writer.WriteRawValue(value.ToStringInvariant("F1"));
-        }
-        else
-        {
-            writer.WriteNumberValue(value);
-        }
-    }
-
-    public static void WriteNumberValue(this Utf8JsonWriter writer, float value, bool ensureFloatingPoint)
-    {
-        ArgumentNullException.ThrowIfNull(writer);
-
-        if (ensureFloatingPoint && !value.HasDecimalPlaces())
-        {
-            writer.WriteRawValue(value.ToStringInvariant("F1"));
-        }
-        else
-        {
-            writer.WriteNumberValue(value);
         }
     }
 }

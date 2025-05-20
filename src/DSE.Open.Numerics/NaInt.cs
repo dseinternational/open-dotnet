@@ -13,7 +13,8 @@ namespace DSE.Open.Numerics;
 
 [StructLayout(LayoutKind.Sequential)]
 public readonly struct NaInt<T>
-    : INaNumber<NaInt<T>, T>
+    : INaNumber<NaInt<T>, T>,
+      IBinaryInteger<NaInt<T>>
       where T : struct, IBinaryInteger<T>, IMinMaxValue<T>
 {
     private static readonly T s_sentinel = T.MaxValue;
@@ -40,9 +41,14 @@ public readonly struct NaInt<T>
             : value;
     }
 
-    public static implicit operator NaInt<T>(T value)
+    public static NaInt<T> FromValue(T value)
     {
         return new(value);
+    }
+
+    public static implicit operator NaInt<T>(T value)
+    {
+        return FromValue(value);
     }
 
     public static implicit operator NaInt<T>(T? value)
@@ -617,6 +623,56 @@ public readonly struct NaInt<T>
         return TryParse(s.AsSpan(), provider, out result);
     }
 
+    int IBinaryInteger<NaInt<T>>.GetByteCount()
+    {
+        throw new NotImplementedException();
+    }
+
+    int IBinaryInteger<NaInt<T>>.GetShortestBitLength()
+    {
+        throw new NotImplementedException();
+    }
+
+    static NaInt<T> IBinaryInteger<NaInt<T>>.PopCount(NaInt<T> value)
+    {
+        throw new NotImplementedException();
+    }
+
+    static NaInt<T> IBinaryInteger<NaInt<T>>.TrailingZeroCount(NaInt<T> value)
+    {
+        throw new NotImplementedException();
+    }
+
+    static bool IBinaryInteger<NaInt<T>>.TryReadBigEndian(ReadOnlySpan<byte> source, bool isUnsigned, out NaInt<T> value)
+    {
+        throw new NotImplementedException();
+    }
+
+    static bool IBinaryInteger<NaInt<T>>.TryReadLittleEndian(ReadOnlySpan<byte> source, bool isUnsigned, out NaInt<T> value)
+    {
+        throw new NotImplementedException();
+    }
+
+    bool IBinaryInteger<NaInt<T>>.TryWriteBigEndian(Span<byte> destination, out int bytesWritten)
+    {
+        throw new NotImplementedException();
+    }
+
+    bool IBinaryInteger<NaInt<T>>.TryWriteLittleEndian(Span<byte> destination, out int bytesWritten)
+    {
+        throw new NotImplementedException();
+    }
+
+    static bool IBinaryNumber<NaInt<T>>.IsPow2(NaInt<T> value)
+    {
+        throw new NotImplementedException();
+    }
+
+    static NaInt<T> IBinaryNumber<NaInt<T>>.Log2(NaInt<T> value)
+    {
+        throw new NotImplementedException();
+    }
+
     public static bool operator <=(NaInt<T> left, NaInt<T> right)
     {
         return left.CompareTo(right) <= 0;
@@ -650,5 +706,40 @@ public readonly struct NaInt<T>
     public static NaInt<T> operator +(NaInt<T> value)
     {
         return +value;
+    }
+
+    static NaInt<T> IBitwiseOperators<NaInt<T>, NaInt<T>, NaInt<T>>.operator &(NaInt<T> left, NaInt<T> right)
+    {
+        throw new NotImplementedException();
+    }
+
+    static NaInt<T> IBitwiseOperators<NaInt<T>, NaInt<T>, NaInt<T>>.operator |(NaInt<T> left, NaInt<T> right)
+    {
+        throw new NotImplementedException();
+    }
+
+    static NaInt<T> IBitwiseOperators<NaInt<T>, NaInt<T>, NaInt<T>>.operator ^(NaInt<T> left, NaInt<T> right)
+    {
+        throw new NotImplementedException();
+    }
+
+    static NaInt<T> IBitwiseOperators<NaInt<T>, NaInt<T>, NaInt<T>>.operator ~(NaInt<T> value)
+    {
+        throw new NotImplementedException();
+    }
+
+    static NaInt<T> IShiftOperators<NaInt<T>, int, NaInt<T>>.operator <<(NaInt<T> value, int shiftAmount)
+    {
+        throw new NotImplementedException();
+    }
+
+    static NaInt<T> IShiftOperators<NaInt<T>, int, NaInt<T>>.operator >>(NaInt<T> value, int shiftAmount)
+    {
+        throw new NotImplementedException();
+    }
+
+    static NaInt<T> IShiftOperators<NaInt<T>, int, NaInt<T>>.operator >>>(NaInt<T> value, int shiftAmount)
+    {
+        throw new NotImplementedException();
     }
 }

@@ -5,9 +5,11 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace DSE.Open.Numerics;
 
-public static class NullableValue
+public static class NaValue
 {
-    public const string NoValueLabel = "NA";
+    public const string NaValueLabel = "NA";
+    internal const string NanValueLabel = "NAN";
+    internal const string NullValueLabel = "NULL";
 
     public static bool Equals<T>(NaValue<T> n1, T n2)
         where T : IEquatable<T>, IComparable<T>, ISpanParsable<T>
@@ -48,7 +50,7 @@ public readonly struct NaValue<T> :
     ISpanParsable<NaValue<T>>
     where T : IEquatable<T>, IComparable<T>, ISpanParsable<T>
 {
-    static NaValue<T> INaValue<NaValue<T>, T>.Na { get; }
+    public static NaValue<T> Na { get; }
 
     private readonly bool _hasValue;
     private readonly T _value;
@@ -80,7 +82,7 @@ public readonly struct NaValue<T> :
 
     public override string ToString()
     {
-        return _hasValue ? _value.ToString() ?? string.Empty : NullableValue.NoValueLabel;
+        return _hasValue ? _value.ToString() ?? string.Empty : NaValue.NaValueLabel;
     }
 
     public override int GetHashCode()
@@ -90,12 +92,12 @@ public readonly struct NaValue<T> :
 
     public bool Equals(NaValue<T> other)
     {
-        return NullableValue.Equals(this, other);
+        return NaValue.Equals(this, other);
     }
 
     public bool Equals(T value)
     {
-        return NullableValue.Equals(this, value);
+        return NaValue.Equals(this, value);
     }
 
     public override bool Equals(object? obj)
@@ -106,19 +108,19 @@ public readonly struct NaValue<T> :
 
     public int CompareTo(NaValue<T> other)
     {
-        return NullableValue.Compare(this, other);
+        return NaValue.Compare(this, other);
     }
 
     int IComparable.CompareTo(object? obj)
     {
         return obj is NaValue<T> other
             ? CompareTo(other)
-            : throw new ArgumentException($"Object is not a {nameof(NullableValue)}", nameof(obj));
+            : throw new ArgumentException($"Object is not a {nameof(NaValue)}", nameof(obj));
     }
 
     public static bool operator ==(NaValue<T> left, NaValue<T> right)
     {
-        return NullableValue.Equals(left, right);
+        return NaValue.Equals(left, right);
     }
 
     public static bool operator !=(NaValue<T> left, NaValue<T> right)
@@ -128,22 +130,22 @@ public readonly struct NaValue<T> :
 
     public static bool operator >(NaValue<T> left, NaValue<T> right)
     {
-        return NullableValue.Compare(left, right) > 0;
+        return NaValue.Compare(left, right) > 0;
     }
 
     public static bool operator >=(NaValue<T> left, NaValue<T> right)
     {
-        return NullableValue.Compare(left, right) >= 0;
+        return NaValue.Compare(left, right) >= 0;
     }
 
     public static bool operator <(NaValue<T> left, NaValue<T> right)
     {
-        return NullableValue.Compare(left, right) < 0;
+        return NaValue.Compare(left, right) < 0;
     }
 
     public static bool operator <=(NaValue<T> left, NaValue<T> right)
     {
-        return NullableValue.Compare(left, right) <= 0;
+        return NaValue.Compare(left, right) <= 0;
     }
 
     public static NaValue<T> Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
@@ -153,7 +155,7 @@ public readonly struct NaValue<T> :
             return value;
         }
 
-        ThrowHelper.ThrowFormatException($"Invalid {nameof(NullableValue)}: {s}");
+        ThrowHelper.ThrowFormatException($"Invalid {nameof(NaValue)}: {s}");
         return default; // unreachable
     }
 
@@ -162,7 +164,7 @@ public readonly struct NaValue<T> :
         IFormatProvider? provider,
         [MaybeNullWhen(false)] out NaValue<T> result)
     {
-        if (s == NullableValue.NoValueLabel)
+        if (s == NaValue.NaValueLabel)
         {
             result = default;
             return true;

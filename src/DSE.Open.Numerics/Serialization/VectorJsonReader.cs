@@ -99,23 +99,23 @@ public static class VectorJsonReader
                     VectorDataType.Bool => ReadBooleanVector(ref reader, length),
                     VectorDataType.Char => ReadCharVector(ref reader, length, format),
                     VectorDataType.String => ReadStringVector(ref reader, length),
-                    VectorDataType.NaFloat64 => throw new NotImplementedException(),
-                    VectorDataType.NaFloat32 => throw new NotImplementedException(),
-                    VectorDataType.NaFloat16 => throw new NotImplementedException(),
-                    VectorDataType.NaInt64 => throw new NotImplementedException(),
-                    VectorDataType.NaUInt64 => throw new NotImplementedException(),
-                    VectorDataType.NaInt32 => throw new NotImplementedException(),
-                    VectorDataType.NaUInt32 => throw new NotImplementedException(),
-                    VectorDataType.NaInt16 => throw new NotImplementedException(),
-                    VectorDataType.NaUInt16 => throw new NotImplementedException(),
-                    VectorDataType.NaInt8 => throw new NotImplementedException(),
-                    VectorDataType.NaUInt8 => throw new NotImplementedException(),
-                    VectorDataType.NaDateTime64 => throw new NotImplementedException(),
-                    VectorDataType.NaDateTime => throw new NotImplementedException(),
-                    VectorDataType.NaDateTimeOffset => throw new NotImplementedException(),
-                    VectorDataType.NaBool => throw new NotImplementedException(),
-                    VectorDataType.NaChar => throw new NotImplementedException(),
-                    VectorDataType.NaString => throw new NotImplementedException(),
+                    VectorDataType.NaFloat64 => ReadNaNumberVector<NaFloat<double>, double>(ref reader, length, format),
+                    VectorDataType.NaFloat32 => ReadNaNumberVector<NaFloat<float>, float>(ref reader, length, format),
+                    VectorDataType.NaFloat16 => ReadNaNumberVector<NaFloat<Half>, Half>(ref reader, length, format),
+                    VectorDataType.NaInt64 => ReadNaNumberVector<NaInt<long>, long>(ref reader, length, format),
+                    VectorDataType.NaUInt64 => ReadNaNumberVector<NaInt<ulong>, ulong>(ref reader, length, format),
+                    VectorDataType.NaInt32 => ReadNaNumberVector<NaInt<int>, int>(ref reader, length, format),
+                    VectorDataType.NaUInt32 => ReadNaNumberVector<NaInt<uint>, uint>(ref reader, length, format),
+                    VectorDataType.NaInt16 => ReadNaNumberVector<NaInt<short>, short>(ref reader, length, format),
+                    VectorDataType.NaUInt16 => ReadNaNumberVector<NaInt<ushort>, ushort>(ref reader, length, format),
+                    VectorDataType.NaInt8 => ReadNaNumberVector<NaInt<sbyte>, sbyte>(ref reader, length, format),
+                    VectorDataType.NaUInt8 => ReadNaNumberVector<NaInt<byte>, byte>(ref reader, length, format),
+                    VectorDataType.NaDateTime64 => ReadNaNumberVector<NaInt<DateTime64>, DateTime64>(ref reader, length, format),
+                    VectorDataType.NaDateTime => ReadNaDateTimeVector(ref reader, length, format),
+                    VectorDataType.NaDateTimeOffset => ReadNaDateTimeOffsetVector(ref reader, length, format),
+                    VectorDataType.NaBool => ReadNaBooleanVector(ref reader, length, format),
+                    VectorDataType.NaChar => ReadNaCharVector(ref reader, length, format),
+                    VectorDataType.NaString => ReadNaStringVector(ref reader, length, format),
                     _ => throw new JsonException($"Unsupported data type: {dtype}")
                 };
             }
@@ -190,6 +190,109 @@ public static class VectorJsonReader
                 return num;
             }
 
+            if (NumberHelper.IsKnownFloatingPointIeee754Type<T>()
+                && r.TokenType == JsonTokenType.String)
+            {
+                var str = r.GetString();
+
+                if (str is not null)
+                {
+                    if (str.Equals(NaValue.NanValueLabel, StringComparison.OrdinalIgnoreCase)
+                        || str.Equals(NaValue.NaValueLabel, StringComparison.OrdinalIgnoreCase))
+                    {
+                        if (typeof(T) == typeof(float))
+                        {
+                            return T.CreateChecked(float.NaN);
+                        }
+
+                        if (typeof(T) == typeof(double))
+                        {
+                            return T.CreateChecked(double.NaN);
+                        }
+
+                        if (typeof(T) == typeof(Half))
+                        {
+                            return T.CreateChecked(Half.NaN);
+                        }
+                    }
+
+                    if (str.Equals("Infinity", StringComparison.OrdinalIgnoreCase))
+                    {
+                        if (typeof(T) == typeof(float))
+                        {
+                            return T.CreateChecked(float.PositiveInfinity);
+                        }
+
+                        if (typeof(T) == typeof(double))
+                        {
+                            return T.CreateChecked(double.PositiveInfinity);
+                        }
+
+                        if (typeof(T) == typeof(Half))
+                        {
+                            return T.CreateChecked(Half.PositiveInfinity);
+                        }
+                    }
+
+                    if (str.Equals("-Infinity", StringComparison.OrdinalIgnoreCase))
+                    {
+                        if (typeof(T) == typeof(float))
+                        {
+                            return T.CreateChecked(float.NegativeInfinity);
+                        }
+
+                        if (typeof(T) == typeof(double))
+                        {
+                            return T.CreateChecked(double.NegativeInfinity);
+                        }
+
+                        if (typeof(T) == typeof(Half))
+                        {
+                            return T.CreateChecked(Half.NegativeInfinity);
+                        }
+                    }
+                }
+            }
+
+            throw new JsonException("Expected number value");
+        });
+    }
+
+    public static Vector<TSelf> ReadNaNumberVector<TSelf, T>(
+        ref Utf8JsonReader reader,
+        int length,
+        VectorJsonFormat format = default)
+        where T : struct, INumber<T>, IMinMaxValue<T>
+        where TSelf : INaNumber<TSelf, T>
+    {
+        return ReadVector(ref reader, length, format, (ref r) =>
+        {
+            if (r.TokenType == JsonTokenType.Null)
+            {
+                return TSelf.Na;
+            }
+
+            if (r.TokenType == JsonTokenType.String)
+            {
+                var str = r.GetString();
+
+                Debug.Assert(str is not null);
+
+                if (str.Equals(NaValue.NaValueLabel, StringComparison.OrdinalIgnoreCase)
+                    || str.Equals(NaValue.NanValueLabel, StringComparison.OrdinalIgnoreCase)
+                    || str.Equals(NaValue.NullValueLabel, StringComparison.OrdinalIgnoreCase))
+                {
+                    return TSelf.Na;
+                }
+
+                throw new JsonException($"Invalid string value for number: {str}");
+            }
+
+            if (r.TryGetNumber<T>(out var num))
+            {
+                return TSelf.FromValue(num);
+            }
+
             throw new JsonException("Expected number value");
         });
     }
@@ -202,12 +305,36 @@ public static class VectorJsonReader
         return ReadVector(ref reader, length, format, (ref r) => r.GetString() ?? throw new JsonException());
     }
 
+    public static Vector<NaValue<string>> ReadNaStringVector(
+        ref Utf8JsonReader reader,
+        int length,
+        VectorJsonFormat format = default)
+    {
+        return ReadVector(ref reader, length, format, (ref r) => (NaValue<string>)r.GetString());
+    }
+
     public static Vector<DateTime> ReadDateTimeVector(
         ref Utf8JsonReader reader,
         int length,
         VectorJsonFormat format = default)
     {
         return ReadVector(ref reader, length, format, (ref r) => r.GetDateTime());
+    }
+
+    public static Vector<NaValue<DateTime>> ReadNaDateTimeVector(
+        ref Utf8JsonReader reader,
+        int length,
+        VectorJsonFormat format = default)
+    {
+        return ReadVector(ref reader, length, format, (ref r) =>
+        {
+            if (r.TokenType == JsonTokenType.Null)
+            {
+                return NaValue<DateTime>.Na;
+            }
+
+            return (NaValue<DateTime>)r.GetDateTime();
+        });
     }
 
     public static Vector<DateTimeOffset> ReadDateTimeOffsetVector(
@@ -218,12 +345,20 @@ public static class VectorJsonReader
         return ReadVector(ref reader, length, format, (ref r) => r.GetDateTimeOffset());
     }
 
-    public static Vector<Guid> ReadGuidVector(
+    public static Vector<NaValue<DateTimeOffset>> ReadNaDateTimeOffsetVector(
         ref Utf8JsonReader reader,
         int length,
         VectorJsonFormat format = default)
     {
-        return ReadVector(ref reader, length, format, (ref r) => r.GetGuid());
+        return ReadVector(ref reader, length, format, (ref r) =>
+        {
+            if (r.TokenType == JsonTokenType.Null)
+            {
+                return NaValue<DateTimeOffset>.Na;
+            }
+
+            return (NaValue<DateTimeOffset>)r.GetDateTimeOffset();
+        });
     }
 
     public static Vector<char> ReadCharVector(
@@ -244,6 +379,29 @@ public static class VectorJsonReader
         });
     }
 
+    public static Vector<NaValue<char>> ReadNaCharVector(
+        ref Utf8JsonReader reader,
+        int length,
+        VectorJsonFormat format = default)
+    {
+        return ReadVector(ref reader, length, format, (ref r) =>
+        {
+            var s = r.GetString();
+
+            if (s is null)
+            {
+                return NaValue<char>.Na;
+            }
+
+            if (s.Length != 1)
+            {
+                throw new JsonException("Expected non-null string with single character.");
+            }
+
+            return (NaValue<char>)s[0];
+        });
+    }
+
     public static Vector<bool> ReadBooleanVector(
         ref Utf8JsonReader reader,
         int length,
@@ -259,6 +417,32 @@ public static class VectorJsonReader
             if (r.TokenType == JsonTokenType.False)
             {
                 return false;
+            }
+
+            throw new JsonException("Expected boolean value");
+        });
+    }
+
+    public static Vector<NaValue<bool>> ReadNaBooleanVector(
+        ref Utf8JsonReader reader,
+        int length,
+        VectorJsonFormat format = default)
+    {
+        return ReadVector(ref reader, length, format, (ref r) =>
+        {
+            if (r.TokenType == JsonTokenType.Null)
+            {
+                return NaValue<bool>.Na;
+            }
+
+            if (r.TokenType == JsonTokenType.True)
+            {
+                return (NaValue<bool>)true;
+            }
+
+            if (r.TokenType == JsonTokenType.False)
+            {
+                return (NaValue<bool>)false;
             }
 
             throw new JsonException("Expected boolean value");

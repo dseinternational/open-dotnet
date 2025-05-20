@@ -3,6 +3,7 @@
 
 using System.Collections.Frozen;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 
 namespace DSE.Open;
 
@@ -56,5 +57,31 @@ public static partial class NumberHelper
     public static bool IsKnownNumberType<T>()
     {
         return IsKnownNumberType(typeof(T));
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool IsKnownFloatingPointType(Type type)
+    {
+        ArgumentNullException.ThrowIfNull(type);
+        return IsKnownFloatingPointIeee754Type(type) || type == typeof(decimal);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool IsKnownFloatingPointType<T>()
+    {
+        return IsKnownFloatingPointType(typeof(T));
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool IsKnownFloatingPointIeee754Type(Type type)
+    {
+        ArgumentNullException.ThrowIfNull(type);
+        return type == typeof(float) || type == typeof(double) || type == typeof(Half);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool IsKnownFloatingPointIeee754Type<T>()
+    {
+        return IsKnownFloatingPointIeee754Type(typeof(T));
     }
 }

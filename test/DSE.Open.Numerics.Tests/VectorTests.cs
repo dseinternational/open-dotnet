@@ -21,12 +21,14 @@ public partial class VectorTests : LoggedTestsBase
         Assert.Equivalent(elements, vector.ToArray());
     }
 
-    private static void TestSerializeDeserialize<T>(T[] elements, JsonSerializerOptions serializerOptions)
+    private void TestSerializeDeserialize<T>(T[] elements, JsonSerializerOptions serializerOptions)
         where T : notnull, IEquatable<T>
     {
         Vector<T> vector = [.. elements];
         var json = JsonSerializer.Serialize(vector, serializerOptions);
         Assert.NotNull(json);
+
+        Output.WriteLine(json);
 
         var deserialized = JsonSerializer.Deserialize<Vector<T>>(json, serializerOptions);
         Assert.NotNull(deserialized);
@@ -205,7 +207,7 @@ public partial class VectorTests : LoggedTestsBase
     public void SerializeDeserializeSourceGeneratedFloat32()
     {
         TestSerializeDeserialize(
-            [0.496f, 1.235f, 200.8469874f, -4682.169845f, 981635.123548715f],
+            [0.496f, 1.235f, 200.8469874f, -4682.169845f, 981635.123548715f, float.NaN, float.NegativeInfinity, float.PositiveInfinity],
             NumericsJsonSharedOptions.SourceGenerated);
     }
 
@@ -213,7 +215,7 @@ public partial class VectorTests : LoggedTestsBase
     public void SerializeDeserializeReflectedFloat64()
     {
         TestSerializeDeserialize(
-            [0.496, 1.235, 200.8469874, -4682.169845, 981635.123548715],
+            [0.496, 1.235, 200.8469874, -4682.169845, 981635.123548715, double.NaN, double.NegativeInfinity, double.PositiveInfinity],
             NumericsJsonSharedOptions.Reflected);
     }
 
@@ -239,7 +241,7 @@ public partial class VectorTests : LoggedTestsBase
         TestSerializeDeserialize(elements, NumericsJsonSharedOptions.SourceGenerated);
     }
 
-    [Fact(Skip = "TODO")]
+    [Fact]
     public void SerializeDeserializeReflectedNaInt32()
     {
         TestSerializeDeserialize(
@@ -247,11 +249,27 @@ public partial class VectorTests : LoggedTestsBase
             NumericsJsonSharedOptions.Reflected);
     }
 
-    [Fact(Skip = "TODO")]
+    [Fact]
     public void SerializeDeserializeSourceGeneratedNaInt32()
     {
         TestSerializeDeserialize(
             [.. Enumerable.Range(-10, 500).Select(i => (NaInt<int>)i)],
+            NumericsJsonSharedOptions.SourceGenerated);
+    }
+
+    [Fact]
+    public void SerializeDeserializeReflectedNaInt64()
+    {
+        TestSerializeDeserialize(
+            [.. Enumerable.Range(-10, 500).Select(i => (NaInt<long>)i)],
+            NumericsJsonSharedOptions.Reflected);
+    }
+
+    [Fact]
+    public void SerializeDeserializeSourceGeneratedNaInt64()
+    {
+        TestSerializeDeserialize(
+            [.. Enumerable.Range(-10, 500).Select(i => (NaInt<long>)i)],
             NumericsJsonSharedOptions.SourceGenerated);
     }
 

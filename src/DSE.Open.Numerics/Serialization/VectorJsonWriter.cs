@@ -308,10 +308,10 @@ public static class VectorJsonWriter
                 writer.WriteNumberValue(int128Value);
                 return;
             case float floatValue:
-                writer.WriteNumberValue(floatValue);
+                writer.WriteNumberValue(floatValue, true);
                 return;
             case double doubleValue:
-                writer.WriteNumberValue(doubleValue);
+                writer.WriteNumberValue(doubleValue, true);
                 return;
             case decimal decimalValue:
                 writer.WriteNumberValue(decimalValue);
@@ -320,7 +320,7 @@ public static class VectorJsonWriter
                 writer.WriteNumberValue(dateTime64Value);
                 return;
             case Half halfValue:
-                writer.WriteNumberValue(halfValue);
+                writer.WriteNumberValue(halfValue, true);
                 return;
             case DateTime dateTimeValue:
                 writer.WriteStringValue(dateTimeValue);
@@ -359,16 +359,16 @@ public static class VectorJsonWriter
                 writer.WriteNullableNumberValue<NaInt<Int128>, Int128>(int128Value);
                 return;
             case NaFloat<float> floatValue:
-                writer.WriteNullableNumberValue<NaFloat<float>, float>(floatValue);
+                writer.WriteNullableNumberValue<NaFloat<float>, float>(floatValue, true);
                 return;
             case NaFloat<double> doubleValue:
-                writer.WriteNullableNumberValue<NaFloat<double>, double>(doubleValue);
+                writer.WriteNullableNumberValue<NaFloat<double>, double>(doubleValue, true);
                 return;
             case NaInt<DateTime64> dateTime64Value:
                 writer.WriteNullableNumberValue<NaInt<DateTime64>, DateTime64>(dateTime64Value);
                 return;
             case NaFloat<Half> halfValue:
-                writer.WriteNullableNumberValue<NaFloat<Half>, Half>(halfValue);
+                writer.WriteNullableNumberValue<NaFloat<Half>, Half>(halfValue, true);
                 return;
             case NaValue<DateTime> dateTimeValue:
                 writer.WriteNullableValue<NaValue<DateTime>, DateTime>(dateTimeValue);
@@ -449,7 +449,7 @@ public static class VectorJsonWriter
             where TNumber : struct, INumber<TNumber>
         {
             Debug.Assert(vector.Length > 0);
-            WriteArray(writer, vector, static (writer, value) => writer.WriteNumberValue(value));
+            WriteArray(writer, vector, static (writer, value) => writer.WriteNumberValue(value, true));
         }
     }
 

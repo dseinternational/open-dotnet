@@ -110,6 +110,7 @@ public static class JsonSharedOptions
         _ = options.ConfigureForNodaTime(DateTimeZoneProviders.Tzdb);
 
         options.WriteIndented = writeIndented;
+        options.NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals;
     }
 
     /// <summary>
