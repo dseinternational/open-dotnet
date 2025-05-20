@@ -22,7 +22,7 @@ public partial class Vector
     /// <returns><see langword="true"/> if the vectors are the same length and each corresponding
     /// element is determined to be equal using <see cref="IEquatable{T}.Equals(T)"/>.</returns>
     public static bool SequenceEqual<T>(IReadOnlyVector<T> v1, IReadOnlyVector<T> v2)
-        where T : struct, IEquatable<T>
+        where T : IEquatable<T>
     {
         ArgumentNullException.ThrowIfNull(v1);
         ArgumentNullException.ThrowIfNull(v2);
@@ -41,7 +41,7 @@ public partial class Vector
     /// <param name="v2"></param>
     /// <returns></returns>
     public static bool SequenceEqual<T>(IReadOnlyVector<T> v1, ReadOnlySpan<T> v2)
-        where T : struct, IEquatable<T>
+        where T : IEquatable<T>
     {
         ArgumentNullException.ThrowIfNull(v1);
 
@@ -85,7 +85,7 @@ public partial class Vector
     }
 
     public static bool SequenceEqual<T>(IReadOnlyVector<T> v1, ReadOnlySpan<T> v2, bool unknownsEqual)
-        where T : struct, IEquatable<T>
+        where T : IEquatable<T>
     {
         ArgumentNullException.ThrowIfNull(v1);
 
@@ -101,10 +101,10 @@ public partial class Vector
 
         if (unknownsEqual)
         {
-            if (TryCastToPrimtive(v1, out var v1Span))
-            {
-                return v1Span.SequenceEqual(v2);
-            }
+            //if (TryCastToPrimtive(v1, out var v1Span))
+            //{
+            //    return v1Span.SequenceEqual(v2);
+            //}
             // TODO: if nullable number, cast to underlying primitive type span
 
             return v1.AsSpan().SequenceEqual(v2);
