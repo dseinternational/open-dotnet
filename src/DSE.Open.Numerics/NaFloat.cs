@@ -49,22 +49,22 @@ public readonly struct NaFloat<T>
         return _value.Equals(other._value);
     }
 
-    Trilean ITriEquatable<NaFloat<T>>.Equals(NaFloat<T> other)
+    Trilean ITernaryEquatable<NaFloat<T>>.TernaryEquals(NaFloat<T> other)
     {
         throw new NotImplementedException();
     }
 
-    bool ITriEquatable<NaFloat<T>>.EqualAndNeitherUnknown(NaFloat<T> other)
+    bool ITernaryEquatable<NaFloat<T>>.EqualAndNotNa(NaFloat<T> other)
     {
         throw new NotImplementedException();
     }
 
-    bool ITriEquatable<NaFloat<T>>.EqualOrBothUnknown(NaFloat<T> other)
+    bool ITernaryEquatable<NaFloat<T>>.EqualOrBothNa(NaFloat<T> other)
     {
         throw new NotImplementedException();
     }
 
-    bool ITriEquatable<NaFloat<T>>.EqualOrEitherUnknown(NaFloat<T> other)
+    bool ITernaryEquatable<NaFloat<T>>.EqualOrEitherNa(NaFloat<T> other)
     {
         throw new NotImplementedException();
     }

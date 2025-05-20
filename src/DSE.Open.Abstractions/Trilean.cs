@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Data.SqlTypes;
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 
@@ -11,7 +12,7 @@ namespace DSE.Open;
 /// </summary>
 public readonly struct Trilean
     : IEquatable<Trilean>,
-      ITriEquatable<Trilean>,
+      ITernaryEquatable<Trilean>,
       INaValue,
       ISpanFormattable,
       ISpanParsable<Trilean>
@@ -79,7 +80,7 @@ public readonly struct Trilean
         value = ToNullableBoolean();
     }
 
-    public Trilean Equals(Trilean other)
+    public Trilean TernaryEquals(Trilean other)
     {
         return Equals(this, other);
     }
@@ -96,27 +97,27 @@ public readonly struct Trilean
         }
 
         // if both values are known, return true if equal or false if not equal.
-        return Equals(other).IsTrue;
+        return TernaryEquals(other).IsTrue;
     }
 
-    public bool EqualOrBothUnknown(Trilean other)
+    public bool EqualOrBothNa(Trilean other)
     {
         return Tri.EqualOrBothNa(this, other);
     }
 
-    public bool EqualOrEitherUnknown(Trilean other)
+    public bool EqualOrEitherNa(Trilean other)
     {
         return Tri.EqualOrEitherNa(this, other);
     }
 
-    public bool EqualAndNeitherUnknown(Trilean other)
+    public bool EqualAndNotNa(Trilean other)
     {
         return Tri.EqualAndNeitherNa(this, other);
     }
 
     public override bool Equals(object? obj)
     {
-        return obj is Trilean t && EqualOrBothUnknown(t);
+        return obj is Trilean t && EqualOrBothNa(t);
     }
 
     public override int GetHashCode()
@@ -177,6 +178,16 @@ public readonly struct Trilean
             FalseValue => false,
             _ => throw new NaValueException(
                 $"Cannot convert {nameof(Na)} {nameof(Trilean)} to boolean value.")
+        };
+    }
+
+    public SqlBoolean ToSqlBoolean()
+    {
+        return _value switch
+        {
+            TrueValue => SqlBoolean.True,
+            FalseValue => SqlBoolean.False,
+            _ => SqlBoolean.Null
         };
     }
 
@@ -309,6 +320,18 @@ public readonly struct Trilean
     public static explicit operator bool(Trilean t)
     {
         return t.ToBoolean();
+    }
+
+#pragma warning disable CA2225 // Operator overloads have named alternates
+    public static implicit operator bool?(Trilean t)
+#pragma warning restore CA2225 // Operator overloads have named alternates
+    {
+        return t.ToNullableBoolean();
+    }
+
+    public static implicit operator SqlBoolean(Trilean t)
+    {
+        return t.ToSqlBoolean();
     }
 
     public static implicit operator Trilean(bool b)

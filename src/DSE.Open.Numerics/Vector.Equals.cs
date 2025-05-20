@@ -3,6 +3,8 @@
 
 using System.Numerics;
 using System.Numerics.Tensors;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace DSE.Open.Numerics;
 
@@ -46,6 +48,42 @@ public partial class Vector
         return SequenceEqual(v1, v2, true);
     }
 
+    internal static bool TryCastToPrimtive<T>(IReadOnlyVector<T> v1, out ReadOnlySpan<T> span)
+        where T : struct, IEquatable<T>
+    {
+        if (v1 is IReadOnlyVector<NaInt<int>> naInt32Vector)
+        {
+            span = CastDangerous<NaInt<int>, T>(naInt32Vector.AsSpan());
+            return true;
+        }
+
+        if (v1 is IReadOnlyVector<NaInt<long>> naInt64Vector)
+        {
+            span = CastDangerous<NaInt<long>, T>(naInt64Vector.AsSpan());
+            return true;
+        }
+
+        span = default;
+        return false;
+    }
+
+    private static ReadOnlySpan<TTo> CastDangerous<TFrom, TTo>(ReadOnlySpan<TFrom> v1)
+        where TFrom : struct
+        where TTo : struct
+    {
+        ref var first = ref Unsafe.As<TFrom, TTo>(ref MemoryMarshal.GetReference(v1));
+        return MemoryMarshal.CreateReadOnlySpan(ref first, v1.Length);
+    }
+
+    public static bool SequenceEqual(
+        IReadOnlyVector<string> v1,
+        ReadOnlySpan<string> v2,
+        StringComparer? stringComparer = default)
+    {
+        ArgumentNullException.ThrowIfNull(v1);
+        return v1.AsSpan().SequenceEqual(v2, stringComparer);
+    }
+
     public static bool SequenceEqual<T>(IReadOnlyVector<T> v1, ReadOnlySpan<T> v2, bool unknownsEqual)
         where T : IEquatable<T>
     {
@@ -63,7 +101,10 @@ public partial class Vector
 
         if (unknownsEqual)
         {
-
+            //if (TryCastToPrimtive(v1, out var v1Span))
+            //{
+            //    return v1Span.SequenceEqual(v2);
+            //}
             // TODO: if nullable number, cast to underlying primitive type span
 
             return v1.AsSpan().SequenceEqual(v2);
@@ -76,8 +117,7 @@ public partial class Vector
             var e1 = v1[i];
             var e2 = v2[i];
 
-            if (e1 is null || e2 is null
-                || (e1 is INaValue n1 && n1.IsNa)
+            if ((e1 is INaValue n1 && n1.IsNa)
                 || (e2 is INaValue n2 && n2.IsNa)
                 || !e1.Equals(e2))
             {

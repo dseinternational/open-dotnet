@@ -76,15 +76,15 @@ public readonly struct NaInt<T>
 
     bool IEquatable<NaInt<T>>.Equals(NaInt<T> other)
     {
-        return EqualOrBothUnknown(other);
+        return EqualOrBothNa(other);
     }
 
     public override bool Equals(object? obj)
     {
-        return obj is NaInt<T> n && EqualOrBothUnknown(n);
+        return obj is NaInt<T> n && EqualOrBothNa(n);
     }
 
-    public Trilean Equals(NaInt<T> other)
+    public Trilean TernaryEquals(NaInt<T> other)
     {
         if (IsNa || other.IsNa)
         {
@@ -94,17 +94,17 @@ public readonly struct NaInt<T>
         return _value == other._value ? Trilean.True : Trilean.False;
     }
 
-    public bool EqualAndNeitherUnknown(NaInt<T> other)
+    public bool EqualAndNotNa(NaInt<T> other)
     {
         return !IsNa && !other.IsNa && _value == other._value;
     }
 
-    public bool EqualOrBothUnknown(NaInt<T> other)
+    public bool EqualOrBothNa(NaInt<T> other)
     {
         return (IsNa && other.IsNa) || _value == other._value;
     }
 
-    public bool EqualOrEitherUnknown(NaInt<T> other)
+    public bool EqualOrEitherNa(NaInt<T> other)
     {
         return IsNa || other.IsNa || _value == other._value;
     }
@@ -200,7 +200,7 @@ public readonly struct NaInt<T>
 
     public static Trilean operator ==(NaInt<T> x, NaInt<T> y)
     {
-        return x.Equals(y);
+        return x.TernaryEquals(y);
     }
 
     public static Trilean operator !=(NaInt<T> x, NaInt<T> y)
@@ -213,12 +213,12 @@ public readonly struct NaInt<T>
         // bool == operator is false for NaInteger<T> Na == NaInteger<T> Na
         // bool Equals(T) is true for NaInteger<T> Na == NaInteger<T> Na
         // as https://learn.microsoft.com/en-us/dotnet/core/compatibility/core-libraries/7.0/equals-nan
-        return left.EqualAndNeitherUnknown(right);
+        return left.EqualAndNotNa(right);
     }
 
     static bool IEqualityOperators<NaInt<T>, NaInt<T>, bool>.operator !=(NaInt<T> left, NaInt<T> right)
     {
-        return !left.EqualAndNeitherUnknown(right);
+        return !left.EqualAndNotNa(right);
     }
 
     public static Trilean operator <(NaInt<T> x, NaInt<T> y)

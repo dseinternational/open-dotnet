@@ -2,7 +2,6 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Numerics;
-using System.Reflection.Metadata.Ecma335;
 
 namespace DSE.Open;
 

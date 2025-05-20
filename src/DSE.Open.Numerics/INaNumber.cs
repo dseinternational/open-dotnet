@@ -9,7 +9,7 @@ public interface INaNumber<TSelf, T>
     : INumber<TSelf>,
       IMinMaxValue<TSelf>,
       INaValue<TSelf, T>,
-      ITriEquatable<TSelf>
+      ITernaryEquatable<TSelf>
     where TSelf : INaNumber<TSelf, T>
     where T : struct, INumber<T>, IMinMaxValue<T>
 {
