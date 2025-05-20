@@ -27,7 +27,7 @@ public class TrileanTests
         Assert.True(t.IsFalse == !input);
         Assert.True(t.IsTrue || t.IsFalse);
         Assert.True((t == expected).IsTrue);
-        Assert.True(t.Equals(expected).IsTrue);
+        Assert.True(t.TernaryEquals(expected).IsTrue);
         Assert.Equal(expected, t);
     }
 

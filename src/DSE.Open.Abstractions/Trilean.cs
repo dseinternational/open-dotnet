@@ -11,7 +11,7 @@ namespace DSE.Open;
 /// </summary>
 public readonly struct Trilean
     : IEquatable<Trilean>,
-      ITriEquatable<Trilean>,
+      ITernaryEquatable<Trilean>,
       INaValue,
       ISpanFormattable,
       ISpanParsable<Trilean>
@@ -79,7 +79,7 @@ public readonly struct Trilean
         value = ToNullableBoolean();
     }
 
-    public Trilean Equals(Trilean other)
+    public Trilean TernaryEquals(Trilean other)
     {
         return Equals(this, other);
     }
@@ -96,27 +96,27 @@ public readonly struct Trilean
         }
 
         // if both values are known, return true if equal or false if not equal.
-        return Equals(other).IsTrue;
+        return TernaryEquals(other).IsTrue;
     }
 
-    public bool EqualOrBothUnknown(Trilean other)
+    public bool EqualOrBothNa(Trilean other)
     {
         return Tri.EqualOrBothNa(this, other);
     }
 
-    public bool EqualOrEitherUnknown(Trilean other)
+    public bool EqualOrEitherNa(Trilean other)
     {
         return Tri.EqualOrEitherNa(this, other);
     }
 
-    public bool EqualAndNeitherUnknown(Trilean other)
+    public bool EqualAndNotNa(Trilean other)
     {
         return Tri.EqualAndNeitherNa(this, other);
     }
 
     public override bool Equals(object? obj)
     {
-        return obj is Trilean t && EqualOrBothUnknown(t);
+        return obj is Trilean t && EqualOrBothNa(t);
     }
 
     public override int GetHashCode()
