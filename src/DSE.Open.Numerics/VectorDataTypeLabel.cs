@@ -9,7 +9,7 @@ namespace DSE.Open.Numerics;
 /// Provides labels for the data types supported by <see cref="Series{T}"/>.
 /// </summary>
 [SuppressMessage("Naming", "CA1720:Identifier contains type name", Justification = "By design")]
-public static class VectorDataTypeLabels
+public static class VectorDataTypeLabel
 {
     public const string Bool = "bool";
     public const string Char = "char";
@@ -22,13 +22,11 @@ public static class VectorDataTypeLabels
     public const string Float64 = "float64";
     public const string Float32 = "float32";
     public const string Int32 = "int32";
-    public const string Int128 = "int128";
     public const string Int64 = "int64";
     public const string Int8 = "int8";
     public const string Int16 = "int16";
     public const string UInt32 = "uint32";
     public const string UInt64 = "uint64";
-    public const string UInt128 = "uint128";
     public const string UInt16 = "uint16";
 
     public const string NullableBool = "bool_n";
@@ -42,12 +40,10 @@ public static class VectorDataTypeLabels
     public const string NullableFloat64 = "float64_n";
     public const string NullableFloat32 = "float32_n";
     public const string NullableInt32 = "int32_n";
-    public const string NullableInt128 = "int128_n";
     public const string NullableInt64 = "int64_n";
     public const string NullableInt8 = "int8_n";
     public const string NullableInt16 = "int16_n";
     public const string NullableUInt32 = "uint32_n";
     public const string NullableUInt64 = "uint64_n";
-    public const string NullableUInt128 = "uint128_n";
     public const string NullableUInt16 = "uint16_n";
 }

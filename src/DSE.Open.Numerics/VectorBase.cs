@@ -32,7 +32,7 @@ public abstract class VectorBase
         ItemType = itemType;
         Length = length;
         IsReadOnly = isReadOnly;
-        IsNullable = dataType >= VectorDataType.NullableFloat64;
+        IsNullable = dataType >= VectorDataType.NaFloat64;
     }
 
     /// <summary>
