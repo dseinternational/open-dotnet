@@ -511,7 +511,7 @@ public static class VectorJsonWriter
 
         static void WriteNaNumberSpan<TSelf, TNum>(Utf8JsonWriter writer, ReadOnlySpan<TSelf> vector)
             where TNum : struct, INumber<TNum>
-            where TSelf : INaValue<TSelf, TNum>
+            where TSelf : struct, INaValue<TSelf, TNum>
         {
             Debug.Assert(vector.Length > 0);
             WriteArray(writer, vector, static (writer, value) => writer.WriteNullableNumberValue<TSelf, TNum>(value));

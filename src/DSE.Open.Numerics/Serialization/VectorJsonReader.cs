@@ -263,7 +263,7 @@ public static class VectorJsonReader
         int length,
         VectorJsonFormat format = default)
         where T : struct, INumber<T>, IMinMaxValue<T>
-        where TSelf : INaNumber<TSelf, T>
+        where TSelf : struct, INaNumber<TSelf, T>
     {
         return ReadVector(ref reader, length, format, (ref r) =>
         {

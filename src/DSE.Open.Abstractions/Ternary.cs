@@ -23,11 +23,8 @@ public static class Ternary
     /// values are not null and not equal.</returns>
     public static Trilean Equals<TSelf, T>(TSelf left, TSelf right)
         where T : notnull, IEquatable<T>
-        where TSelf : notnull, INaValue<TSelf, T>
+        where TSelf : struct, INaValue<TSelf, T>
     {
-        ArgumentNullException.ThrowIfNull(left);
-        ArgumentNullException.ThrowIfNull(right);
-
         if (left.IsNa || right.IsNa)
         {
             return Trilean.Na;

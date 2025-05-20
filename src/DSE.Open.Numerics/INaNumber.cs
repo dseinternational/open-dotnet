@@ -10,8 +10,8 @@ public interface INaNumber<TSelf, T>
       IMinMaxValue<TSelf>,
       INaValue<TSelf, T>,
       ITernaryEquatable<TSelf>
-    where TSelf : INaNumber<TSelf, T>
     where T : struct, INumber<T>, IMinMaxValue<T>
+    where TSelf : struct, INaNumber<TSelf, T>
 {
     static abstract TSelf FromValue(T value);
 }

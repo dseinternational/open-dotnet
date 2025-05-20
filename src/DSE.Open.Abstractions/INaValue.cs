@@ -52,7 +52,7 @@ public interface INaValue<TSelf, T>
       IEqualityOperators<TSelf, TSelf, bool>,
       ITernaryEquatable<TSelf>
     where T : notnull, IEquatable<T>
-    where TSelf : notnull, INaValue<TSelf, T>
+    where TSelf : struct, INaValue<TSelf, T>
 {
     /// <summary>
     /// Gets a value that represents the missing, <see langword="null"/> or 'not a value' state.
@@ -68,49 +68,4 @@ public interface INaValue<TSelf, T>
     new T Value { get; }
 
     object INaValue.Value => Value;
-
-    static virtual bool EqualAndNotNa(INaValue<TSelf, T> n1, INaValue<TSelf, T> n2)
-    {
-        if (n1 is null || n2 is null)
-        {
-            return false;
-        }
-
-        return n2.HasValue && n1.HasValue && n2.Value.Equals(n1.Value);
-    }
-
-    static virtual bool EqualOrBothNa(INaValue<TSelf, T> n1, INaValue<TSelf, T> n2)
-    {
-        if (n1 is null)
-        {
-            return n2 is null;
-        }
-
-        if (n2 is null)
-        {
-            return false;
-        }
-
-        if (n1.HasValue && n2.HasValue)
-        {
-            return true;
-        }
-
-        return n2.Value.Equals(n1.Value);
-    }
-
-    static virtual bool EqualOrEitherNa(INaValue<TSelf, T> n1, INaValue<TSelf, T> n2)
-    {
-        if (n1 is null || n2 is null)
-        {
-            return true;
-        }
-
-        if (n1.HasValue || n2.HasValue)
-        {
-            return true;
-        }
-
-        return n2.Value.Equals(n1.Value);
-    }
 }

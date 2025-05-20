@@ -113,7 +113,7 @@ public static class Utf8JsonWriterExtensions
         TSelf value,
         bool allowNamedFloatingPointLiterals = false)
         where T : IEquatable<T>
-        where TSelf : INaValue<TSelf, T>
+        where TSelf : struct, INaValue<TSelf, T>
     {
         ArgumentNullException.ThrowIfNull(writer);
 
@@ -204,7 +204,7 @@ public static class Utf8JsonWriterExtensions
         TSelf value,
         bool allowNamedFloatingPointLiterals = false)
         where T : struct, INumber<T>
-        where TSelf : INaValue<TSelf, T>
+        where TSelf : struct, INaValue<TSelf, T>
     {
         ArgumentNullException.ThrowIfNull(writer);
 
