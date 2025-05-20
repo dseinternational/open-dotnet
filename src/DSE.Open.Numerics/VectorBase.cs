@@ -19,7 +19,7 @@ public abstract class VectorBase
         IsEmpty = length == 0;
 
 #if DEBUG
-        if (Vector.TryGetVectorDataType(itemType, out var expectedDataType)
+        if (Vector.TryGetDataType(itemType, out var expectedDataType)
             && dataType != expectedDataType)
         {
             Debug.Fail($"Expected data type {expectedDataType} for "

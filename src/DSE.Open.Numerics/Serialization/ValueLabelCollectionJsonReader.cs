@@ -71,7 +71,7 @@ internal static class ValueLabelCollectionJsonReader
                         throw new JsonException();
                     }
 
-                    var type = Vector.GetVectorDataType(dataType);
+                    var type = Vector.GetDataType(dataType);
 
                     switch (type)
                     {
@@ -114,9 +114,6 @@ internal static class ValueLabelCollectionJsonReader
                         case VectorDataType.DateTimeOffset:
                             labels = ReadDateTimeOffsetLabels(ref reader, length);
                             break;
-                        case VectorDataType.Uuid:
-                            labels = ReadGuidLabels(ref reader, length);
-                            break;
                         case VectorDataType.Bool:
                             labels = ReadBooleanLabels(ref reader, length);
                             break;
@@ -150,8 +147,6 @@ internal static class ValueLabelCollectionJsonReader
                         case VectorDataType.NaDateTime:
                             break;
                         case VectorDataType.NaDateTimeOffset:
-                            break;
-                        case VectorDataType.NaUuid:
                             break;
                         case VectorDataType.NaBool:
                             break;
@@ -195,11 +190,6 @@ internal static class ValueLabelCollectionJsonReader
     private static ValueLabelCollection<bool> ReadBooleanLabels(ref Utf8JsonReader reader, int length)
     {
         return ReadLabels(ref reader, length, (ref r) => r.GetBoolean());
-    }
-
-    private static ValueLabelCollection<Guid> ReadGuidLabels(ref Utf8JsonReader reader, int length)
-    {
-        return ReadLabels(ref reader, length, (ref r) => r.GetGuid());
     }
 
     private static ValueLabelCollection<DateTime> ReadDateTimeLabels(ref Utf8JsonReader reader, int length)

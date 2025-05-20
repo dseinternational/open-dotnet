@@ -67,7 +67,7 @@ public static class CategorySetJsonReader
                     throw new JsonException("Cannot read category set without data type");
                 }
 
-                var dtype = Vector.GetVectorDataType(dataType);
+                var dtype = Vector.GetDataType(dataType);
 
                 _ = reader.Read();
 
@@ -88,15 +88,16 @@ public static class CategorySetJsonReader
                     VectorDataType.UInt8 => new CategorySet<byte>(reader.ReadNumberArray<byte>(length)),
                     VectorDataType.Float64 => throw new JsonException("Category sets should only contain binary integer values"),
                     VectorDataType.Float32 => throw new JsonException("Category sets should only contain binary integer values"),
+                    VectorDataType.Float16 => throw new JsonException("Category sets should only contain binary integer values"),
                     VectorDataType.DateTime64 => throw new JsonException("Category sets should only contain binary integer values"),
                     VectorDataType.DateTime => throw new JsonException("Category sets should only contain binary integer values"),
                     VectorDataType.DateTimeOffset => throw new JsonException("Category sets should only contain binary integer values"),
-                    VectorDataType.Uuid => throw new JsonException("Category sets should only contain binary integer values"),
                     VectorDataType.Bool => throw new JsonException("Category sets should only contain binary integer values"),
                     VectorDataType.Char => throw new JsonException("Category sets should only contain binary integer values"),
                     VectorDataType.String => throw new JsonException("Category sets should only contain binary integer values"),
                     VectorDataType.NaFloat64 => throw new NotImplementedException(),
                     VectorDataType.NaFloat32 => throw new NotImplementedException(),
+                    VectorDataType.NaFloat16 => throw new NotImplementedException(),
                     VectorDataType.NaInt64 => throw new NotImplementedException(),
                     VectorDataType.NaUInt64 => throw new NotImplementedException(),
                     VectorDataType.NaInt32 => throw new NotImplementedException(),
@@ -108,7 +109,6 @@ public static class CategorySetJsonReader
                     VectorDataType.NaDateTime64 => throw new NotImplementedException(),
                     VectorDataType.NaDateTime => throw new NotImplementedException(),
                     VectorDataType.NaDateTimeOffset => throw new NotImplementedException(),
-                    VectorDataType.NaUuid => throw new NotImplementedException(),
                     VectorDataType.NaBool => throw new NotImplementedException(),
                     VectorDataType.NaChar => throw new NotImplementedException(),
                     VectorDataType.NaString => throw new NotImplementedException(),

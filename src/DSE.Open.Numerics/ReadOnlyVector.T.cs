@@ -29,7 +29,7 @@ public sealed class ReadOnlyVector<T> : ReadOnlyVector, IReadOnlyVector<T>
     }
 
     public ReadOnlyVector(ReadOnlyMemory<T> memory)
-        : base(Vector.GetVectorDataType<T>(), typeof(T), memory.Length)
+        : base(Vector.GetDataType<T>(), typeof(T), memory.Length)
     {
         _memory = memory;
     }

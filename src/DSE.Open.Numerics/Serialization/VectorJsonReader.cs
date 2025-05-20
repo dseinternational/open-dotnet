@@ -71,7 +71,7 @@ public static class VectorJsonReader
                     throw new JsonException("Cannot read vector without data type");
                 }
 
-                var dtype = Vector.GetVectorDataType(dataType);
+                var dtype = Vector.GetDataType(dataType);
 
                 _ = reader.Read();
 
@@ -84,6 +84,7 @@ public static class VectorJsonReader
                 {
                     VectorDataType.Float64 => ReadNumberVector<double>(ref reader, length, format),
                     VectorDataType.Float32 => ReadNumberVector<float>(ref reader, length, format),
+                    VectorDataType.Float16 => ReadNumberVector<Half>(ref reader, length, format),
                     VectorDataType.Int64 => ReadNumberVector<long>(ref reader, length, format),
                     VectorDataType.UInt64 => ReadNumberVector<ulong>(ref reader, length, format),
                     VectorDataType.Int32 => ReadNumberVector<int>(ref reader, length, format),
@@ -95,12 +96,12 @@ public static class VectorJsonReader
                     VectorDataType.DateTime64 => ReadNumberVector<DateTime64>(ref reader, length, format),
                     VectorDataType.DateTime => ReadDateTimeVector(ref reader, length, format),
                     VectorDataType.DateTimeOffset => ReadDateTimeOffsetVector(ref reader, length, format),
-                    VectorDataType.Uuid => ReadGuidVector(ref reader, length, format),
                     VectorDataType.Bool => ReadBooleanVector(ref reader, length),
                     VectorDataType.Char => ReadCharVector(ref reader, length, format),
                     VectorDataType.String => ReadStringVector(ref reader, length),
                     VectorDataType.NaFloat64 => throw new NotImplementedException(),
                     VectorDataType.NaFloat32 => throw new NotImplementedException(),
+                    VectorDataType.NaFloat16 => throw new NotImplementedException(),
                     VectorDataType.NaInt64 => throw new NotImplementedException(),
                     VectorDataType.NaUInt64 => throw new NotImplementedException(),
                     VectorDataType.NaInt32 => throw new NotImplementedException(),
@@ -112,7 +113,6 @@ public static class VectorJsonReader
                     VectorDataType.NaDateTime64 => throw new NotImplementedException(),
                     VectorDataType.NaDateTime => throw new NotImplementedException(),
                     VectorDataType.NaDateTimeOffset => throw new NotImplementedException(),
-                    VectorDataType.NaUuid => throw new NotImplementedException(),
                     VectorDataType.NaBool => throw new NotImplementedException(),
                     VectorDataType.NaChar => throw new NotImplementedException(),
                     VectorDataType.NaString => throw new NotImplementedException(),
