@@ -19,7 +19,7 @@ public abstract class VectorBase
         IsEmpty = length == 0;
 
 #if DEBUG
-        if (Vector.TryGetVectorDataType(itemType, out var expectedDataType)
+        if (Vector.TryGetDataType(itemType, out var expectedDataType)
             && dataType != expectedDataType)
         {
             Debug.Fail($"Expected data type {expectedDataType} for "
@@ -32,7 +32,7 @@ public abstract class VectorBase
         ItemType = itemType;
         Length = length;
         IsReadOnly = isReadOnly;
-        IsNullable = dataType >= VectorDataType.NullableFloat64;
+        IsNullable = dataType >= VectorDataType.NaFloat64;
     }
 
     /// <summary>

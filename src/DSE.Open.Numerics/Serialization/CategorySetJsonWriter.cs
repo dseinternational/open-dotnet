@@ -84,7 +84,7 @@ public static class CategorySetJsonWriter
 
         writer.WriteString(
             NumericsPropertyNames.DataType,
-            Vector.GetLabel(Vector.GetVectorDataType<T>()));
+            Vector.GetDataTypeLabel(Vector.GetDataType<T>()));
 
         writer.WriteNumber(NumericsPropertyNames.Length, categorySet.Count);
 

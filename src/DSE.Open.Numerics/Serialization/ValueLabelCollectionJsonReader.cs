@@ -71,7 +71,7 @@ internal static class ValueLabelCollectionJsonReader
                         throw new JsonException();
                     }
 
-                    var type = Vector.GetVectorDataType(dataType);
+                    var type = Vector.GetDataType(dataType);
 
                     switch (type)
                     {
@@ -105,12 +105,6 @@ internal static class ValueLabelCollectionJsonReader
                         case VectorDataType.UInt8:
                             labels = ReadNumberLabels<byte>(ref reader, length);
                             break;
-                        case VectorDataType.Int128:
-                            labels = ReadNumberLabels<Int128>(ref reader, length);
-                            break;
-                        case VectorDataType.UInt128:
-                            labels = ReadNumberLabels<UInt128>(ref reader, length);
-                            break;
                         case VectorDataType.DateTime64:
                             labels = ReadNumberLabels<DateTime64>(ref reader, length);
                             break;
@@ -120,9 +114,6 @@ internal static class ValueLabelCollectionJsonReader
                         case VectorDataType.DateTimeOffset:
                             labels = ReadDateTimeOffsetLabels(ref reader, length);
                             break;
-                        case VectorDataType.Uuid:
-                            labels = ReadGuidLabels(ref reader, length);
-                            break;
                         case VectorDataType.Bool:
                             labels = ReadBooleanLabels(ref reader, length);
                             break;
@@ -130,6 +121,38 @@ internal static class ValueLabelCollectionJsonReader
                             break;
                         case VectorDataType.String:
                             labels = ReadStringLabels(ref reader, length);
+                            break;
+                        case VectorDataType.NaFloat64:
+                            break;
+                        case VectorDataType.NaFloat32:
+                            break;
+                        case VectorDataType.NaInt64:
+                            break;
+                        case VectorDataType.NaUInt64:
+                            break;
+                        case VectorDataType.NaInt32:
+                            break;
+                        case VectorDataType.NaUInt32:
+                            break;
+                        case VectorDataType.NaInt16:
+                            break;
+                        case VectorDataType.NaUInt16:
+                            break;
+                        case VectorDataType.NaInt8:
+                            break;
+                        case VectorDataType.NaUInt8:
+                            break;
+                        case VectorDataType.NaDateTime64:
+                            break;
+                        case VectorDataType.NaDateTime:
+                            break;
+                        case VectorDataType.NaDateTimeOffset:
+                            break;
+                        case VectorDataType.NaBool:
+                            break;
+                        case VectorDataType.NaChar:
+                            break;
+                        case VectorDataType.NaString:
                             break;
                         default:
                             throw new JsonException($"Unsupported data type: {dataType}");
@@ -167,11 +190,6 @@ internal static class ValueLabelCollectionJsonReader
     private static ValueLabelCollection<bool> ReadBooleanLabels(ref Utf8JsonReader reader, int length)
     {
         return ReadLabels(ref reader, length, (ref r) => r.GetBoolean());
-    }
-
-    private static ValueLabelCollection<Guid> ReadGuidLabels(ref Utf8JsonReader reader, int length)
-    {
-        return ReadLabels(ref reader, length, (ref r) => r.GetGuid());
     }
 
     private static ValueLabelCollection<DateTime> ReadDateTimeLabels(ref Utf8JsonReader reader, int length)
