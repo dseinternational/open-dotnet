@@ -102,17 +102,17 @@ public readonly struct Trilean
 
     public bool EqualOrBothNa(Trilean other)
     {
-        return Tri.EqualOrBothNa(this, other);
+        return Ternary.EqualOrBothNa(this, other);
     }
 
     public bool EqualOrEitherNa(Trilean other)
     {
-        return Tri.EqualOrEitherNa(this, other);
+        return Ternary.EqualOrEitherNa(this, other);
     }
 
     public bool EqualAndNotNa(Trilean other)
     {
-        return Tri.EqualAndNeitherNa(this, other);
+        return Ternary.EqualAndNeitherNa(this, other);
     }
 
     public override bool Equals(object? obj)

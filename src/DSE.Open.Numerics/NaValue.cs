@@ -17,7 +17,7 @@ public static class NaValue
         return n1.HasValue && n2.Equals(n1.Value);
     }
 
-    public static bool Equals<T>(NaValue<T> n1, NaValue<T> n2)
+    public static bool EqualAndNotNa<T>(NaValue<T> n1, NaValue<T> n2)
         where T : IEquatable<T>, IComparable<T>, ISpanParsable<T>
     {
         return n2.HasValue && n1.HasValue && n2.Value.Equals(n1.Value);
@@ -92,7 +92,7 @@ public readonly struct NaValue<T> :
 
     public bool Equals(NaValue<T> other)
     {
-        return NaValue.Equals(this, other);
+        return NaValue.EqualAndNotNa(this, other);
     }
 
     public bool Equals(T value)
@@ -104,6 +104,21 @@ public readonly struct NaValue<T> :
     {
         return (obj is NaValue<T> other && Equals(other))
             || (obj is T n && Equals(n));
+    }
+
+    public Trilean TernaryEquals(NaValue<T> other)
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool EqualOrBothNa(NaValue<T> other)
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool EqualOrEitherNa(NaValue<T> other)
+    {
+        throw new NotImplementedException();
     }
 
     public int CompareTo(NaValue<T> other)
@@ -120,7 +135,7 @@ public readonly struct NaValue<T> :
 
     public static bool operator ==(NaValue<T> left, NaValue<T> right)
     {
-        return NaValue.Equals(left, right);
+        return NaValue.EqualAndNotNa(left, right);
     }
 
     public static bool operator !=(NaValue<T> left, NaValue<T> right)

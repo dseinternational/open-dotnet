@@ -1,14 +1,12 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Data.SqlTypes;
-
 namespace DSE.Open;
 
 /// <summary>
 /// Helpers for three-valued logic.
 /// </summary>
-public static class Tri
+public static class Ternary
 {
     /// <summary>
     /// Compares two nullable value types for equality and returns a <see cref="Trilean"/>
@@ -72,7 +70,7 @@ public static class Tri
     }
 
     /// <summary>
-    /// Compares two values for equality, using three-valued logic and returning a <see cref="Trilean"/> result.
+    /// Compares two values for equality using three-valued logic and returning a <see cref="Trilean"/> result.
     /// </summary>
     /// <param name="left">The first value to compare.</param>
     /// <param name="right">The second value to compare.</param>

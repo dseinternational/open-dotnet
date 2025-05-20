@@ -49,7 +49,8 @@ public interface INaValue
 public interface INaValue<TSelf, T>
     : INaValue,
       IEquatable<TSelf>,
-      IEqualityOperators<TSelf, TSelf, bool>
+      IEqualityOperators<TSelf, TSelf, bool>,
+      ITernaryEquatable<TSelf>
     where T : notnull, IEquatable<T>
     where TSelf : notnull, INaValue<TSelf, T>
 {
@@ -68,22 +69,48 @@ public interface INaValue<TSelf, T>
 
     object INaValue.Value => Value;
 
-    /*
-     * TODO
-     * 
-    static virtual bool Equals(TSelf left, TSelf right, bool naEqual = false)
+    static virtual bool EqualAndNotNa(INaValue<TSelf, T> n1, INaValue<TSelf, T> n2)
     {
-        return Tri.Equals(left, right).IsTrue;
+        if (n1 is null || n2 is null)
+        {
+            return false;
+        }
+
+        return n2.HasValue && n1.HasValue && n2.Value.Equals(n1.Value);
     }
 
-    static bool IEqualityOperators<TSelf, TSelf, bool>.operator ==(TSelf? left, TSelf? right)
+    static virtual bool EqualOrBothNa(INaValue<TSelf, T> n1, INaValue<TSelf, T> n2)
     {
-        return TSelf.Equals(left, right);
+        if (n1 is null)
+        {
+            return n2 is null;
+        }
+
+        if (n2 is null)
+        {
+            return false;
+        }
+
+        if (n1.HasValue && n2.HasValue)
+        {
+            return true;
+        }
+
+        return n2.Value.Equals(n1.Value);
     }
 
-    static bool IEqualityOperators<TSelf, TSelf, bool>.operator !=(TSelf? left, TSelf? right)
+    static virtual bool EqualOrEitherNa(INaValue<TSelf, T> n1, INaValue<TSelf, T> n2)
     {
-        return !TSelf.Equals(left, right);
+        if (n1 is null || n2 is null)
+        {
+            return true;
+        }
+
+        if (n1.HasValue || n2.HasValue)
+        {
+            return true;
+        }
+
+        return n2.Value.Equals(n1.Value);
     }
-    */
 }
