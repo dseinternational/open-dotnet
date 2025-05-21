@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
@@ -41,6 +42,17 @@ public class NumericsException : Exception
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void ThrowIfNot(
+        [DoesNotReturnIf(false)] bool condition,
+        [CallerArgumentExpression(nameof(condition))] string? message = null)
+    {
+        if (!condition)
+        {
+            Throw(message ?? DefaultMessage);
+        }
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void ThrowIfNotEqualLength<T>(
         [NotNull] ICollection<T> x,
         [NotNull] ICollection<T> y)
@@ -69,7 +81,7 @@ public class NumericsException : Exception
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void ThrowIfNotEqualLength<T>(ReadOnlySpan<T> x, ReadOnlySpan<T> y)
+    public static void ThrowIfNotEqualLength<T>(in ReadOnlySpan<T> x, in ReadOnlySpan<T> y)
     {
         if (x.Length != y.Length)
         {
@@ -80,7 +92,7 @@ public class NumericsException : Exception
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void ThrowIfNotEqualLength<T>(
         [NotNull] ICollection<T> x,
-        ReadOnlySpan<T> y)
+        in ReadOnlySpan<T> y)
     {
         ArgumentNullException.ThrowIfNull(x);
 
@@ -93,7 +105,7 @@ public class NumericsException : Exception
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void ThrowIfNotEqualLength<T>(
         [NotNull] IReadOnlyCollection<T> x,
-        ReadOnlySpan<T> y)
+        in ReadOnlySpan<T> y)
     {
         ArgumentNullException.ThrowIfNull(x);
 
@@ -137,9 +149,21 @@ public class NumericsException : Exception
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void ThrowIfNotEqualLength<T>(
+        in ReadOnlySpan<T> x,
+        in ReadOnlySpan<T> y,
+        in ReadOnlySpan<T> z)
+    {
+        if (x.Length != y.Length || x.Length != z.Length)
+        {
+            Throw("Spans must be the same length.");
+        }
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void ThrowIfNotEqualLength<T>(
         [NotNull] ICollection<T> x,
         [NotNull] ICollection<T> y,
-        ReadOnlySpan<T> z)
+        in ReadOnlySpan<T> z)
     {
         ArgumentNullException.ThrowIfNull(x);
         ArgumentNullException.ThrowIfNull(y);
@@ -154,7 +178,7 @@ public class NumericsException : Exception
     public static void ThrowIfNotEqualLength<T>(
         [NotNull] IReadOnlyCollection<T> x,
         [NotNull] IReadOnlyCollection<T> y,
-        ReadOnlySpan<T> z)
+        in ReadOnlySpan<T> z)
     {
         ArgumentNullException.ThrowIfNull(x);
         ArgumentNullException.ThrowIfNull(y);
@@ -162,15 +186,6 @@ public class NumericsException : Exception
         if (x.Count != y.Count || x.Count != z.Length)
         {
             Throw("Collections must be the same length.");
-        }
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void ThrowIfNotEqualLength<T>(ReadOnlySpan<T> x, ReadOnlySpan<T> y, ReadOnlySpan<T> z)
-    {
-        if (x.Length != y.Length || x.Length != z.Length)
-        {
-            Throw("Vectors must be the same length.");
         }
     }
 }
