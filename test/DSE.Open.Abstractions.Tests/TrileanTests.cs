@@ -55,8 +55,8 @@ public class TrileanTests
 
     [Theory]
     [InlineData(1, "True")]
-    [InlineData(2, "False")]
-    [InlineData(0, "Unknown")]
+    [InlineData(0, "False")]
+    [InlineData(2, "Unknown")]
     public void ToString_ReturnsExpected(byte value, string expected)
     {
         var t = Trilean.FromUnsignedNumber(value);
