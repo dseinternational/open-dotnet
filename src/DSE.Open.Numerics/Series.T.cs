@@ -20,7 +20,12 @@ namespace DSE.Open.Numerics;
 /// <typeparam name="T"></typeparam>
 [CollectionBuilder(typeof(Series), nameof(Create))]
 [JsonConverter(typeof(SeriesJsonConverter))]
-public class Series<T> : Series, ISeries<T>, IReadOnlySeries<T>, IEquatable<Series<T>>, IEquatable<ReadOnlySeries<T>>
+public class Series<T>
+    : Series,
+      ISeries<T>,
+      IReadOnlySeries<T>,
+      IEquatable<Series<T>>,
+      IEquatable<ReadOnlySeries<T>>
     where T : IEquatable<T>
 {
 #pragma warning disable IDE1006 // Naming Styles
