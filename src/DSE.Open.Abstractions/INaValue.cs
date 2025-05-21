@@ -23,7 +23,7 @@ public interface INaValue
     /// <summary>
     /// Indicates if <see cref="Value"/> is missing, not known or is 'not a value'.
     /// </summary>
-    virtual bool IsNa => !HasValue;
+    bool IsNa { get; }
 
     /// <summary>
     /// If the value is known (<see cref="HasValue"/>), then returns that value, otherwise throws
