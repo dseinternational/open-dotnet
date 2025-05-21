@@ -5,7 +5,7 @@ using System.Numerics;
 
 namespace DSE.Open.Numerics;
 
-public partial class Vector
+public static partial class VectorPrimitives
 {
     /// <summary>
     /// Gets the sample variance of a sequence of at least two numbers.

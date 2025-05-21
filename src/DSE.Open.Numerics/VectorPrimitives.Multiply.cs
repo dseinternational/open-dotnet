@@ -6,7 +6,7 @@ using System.Numerics.Tensors;
 
 namespace DSE.Open.Numerics;
 
-public partial class Vector
+public static partial class VectorPrimitives
 {
     public static void Multiply<T>(ReadOnlySpan<T> x, ReadOnlySpan<T> y, Span<T> destination)
         where T : struct, INumber<T>

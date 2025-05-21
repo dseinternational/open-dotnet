@@ -3,14 +3,14 @@
 
 namespace DSE.Open.Numerics;
 
-public partial class VectorTests
+public partial class VectorPrimitivesTests
 {
     [Fact]
     public void AddInPlace_Int32_Zeroes_Ones()
     {
         var v1 = Vector.CreateZeroes<int>(6);
         var v2 = Vector.CreateOnes<int>(6);
-        Vector.AddInPlace(v1, v2);
+        v1.AddInPlace(v2);
         Assert.Equal(6, v1.Length);
         Assert.Equal(6, v2.Length);
         Assert.Equal(v1, v2);
@@ -23,7 +23,7 @@ public partial class VectorTests
         var v2 = Vector.Create<NaInt<int>>([1, 2, 3, 4, 5, 6]);
         var v3 = Vector.Create<NaInt<int>>([2, 4, 6, 8, 10, 12]);
 
-        Vector.AddInPlace(v1, v2);
+        v1.AddInPlace(v2);
         Assert.Equal(6, v1.Length);
         Assert.Equal(6, v2.Length);
         Assert.Equal(v1, v3);
@@ -36,7 +36,7 @@ public partial class VectorTests
         var v2 = Vector.Create<NaInt<int>>([1, null, 3, 4, 5, 6]);
         var v3 = Vector.Create<NaInt<int>>([2, null, 6, 8, null, 12]);
 
-        Vector.AddInPlace(v1, v2);
+        v1.AddInPlace(v2);
 
         Assert.Equal(6, v1.Length);
         Assert.Equal(6, v2.Length);
@@ -53,7 +53,7 @@ public partial class VectorTests
         var v2 = Vector.Create([1, float.NaN, 3, 4, 5, 6]);
         var v3 = Vector.Create([2, float.NaN, 6, 8, float.NaN, 12]);
 
-        Vector.AddInPlace(v1, v2);
+        v1.AddInPlace(v2);
 
         Assert.Equal(6, v1.Length);
         Assert.Equal(6, v2.Length);
@@ -69,7 +69,7 @@ public partial class VectorTests
         var v1 = Vector.Create([.. Enumerable.Range(0, 100)]);
         var v2 = Vector.CreateOnes<int>(100);
 
-        Vector.AddInPlace(v1, v2);
+        v1.AddInPlace(v2);
 
         Assert.Equal(100, v1.Length);
         Assert.Equal(100, v2.Length);
@@ -87,7 +87,7 @@ public partial class VectorTests
         var v1 = Vector.Create<NaInt<int>>([.. Enumerable.Range(0, 100)]);
         var v2 = Vector.CreateOnes<NaInt<int>>(100);
 
-        Vector.AddInPlace(v1, v2);
+        v1.AddInPlace(v2);
 
         Assert.Equal(100, v1.Length);
         Assert.Equal(100, v2.Length);

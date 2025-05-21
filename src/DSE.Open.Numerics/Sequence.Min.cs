@@ -13,7 +13,7 @@ public static partial class Sequence
     {
         if (values.TryGetSpan(out var span))
         {
-            return Vector.Min(span);
+            return VectorPrimitives.Min<T>(span);
         }
 
         ArgumentNullException.ThrowIfNull(values);
@@ -48,7 +48,7 @@ public static partial class Sequence
     {
         if (values.TryGetSpan(out var span))
         {
-            return Vector.Min(span);
+            return VectorPrimitives.Min(span);
         }
 
         ArgumentNullException.ThrowIfNull(values);

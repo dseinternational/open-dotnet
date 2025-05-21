@@ -3,7 +3,7 @@
 
 namespace DSE.Open.Numerics;
 
-public partial class VectorTests
+public partial class VectorPrimitivesTests
 {
     [Fact]
     public void Variance_Span_Double()

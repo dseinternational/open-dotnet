@@ -7,9 +7,9 @@ using DSE.Open.Testing.Xunit;
 
 namespace DSE.Open.Numerics;
 
-public partial class VectorTests : LoggedTestsBase
+public partial class VectorPrimitivesTests : LoggedTestsBase
 {
-    public VectorTests(ITestOutputHelper output) : base(output)
+    public VectorPrimitivesTests(ITestOutputHelper output) : base(output)
     {
     }
 

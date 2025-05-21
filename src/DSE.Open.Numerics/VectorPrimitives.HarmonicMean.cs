@@ -5,18 +5,23 @@ using System.Numerics;
 
 namespace DSE.Open.Numerics;
 
-public partial class Vector
+public static partial class VectorPrimitives
 {
-    public static T PopulationStandardDeviation<T>(ReadOnlySpan<T> span)
+    public static T HarmonicMean<T>(ReadOnlySpan<T> sequence)
         where T : struct, INumberBase<T>
     {
-        return PopulationStandardDeviation<T, T>(span);
+        return Mean<T, T>(sequence);
     }
 
-    public static TResult PopulationStandardDeviation<T, TResult>(ReadOnlySpan<T> span)
+    public static TResult HarmonicMean<T, TResult>(ReadOnlySpan<T> sequence)
         where T : struct, INumberBase<T>
         where TResult : struct, INumberBase<TResult>
     {
+        EmptySequenceException.ThrowIfEmpty(sequence);
+
+        // https://en.wikipedia.org/wiki/Harmonic_mean
+        // https://github.com/python/cpython/blob/3.12/Lib/statistics.py#L545
+
         throw new NotImplementedException();
     }
 }

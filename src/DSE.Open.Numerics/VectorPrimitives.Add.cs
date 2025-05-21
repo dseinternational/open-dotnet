@@ -6,9 +6,9 @@ using System.Numerics.Tensors;
 
 namespace DSE.Open.Numerics;
 
-public partial class Vector
+public static partial class VectorPrimitives
 {
-    public static void Add<T>(IReadOnlyVector<T> x, ReadOnlySpan<T> y, Span<T> destination)
+    public static void Add<T>(this IReadOnlyVector<T> x, ReadOnlySpan<T> y, Span<T> destination)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(x);
@@ -16,7 +16,7 @@ public partial class Vector
         TensorPrimitives.Add(x.AsSpan(), y, destination);
     }
 
-    public static void Add<T>(IReadOnlyVector<T> x, IReadOnlyVector<T> y, Span<T> destination)
+    public static void Add<T>(this IReadOnlyVector<T> x, IReadOnlyVector<T> y, Span<T> destination)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(y);
@@ -24,14 +24,14 @@ public partial class Vector
         Add(x, y.AsSpan(), destination);
     }
 
-    public static void Add<T>(IReadOnlyVector<T> x, IReadOnlyVector<T> y, IVector<T> destination)
+    public static void Add<T>(this IReadOnlyVector<T> x, IReadOnlyVector<T> y, IVector<T> destination)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(destination);
         Add(x, y, destination.AsSpan());
     }
 
-    public static void Add<T>(IReadOnlyVector<T> x, T y, Span<T> destination)
+    public static void Add<T>(this IReadOnlyVector<T> x, T y, Span<T> destination)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(x);
@@ -39,28 +39,28 @@ public partial class Vector
         TensorPrimitives.Add(x.AsSpan(), y, destination);
     }
 
-    public static void Add<T>(IReadOnlyVector<T> x, T y, IVector<T> destination)
+    public static void Add<T>(this IReadOnlyVector<T> x, T y, IVector<T> destination)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(destination);
         Add(x, y, destination.AsSpan());
     }
 
-    public static void AddInPlace<T>(IVector<T> x, ReadOnlySpan<T> y)
+    public static void AddInPlace<T>(this IVector<T> x, ReadOnlySpan<T> y)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(x);
         Add(x, y, x.AsSpan());
     }
 
-    public static void AddInPlace<T>(IVector<T> x, IReadOnlyVector<T> y)
+    public static void AddInPlace<T>(this IVector<T> x, IReadOnlyVector<T> y)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(y);
         AddInPlace(x, y.AsSpan());
     }
 
-    public static void AddInPlace<T>(IVector<T> x, T y)
+    public static void AddInPlace<T>(this IVector<T> x, T y)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(x);

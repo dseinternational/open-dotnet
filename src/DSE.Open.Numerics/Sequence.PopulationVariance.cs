@@ -13,7 +13,7 @@ public static partial class Sequence
     {
         if (sequence.TryGetSpan(out var span))
         {
-            return Vector.PopulationVariance(span, mean);
+            return VectorPrimitives.PopulationVariance(span, mean);
         }
 
         throw new NotImplementedException();
