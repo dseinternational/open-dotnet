@@ -11,6 +11,11 @@ namespace DSE.Open.Numerics;
 #pragma warning disable CA1000 // Do not declare static members on generic types
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
+/// <summary>
+/// An integer value that may be 'not a value', missing, or not available, such as <see langword="null"/> or
+/// <see cref="Na"/>.
+/// </summary>
+/// <typeparam name="T"></typeparam>
 [StructLayout(LayoutKind.Sequential)]
 public readonly struct NaInt<T>
     : INaNumber<NaInt<T>, T>,
