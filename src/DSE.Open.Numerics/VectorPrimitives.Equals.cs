@@ -28,6 +28,11 @@ public static partial class VectorPrimitives
     /// <param name="x"></param>
     /// <param name="y"></param>
     /// <returns></returns>
+    /// <remarks>
+    /// For types that can represent <see langword="null"/>, <c>NA</c> or <see cref="IFloatingPointIeee754{TSelf}.NaN"/>,
+    /// the result of <see cref="IEqualityOperators{TSelf, TOther, Boolean}"/> may be different from the result
+    /// of <see cref="IEquatable{T}.Equals(T)"/> provided by the type.
+    /// </remarks>
     public static Span<bool> Equals<T>(scoped in ReadOnlySpan<T> x, scoped in ReadOnlySpan<T> y)
         where T : IEqualityOperators<T, T, bool>
     {
@@ -46,6 +51,11 @@ public static partial class VectorPrimitives
     /// <param name="y"></param>
     /// <param name="destination"></param>
     /// <returns></returns>
+    /// <remarks>
+    /// For types that can represent <see langword="null"/>, <c>NA</c> or <see cref="IFloatingPointIeee754{TSelf}.NaN"/>,
+    /// the result of <see cref="IEqualityOperators{TSelf, TOther, Boolean}"/> may be different from the result
+    /// of <see cref="IEquatable{T}.Equals(T)"/> provided by the type.
+    /// </remarks>
     public static ref readonly Span<bool> Equals<T>(
         scoped in ReadOnlySpan<T> x,
         scoped in ReadOnlySpan<T> y,
@@ -62,6 +72,18 @@ public static partial class VectorPrimitives
         return ref destination;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <returns></returns>
+    /// <remarks>
+    /// For types that can represent <see langword="null"/>, <c>NA</c> or <see cref="IFloatingPointIeee754{TSelf}.NaN"/>,
+    /// the result of <see cref="IEqualityOperators{TSelf, TOther, Boolean}"/> may be different from the result
+    /// of <see cref="IEquatable{T}.Equals(T)"/> provided by the type.
+    /// </remarks>
     public static Span<bool> Equals<T>(scoped in ReadOnlySpan<T> x, in T y)
         where T : IEqualityOperators<T, T, bool>
     {
@@ -70,6 +92,19 @@ public static partial class VectorPrimitives
         return dest;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="destination"></param>
+    /// <returns></returns>
+    /// <remarks>
+    /// For types that can represent <see langword="null"/>, <c>NA</c> or <see cref="IFloatingPointIeee754{TSelf}.NaN"/>,
+    /// the result of <see cref="IEqualityOperators{TSelf, TOther, Boolean}"/> may be different from the result
+    /// of <see cref="IEquatable{T}.Equals(T)"/> provided by the type.
+    /// </remarks>
     public static ref readonly Span<bool> Equals<T>(
         scoped in ReadOnlySpan<T> x,
         in T y,
@@ -86,6 +121,19 @@ public static partial class VectorPrimitives
         return ref destination;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <returns></returns>
+    /// <remarks>
+    /// For types that can represent <see langword="null"/>, <c>NA</c> or <see cref="IFloatingPointIeee754{TSelf}.NaN"/>,
+    /// the result of <see cref="IEqualityOperators{TSelf, TOther, Boolean}"/> may be different from the result
+    /// of <see cref="IEquatable{T}.Equals(T)"/> provided by the type. Therefore, the result of this method
+    /// may differ from the result of <see cref="SequenceEqual{T}(IReadOnlyVector{T}, in ReadOnlySpan{T})"/>.
+    /// </remarks>
     public static bool EqualsAll<T>(in ReadOnlySpan<T> x, in ReadOnlySpan<T> y)
         where T : IEqualityOperators<T, T, bool>
     {
@@ -96,6 +144,18 @@ public static partial class VectorPrimitives
             new ReadOnlyTensorSpan<T>(y));
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <returns></returns>
+    /// <remarks>
+    /// For types that can represent <see langword="null"/>, <c>NA</c> or <see cref="IFloatingPointIeee754{TSelf}.NaN"/>,
+    /// the result of <see cref="IEqualityOperators{TSelf, TOther, Boolean}"/> may be different from the result
+    /// of <see cref="IEquatable{T}.Equals(T)"/> provided by the type.
+    /// </remarks>
     public static bool EqualsAll<T>(scoped in ReadOnlySpan<T> x, in T y)
         where T : IEqualityOperators<T, T, bool>
     {
@@ -104,6 +164,18 @@ public static partial class VectorPrimitives
             y);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <returns></returns>
+    /// <remarks>
+    /// For types that can represent <see langword="null"/>, <c>NA</c> or <see cref="IFloatingPointIeee754{TSelf}.NaN"/>,
+    /// the result of <see cref="IEqualityOperators{TSelf, TOther, Boolean}"/> may be different from the result
+    /// of <see cref="IEquatable{T}.Equals(T)"/> provided by the type.
+    /// </remarks>
     public static bool EqualsAny<T>(in ReadOnlySpan<T> x, in ReadOnlySpan<T> y)
         where T : IEqualityOperators<T, T, bool>
     {
@@ -114,6 +186,18 @@ public static partial class VectorPrimitives
             new ReadOnlyTensorSpan<T>(y));
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <returns></returns>
+    /// <remarks>
+    /// For types that can represent <see langword="null"/>, <c>NA</c> or <see cref="IFloatingPointIeee754{TSelf}.NaN"/>,
+    /// the result of <see cref="IEqualityOperators{TSelf, TOther, Boolean}"/> may be different from the result
+    /// of <see cref="IEquatable{T}.Equals(T)"/> provided by the type.
+    /// </remarks>
     public static bool EqualsAny<T>(scoped in ReadOnlySpan<T> x, in T y)
         where T : IEqualityOperators<T, T, bool>
     {
