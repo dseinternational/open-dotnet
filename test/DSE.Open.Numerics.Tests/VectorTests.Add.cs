@@ -5,7 +5,6 @@ namespace DSE.Open.Numerics;
 
 public partial class VectorTests
 {
-
     [Fact]
     public void AddInPlace_Int32_Zeroes_Ones()
     {

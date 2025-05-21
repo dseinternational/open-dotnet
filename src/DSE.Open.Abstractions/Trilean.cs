@@ -146,7 +146,7 @@ public readonly struct Trilean
     }
 
     /// <summary>
-    /// Converts the current value to an usigned integer of the specified type.
+    /// Converts the current value to an unsigned integer of the specified type.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <returns>
@@ -160,14 +160,14 @@ public readonly struct Trilean
         return _value switch
         {
             TrueValue => T.One,
-            FalseValue => T.One + T.One,
-            _ => T.Zero,
+            FalseValue => T.Zero,
+            _ => T.One + T.One,
         };
     }
 
     public byte ToSignedInteger()
     {
-        return _value;
+        return (byte)ToSignedNumber<int>();
     }
 
     public bool ToBoolean()
@@ -273,9 +273,9 @@ public readonly struct Trilean
     {
         return value switch
         {
-            { } v when v == T.Zero => Na,
+            { } v when v == T.Zero => False,
             { } v when v == T.One => True,
-            { } v when v == T.One + T.One => false,
+            { } v when v == T.One + T.One => Na,
             _ => throw new InvalidOperationException("Cannot convert value to Trilean.")
         };
     }

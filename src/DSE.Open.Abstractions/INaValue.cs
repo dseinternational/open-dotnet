@@ -23,7 +23,7 @@ public interface INaValue
     /// <summary>
     /// Indicates if <see cref="Value"/> is missing, not known or is 'not a value'.
     /// </summary>
-    virtual bool IsNa => !HasValue;
+    bool IsNa { get; }
 
     /// <summary>
     /// If the value is known (<see cref="HasValue"/>), then returns that value, otherwise throws
@@ -45,6 +45,10 @@ public interface INaValue
 /// <see cref="INaValue{TSelf, T}"/> defines an interface that is similar to <see cref="Nullable{T}"/>
 /// in that it wraps an underlying value and provides a way to determine if that value is missing.
 /// However, it can be applied to both reference and value types.
+/// <para>We limit <see cref="INaValue{TSelf, T}"/> implementations to be value types as they are
+/// expected to be 'simple' wrappers over existing value types or (heap-allocated) object references.
+/// When wrapping value types, it is expected that casting to spans of the underlying value type
+/// will be a common requirement.</para>
 /// </remarks>
 public interface INaValue<TSelf, T>
     : INaValue,

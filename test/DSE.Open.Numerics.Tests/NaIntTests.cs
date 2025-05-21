@@ -2,7 +2,6 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Numerics;
-using System.Numerics.Tensors;
 using System.Runtime.InteropServices;
 
 namespace DSE.Open.Numerics;
@@ -45,5 +44,488 @@ public class NaIntTests
         NaInt<int>[] sequence = [1, 2, 3, NaInt<int>.Na, 4, 5, null, 6, 7, 8];
         var sum = NaNumberPrimitives.Sum(sequence);
         Assert.Equal("NA", sum.ToString());
+    }
+
+    [Fact]
+    public void Constructor_WithValidValue_SetsValue()
+    {
+        var naInt = new NaInt<int>(42);
+        Assert.False(naInt.IsNa);
+        Assert.Equal(42, (int)naInt);
+    }
+
+    [Fact]
+    public void Constructor_WithSentinelValue_ThrowsException()
+    {
+        _ = Assert.Throws<ArgumentOutOfRangeException>(() => new NaInt<int>(int.MaxValue));
+    }
+
+    [Fact]
+    public void ImplicitConversion_FromT_CreatesNaInt()
+    {
+        NaInt<int> naInt = 42;
+        Assert.False(naInt.IsNa);
+        Assert.Equal(42, (int)naInt);
+    }
+
+    [Fact]
+    public void ImplicitConversion_FromNullableT_WithValue_CreatesNaInt()
+    {
+        int? value = 42;
+        NaInt<int> naInt = value;
+        Assert.False(naInt.IsNa);
+        Assert.Equal(42, (int)naInt);
+    }
+
+    [Fact]
+    public void ImplicitConversion_FromNullableT_WithNull_CreatesNa()
+    {
+        int? value = null;
+        NaInt<int> naInt = value;
+        Assert.True(naInt.IsNa);
+    }
+
+    [Fact]
+    public void ExplicitConversion_ToT_WithValue_ReturnsValue()
+    {
+        NaInt<int> naInt = 42;
+        var value = (int)naInt;
+        Assert.Equal(42, value);
+    }
+
+    [Fact]
+    public void ExplicitConversion_ToT_WithNa_ThrowsException()
+    {
+        var naInt = NaInt<int>.Na;
+        _ = Assert.Throws<NaValueException>(() => (int)naInt);
+    }
+
+    [Fact]
+    public void Na_IsNa_ReturnsTrue()
+    {
+        var na = NaInt<int>.Na;
+        Assert.True(na.IsNa);
+    }
+
+    [Fact]
+    public void ToString_WithValue_ReturnsValueString()
+    {
+        NaInt<int> naInt = 42;
+        Assert.Equal("42", naInt.ToString());
+    }
+
+    [Fact]
+    public void ToString_WithNa_ReturnsNa()
+    {
+        var naInt = NaInt<int>.Na;
+        Assert.Equal("NA", naInt.ToString());
+    }
+
+    [Fact]
+    public void IsNaN_WithNa_ReturnsTrue()
+    {
+        var naInt = NaInt<int>.Na;
+        Assert.True(NaInt<int>.IsNaN(naInt));
+    }
+
+    [Fact]
+    public void IsNaN_WithValue_ReturnsFalse()
+    {
+        NaInt<int> naInt = 42;
+        Assert.False(NaInt<int>.IsNaN(naInt));
+    }
+}
+
+public class NaIntEqualityTests
+{
+    [Fact]
+    public void Equals_WithSameValues_ReturnsTrue()
+    {
+        NaInt<int> a = 42;
+        NaInt<int> b = 42;
+        Assert.True(a.Equals(b));
+    }
+
+    [Fact]
+    public void Equals_WithDifferentValues_ReturnsFalse()
+    {
+        NaInt<int> a = 42;
+        NaInt<int> b = 43;
+        Assert.False(a.Equals(b));
+    }
+
+    [Fact]
+    public void Equals_BothNa_ReturnsTrue()
+    {
+        var a = NaInt<int>.Na;
+        var b = NaInt<int>.Na;
+        Assert.True(a.Equals(b));
+    }
+
+    [Fact]
+    public void Equals_OneNa_ReturnsFalse()
+    {
+        NaInt<int> a = 42;
+        var b = NaInt<int>.Na;
+        Assert.False(a.Equals(b));
+        Assert.False(b.Equals(a));
+    }
+
+    [Fact]
+    public void EqualityOperator_WithSameValues_ReturnsFalse()
+    {
+        NaInt<int> a = 42;
+        NaInt<int> b = 42;
+        Assert.True(a == b);
+    }
+
+    [Fact]
+    public void EqualityOperator_WithDifferentValues_ReturnsFalse()
+    {
+        NaInt<int> a = 42;
+        NaInt<int> b = 43;
+        Assert.False(a == b);
+    }
+
+    [Fact]
+    public void EqualityOperator_BothNa_ReturnsFalse()
+    {
+        var a = NaInt<int>.Na;
+        var b = NaInt<int>.Na;
+        Assert.False(a == b);
+    }
+
+    [Fact]
+    public void InequalityOperator_WithSameValues_ReturnsFalse()
+    {
+        NaInt<int> a = 42;
+        NaInt<int> b = 42;
+        Assert.False(a != b);
+    }
+
+    [Fact]
+    public void InequalityOperator_WithDifferentValues_ReturnsTrue()
+    {
+        NaInt<int> a = 42;
+        NaInt<int> b = 43;
+        Assert.True(a != b);
+    }
+
+    [Fact]
+    public void InequalityOperator_BothNa_ReturnsTrue()
+    {
+        var a = NaInt<int>.Na;
+        var b = NaInt<int>.Na;
+        Assert.True(a != b);
+    }
+
+    [Fact]
+    public void TernaryEquals_WithSameValues_ReturnsTrue()
+    {
+        NaInt<int> a = 42;
+        NaInt<int> b = 42;
+        Assert.Equal(Trilean.True, a.TernaryEquals(b));
+    }
+
+    [Fact]
+    public void TernaryEquals_WithDifferentValues_ReturnsFalse()
+    {
+        NaInt<int> a = 42;
+        NaInt<int> b = 43;
+        Assert.Equal(Trilean.False, a.TernaryEquals(b));
+    }
+
+    [Fact]
+    public void TernaryEquals_WithOneNa_ReturnsNa()
+    {
+        NaInt<int> a = 42;
+        var b = NaInt<int>.Na;
+        Assert.Equal(Trilean.Na, a.TernaryEquals(b));
+        Assert.Equal(Trilean.Na, b.TernaryEquals(a));
+    }
+
+    [Fact]
+    public void TernaryEquals_BothNa_ReturnsNa()
+    {
+        var a = NaInt<int>.Na;
+        var b = NaInt<int>.Na;
+        Assert.Equal(Trilean.Na, a.TernaryEquals(b));
+    }
+
+    [Fact]
+    public void EqualAndNotNa_WithSameValuesAndNotNa_ReturnsTrue()
+    {
+        NaInt<int> a = 42;
+        NaInt<int> b = 42;
+        Assert.True(a.EqualAndNotNa(b));
+    }
+
+    [Fact]
+    public void EqualAndNotNa_WithDifferentValuesAndNotNa_ReturnsFalse()
+    {
+        NaInt<int> a = 42;
+        NaInt<int> b = 43;
+        Assert.False(a.EqualAndNotNa(b));
+    }
+
+    [Fact]
+    public void EqualAndNotNa_WithOneOrBothNa_ReturnsFalse()
+    {
+        NaInt<int> a = 42;
+        var na = NaInt<int>.Na;
+
+        Assert.False(a.EqualAndNotNa(na));
+        Assert.False(na.EqualAndNotNa(a));
+        Assert.False(na.EqualAndNotNa(na));
+    }
+
+    [Fact]
+    public void EqualOrBothNa_WithSameValues_ReturnsTrue()
+    {
+        NaInt<int> a = 42;
+        NaInt<int> b = 42;
+        Assert.True(a.EqualOrBothNa(b));
+    }
+
+    [Fact]
+    public void EqualOrBothNa_WithDifferentValues_ReturnsFalse()
+    {
+        NaInt<int> a = 42;
+        NaInt<int> b = 43;
+        Assert.False(a.EqualOrBothNa(b));
+    }
+
+    [Fact]
+    public void EqualOrBothNa_WithOneNa_ReturnsFalse()
+    {
+        NaInt<int> a = 42;
+        var na = NaInt<int>.Na;
+
+        Assert.False(a.EqualOrBothNa(na));
+        Assert.False(na.EqualOrBothNa(a));
+    }
+
+    [Fact]
+    public void EqualOrBothNa_BothNa_ReturnsTrue()
+    {
+        var a = NaInt<int>.Na;
+        var b = NaInt<int>.Na;
+        Assert.True(a.EqualOrBothNa(b));
+    }
+
+    [Fact]
+    public void EqualOrEitherNa_WithSameValues_ReturnsTrue()
+    {
+        NaInt<int> a = 42;
+        NaInt<int> b = 42;
+        Assert.True(a.EqualOrEitherNa(b));
+    }
+
+    [Fact]
+    public void EqualOrEitherNa_WithDifferentValues_ReturnsFalse()
+    {
+        NaInt<int> a = 42;
+        NaInt<int> b = 43;
+        Assert.False(a.EqualOrEitherNa(b));
+    }
+
+    [Fact]
+    public void EqualOrEitherNa_WithOneNa_ReturnsTrue()
+    {
+        NaInt<int> a = 42;
+        var na = NaInt<int>.Na;
+
+        Assert.True(a.EqualOrEitherNa(na));
+        Assert.True(na.EqualOrEitherNa(a));
+    }
+
+    [Fact]
+    public void EqualOrEitherNa_BothNa_ReturnsTrue()
+    {
+        var a = NaInt<int>.Na;
+        var b = NaInt<int>.Na;
+        Assert.True(a.EqualOrEitherNa(b));
+    }
+}
+
+public class NaIntArithmeticTests
+{
+    [Fact]
+    public void Add_WithValues_ReturnsSum()
+    {
+        NaInt<int> a = 40;
+        NaInt<int> b = 2;
+        var result = a + b;
+
+        Assert.False(result.IsNa);
+        Assert.Equal(42, (int)result);
+    }
+
+    [Fact]
+    public void Add_WithOneNa_ReturnsNa()
+    {
+        NaInt<int> a = 40;
+        var na = NaInt<int>.Na;
+
+        Assert.True((a + na).IsNa);
+        Assert.True((na + a).IsNa);
+    }
+
+    [Fact]
+    public void Add_BothNa_ReturnsNa()
+    {
+        var a = NaInt<int>.Na;
+        var b = NaInt<int>.Na;
+
+        Assert.True((a + b).IsNa);
+    }
+
+    [Fact]
+    public void Add_WithTValue_ReturnsSum()
+    {
+        NaInt<int> a = 40;
+        var result = a + 2;
+
+        Assert.False(result.IsNa);
+        Assert.Equal(42, (int)result);
+    }
+
+    [Fact]
+    public void Subtract_WithValues_ReturnsDifference()
+    {
+        NaInt<int> a = 44;
+        NaInt<int> b = 2;
+        var result = a - b;
+
+        Assert.False(result.IsNa);
+        Assert.Equal(42, (int)result);
+    }
+
+    [Fact]
+    public void Subtract_WithOneNa_ReturnsNa()
+    {
+        NaInt<int> a = 40;
+        var na = NaInt<int>.Na;
+
+        Assert.True((a - na).IsNa);
+        Assert.True((na - a).IsNa);
+    }
+
+    [Fact]
+    public void Multiply_WithValues_ReturnsProduct()
+    {
+        NaInt<int> a = 21;
+        NaInt<int> b = 2;
+        var result = a * b;
+
+        Assert.False(result.IsNa);
+        Assert.Equal(42, (int)result);
+    }
+
+    [Fact]
+    public void Multiply_WithOneNa_ReturnsNa()
+    {
+        NaInt<int> a = 40;
+        var na = NaInt<int>.Na;
+
+        Assert.True((a * na).IsNa);
+        Assert.True((na * a).IsNa);
+    }
+
+    [Fact]
+    public void Divide_WithValues_ReturnsQuotient()
+    {
+        NaInt<int> a = 84;
+        NaInt<int> b = 2;
+        var result = a / b;
+
+        Assert.False(result.IsNa);
+        Assert.Equal(42, (int)result);
+    }
+
+    [Fact]
+    public void Divide_WithOneNa_ReturnsNa()
+    {
+        NaInt<int> a = 40;
+        var na = NaInt<int>.Na;
+
+        Assert.True((a / na).IsNa);
+        Assert.True((na / a).IsNa);
+    }
+
+    [Fact]
+    public void Divide_ByZero_ReturnsNa()
+    {
+        NaInt<int> a = 40;
+        NaInt<int> zero = 0;
+
+        Assert.True((a / zero).IsNa);
+    }
+
+    [Fact]
+    public void UnaryMinus_WithValue_ReturnsNegated()
+    {
+        NaInt<int> a = 42;
+        var result = -a;
+
+        Assert.False(result.IsNa);
+        Assert.Equal(-42, (int)result);
+    }
+
+    [Fact]
+    public void UnaryMinus_WithNa_ReturnsNa()
+    {
+        var na = NaInt<int>.Na;
+        var result = -na;
+
+        Assert.True(result.IsNa);
+    }
+
+    [Fact]
+    public void Parse_ValidString_ReturnsValue()
+    {
+        var result = NaInt<int>.Parse("42", null);
+        Assert.False(result.IsNa);
+        Assert.Equal(42, (int)result);
+    }
+
+    [Fact]
+    public void TryParse_ValidString_ReturnsTrue()
+    {
+        var success = NaInt<int>.TryParse("42", null, out var result);
+        Assert.True(success);
+        Assert.False(result.IsNa);
+        Assert.Equal(42, (int)result);
+    }
+
+    [Fact]
+    public void TryParse_InvalidString_ReturnsFalse()
+    {
+        var success = NaInt<int>.TryParse("not a number", null, out _);
+        Assert.False(success);
+    }
+
+    [Fact]
+    public void GetByteCount_WithValue_ReturnsCount()
+    {
+        NaInt<int> value = 42;
+        var count = ((IBinaryInteger<NaInt<int>>)value).GetByteCount();
+        Assert.Equal(sizeof(int), count);
+    }
+
+    [Fact]
+    public void TryWriteBytes_WithValue_WritesBytes()
+    {
+        NaInt<int> value = 42;
+        Span<byte> buffer = new byte[sizeof(int)];
+
+        var success = ((IBinaryInteger<NaInt<int>>)value).TryWriteLittleEndian(buffer, out var bytesWritten);
+
+        Assert.True(success);
+        Assert.Equal(sizeof(int), bytesWritten);
+
+        // Verify the bytes represent 42
+        var result = BitConverter.ToInt32(buffer);
+        Assert.Equal(42, result);
     }
 }

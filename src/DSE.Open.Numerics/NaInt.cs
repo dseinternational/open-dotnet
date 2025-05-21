@@ -11,6 +11,11 @@ namespace DSE.Open.Numerics;
 #pragma warning disable CA1000 // Do not declare static members on generic types
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
+/// <summary>
+/// An integer value that may be 'not a value', missing, or not available, such as <see langword="null"/> or
+/// <see cref="Na"/>.
+/// </summary>
+/// <typeparam name="T"></typeparam>
 [StructLayout(LayoutKind.Sequential)]
 public readonly struct NaInt<T>
     : INaNumber<NaInt<T>, T>,
@@ -74,14 +79,17 @@ public readonly struct NaInt<T>
 
     bool INaValue.HasValue => !IsNa;
 
-    bool IEquatable<NaInt<T>>.Equals(NaInt<T> other)
+    public bool Equals(NaInt<T> other)
     {
+        // bool Equals(T) is true for NaInteger<T> Na == NaInteger<T> Na
+        // bool == operator is false for NaInteger<T> Na == NaInteger<T> Na
+        // as https://learn.microsoft.com/en-us/dotnet/api/system.single.nan?view=net-9.0#remarks
         return EqualOrBothNa(other);
     }
 
     public override bool Equals(object? obj)
     {
-        return obj is NaInt<T> n && EqualOrBothNa(n);
+        return obj is NaInt<T> n && Equals(n);
     }
 
     public Trilean TernaryEquals(NaInt<T> other)
@@ -145,13 +153,13 @@ public readonly struct NaInt<T>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static NaInt<T> ResultIfNotNa(NaInt<T> x, NaInt<T> y, Func<T, T, T> op)
     {
-        return x.IsNa | y.IsNa ? Na : new(op(x._value, y._value), true);
+        return x.IsNa | y.IsNa ? Na : new(op(x._value, y._value), false);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static NaInt<T> ResultIfNotNa(NaInt<T> x, T y, Func<T, T, T> op)
     {
-        return x.IsNa ? Na : new(op(x._value, y), true);
+        return x.IsNa ? Na : new(op(x._value, y), false);
     }
 
     public static NaInt<T> operator +(NaInt<T> x, NaInt<T> y)
@@ -198,62 +206,32 @@ public readonly struct NaInt<T>
             : new(x._value / y, true);
     }
 
-    public static Trilean operator ==(NaInt<T> x, NaInt<T> y)
-    {
-        return x.TernaryEquals(y);
-    }
-
-    public static Trilean operator !=(NaInt<T> x, NaInt<T> y)
-    {
-        return !(x == y);
-    }
-
-    static bool IEqualityOperators<NaInt<T>, NaInt<T>, bool>.operator ==(NaInt<T> left, NaInt<T> right)
+    public static bool operator ==(NaInt<T> left, NaInt<T> right)
     {
         // bool == operator is false for NaInteger<T> Na == NaInteger<T> Na
         // bool Equals(T) is true for NaInteger<T> Na == NaInteger<T> Na
-        // as https://learn.microsoft.com/en-us/dotnet/core/compatibility/core-libraries/7.0/equals-nan
+        // as https://learn.microsoft.com/en-us/dotnet/api/system.single.nan?view=net-9.0#remarks
         return left.EqualAndNotNa(right);
     }
 
-    static bool IEqualityOperators<NaInt<T>, NaInt<T>, bool>.operator !=(NaInt<T> left, NaInt<T> right)
+    public static bool operator !=(NaInt<T> left, NaInt<T> right)
     {
         return !left.EqualAndNotNa(right);
     }
 
-    public static Trilean operator <(NaInt<T> x, NaInt<T> y)
-    {
-        if (x.IsNa || y.IsNa)
-        {
-            return Trilean.Na;
-        }
-
-        return x._value < y._value;
-    }
-
-    public static Trilean operator >(NaInt<T> x, NaInt<T> y)
-    {
-        if (x.IsNa || y.IsNa)
-        {
-            return Trilean.Na;
-        }
-
-        return x._value > y._value;
-    }
-
-    static bool IComparisonOperators<NaInt<T>, NaInt<T>, bool>.operator <(NaInt<T> x, NaInt<T> y)
+    public static bool operator <(NaInt<T> x, NaInt<T> y)
     {
         return !x.IsNa & !y.IsNa && x._value < y._value;
     }
 
-    static bool IComparisonOperators<NaInt<T>, NaInt<T>, bool>.operator >(NaInt<T> x, NaInt<T> y)
+    public static bool operator >(NaInt<T> x, NaInt<T> y)
     {
         return !x.IsNa & !y.IsNa && x._value > y._value;
     }
 
     public override string? ToString()
     {
-        return IsNa ? "NA" : _value.ToString();
+        return IsNa ? NaValue.NaValueLabel : _value.ToString();
     }
 
     public static NaInt<T> Abs(NaInt<T> value)
@@ -625,52 +603,93 @@ public readonly struct NaInt<T>
 
     int IBinaryInteger<NaInt<T>>.GetByteCount()
     {
-        throw new NotImplementedException();
+        return ((IBinaryInteger<T>)_value).GetByteCount();
     }
 
     int IBinaryInteger<NaInt<T>>.GetShortestBitLength()
     {
-        throw new NotImplementedException();
+        return ((IBinaryInteger<T>)_value).GetShortestBitLength();
     }
 
     static NaInt<T> IBinaryInteger<NaInt<T>>.PopCount(NaInt<T> value)
     {
-        throw new NotImplementedException();
+        return new(T.PopCount(value._value), true);
     }
 
     static NaInt<T> IBinaryInteger<NaInt<T>>.TrailingZeroCount(NaInt<T> value)
     {
-        throw new NotImplementedException();
+        if (value.IsNa)
+        {
+            return Na;
+        }
+
+        return new(T.TrailingZeroCount(value._value), true);
     }
 
     static bool IBinaryInteger<NaInt<T>>.TryReadBigEndian(ReadOnlySpan<byte> source, bool isUnsigned, out NaInt<T> value)
     {
-        throw new NotImplementedException();
+        if (T.TryReadBigEndian(source, isUnsigned, out var result))
+        {
+            if (result == Sentinel)
+            {
+                value = Na;
+                return true;
+            }
+
+            value = new NaInt<T>(result, true);
+            return true;
+        }
+
+        value = default;
+        return false;
     }
 
     static bool IBinaryInteger<NaInt<T>>.TryReadLittleEndian(ReadOnlySpan<byte> source, bool isUnsigned, out NaInt<T> value)
     {
-        throw new NotImplementedException();
+        if (T.TryReadLittleEndian(source, isUnsigned, out var result))
+        {
+            if (result == Sentinel)
+            {
+                value = Na;
+                return true;
+            }
+
+            value = new NaInt<T>(result, true);
+            return true;
+        }
+
+        value = default;
+        return false;
     }
 
     bool IBinaryInteger<NaInt<T>>.TryWriteBigEndian(Span<byte> destination, out int bytesWritten)
     {
-        throw new NotImplementedException();
+        return _value.TryWriteBigEndian(destination, out bytesWritten);
     }
 
     bool IBinaryInteger<NaInt<T>>.TryWriteLittleEndian(Span<byte> destination, out int bytesWritten)
     {
-        throw new NotImplementedException();
+        return _value.TryWriteLittleEndian(destination, out bytesWritten);
     }
 
     static bool IBinaryNumber<NaInt<T>>.IsPow2(NaInt<T> value)
     {
-        throw new NotImplementedException();
+        if (value.IsNa)
+        {
+            return false;
+        }
+
+        return T.IsPow2(value._value);
     }
 
     static NaInt<T> IBinaryNumber<NaInt<T>>.Log2(NaInt<T> value)
     {
-        throw new NotImplementedException();
+        if (value.IsNa)
+        {
+            return Na;
+        }
+
+        return new(T.Log2(value._value), true);
     }
 
     public static bool operator <=(NaInt<T> left, NaInt<T> right)
@@ -690,56 +709,98 @@ public readonly struct NaInt<T>
 
     public static NaInt<T> operator --(NaInt<T> value)
     {
-        return --value;
+        if (value.IsNa)
+        {
+            return Na;
+        }
+
+        var v = value._value;
+        return --v;
     }
 
     public static NaInt<T> operator ++(NaInt<T> value)
     {
-        return ++value;
+        if (value.IsNa)
+        {
+            return Na;
+        }
+
+        var v = value._value;
+        return ++v;
     }
 
     public static NaInt<T> operator -(NaInt<T> value)
     {
-        return -value;
+        if (value.IsNa)
+        {
+            return Na;
+        }
+
+        return -value._value;
     }
 
     public static NaInt<T> operator +(NaInt<T> value)
     {
-        return +value;
+        if (value.IsNa)
+        {
+            return Na;
+        }
+
+        return +value._value;
     }
 
     static NaInt<T> IBitwiseOperators<NaInt<T>, NaInt<T>, NaInt<T>>.operator &(NaInt<T> left, NaInt<T> right)
     {
-        throw new NotImplementedException();
+        return ResultIfNotNa(left, right, static (a, b) => a & b);
     }
 
     static NaInt<T> IBitwiseOperators<NaInt<T>, NaInt<T>, NaInt<T>>.operator |(NaInt<T> left, NaInt<T> right)
     {
-        throw new NotImplementedException();
+        return ResultIfNotNa(left, right, static (a, b) => a | b);
     }
 
     static NaInt<T> IBitwiseOperators<NaInt<T>, NaInt<T>, NaInt<T>>.operator ^(NaInt<T> left, NaInt<T> right)
     {
-        throw new NotImplementedException();
+        return ResultIfNotNa(left, right, static (a, b) => a ^ b);
     }
 
     static NaInt<T> IBitwiseOperators<NaInt<T>, NaInt<T>, NaInt<T>>.operator ~(NaInt<T> value)
     {
-        throw new NotImplementedException();
+        if (value.IsNa)
+        {
+            return Na;
+        }
+
+        return new(~value._value, false);
     }
 
     static NaInt<T> IShiftOperators<NaInt<T>, int, NaInt<T>>.operator <<(NaInt<T> value, int shiftAmount)
     {
-        throw new NotImplementedException();
+        if (value.IsNa)
+        {
+            return Na;
+        }
+
+        return new(value._value << shiftAmount, false);
     }
 
     static NaInt<T> IShiftOperators<NaInt<T>, int, NaInt<T>>.operator >>(NaInt<T> value, int shiftAmount)
     {
-        throw new NotImplementedException();
+        if (value.IsNa)
+        {
+            return Na;
+        }
+
+        return new(value._value >> shiftAmount, false);
     }
 
     static NaInt<T> IShiftOperators<NaInt<T>, int, NaInt<T>>.operator >>>(NaInt<T> value, int shiftAmount)
     {
-        throw new NotImplementedException();
+        if (value.IsNa)
+        {
+            return Na;
+        }
+
+        return new(value._value >>> shiftAmount, false);
     }
 }

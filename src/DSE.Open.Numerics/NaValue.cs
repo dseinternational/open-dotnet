@@ -59,6 +59,8 @@ public readonly struct NaValue<T> :
 
     public T Value => HasValue ? _value : throw new NaValueException();
 
+    public bool IsNa => !_hasValue;
+
     private NaValue(T value)
     {
         _value = value;

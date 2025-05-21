@@ -4,6 +4,7 @@
 using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
@@ -93,19 +94,40 @@ public sealed class Vector<T> : Vector, IVector<T>, IReadOnlyVector<T>, IEquatab
         return AsReadOnly();
     }
 
+    /// <summary>
+    /// Compares the elements of this vector with the elements of another using the equality operator
+    /// provided by the implementation of <see cref="IEqualityOperators{TSelf,TOther,Boolean}"/>
+    /// offered by <typeparamref name="T"/>.
+    /// </summary>
+    /// <param name="other"></param>
+    /// <returns></returns>
     public bool Equals(Vector<T>? other)
     {
-        return other is not null && SequenceEqual(this, other);
+        return other is not null && VectorPrimitives.SequenceEqual(this, other);
     }
 
+    /// <summary>
+    /// Compares the elements of this vector with the elements of another using the equality operator
+    /// provided by the implementation of <see cref="IEqualityOperators{TSelf,TOther,Boolean}"/>
+    /// offered by <typeparamref name="T"/>.
+    /// </summary>
+    /// <param name="other"></param>
+    /// <returns></returns>
     public bool Equals(IReadOnlyVector<T>? other)
     {
-        return other is not null && SequenceEqual(this, other);
+        return other is not null && VectorPrimitives.SequenceEqual(this, other);
     }
 
+    /// <summary>
+    /// Compares the elements of this vector with the elements of another using the equality operator
+    /// provided by the implementation of <see cref="IEqualityOperators{TSelf,TOther,Boolean}"/>
+    /// offered by <typeparamref name="T"/>.
+    /// </summary>
+    /// <param name="other"></param>
+    /// <returns></returns>
     public bool Equals(ReadOnlySpan<T> other)
     {
-        return SequenceEqual(this, other);
+        return VectorPrimitives.SequenceEqual(this, other);
     }
 
     public MemoryEnumerator<T> GetEnumerator()

@@ -19,7 +19,7 @@ public readonly struct NaFloat<T>
 {
     public static T Sentinel => T.NaN;
 
-    internal static NaFloat<T> Na => new(T.NaN);
+    public static NaFloat<T> Na { get; } = new(T.NaN);
 
     public static NaFloat<T> MaxValue { get; } = T.MaxValue;
 
@@ -44,29 +44,14 @@ public readonly struct NaFloat<T>
 
     T INaValue<NaFloat<T>, T>.Value => _value;
 
+    public bool IsNa => T.IsNaN(_value);
+
     public bool Equals(NaFloat<T> other)
     {
-        return _value.Equals(other._value);
-    }
-
-    Trilean ITernaryEquatable<NaFloat<T>>.TernaryEquals(NaFloat<T> other)
-    {
-        throw new NotImplementedException();
-    }
-
-    bool ITernaryEquatable<NaFloat<T>>.EqualAndNotNa(NaFloat<T> other)
-    {
-        throw new NotImplementedException();
-    }
-
-    bool ITernaryEquatable<NaFloat<T>>.EqualOrBothNa(NaFloat<T> other)
-    {
-        throw new NotImplementedException();
-    }
-
-    bool ITernaryEquatable<NaFloat<T>>.EqualOrEitherNa(NaFloat<T> other)
-    {
-        throw new NotImplementedException();
+        // bool Equals(T) is true for NaFloat<T> Na == NaFloat<T> Na
+        // bool == operator is false for NaFloat<T> Na == NaFloat<T> Na
+        // as https://learn.microsoft.com/en-us/dotnet/api/system.single.nan?view=net-9.0#remarks
+        return EqualOrBothNa(other);
     }
 
     public override bool Equals(object? obj)
@@ -82,6 +67,31 @@ public readonly struct NaFloat<T>
         }
 
         return false;
+    }
+
+    public Trilean TernaryEquals(NaFloat<T> other)
+    {
+        if (IsNa || other.IsNa)
+        {
+            return Trilean.Na;
+        }
+
+        return _value == other._value ? Trilean.True : Trilean.False;
+    }
+
+    public bool EqualAndNotNa(NaFloat<T> other)
+    {
+        return !IsNa && !other.IsNa && _value == other._value;
+    }
+
+    public bool EqualOrBothNa(NaFloat<T> other)
+    {
+        return !IsNa && !other.IsNa && _value == other._value;
+    }
+
+    public bool EqualOrEitherNa(NaFloat<T> other)
+    {
+        return (IsNa && other.IsNa) || _value == other._value;
     }
 
     public override int GetHashCode()

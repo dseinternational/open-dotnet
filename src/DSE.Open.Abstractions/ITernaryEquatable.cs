@@ -14,6 +14,11 @@ namespace DSE.Open;
 /// <remarks>
 /// <see cref="ITernaryEquatable{T}"/> does not extend <see cref="IEquatable{T}"/>. However, implementors
 /// should consider implementing <see cref="IEquatable{T}"/> to disambiguate equality comparisons.
+/// <para>Implementors should avoid implementing default equality operators returning <see cref="Trilean"/>
+/// in preference to <see langword="bool"/> (<see cref="IEqualityOperators{TSelf, TOther, Trilean}"/>)
+/// as this may be unexpected for many .NET users. If essential, implement
+/// <see cref="IEqualityOperators{TSelf, TOther, Trilean}"/> explcitly and rely on users wanting that
+/// behaviour from operators to cast appropriately.</para>
 /// </remarks>
 public interface ITernaryEquatable<T>
 {
