@@ -87,35 +87,6 @@ public static class Ternary
         return left.Equals(right);
     }
 
-    /*
-     * TODO: Not sure about this
-     * 
-    /// <summary>
-    /// Determines whether two objects are equal and returns a <see cref="Trilean"/>
-    /// value indicating the result.
-    /// </summary>
-    /// <param name="left">The first object to compare. Can be <see langword="null"/>.</param>
-    /// <param name="right">The second object to compare. Can be <see langword="null"/>.</param>
-    /// <returns>A <see cref="Trilean"/> value indicating the equality of the two objects:
-    /// <see cref="Trilean.True"/> if the objects are not null and equal, <see cref="Trilean.False"/>
-    /// if they are not null and not equal, or <see langword="null"/> if either object
-    /// is <see langword="null"/>.</returns>
-    public static new Trilean Equals(object? left, object? right)
-    {
-        if (left is null || right is null)
-        {
-            return null;
-        }
-
-        if (left == right)
-        {
-            return Trilean.True;
-        }
-
-        return Trilean.False;
-    }
-    */
-
     public static bool EqualAndNeitherNa<T>(T left, T right)
         where T : struct, INaValue, IEquatable<T>
     {
@@ -127,13 +98,6 @@ public static class Ternary
     {
         return Equals(left, right).IsTrue;
     }
-
-    /*
-    public static bool EqualAndNeitherNa(object? left, object? right)
-    {
-        return Equals(left, right).IsTrue;
-    }
-    */
 
     /// <summary>
     /// Compares two nullable value types for equality.
@@ -191,21 +155,6 @@ public static class Ternary
         // if both values are known, return true if equal or false if not equal.
         return left.Equals(right);
     }
-
-    /*
-    public static bool EqualOrBothNa(object? left, object? right)
-    {
-        // if both values are unknown, return true.
-
-        if (left is null || (left is INaValue ln && ln.IsNa))
-        {
-            return right is null || (right is INaValue rn && rn.IsNa);
-        }
-
-        // if both values are known, return true if equal or false if not equal.
-        return left.Equals(right);
-    }
-    */
 
     /// <summary>
     /// Compares two nullable value types for equality.
