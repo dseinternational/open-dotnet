@@ -3,37 +3,56 @@
 
 using System.Numerics;
 using System.Numerics.Tensors;
-using System.Runtime.CompilerServices;
 
 namespace DSE.Open.Numerics;
 
 public partial class Vector
 {
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void Add<T>(IReadOnlyVector<T> x, ReadOnlySpan<T> y, Span<T> destination)
+        where T : struct, INumber<T>
+    {
+        ArgumentNullException.ThrowIfNull(x);
+        NumericsException.ThrowIfNot(x.Length == y.Length && y.Length == destination.Length);
+        TensorPrimitives.Add(x.AsSpan(), y, destination);
+    }
+
     public static void Add<T>(IReadOnlyVector<T> x, IReadOnlyVector<T> y, Span<T> destination)
         where T : struct, INumber<T>
     {
-        NumericsException.ThrowIfNotEqualLength(x, y, destination);
-        TensorPrimitives.Add(x.AsSpan(), y.AsSpan(), destination);
+        ArgumentNullException.ThrowIfNull(y);
+        Add(x, y.AsSpan(), destination);
+        Add(x, y.AsSpan(), destination);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void Add<T>(IReadOnlyVector<T> x, IReadOnlyVector<T> y, IVector<T> destination)
         where T : struct, INumber<T>
     {
-        NumericsException.ThrowIfNotEqualLength(x, y, destination);
+        ArgumentNullException.ThrowIfNull(destination);
         Add(x, y, destination.AsSpan());
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void Add<T>(IReadOnlyVector<T> x, T y, Span<T> destination)
+        where T : struct, INumber<T>
+    {
+        ArgumentNullException.ThrowIfNull(x);
+        NumericsException.ThrowIfNot(x.Length == destination.Length);
+        TensorPrimitives.Add(x.AsSpan(), y, destination);
+    }
+
+    public static void Add<T>(IReadOnlyVector<T> x, T y, IVector<T> destination)
+        where T : struct, INumber<T>
+    {
+        ArgumentNullException.ThrowIfNull(destination);
+        Add(x, y, destination.AsSpan());
+    }
+
     public static void AddInPlace<T>(IVector<T> x, ReadOnlySpan<T> y)
         where T : struct, INumber<T>
     {
-        NumericsException.ThrowIfNotEqualLength(x, y);
-        TensorPrimitives.Add(x.AsSpan(), y, x.AsSpan());
+        ArgumentNullException.ThrowIfNull(x);
+        Add(x, y, x.AsSpan());
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void AddInPlace<T>(IVector<T> x, IReadOnlyVector<T> y)
         where T : struct, INumber<T>
     {
@@ -41,27 +60,10 @@ public partial class Vector
         AddInPlace(x, y.AsSpan());
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void Add<T>(IReadOnlyVector<T> x, T y, IVector<T> destination)
-        where T : struct, INumber<T>
-    {
-        NumericsException.ThrowIfNotEqualLength(x, destination);
-        Add(x, y, destination.AsSpan());
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void Add<T>(IReadOnlyVector<T> x, T y, Span<T> destination)
-        where T : struct, INumber<T>
-    {
-        NumericsException.ThrowIfNotEqualLength(x, destination);
-        TensorPrimitives.Add(x.AsSpan(), y, destination);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void AddInPlace<T>(IVector<T> x, T y)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        TensorPrimitives.Add(x.AsSpan(), y, x.AsSpan());
+        Add(x, y, x.AsSpan());
     }
 }
