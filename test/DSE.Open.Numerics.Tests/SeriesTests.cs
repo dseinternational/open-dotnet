@@ -16,7 +16,7 @@ public partial class SeriesTests : LoggedTestsBase
     private void TestSerializeDeserialize<T>(T[] elements, JsonSerializerOptions serializerOptions)
         where T : notnull, IEquatable<T>
     {
-        var vector = Series.Create("test", [.. elements]);
+        var vector = Series.Create([.. elements], "test");
         var json = JsonSerializer.Serialize(vector, serializerOptions);
         Assert.NotNull(json);
 
