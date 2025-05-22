@@ -2,7 +2,9 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices.Marshalling;
 using System.Text.Json.Serialization;
 using DSE.Open.Collections.Generic;
 using DSE.Open.Numerics.Serialization;
@@ -19,15 +21,24 @@ public class DataFrame : IDataFrame
 {
     private readonly Collection<Series> _columns;
 
-    public DataFrame(string? name = null) : this([], null)
+    public DataFrame() : this([], null)
     {
     }
 
-    public DataFrame(Collection<Series> columns, string? name = null)
+    public DataFrame(string name) : this([], name)
+    {
+    }
+
+    public DataFrame(Collection<Series> columns) : this(columns, null)
+    {
+    }
+
+    public DataFrame(Collection<Series> columns, string? name)
     {
         ArgumentNullException.ThrowIfNull(columns);
 
         Name = name;
+
         _columns = columns;
 
         for (var i = 0; i < _columns.Count; i++)
