@@ -8,88 +8,88 @@ namespace DSE.Open.Numerics;
 
 public static partial class VectorPrimitives
 {
-    public static void Subtract<T>(this IReadOnlyVector<T> x, ReadOnlySpan<T> y, in Span<T> destination)
+    public static void Divide<T>(this IReadOnlyVector<T> x, ReadOnlySpan<T> y, in Span<T> destination)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(x);
         NumericsException.ThrowIfNot(x.Length == y.Length && y.Length == destination.Length);
-        TensorPrimitives.Subtract(x.AsSpan(), y, destination);
+        TensorPrimitives.Divide(x.AsSpan(), y, destination);
     }
 
-    public static void Subtract<T>(this IReadOnlyVector<T> x, IReadOnlyVector<T> y, in Span<T> destination)
+    public static void Divide<T>(this IReadOnlyVector<T> x, IReadOnlyVector<T> y, in Span<T> destination)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(y);
-        Subtract(x, y.AsSpan(), destination);
-        Subtract(x, y.AsSpan(), destination);
+        Divide(x, y.AsSpan(), destination);
+        Divide(x, y.AsSpan(), destination);
     }
 
-    public static void Subtract<T>(this IReadOnlyVector<T> x, IReadOnlyVector<T> y, IVector<T> destination)
+    public static void Divide<T>(this IReadOnlyVector<T> x, IReadOnlyVector<T> y, IVector<T> destination)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(destination);
-        Subtract(x, y, destination.AsSpan());
+        Divide(x, y, destination.AsSpan());
     }
 
-    public static Vector<T> Subtract<T>(this IReadOnlyVector<T> x, ReadOnlySpan<T> y)
+    public static Vector<T> Divide<T>(this IReadOnlyVector<T> x, ReadOnlySpan<T> y)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(x);
         NumericsException.ThrowIfNot(x.Length == y.Length);
         var destination = Vector.Create<T>(x.Length);
-        Subtract(x, y, destination.AsSpan());
+        Divide(x, y, destination.AsSpan());
         return destination;
     }
 
-    public static Vector<T> Subtract<T>(this IReadOnlyVector<T> x, IReadOnlyVector<T> y)
+    public static Vector<T> Divide<T>(this IReadOnlyVector<T> x, IReadOnlyVector<T> y)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(y);
-        return Subtract(x, y.AsSpan());
+        return Divide(x, y.AsSpan());
     }
 
-    public static void Subtract<T>(this IReadOnlyVector<T> x, T y, in Span<T> destination)
+    public static void Divide<T>(this IReadOnlyVector<T> x, T y, in Span<T> destination)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(x);
         NumericsException.ThrowIfNot(x.Length == destination.Length);
-        TensorPrimitives.Subtract(x.AsSpan(), y, destination);
+        TensorPrimitives.Divide(x.AsSpan(), y, destination);
     }
 
-    public static void Subtract<T>(this IReadOnlyVector<T> x, T y, IVector<T> destination)
+    public static void Divide<T>(this IReadOnlyVector<T> x, T y, IVector<T> destination)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(destination);
-        Subtract(x, y, destination.AsSpan());
+        Divide(x, y, destination.AsSpan());
     }
 
-    public static Vector<T> Subtract<T>(this IReadOnlyVector<T> x, T y)
+    public static Vector<T> Divide<T>(this IReadOnlyVector<T> x, T y)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(x);
         var destination = Vector.Create<T>(x.Length);
-        Subtract(x, y, destination.AsSpan());
+        Divide(x, y, destination.AsSpan());
         return destination;
     }
 
-    public static void SubtractInPlace<T>(this IVector<T> x, ReadOnlySpan<T> y)
+    public static void DivideInPlace<T>(this IVector<T> x, ReadOnlySpan<T> y)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        Subtract(x, y, x.AsSpan());
+        Divide(x, y, x.AsSpan());
     }
 
-    public static void SubtractInPlace<T>(this IVector<T> x, IReadOnlyVector<T> y)
+    public static void DivideInPlace<T>(this IVector<T> x, IReadOnlyVector<T> y)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(y);
-        SubtractInPlace(x, y.AsSpan());
+        DivideInPlace(x, y.AsSpan());
     }
 
-    public static void SubtractInPlace<T>(this IVector<T> x, T y)
+    public static void DivideInPlace<T>(this IVector<T> x, T y)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        Subtract(x, y, x.AsSpan());
+        Divide(x, y, x.AsSpan());
     }
 }

@@ -8,7 +8,7 @@ namespace DSE.Open.Numerics;
 
 public static partial class VectorPrimitives
 {
-    public static void Add<T>(this IReadOnlyVector<T> x, ReadOnlySpan<T> y, Span<T> destination)
+    public static void Add<T>(this IReadOnlyVector<T> x, ReadOnlySpan<T> y, in Span<T> destination)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(x);
@@ -16,7 +16,7 @@ public static partial class VectorPrimitives
         TensorPrimitives.Add(x.AsSpan(), y, destination);
     }
 
-    public static void Add<T>(this IReadOnlyVector<T> x, IReadOnlyVector<T> y, Span<T> destination)
+    public static void Add<T>(this IReadOnlyVector<T> x, IReadOnlyVector<T> y, in Span<T> destination)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(y);
@@ -48,7 +48,7 @@ public static partial class VectorPrimitives
         return Add(x, y.AsSpan());
     }
 
-    public static void Add<T>(this IReadOnlyVector<T> x, T y, Span<T> destination)
+    public static void Add<T>(this IReadOnlyVector<T> x, T y, in Span<T> destination)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(x);
