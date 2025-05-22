@@ -21,18 +21,18 @@ public abstract class SequenceSumFloatingPointBenchmarksBase<T> : SequenceSumBen
     [Benchmark]
     public T Sequence_Sum_Array()
     {
-        return Sequence.SumFloatingPoint(ValuesArray);
+        return Sequence.SumChecked(ValuesArray);
     }
 
     [Benchmark]
     public T Sequence_Sum_Collection()
     {
-        return Sequence.SumFloatingPoint(ValuesCollection);
+        return Sequence.SumChecked(ValuesCollection);
     }
 
     [Benchmark]
     public T Sequence_Sum_Enumerable()
     {
-        return Sequence.SumFloatingPoint(ValuesEnumerable);
+        return Sequence.SumChecked(ValuesEnumerable);
     }
 }

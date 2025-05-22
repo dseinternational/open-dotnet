@@ -8,12 +8,48 @@ namespace DSE.Open.Numerics;
 
 public static partial class VectorPrimitives
 {
+    /// <summary>
+    /// Computes the sum of the elements in the vector of numbers using the
+    /// <see cref="IAdditionOperators{TSelf, TOther, TResult}"/> implementation provided
+    /// by the type <typeparamref name="T"/>.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="vector">The vector to sum.</param>
+    /// <returns>The result of adding all elements in <paramref name="vector"/>, zero if
+    /// <paramref name="vector"/> is empty, or NaN if any element is equal to
+    /// <see cref="IFloatingPointIeee754{TSelf}.NaN"/>.</returns>
+    /// <remarks>
+    /// ⚠️ If any of the elements in the vector is equal to <see cref="IFloatingPointIeee754{TSelf}.NaN"/>,
+    /// the result is also NaN.
+    /// <para>⚠️ Addition operations are unchecked and may overflow.</para>
+    /// <para>⚠️ This method may call into the underlying C runtime or employ instructions specific
+    /// to the current architecture. Exact results may differ between different operating systems
+    /// or architectures.</para>
+    /// </remarks>
     public static T Sum<T>(ReadOnlySpan<T> vector)
         where T : IEquatable<T>, IAdditionOperators<T, T, T>, IAdditiveIdentity<T, T>
     {
         return TensorPrimitives.Sum(vector);
     }
 
+    /// <summary>
+    /// Computes the sum of the elements in the vector of numbers using the
+    /// <see cref="IAdditionOperators{TSelf, TOther, TResult}"/> implementation provided
+    /// by the type <typeparamref name="T"/>.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="vector">The vector to sum.</param>
+    /// <returns>The result of adding all elements in <paramref name="vector"/>, zero if
+    /// <paramref name="vector"/> is empty, or NaN if any element is equal to
+    /// <see cref="IFloatingPointIeee754{TSelf}.NaN"/>.</returns>
+    /// <remarks>
+    /// ⚠️ If any of the elements in the vector is equal to <see cref="IFloatingPointIeee754{TSelf}.NaN"/>,
+    /// the result is also NaN.
+    /// <para>⚠️ Addition operations are unchecked and may overflow.</para>
+    /// <para>⚠️ This method may call into the underlying C runtime or employ instructions specific
+    /// to the current architecture. Exact results may differ between different operating systems
+    /// or architectures.</para>
+    /// </remarks>
     public static T Sum<T>(this IReadOnlyVector<T> vector)
         where T : IEquatable<T>, IAdditionOperators<T, T, T>, IAdditiveIdentity<T, T>
     {
@@ -21,34 +57,71 @@ public static partial class VectorPrimitives
         return Sum(vector.AsSpan());
     }
 
-    public static TResult Sum<T, TResult>(ReadOnlySpan<T> span)
+    /// <summary>
+    /// Computes the sum of the elements in the vector of numbers, accumulating the sum
+    /// in a value of type <typeparamref name="TResult"/> using the <c>+=</c> operator
+    /// provided by the type <typeparamref name="TResult"/> and checking for overflow.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="TResult"></typeparam>
+    /// <param name="span"></param>
+    /// <returns></returns>
+    /// <remarks>
+    /// ⚠️ If any of the elements in the vector is equal to <see cref="IFloatingPointIeee754{TSelf}.NaN"/>,
+    /// the result is also NaN.
+    /// </remarks>
+    public static TResult SumChecked<T, TResult>(ReadOnlySpan<T> span)
         where T : struct, INumberBase<T>
         where TResult : struct, INumberBase<TResult>
     {
-        if (typeof(T) == typeof(TResult))
-        {
-            return TResult.CreateChecked(TensorPrimitives.Sum(span));
-        }
-
         var result = TResult.AdditiveIdentity;
 
-        foreach (var value in span)
+        checked
         {
-            result += TResult.CreateChecked(value);
+            foreach (var value in span)
+            {
+                if (T.IsNaN(value))
+                {
+                    return TResult.CreateChecked(value);
+                }
+
+                result += TResult.CreateChecked(value);
+            }
         }
 
         return result;
     }
 
-    public static T SumFloatingPoint<T>(
+    public static T SumChecked<T>(ReadOnlySpan<T> span)
+        where T : struct, INumberBase<T>
+    {
+        return SumChecked<T, T>(span);
+    }
+
+    public static TResult SumChecked<T, TResult>(this IReadOnlyVector<T> vector)
+        where T : struct, INumberBase<T>
+        where TResult : struct, INumberBase<TResult>
+    {
+        ArgumentNullException.ThrowIfNull(vector);
+        return SumChecked<T, TResult>(vector.AsSpan());
+    }
+
+    public static T SumChecked<T>(this IReadOnlyVector<T> vector)
+        where T : struct, INumberBase<T>
+    {
+        ArgumentNullException.ThrowIfNull(vector);
+        return SumChecked<T, T>(vector.AsSpan());
+    }
+
+    public static T SumChecked<T>(
         ReadOnlySpan<T> span,
         SummationCompensation summation = SummationCompensation.None)
         where T : struct, IFloatingPointIeee754<T>
     {
-        return SumFloatingPoint<T, T>(span, summation);
+        return SumChecked<T, T>(span, summation);
     }
 
-    public static TResult SumFloatingPoint<T, TResult>(
+    public static TResult SumChecked<T, TResult>(
         ReadOnlySpan<T> span,
         SummationCompensation summation = SummationCompensation.None)
         where T : struct, IFloatingPointIeee754<T>
@@ -90,13 +163,16 @@ public static partial class VectorPrimitives
         return result;
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <typeparam name="T">The type of the elements in the sequence.</typeparam>
-    /// <typeparam name="TResult">The type to use for the calculation and the result.</typeparam>
-    /// <param name="span">The sequence of elements to use for the calculation.</param>
-    /// <returns></returns>
+    public static TResult SumChecked<T, TResult>(
+        this IReadOnlyVector<T> vector,
+        SummationCompensation summation = SummationCompensation.None)
+        where T : struct, IFloatingPointIeee754<T>
+        where TResult : struct, IFloatingPointIeee754<TResult>
+    {
+        ArgumentNullException.ThrowIfNull(vector);
+        return SumChecked<T, TResult>(vector.AsSpan(), summation);
+    }
+
     private static TResult SumFloatingPointKahanBabushkaNeumaier<T, TResult>(ReadOnlySpan<T> span)
         where T : struct, IFloatingPointIeee754<T>
         where TResult : struct, IFloatingPointIeee754<TResult>

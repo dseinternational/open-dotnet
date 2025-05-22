@@ -25,7 +25,7 @@ public static partial class Sequence
         where TResult : struct, INumberBase<TResult>
     {
         // TODO: consider accumulating method to avoid TResult overflow
-        var sum = Sum<T, TResult>(sequence, out var size);
+        var sum = SumChecked<T, TResult>(sequence, out var size);
 
         if (size == 0)
         {

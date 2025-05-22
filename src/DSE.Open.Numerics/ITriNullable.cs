@@ -21,9 +21,9 @@ public interface ITriNullable
 
     /// <summary>
     /// If the value is set (<see cref="HasValue"/>), then returns that value, otherwise throws
-    /// a <see cref="Open.NaValueException"/>.
+    /// a <see cref="NaValueException"/>.
     /// </summary>
-    /// <exception cref="Open.NaValueException">Thrown if no value is available
+    /// <exception cref="NaValueException">Thrown if no value is available
     /// (<see cref="HasValue"/> is false).</exception>
     object Value { get; }
 }
@@ -57,9 +57,9 @@ public interface IMissingNullable<TSelf, T>
 
     /// <summary>
     /// If the value is set (<see cref="ITriNullable.HasValue"/>), then returns that value, otherwise
-    /// throws a <see cref="Open.NaValueException"/>.
+    /// throws a <see cref="NaValueException"/>.
     /// </summary>
-    /// <exception cref="Open.NaValueException">Thrown if no value is available
+    /// <exception cref="NaValueException">Thrown if no value is available
     /// (<see cref="ITriNullable.HasValue"/> is false).</exception>
     new T Value { get; }
 
