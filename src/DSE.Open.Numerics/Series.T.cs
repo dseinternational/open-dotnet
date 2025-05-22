@@ -35,18 +35,21 @@ public class Series<T>
     private readonly Vector<T> _vector;
     private CategorySet<T>? _categories;
 
-    public Series(
-        [NotNull] Vector<T> vector)
-        : base(vector, name)
+    public Series(int length) : this(new Vector<T>(length))
     {
-        _vector = vector;
-        _categories = categories;
     }
 
-    public Series(
-        [NotNull] Vector<T> vector,
-        string? name,
-        CategorySet<T>? categories)
+    public Series([NotNull] Vector<T> vector) : this(vector, null)
+    {
+        _vector = vector;
+    }
+
+    public Series([NotNull] Vector<T> vector, string? name)
+        : this(vector, name, null)
+    {
+    }
+
+    public Series([NotNull] Vector<T> vector, string? name, CategorySet<T>? categories)
         : base(vector, name)
     {
         _vector = vector;
@@ -70,7 +73,7 @@ public class Series<T>
 
     public override bool IsCategorical { get; } = true;
 
-    public CategorySet<T> Categories => _categories ??= new();
+    public CategorySet<T> Categories => _categories ??= [];
 
     /// <summary>
     /// Gets a span over the contents of the vector.
@@ -159,13 +162,13 @@ public class Series<T>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Series<T> Slice(int start)
     {
-        return new Series<T>(_vector[start..], Name, null, null); // todo: slice index and labels
+        return new Series<T>(_vector[start..], Name); // todo: slice index and labels
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Series<T> Slice(int start, int length)
     {
-        return new Series<T>(_vector.Slice(start, length), Name, null, null); // todo: slice index and labels
+        return new Series<T>(_vector.Slice(start, length), Name); // todo: slice index and labels
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -185,7 +188,7 @@ public class Series<T>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator Series<T>(Memory<T> vector)
     {
-        return new(vector, null, null, null);
+        return new(vector);
     }
 
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",
@@ -194,7 +197,7 @@ public class Series<T>
     public static implicit operator Series<T>(T[] vector)
     {
         ArgumentNullException.ThrowIfNull(vector);
-        return new(vector, null, null, null);
+        return new(vector);
     }
 
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",

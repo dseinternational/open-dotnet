@@ -17,7 +17,6 @@ internal static class SeriesJsonReader
         string? name = null;
         ICategorySet? categories = null;
         Vector? values = null;
-        ValueLabelCollection? labels = null;
 
         while (reader.Read())
         {
@@ -48,11 +47,6 @@ internal static class SeriesJsonReader
                 _ = reader.Read();
                 values = VectorJsonReader.ReadVector(ref reader, VectorJsonFormat.Default);
             }
-            else if (propertyName == NumericsPropertyNames.Labels)
-            {
-                _ = reader.Read();
-                labels = ValueLabelCollectionJsonReader.ReadLabels(ref reader);
-            }
             else
             {
                 throw new JsonException($"Unexpected property name: {propertyName}");
@@ -66,9 +60,9 @@ internal static class SeriesJsonReader
 
         if (categories is not null)
         {
-            return CategoricalSeries.CreateUntyped(values, name, null, categories, null);
+           // todo  return CategoricalSeries.CreateUntyped(values, name, null, categories, null);
         }
 
-        return Series.CreateUntyped(name, values, null, labels);
+        return Series.CreateUntyped(name, values, null);
     }
 }

@@ -28,12 +28,15 @@ public sealed class Vector<T> : Vector, IVector<T>, IReadOnlyVector<T>, IEquatab
 
     private readonly Memory<T> _memory;
 
+    public Vector(int length) : this(new T[length])
+    {
+    }
+
     public Vector(T[] array) : this(array.AsMemory())
     {
     }
 
-    public Vector(Memory<T> memory)
-        : base(Vector.GetDataType<T>(), typeof(T), memory.Length)
+    public Vector(Memory<T> memory) : base(GetDataType<T>(), typeof(T), memory.Length)
     {
         _memory = memory;
     }

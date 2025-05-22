@@ -92,12 +92,6 @@ internal static class SeriesJsonWriter
 
         VectorJsonWriter.WriteVector(writer, series.Vector, options);
 
-        if (series.HasValueLabels)
-        {
-            writer.WritePropertyName(NumericsPropertyNames.Labels);
-            ValueLabelCollectionJsonWriter.WriteCollection(writer, series.ValueLabels, options);
-        }
-
         writer.WriteEndObject();
     }
 }
