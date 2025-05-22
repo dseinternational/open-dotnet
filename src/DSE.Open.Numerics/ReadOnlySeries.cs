@@ -38,7 +38,7 @@ public abstract class ReadOnlySeries : SeriesBase, IReadOnlySeries
     /// </summary>
     public Index Index { get; } // todo: readonly
 
-    internal ReadOnlyVector Data => (ReadOnlyVector)BaseVector;
+    public abstract VectorValue GetVectorValue(int index);
 
     /// <summary>
     /// Creates a series from the given data.

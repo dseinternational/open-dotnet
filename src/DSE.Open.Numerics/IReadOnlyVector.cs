@@ -19,6 +19,8 @@ public interface IReadOnlyVector
     Type ItemType { get; }
 
     int Length { get; }
+
+    VectorValue GetVectorValue(int index);
 }
 
 /// <summary>

@@ -14,12 +14,20 @@ public interface IReadOnlySeries<T>
       IEquatable<IReadOnlySeries<T>?>
     where T : IEquatable<T>
 {
+    new ReadOnlyVector<T> Vector { get; }
+
     /// <summary>
     /// Gets a span over the contents of the vector.
     /// </summary>
     ReadOnlySpan<T> AsReadOnlySpan();
 
     IReadOnlySeries<T> Slice(int start, int length);
-
-    new ReadOnlyVector<T> Vector { get; }
+}
+public static class SeriesExtensions
+{
+    public static VectorValue GetValue(this IReadOnlySeries<int> series, int index)
+    {
+        ArgumentNullException.ThrowIfNull(series);
+        return VectorValue.FromValue(series[index]);
+    }
 }

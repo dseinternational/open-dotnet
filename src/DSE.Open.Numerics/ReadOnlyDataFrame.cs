@@ -52,6 +52,8 @@ public sealed class ReadOnlyDataFrame : IReadOnlyList<ReadOnlySeries>, IReadOnly
 
     public int Count => _columns.Count;
 
+    public ReadOnlyDataFrameRowCollection Rows => new(this);
+
     public IEnumerator<ReadOnlySeries> GetEnumerator()
     {
         return _columns.GetEnumerator();

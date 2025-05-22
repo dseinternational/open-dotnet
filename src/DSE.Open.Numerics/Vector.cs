@@ -20,6 +20,8 @@ public abstract partial class Vector : VectorBase, IVector
 
     protected abstract ReadOnlyVector CreateReadOnly();
 
+    public abstract VectorValue GetVectorValue(int index);
+
     public ReadOnlyVector AsReadOnly()
     {
         return CreateReadOnly();

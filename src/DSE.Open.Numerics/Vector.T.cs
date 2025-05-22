@@ -57,6 +57,11 @@ public sealed class Vector<T>
         set => _memory.Span[index] = value;
     }
 
+    public override VectorValue GetVectorValue(int index)
+    {
+        return VectorValue.FromValue(this[index]);
+    }
+
     /// <summary>
     /// Gets a span over the contents of the vector.
     /// </summary>

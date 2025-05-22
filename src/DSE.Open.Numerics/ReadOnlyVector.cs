@@ -17,6 +17,8 @@ public abstract class ReadOnlyVector : VectorBase, IReadOnlyVector
     {
     }
 
+    public abstract VectorValue GetVectorValue(int index);
+
     public static ReadOnlyVector<T> Create<T>(T[] array)
         where T : IEquatable<T>
     {

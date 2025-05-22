@@ -56,6 +56,10 @@ public class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
 
     public new ReadOnlyVector<T> Vector => _vector;
 
+    public override VectorValue GetVectorValue(int index)
+    {
+        return VectorValue.FromValue(this[index]);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ReadOnlySpan<T> AsReadOnlySpan()

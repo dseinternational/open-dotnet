@@ -75,6 +75,11 @@ public class Series<T>
 
     public CategorySet<T> Categories => _categories ??= [];
 
+    public override VectorValue GetVectorValue(int index)
+    {
+        return VectorValue.FromValue(this[index]);
+    }
+
     /// <summary>
     /// Gets a span over the contents of the vector.
     /// </summary>

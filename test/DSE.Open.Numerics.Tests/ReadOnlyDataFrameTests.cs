@@ -27,6 +27,31 @@ public class ReadOnlyDataFrameTests : LoggedTestsBase
     }
 
     [Fact]
+    public void RowCollection()
+    {
+        var series1 = Series.Create([1, 2, 3, 4, 5]).AsReadOnly();
+        var series2 = Series.Create([6.648, 7.185, 8.8946, 9.0, -10]).AsReadOnly();
+
+        ReadOnlyDataFrame frame = [series1, series2];
+
+        foreach (var row in frame.Rows)
+        {
+            Assert.Equal(2, row.Count);
+        }
+
+        Assert.Equal(1, frame.Rows[0][0]);
+        Assert.Equal(6.648, frame.Rows[0][1]);
+        Assert.Equal(2, frame.Rows[1][0]);
+        Assert.Equal(7.185, frame.Rows[1][1]);
+        Assert.Equal(3, frame.Rows[2][0]);
+        Assert.Equal(8.8946, frame.Rows[2][1]);
+        Assert.Equal(4, frame.Rows[3][0]);
+        Assert.Equal(9.0, frame.Rows[3][1]);
+        Assert.Equal(5, frame.Rows[4][0]);
+        Assert.Equal(-10.0, frame.Rows[4][1]);
+    }
+
+    [Fact]
     public void SerializeDeserializeReflectedInt32()
     {
         var series1 = Series.Create([.. Enumerable.Range(0, 100)]).AsReadOnly();

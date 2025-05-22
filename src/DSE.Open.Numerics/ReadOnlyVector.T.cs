@@ -44,6 +44,11 @@ public sealed class ReadOnlyVector<T> : ReadOnlyVector, IReadOnlyVector<T>
         get => _memory.Span[index];
     }
 
+    public override VectorValue GetVectorValue(int index)
+    {
+        return VectorValue.FromValue(this[index]);
+    }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ReadOnlySpan<T> AsSpan()
     {

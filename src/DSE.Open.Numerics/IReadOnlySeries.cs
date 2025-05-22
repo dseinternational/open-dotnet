@@ -21,4 +21,6 @@ public interface IReadOnlySeries
     VectorDataType DataType { get; }
 
     IReadOnlyVector Vector { get; }
+
+    VectorValue GetVectorValue(int index);
 }

@@ -31,6 +31,8 @@ public abstract class Series : SeriesBase, ISeries
 
     internal Vector Data => (Vector)BaseVector;
 
+    public abstract VectorValue GetVectorValue(int index);
+
     protected abstract ReadOnlySeries CreateReadOnly();
 
     public ReadOnlySeries AsReadOnly()

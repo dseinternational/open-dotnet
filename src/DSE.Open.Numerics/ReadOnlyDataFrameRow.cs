@@ -5,34 +5,57 @@ using System.Collections;
 
 namespace DSE.Open.Numerics;
 
-public sealed class ReadOnlyDataFrameRow : IReadOnlyList<VectorValue>
+public readonly record struct ReadOnlyDataFrameRowCollection : IReadOnlyList<ReadOnlyDataFrameRow>
 {
-    private readonly DataFrame _df;
+    private readonly ReadOnlyDataFrame _df;
+
+    internal ReadOnlyDataFrameRowCollection(ReadOnlyDataFrame df)
+    {
+        _df = df;
+    }
+
+    public ReadOnlyDataFrameRow this[int index] => new(_df, index);
+
+    public int Count => _df.Count;
+
+    public IEnumerator<ReadOnlyDataFrameRow> GetEnumerator()
+    {
+        for (var i = 0; i < Count; i++)
+        {
+            yield return this[i];
+        }
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
+}
+public readonly record struct ReadOnlyDataFrameRow : IReadOnlyList<VectorValue>
+{
+    private readonly ReadOnlyDataFrame _df;
     private readonly int _rowIndex;
 
-    internal ReadOnlyDataFrameRow(DataFrame df, int rowIndex)
+    internal ReadOnlyDataFrameRow(ReadOnlyDataFrame df, int rowIndex)
     {
         _df = df;
         _rowIndex = rowIndex;
     }
 
-    // ** TODO
+    public VectorValue this[int index] => _df[index].Vector.GetVectorValue(_rowIndex);
 
-#pragma warning disable CA1065 // Do not raise exceptions in unexpected locations
-
-    public VectorValue this[int index] => throw new NotImplementedException();
-
-    public int Count => throw new NotImplementedException();
-
-#pragma warning restore CA1065 // Do not raise exceptions in unexpected locations
+    public int Count => _df.Count;
 
     public IEnumerator<VectorValue> GetEnumerator()
     {
-        throw new NotImplementedException();
+        for (var i = 0; i < Count; i++)
+        {
+            yield return this[i];
+        }
     }
 
     IEnumerator IEnumerable.GetEnumerator()
     {
-        throw new NotImplementedException();
+        return GetEnumerator();
     }
 }
