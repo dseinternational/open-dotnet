@@ -18,7 +18,11 @@ namespace DSE.Open.Numerics;
 /// <typeparam name="T"></typeparam>
 [CollectionBuilder(typeof(Vector), nameof(Create))]
 [JsonConverter(typeof(VectorJsonConverter))]
-public sealed class Vector<T> : Vector, IVector<T>, IReadOnlyVector<T>, IEquatable<Vector<T>>
+public sealed class Vector<T>
+    : Vector,
+      IVector<T>,
+      IReadOnlyVector<T>,
+      IEquatable<Vector<T>>
     where T : IEquatable<T>
 {
     /// <summary>
@@ -77,6 +81,25 @@ public sealed class Vector<T> : Vector, IVector<T>, IReadOnlyVector<T>, IEquatab
     [EditorBrowsable(EditorBrowsableState.Never)]
     public override int GetHashCode()
     {
+        if (_memory.IsEmpty)
+        {
+            return 0;
+        }
+
+        switch (_memory)
+        {
+            case Memory<int> memory:
+                return GetHashCode(memory);
+            case Memory<uint> memory:
+                return GetHashCode(memory);
+            case Memory<long> memory:
+                return GetHashCode(memory);
+            case Memory<ulong> memory:
+                return GetHashCode(memory);
+            default:
+                break;
+        }
+
         var hash = new HashCode();
 
         foreach (var i in this)
@@ -84,6 +107,14 @@ public sealed class Vector<T> : Vector, IVector<T>, IReadOnlyVector<T>, IEquatab
             hash.Add(i);
         }
 
+        return hash.ToHashCode();
+    }
+
+    private static int GetHashCode<TMem>(Memory<TMem> memory)
+        where TMem : struct
+    {
+        var hash = new HashCode();
+        hash.AddBytes(MemoryMarshal.AsBytes(memory.Span));
         return hash.ToHashCode();
     }
 

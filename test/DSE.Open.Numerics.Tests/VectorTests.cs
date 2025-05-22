@@ -407,44 +407,133 @@ public partial class VectorTests : LoggedTestsBase
         Assert.Equivalent(series, series2);
     }
 
-    /*
     [Fact]
-    public void AdditionOperator()
+    public void Add()
     {
         var v1 = Vector.CreateOnes<int>(6);
         var v2 = Vector.CreateOnes<int>(6);
-        var v3 = v1 + v2;
+        var v3 = v1.Add(v2);
         Assert.Equal(6, v3.Length);
         Assert.True(v3.AsSpan().SequenceEqual([2, 2, 2, 2, 2, 2]));
     }
 
     [Fact]
-    public void AdditionOperatorScalar()
+    public void AddScalar()
     {
         var v1 = Vector.CreateOnes<int>(6);
-        var v2 = v1 + 1;
+        var v2 = v1.Add(1);
         Assert.Equal(6, v2.Length);
         Assert.True(v2.AsSpan().SequenceEqual([2, 2, 2, 2, 2, 2]));
     }
 
     [Fact]
-    public void SubtractionOperator()
+    public void Subtract()
     {
         var v1 = Vector.CreateOnes<int>(6);
         var v2 = Vector.CreateOnes<int>(6);
-        var v3 = v1 - v2;
+        var v3 = v1.Subtract(v2);
         Assert.Equal(6, v3.Length);
         Assert.True(v3.AsSpan().SequenceEqual([0, 0, 0, 0, 0, 0]));
     }
 
     [Fact]
-    public void SubtractionOperatorScalar()
+    public void SubtractScalar()
     {
         var v1 = Vector.CreateOnes<int>(6);
-        var v2 = v1 - 1;
+        var v2 = v1.Subtract(1);
         Assert.Equal(6, v2.Length);
         Assert.True(v2.AsSpan().SequenceEqual([0, 0, 0, 0, 0, 0]));
     }
-    */
 
+    [Fact]
+    public void Create_EmptyArray()
+    {
+        var vector = Vector.Create(Array.Empty<int>());
+        Assert.Equal(0, vector.Length);
+        Assert.True(vector.IsEmpty);
+    }
+
+    [Fact]
+    public void Create_LargeArray()
+    {
+        var largeArray = Enumerable.Range(0, 1_000_000).ToArray();
+        var vector = Vector.Create(largeArray);
+        Assert.Equal(1_000_000, vector.Length);
+        Assert.True(vector.AsSpan().SequenceEqual(largeArray));
+    }
+
+    [Fact]
+    public void Slice_ValidRange()
+    {
+        Vector<int> vector = [1, 2, 3, 4, 5];
+        var slice = vector.Slice(1, 3);
+        Assert.Equal(3, slice.Length);
+        Assert.True(slice.AsSpan().SequenceEqual([2, 3, 4]));
+    }
+
+    [Fact]
+    public void Slice_OutOfRange_Throws()
+    {
+        Vector<int> vector = [1, 2, 3, 4, 5];
+        _ = Assert.Throws<ArgumentOutOfRangeException>(() => vector.Slice(6, 2));
+    }
+
+    [Fact]
+    public void AsSpan_ModifiesVector()
+    {
+        Vector<int> vector = [1, 2, 3, 4, 5];
+        var span = vector.AsSpan();
+        span[0] = 42;
+        Assert.Equal(42, vector[0]);
+    }
+
+    [Fact]
+    public void GetHashCode_EqualVectors_ReturnSameHashCode()
+    {
+        Vector<int> v1 = [1, 2, 3, 4, 5];
+        Vector<int> v2 = [1, 2, 3, 4, 5];
+        Assert.Equal(v1.GetHashCode(), v2.GetHashCode());
+    }
+
+    [Fact]
+    public void GetHashCode_UnequalVectors_ReturnDifferentHashCodes()
+    {
+        Vector<int> v1 = [1, 2, 3, 4, 5];
+        Vector<int> v2 = [5, 4, 3, 2, 1];
+        Assert.NotEqual(v1.GetHashCode(), v2.GetHashCode());
+    }
+
+    [Fact]
+    public void Equals_ReadOnlySpan_Equal()
+    {
+        Vector<int> vector = [1, 2, 3, 4, 5];
+        ReadOnlySpan<int> span = [1, 2, 3, 4, 5];
+        Assert.True(vector.Equals(span));
+    }
+
+    [Fact]
+    public void Equals_ReadOnlySpan_NotEqual()
+    {
+        Vector<int> vector = [1, 2, 3, 4, 5];
+        ReadOnlySpan<int> span = [5, 4, 3, 2, 1];
+        Assert.False(vector.Equals(span));
+    }
+
+    [Fact]
+    public void SerializeDeserialize_EmptyVector()
+    {
+        var vector = Vector<int>.Empty;
+        var json = JsonSerializer.Serialize(vector, NumericsJsonSharedOptions.Reflected);
+        var deserialized = JsonSerializer.Deserialize<Vector<int>>(json, NumericsJsonSharedOptions.Reflected);
+        Assert.NotNull(deserialized);
+        Assert.True(deserialized.IsEmpty);
+    }
+
+    [Fact]
+    public void EmptyVector_IsEmpty()
+    {
+        var empty = Vector<int>.Empty;
+        Assert.Equal(0, empty.Length);
+        Assert.True(empty.IsEmpty);
+    }
 }

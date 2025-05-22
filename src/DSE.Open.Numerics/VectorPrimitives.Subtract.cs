@@ -31,6 +31,23 @@ public static partial class VectorPrimitives
         Subtract(x, y, destination.AsSpan());
     }
 
+    public static Vector<T> Subtract<T>(this IReadOnlyVector<T> x, ReadOnlySpan<T> y)
+        where T : struct, INumber<T>
+    {
+        ArgumentNullException.ThrowIfNull(x);
+        NumericsException.ThrowIfNot(x.Length == y.Length);
+        var destination = Vector.Create<T>(x.Length);
+        Subtract(x, y, destination.AsSpan());
+        return destination;
+    }
+
+    public static Vector<T> Subtract<T>(this IReadOnlyVector<T> x, IReadOnlyVector<T> y)
+        where T : struct, INumber<T>
+    {
+        ArgumentNullException.ThrowIfNull(y);
+        return Subtract(x, y.AsSpan());
+    }
+
     public static void Subtract<T>(this IReadOnlyVector<T> x, T y, Span<T> destination)
         where T : struct, INumber<T>
     {
@@ -44,6 +61,15 @@ public static partial class VectorPrimitives
     {
         ArgumentNullException.ThrowIfNull(destination);
         Subtract(x, y, destination.AsSpan());
+    }
+
+    public static Vector<T> Subtract<T>(this IReadOnlyVector<T> x, T y)
+        where T : struct, INumber<T>
+    {
+        ArgumentNullException.ThrowIfNull(x);
+        var destination = Vector.Create<T>(x.Length);
+        Subtract(x, y, destination.AsSpan());
+        return destination;
     }
 
     public static void SubtractInPlace<T>(this IVector<T> x, ReadOnlySpan<T> y)
