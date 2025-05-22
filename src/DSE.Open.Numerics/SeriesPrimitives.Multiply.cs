@@ -7,77 +7,77 @@ namespace DSE.Open.Numerics;
 
 public static partial class SeriesPrimitives
 {
-    public static void Subtract<T>(this IReadOnlySeries<T> x, ReadOnlySpan<T> y, Span<T> destination)
+    public static void Multiply<T>(this IReadOnlySeries<T> x, ReadOnlySpan<T> y, Span<T> destination)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(x);
         NumericsException.ThrowIfNot(x.Length == y.Length && y.Length == destination.Length);
-        VectorPrimitives.Subtract(x.Vector, y, destination);
+        VectorPrimitives.Multiply(x.Vector, y, destination);
     }
 
-    public static void Subtract<T>(this IReadOnlySeries<T> x, IReadOnlySeries<T> y, Span<T> destination)
+    public static void Multiply<T>(this IReadOnlySeries<T> x, IReadOnlySeries<T> y, Span<T> destination)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(y);
-        Subtract(x, y.Vector.AsSpan(), destination);
-        Subtract(x, y.Vector.AsSpan(), destination);
+        Multiply(x, y.Vector.AsSpan(), destination);
+        Multiply(x, y.Vector.AsSpan(), destination);
     }
 
-    public static void Subtract<T>(this IReadOnlySeries<T> x, IReadOnlySeries<T> y, ISeries<T> destination)
+    public static void Multiply<T>(this IReadOnlySeries<T> x, IReadOnlySeries<T> y, ISeries<T> destination)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(destination);
-        Subtract(x, y, destination.AsSpan());
+        Multiply(x, y, destination.AsSpan());
     }
 
-    public static Series<T> Subtract<T>(this IReadOnlySeries<T> x, IReadOnlySeries<T> y)
+    public static Series<T> Multiply<T>(this IReadOnlySeries<T> x, IReadOnlySeries<T> y)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(x);
         ArgumentNullException.ThrowIfNull(y);
-        return x.Vector.Subtract(y.Vector);
+        return x.Vector.Multiply(y.Vector);
     }
 
-    public static void Subtract<T>(this IReadOnlySeries<T> x, T y, Span<T> destination)
+    public static void Multiply<T>(this IReadOnlySeries<T> x, T y, Span<T> destination)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(x);
         NumericsException.ThrowIfNot(x.Length == destination.Length);
-        VectorPrimitives.Subtract(x.Vector, y, destination);
+        VectorPrimitives.Multiply(x.Vector, y, destination);
     }
 
-    public static void Subtract<T>(this IReadOnlySeries<T> x, T y, ISeries<T> destination)
+    public static void Multiply<T>(this IReadOnlySeries<T> x, T y, ISeries<T> destination)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(destination);
-        Subtract(x, y, destination.AsSpan());
+        Multiply(x, y, destination.AsSpan());
     }
 
-    public static Series<T> Subtract<T>(this IReadOnlySeries<T> x, T y)
+    public static Series<T> Multiply<T>(this IReadOnlySeries<T> x, T y)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        return x.Vector.Subtract(y);
+        return x.Vector.Multiply(y);
     }
 
-    public static void SubtractInPlace<T>(this ISeries<T> x, ReadOnlySpan<T> y)
+    public static void MultiplyInPlace<T>(this ISeries<T> x, ReadOnlySpan<T> y)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        Subtract(x, y, x.AsSpan());
+        Multiply(x, y, x.AsSpan());
     }
 
-    public static void SubtractInPlace<T>(this ISeries<T> x, IReadOnlySeries<T> y)
+    public static void MultiplyInPlace<T>(this ISeries<T> x, IReadOnlySeries<T> y)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(y);
-        SubtractInPlace(x, y.Vector.AsSpan());
+        MultiplyInPlace(x, y.Vector.AsSpan());
     }
 
-    public static void SubtractInPlace<T>(this ISeries<T> x, T y)
+    public static void MultiplyInPlace<T>(this ISeries<T> x, T y)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        Subtract(x, y, x.AsSpan());
+        Multiply(x, y, x.AsSpan());
     }
 }

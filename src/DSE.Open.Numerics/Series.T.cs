@@ -186,9 +186,17 @@ public class Series<T>
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",
         Justification = "By design")]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static implicit operator Series<T>(Vector<T> vector)
+    {
+        return Create(vector);
+    }
+
+    [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",
+        Justification = "By design")]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator Series<T>(Memory<T> vector)
     {
-        return new(vector);
+        return Create(vector);
     }
 
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",
@@ -196,8 +204,7 @@ public class Series<T>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator Series<T>(T[] vector)
     {
-        ArgumentNullException.ThrowIfNull(vector);
-        return new(vector);
+        return Create(vector);
     }
 
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",

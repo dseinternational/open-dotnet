@@ -30,6 +30,14 @@ public static partial class SeriesPrimitives
         Add(x, y, destination.AsSpan());
     }
 
+    public static Series<T> Add<T>(this IReadOnlySeries<T> x, IReadOnlySeries<T> y)
+        where T : struct, INumber<T>
+    {
+        ArgumentNullException.ThrowIfNull(x);
+        ArgumentNullException.ThrowIfNull(y);
+        return x.Vector.Add(y.Vector);
+    }
+
     public static void Add<T>(this IReadOnlySeries<T> x, T y, Span<T> destination)
         where T : struct, INumber<T>
     {
@@ -43,6 +51,13 @@ public static partial class SeriesPrimitives
     {
         ArgumentNullException.ThrowIfNull(destination);
         Add(x, y, destination.AsSpan());
+    }
+
+    public static Series<T> Add<T>(this IReadOnlySeries<T> x, T y)
+        where T : struct, INumber<T>
+    {
+        ArgumentNullException.ThrowIfNull(x);
+        return x.Vector.Add(y);
     }
 
     public static void AddInPlace<T>(this ISeries<T> x, ReadOnlySpan<T> y)
