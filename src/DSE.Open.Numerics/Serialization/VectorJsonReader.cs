@@ -168,7 +168,8 @@ public static class VectorJsonReader
             if (reader.TokenType is JsonTokenType.Number
                 or JsonTokenType.String
                 or JsonTokenType.True
-                or JsonTokenType.False)
+                or JsonTokenType.False
+                or JsonTokenType.Null)
             {
                 builder.Add(valueReader(ref reader));
             }
@@ -190,68 +191,9 @@ public static class VectorJsonReader
                 return num;
             }
 
-            if (NumberHelper.IsKnownFloatingPointIeee754Type<T>()
-                && r.TokenType == JsonTokenType.String)
+            if (TryGetFloatingPointFromString<T>(ref r, out var value))
             {
-                var str = r.GetString();
-
-                if (str is not null)
-                {
-                    if (str.Equals(NaValue.NanValueLabel, StringComparison.OrdinalIgnoreCase)
-                        || str.Equals(NaValue.NaValueLabel, StringComparison.OrdinalIgnoreCase))
-                    {
-                        if (typeof(T) == typeof(float))
-                        {
-                            return T.CreateChecked(float.NaN);
-                        }
-
-                        if (typeof(T) == typeof(double))
-                        {
-                            return T.CreateChecked(double.NaN);
-                        }
-
-                        if (typeof(T) == typeof(Half))
-                        {
-                            return T.CreateChecked(Half.NaN);
-                        }
-                    }
-
-                    if (str.Equals("Infinity", StringComparison.OrdinalIgnoreCase))
-                    {
-                        if (typeof(T) == typeof(float))
-                        {
-                            return T.CreateChecked(float.PositiveInfinity);
-                        }
-
-                        if (typeof(T) == typeof(double))
-                        {
-                            return T.CreateChecked(double.PositiveInfinity);
-                        }
-
-                        if (typeof(T) == typeof(Half))
-                        {
-                            return T.CreateChecked(Half.PositiveInfinity);
-                        }
-                    }
-
-                    if (str.Equals("-Infinity", StringComparison.OrdinalIgnoreCase))
-                    {
-                        if (typeof(T) == typeof(float))
-                        {
-                            return T.CreateChecked(float.NegativeInfinity);
-                        }
-
-                        if (typeof(T) == typeof(double))
-                        {
-                            return T.CreateChecked(double.NegativeInfinity);
-                        }
-
-                        if (typeof(T) == typeof(Half))
-                        {
-                            return T.CreateChecked(Half.NegativeInfinity);
-                        }
-                    }
-                }
+                return value;
             }
 
             throw new JsonException("Expected number value");
@@ -272,6 +214,16 @@ public static class VectorJsonReader
                 return TSelf.Na;
             }
 
+            if (r.TryGetNumber<T>(out var num))
+            {
+                return TSelf.FromValue(num);
+            }
+
+            if (TryGetFloatingPointFromString<T>(ref r, out var value))
+            {
+                return TSelf.FromValue(value);
+            }
+
             if (r.TokenType == JsonTokenType.String)
             {
                 var str = r.GetString();
@@ -286,11 +238,6 @@ public static class VectorJsonReader
                 }
 
                 throw new JsonException($"Invalid string value for number: {str}");
-            }
-
-            if (r.TryGetNumber<T>(out var num))
-            {
-                return TSelf.FromValue(num);
             }
 
             throw new JsonException("Expected number value");
@@ -447,5 +394,85 @@ public static class VectorJsonReader
 
             throw new JsonException("Expected boolean value");
         });
+    }
+
+
+    private static bool TryGetFloatingPointFromString<T>(ref Utf8JsonReader r, out T value)
+        where T : struct, INumber<T>
+    {
+        if (NumberHelper.IsKnownFloatingPointIeee754Type<T>() && r.TokenType == JsonTokenType.String)
+        {
+            var str = r.GetString();
+
+            if (str is not null)
+            {
+                if (str.Equals(NaValue.NanValueLabel, StringComparison.OrdinalIgnoreCase)
+                    || str.Equals(NaValue.NaValueLabel, StringComparison.OrdinalIgnoreCase))
+                {
+                    if (typeof(T) == typeof(float))
+                    {
+                        value = T.CreateChecked(float.NaN);
+                        return true;
+                    }
+
+                    if (typeof(T) == typeof(double))
+                    {
+                        value = T.CreateChecked(double.NaN);
+                        return true;
+                    }
+
+                    if (typeof(T) == typeof(Half))
+                    {
+                        value = T.CreateChecked(Half.NaN);
+                        return true;
+                    }
+                }
+
+                if (str.Equals("Infinity", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (typeof(T) == typeof(float))
+                    {
+                        value = T.CreateChecked(float.PositiveInfinity);
+                        return true;
+                    }
+
+                    if (typeof(T) == typeof(double))
+                    {
+                        value = T.CreateChecked(double.PositiveInfinity);
+                        return true;
+                    }
+
+                    if (typeof(T) == typeof(Half))
+                    {
+                        value = T.CreateChecked(Half.PositiveInfinity);
+                        return true;
+                    }
+                }
+
+                if (str.Equals("-Infinity", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (typeof(T) == typeof(float))
+                    {
+                        value = T.CreateChecked(float.NegativeInfinity);
+                        return true;
+                    }
+
+                    if (typeof(T) == typeof(double))
+                    {
+                        value = T.CreateChecked(double.NegativeInfinity);
+                        return true;
+                    }
+
+                    if (typeof(T) == typeof(Half))
+                    {
+                        value = T.CreateChecked(Half.NegativeInfinity);
+                        return true;
+                    }
+                }
+            }
+        }
+
+        value = default!;
+        return false;
     }
 }

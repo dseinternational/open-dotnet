@@ -7,18 +7,19 @@ using DSE.Open.Testing.Xunit;
 
 namespace DSE.Open.Numerics;
 
-public partial class VectorPrimitivesTests : LoggedTestsBase
+public partial class VectorTests : LoggedTestsBase
 {
-    public VectorPrimitivesTests(ITestOutputHelper output) : base(output)
+    public VectorTests(ITestOutputHelper output) : base(output)
     {
     }
 
-    private static void TestCreate<T>(T[] elements)
+    private static Vector<T> TestCreate<T>(T[] elements)
         where T : notnull, IEquatable<T>
     {
         Vector<T> vector = [.. elements];
         Assert.Equal(elements.Length, vector.Length);
         Assert.Equivalent(elements, vector.ToArray());
+        return vector;
     }
 
     private void TestSerializeDeserialize<T>(T[] elements, JsonSerializerOptions serializerOptions)
@@ -38,97 +39,104 @@ public partial class VectorPrimitivesTests : LoggedTestsBase
     [Fact]
     public void Create_Char()
     {
-        TestCreate(['a', 'b', 'c', 'd', 'e']);
+        _ = TestCreate(['a', 'b', 'c', 'd', 'e']);
     }
 
     [Fact]
     public void CreateString()
     {
-        TestCreate(["one", "two", "three", "four", "five"]);
+        _ = TestCreate(["one", "two", "three", "four", "five"]);
     }
 
     [Fact]
     public void CreateInt8()
     {
-        TestCreate<sbyte>([0, 1, 2, 3, -4]);
+        _ = TestCreate<sbyte>([0, 1, 2, 3, -4]);
     }
 
     [Fact]
     public void CreateInt16()
     {
-        TestCreate<short>([0, 1, 2, 3, -4]);
+        _ = TestCreate<short>([0, 1, 2, 3, -4]);
+    }
+
+    [Fact]
+    public void CreateNaInt16()
+    {
+        var v = TestCreate<NaInt<short>>([0, 1, 2, 3, -4, null]);
+        Assert.True(v.IsNullable);
     }
 
     [Fact]
     public void CreateInt32()
     {
-        TestCreate([0, 1, 2, 3, -4]);
+        _ = TestCreate([0, 1, 2, 3, -4]);
     }
 
     [Fact]
     public void CreateInt64()
     {
-        TestCreate<long>([0, 1, 2, 3, -4]);
+        _ = TestCreate<long>([0, 1, 2, 3, -4]);
     }
 
     [Fact]
     public void CreateUInt16()
     {
-        TestCreate<ushort>([0, 1, 2, 3, 4]);
+        _ = TestCreate<ushort>([0, 1, 2, 3, 4]);
     }
 
     [Fact]
     public void CreateUInt32()
     {
-        TestCreate<uint>([0, 1, 2, 3, 4]);
+        _ = TestCreate<uint>([0, 1, 2, 3, 4]);
     }
 
     [Fact]
     public void CreateUInt64()
     {
-        TestCreate<ulong>([0, 1, 2, 3, 4]);
+        _ = TestCreate<ulong>([0, 1, 2, 3, 4]);
     }
 
     [Fact]
     public void CreateFloat16()
     {
-        TestCreate([(Half)0.496f, (Half)1.235f, (Half)200.8469874f, (Half)(-4682.169845f), (Half)981635.123548715f]);
+        _ = TestCreate([(Half)0.496f, (Half)1.235f, (Half)200.8469874f, (Half)(-4682.169845f), (Half)981635.123548715f]);
     }
 
     [Fact]
     public void CreateFloat32()
     {
-        TestCreate([0.496f, 1.235f, 200.8469874f, -4682.169845f, 981635.123548715f]);
+        _ = TestCreate([0.496f, 1.235f, 200.8469874f, -4682.169845f, 981635.123548715f]);
     }
 
     [Fact]
     public void CreateFloat64()
     {
-        TestCreate([0.496, 1.235, 200.8469874, -4682.169845, 981635.123548715]);
+        _ = TestCreate([0.496, 1.235, 200.8469874, -4682.169845, 981635.123548715]);
     }
 
     [Fact]
     public void CreateNaInt8()
     {
-        TestCreate<NaInt<sbyte>>([0, 1, 2, 3, -4, null]);
+        _ = TestCreate<NaInt<sbyte>>([0, 1, 2, 3, -4, null]);
     }
 
     [Fact]
     public void CreateNaInt32()
     {
-        TestCreate<NaInt<int>>([0, 1, 2, 3, -4, null]);
+        _ = TestCreate<NaInt<int>>([0, 1, 2, 3, -4, null]);
     }
 
     [Fact]
     public void CreateNaInt64()
     {
-        TestCreate<NaInt<long>>([0, 1, 2, 3, -4, null]);
+        _ = TestCreate<NaInt<long>>([0, 1, 2, 3, -4, null]);
     }
 
     [Fact]
     public void CreateNaUInt16()
     {
-        TestCreate<NaInt<ushort>>([0, 1, 2, 3, 4, null]);
+        _ = TestCreate<NaInt<ushort>>([0, 1, 2, 3, 4, null]);
     }
 
     [Fact]
