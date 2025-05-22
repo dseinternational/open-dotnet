@@ -749,22 +749,22 @@ public readonly struct NaInt<T>
         return +value._value;
     }
 
-    static NaInt<T> IBitwiseOperators<NaInt<T>, NaInt<T>, NaInt<T>>.operator &(NaInt<T> left, NaInt<T> right)
+    public static NaInt<T> operator &(NaInt<T> left, NaInt<T> right)
     {
         return ResultIfNotNa(left, right, static (a, b) => a & b);
     }
 
-    static NaInt<T> IBitwiseOperators<NaInt<T>, NaInt<T>, NaInt<T>>.operator |(NaInt<T> left, NaInt<T> right)
+    public static NaInt<T> operator |(NaInt<T> left, NaInt<T> right)
     {
         return ResultIfNotNa(left, right, static (a, b) => a | b);
     }
 
-    static NaInt<T> IBitwiseOperators<NaInt<T>, NaInt<T>, NaInt<T>>.operator ^(NaInt<T> left, NaInt<T> right)
+    public static NaInt<T> operator ^(NaInt<T> left, NaInt<T> right)
     {
         return ResultIfNotNa(left, right, static (a, b) => a ^ b);
     }
 
-    static NaInt<T> IBitwiseOperators<NaInt<T>, NaInt<T>, NaInt<T>>.operator ~(NaInt<T> value)
+    public static NaInt<T> operator ~(NaInt<T> value)
     {
         if (value.IsNa)
         {
@@ -774,7 +774,7 @@ public readonly struct NaInt<T>
         return new(~value._value, false);
     }
 
-    static NaInt<T> IShiftOperators<NaInt<T>, int, NaInt<T>>.operator <<(NaInt<T> value, int shiftAmount)
+    public static NaInt<T> operator <<(NaInt<T> value, int shiftAmount)
     {
         if (value.IsNa)
         {
@@ -784,7 +784,7 @@ public readonly struct NaInt<T>
         return new(value._value << shiftAmount, false);
     }
 
-    static NaInt<T> IShiftOperators<NaInt<T>, int, NaInt<T>>.operator >>(NaInt<T> value, int shiftAmount)
+    public static NaInt<T> operator >>(NaInt<T> value, int shiftAmount)
     {
         if (value.IsNa)
         {
@@ -794,7 +794,7 @@ public readonly struct NaInt<T>
         return new(value._value >> shiftAmount, false);
     }
 
-    static NaInt<T> IShiftOperators<NaInt<T>, int, NaInt<T>>.operator >>>(NaInt<T> value, int shiftAmount)
+    public static NaInt<T> operator >>>(NaInt<T> value, int shiftAmount)
     {
         if (value.IsNa)
         {

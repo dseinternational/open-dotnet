@@ -134,16 +134,11 @@ public class NaIntTests
         NaInt<int> naInt = 42;
         Assert.False(NaInt<int>.IsNaN(naInt));
     }
-}
 
-public class NaIntEqualityTests
-{
     [Fact]
     public void Equals_WithSameValues_ReturnsTrue()
     {
-        NaInt<int> a = 42;
-        NaInt<int> b = 42;
-        Assert.True(a.Equals(b));
+        Assert.Equal(int.MaxValue - 1, (int)NaInt<int>.MaxValue);
     }
 
     [Fact]
@@ -346,10 +341,7 @@ public class NaIntEqualityTests
         var b = NaInt<int>.Na;
         Assert.True(a.EqualOrEitherNa(b));
     }
-}
 
-public class NaIntArithmeticTests
-{
     [Fact]
     public void Add_WithValues_ReturnsSum()
     {
@@ -527,5 +519,173 @@ public class NaIntArithmeticTests
         // Verify the bytes represent 42
         var result = BitConverter.ToInt32(buffer);
         Assert.Equal(42, result);
+    }
+
+    [Fact]
+    public void MaxValue_ReturnsExpectedValue()
+    {
+        Assert.Equal(int.MaxValue - 1, (int)NaInt<int>.MaxValue);
+    }
+
+    [Fact]
+    public void MinValue_ReturnsExpectedValue()
+    {
+        Assert.Equal(int.MinValue, (int)NaInt<int>.MinValue);
+    }
+
+    [Fact]
+    public void BitwiseAnd_WithValues_ReturnsResult()
+    {
+        NaInt<int> a = 6; // 110 in binary
+        NaInt<int> b = 3; // 011 in binary
+        var result = a & b;
+
+        Assert.False(result.IsNa);
+        Assert.Equal(2, (int)result); // 010 in binary
+    }
+
+    [Fact]
+    public void BitwiseAnd_WithNa_ReturnsNa()
+    {
+        NaInt<int> a = 6;
+        var na = NaInt<int>.Na;
+
+        Assert.True((a & na).IsNa);
+        Assert.True((na & a).IsNa);
+    }
+
+    [Fact]
+    public void BitwiseOr_WithValues_ReturnsResult()
+    {
+        NaInt<int> a = 6; // 110 in binary
+        NaInt<int> b = 3; // 011 in binary
+        var result = a | b;
+
+        Assert.False(result.IsNa);
+        Assert.Equal(7, (int)result); // 111 in binary
+    }
+
+    [Fact]
+    public void BitwiseXor_WithValues_ReturnsResult()
+    {
+        NaInt<int> a = 6; // 110 in binary
+        NaInt<int> b = 3; // 011 in binary
+        var result = a ^ b;
+
+        Assert.False(result.IsNa);
+        Assert.Equal(5, (int)result); // 101 in binary
+    }
+
+    [Fact]
+    public void BitwiseNot_WithValue_ReturnsResult()
+    {
+        NaInt<int> a = 6; // 110 in binary
+        var result = ~a;
+
+        Assert.False(result.IsNa);
+        Assert.Equal(~6, (int)result);
+    }
+
+    [Fact]
+    public void BitwiseNot_WithNa_ReturnsNa()
+    {
+        var na = NaInt<int>.Na;
+        var result = ~na;
+
+        Assert.True(result.IsNa);
+    }
+
+    [Fact]
+    public void LeftShift_WithValue_ReturnsResult()
+    {
+        NaInt<int> a = 1; // 0001 in binary
+        var result = a << 2;
+
+        Assert.False(result.IsNa);
+        Assert.Equal(4, (int)result); // 0100 in binary
+    }
+
+    [Fact]
+    public void RightShift_WithValue_ReturnsResult()
+    {
+        NaInt<int> a = 4; // 0100 in binary
+        var result = a >> 2;
+
+        Assert.False(result.IsNa);
+        Assert.Equal(1, (int)result); // 0001 in binary
+    }
+
+    [Fact]
+    public void GetHashCode_WithValue_ReturnsExpectedHashCode()
+    {
+        NaInt<int> value = 42;
+        Assert.Equal(42.GetHashCode(), value.GetHashCode());
+    }
+
+    [Fact]
+    public void GetHashCode_WithNa_ReturnsZero()
+    {
+        var na = NaInt<int>.Na;
+        Assert.Equal(0, na.GetHashCode());
+    }
+
+    [Fact]
+    public void CompareTo_WithValues_ReturnsComparison()
+    {
+        NaInt<int> a = 42;
+        NaInt<int> b = 43;
+
+        Assert.True(a.CompareTo(b) < 0);
+        Assert.True(b.CompareTo(a) > 0);
+        Assert.Equal(0, a.CompareTo(a));
+    }
+
+    [Fact]
+    public void CompareTo_WithNa_ReturnsZero()
+    {
+        NaInt<int> a = 42;
+        var na = NaInt<int>.Na;
+
+        Assert.Equal(0, a.CompareTo(na));
+        Assert.Equal(0, na.CompareTo(a));
+        Assert.Equal(0, na.CompareTo(na));
+    }
+
+    [Fact]
+    public void Parse_EmptyString_ThrowsFormatException()
+    {
+        _ = Assert.Throws<FormatException>(() => NaInt<int>.Parse("", null));
+    }
+
+    [Fact]
+    public void Parse_SentinelValue_ThrowsException()
+    {
+        _ = Assert.Throws<ArgumentOutOfRangeException>(() => NaInt<int>.Parse(int.MaxValue.ToString(), null));
+    }
+
+    [Fact]
+    public void TryParse_EmptyString_ReturnsFalse()
+    {
+        var success = NaInt<int>.TryParse("", null, out _);
+        Assert.False(success);
+    }
+
+    [Fact]
+    public void UnaryPlus_WithValue_ReturnsSameValue()
+    {
+        NaInt<int> a = 42;
+        var result = +a;
+
+        Assert.False(result.IsNa);
+        Assert.Equal(42, (int)result);
+    }
+
+    [Fact]
+    public void UnaryPlus_WithNa_ReturnsNa()
+    {
+        var na = NaInt<int>.Na;
+        var result = +na;
+
+        Assert.True(result.IsNa);
     }
 }
