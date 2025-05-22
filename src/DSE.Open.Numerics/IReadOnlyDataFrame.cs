@@ -3,9 +3,15 @@
 
 namespace DSE.Open.Numerics;
 
-public interface IReadOnlyDataFrame : IReadOnlyList<IReadOnlySeries>
+public interface IReadOnlyDataFrame
 {
+    string? Name { get; }
+
+    int Count { get; }
+
+    IReadOnlySeries this[int index] { get; }
+
     IReadOnlySeries? this[string name] { get; }
 
-    string? Name { get; }
+    IEnumerable<IReadOnlySeries> GetReadOnlySeriesEnumerable();
 }

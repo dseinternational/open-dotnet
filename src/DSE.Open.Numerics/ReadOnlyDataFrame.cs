@@ -14,7 +14,7 @@ namespace DSE.Open.Numerics;
 /// </summary>
 [JsonConverter(typeof(ReadOnlyDataFrameJsonConverter))]
 [CollectionBuilder(typeof(ReadOnlyDataFrame), nameof(Create))]
-public sealed class ReadOnlyDataFrame : IReadOnlyDataFrame
+public sealed class ReadOnlyDataFrame : IReadOnlyList<ReadOnlySeries>, IReadOnlyDataFrame
 {
     public static readonly ReadOnlyDataFrame Empty = new();
 
@@ -41,16 +41,16 @@ public sealed class ReadOnlyDataFrame : IReadOnlyDataFrame
 
     public ReadOnlySeries? this[string name] => _columns.FirstOrDefault(s => s.Name == name);
 
+    IReadOnlySeries? IReadOnlyDataFrame.this[string name] => this[name];
+
+    IReadOnlySeries IReadOnlyDataFrame.this[int index] => this[index];
+
     /// <summary>
     /// A name for the data frame (optional).
     /// </summary>
     public string? Name { get; }
 
     public int Count => _columns.Count;
-
-    IReadOnlySeries IReadOnlyList<IReadOnlySeries>.this[int index] => throw new NotImplementedException();
-
-    IReadOnlySeries? IReadOnlyDataFrame.this[string name] => throw new NotImplementedException();
 
     public IEnumerator<ReadOnlySeries> GetEnumerator()
     {
@@ -67,8 +67,8 @@ public sealed class ReadOnlyDataFrame : IReadOnlyDataFrame
         return new ReadOnlyDataFrame([.. columns.ToArray()]);
     }
 
-    IEnumerator<IReadOnlySeries> IEnumerable<IReadOnlySeries>.GetEnumerator()
+    IEnumerable<IReadOnlySeries> IReadOnlyDataFrame.GetReadOnlySeriesEnumerable()
     {
-        return GetEnumerator();
+        return this;
     }
 }

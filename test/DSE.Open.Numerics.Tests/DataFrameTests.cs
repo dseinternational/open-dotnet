@@ -31,6 +31,48 @@ public class DataFrameTests : LoggedTestsBase
     }
 
     [Fact]
+    public void IndexerGetName()
+    {
+        var series1 = Series.Create([1, 2, 3, 4, 5], "series1");
+        var series2 = Series.Create([5, 4, 3, 2, 1], "series2");
+
+        var frame = new DataFrame
+        {
+            series1,
+            series2
+        };
+
+        Assert.Same(series1, frame["series1"]);
+        Assert.Same(series2, frame["series2"]);
+    }
+
+    [Fact]
+    public void CollectionInitializer()
+    {
+        var series1 = Series.Create([1, 2, 3, 4, 5], "series1");
+        var series2 = Series.Create([5, 4, 3, 2, 1], "series2");
+
+        DataFrame frame = [series1, series2];
+
+        Assert.Same(series1, frame["series1"]);
+        Assert.Same(series2, frame["series2"]);
+    }
+
+    [Fact]
+    public void Enumerate()
+    {
+        var series1 = Series.Create([1, 2, 3, 4, 5], "series1");
+        var series2 = Series.Create([5, 4, 3, 2, 1], "series2");
+
+        DataFrame frame = [series1, series2];
+
+        var seriesArray = frame.ToArray();
+
+        Assert.Same(series1, seriesArray[0]);
+        Assert.Same(series2, seriesArray[1]);
+    }
+
+    [Fact]
     public void SerializeDeserializeReflectedInt32()
     {
         var series1 = Series.Create([.. Enumerable.Range(0, 100)]);

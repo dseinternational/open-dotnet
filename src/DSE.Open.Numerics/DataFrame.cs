@@ -15,7 +15,7 @@ namespace DSE.Open.Numerics;
 /// </summary>
 [JsonConverter(typeof(DataFrameJsonConverter))]
 [CollectionBuilder(typeof(DataFrame), nameof(Create))]
-public class DataFrame : IDataFrame
+public sealed class DataFrame : IList<Series>, IReadOnlyDataFrame
 {
     private readonly Collection<Series> _columns;
 
@@ -45,8 +45,6 @@ public class DataFrame : IDataFrame
         }
     }
 
-    IReadOnlySeries IReadOnlyList<IReadOnlySeries>.this[int index] => this[index];
-
     public Series? this[string name]
     {
         get => _columns.FirstOrDefault(s => s.Name == name);
@@ -68,15 +66,15 @@ public class DataFrame : IDataFrame
         }
     }
 
-    IReadOnlySeries? IReadOnlyDataFrame.this[string name] => this[name];
-
-    ISeries? IDataFrame.this[string name] { get => this[name]; set => this[name] = (Series?)value; }
-
     public Series this[int index]
     {
         get => _columns[index];
         set => _columns[index] = value;
     }
+
+    IReadOnlySeries? IReadOnlyDataFrame.this[string name] => this[name];
+
+    IReadOnlySeries IReadOnlyDataFrame.this[int index] => this[index];
 
     /// <summary>
     /// A name for the data frame (optional).
@@ -154,11 +152,6 @@ public class DataFrame : IDataFrame
         return ((IEnumerable)_columns).GetEnumerator();
     }
 
-    IEnumerator<IReadOnlySeries> IEnumerable<IReadOnlySeries>.GetEnumerator()
-    {
-        return GetEnumerator();
-    }
-
     [OverloadResolutionPriority(1)]
     public static DataFrame Create(Collection<Series> columns)
     {
@@ -175,5 +168,10 @@ public class DataFrame : IDataFrame
     public static DataFrame Create(ReadOnlySpan<Series> columns)
     {
         return new DataFrame([.. columns.ToArray()]);
+    }
+
+    IEnumerable<IReadOnlySeries> IReadOnlyDataFrame.GetReadOnlySeriesEnumerable()
+    {
+        return this;
     }
 }

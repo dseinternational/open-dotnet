@@ -7,6 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
+using DSE.Open.Numerics;
 using DSE.Open.Numerics.Serialization;
 
 namespace DSE.Open.Numerics;

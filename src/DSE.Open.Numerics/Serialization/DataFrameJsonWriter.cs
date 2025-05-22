@@ -23,7 +23,7 @@ public static class DataFrameJsonWriter
 
         writer.WriteStartArray();
 
-        foreach (var column in value)
+        foreach (var column in value.GetReadOnlySeriesEnumerable())
         {
             SeriesJsonWriter.Write(writer, column, options);
         }
