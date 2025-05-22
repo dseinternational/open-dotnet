@@ -95,7 +95,7 @@ public abstract class Series : SeriesBase, ISeries
     }
 
     public static Series<T> Create<T>(int length)
-        where T : struct, INumber<T>
+        where T : IEquatable<T>
     {
         return Create(new T[length]);
     }

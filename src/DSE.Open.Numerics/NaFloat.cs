@@ -132,294 +132,14 @@ public readonly struct NaFloat<T>
 
     static NaFloat<T> IMultiplicativeIdentity<NaFloat<T>, NaFloat<T>>.MultiplicativeIdentity => throw new NotImplementedException();
 
-    static bool IComparisonOperators<NaFloat<T>, NaFloat<T>, bool>.operator >(NaFloat<T> left, NaFloat<T> right)
+    public static bool operator >(NaFloat<T> left, NaFloat<T> right)
     {
-        throw new NotImplementedException();
+        return left._value > right._value;
     }
 
-    static bool IComparisonOperators<NaFloat<T>, NaFloat<T>, bool>.operator >=(NaFloat<T> left, NaFloat<T> right)
+    public static bool operator >=(NaFloat<T> left, NaFloat<T> right)
     {
-        throw new NotImplementedException();
-    }
-
-    static bool IComparisonOperators<NaFloat<T>, NaFloat<T>, bool>.operator <(NaFloat<T> left, NaFloat<T> right)
-    {
-        throw new NotImplementedException();
-    }
-
-    static bool IComparisonOperators<NaFloat<T>, NaFloat<T>, bool>.operator <=(NaFloat<T> left, NaFloat<T> right)
-    {
-        throw new NotImplementedException();
-    }
-
-    static NaFloat<T> IModulusOperators<NaFloat<T>, NaFloat<T>, NaFloat<T>>.operator %(NaFloat<T> left, NaFloat<T> right)
-    {
-        throw new NotImplementedException();
-    }
-
-    static NaFloat<T> IAdditionOperators<NaFloat<T>, NaFloat<T>, NaFloat<T>>.operator +(NaFloat<T> left, NaFloat<T> right)
-    {
-        throw new NotImplementedException();
-    }
-
-    static NaFloat<T> IDecrementOperators<NaFloat<T>>.operator --(NaFloat<T> value)
-    {
-        throw new NotImplementedException();
-    }
-
-    static NaFloat<T> IDivisionOperators<NaFloat<T>, NaFloat<T>, NaFloat<T>>.operator /(NaFloat<T> left, NaFloat<T> right)
-    {
-        throw new NotImplementedException();
-    }
-
-    static NaFloat<T> IIncrementOperators<NaFloat<T>>.operator ++(NaFloat<T> value)
-    {
-        throw new NotImplementedException();
-    }
-
-    static NaFloat<T> IMultiplyOperators<NaFloat<T>, NaFloat<T>, NaFloat<T>>.operator *(NaFloat<T> left, NaFloat<T> right)
-    {
-        throw new NotImplementedException();
-    }
-
-    static NaFloat<T> ISubtractionOperators<NaFloat<T>, NaFloat<T>, NaFloat<T>>.operator -(NaFloat<T> left, NaFloat<T> right)
-    {
-        throw new NotImplementedException();
-    }
-
-    static NaFloat<T> IUnaryNegationOperators<NaFloat<T>, NaFloat<T>>.operator -(NaFloat<T> value)
-    {
-        throw new NotImplementedException();
-    }
-
-    static NaFloat<T> IUnaryPlusOperators<NaFloat<T>, NaFloat<T>>.operator +(NaFloat<T> value)
-    {
-        throw new NotImplementedException();
-    }
-
-    static bool IEqualityOperators<NaFloat<T>, NaFloat<T>, bool>.operator ==(NaFloat<T> left, NaFloat<T> right)
-    {
-        throw new NotImplementedException();
-    }
-
-    static bool IEqualityOperators<NaFloat<T>, NaFloat<T>, bool>.operator !=(NaFloat<T> left, NaFloat<T> right)
-    {
-        throw new NotImplementedException();
-    }
-
-    int IComparable.CompareTo(object? obj)
-    {
-        throw new NotImplementedException();
-    }
-
-    int IComparable<NaFloat<T>>.CompareTo(NaFloat<T> other)
-    {
-        throw new NotImplementedException();
-    }
-
-    static NaFloat<T> INumberBase<NaFloat<T>>.Abs(NaFloat<T> value)
-    {
-        throw new NotImplementedException();
-    }
-
-    static bool INumberBase<NaFloat<T>>.IsCanonical(NaFloat<T> value)
-    {
-        throw new NotImplementedException();
-    }
-
-    static bool INumberBase<NaFloat<T>>.IsComplexNumber(NaFloat<T> value)
-    {
-        throw new NotImplementedException();
-    }
-
-    static bool INumberBase<NaFloat<T>>.IsEvenInteger(NaFloat<T> value)
-    {
-        throw new NotImplementedException();
-    }
-
-    static bool INumberBase<NaFloat<T>>.IsFinite(NaFloat<T> value)
-    {
-        throw new NotImplementedException();
-    }
-
-    static bool INumberBase<NaFloat<T>>.IsImaginaryNumber(NaFloat<T> value)
-    {
-        throw new NotImplementedException();
-    }
-
-    static bool INumberBase<NaFloat<T>>.IsInfinity(NaFloat<T> value)
-    {
-        throw new NotImplementedException();
-    }
-
-    static bool INumberBase<NaFloat<T>>.IsInteger(NaFloat<T> value)
-    {
-        throw new NotImplementedException();
-    }
-
-    static bool INumberBase<NaFloat<T>>.IsNaN(NaFloat<T> value)
-    {
-        throw new NotImplementedException();
-    }
-
-    static bool INumberBase<NaFloat<T>>.IsNegative(NaFloat<T> value)
-    {
-        throw new NotImplementedException();
-    }
-
-    static bool INumberBase<NaFloat<T>>.IsNegativeInfinity(NaFloat<T> value)
-    {
-        throw new NotImplementedException();
-    }
-
-    static bool INumberBase<NaFloat<T>>.IsNormal(NaFloat<T> value)
-    {
-        throw new NotImplementedException();
-    }
-
-    static bool INumberBase<NaFloat<T>>.IsOddInteger(NaFloat<T> value)
-    {
-        throw new NotImplementedException();
-    }
-
-    static bool INumberBase<NaFloat<T>>.IsPositive(NaFloat<T> value)
-    {
-        throw new NotImplementedException();
-    }
-
-    static bool INumberBase<NaFloat<T>>.IsPositiveInfinity(NaFloat<T> value)
-    {
-        throw new NotImplementedException();
-    }
-
-    static bool INumberBase<NaFloat<T>>.IsRealNumber(NaFloat<T> value)
-    {
-        throw new NotImplementedException();
-    }
-
-    static bool INumberBase<NaFloat<T>>.IsSubnormal(NaFloat<T> value)
-    {
-        throw new NotImplementedException();
-    }
-
-    static bool INumberBase<NaFloat<T>>.IsZero(NaFloat<T> value)
-    {
-        throw new NotImplementedException();
-    }
-
-    static NaFloat<T> INumberBase<NaFloat<T>>.MaxMagnitude(NaFloat<T> x, NaFloat<T> y)
-    {
-        throw new NotImplementedException();
-    }
-
-    static NaFloat<T> INumberBase<NaFloat<T>>.MaxMagnitudeNumber(NaFloat<T> x, NaFloat<T> y)
-    {
-        throw new NotImplementedException();
-    }
-
-    static NaFloat<T> INumberBase<NaFloat<T>>.MinMagnitude(NaFloat<T> x, NaFloat<T> y)
-    {
-        throw new NotImplementedException();
-    }
-
-    static NaFloat<T> INumberBase<NaFloat<T>>.MinMagnitudeNumber(NaFloat<T> x, NaFloat<T> y)
-    {
-        throw new NotImplementedException();
-    }
-
-    static NaFloat<T> INumberBase<NaFloat<T>>.Parse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider)
-    {
-        throw new NotImplementedException();
-    }
-
-    static NaFloat<T> INumberBase<NaFloat<T>>.Parse(string s, NumberStyles style, IFormatProvider? provider)
-    {
-        throw new NotImplementedException();
-    }
-
-    static bool INumberBase<NaFloat<T>>.TryConvertFromChecked<TOther>(TOther value, out NaFloat<T> result)
-    {
-        throw new NotImplementedException();
-    }
-
-    static bool INumberBase<NaFloat<T>>.TryConvertFromSaturating<TOther>(TOther value, out NaFloat<T> result)
-    {
-        throw new NotImplementedException();
-    }
-
-    static bool INumberBase<NaFloat<T>>.TryConvertFromTruncating<TOther>(TOther value, out NaFloat<T> result)
-    {
-        throw new NotImplementedException();
-    }
-
-    static bool INumberBase<NaFloat<T>>.TryConvertToChecked<TOther>(NaFloat<T> value, out TOther result)
-    {
-        throw new NotImplementedException();
-    }
-
-    static bool INumberBase<NaFloat<T>>.TryConvertToSaturating<TOther>(NaFloat<T> value, out TOther result)
-    {
-        throw new NotImplementedException();
-    }
-
-    static bool INumberBase<NaFloat<T>>.TryConvertToTruncating<TOther>(NaFloat<T> value, out TOther result)
-    {
-        throw new NotImplementedException();
-    }
-
-    static bool INumberBase<NaFloat<T>>.TryParse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider, out NaFloat<T> result)
-    {
-        throw new NotImplementedException();
-    }
-
-    static bool INumberBase<NaFloat<T>>.TryParse(string? s, NumberStyles style, IFormatProvider? provider, out NaFloat<T> result)
-    {
-        throw new NotImplementedException();
-    }
-
-    bool ISpanFormattable.TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider? provider)
-    {
-        throw new NotImplementedException();
-    }
-
-    string IFormattable.ToString(string? format, IFormatProvider? formatProvider)
-    {
-        throw new NotImplementedException();
-    }
-
-    static NaFloat<T> ISpanParsable<NaFloat<T>>.Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
-    {
-        throw new NotImplementedException();
-    }
-
-    static bool ISpanParsable<NaFloat<T>>.TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out NaFloat<T> result)
-    {
-        throw new NotImplementedException();
-    }
-
-    static NaFloat<T> IParsable<NaFloat<T>>.Parse(string s, IFormatProvider? provider)
-    {
-        throw new NotImplementedException();
-    }
-
-    static bool IParsable<NaFloat<T>>.TryParse(string? s, IFormatProvider? provider, out NaFloat<T> result)
-    {
-        throw new NotImplementedException();
-    }
-
-    static NaFloat<T> INaNumber<NaFloat<T>, T>.FromValue(T value)
-    {
-        throw new NotImplementedException();
-    }
-
-    public static bool operator ==(NaFloat<T> left, NaFloat<T> right)
-    {
-        return left.Equals(right);
-    }
-
-    public static bool operator !=(NaFloat<T> left, NaFloat<T> right)
-    {
-        return !(left == right);
+        return left._value >= right._value;
     }
 
     public static bool operator <(NaFloat<T> left, NaFloat<T> right)
@@ -432,13 +152,433 @@ public readonly struct NaFloat<T>
         return left._value <= right._value;
     }
 
-    public static bool operator >(NaFloat<T> left, NaFloat<T> right)
+    public static NaFloat<T> operator %(NaFloat<T> left, NaFloat<T> right)
     {
-        return left._value > right._value;
+        return new NaFloat<T>(left._value % right._value);
     }
 
-    public static bool operator >=(NaFloat<T> left, NaFloat<T> right)
+    public static NaFloat<T> operator +(NaFloat<T> left, NaFloat<T> right)
     {
-        return left._value >= right._value;
+        return new NaFloat<T>(left._value + right._value);
+    }
+
+    public static NaFloat<T> operator --(NaFloat<T> value)
+    {
+        var v = value._value;
+        return new NaFloat<T>(--v);
+    }
+
+    public static NaFloat<T> operator /(NaFloat<T> left, NaFloat<T> right)
+    {
+        return new NaFloat<T>(left._value / right._value);
+    }
+
+    public static NaFloat<T> operator ++(NaFloat<T> value)
+    {
+        var v = value._value;
+        return new NaFloat<T>(++v);
+    }
+
+    public static NaFloat<T> operator *(NaFloat<T> left, NaFloat<T> right)
+    {
+        return new NaFloat<T>(left._value * right._value);
+    }
+
+    public static NaFloat<T> operator -(NaFloat<T> left, NaFloat<T> right)
+    {
+        return new NaFloat<T>(left._value - right._value);
+    }
+
+    public static NaFloat<T> operator -(NaFloat<T> value)
+    {
+        return new NaFloat<T>(-value._value);
+    }
+
+    public static NaFloat<T> operator +(NaFloat<T> value)
+    {
+        return new NaFloat<T>(+value._value);
+    }
+
+    public static bool operator ==(NaFloat<T> left, NaFloat<T> right)
+    {
+        // NaN == NaN: False
+        return left._value == right._value;
+    }
+
+    public static bool operator !=(NaFloat<T> left, NaFloat<T> right)
+    {
+        // NaN != NaN: True
+        return left._value != right._value;
+    }
+
+    int IComparable.CompareTo(object? obj)
+    {
+        if (obj is NaFloat<T> other)
+        {
+            return CompareTo(other);
+        }
+
+        if (obj is T value)
+        {
+            return _value.CompareTo(value);
+        }
+
+        throw new ArgumentException($"Object must be of type {nameof(NaFloat<>)}", nameof(obj));
+    }
+
+    public int CompareTo(NaFloat<T> other)
+    {
+        return _value.CompareTo(other._value);
+    }
+
+    static NaFloat<T> INumberBase<NaFloat<T>>.Abs(NaFloat<T> value)
+    {
+        return new NaFloat<T>(T.Abs(value._value));
+    }
+
+    static bool INumberBase<NaFloat<T>>.IsCanonical(NaFloat<T> value)
+    {
+        return T.IsCanonical(value._value);
+    }
+
+    static bool INumberBase<NaFloat<T>>.IsComplexNumber(NaFloat<T> value)
+    {
+        return T.IsComplexNumber(value._value);
+    }
+
+    static bool INumberBase<NaFloat<T>>.IsEvenInteger(NaFloat<T> value)
+    {
+        return T.IsEvenInteger(value._value);
+    }
+
+    static bool INumberBase<NaFloat<T>>.IsFinite(NaFloat<T> value)
+    {
+        return T.IsFinite(value._value);
+    }
+
+    static bool INumberBase<NaFloat<T>>.IsImaginaryNumber(NaFloat<T> value)
+    {
+        return T.IsImaginaryNumber(value._value);
+    }
+
+    static bool INumberBase<NaFloat<T>>.IsInfinity(NaFloat<T> value)
+    {
+        return T.IsInfinity(value._value);
+    }
+
+    static bool INumberBase<NaFloat<T>>.IsInteger(NaFloat<T> value)
+    {
+        return T.IsInteger(value._value);
+    }
+
+    public static bool IsNaN(NaFloat<T> value)
+    {
+        return value.IsNa;
+    }
+
+    static bool INumberBase<NaFloat<T>>.IsNegative(NaFloat<T> value)
+    {
+        return T.IsNegative(value._value);
+    }
+
+    static bool INumberBase<NaFloat<T>>.IsNegativeInfinity(NaFloat<T> value)
+    {
+        return T.IsNegativeInfinity(value._value);
+    }
+
+    static bool INumberBase<NaFloat<T>>.IsNormal(NaFloat<T> value)
+    {
+        return T.IsNormal(value._value);
+    }
+
+    static bool INumberBase<NaFloat<T>>.IsOddInteger(NaFloat<T> value)
+    {
+        return T.IsOddInteger(value._value);
+    }
+
+    static bool INumberBase<NaFloat<T>>.IsPositive(NaFloat<T> value)
+    {
+        return T.IsPositive(value._value);
+    }
+
+    static bool INumberBase<NaFloat<T>>.IsPositiveInfinity(NaFloat<T> value)
+    {
+        return T.IsPositiveInfinity(value._value);
+    }
+
+    static bool INumberBase<NaFloat<T>>.IsRealNumber(NaFloat<T> value)
+    {
+        return T.IsRealNumber(value._value);
+    }
+
+    static bool INumberBase<NaFloat<T>>.IsSubnormal(NaFloat<T> value)
+    {
+        return T.IsSubnormal(value._value);
+    }
+
+    static bool INumberBase<NaFloat<T>>.IsZero(NaFloat<T> value)
+    {
+        return T.IsZero(value._value);
+    }
+
+    static NaFloat<T> INumberBase<NaFloat<T>>.MaxMagnitude(NaFloat<T> x, NaFloat<T> y)
+    {
+        return T.MaxMagnitude(x._value, y._value);
+    }
+
+    static NaFloat<T> INumberBase<NaFloat<T>>.MaxMagnitudeNumber(NaFloat<T> x, NaFloat<T> y)
+    {
+        return T.MaxMagnitudeNumber(x._value, y._value);
+    }
+
+    static NaFloat<T> INumberBase<NaFloat<T>>.MinMagnitude(NaFloat<T> x, NaFloat<T> y)
+    {
+        return T.MinMagnitude(x._value, y._value);
+    }
+
+    static NaFloat<T> INumberBase<NaFloat<T>>.MinMagnitudeNumber(NaFloat<T> x, NaFloat<T> y)
+    {
+        return T.MinMagnitudeNumber(x._value, y._value);
+    }
+
+    public static NaFloat<T> Parse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider)
+    {
+        return T.Parse(s, style, provider);
+    }
+
+    public static NaFloat<T> Parse(string s, NumberStyles style, IFormatProvider? provider)
+    {
+        return T.Parse(s, style, provider);
+    }
+
+    static bool INumberBase<NaFloat<T>>.TryConvertFromChecked<TOther>(TOther value, out NaFloat<T> result)
+    {
+        if (value is NaFloat<T> naValue)
+        {
+            result = naValue;
+            return true;
+        }
+
+        if (value is T tValue)
+        {
+            result = new(tValue);
+            return true;
+        }
+
+        if (T.TryConvertFromChecked(value, out var valResult))
+        {
+            result = new(valResult);
+            return true;
+        }
+
+        result = default;
+        return false;
+    }
+
+    static bool INumberBase<NaFloat<T>>.TryConvertFromSaturating<TOther>(TOther value, out NaFloat<T> result)
+    {
+        if (value is NaFloat<T> naValue)
+        {
+            result = naValue;
+            return true;
+        }
+
+        if (value is T tValue)
+        {
+            result = new(tValue);
+            return true;
+        }
+
+        if (T.TryConvertFromSaturating(value, out var valResult))
+        {
+            result = new(valResult);
+            return true;
+        }
+
+        result = default;
+        return false;
+    }
+
+    static bool INumberBase<NaFloat<T>>.TryConvertFromTruncating<TOther>(TOther value, out NaFloat<T> result)
+    {
+        if (value is NaFloat<T> naValue)
+        {
+            result = naValue;
+            return true;
+        }
+
+        if (value is T tValue)
+        {
+            result = new(tValue);
+            return true;
+        }
+
+        if (T.TryConvertFromTruncating(value, out var valResult))
+        {
+            result = new(valResult);
+            return true;
+        }
+
+        result = default;
+        return false;
+    }
+
+    static bool INumberBase<NaFloat<T>>.TryConvertToChecked<TOther>(NaFloat<T> value, out TOther result)
+    {
+        if (value is NaFloat<T> naValue)
+        {
+            result = (TOther)(object)naValue;
+            return true;
+        }
+
+        if (value is T tValue)
+        {
+            result = (TOther)(object)tValue;
+            return true;
+        }
+
+        if (T.TryConvertToChecked<T>(value._value, out var valResult))
+        {
+            result = (TOther)(object)valResult;
+            return true;
+        }
+
+        result = default!;
+        return false;
+    }
+
+    static bool INumberBase<NaFloat<T>>.TryConvertToSaturating<TOther>(NaFloat<T> value, out TOther result)
+    {
+        if (value is NaFloat<T> naValue)
+        {
+            result = (TOther)(object)naValue;
+            return true;
+        }
+
+        if (value is T tValue)
+        {
+            result = (TOther)(object)tValue;
+            return true;
+        }
+
+        if (T.TryConvertToSaturating<T>(value._value, out var valResult))
+        {
+            result = (TOther)(object)valResult;
+            return true;
+        }
+
+        result = default!;
+        return false;
+    }
+
+    static bool INumberBase<NaFloat<T>>.TryConvertToTruncating<TOther>(NaFloat<T> value, out TOther result)
+    {
+        if (value is NaFloat<T> naValue)
+        {
+            result = (TOther)(object)naValue;
+            return true;
+        }
+
+        if (value is T tValue)
+        {
+            result = (TOther)(object)tValue;
+            return true;
+        }
+
+        if (T.TryConvertToTruncating<T>(value._value, out var valResult))
+        {
+            result = (TOther)(object)valResult;
+            return true;
+        }
+
+        result = default!;
+        return false;
+    }
+
+    public static bool TryParse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider, out NaFloat<T> result)
+    {
+        if (T.TryParse(s, style, provider, out var valResult))
+        {
+            result = new(valResult);
+            return true;
+        }
+
+        result = default;
+        return false;
+    }
+
+    public static bool TryParse(string? s, NumberStyles style, IFormatProvider? provider, out NaFloat<T> result)
+    {
+        // todo: null handling
+
+        if (T.TryParse(s, style, provider, out var valResult))
+        {
+            result = new(valResult);
+            return true;
+        }
+
+        result = default;
+        return false;
+    }
+
+    public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider? provider)
+    {
+        if (_value.TryFormat(destination, out charsWritten, format, provider))
+        {
+            return true;
+        }
+
+        charsWritten = 0;
+        return false;
+    }
+
+    public string ToString(string? format, IFormatProvider? formatProvider)
+    {
+        return _value.ToString(format, formatProvider);
+    }
+
+    public static NaFloat<T> Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
+    {
+        if (T.TryParse(s, provider, out var valResult))
+        {
+            return new(valResult);
+        }
+
+        return Na;
+    }
+
+    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out NaFloat<T> result)
+    {
+        if (T.TryParse(s, provider, out var valResult))
+        {
+            result = new(valResult);
+            return true;
+        }
+
+        result = default;
+        return false;
+    }
+
+    public static NaFloat<T> Parse(string s, IFormatProvider? provider)
+    {
+        if (T.TryParse(s, provider, out var valResult))
+        {
+            return new(valResult);
+        }
+
+        return Na;
+    }
+
+    public static bool TryParse(string? s, IFormatProvider? provider, out NaFloat<T> result)
+    {
+        if (T.TryParse(s, provider, out var valResult))
+        {
+            result = new(valResult);
+            return true;
+
+        }
+
+        result = default;
+        return false;
     }
 }
