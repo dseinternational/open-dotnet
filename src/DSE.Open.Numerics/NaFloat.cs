@@ -21,16 +21,16 @@ public readonly struct NaFloat<T>
 
     public static NaFloat<T> Na { get; } = new(T.NaN);
 
-    public static NaFloat<T> MaxValue { get; } = T.MaxValue;
+    public static NaFloat<T> MaxValue { get; } = new(T.MaxValue);
 
-    public static NaFloat<T> MinValue { get; } = T.MaxValue;
+    public static NaFloat<T> MinValue { get; } = new(T.MinValue);
 
     static NaFloat<T> INaValue<NaFloat<T>, T>.Na { get; } = Na;
 
     private readonly T _value;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private NaFloat(T value)
+    public NaFloat(T value)
     {
         _value = value;
     }
@@ -86,7 +86,7 @@ public readonly struct NaFloat<T>
 
     public bool EqualOrBothNa(NaFloat<T> other)
     {
-        return !IsNa && !other.IsNa && _value == other._value;
+        return (IsNa && other.IsNa) || (!IsNa && !other.IsNa && _value == other._value);
     }
 
     public bool EqualOrEitherNa(NaFloat<T> other)
@@ -96,7 +96,7 @@ public readonly struct NaFloat<T>
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(_value);
+        return IsNa ? 0 : _value.GetHashCode();
     }
 
     public static implicit operator NaFloat<T>(T value)
@@ -122,15 +122,15 @@ public readonly struct NaFloat<T>
     // -----------------------------------------------------------------
     // INumberBase
 
-    static NaFloat<T> INumberBase<NaFloat<T>>.One => T.One;
+    public static NaFloat<T> One => T.One;
 
     static int INumberBase<NaFloat<T>>.Radix => T.Radix;
 
-    static NaFloat<T> INumberBase<NaFloat<T>>.Zero => throw new NotImplementedException();
+    public static NaFloat<T> Zero => new(T.Zero);
 
-    static NaFloat<T> IAdditiveIdentity<NaFloat<T>, NaFloat<T>>.AdditiveIdentity => throw new NotImplementedException();
+    static NaFloat<T> IAdditiveIdentity<NaFloat<T>, NaFloat<T>>.AdditiveIdentity => new(T.Zero);
 
-    static NaFloat<T> IMultiplicativeIdentity<NaFloat<T>, NaFloat<T>>.MultiplicativeIdentity => throw new NotImplementedException();
+    static NaFloat<T> IMultiplicativeIdentity<NaFloat<T>, NaFloat<T>>.MultiplicativeIdentity => new(T.One);
 
     public static bool operator >(NaFloat<T> left, NaFloat<T> right)
     {
@@ -343,7 +343,7 @@ public readonly struct NaFloat<T>
 
     public static NaFloat<T> Parse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider)
     {
-        return T.Parse(s, style, provider);
+        return new(T.Parse(s, style, provider));
     }
 
     public static NaFloat<T> Parse(string s, NumberStyles style, IFormatProvider? provider)
