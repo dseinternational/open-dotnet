@@ -3,7 +3,7 @@
 
 namespace DSE.Open.Numerics;
 
-public partial class VectorPrimitivesTestsSequenceEqual
+public partial class VectorPrimitivesTests
 {
     [Fact]
     public void SequenceEqual_ReadOnlySpan()

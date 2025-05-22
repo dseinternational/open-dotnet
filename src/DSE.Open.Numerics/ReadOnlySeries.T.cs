@@ -22,20 +22,25 @@ namespace DSE.Open.Numerics;
 public class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
     where T : IEquatable<T>
 {
-    public static readonly ReadOnlySeries<T> Empty = new([], null, null, null);
+    public static readonly ReadOnlySeries<T> Empty = new([]);
 
     private readonly ReadOnlyVector<T> _vector;
-    private readonly ReadOnlyValueLabelCollection<T> _labels;
 
-    internal ReadOnlySeries(
-        [NotNull] ReadOnlyVector<T> vector,
-        string? name,
-        Index? index,
-        ReadOnlyValueLabelCollection<T>? labels)
-        : base(vector, name, index)
+    public ReadOnlySeries([NotNull] ReadOnlyVector<T> vector)
+        : this(vector, null)
+    {
+    }
+
+    public ReadOnlySeries([NotNull] ReadOnlyVector<T> vector, string? name)
+        : this(vector, name, null)
+    {
+    }
+
+    public ReadOnlySeries([NotNull] ReadOnlyVector<T> vector, string? name, CategorySet<T>? categories)
+        : base(vector, name)
     {
         _vector = vector;
-        _labels = labels ?? [];
+        // todo: if not null, validate categories
     }
 
     public T this[int index]
@@ -48,20 +53,8 @@ public class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
     int IReadOnlyCollection<T>.Count => Length;
 #pragma warning restore CA1033 // Interface methods should be callable by child types
 
-    public bool HasValueLabels => _labels.Count > 0;
-
-    public ReadOnlyValueLabelCollection<T> ValueLabels => _labels;
-
-    IReadOnlyValueLabelCollection<T> IReadOnlySeries<T>.ValueLabels => ValueLabels;
-
     public new ReadOnlyVector<T> Vector => _vector;
 
-    public IEnumerable<string> GetLabelledData()
-    {
-        return new SeriesLabelEnumerable<T>(this);
-    }
-
-    // protected ReadOnlyVector<T> Vector => _vector;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ReadOnlySpan<T> AsReadOnlySpan()
@@ -120,13 +113,13 @@ public class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ReadOnlySeries<T> Slice(int start)
     {
-        return new(_vector[start..], Name, null, null);
+        return new(_vector[start..], Name);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ReadOnlySeries<T> Slice(int start, int length)
     {
-        return new(_vector.Slice(start, length), Name, null, null);
+        return new(_vector.Slice(start, length), Name);
     }
 
     IReadOnlySeries<T> IReadOnlySeries<T>.Slice(int start, int length)
@@ -149,7 +142,7 @@ public class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
         Justification = "By design")]
     public static implicit operator ReadOnlySeries<T>(ReadOnlyMemory<T> vector)
     {
-        return new(vector, null, null, null);
+        return new(vector);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -158,7 +151,7 @@ public class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
     public static implicit operator ReadOnlySeries<T>(T[] vector)
     {
         ArgumentNullException.ThrowIfNull(vector);
-        return new(vector, null, null, null);
+        return new(vector);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

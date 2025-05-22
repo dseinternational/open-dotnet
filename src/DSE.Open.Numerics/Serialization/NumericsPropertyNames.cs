@@ -7,7 +7,6 @@ internal static class NumericsPropertyNames
 {
     public const string Categories = "categories";
     public const string DataType = "dtype";
-    public const string Labels = "labels";
     public const string Length = "length";
     public const string Name = "name";
     public const string Values = "values";

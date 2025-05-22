@@ -18,10 +18,10 @@ public static partial class Sequence
     /// <param name="sequence">The sequence of elements to use for the calculation.</param>
     /// <returns></returns>
     /// <exception cref="OverflowException">An arithmetic overflow occured.</exception>
-    public static T Sum<T>(IEnumerable<T> sequence)
+    public static T SumChecked<T>(IEnumerable<T> sequence)
         where T : struct, INumberBase<T>
     {
-        return Sum<T, T>(sequence, out _);
+        return SumChecked<T, T>(sequence, out _);
     }
 
     /// <summary>
@@ -35,10 +35,10 @@ public static partial class Sequence
     /// <param name="size"></param>
     /// <returns></returns>
     /// <exception cref="OverflowException">An arithmetic overflow occured.</exception>
-    public static T Sum<T>(IEnumerable<T> sequence, out long size)
+    public static T SumChecked<T>(IEnumerable<T> sequence, out long size)
         where T : struct, INumberBase<T>
     {
-        return Sum<T, T>(sequence, out size);
+        return SumChecked<T, T>(sequence, out size);
     }
 
     /// <summary>
@@ -52,11 +52,11 @@ public static partial class Sequence
     /// <typeparam name="TResult">The type to use for the calculation and the result.</typeparam>
     /// <param name="sequence">The sequence of elements to use for the calculation.</param>
     /// <returns></returns>
-    public static TResult Sum<T, TResult>(IEnumerable<T> sequence)
+    public static TResult SumChecked<T, TResult>(IEnumerable<T> sequence)
         where T : struct, INumberBase<T>
         where TResult : struct, INumberBase<TResult>
     {
-        return Sum<T, TResult>(sequence, out _);
+        return SumChecked<T, TResult>(sequence, out _);
     }
 
     /// <summary>
@@ -71,14 +71,14 @@ public static partial class Sequence
     /// <param name="sequence">The sequence of elements to use for the calculation.</param>
     /// <param name="size">The number of elements in the sequence.</param>
     /// <returns></returns>
-    public static TResult Sum<T, TResult>(IEnumerable<T> sequence, out long size)
+    public static TResult SumChecked<T, TResult>(IEnumerable<T> sequence, out long size)
         where T : struct, INumberBase<T>
         where TResult : struct, INumberBase<TResult>
     {
         if (sequence.TryGetSpan(out var span))
         {
             size = span.Length;
-            return VectorPrimitives.Sum<T, TResult>(span);
+            return VectorPrimitives.SumChecked<T, TResult>(span);
         }
 
         ArgumentNullException.ThrowIfNull(sequence);
@@ -107,12 +107,12 @@ public static partial class Sequence
     /// <param name="sequence"></param>
     /// <param name="summation"></param>
     /// <returns></returns>
-    public static T SumFloatingPoint<T>(
+    public static T SumChecked<T>(
         IEnumerable<T> sequence,
         SummationCompensation summation = SummationCompensation.None)
         where T : struct, IFloatingPointIeee754<T>
     {
-        return SumFloatingPoint<T, T>(sequence, summation);
+        return SumChecked<T, T>(sequence, summation);
     }
 
     /// <summary>
@@ -129,7 +129,7 @@ public static partial class Sequence
     /// <param name="summation"></param>
     /// <returns></returns>
     /// <exception cref="NotImplementedException"></exception>
-    public static TResult SumFloatingPoint<T, TResult>(
+    public static TResult SumChecked<T, TResult>(
         IEnumerable<T> sequence,
         SummationCompensation summation = SummationCompensation.None)
         where T : struct, IFloatingPointIeee754<T>
@@ -137,7 +137,7 @@ public static partial class Sequence
     {
         if (sequence.TryGetSpan(out var span))
         {
-            return VectorPrimitives.SumFloatingPoint<T, TResult>(span, summation);
+            return VectorPrimitives.SumChecked<T, TResult>(span, summation);
         }
 
         ArgumentNullException.ThrowIfNull(sequence);
@@ -157,15 +157,15 @@ public static partial class Sequence
 
         var result = TResult.AdditiveIdentity;
 
-        foreach (var value in sequence)
+        checked
         {
-            if (T.IsNaN(value))
+            foreach (var value in sequence)
             {
-                return TResult.NaN;
-            }
+                if (T.IsNaN(value))
+                {
+                    return TResult.NaN;
+                }
 
-            checked
-            {
                 result += TResult.CreateChecked(value);
             }
         }

@@ -19,15 +19,24 @@ public class DataFrame : IDataFrame
 {
     private readonly Collection<Series> _columns;
 
-    public DataFrame(string? name = null) : this([], null)
+    public DataFrame() : this([], null)
     {
     }
 
-    public DataFrame(Collection<Series> columns, string? name = null)
+    public DataFrame(string name) : this([], name)
+    {
+    }
+
+    public DataFrame(Collection<Series> columns) : this(columns, null)
+    {
+    }
+
+    public DataFrame(Collection<Series> columns, string? name)
     {
         ArgumentNullException.ThrowIfNull(columns);
 
         Name = name;
+
         _columns = columns;
 
         for (var i = 0; i < _columns.Count; i++)
@@ -145,13 +154,26 @@ public class DataFrame : IDataFrame
         return ((IEnumerable)_columns).GetEnumerator();
     }
 
-    public static DataFrame Create(ReadOnlySpan<Series> columns)
-    {
-        return new DataFrame([.. columns.ToArray()]);
-    }
-
     IEnumerator<IReadOnlySeries> IEnumerable<IReadOnlySeries>.GetEnumerator()
     {
         return GetEnumerator();
+    }
+
+    [OverloadResolutionPriority(1)]
+    public static DataFrame Create(Collection<Series> columns)
+    {
+#pragma warning disable IDE0028 // Simplify collection initialization
+        return new DataFrame(columns);
+#pragma warning restore IDE0028 // Simplify collection initialization
+    }
+
+    public static DataFrame Create(Collection<Series> columns, string? name)
+    {
+        return new DataFrame(columns, name);
+    }
+
+    public static DataFrame Create(ReadOnlySpan<Series> columns)
+    {
+        return new DataFrame([.. columns.ToArray()]);
     }
 }

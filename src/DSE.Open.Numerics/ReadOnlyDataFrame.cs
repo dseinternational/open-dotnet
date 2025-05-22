@@ -14,54 +14,37 @@ namespace DSE.Open.Numerics;
 /// </summary>
 [JsonConverter(typeof(ReadOnlyDataFrameJsonConverter))]
 [CollectionBuilder(typeof(ReadOnlyDataFrame), nameof(Create))]
-public class ReadOnlyDataFrame : IReadOnlyDataFrame
+public sealed class ReadOnlyDataFrame : IReadOnlyDataFrame
 {
     public static readonly ReadOnlyDataFrame Empty = new();
 
     private readonly ReadOnlyCollection<ReadOnlySeries> _columns;
-    private readonly ReadOnlyCollection<string> _columnNames;
 
-    private ReadOnlyDataFrame() : this([])
+    private ReadOnlyDataFrame() : this([], null)
     {
     }
 
-    public ReadOnlyDataFrame(ReadOnlyCollection<ReadOnlySeries> columns, string? name = null, ReadOnlyCollection<string>? columnNames = null)
+    public ReadOnlyDataFrame(ReadOnlyCollection<ReadOnlySeries> columns) : this(columns, null)
+    {
+    }
+
+    public ReadOnlyDataFrame(ReadOnlyCollection<ReadOnlySeries> columns, string? name)
     {
         ArgumentNullException.ThrowIfNull(columns);
 
-        if (columnNames is not null && columns.Count != columnNames.Count)
-        {
-            throw new ArgumentException("Columns and column names must have the same count.");
-        }
-
         Name = name;
+
         _columns = columns;
-        _columnNames = columnNames is not null ? columnNames : [];
     }
 
     public ReadOnlySeries this[int index] => _columns[index];
 
-    public ReadOnlySeries? this[string name]
-    {
-        get
-        {
-            var index = _columnNames.IndexOf(name);
-
-            if (index < 0)
-            {
-                return null;
-            }
-
-            return _columns[index];
-        }
-    }
+    public ReadOnlySeries? this[string name] => _columns.FirstOrDefault(s => s.Name == name);
 
     /// <summary>
     /// A name for the data frame (optional).
     /// </summary>
     public string? Name { get; }
-
-    public IReadOnlyList<string> ColumnNames => _columnNames;
 
     public int Count => _columns.Count;
 

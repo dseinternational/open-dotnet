@@ -9,7 +9,8 @@ namespace DSE.Open.Numerics;
 public static partial class VectorPrimitives
 {
     /// <summary>
-    /// Calculates the sample arithmetic mean of a sequence. If the sequence is empty, an <see cref="EmptySequenceException"/> is thrown.
+    /// Calculates the sample arithmetic mean of a sequence. If the sequence is empty,
+    /// an <see cref="EmptySequenceException"/> is thrown.
     /// </summary>
     /// <param name="vector">The vector to calculate the mean of.</param>
     /// <typeparam name="T">The type of the elements in the vector.</typeparam>
@@ -21,7 +22,8 @@ public static partial class VectorPrimitives
     }
 
     /// <summary>
-    /// Calculates the sample arithmetic mean of a sequence. If the sequence is empty, an <see cref="EmptySequenceException"/> is thrown.
+    /// Calculates the sample arithmetic mean of a sequence. If the sequence is empty,
+    /// an <see cref="EmptySequenceException"/> is thrown.
     /// </summary>
     /// <param name="span">The vector to calculate the mean of.</param>
     /// <typeparam name="T">The type of the elements in the vector.</typeparam>
@@ -32,7 +34,8 @@ public static partial class VectorPrimitives
     }
 
     /// <summary>
-    /// Calculates the sample arithmetic mean of a sequence. If the sequence is empty, an <see cref="EmptySequenceException"/> is thrown.
+    /// Calculates the sample arithmetic mean of a sequence. If the sequence is empty,
+    /// an <see cref="EmptySequenceException"/> is thrown.
     /// </summary>
     /// <param name="span">The vector to calculate the mean of.</param>
     /// <typeparam name="T">The type of the elements in the vector.</typeparam>
@@ -42,7 +45,7 @@ public static partial class VectorPrimitives
         where TResult : struct, INumberBase<TResult>
     {
         EmptySequenceException.ThrowIfEmpty(span);
-        var sum = Sum<T, TResult>(span);
+        var sum = SumChecked<T, TResult>(span);
         return sum / TResult.CreateChecked(span.Length);
     }
 }

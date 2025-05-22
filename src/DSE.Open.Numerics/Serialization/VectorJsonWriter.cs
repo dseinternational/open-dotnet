@@ -496,8 +496,8 @@ public static class VectorJsonWriter
             case IReadOnlyVector<NaFloat<Half>> halfVector:
                 WriteNaNumberSpan<NaFloat<Half>, Half>(writer, halfVector.AsSpan());
                 break;
-            case IReadOnlyVector<NaValue<DateTime64>> dateTime64Vector:
-                WriteNaNumberSpan<NaValue<DateTime64>, DateTime64>(writer, dateTime64Vector.AsSpan());
+            case IReadOnlyVector<NaInt<DateTime64>> dateTime64Vector:
+                WriteNaNumberSpan<NaInt<DateTime64>, DateTime64>(writer, dateTime64Vector.AsSpan());
                 break;
             case IReadOnlyVector<NaInt<Int128>> int128Vector:
                 WriteNaNumberSpan<NaInt<Int128>, Int128>(writer, int128Vector.AsSpan());
