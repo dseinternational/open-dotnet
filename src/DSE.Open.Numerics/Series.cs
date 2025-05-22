@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
@@ -16,23 +17,17 @@ namespace DSE.Open.Numerics;
 [JsonConverter(typeof(SeriesJsonConverter))]
 public abstract class Series : SeriesBase, ISeries
 {
-    protected internal Series(Vector vector, string? name, Index? index)
+    protected internal Series([NotNull] Vector vector, string? name)
         : base(vector)
     {
         ArgumentNullException.ThrowIfNull(vector);
         Name = name;
-        Index = index!;
     }
 
     /// <summary>
     /// Gets or sets a name for the series (optional).
     /// </summary>
     public string? Name { get; set; }
-
-    /// <summary>
-    /// Reserved for future use.
-    /// </summary>
-    public Index Index { get; }
 
     internal Vector Data => (Vector)BaseVector;
 

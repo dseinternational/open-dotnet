@@ -10,7 +10,7 @@ namespace DSE.Open.Numerics;
 public static class ReadOnlyCategorySet
 {
     public static ReadOnlyCategorySet<T> Create<T>(IReadOnlySet<T> set)
-        where T : struct, IBinaryNumber<T>
+        where T : IEquatable<T>
     {
         ArgumentNullException.ThrowIfNull(set);
 
@@ -29,7 +29,7 @@ public static class ReadOnlyCategorySet
         return new ReadOnlyCategorySet<T>(set);
     }
     public static ReadOnlyCategorySet<T> Create<T>(ReadOnlySpan<T> span)
-        where T : struct, IBinaryNumber<T>
+        where T : IEquatable<T>
     {
         if (span.Length == 0)
         {
@@ -44,7 +44,7 @@ public static class ReadOnlyCategorySet
 
 [CollectionBuilder(typeof(ReadOnlyCategorySet), nameof(ReadOnlyCategorySet.Create))]
 public sealed class ReadOnlyCategorySet<T> : ReadOnlySet<T>, IReadOnlyCategorySet<T>
-    where T : struct, IBinaryNumber<T>
+    where T : IEquatable<T>
 {
     public static new readonly ReadOnlyCategorySet<T> Empty = new(new HashSet<T>());
 

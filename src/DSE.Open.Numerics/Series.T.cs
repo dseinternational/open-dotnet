@@ -29,21 +29,29 @@ public class Series<T>
     where T : IEquatable<T>
 {
 #pragma warning disable IDE1006 // Naming Styles
-    internal static readonly Series<T> Empty = new([], null, null, null);
+    internal static readonly Series<T> Empty = new([]);
 #pragma warning restore IDE1006 // Naming Styles
 
     private readonly Vector<T> _vector;
-    private ValueLabelCollection<T>? _labels;
+    private CategorySet<T>? _categories;
 
-    internal Series(
-        [NotNull] Vector<T> vector,
-        string? name,
-        Index? index,
-        ValueLabelCollection<T>? labels)
-        : base(vector, name, index)
+    public Series(
+        [NotNull] Vector<T> vector)
+        : base(vector, name)
     {
         _vector = vector;
-        _labels = labels;
+        _categories = categories;
+    }
+
+    public Series(
+        [NotNull] Vector<T> vector,
+        string? name,
+        CategorySet<T>? categories)
+        : base(vector, name)
+    {
+        _vector = vector;
+        _categories = categories;
+        // todo: if not null, validate categories
     }
 
     public T this[int index]
@@ -58,20 +66,11 @@ public class Series<T>
     int IReadOnlyCollection<T>.Count => Length;
 #pragma warning restore CA1033 // Interface methods should be callable by child types
 
-    public bool HasValueLabels => _labels is not null && _labels.Count > 0;
-
-    public ValueLabelCollection<T> ValueLabels => _labels ??= [];
-
-    IValueLabelCollection<T> ISeries<T>.ValueLabels => ValueLabels;
-
-    IReadOnlyValueLabelCollection<T> IReadOnlySeries<T>.ValueLabels => ValueLabels;
-
     public new ReadOnlyVector<T> Vector => _vector;
 
-    public IEnumerable<string> GetLabelledData()
-    {
-        return new SeriesLabelEnumerable<T>(this);
-    }
+    public override bool IsCategorical { get; } = true;
+
+    public CategorySet<T> Categories => _categories ??= new();
 
     /// <summary>
     /// Gets a span over the contents of the vector.
@@ -109,7 +108,7 @@ public class Series<T>
 
     public new ReadOnlySeries<T> AsReadOnly()
     {
-        return new ReadOnlySeries<T>(_vector, Name, Index, null); // todo
+        return new ReadOnlySeries<T>(_vector, Name, _categories); // todo
     }
 
     IReadOnlySeries<T> ISeries<T>.AsReadOnly()

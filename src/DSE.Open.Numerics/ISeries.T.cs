@@ -15,12 +15,6 @@ public interface ISeries<T>
     new T this[int index] { get; set; }
 
     /// <summary>
-    /// Provides labels for data values in the series. There is no guarantee that every data value is
-    /// labelled, nor that every label is associated with a data value.
-    /// </summary>
-    new IValueLabelCollection<T> ValueLabels { get; }
-
-    /// <summary>
     /// Gets a read-only view of the vector.
     /// </summary>
     new IReadOnlySeries<T> AsReadOnly();
