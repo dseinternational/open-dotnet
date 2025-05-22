@@ -154,13 +154,26 @@ public class DataFrame : IDataFrame
         return ((IEnumerable)_columns).GetEnumerator();
     }
 
-    public static DataFrame Create(ReadOnlySpan<Series> columns)
-    {
-        return new DataFrame([.. columns.ToArray()]);
-    }
-
     IEnumerator<IReadOnlySeries> IEnumerable<IReadOnlySeries>.GetEnumerator()
     {
         return GetEnumerator();
+    }
+
+    [OverloadResolutionPriority(1)]
+    public static DataFrame Create(Collection<Series> columns)
+    {
+#pragma warning disable IDE0028 // Simplify collection initialization
+        return new DataFrame(columns);
+#pragma warning restore IDE0028 // Simplify collection initialization
+    }
+
+    public static DataFrame Create(Collection<Series> columns, string? name)
+    {
+        return new DataFrame(columns, name);
+    }
+
+    public static DataFrame Create(ReadOnlySpan<Series> columns)
+    {
+        return new DataFrame([.. columns.ToArray()]);
     }
 }

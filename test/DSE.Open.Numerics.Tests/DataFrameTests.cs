@@ -281,4 +281,33 @@ public class DataFrameTests : LoggedTestsBase
         Assert.NotNull(deserialized);
         Assert.Equivalent(frame, deserialized);
     }
+
+    [Fact]
+    public void SerializeDeserializeSourceGeneratedDateNaMixed()
+    {
+
+        var series1 = Series.Create<NaInt<DateTime64>>([DateTime64.Now, DateTime64.Now, DateTime64.Now]);
+        var series2 = Series.Create<NaInt<long>>([5L, 4L, 3L]);
+        var series3 = Series.Create([186352.1111, 0.0000067, -6984135]);
+        var series4 = Series.Create([(byte)1, (byte)2, (byte)3]);
+
+        var frame = new DataFrame
+        {
+            series1,
+            series2,
+            series3,
+            series4
+        };
+
+        var json = JsonSerializer.Serialize(frame, NumericsJsonSharedOptions.SourceGenerated);
+
+        Output.WriteLine(json);
+
+        Assert.NotNull(json);
+
+        var deserialized = JsonSerializer.Deserialize<DataFrame>(json, NumericsJsonSharedOptions.SourceGenerated);
+
+        Assert.NotNull(deserialized);
+        Assert.Equivalent(frame, deserialized);
+    }
 }

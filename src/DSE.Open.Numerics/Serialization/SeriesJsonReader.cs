@@ -104,7 +104,7 @@ internal static class SeriesJsonReader
             VectorDataType.NaUInt16 => CreateNaIntSeries<ushort>(data, name, categorySet),
             VectorDataType.NaInt8 => CreateNaIntSeries<sbyte>(data, name, categorySet),
             VectorDataType.NaUInt8 => CreateNaIntSeries<byte>(data, name, categorySet),
-            VectorDataType.NaDateTime64 => CreateNaValueSeries<DateTime64>(data, name, categorySet),
+            VectorDataType.NaDateTime64 => CreateNaIntSeries<DateTime64>(data, name, categorySet),
             VectorDataType.NaDateTime => CreateNaValueSeries<DateTime>(data, name, categorySet),
             VectorDataType.NaDateTimeOffset => CreateNaValueSeries<DateTimeOffset>(data, name, categorySet),
             VectorDataType.NaBool => CreateNaValueSeries<bool>(data, name, categorySet),
