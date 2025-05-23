@@ -4,7 +4,7 @@
 using System.Diagnostics.CodeAnalysis;
 using DSE.Open.DomainModel.Entities;
 using DSE.Open.EntityFrameworkCore;
-using FluentAssertions;
+using AwesomeAssertions;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 

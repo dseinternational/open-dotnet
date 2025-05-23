@@ -2,7 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using DSE.Open.Notifications;
-using FluentAssertions;
+using AwesomeAssertions;
 
 namespace DSE.Open.Results.Tests;
 

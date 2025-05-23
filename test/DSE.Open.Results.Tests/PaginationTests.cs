@@ -2,7 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Text.Json;
-using FluentAssertions;
+using AwesomeAssertions;
 
 namespace DSE.Open.Results.Tests;
 

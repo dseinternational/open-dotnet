@@ -3,7 +3,7 @@
 
 using System.Text.Json;
 using DSE.Open.Notifications;
-using FluentAssertions;
+using AwesomeAssertions;
 
 namespace DSE.Open.Results.Tests;
 

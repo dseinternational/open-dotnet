@@ -4,7 +4,7 @@
 using System.Text.Json;
 using DSE.Open.Notifications;
 using DSE.Open.Text.Json;
-using FluentAssertions;
+using AwesomeAssertions;
 
 namespace DSE.Open.Results.Tests;
 

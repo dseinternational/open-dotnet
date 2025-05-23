@@ -40,7 +40,7 @@
 
     <PackageReference Include="Moq"/>
 
-    <PackageReference Include="FluentAssertions"/>
+    <PackageReference Include="AwesomeAssertions"/>
     
   </ItemGroup>
 
