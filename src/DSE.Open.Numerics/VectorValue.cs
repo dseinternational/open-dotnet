@@ -3,6 +3,10 @@
 
 namespace DSE.Open.Numerics;
 
+/// <summary>
+/// A weakly-typed value that can be used to represent any of the supported <see cref="Vector{T}"/> types
+/// (see <see cref="VectorDataType"/>).
+/// </summary>
 public readonly struct VectorValue
     : IEquatable<VectorValue>,
       IEquatable<double>
@@ -17,6 +21,8 @@ public readonly struct VectorValue
         _ref = str;
         _kind = kind;
     }
+
+    public VectorDataType DataType => _kind;
 
     public static VectorValue FromInt8(sbyte value)
     {
@@ -510,6 +516,176 @@ public readonly struct VectorValue
         if (_kind != VectorDataType.DateTime64)
         {
             throw new InvalidOperationException($"Cannot convert to DateTime64 from {_kind}.");
+        }
+
+        return new DateTime64((long)_bits);
+    }
+
+    public NaInt<sbyte> ToNaInt8()
+    {
+        if (_kind != VectorDataType.NaInt8)
+        {
+            throw new InvalidOperationException($"Cannot convert to NaInt8 from {_kind}.");
+        }
+
+        return (sbyte)_bits;
+    }
+
+    public NaInt<short> ToNaInt16()
+    {
+        if (_kind != VectorDataType.NaInt16)
+        {
+            throw new InvalidOperationException($"Cannot convert to NaInt16 from {_kind}.");
+        }
+
+        return (short)_bits;
+    }
+
+    public NaInt<int> ToNaInt32()
+    {
+        if (_kind != VectorDataType.NaInt32)
+        {
+            throw new InvalidOperationException($"Cannot convert to NaInt32 from {_kind}.");
+        }
+
+        return (int)_bits;
+    }
+
+    public NaInt<long> ToNaInt64()
+    {
+        if (_kind != VectorDataType.NaInt64)
+        {
+            throw new InvalidOperationException($"Cannot convert to NaInt64 from {_kind}.");
+        }
+
+        return (long)_bits;
+    }
+
+    public NaInt<byte> ToNaUInt8()
+    {
+        if (_kind != VectorDataType.NaUInt8)
+        {
+            throw new InvalidOperationException($"Cannot convert to NaUInt8 from {_kind}.");
+        }
+
+        return (byte)_bits;
+    }
+
+    public NaInt<ushort> ToNaUInt16()
+    {
+        if (_kind != VectorDataType.NaUInt16)
+        {
+            throw new InvalidOperationException($"Cannot convert to NaUInt16 from {_kind}.");
+        }
+
+        return (ushort)_bits;
+    }
+
+    public NaInt<uint> ToNaUInt32()
+    {
+        if (_kind != VectorDataType.NaUInt32)
+        {
+            throw new InvalidOperationException($"Cannot convert to NaUInt32 from {_kind}.");
+        }
+
+        return (uint)_bits;
+    }
+
+    public NaInt<ulong> ToNaUInt64()
+    {
+        if (_kind != VectorDataType.NaUInt64)
+        {
+            throw new InvalidOperationException($"Cannot convert to NaUInt64 from {_kind}.");
+        }
+
+        return _bits;
+    }
+
+    public NaFloat<float> ToNaFloat32()
+    {
+        if (_kind != VectorDataType.NaFloat32)
+        {
+            throw new InvalidOperationException($"Cannot convert to NaFloat32 from {_kind}.");
+        }
+
+        return BitConverter.UInt32BitsToSingle((uint)_bits);
+    }
+
+    public NaFloat<Half> ToNaFloat16()
+    {
+        if (_kind != VectorDataType.NaFloat16)
+        {
+            throw new InvalidOperationException($"Cannot convert to NaFloat16 from {_kind}.");
+        }
+
+        return BitConverter.UInt16BitsToHalf((ushort)_bits);
+    }
+
+    public NaFloat<double> ToNaFloat64()
+    {
+        if (_kind != VectorDataType.NaFloat64)
+        {
+            throw new InvalidOperationException($"Cannot convert to NaFloat64 from {_kind}.");
+        }
+
+        return BitConverter.UInt64BitsToDouble(_bits);
+    }
+
+    public NaValue<string> ToNaString()
+    {
+        if (_kind != VectorDataType.NaString)
+        {
+            throw new InvalidOperationException($"Cannot convert to NaString from {_kind}.");
+        }
+
+        return (string?)_ref ?? string.Empty;
+    }
+
+    public NaValue<char> ToNaChar()
+    {
+        if (_kind != VectorDataType.NaChar)
+        {
+            throw new InvalidOperationException($"Cannot convert to NaChar from {_kind}.");
+        }
+
+        return (char)_bits;
+    }
+
+    public NaValue<bool> ToNaBoolean()
+    {
+        if (_kind != VectorDataType.NaBool)
+        {
+            throw new InvalidOperationException($"Cannot convert to NaBool from {_kind}.");
+        }
+
+        return _bits != 0;
+    }
+
+    public NaValue<DateTime> ToNaDateTime()
+    {
+        if (_kind != VectorDataType.NaDateTime)
+        {
+            throw new InvalidOperationException($"Cannot convert to NaDateTime from {_kind}.");
+        }
+
+        return new DateTime((long)_bits, DateTimeKind.Utc);
+    }
+
+    public NaValue<DateTimeOffset> ToNaDateTimeOffset()
+    {
+        if (_kind != VectorDataType.NaDateTimeOffset)
+        {
+            throw new InvalidOperationException($"Cannot convert to NaDateTimeOffset from {_kind}.");
+        }
+
+        return new DateTimeOffset((long)_bits, TimeSpan.Zero);
+    }
+
+    public NaInt<DateTime64> ToNaDateTime64()
+    {
+        if (_kind != VectorDataType.NaDateTime64)
+        {
+            throw new InvalidOperationException($"Cannot convert to NaDateTime64 from {_kind}.");
         }
 
         return new DateTime64((long)_bits);
