@@ -22,4 +22,10 @@ public interface IReadOnlySeries<T>
     ReadOnlySpan<T> AsReadOnlySpan();
 
     IReadOnlySeries<T> Slice(int start, int length);
+
+    /// <summary>
+    /// Provides labels for data values in the series. There is no guarantee that every data value is
+    /// labelled, nor that every label is associated with a data value.
+    /// </summary>
+    new IReadOnlyValueLabelCollection<T> ValueLabels { get; }
 }

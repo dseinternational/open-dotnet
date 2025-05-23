@@ -46,71 +46,116 @@ public abstract class Series : SeriesBase, ISeries
     }
 
 #pragma warning disable CA1033 // Interface methods should be callable by child types
+
     IReadOnlyCategorySet IReadOnlySeries.Categories => GetReadOnlyCategorySet();
+
+    IReadOnlyValueLabelCollection IReadOnlySeries.ValueLabels => GetReadOnlyValueLabelCollection();
+
 #pragma warning restore CA1033 // Interface methods should be callable by child types
+
+    protected abstract IReadOnlyValueLabelCollection GetReadOnlyValueLabelCollection();
+
+    public abstract bool HasValueLabels { get; }
 
     protected abstract IReadOnlyCategorySet GetReadOnlyCategorySet();
 
     [OverloadResolutionPriority(1)]
-    public static Series<T> Create<T>(Vector<T> data, string? name = null, CategorySet<T>? categories = null)
+    public static Series<T> Create<T>(
+        Vector<T> vector,
+        string? name = null,
+        CategorySet<T>? categories = null,
+        ValueLabelCollection<T>? valueLabels = null)
         where T : IEquatable<T>
     {
-        return new Series<T>(data, name, categories);
+        return new Series<T>(vector, name, categories, valueLabels);
     }
 
-    public static Series<T> Create<T>(Memory<T> data, string? name = null, CategorySet<T>? categories = null)
+    public static Series<T> Create<T>(
+        Memory<T> vector,
+        string? name = null,
+        CategorySet<T>? categories = null,
+        ValueLabelCollection<T>? valueLabels = null)
         where T : IEquatable<T>
     {
-        return new Series<T>(data, name, categories);
+        return new Series<T>(vector, name, categories, valueLabels);
     }
 
-    public static Series<T> Create<T>(T[] data, string? name = null, CategorySet<T>? categories = null)
+    public static Series<T> Create<T>(
+        T[] vector,
+        string? name = null,
+        CategorySet<T>? categories = null,
+        ValueLabelCollection<T>? valueLabels = null)
         where T : IEquatable<T>
     {
-        ArgumentNullException.ThrowIfNull(data);
-        return new Series<T>(data, name, categories);
+        ArgumentNullException.ThrowIfNull(vector);
+        return new Series<T>(vector, name, categories, valueLabels);
     }
 
     // for collection initializers
-    public static Series<T> Create<T>(ReadOnlySpan<T> data)
+    public static Series<T> Create<T>(ReadOnlySpan<T> vector)
         where T : IEquatable<T>
     {
-        return Create(data, null, null);
+        return Create(vector, null, null);
     }
 
-    public static Series<T> Create<T>(ReadOnlySpan<T> data, string? name = null, CategorySet<T>? categories = null)
+    public static Series<T> Create<T>(
+        ReadOnlySpan<T> vector,
+        string? name = null,
+        CategorySet<T>? categories = null,
+        ValueLabelCollection<T>? valueLabels = null)
         where T : IEquatable<T>
     {
-        return new Series<T>(data.ToArray(), name, categories);
+        return new Series<T>(vector.ToArray(), name, categories, valueLabels);
     }
 
-    public static Series<T> Create<T>(int length, string? name = null, CategorySet<T>? categories = null)
+    public static Series<T> Create<T>(
+        int length,
+        string? name = null,
+        CategorySet<T>? categories = null,
+        ValueLabelCollection<T>? valueLabels = null)
         where T : IEquatable<T>
     {
-        return Create(new T[length], name, categories);
+        return Create(new T[length], name, categories, valueLabels);
     }
 
-    public static Series<T> Create<T>(int length, T scalar, string? name = null, CategorySet<T>? categories = null)
+    public static Series<T> Create<T>(
+        int length,
+        T scalar,
+        string? name = null,
+        CategorySet<T>? categories = null,
+        ValueLabelCollection<T>? valueLabels = null)
         where T : IEquatable<T>
     {
-        var data = GC.AllocateUninitializedArray<T>(length);
-        data.AsSpan().Fill(scalar);
-        return Create(data, name, categories);
+        var vector = GC.AllocateUninitializedArray<T>(length);
+        vector.AsSpan().Fill(scalar);
+        return Create(vector, name, categories, valueLabels);
     }
 
-    public static Series<T> CreateZeroes<T>(int length, string? name = null, CategorySet<T>? categories = null)
+    public static Series<T> CreateZeroes<T>(
+        int length,
+        string? name = null,
+        CategorySet<T>? categories = null,
+        ValueLabelCollection<T>? valueLabels = null)
         where T : struct, INumber<T>
     {
-        return Create(length, T.Zero, name, categories);
+        return Create(length, T.Zero, name, categories, valueLabels);
     }
 
-    public static Series<T> CreateOnes<T>(int length, string? name = null, CategorySet<T>? categories = null)
+    public static Series<T> CreateOnes<T>(
+        int length,
+        string? name = null,
+        CategorySet<T>? categories = null,
+        ValueLabelCollection<T>? valueLabels = null)
         where T : struct, INumber<T>
     {
-        return Create(length, T.One, name, categories);
+        return Create(length, T.One, name, categories, valueLabels);
     }
 
-    public static Series<T> CreateUninitialized<T>(int length, string? name = null, CategorySet<T>? categories = null)
+    public static Series<T> CreateUninitialized<T>(
+        int length,
+        string? name = null,
+        CategorySet<T>? categories = null,
+        ValueLabelCollection<T>? valueLabels = null)
         where T : IEquatable<T>
     {
         return Create(GC.AllocateUninitializedArray<T>(length), name, categories);

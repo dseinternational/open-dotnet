@@ -5,9 +5,10 @@ namespace DSE.Open.Numerics.Serialization;
 
 internal static class NumericsPropertyNames
 {
-    public const string Categories = "cats";
-    public const string Columns = "cols";
+    public const string Categories = "cat";
+    public const string Columns = "col";
     public const string DataType = "d";
+    public const string Labels = "lbl";
     public const string Length = "l";
     public const string Frames = "frames";
     public const string Name = "name";

@@ -33,16 +33,22 @@ public class Series<T>
 
     private readonly Vector<T> _vector;
     private CategorySet<T>? _categories;
+    private ValueLabelCollection<T>? _valueLabels;
 
     public Series(int length) : this(new Vector<T>(length))
     {
     }
 
-    public Series([NotNull] Vector<T> vector, string? name = null, CategorySet<T>? categories = null)
+    public Series(
+        [NotNull] Vector<T> vector,
+        string? name = null,
+        CategorySet<T>? categories = null,
+        ValueLabelCollection<T>? valueLabels = null)
         : base(vector, name)
     {
         _vector = vector;
         _categories = categories;
+        _valueLabels = valueLabels;
 
         if (_categories is not null)
         {
@@ -77,9 +83,24 @@ public class Series<T>
 
     public CategorySet<T> Categories => _categories ??= [];
 
+    public ValueLabelCollection<T> ValueLabels => _valueLabels ??= [];
+
+    public override bool HasValueLabels => _valueLabels is not null && _valueLabels.Count > 0;
+
+    IValueLabelCollection<T> ISeries<T>.ValueLabels => ValueLabels;
+
+    IReadOnlyValueLabelCollection<T> IReadOnlySeries<T>.ValueLabels => ValueLabels;
+
+    IReadOnlyValueLabelCollection IReadOnlySeries.ValueLabels => ValueLabels;
+
     protected override IReadOnlyCategorySet GetReadOnlyCategorySet()
     {
         return Categories;
+    }
+
+    protected override IReadOnlyValueLabelCollection GetReadOnlyValueLabelCollection()
+    {
+        return ValueLabels;
     }
 
     public override VectorValue GetVectorValue(int index)
@@ -123,7 +144,7 @@ public class Series<T>
 
     public new ReadOnlySeries<T> AsReadOnly()
     {
-        return new ReadOnlySeries<T>(_vector, Name, _categories); // todo
+        return new ReadOnlySeries<T>(_vector, Name, _categories?.AsReadOnly(), _valueLabels?.AsReadOnly());
     }
 
     IReadOnlySeries<T> ISeries<T>.AsReadOnly()

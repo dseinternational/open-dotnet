@@ -26,13 +26,19 @@ public class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
     public static readonly ReadOnlySeries<T> Empty = new([]);
 
     private readonly ReadOnlyVector<T> _vector;
-    private CategorySet<T>? _categories;
+    private ReadOnlyCategorySet<T>? _categories;
+    private ReadOnlyValueLabelCollection<T>? _valueLabels;
 
-    public ReadOnlySeries([NotNull] ReadOnlyVector<T> vector, string? name = null, CategorySet<T>? categories = null)
+    public ReadOnlySeries(
+        [NotNull] ReadOnlyVector<T> vector,
+        string? name = null,
+        ReadOnlyCategorySet<T>? categories = null,
+        ReadOnlyValueLabelCollection<T>? valueLabels = null)
         : base(vector, name)
     {
         _vector = vector;
         _categories = categories;
+        _valueLabels = valueLabels;
 
         if (_categories is not null)
         {
@@ -55,12 +61,26 @@ public class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
     [MemberNotNullWhen(true, nameof(_categories))]
     public override bool IsCategorical => _categories is not null && !_categories.IsEmpty;
 
-    public CategorySet<T> Categories => _categories ??= [];
+    public ReadOnlyCategorySet<T> Categories => _categories ??= [];
+
+    public ReadOnlyValueLabelCollection<T> ValueLabels => _valueLabels ??= [];
+
+    public override bool HasValueLabels => _valueLabels is not null && _valueLabels.Count > 0;
+
+    IReadOnlyValueLabelCollection<T> IReadOnlySeries<T>.ValueLabels => ValueLabels;
+
+    IReadOnlyValueLabelCollection IReadOnlySeries.ValueLabels => ValueLabels;
 
     protected override IReadOnlyCategorySet GetReadOnlyCategorySet()
     {
         return Categories;
     }
+
+    protected override IReadOnlyValueLabelCollection GetReadOnlyValueLabelCollection()
+    {
+        return ValueLabels;
+    }
+
     public override VectorValue GetVectorValue(int index)
     {
         return VectorValue.FromValue(this[index]);

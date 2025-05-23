@@ -156,6 +156,12 @@ internal static class SeriesJsonWriter
             CategorySetJsonWriter.WriteCategorySet(writer, series.Categories, options);
         }
 
+        if (series.HasValueLabels)
+        {
+            writer.WritePropertyName(NumericsPropertyNames.Labels);
+            ValueLabelCollectionJsonWriter.WriteCollection(writer, series.ValueLabels, options);
+        }
+
         writer.WritePropertyName(NumericsPropertyNames.Vector);
 
         VectorJsonWriter.WriteVector(writer, series.Vector, options);

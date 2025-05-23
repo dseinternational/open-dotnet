@@ -25,4 +25,12 @@ public interface IReadOnlySeries
     VectorValue GetVectorValue(int index);
 
     IReadOnlyCategorySet Categories { get; }
+
+    /// <summary>
+    /// Provides labels for data values in the series. There is no guarantee that every data value is
+    /// labelled, nor that every label is associated with a data value.
+    /// </summary>
+    IReadOnlyValueLabelCollection ValueLabels { get; }
+
+    bool HasValueLabels { get; }
 }

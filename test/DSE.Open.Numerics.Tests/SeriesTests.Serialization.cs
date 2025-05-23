@@ -37,6 +37,22 @@ public partial class SeriesTests
         Assert.Equivalent(vector.Categories, deserialized.Categories);
     }
 
+    private void TestSerializeDeserialize<T>(T[] elements, T[] categories, ValueLabel<T>[] valueLabels, JsonSerializerOptions serializerOptions)
+        where T : IEquatable<T>
+    {
+        var vector = Series.Create([.. elements], "test", [.. categories], [.. valueLabels]);
+        var json = JsonSerializer.Serialize(vector, serializerOptions);
+        Assert.NotNull(json);
+
+        Output.WriteLine(json);
+
+        var deserialized = JsonSerializer.Deserialize<Series<T>>(json, serializerOptions);
+        Assert.NotNull(deserialized);
+        Assert.Equivalent(vector, deserialized);
+        Assert.Equivalent(vector.Categories, deserialized.Categories);
+        Assert.Equivalent(vector.ValueLabels, deserialized.ValueLabels);
+    }
+
     [Fact]
     public void SerializeDeserialize_Int16_Reflected()
     {
@@ -143,5 +159,25 @@ public partial class SeriesTests
     public void SerializeDeserialize_Int64_Categorical_SourceGenerated()
     {
         TestSerializeDeserialize<long>([-1, -2, 3, 4], [-1, -2, 3, 4], NumericsJsonSharedOptions.SourceGenerated);
+    }
+
+    [Fact]
+    public void SerializeDeserialize_Int64_Categorical_Labelled_Reflected()
+    {
+        TestSerializeDeserialize(
+            [-1, -2, 3, 4],
+            [-1, -2, 3, 4],
+            [ValueLabel.Create(-1L, "Minus 1"), ValueLabel.Create(-2L, "Minus 2")],
+            NumericsJsonSharedOptions.Reflected);
+    }
+
+    [Fact]
+    public void SerializeDeserialize_Int64_Categorical_Labelled_SourceGenerated()
+    {
+        TestSerializeDeserialize(
+            [-1, -2, 3, 4],
+            [-1, -2, 3, 4],
+            [ValueLabel.Create(-1L, "Minus 1"), ValueLabel.Create(-2L, "Minus 2")],
+            NumericsJsonSharedOptions.SourceGenerated);
     }
 }

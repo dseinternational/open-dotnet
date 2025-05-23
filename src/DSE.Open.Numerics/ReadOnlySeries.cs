@@ -29,21 +29,63 @@ public abstract class ReadOnlySeries : SeriesBase, IReadOnlySeries
     public string? Name { get; }
 
 #pragma warning disable CA1033 // Interface methods should be callable by child types
+
     IReadOnlyCategorySet IReadOnlySeries.Categories => GetReadOnlyCategorySet();
+
+    IReadOnlyValueLabelCollection IReadOnlySeries.ValueLabels => GetReadOnlyValueLabelCollection();
+
 #pragma warning restore CA1033 // Interface methods should be callable by child types
+
+    protected abstract IReadOnlyValueLabelCollection GetReadOnlyValueLabelCollection();
+
+    public abstract bool HasValueLabels { get; }
 
     protected abstract IReadOnlyCategorySet GetReadOnlyCategorySet();
 
     public abstract VectorValue GetVectorValue(int index);
 
-    /// <summary>
-    /// Creates a series from the given data.
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="vector"></param>
-    /// <returns></returns>
     [OverloadResolutionPriority(1)]
-    public static ReadOnlySeries<T> Create<T>(ReadOnlyVector<T> vector)
+    public static ReadOnlySeries<T> Create<T>(
+        ReadOnlyVector<T> vector,
+        string? name = null,
+        ReadOnlyCategorySet<T>? categories = null,
+        ReadOnlyValueLabelCollection<T>? valueLabels = null)
+        where T : IEquatable<T>
+    {
+        ArgumentNullException.ThrowIfNull(vector);
+
+        if (vector.Length == 0)
+        {
+#pragma warning disable IDE0301 // Simplify collection initialization
+            return ReadOnlySeries<T>.Empty;
+#pragma warning restore IDE0301 // Simplify collection initialization
+        }
+
+        return new ReadOnlySeries<T>(vector, name, categories, valueLabels);
+    }
+
+    public static ReadOnlySeries<T> Create<T>(
+        ReadOnlyMemory<T> vector,
+        string? name = null,
+        ReadOnlyCategorySet<T>? categories = null,
+        ReadOnlyValueLabelCollection<T>? valueLabels = null)
+        where T : IEquatable<T>
+    {
+        if (vector.Length == 0)
+        {
+#pragma warning disable IDE0301 // Simplify collection initialization
+            return ReadOnlySeries<T>.Empty;
+#pragma warning restore IDE0301 // Simplify collection initialization
+        }
+
+        return new ReadOnlySeries<T>(vector, name, categories, valueLabels);
+    }
+
+    public static ReadOnlySeries<T> Create<T>(
+        T[] vector,
+        string? name = null,
+        ReadOnlyCategorySet<T>? categories = null,
+        ReadOnlyValueLabelCollection<T>? valueLabels = null)
         where T : IEquatable<T>
     {
         ArgumentNullException.ThrowIfNull(vector);
@@ -58,13 +100,8 @@ public abstract class ReadOnlySeries : SeriesBase, IReadOnlySeries
         return new ReadOnlySeries<T>(vector);
     }
 
-    /// <summary>
-    /// Creates a series from the given data.
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="vector"></param>
-    /// <returns></returns>
-    public static ReadOnlySeries<T> Create<T>(ReadOnlyMemory<T> vector)
+    // for collection initializers
+    public static ReadOnlySeries<T> Create<T>(ReadOnlySpan<T> vector)
         where T : IEquatable<T>
     {
         if (vector.Length == 0)
@@ -74,66 +111,58 @@ public abstract class ReadOnlySeries : SeriesBase, IReadOnlySeries
 #pragma warning restore IDE0301 // Simplify collection initialization
         }
 
-        return new ReadOnlySeries<T>(vector);
+        return Create(vector.ToArray());
     }
 
-    /// <summary>
-    /// Creates a series from the given data.
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="array"></param>
-    /// <returns></returns>
-    public static ReadOnlySeries<T> Create<T>(T[] array)
+    public static ReadOnlySeries<T> Create<T>(
+        ReadOnlySpan<T> vector,
+        string? name = null,
+        ReadOnlyCategorySet<T>? categories = null,
+        ReadOnlyValueLabelCollection<T>? valueLabels = null)
         where T : IEquatable<T>
     {
-        ArgumentNullException.ThrowIfNull(array);
-
-        if (array.Length == 0)
+        if (vector.Length == 0)
         {
 #pragma warning disable IDE0301 // Simplify collection initialization
             return ReadOnlySeries<T>.Empty;
 #pragma warning restore IDE0301 // Simplify collection initialization
         }
 
-        return new ReadOnlySeries<T>(array);
+        return Create(vector.ToArray(), name, categories, valueLabels);
     }
 
-    public static ReadOnlySeries<T> Create<T>(ReadOnlySpan<T> data)
+    public static ReadOnlySeries<T> Create<T>(
+        int length,
+        T scalar,
+        string? name = null,
+        ReadOnlyCategorySet<T>? categories = null,
+        ReadOnlyValueLabelCollection<T>? valueLabels = null)
         where T : IEquatable<T>
     {
-        if (data.Length == 0)
-        {
-#pragma warning disable IDE0301 // Simplify collection initialization
-            return ReadOnlySeries<T>.Empty;
-#pragma warning restore IDE0301 // Simplify collection initialization
-        }
-
-        return Create(data.ToArray());
+        var vector = new T[length];
+        vector.AsSpan().Fill(scalar);
+        return Create(vector, name, categories, valueLabels);
     }
 
-    public static ReadOnlySeries<T> Create<T>(int length, T scalar)
+    public static ReadOnlySeries<T> CreateZeroes<T>(
+        int length,
+        T scalar,
+        string? name = null,
+        ReadOnlyCategorySet<T>? categories = null,
+        ReadOnlyValueLabelCollection<T>? valueLabels = null)
         where T : struct, INumber<T>
     {
-        var data = new T[length];
-        data.AsSpan().Fill(scalar);
-        return [.. data];
+        return Create(length, T.Zero, name, categories, valueLabels);
     }
 
-    public static ReadOnlySeries<T> Create<T>(int length)
+    public static ReadOnlySeries<T> CreateOnes<T>(
+        int length,
+        T scalar,
+        string? name = null,
+        ReadOnlyCategorySet<T>? categories = null,
+        ReadOnlyValueLabelCollection<T>? valueLabels = null)
         where T : struct, INumber<T>
     {
-        return [.. new T[length]];
-    }
-
-    public static ReadOnlySeries<T> CreateZeroes<T>(int length)
-        where T : struct, INumber<T>
-    {
-        return Create(length, T.Zero);
-    }
-
-    public static ReadOnlySeries<T> CreateOnes<T>(int length)
-        where T : struct, INumber<T>
-    {
-        return Create(length, T.One);
+        return Create(length, T.One, name, categories, valueLabels);
     }
 }
