@@ -16,10 +16,10 @@ public static class DataFrameJsonWriter
 
         if (value.Name is not null)
         {
-            writer.WriteString(DataFrameJsonPropertyNames.Name, value.Name);
+            writer.WriteString(NumericsPropertyNames.Name, value.Name);
         }
 
-        writer.WritePropertyName(DataFrameJsonPropertyNames.Columns);
+        writer.WritePropertyName(NumericsPropertyNames.Columns);
 
         writer.WriteStartArray();
 

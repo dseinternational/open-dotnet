@@ -42,12 +42,12 @@ public class DataSetJsonConverter : JsonConverter<DataSet>
 
             var propertyName = reader.GetString();
 
-            if (propertyName == DataSetJsonPropertyNames.Name)
+            if (propertyName == NumericsPropertyNames.Name)
             {
                 _ = reader.Read();
                 name = reader.GetString();
             }
-            else if (propertyName == DataSetJsonPropertyNames.Frames)
+            else if (propertyName == NumericsPropertyNames.Frames)
             {
                 _ = reader.Read();
 
@@ -87,10 +87,10 @@ public class DataSetJsonConverter : JsonConverter<DataSet>
 
         if (value.Name is not null)
         {
-            writer.WriteString(DataSetJsonPropertyNames.Name, value.Name);
+            writer.WriteString(NumericsPropertyNames.Name, value.Name);
         }
 
-        writer.WritePropertyName(DataSetJsonPropertyNames.Frames);
+        writer.WritePropertyName(NumericsPropertyNames.Frames);
 
         writer.WriteStartArray();
 

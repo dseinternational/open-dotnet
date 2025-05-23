@@ -21,14 +21,14 @@ public class VectorJsonConverterTests : LoggedTestsBase
     }
 
     [Theory]
-    [InlineData("{\"dtype\":\"int32\",\"values\":[]}")]
-    [InlineData("{\"dtype\":\"int32\",\"values\":[0] }")]
-    [InlineData("{\"dtype\":\"int32\",\"values\":[0,1] }")]
-    [InlineData("{\"dtype\":\"int32\",\"values\":[0,1,2,5,-9,-283590]}")]
-    [InlineData("{\"dtype\":\"int32\",\"length\":0,\"values\":[]}")]
-    [InlineData("{\"dtype\":\"int32\",\"length\":1,\"values\":[0]}")]
-    [InlineData("{\"dtype\":\"int32\",\"length\":2,\"values\":[0,1]}")]
-    [InlineData("{\"dtype\":\"int32\",\"length\":6,\"values\":[0,1,2,5,-9,-283590]}")]
+    [InlineData("{\"d\":\"int32\",\"v\":[]}")]
+    [InlineData("{\"d\":\"int32\",\"v\":[0] }")]
+    [InlineData("{\"d\":\"int32\",\"v\":[0,1] }")]
+    [InlineData("{\"d\":\"int32\",\"v\":[0,1,2,5,-9,-283590]}")]
+    [InlineData("{\"d\":\"int32\",\"l\":0,\"v\":[]}")]
+    [InlineData("{\"d\":\"int32\",\"l\":1,\"v\":[0]}")]
+    [InlineData("{\"d\":\"int32\",\"l\":2,\"v\":[0,1]}")]
+    [InlineData("{\"d\":\"int32\",\"l\":6,\"v\":[0,1,2,5,-9,-283590]}")]
     public void DeserializeVectorOfInt32(string json)
     {
         var deserialized = JsonSerializer.Deserialize<Vector<int>>(json, s_jsonOptions.Value);
@@ -36,10 +36,10 @@ public class VectorJsonConverterTests : LoggedTestsBase
     }
 
     [Theory]
-    [InlineData("{\"dtype\":\"int32\",\"length\":0,\"values\":[]}")]
-    [InlineData("{\"dtype\":\"int32\",\"length\":1,\"values\":[0]}")]
-    [InlineData("{\"dtype\":\"int32\",\"length\":2,\"values\":[0,1]}")]
-    [InlineData("{\"dtype\":\"int32\",\"length\":6,\"values\":[0,1,2,5,-9,-283590]}")]
+    [InlineData("{\"d\":\"int32\",\"l\":0,\"v\":[]}")]
+    [InlineData("{\"d\":\"int32\",\"l\":1,\"v\":[0]}")]
+    [InlineData("{\"d\":\"int32\",\"l\":2,\"v\":[0,1]}")]
+    [InlineData("{\"d\":\"int32\",\"l\":6,\"v\":[0,1,2,5,-9,-283590]}")]
     public void DeserializeSerializeVectorOfInt32(string json)
     {
         var deserialized = JsonSerializer.Deserialize<Vector<int>>(json, s_jsonOptions.Value);
@@ -56,14 +56,14 @@ public class VectorJsonConverterTests : LoggedTestsBase
     }
 
     [Theory]
-    [InlineData("{\"dtype\":\"int64\",\"values\":[]}")]
-    [InlineData("{\"dtype\":\"int64\",\"values\":[0]}")]
-    [InlineData("{\"dtype\":\"int64\",\"values\":[0,1]}")]
-    [InlineData("{\"dtype\":\"int64\",\"values\":[0,1,2,5,-9,-283590]}")]
-    [InlineData("{\"dtype\":\"int64\",\"length\":0,\"values\":[]}")]
-    [InlineData("{\"dtype\":\"int64\",\"length\":1,\"values\":[0]}")]
-    [InlineData("{\"dtype\":\"int64\",\"length\":2,\"values\":[0,1]}")]
-    [InlineData("{\"dtype\":\"int64\",\"length\":6,\"values\":[0,1,2,5,-9,-283590]}")]
+    [InlineData("{\"d\":\"int64\",\"v\":[]}")]
+    [InlineData("{\"d\":\"int64\",\"v\":[0]}")]
+    [InlineData("{\"d\":\"int64\",\"v\":[0,1]}")]
+    [InlineData("{\"d\":\"int64\",\"v\":[0,1,2,5,-9,-283590]}")]
+    [InlineData("{\"d\":\"int64\",\"l\":0,\"v\":[]}")]
+    [InlineData("{\"d\":\"int64\",\"l\":1,\"v\":[0]}")]
+    [InlineData("{\"d\":\"int64\",\"l\":2,\"v\":[0,1]}")]
+    [InlineData("{\"d\":\"int64\",\"l\":6,\"v\":[0,1,2,5,-9,-283590]}")]
     public void DeserializeVectorOfInt64(string json)
     {
         var deserialized = JsonSerializer.Deserialize<Vector<long>>(json, s_jsonOptions.Value);
@@ -71,10 +71,10 @@ public class VectorJsonConverterTests : LoggedTestsBase
     }
 
     [Theory]
-    [InlineData("{\"dtype\":\"int64\",\"length\":0,\"values\":[]}")]
-    [InlineData("{\"dtype\":\"int64\",\"length\":1,\"values\":[0]}")]
-    [InlineData("{\"dtype\":\"int64\",\"length\":2,\"values\":[0,1]}")]
-    [InlineData("{\"dtype\":\"int64\",\"length\":6,\"values\":[0,1,2,5,-9,-283590]}")]
+    [InlineData("{\"d\":\"int64\",\"l\":0,\"v\":[]}")]
+    [InlineData("{\"d\":\"int64\",\"l\":1,\"v\":[0]}")]
+    [InlineData("{\"d\":\"int64\",\"l\":2,\"v\":[0,1]}")]
+    [InlineData("{\"d\":\"int64\",\"l\":6,\"v\":[0,1,2,5,-9,-283590]}")]
     public void DeserializeSerializeVectorOfInt64(string json)
     {
         var deserialized = JsonSerializer.Deserialize<Vector<long>>(json, s_jsonOptions.Value);
@@ -91,14 +91,14 @@ public class VectorJsonConverterTests : LoggedTestsBase
     }
 
     [Theory]
-    [InlineData("{\"dtype\":\"uint32\",\"values\":[]}")]
-    [InlineData("{\"dtype\":\"uint32\",\"values\":[0]}")]
-    [InlineData("{\"dtype\":\"uint32\",\"values\":[0,1]}")]
-    [InlineData("{\"dtype\":\"uint32\",\"values\":[0,1,2,5,9,283590]}")]
-    [InlineData("{\"dtype\":\"uint32\",\"length\":0,\"values\":[]}")]
-    [InlineData("{\"dtype\":\"uint32\",\"length\":1,\"values\":[0]}")]
-    [InlineData("{\"dtype\":\"uint32\",\"length\":2,\"values\":[0,1]}")]
-    [InlineData("{\"dtype\":\"uint32\",\"length\":6,\"values\":[0,1,2,5,9,283590]}")]
+    [InlineData("{\"d\":\"uint32\",\"v\":[]}")]
+    [InlineData("{\"d\":\"uint32\",\"v\":[0]}")]
+    [InlineData("{\"d\":\"uint32\",\"v\":[0,1]}")]
+    [InlineData("{\"d\":\"uint32\",\"v\":[0,1,2,5,9,283590]}")]
+    [InlineData("{\"d\":\"uint32\",\"l\":0,\"v\":[]}")]
+    [InlineData("{\"d\":\"uint32\",\"l\":1,\"v\":[0]}")]
+    [InlineData("{\"d\":\"uint32\",\"l\":2,\"v\":[0,1]}")]
+    [InlineData("{\"d\":\"uint32\",\"l\":6,\"v\":[0,1,2,5,9,283590]}")]
     public void DeserializeVectorOfUInt32(string json)
     {
         var deserialized = JsonSerializer.Deserialize<Vector<uint>>(json, s_jsonOptions.Value);
@@ -106,10 +106,10 @@ public class VectorJsonConverterTests : LoggedTestsBase
     }
 
     [Theory]
-    [InlineData("{\"dtype\":\"uint32\",\"length\":0,\"values\":[]}")]
-    [InlineData("{\"dtype\":\"uint32\",\"length\":1,\"values\":[0]}")]
-    [InlineData("{\"dtype\":\"uint32\",\"length\":2,\"values\":[0,1]}")]
-    [InlineData("{\"dtype\":\"uint32\",\"length\":6,\"values\":[0,1,2,5,9,283590]}")]
+    [InlineData("{\"d\":\"uint32\",\"l\":0,\"v\":[]}")]
+    [InlineData("{\"d\":\"uint32\",\"l\":1,\"v\":[0]}")]
+    [InlineData("{\"d\":\"uint32\",\"l\":2,\"v\":[0,1]}")]
+    [InlineData("{\"d\":\"uint32\",\"l\":6,\"v\":[0,1,2,5,9,283590]}")]
     public void DeserializeSerializeVectorOfUInt32(string json)
     {
         var deserialized = JsonSerializer.Deserialize<Vector<uint>>(json, s_jsonOptions.Value);
@@ -126,14 +126,14 @@ public class VectorJsonConverterTests : LoggedTestsBase
     }
 
     [Theory]
-    [InlineData("{\"dtype\":\"uint64\",\"values\":[]}")]
-    [InlineData("{\"dtype\":\"uint64\",\"values\":[0]}")]
-    [InlineData("{\"dtype\":\"uint64\",\"values\":[0,1]}")]
-    [InlineData("{\"dtype\":\"uint64\",\"values\":[0,1,2,5,9,283590]}")]
-    [InlineData("{\"dtype\":\"uint64\",\"length\":0,\"values\":[]}")]
-    [InlineData("{\"dtype\":\"uint64\",\"length\":1,\"values\":[0]}")]
-    [InlineData("{\"dtype\":\"uint64\",\"length\":2,\"values\":[0,1]}")]
-    [InlineData("{\"dtype\":\"uint64\",\"length\":6,\"values\":[0,1,2,5,9,283590]}")]
+    [InlineData("{\"d\":\"uint64\",\"v\":[]}")]
+    [InlineData("{\"d\":\"uint64\",\"v\":[0]}")]
+    [InlineData("{\"d\":\"uint64\",\"v\":[0,1]}")]
+    [InlineData("{\"d\":\"uint64\",\"v\":[0,1,2,5,9,283590]}")]
+    [InlineData("{\"d\":\"uint64\",\"l\":0,\"v\":[]}")]
+    [InlineData("{\"d\":\"uint64\",\"l\":1,\"v\":[0]}")]
+    [InlineData("{\"d\":\"uint64\",\"l\":2,\"v\":[0,1]}")]
+    [InlineData("{\"d\":\"uint64\",\"l\":6,\"v\":[0,1,2,5,9,283590]}")]
     public void DeserializeVectorOfUInt64(string json)
     {
         var deserialized = JsonSerializer.Deserialize<Vector<ulong>>(json, s_jsonOptions.Value);

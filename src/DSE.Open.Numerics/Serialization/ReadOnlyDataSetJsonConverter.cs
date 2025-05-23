@@ -29,10 +29,10 @@ public class ReadOnlyDataSetJsonConverter : JsonConverter<ReadOnlyDataSet>
 
         if (value.Name is not null)
         {
-            writer.WriteString(DataSetJsonPropertyNames.Name, value.Name);
+            writer.WriteString(NumericsPropertyNames.Name, value.Name);
         }
 
-        writer.WritePropertyName(DataSetJsonPropertyNames.Frames);
+        writer.WritePropertyName(NumericsPropertyNames.Frames);
 
         writer.WriteStartArray();
 

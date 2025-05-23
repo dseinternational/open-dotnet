@@ -42,12 +42,12 @@ public class DataFrameJsonConverter : JsonConverter<DataFrame>
 
             var propertyName = reader.GetString();
 
-            if (propertyName == DataFrameJsonPropertyNames.Name)
+            if (propertyName == NumericsPropertyNames.Name)
             {
                 _ = reader.Read();
                 name = reader.GetString();
             }
-            else if (propertyName == DataFrameJsonPropertyNames.Columns)
+            else if (propertyName == NumericsPropertyNames.Columns)
             {
                 _ = reader.Read();
 
