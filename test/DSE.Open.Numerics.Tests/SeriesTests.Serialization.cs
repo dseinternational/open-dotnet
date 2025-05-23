@@ -22,6 +22,21 @@ public partial class SeriesTests
         Assert.Equivalent(vector, deserialized);
     }
 
+    private void TestSerializeDeserialize<T>(T[] elements, T[] categories, JsonSerializerOptions serializerOptions)
+        where T : IEquatable<T>
+    {
+        var vector = Series.Create([.. elements], "test", [.. categories]);
+        var json = JsonSerializer.Serialize(vector, serializerOptions);
+        Assert.NotNull(json);
+
+        Output.WriteLine(json);
+
+        var deserialized = JsonSerializer.Deserialize<Series<T>>(json, serializerOptions);
+        Assert.NotNull(deserialized);
+        Assert.Equivalent(vector, deserialized);
+        Assert.Equivalent(vector.Categories, deserialized.Categories);
+    }
+
     [Fact]
     public void SerializeDeserialize_Int16_Reflected()
     {
@@ -92,5 +107,41 @@ public partial class SeriesTests
     public void SerializeDeserialize_NaInt32_SourceGenerated()
     {
         TestSerializeDeserialize<NaInt<int>>([null, -1, -2, 3, 4, 5, 6, 7, 8, null], NumericsJsonSharedOptions.SourceGenerated);
+    }
+
+    [Fact]
+    public void SerializeDeserialize_Int16_Categorical_Reflected()
+    {
+        TestSerializeDeserialize<short>([-1, -2, 3, 4], [-1, -2, 3, 4], NumericsJsonSharedOptions.Reflected);
+    }
+
+    [Fact]
+    public void SerializeDeserialize_Int16_Categorical_SourceGenerated()
+    {
+        TestSerializeDeserialize<short>([-1, -2, 3, 4], [-1, -2, 3, 4], NumericsJsonSharedOptions.SourceGenerated);
+    }
+
+    [Fact]
+    public void SerializeDeserialize_Int32_Categorical_Reflected()
+    {
+        TestSerializeDeserialize([-1, -2, 3, 4], [-1, -2, 3, 4], NumericsJsonSharedOptions.Reflected);
+    }
+
+    [Fact]
+    public void SerializeDeserialize_Int32_Categorical_SourceGenerated()
+    {
+        TestSerializeDeserialize([-1, -2, 3, 4], [-1, -2, 3, 4], NumericsJsonSharedOptions.SourceGenerated);
+    }
+
+    [Fact]
+    public void SerializeDeserialize_Int64_Categorical_Reflected()
+    {
+        TestSerializeDeserialize<long>([-1, -2, 3, 4], [-1, -2, 3, 4], NumericsJsonSharedOptions.Reflected);
+    }
+
+    [Fact]
+    public void SerializeDeserialize_Int64_Categorical_SourceGenerated()
+    {
+        TestSerializeDeserialize<long>([-1, -2, 3, 4], [-1, -2, 3, 4], NumericsJsonSharedOptions.SourceGenerated);
     }
 }

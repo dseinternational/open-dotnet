@@ -59,18 +59,13 @@ internal static class SeriesJsonReader
             throw new JsonException("Cannot read series without values");
         }
 
-        if (categories is not null)
-        {
-            // todo  return CategoricalSeries.CreateUntyped(values, name, null, categories, null);
-        }
-
-        return CreateSeries(name, values, null);
+        return CreateSeries(name, values, categories);
     }
 
     private static Series CreateSeries(
         string? name,
         Vector data,
-        ICategorySet? categorySet) // todo
+        ICategorySet? categorySet)
     {
         ArgumentNullException.ThrowIfNull(data);
 

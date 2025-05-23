@@ -57,6 +57,10 @@ public class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
 
     public CategorySet<T> Categories => _categories ??= [];
 
+    protected override IReadOnlyCategorySet GetReadOnlyCategorySet()
+    {
+        return Categories;
+    }
     public override VectorValue GetVectorValue(int index)
     {
         return VectorValue.FromValue(this[index]);

@@ -150,10 +150,10 @@ internal static class SeriesJsonWriter
             writer.WriteString(NumericsPropertyNames.Name, series.Name);
         }
 
-        if (series is IReadOnlyCategoricalSeries categorical)
+        if (series.IsCategorical)
         {
             writer.WritePropertyName(NumericsPropertyNames.Categories);
-            CategorySetJsonWriter.WriteCategorySet(writer, categorical.Categories, options);
+            CategorySetJsonWriter.WriteCategorySet(writer, series.Categories, options);
         }
 
         writer.WritePropertyName(NumericsPropertyNames.Vector);
@@ -176,10 +176,10 @@ internal static class SeriesJsonWriter
             writer.WriteString(NumericsPropertyNames.Name, series.Name);
         }
 
-        if (series is IReadOnlyCategoricalSeries categorical)
+        if (series.IsCategorical)
         {
             writer.WritePropertyName(NumericsPropertyNames.Categories);
-            CategorySetJsonWriter.WriteCategorySet(writer, categorical.Categories, options);
+            CategorySetJsonWriter.WriteCategorySet(writer, series.Categories, options);
         }
 
         writer.WritePropertyName(NumericsPropertyNames.Vector);

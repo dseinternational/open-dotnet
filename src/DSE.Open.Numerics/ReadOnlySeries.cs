@@ -16,16 +16,11 @@ namespace DSE.Open.Numerics;
 [JsonConverter(typeof(ReadOnlyVectorJsonConverter))]
 public abstract class ReadOnlySeries : SeriesBase, IReadOnlySeries
 {
-    protected ReadOnlySeries(
-        [NotNull] ReadOnlyVector vector,
-        string? name = null,
-        Index? index = null)
+    protected ReadOnlySeries([NotNull] ReadOnlyVector vector, string? name = null)
         : base(vector)
     {
         ArgumentNullException.ThrowIfNull(vector);
-
         Name = name;
-        Index = index!;
     }
 
     /// <summary>
@@ -33,10 +28,11 @@ public abstract class ReadOnlySeries : SeriesBase, IReadOnlySeries
     /// </summary>
     public string? Name { get; }
 
-    /// <summary>
-    /// Reserved for future use.
-    /// </summary>
-    public Index Index { get; } // todo: readonly
+#pragma warning disable CA1033 // Interface methods should be callable by child types
+    IReadOnlyCategorySet IReadOnlySeries.Categories => GetReadOnlyCategorySet();
+#pragma warning restore CA1033 // Interface methods should be callable by child types
+
+    protected abstract IReadOnlyCategorySet GetReadOnlyCategorySet();
 
     public abstract VectorValue GetVectorValue(int index);
 

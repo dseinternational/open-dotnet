@@ -45,6 +45,12 @@ public abstract class Series : SeriesBase, ISeries
         return AsReadOnly();
     }
 
+#pragma warning disable CA1033 // Interface methods should be callable by child types
+    IReadOnlyCategorySet IReadOnlySeries.Categories => GetReadOnlyCategorySet();
+#pragma warning restore CA1033 // Interface methods should be callable by child types
+
+    protected abstract IReadOnlyCategorySet GetReadOnlyCategorySet();
+
     [OverloadResolutionPriority(1)]
     public static Series<T> Create<T>(Vector<T> data, string? name = null, CategorySet<T>? categories = null)
         where T : IEquatable<T>

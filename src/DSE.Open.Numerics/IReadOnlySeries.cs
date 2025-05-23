@@ -23,4 +23,6 @@ public interface IReadOnlySeries
     IReadOnlyVector Vector { get; }
 
     VectorValue GetVectorValue(int index);
+
+    IReadOnlyCategorySet Categories { get; }
 }
