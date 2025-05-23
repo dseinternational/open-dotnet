@@ -24,7 +24,7 @@ public static partial class VectorPrimitives
         where T : IComparisonOperators<T, T, bool>
     {
         NumericsArgumentException.ThrowIfNot(x.Length == y.Length);
-        var destination = new bool[x.Length];
+        var destination = CreateUninitializedArray<bool>(x.Length);
         _ = LessThan(x, y, destination);
         return destination;
     }
@@ -67,7 +67,7 @@ public static partial class VectorPrimitives
     public static Span<bool> LessThan<T>(in ReadOnlySpan<T> x, in T y)
         where T : IComparisonOperators<T, T, bool>
     {
-        var destination = new bool[x.Length];
+        var destination = CreateUninitializedArray<bool>(x.Length);
         _ = LessThan(x, y, destination);
         return destination;
     }
@@ -110,7 +110,7 @@ public static partial class VectorPrimitives
     public static Span<bool> LessThan<T>(this T x, in ReadOnlySpan<T> y)
         where T : IComparisonOperators<T, T, bool>
     {
-        var destination = new bool[y.Length];
+        var destination = CreateUninitializedArray<bool>(y.Length);
         _ = LessThan(x, y, destination);
         return destination;
     }

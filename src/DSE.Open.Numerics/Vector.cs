@@ -72,6 +72,12 @@ public abstract partial class Vector : VectorBase, IVector
         return [.. new T[length]];
     }
 
+    public static Vector<T> CreateUninitialized<T>(int length)
+        where T : IEquatable<T>
+    {
+        return [.. GC.AllocateUninitializedArray<T>(length)];
+    }
+
     public static Vector<T> Create<T>(int length, T scalar)
         where T : struct, INumber<T>
     {

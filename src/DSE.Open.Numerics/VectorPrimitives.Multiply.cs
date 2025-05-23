@@ -35,9 +35,9 @@ public static partial class VectorPrimitives
     {
         ArgumentNullException.ThrowIfNull(x);
         NumericsArgumentException.ThrowIfNot(x.Length == y.Length);
-        var destination = Vector.Create<T>(x.Length);
-        Multiply(x, y, destination.AsSpan());
-        return destination;
+        var destination = CreateUninitializedArray<T>(x.Length);
+        Multiply(x, y, destination);
+        return Vector.Create(destination);
     }
 
     public static Vector<T> Multiply<T>(this IReadOnlyVector<T> x, IReadOnlyVector<T> y)
@@ -66,9 +66,9 @@ public static partial class VectorPrimitives
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        var destination = Vector.Create<T>(x.Length);
-        Multiply(x, y, destination.AsSpan());
-        return destination;
+        var destination = CreateUninitializedArray<T>(x.Length);
+        Multiply(x, y, destination);
+        return Vector.Create(destination);
     }
 
     public static void MultiplyInPlace<T>(this IVector<T> x, ReadOnlySpan<T> y)
