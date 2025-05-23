@@ -12,7 +12,7 @@ public static partial class VectorPrimitives
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        NumericsException.ThrowIfNot(x.Length == y.Length && y.Length == destination.Length);
+        NumericsArgumentException.ThrowIfNot(x.Length == y.Length && y.Length == destination.Length);
         TensorPrimitives.Multiply(x.AsSpan(), y, destination);
     }
 
@@ -34,7 +34,7 @@ public static partial class VectorPrimitives
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        NumericsException.ThrowIfNot(x.Length == y.Length);
+        NumericsArgumentException.ThrowIfNot(x.Length == y.Length);
         var destination = Vector.Create<T>(x.Length);
         Multiply(x, y, destination.AsSpan());
         return destination;
@@ -51,7 +51,7 @@ public static partial class VectorPrimitives
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        NumericsException.ThrowIfNot(x.Length == destination.Length);
+        NumericsArgumentException.ThrowIfNot(x.Length == destination.Length);
         TensorPrimitives.Multiply(x.AsSpan(), y, destination);
     }
 

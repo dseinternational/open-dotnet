@@ -26,7 +26,7 @@ public partial class Vector
     {
         if (span.Length < 2)
         {
-            NumericsException.Throw();
+            NumericsArgumentException.Throw();
         }
 
         // TODO: incomplete

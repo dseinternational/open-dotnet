@@ -54,7 +54,7 @@ public static partial class VectorPrimitives
     public static Vector<bool> Equals<T>(scoped in ReadOnlySpan<T> x, scoped in ReadOnlySpan<T> y)
         where T : IEqualityOperators<T, T, bool>
     {
-        NumericsException.ThrowIfNot(x.Length == y.Length);
+        NumericsArgumentException.ThrowIfNot(x.Length == y.Length);
         Span<bool> dest = new bool[y.Length];
         _ = Equals(x, y, dest);
         return Vector.Create(dest);
@@ -80,7 +80,7 @@ public static partial class VectorPrimitives
         in Span<bool> destination)
         where T : IEqualityOperators<T, T, bool>
     {
-        NumericsException.ThrowIfNot(x.Length == y.Length && y.Length == destination.Length);
+        NumericsArgumentException.ThrowIfNot(x.Length == y.Length && y.Length == destination.Length);
 
         _ = Tensor.Equals(
             new ReadOnlyTensorSpan<T>(x),
@@ -129,7 +129,7 @@ public static partial class VectorPrimitives
         in Span<bool> destination)
         where T : IEqualityOperators<T, T, bool>
     {
-        NumericsException.ThrowIfNot(x.Length == destination.Length);
+        NumericsArgumentException.ThrowIfNot(x.Length == destination.Length);
 
         _ = Tensor.Equals(
             new ReadOnlyTensorSpan<T>(x),
@@ -155,7 +155,7 @@ public static partial class VectorPrimitives
     public static bool EqualsAll<T>(in ReadOnlySpan<T> x, in ReadOnlySpan<T> y)
         where T : IEqualityOperators<T, T, bool>
     {
-        NumericsException.ThrowIfNot(x.Length == y.Length);
+        NumericsArgumentException.ThrowIfNot(x.Length == y.Length);
 
         return Tensor.EqualsAll(
             new ReadOnlyTensorSpan<T>(x),
@@ -197,7 +197,7 @@ public static partial class VectorPrimitives
     public static bool EqualsAny<T>(in ReadOnlySpan<T> x, in ReadOnlySpan<T> y)
         where T : IEqualityOperators<T, T, bool>
     {
-        NumericsException.ThrowIfNot(x.Length == y.Length);
+        NumericsArgumentException.ThrowIfNot(x.Length == y.Length);
 
         return Tensor.EqualsAny(
             new ReadOnlyTensorSpan<T>(x),

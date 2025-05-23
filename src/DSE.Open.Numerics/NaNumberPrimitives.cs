@@ -1,4 +1,4 @@
-﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Numerics;
@@ -12,7 +12,7 @@ public static class NaNumberPrimitives
     public static void Add<T>(ReadOnlySpan<NaInt<T>> x, ReadOnlySpan<NaInt<T>> y, Span<NaInt<T>> destination)
         where T : struct, IBinaryInteger<T>, IMinMaxValue<T>
     {
-        NumericsException.ThrowIfNotEqualLength(x, y, destination);
+        NumericsArgumentException.ThrowIfNotEqualLength(x, y, destination);
 
         var xv = MemoryMarshal.Cast<NaInt<T>, T>(x);
         var yv = MemoryMarshal.Cast<NaInt<T>, T>(y);

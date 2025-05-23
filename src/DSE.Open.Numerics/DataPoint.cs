@@ -25,7 +25,7 @@ public static class DataPoint
         [NotNull] IReadOnlyList<T> y)
         where T : struct, INumber<T>
     {
-        NumericsException.ThrowIfNotEqualLength(x, y);
+        NumericsArgumentException.ThrowIfNotEqualLength(x, y);
 
         for (var i = 0; i < x.Count; i++)
         {
@@ -39,7 +39,7 @@ public static class DataPoint
         [NotNull] IReadOnlyList<T> z)
         where T : struct, INumber<T>
     {
-        NumericsException.ThrowIfNotEqualLength(x, y, z);
+        NumericsArgumentException.ThrowIfNotEqualLength(x, y, z);
 
         for (var i = 0; i < x.Count; i++)
         {

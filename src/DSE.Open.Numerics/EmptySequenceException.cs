@@ -3,7 +3,7 @@
 
 namespace DSE.Open.Numerics;
 
-public class EmptySequenceException : NumericsException
+public class EmptySequenceException : NumericsArgumentException
 {
     private const string DefaultMessage = "Sequence contains no elements.";
 

@@ -34,6 +34,7 @@ public sealed class DataFrame : IList<Series>, IReadOnlyDataFrame
     public DataFrame(Collection<Series> columns, string? name)
     {
         ArgumentNullException.ThrowIfNull(columns);
+        NumericsArgumentException.ThrowIfNotEqualLength(columns);
 
         Name = name;
 
@@ -81,17 +82,14 @@ public sealed class DataFrame : IList<Series>, IReadOnlyDataFrame
     /// </summary>
     public string? Name { get; set; }
 
-    public IReadOnlyList<string> ColumnNames()
-    {
-        return (IReadOnlyList<string>)_columns.Select(s => s.Name);
-    }
-
     /// <summary>
     /// Gets the number of columns in the data frame.
     /// </summary>
     public int Count => _columns.Count;
 
-    public bool IsReadOnly => false;
+    public DataFrameRowCollection Rows => new(this);
+
+    bool ICollection<Series>.IsReadOnly => _columns.IsReadOnly;
 
     public ReadOnlyDataFrame AsReadOnly()
     {
@@ -152,6 +150,11 @@ public sealed class DataFrame : IList<Series>, IReadOnlyDataFrame
         return ((IEnumerable)_columns).GetEnumerator();
     }
 
+    IEnumerable<IReadOnlySeries> IReadOnlyDataFrame.GetReadOnlySeriesEnumerable()
+    {
+        return this;
+    }
+
     [OverloadResolutionPriority(1)]
     public static DataFrame Create(Collection<Series> columns)
     {
@@ -168,10 +171,5 @@ public sealed class DataFrame : IList<Series>, IReadOnlyDataFrame
     public static DataFrame Create(ReadOnlySpan<Series> columns)
     {
         return new DataFrame([.. columns.ToArray()]);
-    }
-
-    IEnumerable<IReadOnlySeries> IReadOnlyDataFrame.GetReadOnlySeriesEnumerable()
-    {
-        return this;
     }
 }

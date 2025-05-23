@@ -12,7 +12,7 @@ public static class GuardSequence
     {
         if (x.Length != y.Length)
         {
-            NumericsException.Throw("Sequences must be the same length.");
+            NumericsArgumentException.Throw("Sequences must be the same length.");
         }
     }
 
@@ -21,7 +21,7 @@ public static class GuardSequence
     {
         if (x.Length != y.Length || x.Length != z.Length)
         {
-            NumericsException.Throw("Sequences must be the same length.");
+            NumericsArgumentException.Throw("Sequences must be the same length.");
         }
     }
 }

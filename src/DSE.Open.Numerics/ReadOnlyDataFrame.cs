@@ -31,6 +31,7 @@ public sealed class ReadOnlyDataFrame : IReadOnlyList<ReadOnlySeries>, IReadOnly
     public ReadOnlyDataFrame(ReadOnlyCollection<ReadOnlySeries> columns, string? name)
     {
         ArgumentNullException.ThrowIfNull(columns);
+        NumericsArgumentException.ThrowIfNotEqualLength(columns);
 
         Name = name;
 
@@ -51,6 +52,10 @@ public sealed class ReadOnlyDataFrame : IReadOnlyList<ReadOnlySeries>, IReadOnly
     public string? Name { get; }
 
     public int Count => _columns.Count;
+
+    public int FlattenedLength => _columns.Count > 0
+        ? _columns.Count * _columns[0].Length
+        : 0;
 
     public ReadOnlyDataFrameRowCollection Rows => new(this);
 

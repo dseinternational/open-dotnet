@@ -5,12 +5,12 @@ using System.Collections;
 
 namespace DSE.Open.Numerics;
 
-public readonly record struct ReadOnlyDataFrameRow : IReadOnlyList<VectorValue>
+public readonly record struct DataFrameRow : IReadOnlyList<VectorValue>
 {
-    private readonly ReadOnlyDataFrame _df;
+    private readonly DataFrame _df;
     private readonly int _rowIndex;
 
-    internal ReadOnlyDataFrameRow(ReadOnlyDataFrame df, int rowIndex)
+    internal DataFrameRow(DataFrame df, int rowIndex)
     {
         _df = df;
         _rowIndex = rowIndex;

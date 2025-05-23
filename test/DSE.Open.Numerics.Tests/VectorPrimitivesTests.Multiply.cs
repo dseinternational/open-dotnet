@@ -100,7 +100,7 @@ public partial class VectorPrimitivesTests
         {
             x.Multiply(y, destination);
         }
-        catch (NumericsException)
+        catch (NumericsArgumentException)
         {
             thrown = true;
         }

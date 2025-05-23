@@ -6,38 +6,48 @@ using System.Runtime.CompilerServices;
 
 namespace DSE.Open.Numerics;
 
-public class NumericsException : Exception
+public class NumericsArgumentException : ArgumentException
 {
-    private const string DefaultMessage = "Numerics error.";
+    private const string DefaultMessage = "Numerics argument error.";
 
-    public NumericsException()
+    public NumericsArgumentException()
         : base(DefaultMessage)
     {
     }
 
-    public NumericsException(string message)
-        : base(message ?? DefaultMessage)
+    public NumericsArgumentException(string? message)
+        : this(message, null, null)
     {
     }
 
-    public NumericsException(string message, Exception innerException)
-        : base(message ?? DefaultMessage, innerException)
+    public NumericsArgumentException(string? message, Exception? innerException)
+        : this(message, null, innerException)
+    {
+    }
+
+    public NumericsArgumentException(string? message, string? paramName)
+        : this(message, paramName, null)
+    {
+    }
+
+    public NumericsArgumentException(string? message, string? paramName, Exception? innerException)
+        : base(message ?? DefaultMessage, paramName, innerException)
     {
     }
 
     public static void Throw()
     {
-        throw new NumericsException(DefaultMessage);
+        throw new NumericsArgumentException(DefaultMessage);
     }
 
     public static void Throw(string message)
     {
-        throw new NumericsException(message);
+        throw new NumericsArgumentException(message);
     }
 
     public static void Throw(string message, Exception innerException)
     {
-        throw new NumericsException(message, innerException);
+        throw new NumericsArgumentException(message, innerException);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -48,6 +58,46 @@ public class NumericsException : Exception
         if (!condition)
         {
             Throw(message ?? DefaultMessage);
+        }
+    }
+
+    public static void ThrowIfNotEqualLength(IReadOnlyCollection<IReadOnlySeries> collection)
+    {
+        ArgumentNullException.ThrowIfNull(collection);
+
+        if (collection.Count == 0)
+        {
+            return;
+        }
+
+        var length = collection.First().Length;
+
+        foreach (var series in collection)
+        {
+            if (series.Length != length)
+            {
+                Throw($"Each collection must have the same length.");
+            }
+        }
+    }
+
+    public static void ThrowIfNotEqualLength<T>(IReadOnlyCollection<IReadOnlyCollection<T>> collection)
+    {
+        ArgumentNullException.ThrowIfNull(collection);
+
+        if (collection.Count == 0)
+        {
+            return;
+        }
+
+        var count = collection.First().Count;
+
+        foreach (var series in collection)
+        {
+            if (series.Count != count)
+            {
+                Throw($"Each collection must have the same length.");
+            }
         }
     }
 

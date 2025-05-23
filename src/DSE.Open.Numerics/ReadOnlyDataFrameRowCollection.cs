@@ -5,22 +5,20 @@ using System.Collections;
 
 namespace DSE.Open.Numerics;
 
-public readonly record struct ReadOnlyDataFrameRow : IReadOnlyList<VectorValue>
+public readonly record struct ReadOnlyDataFrameRowCollection : IReadOnlyList<ReadOnlyDataFrameRow>
 {
     private readonly ReadOnlyDataFrame _df;
-    private readonly int _rowIndex;
 
-    internal ReadOnlyDataFrameRow(ReadOnlyDataFrame df, int rowIndex)
+    internal ReadOnlyDataFrameRowCollection(ReadOnlyDataFrame df)
     {
         _df = df;
-        _rowIndex = rowIndex;
     }
 
-    public VectorValue this[int index] => _df[index].GetVectorValue(_rowIndex);
+    public ReadOnlyDataFrameRow this[int index] => new(_df, index);
 
     public int Count => _df.Count;
 
-    public IEnumerator<VectorValue> GetEnumerator()
+    public IEnumerator<ReadOnlyDataFrameRow> GetEnumerator()
     {
         for (var i = 0; i < Count; i++)
         {

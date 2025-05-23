@@ -99,7 +99,7 @@ public partial class VectorPrimitivesTestsDivide
         {
             x.Divide(y, destination);
         }
-        catch (NumericsException)
+        catch (NumericsArgumentException)
         {
             thrown = true;
         }
