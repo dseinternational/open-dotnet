@@ -9,7 +9,7 @@ namespace DSE.Open.Numerics;
 
 public static partial class VectorExtensions
 {
-    public static ReadOnlyTensorSpan<T> AsReadOnlyTensorSpan<T>(this IReadOnlySeries<T>? vector)
+    public static ReadOnlyTensorSpan<T> AsReadOnlyTensorSpan<T>(this IReadOnlyVector<T>? vector)
         where T : IEquatable<T>
     {
         if (vector is null)
@@ -17,10 +17,12 @@ public static partial class VectorExtensions
             return default;
         }
 
-        return new ReadOnlyTensorSpan<T>(vector.AsReadOnlySpan());
+        return new ReadOnlyTensorSpan<T>(vector.AsSpan());
     }
 
-    public static ReadOnlyTensorSpan<T> AsReadOnlyTensorSpan<T>(this IReadOnlySeries<T>? vector, scoped ReadOnlySpan<nint> lengths)
+    public static ReadOnlyTensorSpan<T> AsReadOnlyTensorSpan<T>(
+        this IReadOnlyVector<T>? vector,
+        scoped ReadOnlySpan<nint> lengths)
         where T : IEquatable<T>
     {
         if (vector is null)
@@ -28,10 +30,13 @@ public static partial class VectorExtensions
             return default;
         }
 
-        return new ReadOnlyTensorSpan<T>(vector.AsReadOnlySpan(), lengths);
+        return new ReadOnlyTensorSpan<T>(vector.AsSpan(), lengths);
     }
 
-    public static ReadOnlyTensorSpan<T> AsReadOnlyTensorSpan<T>(this IReadOnlySeries<T>? vector, scoped ReadOnlySpan<nint> lengths, scoped ReadOnlySpan<nint> strides)
+    public static ReadOnlyTensorSpan<T> AsReadOnlyTensorSpan<T>(
+        this IReadOnlyVector<T>? vector,
+        scoped ReadOnlySpan<nint> lengths,
+        scoped ReadOnlySpan<nint> strides)
         where T : IEquatable<T>
     {
         if (vector is null)
@@ -39,10 +44,10 @@ public static partial class VectorExtensions
             return default;
         }
 
-        return new ReadOnlyTensorSpan<T>(vector.AsReadOnlySpan(), lengths, strides);
+        return new ReadOnlyTensorSpan<T>(vector.AsSpan(), lengths, strides);
     }
 
-    public static TensorSpan<T> AsTensorSpan<T>(this ISeries<T>? vector)
+    public static TensorSpan<T> AsTensorSpan<T>(this IVector<T>? vector)
         where T : IEquatable<T>
     {
         if (vector is null)
@@ -53,7 +58,7 @@ public static partial class VectorExtensions
         return new TensorSpan<T>(vector.AsSpan());
     }
 
-    public static TensorSpan<T> AsTensorSpan<T>(this ISeries<T>? vector, scoped ReadOnlySpan<nint> lengths)
+    public static TensorSpan<T> AsTensorSpan<T>(this IVector<T>? vector, scoped ReadOnlySpan<nint> lengths)
         where T : IEquatable<T>
     {
         if (vector is null)
@@ -64,7 +69,10 @@ public static partial class VectorExtensions
         return new TensorSpan<T>(vector.AsSpan(), lengths);
     }
 
-    public static TensorSpan<T> AsTensorSpan<T>(this ISeries<T>? vector, scoped ReadOnlySpan<nint> lengths, scoped ReadOnlySpan<nint> strides)
+    public static TensorSpan<T> AsTensorSpan<T>(
+        this IVector<T>? vector,
+        scoped ReadOnlySpan<nint> lengths,
+        scoped ReadOnlySpan<nint> strides)
         where T : IEquatable<T>
     {
         if (vector is null)

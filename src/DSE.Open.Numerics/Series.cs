@@ -46,85 +46,67 @@ public abstract class Series : SeriesBase, ISeries
     }
 
     [OverloadResolutionPriority(1)]
-    public static Series<T> Create<T>(Vector<T> data)
+    public static Series<T> Create<T>(Vector<T> data, string? name = null, CategorySet<T>? categories = null)
         where T : IEquatable<T>
     {
-        return new Series<T>(data);
+        return new Series<T>(data, name, categories);
     }
 
-    [OverloadResolutionPriority(1)]
-    public static Series<T> Create<T>(Vector<T> data, string name)
+    public static Series<T> Create<T>(Memory<T> data, string? name = null, CategorySet<T>? categories = null)
         where T : IEquatable<T>
     {
-        return new Series<T>(data, name);
+        return new Series<T>(data, name, categories);
     }
 
-    /// <summary>
-    /// Creates a vector from the given data.
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="data"></param>
-    /// <returns></returns>
-    public static Series<T> Create<T>(Memory<T> data)
-        where T : IEquatable<T>
-    {
-        return new Series<T>(data);
-    }
-
-    public static Series<T> Create<T>(Memory<T> data, string name)
-        where T : IEquatable<T>
-    {
-        return new Series<T>(data, name);
-    }
-
-    public static Series<T> Create<T>(T[] data, string name)
+    public static Series<T> Create<T>(T[] data, string? name = null, CategorySet<T>? categories = null)
         where T : IEquatable<T>
     {
         ArgumentNullException.ThrowIfNull(data);
-        return new Series<T>(data, name);
+        return new Series<T>(data, name, categories);
     }
 
+    // for collection initializers
     public static Series<T> Create<T>(ReadOnlySpan<T> data)
         where T : IEquatable<T>
     {
-        return new Series<T>(data.ToArray());
+        return Create(data, null, null);
     }
 
-    public static Series<T> Create<T>(ReadOnlySpan<T> data, string name)
+    public static Series<T> Create<T>(ReadOnlySpan<T> data, string? name = null, CategorySet<T>? categories = null)
         where T : IEquatable<T>
     {
-        return new Series<T>(data.ToArray(), name);
+        return new Series<T>(data.ToArray(), name, categories);
     }
 
-    public static Series<T> Create<T>(int length)
+    public static Series<T> Create<T>(int length, string? name = null, CategorySet<T>? categories = null)
         where T : IEquatable<T>
     {
-        return Create(new T[length]);
+        return Create(new T[length], name, categories);
     }
 
-    public static Series<T> Create<T>(int length, T scalar)
-        where T : struct, INumber<T>
+    public static Series<T> Create<T>(int length, T scalar, string? name = null, CategorySet<T>? categories = null)
+        where T : IEquatable<T>
     {
-        var data = new T[length];
+        var data = GC.AllocateUninitializedArray<T>(length);
         data.AsSpan().Fill(scalar);
-        return Create(data);
+        return Create(data, name, categories);
     }
 
-    public static Series<T> CreateZeroes<T>(int length)
+    public static Series<T> CreateZeroes<T>(int length, string? name = null, CategorySet<T>? categories = null)
         where T : struct, INumber<T>
     {
-        return Create(length, T.Zero);
+        return Create(length, T.Zero, name, categories);
     }
 
-    public static Series<T> CreateOnes<T>(int length)
+    public static Series<T> CreateOnes<T>(int length, string? name = null, CategorySet<T>? categories = null)
         where T : struct, INumber<T>
     {
-        return Create(length, T.One);
+        return Create(length, T.One, name, categories);
     }
 
-    public static Series<T> Create<T>(int length, string name)
-        where T : struct, INumber<T>
+    public static Series<T> CreateUninitialized<T>(int length, string? name = null, CategorySet<T>? categories = null)
+        where T : IEquatable<T>
     {
-        return Create(new T[length], name);
+        return Create(GC.AllocateUninitializedArray<T>(length), name, categories);
     }
 }

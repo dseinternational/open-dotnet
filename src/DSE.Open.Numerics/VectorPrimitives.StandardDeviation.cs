@@ -5,7 +5,7 @@ using System.Numerics;
 
 namespace DSE.Open.Numerics;
 
-public partial class Vector
+public static partial class VectorPrimitives
 {
     public static T StandardDeviation<T>(ReadOnlySpan<T> span)
         where T : struct, INumberBase<T>

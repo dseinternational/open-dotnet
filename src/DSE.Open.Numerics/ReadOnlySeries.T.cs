@@ -26,22 +26,18 @@ public class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
     public static readonly ReadOnlySeries<T> Empty = new([]);
 
     private readonly ReadOnlyVector<T> _vector;
+    private CategorySet<T>? _categories;
 
-    public ReadOnlySeries([NotNull] ReadOnlyVector<T> vector)
-        : this(vector, null)
-    {
-    }
-
-    public ReadOnlySeries([NotNull] ReadOnlyVector<T> vector, string? name)
-        : this(vector, name, null)
-    {
-    }
-
-    public ReadOnlySeries([NotNull] ReadOnlyVector<T> vector, string? name, CategorySet<T>? categories)
+    public ReadOnlySeries([NotNull] ReadOnlyVector<T> vector, string? name = null, CategorySet<T>? categories = null)
         : base(vector, name)
     {
         _vector = vector;
-        // todo: if not null, validate categories
+        _categories = categories;
+
+        if (_categories is not null)
+        {
+            NumericsArgumentException.ThrowIfNotInSet(vector, _categories);
+        }
     }
 
     public T this[int index]
@@ -55,6 +51,11 @@ public class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
 #pragma warning restore CA1033 // Interface methods should be callable by child types
 
     public new ReadOnlyVector<T> Vector => _vector;
+
+    [MemberNotNullWhen(true, nameof(_categories))]
+    public override bool IsCategorical => _categories is not null && !_categories.IsEmpty;
+
+    public CategorySet<T> Categories => _categories ??= [];
 
     public override VectorValue GetVectorValue(int index)
     {

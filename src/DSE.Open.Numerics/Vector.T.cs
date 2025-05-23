@@ -93,6 +93,14 @@ public sealed class Vector<T>
 
         switch (_memory)
         {
+            case Memory<byte> memory:
+                return GetHashCode(memory);
+            case Memory<sbyte> memory:
+                return GetHashCode(memory);
+            case Memory<short> memory:
+                return GetHashCode(memory);
+            case Memory<ushort> memory:
+                return GetHashCode(memory);
             case Memory<int> memory:
                 return GetHashCode(memory);
             case Memory<uint> memory:
@@ -100,6 +108,14 @@ public sealed class Vector<T>
             case Memory<long> memory:
                 return GetHashCode(memory);
             case Memory<ulong> memory:
+                return GetHashCode(memory);
+            case Memory<float> memory:
+                return GetHashCode(memory);
+            case Memory<double> memory:
+                return GetHashCode(memory);
+            case Memory<Half> memory:
+                return GetHashCode(memory);
+            case Memory<decimal> memory:
                 return GetHashCode(memory);
             default:
                 break;
@@ -205,6 +221,15 @@ public sealed class Vector<T>
     IVector<T> IVector<T>.Slice(int start, int length)
     {
         return Slice(start, length);
+    }
+
+    /// <summary>
+    /// Copies the contents of this vector to a new array.
+    /// </summary>
+    /// <returns></returns>
+    public T[] ToArray()
+    {
+        return _memory.ToArray();
     }
 
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",

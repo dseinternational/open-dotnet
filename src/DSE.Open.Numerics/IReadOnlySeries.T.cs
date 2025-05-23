@@ -23,11 +23,3 @@ public interface IReadOnlySeries<T>
 
     IReadOnlySeries<T> Slice(int start, int length);
 }
-public static class SeriesExtensions
-{
-    public static VectorValue GetValue(this IReadOnlySeries<int> series, int index)
-    {
-        ArgumentNullException.ThrowIfNull(series);
-        return VectorValue.FromValue(series[index]);
-    }
-}

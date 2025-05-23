@@ -101,6 +101,36 @@ public class NumericsArgumentException : ArgumentException
         }
     }
 
+    public static void ThrowIfNotInSet<T>(IReadOnlyCollection<T> values, IReadOnlySet<T> set)
+    {
+        ArgumentNullException.ThrowIfNull(values);
+        ArgumentNullException.ThrowIfNull(set);
+
+        if (values.Count == 0)
+        {
+            return;
+        }
+
+        foreach (var value in values)
+        {
+            if (!set.Contains(value))
+            {
+                Throw($"Value {value} is not in the set.");
+            }
+        }
+    }
+
+    public static void ThrowIfNotInSet<T>(T value, IReadOnlySet<T> set)
+    {
+        ArgumentNullException.ThrowIfNull(set);
+
+        if (!set.Contains(value))
+        {
+            Throw($"Value {value} is not in the set.");
+        }
+    }
+
+    [Obsolete("Use ThrowIfNot(x.Count == y.Count)")]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void ThrowIfNotEqualLength<T>(
         [NotNull] ICollection<T> x,

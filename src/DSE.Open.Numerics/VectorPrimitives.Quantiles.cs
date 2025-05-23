@@ -5,7 +5,7 @@ using System.Numerics;
 
 namespace DSE.Open.Numerics;
 
-public partial class Vector
+public static partial class VectorPrimitives
 {
     /// <summary>
     /// Divide data into n continuous intervals with equal probability. Returns a list of n - 1

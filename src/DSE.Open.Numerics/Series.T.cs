@@ -23,7 +23,6 @@ namespace DSE.Open.Numerics;
 public class Series<T>
     : Series,
       ISeries<T>,
-      IReadOnlySeries<T>,
       IEquatable<Series<T>>,
       IEquatable<ReadOnlySeries<T>>
     where T : IEquatable<T>
@@ -39,22 +38,16 @@ public class Series<T>
     {
     }
 
-    public Series([NotNull] Vector<T> vector) : this(vector, null)
-    {
-        _vector = vector;
-    }
-
-    public Series([NotNull] Vector<T> vector, string? name)
-        : this(vector, name, null)
-    {
-    }
-
-    public Series([NotNull] Vector<T> vector, string? name, CategorySet<T>? categories)
+    public Series([NotNull] Vector<T> vector, string? name = null, CategorySet<T>? categories = null)
         : base(vector, name)
     {
         _vector = vector;
         _categories = categories;
-        // todo: if not null, validate categories
+
+        if (_categories is not null)
+        {
+            NumericsArgumentException.ThrowIfNotInSet(vector, _categories);
+        }
     }
 
     public T this[int index]
@@ -62,7 +55,15 @@ public class Series<T>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get => _vector[index];
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        set => _vector[index] = value;
+        set
+        {
+            if (IsCategorical)
+            {
+                NumericsArgumentException.ThrowIfNotInSet(value, _categories);
+            }
+
+            _vector[index] = value;
+        }
     }
 
 #pragma warning disable CA1033 // Interface methods should be callable by child types
@@ -71,7 +72,8 @@ public class Series<T>
 
     public new ReadOnlyVector<T> Vector => _vector;
 
-    public override bool IsCategorical { get; } = true;
+    [MemberNotNullWhen(true, nameof(_categories))]
+    public override bool IsCategorical => _categories is not null && !_categories.IsEmpty;
 
     public CategorySet<T> Categories => _categories ??= [];
 
@@ -186,6 +188,17 @@ public class Series<T>
     ISeries<T> ISeries<T>.Slice(int start, int length)
     {
         return Slice(start, length);
+    }
+
+    /// <summary>
+    /// Copies the contents of the series to a new array.
+    /// </summary>
+    /// <returns></returns>
+    public T[] ToArray()
+    {
+#pragma warning disable IDE0305 // Simplify collection initialization
+        return _vector.ToArray();
+#pragma warning restore IDE0305 // Simplify collection initialization
     }
 
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",

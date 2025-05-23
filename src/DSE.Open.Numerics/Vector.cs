@@ -78,20 +78,39 @@ public abstract partial class Vector : VectorBase, IVector
         return [.. GC.AllocateUninitializedArray<T>(length)];
     }
 
+    /// <summary>
+    /// Creates a vector of the given length, with all elements set to the given scalar value.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="length"></param>
+    /// <param name="scalar"></param>
+    /// <returns></returns>
     public static Vector<T> Create<T>(int length, T scalar)
-        where T : struct, INumber<T>
+        where T : IEquatable<T>
     {
-        var array = new T[length];
+        var array = GC.AllocateUninitializedArray<T>(length);
         array.AsSpan().Fill(scalar);
         return [.. array];
     }
 
+    /// <summary>
+    /// Creates a vector of the given length, with all elements set to <see cref="INumberBase{TSelf}.Zero"/>.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="length"></param>
+    /// <returns></returns>
     public static Vector<T> CreateZeroes<T>(int length)
         where T : struct, INumber<T>
     {
         return Create(length, T.Zero);
     }
 
+    /// <summary>
+    /// Creates a vector of the given length, with all elements set to <see cref="INumberBase{TSelf}.One"/>.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="length"></param>
+    /// <returns></returns>
     public static Vector<T> CreateOnes<T>(int length)
         where T : struct, INumber<T>
     {
