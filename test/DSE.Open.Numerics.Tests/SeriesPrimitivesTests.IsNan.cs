@@ -3,7 +3,7 @@
 
 namespace DSE.Open.Numerics;
 
-public partial class SeriesPrimitivesTestsIsNan
+public partial class SeriesPrimitivesTests
 {
     [Fact]
     public void IsNan_Float32()
