@@ -1,13 +1,18 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using Python.Runtime;
+using System.Diagnostics;
+using CSnakes.Runtime.Python;
 
 namespace DSE.Open.Interop.Python;
 
-public interface IPyObjectWrapper<TSelf>
+public abstract class PyObjectWrapper
 {
-#pragma warning disable CA1000 // Do not declare static members on generic types
-    static abstract TSelf FromPyObject(PyObject pyObj);
-#pragma warning restore CA1000 // Do not declare static members on generic types
+    protected internal PyObjectWrapper(PyObject pyObject)
+    {
+        Debug.Assert(pyObject is not null);
+        InnerObject = pyObject;
+    }
+
+    protected PyObject InnerObject { get; }
 }

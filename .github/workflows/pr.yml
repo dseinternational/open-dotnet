@@ -43,10 +43,8 @@ jobs:
           python-version: "3.13.3"
           cache: "pip"
 
-      - name: Install Python packages
-        run: |
-          pip3 install torch>=2.7.0 --index-url https://download.pytorch.org/whl/cpu
-          python -m pip install -r ./requirements.txt --progress-bar off --verbose
+      - name: Configure Python environment
+        run: ./eng/scripts/init_python.ps1
 
       - name: Initialize Python environment
         run: python ./eng/scripts/init_ci.py
@@ -87,6 +85,7 @@ jobs:
           configuration: ${{ matrix.configuration }}
         env:
           STANZA_NLP: en
+          PYTHON3_HOME: ${{ env.Python3_ROOT_DIR }}
 
       # - name: Generate coverage report
       #   if: matrix.configuration == 'Debug'

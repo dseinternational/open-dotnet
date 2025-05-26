@@ -1,56 +1,20 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using DSE.Open.Collections.Generic;
-using DSE.Open.Interop.Python;
+using CSnakes.Runtime;
+using CSnakes.Runtime.Python;
 
 namespace DSE.Open.Language.Annotations.Nlp.Stanza;
 
-/// <summary>
-/// A Document object holds the annotation of an entire document, and is automatically generated
-/// when a string is annotated by the Pipeline. It contains a collection of Sentences and
-/// entities (which are represented as Spans).
-/// </summary>
-public class Document
+public class Document : StanzaObject
 {
-    private readonly dynamic _doc;
-
-    private readonly Lazy<string?> _lang;
-    private readonly Lazy<Collection<Sentence>> _sentences;
-    private readonly Lazy<Collection<Span>> _entities;
-
-    internal Document(dynamic doc)
+    internal Document(PyObject pyDocument, IStanzaService stanza) : base(pyDocument, stanza)
     {
-        ArgumentNullException.ThrowIfNull(doc);
-
-        _doc = doc;
-
-        _lang = new(() => PyConverter.GetStringOrNull(doc.lang));
-
-        _sentences = new(() =>
-        {
-            return PyConverter.GetList<Sentence>(_doc.sentences, (PyWrapperFactory<Sentence>)del);
-
-            Sentence del(dynamic s)
-            {
-                return new(this, s);
-            }
-        });
-
-        _entities = new(() =>
-        {
-            return PyConverter.GetList<Span>(_doc.entities, (PyWrapperFactory<Span>)del);
-
-            Span del(dynamic s)
-            {
-                return new(this, s);
-            }
-        });
+        Text = pyDocument.GetAttr("text").As<string>();
+        Sentences = [.. pyDocument.GetAttr("sentences").As<IReadOnlyList<PyObject>>().Select(s => new Sentence(s, stanza))];
     }
 
-    public string? Lang => _lang.Value;
+    public string Text { get; }
 
-    public IReadOnlyList<Sentence> Sentences => _sentences.Value;
-
-    public IReadOnlyList<Span> Entities => _entities.Value;
+    public IReadOnlyList<Sentence> Sentences { get; }
 }

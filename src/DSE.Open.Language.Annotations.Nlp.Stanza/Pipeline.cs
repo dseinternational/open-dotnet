@@ -1,84 +1,28 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using Python.Runtime;
+using CSnakes.Runtime;
+using CSnakes.Runtime.Python;
 
 namespace DSE.Open.Language.Annotations.Nlp.Stanza;
 
-public class Pipeline : IDisposable
+// https://github.com/stanfordnlp/stanza/blob/af3d42b70ef2d82d96f410214f98dd17dd983f51/stanza/pipeline/core.py#L176
+
+public class Pipeline : StanzaObject
 {
-    private readonly dynamic _nlp;
-    private bool _disposed;
-
-    internal Pipeline(dynamic nlp)
+    internal Pipeline(PyObject pyPipeline, IStanzaService stanza) : base(pyPipeline, stanza)
     {
-        ArgumentNullException.ThrowIfNull(nlp);
-
-        _nlp = nlp;
     }
 
-    public Task<Document> ProcessTextAsync(
-        IEnumerable<string> sentences,
-        CancellationToken cancellationToken = default)
+    public IReadOnlyList<string> GetLoadedProcessorsDescriptions()
     {
-        ArgumentNullException.ThrowIfNull(sentences);
-
-        var text = string.Join("\n\n", sentences);
-        return ProcessTextAsync(text, cancellationToken);
+        return [.. Stanza.GetLoadedProcessors(InnerObject).Select(p => p.ToString())];
     }
 
-    public Task<Document> ProcessTextAsync(
-        string text,
-        CancellationToken cancellationToken = default)
+    public Document ProcessText(string text)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(text);
-
-        return Task.Run(() =>
-        {
-            try
-            {
-                using (Py.GIL())
-                {
-                    var doc = _nlp(text);
-
-                    if (doc is null)
-                    {
-                        throw new InvalidOperationException("Failed to create document.");
-                    }
-
-                    return new Document(doc);
-                }
-            }
-            catch (Exception e)
-            {
-                throw new StanzaException("Failed to process text.", e);
-            }
-        }
-        , cancellationToken);
-    }
-
-    protected virtual void Dispose(bool disposing)
-    {
-        if (!_disposed)
-        {
-            if (disposing)
-            {
-                using (Py.GIL())
-                {
-                    if (_nlp is IDisposable disposable)
-                    {
-                        disposable.Dispose();
-                    }
-                }
-            }
-
-            _disposed = true;
-        }
-    }
-
-    public void Dispose()
-    {
-        Dispose(disposing: true);
-        GC.SuppressFinalize(this);
+        var pyDocument = Stanza.ProcessText(InnerObject, text);
+        return new Document(pyDocument, Stanza);
     }
 }

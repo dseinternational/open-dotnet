@@ -3,6 +3,7 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
   <ItemGroup>
+    <PackageVersion Include="AwesomeAssertions" Version="9.0.0-rc.1" />
     <PackageVersion Include="Azure.Core" Version="1.46.1" />
     <PackageVersion Include="Azure.Identity" Version="1.14.0" />
     <PackageVersion Include="BenchmarkDotNet" Version="0.15.0" />
@@ -10,7 +11,7 @@
     <PackageVersion Include="CommunityToolkit.HighPerformance" Version="8.4.0" />
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageVersion Include="coverlet.collector" Version="6.0.2" />
-    <PackageVersion Include="AwesomeAssertions" Version="9.0.0-rc.1" />
+    <PackageVersion Include="CSnakes.Runtime" Version="1.0.34" />
     <PackageVersion Include="Google.Protobuf" Version="3.31.0" />
     <PackageVersion Include="Iced" Version="1.21.0" />
     <PackageVersion Include="Microsoft.Bcl.TimeProvider" Version="9.0.5" />
@@ -53,7 +54,6 @@
     <PackageVersion Include="Polly" Version="8.5.2" />
     <PackageVersion Include="Polly.Contrib.WaitAndRetry" Version="1.1.1" />
     <PackageVersion Include="Polly.Extensions.Http" Version="3.0.0" />
-    <PackageVersion Include="pythonnet" Version="3.0.5" />
     <PackageVersion Include="SharpZipLib" Version="1.4.2" />
     <PackageVersion Include="SkiaSharp" Version="3.119.0" />
     <PackageVersion Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.11" />

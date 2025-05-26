@@ -5,13 +5,4 @@ namespace DSE.Open.Interop.Python;
 
 public class PythonContextTests
 {
-    [Fact]
-    public void CannotInitializeTwoInstances()
-    {
-        _ = Assert.Throws<InvalidOperationException>(() =>
-        {
-            var context1 = new PythonContext(new());
-            var context21 = new PythonContext(new());
-        });
-    }
 }
