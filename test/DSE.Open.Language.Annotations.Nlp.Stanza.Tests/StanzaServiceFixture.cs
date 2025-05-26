@@ -22,13 +22,6 @@ public sealed class StanzaServiceFixture : IDisposable
             {
                 _ = services.AddLogging(config => config.AddDebug().AddConsole());
 
-                var home = Path.Join(Environment.CurrentDirectory, "Modules");
-
-                if (!Directory.Exists(home))
-                {
-                    throw new InvalidOperationException($"Modules directory not found at {home}");
-                }
-
                 var venv = new DirectoryInfo(Path.Join(Environment.CurrentDirectory,
                     "..", "..", "..", "..", "..", ".venv"));
 
@@ -39,7 +32,6 @@ public sealed class StanzaServiceFixture : IDisposable
 
                 _ = services
                     .WithPython()
-                    .WithHome(home)
                     .WithVirtualEnvironment(venv.FullName)
                     .FromEnvironmentVariable("PYTHON3_HOME", "3.13");
             });
@@ -49,8 +41,6 @@ public sealed class StanzaServiceFixture : IDisposable
         _pythonEnvironment = _host.Services.GetRequiredService<IPythonEnvironment>();
 
         _stanzaEnvironment = new StanzaService(_pythonEnvironment);
-
-        // _stanzaEnvironment.Download("en");
 
         PipelineEnglish = _stanzaEnvironment.CreatePipeline("en");
     }

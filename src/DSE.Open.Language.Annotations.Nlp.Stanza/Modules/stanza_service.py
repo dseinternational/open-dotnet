@@ -1,15 +1,9 @@
-import os
-import numpy
 import stanza
-import stanza.models
-import stanza.models.common
-import stanza.models.common.doc
-import stanza.models.coref
 import stanza.pipeline
 import stanza.pipeline.processor
 
 
-# Stanza
+# Stanza NLP
 
 
 def download(lang: str = "en", logging_level: str = "WARN"):

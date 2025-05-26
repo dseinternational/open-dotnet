@@ -12,10 +12,24 @@
   <ItemGroup>
     <AdditionalFiles Include="Modules\*.py">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      
     </AdditionalFiles>
     <AdditionalFiles Include="Modules\*.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </AdditionalFiles>
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="*.py">
+      <Pack>true</Pack>
+      <PackagePath>contentFiles/any/net9.0</PackagePath>
+      <PackageCopyToOutput>true</PackageCopyToOutput>
+    </Content>
+    <Content Include="*.txt">
+      <Pack>true</Pack>
+      <PackagePath>contentFiles/any/net9.0</PackagePath>
+      <PackageCopyToOutput>true</PackageCopyToOutput>
+    </Content>
+  </ItemGroup>
+  
 </Project>
