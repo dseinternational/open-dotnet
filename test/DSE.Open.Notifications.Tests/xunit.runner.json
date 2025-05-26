@@ -2,6 +2,7 @@
   "$schema": "https://xunit.net/schema/current/xunit.runner.schema.json",
   "diagnosticMessages": true,
   "longRunningTestSeconds": 30,
-  "methodDisplayOptions": "replaceUnderscoreWithSpace",
-  "parallelizeAssembly": true
+  "parallelizeAssembly": true,
+  "parallelizeTestCollections": true,
+  "preEnumerateTheories": true
 }
