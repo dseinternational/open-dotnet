@@ -220,6 +220,10 @@ public static class VectorJsonWriter
         {
             WriteBooleanArray(writer, boolVector.AsSpan());
         }
+        else
+        {
+            throw new JsonException($"Unsupported vector type: {typeof(T)}");
+        }
 
         writer.WriteEndObject();
     }
@@ -249,11 +253,18 @@ public static class VectorJsonWriter
             return;
         }
 
-        var numberType = typeof(INumber<>).MakeGenericType(typeof(T));
-
-        if (typeof(T).IsAssignableTo(numberType))
+        if (vector.IsNumeric)
         {
-            WriteNaNumberArray(writer, vector);
+            var numberType = typeof(INumber<>).MakeGenericType(typeof(T));
+
+            if (typeof(T).IsAssignableTo(numberType))
+            {
+                WriteNaNumberArray(writer, vector);
+            }
+            else
+            {
+                throw new JsonException($"Unsupported numeric vector type: {typeof(T)}");
+            }
         }
         else if (vector is IReadOnlyVector<NaValue<string>> stringVector)
         {
@@ -270,6 +281,14 @@ public static class VectorJsonWriter
         else if (vector is IReadOnlyVector<NaValue<DateTimeOffset>> dateTimeOffsetVector)
         {
             WriteNaDateTimeOffsetArray(writer, dateTimeOffsetVector.AsSpan());
+        }
+        else if (vector is IReadOnlyVector<NaValue<bool>> boolVector)
+        {
+            WriteNaBooleanArray(writer, boolVector.AsSpan());
+        }
+        else
+        {
+            throw new JsonException($"Unsupported vector type: {typeof(T)}");
         }
 
         writer.WriteEndObject();

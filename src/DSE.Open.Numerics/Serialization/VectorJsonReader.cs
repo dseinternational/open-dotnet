@@ -400,7 +400,7 @@ public static class VectorJsonReader
     private static bool TryGetFloatingPointFromString<T>(ref Utf8JsonReader r, out T value)
         where T : struct, INumber<T>
     {
-        if (NumberHelper.IsKnownFloatingPointIeee754Type<T>() && r.TokenType == JsonTokenType.String)
+        if (NumericsNumberHelper.IsKnownFloatingPointIeee754Type<T>() && r.TokenType == JsonTokenType.String)
         {
             var str = r.GetString();
 

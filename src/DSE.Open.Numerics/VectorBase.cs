@@ -28,7 +28,7 @@ public abstract class VectorBase
 #endif
 
         DataType = dataType;
-        IsNumeric = NumberHelper.IsKnownNumberType(itemType);
+        IsNumeric = NumericsNumberHelper.IsKnownNumberType(itemType);
         ItemType = itemType;
         Length = length;
         IsReadOnly = isReadOnly;

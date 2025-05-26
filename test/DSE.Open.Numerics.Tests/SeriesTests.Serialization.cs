@@ -102,6 +102,54 @@ public partial class SeriesTests
     }
 
     [Fact]
+    public void SerializeDeserialize_String_Reflected()
+    {
+        TestSerializeDeserialize(
+            [.. Enumerable.Range(1, 100).Select(i => $"item {i}")],
+            NumericsJsonSharedOptions.Reflected);
+    }
+
+    [Fact]
+    public void SerializeDeserialize_String_SourceGenerated()
+    {
+        TestSerializeDeserialize(
+            [.. Enumerable.Range(1, 100).Select(i => $"item {i}")],
+            NumericsJsonSharedOptions.SourceGenerated);
+    }
+
+    [Fact]
+    public void SerializeDeserialize_Char_Reflected()
+    {
+        TestSerializeDeserialize(
+            [.. Enumerable.Range(48, 591).Select(i => (char)i)],
+            NumericsJsonSharedOptions.Reflected);
+    }
+
+    [Fact]
+    public void SerializeDeserialize_Char_SourceGenerated()
+    {
+        TestSerializeDeserialize(
+            [.. Enumerable.Range(48, 591).Select(i => (char)i)],
+            NumericsJsonSharedOptions.SourceGenerated);
+    }
+
+    [Fact]
+    public void SerializeDeserialize_Boolean_Reflected()
+    {
+        TestSerializeDeserialize(
+            [.. Enumerable.Range(1, 100).Select(i => i % 2 == 0)],
+            NumericsJsonSharedOptions.Reflected);
+    }
+
+    [Fact]
+    public void SerializeDeserialize_Boolean_SourceGenerated()
+    {
+        TestSerializeDeserialize(
+            [.. Enumerable.Range(1, 100).Select(i => i % 2 == 0)],
+            NumericsJsonSharedOptions.SourceGenerated);
+    }
+
+    [Fact]
     public void SerializeDeserialize_NaInt16_Reflected()
     {
         TestSerializeDeserialize<NaInt<short>>([null, -1, -2, 3, 4, 5, 6, 7, 8, null], NumericsJsonSharedOptions.Reflected);

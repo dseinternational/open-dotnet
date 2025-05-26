@@ -298,6 +298,21 @@ public partial class VectorTests : LoggedTestsBase
     }
 
     [Fact]
+    public void SerializeDeserializeReflectedNaCharUnicode()
+    {
+        TestSerializeDeserialize(
+            [.. Enumerable.Range(48, 591).Select(i => (NaValue<char>)(char)i)],
+            NumericsJsonSharedOptions.Reflected);
+    }
+
+    [Fact]
+    public void SerializeDeserializeSourceGeneratedNaCharUnicode()
+    {
+        TestSerializeDeserialize(
+            [.. Enumerable.Range(48, 591).Select(i => (NaValue<char>)(char)i)],
+            NumericsJsonSharedOptions.SourceGenerated);
+    }
+    [Fact]
     public void SerializeDeserializeReflectedBoolean()
     {
         TestSerializeDeserialize(
