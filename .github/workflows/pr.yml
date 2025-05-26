@@ -46,9 +46,6 @@ jobs:
       - name: Configure Python environment
         run: ./eng/scripts/init_python.ps1
 
-      - name: Initialize Python environment
-        run: python ./eng/scripts/init_ci.py
-
       - name: Set .NET SDK version
         uses: actions/setup-dotnet@v4
         with:
