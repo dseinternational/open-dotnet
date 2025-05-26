@@ -250,6 +250,70 @@ public partial class VectorTests : LoggedTestsBase
     }
 
     [Fact]
+    public void SerializeDeserializeReflectedString()
+    {
+        TestSerializeDeserialize(
+            [.. Enumerable.Range(1, 500).Select(i => $"item {i}")],
+            NumericsJsonSharedOptions.Reflected);
+    }
+
+    [Fact]
+    public void SerializeDeserializeSourceGeneratedString()
+    {
+        TestSerializeDeserialize(
+            [.. Enumerable.Range(1, 500).Select(i => $"item {i}")],
+            NumericsJsonSharedOptions.SourceGenerated);
+    }
+
+    [Fact]
+    public void SerializeDeserializeReflectedCharAscii()
+    {
+        TestSerializeDeserialize(
+            [.. Enumerable.Range(48, 78).Select(i => (char)i)],
+            NumericsJsonSharedOptions.Reflected);
+    }
+
+    [Fact]
+    public void SerializeDeserializeSourceGeneratedCharAscii()
+    {
+        TestSerializeDeserialize(
+            [.. Enumerable.Range(48, 78).Select(i => (char)i)],
+            NumericsJsonSharedOptions.SourceGenerated);
+    }
+
+    [Fact]
+    public void SerializeDeserializeReflectedCharUnicode()
+    {
+        TestSerializeDeserialize(
+            [.. Enumerable.Range(48, 591).Select(i => (char)i)],
+            NumericsJsonSharedOptions.Reflected);
+    }
+
+    [Fact]
+    public void SerializeDeserializeSourceGeneratedCharUnicode()
+    {
+        TestSerializeDeserialize(
+            [.. Enumerable.Range(48, 591).Select(i => (char)i)],
+            NumericsJsonSharedOptions.SourceGenerated);
+    }
+
+    [Fact]
+    public void SerializeDeserializeReflectedBoolean()
+    {
+        TestSerializeDeserialize(
+            [.. Enumerable.Range(1, 100).Select(i => i % 2 == 0)],
+            NumericsJsonSharedOptions.Reflected);
+    }
+
+    [Fact]
+    public void SerializeDeserializeSourceGeneratedBoolean()
+    {
+        TestSerializeDeserialize(
+            [.. Enumerable.Range(1, 100).Select(i => i % 2 == 0)],
+            NumericsJsonSharedOptions.SourceGenerated);
+    }
+
+    [Fact]
     public void SerializeDeserializeReflectedNaInt32()
     {
         TestSerializeDeserialize(

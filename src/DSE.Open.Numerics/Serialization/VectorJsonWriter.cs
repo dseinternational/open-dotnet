@@ -187,11 +187,18 @@ public static class VectorJsonWriter
             return;
         }
 
-        var numberType = typeof(INumber<>).MakeGenericType(typeof(T));
-
-        if (typeof(T).IsAssignableTo(numberType))
+        if (vector.IsNumeric)
         {
-            WriteNumberArray(writer, vector);
+            var numberType = typeof(INumber<>).MakeGenericType(typeof(T));
+
+            if (typeof(T).IsAssignableTo(numberType))
+            {
+                WriteNumberArray(writer, vector);
+            }
+            else
+            {
+                throw new JsonException($"Unsupported numeric vector type: {typeof(T)}");
+            }
         }
         else if (vector is IReadOnlyVector<string> stringVector)
         {
@@ -208,6 +215,10 @@ public static class VectorJsonWriter
         else if (vector is IReadOnlyVector<DateTimeOffset> dateTimeOffsetVector)
         {
             WriteDateTimeOffsetArray(writer, dateTimeOffsetVector.AsSpan());
+        }
+        else if (vector is IReadOnlyVector<bool> boolVector)
+        {
+            WriteBooleanArray(writer, boolVector.AsSpan());
         }
 
         writer.WriteEndObject();
@@ -536,6 +547,26 @@ public static class VectorJsonWriter
     private static void WriteNaStringArray(Utf8JsonWriter writer, ReadOnlySpan<NaValue<string>> vector)
     {
         WriteArray(writer, vector, static (writer, value) => writer.WriteStringValue(value.HasValue ? value.Value : null));
+    }
+
+    private static void WriteBooleanArray(Utf8JsonWriter writer, ReadOnlySpan<bool> vector)
+    {
+        WriteArray(writer, vector, static (writer, value) => writer.WriteBooleanValue(value));
+    }
+
+    private static void WriteNaBooleanArray(Utf8JsonWriter writer, ReadOnlySpan<NaValue<bool>> vector)
+    {
+        WriteArray(writer, vector, static (writer, value) =>
+        {
+            if (value.IsNa)
+            {
+                writer.WriteBooleanValue((bool)value);
+            }
+            else
+            {
+                writer.WriteNullValue();
+            }
+        });
     }
 
     private static void WriteDateTimeArray(Utf8JsonWriter writer, ReadOnlySpan<DateTime> vector)
