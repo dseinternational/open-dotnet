@@ -1,18 +1,10 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using DSE.Open.Testing.Xunit.Stanza;
-
 namespace DSE.Open.Language.Readability;
 
-[Collection(nameof(StanzaContextCollection))]
-public class SpacheReadabilityCalculatorTests : StanzaContextTestsBase
+public class SpacheReadabilityCalculatorTests
 {
-    public SpacheReadabilityCalculatorTests(StanzaContextFixture fixture, ITestOutputHelper output)
-        : base(fixture, output)
-    {
-    }
-
     [Theory]
     [InlineData(2, 30, 6, 4.114)]
     [InlineData(2, 30, 0, 2.474)]

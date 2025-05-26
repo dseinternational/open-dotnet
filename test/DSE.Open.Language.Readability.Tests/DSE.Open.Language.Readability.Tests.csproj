@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\DSE.Open.Language.Readability\DSE.Open.Language.Readability.csproj" />
-    <ProjectReference Include="..\..\src\DSE.Open.Testing.Xunit.Stanza\DSE.Open.Testing.Xunit.Stanza.csproj" />
   </ItemGroup>
 
   <ItemGroup>

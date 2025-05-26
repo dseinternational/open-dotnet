@@ -2,12 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
-    <IsAotCompatible>false</IsAotCompatible>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="pythonnet" />
-    <PackageReference Include="System.Reflection.Emit" />
+    <PackageReference Include="CSnakes.Runtime" />
   </ItemGroup>
 
   <ItemGroup>

@@ -2,24 +2,25 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using DSE.Open.Globalization;
-using DSE.Open.Testing.Xunit.Stanza;
 
 namespace DSE.Open.Language.Annotations.Nlp.Stanza;
 
-[Collection(nameof(StanzaContextCollection))]
-public class StanzaAnnotatorTests : StanzaContextTestsBase
+[Collection("StanzaService")]
+public class StanzaAnnotatorTests : StanzaTestsBase
 {
-    public StanzaAnnotatorTests(StanzaContextFixture fixture, ITestOutputHelper output)
-        : base(fixture, output)
+    public StanzaAnnotatorTests(StanzaServiceFixture stanzaFixture, ITestOutputHelper output) : base(stanzaFixture, output)
     {
     }
 
-    [StanzaNlpFact("en")]
+    [Fact]
     public async Task CanAnnotateText()
     {
-        var annotator = new StanzaAnnotator(StanzaContext);
+        var annotator = new StanzaAnnotator(Stanza);
 
-        var doc = await annotator.AnnotateTextAsync(LanguageTag.EnglishUk, "Emma is eating her breakfast. She is sat at the table eating cereal.");
+        var doc = await annotator.AnnotateTextAsync(
+            LanguageTag.EnglishUk,
+            "Emma is eating her breakfast. She is sat at the table eating cereal.",
+            TestContext.Current.CancellationToken);
 
         foreach (var sentence in doc.Sentences)
         {

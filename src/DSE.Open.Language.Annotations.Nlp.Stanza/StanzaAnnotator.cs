@@ -11,27 +11,27 @@ namespace DSE.Open.Language.Annotations.Nlp.Stanza;
 
 public class StanzaAnnotator : IAnnotator
 {
-    public StanzaAnnotator(StanzaContext stanzaContext)
+    public StanzaAnnotator(StanzaService stanza)
     {
-        Context = stanzaContext;
+        Context = stanza;
     }
 
-    public StanzaContext Context { get; }
+    public StanzaService Context { get; }
 
-    public async Task<OpenDocument> AnnotateTextAsync(
+    public Task<OpenDocument> AnnotateTextAsync(
         LanguageTag language,
         string text,
         CancellationToken cancellationToken = default)
     {
         var model = language.GetLanguagePart().ToStringLower();
 
-        using var nlp = Context.CreatePipeline(model);
+        var nlp = Context.CreatePipeline(model);
 
-        var stanzaDoc = await nlp.ProcessTextAsync(text, cancellationToken).ConfigureAwait(false);
+        var doc = nlp.ProcessText(text);
 
-        return new()
+        OpenDocument result = new()
         {
-            Sentences = [.. stanzaDoc.Sentences.Select(s => new OpenSentence
+            Sentences = [.. doc.Sentences.Select(s => new OpenSentence
             {
                 Id = s.Id,
                 Language = language,
@@ -45,6 +45,7 @@ public class StanzaAnnotator : IAnnotator
             })]
         };
 
+        return Task.FromResult(result);
     }
 
     private static OpenWord MapWord(Word w)
@@ -95,5 +96,15 @@ public class StanzaAnnotator : IAnnotator
             Relation = relation,
             Attributes = attributes
         };
+    }
+}
+public sealed class StanzaException : Exception
+{
+    public StanzaException(string message) : base(message)
+    {
+    }
+
+    public StanzaException(string message, Exception innerException) : base(message, innerException)
+    {
     }
 }
