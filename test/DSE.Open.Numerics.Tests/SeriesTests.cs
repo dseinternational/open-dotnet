@@ -133,4 +133,18 @@ public partial class SeriesTests : LoggedTestsBase
     {
         _ = Assert.Throws<NumericsArgumentException>(() => Series.Create([11, 12, 13, 14, 15], categories: [1, 2, 3, 4, 5]));
     }
+
+    [Fact]
+    public void Slice_ShouldNotCopy()
+    {
+        // Arrange
+        var series = Series.Create([1, 2, 3, 4, 5], "TestSeries");
+
+        // Act
+        var slice = series[..1];
+        series[0] = 42; // Modify the first element of the original series
+
+        // Assert
+        Assert.Equal(42, slice[0]);
+    }
 }
