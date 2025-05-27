@@ -20,6 +20,6 @@ public static class ReadOnlyDataFrameExtensions
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
 
         var series = dataFrame[name] ?? throw new KeyNotFoundException($"The series '{name}' was not found in the data frame.");
-        return series.Expect<T>();
+        return series.ExpectElementOfType<T>();
     }
 }

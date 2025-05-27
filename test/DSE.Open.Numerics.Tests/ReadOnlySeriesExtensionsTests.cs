@@ -20,7 +20,7 @@ public sealed class ReadOnlySeriesExtensionsTests
             ]));
 
         // Act
-        var copied = original.Copied();
+        var copied = original.ToSeries();
 
         // Assert
         Assert.NotSame(original, copied);
@@ -38,7 +38,7 @@ public sealed class ReadOnlySeriesExtensionsTests
         var series = ReadOnlySeries.Create([1, 2, 3], "Test Series");
 
         // Act
-        void Act() => series.Expect<string>();
+        void Act() => series.ExpectElementOfType<string>();
 
         // Assert
         _ = Assert.Throws<InvalidDataException>(Act);

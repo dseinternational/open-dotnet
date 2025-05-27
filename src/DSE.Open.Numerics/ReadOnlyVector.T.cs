@@ -130,6 +130,14 @@ public sealed class ReadOnlyVector<T> : ReadOnlyVector, IReadOnlyVector<T>
         return !(left == right);
     }
 
+    /// <summary>
+    /// Creates a mutable <see cref="Vector{T}"/> from this read-only vector.
+    /// </summary>
+    public Vector<T> ToVector()
+    {
+        return new Vector<T>(_memory.ToArray());
+    }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",
         Justification = "By design")]
