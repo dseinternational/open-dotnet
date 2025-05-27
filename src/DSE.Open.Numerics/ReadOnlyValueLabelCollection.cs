@@ -225,4 +225,12 @@ public sealed class ReadOnlyValueLabelCollection<T>
             return _labelIndexLookup;
         }
     }
+
+    /// <summary>
+    /// Creates a mutable <see cref="ValueLabelCollection{T}"/> from this read-only collection.
+    /// </summary>
+    public ValueLabelCollection<T> ToValueLabelCollection()
+    {
+        return new ValueLabelCollection<T>(this);
+    }
 }

@@ -58,4 +58,12 @@ public sealed class ReadOnlyCategorySet<T> : ReadOnlySet<T>, IReadOnlyCategorySe
     public ReadOnlyCategorySet(IReadOnlySet<T> set) : base(set)
     {
     }
+
+    /// <summary>
+    /// Creates a mutable <see cref="CategorySet{T}"/> by copying this read-only instance.
+    /// </summary>
+    public CategorySet<T> ToCategorySet()
+    {
+        return new CategorySet<T>(this);
+    }
 }

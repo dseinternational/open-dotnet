@@ -167,6 +167,18 @@ public class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
         return !(left == right);
     }
 
+    /// <summary>
+    /// Creates a mutable copy of this read-only series.
+    /// </summary>
+    public Series<T> ToSeries()
+    {
+        return new Series<T>(
+            Vector.ToVector(),
+            Name,
+            Categories.ToCategorySet(),
+            ValueLabels.ToValueLabelCollection());
+    }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",
         Justification = "By design")]
