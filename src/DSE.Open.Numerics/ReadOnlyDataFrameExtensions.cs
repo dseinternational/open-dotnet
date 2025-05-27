@@ -22,7 +22,7 @@ public static class ReadOnlyDataFrameExtensions
     /// </summary>
     /// <exception cref="KeyNotFoundException">Thrown when the series with the specified name does not exist in the data frame.</exception>
     /// <exception cref="InvalidDataException">The series does not have elements of type <typeparamref name="T"/></exception>
-    public static ReadOnlySeries GetRequiredNamedSeriesWithElementType<T>(this ReadOnlyDataFrame dataFrame, string name)
+    public static ReadOnlySeries<T> GetRequiredNamedSeriesWithElementType<T>(this ReadOnlyDataFrame dataFrame, string name)
         where T : IEquatable<T>
     {
         ArgumentNullException.ThrowIfNull(dataFrame);
