@@ -558,6 +558,20 @@ public partial class VectorTests : LoggedTestsBase
     }
 
     [Fact]
+    public void Slice_ShouldNotCopy()
+    {
+        // Arrange
+        Vector<int> vector = [1, 2, 3, 4, 5];
+        var slice = vector[..3];
+
+        // Act
+        vector[0] = 42; // Modify the original vector
+
+        // Assert
+        Assert.Equal(42, slice[0]);
+    }
+
+    [Fact]
     public void AsSpan_ModifiesVector()
     {
         Vector<int> vector = [1, 2, 3, 4, 5];
