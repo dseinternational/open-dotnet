@@ -50,6 +50,7 @@ namespace DSE.Open.Numerics.Serialization;
 [JsonSerializable(typeof(Series<NaValue<DateTime>>))]
 [JsonSerializable(typeof(Series<NaValue<DateTimeOffset>>))]
 [JsonSerializable(typeof(Series<NaValue<string>>))]
+[JsonSerializable(typeof(ReadOnlySeries))]
 [JsonSerializable(typeof(ReadOnlySeries<bool>))]
 [JsonSerializable(typeof(ReadOnlySeries<byte>))]
 [JsonSerializable(typeof(ReadOnlySeries<char>))]
