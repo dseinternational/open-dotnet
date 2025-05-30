@@ -11,20 +11,20 @@ def get_sentence_transformer(
     trust_remote_code: bool = False,
 ) -> SentenceTransformer:
     """
-    Loads or creates a SentenceTransformer model that can be used to map sentences / text 
+    Loads or creates a SentenceTransformer model that can be used to map sentences / text
     to embeddings.
 
     Args:
-        model (str): If it is a filepath on disc, it loads the model from that path. If it 
-            is not a path, it first tries to download a pre-trained SentenceTransformer model. 
+        model (str): If it is a filepath on disc, it loads the model from that path. If it
+            is not a path, it first tries to download a pre-trained SentenceTransformer model.
             If that fails, tries to construct a model from the Hugging Face Hub with that name.
-        device (Optional[str]): Device (like “cuda”, “cpu”, “mps”, “npu”) that should be 
+        device (Optional[str]): Device (like “cuda”, “cpu”, “mps”, “npu”) that should be
             used for computation. If None, checks if a GPU can be used.
         cache_folder  (Optional[str]): The directory to cache the model files.
         revision (Optional[str]): The specific model revision to use, default is "main".
-        trust_remote_code (bool): Whether or not to allow for custom models defined on the Hub 
-            in their own modeling files. This option should only be set to True for repositories 
-            you trust and in which you have read the code, as it will execute code present on 
+        trust_remote_code (bool): Whether or not to allow for custom models defined on the Hub
+            in their own modeling files. This option should only be set to True for repositories
+            you trust and in which you have read the code, as it will execute code present on
             the Hub on your local machine.
 
     Returns:
@@ -40,7 +40,7 @@ def get_sentence_transformer(
     )
 
 
-def encode(
+def encode_sentence_collection(
     model: SentenceTransformer, sentences: list[str], prompt: Optional[str]
 ) -> Buffer:
     """
@@ -55,11 +55,26 @@ def encode(
             sentence is appended to the prompt.
 
     Returns:
-        A 2d numpy array with shape [num_inputs, output_dimension] is returned. If only one string 
-        input is provided, then the output is a 1d array with shape [output_dimension].
+        A 2d numpy array with shape [num_inputs, output_dimension] is returned.
 
     """
     return model.encode(sentences, prompt=prompt)
+
+
+def encode_sentence(model: SentenceTransformer, sentence: str) -> Buffer:
+    """
+    Computes a sentence embedding using the specified SentenceTransformer model.
+
+    Args:
+        model (SentenceTransformer): The SentenceTransformer model to use for encoding.
+        sentence (str): The sentence to embed.
+
+    Returns:
+        A 1d array with shape [output_dimension].
+
+    """
+    return model.encode(sentence)
+
 
 def get_device_type(model: SentenceTransformer) -> str:
     """

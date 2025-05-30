@@ -28,14 +28,14 @@ public class SentenceTransformer : PyObjectWrapper
     /// Computes a sentence embedding.
     /// </summary>
     /// <param name="sentence"></param>
-    /// <param name="prompt"></param>
     /// <returns>
-    /// A 2d tensor with shape [1, embedding_length].
     /// </returns>
-    public ReadOnlyTensorSpan<float> GetEmbedding(string sentence, string? prompt = null)
+    public ReadOnlySpan<float> GetEmbedding(string sentence)
     {
         ArgumentNullException.ThrowIfNull(sentence);
-        return GetEmbeddings([sentence], prompt);
+
+        var result = _service.EncodeSentence(InnerObject, sentence);
+        return result.AsReadOnlySpan<float>();
     }
 
     /// <summary>
@@ -57,7 +57,7 @@ public class SentenceTransformer : PyObjectWrapper
             return new ReadOnlyTensorSpan<float>([], [0, 0], [0, 0]);
         }
 
-        var result = _service.Encode(InnerObject, sentences, prompt);
+        var result = _service.EncodeSentenceCollection(InnerObject, sentences, prompt);
         return result.AsReadOnlyTensorSpan<float>();
     }
 

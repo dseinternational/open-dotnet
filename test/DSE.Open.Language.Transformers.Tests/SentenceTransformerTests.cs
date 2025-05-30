@@ -46,7 +46,7 @@ public class SentenceTransformerTests : SentenceTransformerTestsBase
     }
 
     [Fact]
-    public void SingleSentence_ReturnsEmbeddings()
+    public void SingleSentenceCollection_ReturnsEmbeddings()
     {
         string[] chunks =
         [
@@ -58,6 +58,14 @@ public class SentenceTransformerTests : SentenceTransformerTestsBase
         Assert.Equal(2, embeddings.Rank);
         Assert.Equal(1, embeddings.Lengths[0]);
         Assert.Equal(768, embeddings.Lengths[1]);
+    }
+
+    [Fact]
+    public void SingleSentence_ReturnsSingleEmbeddings()
+    {
+        var embedding = NomicTextEmbed.GetEmbedding(
+            "search_document: Emma is playing the park with her mother.");
+        Assert.Equal(768, embedding.Length);
     }
 
     [Fact]
