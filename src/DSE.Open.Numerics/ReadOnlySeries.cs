@@ -10,10 +10,10 @@ using DSE.Open.Numerics.Serialization;
 namespace DSE.Open.Numerics;
 
 /// <summary>
-/// A serializable, fixed-length, contiguous sequence of read-only values 
+/// A serializable, fixed-length, contiguous sequence of read-only values
 ///.
 /// </summary>
-[JsonConverter(typeof(ReadOnlyVectorJsonConverter))]
+[JsonConverter(typeof(ReadOnlySeriesJsonConverter))]
 public abstract class ReadOnlySeries : SeriesBase, IReadOnlySeries
 {
     protected ReadOnlySeries([NotNull] ReadOnlyVector vector, string? name = null)
