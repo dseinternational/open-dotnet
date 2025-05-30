@@ -14,8 +14,9 @@ public class SentenceTransformer : PyObjectWrapper
 {
     private readonly ISentenceTransformersService _service;
 
-    private SentenceTransformer(PyObject pyObject, ISentenceTransformersService service) : base(pyObject)
+    private SentenceTransformer(PyObject pyObject, string modelName, ISentenceTransformersService service) : base(pyObject)
     {
+        ModelName = modelName;
         _service = service;
     }
 
@@ -23,6 +24,8 @@ public class SentenceTransformer : PyObjectWrapper
     /// Gets the type of device on which the model is loaded, e.g., "cuda" or "cpu"
     /// </summary>
     public string DeviceType => _service.GetDeviceType(InnerObject);
+
+    public string ModelName { get; }
 
     /// <summary>
     /// Computes a sentence embedding.
@@ -71,6 +74,6 @@ public class SentenceTransformer : PyObjectWrapper
 
         var service = pythonEnvironment.SentenceTransformersService();
         var transformer = service.GetSentenceTransformer(modelName, trustRemoteCode: trustExternalCode);
-        return new SentenceTransformer(transformer, service);
+        return new SentenceTransformer(transformer, modelName, service);
     }
 }
