@@ -25,9 +25,9 @@ public class StanzaAnnotator : IAnnotator
     {
         var model = language.GetLanguagePart().ToStringLower();
 
-        var nlp = Context.CreatePipeline(model);
+        using var nlp = Context.CreatePipeline(model);
 
-        var doc = nlp.ProcessText(text);
+        using var doc = nlp.ProcessText(text);
 
         OpenDocument result = new()
         {
@@ -96,15 +96,5 @@ public class StanzaAnnotator : IAnnotator
             Relation = relation,
             Attributes = attributes
         };
-    }
-}
-public sealed class StanzaException : Exception
-{
-    public StanzaException(string message) : base(message)
-    {
-    }
-
-    public StanzaException(string message, Exception innerException) : base(message, innerException)
-    {
     }
 }
