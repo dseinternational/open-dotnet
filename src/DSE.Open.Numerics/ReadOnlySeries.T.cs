@@ -19,7 +19,7 @@ namespace DSE.Open.Numerics;
 /// </summary>
 /// <typeparam name="T"></typeparam>
 [CollectionBuilder(typeof(ReadOnlySeries), nameof(Create))]
-[JsonConverter(typeof(ReadOnlyVectorJsonConverter))]
+[JsonConverter(typeof(ReadOnlySeriesJsonConverter))]
 public class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
     where T : IEquatable<T>
 {
