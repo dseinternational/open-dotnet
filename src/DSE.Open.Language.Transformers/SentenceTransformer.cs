@@ -19,10 +19,44 @@ public class SentenceTransformer : PyObjectWrapper
         _service = service;
     }
 
-    public ReadOnlyTensorSpan<float> Encode(
+    /// <summary>
+    /// Gets the type of device on which the model is loaded, e.g., "cuda" or "cpu"
+    /// </summary>
+    public string DeviceType => _service.GetDeviceType(InnerObject);
+
+    /// <summary>
+    /// Computes a sentence embedding.
+    /// </summary>
+    /// <param name="sentence"></param>
+    /// <param name="prompt"></param>
+    /// <returns>
+    /// A 2d tensor with shape [1, embedding_length].
+    /// </returns>
+    public ReadOnlyTensorSpan<float> GetEmbedding(string sentence, string? prompt = null)
+    {
+        ArgumentNullException.ThrowIfNull(sentence);
+        return GetEmbeddings([sentence], prompt);
+    }
+
+    /// <summary>
+    /// Computes sentence embeddings.
+    /// </summary>
+    /// <param name="sentences"></param>
+    /// <param name="prompt"></param>
+    /// <returns>
+    /// A 2d tensor with shape [sentences.Count, embedding_length].
+    /// </returns>
+    public ReadOnlyTensorSpan<float> GetEmbeddings(
         IReadOnlyList<string> sentences,
         string? prompt = null)
     {
+        ArgumentNullException.ThrowIfNull(sentences);
+
+        if (sentences.Count == 0)
+        {
+            return new ReadOnlyTensorSpan<float>([], [0, 0], [0, 0]);
+        }
+
         var result = _service.Encode(InnerObject, sentences, prompt);
         return result.AsReadOnlyTensorSpan<float>();
     }

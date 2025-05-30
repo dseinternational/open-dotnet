@@ -60,3 +60,15 @@ def encode(
 
     """
     return model.encode(sentences, prompt=prompt)
+
+def get_device_type(model: SentenceTransformer) -> str:
+    """
+    Returns the device on which the SentenceTransformer model is loaded.
+
+    Args:
+        model (SentenceTransformer): The SentenceTransformer model.
+
+    Returns:
+        str: The device on which the model is loaded, e.g., "cuda", "cpu", etc.
+    """
+    return model.device.type
