@@ -63,7 +63,7 @@ function TestEnvironment-Init() {
     python -m pip install torch
   }
 
-  python -m pip install -r ./src/DSE.Open.Language.Annotations.Nlp.Stanza/Modules/requirements.txt
+  python -m pip install -r ./requirements.txt
 
   python ./eng/scripts/init_stanza.py
 }
