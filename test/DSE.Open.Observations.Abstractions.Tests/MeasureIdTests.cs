@@ -172,4 +172,26 @@ public sealed class MeasureIdTests
         var json = JsonSerializer.Serialize(id);
         Assert.Equal("667420532491", json);
     }
+
+    [Fact]
+    public void JsonRoundtripDictionaryKey()
+    {
+        var dictionary = new Dictionary<MeasureId, string>
+        {
+            { MeasureId.GetRandomId(), "TestValue1" },
+            { MeasureId.GetRandomId(), "TestValue2" }
+        };
+
+        var json = JsonSerializer.Serialize(dictionary);
+        var actual = JsonSerializer.Deserialize<Dictionary<MeasureId, string>>(json);
+
+        Assert.NotNull(actual);
+        Assert.Equal(2, actual.Count);
+
+        foreach (var kvp in dictionary)
+        {
+            Assert.True(actual.TryGetValue(kvp.Key, out var value));
+            Assert.Equal(kvp.Value, value);
+        }
+    }
 }
