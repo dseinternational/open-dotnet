@@ -5,24 +5,23 @@ using DSE.Open.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DSE.Open.EntityFrameworkCore.Tests.Storage.ValueConversion;
 
-public class ListToJsonStringValueConverterTests
+public class ReadOnlyMemoryToJsonArrayConverterTests
 {
     [Fact]
-    public void SerializesIntArray()
+    public void Serializes_Int32()
     {
-        int[] value = [1, 2, 3, 4, 5, 6, 7, 8];
-        var converter = new ListToJsonStringValueConverter<int>();
+        var value = new ReadOnlyMemory<int>([1, 2, 3, 4, 5, 6, 7, 8]);
+        var converter = new ReadOnlyMemoryToJsonArrayConverter<int>();
         var serialized = converter.ConvertToProviderExpression.Compile().Invoke(value);
         Assert.Equal("[1,2,3,4,5,6,7,8]", serialized);
     }
 
     [Fact]
-    public void SerializeDeserializeAreEqual()
+    public void Serializes_Float32()
     {
-        int[] value = [1, 2, 3, 4, 5, 6, 7, 8];
-        var converter = new ListToJsonStringValueConverter<int>();
+        var value = new ReadOnlyMemory<float>([1.54f, 2.222f, 3.15f, 4.0f, 5, 6, 7, 8]);
+        var converter = new ReadOnlyMemoryToJsonArrayConverter<float>();
         var serialized = converter.ConvertToProviderExpression.Compile().Invoke(value);
-        var deserialized = converter.ConvertFromProviderExpression.Compile().Invoke(serialized);
-        Assert.Equal(value, deserialized);
+        Assert.Equal("[1.54,2.222,3.15,4,5,6,7,8]", serialized);
     }
 }
