@@ -5,5 +5,5 @@ namespace DSE.Open.Numerics.Serialization;
 
 internal static class VectorJsonConstants
 {
-    public const int MaximumSerializedLength = 1024 ^ 2;
+    public const int MaximumSerializedLength = 1024 * 1024;
 }
