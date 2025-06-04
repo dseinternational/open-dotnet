@@ -164,6 +164,22 @@ public partial class VectorTests : LoggedTestsBase
     }
 
     [Fact]
+    public void SerializeDeserializeReflectedUint16()
+    {
+        TestSerializeDeserialize(
+            [.. Enumerable.Range(0, 500).Select(i => (ushort)i)],
+            NumericsJsonSharedOptions.Reflected);
+    }
+
+    [Fact]
+    public void SerializeDeserializeSourceGeneratedUint16()
+    {
+        TestSerializeDeserialize(
+            [.. Enumerable.Range(0, 500).Select(i => (ushort)i)],
+            NumericsJsonSharedOptions.SourceGenerated);
+    }
+
+    [Fact]
     public void SerializeDeserializeSourceGeneratedInt16()
     {
         TestSerializeDeserialize(
