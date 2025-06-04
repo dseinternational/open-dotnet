@@ -18,14 +18,15 @@ public partial class Vector
         [VectorDataType.Float16] = VectorDataTypeLabel.Float16,
         [VectorDataType.Float32] = VectorDataTypeLabel.Float32,
         [VectorDataType.Float64] = VectorDataTypeLabel.Float64,
+        [VectorDataType.Int8] = VectorDataTypeLabel.Int8,
         [VectorDataType.Int16] = VectorDataTypeLabel.Int16,
         [VectorDataType.Int32] = VectorDataTypeLabel.Int32,
         [VectorDataType.Int64] = VectorDataTypeLabel.Int64,
-        [VectorDataType.Int8] = VectorDataTypeLabel.Int8,
         [VectorDataType.String] = VectorDataTypeLabel.String,
+        [VectorDataType.UInt8] = VectorDataTypeLabel.UInt8,
+        [VectorDataType.UInt16] = VectorDataTypeLabel.UInt16,
         [VectorDataType.UInt32] = VectorDataTypeLabel.UInt32,
         [VectorDataType.UInt64] = VectorDataTypeLabel.UInt64,
-        [VectorDataType.UInt8] = VectorDataTypeLabel.UInt8,
 
         [VectorDataType.NaBool] = VectorDataTypeLabel.NaBool,
         [VectorDataType.NaChar] = VectorDataTypeLabel.NaChar,
@@ -35,15 +36,16 @@ public partial class Vector
         [VectorDataType.NaFloat16] = VectorDataTypeLabel.NaFloat16,
         [VectorDataType.NaFloat32] = VectorDataTypeLabel.NaFloat32,
         [VectorDataType.NaFloat64] = VectorDataTypeLabel.NaFloat64,
+        [VectorDataType.NaInt8] = VectorDataTypeLabel.NaInt8,
         [VectorDataType.NaInt16] = VectorDataTypeLabel.NaInt16,
         [VectorDataType.NaInt32] = VectorDataTypeLabel.NaInt32,
         [VectorDataType.NaInt64] = VectorDataTypeLabel.NaInt64,
-        [VectorDataType.NaInt8] = VectorDataTypeLabel.NaInt8,
-        [VectorDataType.NaString] = VectorDataTypeLabel.NaString,
+        [VectorDataType.NaUInt8] = VectorDataTypeLabel.NaUInt8,
+        [VectorDataType.NaUInt16] = VectorDataTypeLabel.NaUInt16,
         [VectorDataType.NaUInt32] = VectorDataTypeLabel.NaUInt32,
         [VectorDataType.NaUInt64] = VectorDataTypeLabel.NaUInt64,
-        [VectorDataType.NaUInt8] = VectorDataTypeLabel.NaUInt8,
 
+        [VectorDataType.NaString] = VectorDataTypeLabel.NaString,
     }.ToFrozenDictionary();
 
     private static readonly FrozenDictionary<string, VectorDataType> s_vectorDataTypeLookup =
@@ -61,15 +63,15 @@ public partial class Vector
         [VectorDataType.Float16] = typeof(Half),
         [VectorDataType.Float32] = typeof(float),
         [VectorDataType.Float64] = typeof(double),
+        [VectorDataType.Int8] = typeof(sbyte),
         [VectorDataType.Int16] = typeof(short),
         [VectorDataType.Int32] = typeof(int),
         [VectorDataType.Int64] = typeof(long),
-        [VectorDataType.Int8] = typeof(sbyte),
         [VectorDataType.String] = typeof(string),
+        [VectorDataType.UInt8] = typeof(byte),
+        [VectorDataType.UInt16] = typeof(ushort),
         [VectorDataType.UInt32] = typeof(uint),
         [VectorDataType.UInt64] = typeof(ulong),
-        [VectorDataType.UInt16] = typeof(ushort),
-        [VectorDataType.UInt8] = typeof(byte),
 
         [VectorDataType.NaBool] = typeof(NaValue<bool>),
         [VectorDataType.NaChar] = typeof(NaValue<char>),
@@ -79,16 +81,15 @@ public partial class Vector
         [VectorDataType.NaFloat16] = typeof(NaFloat<Half>),
         [VectorDataType.NaFloat32] = typeof(NaFloat<float>),
         [VectorDataType.NaFloat64] = typeof(NaFloat<double>),
+        [VectorDataType.NaInt8] = typeof(NaInt<sbyte>),
         [VectorDataType.NaInt16] = typeof(NaInt<short>),
         [VectorDataType.NaInt32] = typeof(NaInt<int>),
         [VectorDataType.NaInt64] = typeof(NaInt<long>),
-        [VectorDataType.NaInt8] = typeof(NaInt<sbyte>),
         [VectorDataType.NaString] = typeof(NaValue<string>),
+        [VectorDataType.NaUInt8] = typeof(NaInt<byte>),
+        [VectorDataType.NaUInt16] = typeof(NaInt<ushort>),
         [VectorDataType.NaUInt32] = typeof(NaInt<uint>),
         [VectorDataType.NaUInt64] = typeof(NaInt<ulong>),
-        [VectorDataType.NaUInt16] = typeof(NaInt<ushort>),
-        [VectorDataType.NaUInt8] = typeof(NaInt<byte>),
-
     }.ToFrozenDictionary();
 
     private static readonly FrozenDictionary<Type, VectorDataType> s_vectorTypeLookup =
@@ -96,30 +97,32 @@ public partial class Vector
         .ToDictionary(kvp => kvp.Value, kvp => kvp.Key)
         .ToFrozenDictionary();
 
-    private static readonly FrozenSet<VectorDataType> s_numericTypes = new VectorDataType[]
+    private static readonly FrozenSet<VectorDataType> s_numericTypes = new[]
     {
         VectorDataType.DateTime64,
         VectorDataType.Float16,
         VectorDataType.Float32,
         VectorDataType.Float64,
+        VectorDataType.Int8,
         VectorDataType.Int16,
         VectorDataType.Int32,
         VectorDataType.Int64,
-        VectorDataType.Int8,
+        VectorDataType.UInt8,
+        VectorDataType.UInt16,
         VectorDataType.UInt32,
         VectorDataType.UInt64,
-        VectorDataType.UInt8,
         VectorDataType.NaDateTime64,
         VectorDataType.NaFloat16,
         VectorDataType.NaFloat32,
         VectorDataType.NaFloat64,
+        VectorDataType.NaInt8,
         VectorDataType.NaInt16,
         VectorDataType.NaInt32,
         VectorDataType.NaInt64,
-        VectorDataType.NaInt8,
+        VectorDataType.NaUInt8,
+        VectorDataType.NaUInt16,
         VectorDataType.NaUInt32,
         VectorDataType.NaUInt64,
-        VectorDataType.NaUInt8,
 
     }.ToFrozenSet();
 
