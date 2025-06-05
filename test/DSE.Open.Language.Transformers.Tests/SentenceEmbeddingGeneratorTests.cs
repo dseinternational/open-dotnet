@@ -23,13 +23,20 @@ public class SentenceEmbeddingGeneratorTests : SentenceTransformerTestsBase
     {
         string[] chunks =
         [
-            "search_document: Emma is playing the park with her mother.",
-            "search_document: Tom is at school with his friends.",
-            "search_document: Emma and her mother are playing on the swing."
+            "Emma is playing the park with her mother.",
+            "Tom is at school with his friends.",
+            "Emma and her mother are playing on the swing."
         ];
 
         var embeddings = await EmbeddingGenerator.GenerateAsync(
             chunks,
+            new Microsoft.Extensions.AI.EmbeddingGenerationOptions
+            {
+                AdditionalProperties = new Microsoft.Extensions.AI.AdditionalPropertiesDictionary
+                {
+                    { "prompt", "search_document" }
+                }
+            },
             cancellationToken: TestContext.Current.CancellationToken);
 
         Assert.Equal(3, embeddings.Count);

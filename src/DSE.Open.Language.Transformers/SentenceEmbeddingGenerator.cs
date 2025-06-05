@@ -24,7 +24,11 @@ public sealed class SentenceEmbeddingGenerator : IEmbeddingGenerator<string, Emb
 
         return Task.Run(() =>
         {
-            var tensor = _sentenceTransformer.GetEmbeddings([.. values]);
+            string? prompt = null;
+
+            _ = options?.AdditionalProperties?.TryGetValue("prompt", out prompt);
+
+            var tensor = _sentenceTransformer.GetEmbeddings([.. values], prompt: prompt);
 
             // expect 2d tensor with shape [values.Count, embedding_length]
 
