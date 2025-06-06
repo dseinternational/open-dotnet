@@ -17,8 +17,7 @@ def download(lang: str = "en", logging_level: str = "WARN"):
 
 
 def create_pipeline(
-    lang: str = "en", processors: str = "tokenize,mwt,pos,lemma,depparse"
-) -> stanza.Pipeline:
+    lang: str = "en", processors: str = "tokenize,mwt,pos,lemma,depparse") -> stanza.Pipeline:
     """
     Create a Stanza pipeline for the specified language and processors.
 
@@ -37,8 +36,7 @@ def create_pipeline(
 
 
 def get_loaded_processors(
-    pipeline: stanza.Pipeline,
-) -> list[stanza.pipeline.processor.Processor]:
+    pipeline: stanza.Pipeline) -> list[stanza.pipeline.processor.Processor]:
     """
     Returns a list of currently loaded Stanza processors.
     """
