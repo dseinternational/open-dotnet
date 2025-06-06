@@ -8,8 +8,7 @@ def get_sentence_transformer(
     device: Optional[str] = None,
     cache_dir: Optional[str] = None,
     revision: Optional[str] = "main",
-    trust_remote_code: bool = False,
-) -> SentenceTransformer:
+    trust_remote_code: bool = False) -> SentenceTransformer:
     """
     Loads or creates a SentenceTransformer model that can be used to map sentences / text
     to embeddings.
