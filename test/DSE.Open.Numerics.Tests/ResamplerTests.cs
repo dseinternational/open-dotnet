@@ -11,7 +11,7 @@ public sealed class ResamplerTests
         var frequency = ResamplingFrequency.Daily;
         var method = ResamplingMethod.Mean;
 
-        var result = Resampler.Resample<int>([], [], frequency, method);
+        var result = Resampler.Resample<int>((ReadOnlySpan<DateTimeOffset>)[], [], frequency, method);
 
         Assert.All(result, s => Assert.True(s.IsEmpty));
     }

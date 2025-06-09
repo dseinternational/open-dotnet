@@ -27,6 +27,55 @@ public static class Resampler
         ResamplingMethod method)
         where T : struct, INumber<T>
     {
+        return Resample(dates, values, static dto => dto, static dto => dto, frequency, method);
+    }
+
+    /// <summary>
+    /// Resamples the specified series in the data frame to a new frequency using the specified method.
+    /// </summary>
+    /// <param name="dates"></param>
+    /// <param name="values"></param>
+    /// <param name="frequency">The frequency to resample the series to.</param>
+    /// <param name="method">The method to use for resampling the series.</param>
+    /// <returns>A new <see cref="ReadOnlyDataFrame"/> containing the resampled series, with a <c>"period"</c> series of type <see cref="ReadOnlySeries{DateTime64}"/> and a <c>"value"</c> series of type <see cref="ReadOnlySeries{T}"/> for the resampled values.</returns>
+    public static ReadOnlyDataFrame Resample<T>(
+        ReadOnlySpan<DateTime64> dates,
+        ReadOnlySpan<T> values,
+        ResamplingFrequency frequency,
+        ResamplingMethod method)
+        where T : struct, INumber<T>
+    {
+        return Resample(dates, values, static dto => dto, static dto => dto, frequency, method);
+    }
+
+    /// <summary>
+    /// Resamples the specified series in the data frame to a new frequency using the specified method.
+    /// </summary>
+    /// <param name="dates"></param>
+    /// <param name="values"></param>
+    /// <param name="frequency">The frequency to resample the series to.</param>
+    /// <param name="method">The method to use for resampling the series.</param>
+    /// <returns>A new <see cref="ReadOnlyDataFrame"/> containing the resampled series, with a <c>"period"</c> series of type <see cref="ReadOnlySeries{DateTime}"/> and a <c>"value"</c> series of type <see cref="ReadOnlySeries{T}"/> for the resampled values.</returns>
+    public static ReadOnlyDataFrame Resample<T>(
+        ReadOnlySpan<DateTime> dates,
+        ReadOnlySpan<T> values,
+        ResamplingFrequency frequency,
+        ResamplingMethod method)
+        where T : struct, INumber<T>
+    {
+        return Resample(dates, values, static dto => dto, static dto => dto.Date, frequency, method);
+    }
+
+    private static ReadOnlyDataFrame Resample<TDate, TValue>(
+        ReadOnlySpan<TDate> dates,
+        ReadOnlySpan<TValue> values,
+        Func<TDate, DateTimeOffset> toDto,
+        Func<DateTimeOffset, TDate> fromDto,
+        ResamplingFrequency frequency,
+        ResamplingMethod method)
+        where TValue : struct, INumber<TValue>
+        where TDate : IEquatable<TDate>
+    {
         if (dates.Length != values.Length)
         {
             throw new ArgumentException($"`{nameof(dates)}` and `{nameof(values)}` must have the same length.");
@@ -35,17 +84,18 @@ public static class Resampler
         var idx = 0;
         var n = dates.Length;
 
-        List<(DateTimeOffset Period, T Value)> resampledData = [];
+        List<TDate> periods = [];
+        List<TValue> resampledValues = [];
 
         while (idx < n)
         {
             // Determine the start of the current resampling period
-            var periodStart = GetPeriodStart(dates[idx], frequency);
+            var periodStart = GetPeriodStart(toDto(dates[idx]), frequency);
 
             // Find the end of this period
             var start = idx;
             idx++;
-            while (idx < n && GetPeriodStart(dates[idx], frequency) == periodStart)
+            while (idx < n && GetPeriodStart(toDto(dates[idx]), frequency) == periodStart)
             {
                 idx++;
             }
@@ -64,11 +114,12 @@ public static class Resampler
                 _ => throw new NotSupportedException($"Unsupported method: {method}"),
             };
 
-            resampledData.Add((periodStart, result));
+            periods.Add(fromDto(periodStart));
+            resampledValues.Add(result);
         }
 
-        var dateSeries = Series.Create(resampledData.Select(d => d.Period).ToArray(), PeriodSeriesName);
-        var valueSeries = Series.Create(resampledData.Select(d => d.Value).ToArray(), ValueSeriesName);
+        var dateSeries = Series.Create(periods.ToArray(), PeriodSeriesName);
+        var valueSeries = Series.Create(resampledValues.ToArray(), ValueSeriesName);
 
         return ReadOnlyDataFrame.Create([dateSeries, valueSeries]);
     }
