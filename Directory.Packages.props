@@ -38,15 +38,15 @@
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.6" />
     <PackageVersion Include="Microsoft.Extensions.Options" Version="9.0.6" />
     <PackageVersion Include="Microsoft.Extensions.TimeProvider.Testing" Version="9.6.0" />
-    <PackageVersion Include="Microsoft.Identity.Client" Version="4.72.1" />
-    <PackageVersion Include="Microsoft.Identity.Client.Extensions.Msal" Version="4.72.1" />
-    <PackageVersion Include="Microsoft.IdentityModel.Abstractions" Version="8.12.0" />
-    <PackageVersion Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.12.0" />
-    <PackageVersion Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.12.0" />
+    <PackageVersion Include="Microsoft.Identity.Client" Version="4.73.0" />
+    <PackageVersion Include="Microsoft.Identity.Client.Extensions.Msal" Version="4.73.0" />
+    <PackageVersion Include="Microsoft.IdentityModel.Abstractions" Version="8.12.1" />
+    <PackageVersion Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.12.1" />
+    <PackageVersion Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.12.1" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
     <PackageVersion Include="Microsoft.NETCore.Platforms" Version="8.0.0-preview.7.23375.6" />
     <PackageVersion Include="Microsoft.Testing.Extensions.CodeCoverage" Version="17.14.2" />
-    <PackageVersion Include="Microsoft.Testing.Platform" Version="1.7.2" />
+    <PackageVersion Include="Microsoft.Testing.Platform" Version="1.7.3" />
     <PackageVersion Include="Microsoft.Testing.Platform.MSBuild" Version="1.6.0" />
     <PackageVersion Include="Moq" Version="4.20.72" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
