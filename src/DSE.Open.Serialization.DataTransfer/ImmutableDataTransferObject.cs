@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.ComponentModel;
 using System.Text.Json.Serialization;
 using DSE.Open.Collections.Generic;
 
@@ -11,7 +12,7 @@ namespace DSE.Open.Serialization.DataTransfer;
 /// </summary>
 public abstract record ImmutableDataTransferObject : IJsonSerializable, IExtensionData
 {
-    private ReadOnlyValueDictionary<string, object> _extensionData = [];
+    private ReadOnlyValueDictionary<string, object>? _extensionData;
 
     [JsonIgnore]
     public IReadOnlyDictionary<string, object> ExtensionData => ExtensionDataCore;
@@ -23,10 +24,11 @@ public abstract record ImmutableDataTransferObject : IJsonSerializable, IExtensi
 
     [JsonExtensionData]
     [JsonPropertyOrder(2100010010)]
-    internal ReadOnlyValueDictionary<string, object> ExtensionDataCore
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public ReadOnlyValueDictionary<string, object> ExtensionDataCore
     {
-        get => _extensionData;
-        init => _extensionData = new(value);
+        get => _extensionData ??= [];
+        init => _extensionData = value;
     }
 
     [JsonIgnore]

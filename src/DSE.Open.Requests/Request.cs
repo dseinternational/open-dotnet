@@ -32,5 +32,6 @@ public record Request : ImmutableDataTransferObject
     /// </summary>
     [JsonPropertyName("source")]
     [JsonPropertyOrder(-899900)]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public Uri? Source { get; init; }
 }
