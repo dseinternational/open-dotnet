@@ -6,6 +6,7 @@ namespace DSE.Open.Serialization;
 /// <summary>
 /// An object that can have additional data attached via an <see cref="ExtensionData"/> dictionary.
 /// </summary>
+[Obsolete("Removing")]
 public interface IExtensionData
 {
     bool HasExtensionData { get; }

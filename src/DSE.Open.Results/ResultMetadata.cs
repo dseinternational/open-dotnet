@@ -7,7 +7,7 @@ using DSE.Open.Serialization.DataTransfer;
 
 namespace DSE.Open.Results;
 
-public record ResultMetadata : ImmutableDataTransferObject
+public record ResultMetadata
 {
     private Guid? _id;
 

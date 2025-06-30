@@ -8,7 +8,7 @@ using DSE.Open.Text.Json.Serialization;
 
 namespace DSE.Open.Notifications;
 
-public sealed record Notification : ImmutableDataTransferObject, INotification
+public sealed record Notification : INotification
 {
     public Notification(string code, NotificationLevel level, string message)
         : this(new DiagnosticCode(code), level, message)

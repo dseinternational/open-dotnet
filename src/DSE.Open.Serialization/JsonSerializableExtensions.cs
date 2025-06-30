@@ -10,6 +10,7 @@ public static class JsonSerializableExtensions
 {
     [RequiresDynamicCode(WarningMessages.RequiresDynamicCode)]
     [RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]
+    [Obsolete("Removing")]
     public static string ToJsonString(this IJsonSerializable obj, JsonSerializerOptions? options = null)
     {
         ArgumentNullException.ThrowIfNull(obj);

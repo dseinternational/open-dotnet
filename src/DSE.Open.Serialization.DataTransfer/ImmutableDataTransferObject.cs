@@ -10,6 +10,7 @@ namespace DSE.Open.Serialization.DataTransfer;
 /// <summary>
 /// Base implementation of an immutable object that can be serialized/deserialized.
 /// </summary>
+[Obsolete("Implement JsonExtensionData directly if required")]
 public abstract record ImmutableDataTransferObject : IJsonSerializable, IExtensionData
 {
     private ReadOnlyValueDictionary<string, object>? _extensionData;
@@ -24,8 +25,7 @@ public abstract record ImmutableDataTransferObject : IJsonSerializable, IExtensi
 
     [JsonExtensionData]
     [JsonPropertyOrder(2100010010)]
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public ReadOnlyValueDictionary<string, object> ExtensionDataCore
+    internal ReadOnlyValueDictionary<string, object> ExtensionDataCore
     {
         get => _extensionData ??= [];
         init => _extensionData = value;

@@ -7,7 +7,7 @@ using DSE.Open.Serialization.DataTransfer;
 
 namespace DSE.Open.Requests;
 
-public record RequestMetadata : ImmutableDataTransferObject
+public record RequestMetadata
 {
     private Guid? _id;
 

@@ -10,6 +10,7 @@ namespace DSE.Open.Serialization.DataTransfer;
 /// Base implementation of an object that can be serialized/deserialized
 /// to pass data between processes.
 /// </summary>
+[Obsolete("Implement JsonExtensionData directly if required")]
 public abstract record DataTransferObject : IJsonSerializable, IExtensionData
 {
     private ValueDictionary<string, object>? _extensionData;

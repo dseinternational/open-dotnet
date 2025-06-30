@@ -11,7 +11,7 @@ namespace DSE.Open.Requests;
 /// Carries the specification for a command or query from a client
 /// to a remote system.
 /// </summary>
-public record Request : ImmutableDataTransferObject
+public record Request
 {
     private string? _requestId;
 

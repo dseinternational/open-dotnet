@@ -9,6 +9,7 @@ namespace DSE.Open.Serialization.DataTransfer.Tests;
 public class ImmutableDataTransferObjectTests
 {
     [Fact]
+    [Obsolete("Obsolete")]
     public void Serialize()
     {
         var dto = new ImmutableDataTransferObjectFake
@@ -22,6 +23,7 @@ public class ImmutableDataTransferObjectTests
     }
 }
 
+[Obsolete("Obsolete")]
 public record ImmutableDataTransferObjectFake : ImmutableDataTransferObject
 {
     public TimeSpan TimeSpan { get; init; }
