@@ -3,3 +3,4 @@ TestTwo = Test two string
 FormattedStringWithTwoHoles = A test string for {Joe} and {Jill}
 FormattedStringWithTwoHolesAndTrailingText = A test string for {Joe} and {Jill} with trailing text
 FormattedStringWithObjectHole = A test string with an object {object:object} hole
+StringsIsDifferentToStrings2 = This string is different to the one in Strings2.restext

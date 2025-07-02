@@ -13,5 +13,7 @@ internal sealed record ResourceProviderInformation
 
     public string ResourcesName { get; set; } = null!;
 
+    public string ResourcesFullyQualifiedName { get; set; } = null!;
+
     public string ResourcesPath { get; set; } = null!;
 }
