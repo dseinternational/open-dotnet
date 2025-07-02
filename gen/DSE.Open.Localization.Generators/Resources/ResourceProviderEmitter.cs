@@ -13,7 +13,7 @@ internal static class ResourceProviderEmitter
         IEnumerable<ResourceItem> resourceItems)
     {
         var providerName = model.ProviderName;
-        var resourcesName = model.ResourcesName;
+        var resourcesName = model.ResourcesFullyQualifiedName;
 
         var providerNamespace = model.ProviderNamespace;
         var providerAccessibility = model.ProviderAccessibility;

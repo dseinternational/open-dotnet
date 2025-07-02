@@ -75,4 +75,25 @@ public sealed class ResourceProviderGeneratorTests
         Assert.Equal(expected, str);
         Assert.Equal(expected, strUs);
     }
+
+    [Fact]
+    public void MultipleResourceProviders_ReferencingDifferentResourceProvider_ShouldGenerateClassForEachResourceProvider()
+    {
+        // Arrange
+        var provider = ResourceProvider.Default;
+        var provider2 = ResourceProvider2.Default;
+        var culture = new CultureInfo("en-US");
+
+        // Act
+        var str = provider.StringsIsDifferentToStrings2(culture);
+        var str2 = provider2.Strings2IsDifferentToStrings(culture);
+
+        // Assert
+        Assert.Equal("This string is different to the one in Strings2.restext", str);
+        Assert.Equal("This string is different to the one in Strings.restext", str2);
+
+        // Verify they are different instances
+        Assert.NotSame(provider, provider2);
+        Assert.NotEqual(provider.GetType(), provider2.GetType());
+    }
 }

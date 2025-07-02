@@ -50,7 +50,7 @@ public sealed class ResourceProviderSourceGenerator : IIncrementalGenerator
             // `stringsType` is defined in the same folder as the resource files.
             // Get the path to the `stringsType` file.
             var path = (stringsType.Locations[0].SourceTree?.FilePath)
-                ?? throw new InvalidOperationException("Resource file path not found.");
+                       ?? throw new InvalidOperationException("Resource file path not found.");
 
             var accessibility = provider.DeclaredAccessibility switch
             {
@@ -70,6 +70,9 @@ public sealed class ResourceProviderSourceGenerator : IIncrementalGenerator
                 ProviderNamespace = provider.ContainingNamespace.ToDisplayString(),
                 ProviderAccessibility = accessibility,
                 ResourcesName =
+                    stringsType.OriginalDefinition.ToDisplayString(DisplayFormats
+                        .NameOnly),
+                ResourcesFullyQualifiedName =
                     stringsType.OriginalDefinition.ToDisplayString(DisplayFormats
                         .FullyQualifiedNonGenericWithGlobalPrefix),
                 ResourcesPath = path
@@ -100,7 +103,7 @@ public sealed class ResourceProviderSourceGenerator : IIncrementalGenerator
     {
         foreach (var model in models)
         {
-            var resourceItems = GetResourceItems(model.ResourcesPath, additionalTexts, context.ReportDiagnostic,
+            var resourceItems = GetResourceItems(model, additionalTexts, context.ReportDiagnostic,
                 cancellationToken);
             var source = ResourceProviderEmitter.Emit(model, resourceItems);
             context.AddSource($"{model.ProviderName}.g.cs", source);
@@ -108,14 +111,14 @@ public sealed class ResourceProviderSourceGenerator : IIncrementalGenerator
     }
 
     private static HashSet<ResourceItem> GetResourceItems(
-        string path,
+        ResourceProviderInformation model,
         ImmutableArray<AdditionalText> additionalTexts,
         Action<Diagnostic> reportDiagnostic,
         CancellationToken cancellationToken = default)
     {
-        if (!TryGetFileForResource(path, additionalTexts, out var nullableFile))
+        if (!TryGetFileForResource(model, additionalTexts, out var nullableFile))
         {
-            reportDiagnostic(Diagnostics.ResourceFileNotFound(path));
+            reportDiagnostic(Diagnostics.ResourceFileNotFound(model.ResourcesPath));
             return [];
         }
 
@@ -149,21 +152,26 @@ public sealed class ResourceProviderSourceGenerator : IIncrementalGenerator
     }
 
     private static bool TryGetFileForResource(
-        string path,
+        ResourceProviderInformation model,
         ImmutableArray<AdditionalText> files,
         out AdditionalText? file)
     {
-        var dir = Path.GetDirectoryName(path)
-            ?? throw new InvalidOperationException($"Could not get directory name for path '{path}'.");
+        var dir = Path.GetDirectoryName(model.ResourcesPath)
+                  ?? throw new InvalidOperationException(
+                      $"Could not get directory name for path '{model.ResourcesPath}'.");
 
         file = null;
 
         foreach (var text in files)
         {
             var textDir = Path.GetDirectoryName(text.Path)
-                ?? throw new InvalidOperationException($"Could not get directory name for path '{text.Path}'.");
+                          ?? throw new InvalidOperationException(
+                              $"Could not get directory name for path '{text.Path}'.");
 
-            if (textDir == dir)
+            var fileName = Path.GetFileNameWithoutExtension(text.Path);
+
+            if (string.Equals(textDir, dir, StringComparison.OrdinalIgnoreCase) &&
+                string.Equals(model.ResourcesName, fileName, StringComparison.OrdinalIgnoreCase))
             {
                 file = text;
                 break;
