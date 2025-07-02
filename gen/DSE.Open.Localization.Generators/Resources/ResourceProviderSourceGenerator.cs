@@ -171,7 +171,8 @@ public sealed class ResourceProviderSourceGenerator : IIncrementalGenerator
 
             var fileName = Path.GetFileNameWithoutExtension(text.Path);
 
-            if (textDir == dir && model.ResourcesName == fileName)
+            if (string.Equals(textDir, dir, StringComparison.OrdinalIgnoreCase) &&
+                string.Equals(model.ResourcesName, fileName, StringComparison.OrdinalIgnoreCase))
             {
                 file = text;
                 break;
