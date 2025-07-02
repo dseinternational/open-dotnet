@@ -2,7 +2,6 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Collections.Immutable;
-using System.Diagnostics;
 using DSE.Open.Localization.Generators.Resources.Parsing;
 using Microsoft.CodeAnalysis;
 
