@@ -77,7 +77,7 @@ public sealed class ResourceProviderGeneratorTests
     }
 
     [Fact]
-    public void MultipleResourceProviders_RefrencingDifferentResourceProvider_ShouldGenerateClassForEachResourceProvider()
+    public void MultipleResourceProviders_ReferencingDifferentResourceProvider_ShouldGenerateClassForEachResourceProvider()
     {
         // Arrange
         var provider = ResourceProvider.Default;
