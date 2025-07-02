@@ -23,6 +23,7 @@
     <PackageReference Include="Microsoft.Extensions.Options" />
     <PackageReference Include="Microsoft.Identity.Client" />
     <PackageReference Include="Microsoft.Identity.Client.Extensions.Msal" />
+    <PackageReference Include="Microsoft.IdentityModel.Abstractions" />
     <PackageReference Include="System.Collections.Immutable" />
     <PackageReference Include="System.Management" />
     <PackageReference Include="System.Memory" />
