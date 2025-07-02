@@ -19,7 +19,7 @@
     <PackageVersion Include="Microsoft.CodeAnalysis.Common" Version="4.14.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.14.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="8.0.0" />
-    <PackageVersion Include="Microsoft.Data.SqlClient" Version="6.0.2" />
+    <PackageVersion Include="Microsoft.Data.SqlClient" Version="6.1.0-preview2.25178.5" />
     <PackageVersion Include="Microsoft.Diagnostics.NETCore.Client" Version="0.2.621003" />
     <PackageVersion Include="Microsoft.Diagnostics.Runtime" Version="4.0.0-beta.24360.3" />
     <PackageVersion Include="Microsoft.Diagnostics.Tracing.TraceEvent" Version="3.1.22" />
@@ -78,11 +78,11 @@
     <PackageVersion Include="System.Text.Json" Version="9.0.6" />
     <PackageVersion Include="System.Threading.Tasks.Extensions" Version="4.6.3" />
     <PackageVersion Include="Verify.XunitV3" Version="30.4.0" />
-    <PackageVersion Include="xunit.analyzers" Version="1.22.0" />
+    <PackageVersion Include="xunit.analyzers" Version="1.23.0-pre.3" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.1" />
-    <PackageVersion Include="xunit.v3" Version="2.0.3" />
-    <PackageVersion Include="xunit.v3.assert" Version="2.0.3" />
-    <PackageVersion Include="xunit.v3.core" Version="1.1.0" />
-    <PackageVersion Include="xunit.v3.extensibility.core" Version="2.0.3" />
+    <PackageVersion Include="xunit.v3" Version="3.0.0-pre.25" />
+    <PackageVersion Include="xunit.v3.assert" Version="3.0.0-pre.25" />
+    <PackageVersion Include="xunit.v3.core" Version="3.0.0-pre.25" />
+    <PackageVersion Include="xunit.v3.extensibility.core" Version="3.0.0-pre.25" />
   </ItemGroup>
 </Project>
