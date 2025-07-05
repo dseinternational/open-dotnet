@@ -12,7 +12,7 @@ namespace DSE.Open.Requests;
 /// </summary>
 public record Request
 {
-    private string? _requestId;
+    private RequestId? _requestId;
 
     /// <summary>
     /// Identifies the request. This should be unique for each request and remain the same if a request is
@@ -20,9 +20,9 @@ public record Request
     /// </summary>
     [JsonPropertyName("request_id")]
     [JsonPropertyOrder(-900000)]
-    public string RequestId
+    public RequestId RequestId
     {
-        get => _requestId ??= Identifier.New(20, "req"u8).ToStringInvariant();
+        get => _requestId ??= new(Identifier.New(20, "req"u8).ToStringInvariant());
         init => _requestId = value;
     }
 

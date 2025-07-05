@@ -12,7 +12,7 @@ public class RequestTests
     public void RequestIdIsNotNullOrWhiteSpace()
     {
         var request = new Request();
-        Assert.False(string.IsNullOrWhiteSpace(request.RequestId));
+        Assert.False(string.IsNullOrWhiteSpace(request.RequestId.ToStringInvariant()));
     }
 
     [Fact]
