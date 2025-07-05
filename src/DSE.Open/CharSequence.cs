@@ -84,12 +84,6 @@ public readonly struct CharSequence
         return _value;
     }
 
-    [Obsolete("Use Span property instead.")]
-    public ReadOnlySpan<char> AsSpan()
-    {
-        return _value.Span;
-    }
-
     public ReadOnlySpan<char> Span => _value.Span;
 
     public int GetCharCount(ReadOnlySpan<char> format, IFormatProvider? provider)
