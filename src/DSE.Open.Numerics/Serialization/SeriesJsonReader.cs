@@ -3,7 +3,6 @@
 
 using System.Numerics;
 using System.Text.Json;
-using DSE.Open.Collections.Generic;
 
 namespace DSE.Open.Numerics.Serialization;
 

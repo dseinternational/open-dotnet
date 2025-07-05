@@ -3,7 +3,6 @@
 
 using System.Collections.Concurrent;
 using System.Text.Json.Serialization;
-using DSE.Open.Serialization.DataTransfer;
 
 namespace DSE.Open.Results;
 

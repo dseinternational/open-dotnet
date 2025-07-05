@@ -3,7 +3,6 @@
 
 using System.Text.Json.Serialization;
 using DSE.Open.Diagnostics;
-using DSE.Open.Serialization.DataTransfer;
 using DSE.Open.Text.Json.Serialization;
 
 namespace DSE.Open.Notifications;
