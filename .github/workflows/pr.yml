@@ -67,13 +67,13 @@ jobs:
         shell: pwsh
 
       - name: Restore
-        run: dotnet restore ./DSE.Open.sln
+        run: dotnet restore ./DSE.Open.slnx
 
       - name: Build DSE.Open.Values.Generators
         run: dotnet build ./gen/DSE.Open.Values.Generators/DSE.Open.Values.Generators.csproj --configuration ${{ matrix.configuration }}
 
       - name: Build
-        run: dotnet build ./DSE.Open.sln --no-restore --configuration ${{ matrix.configuration }}
+        run: dotnet build ./DSE.Open.slnx --no-restore --configuration ${{ matrix.configuration }}
 
       - name: Run Tests
         uses: dseinternational/open-dotnet/.github/actions/dotnet-test@actions-0.8
