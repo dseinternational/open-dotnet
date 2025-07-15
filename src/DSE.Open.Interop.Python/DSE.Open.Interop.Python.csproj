@@ -6,6 +6,8 @@
 
   <ItemGroup>
     <PackageReference Include="CSnakes.Runtime" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="Microsoft.Extensions.Logging" />
   </ItemGroup>
 
   <ItemGroup>

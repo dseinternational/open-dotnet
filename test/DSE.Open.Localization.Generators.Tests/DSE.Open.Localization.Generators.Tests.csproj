@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.Common" />
+    <PackageReference Include="System.Management" />
     <PackageReference Include="Verify.XunitV3" />
   </ItemGroup>
 
