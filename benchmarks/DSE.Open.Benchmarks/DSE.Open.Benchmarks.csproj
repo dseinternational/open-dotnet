@@ -40,6 +40,10 @@
   </ItemGroup>
 
   <ItemGroup>
+
+    <PackageReference Include="System.Diagnostics.DiagnosticSource" />
+
+    <PackageReference Include="System.Memory.Data" />
     <Using Include="System.Globalization" />
   </ItemGroup>
 
