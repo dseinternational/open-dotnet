@@ -15,6 +15,10 @@
   </ItemGroup>
 
   <ItemGroup>
+
+    <PackageReference Include="System.Collections.Immutable" />
+
+    <PackageReference Include="System.Management" />
     <ProjectReference Include="..\..\gen\DSE.Open.Localization.Generators\DSE.Open.Localization.Generators.csproj" />
   </ItemGroup>
 
