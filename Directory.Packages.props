@@ -4,7 +4,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="AwesomeAssertions" Version="9.1.0" />
-    <PackageVersion Include="Azure.Core" Version="1.47.0" />
+    <PackageVersion Include="Azure.Core" Version="1.47.1" />
     <PackageVersion Include="Azure.Identity" Version="1.14.2" />
     <PackageVersion Include="BenchmarkDotNet" Version="0.15.2" />
     <PackageVersion Include="CommunityToolkit.Diagnostics" Version="8.4.0" />
@@ -27,7 +27,7 @@
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.7" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.7" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer.HierarchyId" Version="9.0.7" />
-    <PackageVersion Include="Microsoft.Extensions.AI" Version="9.7.0" />
+    <PackageVersion Include="Microsoft.Extensions.AI" Version="9.7.1" />
     <PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="9.0.7" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.7" />
     <PackageVersion Include="Microsoft.Extensions.DependencyModel" Version="9.0.7" />
@@ -63,11 +63,11 @@
     <PackageVersion Include="System.Configuration.ConfigurationManager" Version="9.0.7" />
     <PackageVersion Include="System.Diagnostics.DiagnosticSource" Version="9.0.7" />
     <PackageVersion Include="System.IO.Hashing" Version="9.0.7" />
-    <PackageVersion Include="System.Linq.AsyncEnumerable" Version="10.0.0-preview.5.25277.114" />
+    <PackageVersion Include="System.Linq.AsyncEnumerable" Version="10.0.0-preview.6.25358.103" />
     <PackageVersion Include="System.Management" Version="9.0.7" />
     <PackageVersion Include="System.Memory" Version="4.6.3" />
     <PackageVersion Include="System.Memory.Data" Version="9.0.7" />
-    <PackageVersion Include="System.Numerics.Tensors" Version="10.0.0-preview.5.25277.114" />
+    <PackageVersion Include="System.Numerics.Tensors" Version="10.0.0-preview.6.25358.103" />
     <PackageVersion Include="System.Numerics.Vectors" Version="4.6.1" />
     <PackageVersion Include="System.Reflection.Emit" Version="4.7.0" />
     <PackageVersion Include="System.Reflection.Metadata" Version="9.0.7" />
