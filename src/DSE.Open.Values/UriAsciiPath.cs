@@ -33,7 +33,7 @@ public readonly partial struct UriAsciiPath
 
     public static readonly UriAsciiPath Empty = new(default, true);
 
-    public const int MaxLength = 512;
+    public const int MaxLength = 1024;
 
     public static int MaxSerializedByteLength => MaxLength;
 
