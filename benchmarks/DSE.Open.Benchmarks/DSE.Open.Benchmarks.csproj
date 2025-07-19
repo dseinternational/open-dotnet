@@ -40,6 +40,8 @@
   </ItemGroup>
 
   <ItemGroup>
+
+    <PackageReference Include="Azure.Core" />
     <Using Include="System.Globalization" />
   </ItemGroup>
 
