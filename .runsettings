@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+  <RunConfiguration>
+    <TestCaseFilter>Category!=ActiveIssue</TestCaseFilter>
+  </RunConfiguration>
+  <xUnit>
+    <ParallelizeAssembly>true</ParallelizeAssembly>
+    <LongRunningTestSeconds>60</LongRunningTestSeconds>
+  </xUnit>
+</RunSettings>

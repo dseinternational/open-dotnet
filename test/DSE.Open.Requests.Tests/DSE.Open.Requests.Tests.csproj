@@ -11,10 +11,4 @@
     <ProjectReference Include="..\..\src\DSE.Open.Requests\DSE.Open.Requests.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="xunit.runner.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>

@@ -13,10 +13,4 @@
     <ProjectReference Include="..\DSE.Open.Values.TestValues\DSE.Open.Values.TestValues.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="xunit.runner.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>

@@ -14,6 +14,7 @@
     <PackageVersion Include="CSnakes.Runtime" Version="1.1.0" />
     <PackageVersion Include="Google.Protobuf" Version="3.31.0" />
     <PackageVersion Include="Iced" Version="1.21.0" />
+    <PackageVersion Include="Microsoft.Bcl.AsyncInterfaces" Version="9.0.7" />
     <PackageVersion Include="Microsoft.Bcl.TimeProvider" Version="9.0.7" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="4.14.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Common" Version="4.14.0" />
@@ -44,10 +45,9 @@
     <PackageVersion Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.12.1" />
     <PackageVersion Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.12.1" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
-    <PackageVersion Include="Microsoft.NETCore.Platforms" Version="8.0.0-preview.7.23375.6" />
     <PackageVersion Include="Microsoft.Testing.Extensions.CodeCoverage" Version="17.14.2" />
     <PackageVersion Include="Microsoft.Testing.Platform" Version="1.7.3" />
-    <PackageVersion Include="Microsoft.Testing.Platform.MSBuild" Version="1.6.0" />
+    <PackageVersion Include="Microsoft.Testing.Platform.MSBuild" Version="1.7.3" />
     <PackageVersion Include="Moq" Version="4.20.72" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageVersion Include="NodaTime" Version="3.2.2" />

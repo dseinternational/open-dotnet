@@ -1,0 +1,7 @@
+{
+  "xUnit": {
+    "culture": "default",
+    "diagnosticMessages": false,
+    "longRunningTestSeconds": 60
+  }
+}
