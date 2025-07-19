@@ -3,7 +3,7 @@
 
 [CmdletBinding(PositionalBinding = $false)]
 param (
-  [string]$target,
+  [string]$target = "test",
   [string]$configuration = "Debug",
   [string]$coverage = "false",
   [string]$coverage_output,
