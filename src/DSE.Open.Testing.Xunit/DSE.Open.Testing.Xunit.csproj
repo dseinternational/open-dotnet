@@ -13,6 +13,7 @@
     <PackageReference Include="Microsoft.Extensions.Options" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
     <PackageReference Include="Microsoft.Testing.Platform" />
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" />
   </ItemGroup>
 
   <ItemGroup>

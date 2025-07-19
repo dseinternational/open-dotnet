@@ -12,10 +12,4 @@
     <ProjectReference Include="..\..\src\DSE.Open.Interop.Python\DSE.Open.Interop.Python.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="xunit.runner.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>
