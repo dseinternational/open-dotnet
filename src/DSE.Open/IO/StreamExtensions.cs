@@ -1,9 +1,12 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Buffers;
 using System.Text;
 
 namespace DSE.Open.IO;
+
+#pragma warning disable DSEOPEN001 // ArrayBuilder
 
 public static class StreamExtensions
 {
@@ -47,7 +50,10 @@ public static class StreamExtensions
         return result;
     }
 
-    public static async Task<byte[]> ReadToEndAsync(this Stream stream, int initialLength = 0)
+    public static async Task<byte[]> ReadToEndAsync(
+        this Stream stream,
+        int initialLength = 0,
+        CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(stream);
 
@@ -56,35 +62,46 @@ public static class StreamExtensions
             initialLength = 1024 * 4;
         }
 
-        var buffer = new byte[initialLength];
-        var read = 0;
+        var buffer = ArrayPool<byte>.Shared.Rent(initialLength);
 
-        int chunk;
-
-        while ((chunk = await stream.ReadAsync(buffer.AsMemory(read, buffer.Length - read)).ConfigureAwait(false)) > 0)
+        try
         {
-            read += chunk;
+            var read = 0;
 
-            if (read == buffer.Length)
+            int chunk;
+
+            while ((chunk = await stream.ReadAsync(
+                buffer.AsMemory(read, buffer.Length - read), cancellationToken).ConfigureAwait(false))
+                > 0)
             {
-                var nextByte = stream.ReadByte();
+                read += chunk;
 
-                if (nextByte == -1)
+                if (read == buffer.Length)
                 {
-                    return [.. buffer];
+                    cancellationToken.ThrowIfCancellationRequested();
+
+                    var newBuffer = ArrayPool<byte>.Shared.Rent(buffer.Length * 2);
+                    Array.Copy(buffer, newBuffer, buffer.Length);
+                    ArrayPool<byte>.Shared.Return(buffer);
+                    buffer = newBuffer;
                 }
-
-                var newBuffer = new byte[buffer.Length * 2];
-                Array.Copy(buffer, newBuffer, buffer.Length);
-                newBuffer[read] = (byte)nextByte;
-                buffer = newBuffer;
-                read++;
             }
-        }
 
-        var result = new byte[read];
-        Array.Copy(buffer, result, read);
-        return result;
+            cancellationToken.ThrowIfCancellationRequested();
+
+            if (read == 0)
+            {
+                return [];
+            }
+
+            var result = new byte[read];
+            Array.Copy(buffer, result, read);
+            return result;
+        }
+        finally
+        {
+            ArrayPool<byte>.Shared.Return(buffer);
+        }
     }
 
     public static string ReadToEndAsString(this Stream stream)
