@@ -50,6 +50,13 @@ public static class StreamExtensions
         return result;
     }
 
+    public static Task<byte[]> ReadToEndAsync(
+        this Stream stream,
+        CancellationToken cancellationToken = default)
+    {
+        return ReadToEndAsync(stream, 0, cancellationToken);
+    }
+
     public static async Task<byte[]> ReadToEndAsync(
         this Stream stream,
         int initialLength = 0,
@@ -125,5 +132,40 @@ public static class StreamExtensions
     {
         using var reader = new StreamReader(stream, encoding);
         return await reader.ReadToEndAsync().ConfigureAwait(false);
+    }
+
+    public static void Write(this Stream stream, in ReadOnlySequence<byte> sequence)
+    {
+        ArgumentNullException.ThrowIfNull(stream);
+
+        if (sequence.IsSingleSegment)
+        {
+            stream.Write(sequence.FirstSpan);
+            return;
+        }
+
+        foreach (var segment in sequence)
+        {
+            stream.Write(segment.Span);
+        }
+    }
+
+    public static async ValueTask WriteAsync(
+        this Stream stream,
+        ReadOnlySequence<byte> sequence,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(stream);
+
+        if (sequence.IsSingleSegment)
+        {
+            await stream.WriteAsync(sequence.First, cancellationToken).ConfigureAwait(false);
+            return;
+        }
+
+        foreach (var segment in sequence)
+        {
+            await stream.WriteAsync(segment, cancellationToken).ConfigureAwait(false);
+        }
     }
 }
