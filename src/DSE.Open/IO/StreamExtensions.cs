@@ -10,6 +10,11 @@ namespace DSE.Open.IO;
 
 public static class StreamExtensions
 {
+    public static byte[] ReadToEnd(this Stream stream)
+    {
+        return ReadToEnd(stream, 0);
+    }
+
     public static byte[] ReadToEnd(this Stream stream, int initialLength = 0)
     {
         ArgumentNullException.ThrowIfNull(stream);
@@ -59,7 +64,7 @@ public static class StreamExtensions
 
     public static async Task<byte[]> ReadToEndAsync(
         this Stream stream,
-        int initialLength = 0,
+        int initialLength,
         CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(stream);
