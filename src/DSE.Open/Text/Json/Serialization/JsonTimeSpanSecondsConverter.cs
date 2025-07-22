@@ -26,6 +26,6 @@ public class JsonTimeSpanSecondsConverter : JsonConverter<TimeSpan>
         JsonSerializerOptions options)
     {
         ArgumentNullException.ThrowIfNull(writer);
-        writer.WriteNumberValue(value.TotalSeconds);
+        writer.WriteNumberValue((long)value.TotalSeconds);
     }
 }

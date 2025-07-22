@@ -14,7 +14,7 @@ public class JsonTimeSpanSecondsConverterTests
         var converter = new JsonTimeSpanSecondsConverter();
         var buffer = new ArrayBufferWriter<byte>(32);
         using var writer = new Utf8JsonWriter(buffer);
-        converter.Write(writer, TimeSpan.FromSeconds(968485), JsonSerializerOptions.Default);
+        converter.Write(writer, TimeSpan.FromSeconds(968485.84698), JsonSerializerOptions.Default);
         writer.Flush();
         Assert.Equal(968485, JsonSerializer.Deserialize<long>(buffer.WrittenSpan, JsonSerializerOptions.Default));
     }
