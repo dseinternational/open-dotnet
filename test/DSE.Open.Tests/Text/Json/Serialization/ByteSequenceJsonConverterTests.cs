@@ -49,6 +49,23 @@ public sealed class ByteSequenceJsonConverterTests
         Assert.Equal(original, deserialized);
     }
 
+    [Fact]
+    public void Serialize_Deserialize_DataItem()
+    {
+        var original = new DataItem
+        {
+            Data = new ReadOnlyMemory<byte>([1, 2, 3, 4, 5])
+        };
+
+        var serialized = JsonSerializer.Serialize(original, JsonSharedOptions.RelaxedJsonEscaping);
+        Assert.NotNull(serialized);
+
+        var deserialized = JsonSerializer.Deserialize<DataItem>(serialized, JsonSharedOptions.RelaxedJsonEscaping);
+        Assert.NotNull(deserialized);
+
+        Assert.Equal(original.Data.Span, deserialized.Data.Span);
+    }
+
     private T SerializeDeserialize<T>(T original)
     {
         var factory = new ByteSequenceJsonConverter();
@@ -74,5 +91,11 @@ public sealed class ByteSequenceJsonConverterTests
         Assert.NotNull(deserialized);
 
         return deserialized;
+    }
+
+    internal sealed class DataItem
+    {
+        [JsonConverter(typeof(ByteSequenceJsonConverter))]
+        public required ReadOnlyMemory<byte> Data { get; set; }
     }
 }
