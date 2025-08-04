@@ -201,7 +201,6 @@ public readonly partial record struct BinaryValue
                 _ = value.TryFormat(span, out var charsWritten, format: "x", provider: null);
                 Debug.Assert(charsWritten == span.Length);
             }),
-            BinaryStringEncoding.Base64 => throw new NotImplementedException(),
             _ => Convert.ToBase64String(_value.Span)
         };
     }
