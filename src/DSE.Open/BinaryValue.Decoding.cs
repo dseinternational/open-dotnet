@@ -13,14 +13,24 @@ namespace DSE.Open;
 
 public readonly partial record struct BinaryValue
 {
-    public static BinaryValue FromBase62EncodedString(string value)
+    public static BinaryValue FromBase62(string value)
     {
         return FromEncodedString(value, BinaryStringEncoding.Base62);
     }
 
-    public static BinaryValue FromBase64EncodedString(string value)
+    public static BinaryValue FromBase64(string value)
     {
         return FromEncodedString(value, BinaryStringEncoding.Base64);
+    }
+
+    public static BinaryValue FromHexLower(string value)
+    {
+        return FromEncodedString(value, BinaryStringEncoding.HexLower);
+    }
+
+    public static BinaryValue FromHexUpper(string value)
+    {
+        return FromEncodedString(value, BinaryStringEncoding.HexUpper);
     }
 
     public static BinaryValue FromEncodedString(string value, BinaryStringEncoding encoding)

@@ -23,6 +23,6 @@ public sealed class BinaryValueToBase64StringConverter : ValueConverter<BinaryVa
     // keep public for EF Core compiled models
     public static BinaryValue ConvertFromString(string value)
     {
-        return BinaryValue.FromBase64EncodedString(value);
+        return BinaryValue.FromBase64(value);
     }
 }

@@ -193,14 +193,15 @@ public readonly partial record struct BinaryValue
             BinaryStringEncoding.Base62 => Base62Converter.ToBase62String(_value.Span),
             BinaryStringEncoding.HexUpper => string.Create(_value.Length * 2, this, (span, value) =>
             {
-                value.TryFormat(span, out var charsWritten, format: "X", provider: null);
+                _ = value.TryFormat(span, out var charsWritten, format: "X", provider: null);
                 Debug.Assert(charsWritten == span.Length);
             }),
             BinaryStringEncoding.HexLower => string.Create(_value.Length * 2, this, (span, value) =>
             {
-                value.TryFormat(span, out var charsWritten, format: "x", provider: null);
+                _ = value.TryFormat(span, out var charsWritten, format: "x", provider: null);
                 Debug.Assert(charsWritten == span.Length);
             }),
+            BinaryStringEncoding.Base64 => throw new NotImplementedException(),
             _ => Convert.ToBase64String(_value.Span)
         };
     }
@@ -211,6 +212,21 @@ public readonly partial record struct BinaryValue
     }
 
     public string ToBase64EncodedString()
+    {
+        return ToString(BinaryStringEncoding.Base64);
+    }
+
+    public string ToHexStringUpper()
+    {
+        return ToString(BinaryStringEncoding.HexUpper);
+    }
+
+    public string ToHexStringLower()
+    {
+        return ToString(BinaryStringEncoding.HexLower);
+    }
+
+    public string ToBase64String()
     {
         return ToString(BinaryStringEncoding.Base64);
     }

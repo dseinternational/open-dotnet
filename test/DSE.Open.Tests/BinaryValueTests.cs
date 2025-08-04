@@ -15,7 +15,7 @@ public class BinaryValueTests
         {
             var value = BinaryValue.GetRandomValue();
             var encoded = value.ToBase62EncodedString();
-            var value2 = BinaryValue.FromBase62EncodedString(encoded);
+            var value2 = BinaryValue.FromBase62(encoded);
             Assert.Equal(value, value2);
         }
     }
@@ -27,7 +27,7 @@ public class BinaryValueTests
         {
             var value = BinaryValue.GetRandomValue();
             var encoded = value.ToBase64EncodedString();
-            var value2 = BinaryValue.FromBase64EncodedString(encoded);
+            var value2 = BinaryValue.FromBase64(encoded);
             Assert.Equal(value, value2);
         }
     }
