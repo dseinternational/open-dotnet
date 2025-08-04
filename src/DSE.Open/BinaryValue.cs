@@ -144,4 +144,19 @@ public readonly partial record struct BinaryValue : ISpanFormattable, IUtf8SpanF
     {
         return RepeatableHash64Provider.Default.GetRepeatableHashCode(this);
     }
+
+    public string ToHexString()
+    {
+        return Convert.ToHexString(_value.Span);
+    }
+
+    public string ToHexStringLower()
+    {
+        return Convert.ToHexStringLower(_value.Span);
+    }
+
+    public string ToBase64String()
+    {
+        return Convert.ToBase64String(_value.Span);
+    }
 }
