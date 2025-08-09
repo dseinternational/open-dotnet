@@ -3,6 +3,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 
@@ -168,4 +169,20 @@ public readonly record struct Range<T> : ISpanFormattable, ISpanParsable<Range<T
         ArgumentNullException.ThrowIfNull(s);
         return Parse(s.AsSpan(), provider);
     }
+
+#pragma warning disable CA2225 // Operator overloads have named alternates
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static implicit operator Range<T>((T start, T end) valueTuple)
+    {
+        return new(valueTuple.start, valueTuple.end);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static implicit operator (T start, T end)(Range<T> range)
+    {
+        return (range.Start, range.End);
+    }
+
+#pragma warning restore CA2225 // Operator overloads have named alternates
 }
