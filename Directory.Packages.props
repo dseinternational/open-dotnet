@@ -4,8 +4,8 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="AwesomeAssertions" Version="9.1.0" />
-    <PackageVersion Include="Azure.Core" Version="1.47.1" />
-    <PackageVersion Include="Azure.Identity" Version="1.14.2" />
+    <PackageVersion Include="Azure.Core" Version="1.47.2" />
+    <PackageVersion Include="Azure.Identity" Version="1.15.0" />
     <PackageVersion Include="BenchmarkDotNet" Version="0.15.2" />
     <PackageVersion Include="CommunityToolkit.Diagnostics" Version="8.4.0" />
     <PackageVersion Include="CommunityToolkit.HighPerformance" Version="8.4.0" />
@@ -28,7 +28,7 @@
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.8" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.8" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer.HierarchyId" Version="9.0.8" />
-    <PackageVersion Include="Microsoft.Extensions.AI" Version="9.7.1" />
+    <PackageVersion Include="Microsoft.Extensions.AI" Version="9.8.0" />
     <PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="9.0.8" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.8" />
     <PackageVersion Include="Microsoft.Extensions.DependencyModel" Version="9.0.8" />
@@ -38,7 +38,7 @@
     <PackageVersion Include="Microsoft.Extensions.Logging" Version="9.0.8" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.8" />
     <PackageVersion Include="Microsoft.Extensions.Options" Version="9.0.8" />
-    <PackageVersion Include="Microsoft.Extensions.TimeProvider.Testing" Version="9.7.0" />
+    <PackageVersion Include="Microsoft.Extensions.TimeProvider.Testing" Version="9.8.0" />
     <PackageVersion Include="Microsoft.Identity.Client" Version="4.74.1" />
     <PackageVersion Include="Microsoft.Identity.Client.Extensions.Msal" Version="4.74.1" />
     <PackageVersion Include="Microsoft.IdentityModel.Abstractions" Version="8.13.1" />
@@ -46,8 +46,8 @@
     <PackageVersion Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.13.1" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
     <PackageVersion Include="Microsoft.Testing.Extensions.CodeCoverage" Version="17.14.2" />
-    <PackageVersion Include="Microsoft.Testing.Platform" Version="1.8.1" />
-    <PackageVersion Include="Microsoft.Testing.Platform.MSBuild" Version="1.8.1" />
+    <PackageVersion Include="Microsoft.Testing.Platform" Version="1.8.2" />
+    <PackageVersion Include="Microsoft.Testing.Platform.MSBuild" Version="1.8.2" />
     <PackageVersion Include="Moq" Version="4.20.72" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageVersion Include="NodaTime" Version="3.2.2" />
@@ -58,16 +58,16 @@
     <PackageVersion Include="SharpZipLib" Version="1.4.2" />
     <PackageVersion Include="SkiaSharp" Version="3.119.0" />
     <PackageVersion Include="SQLitePCLRaw.bundle_e_sqlite3" Version="3.0.1" />
-    <PackageVersion Include="System.ClientModel" Version="1.5.1" />
+    <PackageVersion Include="System.ClientModel" Version="1.6.0" />
     <PackageVersion Include="System.Collections.Immutable" Version="9.0.8" />
     <PackageVersion Include="System.Configuration.ConfigurationManager" Version="9.0.8" />
     <PackageVersion Include="System.Diagnostics.DiagnosticSource" Version="9.0.8" />
     <PackageVersion Include="System.IO.Hashing" Version="9.0.8" />
-    <PackageVersion Include="System.Linq.AsyncEnumerable" Version="10.0.0-preview.6.25358.103" />
+    <PackageVersion Include="System.Linq.AsyncEnumerable" Version="10.0.0-preview.7.25380.108" />
     <PackageVersion Include="System.Management" Version="9.0.8" />
     <PackageVersion Include="System.Memory" Version="4.6.3" />
     <PackageVersion Include="System.Memory.Data" Version="9.0.8" />
-    <PackageVersion Include="System.Numerics.Tensors" Version="10.0.0-preview.6.25358.103" />
+    <PackageVersion Include="System.Numerics.Tensors" Version="10.0.0-preview.7.25380.108" />
     <PackageVersion Include="System.Numerics.Vectors" Version="4.6.1" />
     <PackageVersion Include="System.Reflection.Emit" Version="4.7.0" />
     <PackageVersion Include="System.Reflection.Metadata" Version="9.0.8" />
