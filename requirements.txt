@@ -4,13 +4,13 @@
 # mac: pip3 install torch>=2.8.0 torchvision --upgrade
 
 numpy>=2.3.2
-pandas>=2.3.1
+pandas>=2.3.2
 ipython>=9.4.0
-jupyterlab>=4.4.5
+jupyterlab>=4.4.6
 notebook>=7.4.5
 matplotlib>=3.10.5
 stanza>=1.10.1
 sentence-transformers>=5.1.0
 einops>=0.8.1
 setuptools>=80.9.0
-hf-xet>=1.1.7
+hf-xet>=1.1.9
