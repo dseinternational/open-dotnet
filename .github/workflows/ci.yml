@@ -41,16 +41,16 @@ jobs:
             ${{ runner.os }}-build-${{ env.cache-name }}-${{ env.stanza-version }}
 
       - name: Set Python version
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
-          python-version: "3.13.6"
+          python-version: "3.13.7"
           cache: "pip"
 
       - name: Configure Python environment
         run: ./eng/scripts/init_python.ps1
 
       - name: Set .NET SDK version
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           global-json-file: global.json
 
