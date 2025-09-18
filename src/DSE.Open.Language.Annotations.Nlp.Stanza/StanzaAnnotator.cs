@@ -11,12 +11,12 @@ namespace DSE.Open.Language.Annotations.Nlp.Stanza;
 
 public class StanzaAnnotator : IAnnotator
 {
-    public StanzaAnnotator(StanzaService stanza)
+    public StanzaAnnotator(StanzaService2 stanza)
     {
         Context = stanza;
     }
 
-    public StanzaService Context { get; }
+    public StanzaService2 Context { get; }
 
     public Task<OpenDocument> AnnotateTextAsync(
         LanguageTag language,

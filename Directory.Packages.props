@@ -11,19 +11,16 @@
     <PackageVersion Include="CommunityToolkit.HighPerformance" Version="8.4.0" />
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageVersion Include="coverlet.collector" Version="6.0.2" />
-    <PackageVersion Include="CSnakes.Runtime" Version="2.0.0-beta.284" />
+    <PackageVersion Include="CSnakes.Runtime" Version="2.0.0-beta.286" />
     <PackageVersion Include="Google.Protobuf" Version="3.31.0" />
     <PackageVersion Include="Iced" Version="1.21.0" />
     <PackageVersion Include="Microsoft.Bcl.AsyncInterfaces" Version="10.0.0-rc.1.25451.107" />
     <PackageVersion Include="Microsoft.Bcl.TimeProvider" Version="10.0.0-rc.1.25451.107" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="5.0.0-1.25277.114" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Common" Version="4.14.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.14.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Data.SqlClient" Version="7.0.0-preview1.25257.1" />
-    <PackageVersion Include="Microsoft.Diagnostics.NETCore.Client" Version="0.2.621003" />
-    <PackageVersion Include="Microsoft.Diagnostics.Runtime" Version="4.0.0-beta.24360.3" />
-    <PackageVersion Include="Microsoft.Diagnostics.Tracing.TraceEvent" Version="3.1.24" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="9.0.9" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.9" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.9" />
@@ -64,7 +61,6 @@
     <PackageVersion Include="System.Diagnostics.DiagnosticSource" Version="10.0.0-rc.1.25451.107" />
     <PackageVersion Include="System.IO.Hashing" Version="10.0.0-rc.1.25451.107" />
     <PackageVersion Include="System.Linq.AsyncEnumerable" Version="10.0.0-rc.1.25451.107" />
-    <PackageVersion Include="System.Management" Version="10.0.0-rc.1.25451.107" />
     <PackageVersion Include="System.Memory" Version="4.6.3" />
     <PackageVersion Include="System.Memory.Data" Version="10.0.0-rc.1.25451.107" />
     <PackageVersion Include="System.Numerics.Tensors" Version="10.0.0-rc.1.25451.107" />
