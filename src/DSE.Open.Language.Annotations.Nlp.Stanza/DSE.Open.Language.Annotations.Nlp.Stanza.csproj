@@ -14,7 +14,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <AdditionalFiles Include="*.py" SourceItemType="Python">
+    <AdditionalFiles Include="Modules\*.py" SourceItemType="Python">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>      
     </AdditionalFiles>
     <AdditionalFiles Include="Modules\*.txt">

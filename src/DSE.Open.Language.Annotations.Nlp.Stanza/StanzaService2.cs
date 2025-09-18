@@ -13,7 +13,7 @@ namespace DSE.Open.Language.Annotations.Nlp.Stanza;
 public sealed class StanzaService2 : IDisposable
 {
     private readonly IPythonEnvironment _pythonEnvironment;
-    private readonly StanzaService _stanza;
+    private readonly IStanzaService _stanza;
 
     public StanzaService2(IPythonEnvironment pythonEnvironment) : this(pythonEnvironment, NullLogger<StanzaService2>.Instance)
     {

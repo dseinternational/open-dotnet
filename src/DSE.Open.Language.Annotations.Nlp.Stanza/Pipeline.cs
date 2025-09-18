@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Diagnostics.CodeAnalysis;
 using CSnakes.Runtime;
 using CSnakes.Runtime.Python;
 
@@ -19,6 +20,7 @@ public class Pipeline : StanzaObject
         return [.. Stanza.GetLoadedProcessors(InnerObject).Select(p => p.ToString())];
     }
 
+    [RequiresDynamicCode("Calls DSE.Open.Interop.Python.PyObjectExtensions.AsNullable<T>()")]
     public Document ProcessText(string text)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(text);
