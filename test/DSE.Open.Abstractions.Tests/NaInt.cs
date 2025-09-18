@@ -38,7 +38,7 @@ internal readonly struct NaInt : INaValue<NaInt, int>, IEquatable<NaInt>
 
     public override string ToString()
     {
-        return HasValue ? Value.ToString() : "Na";
+        return HasValue ? Value.ToString(CultureInfo.InvariantCulture) : "Na";
     }
 
     public Trilean TernaryEquals(NaInt other)

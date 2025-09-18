@@ -242,7 +242,7 @@ public record Sentence : ISpanFormattable, IRepeatableHash64
 
         var tokens = ParseTokens(lines);
 
-        var text = lines.FirstOrDefault(l => l.StartsWith("# text = "))?.Split('=', 2)[1].Trim()
+        var text = lines.FirstOrDefault(l => l.StartsWith("# text = ", StringComparison.OrdinalIgnoreCase))?.Split('=', 2)[1].Trim()
             ?? string.Join(' ', tokens.Select(t => t.Text));
 
         return new Sentence
@@ -257,7 +257,7 @@ public record Sentence : ISpanFormattable, IRepeatableHash64
     {
         foreach (var line in lines)
         {
-            if (line.StartsWith("#"))
+            if (line.StartsWith('#'))
             {
                 continue;
             }
