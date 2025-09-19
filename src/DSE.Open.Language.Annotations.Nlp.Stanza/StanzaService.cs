@@ -10,16 +10,16 @@ namespace DSE.Open.Language.Annotations.Nlp.Stanza;
 /// <summary>
 /// Provides access to <see href="https://github.com/stanfordnlp/stanza">Stanza</see> NLP processing pipeline.
 /// </summary>
-public sealed class StanzaService2 : IDisposable
+public sealed class StanzaService : IDisposable
 {
     private readonly IPythonEnvironment _pythonEnvironment;
     private readonly IStanzaService _stanza;
 
-    public StanzaService2(IPythonEnvironment pythonEnvironment) : this(pythonEnvironment, NullLogger<StanzaService2>.Instance)
+    public StanzaService(IPythonEnvironment pythonEnvironment) : this(pythonEnvironment, NullLogger<StanzaService>.Instance)
     {
     }
 
-    public StanzaService2(IPythonEnvironment pythonEnvironment, ILogger<StanzaService2> logger)
+    public StanzaService(IPythonEnvironment pythonEnvironment, ILogger<StanzaService> logger)
     {
         ArgumentNullException.ThrowIfNull(pythonEnvironment);
         ArgumentNullException.ThrowIfNull(logger);

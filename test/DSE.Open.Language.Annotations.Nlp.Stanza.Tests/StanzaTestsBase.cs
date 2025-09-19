@@ -13,7 +13,7 @@ public abstract class StanzaTestsBase
 
     public StanzaServiceFixture StanzaFixture { get; }
 
-    public StanzaService2 Stanza => StanzaFixture.Stanza;
+    public StanzaService Stanza => StanzaFixture.Stanza;
 
     public Pipeline PipelineEnglish => StanzaFixture.PipelineEnglish;
 
