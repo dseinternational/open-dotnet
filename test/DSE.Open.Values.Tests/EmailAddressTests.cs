@@ -73,18 +73,18 @@ public class EmailAddressTests
     [Fact]
     public void Length()
     {
-        Assert.Equal(26, EmailAddress.Parse("hello@dseinternational.org").Length);
+        Assert.Equal(26, EmailAddress.Parse("hello@dseinternational.org", CultureInfo.InvariantCulture).Length);
     }
 
     [Fact]
     public void LocalPart()
     {
-        Assert.Equal("hello", EmailAddress.Parse("hello@dseinternational.org").LocalPart());
+        Assert.Equal("hello", EmailAddress.Parse("hello@dseinternational.org", CultureInfo.InvariantCulture).LocalPart());
     }
 
     [Fact]
     public void DomainPart()
     {
-        Assert.Equal("dseinternational.org", EmailAddress.Parse("hello@dseinternational.org").DomainPart());
+        Assert.Equal("dseinternational.org", EmailAddress.Parse("hello@dseinternational.org", CultureInfo.InvariantCulture).DomainPart());
     }
 }

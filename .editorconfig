@@ -619,6 +619,8 @@ dotnet_diagnostic.IDE0045.severity = suggestion # IDE0045: Use conditional expre
 # prevent code cleanup auto-'fixing' simple properties
 dotnet_style_prefer_auto_properties = false:suggestion
 
+dotnet_diagnostic.CA1515.severity = none # CA1515: Consider making public types internal
+
 # spelling
 spelling_languages = en-us,en-gb
 spelling_checkable_types = strings,identifiers,comments

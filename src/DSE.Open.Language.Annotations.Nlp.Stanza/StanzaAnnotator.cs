@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Diagnostics.CodeAnalysis;
 using DSE.Open.Globalization;
 using OpenDocument = DSE.Open.Language.Annotations.Document;
 using OpenSentence = DSE.Open.Language.Annotations.Sentence;
@@ -11,13 +12,14 @@ namespace DSE.Open.Language.Annotations.Nlp.Stanza;
 
 public class StanzaAnnotator : IAnnotator
 {
-    public StanzaAnnotator(StanzaService stanza)
+    public StanzaAnnotator(StanzaService2 stanza)
     {
         Context = stanza;
     }
 
-    public StanzaService Context { get; }
+    public StanzaService2 Context { get; }
 
+    [RequiresDynamicCode("Calls DSE.Open.Interop.Python.PyObjectExtensions.AsNullable<T>()")]
     public Task<OpenDocument> AnnotateTextAsync(
         LanguageTag language,
         string text,

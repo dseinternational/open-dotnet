@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Diagnostics.CodeAnalysis;
 using CSnakes.Runtime;
 using CSnakes.Runtime.Python;
 using DSE.Open.Interop.Python;
@@ -9,6 +10,7 @@ namespace DSE.Open.Language.Annotations.Nlp.Stanza;
 
 public class Word : StanzaObject
 {
+    [RequiresDynamicCode("Calls DSE.Open.Interop.Python.PyObjectExtensions.AsNullable<T>()")]
     internal Word(PyObject pyWord, IStanzaService stanza) : base(pyWord, stanza)
     {
         Index = pyWord.GetAttr("id").AsNumber<int>();

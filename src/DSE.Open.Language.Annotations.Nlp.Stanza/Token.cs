@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Diagnostics.CodeAnalysis;
 using CSnakes.Runtime;
 using CSnakes.Runtime.Python;
 
@@ -8,6 +9,7 @@ namespace DSE.Open.Language.Annotations.Nlp.Stanza;
 
 public class Token : StanzaObject
 {
+    [RequiresDynamicCode("Calls DSE.Open.Interop.Python.PyObjectExtensions.AsNullable<T>()")]
     internal Token(PyObject pyToken, IStanzaService stanza) : base(pyToken, stanza)
     {
         Text = pyToken.GetAttr("text").As<string>();

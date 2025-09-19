@@ -12,7 +12,7 @@ public sealed class StanzaServiceFixture : IDisposable
 {
     private readonly IHost _host;
     private readonly IPythonEnvironment _pythonEnvironment;
-    private readonly StanzaService _stanzaEnvironment;
+    private readonly StanzaService2 _stanzaEnvironment;
 
     public StanzaServiceFixture()
     {
@@ -40,14 +40,14 @@ public sealed class StanzaServiceFixture : IDisposable
 
         _pythonEnvironment = _host.Services.GetRequiredService<IPythonEnvironment>();
 
-        _stanzaEnvironment = new StanzaService(_pythonEnvironment);
+        _stanzaEnvironment = new StanzaService2(_pythonEnvironment);
 
         PipelineEnglish = _stanzaEnvironment.CreatePipeline("en");
     }
 
     public ILoggerFactory LoggerFactory => _host.Services.GetRequiredService<ILoggerFactory>();
 
-    public StanzaService Stanza => _stanzaEnvironment;
+    public StanzaService2 Stanza => _stanzaEnvironment;
 
     public Pipeline PipelineEnglish { get; }
 

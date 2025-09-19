@@ -660,7 +660,7 @@ public class NaIntTests
     [Fact]
     public void Parse_SentinelValue_ThrowsException()
     {
-        _ = Assert.Throws<ArgumentOutOfRangeException>(() => NaInt<int>.Parse(int.MaxValue.ToString(), null));
+        _ = Assert.Throws<ArgumentOutOfRangeException>(() => NaInt<int>.Parse(int.MaxValue.ToString(CultureInfo.InvariantCulture), null));
     }
 
     [Fact]
