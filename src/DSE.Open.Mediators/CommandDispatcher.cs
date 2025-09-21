@@ -62,7 +62,7 @@ public sealed partial class CommandDispatcher : ICommandDispatcher
             try
             {
                 var result = handlerType.InvokeMember(
-                    nameof(ICommandHandler<,>.HandleAsync),
+                    nameof(ICommandHandler<ICommand, object>.HandleAsync),
                     BindingFlags.InvokeMethod,
                     null, handler, [command, cancellation], null);
 
@@ -82,12 +82,7 @@ public sealed partial class CommandDispatcher : ICommandDispatcher
 
         }, cancellation).ConfigureAwait(false);
 
-        if (_logger.IsEnabled(LogLevel.Debug))
-        {
-#pragma warning disable CA1873 // Avoid potentially expensive logging
-            Log.SentCommandToHandler(_logger, handler.GetType().Name);
-#pragma warning restore CA1873 // Avoid potentially expensive logging
-        }
+        Log.SentCommandToHandler(_logger, handler.GetType().Name);
 
         return commandResult;
     }

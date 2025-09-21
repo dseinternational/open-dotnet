@@ -2,7 +2,6 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Collections.ObjectModel;
-using System.Globalization;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 
@@ -233,7 +232,7 @@ public sealed class ResourceValueParser
         // Do some normalization to .NET style variable naming, if needed.
         name = char.IsUpper(name[0]) switch
         {
-            true => $"{char.ToLower(name[0], CultureInfo.InvariantCulture)}{name.Substring(1)}",
+            true => $"{char.ToLower(name[0])}{name.Substring(1)}",
             false => name
         };
 

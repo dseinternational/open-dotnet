@@ -153,7 +153,7 @@ public static class LocalizedCollectionExtensions
 
         if (localizedCollection is not ICollection<KeyValuePair<string, T>> list)
         {
-            list = [.. localizedCollection];
+            list = localizedCollection.ToList();
         }
 
         if (list.Count == 0)
@@ -295,7 +295,7 @@ public static class LocalizedCollectionExtensions
 
         if (localizedCollection is not ICollection<KeyValuePair<LanguageTag, T>> list)
         {
-            list = [.. localizedCollection];
+            list = localizedCollection.ToList();
         }
 
         if (list.Count == 0)

@@ -1,21 +1,18 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="CSnakes.Runtime" />
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DSE.Open.Interop.Python\DSE.Open.Interop.Python.csproj" />
     <ProjectReference Include="..\DSE.Open.Language.Annotations.Books\DSE.Open.Language.Annotations.Books.csproj" />
   </ItemGroup>
-  
+
   <ItemGroup>
-    <AdditionalFiles Include="Modules\*.py" SourceItemType="Python">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>      
+    <AdditionalFiles Include="Modules\*.py">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      
     </AdditionalFiles>
     <AdditionalFiles Include="Modules\*.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -25,12 +22,12 @@
   <ItemGroup>
     <Content Include="*.py">
       <Pack>true</Pack>
-      <PackagePath>contentFiles/any/net10.0</PackagePath>
+      <PackagePath>contentFiles/any/net9.0</PackagePath>
       <PackageCopyToOutput>true</PackageCopyToOutput>
     </Content>
     <Content Include="*.txt">
       <Pack>true</Pack>
-      <PackagePath>contentFiles/any/net10.0</PackagePath>
+      <PackagePath>contentFiles/any/net9.0</PackagePath>
       <PackageCopyToOutput>true</PackageCopyToOutput>
     </Content>
   </ItemGroup>

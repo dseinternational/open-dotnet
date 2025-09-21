@@ -6,7 +6,6 @@
     <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <AnalyzerRoslynVersion>4.4</AnalyzerRoslynVersion>
   </PropertyGroup>
 
   <ItemGroup>

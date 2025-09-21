@@ -698,7 +698,7 @@ public class ObservableList<T> : IObservableList<T>, IReadOnlyObservableList<T>,
             if (CollectionChanged?.GetInvocationList().Length > 1)
             {
                 throw new InvalidOperationException(
-                    $"Cannot change {nameof(ObservableList<>)} during a {nameof(CollectionChanged)} event.");
+                    $"Cannot change {nameof(ObservableList<T>)} during a {nameof(CollectionChanged)} event.");
             }
         }
     }
