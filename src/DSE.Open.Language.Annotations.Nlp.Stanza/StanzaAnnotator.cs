@@ -12,12 +12,12 @@ namespace DSE.Open.Language.Annotations.Nlp.Stanza;
 
 public class StanzaAnnotator : IAnnotator
 {
-    public StanzaAnnotator(StanzaService stanza)
+    public StanzaAnnotator(StanzaService2 stanza)
     {
         Context = stanza;
     }
 
-    public StanzaService Context { get; }
+    public StanzaService2 Context { get; }
 
     [RequiresDynamicCode("Calls DSE.Open.Interop.Python.PyObjectExtensions.AsNullable<T>()")]
     public Task<OpenDocument> AnnotateTextAsync(
