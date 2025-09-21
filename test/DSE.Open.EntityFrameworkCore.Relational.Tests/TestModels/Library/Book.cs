@@ -28,5 +28,5 @@ public class Book : UpdateTimesTrackedEventRaisingEntity<int>
 
     public required string Description { get; set; }
 
-    public ICollection<Author> Authors { get; } = [];
+    public ICollection<Author> Authors { get; } = new List<Author>();
 }

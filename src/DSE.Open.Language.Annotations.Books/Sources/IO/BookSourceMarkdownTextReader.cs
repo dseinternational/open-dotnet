@@ -2,25 +2,24 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 using DSE.Open.Globalization;
 
 namespace DSE.Open.Language.Annotations.Books.Sources.IO;
 
 public class BookSourceMarkdownTextReader
 {
-    public async Task<BookSource> ReadAsync(string path, string id)
+    public Task<BookSource> ReadAsync(string path, string id)
     {
         using var stream = File.OpenRead(path);
-        return await ReadAsync(stream, id).ConfigureAwait(false);
+        return ReadAsync(stream, id);
     }
 
-    public async Task<BookSource> ReadAsync(Stream stream, string id)
+    public Task<BookSource> ReadAsync(Stream stream, string id)
     {
         ArgumentNullException.ThrowIfNull(stream);
 
         using var reader = new StreamReader(stream);
-        return await ReadAsync(reader, id).ConfigureAwait(false);
+        return ReadAsync(reader, id);
     }
 
     [SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "<Pending>")]
@@ -32,9 +31,9 @@ public class BookSourceMarkdownTextReader
         var pages = new List<PageSource>();
         var paragraphs = new List<ParagraphSource>();
 
-        string? line;
-        while ((line = await reader.ReadLineAsync().ConfigureAwait(false)) is not null)
+        while (!reader.EndOfStream)
         {
+            var line = await reader.ReadLineAsync().ConfigureAwait(false);
 
             if (string.IsNullOrWhiteSpace(line))
             {

@@ -68,9 +68,7 @@ public class ObservableSetTest
         Assert.Equal(1, countChanging);
         Assert.Equal(1, countChanged);
         Assert.Equal(1, collectionChanged);
-#pragma warning disable CA1861 // Avoid constant arrays as arguments
         Assert.Equal(new[] { "Palmer" }, hashSet);
-#pragma warning restore CA1861 // Avoid constant arrays as arguments
 
         adding = ["Carmack"];
         Assert.True(hashSet.Add("Carmack"));
@@ -199,9 +197,7 @@ public class ObservableSetTest
         Assert.Equal(1, countChanging);
         Assert.Equal(1, countChanged);
         Assert.Equal(1, collectionChanged);
-#pragma warning disable CA1861 // Avoid constant arrays as arguments
         Assert.Equal(new[] { "Carmack" }, hashSet);
-#pragma warning restore CA1861 // Avoid constant arrays as arguments
 
         removing = ["Carmack"];
         Assert.True(hashSet.Remove("Carmack"));

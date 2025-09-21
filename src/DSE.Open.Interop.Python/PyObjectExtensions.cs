@@ -1,13 +1,11 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using CSnakes.Runtime.Python;
 
 namespace DSE.Open.Interop.Python;
 
-[RequiresDynamicCode("TODO")]
 public static class PyObjectExtensions
 {
     public static T AsNumber<T>(this PyObject pyObject)

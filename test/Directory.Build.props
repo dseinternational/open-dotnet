@@ -18,6 +18,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Configuration.ConfigurationManager"/>
+    
     <PackageReference Include="xunit.v3"/>
     <PackageReference Include="xunit.analyzers">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -31,6 +33,8 @@
     <PackageReference Include="Microsoft.Extensions.DependencyModel"/>
 
     <PackageReference Include="Moq"/>
+    <PackageReference Include="System.Collections.Immutable"/>
+    <PackageReference Include="System.Reflection.Metadata"/>
 
     <PackageReference Include="AwesomeAssertions"/>
     

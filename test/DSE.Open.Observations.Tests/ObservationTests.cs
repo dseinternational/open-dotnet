@@ -172,7 +172,7 @@ public sealed class ObservationTests
         const string expected = """{"d":101,"i":3840829473618409,"t":1733011200000,"m":203189995833,"v":"1"}""";
 
         var timeProvider = new FakeTimeProvider(new DateTimeOffset(2024, 12, 1, 0, 0, 0, TimeSpan.Zero));
-        var id = ObservationId.Parse("3840829473618409", CultureInfo.InvariantCulture);
+        var id = ObservationId.Parse("3840829473618409");
 
         var observation = new Observation<Binary>(
             id,
@@ -195,7 +195,7 @@ public sealed class ObservationTests
         const string expected = """{"i":3840829473618409,"t":1733011200000,"m":203189995833,"v":"1"}""";
 
         var timeProvider = new FakeTimeProvider(new DateTimeOffset(2024, 12, 1, 0, 0, 0, TimeSpan.Zero));
-        var id = ObservationId.Parse("3840829473618409", CultureInfo.InvariantCulture);
+        var id = ObservationId.Parse("3840829473618409");
 
         var observation = new Observation<Binary>(
             id,
@@ -218,7 +218,7 @@ public sealed class ObservationTests
         const string expected = """{"i":3840829473618409,"t":1733011200000,"m":203189995833,"p":"e\u026A","v":90}""";
 
         var timeProvider = new FakeTimeProvider(new DateTimeOffset(2024, 12, 1, 0, 0, 0, TimeSpan.Zero));
-        var id = ObservationId.Parse("3840829473618409", CultureInfo.InvariantCulture);
+        var id = ObservationId.Parse("3840829473618409");
 
         var observation = new Observation<BehaviorFrequency, SpeechSound>(
             id,
@@ -242,7 +242,7 @@ public sealed class ObservationTests
         const string expected = """{"i":3840829473618409,"m":203189995833,"t":1733011200000,"v":"1"}""";
 
         var timeProvider = new FakeTimeProvider(new DateTimeOffset(2024, 12, 1, 0, 0, 0, TimeSpan.Zero));
-        var id = ObservationId.Parse("3840829473618409", CultureInfo.InvariantCulture);
+        var id = ObservationId.Parse("3840829473618409");
 
         var observation = new Observation<Binary>(
             id,
@@ -265,7 +265,7 @@ public sealed class ObservationTests
         const string expected = """{"i":3840829473618409,"m":203189995833,"t":1733011200000,"v":90,"p":"e\u026A"}""";
 
         var timeProvider = new FakeTimeProvider(new DateTimeOffset(2024, 12, 1, 0, 0, 0, TimeSpan.Zero));
-        var id = ObservationId.Parse("3840829473618409", CultureInfo.InvariantCulture);
+        var id = ObservationId.Parse("3840829473618409");
 
         var observation = new Observation<BehaviorFrequency, SpeechSound>(
             id,
