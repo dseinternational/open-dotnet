@@ -7,7 +7,8 @@ param (
   [string]$configuration = "Debug",
   [string]$coverage = "false",
   [string]$coverage_output,
-  [string]$coverage_output_format = "cobertura"
+  [string]$coverage_output_format = "cobertura",
+  [string[]]$target_frameworks = @("net9.0", "net10.0")
 )
 
 Set-StrictMode -version 2.0
@@ -25,6 +26,7 @@ try {
   Write-Host "Coverage:                 $coverage"
   Write-Host "Coverage output:          $coverage_output"
   Write-Host "Coverage output format:   $coverage_output_format"
+  Write-Host "Target frameworks:        $($target_frameworks -join ', ')"
   Write-Host "------------------------------------------------------------------------------------------------------------------------" -ForegroundColor Green
   Write-Host
 
@@ -32,8 +34,7 @@ try {
     throw "Path does not exist: $target"
   }
 
-  $exit_code = 0;
-
+  $exit_code = 0
   $item = Get-Item $target
 
   $failed_count = 0
@@ -45,42 +46,54 @@ try {
 
     foreach ($test in $tests) {
 
-      Write-Host
-      Write-Host "------------------------------------------------------------------------------------------------------------------------" -ForegroundColor Green
-      Write-Host "Running tests in $test" -ForegroundColor Green
-      Write-Host "------------------------------------------------------------------------------------------------------------------------" -ForegroundColor Green
-      Write-Host
+      foreach ($tfm in $target_frameworks) {
 
-      $dotnet_args = @("run", "--project", "$($test.FullName)", "--configuration", $configuration, "--ignore-exit-code", "8");
+        Write-Host
+        Write-Host "------------------------------------------------------------------------------------------------------------------------" -ForegroundColor Green
+        Write-Host "Running tests in $($test.FullName) (framework: $tfm)" -ForegroundColor Green
+        Write-Host "------------------------------------------------------------------------------------------------------------------------" -ForegroundColor Green
+        Write-Host
 
-      if ($coverage -eq "true") {
+        $dotnet_args = @(
+          "run",
+          "--project", $test.FullName,
+          "--configuration", $configuration,
+          "--ignore-exit-code", "8"
+        )
 
-        $dotnet_args += "--coverage";
-
-        if (-not [string]::IsNullOrWhiteSpace($coverage_output)) {
-          $dotnet_args += "--coverage-output";
-          $dotnet_args += $coverage_output;
+        if (-not [string]::IsNullOrWhiteSpace($tfm)) {
+          $dotnet_args += @("--framework", $tfm)
         }
 
-        if (-not [string]::IsNullOrWhiteSpace($coverage_output_format)) {
-          $dotnet_args += "--coverage-output-format";
-          $dotnet_args += $coverage_output_format;
+        if ($coverage -eq "true") {
+
+          $dotnet_args += "--coverage"
+
+          if (-not [string]::IsNullOrWhiteSpace($coverage_output)) {
+            $dotnet_args += @("--coverage-output", $coverage_output)
+          }
+
+          if (-not [string]::IsNullOrWhiteSpace($coverage_output_format)) {
+            $dotnet_args += @("--coverage-output-format", $coverage_output_format)
+          }
         }
-      }
 
-      Write-Host "dotnet $dotnet_args"
+        Write-Host "dotnet $($dotnet_args -join ' ')"
 
-      &dotnet $dotnet_args
+        & dotnet @dotnet_args
 
-      if ($LASTEXITCODE -ne 0) {
-        Write-Host
-        Write-Host "********************************************************************************" -ForegroundColor Red
-        Write-Host "Test execution FAILED with exit code $LASTEXITCODE" -ForegroundColor Red
-        Write-Host "********************************************************************************" -ForegroundColor Red
-        Write-Host
-        $exit_code = $LASTEXITCODE;
-        $failed_count += 1;
-        $failed_executions += $test.FullName;
+        if ($LASTEXITCODE -ne 0) {
+          Write-Host
+          Write-Host "********************************************************************************" -ForegroundColor Red
+          Write-Host "Test execution FAILED with exit code $LASTEXITCODE" -ForegroundColor Red
+          Write-Host "Project: $($test.FullName)" -ForegroundColor Red
+          Write-Host "Framework: $tfm" -ForegroundColor Red
+          Write-Host "********************************************************************************" -ForegroundColor Red
+          Write-Host
+          $exit_code = $LASTEXITCODE
+          $failed_count += 1
+          $failed_executions += "$($test.FullName) [$tfm]"
+        }
       }
     }
   }
