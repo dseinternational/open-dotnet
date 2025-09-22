@@ -5,6 +5,10 @@ inputs:
   target:
     required: true
     description: The project or solution, or directory.
+  target-frameworks:
+    required: false
+    default: "net9.0,net10.0"
+    description: The target frameworks to build and test.
   configuration:
     required: false
     default: "Debug"
@@ -39,5 +43,6 @@ runs:
           configuration = "${{ inputs.configuration }}"
           coverage = "${{ inputs.coverage }}"
           coverage_output = "${{ inputs.coverage-output }}"
+          target_frameworks = "${{ inputs.target-frameworks }}" -split ","
         }
         ./eng/scripts/test.ps1 @args
