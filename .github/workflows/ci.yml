@@ -79,7 +79,7 @@ jobs:
         run: dotnet build ./DSE.Open.slnx --no-restore --configuration ${{ matrix.configuration }}
 
       - name: Run Tests
-        uses: dseinternational/open-dotnet/.github/actions/dotnet-test@actions-0.8
+        uses: dseinternational/open-dotnet/.github/actions/dotnet-test@actions-0.9
         with:
           target: ./test
           configuration: ${{ matrix.configuration }}
