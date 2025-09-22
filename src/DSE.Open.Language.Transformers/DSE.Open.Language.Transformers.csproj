@@ -21,4 +21,27 @@
     </AdditionalFiles>
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="*.py">
+      <Pack>true</Pack>
+      <PackagePath>contentFiles/any/net9.0</PackagePath>
+      <PackageCopyToOutput>true</PackageCopyToOutput>
+    </Content>
+    <Content Include="*.txt">
+      <Pack>true</Pack>
+      <PackagePath>contentFiles/any/net9.0</PackagePath>
+      <PackageCopyToOutput>true</PackageCopyToOutput>
+    </Content>
+    <Content Include="*.py">
+      <Pack>true</Pack>
+      <PackagePath>contentFiles/any/net10.0</PackagePath>
+      <PackageCopyToOutput>true</PackageCopyToOutput>
+    </Content>
+    <Content Include="*.txt">
+      <Pack>true</Pack>
+      <PackagePath>contentFiles/any/net10.0</PackagePath>
+      <PackageCopyToOutput>true</PackageCopyToOutput>
+    </Content>
+  </ItemGroup>
+
 </Project>
