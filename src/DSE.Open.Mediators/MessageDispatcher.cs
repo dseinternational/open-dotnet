@@ -60,7 +60,7 @@ public sealed partial class MessageDispatcher : IMessageDispatcher
                 try
                 {
                     var result = handlerType.InvokeMember(
-                        nameof(IMessageHandler<IMessage>.HandleAsync),
+                        nameof(IMessageHandler<>.HandleAsync),
                         BindingFlags.InvokeMethod,
                         null, handler, [message, cancellationToken], null);
 
@@ -83,7 +83,9 @@ public sealed partial class MessageDispatcher : IMessageDispatcher
 
             }, cancellationToken).ConfigureAwait(false);
 
+#pragma warning disable CA1873 // Avoid potentially expensive logging
             Log.SentMessageToHandler(_logger, handler.GetType().Name);
+#pragma warning restore CA1873 // Avoid potentially expensive logging
         }
     }
 

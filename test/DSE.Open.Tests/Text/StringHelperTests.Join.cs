@@ -134,7 +134,7 @@ public partial class StringHelperTests
     [Fact]
     public void Joins_big_array_of_double_formatted()
     {
-        double[] values = Enumerable.Range(1, 1000).Select(i => i * 0.77313).ToArray();
+        double[] values = [.. Enumerable.Range(1, 1000).Select(i => i * 0.77313)];
         var joined = StringHelper.Join(", ", default, values, "0.00", CultureInfo.InvariantCulture);
         var expected = string.Join(", ", values.Select(v => v.ToString("0.00", CultureInfo.InvariantCulture)));
         Assert.Equal(expected, joined);

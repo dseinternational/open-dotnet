@@ -42,6 +42,6 @@ public sealed class CollectionToFormattableStringCollectionConverter<T> : ValueC
 #pragma warning restore CA1000 // Do not declare static members on generic types
     {
         ArgumentNullException.ThrowIfNull(collection);
-        return collection.Select(s => T.Parse(s, formatProvider)).ToList();
+        return [.. collection.Select(s => T.Parse(s, formatProvider))];
     }
 }

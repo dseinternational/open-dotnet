@@ -35,7 +35,9 @@ public sealed class StanzaService : IDisposable
     {
         _ = _stanza.Download(lang);
 
+#pragma warning disable CA1873 // Avoid potentially expensive logging
         Logger.LogInformation("Downloaded Stanza model '{Language}'.", lang);
+#pragma warning restore CA1873 // Avoid potentially expensive logging
     }
 
     public Pipeline CreatePipeline(string lang = "en")

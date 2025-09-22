@@ -20,7 +20,7 @@ public sealed class ResourceProviderSourceGenerator : IIncrementalGenerator
             SyntaxProviderTransform
         );
 
-        var textsProvider = context.AdditionalTextsProvider.Where(x => x.Path.EndsWith(".restext"));
+        var textsProvider = context.AdditionalTextsProvider.Where(x => x.Path.EndsWith(".restext", StringComparison.OrdinalIgnoreCase));
 
         var compilation = context.CompilationProvider
             .Combine(provider.Collect())

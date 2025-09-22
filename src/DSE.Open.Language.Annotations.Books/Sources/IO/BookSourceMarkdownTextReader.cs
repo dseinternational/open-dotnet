@@ -8,18 +8,18 @@ namespace DSE.Open.Language.Annotations.Books.Sources.IO;
 
 public class BookSourceMarkdownTextReader
 {
-    public Task<BookSource> ReadAsync(string path, string id)
+    public async Task<BookSource> ReadAsync(string path, string id)
     {
         using var stream = File.OpenRead(path);
-        return ReadAsync(stream, id);
+        return await ReadAsync(stream, id).ConfigureAwait(false);
     }
 
-    public Task<BookSource> ReadAsync(Stream stream, string id)
+    public async Task<BookSource> ReadAsync(Stream stream, string id)
     {
         ArgumentNullException.ThrowIfNull(stream);
 
         using var reader = new StreamReader(stream);
-        return ReadAsync(reader, id);
+        return await ReadAsync(reader, id).ConfigureAwait(false);
     }
 
     [SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "<Pending>")]
@@ -31,10 +31,10 @@ public class BookSourceMarkdownTextReader
         var pages = new List<PageSource>();
         var paragraphs = new List<ParagraphSource>();
 
-        while (!reader.EndOfStream)
-        {
-            var line = await reader.ReadLineAsync().ConfigureAwait(false);
+        string? line;
 
+        while (null != (line = await reader.ReadLineAsync().ConfigureAwait(false)))
+        {
             if (string.IsNullOrWhiteSpace(line))
             {
                 continue;

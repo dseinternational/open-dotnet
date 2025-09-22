@@ -64,6 +64,6 @@ public abstract class SequenceSumBenchmarksBase<T>
 #pragma warning restore CA1002 // Do not expose generic lists
     {
         var i = T.AdditiveIdentity;
-        return Enumerable.Range(1, count).Select(n => i + T.One).ToList();
+        return [.. Enumerable.Range(1, count).Select(n => i + T.One)];
     }
 }

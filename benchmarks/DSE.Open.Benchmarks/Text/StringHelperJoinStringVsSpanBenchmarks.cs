@@ -17,9 +17,7 @@ public class StringHelperJoinStringVsSpanBenchmarks
 
     private static List<string> GetValuesList(int count)
     {
-        return Enumerable.Range(0, count)
-            .Select(i => WordLists.EnglishEarlyWords[Random.Shared.Next(WordLists.EnglishEarlyWords.Count - 1)])
-            .ToList();
+        return [.. Enumerable.Range(0, count).Select(i => WordLists.EnglishEarlyWords[Random.Shared.Next(WordLists.EnglishEarlyWords.Count - 1)])];
     }
 
     public static IEnumerable<string> GetValuesCollection(int count)
