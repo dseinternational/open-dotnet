@@ -41,8 +41,8 @@ function TestEnvironment-Init() {
 
   if ($IsWindows) {
     if ($env:USE_CUDA -eq "True") {
-      Write-Host "Using CUDA 12.8"
-      python -m pip install --upgrade torch --index-url https://download.pytorch.org/whl/cu128
+      Write-Host "Using CUDA 12.9"
+      python -m pip install --upgrade torch --index-url https://download.pytorch.org/whl/cu129
     }
     else {
       Write-Host "Using CPU only"
@@ -51,8 +51,8 @@ function TestEnvironment-Init() {
   }
   elseif ($IsLinux) {
     if ($env:USE_CUDA -eq "True") {
-      Write-Host "Using CUDA 12.8"
-      python -m pip install --upgrade torch --index-url https://download.pytorch.org/whl/cu128
+      Write-Host "Using CUDA 12.9"
+      python -m pip install --upgrade torch --index-url https://download.pytorch.org/whl/cu129
     }
     else {
       Write-Host "Using CPU only"
