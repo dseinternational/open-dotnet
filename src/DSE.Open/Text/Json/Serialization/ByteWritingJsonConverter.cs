@@ -26,17 +26,54 @@ public abstract class ByteWritingJsonConverter<TValue> : JsonConverter<TValue>
 
     public override TValue Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        var bytes = reader.HasValueSequence
-            ? reader.ValueSequence.ToArray()
-            : reader.ValueSpan;
-
-        if (TryParse(bytes, out var value))
+        if (reader.ValueIsEscaped)
         {
-            return value;
+            return ReadEscaped(ref reader);
         }
 
-        ThrowHelper.ThrowFormatException($"Could not convert {typeof(TValue).Name} value: {bytes.ToArray()}");
-        return default;
+        return ReadUnescaped(ref reader);
+
+        TValue ReadUnescaped(ref Utf8JsonReader reader)
+        {
+            var bytes = reader.HasValueSequence
+                ? reader.ValueSequence.ToArray()
+                : reader.ValueSpan;
+
+            if (TryParse(bytes, out var value))
+            {
+                return value;
+            }
+
+            ThrowHelper.ThrowFormatException($"Could not convert {typeof(TValue).Name} value: {bytes.ToArray()}");
+            return default;
+        }
+
+        TValue ReadEscaped(ref Utf8JsonReader reader)
+        {
+            var rented = SpanOwner<byte>.Empty;
+
+            var length = reader.HasValueSequence
+                ? (int)reader.ValueSequence.Length
+                : reader.ValueSpan.Length;
+
+            var buffer = MemoryThresholds.CanStackalloc<byte>(length)
+                ? stackalloc byte[length]
+                : (rented = SpanOwner<byte>.Allocate(length)).Span;
+
+            var written = reader.CopyString(buffer);
+
+            if (TryParse(buffer[..written], out var value))
+            {
+                return value;
+            }
+
+            var bytes = reader.HasValueSequence
+                ? reader.ValueSequence.ToArray()
+                : reader.ValueSpan;
+
+            ThrowHelper.ThrowFormatException($"Could not convert {typeof(TValue).Name} value: {bytes.ToArray()}");
+            return default;
+        }
     }
 
     [SkipLocalsInit]
@@ -54,7 +91,7 @@ public abstract class ByteWritingJsonConverter<TValue> : JsonConverter<TValue>
 
         var rented = SpanOwner<byte>.Empty;
 
-        Span<byte> output = MemoryThresholds.CanStackalloc<byte>(byteCount)
+        var output = MemoryThresholds.CanStackalloc<byte>(byteCount)
             ? stackalloc byte[byteCount]
             : (rented = SpanOwner<byte>.Allocate(byteCount)).Span;
 

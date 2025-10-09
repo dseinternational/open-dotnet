@@ -160,7 +160,7 @@ public readonly struct AsciiString
     {
         var rented = SpanOwner<byte>.Empty;
 
-        Span<byte> buffer = MemoryThresholds.CanStackalloc<byte>(s.Length)
+        var buffer = MemoryThresholds.CanStackalloc<byte>(s.Length)
             ? stackalloc byte[MemoryThresholds.StackallocByteThreshold]
             : (rented = SpanOwner<byte>.Allocate(s.Length)).Span;
 
@@ -382,7 +382,7 @@ public readonly struct AsciiString
 
         if (format.Length != 1)
         {
-            ThrowHelper.ThrowFormatException($"The format '{format.ToString()}' is not supported.");
+            ThrowHelper.ThrowFormatException($"The format '{format}' is not supported.");
         }
 
         switch (format[0] | 0x20)
@@ -395,7 +395,7 @@ public readonly struct AsciiString
                 break;
         }
 
-        ThrowHelper.ThrowFormatException($"The format '{format.ToString()}' is not supported.");
+        ThrowHelper.ThrowFormatException($"The format '{format}' is not supported.");
         charsWritten = default;
         return false;
     }
@@ -434,7 +434,7 @@ public readonly struct AsciiString
                 break;
         }
 
-        ThrowHelper.ThrowFormatException($"The format '{format.ToString()}' is not supported.");
+        ThrowHelper.ThrowFormatException($"The format '{format}' is not supported.");
         bytesWritten = default;
         return false;
     }

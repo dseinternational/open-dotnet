@@ -1,10 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-
-// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
-// Down Syndrome Education International and Contributors licence this file to you under the MIT license.
-
+using System.Text.Json;
 using DSE.Open;
 
 namespace DSE.Open;
@@ -51,6 +48,8 @@ public class AsciiStringTests
 
     [Theory]
     [InlineData("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "ABCDEFGHIJKLMNOPQRSTUVWXYZ")]
+    [InlineData("\"6a004564-0000-1100-0000-68e77d630000\"", "\"6a004564-0000-1100-0000-68e77d630000\"")]
+    [InlineData("\\\"6a004564-0000-1100-0000-68e77d630000\\\"", "\\\"6a004564-0000-1100-0000-68e77d630000\\\"")]
     public void ToString_returns_string(string value, string expected)
     {
         var c = AsciiString.Parse(value, CultureInfo.InvariantCulture);
@@ -382,5 +381,16 @@ public class AsciiStringTests
     {
         var value = AsciiString.Parse("abcdefghijklmnopqrstuvwxyza", CultureInfo.InvariantCulture);
         Assert.Equal(10941012414329798000u, value.GetRepeatableHashCode());
+    }
+
+    [Theory]
+    [InlineData("\"abcdefg123456\"", "abcdefg123456")]
+    [InlineData("\"abcde\\\\fg123456\"", "abcde\\fg123456")]
+    [InlineData("\"\\\"6a004564-0000-1100-0000-68e77d630000\\\"\"", "\"6a004564-0000-1100-0000-68e77d630000\"")]
+    [InlineData("\"\\\\\\\"6a004564-0000-1100-0000-68e77d630000\\\\\\\"\"", "\\\"6a004564-0000-1100-0000-68e77d630000\\\"")]
+    public void Deserialize_Json(string json, string expected)
+    {
+        var deserialized = JsonSerializer.Deserialize<AsciiString>(json);
+        Assert.Equal(expected, deserialized.ToString());
     }
 }
