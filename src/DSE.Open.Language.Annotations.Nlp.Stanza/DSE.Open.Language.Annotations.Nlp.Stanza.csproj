@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net9.0;net10.0</TargetFrameworks>
+    <TargetFramework>net10.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,12 +21,12 @@
   <ItemGroup>
     <Content Include="*.py">
       <Pack>true</Pack>
-      <PackagePath>contentFiles/any/net9.0</PackagePath>
+      <PackagePath>contentFiles/any/net10.0</PackagePath>
       <PackageCopyToOutput>true</PackageCopyToOutput>
     </Content>
     <Content Include="*.txt">
       <Pack>true</Pack>
-      <PackagePath>contentFiles/any/net9.0</PackagePath>
+      <PackagePath>contentFiles/any/net10.0</PackagePath>
       <PackageCopyToOutput>true</PackageCopyToOutput>
     </Content>
     <Content Include="*.py">

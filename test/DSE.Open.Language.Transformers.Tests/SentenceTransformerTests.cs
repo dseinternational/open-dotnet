@@ -5,7 +5,6 @@ using System.Numerics.Tensors;
 
 namespace DSE.Open.Language.Transformers;
 
-#pragma warning disable SYSLIB5001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 
 [Collection("SentenceTransformersService")]
 public class SentenceTransformerTests : SentenceTransformerTestsBase
@@ -94,14 +93,14 @@ public class SentenceTransformerTests : SentenceTransformerTestsBase
 
         // "Tom is at school with his friends." is less similar to "Emma is playing in the park with her mother."
         // than "Emma and her mother are playing on the swing."
-        Assert.True(Tensor.CosineSimilarity(s0, s1)[0, 0] < Tensor.CosineSimilarity(s0, s2)[0, 0]);
+        Assert.True(Tensor.CosineSimilarity(s0, s1) < Tensor.CosineSimilarity(s0, s2));
 
         // "Emma is playing in the park with her mother." is a closer answer to "Where is Emma?"
         // than "Tom is at school with his friends."
-        Assert.True(Tensor.CosineSimilarity(s3, s0)[0, 0] > Tensor.CosineSimilarity(s3, s1)[0, 0]);
+        Assert.True(Tensor.CosineSimilarity(s3, s0) > Tensor.CosineSimilarity(s3, s1));
 
         // "Emma and her mother are playing on the swing." is a closer answer to "Where is Emma?"
         // than "Tom is at school with his friends."
-        Assert.True(Tensor.CosineSimilarity(s3, s2)[0, 0] > Tensor.CosineSimilarity(s0, s1)[0, 0]);
+        Assert.True(Tensor.CosineSimilarity(s3, s2) > Tensor.CosineSimilarity(s0, s1));
     }
 }

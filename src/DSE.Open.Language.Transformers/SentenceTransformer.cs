@@ -8,7 +8,6 @@ using DSE.Open.Interop.Python;
 
 namespace DSE.Open.Language.Transformers;
 
-#pragma warning disable SYSLIB5001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 
 public class SentenceTransformer : PyObjectWrapper
 {

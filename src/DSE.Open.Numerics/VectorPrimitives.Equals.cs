@@ -7,7 +7,6 @@ using System.Numerics.Tensors;
 
 namespace DSE.Open.Numerics;
 
-#pragma warning disable SYSLIB5001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 
 // Note: these use IEqualityOperators{TSelf,TOther,Boolen} rather than IEquatable<T> as SequenceEqual does
 

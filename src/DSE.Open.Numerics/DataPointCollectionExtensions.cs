@@ -9,7 +9,6 @@ namespace DSE.Open.Numerics;
 
 #pragma warning disable DSEOPEN001 // ArrayBuilder ref struct
 
-#pragma warning disable SYSLIB5001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 
 public static class DataPointCollectionExtensions
 {
