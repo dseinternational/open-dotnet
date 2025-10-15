@@ -86,3 +86,16 @@ def get_device_type(model: SentenceTransformer) -> str:
         str: The device on which the model is loaded, e.g., "cuda", "cpu", etc.
     """
     return model.device.type
+
+
+def get_sentence_embedding_dimension(model: SentenceTransformer) -> int:
+    """
+    Returns the dimension of the sentence embeddings produced by the SentenceTransformer model.
+
+    Args:
+        model (SentenceTransformer): The SentenceTransformer model.
+
+    Returns:
+        int: The dimension of the sentence embeddings.
+    """
+    return model.get_sentence_embedding_dimension()

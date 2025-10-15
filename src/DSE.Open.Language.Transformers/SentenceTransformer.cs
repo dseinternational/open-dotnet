@@ -56,11 +56,17 @@ public class SentenceTransformer : PyObjectWrapper
 
         if (sentences.Count == 0)
         {
-            return new ReadOnlyTensorSpan<float>([], [0, 0], [0, 0]);
+            return new ReadOnlyTensorSpan<float>();
         }
 
         var result = _service.EncodeSentenceCollection(InnerObject, sentences, prompt);
-        return result.AsReadOnlyTensorSpan<float>();
+
+        // todo: avoid copy - this is a workaround an issue in CSnakes
+        var encodingDimensions = (int)_service.GetSentenceEmbeddingDimension(InnerObject);
+        var data = new float[sentences.Count * encodingDimensions];
+        result.AsSpan2D<float>().CopyTo(data);
+        return new ReadOnlyTensorSpan<float>(data, [sentences.Count, encodingDimensions]);
+        // return result.AsTensorSpan<float>();
     }
 
     public static SentenceTransformer Create(

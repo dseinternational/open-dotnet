@@ -21,9 +21,7 @@ public class SentenceTransformerTests : SentenceTransformerTestsBase
 
         var embeddings = NomicTextEmbed.GetEmbeddings(chunks, "search_document: ");
 
-        Assert.Equal(2, embeddings.Rank);
-        Assert.Equal(0, embeddings.Lengths[0]);
-        Assert.Equal(0, embeddings.Lengths[1]);
+        Assert.Equal(0, embeddings.Rank);
         Assert.True(embeddings.IsEmpty);
     }
 

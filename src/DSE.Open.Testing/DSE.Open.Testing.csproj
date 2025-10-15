@@ -10,7 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Configuration.ConfigurationManager" />
     <PackageReference Include="Microsoft.Extensions.TimeProvider.Testing"/>
   </ItemGroup>
 
