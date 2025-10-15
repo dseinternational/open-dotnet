@@ -8,7 +8,7 @@ param (
   [string]$coverage = "false",
   [string]$coverage_output,
   [string]$coverage_output_format = "cobertura",
-  [string[]]$target_frameworks = @("net9.0", "net10.0")
+  [string[]]$target_frameworks = @("net10.0")
 )
 
 Set-StrictMode -version 2.0
