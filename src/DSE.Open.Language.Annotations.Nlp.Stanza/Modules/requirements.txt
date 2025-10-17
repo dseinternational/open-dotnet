@@ -1,2 +1,2 @@
-numpy>=2.3.2
+numpy>=2.3.4
 stanza>=1.11.0
