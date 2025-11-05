@@ -9,7 +9,7 @@
     <PackageVersion Include="AwesomeAssertions" Version="9.3.0" />
     <PackageVersion Include="Azure.Core" Version="1.49.0" />
     <PackageVersion Include="Azure.Identity" Version="1.17.0" />
-    <PackageVersion Include="BenchmarkDotNet" Version="0.15.5" />
+    <PackageVersion Include="BenchmarkDotNet" Version="0.15.6" />
     <PackageVersion Include="CommunityToolkit.Diagnostics" Version="8.4.0" />
     <PackageVersion Include="CommunityToolkit.HighPerformance" Version="8.4.0" />
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
@@ -53,7 +53,7 @@
     <PackageVersion Include="System.IO.Hashing" Version="10.0.0-rc.2.25502.107" />
     <PackageVersion Include="System.Memory.Data" Version="10.0.0-rc.2.25502.107" />
     <PackageVersion Include="System.Numerics.Tensors" Version="10.0.0-rc.2.25502.107" />
-    <PackageVersion Include="Verify.XunitV3" Version="31.4.1" />
+    <PackageVersion Include="Verify.XunitV3" Version="31.4.3" />
     <PackageVersion Include="xunit.analyzers" Version="1.25.0" />
     <PackageVersion Include="xunit.v3" Version="3.2.0" />
     <PackageVersion Include="xunit.v3.assert" Version="3.2.0" />
