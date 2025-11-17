@@ -211,6 +211,11 @@ public readonly struct DiagnosticCode
         return Parse(s, null);
     }
 
+    public static DiagnosticCode ParseInvariant(string s)
+    {
+        return Parse(s, CultureInfo.InvariantCulture);
+    }
+
     public static DiagnosticCode Parse(string s, IFormatProvider? provider)
     {
         ArgumentNullException.ThrowIfNull(s);
@@ -220,6 +225,11 @@ public readonly struct DiagnosticCode
     public static DiagnosticCode Parse(ReadOnlySpan<char> s)
     {
         return Parse(s, null);
+    }
+
+    public static DiagnosticCode ParseInvariant(ReadOnlySpan<char> s)
+    {
+        return Parse(s, CultureInfo.InvariantCulture);
     }
 
     public static DiagnosticCode Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
