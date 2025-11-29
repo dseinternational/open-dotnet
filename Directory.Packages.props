@@ -55,11 +55,11 @@
     <PackageVersion Include="System.IO.Hashing" Version="10.0.0" />
     <PackageVersion Include="System.Memory.Data" Version="10.0.0" />
     <PackageVersion Include="System.Numerics.Tensors" Version="10.0.0" />
-    <PackageVersion Include="Verify.XunitV3" Version="31.7.2" />
-    <PackageVersion Include="xunit.analyzers" Version="1.25.0" />
-    <PackageVersion Include="xunit.v3.assert" Version="3.2.0" />
-    <PackageVersion Include="xunit.v3.extensibility.core" Version="3.2.0" />
-    <PackageVersion Include="xunit.v3.mtp-v2" Version="3.2.0" />
+    <PackageVersion Include="Verify.XunitV3" Version="31.7.3" />
+    <PackageVersion Include="xunit.analyzers" Version="1.26.0" />
+    <PackageVersion Include="xunit.v3.assert" Version="3.2.1" />
+    <PackageVersion Include="xunit.v3.extensibility.core" Version="3.2.1" />
+    <PackageVersion Include="xunit.v3.mtp-v2" Version="3.2.1" />
   </ItemGroup>
 
 </Project>
