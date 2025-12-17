@@ -30,7 +30,7 @@ jobs:
 
       - name: Cache Stanza downloads
         id: cache-stanza-downloads
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         env:
           cache-name: cache-stanza-downloads
           stanza-version: 1.11.0
