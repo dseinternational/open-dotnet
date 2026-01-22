@@ -1,16 +1,16 @@
 # torch with appropriate acceleration https://pytorch.org/get-started/locally/
-# windows+cuda: pip3 install torch>=2.9.1 torchvision --index-url https://download.pytorch.org/whl/cu130 --upgrade
-# linux+cpu: pip3 install torch>=2.9.1 torchvision --index-url https://download.pytorch.org/whl/cpu --upgrade
-# mac: pip3 install torch>=2.9.1 torchvision --upgrade
+# windows+cuda: pip3 install torch>=2.10.0 torchvision --index-url https://download.pytorch.org/whl/cu130 --upgrade
+# linux+cpu: pip3 install torch>=2.10.0 torchvision --index-url https://download.pytorch.org/whl/cpu --upgrade
+# mac: pip3 install torch>=2.10.0 torchvision --upgrade
 
-numpy>=2.3.5
-pandas>=2.3.3
-ipython>=9.7.0
-jupyterlab>=4.5.0
-notebook>=7.5.0
-matplotlib>=3.10.7
+numpy>=2.4.1
+pandas>=3.0.0
+ipython>=9.9.0
+jupyterlab>=4.5.2
+notebook>=7.5.2
+matplotlib>=3.10.8
 stanza>=1.11.0
 sentence-transformers>=5.1.2
 einops>=0.8.1
-setuptools>=80.9.0
+setuptools>=80.10.1
 hf-xet>=1.1.9
