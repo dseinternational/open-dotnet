@@ -6,7 +6,7 @@
 numpy>=2.4.1
 pandas>=3.0.0
 ipython>=9.9.0
-jupyterlab>=4.5.2
+jupyterlab>=4.5.3
 notebook>=7.5.2
 matplotlib>=3.10.8
 stanza>=1.11.0
