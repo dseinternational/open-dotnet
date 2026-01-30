@@ -33,7 +33,7 @@ public sealed class StanzaServiceFixture : IDisposable
                 _ = services
                     .WithPython()
                     .WithVirtualEnvironment(venv.FullName)
-                    .FromEnvironmentVariable("PYTHON3_HOME", "3.13");
+                    .FromEnvironmentVariable("PYTHON3_HOME", "3.14");
             });
 
         _host = builder.Build();
