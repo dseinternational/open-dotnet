@@ -43,7 +43,7 @@ jobs:
       - name: Set Python version
         uses: actions/setup-python@v6
         with:
-          python-version: "3.13.11"
+          python-version: "3.14.2"
           cache: "pip"
 
       - name: Configure Python environment
