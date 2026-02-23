@@ -13,4 +13,17 @@ public sealed class SpeechClarityTests
         var json = JsonSerializer.Serialize(SpeechClarity.Developing);
         Assert.Equal("50", json);
     }
+
+    [Theory]
+    [InlineData(10)]
+    [InlineData(50)]
+    [InlineData(90)]
+    public void GetOrdinal_ReturnsValue(byte value)
+    {
+        var speechClarity = (SpeechClarity)value;
+
+        var result = speechClarity.GetOrdinal();
+
+        Assert.Equal(value, result);
+    }
 }
