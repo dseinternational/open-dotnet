@@ -40,4 +40,24 @@ public sealed class CountTests
         var json = JsonSerializer.Serialize(count, JsonSharedOptions.RelaxedJsonEscaping);
         Assert.Equal(value.ToStringInvariant(), json);
     }
+
+    [Fact]
+    public void MaxSerializedCharLength_IsAtLeastAsLongAsMaxValue()
+    {
+        var maxValueLength = Count.MaxValue.ToStringInvariant().Length;
+        Assert.True(
+            Count.MaxSerializedCharLength >= maxValueLength,
+            $"MaxSerializedCharLength ({Count.MaxSerializedCharLength}) must be >= "
+            + $"length of MaxValue string ({maxValueLength})");
+    }
+
+    [Fact]
+    public void MaxSerializedByteLength_IsAtLeastAsLongAsMaxValue()
+    {
+        var maxValueLength = Count.MaxValue.ToStringInvariant().Length;
+        Assert.True(
+            Count.MaxSerializedByteLength >= maxValueLength,
+            $"MaxSerializedByteLength ({Count.MaxSerializedByteLength}) must be >= "
+            + $"length of MaxValue string ({maxValueLength})");
+    }
 }
