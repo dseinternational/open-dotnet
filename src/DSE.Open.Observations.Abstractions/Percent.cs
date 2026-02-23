@@ -31,7 +31,7 @@ public readonly partial struct Percent : IDivisibleValue<Percent, decimal>, IUtf
 
     public Ratio ToRatio()
     {
-        return (Ratio)(_value * 100);
+        return (Ratio)(_value / 100m);
     }
 
     public static explicit operator Percent(Ratio value)
