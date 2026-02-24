@@ -4,6 +4,7 @@
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -16,7 +17,6 @@ namespace DSE.Open;
 /// An immutable sequence of three ASCII bytes.
 /// </summary>
 [JsonConverter(typeof(JsonStringAsciiCharNConverter<AsciiChar3>))]
-[StructLayout(LayoutKind.Sequential)]
 public readonly struct AsciiChar3
     : IComparable<AsciiChar3>,
       IEquatable<AsciiChar3>,
@@ -33,22 +33,17 @@ public readonly struct AsciiChar3
     public static int MaxSerializedByteLength => 3;
 
     // internal for AsciiChar3Comparer
-    internal readonly AsciiChar _c0;
-    internal readonly AsciiChar _c1;
-    internal readonly AsciiChar _c2;
+    internal readonly InlineArray3<AsciiChar> _chars;
 
     public AsciiChar3(AsciiChar c0, AsciiChar c1, AsciiChar c2)
     {
-        _c0 = c0;
-        _c1 = c1;
-        _c2 = c2;
+        _chars[0] = c0;
+        _chars[1] = c1;
+        _chars[2] = c2;
     }
 
-    public AsciiChar3(char c0, char c1, char c2)
+    public AsciiChar3(char c0, char c1, char c2) : this((AsciiChar)c0, (AsciiChar)c1, (AsciiChar)c2)
     {
-        _c0 = (AsciiChar)c0;
-        _c1 = (AsciiChar)c1;
-        _c2 = (AsciiChar)c2;
     }
 
     public AsciiChar3((AsciiChar c0, AsciiChar c1, AsciiChar c2) value) : this(value.c0, value.c1, value.c2)
@@ -66,9 +61,7 @@ public readonly struct AsciiChar3
             ThrowHelper.ThrowArgumentOutOfRangeException(nameof(span));
         }
 
-        _c0 = span[0];
-        _c1 = span[1];
-        _c2 = span[2];
+        _chars = Unsafe.As<AsciiChar, InlineArray3<AsciiChar>>(ref MemoryMarshal.GetReference(span));
     }
 
     public AsciiChar3(ReadOnlySpan<char> span)
@@ -78,22 +71,21 @@ public readonly struct AsciiChar3
             ThrowHelper.ThrowArgumentOutOfRangeException(nameof(span));
         }
 
-        _c0 = (AsciiChar)span[0];
-        _c1 = (AsciiChar)span[1];
-        _c2 = (AsciiChar)span[2];
+        // chars require per-element casting (narrowing), so delegate to the element constructor.
+        this = new((AsciiChar)span[0], (AsciiChar)span[1], (AsciiChar)span[2]);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
     public void Deconstruct(out AsciiChar c0, out AsciiChar c1, out AsciiChar c2)
     {
-        c0 = _c0;
-        c1 = _c1;
-        c2 = _c2;
+        c0 = _chars[0];
+        c1 = _chars[1];
+        c2 = _chars[2];
     }
 
     public bool Equals(AsciiChar3 other)
     {
-        return _c0 == other._c0 && _c1 == other._c1 && _c2 == other._c2;
+        return _chars[0] == other._chars[0] && _chars[1] == other._chars[1] && _chars[2] == other._chars[2];
     }
 
     public bool Equals(string other)
@@ -115,13 +107,13 @@ public readonly struct AsciiChar3
 
     public bool Equals(ReadOnlySpan<char> other)
     {
-        return other.Length == CharCount && other[0] == _c0 && other[1] == _c1 && other[2] == _c2;
+        return other.Length == CharCount && other[0] == _chars[0] && other[1] == _chars[1] && other[2] == _chars[2];
     }
 
     public bool EqualsIgnoreCase(ReadOnlySpan<char> other)
     {
         return other.Length == CharCount
-            && Ascii.EqualsIgnoreCase([_c0.ToChar(), _c1.ToChar(), _c2.ToChar()], other);
+            && Ascii.EqualsIgnoreCase([_chars[0].ToChar(), _chars[1].ToChar(), _chars[2].ToChar()], other);
     }
 
     public override bool Equals(object? obj)
@@ -131,42 +123,42 @@ public readonly struct AsciiChar3
 
     public bool EqualsIgnoreCase(AsciiChar3 other)
     {
-        return AsciiChar.EqualsIgnoreCase(_c0, other._c0)
-               && AsciiChar.EqualsIgnoreCase(_c1, other._c1)
-               && AsciiChar.EqualsIgnoreCase(_c2, other._c2);
+        return AsciiChar.EqualsIgnoreCase(_chars[0], other._chars[0])
+               && AsciiChar.EqualsIgnoreCase(_chars[1], other._chars[1])
+               && AsciiChar.EqualsIgnoreCase(_chars[2], other._chars[2]);
     }
 
     public int CompareToIgnoreCase(AsciiChar3 other)
     {
-        var c = AsciiChar.CompareToIgnoreCase(_c0, other._c0);
+        var c = AsciiChar.CompareToIgnoreCase(_chars[0], other._chars[0]);
 
         if (c != 0)
         {
             return c;
         }
 
-        c = AsciiChar.CompareToIgnoreCase(_c1, other._c1);
+        c = AsciiChar.CompareToIgnoreCase(_chars[1], other._chars[1]);
 
-        return c != 0 ? c : AsciiChar.CompareToIgnoreCase(_c2, other._c2);
+        return c != 0 ? c : AsciiChar.CompareToIgnoreCase(_chars[2], other._chars[2]);
     }
 
     public int CompareTo(AsciiChar3 other)
     {
-        var c = _c0.CompareTo(other._c0);
+        var c = _chars[0].CompareTo(other._chars[0]);
 
         if (c != 0)
         {
             return c;
         }
 
-        c = _c1.CompareTo(other._c1);
+        c = _chars[1].CompareTo(other._chars[1]);
 
-        return c != 0 ? c : _c2.CompareTo(other._c2);
+        return c != 0 ? c : _chars[2].CompareTo(other._chars[2]);
     }
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(_c0, _c1, _c2);
+        return HashCode.Combine(_chars[0], _chars[1], _chars[2]);
     }
 
     public override string ToString()
@@ -186,12 +178,12 @@ public readonly struct AsciiChar3
 
     public Char3 ToChar3()
     {
-        return new((char)_c0, (char)_c1, (char)_c2);
+        return new((char)_chars[0], (char)_chars[1], (char)_chars[2]);
     }
 
     public char[] ToCharArray()
     {
-        return [(char)_c0, _c1, _c2];
+        return [_chars[0], _chars[1], _chars[2]];
     }
 
     public static AsciiChar3 FromString(string value)
@@ -231,21 +223,21 @@ public readonly struct AsciiChar3
 
     public AsciiChar3 ToUpper()
     {
-        return new(_c0.ToUpper(), _c1.ToUpper(), _c2.ToUpper());
+        return new(_chars[0].ToUpper(), _chars[1].ToUpper(), _chars[2].ToUpper());
     }
 
     public AsciiChar3 ToLower()
     {
-        return new(_c0.ToLower(), _c1.ToLower(), _c2.ToLower());
+        return new(_chars[0].ToLower(), _chars[1].ToLower(), _chars[2].ToLower());
     }
 
     public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider? provider)
     {
         if (destination.Length >= CharCount)
         {
-            _ = _c0.TryFormat(destination, out _, format, provider);
-            _ = _c1.TryFormat(destination[1..], out _, format, provider);
-            _ = _c2.TryFormat(destination[2..], out _, format, provider);
+            _ = _chars[0].TryFormat(destination, out _, format, provider);
+            _ = _chars[1].TryFormat(destination[1..], out _, format, provider);
+            _ = _chars[2].TryFormat(destination[2..], out _, format, provider);
             charsWritten = CharCount;
             return true;
         }
@@ -358,9 +350,9 @@ public readonly struct AsciiChar3
     {
         if (utf8Destination.Length >= CharCount)
         {
-            _ = _c0.TryFormat(utf8Destination, out _, format, provider);
-            _ = _c1.TryFormat(utf8Destination[1..], out _, format, provider);
-            _ = _c2.TryFormat(utf8Destination[2..], out _, format, provider);
+            _ = _chars[0].TryFormat(utf8Destination, out _, format, provider);
+            _ = _chars[1].TryFormat(utf8Destination[1..], out _, format, provider);
+            _ = _chars[2].TryFormat(utf8Destination[2..], out _, format, provider);
 
             bytesWritten = CharCount;
             return true;
@@ -370,9 +362,16 @@ public readonly struct AsciiChar3
         return false;
     }
 
+    internal ReadOnlySpan<AsciiChar> AsSpan()
+    {
+        return MemoryMarshal.CreateReadOnlySpan(
+            ref Unsafe.As<InlineArray3<AsciiChar>, AsciiChar>(ref Unsafe.AsRef(in _chars)),
+            CharCount);
+    }
+
     public ulong GetRepeatableHashCode()
     {
-        return RepeatableHash64Provider.Default.GetRepeatableHashCode([_c0, _c1, _c2]);
+        return RepeatableHash64Provider.Default.GetRepeatableHashCode(AsSpan());
     }
 
     public static bool operator <(AsciiChar3 left, AsciiChar3 right)
