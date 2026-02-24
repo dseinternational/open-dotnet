@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageVersion Include="AwesomeAssertions" Version="9.3.0" />
+    <PackageVersion Include="AwesomeAssertions" Version="9.4.0" />
     <PackageVersion Include="Azure.Core" Version="1.49.0" />
     <PackageVersion Include="Azure.Identity" Version="1.17.0" />
     <PackageVersion Include="BenchmarkDotNet" Version="0.15.8" />
@@ -55,7 +55,7 @@
     <PackageVersion Include="System.IO.Hashing" Version="10.0.3" />
     <PackageVersion Include="System.Memory.Data" Version="10.0.0" />
     <PackageVersion Include="System.Numerics.Tensors" Version="10.0.3" />
-    <PackageVersion Include="Verify.XunitV3" Version="31.13.0" />
+    <PackageVersion Include="Verify.XunitV3" Version="31.13.2" />
     <PackageVersion Include="xunit.analyzers" Version="1.27.0" />
     <PackageVersion Include="xunit.v3.assert" Version="3.2.2" />
     <PackageVersion Include="xunit.v3.extensibility.core" Version="3.2.2" />
