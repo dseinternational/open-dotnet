@@ -12,7 +12,6 @@ namespace DSE.Open;
 /// An 8 byte version stamp.
 /// </summary>
 [JsonConverter(typeof(JsonStringTimestampConverter))]
-[StructLayout(LayoutKind.Sequential)]
 public readonly record struct Timestamp : IComparable<Timestamp>, ISpanFormattable, ISpanParsable<Timestamp>
 {
     public static readonly Timestamp Empty;
@@ -21,7 +20,7 @@ public readonly record struct Timestamp : IComparable<Timestamp>, ISpanFormattab
 
     public const int Base64Length = 12;
 
-    private readonly byte _b0, _b1, _b2, _b3, _b4, _b5, _b6, _b7;
+    private readonly InlineArray8<byte> _bytes;
 
     public Timestamp(ReadOnlySpan<byte> timestamp) : this(timestamp, true)
     {
@@ -34,47 +33,22 @@ public readonly record struct Timestamp : IComparable<Timestamp>, ISpanFormattab
             Guard.IsTrue(timestamp.Length == Size);
         }
 
-        _b0 = timestamp[0];
-        _b1 = timestamp[1];
-        _b2 = timestamp[2];
-        _b3 = timestamp[3];
-        _b4 = timestamp[4];
-        _b5 = timestamp[5];
-        _b6 = timestamp[6];
-        _b7 = timestamp[7];
+        _bytes = Unsafe.As<byte, InlineArray8<byte>>(ref MemoryMarshal.GetReference(timestamp));
     }
 
-    public byte[] GetBytes()
-    {
-        return [_b0, _b1, _b2, _b3, _b4, _b5, _b6, _b7];
-    }
+    public byte[] GetBytes() => AsSpan().ToArray();
 
     public ReadOnlySpan<byte> AsSpan()
-    {
-        return GetBytes();
-    }
+        => MemoryMarshal.CreateReadOnlySpan(ref Unsafe.As<InlineArray8<byte>, byte>(ref Unsafe.AsRef(in _bytes)), Size);
 
-    public int CompareTo(Timestamp other)
-    {
-        ReadOnlySpan<byte> v1 = [_b0, _b1, _b2, _b3, _b4, _b5, _b6, _b7];
-        ReadOnlySpan<byte> v2 =
-        [
-            other._b0,
-            other._b1,
-            other._b2,
-            other._b3,
-            other._b4,
-            other._b5,
-            other._b6,
-            other._b7
-        ];
-        return v1.SequenceCompareTo(v2);
-    }
+    public int CompareTo(Timestamp other) => AsSpan().SequenceCompareTo(other.AsSpan());
 
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(_b0, _b1, _b2, _b3, _b4, _b5, _b6, _b7);
-    }
+    // InlineArray types throw NotSupportedException from their generated Equals,
+    // so we must provide explicit equality and hashing over the span.
+
+    public bool Equals(Timestamp other) => AsSpan().SequenceEqual(other.AsSpan());
+
+    public override int GetHashCode() => MemoryMarshal.Read<long>(AsSpan()).GetHashCode();
 
     public override string ToString()
     {
@@ -101,8 +75,7 @@ public readonly record struct Timestamp : IComparable<Timestamp>, ISpanFormattab
             return this == Empty;
         }
 
-        ReadOnlySpan<byte> bytes = [_b0, _b1, _b2, _b3, _b4, _b5, _b6, _b7];
-        return Convert.TryToBase64Chars(bytes, destination, out charsWritten);
+        return Convert.TryToBase64Chars(AsSpan(), destination, out charsWritten);
     }
 
     [SkipLocalsInit]

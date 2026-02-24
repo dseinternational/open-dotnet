@@ -50,7 +50,7 @@ public abstract class AsciiChar3Comparer : IComparer<AsciiChar3>, IEqualityCompa
 
         public override int GetHashCode(AsciiChar3 obj)
         {
-            return HashCode.Combine(obj._c0.ToUpper(), obj._c1.ToUpper(), obj._c2.ToUpper());
+            return HashCode.Combine(obj._chars[0].ToUpper(), obj._chars[1].ToUpper(), obj._chars[2].ToUpper());
         }
     }
 }
