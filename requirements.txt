@@ -3,7 +3,7 @@
 # linux+cpu: pip3 install torch>=2.10.0 torchvision --index-url https://download.pytorch.org/whl/cpu --upgrade
 # mac: pip3 install torch>=2.10.0 torchvision --upgrade
 
-numpy>=2.4.2
+numpy>=2.4.3
 pandas>=3.0.1
 ipython>=9.10.0
 jupyterlab>=4.5.5
