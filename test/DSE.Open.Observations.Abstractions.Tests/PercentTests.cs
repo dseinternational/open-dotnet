@@ -14,4 +14,34 @@ public sealed class PercentTests
         var json = JsonSerializer.Serialize(value);
         Assert.Equal(value.ToStringInvariant(), json);
     }
+
+    [Theory]
+    [InlineData(50, 0.5)]
+    [InlineData(100, 1.0)]
+    [InlineData(-100, -1.0)]
+    [InlineData(0, 0)]
+    [InlineData(25, 0.25)]
+    public void ToRatio_ReturnsCorrectValue(decimal percentValue, decimal expectedRatio)
+    {
+        var percent = (Percent)percentValue;
+
+        var ratio = percent.ToRatio();
+
+        Assert.Equal(expectedRatio, (decimal)ratio);
+    }
+
+    [Theory]
+    [InlineData(50)]
+    [InlineData(100)]
+    [InlineData(-100)]
+    [InlineData(0)]
+    public void FromRatio_RoundtripsWithToRatio(decimal percentValue)
+    {
+        var percent = (Percent)percentValue;
+
+        var ratio = percent.ToRatio();
+        var roundtripped = Percent.FromRatio(ratio);
+
+        Assert.Equal(percent, roundtripped);
+    }
 }
