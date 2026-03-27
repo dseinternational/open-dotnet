@@ -32,7 +32,23 @@ public enum ResultStatus
     /// </summary>
     Accepted,
 
+    /// <summary>
+    /// The request was malformed or contained invalid parameters. Use <see cref="RuleViolation"/>
+    /// when the request is well-formed but violates business rules.
+    /// </summary>
     BadRequest = 900,
+
+    /// <summary>
+    /// The request was well-formed but could not be processed because it violates
+    /// one or more business rules.
+    /// </summary>
+    RuleViolation,
+
+    /// <summary>
+    /// The request could not be completed because it conflicts with the current state
+    /// of the resource.
+    /// </summary>
+    StateConflict,
 
     /// <summary>
     /// The request was not successful. The requested resource was not found.
