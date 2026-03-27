@@ -18,6 +18,8 @@ public static class ResultHttpStatusCodeMapper
             ResultStatus.Deleted => HttpStatusCode.NoContent,
             ResultStatus.Accepted => HttpStatusCode.Accepted,
             ResultStatus.BadRequest => HttpStatusCode.BadRequest,
+            ResultStatus.RuleViolation => HttpStatusCode.UnprocessableEntity,
+            ResultStatus.StateConflict => HttpStatusCode.Conflict,
             ResultStatus.NotFound => HttpStatusCode.NotFound,
             ResultStatus.Unauthenticated => HttpStatusCode.Unauthorized,
             ResultStatus.Unauthorized => HttpStatusCode.Forbidden,
