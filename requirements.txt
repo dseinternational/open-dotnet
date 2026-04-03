@@ -4,8 +4,8 @@
 # mac: pip3 install torch>=2.11.0 torchvision --upgrade
 
 numpy>=2.4.3
-pandas>=3.0.1
-ipython>=9.10.0
+pandas>=3.0.2
+ipython>=9.12.0
 jupyterlab>=4.5.5
 notebook>=7.5.4
 matplotlib>=3.10.8
