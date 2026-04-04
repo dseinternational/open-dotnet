@@ -40,6 +40,15 @@ public static class NotificationCollectionExtensions
     }
 
     /// <summary>
+    /// Indicates if the notifications include a notification with the specified
+    /// <see cref="Diagnostics.DiagnosticCode"/>.
+    /// </summary>
+    public static bool HasNotificationWithCode(this IEnumerable<Notification> notifications, Diagnostics.DiagnosticCode code)
+    {
+        return notifications.Any(n => n.Code == code);
+    }
+
+    /// <summary>
     /// Indicates if the notifications include any <see cref="NotificationLevel.Critical"/> level notifications.
     /// </summary>
     /// <param name="notifications"></param>
