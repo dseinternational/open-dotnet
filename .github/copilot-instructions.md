@@ -1,5 +1,7 @@
 # Copilot Instructions
 
+> **Keep in sync:** This file, `CLAUDE.md`, and `AGENTS.md` contain the same core guidance. Update all three when making changes.
+
 ## Build & Test Commands
 
 **Requires .NET SDK 10.0.200+** (pinned in `global.json`).
