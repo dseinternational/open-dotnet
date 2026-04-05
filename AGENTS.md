@@ -1,4 +1,4 @@
-# Copilot Instructions
+# AGENTS.md
 
 > **Keep in sync:** This file, `CLAUDE.md`, and `AGENTS.md` contain the same core guidance. Update all three when making changes.
 
