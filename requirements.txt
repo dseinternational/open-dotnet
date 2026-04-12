@@ -12,5 +12,5 @@ matplotlib>=3.10.8
 stanza>=1.11.1
 sentence-transformers>=5.3.0
 einops>=0.8.1
-setuptools>=82.0.1
+setuptools>=81.0.0
 hf-xet>=1.1.9
