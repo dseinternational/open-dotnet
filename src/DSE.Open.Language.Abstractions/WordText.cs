@@ -62,6 +62,7 @@ public readonly partial struct WordText
 
         if (value[0] == '{')
         {
+            // Minimum template is "{{abcd}}" — 2 braces + 4-char id + 2 braces.
             if (value.Length < 8)
             {
                 return false;
@@ -74,27 +75,27 @@ public readonly partial struct WordText
                 return false;
             }
 
-            for (var i = 2; i < value.Length - 2; i++)
+            var interior = value.Span[2..^2];
+
+            // Spacing must be symmetric: either both edges are whitespace, or neither.
+            var leadingSpace = char.IsWhiteSpace(interior[0]);
+            var trailingSpace = char.IsWhiteSpace(interior[^1]);
+
+            if (leadingSpace != trailingSpace)
             {
-                var c = value[i];
+                return false;
+            }
 
-                if (char.IsWhiteSpace(c))
-                {
-                    if (i == 2 || i == value.Length - 3)
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
+            var id = leadingSpace ? interior[1..^1] : interior;
 
-                if (char.IsAsciiLetterLower(c) || c == '_')
-                {
-                    continue;
-                }
-                else
+            if (id.Length is < 4 or > 26)
+            {
+                return false;
+            }
+
+            foreach (var c in id)
+            {
+                if (!char.IsAsciiLetterLower(c) && c != '_')
                 {
                     return false;
                 }
