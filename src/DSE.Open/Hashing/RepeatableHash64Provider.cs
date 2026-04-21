@@ -145,8 +145,8 @@ public abstract class RepeatableHash64Provider
         T[]? rented = null;
 
         Span<T> reversed = MemoryThresholds.CanStackalloc<T>(value.Length)
-            ? (rented = ArrayPool<T>.Shared.Rent(value.Length))
-            : stackalloc T[MemoryThresholds.StackallocByteThreshold / Unsafe.SizeOf<T>()];
+            ? stackalloc T[MemoryThresholds.StackallocByteThreshold / Unsafe.SizeOf<T>()]
+            : (rented = ArrayPool<T>.Shared.Rent(value.Length));
 
         try
         {

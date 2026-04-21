@@ -4,6 +4,9 @@
 #undef OUTPUT_CSV
 // #define OUTPUT_CSV
 
+using System.Buffers.Binary;
+using System.Runtime.InteropServices;
+
 namespace DSE.Open.Hashing;
 
 public sealed class RepeatableHash64ProviderTests
@@ -185,6 +188,32 @@ public sealed class RepeatableHash64ProviderTests
         ReadOnlySpan<ulong> value = [0, 1, long.MaxValue, ulong.MaxValue];
         const ulong expected = 6043940069377282815u;
         var actual = RepeatableHash64Provider.Default.GetRepeatableHashCode(value, true);
+        Assert.Equal(expected, actual);
+    }
+
+    [Fact]
+    public void GetRepeatableHashCode_ReadOnlySpanInt16_BigEndian_LargeInput_MatchesManualReversal()
+    {
+        // Length chosen to exceed MemoryThresholds.StackallocByteThreshold / sizeof(short) = 256,
+        // exercising the heap-rent branch of GetRepeatableHashCodeSpan.
+        var value = new short[300];
+        for (var i = 0; i < value.Length; i++)
+        {
+            value[i] = (short)(i - 42);
+        }
+
+        var manuallyReversed = new short[value.Length];
+        for (var i = 0; i < value.Length; i++)
+        {
+            manuallyReversed[i] = BinaryPrimitives.ReverseEndianness(value[i]);
+        }
+
+        var expected = RepeatableHash64Provider.Default.GetRepeatableHashCode(
+            MemoryMarshal.AsBytes<short>(manuallyReversed));
+
+        var actual = RepeatableHash64Provider.Default.GetRepeatableHashCode(
+            (ReadOnlySpan<short>)value, true);
+
         Assert.Equal(expected, actual);
     }
 
