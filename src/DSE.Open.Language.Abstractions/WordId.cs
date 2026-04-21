@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Buffers;
 using System.IO.Hashing;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -104,28 +105,76 @@ public readonly partial struct WordId
     /// <returns></returns>
     public static WordId FromWord(WordMeaningId meaningId, WordText word, LanguageTag language)
     {
-        ReadOnlySpan<char> s = [.. ((CharSequence)word).Span];
-        return FromWord(meaningId, s, language);
+        return FromWord(meaningId, word.Span, language);
     }
 
     public static WordId FromWord(WordMeaningId meaningId, ReadOnlySpan<char> word, LanguageTag language)
     {
-        var c = Encoding.UTF8.GetByteCount(word);
-        Span<byte> utf8 = stackalloc byte[c];
-        _ = Encoding.UTF8.GetBytes(word, utf8);
-        return FromWord(meaningId, utf8, language);
+        var langSpan = MemoryMarshal.AsBytes(((AsciiString)language).AsSpan());
+
+        var length = Encoding.UTF8.GetByteCount(word)
+            + 20 // max length of UInt64 decimal text
+            + langSpan.Length;
+
+        byte[]? rented = null;
+
+        try
+        {
+            Span<byte> buffer = length > 256
+                ? (rented = ArrayPool<byte>.Shared.Rent(length))
+                : stackalloc byte[length];
+
+            _ = meaningId.TryFormat(buffer, out var bytesWritten, default, CultureInfo.InvariantCulture);
+
+            langSpan.CopyTo(buffer[bytesWritten..]);
+            bytesWritten += langSpan.Length;
+
+            bytesWritten += Encoding.UTF8.GetBytes(word, buffer[bytesWritten..]);
+
+            return (WordId)(LanguageIds.MinIdValue + (ulong)(XxHash3.HashToUInt64(buffer[..bytesWritten]) / (decimal)ulong.MaxValue * LanguageIds.MaxRange));
+        }
+        finally
+        {
+            if (rented is not null)
+            {
+                ArrayPool<byte>.Shared.Return(rented);
+            }
+        }
     }
 
     public static WordId FromWord(WordMeaningId meaningId, ReadOnlySpan<byte> wordUtf8, LanguageTag language)
     {
-        ReadOnlySpan<byte> combined =
-        [
-            .. BitConverter.GetBytes(meaningId).AsSpan(),
-            .. wordUtf8,
-            .. ((AsciiString)language).AsSpan(),
-        ];
+        var langSpan = MemoryMarshal.AsBytes(((AsciiString)language).AsSpan());
 
-        return (WordId)(LanguageIds.MinIdValue + (ulong)(XxHash3.HashToUInt64(combined) / (decimal)ulong.MaxValue * LanguageIds.MaxRange));
+        var length = wordUtf8.Length
+            + 20 // max length of UInt64 decimal text
+            + langSpan.Length;
+
+        byte[]? rented = null;
+
+        try
+        {
+            Span<byte> buffer = length > 256
+                ? (rented = ArrayPool<byte>.Shared.Rent(length))
+                : stackalloc byte[length];
+
+            _ = meaningId.TryFormat(buffer, out var bytesWritten, default, CultureInfo.InvariantCulture);
+
+            langSpan.CopyTo(buffer[bytesWritten..]);
+            bytesWritten += langSpan.Length;
+
+            wordUtf8.CopyTo(buffer[bytesWritten..]);
+            bytesWritten += wordUtf8.Length;
+
+            return (WordId)(LanguageIds.MinIdValue + (ulong)(XxHash3.HashToUInt64(buffer[..bytesWritten]) / (decimal)ulong.MaxValue * LanguageIds.MaxRange));
+        }
+        finally
+        {
+            if (rented is not null)
+            {
+                ArrayPool<byte>.Shared.Return(rented);
+            }
+        }
     }
 
     public ulong GetRepeatableHashCode()
