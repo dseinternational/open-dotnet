@@ -71,6 +71,34 @@ public sealed class MeasureTests
     }
 
     [Fact]
+    public void Equals_SameId_ReturnsTrueAndMatchesHashCode()
+    {
+        var a = new Measure<Binary>(s_measureUri, MeasurementLevel.Binary, "A", "[subject] does A");
+        var b = new Measure<Binary>(a.Id, s_measureUri, MeasurementLevel.Binary, "B (different name)", "[subject] does B", 0);
+
+        Assert.True(a.Equals(b));
+        Assert.True(a.Equals((object)b));
+        Assert.Equal(a.GetHashCode(), b.GetHashCode());
+    }
+
+    [Fact]
+    public void Equals_DifferentId_ReturnsFalse()
+    {
+        var a = new Measure<Binary>(s_measureUri, MeasurementLevel.Binary, "Test", "[subject] does something");
+        var b = new Measure<Binary>(new Uri("https://schema-test.dseapi.app/testing/other"), MeasurementLevel.Binary, "Test", "[subject] does something");
+
+        Assert.False(a.Equals(b));
+        Assert.False(a.Equals((object)b));
+    }
+
+    [Fact]
+    public void Equals_DifferentType_ReturnsFalse()
+    {
+        var a = new Measure<Binary>(s_measureUri, MeasurementLevel.Binary, "Test", "[subject] does something");
+        Assert.False(a.Equals("not a measure"));
+    }
+
+    [Fact]
     public void JsonRoundtrip_BehaviorFrequency_Polymorphic()
     {
         var uri = new Uri("https://schema-test.dseapi.app/testing/measure");
