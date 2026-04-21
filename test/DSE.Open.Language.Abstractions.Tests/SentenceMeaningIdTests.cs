@@ -14,4 +14,14 @@ public sealed class SentenceMeaningIdTests
         var json = JsonSerializer.Serialize(value);
         Assert.Equal(value.ToStringInvariant(), json);
     }
+
+    [Fact]
+    public void GetRandomId_ReturnsValidValue()
+    {
+        for (var i = 0; i < 1000; i++)
+        {
+            var id = SentenceMeaningId.GetRandomId();
+            Assert.True(SentenceMeaningId.IsValidValue((long)id));
+        }
+    }
 }

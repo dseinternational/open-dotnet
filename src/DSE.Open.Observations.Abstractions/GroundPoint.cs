@@ -9,7 +9,7 @@ using DSE.Open.Values.Units;
 namespace DSE.Open.Observations;
 
 /// <summary>
-/// Defines a location on the surface of the Earth as defined by a <see cref="Longitude"/>
+/// Defines a location on the surface of the Earth as defined by a <see cref="Latitude"/>
 /// and <see cref="Longitude"/> that are accurate to within a specified <see cref="Accuracy"/>.
 /// Longitude and latitude are defined in terms of the World Geodetic System 2D coordinate
 /// system - WGS 84 (G2139) / EPSG:4326.
@@ -19,6 +19,18 @@ public readonly record struct GroundPoint : IRepeatableHash64
 {
     public GroundPoint(double latitude, double longitude, Length accuracy)
     {
+        if (!double.IsFinite(latitude) || latitude is < -90 or > 90)
+        {
+            throw new ArgumentOutOfRangeException(nameof(latitude), latitude,
+                "Latitude must be a finite value in the inclusive range -90 to 90.");
+        }
+
+        if (!double.IsFinite(longitude) || longitude is < -180 or > 180)
+        {
+            throw new ArgumentOutOfRangeException(nameof(longitude), longitude,
+                "Longitude must be a finite value in the inclusive range -180 to 180.");
+        }
+
         Latitude = latitude;
         Longitude = longitude;
         Accuracy = accuracy;

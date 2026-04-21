@@ -9,16 +9,16 @@ using System.Text.Json.Serialization;
 namespace DSE.Open.Observations;
 
 /// <summary>
-/// A value that expresses a ratio as a signed value between 0 and 100 (values between -100 and 100).
+/// A value that expresses a ratio as a signed percentage in the inclusive range -100 to 100.
 /// </summary>
 [DivisibleValue]
 [JsonConverter(typeof(JsonDecimalValueConverter<Percent>))]
 [StructLayout(LayoutKind.Sequential)]
 public readonly partial struct Percent : IDivisibleValue<Percent, decimal>, IUtf8SpanSerializable<Percent>
 {
-    public static int MaxSerializedCharLength => 128; // TODO
+    public static int MaxSerializedCharLength => 32;
 
-    public static int MaxSerializedByteLength => 128; // TODO
+    public static int MaxSerializedByteLength => 32;
 
     public static Percent Zero { get; } = new(0);
 
@@ -31,7 +31,7 @@ public readonly partial struct Percent : IDivisibleValue<Percent, decimal>, IUtf
 
     public Ratio ToRatio()
     {
-        return (Ratio)(_value * 100);
+        return (Ratio)(_value / 100m);
     }
 
     public static explicit operator Percent(Ratio value)

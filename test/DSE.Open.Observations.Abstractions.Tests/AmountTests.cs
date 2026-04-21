@@ -48,4 +48,28 @@ public class AmountTests
         var json = JsonSerializer.Serialize(amount, JsonSharedOptions.RelaxedJsonEscaping);
         Assert.Equal(value.ToStringInvariant(), json);
     }
+
+    [Theory]
+    [InlineData(0.0)]
+    [InlineData(1.0)]
+    [InlineData(798165.249850)]
+    public void GetAmount_ReturnsValue(decimal value)
+    {
+        var amount = new Amount(value);
+
+        var result = amount.GetAmount();
+
+        Assert.Equal(value, result);
+    }
+
+    [Fact]
+    public void GetCount_ThrowsValueTypeMismatchException()
+    {
+        var amount = new Amount(42m);
+        IObservationValue observationValue = amount;
+
+        var act = () => { _ = observationValue.GetCount(); };
+
+        _ = Assert.Throws<ValueTypeMismatchException>(act);
+    }
 }

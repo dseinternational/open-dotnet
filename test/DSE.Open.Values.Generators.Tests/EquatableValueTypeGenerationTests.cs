@@ -31,7 +31,7 @@ public class EquatableValueTypeGenerationTests : ValueTypeGenerationTests
 
                 public static int MaxSerializedCharLength { get; } = 1;
 
-                public static bool IsValidValue(byte value) => value is >= 0 and <= 1;
+                public static bool IsValidValue(byte value) => value is <= 1;
             }
 
             [EquatableValue]
@@ -44,7 +44,7 @@ public class EquatableValueTypeGenerationTests : ValueTypeGenerationTests
 
                 public static int MaxSerializedCharLength { get; } = 1;
 
-                public static bool IsValidValue(byte value) => value is >= 0 and <= 1;
+                public static bool IsValidValue(byte value) => value is <= 1;
             }
 
             #nullable disable

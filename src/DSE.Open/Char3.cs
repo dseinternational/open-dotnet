@@ -3,6 +3,7 @@
 
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using DSE.Open.Hashing;
 
@@ -11,7 +12,6 @@ namespace DSE.Open;
 /// <summary>
 /// An immutable sequence of three unicode characters.
 /// </summary>
-[StructLayout(LayoutKind.Sequential)]
 public readonly struct Char3
     : IEquatable<Char3>,
       ISpanFormattable,
@@ -24,15 +24,13 @@ public readonly struct Char3
 
     public static int MaxSerializedCharLength => CharCount;
 
-    private readonly char _c0;
-    private readonly char _c1;
-    private readonly char _c2;
+    private readonly InlineArray3<char> _chars;
 
     public Char3(char c0, char c1, char c2)
     {
-        _c0 = c0;
-        _c1 = c1;
-        _c2 = c2;
+        _chars[0] = c0;
+        _chars[1] = c1;
+        _chars[2] = c2;
     }
 
     public Char3((char c0, char c1, char c2) value)
@@ -47,24 +45,22 @@ public readonly struct Char3
             ThrowHelper.ThrowArgumentOutOfRangeException(nameof(span));
         }
 
-        _c0 = span[0];
-        _c1 = span[1];
-        _c2 = span[2];
+        _chars = Unsafe.As<char, InlineArray3<char>>(ref MemoryMarshal.GetReference(span));
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
     public void Deconstruct(out char c0, out char c1, out char c2)
     {
-        c0 = _c0;
-        c1 = _c1;
-        c2 = _c2;
+        c0 = _chars[0];
+        c1 = _chars[1];
+        c2 = _chars[2];
     }
 
     public bool Equals(Char3 other)
     {
-        return _c0 == other._c0
-               && _c1 == other._c1
-               && _c2 == other._c2;
+        return _chars[0] == other._chars[0]
+               && _chars[1] == other._chars[1]
+               && _chars[2] == other._chars[2];
     }
 
     public override bool Equals(object? obj)
@@ -74,7 +70,7 @@ public readonly struct Char3
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(_c0, _c1, _c2);
+        return HashCode.Combine(_chars[0], _chars[1], _chars[2]);
     }
 
     public override string ToString()
@@ -130,9 +126,9 @@ public readonly struct Char3
     public Char3 ToUpper(CultureInfo cultureInfo)
     {
         return new(
-            char.ToUpper(_c0, cultureInfo),
-            char.ToUpper(_c1, cultureInfo),
-            char.ToUpper(_c2, cultureInfo));
+            char.ToUpper(_chars[0], cultureInfo),
+            char.ToUpper(_chars[1], cultureInfo),
+            char.ToUpper(_chars[2], cultureInfo));
     }
 
     public Char3 ToUpperInvariant()
@@ -148,9 +144,9 @@ public readonly struct Char3
     public Char3 ToLower(CultureInfo cultureInfo)
     {
         return new(
-            char.ToLower(_c0, cultureInfo),
-            char.ToLower(_c1, cultureInfo),
-            char.ToLower(_c2, cultureInfo));
+            char.ToLower(_chars[0], cultureInfo),
+            char.ToLower(_chars[1], cultureInfo),
+            char.ToLower(_chars[2], cultureInfo));
     }
 
     public Char3 ToLowerInvariant()
@@ -168,9 +164,9 @@ public readonly struct Char3
     {
         if (destination.Length >= CharCount)
         {
-            destination[0] = _c0;
-            destination[1] = _c1;
-            destination[2] = _c2;
+            destination[0] = _chars[0];
+            destination[1] = _chars[1];
+            destination[2] = _chars[2];
             charsWritten = CharCount;
             return true;
         }
@@ -184,9 +180,9 @@ public readonly struct Char3
     {
         return string.Create(CharCount, this, (span, value) =>
         {
-            span[0] = value._c0;
-            span[1] = value._c1;
-            span[2] = value._c2;
+            span[0] = value._chars[0];
+            span[1] = value._chars[1];
+            span[2] = value._chars[2];
         });
     }
 
@@ -230,8 +226,15 @@ public readonly struct Char3
         return TryParse(s.AsSpan(), provider, out result);
     }
 
+    internal ReadOnlySpan<char> AsSpan()
+    {
+        return MemoryMarshal.CreateReadOnlySpan(
+            ref Unsafe.As<InlineArray3<char>, char>(ref Unsafe.AsRef(in _chars)),
+            CharCount);
+    }
+
     public ulong GetRepeatableHashCode()
     {
-        return RepeatableHash64Provider.Default.GetRepeatableHashCode([_c0, _c1, _c2]);
+        return RepeatableHash64Provider.Default.GetRepeatableHashCode(AsSpan());
     }
 }

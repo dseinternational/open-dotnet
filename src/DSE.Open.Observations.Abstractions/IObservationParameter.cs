@@ -34,6 +34,6 @@ public interface IObservationParameter
     public static T ThrowParameterMismatchException<T>()
     {
         throw new ParameterTypeMismatchException(
-            "The observation paramater does not support the requested parameter type.");
+            "The observation parameter does not support the requested parameter type.");
     }
 }

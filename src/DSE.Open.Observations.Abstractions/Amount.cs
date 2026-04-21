@@ -53,12 +53,12 @@ public readonly partial struct Amount
         return IObservationValue.ThrowValueMismatchException<byte>();
     }
 
-    public ulong GetCount()
+    ulong IObservationValue.GetCount()
     {
         return IObservationValue.ThrowValueMismatchException<ulong>();
     }
 
-    decimal IObservationValue.GetAmount()
+    public decimal GetAmount()
     {
         return _value;
     }

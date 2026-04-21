@@ -44,4 +44,17 @@ public class AsciiChar2Tests
         Assert.False(result);
         Assert.Equal(default, value);
     }
+
+    [Fact]
+    public void Ctor_ByteSpan_WithNonAsciiByte_ShouldThrow()
+    {
+        // Arrange
+        byte[] input = [0xFF, 0x41];
+
+        // Act
+        void Act() => _ = new AsciiChar2(input);
+
+        // Assert
+        Assert.Throws<ArgumentOutOfRangeException>(Act);
+    }
 }

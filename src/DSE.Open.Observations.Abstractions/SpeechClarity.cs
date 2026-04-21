@@ -46,7 +46,7 @@ public readonly partial struct SpeechClarity
         return IObservationValue.ThrowValueMismatchException<bool>();
     }
 
-    byte IObservationValue.GetOrdinal()
+    public byte GetOrdinal()
     {
         return _value;
     }

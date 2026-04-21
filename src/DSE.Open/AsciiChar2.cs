@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -17,7 +18,6 @@ namespace DSE.Open;
 /// An immutable sequence of two ASCII bytes.
 /// </summary>
 [JsonConverter(typeof(JsonStringAsciiCharNConverter<AsciiChar2>))]
-[StructLayout(LayoutKind.Sequential)]
 public readonly struct AsciiChar2
     : IComparable<AsciiChar2>,
       IEquatable<AsciiChar2>,
@@ -35,25 +35,20 @@ public readonly struct AsciiChar2
     public static int MaxSerializedByteLength => 2;
 
     // internal for AsciiChar2Comparer
-    internal readonly AsciiChar _c0;
-    internal readonly AsciiChar _c1;
+    internal readonly InlineArray2<AsciiChar> _chars;
 
     public AsciiChar2(AsciiChar c0, AsciiChar c1)
     {
-        _c0 = c0;
-        _c1 = c1;
+        _chars[0] = c0;
+        _chars[1] = c1;
     }
 
-    public AsciiChar2(byte c0, byte c1)
+    public AsciiChar2(byte c0, byte c1) : this((AsciiChar)c0, (AsciiChar)c1)
     {
-        _c0 = (AsciiChar)c0;
-        _c1 = (AsciiChar)c1;
     }
 
-    public AsciiChar2(char c0, char c1)
+    public AsciiChar2(char c0, char c1) : this((AsciiChar)c0, (AsciiChar)c1)
     {
-        _c0 = (AsciiChar)c0;
-        _c1 = (AsciiChar)c1;
     }
 
     public AsciiChar2((AsciiChar c0, AsciiChar c1) value) : this(value.c0, value.c1)
@@ -75,8 +70,7 @@ public readonly struct AsciiChar2
             ThrowHelper.ThrowArgumentOutOfRangeException(nameof(span));
         }
 
-        _c0 = span[0];
-        _c1 = span[1];
+        _chars = Unsafe.As<AsciiChar, InlineArray2<AsciiChar>>(ref MemoryMarshal.GetReference(span));
     }
 
     public AsciiChar2(ReadOnlySpan<byte> span)
@@ -86,8 +80,14 @@ public readonly struct AsciiChar2
             ThrowHelper.ThrowArgumentOutOfRangeException(nameof(span));
         }
 
-        _c0 = (AsciiChar)span[0];
-        _c1 = (AsciiChar)span[1];
+        if (!Ascii.IsValid(span))
+        {
+            ThrowHelper.ThrowArgumentOutOfRangeException(nameof(span));
+        }
+
+        // AsciiChar is a single-byte struct with identical layout to byte,
+        // and all bytes have been validated as ASCII above.
+        _chars = Unsafe.As<byte, InlineArray2<AsciiChar>>(ref MemoryMarshal.GetReference(span));
     }
 
     public AsciiChar2(ReadOnlySpan<char> span)
@@ -97,42 +97,42 @@ public readonly struct AsciiChar2
             ThrowHelper.ThrowArgumentOutOfRangeException(nameof(span));
         }
 
-        _c0 = (AsciiChar)span[0];
-        _c1 = (AsciiChar)span[1];
+        // chars require per-element casting (narrowing), so delegate to the element constructor.
+        this = new((AsciiChar)span[0], (AsciiChar)span[1]);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
     public void Deconstruct(out AsciiChar c0, out AsciiChar c1)
     {
-        c0 = _c0;
-        c1 = _c1;
+        c0 = _chars[0];
+        c1 = _chars[1];
     }
 
     public int CompareTo(AsciiChar2 other)
     {
-        var c = _c0.CompareTo(other._c0);
-        return c != 0 ? c : _c1.CompareTo(other._c1);
+        var c = _chars[0].CompareTo(other._chars[0]);
+        return c != 0 ? c : _chars[1].CompareTo(other._chars[1]);
     }
 
     public int CompareToIgnoreCase(AsciiChar2 other)
     {
-        var c = AsciiChar.CompareToIgnoreCase(_c0, other._c0);
+        var c = AsciiChar.CompareToIgnoreCase(_chars[0], other._chars[0]);
 
         return (c != 0) switch
         {
             true => c,
-            _ => AsciiChar.CompareToIgnoreCase(_c1, other._c1)
+            _ => AsciiChar.CompareToIgnoreCase(_chars[1], other._chars[1])
         };
     }
 
     public bool Equals(AsciiChar2 other)
     {
-        return _c0 == other._c0 && _c1 == other._c1;
+        return _chars[0] == other._chars[0] && _chars[1] == other._chars[1];
     }
 
     public bool EqualsIgnoreCase(AsciiChar2 other)
     {
-        return AsciiChar.EqualsIgnoreCase(_c0, other._c0) && AsciiChar.EqualsIgnoreCase(_c1, other._c1);
+        return AsciiChar.EqualsIgnoreCase(_chars[0], other._chars[0]) && AsciiChar.EqualsIgnoreCase(_chars[1], other._chars[1]);
     }
 
     public bool Equals(string other)
@@ -154,13 +154,13 @@ public readonly struct AsciiChar2
 
     public bool Equals(ReadOnlySpan<char> other)
     {
-        return other.Length == CharCount && other[0] == _c0 && other[1] == _c1;
+        return other.Length == CharCount && other[0] == _chars[0] && other[1] == _chars[1];
     }
 
     public bool EqualsIgnoreCase(ReadOnlySpan<char> other)
     {
         return other.Length == CharCount
-            && Ascii.EqualsIgnoreCase([_c0.ToChar(), _c1.ToChar()], other);
+            && Ascii.EqualsIgnoreCase([_chars[0].ToChar(), _chars[1].ToChar()], other);
     }
 
     public override bool Equals(object? obj)
@@ -170,7 +170,7 @@ public readonly struct AsciiChar2
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(_c0, _c1);
+        return HashCode.Combine(_chars[0], _chars[1]);
     }
 
     public int GetCharCount(ReadOnlySpan<char> format, IFormatProvider? provider)
@@ -185,12 +185,12 @@ public readonly struct AsciiChar2
 
     public Char2 ToChar2()
     {
-        return new(_c0, _c1);
+        return new(_chars[0], _chars[1]);
     }
 
     public char[] ToCharArray()
     {
-        return [_c0, _c1];
+        return [_chars[0], _chars[1]];
     }
 
     public static AsciiChar2 FromString(string value)
@@ -254,12 +254,12 @@ public readonly struct AsciiChar2
 
     public AsciiChar2 ToUpper()
     {
-        return new(_c0.ToUpper(), _c1.ToUpper());
+        return new(_chars[0].ToUpper(), _chars[1].ToUpper());
     }
 
     public AsciiChar2 ToLower()
     {
-        return new(_c0.ToLower(), _c1.ToLower());
+        return new(_chars[0].ToLower(), _chars[1].ToLower());
     }
 
     public bool TryFormat(
@@ -270,8 +270,8 @@ public readonly struct AsciiChar2
     {
         if (destination.Length >= 2)
         {
-            _ = _c0.TryFormat(destination, out _, format, provider);
-            _ = _c1.TryFormat(destination[1..], out _, format, provider);
+            _ = _chars[0].TryFormat(destination, out _, format, provider);
+            _ = _chars[1].TryFormat(destination[1..], out _, format, provider);
             charsWritten = 2;
             return true;
         }
@@ -398,8 +398,8 @@ public readonly struct AsciiChar2
     {
         if (utf8Destination.Length >= MaxSerializedByteLength)
         {
-            _ = _c0.TryFormat(utf8Destination, out _, format, provider);
-            _ = _c1.TryFormat(utf8Destination[1..], out _, format, provider);
+            _ = _chars[0].TryFormat(utf8Destination, out _, format, provider);
+            _ = _chars[1].TryFormat(utf8Destination[1..], out _, format, provider);
             bytesWritten = MaxSerializedByteLength;
             return true;
         }
@@ -408,9 +408,16 @@ public readonly struct AsciiChar2
         return false;
     }
 
+    internal ReadOnlySpan<AsciiChar> AsSpan()
+    {
+        return MemoryMarshal.CreateReadOnlySpan(
+            ref Unsafe.As<InlineArray2<AsciiChar>, AsciiChar>(ref Unsafe.AsRef(in _chars)),
+            CharCount);
+    }
+
     public ulong GetRepeatableHashCode()
     {
-        return RepeatableHash64Provider.Default.GetRepeatableHashCode([_c0, _c1]);
+        return RepeatableHash64Provider.Default.GetRepeatableHashCode(AsSpan());
     }
 
     public static bool operator <(AsciiChar2 left, AsciiChar2 right)
