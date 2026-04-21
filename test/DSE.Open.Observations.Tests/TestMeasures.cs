@@ -90,4 +90,81 @@ public static class TestMeasures
         "Test measure",
         "[subject] does something",
         160900);
+
+    public static readonly Measure<BehaviorFrequency> BehaviorFrequencyMeasure = new(
+        new Uri("https://schema-test.dseapi.app/testing/frequency-measure"),
+        MeasurementLevel.Ordinal,
+        "Test measure",
+        "[subject] does something",
+        161000);
+
+    public static readonly Measure<BehaviorFrequency, WordId> BehaviorFrequencyWordMeasure = new(
+        new Uri("https://schema-test.dseapi.app/testing/frequency-word-measure"),
+        MeasurementLevel.Ordinal,
+        "Test measure",
+        "[subject] does something",
+        161100);
+
+    public static readonly Measure<BehaviorFrequency, SentenceId> BehaviorFrequencySentenceMeasure = new(
+        new Uri("https://schema-test.dseapi.app/testing/frequency-sentence-measure"),
+        MeasurementLevel.Ordinal,
+        "Test measure",
+        "[subject] does something",
+        161200);
+
+    public static readonly Measure<SpeechClarity> SpeechClarityMeasure = new(
+        new Uri("https://schema-test.dseapi.app/testing/speech-clarity-measure"),
+        MeasurementLevel.Ordinal,
+        "Test measure",
+        "[subject] is clear",
+        170000);
+
+    public static readonly Measure<SpeechClarity, SpeechSound> SpeechClaritySpeechSoundMeasure = new(
+        new Uri("https://schema-test.dseapi.app/testing/speech-clarity-speech-sound-measure"),
+        MeasurementLevel.Ordinal,
+        "Test measure",
+        "[subject] is clear",
+        170100);
+
+    public static readonly Measure<SpeechClarity, WordId> SpeechClarityWordMeasure = new(
+        new Uri("https://schema-test.dseapi.app/testing/speech-clarity-word-measure"),
+        MeasurementLevel.Ordinal,
+        "Test measure",
+        "[subject] is clear",
+        170200);
+
+    public static readonly Measure<SpeechClarity, SentenceId> SpeechClaritySentenceMeasure = new(
+        new Uri("https://schema-test.dseapi.app/testing/speech-clarity-sentence-measure"),
+        MeasurementLevel.Ordinal,
+        "Test measure",
+        "[subject] is clear",
+        170300);
+
+    public static readonly Measure<Completeness> CompletenessMeasure = new(
+        new Uri("https://schema-test.dseapi.app/testing/completeness-measure"),
+        MeasurementLevel.Ordinal,
+        "Test measure",
+        "[subject] is complete",
+        180000);
+
+    public static readonly Measure<Completeness, SpeechSound> CompletenessSpeechSoundMeasure = new(
+        new Uri("https://schema-test.dseapi.app/testing/completeness-speech-sound-measure"),
+        MeasurementLevel.Ordinal,
+        "Test measure",
+        "[subject] is complete",
+        180100);
+
+    public static readonly Measure<Completeness, WordId> CompletenessWordMeasure = new(
+        new Uri("https://schema-test.dseapi.app/testing/completeness-word-measure"),
+        MeasurementLevel.Ordinal,
+        "Test measure",
+        "[subject] is complete",
+        180200);
+
+    public static readonly Measure<Completeness, SentenceId> CompletenessSentenceMeasure = new(
+        new Uri("https://schema-test.dseapi.app/testing/completeness-sentence-measure"),
+        MeasurementLevel.Ordinal,
+        "Test measure",
+        "[subject] is complete",
+        180300);
 }
