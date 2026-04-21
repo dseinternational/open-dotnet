@@ -20,30 +20,22 @@ public class NaValueException : InvalidOperationException
     {
     }
 
-    public NaValueException(string message) : base(message ?? DefaultMessage)
+    public NaValueException(string? message) : base(message ?? DefaultMessage)
     {
     }
 
-    public NaValueException(string message, Exception innerException)
+    public NaValueException(string? message, Exception? innerException)
         : base(message ?? DefaultMessage, innerException)
     {
     }
 
-    public static void ThrowIfNull(INaValue value, string? message = null)
+    public static void ThrowIfNa(INaValue value, string? message = null)
     {
         ArgumentNullException.ThrowIfNull(value);
 
         if (!value.HasValue)
         {
-            throw new NaValueException(message!);
-        }
-    }
-
-    public static void ThrowIfNull<T>(T? value, string? message = null)
-    {
-        if (value is null)
-        {
-            throw new NaValueException(message!);
+            throw new NaValueException(message);
         }
     }
 
@@ -51,7 +43,7 @@ public class NaValueException : InvalidOperationException
     {
         if (value.IsNa)
         {
-            throw new NaValueException(message!);
+            throw new NaValueException(message);
         }
     }
 }
