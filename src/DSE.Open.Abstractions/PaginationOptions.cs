@@ -55,6 +55,10 @@ public readonly record struct PaginationOptions
     /// <summary>
     /// The number of items to skip to get to the current page, based on the page size and page number.
     /// </summary>
+    /// <exception cref="OverflowException">
+    /// Thrown when <see cref="PageSize"/> multiplied by <see cref="PageNumber"/> minus one
+    /// exceeds <see cref="int.MaxValue"/>.
+    /// </exception>
     [JsonIgnore]
-    public int SkipCount => PageSize * (PageNumber - 1);
+    public int SkipCount => checked(PageSize * (PageNumber - 1));
 }

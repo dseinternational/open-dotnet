@@ -71,4 +71,13 @@ public class PaginationOptionsTests
         // Assert
         Assert.Equal(expected, actual);
     }
+
+    [Fact]
+    public void SkipCount_Overflow_Throws()
+    {
+        // PageSize * (PageNumber - 1) = 100_000 * 29_999 = 2_999_900_000 > int.MaxValue
+        var options = new PaginationOptions(pageSize: 100_000, pageNumber: 30_000);
+
+        _ = Assert.Throws<OverflowException>(() => options.SkipCount);
+    }
 }
