@@ -56,7 +56,7 @@ public sealed class ReadOnlyValueLabelCollection<T>
 {
     public static readonly ReadOnlyValueLabelCollection<T> Empty = new([]);
 
-    private IReadOnlyDictionary<ulong, int>? _valueIndexLookup;
+    private IReadOnlyDictionary<T, int>? _valueIndexLookup;
     private IReadOnlyDictionary<string, int>? _labelIndexLookup;
     private readonly ReadOnlyCollection<ValueLabel<T>> _valueLabels;
 
@@ -79,7 +79,7 @@ public sealed class ReadOnlyValueLabelCollection<T>
                 throw new KeyNotFoundException($"Value {value} not found.");
             }
 
-            return _valueLabels[ValueIndexLookup[ValueLabelCollectionHelper.GetHash(value)]].Label;
+            return _valueLabels[ValueIndexLookup[value]].Label;
         }
     }
 
@@ -92,9 +92,7 @@ public sealed class ReadOnlyValueLabelCollection<T>
             return false;
         }
 
-        var key = ValueLabelCollectionHelper.GetHash(item.Value);
-
-        if (!ValueIndexLookup.TryGetValue(key, out var index))
+        if (!ValueIndexLookup.TryGetValue(item.Value, out var index))
         {
             return false;
         }
@@ -121,9 +119,7 @@ public sealed class ReadOnlyValueLabelCollection<T>
             return false;
         }
 
-        var key = ValueLabelCollectionHelper.GetHash(value);
-
-        return ValueIndexLookup.ContainsKey(key);
+        return ValueIndexLookup.ContainsKey(value);
     }
 
     public IEnumerator<ValueLabel<T>> GetEnumerator()
@@ -147,9 +143,7 @@ public sealed class ReadOnlyValueLabelCollection<T>
             return false;
         }
 
-        var key = ValueLabelCollectionHelper.GetHash(value);
-
-        if (ValueIndexLookup.TryGetValue(key, out var index))
+        if (ValueIndexLookup.TryGetValue(value, out var index))
         {
             label = _valueLabels[index].Label;
             return true;
@@ -169,20 +163,17 @@ public sealed class ReadOnlyValueLabelCollection<T>
             return false;
         }
 
-        for (var i = 0; i < _valueLabels.Count; i++)
+        if (LabelIndexLookup.TryGetValue(label, out var index))
         {
-            if (_valueLabels[i].Label == label)
-            {
-                value = _valueLabels[i].Value;
-                return true;
-            }
+            value = _valueLabels[index].Value;
+            return true;
         }
 
         value = default!;
         return false;
     }
 
-    private IReadOnlyDictionary<ulong, int> ValueIndexLookup
+    private IReadOnlyDictionary<T, int> ValueIndexLookup
     {
         get
         {
@@ -191,11 +182,11 @@ public sealed class ReadOnlyValueLabelCollection<T>
                 return _valueIndexLookup;
             }
 
-            var valueIndexLookup = new Dictionary<ulong, int>(_valueLabels.Count);
+            var valueIndexLookup = new Dictionary<T, int>(_valueLabels.Count, EqualityComparer<T>.Default);
 
             for (var i = 0; i < _valueLabels.Count; i++)
             {
-                valueIndexLookup.Add(ValueLabelCollectionHelper.GetHash(_valueLabels[i].Value), i);
+                valueIndexLookup.Add(_valueLabels[i].Value, i);
             }
 
             _valueIndexLookup = valueIndexLookup;
