@@ -29,7 +29,7 @@ public static partial class NumericMatrixPrimitives
                 var xRow = x.GetRowSpan(i);
                 var yRow = y.GetRowSpan(i);
                 var destinationRow = destination.GetRowSpan(i);
-                TensorPrimitives.Add(xRow, yRow, destinationRow);
+                TensorPrimitives.Multiply(xRow, yRow, destinationRow);
             }
         }
     }
