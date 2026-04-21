@@ -126,34 +126,36 @@ public static class Ternary
     }
 
     /// <summary>
-    /// Compares two nullable value types for equality.
+    /// Compares two nullable value types for equality, treating <see langword="null"/>
+    /// as the unknown/Na signal.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="left"></param>
     /// <param name="right"></param>
     /// <returns>
-    /// <see langword="true"/> if both values are equal or both values are unknown, otherwise <see langword="false"/>.
+    /// <see langword="true"/> if both values are equal or both values are <see langword="null"/>,
+    /// otherwise <see langword="false"/>.
     /// </returns>
     /// <remarks>
-    /// This is the default behavior for <see cref="IEquatable{T}.Equals"/> and <see cref="Nullable{T}.Equals"/>.
+    /// Only outer <see cref="Nullable{T}"/> nullability is inspected. If
+    /// <typeparamref name="T"/> itself implements <see cref="INaValue"/>, an inner Na
+    /// value is <b>not</b> detected &#x2014; use the
+    /// <see cref="EqualOrBothNa{T}(T, T)"/> overload for Na-aware comparison.
     /// </remarks>
     public static bool EqualOrBothNa<T>(T? left, T? right)
         where T : struct, IEquatable<T>
     {
-        // if both values are unknown, return true.
-
         if (left is null)
         {
-            return right is null || right.IsUnknown();
+            return right is null;
         }
 
-        if (left.IsUnknown())
+        if (right is null)
         {
-            return right.IsUnknown();
+            return false;
         }
 
-        // if both values are known, return true if equal or false if not equal.
-        return left.Equals(right);
+        return left.Value.Equals(right.Value);
     }
 
     /// <summary>
@@ -180,25 +182,30 @@ public static class Ternary
     }
 
     /// <summary>
-    /// Compares two nullable value types for equality.
+    /// Compares two nullable value types for equality, treating <see langword="null"/>
+    /// as the unknown/Na signal.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="left"></param>
     /// <param name="right"></param>
     /// <returns>
-    /// <see langword="true"/> if both values are equal or either value is unknown, otherwise <see langword="false"/>.
+    /// <see langword="true"/> if both values are equal or either value is <see langword="null"/>,
+    /// otherwise <see langword="false"/>.
     /// </returns>
+    /// <remarks>
+    /// Only outer <see cref="Nullable{T}"/> nullability is inspected. If
+    /// <typeparamref name="T"/> itself implements <see cref="INaValue"/>, an inner Na
+    /// value is <b>not</b> detected &#x2014; use the
+    /// <see cref="EqualOrEitherNa{T}(T, T)"/> overload for Na-aware comparison.
+    /// </remarks>
     public static bool EqualOrEitherNa<T>(T? left, T? right)
         where T : struct, IEquatable<T>
     {
-        // if either values are unknown, return true.
-
-        if (left is null || right is null || left.IsUnknown() || right.IsUnknown())
+        if (left is null || right is null)
         {
             return true;
         }
 
-        // if both values are known, return true if equal or false if not equal.
-        return left.Equals(right);
+        return left.Value.Equals(right.Value);
     }
 }
