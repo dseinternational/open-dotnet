@@ -10,8 +10,7 @@ updates:
     registries: "*"
     directory: "/"
     schedule:
-      interval: "weekly"
-      day: "wednesday"
+      interval: "daily"
       time: "05:00"
       timezone: "Europe/London"
     open-pull-requests-limit: 20
@@ -23,29 +22,43 @@ updates:
       CommunityToolkit:
         patterns:
           - "CommunityToolkit.*"
-      DotNet:
+      DotNetRuntime:
         patterns:
           - "System.*"
-          - "Microsoft.Bcl*"
-          - "Microsoft.CodeAnalysis*"
-          - "Microsoft.Diagnostics*"
           - "Microsoft.AspNetCore*"
-          - "Microsoft.EntityFrameworkCore*"
+          - "Microsoft.Bcl*"
+          - "Microsoft.Diagnostics*"
           - "Microsoft.Extensions.*"
           - "Microsoft.NETCore.*"
-      MicrosoftIdentity:
+        exclude-patterns:
+          - "Microsoft.Extensions.AI*"
+      EntityFrameworkCore:
+        patterns:
+          - "Microsoft.EntityFrameworkCore*"
+      Identity:
         patterns:
           - "Microsoft.Identity*"
-      NETTestSdk:
+      MicrosoftTesting:
         patterns:
-          - "Microsoft.CodeCoverage"
-          - "Microsoft.NET.Test.Sdk"
+          - "Microsoft.Testing.*"
       NodaTime:
         patterns:
           - "NodaTime*"
       Polly:
         patterns:
           - "Polly*"
+      Roslyn:
+        patterns:
+          - "Microsoft.CodeAnalysis*"
+      SQLitePCLRaw:
+        patterns:
+          - "SQLitePCLRaw.*"
+      Testing:
+        patterns:
+          - "AwesomeAssertions"
+          - "Moq"
+          - "Verify.*"
+          - "coverlet.*"
       xunit:
         patterns:
           - "xunit*"
@@ -57,8 +70,7 @@ updates:
   - package-ecosystem: pip
     directory: "/"
     schedule:
-      interval: "weekly"
-      day: "wednesday"
+      interval: "daily"
       time: "05:00"
       timezone: "Europe/London"
     open-pull-requests-limit: 20
@@ -70,8 +82,7 @@ updates:
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
-      interval: "weekly"
-      day: "wednesday"
+      interval: "daily"
       time: "05:00"
       timezone: "Europe/London"
     open-pull-requests-limit: 20
