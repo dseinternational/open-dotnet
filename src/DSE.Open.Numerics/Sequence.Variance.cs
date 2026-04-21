@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.ComponentModel;
 using System.Numerics;
 using DSE.Open.Linq;
 
@@ -19,6 +20,8 @@ public static partial class Sequence
         throw new NotImplementedException();
     }
 
+    [Obsolete("Not yet implemented", error: true)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static TResult Variance<T, TResult>(IEnumerable<T> sequence, T? mean = default)
         where T : struct, INumberBase<T>
         where TResult : struct, INumberBase<TResult>

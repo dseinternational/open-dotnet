@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.ComponentModel;
 using System.Numerics;
 
 namespace DSE.Open.Numerics;
@@ -15,6 +16,8 @@ public static partial class VectorPrimitives
     /// <param name="span">The sequence of elements to use for the calculation.</param>
     /// <param name="median"></param>
     /// <returns></returns>
+    [Obsolete("Not yet implemented", error: true)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static TResult Median<T, TResult>(
         ReadOnlySpan<T> span,
         MedianMethod median = MedianMethod.MeanOfMiddleTwo)
@@ -39,6 +42,8 @@ public static partial class VectorPrimitives
     /// <param name="comparer"></param>
     /// <param name="median"></param>
     /// <returns></returns>
+    [Obsolete("Not yet implemented", error: true)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static TResult Median<T, TResult, TComparer>(
         Span<T> span,
         TComparer comparer,

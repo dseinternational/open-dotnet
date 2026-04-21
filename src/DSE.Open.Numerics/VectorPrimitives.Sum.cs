@@ -67,8 +67,10 @@ public static partial class VectorPrimitives
     /// <param name="span"></param>
     /// <returns></returns>
     /// <remarks>
-    /// ⚠️ If any of the elements in the vector is equal to <see cref="IFloatingPointIeee754{TSelf}.NaN"/>,
-    /// the result is also NaN.
+    /// ⚠️ If <typeparamref name="TResult"/> is a floating-point type and any element equals
+    /// <see cref="IFloatingPointIeee754{TSelf}.NaN"/>, the result propagates as NaN.
+    /// If <typeparamref name="TResult"/> is an integer type, encountering a NaN input throws
+    /// <see cref="OverflowException"/> from <see cref="INumberBase{TSelf}.CreateChecked{TOther}(TOther)"/>.
     /// </remarks>
     public static TResult SumChecked<T, TResult>(ReadOnlySpan<T> span)
         where T : struct, INumberBase<T>
@@ -80,11 +82,6 @@ public static partial class VectorPrimitives
         {
             foreach (var value in span)
             {
-                if (T.IsNaN(value))
-                {
-                    return TResult.CreateChecked(value);
-                }
-
                 result += TResult.CreateChecked(value);
             }
         }

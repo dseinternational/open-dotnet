@@ -67,4 +67,34 @@ public partial class VectorPrimitivesTests
         var sum = vector.SumChecked<float, double>();
         Assert.Equal(3.4028234663852886E+38, sum);
     }
+
+    [Fact]
+    public void SumChecked_Double_Double_WithNaN_ReturnsNaN()
+    {
+        // Regression for #363: the general SumChecked<T, TResult> overload
+        // previously routed NaN through TResult.CreateChecked(value), which
+        // misbehaves when TResult is an integer and was a wasted check for
+        // integer T. For floating-point TResult, NaN must propagate via +=.
+        ReadOnlySpan<double> span = [1.0, 2.0, double.NaN, 4.0];
+        var sum = VectorPrimitives.SumChecked<double, double>(span);
+        Assert.True(double.IsNaN(sum));
+    }
+
+    [Fact]
+    public void SumChecked_Float_Double_WithNaN_ReturnsNaN()
+    {
+        ReadOnlySpan<float> span = [1.0f, 2.0f, float.NaN, 4.0f];
+        var sum = VectorPrimitives.SumChecked<float, double>(span);
+        Assert.True(double.IsNaN(sum));
+    }
+
+    [Fact]
+    public void SumChecked_Double_Int64_WithNaN_Throws()
+    {
+        // Integer TResult cannot represent NaN — CreateChecked throws
+        // OverflowException. Documented behaviour.
+        double[] values = [1.0, 2.0, double.NaN, 4.0];
+        _ = Assert.Throws<OverflowException>(
+            () => VectorPrimitives.SumChecked<double, long>(values));
+    }
 }
