@@ -112,7 +112,7 @@ public readonly partial struct PredecessorId
 
         byte[]? rented = null;
         Span<byte> b = MemoryThresholds.CanStackalloc<byte>(c)
-            ? stackalloc byte[MemoryThresholds.StackallocByteThreshold]
+            ? stackalloc byte[c]
             : (rented = ArrayPool<byte>.Shared.Rent(c));
 
         try
