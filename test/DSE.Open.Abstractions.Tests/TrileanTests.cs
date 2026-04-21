@@ -26,7 +26,7 @@ public class TrileanTests
         Assert.True(t.IsTrue == input);
         Assert.True(t.IsFalse == !input);
         Assert.True(t.IsTrue || t.IsFalse);
-        Assert.True((t == expected).IsTrue);
+        Assert.True(t == expected);
         Assert.True(t.TernaryEquals(expected).IsTrue);
         Assert.Equal(expected, t);
     }
@@ -301,5 +301,65 @@ public class TrileanTests
         var success = Trilean.TryParse("Invalid", null, out var result);
         Assert.False(success);
         Assert.True(result.IsNa);
+    }
+
+    [Fact]
+    public void TryParse_EmptyString_ReturnsNa()
+    {
+        var success = Trilean.TryParse("", null, out var result);
+        Assert.True(success);
+        Assert.True(result.IsNa);
+    }
+
+    [Fact]
+    public void Parse_NullString_ReturnsNa()
+    {
+        var t = Trilean.Parse("Null", null);
+        Assert.True(t.IsNa);
+    }
+
+    [Fact]
+    public void EqualityOperator_BothNa_ReturnsTrue()
+    {
+        var left = Trilean.Na;
+        var right = Trilean.Na;
+        Assert.True(left == right);
+        Assert.False(left != right);
+    }
+
+    [Fact]
+    public void EqualityOperator_NaAndTrue_ReturnsFalse()
+    {
+        var left = Trilean.Na;
+        var right = Trilean.True;
+        Assert.False(left == right);
+        Assert.True(left != right);
+    }
+
+    [Fact]
+    public void EqualityOperator_TrueAndTrue_ReturnsTrue()
+    {
+        var left = Trilean.True;
+        var right = Trilean.True;
+        Assert.True(left == right);
+        Assert.False(left != right);
+    }
+
+    [Fact]
+    public void TernaryEquals_Static_NaAndTrue_ReturnsNa()
+    {
+        Assert.True(Trilean.TernaryEquals(Trilean.Na, Trilean.True).IsNa);
+    }
+
+    [Fact]
+    public void TernaryEquals_Static_TrueAndTrue_ReturnsTrue()
+    {
+        Assert.True(Trilean.TernaryEquals(Trilean.True, Trilean.True).IsTrue);
+    }
+
+    [Fact]
+    public void TernaryEquals_Static_TrueAndFalse_ReturnsFalse()
+    {
+        Assert.True(Trilean.TernaryEquals(Trilean.True, Trilean.False).IsFalse);
     }
 }

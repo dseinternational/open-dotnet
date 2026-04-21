@@ -42,7 +42,7 @@ public interface ITernaryEquatable<T>
     /// <returns></returns>
     virtual bool EqualAndNotNa(T other)
     {
-        return (TernaryEquals(other) == Trilean.True).IsTrue;
+        return TernaryEquals(other).IsTrue;
     }
 
     /// <summary>
