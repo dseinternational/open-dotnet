@@ -30,7 +30,7 @@ namespace DSE.Open.Observations;
 [JsonDerivedType(typeof(Measure<Completeness, SpeechSound>), (int)MeasureType.CompletenessSpeechSound)]
 [JsonDerivedType(typeof(Measure<Completeness, WordId>), (int)MeasureType.CompletenessWord)]
 [JsonDerivedType(typeof(Measure<Completeness, SentenceId>), (int)MeasureType.CompletenessSentence)]
-public abstract class Measure : IMeasure
+public abstract class Measure : IMeasure, IEquatable<Measure>
 {
     protected Measure(Uri uri, MeasurementLevel measurementLevel, string name, string statement, uint sequence)
         : this(MeasureId.FromUri(uri), uri, measurementLevel, name, statement, sequence)
@@ -75,6 +75,16 @@ public abstract class Measure : IMeasure
     public override int GetHashCode()
     {
         return HashCode.Combine(Id);
+    }
+
+    public bool Equals(Measure? other)
+    {
+        return other is not null && Id == other.Id;
+    }
+
+    public override bool Equals(object? obj)
+    {
+        return Equals(obj as Measure);
     }
 }
 

@@ -120,6 +120,35 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
     }
 
     /// <summary>
+    /// Initializes a new observation from deserialized data. Unlike the
+    /// <see cref="TimeProvider"/>-taking overload, this path does not validate
+    /// <paramref name="time"/> against the receiver's wall-clock, since the
+    /// sender's clock may legitimately differ (and the payload has already
+    /// been validated at record time). Only the <see cref="MinimumObservationTime"/>
+    /// floor and the <c>time &lt;= recorded</c> invariant are enforced.
+    /// </summary>
+    private protected Observation(
+        ObservationId id,
+        DateTimeOffset time,
+        DateTimeOffset? recorded,
+        MeasureId measureId)
+    {
+        Guard.IsNotDefault(id);
+        Guard.IsNotDefault(measureId);
+        Guard.IsGreaterThanOrEqualTo(time, MinimumObservationTime);
+
+        if (recorded.HasValue)
+        {
+            Guard.IsLessThanOrEqualTo(time, recorded.Value);
+        }
+
+        Id = id;
+        Time = time;
+        Recorded = recorded;
+        MeasureId = measureId;
+    }
+
+    /// <summary>
     /// A randomly generated number between 0 and <see cref="NumberHelper.MaxJsonSafeInteger"/> that,
     /// together with the timestamp, uniquely identifies this observation.
     /// </summary>
@@ -396,7 +425,7 @@ public sealed class Observation<TValue>
         DateTimeOffset? recorded,
         MeasureId measureId,
         TValue value)
-        : base(id, time, recorded, measureId, TimeProvider.System)
+        : base(id, time, recorded, measureId)
     {
         Value = value;
     }
@@ -552,7 +581,7 @@ public sealed class Observation<TValue, TParam>
         MeasureId measureId,
         TParam parameter,
         TValue value)
-        : base(id, time, recorded, measureId, TimeProvider.System)
+        : base(id, time, recorded, measureId)
     {
         Parameter = parameter;
         Value = value;

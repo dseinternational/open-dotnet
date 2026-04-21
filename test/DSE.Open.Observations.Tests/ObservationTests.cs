@@ -373,6 +373,33 @@ public sealed class ObservationTests
     }
 
     [Fact]
+    public void Deserialize_TimeFarInFutureOfMachineClock_Succeeds()
+    {
+        // Simulates a sender whose clock is ahead of the receiver (or future-dated payload).
+        // The JsonConstructor path must not validate `time` against the receiver's wall-clock.
+        var future = DateTimeOffset.UtcNow.AddHours(2);
+        var id = ObservationId.GetRandomId();
+        var json = $$"""{"i":{{id}},"t":{{future.ToUnixTimeMilliseconds()}},"m":{{TestMeasures.BinaryMeasure.Id}},"v":"1"}""";
+
+        var observation = JsonSerializer.Deserialize(json, JsonContext.Default.ObservationBinary);
+
+        Assert.NotNull(observation);
+        Assert.Equal(future.Truncate(DateTimeTruncation.Millisecond), observation.Time);
+    }
+
+    [Fact]
+    public void Deserialize_TimeBeforeMinimum_Throws()
+    {
+        // Floor (MinimumObservationTime = 2000-01-01) must still be enforced.
+        var tooEarly = new DateTimeOffset(1999, 12, 31, 23, 59, 59, TimeSpan.Zero);
+        var id = ObservationId.GetRandomId();
+        var json = $$"""{"i":{{id}},"t":{{tooEarly.ToUnixTimeMilliseconds()}},"m":{{TestMeasures.BinaryMeasure.Id}},"v":"1"}""";
+
+        _ = Assert.ThrowsAny<Exception>(() =>
+            JsonSerializer.Deserialize(json, JsonContext.Default.ObservationBinary));
+    }
+
+    [Fact]
     public void New_WithTime_ShouldTruncateToMilliseconds()
     {
         // Arrange
