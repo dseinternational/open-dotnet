@@ -102,7 +102,7 @@ public readonly partial struct SentenceId
 #pragma warning disable CA5394 // Do not use insecure randomness
     public static SentenceId GetRandomId()
     {
-        return (SentenceId)(ulong)Random.Shared.NextInt64((long)LanguageIds.MinIdValue, (long)LanguageIds.MaxIdValue);
+        return (SentenceId)(ulong)Random.Shared.NextInt64((long)LanguageIds.MinIdValue, (long)LanguageIds.MaxIdValue + 1);
     }
 #pragma warning restore CA5394 // Do not use insecure randomness
 
