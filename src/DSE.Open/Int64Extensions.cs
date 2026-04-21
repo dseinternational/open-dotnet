@@ -27,7 +27,11 @@ public static class Int64Extensions
     /// <returns></returns>
     public static int GetDigitCount(this long number)
     {
-        return (int)(uint)Math.Log10(Math.Abs(number)) + 1;
+        // Compute absolute value as ulong to handle long.MinValue, which would
+        // overflow Math.Abs. For long.MinValue, unchecked -number wraps to the
+        // same bit pattern, which reinterpreted as ulong is the correct |MinValue|.
+        var abs = number < 0 ? unchecked((ulong)-number) : (ulong)number;
+        return (int)(uint)Math.Log10(abs) + 1;
     }
 
     public static ulong GetRepeatableHashCode(this long number)

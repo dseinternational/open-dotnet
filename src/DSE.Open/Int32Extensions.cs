@@ -27,7 +27,8 @@ public static class Int32Extensions
     /// <returns></returns>
     public static int GetDigitCount(this int number)
     {
-        return (int)(uint)Math.Log10(Math.Abs(number)) + 1;
+        // Widen to long so that Math.Abs(int.MinValue) does not overflow.
+        return (int)(uint)Math.Log10(Math.Abs((long)number)) + 1;
     }
 
     public static ulong GetRepeatableHashCode(this int number)
