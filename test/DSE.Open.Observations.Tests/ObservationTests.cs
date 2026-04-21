@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Text.Json;
+using DSE.Open.Language;
 using DSE.Open.Speech;
 using DSE.Open.Testing.Xunit;
 using Microsoft.Extensions.Time.Testing;
@@ -417,5 +418,237 @@ public sealed class ObservationTests
         // Assert
         Assert.Equal(time.Truncate(DateTimeTruncation.Millisecond), observation.Time);
         Assert.Equal(recorded.Truncate(DateTimeTruncation.Millisecond), observation.Recorded);
+    }
+
+    [Fact]
+    public void JsonRoundtrip_AllVariants()
+    {
+        var word = WordId.GetRandomId();
+        var sentence = SentenceId.GetRandomId();
+        var sound = Phonemes.English.ay.Abstraction;
+
+        Observation[] observations =
+        [
+            Observation.Create(TestMeasures.BinaryMeasure, Binary.True),
+            Observation.Create(TestMeasures.BinarySpeechSoundMeasure, sound, Binary.True),
+            Observation.Create(TestMeasures.BinaryWordMeasure, word, Binary.False),
+            Observation.Create(TestMeasures.BinarySentenceMeasure, sentence, Binary.True),
+            Observation.Create(TestMeasures.BehaviorFrequencyMeasure, BehaviorFrequency.Developing),
+            Observation.Create(TestMeasures.BehaviorFrequencySpeechSoundMeasure, sound, BehaviorFrequency.Achieved),
+            Observation.Create(TestMeasures.BehaviorFrequencyWordMeasure, word, BehaviorFrequency.Emerging),
+            Observation.Create(TestMeasures.BehaviorFrequencySentenceMeasure, sentence, BehaviorFrequency.Never),
+            Observation.Create(TestMeasures.CountMeasure, (Count)42uL),
+            Observation.Create(TestMeasures.AmountMeasure, (Amount)42.123m),
+            Observation.Create(TestMeasures.SpeechClarityMeasure, SpeechClarity.Clear),
+            Observation.Create(TestMeasures.SpeechClaritySpeechSoundMeasure, sound, SpeechClarity.Developing),
+            Observation.Create(TestMeasures.SpeechClarityWordMeasure, word, SpeechClarity.Unclear),
+            Observation.Create(TestMeasures.SpeechClaritySentenceMeasure, sentence, SpeechClarity.Clear),
+            Observation.Create(TestMeasures.CompletenessMeasure, Completeness.Developing),
+            Observation.Create(TestMeasures.CompletenessSpeechSoundMeasure, sound, Completeness.Partial),
+            Observation.Create(TestMeasures.CompletenessWordMeasure, word, Completeness.Complete),
+            Observation.Create(TestMeasures.CompletenessSentenceMeasure, sentence, Completeness.Developing),
+        ];
+
+        foreach (var observation in observations)
+        {
+            AssertJson.Roundtrip(observation, JsonContext.Default.Observation);
+        }
+    }
+
+    [Fact]
+    public void JsonRoundtrip_AllVariants_Historic()
+    {
+        var tp = new FakeTimeProvider(new DateTimeOffset(2025, 6, 1, 0, 0, 0, TimeSpan.Zero));
+        var madeAt = tp.GetUtcNow().AddDays(-3);
+        var word = WordId.GetRandomId();
+        var sentence = SentenceId.GetRandomId();
+        var sound = Phonemes.English.ay.Abstraction;
+
+        Observation[] observations =
+        [
+            Observation.CreateHistorical(TestMeasures.BinaryMeasure, Binary.True, madeAt, tp),
+            Observation.CreateHistorical(TestMeasures.BinarySpeechSoundMeasure, sound, Binary.True, madeAt, tp),
+            Observation.CreateHistorical(TestMeasures.BinaryWordMeasure, word, Binary.False, madeAt, tp),
+            Observation.CreateHistorical(TestMeasures.BinarySentenceMeasure, sentence, Binary.True, madeAt, tp),
+            Observation.CreateHistorical(TestMeasures.BehaviorFrequencyMeasure, BehaviorFrequency.Developing, madeAt, tp),
+            Observation.CreateHistorical(TestMeasures.BehaviorFrequencySpeechSoundMeasure, sound, BehaviorFrequency.Achieved, madeAt, tp),
+            Observation.CreateHistorical(TestMeasures.BehaviorFrequencyWordMeasure, word, BehaviorFrequency.Emerging, madeAt, tp),
+            Observation.CreateHistorical(TestMeasures.BehaviorFrequencySentenceMeasure, sentence, BehaviorFrequency.Never, madeAt, tp),
+            Observation.CreateHistorical(TestMeasures.CountMeasure, (Count)42uL, madeAt, tp),
+            Observation.CreateHistorical(TestMeasures.AmountMeasure, (Amount)42.123m, madeAt, tp),
+            Observation.CreateHistorical(TestMeasures.SpeechClarityMeasure, SpeechClarity.Clear, madeAt, tp),
+            Observation.CreateHistorical(TestMeasures.SpeechClaritySpeechSoundMeasure, sound, SpeechClarity.Developing, madeAt, tp),
+            Observation.CreateHistorical(TestMeasures.SpeechClarityWordMeasure, word, SpeechClarity.Unclear, madeAt, tp),
+            Observation.CreateHistorical(TestMeasures.SpeechClaritySentenceMeasure, sentence, SpeechClarity.Clear, madeAt, tp),
+            Observation.CreateHistorical(TestMeasures.CompletenessMeasure, Completeness.Developing, madeAt, tp),
+            Observation.CreateHistorical(TestMeasures.CompletenessSpeechSoundMeasure, sound, Completeness.Partial, madeAt, tp),
+            Observation.CreateHistorical(TestMeasures.CompletenessWordMeasure, word, Completeness.Complete, madeAt, tp),
+            Observation.CreateHistorical(TestMeasures.CompletenessSentenceMeasure, sentence, Completeness.Developing, madeAt, tp),
+        ];
+
+        foreach (var observation in observations)
+        {
+            Assert.NotNull(observation.Recorded);
+            AssertJson.Roundtrip(observation, JsonContext.Default.Observation);
+        }
+    }
+
+    [Fact]
+    public void JsonRoundtrip_Polymorphic_ResolvesBackToConcreteType_AllVariants()
+    {
+        var word = WordId.GetRandomId();
+        var sentence = SentenceId.GetRandomId();
+        var sound = Phonemes.English.ay.Abstraction;
+
+        (Observation Observation, Type ExpectedType)[] cases =
+        [
+            (Observation.Create(TestMeasures.BinaryMeasure, Binary.True), typeof(Observation<Binary>)),
+            (Observation.Create(TestMeasures.BinarySpeechSoundMeasure, sound, Binary.True), typeof(Observation<Binary, SpeechSound>)),
+            (Observation.Create(TestMeasures.BinaryWordMeasure, word, Binary.False), typeof(Observation<Binary, WordId>)),
+            (Observation.Create(TestMeasures.BinarySentenceMeasure, sentence, Binary.True), typeof(Observation<Binary, SentenceId>)),
+            (Observation.Create(TestMeasures.BehaviorFrequencyMeasure, BehaviorFrequency.Developing), typeof(Observation<BehaviorFrequency>)),
+            (Observation.Create(TestMeasures.BehaviorFrequencySpeechSoundMeasure, sound, BehaviorFrequency.Achieved), typeof(Observation<BehaviorFrequency, SpeechSound>)),
+            (Observation.Create(TestMeasures.BehaviorFrequencyWordMeasure, word, BehaviorFrequency.Emerging), typeof(Observation<BehaviorFrequency, WordId>)),
+            (Observation.Create(TestMeasures.BehaviorFrequencySentenceMeasure, sentence, BehaviorFrequency.Never), typeof(Observation<BehaviorFrequency, SentenceId>)),
+            (Observation.Create(TestMeasures.CountMeasure, (Count)42uL), typeof(Observation<Count>)),
+            (Observation.Create(TestMeasures.AmountMeasure, (Amount)42.123m), typeof(Observation<Amount>)),
+            (Observation.Create(TestMeasures.SpeechClarityMeasure, SpeechClarity.Clear), typeof(Observation<SpeechClarity>)),
+            (Observation.Create(TestMeasures.SpeechClaritySpeechSoundMeasure, sound, SpeechClarity.Developing), typeof(Observation<SpeechClarity, SpeechSound>)),
+            (Observation.Create(TestMeasures.SpeechClarityWordMeasure, word, SpeechClarity.Unclear), typeof(Observation<SpeechClarity, WordId>)),
+            (Observation.Create(TestMeasures.SpeechClaritySentenceMeasure, sentence, SpeechClarity.Clear), typeof(Observation<SpeechClarity, SentenceId>)),
+            (Observation.Create(TestMeasures.CompletenessMeasure, Completeness.Developing), typeof(Observation<Completeness>)),
+            (Observation.Create(TestMeasures.CompletenessSpeechSoundMeasure, sound, Completeness.Partial), typeof(Observation<Completeness, SpeechSound>)),
+            (Observation.Create(TestMeasures.CompletenessWordMeasure, word, Completeness.Complete), typeof(Observation<Completeness, WordId>)),
+            (Observation.Create(TestMeasures.CompletenessSentenceMeasure, sentence, Completeness.Developing), typeof(Observation<Completeness, SentenceId>)),
+        ];
+
+        foreach (var (observation, expected) in cases)
+        {
+            var json = JsonSerializer.Serialize(observation, JsonContext.Default.Observation);
+            var deserialized = JsonSerializer.Deserialize(json, JsonContext.Default.Observation);
+            Assert.NotNull(deserialized);
+            Assert.IsType(expected, deserialized);
+            Assert.Equal(observation, deserialized);
+        }
+    }
+
+    [Fact]
+    public void JsonSmokeTest_Concrete_BehaviorFrequency()
+    {
+        const string expected = """{"i":3840829473618409,"t":1733011200000,"m":203189995833,"v":50}""";
+
+        var timeProvider = new FakeTimeProvider(new DateTimeOffset(2024, 12, 1, 0, 0, 0, TimeSpan.Zero));
+        var id = ObservationId.Parse("3840829473618409", CultureInfo.InvariantCulture);
+
+        var observation = new Observation<BehaviorFrequency>(
+            id,
+            timeProvider.GetUtcNow(),
+            TestMeasures.BinaryMeasure.Id,
+            BehaviorFrequency.Developing,
+            timeProvider);
+
+        var json = JsonSerializer.Serialize(observation, JsonContext.Default.ObservationBehaviorFrequency);
+
+        Assert.Equal(expected, json);
+    }
+
+    [Fact]
+    public void JsonSmokeTest_Concrete_SpeechClarity()
+    {
+        const string expected = """{"i":3840829473618409,"t":1733011200000,"m":203189995833,"v":50}""";
+
+        var timeProvider = new FakeTimeProvider(new DateTimeOffset(2024, 12, 1, 0, 0, 0, TimeSpan.Zero));
+        var id = ObservationId.Parse("3840829473618409", CultureInfo.InvariantCulture);
+
+        var observation = new Observation<SpeechClarity>(
+            id,
+            timeProvider.GetUtcNow(),
+            TestMeasures.BinaryMeasure.Id,
+            SpeechClarity.Developing,
+            timeProvider);
+
+        var json = JsonSerializer.Serialize(observation, JsonContext.Default.ObservationSpeechClarity);
+
+        Assert.Equal(expected, json);
+    }
+
+    [Fact]
+    public void JsonSmokeTest_Concrete_Completeness()
+    {
+        const string expected = """{"i":3840829473618409,"t":1733011200000,"m":203189995833,"v":50}""";
+
+        var timeProvider = new FakeTimeProvider(new DateTimeOffset(2024, 12, 1, 0, 0, 0, TimeSpan.Zero));
+        var id = ObservationId.Parse("3840829473618409", CultureInfo.InvariantCulture);
+
+        var observation = new Observation<Completeness>(
+            id,
+            timeProvider.GetUtcNow(),
+            TestMeasures.BinaryMeasure.Id,
+            Completeness.Developing,
+            timeProvider);
+
+        var json = JsonSerializer.Serialize(observation, JsonContext.Default.ObservationCompleteness);
+
+        Assert.Equal(expected, json);
+    }
+
+    [Fact]
+    public void JsonSmokeTest_Abstract_BehaviorFrequency()
+    {
+        const string expected = """{"d":1001,"i":3840829473618409,"t":1733011200000,"m":203189995833,"v":50}""";
+
+        var timeProvider = new FakeTimeProvider(new DateTimeOffset(2024, 12, 1, 0, 0, 0, TimeSpan.Zero));
+        var id = ObservationId.Parse("3840829473618409", CultureInfo.InvariantCulture);
+
+        Observation observation = new Observation<BehaviorFrequency>(
+            id,
+            timeProvider.GetUtcNow(),
+            TestMeasures.BinaryMeasure.Id,
+            BehaviorFrequency.Developing,
+            timeProvider);
+
+        var json = JsonSerializer.Serialize(observation, JsonContext.Default.Observation);
+
+        Assert.Equal(expected, json);
+    }
+
+    [Fact]
+    public void JsonSmokeTest_Abstract_SpeechClarity()
+    {
+        const string expected = """{"d":3001,"i":3840829473618409,"t":1733011200000,"m":203189995833,"v":50}""";
+
+        var timeProvider = new FakeTimeProvider(new DateTimeOffset(2024, 12, 1, 0, 0, 0, TimeSpan.Zero));
+        var id = ObservationId.Parse("3840829473618409", CultureInfo.InvariantCulture);
+
+        Observation observation = new Observation<SpeechClarity>(
+            id,
+            timeProvider.GetUtcNow(),
+            TestMeasures.BinaryMeasure.Id,
+            SpeechClarity.Developing,
+            timeProvider);
+
+        var json = JsonSerializer.Serialize(observation, JsonContext.Default.Observation);
+
+        Assert.Equal(expected, json);
+    }
+
+    [Fact]
+    public void JsonSmokeTest_Abstract_Completeness()
+    {
+        const string expected = """{"d":4001,"i":3840829473618409,"t":1733011200000,"m":203189995833,"v":50}""";
+
+        var timeProvider = new FakeTimeProvider(new DateTimeOffset(2024, 12, 1, 0, 0, 0, TimeSpan.Zero));
+        var id = ObservationId.Parse("3840829473618409", CultureInfo.InvariantCulture);
+
+        Observation observation = new Observation<Completeness>(
+            id,
+            timeProvider.GetUtcNow(),
+            TestMeasures.BinaryMeasure.Id,
+            Completeness.Developing,
+            timeProvider);
+
+        var json = JsonSerializer.Serialize(observation, JsonContext.Default.Observation);
+
+        Assert.Equal(expected, json);
     }
 }

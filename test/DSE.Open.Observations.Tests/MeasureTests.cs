@@ -2,6 +2,8 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Text.Json;
+using DSE.Open.Language;
+using DSE.Open.Speech;
 using DSE.Open.Testing.Xunit;
 using DSE.Open.Text.Json;
 
@@ -118,5 +120,140 @@ public sealed class MeasureTests
         Assert.Equal(measure.MeasurementLevel, measureDeserialized.MeasurementLevel);
         Assert.Equal(measure.Name, measureDeserialized.Name);
         Assert.Equal(measure.Statement, measureDeserialized.Statement);
+    }
+
+    [Fact]
+    public void JsonRoundtrip_WithContext_Count()
+    {
+        AssertJson.Roundtrip(TestMeasures.CountMeasure, JsonContext.Default);
+    }
+
+    [Fact]
+    public void JsonRoundtrip_WithContext_BinarySpeechSound()
+    {
+        AssertJson.Roundtrip(TestMeasures.BinarySpeechSoundMeasure, JsonContext.Default);
+    }
+
+    [Fact]
+    public void JsonRoundtrip_WithContext_BinaryWord()
+    {
+        AssertJson.Roundtrip(TestMeasures.BinaryWordMeasure, JsonContext.Default);
+    }
+
+    [Fact]
+    public void JsonRoundtrip_WithContext_BinarySentence()
+    {
+        AssertJson.Roundtrip(TestMeasures.BinarySentenceMeasure, JsonContext.Default);
+    }
+
+    [Fact]
+    public void JsonRoundtrip_WithContext_BehaviorFrequencyMeasure()
+    {
+        AssertJson.Roundtrip(TestMeasures.BehaviorFrequencyMeasure, JsonContext.Default);
+    }
+
+    [Fact]
+    public void JsonRoundtrip_WithContext_BehaviorFrequencySpeechSound()
+    {
+        AssertJson.Roundtrip(TestMeasures.BehaviorFrequencySpeechSoundMeasure, JsonContext.Default);
+    }
+
+    [Fact]
+    public void JsonRoundtrip_WithContext_BehaviorFrequencyWord()
+    {
+        AssertJson.Roundtrip(TestMeasures.BehaviorFrequencyWordMeasure, JsonContext.Default);
+    }
+
+    [Fact]
+    public void JsonRoundtrip_WithContext_BehaviorFrequencySentence()
+    {
+        AssertJson.Roundtrip(TestMeasures.BehaviorFrequencySentenceMeasure, JsonContext.Default);
+    }
+
+    [Fact]
+    public void JsonRoundtrip_WithContext_SpeechClarity()
+    {
+        AssertJson.Roundtrip(TestMeasures.SpeechClarityMeasure, JsonContext.Default);
+    }
+
+    [Fact]
+    public void JsonRoundtrip_WithContext_SpeechClaritySpeechSound()
+    {
+        AssertJson.Roundtrip(TestMeasures.SpeechClaritySpeechSoundMeasure, JsonContext.Default);
+    }
+
+    [Fact]
+    public void JsonRoundtrip_WithContext_SpeechClarityWord()
+    {
+        AssertJson.Roundtrip(TestMeasures.SpeechClarityWordMeasure, JsonContext.Default);
+    }
+
+    [Fact]
+    public void JsonRoundtrip_WithContext_SpeechClaritySentence()
+    {
+        AssertJson.Roundtrip(TestMeasures.SpeechClaritySentenceMeasure, JsonContext.Default);
+    }
+
+    [Fact]
+    public void JsonRoundtrip_WithContext_Completeness()
+    {
+        AssertJson.Roundtrip(TestMeasures.CompletenessMeasure, JsonContext.Default);
+    }
+
+    [Fact]
+    public void JsonRoundtrip_WithContext_CompletenessSpeechSound()
+    {
+        AssertJson.Roundtrip(TestMeasures.CompletenessSpeechSoundMeasure, JsonContext.Default);
+    }
+
+    [Fact]
+    public void JsonRoundtrip_WithContext_CompletenessWord()
+    {
+        AssertJson.Roundtrip(TestMeasures.CompletenessWordMeasure, JsonContext.Default);
+    }
+
+    [Fact]
+    public void JsonRoundtrip_WithContext_CompletenessSentence()
+    {
+        AssertJson.Roundtrip(TestMeasures.CompletenessSentenceMeasure, JsonContext.Default);
+    }
+
+    public static TheoryData<Measure, Type> PolymorphicCases { get; } = new()
+    {
+        { TestMeasures.BinaryMeasure, typeof(Measure<Binary>) },
+        { TestMeasures.BinarySpeechSoundMeasure, typeof(Measure<Binary, SpeechSound>) },
+        { TestMeasures.BinaryWordMeasure, typeof(Measure<Binary, WordId>) },
+        { TestMeasures.BinarySentenceMeasure, typeof(Measure<Binary, SentenceId>) },
+        { TestMeasures.BehaviorFrequencyMeasure, typeof(Measure<BehaviorFrequency>) },
+        { TestMeasures.BehaviorFrequencySpeechSoundMeasure, typeof(Measure<BehaviorFrequency, SpeechSound>) },
+        { TestMeasures.BehaviorFrequencyWordMeasure, typeof(Measure<BehaviorFrequency, WordId>) },
+        { TestMeasures.BehaviorFrequencySentenceMeasure, typeof(Measure<BehaviorFrequency, SentenceId>) },
+        { TestMeasures.CountMeasure, typeof(Measure<Count>) },
+        { TestMeasures.AmountMeasure, typeof(Measure<Amount>) },
+        { TestMeasures.SpeechClarityMeasure, typeof(Measure<SpeechClarity>) },
+        { TestMeasures.SpeechClaritySpeechSoundMeasure, typeof(Measure<SpeechClarity, SpeechSound>) },
+        { TestMeasures.SpeechClarityWordMeasure, typeof(Measure<SpeechClarity, WordId>) },
+        { TestMeasures.SpeechClaritySentenceMeasure, typeof(Measure<SpeechClarity, SentenceId>) },
+        { TestMeasures.CompletenessMeasure, typeof(Measure<Completeness>) },
+        { TestMeasures.CompletenessSpeechSoundMeasure, typeof(Measure<Completeness, SpeechSound>) },
+        { TestMeasures.CompletenessWordMeasure, typeof(Measure<Completeness, WordId>) },
+        { TestMeasures.CompletenessSentenceMeasure, typeof(Measure<Completeness, SentenceId>) },
+    };
+
+    [Theory]
+    [MemberData(nameof(PolymorphicCases))]
+    public void JsonRoundtrip_Polymorphic_ResolvesBackToConcreteType(Measure measure, Type expected)
+    {
+        var json = JsonSerializer.Serialize(measure, JsonSharedOptions.RelaxedJsonEscaping);
+
+        var deserialized = JsonSerializer.Deserialize<Measure>(json, JsonSharedOptions.RelaxedJsonEscaping);
+
+        Assert.NotNull(deserialized);
+        Assert.IsType(expected, deserialized);
+        Assert.Equal(measure.Id, deserialized.Id);
+        Assert.Equal(measure.Uri, deserialized.Uri);
+        Assert.Equal(measure.MeasurementLevel, deserialized.MeasurementLevel);
+        Assert.Equal(measure.Name, deserialized.Name);
+        Assert.Equal(measure.Statement, deserialized.Statement);
     }
 }
