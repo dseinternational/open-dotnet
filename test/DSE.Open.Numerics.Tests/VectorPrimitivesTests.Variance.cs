@@ -20,4 +20,33 @@ public partial class VectorPrimitivesTests
         var variance = Vector.Variance(sequence);
         Assert.Equal(27.428571428571, variance, 0.000000000001);
     }
+
+    [Fact]
+    public void Variance_Span_Double_WithCorrectMean_MatchesComputedMean()
+    {
+        ReadOnlySpan<double> sequence = [1, 2, 3, 4, 5];
+        var variance = Vector.Variance(sequence, mean: 3.0);
+        Assert.Equal(2.5, variance);
+    }
+
+    [Fact]
+    public void Variance_Span_Double_WithShiftedMean_IsUsed()
+    {
+        // Regression test for #360: mean parameter was silently ignored.
+        // Supplying an off-centre mean must change the result.
+        ReadOnlySpan<double> sequence = [1, 2, 3, 4, 5];
+        var variance = Vector.Variance(sequence, mean: 0.0);
+        // Σ(xᵢ − 0)² / (n − 1) = (1 + 4 + 9 + 16 + 25) / 4 = 13.75
+        Assert.Equal(13.75, variance);
+    }
+
+    [Fact]
+    public void Variance_Span_IntToDouble()
+    {
+        // Regression test for #361: integer input accumulating into a floating-point
+        // result must not truncate intermediate values.
+        ReadOnlySpan<int> sequence = [1, 2, 3, 4, 5];
+        var variance = Vector.Variance<int, double>(sequence);
+        Assert.Equal(2.5, variance);
+    }
 }
