@@ -7,12 +7,16 @@ public class Int64ExtensionsTests
 {
     [Theory]
     [InlineData(0L, 1)]
+    [InlineData(1L, 1)]
+    [InlineData(-1L, 1)]
     [InlineData(1000L, 4)]
     [InlineData(-1000L, 4)]
     [InlineData(123456789L, 9)]
     [InlineData(-123456789L, 9)]
     [InlineData(1234567890123L, 13)]
     [InlineData(-1234567890123L, 13)]
+    [InlineData(long.MaxValue, 19)]
+    [InlineData(long.MinValue, 19)]
     public void GetDigitCountReturnsCorrectCount(long number, int digits)
     {
         Assert.Equal(digits, number.GetDigitCount());

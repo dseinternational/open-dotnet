@@ -7,10 +7,14 @@ public class Int32ExtensionsTests
 {
     [Theory]
     [InlineData(0, 1)]
+    [InlineData(1, 1)]
+    [InlineData(-1, 1)]
     [InlineData(1000, 4)]
     [InlineData(-1000, 4)]
     [InlineData(123456789, 9)]
     [InlineData(-123456789, 9)]
+    [InlineData(int.MaxValue, 10)]
+    [InlineData(int.MinValue, 10)]
     public void GetDigitCountReturnsCorrectCount(int number, int digits)
     {
         Assert.Equal(digits, number.GetDigitCount());
