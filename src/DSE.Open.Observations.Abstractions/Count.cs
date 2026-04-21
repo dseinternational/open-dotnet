@@ -161,7 +161,7 @@ public readonly partial struct Count
 
     public static explicit operator int(Count value)
     {
-        return (int)value._value;
+        return checked((int)value._value);
     }
 
     public static implicit operator Count(uint value)
