@@ -264,6 +264,24 @@ public class TrileanTests
     }
 
     [Fact]
+    public void ToSignedInteger_True_ReturnsOne()
+    {
+        Assert.Equal((sbyte)1, Trilean.True.ToSignedInteger());
+    }
+
+    [Fact]
+    public void ToSignedInteger_False_ReturnsZero()
+    {
+        Assert.Equal((sbyte)0, Trilean.False.ToSignedInteger());
+    }
+
+    [Fact]
+    public void ToSignedInteger_Na_ReturnsNegativeOne()
+    {
+        Assert.Equal((sbyte)-1, Trilean.Na.ToSignedInteger());
+    }
+
+    [Fact]
     public void Parse_TrueString_ReturnsTrue()
     {
         var t = Trilean.Parse("True", null);

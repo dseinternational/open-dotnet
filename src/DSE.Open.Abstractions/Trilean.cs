@@ -165,9 +165,15 @@ public readonly struct Trilean
         };
     }
 
-    public byte ToSignedInteger()
+    /// <summary>
+    /// Converts the current value to a signed 8-bit integer.
+    /// </summary>
+    /// <returns>
+    /// <c>1</c> if <see cref="IsTrue"/>, <c>0</c> if <see cref="IsFalse"/>, or <c>-1</c> if <see cref="IsNa"/>.
+    /// </returns>
+    public sbyte ToSignedInteger()
     {
-        return (byte)ToSignedNumber<int>();
+        return ToSignedNumber<sbyte>();
     }
 
     public bool ToBoolean()
