@@ -43,11 +43,12 @@ public sealed class WordIdTests
     }
 
     // Pins a specific hash output so any future change to the serialization
-    // format (including endianness, ordering, or formatting of the meaning id)
-    // is caught on every platform. Regression guard for #348.
+    // format (including endianness, ordering, or formatting of the meaning id,
+    // or separator bytes) is caught on every platform. Regression guard for #348
+    // and #354 item 4.
     [Theory]
-    [InlineData(100000000001ul, "run", "en-GB", 396464813821ul)]
-    [InlineData(500000000042ul, "correr", "es-ES", 895315379591ul)]
+    [InlineData(100000000001ul, "run", "en-GB", 680816084390ul)]
+    [InlineData(500000000042ul, "correr", "es-ES", 704252438813ul)]
     public void FromWord_produces_platform_pinned_id(
         ulong meaningIdValue,
         string word,
@@ -60,6 +61,28 @@ public sealed class WordIdTests
         var actual = WordId.FromWord(meaning, word.AsSpan(), language);
 
         Assert.Equal(expectedId, actual.ToUInt64());
+    }
+
+    [Fact]
+    public void ToInt64_round_trips_via_FromInt64()
+    {
+        var id = WordId.FromUInt64(258089004501ul);
+        var i = id.ToInt64();
+        Assert.Equal(id, WordId.FromInt64(i));
+    }
+
+    [Fact]
+    public void ToUInt64_round_trips_via_FromUInt64()
+    {
+        var id = WordId.FromUInt64(258089004501ul);
+        var u = id.ToUInt64();
+        Assert.Equal(id, WordId.FromUInt64(u));
+    }
+
+    [Fact]
+    public void FromUInt64_throws_for_out_of_range_value()
+    {
+        _ = Assert.Throws<ArgumentOutOfRangeException>(() => WordId.FromUInt64(1ul));
     }
 
 

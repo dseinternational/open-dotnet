@@ -65,22 +65,37 @@ public readonly partial struct WordMeaningId
         return new WordMeaningId((ulong)value);
     }
 
+    public static WordMeaningId FromUInt64(ulong value)
+    {
+        if (!IsValidValue(value))
+        {
+            ThrowHelper.ThrowArgumentOutOfRangeException(nameof(value));
+        }
+
+        return new WordMeaningId(value);
+    }
+
     public static explicit operator WordMeaningId(long value)
     {
         return FromInt64(value);
     }
 
-    public static long ToInt64(WordMeaningId value)
+    public long ToInt64()
     {
         unchecked
         {
-            return (long)value._value;
+            return (long)_value;
         }
+    }
+
+    public ulong ToUInt64()
+    {
+        return _value;
     }
 
     public static implicit operator long(WordMeaningId value)
     {
-        return ToInt64(value);
+        return value.ToInt64();
     }
 
 #pragma warning disable CA5394 // Do not use insecure randomness
@@ -107,7 +122,9 @@ public readonly partial struct WordMeaningId
         var posSpan = MemoryMarshal.AsBytes(pos.AsSpan());
         var altPosSpan = altPos is null ? default : MemoryMarshal.AsBytes(altPos.Value.AsSpan());
 
-        var length = Encoding.UTF8.GetByteCount(label) + posSpan.Length + altPosSpan.Length;
+        // +2 for 0xFF separator bytes between label/pos and pos/altPos. 0xFF is never a
+        // valid byte in UTF-8 or ASCII, so it cannot appear inside any field.
+        var length = Encoding.UTF8.GetByteCount(label) + posSpan.Length + altPosSpan.Length + 2;
 
         byte[]? rented = null;
 
@@ -117,17 +134,19 @@ public readonly partial struct WordMeaningId
                 ? (rented = ArrayPool<byte>.Shared.Rent(length))
                 : stackalloc byte[length];
 
-            var charsWritten = Encoding.UTF8.GetBytes(label, buffer);
+            var bytesWritten = Encoding.UTF8.GetBytes(label, buffer);
 
-            posSpan.CopyTo(buffer[charsWritten..]);
+            buffer[bytesWritten++] = 0xFF;
 
-            charsWritten += posSpan.Length;
+            posSpan.CopyTo(buffer[bytesWritten..]);
+            bytesWritten += posSpan.Length;
 
-            altPosSpan.CopyTo(buffer[charsWritten..]);
+            buffer[bytesWritten++] = 0xFF;
 
-            charsWritten += altPosSpan.Length;
+            altPosSpan.CopyTo(buffer[bytesWritten..]);
+            bytesWritten += altPosSpan.Length;
 
-            return (WordMeaningId)(LanguageIds.MinIdValue + (ulong)(XxHash3.HashToUInt64(buffer[..charsWritten]) / (decimal)ulong.MaxValue * LanguageIds.MaxRange));
+            return (WordMeaningId)(LanguageIds.MinIdValue + (ulong)(XxHash3.HashToUInt64(buffer[..bytesWritten]) / (decimal)ulong.MaxValue * LanguageIds.MaxRange));
         }
         finally
         {
