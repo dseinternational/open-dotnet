@@ -641,14 +641,38 @@ public class NaIntTests
     }
 
     [Fact]
-    public void CompareTo_WithNa_ReturnsZero()
+    public void CompareTo_NaSortsBeforeValues()
     {
         NaInt<int> a = 42;
         var na = NaInt<int>.Na;
 
-        Assert.Equal(0, a.CompareTo(na));
-        Assert.Equal(0, na.CompareTo(a));
         Assert.Equal(0, na.CompareTo(na));
+        Assert.True(na.CompareTo(a) < 0);
+        Assert.True(a.CompareTo(na) > 0);
+    }
+
+    [Fact]
+    public void CompareTo_ConsistentWithEquals_ForNaVsValue()
+    {
+        NaInt<int> a = 42;
+        var na = NaInt<int>.Na;
+
+        // CompareTo == 0 must imply Equals; Equals == false must imply CompareTo != 0
+        Assert.False(na.Equals(a));
+        Assert.NotEqual(0, na.CompareTo(a));
+    }
+
+    [Fact]
+    public void CompareTo_SortOrdersNaFirst()
+    {
+        NaInt<int>[] values = [5, NaInt<int>.Na, 2, NaInt<int>.Na, 1];
+        Array.Sort(values);
+
+        Assert.True(values[0].IsNa);
+        Assert.True(values[1].IsNa);
+        Assert.Equal(1, (int)values[2]);
+        Assert.Equal(2, (int)values[3]);
+        Assert.Equal(5, (int)values[4]);
     }
 
     [Fact]
