@@ -4,7 +4,7 @@
 
 ## Overview
 
-This repository contains a variety of libraries and tools useful for building .NET applications. They provide commoon functionality for DSE projects, but may have wider applicability, including, in particular, third parties integrating with DSE projects and services.
+This repository contains libraries and tools useful for building .NET applications. They provide common functionality for DSE projects, but may have wider applicability, including, in particular, third parties integrating with DSE projects and services.
 
 ## Build and Test Commands
 
