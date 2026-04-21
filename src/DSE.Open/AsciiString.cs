@@ -37,7 +37,7 @@ public readonly struct AsciiString
       ISpanParsable<AsciiString>,
       IUtf8SpanFormattable,
       IUtf8SpanParsable<AsciiString>,
-      ISpanFormatableCharCountProvider,
+      ISpanFormattableCharCountProvider,
       IRepeatableHash64
 {
     private readonly ReadOnlyMemory<AsciiChar> _value;

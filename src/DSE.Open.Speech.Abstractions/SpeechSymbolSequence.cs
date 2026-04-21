@@ -26,7 +26,7 @@ public readonly struct SpeechSymbolSequence
       IEqualityOperators<SpeechSymbolSequence, SpeechSymbolSequence, bool>,
       ISpanFormattable,
       ISpanParsable<SpeechSymbolSequence>,
-      ISpanFormatableCharCountProvider,
+      ISpanFormattableCharCountProvider,
       IUtf8SpanFormattable,
       IRepeatableHash64
 {

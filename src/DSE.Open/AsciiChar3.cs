@@ -26,7 +26,7 @@ public readonly struct AsciiChar3
       IConvertibleTo<AsciiChar3, string>,
       ITryConvertibleFrom<AsciiChar3, string>,
       IUtf8SpanSerializable<AsciiChar3>,
-      ISpanFormatableCharCountProvider,
+      ISpanFormattableCharCountProvider,
       IRepeatableHash64
 {
     private const int CharCount = 3;

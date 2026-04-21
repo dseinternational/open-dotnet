@@ -11,6 +11,6 @@ public class JsonStringSpeechTranscriptionConverter : SpanParsableCharWritingJso
 
     protected override int GetMaxCharCountToWrite(SpeechTranscription value)
     {
-        return ((ISpanFormatableCharCountProvider)value).GetCharCount(null, null);
+        return ((ISpanFormattableCharCountProvider)value).GetCharCount(null, null);
     }
 }

@@ -3,7 +3,12 @@
 
 namespace DSE.Open;
 
-public interface ISpanFormatableCharCountProvider : IFormatableCharCountProvider
+public interface ISpanFormattableCharCountProvider : IFormattableCharCountProvider
 {
     int GetCharCount(ReadOnlySpan<char> format, IFormatProvider? provider);
+}
+
+[Obsolete("Renamed to " + nameof(ISpanFormattableCharCountProvider) + ". This alias will be removed in a future release.")]
+public interface ISpanFormatableCharCountProvider : ISpanFormattableCharCountProvider
+{
 }

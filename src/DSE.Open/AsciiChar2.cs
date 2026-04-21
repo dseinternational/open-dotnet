@@ -27,7 +27,7 @@ public readonly struct AsciiChar2
       IConvertibleTo<AsciiChar2, string>,
       ITryConvertibleFrom<AsciiChar2, string>,
       IUtf8SpanSerializable<AsciiChar2>,
-      ISpanFormatableCharCountProvider,
+      ISpanFormattableCharCountProvider,
       IRepeatableHash64
 {
     private const int CharCount = 2;

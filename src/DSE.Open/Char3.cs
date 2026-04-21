@@ -16,7 +16,7 @@ public readonly struct Char3
     : IEquatable<Char3>,
       ISpanFormattable,
       ISpanParsable<Char3>,
-      ISpanFormatableCharCountProvider,
+      ISpanFormattableCharCountProvider,
       ISpanSerializable<Char3>,
       IRepeatableHash64
 {

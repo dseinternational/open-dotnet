@@ -16,7 +16,7 @@ public readonly struct Char2
     : IEquatable<Char2>,
       ISpanFormattable,
       ISpanParsable<Char2>,
-      ISpanFormatableCharCountProvider,
+      ISpanFormattableCharCountProvider,
       IRepeatableHash64
 {
     private const int CharCount = 2;
