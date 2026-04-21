@@ -652,9 +652,17 @@ public sealed class Observation<TValue, TParam>
             return 0u;
         }
 
+        if (!RepeatableHash64Provider.Default.TryGetRepeatableHashCode(Value, out var valueHash))
+        {
+            ThrowHelper.ThrowInvalidOperationException(
+                $"The {typeof(TValue).Name} type does not support repeatable hashing.");
+            return 0u;
+        }
+
         return RepeatableHash64Provider.Default.CombineHashCodes(
             base.GetRepeatableHashCode(),
-            paramHash);
+            paramHash,
+            valueHash);
     }
 
     public override string ToString()
