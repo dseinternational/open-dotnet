@@ -61,4 +61,31 @@ public class DomainEventDispatcherTests
         Assert.True(state.ContainsKey(ev.Instance.ToString()));
         Assert.True(state.ContainsKey(bev.Instance.ToString()));
     }
+
+    [Fact]
+    public async Task Dispatcher_PublishEvents_PreCancelledToken_CancelsBackgroundEvents()
+    {
+        var services = new ServiceCollection();
+
+        _ = services.AddLogging();
+        _ = services.AddSingleton(new TestState());
+        _ = services.AddDomainEventDispatcher();
+        _ = services.AddMessageHandler<DomainBackgroundEventHandlerFake, DomainBackgroundEventFake>();
+
+        var provider = services.BuildServiceProvider();
+
+        var dispatcher = provider.GetRequiredService<IDomainEventDispatcher>();
+
+        var entity = new EventRaisingEntityFake<Guid>();
+        _ = entity.AddFakeBackgroundEvent();
+
+        using var cts = new CancellationTokenSource();
+        await cts.CancelAsync();
+
+        _ = await Assert.ThrowsAnyAsync<OperationCanceledException>(
+            () => dispatcher.PublishEventsAsync([entity], cts.Token));
+
+        var state = provider.GetRequiredService<TestState>();
+        Assert.Empty(state);
+    }
 }
