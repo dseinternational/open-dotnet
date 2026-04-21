@@ -23,9 +23,9 @@ public readonly partial struct Count
 {
     public const ulong MaxValue = NumberHelper.MaxJsonSafeInteger;
 
-    public static int MaxSerializedCharLength => 10;
+    public static int MaxSerializedCharLength => 16;
 
-    public static int MaxSerializedByteLength => 10;
+    public static int MaxSerializedByteLength => 16;
 
     public static Count Zero { get; } = new(0);
 
