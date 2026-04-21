@@ -12,14 +12,25 @@ public partial class Vector
     /// </summary>
     /// <typeparam name="T">The type of the elements in the sequence.</typeparam>
     /// <param name="span">The sequence of elements to use for the calculation.</param>
-    /// <param name="mean"></param>
-    /// <returns></returns>
+    /// <param name="mean">An optional precomputed arithmetic mean. When supplied, the
+    /// first pass over <paramref name="span"/> is skipped and the supplied value is
+    /// used as the centre of the squared deviations.</param>
     public static T Variance<T>(ReadOnlySpan<T> span, T? mean = default)
         where T : struct, INumberBase<T>
     {
         return Variance<T, T>(span, mean);
     }
 
+    /// <summary>
+    /// Gets the sample variance of a sequence of at least two numbers, accumulating
+    /// into <typeparamref name="TResult"/>.
+    /// </summary>
+    /// <typeparam name="T">The type of the elements in the sequence.</typeparam>
+    /// <typeparam name="TResult">The type used for accumulation and the returned result.</typeparam>
+    /// <param name="span">The sequence of elements to use for the calculation.</param>
+    /// <param name="mean">An optional precomputed arithmetic mean. When supplied, the
+    /// first pass over <paramref name="span"/> is skipped and the supplied value is
+    /// used as the centre of the squared deviations.</param>
     public static TResult Variance<T, TResult>(ReadOnlySpan<T> span, T? mean = default)
         where T : struct, INumberBase<T>
         where TResult : struct, INumberBase<TResult>
@@ -29,29 +40,29 @@ public partial class Vector
             NumericsArgumentException.Throw();
         }
 
-        // TODO: incomplete
+        TResult meanResult;
 
-        // Consider: different algorithms for enumerable/in-memory sequences?
-
-        // https://en.wikipedia.org/wiki/Variance
-        // https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance
-
-        // Examples:
-        // https://github.com/python/cpython/blob/3.12/Lib/statistics.py#L874
-        // https://github.com/python/cpython/blob/3.12/Lib/statistics.py#L208
-
-        var variance = TResult.AdditiveIdentity;
-
-        var t = TResult.CreateChecked(span[0]);
-
-        for (var i = 1; i < span.Length; i++)
+        if (mean.HasValue)
         {
-            var t1 = TResult.CreateChecked(span[i]);
-            t += t1;
-            var diff = (TResult.CreateChecked(i + 1) * t1) - t;
-            variance += diff * diff / TResult.CreateChecked((i + 1.0) * i);
+            meanResult = TResult.CreateChecked(mean.Value);
+        }
+        else
+        {
+            var sum = TResult.AdditiveIdentity;
+            for (var i = 0; i < span.Length; i++)
+            {
+                sum += TResult.CreateChecked(span[i]);
+            }
+            meanResult = sum / TResult.CreateChecked(span.Length);
         }
 
-        return variance / TResult.CreateChecked(span.Length - 1);
+        var sumSquaredDeviations = TResult.AdditiveIdentity;
+        for (var i = 0; i < span.Length; i++)
+        {
+            var diff = TResult.CreateChecked(span[i]) - meanResult;
+            sumSquaredDeviations += diff * diff;
+        }
+
+        return sumSquaredDeviations / TResult.CreateChecked(span.Length - 1);
     }
 }
