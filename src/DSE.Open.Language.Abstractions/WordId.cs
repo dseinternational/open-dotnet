@@ -66,6 +66,16 @@ public readonly partial struct WordId
         return new WordId((ulong)value);
     }
 
+    public static WordId FromUInt64(ulong value)
+    {
+        if (!IsValidValue(value))
+        {
+            ThrowHelper.ThrowArgumentOutOfRangeException(nameof(value));
+        }
+
+        return new WordId(value);
+    }
+
     public static explicit operator WordId(long value)
     {
         return FromInt64(value);
@@ -112,9 +122,12 @@ public readonly partial struct WordId
     {
         var langSpan = MemoryMarshal.AsBytes(((AsciiString)language).AsSpan());
 
+        // +2 for 0xFF separator bytes between meaningId/language and language/word.
+        // 0xFF is never a valid byte in UTF-8 or ASCII, so it cannot appear inside any field.
         var length = Encoding.UTF8.GetByteCount(word)
             + 20 // max length of UInt64 decimal text
-            + langSpan.Length;
+            + langSpan.Length
+            + 2;
 
         byte[]? rented = null;
 
@@ -126,8 +139,12 @@ public readonly partial struct WordId
 
             _ = meaningId.TryFormat(buffer, out var bytesWritten, default, CultureInfo.InvariantCulture);
 
+            buffer[bytesWritten++] = 0xFF;
+
             langSpan.CopyTo(buffer[bytesWritten..]);
             bytesWritten += langSpan.Length;
+
+            buffer[bytesWritten++] = 0xFF;
 
             bytesWritten += Encoding.UTF8.GetBytes(word, buffer[bytesWritten..]);
 
@@ -146,9 +163,12 @@ public readonly partial struct WordId
     {
         var langSpan = MemoryMarshal.AsBytes(((AsciiString)language).AsSpan());
 
+        // +2 for 0xFF separator bytes between meaningId/language and language/word.
+        // 0xFF is never a valid byte in UTF-8 or ASCII, so it cannot appear inside any field.
         var length = wordUtf8.Length
             + 20 // max length of UInt64 decimal text
-            + langSpan.Length;
+            + langSpan.Length
+            + 2;
 
         byte[]? rented = null;
 
@@ -160,8 +180,12 @@ public readonly partial struct WordId
 
             _ = meaningId.TryFormat(buffer, out var bytesWritten, default, CultureInfo.InvariantCulture);
 
+            buffer[bytesWritten++] = 0xFF;
+
             langSpan.CopyTo(buffer[bytesWritten..]);
             bytesWritten += langSpan.Length;
+
+            buffer[bytesWritten++] = 0xFF;
 
             wordUtf8.CopyTo(buffer[bytesWritten..]);
             bytesWritten += wordUtf8.Length;

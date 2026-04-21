@@ -65,22 +65,37 @@ public readonly partial struct SentenceMeaningId
         return new SentenceMeaningId((ulong)value);
     }
 
+    public static SentenceMeaningId FromUInt64(ulong value)
+    {
+        if (!IsValidValue(value))
+        {
+            ThrowHelper.ThrowArgumentOutOfRangeException(nameof(value));
+        }
+
+        return new SentenceMeaningId(value);
+    }
+
     public static explicit operator SentenceMeaningId(long value)
     {
         return FromInt64(value);
     }
 
-    public static long ToInt64(SentenceMeaningId value)
+    public long ToInt64()
     {
         unchecked
         {
-            return (long)value._value;
+            return (long)_value;
         }
+    }
+
+    public ulong ToUInt64()
+    {
+        return _value;
     }
 
     public static implicit operator long(SentenceMeaningId value)
     {
-        return ToInt64(value);
+        return value.ToInt64();
     }
 
 #pragma warning disable CA5394 // Do not use insecure randomness

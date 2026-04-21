@@ -123,10 +123,13 @@ public readonly partial struct SentenceId
 
         var langSpan = MemoryMarshal.AsBytes(((AsciiString)language).AsSpan());
 
+        // +2 for 0xFF separator bytes between meaningId/language and language/sentence.
+        // 0xFF is never a valid byte in UTF-8 or ASCII, so it cannot appear inside any field.
         var length = Encoding.UTF8.GetByteCount(sentence) +
             20 // max length of UInt64
             +
-            langSpan.Length;
+            langSpan.Length +
+            2;
 
         byte[]? rented = null;
 
@@ -138,13 +141,14 @@ public readonly partial struct SentenceId
 
             _ = meaningId.TryFormat(buffer, out var bytesWritten, default, CultureInfo.InvariantCulture);
 
-            langSpan.CopyTo(buffer[bytesWritten..]);
+            buffer[bytesWritten++] = 0xFF;
 
+            langSpan.CopyTo(buffer[bytesWritten..]);
             bytesWritten += langSpan.Length;
 
-            var textBytes = Encoding.UTF8.GetBytes(sentence, buffer[bytesWritten..]);
+            buffer[bytesWritten++] = 0xFF;
 
-            bytesWritten += textBytes;
+            bytesWritten += Encoding.UTF8.GetBytes(sentence, buffer[bytesWritten..]);
 
             return (SentenceId)(LanguageIds.MinIdValue + (ulong)(XxHash3.HashToUInt64(buffer[..bytesWritten]) / (decimal)ulong.MaxValue * LanguageIds.MaxRange));
         }
