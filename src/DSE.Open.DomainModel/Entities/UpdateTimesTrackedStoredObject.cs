@@ -3,16 +3,39 @@
 
 namespace DSE.Open.DomainModel.Entities;
 
+/// <summary>
+/// Stored object tracking <see cref="Created"/> / <see cref="Updated"/> timestamps.
+/// </summary>
+/// <remarks>
+/// See <see cref="StoredObject"/> for the constructor contract. The parameterless
+/// constructor is the 'new object' path and leaves both timestamps unset — the
+/// domain is expected to populate them via
+/// <see cref="IUpdateTimesTracked.SetCreated(TimeProvider?)"/> before the object is
+/// persisted. The <c>(DateTimeOffset?, DateTimeOffset?)</c> constructor is the
+/// materialization path and derived concrete types must chain to it from a
+/// constructor marked with <see cref="MaterializationConstructorAttribute"/>.
+/// </remarks>
 public abstract class UpdateTimesTrackedStoredObject : StoredObject, IUpdateTimesTracked
 {
     private DateTimeOffset? _created;
     private DateTimeOffset? _updated;
 
+    /// <summary>
+    /// Initializes a newly created stored object — timestamps are unset and
+    /// <see cref="StoredObject.Initialization"/> is
+    /// <see cref="StoredObjectInitialization.Created"/>.
+    /// </summary>
     protected UpdateTimesTrackedStoredObject()
         : base(StoredObjectInitialization.Created)
     {
     }
 
+    /// <summary>
+    /// Materialization constructor — derived concrete types should chain to this from
+    /// a <see cref="MaterializationConstructorAttribute"/>-marked constructor when
+    /// reconstituting the object from storage. Both timestamps must be non-null and
+    /// non-default.
+    /// </summary>
     protected UpdateTimesTrackedStoredObject(DateTimeOffset? created, DateTimeOffset? updated)
         : base(StoredObjectInitialization.Materialized)
     {
