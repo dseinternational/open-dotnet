@@ -43,6 +43,10 @@ public class WordTests
     [InlineData("")]
     [InlineData("{{  child_name  }}")]
     [InlineData("{{CHILD_NAME}}")]
+    [InlineData("{{ child_name}}")]
+    [InlineData("{{child_name }}")]
+    [InlineData("{{ ab }}")]
+    [InlineData("{{abc}}")]
     public void ParseFailsIfInvalid(string wordValue)
     {
         _ = Assert.Throws<FormatException>(() => WordText.Parse(wordValue, CultureInfo.InvariantCulture));
