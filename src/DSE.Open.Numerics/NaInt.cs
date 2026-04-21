@@ -119,7 +119,14 @@ public readonly struct NaInt<T>
 
     public int CompareTo(NaInt<T> other)
     {
-        return IsNa | other.IsNa ? 0 : _value.CompareTo(other._value);
+        // NA sorts before real values and equals only itself — consistent with Equals
+        // and with the .NET IEEE 754 convention (float.NaN.CompareTo(x) returns -1).
+        if (IsNa)
+        {
+            return other.IsNa ? 0 : -1;
+        }
+
+        return other.IsNa ? 1 : _value.CompareTo(other._value);
     }
 
     int IComparable.CompareTo(object? obj)

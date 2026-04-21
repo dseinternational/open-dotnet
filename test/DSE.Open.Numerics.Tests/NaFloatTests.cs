@@ -1,6 +1,8 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Numerics;
+
 namespace DSE.Open.Numerics;
 
 public class NaFloatTests
@@ -65,5 +67,71 @@ public class NaFloatTests
 
         NaFloat<float> na = (float?)null;
         Assert.Equal(NaFloat<float>.Na, na);
+    }
+
+    [Fact]
+    public void EqualOrEitherNa_WithSameValues_ReturnsTrue()
+    {
+        var a = new NaFloat<double>(1.5);
+        var b = new NaFloat<double>(1.5);
+        Assert.True(a.EqualOrEitherNa(b));
+    }
+
+    [Fact]
+    public void EqualOrEitherNa_WithDifferentValues_ReturnsFalse()
+    {
+        var a = new NaFloat<double>(1.5);
+        var b = new NaFloat<double>(2.5);
+        Assert.False(a.EqualOrEitherNa(b));
+    }
+
+    [Fact]
+    public void EqualOrEitherNa_WithOneNa_ReturnsTrue()
+    {
+        var a = new NaFloat<double>(1.5);
+        var na = NaFloat<double>.Na;
+
+        Assert.True(a.EqualOrEitherNa(na));
+        Assert.True(na.EqualOrEitherNa(a));
+    }
+
+    [Fact]
+    public void EqualOrEitherNa_BothNa_ReturnsTrue()
+    {
+        var a = NaFloat<double>.Na;
+        var b = NaFloat<double>.Na;
+        Assert.True(a.EqualOrEitherNa(b));
+    }
+
+    [Fact]
+    public void CreateChecked_FromNaFloat_ToFloat_Succeeds()
+    {
+        // Exercises NaFloat<double>.TryConvertToChecked<float>
+        var value = new NaFloat<double>(42.5);
+        var converted = float.CreateChecked(value);
+        Assert.Equal(42.5f, converted);
+    }
+
+    [Fact]
+    public void CreateSaturating_FromNaFloat_ToFloat_Succeeds()
+    {
+        var value = new NaFloat<double>(42.5);
+        var converted = float.CreateSaturating(value);
+        Assert.Equal(42.5f, converted);
+    }
+
+    [Fact]
+    public void CreateTruncating_FromNaFloat_ToFloat_Succeeds()
+    {
+        var value = new NaFloat<double>(42.5);
+        var converted = float.CreateTruncating(value);
+        Assert.Equal(42.5f, converted);
+    }
+
+    [Fact]
+    public void CreateSaturating_FromNaFloatNa_ToFloat_PreservesNaN()
+    {
+        var converted = float.CreateSaturating(NaFloat<double>.Na);
+        Assert.True(float.IsNaN(converted));
     }
 }

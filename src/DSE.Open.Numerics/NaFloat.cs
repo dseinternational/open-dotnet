@@ -91,7 +91,7 @@ public readonly struct NaFloat<T>
 
     public bool EqualOrEitherNa(NaFloat<T> other)
     {
-        return (IsNa && other.IsNa) || _value == other._value;
+        return IsNa || other.IsNa || _value == other._value;
     }
 
     public override int GetHashCode()
@@ -425,74 +425,40 @@ public readonly struct NaFloat<T>
 
     static bool INumberBase<NaFloat<T>>.TryConvertToChecked<TOther>(NaFloat<T> value, out TOther result)
     {
-        if (value is NaFloat<T> naValue)
+        if (typeof(TOther) == typeof(NaFloat<T>))
         {
-            result = (TOther)(object)naValue;
+            result = (TOther)(object)value;
             return true;
         }
 
-        if (value is T tValue)
-        {
-            result = (TOther)(object)tValue;
-            return true;
-        }
-
-        if (T.TryConvertToChecked<T>(value._value, out var valResult))
-        {
-            result = (TOther)(object)valResult;
-            return true;
-        }
-
-        result = default!;
-        return false;
+        // Mirror CreateChecked's two-direction fallback so that both T's own
+        // narrowing conversions and TOther's widening conversions are reachable.
+        return T.TryConvertToChecked(value._value, out result!)
+            || TOther.TryConvertFromChecked(value._value, out result!);
     }
 
     static bool INumberBase<NaFloat<T>>.TryConvertToSaturating<TOther>(NaFloat<T> value, out TOther result)
     {
-        if (value is NaFloat<T> naValue)
+        if (typeof(TOther) == typeof(NaFloat<T>))
         {
-            result = (TOther)(object)naValue;
+            result = (TOther)(object)value;
             return true;
         }
 
-        if (value is T tValue)
-        {
-            result = (TOther)(object)tValue;
-            return true;
-        }
-
-        if (T.TryConvertToSaturating<T>(value._value, out var valResult))
-        {
-            result = (TOther)(object)valResult;
-            return true;
-        }
-
-        result = default!;
-        return false;
+        return T.TryConvertToSaturating(value._value, out result!)
+            || TOther.TryConvertFromSaturating(value._value, out result!);
     }
 
     static bool INumberBase<NaFloat<T>>.TryConvertToTruncating<TOther>(NaFloat<T> value, out TOther result)
     {
-        if (value is NaFloat<T> naValue)
+        if (typeof(TOther) == typeof(NaFloat<T>))
         {
-            result = (TOther)(object)naValue;
+            result = (TOther)(object)value;
             return true;
         }
 
-        if (value is T tValue)
-        {
-            result = (TOther)(object)tValue;
-            return true;
-        }
-
-        if (T.TryConvertToTruncating<T>(value._value, out var valResult))
-        {
-            result = (TOther)(object)valResult;
-            return true;
-        }
-
-        result = default!;
-        return false;
+        return T.TryConvertToTruncating(value._value, out result!)
+            || TOther.TryConvertFromTruncating(value._value, out result!);
     }
 
     public static bool TryParse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider, out NaFloat<T> result)
