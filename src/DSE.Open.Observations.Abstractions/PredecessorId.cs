@@ -1,11 +1,13 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Buffers;
 using System.IO.Hashing;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json.Serialization;
 using DSE.Open.Hashing;
+using DSE.Open.Runtime.Helpers;
 using DSE.Open.Values;
 using DSE.Open.Values.Text.Json.Serialization;
 
@@ -94,7 +96,7 @@ public readonly partial struct PredecessorId
 #pragma warning disable CA5394 // Do not use insecure randomness
     public static PredecessorId GetRandomId()
     {
-        return (PredecessorId)(ulong)Random.Shared.NextInt64((long)MinIdValue, (long)MaxIdValue);
+        return (PredecessorId)(ulong)Random.Shared.NextInt64((long)MinIdValue, (long)MaxIdValue + 1);
     }
 #pragma warning restore CA5394 // Do not use insecure randomness
 
@@ -107,9 +109,24 @@ public readonly partial struct PredecessorId
     public static PredecessorId FromUri(ReadOnlySpan<char> urn)
     {
         var c = Encoding.UTF8.GetByteCount(urn);
-        Span<byte> b = stackalloc byte[c];
-        _ = Encoding.UTF8.GetBytes(urn, b);
-        return (PredecessorId)(MinIdValue + (ulong)(XxHash3.HashToUInt64(b) / (decimal)ulong.MaxValue * MaxRange));
+
+        byte[]? rented = null;
+        Span<byte> b = MemoryThresholds.CanStackalloc<byte>(c)
+            ? stackalloc byte[c]
+            : (rented = ArrayPool<byte>.Shared.Rent(c));
+
+        try
+        {
+            var written = Encoding.UTF8.GetBytes(urn, b);
+            return (PredecessorId)(MinIdValue + (ulong)(XxHash3.HashToUInt64(b[..written]) / (decimal)ulong.MaxValue * MaxRange));
+        }
+        finally
+        {
+            if (rented is not null)
+            {
+                ArrayPool<byte>.Shared.Return(rented);
+            }
+        }
     }
 
     public static PredecessorId FromMeasures(Uri head, Uri tail)

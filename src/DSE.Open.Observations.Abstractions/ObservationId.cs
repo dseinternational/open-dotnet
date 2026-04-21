@@ -86,7 +86,7 @@ public readonly partial struct ObservationId
 
     public static ObservationId GetRandomId()
     {
-        return (ObservationId)RandomValueGenerator.GetUInt64Value(MinIdValue, MaxIdValue);
+        return (ObservationId)RandomValueGenerator.GetUInt64Value(MinIdValue, MaxIdValue + 1);
     }
 
     public ulong GetRepeatableHashCode()

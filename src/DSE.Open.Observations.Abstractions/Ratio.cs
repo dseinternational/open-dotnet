@@ -10,7 +10,7 @@ using DSE.Open.Values;
 namespace DSE.Open.Observations;
 
 /// <summary>
-/// A value that expresses a ratio as a signed value between 0 and 1 (values between -1 and 1).
+/// A value that expresses a ratio as a signed value in the inclusive range -1 to 1.
 /// </summary>
 [DivisibleValue]
 [JsonConverter(typeof(JsonDecimalValueConverter<Ratio>))]
@@ -21,9 +21,9 @@ public readonly partial struct Ratio
       IRepeatableHash64,
       IObservationValue
 {
-    public static int MaxSerializedCharLength => 128; // TODO
+    public static int MaxSerializedCharLength => 32;
 
-    public static int MaxSerializedByteLength => 128; // TODO
+    public static int MaxSerializedByteLength => 32;
 
     public static Ratio Zero { get; } = new(0);
 
