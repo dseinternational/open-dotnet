@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Text.Json;
+
 namespace DSE.Open.Abstractions.Tests;
 
 public class PaginationOptionsTests
@@ -17,6 +19,20 @@ public class PaginationOptionsTests
         // Assert
         Assert.Equal(expected.PageSize, actual.PageSize);
         Assert.Equal(expected.PageNumber, actual.PageNumber);
+    }
+
+    [Fact]
+    public void Default_JsonRoundTrip_ShouldNotThrow()
+    {
+        // Arrange
+        var json = JsonSerializer.Serialize(PaginationOptions.Default);
+
+        // Act
+        var actual = JsonSerializer.Deserialize<PaginationOptions>(json);
+
+        // Assert
+        Assert.Equal(PaginationOptions.DefaultPageSize, actual.PageSize);
+        Assert.Equal(PaginationOptions.DefaultPageNumber, actual.PageNumber);
     }
 
     [Fact]

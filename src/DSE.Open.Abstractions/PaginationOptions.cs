@@ -25,7 +25,7 @@ public readonly record struct PaginationOptions
     /// <summary>
     /// The default pagination options, with a page size of <see cref="DefaultPageSize"/> and a page number of <see cref="DefaultPageNumber"/>.
     /// </summary>
-    public static readonly PaginationOptions Default;
+    public static readonly PaginationOptions Default = new(DefaultPageSize, DefaultPageNumber);
 
     private readonly int _pageSize;
     private readonly int _pageNumber;

@@ -3,21 +3,50 @@
 
 namespace DSE.Open.DomainModel.Entities;
 
+/// <summary>
+/// Event-raising entity that tracks <see cref="Created"/> / <see cref="Updated"/>
+/// timestamps.
+/// </summary>
+/// <remarks>
+/// See <see cref="EventRaisingEntity{TId}"/> / <see cref="StoredObject"/> for the
+/// constructor contract. Concrete derived types must declare a
+/// <see cref="MaterializationConstructorAttribute"/>-marked constructor that chains
+/// to <see cref="UpdateTimesTrackedEventRaisingEntity{TId}(TId, DateTimeOffset?, DateTimeOffset?)"/>;
+/// the parameterless and <c>(TId)</c> constructors are the domain-facing
+/// 'new entity' paths.
+/// </remarks>
 public abstract class UpdateTimesTrackedEventRaisingEntity<TId> : EventRaisingEntity<TId>, IUpdateTimesTracked
     where TId : struct, IEquatable<TId>
 {
     private DateTimeOffset? _created;
     private DateTimeOffset? _updated;
 
+    /// <summary>
+    /// Initializes a newly created entity with an unset
+    /// <see cref="Entity{TId}.Id"/> and unset timestamps. Intended for use by
+    /// derived classes' domain-facing 'new entity' constructors.
+    /// </summary>
     protected UpdateTimesTrackedEventRaisingEntity()
     {
     }
 
+    /// <summary>
+    /// Initializes a newly created entity with a known <paramref name="id"/> and
+    /// unset timestamps — timestamps are expected to be populated via
+    /// <see cref="IUpdateTimesTracked.SetCreated(TimeProvider?)"/> before the entity
+    /// is persisted.
+    /// </summary>
     protected UpdateTimesTrackedEventRaisingEntity(TId id)
         : base(id, StoredObjectInitialization.Created)
     {
     }
 
+    /// <summary>
+    /// Materialization constructor — derived concrete types should chain to this from
+    /// a <see cref="MaterializationConstructorAttribute"/>-marked constructor when
+    /// reconstituting the entity from storage. All values must be present and
+    /// non-default.
+    /// </summary>
     protected UpdateTimesTrackedEventRaisingEntity(TId id, DateTimeOffset? created, DateTimeOffset? updated)
         : base(id, StoredObjectInitialization.Materialized)
     {

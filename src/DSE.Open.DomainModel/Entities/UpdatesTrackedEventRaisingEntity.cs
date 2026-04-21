@@ -3,6 +3,18 @@
 
 namespace DSE.Open.DomainModel.Entities;
 
+/// <summary>
+/// Event-raising entity that tracks <see cref="Created"/> / <see cref="Updated"/>
+/// timestamps and carries a concurrency <see cref="Timestamp"/>.
+/// </summary>
+/// <remarks>
+/// See <see cref="EventRaisingEntity{TId}"/> / <see cref="StoredObject"/> for the
+/// constructor contract. Concrete derived types must declare a
+/// <see cref="MaterializationConstructorAttribute"/>-marked constructor that chains
+/// to <see cref="UpdatesTrackedEventRaisingEntity{TId}(TId, DateTimeOffset?, DateTimeOffset?, Timestamp?)"/>;
+/// the parameterless and <c>(TId)</c> constructors are the domain-facing
+/// 'new entity' paths.
+/// </remarks>
 public abstract class UpdatesTrackedEventRaisingEntity<TId> : EventRaisingEntity<TId>, IUpdatesTracked
     where TId : struct, IEquatable<TId>
 {
@@ -10,15 +22,34 @@ public abstract class UpdatesTrackedEventRaisingEntity<TId> : EventRaisingEntity
     private DateTimeOffset? _updated;
     private readonly Timestamp? _timestamp;
 
+    /// <summary>
+    /// Initializes a newly created entity with an unset
+    /// <see cref="Entity{TId}.Id"/>, unset timestamps and no concurrency
+    /// <see cref="Timestamp"/>. Intended for use by derived classes' domain-facing
+    /// 'new entity' constructors.
+    /// </summary>
     protected UpdatesTrackedEventRaisingEntity()
     {
     }
 
+    /// <summary>
+    /// Initializes a newly created entity with a known <paramref name="id"/>, unset
+    /// timestamps and no concurrency <see cref="Timestamp"/> — timestamps are
+    /// expected to be populated via
+    /// <see cref="IUpdateTimesTracked.SetCreated(TimeProvider?)"/> before the entity
+    /// is persisted.
+    /// </summary>
     protected UpdatesTrackedEventRaisingEntity(TId id)
         : base(id, StoredObjectInitialization.Created)
     {
     }
 
+    /// <summary>
+    /// Materialization constructor — derived concrete types should chain to this from
+    /// a <see cref="MaterializationConstructorAttribute"/>-marked constructor when
+    /// reconstituting the entity from storage. All values must be present and
+    /// non-default.
+    /// </summary>
     protected UpdatesTrackedEventRaisingEntity(TId id, DateTimeOffset? created, DateTimeOffset? updated, Timestamp? timestamp)
         : base(id, StoredObjectInitialization.Materialized)
     {
