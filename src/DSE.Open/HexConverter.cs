@@ -2,7 +2,6 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Buffers;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace DSE.Open;
@@ -38,6 +37,12 @@ internal static class HexConverter
 
     private static bool TryEncodeToHex(ReadOnlySpan<byte> data, Span<byte> utf8Destination, out int bytesWritten, Casing casing)
     {
+        if (utf8Destination.Length < data.Length * 2)
+        {
+            bytesWritten = 0;
+            return false;
+        }
+
         for (var i = 0; i < data.Length; i++)
         {
             ToBytesBuffer(data[i], utf8Destination, i * 2, casing);
@@ -59,7 +64,11 @@ internal static class HexConverter
 
     private static bool TryEncodeToHex(ReadOnlySpan<byte> data, Span<char> destination, out int charsWritten, Casing casing)
     {
-        Debug.Assert(destination.Length >= data.Length * 2);
+        if (destination.Length < data.Length * 2)
+        {
+            charsWritten = 0;
+            return false;
+        }
 
         for (var pos = 0; pos < data.Length; pos++)
         {
@@ -124,6 +133,12 @@ internal static class HexConverter
     public static bool TryConvertFromUtf8(ReadOnlySpan<byte> source, Span<byte> destination, out int bytesWritten)
     {
         if (source.Length % 2 != 0)
+        {
+            bytesWritten = 0;
+            return false;
+        }
+
+        if (destination.Length < source.Length / 2)
         {
             bytesWritten = 0;
             return false;
