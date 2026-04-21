@@ -311,6 +311,68 @@ public sealed class ObservationTests
     }
 
     [Fact]
+    public void RepeatableHash_Value_DistinguishesByValue()
+    {
+        var tp = new FakeTimeProvider(new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero));
+        var id = ObservationId.Parse("3840829473618409", CultureInfo.InvariantCulture);
+
+        var obs1 = new Observation<Binary>(id, tp.GetUtcNow(), TestMeasures.BinaryMeasure.Id, Binary.True, tp);
+        var obs2 = new Observation<Binary>(id, tp.GetUtcNow(), TestMeasures.BinaryMeasure.Id, Binary.False, tp);
+
+        Assert.NotEqual(obs1.GetRepeatableHashCode(), obs2.GetRepeatableHashCode());
+    }
+
+    [Fact]
+    public void RepeatableHash_ValueParam_DistinguishesByValue()
+    {
+        // Regression: Observation<TValue, TParam>.GetRepeatableHashCode previously hashed
+        // Parameter but not Value, so two observations differing only by Value collided.
+        var tp = new FakeTimeProvider(new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero));
+        var id = ObservationId.Parse("3840829473618409", CultureInfo.InvariantCulture);
+
+        var obs1 = new Observation<BehaviorFrequency, SpeechSound>(
+            id, tp.GetUtcNow(), TestMeasures.BehaviorFrequencySpeechSoundMeasure.Id,
+            Phonemes.English.ay.Abstraction, BehaviorFrequency.Achieved, tp);
+        var obs2 = new Observation<BehaviorFrequency, SpeechSound>(
+            id, tp.GetUtcNow(), TestMeasures.BehaviorFrequencySpeechSoundMeasure.Id,
+            Phonemes.English.ay.Abstraction, BehaviorFrequency.Developing, tp);
+
+        Assert.NotEqual(obs1.GetRepeatableHashCode(), obs2.GetRepeatableHashCode());
+    }
+
+    [Fact]
+    public void RepeatableHash_ValueParam_DistinguishesByParameter()
+    {
+        var tp = new FakeTimeProvider(new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero));
+        var id = ObservationId.Parse("3840829473618409", CultureInfo.InvariantCulture);
+
+        var obs1 = new Observation<BehaviorFrequency, SpeechSound>(
+            id, tp.GetUtcNow(), TestMeasures.BehaviorFrequencySpeechSoundMeasure.Id,
+            Phonemes.English.ay.Abstraction, BehaviorFrequency.Achieved, tp);
+        var obs2 = new Observation<BehaviorFrequency, SpeechSound>(
+            id, tp.GetUtcNow(), TestMeasures.BehaviorFrequencySpeechSoundMeasure.Id,
+            Phonemes.English.ch.Abstraction, BehaviorFrequency.Achieved, tp);
+
+        Assert.NotEqual(obs1.GetRepeatableHashCode(), obs2.GetRepeatableHashCode());
+    }
+
+    [Fact]
+    public void RepeatableHash_ValueParam_StableAcrossInstances()
+    {
+        var tp = new FakeTimeProvider(new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero));
+        var id = ObservationId.Parse("3840829473618409", CultureInfo.InvariantCulture);
+
+        var obs1 = new Observation<BehaviorFrequency, SpeechSound>(
+            id, tp.GetUtcNow(), TestMeasures.BehaviorFrequencySpeechSoundMeasure.Id,
+            Phonemes.English.ay.Abstraction, BehaviorFrequency.Achieved, tp);
+        var obs2 = new Observation<BehaviorFrequency, SpeechSound>(
+            id, tp.GetUtcNow(), TestMeasures.BehaviorFrequencySpeechSoundMeasure.Id,
+            Phonemes.English.ay.Abstraction, BehaviorFrequency.Achieved, tp);
+
+        Assert.Equal(obs1.GetRepeatableHashCode(), obs2.GetRepeatableHashCode());
+    }
+
+    [Fact]
     public void New_WithTime_ShouldTruncateToMilliseconds()
     {
         // Arrange
