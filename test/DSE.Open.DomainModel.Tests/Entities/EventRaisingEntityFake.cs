@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using DSE.Open.DomainModel.Entities;
+using DSE.Open.DomainModel.Events;
 using DSE.Open.DomainModel.Tests.Events;
 
 namespace DSE.Open.DomainModel.Tests.Entities;
@@ -30,5 +31,10 @@ public class EventRaisingEntityFake<TId> : EventRaisingEntity<TId>
         var ev = new DomainBackgroundEventFake("Background Test");
         AddEvent(ev);
         return ev;
+    }
+
+    internal void AddDomainEvent(IDomainEvent @event)
+    {
+        AddEvent(@event);
     }
 }
