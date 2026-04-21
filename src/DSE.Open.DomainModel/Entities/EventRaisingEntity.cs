@@ -6,15 +6,41 @@ using DSE.Open.DomainModel.Events;
 
 namespace DSE.Open.DomainModel.Entities;
 
+/// <summary>
+/// Base class for entities that can raise domain events.
+/// </summary>
+/// <remarks>
+/// See <see cref="Entity{TId}"/> / <see cref="StoredObject"/> for the constructor
+/// contract. Concrete derived types must declare a
+/// <see cref="MaterializationConstructorAttribute"/>-marked constructor that chains
+/// to <see cref="EventRaisingEntity{TId}(TId, StoredObjectInitialization)"/> with
+/// <see cref="StoredObjectInitialization.Materialized"/>; the parameterless base
+/// constructor is reserved for the domain-facing 'new entity' path.
+/// </remarks>
 public abstract class EventRaisingEntity<TId> : Entity<TId>, IEventRaisingEntity<TId>
     where TId : struct, IEquatable<TId>
 {
     private readonly Lazy<List<IDomainEvent>> _events = new(() => new());
 
+    /// <summary>
+    /// Initializes a new entity with an unset <see cref="Entity{TId}.Id"/> and
+    /// <see cref="StoredObject.Initialization"/> set to
+    /// <see cref="StoredObjectInitialization.Created"/>. Intended for use by
+    /// derived classes' domain-facing 'new entity' constructors only.
+    /// </summary>
     protected EventRaisingEntity()
     {
     }
 
+    /// <summary>
+    /// Initializes an entity with a known <paramref name="id"/> — see
+    /// <see cref="Entity{TId}(TId, StoredObjectInitialization)"/>.
+    /// </summary>
+    /// <remarks>
+    /// Derived concrete entity types should chain to this constructor from a
+    /// constructor marked with <see cref="MaterializationConstructorAttribute"/>
+    /// when they need to be reconstituted from storage.
+    /// </remarks>
     protected EventRaisingEntity(TId id, StoredObjectInitialization initialization = StoredObjectInitialization.Created)
         : base(id, initialization)
     {

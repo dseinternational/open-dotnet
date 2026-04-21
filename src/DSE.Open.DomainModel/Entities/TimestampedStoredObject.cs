@@ -3,15 +3,36 @@
 
 namespace DSE.Open.DomainModel.Entities;
 
+/// <summary>
+/// Stored object that carries a concurrency <see cref="Timestamp"/>.
+/// </summary>
+/// <remarks>
+/// See <see cref="StoredObject"/> for the constructor contract. The parameterless
+/// constructor is the 'new object' path; the <c>(Timestamp?)</c> constructor is
+/// the materialization path and derived concrete types must chain to it from a
+/// constructor marked with <see cref="MaterializationConstructorAttribute"/>.
+/// </remarks>
 public abstract class TimestampedStoredObject : StoredObject, ITimestamped
 {
     private readonly Timestamp? _timestamp;
 
+    /// <summary>
+    /// Initializes a newly created stored object — <see cref="Timestamp"/> is unset
+    /// and <see cref="StoredObject.Initialization"/> is
+    /// <see cref="StoredObjectInitialization.Created"/>.
+    /// </summary>
     protected TimestampedStoredObject()
         : base(StoredObjectInitialization.Created)
     {
     }
 
+    /// <summary>
+    /// Materialization constructor — derived concrete types should chain to this from
+    /// a <see cref="MaterializationConstructorAttribute"/>-marked constructor when
+    /// reconstituting the object from storage.
+    /// </summary>
+    /// <param name="timestamp">Concurrency timestamp loaded from storage. Must be non-null
+    /// and non-default.</param>
     protected TimestampedStoredObject(Timestamp? timestamp)
         : base(StoredObjectInitialization.Materialized)
     {
