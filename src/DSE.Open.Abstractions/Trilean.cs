@@ -82,7 +82,7 @@ public readonly struct Trilean
 
     public Trilean TernaryEquals(Trilean other)
     {
-        return Equals(this, other);
+        return TernaryEquals(this, other);
     }
 
     bool IEquatable<Trilean>.Equals(Trilean other)
@@ -350,29 +350,43 @@ public readonly struct Trilean
         return FromBoolean(b);
     }
 
-    public static Trilean Equals(Trilean left, Trilean right)
+    /// <summary>
+    /// Returns a three-valued (ternary) equality comparison of <paramref name="left"/> and
+    /// <paramref name="right"/>: <see cref="Na"/> if either operand is <see cref="Na"/>,
+    /// otherwise <see cref="True"/> or <see cref="False"/>.
+    /// </summary>
+    /// <remarks>
+    /// The <c>==</c> and <c>!=</c> operators on two <see cref="Trilean"/> values return
+    /// <see langword="bool"/> with standard <see cref="IEquatable{T}"/> semantics
+    /// (<c>Na == Na</c> is <see langword="true"/>). Use this method when you need
+    /// SQL-style three-valued equality.
+    /// </remarks>
+    public static Trilean TernaryEquals(Trilean left, Trilean right)
     {
         if (left.IsNa || right.IsNa)
         {
-            return null;
+            return Na;
         }
 
-        if (left._value.Equals(right._value))
-        {
-            return True;
-        }
-
-        return False;
+        return left._value == right._value ? True : False;
     }
 
-    public static Trilean operator ==(Trilean left, Trilean right)
+    /// <summary>
+    /// Returns <see langword="true"/> if <paramref name="left"/> and <paramref name="right"/>
+    /// are the same value, including when both are <see cref="Na"/>.
+    /// </summary>
+    /// <remarks>
+    /// This matches <see cref="IEquatable{T}"/> semantics. For SQL-style three-valued
+    /// equality (where <c>Na == Na</c> is <see cref="Na"/>), use <see cref="TernaryEquals(Trilean, Trilean)"/>.
+    /// </remarks>
+    public static bool operator ==(Trilean left, Trilean right)
     {
-        return Equals(left, right);
+        return left._value == right._value;
     }
 
-    public static Trilean operator !=(Trilean left, Trilean right)
+    public static bool operator !=(Trilean left, Trilean right)
     {
-        return !Equals(left, right);
+        return left._value != right._value;
     }
 
     public static bool Equals(Trilean left, bool right)
@@ -476,6 +490,18 @@ public readonly struct Trilean
         return LogicalXor(left, right);
     }
 
+    /// <summary>
+    /// Parses a <see cref="Trilean"/> from the given span, throwing if the input is not recognised.
+    /// </summary>
+    /// <remarks>
+    /// Accepted inputs (case-insensitive):
+    /// <list type="bullet">
+    ///   <item><description><c>"True"</c> or <c>"1"</c> — <see cref="True"/>.</description></item>
+    ///   <item><description><c>"False"</c> or <c>"2"</c> — <see cref="False"/>.</description></item>
+    ///   <item><description><c>"Unknown"</c>, <c>"Null"</c>, <c>"0"</c>, or the empty span — <see cref="Na"/>.</description></item>
+    /// </list>
+    /// Note that an empty span parses successfully as <see cref="Na"/>; it does not fail.
+    /// </remarks>
     public static Trilean Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
     {
         if (TryParse(s, provider, out var result))
@@ -487,6 +513,19 @@ public readonly struct Trilean
         return default; // unreachable
     }
 
+    /// <summary>
+    /// Attempts to parse a <see cref="Trilean"/> from the given span.
+    /// </summary>
+    /// <remarks>
+    /// Accepted inputs (case-insensitive):
+    /// <list type="bullet">
+    ///   <item><description><c>"True"</c> or <c>"1"</c> — <see cref="True"/>.</description></item>
+    ///   <item><description><c>"False"</c> or <c>"2"</c> — <see cref="False"/>.</description></item>
+    ///   <item><description><c>"Unknown"</c>, <c>"Null"</c>, <c>"0"</c>, or the empty span — <see cref="Na"/>.</description></item>
+    /// </list>
+    /// Note that an empty span parses successfully as <see cref="Na"/>; the method returns
+    /// <see langword="true"/> and sets <paramref name="result"/> to <see cref="Na"/>.
+    /// </remarks>
     public static bool TryParse(
         ReadOnlySpan<char> s,
         IFormatProvider? provider,
