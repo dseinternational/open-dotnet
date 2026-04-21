@@ -19,7 +19,9 @@ public abstract class ObservationEqualityComparer<T> : EqualityComparer<T>
                 return false;
             }
 
-            return x.GetMeasurementHashCode() == y.GetMeasurementHashCode();
+            return x.MeasureId == y.MeasureId
+                && Equals(x.Parameter, y.Parameter)
+                && Equals(x.Parameter2, y.Parameter2);
         }
 
         public override int GetHashCode(T obj)
