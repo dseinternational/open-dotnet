@@ -12,7 +12,7 @@ namespace DSE.Open.DomainModel.Events;
 /// </summary>
 public abstract class DomainEvent<TData> : IDomainEvent<TData>
 {
-    private Identifier _id;
+    private readonly Identifier _id;
 
     protected DomainEvent(TData data)
     {
@@ -22,6 +22,7 @@ public abstract class DomainEvent<TData> : IDomainEvent<TData>
             throw new InvalidOperationException("Source must be provided.");
 
         Data = data;
+        _id = Identifier.New("dse_evt");
     }
 
     /// <summary>
@@ -38,7 +39,7 @@ public abstract class DomainEvent<TData> : IDomainEvent<TData>
     object? IEvent.Data => Data;
 
     /// <inheritdoc />
-    public virtual Identifier Id => _id != default ? _id : (_id = Identifier.New("dse_evt"));
+    public virtual Identifier Id => _id;
 
     /// <inheritdoc />
     public Uri Source { get; }
