@@ -23,7 +23,7 @@ public readonly partial struct AsciiChar
       ISpanFormattable,
       ISpanParsable<AsciiChar>,
       IUtf8SpanSerializable<AsciiChar>,
-      ISpanFormatableCharCountProvider
+      ISpanFormattableCharCountProvider
 {
     private readonly byte _asciiByte;
 

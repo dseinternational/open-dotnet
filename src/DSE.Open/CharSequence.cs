@@ -24,7 +24,7 @@ public readonly struct CharSequence
       IComparable<CharSequence>,
       ISpanFormattable,
       ISpanParsable<CharSequence>,
-      ISpanFormatableCharCountProvider,
+      ISpanFormattableCharCountProvider,
       IRepeatableHash64
 {
     private readonly ReadOnlyMemory<char> _value;

@@ -22,7 +22,7 @@ public readonly record struct SpeechTranscription
     : IEquatable<SpeechTranscription>,
       ISpanFormattable,
       ISpanParsable<SpeechTranscription>,
-      ISpanFormatableCharCountProvider
+      ISpanFormattableCharCountProvider
 {
     private readonly SpeechSymbolSequence _transcription;
     private readonly TranscriptionNotation _notation;
@@ -269,14 +269,14 @@ public readonly record struct SpeechTranscription
         return false;
     }
 
-    int ISpanFormatableCharCountProvider.GetCharCount(ReadOnlySpan<char> format, IFormatProvider? provider)
+    int ISpanFormattableCharCountProvider.GetCharCount(ReadOnlySpan<char> format, IFormatProvider? provider)
     {
         return _notation == TranscriptionNotation.Undefined
             ? _transcription.Length
             : _transcription.Length + 2;
     }
 
-    int IFormatableCharCountProvider.GetCharCount(string? format, IFormatProvider? formatProvider)
+    int IFormattableCharCountProvider.GetCharCount(string? format, IFormatProvider? formatProvider)
     {
         return _notation == TranscriptionNotation.Undefined
             ? _transcription.Length
