@@ -19,7 +19,7 @@ public abstract class ValueLabelCollection : IReadOnlyValueLabelCollection
 public sealed class ValueLabelCollection<T> : ValueLabelCollection, IValueLabelCollection<T>
     where T : IEquatable<T>
 {
-    private Dictionary<ulong, int>? _valueIndexLookup;
+    private Dictionary<T, int>? _valueIndexLookup;
     private Dictionary<string, int>? _labelIndexLookup;
     private readonly Collection<ValueLabel<T>> _valueLabels;
 
@@ -46,7 +46,7 @@ public sealed class ValueLabelCollection<T> : ValueLabelCollection, IValueLabelC
                 throw new KeyNotFoundException($"Data {data} not found.");
             }
 
-            return _valueLabels[ValueIndexLookup[ValueLabelCollectionHelper.GetHash(data)]].Label;
+            return _valueLabels[ValueIndexLookup[data]].Label;
         }
         set => Add(new ValueLabel<T>(data, value));
     }
@@ -57,15 +57,12 @@ public sealed class ValueLabelCollection<T> : ValueLabelCollection, IValueLabelC
 
     public void Add(ValueLabel<T> label)
     {
-        var key = ValueLabelCollectionHelper.GetHash(label.Value);
-
-        if (ValueIndexLookup.ContainsKey(key))
+        if (ValueIndexLookup.ContainsKey(label.Value))
         {
             throw new ArgumentException($"Label already included for label {label}", nameof(label));
         }
 
-        // before _valueLabels.Add
-        ValueIndexLookup.Add(key, _valueLabels.Count);
+        ValueIndexLookup.Add(label.Value, _valueLabels.Count);
         LabelIndexLookup.Add(label.Label, _valueLabels.Count);
 
         _valueLabels.Add(label);
@@ -96,9 +93,7 @@ public sealed class ValueLabelCollection<T> : ValueLabelCollection, IValueLabelC
             return false;
         }
 
-        var key = ValueLabelCollectionHelper.GetHash(item.Value);
-
-        if (!ValueIndexLookup.TryGetValue(key, out var index))
+        if (!ValueIndexLookup.TryGetValue(item.Value, out var index))
         {
             return false;
         }
@@ -125,9 +120,7 @@ public sealed class ValueLabelCollection<T> : ValueLabelCollection, IValueLabelC
             return false;
         }
 
-        var key = ValueLabelCollectionHelper.GetHash(value);
-
-        return ValueIndexLookup.ContainsKey(key);
+        return ValueIndexLookup.ContainsKey(value);
     }
 
     public IEnumerator<ValueLabel<T>> GetEnumerator()
@@ -167,9 +160,7 @@ public sealed class ValueLabelCollection<T> : ValueLabelCollection, IValueLabelC
             return false;
         }
 
-        var key = ValueLabelCollectionHelper.GetHash(item.Value);
-
-        if (!ValueIndexLookup.TryGetValue(key, out var index))
+        if (!ValueIndexLookup.TryGetValue(item.Value, out var index))
         {
             return false;
         }
@@ -179,17 +170,15 @@ public sealed class ValueLabelCollection<T> : ValueLabelCollection, IValueLabelC
             return false;
         }
 
-        var label = _valueLabels[index].Label;
-
-        _ = ValueIndexLookup.Remove(key);
-        _ = LabelIndexLookup.Remove(label);
+        _ = ValueIndexLookup.Remove(item.Value);
+        _ = LabelIndexLookup.Remove(_valueLabels[index].Label);
 
         _valueLabels.RemoveAt(index);
 
         for (var i = index; i < _valueLabels.Count; i++)
         {
-            ValueIndexLookup[ValueLabelCollectionHelper.GetHash(_valueLabels[i].Value)] = i;
-            LabelIndexLookup[label] = i;
+            ValueIndexLookup[_valueLabels[i].Value] = i;
+            LabelIndexLookup[_valueLabels[i].Label] = i;
         }
 
         return true;
@@ -203,9 +192,7 @@ public sealed class ValueLabelCollection<T> : ValueLabelCollection, IValueLabelC
             return false;
         }
 
-        var key = ValueLabelCollectionHelper.GetHash(value);
-
-        if (ValueIndexLookup.TryGetValue(key, out var index))
+        if (ValueIndexLookup.TryGetValue(value, out var index))
         {
             label = _valueLabels[index].Label;
             return true;
@@ -225,20 +212,17 @@ public sealed class ValueLabelCollection<T> : ValueLabelCollection, IValueLabelC
             return false;
         }
 
-        for (var i = 0; i < _valueLabels.Count; i++)
+        if (LabelIndexLookup.TryGetValue(label, out var index))
         {
-            if (_valueLabels[i].Label == label)
-            {
-                value = _valueLabels[i].Value;
-                return true;
-            }
+            value = _valueLabels[index].Value;
+            return true;
         }
 
         value = default!;
         return false;
     }
 
-    private Dictionary<ulong, int> ValueIndexLookup
+    private Dictionary<T, int> ValueIndexLookup
     {
         get
         {
@@ -247,11 +231,11 @@ public sealed class ValueLabelCollection<T> : ValueLabelCollection, IValueLabelC
                 return _valueIndexLookup;
             }
 
-            _valueIndexLookup = new Dictionary<ulong, int>(_valueLabels.Count);
+            _valueIndexLookup = new Dictionary<T, int>(_valueLabels.Count, EqualityComparer<T>.Default);
 
             for (var i = 0; i < _valueLabels.Count; i++)
             {
-                _valueIndexLookup.Add(ValueLabelCollectionHelper.GetHash(_valueLabels[i].Value), i);
+                _valueIndexLookup.Add(_valueLabels[i].Value, i);
             }
 
             return _valueIndexLookup;
