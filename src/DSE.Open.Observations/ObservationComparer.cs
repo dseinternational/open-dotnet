@@ -21,7 +21,49 @@ public abstract class ObservationComparer : Comparer<IObservation>
                 return 1;
             }
 
-            return x.GetMeasurementHashCode().CompareTo(y.GetMeasurementHashCode());
+            var c = x.MeasureId.ToUInt64().CompareTo(y.MeasureId.ToUInt64());
+            if (c != 0)
+            {
+                return c;
+            }
+
+            c = CompareParameter(x.Parameter, y.Parameter);
+            if (c != 0)
+            {
+                return c;
+            }
+
+            return CompareParameter(x.Parameter2, y.Parameter2);
+        }
+
+        private static int CompareParameter(object? x, object? y)
+        {
+            if (ReferenceEquals(x, y))
+            {
+                return 0;
+            }
+
+            if (x is null)
+            {
+                return -1;
+            }
+
+            if (y is null)
+            {
+                return 1;
+            }
+
+            if (Equals(x, y))
+            {
+                return 0;
+            }
+
+            if (x.GetType() == y.GetType() && x is IComparable xc)
+            {
+                return xc.CompareTo(y);
+            }
+
+            return string.CompareOrdinal(x.ToString(), y.ToString());
         }
     }
 }
