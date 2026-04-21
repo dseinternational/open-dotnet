@@ -24,11 +24,6 @@ public class EntityDataInitializationException : EntityDataException
     {
     }
 
-    public EntityDataInitializationException(string parameterName, ValidationResult? validationResult, string? message = null)
-        : this(parameterName, validationResult, message, null)
-    {
-    }
-
     public EntityDataInitializationException(string parameterName, ValidationResult? validationResult = null, string? message = null, Exception? innerException = null)
         : base(message ?? DefaultMessage + parameterName, innerException)
     {
