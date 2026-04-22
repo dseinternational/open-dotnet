@@ -11,6 +11,6 @@ notebook>=7.5.4
 matplotlib>=3.10.8
 stanza>=1.11.1
 sentence-transformers>=5.4.1
-einops>=0.8.1
+einops>=0.8.2
 setuptools>=81.0.0
 hf-xet>=1.1.9
