@@ -62,8 +62,6 @@ updates:
       xunit:
         patterns:
           - "xunit*"
-    reviewers:
-      - frankbuckley
     assignees:
       - frankbuckley
 
@@ -74,8 +72,25 @@ updates:
       time: "05:00"
       timezone: "Europe/London"
     open-pull-requests-limit: 20
-    reviewers:
-      - frankbuckley
+    groups:
+      Jupyter:
+        patterns:
+          - "ipython*"
+          - "jupyter*"
+          - "jupyterlab*"
+          - "notebook"
+      DataScience:
+        patterns:
+          - "numpy"
+          - "pandas"
+          - "matplotlib"
+      MachineLearning:
+        patterns:
+          - "torch*"
+          - "stanza"
+          - "sentence-transformers"
+          - "einops"
+          - "hf-xet"
     assignees:
       - frankbuckley
 
@@ -86,7 +101,5 @@ updates:
       time: "05:00"
       timezone: "Europe/London"
     open-pull-requests-limit: 20
-    reviewers:
-      - frankbuckley
     assignees:
       - frankbuckley
