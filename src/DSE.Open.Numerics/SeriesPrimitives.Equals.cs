@@ -22,7 +22,7 @@ public static partial class SeriesPrimitives
     {
         ArgumentNullException.ThrowIfNull(x);
         ArgumentNullException.ThrowIfNull(y);
-        return VectorPrimitives.Equals(x.Vector, y.Vector);
+        return WrapTypeChange<T, bool>(VectorPrimitives.Equals(x.Vector, y.Vector), x);
     }
 
     public static Series<bool> Equals<T>(IReadOnlySeries<T> x, T y)
@@ -30,7 +30,7 @@ public static partial class SeriesPrimitives
     {
         ArgumentNullException.ThrowIfNull(x);
         var span = x.Vector.AsSpan();
-        return VectorPrimitives.Equals(in span, in y);
+        return WrapTypeChange<T, bool>(VectorPrimitives.Equals(in span, in y), x);
     }
 
     public static void Equals<T>(

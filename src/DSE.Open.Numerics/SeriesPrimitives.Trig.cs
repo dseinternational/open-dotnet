@@ -18,7 +18,7 @@ public static partial class SeriesPrimitives
         where T : struct, ITrigonometricFunctions<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        return x.Vector.Sin();
+        return WrapUnary(x.Vector.Sin(), x);
     }
 
     public static void Cos<T>(this IReadOnlySeries<T> x, Span<T> destination)
@@ -32,7 +32,7 @@ public static partial class SeriesPrimitives
         where T : struct, ITrigonometricFunctions<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        return x.Vector.Cos();
+        return WrapUnary(x.Vector.Cos(), x);
     }
 
     public static void Tan<T>(this IReadOnlySeries<T> x, Span<T> destination)
@@ -46,7 +46,7 @@ public static partial class SeriesPrimitives
         where T : struct, ITrigonometricFunctions<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        return x.Vector.Tan();
+        return WrapUnary(x.Vector.Tan(), x);
     }
 
     public static void SinCos<T>(
@@ -70,7 +70,7 @@ public static partial class SeriesPrimitives
         where T : struct, ITrigonometricFunctions<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        return x.Vector.Asin();
+        return WrapUnary(x.Vector.Asin(), x);
     }
 
     public static void Acos<T>(this IReadOnlySeries<T> x, Span<T> destination)
@@ -84,7 +84,7 @@ public static partial class SeriesPrimitives
         where T : struct, ITrigonometricFunctions<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        return x.Vector.Acos();
+        return WrapUnary(x.Vector.Acos(), x);
     }
 
     public static void Atan<T>(this IReadOnlySeries<T> x, Span<T> destination)
@@ -98,7 +98,7 @@ public static partial class SeriesPrimitives
         where T : struct, ITrigonometricFunctions<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        return x.Vector.Atan();
+        return WrapUnary(x.Vector.Atan(), x);
     }
 
     public static void Atan2<T>(

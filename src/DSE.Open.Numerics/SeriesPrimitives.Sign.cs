@@ -26,7 +26,7 @@ public static partial class SeriesPrimitives
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        return x.Vector.CopySign(sign);
+        return WrapUnary(x.Vector.CopySign(sign), x);
     }
 
     public static Series<T> CopySign<T>(this IReadOnlySeries<T> x, IReadOnlySeries<T> sign)
@@ -34,7 +34,7 @@ public static partial class SeriesPrimitives
     {
         ArgumentNullException.ThrowIfNull(x);
         ArgumentNullException.ThrowIfNull(sign);
-        return x.Vector.CopySign(sign.Vector);
+        return WrapBinary(x.Vector.CopySign(sign.Vector), x, sign);
     }
 
     public static void Sign<T>(this IReadOnlySeries<T> x, Span<int> destination)
@@ -55,6 +55,6 @@ public static partial class SeriesPrimitives
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        return x.Vector.Sign();
+        return WrapTypeChange<T, int>(x.Vector.Sign(), x);
     }
 }

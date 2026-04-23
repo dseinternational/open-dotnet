@@ -25,7 +25,7 @@ public static partial class SeriesPrimitives
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        return x.Vector.Clamp(min, max);
+        return WrapUnary(x.Vector.Clamp(min, max), x);
     }
 
     public static void ClampInPlace<T>(this ISeries<T> x, T min, T max)

@@ -18,7 +18,7 @@ public static partial class SeriesPrimitives
         where T : struct, ILogarithmicFunctions<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        return x.Vector.Log();
+        return WrapUnary(x.Vector.Log(), x);
     }
 
     public static void LogInPlace<T>(this ISeries<T> x)
@@ -46,7 +46,7 @@ public static partial class SeriesPrimitives
         where T : struct, ILogarithmicFunctions<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        return x.Vector.Log2();
+        return WrapUnary(x.Vector.Log2(), x);
     }
 
     public static void Log2InPlace<T>(this ISeries<T> x)
@@ -67,7 +67,7 @@ public static partial class SeriesPrimitives
         where T : struct, ILogarithmicFunctions<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        return x.Vector.Log10();
+        return WrapUnary(x.Vector.Log10(), x);
     }
 
     public static void Log10InPlace<T>(this ISeries<T> x)

@@ -34,7 +34,7 @@ public static partial class SeriesPrimitives
     {
         ArgumentNullException.ThrowIfNull(x);
         ArgumentNullException.ThrowIfNull(y);
-        return x.Vector.Subtract(y.Vector);
+        return WrapBinary(x.Vector.Subtract(y.Vector), x, y);
     }
 
     public static void Subtract<T>(this IReadOnlySeries<T> x, T y, Span<T> destination)
@@ -56,7 +56,7 @@ public static partial class SeriesPrimitives
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        return x.Vector.Subtract(y);
+        return WrapUnary(x.Vector.Subtract(y), x);
     }
 
     public static void SubtractInPlace<T>(this ISeries<T> x, ReadOnlySpan<T> y)

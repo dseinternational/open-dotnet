@@ -25,7 +25,7 @@ public static partial class SeriesPrimitives
         where T : struct, IRootFunctions<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        return x.Vector.Sqrt();
+        return WrapUnary(x.Vector.Sqrt(), x);
     }
 
     public static void SqrtInPlace<T>(this ISeries<T> x)
@@ -46,7 +46,7 @@ public static partial class SeriesPrimitives
         where T : struct, IRootFunctions<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        return x.Vector.Cbrt();
+        return WrapUnary(x.Vector.Cbrt(), x);
     }
 
     public static void CbrtInPlace<T>(this ISeries<T> x)

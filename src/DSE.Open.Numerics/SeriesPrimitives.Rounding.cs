@@ -20,7 +20,7 @@ public static partial class SeriesPrimitives
         where T : struct, IFloatingPoint<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        return x.Vector.Floor();
+        return WrapUnary(x.Vector.Floor(), x);
     }
 
     public static void FloorInPlace<T>(this ISeries<T> x)
@@ -43,7 +43,7 @@ public static partial class SeriesPrimitives
         where T : struct, IFloatingPoint<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        return x.Vector.Ceiling();
+        return WrapUnary(x.Vector.Ceiling(), x);
     }
 
     public static void CeilingInPlace<T>(this ISeries<T> x)
@@ -91,7 +91,7 @@ public static partial class SeriesPrimitives
         where T : struct, IFloatingPoint<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        return x.Vector.Round();
+        return WrapUnary(x.Vector.Round(), x);
     }
 
     public static void RoundInPlace<T>(this ISeries<T> x)
@@ -114,7 +114,7 @@ public static partial class SeriesPrimitives
         where T : struct, IFloatingPoint<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        return x.Vector.Truncate();
+        return WrapUnary(x.Vector.Truncate(), x);
     }
 
     public static void TruncateInPlace<T>(this ISeries<T> x)
