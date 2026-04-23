@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Numerics;
 using System.Text.Json;
 
 namespace DSE.Open;
@@ -51,4 +52,21 @@ public class Date64Tests
         Assert.Equal(1619827200000, date.TotalMilliseconds);
     }
 
+    [Theory]
+    [InlineData(1L)]
+    [InlineData(1000L)]
+    [InlineData(1619827200000L)]
+    public void UnaryNegation_NegatesValue(long milliseconds)
+    {
+        var value = new DateTime64(milliseconds);
+
+        var negated = Negate(value);
+
+        Assert.Equal(-milliseconds, negated.TotalMilliseconds);
+
+        static T Negate<T>(T v) where T : IUnaryNegationOperators<T, T>
+        {
+            return -v;
+        }
+    }
 }

@@ -12,6 +12,9 @@ public static partial class MemoryExtensions
 {
     internal static class SearchBytes
     {
+        internal static readonly SearchValues<byte> s_asciiDigits =
+            SearchValues.Create("0123456789"u8);
+
         internal static readonly SearchValues<byte> s_asciiLetters =
             SearchValues.Create("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"u8);
 
@@ -65,7 +68,7 @@ public static partial class MemoryExtensions
 
     public static bool ContainsOnlyAsciiDigits(this ReadOnlySpan<byte> value)
     {
-        return ContainsOnlyCore(value, SearchBytes.s_asciiLetters, AsciiChar.IsDigit);
+        return ContainsOnlyCore(value, SearchBytes.s_asciiDigits, AsciiChar.IsDigit);
     }
 
     public static bool ContainsOnlyAsciiLetters(this ReadOnlySpan<byte> value)

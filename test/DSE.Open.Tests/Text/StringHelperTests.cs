@@ -118,4 +118,26 @@ public partial class StringHelperTests
         // Assert
         Assert.Equal(expected, actual);
     }
+
+    [Theory]
+    [InlineData("hello.world", ".", "world")]
+    [InlineData(".hello", ".", "hello")]
+    [InlineData("a.b.c", ".", "c")]
+    [InlineData("a--b", "--", "b")]
+    [InlineData("abc", "x", "")]
+    public void GetSubstringAfterLast_String(string original, string marker, string expected)
+    {
+        Assert.Equal(expected, StringHelper.GetSubstringAfterLast(original, marker));
+    }
+
+    [Theory]
+    [InlineData("hello.world", '.', "world")]
+    [InlineData(".hello", '.', "hello")]
+    [InlineData("a.b.c", '.', "c")]
+    [InlineData("abc", '.', "")]
+    [InlineData("abc.", '.', "")]
+    public void GetSubstringAfterLast_Char(string original, char marker, string expected)
+    {
+        Assert.Equal(expected, StringHelper.GetSubstringAfterLast(original, marker));
+    }
 }

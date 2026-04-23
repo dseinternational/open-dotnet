@@ -47,7 +47,7 @@ public abstract class AsciiCharComparer : IComparer<AsciiChar>, IEqualityCompare
 
         public override int GetHashCode(AsciiChar obj)
         {
-            return obj.GetHashCode();
+            return obj.ToUpper().GetHashCode();
         }
     }
 }

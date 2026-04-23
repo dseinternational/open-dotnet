@@ -83,8 +83,10 @@ public class ValueSet<T> : ISet<T>, IEquatable<ValueSet<T>>, ICollection<T>
         {
             _set = other._set;
         }
-
-        _set = [.. set];
+        else
+        {
+            _set = [.. set];
+        }
     }
 
     public int Count => _set.Count;
@@ -95,7 +97,7 @@ public class ValueSet<T> : ISet<T>, IEquatable<ValueSet<T>>, ICollection<T>
 
     public bool Add(T item)
     {
-        return Add(item);
+        return _set.Add(item);
     }
 
     void ICollection<T>.Add(T item)

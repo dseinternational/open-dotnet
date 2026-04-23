@@ -124,7 +124,7 @@ public static class StreamExtensions
 
     public static string ReadToEndAsString(this Stream stream, Encoding encoding)
     {
-        using var reader = new StreamReader(stream);
+        using var reader = new StreamReader(stream, encoding);
         return reader.ReadToEnd();
     }
 

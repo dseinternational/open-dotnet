@@ -200,8 +200,7 @@ public static partial class StringHelper
         ArgumentNullException.ThrowIfNull(marker);
 
         var pos = original.LastIndexOf(marker, comparison);
-        var rtn = pos > 0 ? original[(pos + 1)..] : string.Empty;
-        return rtn;
+        return pos >= 0 ? original[(pos + marker.Length)..] : string.Empty;
     }
 
     /// <summary>
@@ -219,8 +218,7 @@ public static partial class StringHelper
         ArgumentNullException.ThrowIfNull(original);
 
         var pos = original.LastIndexOf(marker);
-        var rtn = pos > 0 ? original[(pos + 1)..] : string.Empty;
-        return rtn;
+        return pos >= 0 ? original[(pos + 1)..] : string.Empty;
     }
 
     /// <summary>

@@ -9,12 +9,13 @@ public static class DateTimeExtensions
 {
     public static DateTime ToStartOfDay(this DateTime value)
     {
-        return new(value.Year, value.Month, value.Day, 0, 0, 0);
+        return new(value.Year, value.Month, value.Day, 0, 0, 0, value.Kind);
     }
 
     public static DateTime ToEndOfDay(this DateTime value)
     {
-        return new(value.Year, value.Month, value.Day, 23, 59, 59, 999);
+        return new DateTime(value.Year, value.Month, value.Day, 0, 0, 0, value.Kind)
+            .AddTicks(TimeSpan.TicksPerDay - 1);
     }
 
     public static DateTime? ToStartOfDay(this DateTime? value)
