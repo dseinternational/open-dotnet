@@ -65,10 +65,12 @@ public abstract class Entity<TId> : StoredObject, IEntity<TId>
         _id = id;
     }
 
+    /// <inheritdoc />
     public TId Id => _id;
 
     object IIdentified.Id => Id;
 
+    /// <inheritdoc />
     public override string ToString()
     {
         return $"{GetType().Name} [Id: {_id}]";

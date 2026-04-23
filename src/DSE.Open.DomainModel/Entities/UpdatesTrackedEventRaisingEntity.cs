@@ -62,10 +62,13 @@ public abstract class UpdatesTrackedEventRaisingEntity<TId> : EventRaisingEntity
         _timestamp = timestamp;
     }
 
+    /// <inheritdoc />
     public DateTimeOffset? Created => _created;
 
+    /// <inheritdoc />
     public DateTimeOffset? Updated => _updated;
 
+    /// <inheritdoc />
     public Timestamp? Timestamp => _timestamp;
 
 #pragma warning disable CA1033 // Interface methods should be callable by child types

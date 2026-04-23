@@ -3,4 +3,9 @@
 
 namespace DSE.Open.DomainModel.Entities;
 
+/// <summary>
+/// Combines <see cref="IUpdateTimesTracked"/> with <see cref="ITimestamped"/> —
+/// an object that tracks created/updated times and carries a concurrency
+/// <see cref="Timestamp"/>.
+/// </summary>
 public interface IUpdatesTracked : IUpdateTimesTracked, ITimestamped;

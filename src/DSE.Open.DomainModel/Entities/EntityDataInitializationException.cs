@@ -19,11 +19,23 @@ public class EntityDataInitializationException : EntityDataException
     private const string DefaultMessage = "An error occured initializing an entity with data " +
         "from the data store. Parameter name: ";
 
+    /// <summary>
+    /// Initializes a new <see cref="EntityDataInitializationException"/> with the
+    /// supplied <paramref name="parameterName"/> and <paramref name="message"/>.
+    /// </summary>
     public EntityDataInitializationException(string parameterName, string? message)
         : this(parameterName, null, message, null)
     {
     }
 
+    /// <summary>
+    /// Initializes a new <see cref="EntityDataInitializationException"/>.
+    /// </summary>
+    /// <param name="parameterName">The name of the parameter or backing field that was not initialized.</param>
+    /// <param name="validationResult">An optional validation result describing the failure.</param>
+    /// <param name="message">An optional message; when not supplied a default message is generated.</param>
+    /// <param name="innerException">An optional inner exception.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="parameterName"/> is <see langword="null"/>.</exception>
     public EntityDataInitializationException(string parameterName, ValidationResult? validationResult = null, string? message = null, Exception? innerException = null)
         : base(message ?? DefaultMessage + parameterName, innerException)
     {
@@ -33,10 +45,22 @@ public class EntityDataInitializationException : EntityDataException
         ValidationResult = validationResult;
     }
 
+    /// <summary>
+    /// The name of the parameter or backing field that was not initialized.
+    /// </summary>
     public string ParameterName { get; }
 
+    /// <summary>
+    /// The validation result describing the failure, if one was supplied.
+    /// </summary>
     public ValidationResult? ValidationResult { get; }
 
+    /// <summary>
+    /// Throws an <see cref="EntityDataInitializationException"/> if
+    /// <paramref name="condition"/> is <see langword="true"/>.
+    /// </summary>
+    /// <param name="condition">The condition to test.</param>
+    /// <param name="parameterName">Automatically captured expression for <paramref name="condition"/>.</param>
     public static void ThrowIf(
         [DoesNotReturnIf(true)] bool condition,
         [CallerArgumentExpression("condition")] string? parameterName = null)

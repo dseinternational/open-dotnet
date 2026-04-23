@@ -32,6 +32,10 @@ namespace DSE.Open.DomainModel.Entities;
 /// </remarks>
 public abstract class StoredObject : IStoredObject
 {
+    /// <summary>
+    /// Initializes a new <see cref="StoredObject"/> in the supplied
+    /// <paramref name="initialization"/> state.
+    /// </summary>
     /// <param name="initialization">
     /// Pass <see cref="StoredObjectInitialization.Created"/> when the object is being
     /// newly created by the domain, and <see cref="StoredObjectInitialization.Materialized"/>
@@ -44,6 +48,7 @@ public abstract class StoredObject : IStoredObject
         Initialization = initialization;
     }
 
+    /// <inheritdoc />
     [NotMapped]
     public StoredObjectInitialization Initialization { get; }
 }

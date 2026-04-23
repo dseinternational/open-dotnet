@@ -41,5 +41,6 @@ public abstract class TimestampedStoredObject : StoredObject, ITimestamped
         _timestamp = timestamp;
     }
 
+    /// <inheritdoc />
     public Timestamp? Timestamp => _timestamp;
 }

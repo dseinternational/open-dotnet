@@ -6,10 +6,15 @@ using System.Runtime.CompilerServices;
 
 namespace DSE.Open.DomainModel.Entities;
 
+/// <summary>
+/// Helpers used by entity materialization constructors to assert that required
+/// backing fields have been populated from storage.
+/// </summary>
 public static class EntityDataInitializationHelper
 {
     /// <summary>
-    /// Verifies than value is not <see langword="null"/>  and, if so, returns it. Otherwise throws <see cref="EntityDataInitializationException"/>.
+    /// Verifies that <paramref name="value"/> is not <see langword="null"/> and, if so, returns it.
+    /// Otherwise throws <see cref="EntityDataInitializationException"/>.
     /// </summary>
     /// <typeparam name="T">The type of the field.</typeparam>
     /// <param name="value">The value to test.</param>
