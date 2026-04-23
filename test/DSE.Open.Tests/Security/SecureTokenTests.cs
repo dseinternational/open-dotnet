@@ -130,4 +130,17 @@ public class SecureTokenTests
         var v2 = (object)SecureToken.Parse(v1.ToString()!, CultureInfo.InvariantCulture);
         Assert.Equal(v1, v2);
     }
+
+    [Theory]
+    [InlineData(SecureToken.MinTokenLength)]
+    [InlineData(129)]
+    [InlineData(200)]
+    [InlineData(SecureToken.MaxTokenLength)]
+    public void NewSupportsFullLengthRange(int length)
+    {
+        var token = SecureToken.New(length);
+
+        Assert.Equal(length, token.AsSpan().Length);
+        Assert.True(SecureToken.IsValidToken(token.ToString()));
+    }
 }

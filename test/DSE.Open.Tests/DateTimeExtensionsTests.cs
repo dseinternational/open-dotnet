@@ -155,4 +155,45 @@ public class DateTimeExtensionsTests
         // Assert
         Assert.Equal(DateTimeKind.Local, result.Kind);
     }
+
+    [Theory]
+    [InlineData(DateTimeKind.Utc)]
+    [InlineData(DateTimeKind.Local)]
+    [InlineData(DateTimeKind.Unspecified)]
+    public void ToStartOfDay_PreservesKind(DateTimeKind kind)
+    {
+        var dateTime = new DateTime(2023, 6, 15, 14, 30, 45, 123, kind);
+
+        var result = dateTime.ToStartOfDay();
+
+        Assert.Equal(kind, result.Kind);
+        Assert.Equal(0, result.Hour);
+        Assert.Equal(0, result.Minute);
+        Assert.Equal(0, result.Second);
+        Assert.Equal(0, result.Millisecond);
+    }
+
+    [Theory]
+    [InlineData(DateTimeKind.Utc)]
+    [InlineData(DateTimeKind.Local)]
+    [InlineData(DateTimeKind.Unspecified)]
+    public void ToEndOfDay_PreservesKind(DateTimeKind kind)
+    {
+        var dateTime = new DateTime(2023, 6, 15, 14, 30, 45, 123, kind);
+
+        var result = dateTime.ToEndOfDay();
+
+        Assert.Equal(kind, result.Kind);
+    }
+
+    [Fact]
+    public void ToEndOfDay_ReturnsLastTickOfDay()
+    {
+        var dateTime = new DateTime(2023, 6, 15, 14, 30, 45, 123, DateTimeKind.Utc);
+
+        var result = dateTime.ToEndOfDay();
+
+        var nextDay = dateTime.ToStartOfDay().AddDays(1);
+        Assert.Equal(nextDay.Ticks - 1, result.Ticks);
+    }
 }

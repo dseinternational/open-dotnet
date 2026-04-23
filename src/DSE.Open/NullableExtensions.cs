@@ -7,7 +7,7 @@ namespace DSE.Open;
 
 public static class NullableExtensions
 {
-    public static bool IsNullOrDefault<T>([NotNullWhen(true)] this T? nullable)
+    public static bool IsNullOrDefault<T>([NotNullWhen(false)] this T? nullable)
         where T : struct, IEquatable<T>
     {
         return !nullable.HasValue || nullable.Value.Equals(default);

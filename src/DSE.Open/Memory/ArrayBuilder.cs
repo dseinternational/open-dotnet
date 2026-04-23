@@ -144,9 +144,18 @@ public ref struct ArrayBuilder<T>
 
         newCapacity = Math.Max(newCapacity, minimum);
 
-        var newBuffer = _rentFromPool
-            ? _pooledBuffer = ArrayPool<T>.Shared.Rent(capacity)
-            : _ownedBuffer = new T[newCapacity];
+        T[]? oldPooled = null;
+
+        T[] newBuffer;
+        if (_rentFromPool)
+        {
+            oldPooled = _pooledBuffer;
+            newBuffer = _pooledBuffer = ArrayPool<T>.Shared.Rent(newCapacity);
+        }
+        else
+        {
+            newBuffer = _ownedBuffer = new T[newCapacity];
+        }
 
         if (_count > 0)
         {
@@ -154,6 +163,11 @@ public ref struct ArrayBuilder<T>
         }
 
         _buffer = newBuffer;
+
+        if (oldPooled is not null)
+        {
+            ArrayPool<T>.Shared.Return(oldPooled);
+        }
     }
 
     /// <summary>

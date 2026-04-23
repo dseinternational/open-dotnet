@@ -1,12 +1,28 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Text;
+
 namespace DSE.Open.IO;
 
 #pragma warning disable CA5394 // Do not use insecure randomness
 
 public class StreamExtensionsTests
 {
+    [Fact]
+    public void ReadToEndAsString_WithEncoding_HonoursSpecifiedEncoding()
+    {
+        const string original = "héllo wörld";
+        var encoded = Encoding.Latin1.GetBytes(original);
+
+        using var stream = new MemoryStream(encoded);
+
+        var result = stream.ReadToEndAsString(Encoding.Latin1);
+
+        Assert.Equal(original, result);
+    }
+
+
     [Fact]
     public async Task ReadToEndAsStringAsync_ReadsCorrectly()
     {

@@ -39,11 +39,12 @@ public readonly record struct SecureToken : ISpanParsable<SecureToken>, ISpanFor
             throw new ArgumentOutOfRangeException(nameof(length));
         }
 
-        Span<byte> data = stackalloc byte[MaxTokenLength];
+        Span<byte> data = stackalloc byte[MaxTokenLength * 2];
+        data = data[..(length * 2)];
 
         RandomNumberGenerator.Fill(data);
 
-        Span<char> id = stackalloc char[MaxTokenLength / 2];
+        Span<char> id = stackalloc char[MaxTokenLength];
 
         for (var i = 0; i < length * 2; i += 2)
         {
