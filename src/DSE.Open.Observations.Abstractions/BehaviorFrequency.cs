@@ -72,6 +72,9 @@ public readonly partial struct BehaviorFrequency
         return IObservationValue.ThrowValueMismatchException<decimal>();
     }
 
+    /// <summary>
+    /// Behavior is not observed.
+    /// </summary>
     public static BehaviorFrequency Never => new(NeverValue);
 
     /// <summary>
