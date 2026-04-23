@@ -91,7 +91,7 @@ public readonly partial struct UriAsciiPath
 
     public bool EndsWith(AsciiChar value)
     {
-        return !_value.IsEmpty && _value[_value.Length] == value;
+        return !_value.IsEmpty && _value[_value.Length - 1] == value;
     }
 
     public bool Equals(string value)

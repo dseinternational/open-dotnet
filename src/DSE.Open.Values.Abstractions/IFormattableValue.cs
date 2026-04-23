@@ -3,6 +3,13 @@
 
 namespace DSE.Open.Values;
 
+/// <summary>
+/// Defines a value type that wraps an underlying <see cref="IFormattable"/> value
+/// of type <typeparamref name="T"/> and can be formatted using a format string
+/// and format provider.
+/// </summary>
+/// <typeparam name="TSelf">The type that implements the interface.</typeparam>
+/// <typeparam name="T">The underlying value type being wrapped.</typeparam>
 public interface IFormattableValue<TSelf, T> : IValue<TSelf, T>, IFormattable
     where T : IEquatable<T>, IFormattable
     where TSelf : struct, IFormattableValue<TSelf, T>

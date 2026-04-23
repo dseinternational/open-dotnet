@@ -48,6 +48,6 @@ public static class Delays
     /// for a wait-and-retry policy.</returns>
     public static IEnumerable<TimeSpan> ExponentialBackoffWithJitter(TimeSpan medianFirstRetryDelay, int retryCount)
     {
-        return Backoff.DecorrelatedJitterBackoffV2(medianFirstRetryDelay: TimeSpan.FromSeconds(2.0), retryCount: 5);
+        return Backoff.DecorrelatedJitterBackoffV2(medianFirstRetryDelay: medianFirstRetryDelay, retryCount: retryCount);
     }
 }

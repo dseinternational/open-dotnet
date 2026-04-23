@@ -258,6 +258,25 @@ public class MemoryExtensionsTests
         Assert.Equal(expected, result);
     }
 
+    // Covers the vectorized path (>=16 bytes) with mixed ASCII inputs.
+    [Theory]
+    [InlineData("1234567890123456", true)]
+    [InlineData("12345678901234567890", true)]
+    [InlineData("ABCDEFGHIJKLMNOP", false)]
+    [InlineData("abcdefghijklmnopqrstuvwxyz", false)]
+    [InlineData("123456789012345A", false)]
+    public void ContainsOnlyAsciiDigits_Bytes(string source, bool expected)
+    {
+        var bytes = System.Text.Encoding.ASCII.GetBytes(source);
+
+        var result = bytes.AsSpan().ContainsOnlyAsciiDigits();
+
+        Assert.Equal(expected, result);
+
+        ReadOnlySpan<byte> readOnly = bytes;
+        Assert.Equal(expected, readOnly.ContainsOnlyAsciiDigits());
+    }
+
     [Theory]
     [InlineData("", '/', "")]
     [InlineData("/", '/', "")]

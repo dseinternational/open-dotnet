@@ -243,7 +243,7 @@ public readonly record struct EmailAddress
     /// <returns></returns>
     public bool Contains(string value)
     {
-        return Contains(value.AsSpan(), StringComparison.Ordinal);
+        return Contains(value.AsSpan(), StringComparison.InvariantCultureIgnoreCase);
     }
 
     /// <summary>

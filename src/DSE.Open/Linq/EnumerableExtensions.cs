@@ -40,7 +40,7 @@ public static class EnumerableExtensions
         }
         else if (source.GetType() == typeof(ValueCollection<TSource>))
         {
-            span = Unsafe.As<ReadOnlyValueCollection<TSource>>(source).AsSpan();
+            span = Unsafe.As<ValueCollection<TSource>>(source).AsSpan();
         }
         else if (source.GetType() == typeof(ReadOnlyValueCollection<TSource>))
         {

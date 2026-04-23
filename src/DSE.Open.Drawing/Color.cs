@@ -93,7 +93,7 @@ public readonly record struct Color : ISpanParsable<Color>, ISpanFormattable
 
     private static byte FloatToByte(float value)
     {
-        Debug.Assert(value is > 1 or < 0);
+        Debug.Assert(value is >= 0 and <= 1);
         return (byte)(value * 255);
     }
 
@@ -104,17 +104,17 @@ public readonly record struct Color : ISpanParsable<Color>, ISpanFormattable
 
     public static Color FromRgb(float red, float green, float blue)
     {
-        if (red is > 1 or < 0)
+        if (float.IsNaN(red) || red is > 1 or < 0)
         {
             ThrowHelper.ThrowArgumentOutOfRangeException(nameof(red));
         }
 
-        if (green is > 1 or < 0)
+        if (float.IsNaN(green) || green is > 1 or < 0)
         {
             ThrowHelper.ThrowArgumentOutOfRangeException(nameof(green));
         }
 
-        if (blue is > 1 or < 0)
+        if (float.IsNaN(blue) || blue is > 1 or < 0)
         {
             ThrowHelper.ThrowArgumentOutOfRangeException(nameof(blue));
         }
@@ -154,22 +154,22 @@ public readonly record struct Color : ISpanParsable<Color>, ISpanFormattable
 
     public static Color FromArgb(float alpha, float red, float green, float blue)
     {
-        if (alpha is > 1 or < 0)
+        if (float.IsNaN(alpha) || alpha is > 1 or < 0)
         {
             ThrowHelper.ThrowArgumentOutOfRangeException(nameof(alpha));
         }
 
-        if (red is > 1 or < 0)
+        if (float.IsNaN(red) || red is > 1 or < 0)
         {
             ThrowHelper.ThrowArgumentOutOfRangeException(nameof(red));
         }
 
-        if (green is > 1 or < 0)
+        if (float.IsNaN(green) || green is > 1 or < 0)
         {
             ThrowHelper.ThrowArgumentOutOfRangeException(nameof(green));
         }
 
-        if (blue is > 1 or < 0)
+        if (float.IsNaN(blue) || blue is > 1 or < 0)
         {
             ThrowHelper.ThrowArgumentOutOfRangeException(nameof(blue));
         }
@@ -249,9 +249,7 @@ public readonly record struct Color : ISpanParsable<Color>, ISpanFormattable
         {
             // #RRGGBB
 
-            var val = Convert.FromHexString(s[1..]);
-
-            if (val.Length != 3)
+            if (!TryFromHexString(s[1..], out var val) || val.Length != 3)
             {
                 return Failed(out result);
             }
@@ -264,9 +262,7 @@ public readonly record struct Color : ISpanParsable<Color>, ISpanFormattable
         {
             // #RRGGBBAA
 
-            var val = Convert.FromHexString(s[1..]);
-
-            if (val.Length != 4)
+            if (!TryFromHexString(s[1..], out var val) || val.Length != 4)
             {
                 return Failed(out result);
             }
@@ -336,6 +332,11 @@ public readonly record struct Color : ISpanParsable<Color>, ISpanFormattable
         if (format.Equals(RgbaHexFormat, StringComparison.Ordinal))
         {
             return TryFormatRgbaHex(destination, out charsWritten, provider);
+        }
+
+        if (format.Equals(ArgbHexFormat, StringComparison.Ordinal))
+        {
+            return TryFormatARgbHex(destination, out charsWritten, provider);
         }
 
         charsWritten = 0;
@@ -428,6 +429,20 @@ public readonly record struct Color : ISpanParsable<Color>, ISpanFormattable
     private static uint Encode(byte alpha, byte red, byte green, byte blue)
     {
         return unchecked((uint)((red << RedShift) | (green << GreenShift) | (blue << BlueShift) | (alpha << AlphaShift))) & 0xffffffff;
+    }
+
+    private static bool TryFromHexString(ReadOnlySpan<char> chars, out byte[] bytes)
+    {
+        try
+        {
+            bytes = Convert.FromHexString(chars);
+            return true;
+        }
+        catch (FormatException)
+        {
+            bytes = [];
+            return false;
+        }
     }
 
     // Source: https://github.com/dotnet/maui/blob/main/src/Graphics/src/Graphics/Color.cs

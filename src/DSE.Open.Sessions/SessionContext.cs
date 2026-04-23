@@ -35,7 +35,7 @@ public sealed class SessionContext
 
         Created = timeProvider.GetUtcNow();
 
-        _storageTokens = new();
+        _storageTokens = new(StringComparer.InvariantCultureIgnoreCase);
     }
 
     [JsonConstructor]
@@ -44,6 +44,9 @@ public sealed class SessionContext
         DateTimeOffset created,
         ConcurrentDictionary<string, string> storageTokens)
     {
+        ArgumentNullException.ThrowIfNull(storageTokens);
+        Guard.IsNotDefault(id);
+
         Id = id;
         Created = created;
         _storageTokens = new(storageTokens, StringComparer.InvariantCultureIgnoreCase);
@@ -90,6 +93,6 @@ public sealed class SessionContext
 
     public override string ToString()
     {
-        return $$"""SessionContext { Id = {{Id}}, Created = {{Created}}, StorageTokens.Count =  {{_storageTokens.Count}} }""";
+        return $$"""SessionContext { Id = {{Id}}, Created = {{Created}}, StorageTokens.Count = {{_storageTokens.Count}} }""";
     }
 }

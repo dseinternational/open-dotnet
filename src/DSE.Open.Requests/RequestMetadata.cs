@@ -18,6 +18,7 @@ public record RequestMetadata
     }
 
     [JsonPropertyName("properties")]
+    [JsonObjectCreationHandling(JsonObjectCreationHandling.Populate)]
     public ConcurrentDictionary<string, object> Properties { get; }
         = new(StringComparer.InvariantCultureIgnoreCase);
 }

@@ -49,11 +49,17 @@ internal sealed class AllSatisfiedSpecification<T> : AggregateSpecification<T>, 
             return IsSatisfiedBy(candidate, cancellationToken);
         }
 
-        var enumerable = cancellationToken != CancellationToken.None
-            ? Specifications.AsParallel().WithDegreeOfParallelism(maxDegreeOfParallelism).WithCancellation(cancellationToken)
-            : Specifications.AsParallel().WithDegreeOfParallelism(maxDegreeOfParallelism);
+        var query = Specifications.AsParallel()
+            .WithDegreeOfParallelism(maxDegreeOfParallelism)
+            .WithExecutionMode(executionMode)
+            .WithMergeOptions(mergeOptions);
 
-        return enumerable.All(s =>
+        if (cancellationToken != CancellationToken.None)
+        {
+            query = query.WithCancellation(cancellationToken);
+        }
+
+        return query.All(s =>
         {
             if (s is ICancellableSpecification<T> cancellable)
             {

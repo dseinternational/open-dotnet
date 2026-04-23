@@ -13,7 +13,7 @@ public sealed class UnitOfVolume : UnitOfMeasure<double>, IRepeatableHash64
 {
     public static readonly UnitOfVolume CubicMetre = new(1000000000.000000, "cubic metre", "m³");
     public static readonly UnitOfVolume CubicCentimetre = new(1000.000000, "cubic centimetre", "cm³");
-    public static readonly UnitOfVolume CubicMillimetre = new(1000.000000, "cubic millimetre", "mm³");
+    public static readonly UnitOfVolume CubicMillimetre = new(1.000000, "cubic millimetre", "mm³");
     public static readonly UnitOfVolume Litre = new(1000000.000000, "litre", "L");
     public static readonly UnitOfVolume Millilitre = new(1000.000000, "millilitre", "mL");
     public static readonly UnitOfVolume Microlitre = new(1.000000, "microlitre", "μL");

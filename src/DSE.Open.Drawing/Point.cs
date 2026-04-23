@@ -5,6 +5,9 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace DSE.Open.Drawing;
 
+/// <summary>
+/// A point in 2D space represented by <see cref="double"/> X and Y coordinates.
+/// </summary>
 public readonly record struct Point(double X, double Y)
 {
     public static Point Parse(string value)

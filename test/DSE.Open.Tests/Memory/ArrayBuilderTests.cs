@@ -25,4 +25,42 @@ public class ArrayBuilderTests
         Assert.Equal(0, builder.Count);
         Assert.Equal(6, builder.Capacity);
     }
+
+    [Fact]
+    public void EnsureCapacityGrowsPooledBufferToAccommodateItems()
+    {
+        using var builder = new ArrayBuilder<int>(capacity: 4, rentFromPool: true);
+
+        const int ItemCount = 2048;
+
+        for (var i = 0; i < ItemCount; i++)
+        {
+            builder.Add(i);
+        }
+
+        Assert.Equal(ItemCount, builder.Count);
+        Assert.True(builder.Capacity >= ItemCount);
+
+        var result = builder.ToArray();
+        for (var i = 0; i < ItemCount; i++)
+        {
+            Assert.Equal(i, result[i]);
+        }
+    }
+
+    [Fact]
+    public void EnsureCapacityGrowsOwnedBufferToAccommodateItems()
+    {
+        using var builder = new ArrayBuilder<int>(capacity: 4, rentFromPool: false);
+
+        const int ItemCount = 2048;
+
+        for (var i = 0; i < ItemCount; i++)
+        {
+            builder.Add(i);
+        }
+
+        Assert.Equal(ItemCount, builder.Count);
+        Assert.True(builder.Capacity >= ItemCount);
+    }
 }

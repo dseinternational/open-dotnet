@@ -6,6 +6,13 @@ using System.Numerics;
 
 namespace DSE.Open.Values;
 
+/// <summary>
+/// Defines a value type that wraps an underlying value of type <typeparamref name="T"/>
+/// and supports division, multiplication and modulus operations in addition to the
+/// operations defined by <see cref="IAddableValue{TSelf, T}"/>.
+/// </summary>
+/// <typeparam name="TSelf">The type that implements the interface.</typeparam>
+/// <typeparam name="T">The underlying value type being wrapped.</typeparam>
 [SuppressMessage("Design", "CA1000:Do not declare static members on generic types", Justification = "Required for static interface methods")]
 public interface IDivisibleValue<TSelf, T>
     : IAddableValue<TSelf, T>,
@@ -27,5 +34,6 @@ public interface IDivisibleValue<TSelf, T>
       IUnaryNegationOperators<T, T>
     where TSelf : struct, IDivisibleValue<TSelf, T>
 {
+    /// <summary>Gets the zero value for this type.</summary>
     static abstract TSelf Zero { get; }
 }

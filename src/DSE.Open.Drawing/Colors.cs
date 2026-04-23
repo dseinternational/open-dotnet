@@ -3,6 +3,9 @@
 
 namespace DSE.Open.Drawing;
 
+/// <summary>
+/// Provides named <see cref="Color"/> constants for the standard CSS/HTML color palette.
+/// </summary>
 public static class Colors
 {
     public static readonly Color AliceBlue = Color.FromUint(0xFFF0F8FF);
@@ -95,7 +98,7 @@ public static class Colors
     public static readonly Color MediumAquamarine = Color.FromUint(0xFF66CDAA);
     public static readonly Color MediumBlue = Color.FromUint(0xFF0000CD);
     public static readonly Color MediumOrchid = Color.FromUint(0xFFBA55D3);
-    public static readonly Color MediumPurple = Color.FromUint(0xFF9370D8);
+    public static readonly Color MediumPurple = Color.FromUint(0xFF9370DB);
     public static readonly Color MediumSeaGreen = Color.FromUint(0xFF3CB371);
     public static readonly Color MediumSlateBlue = Color.FromUint(0xFF7B68EE);
     public static readonly Color MediumSpringGreen = Color.FromUint(0xFF00FA9A);
@@ -158,9 +161,9 @@ public static class Colors
     {
 #pragma warning disable CA5394 // Do not use insecure randomness
 
-        var r = (byte)Random.Shared.Next(byte.MaxValue);
-        var g = (byte)Random.Shared.Next(byte.MaxValue);
-        var b = (byte)Random.Shared.Next(byte.MaxValue);
+        var r = (byte)Random.Shared.Next(byte.MaxValue + 1);
+        var g = (byte)Random.Shared.Next(byte.MaxValue + 1);
+        var b = (byte)Random.Shared.Next(byte.MaxValue + 1);
 
 #pragma warning restore CA5394 // Do not use insecure randomness
 

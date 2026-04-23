@@ -371,7 +371,7 @@ public readonly record struct DateTime64 : IBinaryInteger<DateTime64>, IMinMaxVa
 
     static DateTime64 IUnaryNegationOperators<DateTime64, DateTime64>.operator -(DateTime64 value)
     {
-        return value.Subtract(One);
+        return new DateTime64(-value.TotalMilliseconds);
     }
 
     static DateTime64 ISubtractionOperators<DateTime64, DateTime64, DateTime64>.operator -(DateTime64 left, DateTime64 right)

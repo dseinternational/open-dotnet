@@ -36,4 +36,20 @@ public class NullableExtensionsTests
         Guid? value = Guid.Empty;
         Assert.True(value.IsNullOrDefault());
     }
+
+    [Fact]
+    public void IsNullOrDefault_WhenFalse_AllowsDereferencingValue()
+    {
+        int? i = 42;
+
+        if (!i.IsNullOrDefault())
+        {
+            // [NotNullWhen(false)] lets the compiler see i as non-null here.
+            Assert.Equal(42, i.Value);
+        }
+        else
+        {
+            Assert.Fail("Expected IsNullOrDefault to return false for a non-default value.");
+        }
+    }
 }
