@@ -1,0 +1,54 @@
+// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
+// Down Syndrome Education International and Contributors licence this file to you under the MIT license.
+
+using System.Numerics;
+
+namespace DSE.Open.Numerics;
+
+public static partial class SeriesPrimitives
+{
+    public static void Pow<T>(this IReadOnlySeries<T> x, IReadOnlySeries<T> y, Span<T> destination)
+        where T : struct, IPowerFunctions<T>
+    {
+        ArgumentNullException.ThrowIfNull(x);
+        ArgumentNullException.ThrowIfNull(y);
+        VectorPrimitives.Pow(x.Vector.AsSpan(), y.Vector.AsSpan(), destination);
+    }
+
+    public static Series<T> Pow<T>(this IReadOnlySeries<T> x, IReadOnlySeries<T> y)
+        where T : struct, IPowerFunctions<T>
+    {
+        ArgumentNullException.ThrowIfNull(x);
+        ArgumentNullException.ThrowIfNull(y);
+        return x.Vector.Pow(y.Vector);
+    }
+
+    public static void Pow<T>(this IReadOnlySeries<T> x, T y, Span<T> destination)
+        where T : struct, IPowerFunctions<T>
+    {
+        ArgumentNullException.ThrowIfNull(x);
+        VectorPrimitives.Pow(x.Vector.AsSpan(), y, destination);
+    }
+
+    public static Series<T> Pow<T>(this IReadOnlySeries<T> x, T y)
+        where T : struct, IPowerFunctions<T>
+    {
+        ArgumentNullException.ThrowIfNull(x);
+        return x.Vector.Pow(y);
+    }
+
+    public static void PowInPlace<T>(this ISeries<T> x, IReadOnlySeries<T> y)
+        where T : struct, IPowerFunctions<T>
+    {
+        ArgumentNullException.ThrowIfNull(x);
+        ArgumentNullException.ThrowIfNull(y);
+        VectorPrimitives.Pow(x.AsSpan(), y.Vector.AsSpan(), x.AsSpan());
+    }
+
+    public static void PowInPlace<T>(this ISeries<T> x, T y)
+        where T : struct, IPowerFunctions<T>
+    {
+        ArgumentNullException.ThrowIfNull(x);
+        VectorPrimitives.Pow(x.AsSpan(), y, x.AsSpan());
+    }
+}
