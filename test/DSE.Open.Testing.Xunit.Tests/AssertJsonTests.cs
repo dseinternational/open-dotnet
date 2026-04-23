@@ -42,16 +42,17 @@ public partial class AssertJsonTests
     [Fact]
     public void Roundtrip_DetectsDataLoss()
     {
-        // Payload.Name is required; serialising one whose Name the converter drops
-        // would cause equivalence to fail. We simulate by constructing a context that
-        // serialises the value but then compare against a wholly different expected value.
-        // Here we simply assert that comparing two different payloads throws.
+        // LossyPayload.Secret is decorated with [JsonIgnore], so it is dropped during
+        // serialisation.  AssertJson.Roundtrip must detect the mismatch and throw.
         _ = Assert.ThrowsAny<XunitException>(
-            () => AssertEquivalentFailsFor(new Payload(1, "a"), new Payload(1, "b")));
+            () => AssertJson.Roundtrip(new LossyPayload { Id = 1, Secret = "secret" }));
     }
 
-    private static void AssertEquivalentFailsFor(Payload expected, Payload actual)
+    internal sealed class LossyPayload
     {
-        Assert.Equivalent(expected, actual, true);
+        public int Id { get; set; }
+
+        [JsonIgnore]
+        public string Secret { get; set; } = string.Empty;
     }
 }

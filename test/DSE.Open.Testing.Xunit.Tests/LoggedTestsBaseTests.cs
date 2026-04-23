@@ -25,8 +25,11 @@ public class LoggedTestsBaseTests
     [Fact]
     public void Logger_CategoryMatchesFullName()
     {
-        using var subject = new NoopSubclass(new NullTestOutputHelper());
-        Assert.NotNull(subject.Logger);
+        var output = new CapturingTestOutputHelper();
+        using var subject = new NoopSubclass(output);
+        subject.Logger.LogInformation("probe");
+        var expectedCategory = typeof(NoopSubclass).FullName;
+        Assert.Contains(output.Lines, l => l.Contains($"[{expectedCategory}]", StringComparison.Ordinal));
     }
 
     [Fact]

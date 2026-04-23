@@ -3,7 +3,7 @@
 
 namespace DSE.Open.Testing.Xunit;
 
-public partial class AssertSequenceTests
+public class AssertComparisonTests
 {
     [Fact]
     public void True_Success()
