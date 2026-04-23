@@ -152,6 +152,11 @@ public readonly record struct Sign
     {
         if (Modality.TryFormat(destination, out charsWritten, format, provider))
         {
+            if (charsWritten >= destination.Length)
+            {
+                return false;
+            }
+
             destination[charsWritten++] = ':';
 
             if (Word.TryFormat(destination[charsWritten..], out var wordCharsWritten, format, provider))
