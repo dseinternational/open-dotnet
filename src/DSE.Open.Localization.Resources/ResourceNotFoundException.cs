@@ -6,8 +6,15 @@ using System.Diagnostics.CodeAnalysis;
 namespace DSE.Open.Localization.Resources;
 
 /// <summary>
-/// Exception thrown when a resource string is not found.
+/// Thrown by <see cref="ILocalizedResourceProvider"/> implementations when a
+/// lookup for a resource key returns no value for the requested culture (or any
+/// of its fallbacks).
 /// </summary>
+/// <remarks>
+/// Carries the missing key in its <see cref="Exception.Message"/>. Cannot be
+/// constructed by callers; use the provider methods, which throw this exception
+/// on miss.
+/// </remarks>
 public sealed class ResourceNotFoundException : Exception
 {
     private ResourceNotFoundException(string message) : base(message)
