@@ -14,7 +14,7 @@ public sealed class UnitOfMass : UnitOfMeasure<double>, IRepeatableHash64
 {
     public static readonly UnitOfMass Gram = new(1, "Gram", "g");
     public static readonly UnitOfMass Kilogram = new(1000, "Kilogram", "kg");
-    public static readonly UnitOfMass Milligram = new(1000, "Milligram", "mg");
+    public static readonly UnitOfMass Milligram = new(0.001, "Milligram", "mg");
     public static readonly UnitOfMass Ounce = new(28.349523125, "Ounce", "oz");
     public static readonly UnitOfMass Pound = new(453.59237, "Pound", "lb");
 

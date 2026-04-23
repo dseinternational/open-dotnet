@@ -125,7 +125,9 @@ public readonly record struct Length
 
     public ulong GetRepeatableHashCode()
     {
-        throw new NotImplementedException();
+        var h0 = RepeatableHash64Provider.Default.GetRepeatableHashCode(Amount);
+        var h1 = Units.GetRepeatableHashCode();
+        return RepeatableHash64Provider.Default.CombineHashCodes(h0, h1);
     }
 
     public static bool operator <(Length left, Length right)
