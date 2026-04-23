@@ -87,6 +87,9 @@ public static class SqlServerTransientConnectionExceptionDetector
                     // Could not perform the operation because the elastic pool or managed instance has reached its quota for in-memory tables.
                     // This error may be transient. Please retry the operation. See 'http://go.microsoft.com/fwlink/?LinkID=623028' for more information.
                     case 41840:
+                    // SQL Error Code: 41839
+                    // Transaction exceeded the maximum number of commit dependencies for memory optimized tables.
+                    case 41839:
                     // SQL Error Code: 41823
                     // Could not perform the operation because the database has reached its quota for in-memory tables. This error may be transient.
                     // Please retry the operation. See 'http://go.microsoft.com/fwlink/?LinkID=623028' for more information.
@@ -121,6 +124,18 @@ public static class SqlServerTransientConnectionExceptionDetector
                     // The table '%.*ls' has been created or altered after the start of the current transaction. The transaction was aborted.
                     // Please retry the transaction.
                     case 41339:
+                    // SQL Error Code: 41325
+                    // The current transaction failed to commit due to a serializable validation failure.
+                    case 41325:
+                    // SQL Error Code: 41305
+                    // The current transaction failed to commit due to a repeatable read validation failure.
+                    case 41305:
+                    // SQL Error Code: 41302
+                    // The current transaction attempted to update a record that has been updated since this transaction started.
+                    case 41302:
+                    // SQL Error Code: 41301
+                    // Dependency failure: a dependency was taken on another transaction that later failed to commit.
+                    case 41301:
                     // SQL Error Code: 40938
                     // The Server DNS Alias '%.*ls' is busy with another operation and cannot perform the '%.*ls' operation. Please try again later.
                     case 40938:
@@ -353,6 +368,9 @@ public static class SqlServerTransientConnectionExceptionDetector
                     // The server '%s' is not accessible. Ensure that the remote server exists and the Azure SQL DB Firewall Rules permit
                     // access to the server. If you believe that your server should be accessible please retry the command.
                     case 14817:
+                    // SQL Error Code: 14355
+                    // The MSSQLServer service is not started. Try again after starting the service.
+                    case 14355:
                     // SQL Error Code: 11539
                     // One of the types specified in WITH RESULT SETS clause has been modified after the EXECUTE statement started running.
                     // Please rerun the statement.
@@ -434,6 +452,9 @@ public static class SqlServerTransientConnectionExceptionDetector
                     // The transaction cannot modify an object that is published for replication or has Change Data Capture enabled
                     // because the transaction started before replication or Change Data Capture was enabled on the database. Retry the transaction.
                     case 3941:
+                    // SQL Error Code: 3935
+                    // A FILESTREAM transaction context could not be initialized. This might be caused by a resource shortage. Retry the operation.
+                    case 3935:
                     // SQL Error Code: 3635
                     // An error occurred while processing '%ls' metadata for database id %d, file id %d, and transaction='%.*ls'.
                     // Additional Context='%ls'. Location='%hs'(%d). Retry the operation; if the problem persists,
@@ -604,10 +625,15 @@ public static class SqlServerTransientConnectionExceptionDetector
 
                     // Transaction (Process ID) was deadlocked on resources with another process and has
                     // been chosen as the deadlock victim. Rerun the transaction.
-                    case 1025:
+                    case 1205:
 
                     // Lock request time out period exceeded.
                     case 1222:
+
+                    // SQL Error Code: 1204
+                    // The instance of the SQL Server Database Engine cannot obtain a LOCK resource at this time.
+                    // Rerun your statement when there are fewer active users.
+                    case 1204:
 
                     // The service has encountered an error processing your request. Please try again.
                     // case 40143:
@@ -664,6 +690,10 @@ public static class SqlServerTransientConnectionExceptionDetector
                     // The instance of SQL Server you attempted to connect to does not support encryption.
                     case 20:
 
+                    // SQL Error Code: -2
+                    // A timeout error occurred. The timeout period elapsed prior to completion of the operation or the server is not responding.
+                    case -2:
+
                         return true;
                     default:
                         break;
@@ -677,88 +707,5 @@ public static class SqlServerTransientConnectionExceptionDetector
         }
 
         return ex is TimeoutException;
-    }
-
-    // https://github.com/dotnet/efcore/pull/31612/files
-
-    private static bool IsMemoryOptimizedError(Exception exception)
-    {
-        if (exception is SqlException sqlException)
-        {
-            foreach (SqlError err in sqlException.Errors)
-            {
-                switch (err.Number)
-                {
-                    case 41301:
-                    case 41302:
-                    case 41305:
-                    case 41325:
-                    case 41839:
-                        return true;
-                    default:
-                        break;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    // https://github.com/dotnet/efcore/pull/31612/files
-
-    private static bool IsThrottlingError(Exception exception)
-    {
-        if (exception is SqlException sqlException)
-        {
-            foreach (SqlError err in sqlException.Errors)
-            {
-                switch (err.Number)
-                {
-                    case 49977:
-                    case 49920:
-                    case 49919:
-                    case 49918:
-                    case 45319:
-                    case 45182:
-                    case 45161:
-                    case 45157:
-                    case 45156:
-                    case 41840:
-                    case 41823:
-                    case 40903:
-                    case 40890:
-                    case 40675:
-                    case 40648:
-                    case 40642:
-                    case 40613:
-                    case 40501:
-                    case 40189:
-                    case 39110:
-                    case 39108:
-                    case 37327:
-                    case 30085:
-                    case 25740:
-                    case 25738:
-                    case 22498:
-                    case 22335:
-                    case 17889:
-                    case 14355:
-                    case 10930:
-                    case 10929:
-                    case 9985:
-                    case 3950:
-                    case 3935:
-                    case 1404:
-                    case 1204:
-                    case 233:
-                    case -2:
-                        return true;
-                    default:
-                        break;
-                }
-            }
-        }
-
-        return false;
     }
 }
