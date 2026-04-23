@@ -35,6 +35,19 @@ public partial class SeriesPrimitivesTests
     }
 
     [Fact]
+    public void Multiply_SeriesSeries_IntoAliasedRhsSpan_WritesProduct()
+    {
+        var lhs = Series.Create([1, 2, 3]);
+        var rhs = Series.Create([4, 5, 6]);
+
+        lhs.Multiply(rhs, rhs.AsSpan());
+
+        Assert.Equal(4, rhs[0]);
+        Assert.Equal(10, rhs[1]);
+        Assert.Equal(18, rhs[2]);
+    }
+
+    [Fact]
     public void Multiply_SeriesScalar_ReturnsProduct()
     {
         var series = Series.Create([1, 2, 3]);

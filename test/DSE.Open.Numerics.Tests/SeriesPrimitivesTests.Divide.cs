@@ -35,6 +35,19 @@ public partial class SeriesPrimitivesTests
     }
 
     [Fact]
+    public void Divide_SeriesSeries_IntoRhsSpan_WritesQuotient()
+    {
+        var lhs = Series.Create([10, 20, 30]);
+        var rhs = Series.Create([2, 4, 5]);
+
+        lhs.Divide(rhs, rhs.AsSpan());
+
+        Assert.Equal(5, rhs[0]);
+        Assert.Equal(5, rhs[1]);
+        Assert.Equal(6, rhs[2]);
+    }
+
+    [Fact]
     public void Divide_SeriesScalar_ReturnsQuotient()
     {
         var series = Series.Create([10, 20, 30]);

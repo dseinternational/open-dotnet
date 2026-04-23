@@ -20,4 +20,17 @@ public partial class SeriesPrimitivesTests
         Assert.Equal(10, result[4]);
         Assert.Null(result.Name);
     }
+
+    [Fact]
+    public void Add_SeriesSeries_IntoAliasedRhsSpan_WritesSum()
+    {
+        var lhs = Series.Create([1, 2, 3]);
+        var rhs = Series.Create([4, 5, 6]);
+
+        lhs.Add(rhs, rhs.AsSpan());
+
+        Assert.Equal(5, rhs[0]);
+        Assert.Equal(7, rhs[1]);
+        Assert.Equal(9, rhs[2]);
+    }
 }

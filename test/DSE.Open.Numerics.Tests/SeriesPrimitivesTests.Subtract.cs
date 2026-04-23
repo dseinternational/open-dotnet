@@ -35,6 +35,19 @@ public partial class SeriesPrimitivesTests
     }
 
     [Fact]
+    public void Subtract_SeriesSeries_IntoAliasedRightHandSpan_WritesDifference()
+    {
+        var lhs = Series.Create([10, 20, 30]);
+        var rhs = Series.Create([1, 2, 3]);
+
+        lhs.Subtract(rhs, rhs.AsSpan());
+
+        Assert.Equal(9, rhs[0]);
+        Assert.Equal(18, rhs[1]);
+        Assert.Equal(27, rhs[2]);
+    }
+
+    [Fact]
     public void Subtract_SeriesScalar_ReturnsDifference()
     {
         var series = Series.Create([10, 20, 30]);
