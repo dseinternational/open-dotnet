@@ -34,7 +34,7 @@ public static partial class SeriesPrimitives
     {
         ArgumentNullException.ThrowIfNull(x);
         ArgumentNullException.ThrowIfNull(y);
-        return x.Vector.Multiply(y.Vector);
+        return WrapBinary(x.Vector.Multiply(y.Vector), x, y);
     }
 
     public static void Multiply<T>(this IReadOnlySeries<T> x, T y, Span<T> destination)
@@ -56,7 +56,7 @@ public static partial class SeriesPrimitives
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        return x.Vector.Multiply(y);
+        return WrapUnary(x.Vector.Multiply(y), x);
     }
 
     public static void MultiplyInPlace<T>(this ISeries<T> x, ReadOnlySpan<T> y)

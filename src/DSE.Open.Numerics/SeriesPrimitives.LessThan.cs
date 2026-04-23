@@ -12,7 +12,7 @@ public static partial class SeriesPrimitives
     {
         ArgumentNullException.ThrowIfNull(x);
         ArgumentNullException.ThrowIfNull(y);
-        return x.Vector.LessThan(y.Vector);
+        return WrapTypeChange<T, bool>(x.Vector.LessThan(y.Vector), x);
     }
 
     public static void LessThan<T>(this IReadOnlySeries<T> x, ReadOnlySpan<T> y, Span<bool> destination)
@@ -41,7 +41,7 @@ public static partial class SeriesPrimitives
         where T : IComparisonOperators<T, T, bool>, IEquatable<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        return x.Vector.LessThan(y);
+        return WrapTypeChange<T, bool>(x.Vector.LessThan(y), x);
     }
 
     public static void LessThan<T>(this IReadOnlySeries<T> x, T y, Span<bool> destination)
@@ -63,7 +63,7 @@ public static partial class SeriesPrimitives
         where T : IComparisonOperators<T, T, bool>, IEquatable<T>
     {
         ArgumentNullException.ThrowIfNull(y);
-        return x.LessThan(y.Vector);
+        return WrapTypeChange<T, bool>(x.LessThan(y.Vector), y);
     }
 
     public static void LessThan<T>(this T x, IReadOnlySeries<T> y, Span<bool> destination)

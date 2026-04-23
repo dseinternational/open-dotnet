@@ -24,7 +24,7 @@ public static partial class SeriesPrimitives
         where T : struct, IExponentialFunctions<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        return x.Vector.Sigmoid();
+        return WrapUnary(x.Vector.Sigmoid(), x);
     }
 
     /// <summary>
@@ -44,6 +44,6 @@ public static partial class SeriesPrimitives
         where T : struct, IExponentialFunctions<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        return x.Vector.SoftMax();
+        return WrapUnary(x.Vector.SoftMax(), x);
     }
 }

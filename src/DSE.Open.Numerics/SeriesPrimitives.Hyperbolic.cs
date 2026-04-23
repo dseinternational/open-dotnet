@@ -18,7 +18,7 @@ public static partial class SeriesPrimitives
         where T : struct, IHyperbolicFunctions<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        return x.Vector.Sinh();
+        return WrapUnary(x.Vector.Sinh(), x);
     }
 
     public static void Cosh<T>(this IReadOnlySeries<T> x, Span<T> destination)
@@ -32,7 +32,7 @@ public static partial class SeriesPrimitives
         where T : struct, IHyperbolicFunctions<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        return x.Vector.Cosh();
+        return WrapUnary(x.Vector.Cosh(), x);
     }
 
     public static void Tanh<T>(this IReadOnlySeries<T> x, Span<T> destination)
@@ -46,7 +46,7 @@ public static partial class SeriesPrimitives
         where T : struct, IHyperbolicFunctions<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        return x.Vector.Tanh();
+        return WrapUnary(x.Vector.Tanh(), x);
     }
 
     public static void Asinh<T>(this IReadOnlySeries<T> x, Span<T> destination)
@@ -60,7 +60,7 @@ public static partial class SeriesPrimitives
         where T : struct, IHyperbolicFunctions<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        return x.Vector.Asinh();
+        return WrapUnary(x.Vector.Asinh(), x);
     }
 
     public static void Acosh<T>(this IReadOnlySeries<T> x, Span<T> destination)
@@ -74,7 +74,7 @@ public static partial class SeriesPrimitives
         where T : struct, IHyperbolicFunctions<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        return x.Vector.Acosh();
+        return WrapUnary(x.Vector.Acosh(), x);
     }
 
     public static void Atanh<T>(this IReadOnlySeries<T> x, Span<T> destination)
@@ -88,6 +88,6 @@ public static partial class SeriesPrimitives
         where T : struct, IHyperbolicFunctions<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        return x.Vector.Atanh();
+        return WrapUnary(x.Vector.Atanh(), x);
     }
 }

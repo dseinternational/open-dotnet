@@ -25,7 +25,7 @@ public static partial class SeriesPrimitives
         where T : struct, INumberBase<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        return x.Vector.Negate();
+        return WrapUnary(x.Vector.Negate(), x);
     }
 
     public static void NegateInPlace<T>(this ISeries<T> x)

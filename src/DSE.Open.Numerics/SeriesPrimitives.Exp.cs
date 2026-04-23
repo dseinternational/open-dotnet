@@ -25,7 +25,7 @@ public static partial class SeriesPrimitives
         where T : struct, IExponentialFunctions<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        return x.Vector.Exp();
+        return WrapUnary(x.Vector.Exp(), x);
     }
 
     public static void ExpInPlace<T>(this ISeries<T> x)

@@ -20,7 +20,7 @@ public static partial class SeriesPrimitives
     {
         ArgumentNullException.ThrowIfNull(x);
         ArgumentNullException.ThrowIfNull(y);
-        return x.Vector.Pow(y.Vector);
+        return WrapBinary(x.Vector.Pow(y.Vector), x, y);
     }
 
     public static void Pow<T>(this IReadOnlySeries<T> x, T y, Span<T> destination)
@@ -34,7 +34,7 @@ public static partial class SeriesPrimitives
         where T : struct, IPowerFunctions<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        return x.Vector.Pow(y);
+        return WrapUnary(x.Vector.Pow(y), x);
     }
 
     public static void PowInPlace<T>(this ISeries<T> x, IReadOnlySeries<T> y)

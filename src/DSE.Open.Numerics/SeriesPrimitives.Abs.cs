@@ -25,7 +25,7 @@ public static partial class SeriesPrimitives
         where T : struct, INumberBase<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        return x.Vector.Abs();
+        return WrapUnary(x.Vector.Abs(), x);
     }
 
     public static void AbsInPlace<T>(this ISeries<T> x)

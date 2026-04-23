@@ -18,7 +18,7 @@ public static partial class SeriesPrimitives
         where T : struct, ITrigonometricFunctions<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        return x.Vector.DegreesToRadians();
+        return WrapUnary(x.Vector.DegreesToRadians(), x);
     }
 
     public static void RadiansToDegrees<T>(this IReadOnlySeries<T> x, Span<T> destination)
@@ -32,6 +32,6 @@ public static partial class SeriesPrimitives
         where T : struct, ITrigonometricFunctions<T>
     {
         ArgumentNullException.ThrowIfNull(x);
-        return x.Vector.RadiansToDegrees();
+        return WrapUnary(x.Vector.RadiansToDegrees(), x);
     }
 }

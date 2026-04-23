@@ -18,7 +18,9 @@ public partial class SeriesPrimitivesTests
         Assert.Equal(6, result[2]);
         Assert.Equal(8, result[3]);
         Assert.Equal(10, result[4]);
-        Assert.Null(result.Name);
+        // LHS.Name is carried through binary arithmetic by convention; since both operands
+        // were created with "series1", the result also carries "series1".
+        Assert.Equal("series1", result.Name);
     }
 
     [Fact]
