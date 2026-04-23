@@ -29,7 +29,7 @@ public class InvalidValueResultException<T> : InvalidResultException<ValueResult
 public static class InvalidValueResultException
 {
     [StackTraceHidden]
-    public static void ThrowIfNotHasValue<T>(ValueResult<T> result) where T : struct
+    public static void ThrowIfNotHasValue<T>(ValueResult<T> result)
     {
         ArgumentNullException.ThrowIfNull(result);
 
