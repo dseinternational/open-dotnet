@@ -20,8 +20,8 @@ public static class DateTimeExtensions
     }
 
     /// <summary>
-    /// Returns a <see cref="DateTime"/> representing the last moment before midnight on the
-    /// same calendar day as <paramref name="value"/>.
+    /// Returns a <see cref="DateTime"/> representing the last millisecond of the same
+    /// calendar day as <paramref name="value"/> (23:59:59.999).
     /// </summary>
     public static DateTime ToEndOfDay(this DateTime value)
     {

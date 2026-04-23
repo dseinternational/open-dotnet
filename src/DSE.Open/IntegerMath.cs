@@ -15,7 +15,7 @@ public static class IntegerMath
     /// </summary>
     /// <param name="dividend">The value being divided.</param>
     /// <param name="divisor">The value to divide by.</param>
-    /// <returns>The quotient, rounded away from zero when the division has a remainder.</returns>
+    /// <returns>The quotient, rounded toward positive infinity when the division has a remainder.</returns>
     /// <exception cref="ArgumentOutOfRangeException">
     /// <paramref name="divisor"/> is <c>0</c>, or <paramref name="dividend"/> is
     /// <see cref="int.MinValue"/> and <paramref name="divisor"/> is <c>-1</c> (would overflow).
@@ -53,7 +53,7 @@ public static class IntegerMath
     /// </summary>
     /// <param name="dividend">The value being divided.</param>
     /// <param name="divisor">The value to divide by.</param>
-    /// <returns>The quotient, rounded away from zero when the division has a remainder.</returns>
+    /// <returns>The quotient, rounded toward positive infinity when the division has a remainder.</returns>
     /// <exception cref="ArgumentOutOfRangeException">
     /// <paramref name="divisor"/> is <c>0</c>, or <paramref name="dividend"/> is
     /// <see cref="long.MinValue"/> and <paramref name="divisor"/> is <c>-1</c> (would overflow).

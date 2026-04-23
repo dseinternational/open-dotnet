@@ -17,6 +17,11 @@ public static class UInt32Extensions
     /// <param name="number">The value.</param>
     public static int GetDigitCount(this uint number)
     {
+        if (number == 0)
+        {
+            return 1;
+        }
+
         return (int)(uint)Math.Log10(number) + 1;
     }
 

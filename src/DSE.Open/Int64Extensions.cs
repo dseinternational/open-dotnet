@@ -43,6 +43,12 @@ public static class Int64Extensions
         // overflow Math.Abs. For long.MinValue, unchecked -number wraps to the
         // same bit pattern, which reinterpreted as ulong is the correct |MinValue|.
         var abs = number < 0 ? unchecked((ulong)-number) : (ulong)number;
+
+        if (abs == 0UL)
+        {
+            return 1;
+        }
+
         return (int)(uint)Math.Log10(abs) + 1;
     }
 

@@ -39,6 +39,11 @@ public static class Int32Extensions
     /// <param name="number">The value.</param>
     public static int GetDigitCount(this int number)
     {
+        if (number == 0)
+        {
+            return 1;
+        }
+
         // Widen to long so that Math.Abs(int.MinValue) does not overflow.
         return (int)(uint)Math.Log10(Math.Abs((long)number)) + 1;
     }

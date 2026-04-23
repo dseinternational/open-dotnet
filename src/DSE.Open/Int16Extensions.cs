@@ -39,7 +39,29 @@ public static class Int16Extensions
     /// <param name="number">The value.</param>
     public static int GetDigitCount(this short number)
     {
-        return (int)(uint)Math.Log10(Math.Abs(number)) + 1;
+        int magnitude = number < 0 ? -number : number;
+
+        if (magnitude >= 10000)
+        {
+            return 5;
+        }
+
+        if (magnitude >= 1000)
+        {
+            return 4;
+        }
+
+        if (magnitude >= 100)
+        {
+            return 3;
+        }
+
+        if (magnitude >= 10)
+        {
+            return 2;
+        }
+
+        return 1;
     }
 
     /// <summary>
