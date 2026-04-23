@@ -20,7 +20,7 @@ public readonly partial struct RequestId : IEquatableValue<RequestId, CharSequen
         if (!IsValidValue(value))
         {
             throw new ArgumentOutOfRangeException(nameof(value),
-                $"Value must be a string with a maximum length of {Length} characters.");
+                $"Value must be a non-empty string with a maximum length of {Length} characters.");
         }
 
         _value = value;
@@ -28,7 +28,7 @@ public readonly partial struct RequestId : IEquatableValue<RequestId, CharSequen
 
     public static bool IsValidValue(CharSequence value)
     {
-        return value.Length <= Length;
+        return value.Length > 0 && value.Length <= Length;
     }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
