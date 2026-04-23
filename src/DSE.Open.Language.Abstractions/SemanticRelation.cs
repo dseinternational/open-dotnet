@@ -9,6 +9,16 @@ using DSE.Open.Values.Text.Json.Serialization;
 
 namespace DSE.Open.Language;
 
+/// <summary>
+/// Classifies the semantic relationship between the syntactic elements of
+/// a two- or three-word expression - for example, <i>agent + action</i> or
+/// <i>attribute + entity</i>.
+/// </summary>
+/// <remarks>
+/// The relations are drawn from the literature on early child language
+/// acquisition and describe the meaning carried by each combination rather
+/// than its syntactic shape.
+/// </remarks>
 [EquatableValue]
 [StructLayout(LayoutKind.Sequential)]
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<SemanticRelation, AsciiString>))]
@@ -16,8 +26,16 @@ public readonly partial struct SemanticRelation
     : IEquatableValue<SemanticRelation, AsciiString>,
       IUtf8SpanSerializable<SemanticRelation>
 {
+    /// <summary>
+    /// The maximum number of characters used to serialize a
+    /// <see cref="SemanticRelation"/> value.
+    /// </summary>
     public static int MaxSerializedCharLength => 32;
 
+    /// <summary>
+    /// The maximum number of bytes used to serialize a
+    /// <see cref="SemanticRelation"/> value in UTF-8.
+    /// </summary>
     public static int MaxSerializedByteLength => 32;
 
     public SemanticRelation(string value) : this((AsciiString)value)
@@ -75,12 +93,14 @@ public readonly partial struct SemanticRelation
     public static readonly SemanticRelation AttributeEntity = new("attribute-entity", true);
 
     /// <summary>
-    /// e.g. "sit chair"
+    /// Indicates a <b>verb + noun</b> <c>[VERB+NOUN]</c> (action + location)
+    /// construction - for example "sit chair", "sleep bed".
     /// </summary>
     public static readonly SemanticRelation ActionLocation = new("action-location", true);
 
     /// <summary>
-    /// e.g. "bear bed"
+    /// Indicates a <b>noun + noun</b> <c>[NOUN+NOUN]</c> (entity + location)
+    /// construction - for example "bear bed", "baby chair".
     /// </summary>
     public static readonly SemanticRelation EntityLocation = new("entity-location", true);
 
@@ -130,17 +150,24 @@ public readonly partial struct SemanticRelation
     public static readonly SemanticRelation AgentActionObject = new("agent-action-object", true);
 
     /// <summary>
-    /// TODO
+    /// Indicates a <b>noun + verb + noun</b>
+    /// <c>[(NOUN|PROPN)+VERB+NOUN]</c> (agent + action + location)
+    /// construction - for example "baby sit chair".
     /// </summary>
     public static readonly SemanticRelation AgentActionLocation = new("agent-action-location", true);
 
     /// <summary>
-    /// TODO
+    /// Indicates a <b>verb + noun + noun</b>
+    /// <c>[VERB+NOUN+NOUN]</c> (action + object + location)
+    /// construction - for example "put ball box".
     /// </summary>
     public static readonly SemanticRelation ActionObjectLocation = new("action-object-location", true);
 
     // TODO: complete
 
+    /// <summary>
+    /// The set of all defined <see cref="SemanticRelation"/> values.
+    /// </summary>
     public static readonly FrozenSet<SemanticRelation> All = FrozenSet.ToFrozenSet(
     [
         ActionLocation,

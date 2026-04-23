@@ -27,7 +27,7 @@ public class SyllableCountTests
 
     [Theory]
     [InlineData("Emma's", "Emma")]
-    [InlineData("dog’s", "dog")]
+    [InlineData("dog's", "dog")]
     public void GetSyllableCount_StripsPossessiveSuffix(string possessive, string root)
     {
         var rootCount = SyllableCount.GetSyllableCount(root);
@@ -41,11 +41,12 @@ public class SyllableCountTests
     }
 
     [Theory]
+    [InlineData(null)]
     [InlineData("")]
     [InlineData("   ")]
     [InlineData("\t")]
-    public void GetSyllableCount_EmptyOrWhitespace_Throws(string word)
+    public void GetSyllableCount_NullEmptyOrWhitespace_Throws(string? word)
     {
-        _ = Assert.Throws<ArgumentException>(() => SyllableCount.GetSyllableCount(word));
+        _ = Assert.Throws<ArgumentException>(() => SyllableCount.GetSyllableCount(word!));
     }
 }

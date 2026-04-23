@@ -20,14 +20,26 @@ public readonly partial struct PosTag
       IUtf8SpanSerializable<PosTag>,
       IRepeatableHash64
 {
+    /// <summary>
+    /// The maximum number of characters used to serialize a <see cref="PosTag"/>.
+    /// </summary>
     public static int MaxSerializedCharLength => 16;
 
+    /// <summary>
+    /// The maximum number of bytes used to serialize a <see cref="PosTag"/> in UTF-8.
+    /// </summary>
     public static int MaxSerializedByteLength => 16;
 
+    /// <summary>
+    /// Initializes a new <see cref="PosTag"/> from the specified value.
+    /// </summary>
     public PosTag(AsciiString value) : this(value, false)
     {
     }
 
+    /// <summary>
+    /// Initializes a new <see cref="PosTag"/> from the specified value.
+    /// </summary>
     public PosTag(string value) : this((AsciiString)value)
     {
     }
@@ -36,12 +48,26 @@ public readonly partial struct PosTag
     {
     }
 
+    /// <summary>
+    /// The number of characters in the tag.
+    /// </summary>
     public int Length => _value.Length;
 
+    /// <summary>
+    /// The underlying <see cref="AsciiString"/> holding the characters of the tag.
+    /// </summary>
     public AsciiString Value => _value;
 
+    /// <summary>
+    /// <see langword="true"/> if the value is a recognised
+    /// <see cref="UniversalPosTag"/>.
+    /// </summary>
     public bool IsValidUniversalPosTag => UniversalPosTag.IsValidValue(_value);
 
+    /// <summary>
+    /// <see langword="true"/> if the value is a recognised
+    /// <see cref="TreebankPosTag"/>.
+    /// </summary>
     public bool IsValidTreebankTag => TreebankPosTag.IsValidValue(_value);
 
     public static bool IsValidValue(AsciiString value)
@@ -50,11 +76,21 @@ public readonly partial struct PosTag
             && value.Length <= MaxSerializedCharLength;
     }
 
+    /// <summary>
+    /// Converts this <see cref="PosTag"/> to a <see cref="UniversalPosTag"/>.
+    /// </summary>
+    /// <exception cref="ArgumentOutOfRangeException">The value is not a
+    /// valid <see cref="UniversalPosTag"/>.</exception>
     public UniversalPosTag ToUniversalPosTag()
     {
         return new(_value);
     }
 
+    /// <summary>
+    /// Converts this <see cref="PosTag"/> to a <see cref="TreebankPosTag"/>.
+    /// </summary>
+    /// <exception cref="ArgumentOutOfRangeException">The value is not a
+    /// valid <see cref="TreebankPosTag"/>.</exception>
     public TreebankPosTag ToTreebankPosTag()
     {
         return new(_value);

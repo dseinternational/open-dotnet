@@ -9,6 +9,10 @@ using DSE.Open.Values.Text.Json.Serialization;
 
 namespace DSE.Open.Language;
 
+/// <summary>
+/// Identifies the clausal structure of a sentence - for example, simple,
+/// compound, complex or compound-complex.
+/// </summary>
 [EquatableValue]
 [StructLayout(LayoutKind.Sequential)]
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<SentenceStructure, AsciiString>))]
@@ -16,8 +20,16 @@ public readonly partial struct SentenceStructure
     : IEquatableValue<SentenceStructure, AsciiString>,
       IUtf8SpanSerializable<SentenceStructure>
 {
+    /// <summary>
+    /// The maximum number of characters used to serialize a
+    /// <see cref="SentenceStructure"/> value.
+    /// </summary>
     public static int MaxSerializedCharLength => 32;
 
+    /// <summary>
+    /// The maximum number of bytes used to serialize a
+    /// <see cref="SentenceStructure"/> value in UTF-8.
+    /// </summary>
     public static int MaxSerializedByteLength => 32;
 
     public SentenceStructure(string value) : this((AsciiString)value)
@@ -42,14 +54,32 @@ public readonly partial struct SentenceStructure
         return new(value);
     }
 
+    /// <summary>
+    /// A sentence consisting of a single independent clause.
+    /// </summary>
     public static readonly SentenceStructure Simple = new("simple", true);
 
+    /// <summary>
+    /// A sentence consisting of two or more independent clauses joined by a
+    /// coordinator or equivalent punctuation.
+    /// </summary>
     public static readonly SentenceStructure Compound = new("compound", true);
 
+    /// <summary>
+    /// A sentence consisting of one independent clause and at least one
+    /// dependent clause.
+    /// </summary>
     public static readonly SentenceStructure Complex = new("complex", true);
 
+    /// <summary>
+    /// A sentence consisting of two or more independent clauses and at least
+    /// one dependent clause.
+    /// </summary>
     public static readonly SentenceStructure CompoundComplex = new("compound-complex", true);
 
+    /// <summary>
+    /// The set of all defined <see cref="SentenceStructure"/> values.
+    /// </summary>
     public static readonly FrozenSet<SentenceStructure> All = FrozenSet.ToFrozenSet(
     [
         Simple,
