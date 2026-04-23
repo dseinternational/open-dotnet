@@ -42,6 +42,35 @@ public sealed class ObservationEqualityComparerTests
     }
 
     [Fact]
+    public void Measurement_BothNull_AreEqual()
+    {
+        // Regression for issue #329: IEqualityComparer<T>.Equals(null, null)
+        // must return true. Many BCL consumers (HashSet, Dictionary, LINQ
+        // Distinct, etc.) depend on that contract.
+        var cmp = ObservationEqualityComparer.Measurement;
+
+        Assert.True(cmp.Equals(null, null));
+    }
+
+    [Fact]
+    public void Measurement_FirstNullSecondNonNull_NotEqual()
+    {
+        var cmp = ObservationEqualityComparer.Measurement;
+        var obs = Observation.Create(TestMeasures.BinaryMeasure, true);
+
+        Assert.False(cmp.Equals(null, obs));
+    }
+
+    [Fact]
+    public void Measurement_FirstNonNullSecondNull_NotEqual()
+    {
+        var cmp = ObservationEqualityComparer.Measurement;
+        var obs = Observation.Create(TestMeasures.BinaryMeasure, true);
+
+        Assert.False(cmp.Equals(obs, null));
+    }
+
+    [Fact]
     public void Measurement_HashCollisionWithDifferentIdentity_NotEqual()
     {
         // Regression for issue #326: previously Equals compared

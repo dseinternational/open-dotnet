@@ -14,7 +14,14 @@ public abstract class ObservationEqualityComparer<T> : EqualityComparer<T>
     {
         public override bool Equals(T? x, T? y)
         {
-            if (x is null || y is null)
+            // IEqualityComparer<T>.Equals contract: both-null is equal; either-null
+            // with the other non-null is not equal.
+            if (x is null)
+            {
+                return y is null;
+            }
+
+            if (y is null)
             {
                 return false;
             }
