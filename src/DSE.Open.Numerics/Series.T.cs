@@ -147,6 +147,59 @@ public class Series<T>
         return new ReadOnlySeries<T>(_vector, Name, _categories?.AsReadOnly(), _valueLabels?.AsReadOnly());
     }
 
+    /// <summary>
+    /// Returns a new <see cref="Series{T}"/> that wraps the same underlying vector as
+    /// this instance but with <see cref="ISeries.Name"/> overridden. Categories and
+    /// value labels (if any) are carried through by reference.
+    /// </summary>
+    /// <param name="name">The name to assign to the new series. Pass <see langword="null"/> to clear.</param>
+    public Series<T> WithName(string? name)
+    {
+        // Only pass _categories through if the series is actually categorical. The
+        // lazy Categories getter creates an empty CategorySet on first access, which
+        // would otherwise trip the non-empty-set validation in the ctor.
+        return new Series<T>(_vector, name, IsCategorical ? _categories : null, _valueLabels);
+    }
+
+    /// <summary>
+    /// Returns a new <see cref="Series{T}"/> that wraps the same underlying vector as
+    /// this instance but with <see cref="Categories"/> overridden. Name and value labels
+    /// (if any) are carried through.
+    /// </summary>
+    /// <param name="categories">The category set to attach. Pass <see langword="null"/> to
+    /// remove categorical constraints.</param>
+    /// <remarks>
+    /// The supplied <paramref name="categories"/> is retained by reference by the
+    /// returned series; external mutation of the set is visible to the returned
+    /// series, and to this series only if it already references the same instance.
+    /// Elements of the vector are validated against <paramref name="categories"/> at
+    /// construction time; subsequent mutations of the set are not re-validated.
+    /// </remarks>
+    public Series<T> WithCategories(CategorySet<T>? categories)
+    {
+        return new Series<T>(_vector, Name, categories, _valueLabels);
+    }
+
+    /// <summary>
+    /// Returns a new <see cref="Series{T}"/> that wraps the same underlying vector as
+    /// this instance but with <see cref="ValueLabels"/> overridden. Name and categories
+    /// (if any) are carried through.
+    /// </summary>
+    /// <param name="valueLabels">The value-label collection to attach. Pass
+    /// <see langword="null"/> to clear.</param>
+    /// <remarks>
+    /// The supplied <paramref name="valueLabels"/> is retained by reference by the
+    /// returned series; external mutation of the collection is visible to the returned
+    /// series and to any other series that shares the same collection instance.
+    /// </remarks>
+    public Series<T> WithValueLabels(ValueLabelCollection<T>? valueLabels)
+    {
+        // Only pass _categories through if the series is actually categorical. The
+        // lazy Categories getter creates an empty CategorySet on first access, which
+        // would otherwise trip the non-empty-set validation in the ctor.
+        return new Series<T>(_vector, Name, IsCategorical ? _categories : null, valueLabels);
+    }
+
     IReadOnlySeries<T> ISeries<T>.AsReadOnly()
     {
         return AsReadOnly();
