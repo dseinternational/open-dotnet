@@ -21,7 +21,6 @@ public static partial class VectorPrimitives
     {
         ArgumentNullException.ThrowIfNull(y);
         Add(x, y.AsSpan(), destination);
-        Add(x, y.AsSpan(), destination);
     }
 
     public static void Add<T>(this IReadOnlyVector<T> x, IReadOnlyVector<T> y, IVector<T> destination)

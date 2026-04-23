@@ -7,16 +7,24 @@ namespace DSE.Open.Numerics;
 
 public static partial class VectorPrimitives
 {
+    /// <summary>
+    /// Gets the population standard deviation (square root of the population variance) of a
+    /// sequence of at least one number.
+    /// </summary>
     public static T PopulationStandardDeviation<T>(ReadOnlySpan<T> span)
-        where T : struct, INumberBase<T>
+        where T : struct, IRootFunctions<T>
     {
         return PopulationStandardDeviation<T, T>(span);
     }
 
+    /// <summary>
+    /// Gets the population standard deviation (square root of the population variance) of a
+    /// sequence of at least one number, accumulating into <typeparamref name="TResult"/>.
+    /// </summary>
     public static TResult PopulationStandardDeviation<T, TResult>(ReadOnlySpan<T> span)
         where T : struct, INumberBase<T>
-        where TResult : struct, INumberBase<TResult>
+        where TResult : struct, IRootFunctions<TResult>
     {
-        throw new NotImplementedException();
+        return TResult.Sqrt(PopulationVariance<T, TResult>(span));
     }
 }

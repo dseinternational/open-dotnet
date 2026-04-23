@@ -7,16 +7,24 @@ namespace DSE.Open.Numerics;
 
 public static partial class VectorPrimitives
 {
+    /// <summary>
+    /// Gets the sample standard deviation (square root of the sample variance) of a
+    /// sequence of at least two numbers.
+    /// </summary>
     public static T StandardDeviation<T>(ReadOnlySpan<T> span)
-        where T : struct, INumberBase<T>
+        where T : struct, IRootFunctions<T>
     {
         return StandardDeviation<T, T>(span);
     }
 
+    /// <summary>
+    /// Gets the sample standard deviation (square root of the sample variance) of a
+    /// sequence of at least two numbers, accumulating into <typeparamref name="TResult"/>.
+    /// </summary>
     public static TResult StandardDeviation<T, TResult>(ReadOnlySpan<T> span)
         where T : struct, INumberBase<T>
-        where TResult : struct, INumberBase<TResult>
+        where TResult : struct, IRootFunctions<TResult>
     {
-        throw new NotImplementedException();
+        return TResult.Sqrt(Vector.Variance<T, TResult>(span));
     }
 }
