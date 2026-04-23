@@ -147,6 +147,51 @@ public class Series<T>
         return new ReadOnlySeries<T>(_vector, Name, _categories?.AsReadOnly(), _valueLabels?.AsReadOnly());
     }
 
+    /// <summary>
+    /// Returns a new <see cref="Series{T}"/> that wraps the same underlying vector as
+    /// this instance but with <see cref="ISeries.Name"/> overridden. Categories and
+    /// value labels (if any) are carried through by reference.
+    /// </summary>
+    /// <param name="name">The name to assign to the new series. Pass <see langword="null"/> to clear.</param>
+    public Series<T> WithName(string? name)
+    {
+        return new Series<T>(_vector, name, _categories, _valueLabels);
+    }
+
+    /// <summary>
+    /// Returns a new <see cref="Series{T}"/> that wraps the same underlying vector as
+    /// this instance but with <see cref="Categories"/> overridden. Name and value labels
+    /// (if any) are carried through.
+    /// </summary>
+    /// <param name="categories">The category set to attach. Pass <see langword="null"/> to
+    /// remove categorical constraints.</param>
+    /// <remarks>
+    /// The supplied <paramref name="categories"/> is retained by reference; external
+    /// mutation of the set is visible to both this series and the new one. Elements of
+    /// the vector are validated against <paramref name="categories"/> at construction
+    /// time; subsequent mutations of the set are not re-validated.
+    /// </remarks>
+    public Series<T> WithCategories(CategorySet<T>? categories)
+    {
+        return new Series<T>(_vector, Name, categories, _valueLabels);
+    }
+
+    /// <summary>
+    /// Returns a new <see cref="Series{T}"/> that wraps the same underlying vector as
+    /// this instance but with <see cref="ValueLabels"/> overridden. Name and categories
+    /// (if any) are carried through.
+    /// </summary>
+    /// <param name="valueLabels">The value-label collection to attach. Pass
+    /// <see langword="null"/> to clear.</param>
+    /// <remarks>
+    /// The supplied <paramref name="valueLabels"/> is retained by reference; external
+    /// mutation of the collection is visible to both this series and the new one.
+    /// </remarks>
+    public Series<T> WithValueLabels(ValueLabelCollection<T>? valueLabels)
+    {
+        return new Series<T>(_vector, Name, _categories, valueLabels);
+    }
+
     IReadOnlySeries<T> ISeries<T>.AsReadOnly()
     {
         return AsReadOnly();

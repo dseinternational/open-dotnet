@@ -140,6 +140,46 @@ public class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
         return ((IEnumerable<T>)this).GetEnumerator();
     }
 
+    /// <summary>
+    /// Returns a new <see cref="ReadOnlySeries{T}"/> that wraps the same underlying
+    /// vector as this instance but with <see cref="IReadOnlySeries.Name"/> overridden.
+    /// Categories and value labels (if any) are carried through by reference.
+    /// </summary>
+    /// <param name="name">The name to assign to the new series. Pass <see langword="null"/> to clear.</param>
+    public ReadOnlySeries<T> WithName(string? name)
+    {
+        return new ReadOnlySeries<T>(_vector, name, _categories, _valueLabels);
+    }
+
+    /// <summary>
+    /// Returns a new <see cref="ReadOnlySeries{T}"/> that wraps the same underlying
+    /// vector as this instance but with <see cref="Categories"/> overridden. Name and
+    /// value labels (if any) are carried through.
+    /// </summary>
+    /// <param name="categories">The read-only category set to attach. Pass
+    /// <see langword="null"/> to remove categorical constraints.</param>
+    /// <remarks>
+    /// The supplied <paramref name="categories"/> is retained by reference. Elements
+    /// of the vector are validated against <paramref name="categories"/> at
+    /// construction time.
+    /// </remarks>
+    public ReadOnlySeries<T> WithCategories(ReadOnlyCategorySet<T>? categories)
+    {
+        return new ReadOnlySeries<T>(_vector, Name, categories, _valueLabels);
+    }
+
+    /// <summary>
+    /// Returns a new <see cref="ReadOnlySeries{T}"/> that wraps the same underlying
+    /// vector as this instance but with <see cref="ValueLabels"/> overridden. Name and
+    /// categories (if any) are carried through.
+    /// </summary>
+    /// <param name="valueLabels">The read-only value-label collection to attach. Pass
+    /// <see langword="null"/> to clear.</param>
+    public ReadOnlySeries<T> WithValueLabels(ReadOnlyValueLabelCollection<T>? valueLabels)
+    {
+        return new ReadOnlySeries<T>(_vector, Name, _categories, valueLabels);
+    }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ReadOnlySeries<T> Slice(int start)
     {
