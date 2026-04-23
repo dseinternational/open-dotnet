@@ -14,7 +14,7 @@ using DSE.Open.Values.Text.Json.Serialization;
 namespace DSE.Open.Language;
 
 /// <summary>
-/// A value used to identify a word.
+/// A value used to identify a sentence.
 /// </summary>
 [EquatableValue]
 [JsonConverter(typeof(JsonUInt64ValueConverter<SentenceId>))]
