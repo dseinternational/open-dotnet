@@ -24,5 +24,5 @@ public class InvalidSqlException : Exception
         Sql = sql ?? string.Empty;
     }
 
-    public string? Sql { get; }
+    public string Sql { get; }
 }

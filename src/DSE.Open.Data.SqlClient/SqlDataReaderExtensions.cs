@@ -88,7 +88,7 @@ public static class SqlDataReaderExtensions
             SqlExceptionHelper.ThrowSqlNullValueException();
         }
 
-        return data.Storage != StorageState.Buffer
+        return data.Storage == StorageState.Buffer
             ? new(data.Buffer.AsMemory()[..(int)data.Length])
             : new Utf8String(data.Value);
     }
@@ -104,7 +104,7 @@ public static class SqlDataReaderExtensions
             return null;
         }
 
-        return data.Storage != StorageState.Buffer
+        return data.Storage == StorageState.Buffer
             ? new(data.Buffer.AsMemory()[..(int)data.Length])
             : new Utf8String(data.Value);
     }
