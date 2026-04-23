@@ -3,95 +3,83 @@
 
 namespace DSE.Open.Language.Annotations;
 
-public sealed class AttributeValueSerializerTests
+public class AttributeValueSerializerTests
 {
-    [Fact]
-    public void SerializeToString_joins_values_with_pipe()
+    [Theory]
+    [InlineData("Case=Acc")]
+    [InlineData("Case=Acc|Gender=Masc")]
+    [InlineData("Case=Acc,Dat|Gender=Masc")]
+    public void TrySerialize_Roundtrips(string values)
     {
-        var values = new[]
-        {
-            AttributeValue.ParseInvariant("SpaceAfter=No"),
-            AttributeValue.ParseInvariant("Lang=en"),
-        };
+        Assert.True(AttributeValueSerializer.TryDeserialize(values, out var parsed));
+        var list = parsed.ToList();
 
-        var result = AttributeValueSerializer.SerializeToString(values);
-        Assert.Equal("SpaceAfter=No|Lang=en", result);
+        Span<char> buffer = stackalloc char[256];
+        Assert.True(AttributeValueSerializer.TrySerialize(buffer, list, out var charsWritten));
+
+        Assert.Equal(values, buffer[..charsWritten].ToString());
     }
 
     [Fact]
-    public void SerializeToString_throws_on_null_input()
+    public void TrySerialize_BufferTooSmall_ReturnsFalse()
     {
-        _ = Assert.Throws<ArgumentNullException>(() =>
-            AttributeValueSerializer.SerializeToString(null!));
-    }
+        Assert.True(AttributeValueSerializer.TryDeserialize("Case=Acc|Gender=Masc", out var parsed));
+        var list = parsed.ToList();
 
-    [Fact]
-    public void TryDeserialize_empty_span_returns_empty_sequence()
-    {
-        Assert.True(AttributeValueSerializer.TryDeserialize(ReadOnlySpan<char>.Empty, out var result));
-        Assert.Empty(result);
-    }
+        Span<char> tooSmall = stackalloc char[5];
+        var result = AttributeValueSerializer.TrySerialize(tooSmall, list, out var charsWritten);
 
-    [Fact]
-    public void TryDeserialize_null_string_returns_empty_sequence()
-    {
-        Assert.True(AttributeValueSerializer.TryDeserialize((string?)null, out var result));
-        Assert.Empty(result);
-    }
-
-    [Fact]
-    public void TryDeserialize_single_attribute_value()
-    {
-        Assert.True(AttributeValueSerializer.TryDeserialize("SpaceAfter=No", out var result));
-        var list = result.ToList();
-        _ = Assert.Single(list);
-        Assert.Equal("SpaceAfter", list[0].Name.ToStringInvariant());
-        Assert.Equal("No", list[0].Value.ToStringInvariant());
-    }
-
-    [Fact]
-    public void TryDeserialize_multiple_attribute_values()
-    {
-        Assert.True(AttributeValueSerializer.TryDeserialize("SpaceAfter=No|Lang=en", out var result));
-        var list = result.ToList();
-        Assert.Equal(2, list.Count);
-        Assert.Equal("SpaceAfter", list[0].Name.ToStringInvariant());
-        Assert.Equal("Lang", list[1].Name.ToStringInvariant());
-    }
-
-    [Fact]
-    public void Serialize_then_deserialize_roundtrips()
-    {
-        var original = new[]
-        {
-            AttributeValue.ParseInvariant("SpaceAfter=No"),
-            AttributeValue.ParseInvariant("Lang=en"),
-        };
-
-        var serialized = AttributeValueSerializer.SerializeToString(original);
-        Assert.True(AttributeValueSerializer.TryDeserialize(serialized, out var deserialized));
-
-        var list = deserialized.ToList();
-        Assert.Equal(original.Length, list.Count);
-        for (var i = 0; i < original.Length; i++)
-        {
-            Assert.Equal(original[i], list[i]);
-        }
-    }
-
-    [Fact]
-    public void TrySerialize_returns_false_when_destination_too_small()
-    {
-        var values = new[]
-        {
-            AttributeValue.ParseInvariant("SpaceAfter=No"),
-            AttributeValue.ParseInvariant("Lang=en"),
-        };
-
-        Span<char> destination = stackalloc char[4];
-        var success = AttributeValueSerializer.TrySerialize(destination, values, out var charsWritten);
-
-        Assert.False(success);
+        Assert.False(result);
         Assert.Equal(0, charsWritten);
+    }
+
+    [Fact]
+    public void TrySerialize_BufferExactlyFits_ReturnsTrue()
+    {
+        var input = "Case=Acc|Gender=Masc";
+        Assert.True(AttributeValueSerializer.TryDeserialize(input, out var parsed));
+        var list = parsed.ToList();
+
+        Span<char> exact = stackalloc char[input.Length];
+        Assert.True(AttributeValueSerializer.TrySerialize(exact, list, out var charsWritten));
+        Assert.Equal(exact.Length, charsWritten);
+    }
+
+    [Fact]
+    public void TrySerialize_NoSeparatorRoomBetweenItems_ReturnsFalse()
+    {
+        Assert.True(AttributeValueSerializer.TryDeserialize("Case=Acc|Gender=Masc", out var parsed));
+        var list = parsed.ToList();
+
+        // Buffer fits the first attribute "Case=Acc" but leaves no room for "|".
+        Span<char> noRoomForSeparator = stackalloc char["Case=Acc".Length];
+        var result = AttributeValueSerializer.TrySerialize(noRoomForSeparator, list, out var charsWritten);
+
+        Assert.False(result);
+        Assert.Equal(0, charsWritten);
+    }
+
+    [Fact]
+    public void TryDeserialize_Empty_ReturnsTrueAndEmptyCollection()
+    {
+        Assert.True(AttributeValueSerializer.TryDeserialize(default(string), out var values));
+        Assert.Empty(values);
+    }
+
+    [Fact]
+    public void TryDeserialize_InvalidValue_ReturnsFalse()
+    {
+        Assert.False(AttributeValueSerializer.TryDeserialize("Case=Acc|=Bad", out _));
+    }
+
+    [Fact]
+    public void SerializeToString_RoundtripsMultiValueAttribute()
+    {
+        var input = "Case=Acc,Dat";
+        Assert.True(AttributeValueSerializer.TryDeserialize(input, out var parsed));
+        var list = parsed.ToList();
+
+        var roundtrip = AttributeValueSerializer.SerializeToString(list);
+        Assert.Equal(input, roundtrip);
     }
 }

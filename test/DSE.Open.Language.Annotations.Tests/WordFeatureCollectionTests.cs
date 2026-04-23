@@ -38,4 +38,38 @@ public class WordFeatureCollectionTests
             Assert.Equal(col[i], deserialized[i]);
         }
     }
+
+    [Fact]
+    public void Add_DuplicateFeatureName_Throws()
+    {
+        var col = WordFeatureCollection.ParseInvariant("Voice=Pass");
+        var duplicate = WordFeature.ParseInvariant("Voice=Act");
+        _ = Assert.Throws<InvalidOperationException>(() => col.Add(duplicate));
+    }
+
+    [Fact]
+    public void Insert_DuplicateFeatureName_Throws()
+    {
+        var col = WordFeatureCollection.ParseInvariant("Voice=Pass|Gender=Masc");
+        var duplicate = WordFeature.ParseInvariant("Voice=Act");
+        _ = Assert.Throws<InvalidOperationException>(() => col.Insert(0, duplicate));
+    }
+
+    [Fact]
+    public void Insert_NewFeatureName_AddsAtIndex()
+    {
+        var col = WordFeatureCollection.ParseInvariant("Voice=Pass|Gender=Masc");
+        var added = WordFeature.ParseInvariant("Number=Sing");
+        col.Insert(1, added);
+
+        Assert.Equal(3, col.Count);
+        Assert.Equal(added, col[1]);
+    }
+
+    [Fact]
+    public void Insert_NullItem_Throws()
+    {
+        var col = WordFeatureCollection.ParseInvariant("Voice=Pass");
+        _ = Assert.Throws<ArgumentNullException>(() => col.Insert(0, null!));
+    }
 }

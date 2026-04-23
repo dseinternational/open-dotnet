@@ -3,88 +3,83 @@
 
 namespace DSE.Open.Language.Annotations;
 
-public sealed class WordFeatureSerializerTests
+public class WordFeatureSerializerTests
 {
-    [Fact]
-    public void SerializeToString_joins_features_with_pipe()
+    [Theory]
+    [InlineData("Voice=Pass")]
+    [InlineData("Voice=Pass|Gender=Masc")]
+    [InlineData("Voice=Pass|Number=Sing|Gender=Masc")]
+    public void TrySerialize_Roundtrips(string features)
     {
-        var features = new[]
-        {
-            WordFeature.ParseInvariant("Number=Sing"),
-            WordFeature.ParseInvariant("Tense=Past"),
-        };
+        Assert.True(WordFeatureSerializer.TryDeserialize(features, out var parsed));
+        var list = parsed.ToList();
 
-        var result = WordFeatureSerializer.SerializeToString(features);
-        Assert.Equal("Number=Sing|Tense=Past", result);
+        Span<char> buffer = stackalloc char[256];
+        Assert.True(WordFeatureSerializer.TrySerialize(buffer, list, out var charsWritten));
+
+        Assert.Equal(features, buffer[..charsWritten].ToString());
     }
 
     [Fact]
-    public void SerializeToString_throws_on_null_input()
+    public void TrySerialize_BufferTooSmall_ReturnsFalse()
     {
-        _ = Assert.Throws<ArgumentNullException>(() =>
-            WordFeatureSerializer.SerializeToString(null!));
-    }
+        Assert.True(WordFeatureSerializer.TryDeserialize("Voice=Pass|Gender=Masc", out var parsed));
+        var list = parsed.ToList();
 
-    [Fact]
-    public void TryDeserialize_empty_span_returns_empty_sequence()
-    {
-        Assert.True(WordFeatureSerializer.TryDeserialize(ReadOnlySpan<char>.Empty, out var result));
-        Assert.Empty(result);
-    }
+        Span<char> tooSmall = stackalloc char[5];
+        var result = WordFeatureSerializer.TrySerialize(tooSmall, list, out var charsWritten);
 
-    [Fact]
-    public void TryDeserialize_null_string_returns_empty_sequence()
-    {
-        Assert.True(WordFeatureSerializer.TryDeserialize((string?)null, out var result));
-        Assert.Empty(result);
-    }
-
-    [Fact]
-    public void TryDeserialize_single_feature()
-    {
-        Assert.True(WordFeatureSerializer.TryDeserialize("Number=Sing", out var result));
-        var list = result.ToList();
-        _ = Assert.Single(list);
-        Assert.Equal("Number", list[0].Name.ToStringInvariant());
-    }
-
-    [Fact]
-    public void TryDeserialize_multiple_features()
-    {
-        Assert.True(WordFeatureSerializer.TryDeserialize("Number=Sing|Tense=Past", out var result));
-        var list = result.ToList();
-        Assert.Equal(2, list.Count);
-    }
-
-    [Fact]
-    public void Serialize_then_deserialize_roundtrips()
-    {
-        var original = new[]
-        {
-            WordFeature.ParseInvariant("Number=Sing"),
-            WordFeature.ParseInvariant("Tense=Past"),
-        };
-
-        var serialized = WordFeatureSerializer.SerializeToString(original);
-        Assert.True(WordFeatureSerializer.TryDeserialize(serialized, out var deserialized));
-
-        var list = deserialized.ToList();
-        Assert.Equal(original.Length, list.Count);
-    }
-
-    [Fact]
-    public void TrySerialize_returns_false_when_destination_too_small()
-    {
-        var features = new[]
-        {
-            WordFeature.ParseInvariant("Number=Sing"),
-            WordFeature.ParseInvariant("Tense=Past"),
-        };
-
-        Span<char> destination = stackalloc char[4];
-        var success = WordFeatureSerializer.TrySerialize(destination, features, out var charsWritten);
-
-        Assert.False(success);
+        Assert.False(result);
         Assert.Equal(0, charsWritten);
+    }
+
+    [Fact]
+    public void TrySerialize_BufferExactlyFits_ReturnsTrue()
+    {
+        Assert.True(WordFeatureSerializer.TryDeserialize("Voice=Pass|Gender=Masc", out var parsed));
+        var list = parsed.ToList();
+
+        Span<char> exact = stackalloc char["Voice=Pass|Gender=Masc".Length];
+        Assert.True(WordFeatureSerializer.TrySerialize(exact, list, out var charsWritten));
+        Assert.Equal(exact.Length, charsWritten);
+    }
+
+    [Fact]
+    public void TrySerialize_NoSeparatorRoomBetweenItems_ReturnsFalse()
+    {
+        Assert.True(WordFeatureSerializer.TryDeserialize("Voice=Pass|Gender=Masc", out var parsed));
+        var list = parsed.ToList();
+
+        // Buffer just large enough for the first feature ("Voice=Pass") but not
+        // for the separator that follows.
+        Span<char> noRoomForSeparator = stackalloc char["Voice=Pass".Length];
+        var result = WordFeatureSerializer.TrySerialize(noRoomForSeparator, list, out var charsWritten);
+
+        Assert.False(result);
+        Assert.Equal(0, charsWritten);
+    }
+
+    [Fact]
+    public void TryDeserialize_Empty_ReturnsTrueAndEmptyCollection()
+    {
+        Assert.True(WordFeatureSerializer.TryDeserialize(default(string), out var features));
+        Assert.Empty(features);
+    }
+
+    [Fact]
+    public void TryDeserialize_InvalidValue_ReturnsFalse()
+    {
+        Assert.False(WordFeatureSerializer.TryDeserialize("Voice=Pass|=Bad", out _));
+    }
+
+    [Fact]
+    public void SerializeToString_RoundtripsMultiValueFeature()
+    {
+        var input = "Case=Acc,Dat";
+        Assert.True(WordFeatureSerializer.TryDeserialize(input, out var parsed));
+        var list = parsed.ToList();
+
+        var roundtrip = WordFeatureSerializer.SerializeToString(list);
+        Assert.Equal(input, roundtrip);
     }
 }

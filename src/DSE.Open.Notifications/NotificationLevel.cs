@@ -3,6 +3,11 @@
 
 namespace DSE.Open.Notifications;
 
+/// <summary>
+/// Indicates the severity of a <see cref="Notification"/>. Levels are ordered so that a
+/// higher numeric value indicates a higher severity — <see cref="Trace"/> is the lowest and
+/// <see cref="Critical"/> is the highest.
+/// </summary>
 public enum NotificationLevel
 {
     /// <summary>

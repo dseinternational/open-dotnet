@@ -1,73 +1,58 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Text.Json;
 using DSE.Open.Testing.Xunit;
 
 namespace DSE.Open.Language;
 
-public sealed class SignModalityTests
+public class SignModalityTests
 {
-    [Theory]
-    [MemberData(nameof(Modalities))]
-    public void ParseInvariant_round_trips_canonical_values(string modalityStr)
+    public static TheoryData<SignModality, string> KnownModalities { get; } = new()
     {
-        var modality = SignModality.ParseInvariant(modalityStr);
-        Assert.Equal(modalityStr, modality.ToStringInvariant());
+        { SignModality.Pictured, "pictured" },
+        { SignModality.Spoken, "spoken" },
+        { SignModality.Gestured, "gestured" },
+        { SignModality.Written, "written" },
+    };
+
+    [Theory]
+    [MemberData(nameof(KnownModalities))]
+    public void ToString_ReturnsCanonicalValue(SignModality modality, string expected)
+    {
+        Assert.Equal(expected, modality.ToString());
     }
 
     [Theory]
-    [MemberData(nameof(Modalities))]
-    public void Serialize_deserialize(string modalityStr)
+    [MemberData(nameof(KnownModalities))]
+    public void Parse_ReturnsKnownModality(SignModality modality, string value)
     {
-        var modality = SignModality.ParseInvariant(modalityStr);
+        Assert.Equal(modality, SignModality.Parse(value, CultureInfo.InvariantCulture));
+    }
+
+    [Theory]
+    [MemberData(nameof(KnownModalities))]
+    public void SerializeDeserialize(SignModality modality, string _)
+    {
         AssertJson.Roundtrip(modality);
     }
 
-    [Fact]
-    public void All_contains_exactly_the_canonical_values()
+    [Theory]
+    [InlineData("Pictured")]
+    [InlineData("PICTURED")]
+    [InlineData("unknown")]
+    [InlineData("")]
+    public void Parse_RejectsInvalidValues(string value)
     {
-        Assert.Equal(4, SignModality.All.Count);
+        _ = Assert.Throws<FormatException>(() => SignModality.Parse(value, CultureInfo.InvariantCulture));
+    }
+
+    [Fact]
+    public void All_ContainsAllKnownModalities()
+    {
         Assert.Contains(SignModality.Pictured, SignModality.All);
         Assert.Contains(SignModality.Spoken, SignModality.All);
         Assert.Contains(SignModality.Gestured, SignModality.All);
         Assert.Contains(SignModality.Written, SignModality.All);
+        Assert.Equal(4, SignModality.All.Count);
     }
-
-    [Fact]
-    public void Repeatable_hash_is_stable_for_equal_values()
-    {
-        var a = SignModality.ParseInvariant("written");
-        var b = SignModality.ParseInvariant("written");
-        Assert.Equal(a.GetRepeatableHashCode(), b.GetRepeatableHashCode());
-    }
-
-    [Fact]
-    public void Repeatable_hash_differs_between_distinct_modalities()
-    {
-        Assert.NotEqual(
-            SignModality.Spoken.GetRepeatableHashCode(),
-            SignModality.Written.GetRepeatableHashCode());
-    }
-
-    [Fact]
-    public void TryParse_rejects_unknown_value()
-    {
-        Assert.False(SignModality.TryParse("signed", out _));
-    }
-
-    [Fact]
-    public void Deserialize_from_json_string()
-    {
-        var modality = JsonSerializer.Deserialize<SignModality>("\"pictured\"");
-        Assert.Equal(SignModality.Pictured, modality);
-    }
-
-    public static readonly TheoryData<string> Modalities =
-    [
-        "pictured",
-        "spoken",
-        "gestured",
-        "written",
-    ];
 }

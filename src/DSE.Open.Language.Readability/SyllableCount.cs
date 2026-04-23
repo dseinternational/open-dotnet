@@ -6,9 +6,8 @@ using System.Collections.Frozen;
 namespace DSE.Open.Language.Readability;
 
 /// <summary>
-/// Looks up the number of syllables in an English word using a precomputed
-/// dictionary file (<c>syllable-counts.txt</c>) loaded from the application
-/// base directory on first use.
+/// Looks up the syllable count for English words from a precomputed dictionary
+/// (loaded lazily from <c>syllable-counts.txt</c> alongside the assembly).
 /// </summary>
 public static class SyllableCount
 {
@@ -16,15 +15,12 @@ public static class SyllableCount
     private static readonly object s_countsLock = new();
 
     /// <summary>
-    /// Returns the number of syllables in <paramref name="textWord"/>, or
-    /// <c>-1</c> if the word is not found in the dictionary.
+    /// Gets the syllable count for the given word.
     /// </summary>
-    /// <param name="textWord">The word to look up. Leading and trailing
-    /// whitespace is ignored, the word is folded to lower case, and a
-    /// trailing possessive <c>'s</c> (ASCII or typographic apostrophe) is
-    /// stripped before lookup.</param>
-    /// <exception cref="ArgumentException"><paramref name="textWord"/> is
-    /// <see langword="null"/>, empty or whitespace.</exception>
+    /// <param name="textWord">The word to look up. Trimmed and lowercased before lookup;
+    /// trailing possessive forms (<c>'s</c> or <c>’s</c>) are stripped.</param>
+    /// <returns>The number of syllables, or <c>-1</c> if the word is not in the dictionary.</returns>
+    /// <exception cref="ArgumentException"><paramref name="textWord"/> is null, empty, or whitespace.</exception>
     public static int GetSyllableCount(string textWord)
     {
         if (string.IsNullOrWhiteSpace(textWord))

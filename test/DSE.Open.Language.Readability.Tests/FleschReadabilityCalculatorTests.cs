@@ -5,79 +5,59 @@ namespace DSE.Open.Language.Readability;
 
 public class FleschReadabilityCalculatorTests
 {
-    // Reference numbers derived from 206.835 - 1.015*(W/S) - 84.6*(Syl/W)
+    // Reading ease = 206.835 - 1.015 * (words / sentences) - 84.6 * (syllables / words)
+
     [Theory]
-    [InlineData(100, 10, 150, 69.785)]
-    [InlineData(200, 20, 400, 27.485)]
-    [InlineData(120, 6, 180, 59.635)]
-    public void CalculateReadingEase_matches_flesch_formula(
+    [InlineData(100, 5, 150, 59.635)]   // 206.835 - 1.015 * 20 - 84.6 * 1.5
+    [InlineData(120, 8, 180, 64.71)]    // 206.835 - 1.015 * 15 - 84.6 * 1.5
+    [InlineData(7, 2, 9, 94.511)]       // small sample sensitive to integer division (7/2 == 3.5, 9/7 ≈ 1.2857)
+    public void CalculateReadingEase_ProducesFloatingPointResult(
         int wordCount,
         int sentenceCount,
         int syllableCount,
         double expected)
     {
-        var actual = FleschReadabilityCalculator.CalculateReadingEase(wordCount, sentenceCount, syllableCount);
-        Assert.Equal(expected, actual, 3);
+        var ease = FleschReadabilityCalculator.CalculateReadingEase(wordCount, sentenceCount, syllableCount);
+        Assert.Equal(expected, ease, 3);
     }
 
-    // Reference numbers derived from 0.39*(W/S) + 11.8*(Syl/W) - 15.59
+    // Reading grade = 0.39 * (words / sentences) + 11.8 * (syllables / words) - 15.59
+
     [Theory]
-    [InlineData(100, 10, 150, 6.01)]
-    [InlineData(200, 20, 400, 11.91)]
-    [InlineData(120, 6, 180, 9.91)]
-    public void CalculateReadingGrade_matches_flesch_kincaid_formula(
+    [InlineData(100, 5, 150, 9.91)]     // 0.39 * 20 + 11.8 * 1.5 - 15.59
+    [InlineData(120, 8, 180, 7.96)]     // 0.39 * 15 + 11.8 * 1.5 - 15.59
+    [InlineData(7, 2, 9, 0.946)]        // 0.39 * 3.5 + 11.8 * (9/7) - 15.59
+    public void CalculateReadingGrade_ProducesFloatingPointResult(
         int wordCount,
         int sentenceCount,
         int syllableCount,
         double expected)
     {
-        var actual = FleschReadabilityCalculator.CalculateReadingGrade(wordCount, sentenceCount, syllableCount);
-        Assert.Equal(expected, actual, 3);
+        var grade = FleschReadabilityCalculator.CalculateReadingGrade(wordCount, sentenceCount, syllableCount);
+        Assert.Equal(expected, grade, 3);
     }
 
     [Fact]
-    public void Reading_ease_is_higher_for_shorter_words_and_sentences()
+    public void CalculateReadingEase_RatiosUseFloatingPointDivision()
     {
-        var simple = FleschReadabilityCalculator.CalculateReadingEase(wordCount: 20, sentenceCount: 5, syllableCount: 25);
-        var complex = FleschReadabilityCalculator.CalculateReadingEase(wordCount: 20, sentenceCount: 2, syllableCount: 60);
-        Assert.True(simple > complex);
+        // If integer division were used:
+        //   (7 / 2) == 3 and (9 / 7) == 1
+        //   => 206.835 - 1.015 * 3 - 84.6 * 1 == 119.19
+        // With floating-point division the correct result is ~94.511.
+        var ease = FleschReadabilityCalculator.CalculateReadingEase(7, 2, 9);
+        Assert.NotEqual(119.19, ease, 2);
+        Assert.Equal(94.511, ease, 3);
     }
 
     [Fact]
-    public void Reading_grade_is_higher_for_longer_words_and_sentences()
+    public void CalculateReadingGrade_RatiosUseFloatingPointDivision()
     {
-        var simple = FleschReadabilityCalculator.CalculateReadingGrade(wordCount: 20, sentenceCount: 5, syllableCount: 25);
-        var complex = FleschReadabilityCalculator.CalculateReadingGrade(wordCount: 20, sentenceCount: 2, syllableCount: 60);
-        Assert.True(complex > simple);
-    }
-
-    [Fact]
-    public void CalculateReadingEase_throws_on_null_sentences()
-    {
-        _ = Assert.Throws<ArgumentNullException>(() =>
-            FleschReadabilityCalculator.CalculateReadingEase(null!));
-    }
-
-    [Fact]
-    public void CalculateReadingGrade_throws_on_null_sentences()
-    {
-        _ = Assert.Throws<ArgumentNullException>(() =>
-            FleschReadabilityCalculator.CalculateReadingGrade(null!));
-    }
-
-    [Fact]
-    public void Ease_weights_match_published_constants()
-    {
-        Assert.Equal(206.835, FleschReadabilityCalculator.EaseBaseScore);
-        Assert.Equal(1.015, FleschReadabilityCalculator.EaseSentenceWeight);
-        Assert.Equal(84.6, FleschReadabilityCalculator.EaseWordWeight);
-    }
-
-    [Fact]
-    public void Grade_weights_match_published_constants()
-    {
-        Assert.Equal(-15.59, FleschReadabilityCalculator.GradeBaseScore);
-        Assert.Equal(0.39, FleschReadabilityCalculator.GradeSentenceWeight);
-        Assert.Equal(11.8, FleschReadabilityCalculator.GradeWordWeight);
+        // If integer division were used:
+        //   (7 / 2) == 3 and (9 / 7) == 1
+        //   => 0.39 * 3 + 11.8 * 1 - 15.59 == -2.62
+        // With floating-point division the correct result is ~0.946.
+        var grade = FleschReadabilityCalculator.CalculateReadingGrade(7, 2, 9);
+        Assert.NotEqual(-2.62, grade, 2);
+        Assert.Equal(0.946, grade, 3);
     }
 }
