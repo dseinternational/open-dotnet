@@ -9,11 +9,22 @@ using Microsoft.Extensions.Logging;
 
 namespace DSE.Open.Mediators;
 
+/// <summary>
+/// Dispatches commands to the single registered
+/// <see cref="ICommandHandler{TCommand, TCommandResult}"/> obtained from an
+/// <see cref="IServiceProvider"/>.
+/// </summary>
 public sealed partial class CommandDispatcher : ICommandDispatcher
 {
     private readonly IServiceProvider _serviceProvider;
     private readonly ILogger<CommandDispatcher> _logger;
 
+    /// <summary>
+    /// Initialises a new <see cref="CommandDispatcher"/>.
+    /// </summary>
+    /// <param name="serviceProvider">Provider used to resolve command handlers.</param>
+    /// <param name="logger">Logger used to record dispatch activity.</param>
+    /// <exception cref="ArgumentNullException">Either argument is <see langword="null"/>.</exception>
     public CommandDispatcher(IServiceProvider serviceProvider, ILogger<CommandDispatcher> logger)
     {
         ArgumentNullException.ThrowIfNull(serviceProvider);
