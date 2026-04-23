@@ -33,7 +33,7 @@ internal readonly struct NaInt : INaValue<NaInt, int>, IEquatable<NaInt>
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(Value, HasValue);
+        return HasValue ? HashCode.Combine(Value, HasValue) : 0;
     }
 
     public override string ToString()

@@ -3,6 +3,9 @@
 
 namespace DSE.Open;
 
+/// <summary>
+/// Represents an object that has a summary and detail text.
+/// </summary>
 public interface ISummaryDetail : ISummarized
 {
     string Detail { get; }

@@ -9,18 +9,17 @@ namespace DSE.Open;
 public static class Ternary
 {
     /// <summary>
-    /// Compares two nullable value types for equality and returns a <see cref="Trilean"/>
+    /// Compares two <see cref="INaValue{TSelf, T}"/> values for equality and returns a <see cref="Trilean"/>
     /// value indicating the result.
     /// </summary>
     /// <typeparam name="TSelf"></typeparam>
-    /// <typeparam name="T">The type of the values to compare. Must be a value type that
-    /// implements <see cref="IEquatable{T}"/>.</typeparam>
-    /// <param name="left">The first value to compare. Can be <see langword="null"/>.</param>
-    /// <param name="right">The second value to compare. Can be <see langword="null"/>.</param>
+    /// <typeparam name="T">The underlying data type of the Na values.</typeparam>
+    /// <param name="left">The first value to compare.</param>
+    /// <param name="right">The second value to compare.</param>
     /// <returns>A <see cref="Trilean"/> indicating the result of the comparison:
-    /// <see langword="null"/> if either value is <see langword="null"/>, <see cref="Trilean.True"/>
-    /// if the values are not null and equal, or  <see cref="Trilean.False"/> if the
-    /// values are not null and not equal.</returns>
+    /// <see cref="Trilean.Na"/> if either value is Na, <see cref="Trilean.True"/>
+    /// if the values are not Na and equal, or <see cref="Trilean.False"/> if the
+    /// values are not Na and not equal.</returns>
     public static Trilean Equals<TSelf, T>(TSelf left, TSelf right)
         where T : notnull, IEquatable<T>
         where TSelf : struct, INaValue<TSelf, T>
