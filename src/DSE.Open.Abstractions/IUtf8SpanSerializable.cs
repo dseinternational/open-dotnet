@@ -8,7 +8,7 @@ namespace DSE.Open;
 /// <summary>
 /// Indicates that a type can be written to and read from a span of bytes.
 /// </summary>
-/// <typeparam name="TSelf"></typeparam>
+/// <typeparam name="TSelf">The type that implements this interface.</typeparam>
 [SuppressMessage("Design", "CA1000:Do not declare static members on generic types", Justification = "Required for static interface methods")]
 public interface IUtf8SpanSerializable<TSelf> : IUtf8SpanParsable<TSelf>, IUtf8SpanFormattable
     where TSelf : IUtf8SpanSerializable<TSelf>

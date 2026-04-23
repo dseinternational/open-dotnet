@@ -72,7 +72,8 @@ public readonly struct Trilean
     {
         TrueValue => True,
         FalseValue => False,
-        _ => Na,
+        _ => throw new NaValueException(
+            $"Cannot access value as the {nameof(Trilean)} value is Na."),
     };
 
     public void Deconstruct(out bool? value)
@@ -584,6 +585,8 @@ public readonly struct Trilean
 
     public static Trilean Parse(string s, IFormatProvider? provider)
     {
+        ArgumentNullException.ThrowIfNull(s);
+
         if (TryParse(s.AsSpan(), provider, out var result))
         {
             return result;
@@ -598,6 +601,12 @@ public readonly struct Trilean
         IFormatProvider? provider,
         [MaybeNullWhen(false)] out Trilean result)
     {
+        if (s is null)
+        {
+            result = default;
+            return false;
+        }
+
         return TryParse(s.AsSpan(), provider, out result);
     }
 }

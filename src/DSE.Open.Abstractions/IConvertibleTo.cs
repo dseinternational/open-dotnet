@@ -18,7 +18,7 @@ public interface IConvertibleTo<TFrom, TTo>
     /// <summary>
     /// Gets a value of type <typeparamref name="TTo"/> from a <typeparamref name="TFrom"/> value.
     /// </summary>
-    /// <param name="value"></param>
+    /// <param name="value">The value to convert.</param>
     static virtual implicit operator TTo(TFrom value)
     {
         return TFrom.ConvertTo(value);

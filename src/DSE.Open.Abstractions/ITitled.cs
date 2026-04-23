@@ -3,6 +3,9 @@
 
 namespace DSE.Open;
 
+/// <summary>
+/// Represents an object that has a title.
+/// </summary>
 public interface ITitled
 {
     string Title { get; }

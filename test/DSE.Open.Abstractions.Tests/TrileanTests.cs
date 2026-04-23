@@ -362,4 +362,40 @@ public class TrileanTests
     {
         Assert.True(Trilean.TernaryEquals(Trilean.True, Trilean.False).IsFalse);
     }
+
+    [Fact]
+    public void INaValue_Value_Na_ThrowsNaValueException()
+    {
+        INaValue naValue = Trilean.Na;
+        _ = Assert.Throws<NaValueException>(() => naValue.Value);
+    }
+
+    [Fact]
+    public void INaValue_Value_True_ReturnsTrue()
+    {
+        INaValue naValue = Trilean.True;
+        var value = (Trilean)naValue.Value;
+        Assert.True(value.IsTrue);
+    }
+
+    [Fact]
+    public void INaValue_Value_False_ReturnsFalse()
+    {
+        INaValue naValue = Trilean.False;
+        var value = (Trilean)naValue.Value;
+        Assert.True(value.IsFalse);
+    }
+
+    [Fact]
+    public void TryParse_NullString_ReturnsFalse()
+    {
+        var success = Trilean.TryParse(null, null, out _);
+        Assert.False(success);
+    }
+
+    [Fact]
+    public void Parse_NullString_ThrowsArgumentNullException()
+    {
+        _ = Assert.Throws<ArgumentNullException>(() => Trilean.Parse(null!, null));
+    }
 }

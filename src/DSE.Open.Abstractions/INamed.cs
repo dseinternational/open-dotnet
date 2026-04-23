@@ -3,6 +3,9 @@
 
 namespace DSE.Open;
 
+/// <summary>
+/// Represents an object that has a name.
+/// </summary>
 public interface INamed
 {
     string Name { get; }

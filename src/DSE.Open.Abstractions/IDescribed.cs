@@ -3,6 +3,9 @@
 
 namespace DSE.Open;
 
+/// <summary>
+/// Represents an object that has a description.
+/// </summary>
 public interface IDescribed
 {
     string Description { get; }
