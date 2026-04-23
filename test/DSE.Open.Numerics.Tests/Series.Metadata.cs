@@ -52,6 +52,41 @@ public class SeriesMetadataTests
         Assert.Equal(99, series[0]);
     }
 
+    // -------- Series<T>: lazy-initialised empty Categories must not throw --------
+
+    [Fact]
+    public void WithName_DoesNotThrow_WhenCategoriesGetterWasTouched_ButSeriesIsNonCategorical()
+    {
+        // Regression: accessing .Categories on a non-categorical series lazily creates
+        // an empty CategorySet<T> in the backing field. Passing that empty set to the
+        // ctor would trip the non-empty-set validation ("no vector element is in the
+        // set") even though the caller is only changing Name. The builder should
+        // normalise the empty lazy set to null when forwarding.
+        var series = new Series<int>([1, 2, 3]);
+        _ = series.Categories; // force lazy init to an empty CategorySet<T>
+
+        var renamed = series.WithName("x"); // must not throw
+
+        Assert.Equal("x", renamed.Name);
+        Assert.False(renamed.IsCategorical);
+    }
+
+    [Fact]
+    public void WithValueLabels_DoesNotThrow_WhenCategoriesGetterWasTouched_ButSeriesIsNonCategorical()
+    {
+        // Same regression: WithValueLabels forwards _categories through the ctor and
+        // would otherwise throw on the empty lazy set.
+        var series = new Series<int>([1, 2, 3]);
+        _ = series.Categories;
+
+        var labels = new ValueLabelCollection<int>();
+        labels.Add(1, "one");
+        var updated = series.WithValueLabels(labels); // must not throw
+
+        Assert.Same(labels, updated.ValueLabels);
+        Assert.False(updated.IsCategorical);
+    }
+
     // -------- Series<T>.WithCategories --------
 
     [Fact]
@@ -170,6 +205,37 @@ public class SeriesMetadataTests
 
         Assert.Same(series.Categories, renamed.Categories);
         Assert.Same(series.ValueLabels, renamed.ValueLabels);
+    }
+
+    // -------- ReadOnlySeries<T>: lazy-initialised empty Categories must not throw --------
+
+    [Fact]
+    public void ReadOnly_WithName_DoesNotThrow_WhenCategoriesGetterWasTouched_ButSeriesIsNonCategorical()
+    {
+        // Same regression as Series<T>: accessing .Categories lazily creates an empty
+        // ReadOnlyCategorySet<T>; forwarding it through the ctor must not throw when
+        // the caller is only changing Name.
+        var series = new ReadOnlySeries<int>([1, 2, 3]);
+        _ = series.Categories;
+
+        var renamed = series.WithName("x"); // must not throw
+
+        Assert.Equal("x", renamed.Name);
+        Assert.False(renamed.IsCategorical);
+    }
+
+    [Fact]
+    public void ReadOnly_WithValueLabels_DoesNotThrow_WhenCategoriesGetterWasTouched_ButSeriesIsNonCategorical()
+    {
+        var series = new ReadOnlySeries<int>([1, 2, 3]);
+        _ = series.Categories;
+
+        var labels = new ValueLabelCollection<int>();
+        labels.Add(1, "one");
+        var updated = series.WithValueLabels(labels.AsReadOnly()); // must not throw
+
+        Assert.Single(updated.ValueLabels);
+        Assert.False(updated.IsCategorical);
     }
 
     // -------- ReadOnlySeries<T>.WithCategories --------
