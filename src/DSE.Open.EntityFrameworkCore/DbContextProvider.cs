@@ -15,6 +15,9 @@ public sealed partial class DbContextProvider : IDbContextProvider
 
     public DbContextProvider(IServiceProvider serviceProvider, ILogger<DbContextProvider> logger)
     {
+        ArgumentNullException.ThrowIfNull(serviceProvider);
+        ArgumentNullException.ThrowIfNull(logger);
+
         _serviceProvider = serviceProvider;
         _logger = logger;
     }
