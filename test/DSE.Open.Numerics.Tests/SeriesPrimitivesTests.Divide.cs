@@ -35,7 +35,7 @@ public partial class SeriesPrimitivesTests
     }
 
     [Fact]
-    public void Divide_SeriesSeries_IntoRhsSpan_WritesQuotient()
+    public void Divide_SeriesSeries_IntoAliasedRhsSpan_WritesQuotient()
     {
         var lhs = Series.Create([10, 20, 30]);
         var rhs = Series.Create([2, 4, 5]);
