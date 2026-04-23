@@ -46,6 +46,29 @@ public class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
         }
     }
 
+    /// <summary>
+    /// "Trusted" ctor used by <see cref="Slice(int)"/> and <see cref="Slice(int, int)"/>.
+    /// The sliced vector inherits metadata from a source that already validated its
+    /// full vector against <paramref name="categories"/>, so each element of the
+    /// sliced sub-vector is necessarily in the set. Skipping re-validation avoids an
+    /// O(length) check on every slice and, crucially, prevents slicing from throwing
+    /// in the presence of externally-mutated category sets — consistent with the
+    /// documented "no runtime enforcement" contract.
+    /// </summary>
+    private ReadOnlySeries(
+        ReadOnlyVector<T> vector,
+        string? name,
+        ReadOnlyCategorySet<T>? categories,
+        ReadOnlyValueLabelCollection<T>? valueLabels,
+        bool skipCategoryValidation)
+        : base(vector, name)
+    {
+        _vector = vector;
+        _categories = categories;
+        _valueLabels = valueLabels;
+        _ = skipCategoryValidation;
+    }
+
     public T this[int index]
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -203,7 +226,8 @@ public class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ReadOnlySeries<T> Slice(int start)
     {
-        return new(_vector[start..], Name, _categories, _valueLabels);
+        return new ReadOnlySeries<T>(
+            _vector[start..], Name, _categories, _valueLabels, skipCategoryValidation: true);
     }
 
     /// <summary>
@@ -216,7 +240,8 @@ public class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ReadOnlySeries<T> Slice(int start, int length)
     {
-        return new(_vector.Slice(start, length), Name, _categories, _valueLabels);
+        return new ReadOnlySeries<T>(
+            _vector.Slice(start, length), Name, _categories, _valueLabels, skipCategoryValidation: true);
     }
 
     /// <summary>

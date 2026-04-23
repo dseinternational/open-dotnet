@@ -112,8 +112,36 @@ public partial class SeriesTests
     }
 
     [Fact]
-    public void Slice_WithCopyTrue_NoCategories_ReturnsSliceWithNullCategories()
+    public void Slice_DoesNotRevalidate_AgainstExternallyMutatedCategorySet()
     {
+        // Regression for reviewer concern: Slice now inherits metadata from the
+        // source series, but it should NOT re-validate the sliced vector against
+        // the (possibly mutated) category set. The public ctor validates; Slice
+        // must route through a skip-validation path so that external mutation of
+        // the parent's CategorySet after construction doesn't cause subsequent
+        // Slice calls to throw. This matches the documented "no runtime
+        // enforcement" contract for external mutation.
+        var categories = new CategorySet<int>([1, 2, 3]);
+        var series = new Series<int>([1, 2, 3], name: "x", categories: categories);
+
+        // Remove a category that is still present in the vector.
+        _ = categories.Remove(2);
+        // The slice's elements include 2 and 2 is no longer in the set. Old behaviour
+        // would throw "Value 2 is not in the set." on the ctor validation.
+        var slice = series.Slice(0, 3);
+
+        Assert.Equal(3, slice.Length);
+        // The slice still references the same (mutated) CategorySet.
+        Assert.Same(categories, slice.Categories);
+    }
+
+    [Fact]
+    public void Slice_WithCopyTrue_NoCategories_SliceRemainsNonCategorical()
+    {
+        // Renamed from "...ReturnsSliceWithNullCategories" — the Categories property
+        // is lazy-initialised to an empty set, so it is never observably null. The
+        // behaviour the test actually asserts is that a non-categorical source
+        // produces a non-categorical slice even under copy: true.
         var series = new Series<int>([1, 2, 3]) { Name = "x" };
 
         var slice = series.Slice(0, 2, copy: true);
@@ -146,5 +174,39 @@ public partial class SeriesTests
 
         Assert.True(slice.IsCategorical);
         Assert.NotSame(roCategories, slice.Categories);
+    }
+
+    [Fact]
+    public void ReadOnlySlice_Preserves_ValueLabels_ByReference()
+    {
+        var labels = new ValueLabelCollection<int>();
+        labels.Add(1, "one");
+        labels.Add(2, "two");
+        labels.Add(3, "three");
+        var roLabels = labels.AsReadOnly();
+        var series = new ReadOnlySeries<int>([1, 2, 3, 2, 1], name: "x", valueLabels: roLabels);
+
+        var slice = series.Slice(1, 3);
+
+        Assert.Same(roLabels, slice.ValueLabels);
+    }
+
+    [Fact]
+    public void ReadOnlySlice_WithCopyTrue_Copies_ValueLabels_AndPreservesContents()
+    {
+        var labels = new ValueLabelCollection<int>();
+        labels.Add(1, "one");
+        labels.Add(2, "two");
+        labels.Add(3, "three");
+        var roLabels = labels.AsReadOnly();
+        var series = new ReadOnlySeries<int>([1, 2, 3, 2, 1], name: "x", valueLabels: roLabels);
+
+        var slice = series.Slice(1, 3, copy: true);
+
+        Assert.NotSame(roLabels, slice.ValueLabels);
+        Assert.Equal(roLabels.Count, slice.ValueLabels.Count);
+        Assert.Equal("one", slice.ValueLabels[1]);
+        Assert.Equal("two", slice.ValueLabels[2]);
+        Assert.Equal("three", slice.ValueLabels[3]);
     }
 }

@@ -56,6 +56,29 @@ public class Series<T>
         }
     }
 
+    /// <summary>
+    /// "Trusted" ctor used by <see cref="Slice(int)"/> and <see cref="Slice(int, int)"/>.
+    /// The sliced vector inherits metadata from a source that already validated its
+    /// full vector against <paramref name="categories"/>, so each element of the
+    /// sliced sub-vector is necessarily in the set. Skipping re-validation avoids an
+    /// O(length) check on every slice and, crucially, prevents slicing from throwing
+    /// in the presence of externally-mutated category sets — consistent with the
+    /// documented "no runtime enforcement" contract.
+    /// </summary>
+    private Series(
+        Vector<T> vector,
+        string? name,
+        CategorySet<T>? categories,
+        ValueLabelCollection<T>? valueLabels,
+        bool skipCategoryValidation)
+        : base(vector, name)
+    {
+        _vector = vector;
+        _categories = categories;
+        _valueLabels = valueLabels;
+        _ = skipCategoryValidation;
+    }
+
     public T this[int index]
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -275,7 +298,7 @@ public class Series<T>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Series<T> Slice(int start)
     {
-        return new Series<T>(_vector[start..], Name, _categories, _valueLabels);
+        return new Series<T>(_vector[start..], Name, _categories, _valueLabels, skipCategoryValidation: true);
     }
 
     /// <summary>
@@ -288,7 +311,8 @@ public class Series<T>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Series<T> Slice(int start, int length)
     {
-        return new Series<T>(_vector.Slice(start, length), Name, _categories, _valueLabels);
+        return new Series<T>(
+            _vector.Slice(start, length), Name, _categories, _valueLabels, skipCategoryValidation: true);
     }
 
     /// <summary>
