@@ -27,14 +27,18 @@ public static partial class VectorPrimitives
         sorted.AsSpan().Sort();
 
         var result = new T[n - 1];
-        var length = T.CreateChecked(sorted.Length + 1);
-        var nT = T.CreateChecked(n);
+
+        // Index arithmetic is done in double to avoid overflowing narrow FP types
+        // (e.g. Half) when sorted.Length or n exceeds the type's max finite value.
+        // Only the final interpolation is performed in T.
+        var lengthD = (double)sorted.Length + 1.0;
+        var nD = (double)n;
 
         for (var i = 1; i < n; i++)
         {
-            var h = T.CreateChecked(i) * length / nT;
-            var hFloor = T.Floor(h);
-            var j = int.CreateChecked(hFloor);
+            var h = i * lengthD / nD;
+            var hFloor = Math.Floor(h);
+            var j = (int)hFloor;
             var frac = h - hFloor;
 
             if (j < 1)
@@ -47,7 +51,7 @@ public static partial class VectorPrimitives
             }
             else
             {
-                result[i - 1] = sorted[j - 1] + frac * (sorted[j] - sorted[j - 1]);
+                result[i - 1] = sorted[j - 1] + T.CreateChecked(frac) * (sorted[j] - sorted[j - 1]);
             }
         }
 

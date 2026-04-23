@@ -37,7 +37,8 @@ public static partial class VectorPrimitives
         ArgumentNullException.ThrowIfNull(x);
         ArgumentNullException.ThrowIfNull(y);
         ArgumentNullException.ThrowIfNull(destination);
-        return Vector.Create(GreaterThanOrEqual(x.AsSpan(), y.AsSpan(), destination.AsSpan()));
+        _ = GreaterThanOrEqual(x.AsSpan(), y.AsSpan(), destination.AsSpan());
+        return destination;
     }
 
     public static ref readonly Span<bool> GreaterThanOrEqual<T>(

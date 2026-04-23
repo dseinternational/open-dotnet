@@ -1,51 +1,112 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Collections;
+
 namespace DSE.Open.Numerics;
 
 public partial class VectorPrimitivesTests
 {
+    // Test helper: a minimal IReadOnlyVector<T> that counts AsSpan() invocations
+    // so the Add/Subtract/Divide double-call regression can actually be detected.
+    // Only the members reached by those code paths (AsSpan, Length) do real work;
+    // the remainder either delegate trivially or throw NotSupportedException.
+    private sealed class CountingReadOnlyVector<T> : IReadOnlyVector<T>
+        where T : struct, IEquatable<T>
+    {
+        private readonly T[] _data;
+
+        public CountingReadOnlyVector(params T[] data)
+        {
+            _data = data;
+        }
+
+        public int AsSpanCalls { get; private set; }
+
+        public ReadOnlySpan<T> AsSpan()
+        {
+            AsSpanCalls++;
+            return _data;
+        }
+
+        public int Length => _data.Length;
+
+        public int Count => _data.Length;
+
+        public T this[int index] => _data[index];
+
+        public VectorDataType DataType => Vector.GetDataType<T>();
+
+        public bool IsEmpty => _data.Length == 0;
+
+        public bool IsNumeric => true;
+
+        public bool IsNullable => false;
+
+        public Type ItemType => typeof(T);
+
+        public VectorValue GetVectorValue(int index) => throw new NotSupportedException();
+
+        public IReadOnlyVector<T> Slice(int start, int length) => throw new NotSupportedException();
+
+        public IEnumerator<T> GetEnumerator() => ((IEnumerable<T>)_data).GetEnumerator();
+
+        IEnumerator IEnumerable.GetEnumerator() => _data.GetEnumerator();
+
+        public bool Equals(IReadOnlyVector<T>? other) => ReferenceEquals(this, other);
+    }
+
+
     // -------- Regression: Add/Subtract/Divide double-call bugfix --------
+    //
+    // The IReadOnlyVector<T>,IReadOnlyVector<T>,Span<T> overloads previously
+    // delegated to the inner span-based primitive TWICE. Because the operation
+    // is idempotent on the destination, a correctness check on the output
+    // cannot catch the regression. Instead we pass CountingReadOnlyVector<T>
+    // wrappers and assert that each vector's AsSpan() is called exactly once
+    // during a single invocation — if the duplicate call is re-introduced the
+    // counts jump to 2 and these tests fail.
 
     [Fact]
-    public void Add_VectorVectorSpan_WritesDestinationOnce()
+    public void Add_VectorVectorSpan_DoesNotInvokeUnderlyingPrimitiveTwice()
     {
-        // Regression: the IReadOnlyVector<T>,IReadOnlyVector<T>,Span<T> overload
-        // used to call the underlying Add twice — writing the result correctly but
-        // doubling the work. Behaviour check: a sentinel in destination must be
-        // overwritten to the correct sum exactly once.
-        Vector<int> v1 = [1, 2, 3];
-        Vector<int> v2 = [4, 5, 6];
+        var v1 = new CountingReadOnlyVector<int>(1, 2, 3);
+        var v2 = new CountingReadOnlyVector<int>(4, 5, 6);
         Span<int> destination = stackalloc int[3];
-        destination.Fill(int.MinValue);
 
         v1.Add(v2, destination);
 
         Assert.Equal([5, 7, 9], destination);
+        Assert.Equal(1, v1.AsSpanCalls);
+        Assert.Equal(1, v2.AsSpanCalls);
     }
 
     [Fact]
-    public void Subtract_VectorVectorSpan_WritesDestinationOnce()
+    public void Subtract_VectorVectorSpan_DoesNotInvokeUnderlyingPrimitiveTwice()
     {
-        Vector<int> v1 = [10, 20, 30];
-        Vector<int> v2 = [1, 2, 3];
+        var v1 = new CountingReadOnlyVector<int>(10, 20, 30);
+        var v2 = new CountingReadOnlyVector<int>(1, 2, 3);
         Span<int> destination = stackalloc int[3];
 
         v1.Subtract(v2, destination);
 
         Assert.Equal([9, 18, 27], destination);
+        Assert.Equal(1, v1.AsSpanCalls);
+        Assert.Equal(1, v2.AsSpanCalls);
     }
 
     [Fact]
-    public void Divide_VectorVectorSpan_WritesDestinationOnce()
+    public void Divide_VectorVectorSpan_DoesNotInvokeUnderlyingPrimitiveTwice()
     {
-        Vector<int> v1 = [10, 20, 30];
-        Vector<int> v2 = [2, 4, 5];
+        var v1 = new CountingReadOnlyVector<int>(10, 20, 30);
+        var v2 = new CountingReadOnlyVector<int>(2, 4, 5);
         Span<int> destination = stackalloc int[3];
 
         v1.Divide(v2, destination);
 
         Assert.Equal([5, 5, 6], destination);
+        Assert.Equal(1, v1.AsSpanCalls);
+        Assert.Equal(1, v2.AsSpanCalls);
     }
 
     // -------- LessThanOrEqual --------

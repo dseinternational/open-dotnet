@@ -6,14 +6,15 @@ using System.Numerics.Tensors;
 
 namespace DSE.Open.Numerics;
 
-// Each predicate follows the existing VectorPrimitives.IsNaN pattern:
+// All predicates expose the same core span-based surface:
 //   - IsXxx(ReadOnlySpan<T>, Span<bool>)         — element-wise mask
-//   - IsXxx(IReadOnlyVector<T>, Span<bool>)      — extension overload
-//   - IsXxx(IReadOnlyVector<T>, IVector<bool>)   — extension overload
 //   - IsXxxAll(ReadOnlySpan<T>) : bool           — all-true reduction
-//   - IsXxxAll(IReadOnlyVector<T>) : bool
 //   - IsXxxAny(ReadOnlySpan<T>) : bool           — any-true reduction
-//   - IsXxxAny(IReadOnlyVector<T>) : bool
+//
+// IReadOnlyVector<T> and IVector<bool> extension overloads (matching the
+// existing VectorPrimitives.IsNaN pattern) are currently provided only for
+// IsFinite and IsInfinity as representative coverage. Callers working with a
+// vector and any other predicate should pass `vector.AsSpan()` directly.
 public static partial class VectorPrimitives
 {
     // -------- IsFinite --------

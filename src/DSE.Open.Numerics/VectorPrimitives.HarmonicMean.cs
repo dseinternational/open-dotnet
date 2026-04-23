@@ -11,11 +11,12 @@ public static partial class VectorPrimitives
     /// Gets the harmonic mean of a non-empty sequence: <c>n / Σ(1/xᵢ)</c>.
     /// </summary>
     /// <remarks>
-    /// The harmonic mean is defined only for positive real numbers; a zero element produces
-    /// positive infinity in the reciprocal sum and therefore a result of zero.
+    /// The accumulation type must be a floating-point type so that reciprocals of zero
+    /// produce <c>±∞</c> (yielding a result of zero) rather than throwing
+    /// <see cref="DivideByZeroException"/>.
     /// </remarks>
     public static T HarmonicMean<T>(ReadOnlySpan<T> sequence)
-        where T : struct, INumberBase<T>
+        where T : struct, IFloatingPoint<T>
     {
         return HarmonicMean<T, T>(sequence);
     }
@@ -24,9 +25,14 @@ public static partial class VectorPrimitives
     /// Gets the harmonic mean of a non-empty sequence, accumulating into
     /// <typeparamref name="TResult"/>: <c>n / Σ(1/xᵢ)</c>.
     /// </summary>
+    /// <remarks>
+    /// <typeparamref name="TResult"/> must be a floating-point type so that reciprocals
+    /// of zero produce <c>±∞</c> (yielding a result of zero) rather than throwing
+    /// <see cref="DivideByZeroException"/>.
+    /// </remarks>
     public static TResult HarmonicMean<T, TResult>(ReadOnlySpan<T> sequence)
         where T : struct, INumberBase<T>
-        where TResult : struct, INumberBase<TResult>
+        where TResult : struct, IFloatingPoint<TResult>
     {
         EmptySequenceException.ThrowIfEmpty(sequence);
 
