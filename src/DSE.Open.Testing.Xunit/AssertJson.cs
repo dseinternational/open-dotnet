@@ -9,8 +9,20 @@ using Xunit;
 
 namespace DSE.Open.Testing.Xunit;
 
+/// <summary>
+/// Helpers that verify a type round-trips faithfully through
+/// <see cref="JsonSerializer"/>.
+/// </summary>
 public static class AssertJson
 {
+    /// <summary>
+    /// Serialises <paramref name="value"/> with <paramref name="options"/>, deserialises
+    /// the result, and asserts equivalence with the original.
+    /// </summary>
+    /// <remarks>
+    /// Uses reflection-based serialisation. For AOT-compatible code, use the overload
+    /// that accepts a <see cref="JsonTypeInfo{T}"/> or <see cref="JsonSerializerContext"/>.
+    /// </remarks>
     [RequiresDynamicCode(
         "JSON serialization and deserialization might require types that cannot be statically analyzed and might need runtime code generation. Use System.Text.Json source generation for native AOT applications.")]
     [RequiresUnreferencedCode(
@@ -23,11 +35,9 @@ public static class AssertJson
     }
 
     /// <summary>
-    /// Roundtrip a value of type <typeparamref name="T"/> using the provided <see cref="JsonTypeInfo{T}"/> instance.
+    /// Serialises <paramref name="value"/> using the supplied <see cref="JsonTypeInfo{T}"/>,
+    /// deserialises the result, and asserts equivalence with the original. Safe for AOT.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="value"></param>
-    /// <param name="typeInfo"></param>
     public static void Roundtrip<T>(T value, JsonTypeInfo<T> typeInfo)
     {
         var json = JsonSerializer.Serialize(value, typeInfo);
@@ -35,6 +45,11 @@ public static class AssertJson
         Assert.Equivalent(value, deserialized, true);
     }
 
+    /// <summary>
+    /// Serialises <paramref name="value"/> using the type metadata supplied by
+    /// <paramref name="context"/>, deserialises the result, and asserts equivalence with
+    /// the original. Safe for AOT.
+    /// </summary>
     public static void Roundtrip<T>(T value, JsonSerializerContext context)
     {
         var json = JsonSerializer.Serialize(value, typeof(T), context);

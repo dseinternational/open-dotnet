@@ -6,22 +6,25 @@ using Xunit.Sdk;
 namespace DSE.Open.Testing.Xunit;
 
 /// <summary>
-/// Assertion thrown when a <see cref="AssertComparison.True{T}(Func{T, bool}, T, string?)"/> fails.
+/// Thrown when an <see cref="AssertComparison"/> assertion fails.
 /// </summary>
 public class ComparisonException : XunitException
 {
     private const string DefaultMessage = "Expected comparison failed";
 
+    /// <summary>Initialises a new <see cref="ComparisonException"/> with a default message.</summary>
     public ComparisonException()
         : base(DefaultMessage)
     {
     }
 
+    /// <summary>Initialises a new <see cref="ComparisonException"/> with the specified message.</summary>
     public ComparisonException(string message)
         : base(message ?? DefaultMessage)
     {
     }
 
+    /// <summary>Initialises a new <see cref="ComparisonException"/> with a message and inner exception.</summary>
     public ComparisonException(string message, Exception innerException)
         : base(message ?? DefaultMessage, innerException)
     {

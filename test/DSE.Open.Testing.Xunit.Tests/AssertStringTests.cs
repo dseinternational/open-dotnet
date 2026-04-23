@@ -39,9 +39,56 @@ public class AssertStringTests
     }
 
     [Fact]
+    public void IsAscii_EmptyPasses()
+    {
+        AssertString.IsAscii(ReadOnlySpan<char>.Empty);
+    }
+
+    [Fact]
     public void IsAscii_throws_if_not()
     {
         _ = Assert.Throws<StringException>(() => AssertString.IsAscii("Ελληνικά"));
         _ = Assert.Throws<StringException>(() => AssertString.IsAscii("ɲ ɳ ŋ"));
+    }
+
+    [Fact]
+    public void IsAsciiDigits()
+    {
+        AssertString.IsAsciiDigits("0123456789");
+    }
+
+    [Fact]
+    public void IsAsciiDigits_EmptyPasses()
+    {
+        AssertString.IsAsciiDigits(ReadOnlySpan<char>.Empty);
+    }
+
+    [Fact]
+    public void IsAsciiDigits_throws_if_not()
+    {
+        _ = Assert.Throws<StringException>(() => AssertString.IsAsciiDigits("12a34"));
+        _ = Assert.Throws<StringException>(() => AssertString.IsAsciiDigits("12 34"));
+        _ = Assert.Throws<StringException>(() => AssertString.IsAsciiDigits("Hello"));
+    }
+
+    [Fact]
+    public void IsAsciiLetters()
+    {
+        AssertString.IsAsciiLetters("Hello");
+        AssertString.IsAsciiLetters("abcXYZ");
+    }
+
+    [Fact]
+    public void IsAsciiLetters_EmptyPasses()
+    {
+        AssertString.IsAsciiLetters(ReadOnlySpan<char>.Empty);
+    }
+
+    [Fact]
+    public void IsAsciiLetters_throws_if_not()
+    {
+        _ = Assert.Throws<StringException>(() => AssertString.IsAsciiLetters("Hello1"));
+        _ = Assert.Throws<StringException>(() => AssertString.IsAsciiLetters("Hello World"));
+        _ = Assert.Throws<StringException>(() => AssertString.IsAsciiLetters("Ελληνικά"));
     }
 }

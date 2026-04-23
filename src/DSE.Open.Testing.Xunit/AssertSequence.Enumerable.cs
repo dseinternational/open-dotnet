@@ -8,6 +8,14 @@ namespace DSE.Open.Testing.Xunit;
 
 public static partial class AssertSequence
 {
+    /// <summary>
+    /// Asserts that <paramref name="assertion"/> returns <see langword="true"/> when
+    /// applied to <paramref name="sequence"/>.
+    /// </summary>
+    /// <exception cref="ArgumentNullException"><paramref name="assertion"/> or
+    /// <paramref name="sequence"/> is <see langword="null"/>.</exception>
+    /// <exception cref="SequenceException">The assertion returned
+    /// <see langword="false"/>.</exception>
     public static void True<T>(
         Func<IEnumerable<T>, bool> assertion,
         IEnumerable<T> sequence,
@@ -22,6 +30,14 @@ public static partial class AssertSequence
         }
     }
 
+    /// <summary>
+    /// Asserts that <paramref name="assertion"/> returns <see langword="true"/> for every
+    /// element in <paramref name="sequence"/>.
+    /// </summary>
+    /// <exception cref="ArgumentNullException"><paramref name="assertion"/> or
+    /// <paramref name="sequence"/> is <see langword="null"/>.</exception>
+    /// <exception cref="SequenceException">The assertion returned <see langword="false"/>
+    /// for at least one element.</exception>
     public static void TrueForAll<T>(
         Func<T, bool> assertion,
         IEnumerable<T> sequence,
@@ -39,6 +55,14 @@ public static partial class AssertSequence
         }
     }
 
+    /// <summary>
+    /// Asserts that <paramref name="assertion"/> returns <see langword="true"/> for at
+    /// least one element in <paramref name="sequence"/>.
+    /// </summary>
+    /// <exception cref="ArgumentNullException"><paramref name="assertion"/> or
+    /// <paramref name="sequence"/> is <see langword="null"/>.</exception>
+    /// <exception cref="SequenceException">The assertion returned <see langword="false"/>
+    /// for every element.</exception>
     public static void TrueForAny<T>(
         Func<T, bool> assertion,
         IEnumerable<T> sequence,
@@ -58,30 +82,42 @@ public static partial class AssertSequence
         throw new SequenceException($"Expected true for any: {message}");
     }
 
+    /// <summary>
+    /// Asserts that <paramref name="sequence"/> contains no elements.
+    /// </summary>
+    /// <exception cref="SequenceException"><paramref name="sequence"/> is not empty.</exception>
     public static void Empty<T>(IEnumerable<T> sequence)
     {
         True(s => !s.Any(), sequence);
     }
 
+    /// <summary>
+    /// Asserts that <paramref name="sequence"/> contains at least one element.
+    /// </summary>
+    /// <exception cref="SequenceException"><paramref name="sequence"/> is empty.</exception>
     public static void NotEmpty<T>(IEnumerable<T> sequence)
     {
         True(s => s.Any(), sequence);
     }
 
     /// <summary>
-    /// Asserts that each value in a sequence is greater than the previous value in
-    /// the sequence and that the first value is greater than <paramref name="expectedAllEqualOrAbove"/>.
+    /// Asserts that each value in <paramref name="source"/> is strictly greater than the
+    /// previous value and that the first value is strictly greater than
+    /// <paramref name="expectedAllAbove"/>.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="source"></param>
-    /// <param name="expectedAllEqualOrAbove"></param>
-    /// <exception cref="ComparisonException"></exception>
-    public static void EachGreaterThanPrevious<T>(IEnumerable<T> source, T expectedAllEqualOrAbove = default)
+    /// <param name="source">The sequence of values to inspect.</param>
+    /// <param name="expectedAllAbove">A lower bound that every value must exceed. Defaults
+    /// to <c>default(T)</c>.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="source"/> is
+    /// <see langword="null"/>.</exception>
+    /// <exception cref="SequenceException">A value was not strictly greater than the
+    /// previous value (or the lower bound).</exception>
+    public static void EachGreaterThanPrevious<T>(IEnumerable<T> source, T expectedAllAbove = default)
         where T : struct, IComparable<T>
     {
         ArgumentNullException.ThrowIfNull(source);
 
-        var p = expectedAllEqualOrAbove;
+        var p = expectedAllAbove;
 
         try
         {
@@ -94,18 +130,22 @@ public static partial class AssertSequence
         catch (ComparisonException ex)
         {
             throw new SequenceException(
-                "Expected each value in sequence to be greater than or equal to previous", ex);
+                "Expected each value in sequence to be greater than previous", ex);
         }
     }
 
     /// <summary>
-    /// Asserts that each value in a sequence is greater than or equal to the previous value in
-    /// the sequence and that the first value is greater than or equal to <paramref name="expectedAllEqualOrAbove"/>.
+    /// Asserts that each value in <paramref name="source"/> is greater than or equal to
+    /// the previous value and that the first value is greater than or equal to
+    /// <paramref name="expectedAllEqualOrAbove"/>.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="source"></param>
-    /// <param name="expectedAllEqualOrAbove"></param>
-    /// <exception cref="ComparisonException"></exception>
+    /// <param name="source">The sequence of values to inspect.</param>
+    /// <param name="expectedAllEqualOrAbove">An inclusive lower bound every value must meet.
+    /// Defaults to <c>default(T)</c>.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="source"/> is
+    /// <see langword="null"/>.</exception>
+    /// <exception cref="SequenceException">A value was less than the previous value
+    /// (or the lower bound).</exception>
     public static void EachGreaterThanOrEqualToPrevious<T>(IEnumerable<T> source, T expectedAllEqualOrAbove = default)
         where T : struct, IComparable<T>
     {
@@ -128,11 +168,16 @@ public static partial class AssertSequence
         }
     }
 
+    /// <summary>
+    /// Asserts that every numeric value in <paramref name="sequence"/> equals
+    /// <see cref="INumberBase{TSelf}.Zero"/>.
+    /// </summary>
+    /// <exception cref="ArgumentNullException"><paramref name="sequence"/> is
+    /// <see langword="null"/>.</exception>
+    /// <exception cref="SequenceException">A non-zero value was found.</exception>
     public static void AllZero<T>(IEnumerable<T> sequence)
         where T : struct, INumber<T>
     {
         TrueForAll(v => v == T.Zero, sequence);
     }
-
-
 }
