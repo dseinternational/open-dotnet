@@ -31,6 +31,7 @@ public record ResultMetadata
     /// using <see cref="StringComparer.OrdinalIgnoreCase"/>.
     /// </summary>
     [JsonPropertyName("properties")]
+    [JsonObjectCreationHandling(JsonObjectCreationHandling.Populate)]
     public ConcurrentDictionary<string, object> Properties { get; }
         = new(StringComparer.OrdinalIgnoreCase);
 }

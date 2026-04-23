@@ -50,6 +50,7 @@ public readonly partial struct RequestId : IEquatableValue<RequestId, CharSequen
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
     /// <summary>Explicitly converts a string to a <see cref="RequestId"/>.</summary>
+    /// <exception cref="ArgumentNullException"><paramref name="value"/> is <see langword="null"/>.</exception>
     /// <exception cref="ArgumentOutOfRangeException"><paramref name="value"/> is empty or too long.</exception>
     public static explicit operator RequestId(string value)
     {

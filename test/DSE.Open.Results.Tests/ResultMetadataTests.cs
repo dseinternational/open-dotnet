@@ -63,4 +63,22 @@ public class ResultMetadataTests
         Assert.NotNull(deserialized);
         Assert.Equal(metadata.Id, deserialized.Id);
     }
+
+    [Fact]
+    public void SerializeDeserialize_PreservesProperties()
+    {
+        var metadata = new ResultMetadata();
+        _ = metadata.Properties.TryAdd("tenant", "acme");
+        _ = metadata.Properties.TryAdd("traceId", "abc-123");
+
+        var json = JsonSerializer.Serialize(metadata);
+        var deserialized = JsonSerializer.Deserialize<ResultMetadata>(json);
+
+        Assert.NotNull(deserialized);
+        Assert.Equal(2, deserialized.Properties.Count);
+        Assert.True(deserialized.Properties.TryGetValue("tenant", out var tenant));
+        Assert.Equal("acme", tenant?.ToString());
+        Assert.True(deserialized.Properties.TryGetValue("traceId", out var traceId));
+        Assert.Equal("abc-123", traceId?.ToString());
+    }
 }
