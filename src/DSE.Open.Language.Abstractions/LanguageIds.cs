@@ -16,6 +16,6 @@ public static class LanguageIds
     /// <summary>The largest valid identifier value.</summary>
     public const ulong MaxIdValue = 999999999999;
 
-    /// <summary>The number of representable identifier values, equal to <see cref="MaxIdValue"/> minus <see cref="MinIdValue"/>.</summary>
+    /// <summary>The numeric span between the valid identifier bounds, equal to <see cref="MaxIdValue"/> minus <see cref="MinIdValue"/>.</summary>
     public const ulong MaxRange = MaxIdValue - MinIdValue;
 }

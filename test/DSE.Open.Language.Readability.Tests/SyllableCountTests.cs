@@ -44,7 +44,7 @@ public class SyllableCountTests
     [InlineData("")]
     [InlineData("   ")]
     [InlineData("\t")]
-    public void GetSyllableCount_NullOrWhitespace_Throws(string word)
+    public void GetSyllableCount_EmptyOrWhitespace_Throws(string word)
     {
         _ = Assert.Throws<ArgumentException>(() => SyllableCount.GetSyllableCount(word));
     }

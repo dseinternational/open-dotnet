@@ -41,15 +41,26 @@ public static class FleschReadabilityCalculator
     /// <summary>
     /// Calculates the Flesch reading-ease score for a collection of sentences.
     /// </summary>
-    /// <param name="sentences">The sentences to score. Must contain at least one word.</param>
+    /// <param name="sentences">The sentences to score. Must contain at least one sentence with at least one word.</param>
     /// <returns>The reading-ease score; higher values indicate easier text.</returns>
     /// <exception cref="ArgumentNullException"><paramref name="sentences"/> is <see langword="null"/>.</exception>
+    /// <exception cref="ArgumentException"><paramref name="sentences"/> is empty or contains no words.</exception>
     /// <exception cref="InvalidOperationException">A word's syllable count cannot be determined.</exception>
     public static double CalculateReadingEase(IReadOnlyCollection<Sentence> sentences)
     {
         ArgumentNullException.ThrowIfNull(sentences);
 
+        if (sentences.Count == 0)
+        {
+            throw new ArgumentException("Must contain at least one sentence.", nameof(sentences));
+        }
+
         var words = sentences.SelectMany(s => s.Words).ToArray();
+
+        if (words.Length == 0)
+        {
+            throw new ArgumentException("Must contain at least one word.", nameof(sentences));
+        }
 
         var unknown = words.FirstOrDefault(w => SyllableCount.GetSyllableCount(w.Form.ToString()) < 1);
 
@@ -66,12 +77,16 @@ public static class FleschReadabilityCalculator
     /// <summary>
     /// Calculates the Flesch reading-ease score from raw counts.
     /// </summary>
-    /// <param name="wordCount">The total number of words.</param>
+    /// <param name="wordCount">The total number of words. Must be greater than zero.</param>
     /// <param name="sentenceCount">The number of sentences. Must be greater than zero.</param>
     /// <param name="syllableCount">The total number of syllables across all words.</param>
     /// <returns>The reading-ease score; higher values indicate easier text.</returns>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="wordCount"/> or <paramref name="sentenceCount"/> is less than or equal to zero.</exception>
     public static double CalculateReadingEase(int wordCount, int sentenceCount, int syllableCount)
     {
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(wordCount);
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(sentenceCount);
+
         return EaseBaseScore -
             (EaseSentenceWeight * ((double)wordCount / sentenceCount)) -
             (EaseWordWeight * ((double)syllableCount / wordCount));
@@ -80,15 +95,26 @@ public static class FleschReadabilityCalculator
     /// <summary>
     /// Calculates the Flesch–Kincaid grade-level score for a collection of sentences.
     /// </summary>
-    /// <param name="sentences">The sentences to score. Must contain at least one word.</param>
+    /// <param name="sentences">The sentences to score. Must contain at least one sentence with at least one word.</param>
     /// <returns>The grade-level score; an approximation of the U.S. school grade required to read the text.</returns>
     /// <exception cref="ArgumentNullException"><paramref name="sentences"/> is <see langword="null"/>.</exception>
+    /// <exception cref="ArgumentException"><paramref name="sentences"/> is empty or contains no words.</exception>
     /// <exception cref="InvalidOperationException">A word's syllable count cannot be determined.</exception>
     public static double CalculateReadingGrade(IReadOnlyCollection<Sentence> sentences)
     {
         ArgumentNullException.ThrowIfNull(sentences);
 
+        if (sentences.Count == 0)
+        {
+            throw new ArgumentException("Must contain at least one sentence.", nameof(sentences));
+        }
+
         var words = sentences.SelectMany(s => s.Words).ToArray();
+
+        if (words.Length == 0)
+        {
+            throw new ArgumentException("Must contain at least one word.", nameof(sentences));
+        }
 
         var unknown = words.FirstOrDefault(w => SyllableCount.GetSyllableCount(w.Form.ToString()) < 1);
 
@@ -105,12 +131,16 @@ public static class FleschReadabilityCalculator
     /// <summary>
     /// Calculates the Flesch–Kincaid grade-level score from raw counts.
     /// </summary>
-    /// <param name="wordCount">The total number of words.</param>
+    /// <param name="wordCount">The total number of words. Must be greater than zero.</param>
     /// <param name="sentenceCount">The number of sentences. Must be greater than zero.</param>
     /// <param name="syllableCount">The total number of syllables across all words.</param>
     /// <returns>The grade-level score; an approximation of the U.S. school grade required to read the text.</returns>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="wordCount"/> or <paramref name="sentenceCount"/> is less than or equal to zero.</exception>
     public static double CalculateReadingGrade(int wordCount, int sentenceCount, int syllableCount)
     {
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(wordCount);
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(sentenceCount);
+
         return (GradeSentenceWeight * ((double)wordCount / sentenceCount)) +
             (GradeWordWeight * ((double)syllableCount / wordCount)) +
             GradeBaseScore;
