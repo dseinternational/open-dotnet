@@ -81,7 +81,7 @@ public class StanzaAnnotator : IAnnotator
 
         if (!ReadOnlyAttributeValueCollection.TryParse(w.Attributes, default, out var attributes))
         {
-            throw new StanzaException($"Failed to parse features '{w.Features}'");
+            throw new StanzaException($"Failed to parse attributes '{w.Attributes}'");
         }
 
         return new()

@@ -36,8 +36,8 @@ public static class FleschReadabilityCalculator
     public static double CalculateReadingEase(int wordCount, int sentenceCount, int syllableCount)
     {
         return EaseBaseScore -
-            (EaseSentenceWeight * (wordCount / sentenceCount)) -
-            (EaseWordWeight * (syllableCount / wordCount));
+            (EaseSentenceWeight * ((double)wordCount / sentenceCount)) -
+            (EaseWordWeight * ((double)syllableCount / wordCount));
     }
 
     public static double CalculateReadingGrade(IReadOnlyCollection<Sentence> sentences)
@@ -60,8 +60,8 @@ public static class FleschReadabilityCalculator
 
     public static double CalculateReadingGrade(int wordCount, int sentenceCount, int syllableCount)
     {
-        return (GradeSentenceWeight * (wordCount / sentenceCount)) +
-            (GradeWordWeight * (syllableCount / wordCount)) +
+        return (GradeSentenceWeight * ((double)wordCount / sentenceCount)) +
+            (GradeWordWeight * ((double)syllableCount / wordCount)) +
             GradeBaseScore;
     }
 }

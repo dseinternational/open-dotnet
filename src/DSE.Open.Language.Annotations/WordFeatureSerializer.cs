@@ -31,20 +31,24 @@ public static class WordFeatureSerializer
         {
             var f = features[i];
 
-            if (f.TryFormat(destination[charsWritten..], out var cw, default, default))
+            if (!f.TryFormat(destination[charsWritten..], out var cw, default, default))
             {
-                charsWritten += cw;
+                charsWritten = 0;
+                return false;
+            }
 
-                if (i < features.Count - 1)
+            charsWritten += cw;
+
+            if (i < features.Count - 1)
+            {
+                if (destination.Length > charsWritten)
                 {
-                    if (destination.Length > charsWritten)
-                    {
-                        destination[charsWritten++] = '|';
-                    }
-                    else
-                    {
-                        return false;
-                    }
+                    destination[charsWritten++] = '|';
+                }
+                else
+                {
+                    charsWritten = 0;
+                    return false;
                 }
             }
         }
