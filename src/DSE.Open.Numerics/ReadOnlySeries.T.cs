@@ -46,6 +46,29 @@ public class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
         }
     }
 
+    /// <summary>
+    /// "Trusted" ctor used by <see cref="Slice(int)"/> and <see cref="Slice(int, int)"/>.
+    /// The sliced vector inherits metadata from a source that already validated its
+    /// full vector against <paramref name="categories"/>, so each element of the
+    /// sliced sub-vector is necessarily in the set. Skipping re-validation avoids an
+    /// O(length) check on every slice and, crucially, prevents slicing from throwing
+    /// in the presence of externally-mutated category sets — consistent with the
+    /// documented "no runtime enforcement" contract.
+    /// </summary>
+    private ReadOnlySeries(
+        ReadOnlyVector<T> vector,
+        string? name,
+        ReadOnlyCategorySet<T>? categories,
+        ReadOnlyValueLabelCollection<T>? valueLabels,
+        bool skipCategoryValidation)
+        : base(vector, name)
+    {
+        _vector = vector;
+        _categories = categories;
+        _valueLabels = valueLabels;
+        _ = skipCategoryValidation;
+    }
+
     public T this[int index]
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -193,16 +216,61 @@ public class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
         return new ReadOnlySeries<T>(_vector, Name, IsCategorical ? _categories : null, valueLabels);
     }
 
+    /// <summary>
+    /// Returns a slice of this series starting at <paramref name="start"/>. The returned
+    /// slice preserves the source's <see cref="IReadOnlySeries.Name"/>,
+    /// <see cref="Categories"/> and <see cref="ValueLabels"/>. Categories and value
+    /// labels are <b>shared by reference</b> with the source; call
+    /// <see cref="Slice(int, int, bool)"/> with <c>copy: true</c> to isolate them.
+    /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ReadOnlySeries<T> Slice(int start)
     {
-        return new(_vector[start..], Name);
+        return new ReadOnlySeries<T>(
+            _vector[start..], Name, _categories, _valueLabels, skipCategoryValidation: true);
     }
 
+    /// <summary>
+    /// Returns a slice of this series. The returned slice preserves the source's
+    /// <see cref="IReadOnlySeries.Name"/>, <see cref="Categories"/> and
+    /// <see cref="ValueLabels"/>. Categories and value labels are <b>shared by
+    /// reference</b> with the source; call <see cref="Slice(int, int, bool)"/> with
+    /// <c>copy: true</c> to isolate them.
+    /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ReadOnlySeries<T> Slice(int start, int length)
     {
-        return new(_vector.Slice(start, length), Name);
+        return new ReadOnlySeries<T>(
+            _vector.Slice(start, length), Name, _categories, _valueLabels, skipCategoryValidation: true);
+    }
+
+    /// <summary>
+    /// Returns a slice of this series.
+    /// </summary>
+    /// <param name="start">Start index of the slice.</param>
+    /// <param name="length">Length of the slice.</param>
+    /// <param name="copy">
+    /// When <see langword="false"/>, the returned slice shares its
+    /// <see cref="Categories"/> and <see cref="ValueLabels"/> references with the
+    /// source (matching <see cref="Slice(int, int)"/>). When <see langword="true"/>,
+    /// the slice receives deep copies.
+    /// </param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public ReadOnlySeries<T> Slice(int start, int length, bool copy)
+    {
+        if (!copy)
+        {
+            return Slice(start, length);
+        }
+
+        // Cast to IEnumerable<T> forces the enumerating copy ctor; passing a
+        // ReadOnlyCategorySet<T> directly would select the IReadOnlySet<T> overload,
+        // which aliases the underlying storage instead of copying.
+        return new ReadOnlySeries<T>(
+            _vector.Slice(start, length),
+            Name,
+            _categories is null ? null : new ReadOnlyCategorySet<T>((IEnumerable<T>)_categories),
+            _valueLabels is null ? null : new ReadOnlyValueLabelCollection<T>(_valueLabels));
     }
 
     IReadOnlySeries<T> IReadOnlySeries<T>.Slice(int start, int length)
