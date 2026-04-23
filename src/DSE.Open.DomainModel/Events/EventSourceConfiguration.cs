@@ -11,6 +11,13 @@ public static class EventSourceConfiguration
     private static readonly Uri s_default = new("https://dseapi.app/event-source");
     private static Func<Type, Uri> s_provider = DefaultProvider;
 
+    /// <summary>
+    /// The function used to resolve an event source <see cref="Uri"/> for a
+    /// given requesting <see cref="Type"/>. Defaults to a provider that
+    /// composes the type's full name under a DSE base URI.
+    /// </summary>
+    /// <exception cref="ArgumentNullException">A <see langword="null"/> value
+    /// was assigned.</exception>
     public static Func<Type, Uri> SourceProvider
     {
         get => s_provider;
@@ -21,6 +28,11 @@ public static class EventSourceConfiguration
         }
     }
 
+    /// <summary>
+    /// Returns the event source <see cref="Uri"/> for <paramref name="requestingType"/>
+    /// using the currently-configured <see cref="SourceProvider"/>.
+    /// </summary>
+    /// <param name="requestingType">The type requesting an event source.</param>
     public static Uri GetEventSource(Type requestingType)
     {
         return SourceProvider(requestingType);

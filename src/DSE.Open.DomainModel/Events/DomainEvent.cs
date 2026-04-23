@@ -14,6 +14,14 @@ public abstract class DomainEvent<TData> : IDomainEvent<TData>
 {
     private readonly Identifier _id;
 
+    /// <summary>
+    /// Initializes a new <see cref="DomainEvent{TData}"/>, stamping its
+    /// <see cref="Id"/>, <see cref="Source"/> and <see cref="Time"/>.
+    /// </summary>
+    /// <param name="data">The data carried by the event.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="data"/> is <see langword="null"/>.</exception>
+    /// <exception cref="InvalidOperationException">No <see cref="Uri"/> source
+    /// could be resolved for the derived event type.</exception>
     protected DomainEvent(TData data)
     {
         ArgumentNullException.ThrowIfNull(data);
@@ -47,6 +55,9 @@ public abstract class DomainEvent<TData> : IDomainEvent<TData>
     /// <inheritdoc />
     public string? Subject { get; init; }
 
-    /// <inheritdoc />
+    /// <summary>
+    /// A stable type identifier for this event, used by serializers and
+    /// external consumers to route events without reflecting on the CLR type.
+    /// </summary>
     public abstract string Type { get; }
 }

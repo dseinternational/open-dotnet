@@ -8,6 +8,11 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace DSE.Open.DomainModel.Events;
 
+/// <summary>
+/// <see cref="IServiceCollection"/> extension methods that register domain
+/// event infrastructure (an <see cref="IDomainEventDispatcher"/> and handlers
+/// for specific <see cref="IDomainEvent"/> types).
+/// </summary>
 public static class ServiceCollectionExtensions
 {
     /// <summary>
@@ -32,11 +37,14 @@ public static class ServiceCollectionExtensions
     /// Adds a <see cref="IDomainEventMessageHandler{TMessage}"/> descriptor to the service collection. By default,
     /// the registered lifetime is <see cref="ServiceLifetime.Scoped"/>.
     /// </summary>
-    /// <typeparam name="THandler"></typeparam>
-    /// <typeparam name="TMessage"></typeparam>
-    /// <param name="services"></param>
-    /// <param name="serviceLifetime"></param>
-    /// <returns></returns>
+    /// <typeparam name="THandler">The concrete handler type.</typeparam>
+    /// <typeparam name="TMessage">The domain event type handled.</typeparam>
+    /// <param name="services">The collection of service descriptors.</param>
+    /// <param name="serviceLifetime">The lifetime of the handler. Defaults to
+    /// <see cref="ServiceLifetime.Scoped"/>.</param>
+    /// <returns>The <paramref name="services"/> instance, to support chaining.</returns>
+    /// <exception cref="ArgumentNullException"><paramref name="services"/>
+    /// is <see langword="null"/>.</exception>
     [RequiresUnreferencedCode("May break functionality when AOT compiling")]
     public static IServiceCollection AddDomainEventHandler<THandler, TMessage>(
         this IServiceCollection services,

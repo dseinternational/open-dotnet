@@ -59,8 +59,10 @@ public abstract class UpdateTimesTrackedEntity<TId> : Entity<TId>, IUpdateTimesT
         _updated = updated;
     }
 
+    /// <inheritdoc />
     public DateTimeOffset? Created => _created;
 
+    /// <inheritdoc />
     public DateTimeOffset? Updated => _updated;
 
 #pragma warning disable CA1033 // Interface methods should be callable by child types

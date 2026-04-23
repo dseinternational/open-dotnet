@@ -46,17 +46,29 @@ public abstract class EventRaisingEntity<TId> : Entity<TId>, IEventRaisingEntity
     {
     }
 
+    /// <inheritdoc />
     [NotMapped]
     public IEnumerable<IDomainEvent> Events => _events.Value;
 
+    /// <inheritdoc />
     public bool HasEvents => _events.IsValueCreated && _events.Value.Count != 0;
 
+    /// <summary>
+    /// Appends <paramref name="event"/> to the pending events for this entity.
+    /// </summary>
+    /// <param name="event">The event to append.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="event"/> is <see langword="null"/>.</exception>
     protected void AddEvent(IDomainEvent @event)
     {
         ArgumentNullException.ThrowIfNull(@event);
         _events.Value.Add(@event);
     }
 
+    /// <summary>
+    /// Removes all pending events that implement
+    /// <see cref="IBeforeSaveChangesDomainEvent"/>. Derived classes may override
+    /// to observe or augment this behaviour.
+    /// </summary>
     protected virtual void ClearBeforeSaveChangesEventsCore()
     {
         if (HasEvents)
@@ -65,6 +77,10 @@ public abstract class EventRaisingEntity<TId> : Entity<TId>, IEventRaisingEntity
         }
     }
 
+    /// <summary>
+    /// Removes all pending events. Derived classes may override to observe or
+    /// augment this behaviour.
+    /// </summary>
     protected virtual void ClearEventsCore()
     {
         if (HasEvents)

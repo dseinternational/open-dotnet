@@ -24,6 +24,13 @@ public class DomainEventDispatcher : IDomainEventDispatcher
 
     private readonly IMessageDispatcher _dispatcher;
 
+    /// <summary>
+    /// Initializes a new <see cref="DomainEventDispatcher"/>.
+    /// </summary>
+    /// <param name="dispatcher">The underlying message dispatcher used to
+    /// publish events to their registered handlers.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="dispatcher"/>
+    /// is <see langword="null"/>.</exception>
     public DomainEventDispatcher(IMessageDispatcher dispatcher)
     {
         ArgumentNullException.ThrowIfNull(dispatcher);
