@@ -113,6 +113,7 @@
     <Project Path="test/DSE.Open.Values.Generators.Tests/DSE.Open.Values.Generators.Tests.csproj" />
     <Project Path="test/DSE.Open.Values.Tests/DSE.Open.Values.Tests.csproj" />
     <Project Path="test/DSE.Open.Values.TestValues/DSE.Open.Values.TestValues.csproj" />
+    <Project Path="test/DSE.Open.ViewModels.Tests/DSE.Open.ViewModels.Tests.csproj" />
     <Project Path="test/DSE.Open.Web.Tests/DSE.Open.Web.Tests.csproj" />
   </Folder>
 </Solution>

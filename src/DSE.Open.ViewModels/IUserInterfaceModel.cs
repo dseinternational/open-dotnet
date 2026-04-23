@@ -33,16 +33,18 @@ public interface IUserInterfaceModel : INotifyPropertyChanged, INotifyPropertyCh
     CultureInfo FormatCulture { get; set; }
 
     /// <summary>
-    /// Gets or sets the culture used for localizing text and speech presented withing the user interface.
+    /// Gets or sets the culture used for localising text and speech presented within the user interface.
     /// </summary>
     CultureInfo PresentationCulture { get; set; }
 
     /// <summary>
-    /// Initialises the user interface model.
+    /// Initialises the user interface model. After a successful initialisation the method
+    /// throws <see cref="InvalidOperationException"/> on every subsequent call. If a
+    /// previous attempt failed (i.e. <see cref="IsInitialized"/> is still
+    /// <see langword="false"/>), the method may be called again to retry.
     /// </summary>
     /// <param name="state">An object that can be used to provide data/configuration for initialisation.</param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    /// <exception cref="InvalidOperationException">The model has already been initialised.</exception>
+    /// <param name="cancellationToken">Propagates notification that the operation should be cancelled.</param>
+    /// <exception cref="InvalidOperationException">The model has already been successfully initialised.</exception>
     ValueTask InitializeAsync(object? state = null, CancellationToken cancellationToken = default);
 }
