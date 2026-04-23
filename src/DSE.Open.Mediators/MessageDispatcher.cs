@@ -3,6 +3,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using System.Runtime.ExceptionServices;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -53,7 +54,7 @@ public sealed partial class MessageDispatcher : IMessageDispatcher
                 continue;
             }
 
-            _ = await Task.Run(() =>
+            await Task.Run(async () =>
             {
                 ValueTask task;
 
@@ -67,19 +68,24 @@ public sealed partial class MessageDispatcher : IMessageDispatcher
                     if (result is not ValueTask resultTask)
                     {
                         ThrowHelper.ThrowInvalidOperationException("Handler is expected to return ValueTask.");
-                        return default; // unreachable
+                        return; // unreachable
                     }
 
                     task = resultTask;
+                }
+                catch (TargetInvocationException e) when (e.InnerException is OperationCanceledException)
+                {
+                    ExceptionDispatchInfo.Throw(e.InnerException);
+                    return; // unreachable
                 }
                 catch (Exception e) when (e is not (StackOverflowException or OutOfMemoryException or OperationCanceledException))
                 {
                     ThrowHelper.ThrowInvalidOperationException(
                         $"Error invoking {handler.GetType().Name} handler for {messageType.Name} message.", e);
-                    return default; // unreachable
+                    return; // unreachable
                 }
 
-                return task;
+                await task.ConfigureAwait(false);
 
             }, cancellationToken).ConfigureAwait(false);
 

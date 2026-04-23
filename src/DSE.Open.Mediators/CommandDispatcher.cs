@@ -3,6 +3,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using System.Runtime.ExceptionServices;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -72,6 +73,11 @@ public sealed partial class CommandDispatcher : ICommandDispatcher
                 }
 
                 task = (Task<TCommandResult>)result;
+            }
+            catch (TargetInvocationException e) when (e.InnerException is OperationCanceledException)
+            {
+                ExceptionDispatchInfo.Throw(e.InnerException);
+                return default!; // unreachable
             }
             catch (Exception e)
             {
