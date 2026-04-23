@@ -17,6 +17,11 @@ public sealed record Notification : INotification
     [JsonConstructor]
     public Notification(DiagnosticCode code, NotificationLevel level, string message)
     {
+        if (!Enum.IsDefined(level))
+        {
+            throw new ArgumentOutOfRangeException(nameof(level), level, "Invalid notification level.");
+        }
+
         ArgumentException.ThrowIfNullOrEmpty(message);
 
         Code = code;
