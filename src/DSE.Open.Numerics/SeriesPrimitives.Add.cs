@@ -20,7 +20,6 @@ public static partial class SeriesPrimitives
     {
         ArgumentNullException.ThrowIfNull(y);
         Add(x, y.Vector.AsSpan(), destination);
-        Add(x, y.Vector.AsSpan(), destination);
     }
 
     public static void Add<T>(this IReadOnlySeries<T> x, IReadOnlySeries<T> y, ISeries<T> destination)

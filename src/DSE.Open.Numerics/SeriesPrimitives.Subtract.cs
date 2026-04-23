@@ -20,7 +20,6 @@ public static partial class SeriesPrimitives
     {
         ArgumentNullException.ThrowIfNull(y);
         Subtract(x, y.Vector.AsSpan(), destination);
-        Subtract(x, y.Vector.AsSpan(), destination);
     }
 
     public static void Subtract<T>(this IReadOnlySeries<T> x, IReadOnlySeries<T> y, ISeries<T> destination)

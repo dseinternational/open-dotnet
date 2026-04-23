@@ -20,7 +20,6 @@ public static partial class SeriesPrimitives
     {
         ArgumentNullException.ThrowIfNull(y);
         Multiply(x, y.Vector.AsSpan(), destination);
-        Multiply(x, y.Vector.AsSpan(), destination);
     }
 
     public static void Multiply<T>(this IReadOnlySeries<T> x, IReadOnlySeries<T> y, ISeries<T> destination)
