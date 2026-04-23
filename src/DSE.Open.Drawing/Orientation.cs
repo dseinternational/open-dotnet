@@ -3,6 +3,9 @@
 
 namespace DSE.Open.Drawing;
 
+/// <summary>
+/// Describes the visual orientation of a rectangular shape.
+/// </summary>
 public enum Orientation
 {
     Square,

@@ -5,6 +5,10 @@ using DSE.Open.Text.Json.Serialization;
 
 namespace DSE.Open.Drawing.Text.Json.Serialization;
 
+/// <summary>
+/// A JSON converter that serializes and deserializes <see cref="Color"/> values
+/// as hex strings (#RRGGBB or #RRGGBBAA).
+/// </summary>
 public class JsonStringColorConverter : SpanParsableCharWritingJsonConverter<Color>
 {
     public static readonly JsonStringColorConverter Default = new();
