@@ -6,8 +6,17 @@ using NodaTime;
 
 namespace DSE.Open;
 
+/// <summary>
+/// Extension methods for <see cref="DateTimeOffset"/>.
+/// </summary>
 public static class DateTimeOffsetExtensions
 {
+    /// <summary>
+    /// Truncates the value to the specified granularity. See <see cref="DateTimeTruncation"/>
+    /// for the set of supported truncation levels.
+    /// </summary>
+    /// <param name="dateTime">The value to truncate.</param>
+    /// <param name="dateTimeTruncation">The granularity.</param>
     public static DateTimeOffset Truncate(this DateTimeOffset dateTime, DateTimeTruncation dateTimeTruncation)
     {
         return dateTimeTruncation switch
@@ -23,16 +32,29 @@ public static class DateTimeOffsetExtensions
         };
     }
 
+    /// <summary>
+    /// Formats the value using the ISO 8601 "round-trip" (<c>"o"</c>) format specifier with the
+    /// invariant culture.
+    /// </summary>
     public static string ToIso8601String(this DateTimeOffset value)
     {
         return value.ToString("o", CultureInfo.InvariantCulture);
     }
 
+    /// <summary>
+    /// Converts the value to a NodaTime <see cref="Instant"/>.
+    /// </summary>
     public static Instant ToInstant(this DateTimeOffset value)
     {
         return Instant.FromDateTimeOffset(value);
     }
 
+    /// <summary>
+    /// Converts the value to a NodaTime <see cref="ZonedDateTime"/> in the specified time zone.
+    /// </summary>
+    /// <param name="value">The value to convert.</param>
+    /// <param name="dateTimeZone">The target time zone.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="dateTimeZone"/> is <see langword="null"/>.</exception>
     public static ZonedDateTime ToZonedDateTime(this DateTimeOffset value, DateTimeZone dateTimeZone)
     {
         ArgumentNullException.ThrowIfNull(dateTimeZone);
@@ -72,6 +94,10 @@ public static class DateTimeOffsetExtensions
         return IsWithinPastMonths(date.Value, months);
     }
 
+    /// <summary>
+    /// Computes a 64-bit hash code that is stable across application runs and process
+    /// architectures.
+    /// </summary>
     public static ulong GetRepeatableHashCode(this DateTimeOffset value)
     {
         return RepeatableHash64Provider.Default.GetRepeatableHashCode(value);

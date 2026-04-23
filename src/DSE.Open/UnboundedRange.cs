@@ -14,6 +14,10 @@ namespace DSE.Open;
 public readonly record struct UnboundedRange<T>
     where T : struct, IComparable<T>
 {
+    /// <summary>
+    /// A range with no lower or upper bound. <see cref="Includes"/> returns <see langword="true"/>
+    /// for any value.
+    /// </summary>
     public static readonly UnboundedRange<T> Infinite;
 
     /// <summary>
@@ -70,20 +74,38 @@ public readonly record struct UnboundedRange<T>
     }
 }
 
+/// <summary>
+/// Factory methods for building <see cref="UnboundedRange{T}"/> values.
+/// </summary>
 public static class UnboundedRange
 {
+    /// <summary>
+    /// Creates a bounded range <c>[minimum, maximum]</c>.
+    /// </summary>
+    /// <param name="minimum">The inclusive lower bound.</param>
+    /// <param name="maximum">The inclusive upper bound.</param>
     public static UnboundedRange<T> Between<T>(T minimum, T maximum)
         where T : struct, IComparable<T>
     {
         return new(minimum, maximum);
     }
 
+    /// <summary>
+    /// Creates an open-ended range <c>[minimum, ∞)</c> that includes every value greater
+    /// than or equal to <paramref name="minimum"/>.
+    /// </summary>
+    /// <param name="minimum">The inclusive lower bound.</param>
     public static UnboundedRange<T> GreaterThanOrEqual<T>(T minimum)
         where T : struct, IComparable<T>
     {
         return new(minimum, default);
     }
 
+    /// <summary>
+    /// Creates an open-ended range <c>(-∞, maximum]</c> that includes every value less
+    /// than or equal to <paramref name="maximum"/>.
+    /// </summary>
+    /// <param name="maximum">The inclusive upper bound.</param>
     public static UnboundedRange<T> LessThanOrEqual<T>(T maximum)
         where T : struct, IComparable<T>
     {

@@ -29,12 +29,12 @@ public enum SetComparison
     Superset,
 
     /// <summary>
-    /// The evaluated set of values is a subset of the specified set of values.
+    /// The evaluated set of values is a proper (strict) subset of the specified set of values.
     /// </summary>
     ProperSubset,
 
     /// <summary>
-    /// The evaluated set of values is a superset of the specified set of values.
+    /// The evaluated set of values is a proper (strict) superset of the specified set of values.
     /// </summary>
     ProperSuperset,
 }

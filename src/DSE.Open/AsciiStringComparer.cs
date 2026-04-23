@@ -8,11 +8,25 @@ using DSE.Open.Runtime.InteropServices;
 
 namespace DSE.Open;
 
+/// <summary>
+/// Ordinal comparer for <see cref="AsciiString"/> values. Use <see cref="CaseSensitive"/> for
+/// ordinal comparison and <see cref="IgnoreCase"/> for ordinal, case-insensitive comparison.
+/// </summary>
 public abstract class AsciiStringComparer : IComparer<AsciiString>, IEqualityComparer<AsciiString>
 {
+    /// <summary>
+    /// A comparer that distinguishes uppercase and lowercase ASCII letters.
+    /// </summary>
     public static readonly AsciiStringComparer CaseSensitive = new AsciiCharSequenceComparerCaseSensitive();
+
+    /// <summary>
+    /// A comparer that treats corresponding uppercase and lowercase ASCII letters as equal.
+    /// </summary>
     public static readonly AsciiStringComparer IgnoreCase = new AsciiCharSequenceComparerIgnoreCase();
 
+    /// <summary>
+    /// Initialises the base comparer. Intended for derived-class use only.
+    /// </summary>
     protected AsciiStringComparer()
     {
     }

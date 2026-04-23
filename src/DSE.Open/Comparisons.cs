@@ -3,27 +3,30 @@
 
 namespace DSE.Open;
 
+/// <summary>
+/// Generic comparison helpers over <see cref="IComparable{T}"/>.
+/// </summary>
 public static class Comparisons
 {
     /// <summary>
-    /// Returns the last of two comparable values.
+    /// Returns the greater of two comparable values. When the values compare equal,
+    /// <paramref name="a"/> is returned.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="a"></param>
-    /// <param name="b"></param>
-    /// <returns></returns>
+    /// <typeparam name="T">The comparable element type.</typeparam>
+    /// <param name="a">The first value.</param>
+    /// <param name="b">The second value.</param>
     public static T Max<T>(T a, T b) where T : IComparable<T>
     {
         return a.CompareTo(b) >= 0 ? a : b;
     }
 
     /// <summary>
-    /// Returns the first of two comparable values.
+    /// Returns the lesser of two comparable values. When the values compare equal,
+    /// <paramref name="a"/> is returned.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="a"></param>
-    /// <param name="b"></param>
-    /// <returns></returns>
+    /// <typeparam name="T">The comparable element type.</typeparam>
+    /// <param name="a">The first value.</param>
+    /// <param name="b">The second value.</param>
     public static T Min<T>(T a, T b) where T : IComparable<T>
     {
         return a.CompareTo(b) <= 0 ? a : b;
