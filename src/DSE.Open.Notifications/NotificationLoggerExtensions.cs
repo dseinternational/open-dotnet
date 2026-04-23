@@ -41,4 +41,13 @@ public static class NotificationLoggerExtensions
     {
         NotificationLogger.LogCritical(logger, notification);
     }
+
+    /// <summary>
+    /// Logs the notification, mapping its <see cref="INotification.Level"/> to the
+    /// corresponding <see cref="LogLevel"/>.
+    /// </summary>
+    public static void Log(this ILogger logger, INotification notification)
+    {
+        NotificationLogger.Log(logger, notification);
+    }
 }

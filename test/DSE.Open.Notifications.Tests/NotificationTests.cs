@@ -62,6 +62,13 @@ public class NotificationTests
     }
 
     [Fact]
+    public void Create_InvalidLevel_ThrowsArgumentOutOfRange()
+    {
+        _ = Assert.Throws<ArgumentOutOfRangeException>(
+            () => new Notification("CODE123456", (NotificationLevel)999, "Message"));
+    }
+
+    [Fact]
     public void Value_Equality()
     {
         var n1 = Notification.Warning("CODE123456", "Message");

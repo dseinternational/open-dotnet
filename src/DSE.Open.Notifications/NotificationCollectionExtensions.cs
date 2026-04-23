@@ -33,6 +33,13 @@ public static class NotificationCollectionExtensions
         notifications.Add(Notification.Information(code, message));
     }
 
+    [Conditional("DEBUG")]
+    public static void AddTrace(this ICollection<Notification> notifications, Diagnostics.DiagnosticCode code, string message)
+    {
+        ArgumentNullException.ThrowIfNull(notifications);
+        notifications.Add(Notification.Trace(code, message));
+    }
+
     public static void AddWarning(this ICollection<Notification> notifications, Diagnostics.DiagnosticCode code, string message)
     {
         ArgumentNullException.ThrowIfNull(notifications);
@@ -45,6 +52,7 @@ public static class NotificationCollectionExtensions
     /// </summary>
     public static bool HasNotificationWithCode(this IEnumerable<Notification> notifications, Diagnostics.DiagnosticCode code)
     {
+        ArgumentNullException.ThrowIfNull(notifications);
         return notifications.Any(n => n.Code == code);
     }
 
@@ -55,6 +63,7 @@ public static class NotificationCollectionExtensions
     /// <returns></returns>
     public static bool AnyCritical(this IEnumerable<Notification> notifications)
     {
+        ArgumentNullException.ThrowIfNull(notifications);
         return notifications.Any(n => n.IsCritical());
     }
 
@@ -68,6 +77,7 @@ public static class NotificationCollectionExtensions
     /// level notifications.</returns>
     public static bool AnyErrors(this IEnumerable<Notification> notifications)
     {
+        ArgumentNullException.ThrowIfNull(notifications);
         return notifications.Any(n => n.IsErrorOrAbove());
     }
 
@@ -80,6 +90,7 @@ public static class NotificationCollectionExtensions
     /// <returns></returns>
     public static bool AnyWarnings(this IEnumerable<Notification> notifications)
     {
+        ArgumentNullException.ThrowIfNull(notifications);
         return notifications.Any(n => n.IsWarningOrAbove());
     }
 
@@ -91,7 +102,8 @@ public static class NotificationCollectionExtensions
     /// <returns></returns>
     public static bool NoErrors(this IEnumerable<Notification> notifications)
     {
-        return !notifications.AnyErrors();
+        ArgumentNullException.ThrowIfNull(notifications);
+        return !notifications.Any(n => n.IsErrorOrAbove());
     }
 
     /// <summary>
@@ -103,7 +115,8 @@ public static class NotificationCollectionExtensions
     /// <returns></returns>
     public static bool NoWarnings(this IEnumerable<Notification> notifications)
     {
-        return !notifications.AnyWarnings();
+        ArgumentNullException.ThrowIfNull(notifications);
+        return !notifications.Any(n => n.IsWarningOrAbove());
     }
 
     /// <summary>
@@ -113,6 +126,8 @@ public static class NotificationCollectionExtensions
     /// <returns></returns>
     public static string ToDiagnosticString(this IEnumerable<Notification> notifications)
     {
+        ArgumentNullException.ThrowIfNull(notifications);
+
         var list = notifications.ToList();
 
         if (list.Count == 0)
@@ -158,6 +173,7 @@ public static class NotificationCollectionExtensions
 
     public static IEnumerable<Notification> WhereErrorOrAbove(this IEnumerable<Notification> notifications)
     {
+        ArgumentNullException.ThrowIfNull(notifications);
         return notifications.Where(n => n.IsErrorOrAbove());
     }
 }
