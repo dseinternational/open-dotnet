@@ -76,7 +76,7 @@ public interface IEvent
     string? Subject { get; }
 
     /// <summary>
-    /// DSE.Open.Timestamp of when the occurrence happened.
+    /// The time when the occurrence happened.
     /// </summary>
     /// <remarks>
     /// If the time of the occurrence cannot be determined then this attribute may be set to some
@@ -117,4 +117,7 @@ public interface IEvent<TData> : IEvent
     /// </list>
     /// </remarks>
     new TData? Data { get; }
+
+    /// <inheritdoc />
+    object? IEvent.Data => Data;
 }
