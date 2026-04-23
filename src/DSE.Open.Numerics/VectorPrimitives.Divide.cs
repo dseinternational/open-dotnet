@@ -21,7 +21,6 @@ public static partial class VectorPrimitives
     {
         ArgumentNullException.ThrowIfNull(y);
         Divide(x, y.AsSpan(), destination);
-        Divide(x, y.AsSpan(), destination);
     }
 
     public static void Divide<T>(this IReadOnlyVector<T> x, IReadOnlyVector<T> y, IVector<T> destination)

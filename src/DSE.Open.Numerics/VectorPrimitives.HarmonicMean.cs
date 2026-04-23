@@ -7,12 +7,23 @@ namespace DSE.Open.Numerics;
 
 public static partial class VectorPrimitives
 {
+    /// <summary>
+    /// Gets the harmonic mean of a non-empty sequence: <c>n / Σ(1/xᵢ)</c>.
+    /// </summary>
+    /// <remarks>
+    /// The harmonic mean is defined only for positive real numbers; a zero element produces
+    /// positive infinity in the reciprocal sum and therefore a result of zero.
+    /// </remarks>
     public static T HarmonicMean<T>(ReadOnlySpan<T> sequence)
         where T : struct, INumberBase<T>
     {
-        return Mean<T, T>(sequence);
+        return HarmonicMean<T, T>(sequence);
     }
 
+    /// <summary>
+    /// Gets the harmonic mean of a non-empty sequence, accumulating into
+    /// <typeparamref name="TResult"/>: <c>n / Σ(1/xᵢ)</c>.
+    /// </summary>
     public static TResult HarmonicMean<T, TResult>(ReadOnlySpan<T> sequence)
         where T : struct, INumberBase<T>
         where TResult : struct, INumberBase<TResult>
@@ -20,8 +31,12 @@ public static partial class VectorPrimitives
         EmptySequenceException.ThrowIfEmpty(sequence);
 
         // https://en.wikipedia.org/wiki/Harmonic_mean
-        // https://github.com/python/cpython/blob/3.12/Lib/statistics.py#L545
+        var reciprocalSum = TResult.AdditiveIdentity;
+        for (var i = 0; i < sequence.Length; i++)
+        {
+            reciprocalSum += TResult.One / TResult.CreateChecked(sequence[i]);
+        }
 
-        throw new NotImplementedException();
+        return TResult.CreateChecked(sequence.Length) / reciprocalSum;
     }
 }

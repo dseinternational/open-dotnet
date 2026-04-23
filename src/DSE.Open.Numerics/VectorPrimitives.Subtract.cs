@@ -21,7 +21,6 @@ public static partial class VectorPrimitives
     {
         ArgumentNullException.ThrowIfNull(y);
         Subtract(x, y.AsSpan(), destination);
-        Subtract(x, y.AsSpan(), destination);
     }
 
     public static void Subtract<T>(this IReadOnlyVector<T> x, IReadOnlyVector<T> y, IVector<T> destination)
