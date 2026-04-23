@@ -5,6 +5,12 @@ using System.Numerics;
 
 namespace DSE.Open.Values;
 
+/// <summary>
+/// Defines a value type that wraps an underlying value of type <typeparamref name="T"/>
+/// and supports arithmetic addition, subtraction, increment and decrement operations.
+/// </summary>
+/// <typeparam name="TSelf">The type that implements the interface.</typeparam>
+/// <typeparam name="T">The underlying value type being wrapped.</typeparam>
 public interface IAddableValue<TSelf, T>
     : IComparableValue<TSelf, T>,
       IAdditionOperators<TSelf, TSelf, TSelf>,

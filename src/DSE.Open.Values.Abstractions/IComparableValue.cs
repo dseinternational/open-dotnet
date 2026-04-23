@@ -8,8 +8,8 @@ namespace DSE.Open.Values;
 /// <summary>
 /// Encapsulates/constrains a <see cref="IComparable{TSelf}"/> value.
 /// </summary>
-/// <typeparam name="TSelf"></typeparam>
-/// <typeparam name="T"></typeparam>
+/// <typeparam name="TSelf">The type that implements the interface.</typeparam>
+/// <typeparam name="T">The underlying value type being wrapped.</typeparam>
 public interface IComparableValue<TSelf, T>
     : IEquatableValue<TSelf, T>,
       IComparable<TSelf>,
