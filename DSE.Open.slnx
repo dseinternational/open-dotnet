@@ -84,6 +84,7 @@
     <Project Path="test/DSE.Open.Interop.Python.Tests/DSE.Open.Interop.Python.Tests.csproj" />
     <Project Path="test/DSE.Open.Labels.Tests/DSE.Open.Labels.Tests.csproj" />
     <Project Path="test/DSE.Open.Language.Abstractions.Tests/DSE.Open.Language.Abstractions.Tests.csproj" />
+    <Project Path="test/DSE.Open.Language.Annotations.Books.Tests/DSE.Open.Language.Annotations.Books.Tests.csproj" />
     <Project Path="test/DSE.Open.Language.Annotations.Nlp.Stanza.Tests/DSE.Open.Language.Annotations.Nlp.Stanza.Tests.csproj" />
     <Project Path="test/DSE.Open.Language.Annotations.Tests/DSE.Open.Language.Annotations.Tests.csproj" />
     <Project Path="test/DSE.Open.Language.Readability.Tests/DSE.Open.Language.Readability.Tests.csproj" />
