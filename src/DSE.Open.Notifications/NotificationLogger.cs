@@ -6,8 +6,17 @@ using Microsoft.Extensions.Logging;
 
 namespace DSE.Open.Notifications;
 
+/// <summary>
+/// Logs <see cref="INotification"/> instances via an <see cref="ILogger"/> using the
+/// source-generated <see cref="Log(ILogger, LogLevel, DiagnosticCode, string)"/> entry.
+/// </summary>
 public static partial class NotificationLogger
 {
+    /// <summary>
+    /// Logs the notification at <see cref="LogLevel.Trace"/>.
+    /// </summary>
+    /// <exception cref="ArgumentNullException"><paramref name="logger"/> or
+    /// <paramref name="notification"/> is <see langword="null"/>.</exception>
     public static void LogTrace(ILogger logger, INotification notification)
     {
         ArgumentNullException.ThrowIfNull(logger);
@@ -20,6 +29,11 @@ public static partial class NotificationLogger
             notification.Message);
     }
 
+    /// <summary>
+    /// Logs the notification at <see cref="LogLevel.Debug"/>.
+    /// </summary>
+    /// <exception cref="ArgumentNullException"><paramref name="logger"/> or
+    /// <paramref name="notification"/> is <see langword="null"/>.</exception>
     public static void LogDebug(ILogger logger, INotification notification)
     {
         ArgumentNullException.ThrowIfNull(logger);
@@ -32,6 +46,11 @@ public static partial class NotificationLogger
             notification.Message);
     }
 
+    /// <summary>
+    /// Logs the notification at <see cref="LogLevel.Information"/>.
+    /// </summary>
+    /// <exception cref="ArgumentNullException"><paramref name="logger"/> or
+    /// <paramref name="notification"/> is <see langword="null"/>.</exception>
     public static void LogInformation(ILogger logger, INotification notification)
     {
         ArgumentNullException.ThrowIfNull(logger);
@@ -44,6 +63,11 @@ public static partial class NotificationLogger
             notification.Message);
     }
 
+    /// <summary>
+    /// Logs the notification at <see cref="LogLevel.Warning"/>.
+    /// </summary>
+    /// <exception cref="ArgumentNullException"><paramref name="logger"/> or
+    /// <paramref name="notification"/> is <see langword="null"/>.</exception>
     public static void LogWarning(ILogger logger, INotification notification)
     {
         ArgumentNullException.ThrowIfNull(logger);
@@ -56,6 +80,11 @@ public static partial class NotificationLogger
             notification.Message);
     }
 
+    /// <summary>
+    /// Logs the notification at <see cref="LogLevel.Error"/>.
+    /// </summary>
+    /// <exception cref="ArgumentNullException"><paramref name="logger"/> or
+    /// <paramref name="notification"/> is <see langword="null"/>.</exception>
     public static void LogError(ILogger logger, INotification notification)
     {
         ArgumentNullException.ThrowIfNull(logger);
@@ -68,6 +97,11 @@ public static partial class NotificationLogger
             notification.Message);
     }
 
+    /// <summary>
+    /// Logs the notification at <see cref="LogLevel.Critical"/>.
+    /// </summary>
+    /// <exception cref="ArgumentNullException"><paramref name="logger"/> or
+    /// <paramref name="notification"/> is <see langword="null"/>.</exception>
     public static void LogCritical(ILogger logger, INotification notification)
     {
         ArgumentNullException.ThrowIfNull(logger);
@@ -80,6 +114,12 @@ public static partial class NotificationLogger
             notification.Message);
     }
 
+    /// <summary>
+    /// Logs the notification using the explicitly supplied <paramref name="logLevel"/>,
+    /// regardless of the notification's own <see cref="INotification.Level"/>.
+    /// </summary>
+    /// <exception cref="ArgumentNullException"><paramref name="logger"/> or
+    /// <paramref name="notification"/> is <see langword="null"/>.</exception>
     public static void Log(ILogger logger, LogLevel logLevel, INotification notification)
     {
         ArgumentNullException.ThrowIfNull(logger);
@@ -93,10 +133,13 @@ public static partial class NotificationLogger
     }
 
     /// <summary>
-    /// Logs the notification using the specified logger, mapping the notification level to the appropriate log level.
+    /// Logs the notification, mapping its <see cref="INotification.Level"/> to the
+    /// corresponding <see cref="LogLevel"/>.
     /// </summary>
-    /// <param name="logger"></param>
-    /// <param name="notification"></param>
+    /// <param name="logger">The logger.</param>
+    /// <param name="notification">The notification to log.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="logger"/> or
+    /// <paramref name="notification"/> is <see langword="null"/>.</exception>
     /// <exception cref="ArgumentOutOfRangeException">Thrown when the notification level is not recognised.</exception>
     public static void Log(ILogger logger, INotification notification)
     {
@@ -121,6 +164,10 @@ public static partial class NotificationLogger
             notification.Message);
     }
 
+    /// <summary>
+    /// Source-generated logger method that writes a message of the form
+    /// <c>[{diagnosticCode}] {message}</c> at the supplied <paramref name="level"/>.
+    /// </summary>
     [LoggerMessage(message: "[{diagnosticCode}] {message}")]
     public static partial void Log(ILogger logger, LogLevel level, DiagnosticCode diagnosticCode, string message);
 }
