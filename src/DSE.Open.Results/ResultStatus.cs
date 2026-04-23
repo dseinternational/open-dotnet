@@ -56,7 +56,7 @@ public enum ResultStatus
     NotFound = 1000,
 
     /// <summary>
-    /// The request was not successful. The user copuld not be authenticated.
+    /// The request was not successful. The user could not be authenticated.
     /// </summary>
     Unauthenticated = 2000,
 

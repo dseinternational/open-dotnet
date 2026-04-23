@@ -17,6 +17,8 @@ public class PaginatedCollectionValueResultBuilder<TValue> : CollectionValueResu
         MergeNotifications(valueResult);
 
         Items.AddRange(valueResult.Value);
+
+        Pagination = valueResult.Pagination;
     }
 
     public override PaginatedCollectionValueResult<TValue> Build()

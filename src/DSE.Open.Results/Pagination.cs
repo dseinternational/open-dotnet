@@ -18,7 +18,11 @@ public readonly record struct Pagination
         Guard.IsGreaterThanOrEqualTo(totalItems, 0);
         Guard.IsGreaterThanOrEqualTo(pageSize, 1);
 
-        if (currentPage < 1 || (totalItems > 0 && currentPage > (int)Math.Ceiling((double)totalItems / pageSize)))
+        if (totalItems == 0)
+        {
+            ArgumentOutOfRangeException.ThrowIfNotEqual(currentPage, 1);
+        }
+        else if (currentPage < 1 || currentPage > (int)Math.Ceiling((double)totalItems / pageSize))
         {
             throw new ArgumentOutOfRangeException(nameof(currentPage));
         }
@@ -51,7 +55,7 @@ public readonly record struct Pagination
     /// if there are no items in the result set.
     /// </summary>
     [JsonPropertyName("total_pages")]
-    public int TotalPages => (int)Math.Ceiling((double)TotalItems / PageSize);
+    public int TotalPages => PageSize == 0 ? 0 : (int)Math.Ceiling((double)TotalItems / PageSize);
 
     /// <summary>
     /// Gets the next page number, or null if no page number is available.
@@ -61,7 +65,7 @@ public readonly record struct Pagination
     public int? NextPage => TotalPages > CurrentPage ? CurrentPage + 1 : null;
 
     /// <summary>
-    /// Gets the next page number, or null if no page number is available.
+    /// Gets the previous page number, or null if no page number is available.
     /// </summary>
     [JsonPropertyName("previous_page")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
@@ -75,7 +79,7 @@ public readonly record struct Pagination
         ? TotalItems
         : CurrentPage < TotalPages
             ? PageSize
-            : TotalItems % PageSize;
+            : TotalItems - (PageSize * (TotalPages - 1));
 
     /// <summary>
     /// Gets a human-readable description.

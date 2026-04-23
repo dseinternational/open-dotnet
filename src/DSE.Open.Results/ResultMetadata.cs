@@ -19,5 +19,5 @@ public record ResultMetadata
 
     [JsonPropertyName("properties")]
     public ConcurrentDictionary<string, object> Properties { get; }
-        = new(StringComparer.InvariantCultureIgnoreCase);
+        = new(StringComparer.OrdinalIgnoreCase);
 }
