@@ -60,4 +60,34 @@ public sealed class CountTests
             $"MaxSerializedByteLength ({Count.MaxSerializedByteLength}) must be >= "
             + $"length of MaxValue string ({maxValueLength})");
     }
+
+    [Fact]
+    public void FromValue_NegativeInt_ThrowsArgumentOutOfRangeException()
+    {
+        _ = Assert.Throws<ArgumentOutOfRangeException>(() => Count.FromValue(-1));
+    }
+
+    [Fact]
+    public void ExplicitCast_NegativeInt_ThrowsArgumentOutOfRangeException()
+    {
+        _ = Assert.Throws<ArgumentOutOfRangeException>(() => (Count)(-1));
+    }
+
+    [Fact]
+    public void FromValue_NegativeLong_ThrowsArgumentOutOfRangeException()
+    {
+        _ = Assert.Throws<ArgumentOutOfRangeException>(() => Count.FromValue(-1L));
+    }
+
+    [Fact]
+    public void TryFromValue_NegativeInt_ReturnsFalse()
+    {
+        Assert.False(Count.TryFromValue(-1, out _));
+    }
+
+    [Fact]
+    public void TryFromValue_NegativeLong_ReturnsFalse()
+    {
+        Assert.False(Count.TryFromValue(-1L, out _));
+    }
 }

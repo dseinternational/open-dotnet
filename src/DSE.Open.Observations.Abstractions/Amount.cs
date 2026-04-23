@@ -35,7 +35,7 @@ public readonly partial struct Amount
 
     public static bool IsValidValue(decimal value)
     {
-        return value >= Zero._value;
+        return value >= Zero._value && value <= IObservationValue.MaxAmount;
     }
 
     public ulong GetRepeatableHashCode()

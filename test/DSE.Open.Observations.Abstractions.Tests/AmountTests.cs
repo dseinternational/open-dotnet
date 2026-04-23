@@ -72,4 +72,32 @@ public class AmountTests
 
         _ = Assert.Throws<ValueTypeMismatchException>(act);
     }
+
+    [Fact]
+    public void CanInitialize_AtMaxAmount()
+    {
+        var amount = new Amount(IObservationValue.MaxAmount);
+        Assert.Equal(IObservationValue.MaxAmount, (decimal)amount);
+    }
+
+    [Fact]
+    public void CannotInitialize_AboveMaxAmount()
+    {
+        var aboveMax = IObservationValue.MaxAmount + 1m;
+        _ = Assert.Throws<ArgumentOutOfRangeException>(() => new Amount(aboveMax));
+    }
+
+    [Fact]
+    public void TryFromValue_AboveMaxAmount_ReturnsFalse()
+    {
+        var aboveMax = IObservationValue.MaxAmount + 1m;
+        Assert.False(Amount.TryFromValue(aboveMax, out _));
+    }
+
+    [Fact]
+    public void TryFromValue_AtMaxAmount_ReturnsTrue()
+    {
+        Assert.True(Amount.TryFromValue(IObservationValue.MaxAmount, out var result));
+        Assert.Equal(IObservationValue.MaxAmount, (decimal)result);
+    }
 }

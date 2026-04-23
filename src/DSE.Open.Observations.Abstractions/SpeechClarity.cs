@@ -79,7 +79,7 @@ public readonly partial struct SpeechClarity
 
     /// <summary>
     /// Clarity is improving, but still not ideal: mostly understood by familiar listeners, but
-    /// only occassionally recognised by unfamiliar listeners.
+    /// only occasionally recognised by unfamiliar listeners.
     /// </summary>
     public static SpeechClarity Developing => new(DevelopingValue);
 

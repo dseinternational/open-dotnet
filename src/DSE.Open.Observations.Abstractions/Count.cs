@@ -98,7 +98,7 @@ public readonly partial struct Count
 
     public static Count FromValue(int value)
     {
-        EnsureIsValidValue((ulong)value);
+        EnsureIsValidValue((long)value);
         return new((ulong)value, true);
     }
 
