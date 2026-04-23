@@ -18,6 +18,12 @@ public sealed partial class MessageDispatcher : IMessageDispatcher
     private readonly IServiceProvider _serviceProvider;
     private readonly ILogger<MessageDispatcher> _logger;
 
+    /// <summary>
+    /// Initialises a new <see cref="MessageDispatcher"/>.
+    /// </summary>
+    /// <param name="serviceProvider">Provider used to resolve message handlers.</param>
+    /// <param name="logger">Logger used to record dispatch activity.</param>
+    /// <exception cref="ArgumentNullException">Either argument is <see langword="null"/>.</exception>
     public MessageDispatcher(IServiceProvider serviceProvider, ILogger<MessageDispatcher> logger)
     {
         ArgumentNullException.ThrowIfNull(serviceProvider);

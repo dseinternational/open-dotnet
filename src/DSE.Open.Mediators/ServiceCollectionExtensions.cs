@@ -7,16 +7,21 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace DSE.Open.Mediators;
 
+/// <summary>
+/// Registration helpers for <see cref="IMessageDispatcher"/> and its handlers.
+/// </summary>
 public static class ServiceCollectionExtensions
 {
     /// <summary>
-    /// Adds a <see cref="IMessageDispatcher"/> descriptor to the service collection. By default,
-    /// the registered lifetime is <see cref="ServiceLifetime.Scoped"/>.
+    /// Registers <see cref="MessageDispatcher"/> as <see cref="IMessageDispatcher"/>
+    /// in <paramref name="services"/>. Uses <c>TryAdd</c>, so calling it repeatedly
+    /// is a no-op after the first call. By default, the lifetime is
+    /// <see cref="ServiceLifetime.Scoped"/>.
     /// </summary>
-    /// <param name="services">The collection of service descriptors.</param>
-    /// <param name="serviceLifetime">The lifetime of the implementation. Defaults to
-    /// <see cref="ServiceLifetime.Scoped"/>.</param>
-    /// <returns></returns>
+    /// <param name="services">The service collection to modify.</param>
+    /// <param name="serviceLifetime">The lifetime of the registration.</param>
+    /// <returns>The same <paramref name="services"/> instance for chaining.</returns>
+    /// <exception cref="ArgumentNullException"><paramref name="services"/> is <see langword="null"/>.</exception>
     public static IServiceCollection AddMessageDispatcher(this IServiceCollection services, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped)
     {
         ArgumentNullException.ThrowIfNull(services);
@@ -25,14 +30,17 @@ public static class ServiceCollectionExtensions
     }
 
     /// <summary>
-    /// Adds a <see cref="IMessageHandler{TMessage}"/> descriptor to the service collection. By default,
-    /// the registered lifetime is <see cref="ServiceLifetime.Scoped"/>.
+    /// Registers <typeparamref name="THandler"/> as an <see cref="IMessageHandler{TMessage}"/>.
+    /// Unlike <see cref="AddMessageDispatcher"/>, this uses plain <c>Add</c> — calling it twice
+    /// with the same types registers the handler twice, causing the handler to run twice when
+    /// a matching message is published.
     /// </summary>
-    /// <typeparam name="THandler"></typeparam>
-    /// <typeparam name="TMessage"></typeparam>
-    /// <param name="services"></param>
-    /// <param name="serviceLifetime"></param>
-    /// <returns></returns>
+    /// <typeparam name="THandler">The concrete handler implementation.</typeparam>
+    /// <typeparam name="TMessage">The message type the handler handles.</typeparam>
+    /// <param name="services">The service collection to modify.</param>
+    /// <param name="serviceLifetime">The lifetime of the registration.</param>
+    /// <returns>The same <paramref name="services"/> instance for chaining.</returns>
+    /// <exception cref="ArgumentNullException"><paramref name="services"/> is <see langword="null"/>.</exception>
     public static IServiceCollection AddMessageHandler<
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] THandler, TMessage>(
         this IServiceCollection services,
