@@ -95,6 +95,8 @@ public sealed class WordFeatureCollection
 
     public void Insert(int index, WordFeature item)
     {
+        ArgumentNullException.ThrowIfNull(item);
+        EnsureDoesNotContainName(item.Name);
         _features.Insert(index, item);
     }
 

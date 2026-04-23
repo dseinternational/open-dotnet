@@ -35,7 +35,7 @@ public static class SyllableCount
 
     private static FrozenDictionary<string, int> ReadCounts()
     {
-        var countsPath = Path.Combine(AppContext.BaseDirectory, "Readability/syllable-counts.txt");
+        var countsPath = Path.Combine(AppContext.BaseDirectory, "syllable-counts.txt");
 
         using var reader = File.OpenText(countsPath);
 
