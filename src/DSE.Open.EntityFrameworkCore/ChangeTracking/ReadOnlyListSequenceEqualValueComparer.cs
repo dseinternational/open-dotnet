@@ -10,7 +10,7 @@ public sealed class ReadOnlyListSequenceEqualValueComparer<
         | DynamicallyAccessedMemberTypes.NonPublicMethods
         | DynamicallyAccessedMemberTypes.PublicProperties)]
 T>
-    : SequenceEqualValueComparer<T, IList<T>>
+    : SequenceEqualValueComparer<T, IReadOnlyList<T>>
 {
     public static readonly ReadOnlyListSequenceEqualValueComparer<T> Default = new();
 
@@ -18,7 +18,7 @@ T>
     {
     }
 
-    private static List<T> GenerateSnapshot(IList<T> values)
+    private static List<T> GenerateSnapshot(IReadOnlyList<T> values)
     {
         return [.. values];
     }

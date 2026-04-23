@@ -24,7 +24,11 @@ public sealed partial class UpdateTimesTrackedSaveChangesInterceptor : SaveChang
         _logger = logger;
     }
 
-    public bool SetCreatedTimestamp { get; set; }
+    /// <summary>
+    /// Gets or sets a value indicating whether the <see cref="IUpdateTimesTracked.Created"/> timestamp
+    /// should be set on newly-added entities during <c>SaveChanges</c>. Defaults to <see langword="true"/>.
+    /// </summary>
+    public bool SetCreatedTimestamp { get; set; } = true;
 
     public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
     {
@@ -49,29 +53,32 @@ public sealed partial class UpdateTimesTrackedSaveChangesInterceptor : SaveChang
 
         var persistedEntityEntries = eventData.Context.ChangeTracker.Entries<IUpdateTimesTracked>().ToArray();
 
-        var addedEntities = persistedEntityEntries
-            .Where(e => e.State == EntityState.Added)
-            .Select(e => e.Entity)
-            .ToArray();
-
-        Log.SettingCreatedTime(_logger, addedEntities.Length);
-
-        foreach (var added in addedEntities)
+        if (SetCreatedTimestamp)
         {
-            try
+            var addedEntities = persistedEntityEntries
+                .Where(e => e.State == EntityState.Added)
+                .Select(e => e.Entity)
+                .ToArray();
+
+            Log.SettingCreatedTime(_logger, addedEntities.Length);
+
+            foreach (var added in addedEntities)
             {
-                added.SetCreated(_timeProvider);
-            }
-            catch (InvalidOperationException ex)
-            {
-                ThrowHelper.ThrowInvalidOperationException(
-                    $"Error setting created time on entity of type {added.GetType().Name} with created time '{added.Created}' " +
-                    $"and id '{(added as IIdentified)?.Id}'", ex);
-            }
+                try
+                {
+                    added.SetCreated(_timeProvider);
+                }
+                catch (InvalidOperationException ex)
+                {
+                    ThrowHelper.ThrowInvalidOperationException(
+                        $"Error setting created time on entity of type {added.GetType().Name} with created time '{added.Created}' " +
+                        $"and id '{(added as IIdentified)?.Id}'", ex);
+                }
 
 #pragma warning disable CA1873 // Avoid potentially expensive logging
-            Log.SetCreatedTime(_logger, added.GetType().Name, (added as IIdentified)?.Id);
+                Log.SetCreatedTime(_logger, added.GetType().Name, (added as IIdentified)?.Id);
 #pragma warning restore CA1873 // Avoid potentially expensive logging
+            }
         }
 
         var updatedEntities = persistedEntityEntries

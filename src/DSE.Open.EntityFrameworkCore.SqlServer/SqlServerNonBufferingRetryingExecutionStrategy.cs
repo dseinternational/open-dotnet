@@ -58,6 +58,7 @@ public sealed partial class SqlServerNonBufferingRetryingExecutionStrategy : Exe
     public SqlServerNonBufferingRetryingExecutionStrategy(DbContext context, int maxRetryCount, TimeSpan medianRetryDelay)
         : base(context, maxRetryCount, DefaultMaxDelay)
     {
+        ArgumentNullException.ThrowIfNull(context);
         _logger = context.GetService<ILoggerFactory>().CreateLogger<SqlServerNonBufferingRetryingExecutionStrategy>();
         _retryDelays = GetRetryDelays(maxRetryCount, DefaultFirstRetryDelay, medianRetryDelay);
     }

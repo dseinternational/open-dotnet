@@ -21,8 +21,8 @@ public abstract class EntityTypeConfigurationBase<[DynamicallyAccessedMembers(Tr
 
         if (builder.Metadata.BaseType == null)
         {
-            builder.Metadata.SetPropertyAccessMode(PropertyAccessMode.Field);
-            builder.Metadata.SetNavigationAccessMode(PropertyAccessMode.Field);
+            builder.Metadata.SetPropertyAccessMode(PropertyAccessMode);
+            builder.Metadata.SetNavigationAccessMode(NavigationAccessMode);
         }
     }
 }
