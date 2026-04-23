@@ -26,6 +26,6 @@ public sealed class ConditionDiagnosisCodeDescriptions : ResourceLabelDescriptio
 
     public override string GetDescriptionKey(ConditionDiagnosisCode value)
     {
-        return "{value}_description";
+        return $"{value}_description";
     }
 }

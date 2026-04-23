@@ -61,7 +61,7 @@ public readonly partial struct ConditionDiagnosisCode : IEquatableValue<Conditio
     public static readonly ConditionDiagnosisCode DownSyndromeMosaic = new((ClinicalConceptCode)205616004, true);
 
     /// <summary>
-    /// Identifies a diagnosis of mosaic Down syndrome [254264002 | Partial trisomy 21 in Down syndrome (disorder)].
+    /// Identifies a diagnosis of partial Down syndrome [254264002 | Partial trisomy 21 in Down syndrome (disorder)].
     /// </summary>
     public static readonly ConditionDiagnosisCode DownSyndromePartial = new((ClinicalConceptCode)254264002, true);
 
