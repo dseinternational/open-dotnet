@@ -25,6 +25,19 @@ public static class CategorySet
     }
 }
 
+/// <summary>
+/// The set of allowed values for a categorical <see cref="Series{T}"/>.
+/// </summary>
+/// <remarks>
+/// A <see cref="CategorySet{T}"/> is a fully mutable <see cref="ISet{T}"/>. When a
+/// set is attached to a <see cref="Series{T}"/>, the series validates its elements
+/// against the set at construction and on indexer assignment, but it does
+/// <b>not</b> subscribe to changes. Mutating the set after it has been attached can
+/// therefore leave a series holding values that are no longer members of the set.
+/// Treat a set attached to any <see cref="Series{T}"/> as effectively read-only, or
+/// pass <c>copy: true</c> to <see cref="Series{T}.Slice(int, int, bool)"/> to take
+/// an isolated copy.
+/// </remarks>
 [CollectionBuilder(typeof(CategorySet), nameof(CategorySet.Create))]
 public sealed class CategorySet<T> : Set<T>, ICategorySet<T>
     where T : IEquatable<T>

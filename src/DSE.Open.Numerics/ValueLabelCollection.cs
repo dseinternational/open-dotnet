@@ -16,6 +16,19 @@ public abstract class ValueLabelCollection : IReadOnlyValueLabelCollection
     }
 }
 
+/// <summary>
+/// A mutable collection of human-readable labels associated with values of type
+/// <typeparamref name="T"/>, used by a <see cref="Series{T}"/> to map data values to
+/// display labels.
+/// </summary>
+/// <remarks>
+/// A <see cref="ValueLabelCollection{T}"/> is attached to a <see cref="Series{T}"/>
+/// by reference; later mutation of the collection is visible to every series it was
+/// attached to. The series does not subscribe to changes, so removing or renaming
+/// labels does not invalidate any series that still references them. Pass
+/// <c>copy: true</c> to <see cref="Series{T}.Slice(int, int, bool)"/> to take an
+/// isolated copy.
+/// </remarks>
 public sealed class ValueLabelCollection<T> : ValueLabelCollection, IValueLabelCollection<T>
     where T : IEquatable<T>
 {

@@ -81,8 +81,28 @@ public class Series<T>
     [MemberNotNullWhen(true, nameof(_categories))]
     public override bool IsCategorical => _categories is not null && !_categories.IsEmpty;
 
+    /// <summary>
+    /// The set of allowed values for this series.
+    /// </summary>
+    /// <remarks>
+    /// The series validates elements against the attached category set at construction
+    /// and whenever an element is assigned via the indexer, but it does <b>not</b>
+    /// revalidate if the category set itself is mutated later (for example if a
+    /// category is removed via the returned <see cref="CategorySet{T}"/>). External
+    /// mutation of the set can therefore leave the series holding values that are no
+    /// longer in the set. Treat an attached <see cref="CategorySet{T}"/> as effectively
+    /// read-only, or pass <c>copy: true</c> to <see cref="Slice(int, int, bool)"/> to
+    /// isolate a slice's metadata from later mutations of the source.
+    /// </remarks>
     public CategorySet<T> Categories => _categories ??= [];
 
+    /// <summary>
+    /// The collection of human-readable labels for values in this series.
+    /// </summary>
+    /// <remarks>
+    /// Like <see cref="Categories"/>, the collection is retained by reference and
+    /// external mutation is visible; see <see cref="Categories"/> for guidance.
+    /// </remarks>
     public ValueLabelCollection<T> ValueLabels => _valueLabels ??= [];
 
     public override bool HasValueLabels => _valueLabels is not null && _valueLabels.Count > 0;
@@ -245,16 +265,61 @@ public class Series<T>
         return ((IEnumerable<T>)this).GetEnumerator();
     }
 
+    /// <summary>
+    /// Returns a slice of this series starting at <paramref name="start"/>. The returned
+    /// slice preserves the source's <see cref="ISeries.Name"/>, <see cref="Categories"/>
+    /// and <see cref="ValueLabels"/>. Categories and value labels are <b>shared by
+    /// reference</b> with the source; call <see cref="Slice(int, int, bool)"/> with
+    /// <c>copy: true</c> to isolate them.
+    /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Series<T> Slice(int start)
     {
-        return new Series<T>(_vector[start..], Name); // todo: slice index and labels
+        return new Series<T>(_vector[start..], Name, _categories, _valueLabels);
     }
 
+    /// <summary>
+    /// Returns a slice of this series. The returned slice preserves the source's
+    /// <see cref="ISeries.Name"/>, <see cref="Categories"/> and
+    /// <see cref="ValueLabels"/>. Categories and value labels are <b>shared by
+    /// reference</b> with the source; call <see cref="Slice(int, int, bool)"/> with
+    /// <c>copy: true</c> to isolate them.
+    /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Series<T> Slice(int start, int length)
     {
-        return new Series<T>(_vector.Slice(start, length), Name); // todo: slice index and labels
+        return new Series<T>(_vector.Slice(start, length), Name, _categories, _valueLabels);
+    }
+
+    /// <summary>
+    /// Returns a slice of this series.
+    /// </summary>
+    /// <param name="start">Start index of the slice.</param>
+    /// <param name="length">Length of the slice.</param>
+    /// <param name="copy">
+    /// When <see langword="false"/> (the default behaviour of
+    /// <see cref="Slice(int, int)"/>), the returned slice shares its
+    /// <see cref="Categories"/> and <see cref="ValueLabels"/> references with the
+    /// source. When <see langword="true"/>, the slice receives deep copies so that
+    /// subsequent mutation of the source's metadata does not affect the slice (and
+    /// vice versa).
+    /// </param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Series<T> Slice(int start, int length, bool copy)
+    {
+        if (!copy)
+        {
+            return Slice(start, length);
+        }
+
+        // Cast to IEnumerable<T> forces the enumerating copy ctor; passing a
+        // CategorySet<T> directly would select the ISet<T> overload, which aliases
+        // the underlying storage instead of copying.
+        return new Series<T>(
+            _vector.Slice(start, length),
+            Name,
+            _categories is null ? null : new CategorySet<T>((IEnumerable<T>)_categories),
+            _valueLabels is null ? null : new ValueLabelCollection<T>(_valueLabels));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
