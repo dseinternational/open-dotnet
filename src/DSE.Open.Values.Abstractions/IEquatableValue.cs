@@ -5,6 +5,12 @@ using System.Numerics;
 
 namespace DSE.Open.Values;
 
+/// <summary>
+/// Defines a value type that wraps an underlying equatable value of type <typeparamref name="T"/>
+/// and supports equality comparison, span-based formatting and parsing.
+/// </summary>
+/// <typeparam name="TSelf">The type that implements the interface.</typeparam>
+/// <typeparam name="T">The underlying value type being wrapped.</typeparam>
 public interface IEquatableValue<TSelf, T>
     : IValue<TSelf, T>,
       IEquatable<TSelf>,
