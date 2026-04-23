@@ -1,18 +1,41 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Diagnostics.CodeAnalysis;
+
 namespace DSE.Open.Speech;
 
+/// <summary>
+/// Looks up the display label for a <see cref="Phoneme"/> under a given
+/// <see cref="PhonemeLabelScheme"/>.
+/// </summary>
 public static class PhonemeLabel
 {
-    public static bool TryGetLabel(PhonemeLabelScheme scheme, Phoneme phoneme, out string label)
+    /// <summary>
+    /// Attempts to resolve the label for <paramref name="phoneme"/> under
+    /// <paramref name="scheme"/>.
+    /// </summary>
+    /// <param name="scheme">The label scheme to query.</param>
+    /// <param name="phoneme">The phoneme whose label is sought.</param>
+    /// <param name="label">When this method returns <see langword="true"/>, the resolved
+    /// label; otherwise <see langword="null"/>.</param>
+    /// <returns><see langword="true"/> if a label was found for the scheme and phoneme;
+    /// otherwise <see langword="false"/>.</returns>
+    /// <exception cref="ArgumentNullException"><paramref name="phoneme"/> is
+    /// <see langword="null"/>.</exception>
+    public static bool TryGetLabel(
+        PhonemeLabelScheme scheme,
+        Phoneme phoneme,
+        [NotNullWhen(true)] out string? label)
     {
+        ArgumentNullException.ThrowIfNull(phoneme);
+
         if (Labels.TryGetValue(scheme, out var labels) && labels.TryGetValue(phoneme, out label!))
         {
             return true;
         }
 
-        label = default!;
+        label = null;
         return false;
     }
 

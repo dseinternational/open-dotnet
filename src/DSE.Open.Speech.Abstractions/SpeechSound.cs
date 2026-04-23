@@ -46,7 +46,7 @@ public readonly struct SpeechSound
     public static bool IsValidValue(SpeechSymbolSequence value)
     {
         return value.Length > 0
-            && value.Length < MaxLength;
+            && value.Length <= MaxLength;
     }
 
     private static void EnsureValidValue(SpeechSymbolSequence value)

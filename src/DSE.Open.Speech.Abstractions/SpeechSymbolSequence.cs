@@ -15,7 +15,10 @@ using DSE.Open.Speech.Serialization;
 namespace DSE.Open.Speech;
 
 /// <summary>
-///
+/// An immutable ordered sequence of <see cref="SpeechSymbol"/> values — an IPA
+/// transcription of one or more speech sounds. Supports comparison either exactly
+/// or ignoring suprasegmental markers and diacritics via
+/// <see cref="SpeechSymbolSequenceComparison.ConsonantsAndVowels"/>.
 /// </summary>
 [JsonConverter(typeof(JsonStringSpeechSymbolSequenceConverter))]
 [StructLayout(LayoutKind.Sequential)]
@@ -269,42 +272,48 @@ public readonly struct SpeechSymbolSequence
             var l = 0;
             var r = 0;
 
-            while (l < buffer.Length || r < chars.Length)
+            while (l < buffer.Length && r < chars.Length)
             {
-                if (l < buffer.Length - 1 && !SpeechSymbol.IsConsonantOrVowel(buffer[l]))
+                if (!SpeechSymbol.IsConsonantOrVowel(buffer[l]))
                 {
                     l++;
-
-                    if (buffer[l] == chars[r])
-                    {
-                        l++;
-                        r++;
-                    }
-
                     continue;
                 }
 
-                if (r < chars.Length - 1 && !SpeechSymbol.IsConsonantOrVowel(chars[r]))
+                if (!SpeechSymbol.IsConsonantOrVowel(chars[r]))
                 {
-                    r++;
-
-                    if (buffer[l] == chars[r])
-                    {
-                        l++;
-                        r++;
-                    }
-
-                    continue;
-                }
-
-                if (buffer[l] == chars[r])
-                {
-                    l++;
                     r++;
                     continue;
                 }
 
-                return false;
+                if (buffer[l] != chars[r])
+                {
+                    return false;
+                }
+
+                l++;
+                r++;
+            }
+
+            // Any remaining characters on either side must be non-consonant/vowel
+            // for the comparison to still hold.
+
+            while (l < buffer.Length)
+            {
+                if (SpeechSymbol.IsConsonantOrVowel(buffer[l]))
+                {
+                    return false;
+                }
+                l++;
+            }
+
+            while (r < chars.Length)
+            {
+                if (SpeechSymbol.IsConsonantOrVowel(chars[r]))
+                {
+                    return false;
+                }
+                r++;
             }
 
             return true;
@@ -654,8 +663,6 @@ public readonly struct SpeechSymbolSequence
 
             if (!SpeechSymbol.TryCreate(c, out var symbol))
             {
-                Debugger.Break();
-
                 result = default;
                 return false;
             }
