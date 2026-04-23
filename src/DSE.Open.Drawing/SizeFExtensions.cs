@@ -5,6 +5,9 @@ using System.Drawing;
 
 namespace DSE.Open.Drawing;
 
+/// <summary>
+/// Extension methods for <see cref="SizeF"/> to determine visual orientation.
+/// </summary>
 public static class SizeFExtensions
 {
     public static Orientation GetOrientation(this SizeF size)

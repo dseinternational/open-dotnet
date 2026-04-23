@@ -5,6 +5,10 @@ using System.ComponentModel;
 
 namespace DSE.Open.Drawing;
 
+/// <summary>
+/// A <see cref="TypeConverter"/> that converts between <see cref="string"/> and <see cref="Point"/>
+/// using comma-separated X,Y format.
+/// </summary>
 public class PointTypeConverter : TypeConverter
 {
     public override bool CanConvertFrom(ITypeDescriptorContext? context, Type sourceType)

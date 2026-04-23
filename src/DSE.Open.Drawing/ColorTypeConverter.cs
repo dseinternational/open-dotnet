@@ -5,6 +5,10 @@ using System.ComponentModel;
 
 namespace DSE.Open.Drawing;
 
+/// <summary>
+/// A <see cref="TypeConverter"/> that converts between <see cref="string"/> and <see cref="Color"/>
+/// using hex format (#RRGGBB or #RRGGBBAA).
+/// </summary>
 public class ColorTypeConverter : TypeConverter
 {
     public override object ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object value)
