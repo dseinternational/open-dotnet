@@ -3,11 +3,21 @@
 
 namespace DSE.Open.Collections.Generic;
 
+/// <summary>
+/// Compares dictionaries for structural equality. Two dictionaries are considered equal
+/// when they contain the same set of keys and the values under each key match according
+/// to <see cref="ValueComparer"/>. Iteration order does not affect <see cref="Equals(IDictionary{TKey,TValue},IDictionary{TKey,TValue})"/>.
+/// </summary>
+/// <typeparam name="TKey">The dictionary key type.</typeparam>
+/// <typeparam name="TValue">The dictionary value type.</typeparam>
 public class DictionaryEqualityComparer<TKey, TValue>
     : IEqualityComparer<IReadOnlyDictionary<TKey, TValue>>,
       IEqualityComparer<IDictionary<TKey, TValue>>
     where TKey : notnull
 {
+    /// <summary>
+    /// The singleton instance that uses <see cref="EqualityComparer{T}.Default"/> for values.
+    /// </summary>
     public static readonly DictionaryEqualityComparer<TKey, TValue> Default = new();
 
     private DictionaryEqualityComparer()
@@ -15,6 +25,9 @@ public class DictionaryEqualityComparer<TKey, TValue>
         ValueComparer = EqualityComparer<TValue>.Default;
     }
 
+    /// <summary>
+    /// The value equality comparer used when comparing entries under the same key.
+    /// </summary>
     public IEqualityComparer<TValue> ValueComparer { get; }
 
     public bool Equals(ReadOnlyValueDictionary<TKey, TValue>? x, ReadOnlyValueDictionary<TKey, TValue>? y)

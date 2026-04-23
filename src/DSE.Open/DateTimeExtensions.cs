@@ -5,23 +5,42 @@ using DSE.Open.Hashing;
 
 namespace DSE.Open;
 
+/// <summary>
+/// Extension methods for <see cref="DateTime"/>.
+/// </summary>
 public static class DateTimeExtensions
 {
+    /// <summary>
+    /// Returns a <see cref="DateTime"/> representing midnight at the start of the same
+    /// calendar day as <paramref name="value"/>.
+    /// </summary>
     public static DateTime ToStartOfDay(this DateTime value)
     {
         return new(value.Year, value.Month, value.Day, 0, 0, 0);
     }
 
+    /// <summary>
+    /// Returns a <see cref="DateTime"/> representing the last moment before midnight on the
+    /// same calendar day as <paramref name="value"/>.
+    /// </summary>
     public static DateTime ToEndOfDay(this DateTime value)
     {
         return new(value.Year, value.Month, value.Day, 23, 59, 59, 999);
     }
 
+    /// <summary>
+    /// Returns the start of the day for <paramref name="value"/>, or <see langword="null"/>
+    /// if <paramref name="value"/> is <see langword="null"/>.
+    /// </summary>
     public static DateTime? ToStartOfDay(this DateTime? value)
     {
         return value?.ToStartOfDay();
     }
 
+    /// <summary>
+    /// Returns the end of the day for <paramref name="value"/>, or <see langword="null"/>
+    /// if <paramref name="value"/> is <see langword="null"/>.
+    /// </summary>
     public static DateTime? ToEndOfDay(this DateTime? value)
     {
         return value?.ToEndOfDay();
@@ -46,6 +65,10 @@ public static class DateTimeExtensions
         };
     }
 
+    /// <summary>
+    /// Formats the value using the ISO 8601 "round-trip" (<c>"o"</c>) format specifier with the
+    /// invariant culture.
+    /// </summary>
     public static string ToIso8601String(this DateTime value)
     {
         return value.ToString("o", CultureInfo.InvariantCulture);
@@ -69,6 +92,10 @@ public static class DateTimeExtensions
         };
     }
 
+    /// <summary>
+    /// Computes a 64-bit hash code that is stable across application runs and process
+    /// architectures.
+    /// </summary>
     public static ulong GetRepeatableHashCode(this DateTime value)
     {
         return RepeatableHash64Provider.Default.GetRepeatableHashCode(value);

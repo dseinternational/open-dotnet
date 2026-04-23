@@ -3,11 +3,25 @@
 
 namespace DSE.Open;
 
+/// <summary>
+/// Ordinal comparer for <see cref="AsciiChar2"/> values. Use <see cref="CaseSensitive"/> for
+/// ordinal comparison and <see cref="IgnoreCase"/> for ordinal, case-insensitive comparison.
+/// </summary>
 public abstract class AsciiChar2Comparer : IComparer<AsciiChar2>, IEqualityComparer<AsciiChar2>
 {
+    /// <summary>
+    /// A comparer that distinguishes uppercase and lowercase ASCII letters.
+    /// </summary>
     public static readonly AsciiChar2Comparer CaseSensitive = new AsciiCharSequenceComparerCaseSensitive();
+
+    /// <summary>
+    /// A comparer that treats corresponding uppercase and lowercase ASCII letters as equal.
+    /// </summary>
     public static readonly AsciiChar2Comparer IgnoreCase = new AsciiCharSequenceComparerIgnoreCase();
 
+    /// <summary>
+    /// Initialises the base comparer. Intended for derived-class use only.
+    /// </summary>
     protected AsciiChar2Comparer()
     {
     }

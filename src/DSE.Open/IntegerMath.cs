@@ -3,8 +3,23 @@
 
 namespace DSE.Open;
 
+/// <summary>
+/// Integer arithmetic helpers.
+/// </summary>
 public static class IntegerMath
 {
+    /// <summary>
+    /// Divides <paramref name="dividend"/> by <paramref name="divisor"/> and rounds the
+    /// result toward positive infinity (ceiling division). Any non-zero remainder
+    /// increments the quotient when the mathematical result is positive.
+    /// </summary>
+    /// <param name="dividend">The value being divided.</param>
+    /// <param name="divisor">The value to divide by.</param>
+    /// <returns>The quotient, rounded away from zero when the division has a remainder.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// <paramref name="divisor"/> is <c>0</c>, or <paramref name="dividend"/> is
+    /// <see cref="int.MinValue"/> and <paramref name="divisor"/> is <c>-1</c> (would overflow).
+    /// </exception>
     public static int DivideByRoundUp(this int dividend, int divisor)
     {
         switch (divisor)
@@ -31,6 +46,18 @@ public static class IntegerMath
         return wasRoundedDown ? roundedTowardsZeroQuotient + 1 : roundedTowardsZeroQuotient;
     }
 
+    /// <summary>
+    /// Divides <paramref name="dividend"/> by <paramref name="divisor"/> and rounds the
+    /// result toward positive infinity (ceiling division). Any non-zero remainder
+    /// increments the quotient when the mathematical result is positive.
+    /// </summary>
+    /// <param name="dividend">The value being divided.</param>
+    /// <param name="divisor">The value to divide by.</param>
+    /// <returns>The quotient, rounded away from zero when the division has a remainder.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// <paramref name="divisor"/> is <c>0</c>, or <paramref name="dividend"/> is
+    /// <see cref="long.MinValue"/> and <paramref name="divisor"/> is <c>-1</c> (would overflow).
+    /// </exception>
     public static long DivideByRoundUp(this long dividend, long divisor)
     {
         switch (divisor)
