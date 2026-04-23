@@ -54,7 +54,7 @@ public class CommandDispatcherTests : LoggedTestsBase
         _ = await dispatcher.Dispatch<CreatePerson, int>(
             new CreatePerson("Bob"), TestContext.Current.CancellationToken);
 
-        Assert.Equal("Bob", captured.LastName);
+        Assert.Equal("Bob", captured.Name);
     }
 
     // ---------- Argument validation ----------
@@ -181,7 +181,7 @@ public class CommandDispatcherTests : LoggedTestsBase
     public void Ctor_NullServiceProvider_Throws()
     {
         _ = Assert.Throws<ArgumentNullException>(
-            () => new CommandDispatcher(null!, new NullLogger<CommandDispatcher>()));
+            () => new CommandDispatcher(null!, Microsoft.Extensions.Logging.Abstractions.NullLogger<CommandDispatcher>.Instance));
     }
 
     [Fact]
@@ -204,11 +204,11 @@ public class CommandDispatcherTests : LoggedTestsBase
 
     private sealed class CapturingCreatePersonHandler : ICommandHandler<CreatePerson, int>
     {
-        public string? LastName { get; private set; }
+        public string? Name { get; private set; }
 
         public Task<int> HandleAsync(CreatePerson command, CancellationToken cancellation = default)
         {
-            LastName = command.Name;
+            Name = command.Name;
             return Task.FromResult(1);
         }
     }
@@ -249,15 +249,4 @@ public class CommandDispatcherTests : LoggedTestsBase
         }
     }
 
-    private sealed class NullLogger<T> : Microsoft.Extensions.Logging.ILogger<T>
-    {
-        public IDisposable? BeginScope<TState>(TState state) where TState : notnull => null;
-        public bool IsEnabled(Microsoft.Extensions.Logging.LogLevel logLevel) => false;
-        public void Log<TState>(
-            Microsoft.Extensions.Logging.LogLevel logLevel,
-            Microsoft.Extensions.Logging.EventId eventId,
-            TState state,
-            Exception? exception,
-            Func<TState, Exception?, string> formatter) { }
-    }
 }

@@ -27,7 +27,8 @@ public interface ICommandDispatcher
     /// or the handler threw a non-cancellation exception.
     /// </exception>
     /// <exception cref="OperationCanceledException">
-    /// The handler reported cancellation.
+    /// The operation was canceled either because the handler reported cancellation
+    /// or because <paramref name="cancellation"/> was canceled.
     /// </exception>
     [RequiresDynamicCode("May break functionality when AOT compiling")]
     Task<TCommandResult> Dispatch<TCommand, TCommandResult>(TCommand command, CancellationToken cancellation = default)

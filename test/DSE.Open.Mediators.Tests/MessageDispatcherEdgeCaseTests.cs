@@ -132,7 +132,7 @@ public class MessageDispatcherEdgeCaseTests : LoggedTestsBase
     public void Ctor_NullServiceProvider_Throws()
     {
         _ = Assert.Throws<ArgumentNullException>(
-            () => new MessageDispatcher(null!, new NullLogger<MessageDispatcher>()));
+            () => new MessageDispatcher(null!, Microsoft.Extensions.Logging.Abstractions.NullLogger<MessageDispatcher>.Instance));
     }
 
     [Fact]
@@ -212,15 +212,4 @@ public class MessageDispatcherEdgeCaseTests : LoggedTestsBase
         }
     }
 
-    private sealed class NullLogger<T> : Microsoft.Extensions.Logging.ILogger<T>
-    {
-        public IDisposable? BeginScope<TState>(TState state) where TState : notnull => null;
-        public bool IsEnabled(Microsoft.Extensions.Logging.LogLevel logLevel) => false;
-        public void Log<TState>(
-            Microsoft.Extensions.Logging.LogLevel logLevel,
-            Microsoft.Extensions.Logging.EventId eventId,
-            TState state,
-            Exception? exception,
-            Func<TState, Exception?, string> formatter) { }
-    }
 }
