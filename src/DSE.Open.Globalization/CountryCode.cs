@@ -389,6 +389,7 @@ public readonly partial struct CountryCode : IComparableValue<CountryCode, Ascii
     [
         Austria,
         Belgium,
+        Croatia,
         Cyprus,
         Estonia,
         Finland,

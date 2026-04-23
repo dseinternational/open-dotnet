@@ -172,14 +172,14 @@ public static class LocalizedCollectionExtensions
 
         var baseLangMatch = list.SingleOrDefault(i => i.Key.AsSpan().SequenceEqual(tagLangPart.ToCharArray()));
 
-        if (baseLangMatch.Key == tagStr)
+        if (baseLangMatch.Key is not null)
         {
             return baseLangMatch.Value;
         }
 
         var firstSameLang = list.FirstOrDefault(i => FirstPartMatch(i.Key, tagLangPart));
 
-        if (firstSameLang.Key == tagStr)
+        if (firstSameLang.Key is not null)
         {
             return firstSameLang.Value;
         }
@@ -188,13 +188,13 @@ public static class LocalizedCollectionExtensions
         {
             var fallbackMatch = list.SingleOrDefault(i => i.Key == fallback.ToString());
 
-            if (fallbackMatch.Key == tagStr)
+            if (fallbackMatch.Key is not null)
             {
                 return fallbackMatch.Value;
             }
         }
 
-        return localizedCollection.First().Value;
+        return list.First().Value;
     }
 
     /// <summary>
@@ -264,6 +264,58 @@ public static class LocalizedCollectionExtensions
         return dictionary.First().Value;
     }
 
+    public static T GetLocalizedOrFallback<T>(
+        this IReadOnlyDictionary<LanguageTag, T> dictionary,
+        LanguageTag tag,
+        IEnumerable<LanguageTag> fallbacks)
+    {
+        ArgumentNullException.ThrowIfNull(dictionary);
+        ArgumentNullException.ThrowIfNull(fallbacks);
+
+        if (dictionary.Count == 0)
+        {
+            throw new InvalidOperationException("No localized items in collection.");
+        }
+
+        if (dictionary.TryGetValue(tag, out var exactMatch))
+        {
+            return exactMatch;
+        }
+
+        var tagLangPart = tag.GetLanguagePart();
+
+        if (tagLangPart != tag && dictionary.TryGetValue(tagLangPart, out var baseLangMatch))
+        {
+            return baseLangMatch;
+        }
+
+        LanguageTag? match2 = default;
+
+        foreach (var k in dictionary.Keys)
+        {
+            if (k.LanguagePartEquals(tagLangPart))
+            {
+                match2 = k;
+                break;
+            }
+        }
+
+        if (match2.HasValue)
+        {
+            return dictionary[match2.Value];
+        }
+
+        foreach (var fallback in fallbacks)
+        {
+            if (dictionary.TryGetValue(fallback, out var fallbackMatch))
+            {
+                return fallbackMatch;
+            }
+        }
+
+        return dictionary.First().Value;
+    }
+
     /// <summary>
     /// Gets the item specified by the <paramref name="tag"/> or
     /// the nearest fallback item.
@@ -314,14 +366,14 @@ public static class LocalizedCollectionExtensions
 
         var baseLangMatch = list.SingleOrDefault(i => i.Key == tagLangPart);
 
-        if (baseLangMatch.Key == tag)
+        if (baseLangMatch.Key != default)
         {
             return baseLangMatch.Value;
         }
 
         var firstSameLang = list.FirstOrDefault(i => i.Key.LanguagePartEquals(tagLangPart));
 
-        if (firstSameLang.Key == tag)
+        if (firstSameLang.Key != default)
         {
             return firstSameLang.Value;
         }
@@ -330,13 +382,13 @@ public static class LocalizedCollectionExtensions
         {
             var fallbackMatch = list.SingleOrDefault(i => i.Key == fallback);
 
-            if (fallbackMatch.Key == tag)
+            if (fallbackMatch.Key != default)
             {
                 return fallbackMatch.Value;
             }
         }
 
-        return localizedCollection.First().Value;
+        return list.First().Value;
     }
 
     /// <summary>
@@ -429,9 +481,14 @@ public static class LocalizedCollectionExtensions
         var firstPart = tag[..ix];
         var matchSpan = match.GetLanguagePartSpan();
 
+        if (firstPart.Length != matchSpan.Length)
+        {
+            return false;
+        }
+
         for (var i = 0; i < firstPart.Length; i++)
         {
-            if (firstPart[i] != matchSpan[i])
+            if (char.ToLowerInvariant(firstPart[i]) != (char)matchSpan[i].ToLower())
             {
                 return false;
             }

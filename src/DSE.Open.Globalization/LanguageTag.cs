@@ -397,9 +397,10 @@ public readonly partial struct LanguageTag
 
         var span = _value.AsSpan();
         var index = span.IndexOf((AsciiChar)'-');
+        var langPart = index < 0 ? span : span[..index];
 
-        return otherLangPart.Length == index - 1
-            && span[..index].SequenceEqualsIgnoreCase(otherLangPart);
+        return langPart.Length == otherLangPart.Length
+            && langPart.SequenceEqualsIgnoreCase(otherLangPart);
     }
 
     public ReadOnlySpan<AsciiChar> GetLanguagePartSpan()
