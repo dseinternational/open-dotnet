@@ -38,10 +38,13 @@ public interface IUserInterfaceModel : INotifyPropertyChanged, INotifyPropertyCh
     CultureInfo PresentationCulture { get; set; }
 
     /// <summary>
-    /// Initialises the user interface model. May only be called once per instance.
+    /// Initialises the user interface model. After a successful initialisation the method
+    /// throws <see cref="InvalidOperationException"/> on every subsequent call. If a
+    /// previous attempt failed (i.e. <see cref="IsInitialized"/> is still
+    /// <see langword="false"/>), the method may be called again to retry.
     /// </summary>
     /// <param name="state">An object that can be used to provide data/configuration for initialisation.</param>
     /// <param name="cancellationToken">Propagates notification that the operation should be cancelled.</param>
-    /// <exception cref="InvalidOperationException">The model has already been initialised.</exception>
+    /// <exception cref="InvalidOperationException">The model has already been successfully initialised.</exception>
     ValueTask InitializeAsync(object? state = null, CancellationToken cancellationToken = default);
 }

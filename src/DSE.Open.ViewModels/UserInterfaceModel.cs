@@ -92,9 +92,10 @@ public abstract partial class UserInterfaceModel : ObservableObject, IUserInterf
     }
 
     /// <summary>
-    /// Subclass initialisation hook called exactly once by <see cref="InitializeAsync"/>.
-    /// Throw from this method to abort initialisation — <see cref="IsInitialized"/> will
-    /// remain <see langword="false"/>.
+    /// Subclass initialisation hook called by <see cref="InitializeAsync"/> on each
+    /// initialisation attempt. Throw from this method to abort initialisation —
+    /// <see cref="IsInitialized"/> will remain <see langword="false"/> and a subsequent
+    /// call to <see cref="InitializeAsync"/> may retry.
     /// </summary>
     /// <param name="state">The state value passed to <see cref="InitializeAsync"/>.</param>
     /// <param name="cancellationToken">Propagates notification that the operation should
