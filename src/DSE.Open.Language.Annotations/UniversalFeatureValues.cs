@@ -149,7 +149,7 @@ public static class UniversalFeatureValues
     /// <remarks>
     /// See <see href="https://universaldependencies.org/u/feat/Tense.html"><c>Tense</c>: tense</see>
     /// </remarks>
-    public static readonly AlphaNumericCode TenseFuture = new("Pres");
+    public static readonly AlphaNumericCode TenseFuture = new("Fut");
 
     /// <summary>
     /// <c>Imp</c>: imperfect
@@ -349,7 +349,7 @@ public static class UniversalFeatureValues
     /// <remarks>
     /// See <see href="https://universaldependencies.org/u/feat/Mood.html"><c>Mood</c>: mood</see>
     /// </remarks>
-    public static readonly AlphaNumericCode MoodImperative = new("Ind");
+    public static readonly AlphaNumericCode MoodImperative = new("Imp");
 
     /// <summary>
     /// <c>Cnd</c>: conditional
@@ -360,12 +360,12 @@ public static class UniversalFeatureValues
     public static readonly AlphaNumericCode MoodConditional = new("Cnd");
 
     /// <summary>
-    /// Pot: potential
+    /// <c>Pot</c>: potential
     /// </summary>
     /// <remarks>
     /// See <see href="https://universaldependencies.org/u/feat/Mood.html"><c>Mood</c>: mood</see>
     /// </remarks>
-    public static readonly AlphaNumericCode MoodPotential = new("Cnd");
+    public static readonly AlphaNumericCode MoodPotential = new("Pot");
 
     /// <summary>
     /// Sub: subjunctive / conjunctive

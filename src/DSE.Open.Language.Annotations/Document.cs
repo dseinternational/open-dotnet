@@ -8,14 +8,28 @@ using DSE.Open.Hashing;
 
 namespace DSE.Open.Language.Annotations;
 
+/// <summary>
+/// A linguistically-annotated text, composed of one or more
+/// <see cref="Sentence"/>s and optionally tagged with an identifier and a
+/// language.
+/// </summary>
 public record Document : IRepeatableHash64
 {
+    /// <summary>
+    /// The optional identifier of the document.
+    /// </summary>
     [JsonPropertyName("doc_id")]
     public string? Id { get; init; }
 
+    /// <summary>
+    /// The optional language of the document.
+    /// </summary>
     [JsonPropertyName("language")]
     public LanguageTag? Language { get; init; }
 
+    /// <summary>
+    /// The sentences that make up the document.
+    /// </summary>
     [JsonPropertyName("sentences")]
     public required ReadOnlyValueCollection<Sentence> Sentences { get; init; } = [];
 

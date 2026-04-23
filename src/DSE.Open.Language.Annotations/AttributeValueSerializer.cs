@@ -7,8 +7,19 @@ using DSE.Open.Runtime.Helpers;
 
 namespace DSE.Open.Language.Annotations;
 
+/// <summary>
+/// Serializes and deserializes sequences of <see cref="AttributeValue"/> to
+/// and from pipe-delimited (<c>|</c>) strings, as used by the CoNLL-U
+/// <c>MISC</c> field.
+/// </summary>
 public static class AttributeValueSerializer
 {
+    /// <summary>
+    /// Writes <paramref name="features"/> to <paramref name="destination"/>
+    /// as a pipe-delimited sequence.
+    /// </summary>
+    /// <exception cref="ArgumentNullException"><paramref name="features"/>
+    /// is <see langword="null"/>.</exception>
     public static bool TrySerialize(
         Span<char> destination,
         IEnumerable<AttributeValue> features,
@@ -18,6 +29,12 @@ public static class AttributeValueSerializer
         return TrySerialize(destination, [.. features], out charsWritten);
     }
 
+    /// <summary>
+    /// Writes <paramref name="features"/> to <paramref name="destination"/>
+    /// as a pipe-delimited sequence.
+    /// </summary>
+    /// <exception cref="ArgumentNullException"><paramref name="features"/>
+    /// is <see langword="null"/>.</exception>
     public static bool TrySerialize(
         Span<char> destination,
         IReadOnlyList<AttributeValue> features,
@@ -56,6 +73,12 @@ public static class AttributeValueSerializer
         return true;
     }
 
+    /// <summary>
+    /// Serializes <paramref name="features"/> to a pipe-delimited string.
+    /// </summary>
+    /// <exception cref="ArgumentNullException"><paramref name="features"/>
+    /// is <see langword="null"/>.</exception>
+    /// <exception cref="FormatException">The collection could not be formatted.</exception>
     [SkipLocalsInit]
     public static string SerializeToString(IEnumerable<AttributeValue> features)
     {
@@ -91,9 +114,12 @@ public static class AttributeValueSerializer
     /// <summary>
     /// Parses a collection of <see cref="AttributeValue"/>s from a pipe-delimited sequence of characters.
     /// </summary>
-    /// <param name="values"></param>
-    /// <param name="features"></param>
-    /// <returns></returns>
+    /// <param name="values">The characters to parse.</param>
+    /// <param name="features">When the method returns <see langword="true"/>,
+    /// the parsed values. An empty sequence when <paramref name="values"/>
+    /// is empty.</param>
+    /// <returns><see langword="true"/> if parsing succeeded; otherwise
+    /// <see langword="false"/>.</returns>
     public static bool TryDeserialize(ReadOnlySpan<char> values, out IEnumerable<AttributeValue> features)
     {
         if (values.IsEmpty)
@@ -128,6 +154,10 @@ public static class AttributeValueSerializer
         return true;
     }
 
+    /// <summary>
+    /// Parses a collection of <see cref="AttributeValue"/>s from a pipe-delimited
+    /// string. A <see langword="null"/> value is treated as an empty sequence.
+    /// </summary>
     public static bool TryDeserialize(string? values, out IEnumerable<AttributeValue> features)
     {
         return TryDeserialize(values.AsSpan(), out features);

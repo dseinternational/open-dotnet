@@ -107,7 +107,7 @@ public record Word : ISpanFormattable, ISpanParsable<Word>, IRepeatableHash64
         }
 
         return ThrowHelper.ThrowFormatException<Word>(
-            $"Failed to parse {s} as Token.");
+            $"Failed to parse {s} as Word.");
     }
 
     public static Word Parse(string s)

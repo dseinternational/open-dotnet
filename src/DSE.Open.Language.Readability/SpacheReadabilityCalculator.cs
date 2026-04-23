@@ -7,12 +7,25 @@ namespace DSE.Open.Language.Readability;
 
 // (0.121 * Average Sentence Length) + (0.082 * Percentage of unique unfamiliar words) + 0.659
 
+/// <summary>
+/// Computes the Spache readability score for a children's <see cref="Book"/>,
+/// based on the average sentence length and the proportion of words that are
+/// not in the Spache list of familiar words.
+/// </summary>
+/// <remarks>
+/// See <see href="https://en.wikipedia.org/wiki/Spache_readability_formula"/>.
+/// </remarks>
 public static class SpacheReadabilityCalculator
 {
     private const double SentenceCountWeight = 0.121;
     private const double WordCountWeight = 0.082;
     private const double BaseFactor = 0.659;
 
+    /// <summary>
+    /// Calculates the Spache readability result for <paramref name="book"/>.
+    /// </summary>
+    /// <param name="book">The book to score.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="book"/> is <see langword="null"/>.</exception>
     public static SpacheReadabilityResult Calculate(Book book)
     {
         ArgumentNullException.ThrowIfNull(book);
@@ -37,6 +50,12 @@ public static class SpacheReadabilityCalculator
             unfamiliarWords.Select(w => w.Form.ToString()));
     }
 
+    /// <summary>
+    /// Calculates the Spache readability level from precomputed totals.
+    /// </summary>
+    /// <param name="averageSentenceLength">The mean number of words per sentence.</param>
+    /// <param name="distinctWordCount">The count of distinct words in the text.</param>
+    /// <param name="unfamiliarWordCount">The count of distinct unfamiliar words.</param>
     public static double CalculateLevel(double averageSentenceLength, int distinctWordCount, int unfamiliarWordCount)
     {
         return BaseFactor +
@@ -44,6 +63,12 @@ public static class SpacheReadabilityCalculator
             (WordCountWeight * unfamiliarWordCount / distinctWordCount * 100d);
     }
 
+    /// <summary>
+    /// Returns the number of distinct words in <paramref name="words"/> that
+    /// are not recognised as <see cref="IsFamiliarWord(string)">familiar</see>.
+    /// </summary>
+    /// <param name="words">The words to inspect.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="words"/> is <see langword="null"/>.</exception>
     public static int GetUnfamiliarWordCount(IEnumerable<string> words)
     {
         ArgumentNullException.ThrowIfNull(words);
@@ -51,6 +76,13 @@ public static class SpacheReadabilityCalculator
         return words.Distinct().Where(IsUnfamiliarWord).Count();
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if <paramref name="word"/> (optionally
+    /// with a simple morphological suffix such as <c>-s</c>, <c>-es</c>,
+    /// <c>-ed</c> or <c>-ing</c>) is in the Spache list of familiar words.
+    /// </summary>
+    /// <param name="word">The word to test.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="word"/> is <see langword="null"/>.</exception>
     public static bool IsFamiliarWord(string word)
     {
         ArgumentNullException.ThrowIfNull(word);
@@ -116,6 +148,12 @@ public static class SpacheReadabilityCalculator
         return false;
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if <paramref name="word"/> is not in
+    /// the Spache list of familiar words.
+    /// </summary>
+    /// <param name="word">The word to test.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="word"/> is <see langword="null"/>.</exception>
     public static bool IsUnfamiliarWord(string word)
     {
         ArgumentNullException.ThrowIfNull(word);
@@ -1192,6 +1230,10 @@ public static class SpacheReadabilityCalculator
         "zoo"
     ];
 
+    /// <summary>
+    /// The Spache list of familiar words used by
+    /// <see cref="IsFamiliarWord(string)"/>.
+    /// </summary>
     public static readonly IReadOnlyList<string> FamiliarWords
         = s_familiarWords.ToList().AsReadOnly();
 

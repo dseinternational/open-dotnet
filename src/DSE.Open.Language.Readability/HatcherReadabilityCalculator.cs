@@ -5,6 +5,12 @@ using DSE.Open.Language.Annotations.Books;
 
 namespace DSE.Open.Language.Readability;
 
+/// <summary>
+/// Computes a readability score for a children's <see cref="Book"/> using
+/// the Hatcher formula, which combines page count, maximum lines per page,
+/// maximum sentence length, word count, a syntactic complexity rating, and
+/// the number of distinct words of given lengths.
+/// </summary>
 public static class HatcherReadabilityCalculator
 {
     private const double MaxLinesWeight = 0.221677;
@@ -16,6 +22,15 @@ public static class HatcherReadabilityCalculator
     private const double WordCount5Weight = 0.272515;
     private const double AdjustmentFactor = -3.263162;
 
+    /// <summary>
+    /// Calculates the Hatcher readability score for <paramref name="book"/>.
+    /// </summary>
+    /// <param name="book">The book to score.</param>
+    /// <param name="maxLinesOnPage">The maximum number of lines appearing
+    /// on any page of the book.</param>
+    /// <param name="syntaxComplexity">A rating of the syntactic complexity
+    /// of the book's text.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="book"/> is <see langword="null"/>.</exception>
     public static HatcherReadabilityResult Calculate(
         Book book,
         int maxLinesOnPage = 1,
@@ -54,6 +69,20 @@ public static class HatcherReadabilityCalculator
             maxSentenceLength, syntaxComplexity, words5, words6, words7, words8);
     }
 
+    /// <summary>
+    /// Calculates the Hatcher readability level from precomputed totals.
+    /// </summary>
+    /// <param name="pageCount">The total number of pages in the book.</param>
+    /// <param name="wordCount">The total number of running words.</param>
+    /// <param name="maxLinesOnPage">The maximum number of lines appearing
+    /// on any page.</param>
+    /// <param name="maxSentenceLength">The length, in words, of the
+    /// longest sentence in the book.</param>
+    /// <param name="syntaxComplexityScore">A rating of the syntactic
+    /// complexity of the book's text.</param>
+    /// <param name="wordsLonger5Count">The count of distinct words whose
+    /// length is greater than five characters.</param>
+    /// <param name="words5Count">The count of distinct five-letter words.</param>
     public static double CalculateLevel(int pageCount, int wordCount, int maxLinesOnPage,
         int maxSentenceLength, int syntaxComplexityScore, int wordsLonger5Count, int words5Count)
     {

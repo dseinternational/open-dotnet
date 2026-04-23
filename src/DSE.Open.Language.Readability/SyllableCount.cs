@@ -5,11 +5,26 @@ using System.Collections.Frozen;
 
 namespace DSE.Open.Language.Readability;
 
+/// <summary>
+/// Looks up the number of syllables in an English word using a precomputed
+/// dictionary file (<c>syllable-counts.txt</c>) loaded from the application
+/// base directory on first use.
+/// </summary>
 public static class SyllableCount
 {
     private static FrozenDictionary<string, int>? s_counts;
     private static readonly object s_countsLock = new();
 
+    /// <summary>
+    /// Returns the number of syllables in <paramref name="textWord"/>, or
+    /// <c>-1</c> if the word is not found in the dictionary.
+    /// </summary>
+    /// <param name="textWord">The word to look up. Leading and trailing
+    /// whitespace is ignored, the word is folded to lower case, and a
+    /// trailing possessive <c>'s</c> (ASCII or typographic apostrophe) is
+    /// stripped before lookup.</param>
+    /// <exception cref="ArgumentException"><paramref name="textWord"/> is
+    /// <see langword="null"/>, empty or whitespace.</exception>
     public static int GetSyllableCount(string textWord)
     {
         if (string.IsNullOrWhiteSpace(textWord))

@@ -9,6 +9,11 @@ using DSE.Open.Values.Text.Json.Serialization;
 
 namespace DSE.Open.Language;
 
+/// <summary>
+/// Text that represents a token - the literal surface form emitted by a
+/// tokenizer, including whitespace and punctuation, which may or may not
+/// correspond to a single <see cref="WordText">word</see>.
+/// </summary>
 [ComparableValue]
 [StructLayout(LayoutKind.Sequential)]
 [JsonConverter(typeof(JsonSpanSerializableValueConverter<TokenText, CharSequence>))]
@@ -17,18 +22,38 @@ public readonly partial struct TokenText
       ISpanSerializableValue<TokenText, CharSequence>,
       IRepeatableHash64
 {
+    /// <summary>
+    /// The maximum number of characters used to serialize a
+    /// <see cref="TokenText"/> value.
+    /// </summary>
     public static int MaxSerializedCharLength => 32;
 
+    /// <summary>
+    /// Initializes a new <see cref="TokenText"/> from a <see cref="string"/>.
+    /// </summary>
+    /// <param name="word">The characters of the token.</param>
     public TokenText(string word) : this((CharSequence)word)
     {
     }
 
+    /// <summary>
+    /// Initializes a new <see cref="TokenText"/> from a
+    /// <see cref="ReadOnlyMemory{T}"/> of <see cref="char"/>.
+    /// </summary>
+    /// <param name="word">The characters of the token.</param>
     public TokenText(ReadOnlyMemory<char> word) : this(new CharSequence(word))
     {
     }
 
+    /// <summary>
+    /// The number of characters in the token.
+    /// </summary>
     public int Length => _value.Length;
 
+    /// <summary>
+    /// The underlying <see cref="CharSequence"/> holding the characters of
+    /// the token.
+    /// </summary>
     public CharSequence Value => _value;
 
     public static bool IsValidValue(CharSequence value)
