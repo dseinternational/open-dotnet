@@ -20,7 +20,6 @@ public static partial class SeriesPrimitives
     {
         ArgumentNullException.ThrowIfNull(y);
         Divide(x, y.Vector.AsSpan(), destination);
-        Divide(x, y.Vector.AsSpan(), destination);
     }
 
     public static void Divide<T>(this IReadOnlySeries<T> x, IReadOnlySeries<T> y, ISeries<T> destination)

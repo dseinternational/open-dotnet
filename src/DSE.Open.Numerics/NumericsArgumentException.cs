@@ -6,6 +6,14 @@ using System.Runtime.CompilerServices;
 
 namespace DSE.Open.Numerics;
 
+/// <summary>
+/// The exception thrown by guard helpers in <c>DSE.Open.Numerics</c> when a
+/// numeric-input invariant (length match, value-in-set, etc.) is violated.
+/// </summary>
+/// <remarks>
+/// Inherits from <see cref="ArgumentException"/>; callers that catch
+/// <see cref="ArgumentException"/> will also catch this type.
+/// </remarks>
 public class NumericsArgumentException : ArgumentException
 {
     private const string DefaultMessage = "Numerics argument error.";

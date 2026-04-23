@@ -3,6 +3,10 @@
 
 namespace DSE.Open.Numerics;
 
+/// <summary>
+/// The aggregation applied to the source values that fall into each bin
+/// when resampling a series.
+/// </summary>
 public enum ResamplingMethod
 {
     /// <summary>
