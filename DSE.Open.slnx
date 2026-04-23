@@ -105,6 +105,7 @@
     <Project Path="test/DSE.Open.Specifications.Abstractions.Tests/DSE.Open.Specifications.Abstractions.Tests.csproj" />
     <Project Path="test/DSE.Open.Specifications.Tests/DSE.Open.Specifications.Tests.csproj" />
     <Project Path="test/DSE.Open.Speech.Abstractions.Tests/DSE.Open.Speech.Abstractions.Tests.csproj" />
+    <Project Path="test/DSE.Open.Testing.Tests/DSE.Open.Testing.Tests.csproj" />
     <Project Path="test/DSE.Open.Testing.Xunit.Tests/DSE.Open.Testing.Xunit.Tests.csproj" />
     <Project Path="test/DSE.Open.Tests/DSE.Open.Tests.csproj" />
     <Project Path="test/DSE.Open.Turnstile.Tests/DSE.Open.Turnstile.Tests.csproj" />
