@@ -5,7 +5,7 @@ namespace DSE.Open.Specifications;
 
 internal sealed class AnySatisfiedAsyncSpecification<T> : AggregateAsyncSpecification<T>
 {
-    public AnySatisfiedAsyncSpecification(IEnumerable<IAsyncSpecification<T>> specifications, bool asParallel = false) : base(specifications)
+    public AnySatisfiedAsyncSpecification(IEnumerable<IAsyncSpecification<T>> specifications) : base(specifications)
     {
     }
 
@@ -19,9 +19,7 @@ internal sealed class AnySatisfiedAsyncSpecification<T> : AggregateAsyncSpecific
         {
             var next = await Task.WhenAny(coll).ConfigureAwait(false);
 
-#pragma warning disable CA1849 // Call async methods when in an async method
-            if (next.Result)
-#pragma warning restore CA1849 // Call async methods when in an async method
+            if (await next.ConfigureAwait(false))
             {
                 await cancellationSource.CancelAsync().ConfigureAwait(false);
                 return true;

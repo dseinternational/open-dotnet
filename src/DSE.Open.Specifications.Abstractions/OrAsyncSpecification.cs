@@ -24,8 +24,8 @@ internal sealed class OrAsyncSpecification<T> : IAsyncSpecification<T>
     {
         using var cancellationSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
 
-        var t1 = _left.IsSatisfiedByAsync(value, cancellationToken);
-        var t2 = _right.IsSatisfiedByAsync(value, cancellationToken);
+        var t1 = _left.IsSatisfiedByAsync(value, cancellationSource.Token);
+        var t2 = _right.IsSatisfiedByAsync(value, cancellationSource.Token);
 
         var completed = await Task.WhenAny(t1, t2).ConfigureAwait(false);
 
