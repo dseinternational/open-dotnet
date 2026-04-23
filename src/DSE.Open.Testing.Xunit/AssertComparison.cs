@@ -5,16 +5,20 @@ using System.Runtime.CompilerServices;
 
 namespace DSE.Open.Testing.Xunit;
 
+/// <summary>
+/// Order-comparison assertions for struct values that implement
+/// <see cref="IComparable{T}"/>.
+/// </summary>
 public static class AssertComparison
 {
     /// <summary>
-    /// Asserts that a comparison is true.
+    /// Asserts that <paramref name="comparison"/> returns <see langword="true"/> when
+    /// applied to <paramref name="value"/>.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="comparison"></param>
-    /// <param name="value"></param>
-    /// <param name="message"></param>
-    /// <exception cref="ComparisonException"></exception>
+    /// <exception cref="ArgumentNullException"><paramref name="comparison"/> is
+    /// <see langword="null"/>.</exception>
+    /// <exception cref="ComparisonException">The comparison returned
+    /// <see langword="false"/>.</exception>
     public static void True<T>(
         Func<T, bool> comparison,
         T value,
@@ -30,12 +34,10 @@ public static class AssertComparison
     }
 
     /// <summary>
-    /// Asserts that the value is greater than an expected value.
+    /// Asserts that <paramref name="value"/> is strictly greater than
+    /// <paramref name="expectedAbove"/>.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="expectedAbove"></param>
-    /// <param name="value"></param>
-    /// <exception cref="ComparisonException"></exception>
+    /// <exception cref="ComparisonException">The assertion failed.</exception>
     public static void GreaterThan<T>(T expectedAbove, T value)
         where T : struct, IComparable<T>
     {
@@ -43,12 +45,10 @@ public static class AssertComparison
     }
 
     /// <summary>
-    /// Asserts that the value is greater than or equal to an expected value.
+    /// Asserts that <paramref name="value"/> is greater than or equal to
+    /// <paramref name="expectedAboveOrEqual"/>.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="expectedAboveOrEqual"></param>
-    /// <param name="value"></param>
-    /// <exception cref="ComparisonException"></exception>
+    /// <exception cref="ComparisonException">The assertion failed.</exception>
     public static void GreaterThanOrEqual<T>(T expectedAboveOrEqual, T value)
         where T : struct, IComparable<T>
     {
@@ -56,12 +56,10 @@ public static class AssertComparison
     }
 
     /// <summary>
-    /// Asserts that the value is less than an expected value.
+    /// Asserts that <paramref name="value"/> is strictly less than
+    /// <paramref name="expectedBelow"/>.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="expectedBelow"></param>
-    /// <param name="value"></param>
-    /// <exception cref="ComparisonException"></exception>
+    /// <exception cref="ComparisonException">The assertion failed.</exception>
     public static void LessThan<T>(T expectedBelow, T value)
         where T : struct, IComparable<T>
     {
@@ -69,12 +67,10 @@ public static class AssertComparison
     }
 
     /// <summary>
-    /// Asserts that the value is less than or equal to an expected value.
+    /// Asserts that <paramref name="value"/> is less than or equal to
+    /// <paramref name="expectedBelowOrEqual"/>.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="expectedBelowOrEqual"></param>
-    /// <param name="value"></param>
-    /// <exception cref="ComparisonException"></exception>
+    /// <exception cref="ComparisonException">The assertion failed.</exception>
     public static void LessThanOrEqual<T>(T expectedBelowOrEqual, T value)
         where T : struct, IComparable<T>
     {
@@ -82,13 +78,13 @@ public static class AssertComparison
     }
 
     /// <summary>
-    /// Asserts that each value in a sequence is greater than than the previous value in
-    /// the sequence and that the first value is greater than <paramref name="expectedAllAbove"/>.
+    /// Asserts that each value in <paramref name="source"/> is strictly greater than the
+    /// previous value and that the first value is strictly greater than
+    /// <paramref name="expectedAllAbove"/>.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="source"></param>
-    /// <param name="expectedAllAbove"></param>
-    /// <exception cref="ComparisonException"></exception>
+    /// <exception cref="ArgumentNullException"><paramref name="source"/> is
+    /// <see langword="null"/>.</exception>
+    /// <exception cref="ComparisonException">The assertion failed.</exception>
     public static void EachGreaterThanPrevious<T>(IEnumerable<T> source, T expectedAllAbove = default)
         where T : struct, IComparable<T>
     {

@@ -6,6 +6,11 @@ using Xunit;
 
 namespace DSE.Open.Testing.Xunit.Logging;
 
+/// <summary>
+/// An <see cref="ILogger"/> that forwards log messages to an xUnit
+/// <see cref="ITestOutputHelper"/>, prefixing each entry with a timestamp, thread id,
+/// category and level.
+/// </summary>
 public class XunitLogger : ILogger
 {
     private const string TimestampFormat = "yyyy-MM-dd HH:mm:ss.fffff";
@@ -17,13 +22,26 @@ public class XunitLogger : ILogger
     private readonly LogLevel _minLogLevel;
     private readonly ITestOutputHelper _output;
 
+    /// <summary>
+    /// Initialises a new <see cref="XunitLogger"/>.
+    /// </summary>
+    /// <param name="output">The xUnit output helper to write to.</param>
+    /// <param name="category">The category name that appears in each log line.</param>
+    /// <param name="minLogLevel">The minimum <see cref="LogLevel"/> to emit. Entries below
+    /// this level are suppressed.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="output"/> or
+    /// <paramref name="category"/> is <see langword="null"/>.</exception>
     public XunitLogger(ITestOutputHelper output, string category, LogLevel minLogLevel)
     {
+        ArgumentNullException.ThrowIfNull(output);
+        ArgumentNullException.ThrowIfNull(category);
+
         _minLogLevel = minLogLevel;
         _category = category;
         _output = output;
     }
 
+    /// <inheritdoc />
     public void Log<TState>(
         LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
     {
@@ -55,11 +73,13 @@ public class XunitLogger : ILogger
         }
     }
 
+    /// <inheritdoc />
     public bool IsEnabled(LogLevel logLevel)
     {
         return logLevel >= _minLogLevel;
     }
 
+    /// <inheritdoc />
     public IDisposable BeginScope<TState>(TState state) where TState : notnull
     {
         return new NullScope();
