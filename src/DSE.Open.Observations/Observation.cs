@@ -640,7 +640,7 @@ public sealed class Observation<TValue, TParam>
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(Value, base.GetHashCode());
+        return HashCode.Combine(Parameter, Value, base.GetHashCode());
     }
 
     public override ulong GetRepeatableHashCode()

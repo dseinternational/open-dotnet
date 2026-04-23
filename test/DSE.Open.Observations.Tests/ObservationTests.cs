@@ -374,6 +374,44 @@ public sealed class ObservationTests
     }
 
     [Fact]
+    public void GetHashCode_ValueParam_DistinguishesByParameter()
+    {
+        // Regression: Observation<TValue, TParam>.GetHashCode previously combined Value
+        // with the base hash but ignored Parameter, while Equals checked Parameter —
+        // breaking the Equals/GetHashCode contract for two observations differing only
+        // by Parameter.
+        var tp = new FakeTimeProvider(new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero));
+        var id = ObservationId.Parse("3840829473618409", CultureInfo.InvariantCulture);
+
+        var obs1 = new Observation<BehaviorFrequency, SpeechSound>(
+            id, tp.GetUtcNow(), TestMeasures.BehaviorFrequencySpeechSoundMeasure.Id,
+            Phonemes.English.ay.Abstraction, BehaviorFrequency.Achieved, tp);
+        var obs2 = new Observation<BehaviorFrequency, SpeechSound>(
+            id, tp.GetUtcNow(), TestMeasures.BehaviorFrequencySpeechSoundMeasure.Id,
+            Phonemes.English.ch.Abstraction, BehaviorFrequency.Achieved, tp);
+
+        Assert.NotEqual(obs1, obs2);
+        Assert.NotEqual(obs1.GetHashCode(), obs2.GetHashCode());
+    }
+
+    [Fact]
+    public void GetHashCode_ValueParam_StableAcrossEqualInstances()
+    {
+        var tp = new FakeTimeProvider(new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero));
+        var id = ObservationId.Parse("3840829473618409", CultureInfo.InvariantCulture);
+
+        var obs1 = new Observation<BehaviorFrequency, SpeechSound>(
+            id, tp.GetUtcNow(), TestMeasures.BehaviorFrequencySpeechSoundMeasure.Id,
+            Phonemes.English.ay.Abstraction, BehaviorFrequency.Achieved, tp);
+        var obs2 = new Observation<BehaviorFrequency, SpeechSound>(
+            id, tp.GetUtcNow(), TestMeasures.BehaviorFrequencySpeechSoundMeasure.Id,
+            Phonemes.English.ay.Abstraction, BehaviorFrequency.Achieved, tp);
+
+        Assert.Equal(obs1, obs2);
+        Assert.Equal(obs1.GetHashCode(), obs2.GetHashCode());
+    }
+
+    [Fact]
     public void Deserialize_TimeFarInFutureOfMachineClock_Succeeds()
     {
         // Simulates a sender whose clock is ahead of the receiver (or future-dated payload).
