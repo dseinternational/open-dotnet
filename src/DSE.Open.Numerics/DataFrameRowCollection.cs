@@ -16,7 +16,7 @@ public readonly record struct DataFrameRowCollection : IReadOnlyList<DataFrameRo
 
     public DataFrameRow this[int index] => new(_df, index);
 
-    public int Count => _df.Count;
+    public int Count => _df.Count == 0 ? 0 : _df[0].Length;
 
     public IEnumerator<DataFrameRow> GetEnumerator()
     {
