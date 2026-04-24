@@ -78,6 +78,19 @@ public class BinaryValueTests
     }
 
     [Fact]
+    public void Base62_RequiredBufferSize_DoesNotUnderestimate()
+    {
+        var value = new BinaryValue([0xFF, 0xFF, 0xFF]);
+        var requiredLength = BinaryValue.GetRequiredBufferSize(value.Length, BinaryStringEncoding.Base62);
+        var buffer = new char[requiredLength];
+
+        var success = value.TryFormat(buffer, out var charsWritten, format: "b", provider: default);
+
+        Assert.True(success);
+        Assert.Equal(value, BinaryValue.FromBase62(buffer.AsSpan(0, charsWritten).ToString()));
+    }
+
+    [Fact]
     public void Base64_RoundTrip_Chars()
     {
         for (var i = 0; i < 100; i++)
@@ -263,6 +276,45 @@ public class BinaryValueTests
         // Assert
         Assert.True(result);
         Assert.Equal(value, decoded);
+    }
+
+    [Fact]
+    public void TryFromEncodedBytes_WithLowerHex_ShouldRejectUpperCase()
+    {
+        var result = BinaryValue.TryFromEncodedBytes("AB"u8, BinaryStringEncoding.HexLower, out var decoded);
+
+        Assert.False(result);
+        Assert.Equal(BinaryValue.Empty, decoded);
+    }
+
+    [Fact]
+    public void TryFromEncodedBytes_WithUpperHex_ShouldRejectLowerCase()
+    {
+        var result = BinaryValue.TryFromEncodedBytes("ab"u8, BinaryStringEncoding.HexUpper, out var decoded);
+
+        Assert.False(result);
+        Assert.Equal(BinaryValue.Empty, decoded);
+    }
+
+    [Fact]
+    public void TryFromEncodedString_WithOddLengthHex_ShouldReturnFalse()
+    {
+        var result = BinaryValue.TryFromEncodedString("a", BinaryStringEncoding.HexLower, out var decoded);
+
+        Assert.False(result);
+        Assert.Equal(BinaryValue.Empty, decoded);
+    }
+
+    [Fact]
+    public void FromHexLower_WithUpperCaseHex_ShouldThrowFormatException()
+    {
+        _ = Assert.Throws<FormatException>(() => BinaryValue.FromHexLower("AB"));
+    }
+
+    [Fact]
+    public void FromHexUpper_WithLowerCaseHex_ShouldThrowFormatException()
+    {
+        _ = Assert.Throws<FormatException>(() => BinaryValue.FromHexUpper("ab"));
     }
 
     [Fact]

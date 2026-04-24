@@ -731,11 +731,12 @@ public class ConcurrentSet<T> : IReadOnlyCollection<T>, ICollection<T>
     private void GrowTable(Tables tables)
     {
         const int maxArrayLength = 0X7FEFFFFF;
+        var locks = tables.Locks;
         var locksAcquired = 0;
         try
         {
             // The thread that first obtains _locks[0] will be the one doing the resize operation
-            AcquireLocks(0, 1, ref locksAcquired);
+            AcquireLocks(locks, 0, 1, ref locksAcquired);
 
             // Make sure nobody resized the table while we were waiting for lock 0:
             if (tables != _tables)
@@ -811,16 +812,16 @@ public class ConcurrentSet<T> : IReadOnlyCollection<T>, ICollection<T>
             }
 
             // Now acquire all other locks for the table
-            AcquireLocks(1, tables.Locks.Length, ref locksAcquired);
+            AcquireLocks(locks, 1, locks.Length, ref locksAcquired);
 
-            var newLocks = tables.Locks;
+            var newLocks = locks;
 
             // Add more locks
-            if (_growLockArray && tables.Locks.Length < MaxLockNumber)
+            if (_growLockArray && locks.Length < MaxLockNumber)
             {
-                newLocks = new object[tables.Locks.Length * 2];
-                Array.Copy(tables.Locks, newLocks, tables.Locks.Length);
-                for (var i = tables.Locks.Length; i < newLocks.Length; i++)
+                newLocks = new object[locks.Length * 2];
+                Array.Copy(locks, newLocks, locks.Length);
+                for (var i = locks.Length; i < newLocks.Length; i++)
                 {
                     newLocks[i] = new();
                 }
@@ -858,7 +859,7 @@ public class ConcurrentSet<T> : IReadOnlyCollection<T>, ICollection<T>
         finally
         {
             // Release all locks that we took earlier
-            ReleaseLocks(0, locksAcquired);
+            ReleaseLocks(locks, 0, locksAcquired);
         }
     }
 
@@ -875,8 +876,12 @@ public class ConcurrentSet<T> : IReadOnlyCollection<T>, ICollection<T>
 
     private void AcquireLocks(int fromInclusive, int toExclusive, ref int locksAcquired)
     {
+        AcquireLocks(_tables.Locks, fromInclusive, toExclusive, ref locksAcquired);
+    }
+
+    private static void AcquireLocks(object[] locks, int fromInclusive, int toExclusive, ref int locksAcquired)
+    {
         Debug.Assert(fromInclusive <= toExclusive);
-        var locks = _tables.Locks;
 
         for (var i = fromInclusive; i < toExclusive; i++)
         {
@@ -897,11 +902,16 @@ public class ConcurrentSet<T> : IReadOnlyCollection<T>, ICollection<T>
 
     private void ReleaseLocks(int fromInclusive, int toExclusive)
     {
+        ReleaseLocks(_tables.Locks, fromInclusive, toExclusive);
+    }
+
+    private static void ReleaseLocks(object[] locks, int fromInclusive, int toExclusive)
+    {
         Debug.Assert(fromInclusive <= toExclusive);
 
         for (var i = fromInclusive; i < toExclusive; i++)
         {
-            Monitor.Exit(_tables.Locks[i]);
+            Monitor.Exit(locks[i]);
         }
     }
 

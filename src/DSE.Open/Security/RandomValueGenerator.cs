@@ -1,9 +1,8 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-using System.Runtime.InteropServices;
+using System.Buffers.Binary;
 using System.Security.Cryptography;
-using System.Text;
 
 namespace DSE.Open.Security;
 
@@ -22,17 +21,13 @@ public static class RandomValueGenerator
         ArgumentException.ThrowIfNullOrWhiteSpace(validCharacters);
         Guard.IsGreaterThan(validCharacters.Length, 8);
 
-        var data = RandomNumberGenerator.GetBytes(length * 2);
-        var sb = new StringBuilder(length);
-        for (var i = 0; i < data.Length; i += 2)
+        return string.Create(length, validCharacters, static (chars, characters) =>
         {
-            var f = BitConverter.ToUInt16(data, i);
-            var r = (double)f / ushort.MaxValue;
-            var c = (int)(r * (validCharacters.Length - 1));
-            _ = sb.Append(validCharacters[c]);
-        }
-
-        return sb.ToString();
+            for (var i = 0; i < chars.Length; i++)
+            {
+                chars[i] = characters[RandomNumberGenerator.GetInt32(characters.Length)];
+            }
+        });
     }
 
     public static int GetInt32Value()
@@ -64,46 +59,36 @@ public static class RandomValueGenerator
 
     public static long GetInt64Value(long fromInclusive, long toExclusive)
     {
-        ArgumentOutOfRangeException.ThrowIfLessThan(toExclusive, fromInclusive);
-
-        var range = toExclusive - fromInclusive - 1;
-
-        if (range == 0)
+        if (fromInclusive >= toExclusive)
         {
-            return fromInclusive;
+            throw new ArgumentOutOfRangeException(nameof(toExclusive), "Maximum must be greater than minimum.");
         }
 
-        var mask = range;
-        mask |= mask >> 1;
-        mask |= mask >> 2;
-        mask |= mask >> 4;
-        mask |= mask >> 8;
-        mask |= mask >> 16;
-        mask |= mask >> 32;
-
-        long oneInt64 = 0;
-        var oneInt64Bytes = MemoryMarshal.AsBytes(new Span<long>(ref oneInt64));
-        long result;
-
-        do
-        {
-            RandomNumberGenerator.Fill(oneInt64Bytes);
-            result = mask & oneInt64;
-        }
-        while (result > range);
-
-        return result + fromInclusive;
+        var range = unchecked((ulong)(toExclusive - fromInclusive));
+        var offset = GetUInt64ValueBelow(range);
+        return unchecked(fromInclusive + (long)offset);
     }
 
     public static ulong GetUInt64Value(ulong fromInclusive, ulong toExclusive)
     {
-        ArgumentOutOfRangeException.ThrowIfLessThan(toExclusive, fromInclusive);
+        if (fromInclusive >= toExclusive)
+        {
+            throw new ArgumentOutOfRangeException(nameof(toExclusive), "Maximum must be greater than minimum.");
+        }
 
-        var range = toExclusive - fromInclusive - 1;
+        var range = toExclusive - fromInclusive;
+        return fromInclusive + GetUInt64ValueBelow(range);
+    }
+
+    private static ulong GetUInt64ValueBelow(ulong exclusiveUpperBound)
+    {
+        ArgumentOutOfRangeException.ThrowIfZero(exclusiveUpperBound);
+
+        var range = exclusiveUpperBound - 1;
 
         if (range == 0)
         {
-            return fromInclusive;
+            return 0;
         }
 
         var mask = range;
@@ -114,28 +99,27 @@ public static class RandomValueGenerator
         mask |= mask >> 16;
         mask |= mask >> 32;
 
-        ulong oneUInt64 = 0;
-        var oneUInt64Bytes = MemoryMarshal.AsBytes(new Span<ulong>(ref oneUInt64));
+        Span<byte> randomBytes = stackalloc byte[sizeof(ulong)];
         ulong result;
 
         do
         {
-            RandomNumberGenerator.Fill(oneUInt64Bytes);
-            result = mask & oneUInt64;
+            RandomNumberGenerator.Fill(randomBytes);
+            result = BinaryPrimitives.ReadUInt64LittleEndian(randomBytes) & mask;
         }
         while (result > range);
 
-        return result + fromInclusive;
+        return result;
     }
 
     public static ulong GetJsonSafeUInt64()
     {
-        return GetJsonSafeUInt64(0L, NumberHelper.MaxJsonSafeInteger);
+        return GetJsonSafeUInt64(0, (ulong)NumberHelper.MaxJsonSafeInteger + 1);
     }
 
     public static ulong GetJsonSafeUInt64(ulong fromInclusive, ulong toExclusive)
     {
-        ArgumentOutOfRangeException.ThrowIfGreaterThan(toExclusive, (ulong)NumberHelper.MaxJsonSafeInteger);
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(toExclusive, (ulong)NumberHelper.MaxJsonSafeInteger + 1);
         return GetUInt64Value(fromInclusive, toExclusive);
     }
 }

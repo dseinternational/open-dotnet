@@ -165,76 +165,38 @@ public class DictionaryEqualityComparer<TKey, TValue>
     public int GetHashCode(ReadOnlyValueDictionary<TKey, TValue> obj)
     {
         ArgumentNullException.ThrowIfNull(obj);
-
-        var hashCode = -7291863;
-
-        foreach (var kvp in obj)
-        {
-            hashCode = HashCode.Combine(hashCode, kvp.Key);
-
-            if (kvp.Value is not null)
-            {
-                hashCode = HashCode.Combine(hashCode, kvp.Value);
-            }
-        }
-
-        return hashCode;
+        return GetHashCodeCore(obj, obj.Count);
     }
 
     public int GetHashCode(ReadOnlySortedValueDictionary<TKey, TValue> obj)
     {
         ArgumentNullException.ThrowIfNull(obj);
-
-        var hashCode = -7291863;
-
-        foreach (var kvp in obj)
-        {
-            hashCode = HashCode.Combine(hashCode, kvp.Key);
-
-            if (kvp.Value is not null)
-            {
-                hashCode = HashCode.Combine(hashCode, kvp.Value);
-            }
-        }
-
-        return hashCode;
+        return GetHashCodeCore(obj, obj.Count);
     }
 
     public int GetHashCode(IReadOnlyDictionary<TKey, TValue> obj)
     {
         ArgumentNullException.ThrowIfNull(obj);
-
-        var hashCode = -7291863;
-
-        foreach (var kvp in obj)
-        {
-            hashCode = HashCode.Combine(hashCode, kvp.Key);
-
-            if (kvp.Value is not null)
-            {
-                hashCode = HashCode.Combine(hashCode, kvp.Value);
-            }
-        }
-
-        return hashCode;
+        return GetHashCodeCore(obj, obj.Count);
     }
 
     public int GetHashCode(IDictionary<TKey, TValue> obj)
     {
         ArgumentNullException.ThrowIfNull(obj);
+        return GetHashCodeCore(obj, obj.Count);
+    }
 
-        var hashCode = -7291863;
+    private int GetHashCodeCore(IEnumerable<KeyValuePair<TKey, TValue>> dictionary, int count)
+    {
+        var hashCode = 0;
 
-        foreach (var kvp in obj)
+        foreach (var kvp in dictionary)
         {
-            hashCode = HashCode.Combine(hashCode, kvp.Key);
-
-            if (kvp.Value is not null)
-            {
-                hashCode = HashCode.Combine(hashCode, kvp.Value);
-            }
+            hashCode ^= HashCode.Combine(
+                kvp.Key,
+                kvp.Value is null ? 0 : ValueComparer.GetHashCode(kvp.Value));
         }
 
-        return hashCode;
+        return HashCode.Combine(count, hashCode);
     }
 }

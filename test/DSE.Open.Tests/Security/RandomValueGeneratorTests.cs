@@ -25,6 +25,17 @@ public class RandomValueGeneratorTests
     }
 
     [Fact]
+    public void GetStringValue_UsesEntireCharacterSet()
+    {
+        const string validCharacters = "abcdefghi";
+
+        var value = RandomValueGenerator.GetStringValue(512, validCharacters);
+
+        Assert.Contains('i', value);
+        Assert.All(value, c => Assert.Contains(c, validCharacters));
+    }
+
+    [Fact]
     public void GetInt32Value_min_max()
     {
         for (var i = 0; i < 50; i++)
@@ -32,7 +43,7 @@ public class RandomValueGeneratorTests
             var value = RandomValueGenerator.GetInt32Value(100, 999);
             //_output.WriteLine(value.ToString());
             Assert.True(value >= 100);
-            Assert.True(value <= 999);
+            Assert.True(value < 999);
         }
     }
 
@@ -44,7 +55,7 @@ public class RandomValueGeneratorTests
             var value = RandomValueGenerator.GetInt32Value(100000, 999999);
             //_output.WriteLine(value.ToString());
             Assert.True(value >= 100000);
-            Assert.True(value <= 999999);
+            Assert.True(value < 999999);
         }
     }
 
@@ -56,8 +67,14 @@ public class RandomValueGeneratorTests
             var value = RandomValueGenerator.GetInt64Value(10000000000001, 99999999999999);
             _output.WriteLine(value.ToStringInvariant());
             Assert.True(value >= 10000000000001);
-            Assert.True(value <= 99999999999999);
+            Assert.True(value < 99999999999999);
         }
+    }
+
+    [Fact]
+    public void GetInt64Value_WithEqualBounds_ShouldThrow()
+    {
+        _ = Assert.Throws<ArgumentOutOfRangeException>(() => RandomValueGenerator.GetInt64Value(10, 10));
     }
 
     [Fact]
@@ -68,8 +85,14 @@ public class RandomValueGeneratorTests
             var value = RandomValueGenerator.GetUInt64Value(100000000001, 999999999999);
             _output.WriteLine(value.ToStringInvariant());
             Assert.True(value >= 100000000001);
-            Assert.True(value <= 999999999999);
+            Assert.True(value < 999999999999);
         }
+    }
+
+    [Fact]
+    public void GetUInt64Value_WithEqualBounds_ShouldThrow()
+    {
+        _ = Assert.Throws<ArgumentOutOfRangeException>(() => RandomValueGenerator.GetUInt64Value(10, 10));
     }
 
     [Fact]
@@ -82,5 +105,15 @@ public class RandomValueGeneratorTests
             Assert.True(value >= 0);
             Assert.True(value <= NumberHelper.MaxJsonSafeInteger);
         }
+    }
+
+    [Fact]
+    public void GetJsonSafeUInt64_AllowsExclusiveBoundAfterMaxSafeInteger()
+    {
+        var maxSafeInteger = (ulong)NumberHelper.MaxJsonSafeInteger;
+
+        var value = RandomValueGenerator.GetJsonSafeUInt64(maxSafeInteger, maxSafeInteger + 1);
+
+        Assert.Equal(maxSafeInteger, value);
     }
 }

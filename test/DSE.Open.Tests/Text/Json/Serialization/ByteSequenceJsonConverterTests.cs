@@ -44,7 +44,23 @@ public sealed class ByteSequenceJsonConverterTests
     [Fact]
     public void Serialize_Deserialize_List()
     {
+        var original = new List<byte>([1, 2, 3, 4, 5]);
+        var deserialized = SerializeDeserialize(original);
+        Assert.Equal(original, deserialized);
+    }
+
+    [Fact]
+    public void Serialize_Deserialize_Enumerable()
+    {
         IEnumerable<byte> original = new List<byte>([1, 2, 3, 4, 5]);
+        var deserialized = SerializeDeserialize(original);
+        Assert.Equal(original, deserialized);
+    }
+
+    [Fact]
+    public void Serialize_Deserialize_Collection()
+    {
+        var original = new Collection<byte>([1, 2, 3, 4, 5]);
         var deserialized = SerializeDeserialize(original);
         Assert.Equal(original, deserialized);
     }
@@ -64,6 +80,40 @@ public sealed class ByteSequenceJsonConverterTests
         Assert.NotNull(deserialized);
 
         Assert.Equal(original.Data.Span, deserialized.Data.Span);
+    }
+
+    [Fact]
+    public void Serialize_Deserialize_ListDataItem()
+    {
+        var original = new ListDataItem
+        {
+            Data = [1, 2, 3, 4, 5]
+        };
+
+        var serialized = JsonSerializer.Serialize(original, JsonSharedOptions.RelaxedJsonEscaping);
+        Assert.NotNull(serialized);
+
+        var deserialized = JsonSerializer.Deserialize<ListDataItem>(serialized, JsonSharedOptions.RelaxedJsonEscaping);
+        Assert.NotNull(deserialized);
+
+        Assert.Equal(original.Data, deserialized.Data);
+    }
+
+    [Fact]
+    public void Serialize_Deserialize_CollectionDataItem()
+    {
+        var original = new CollectionDataItem
+        {
+            Data = [1, 2, 3, 4, 5]
+        };
+
+        var serialized = JsonSerializer.Serialize(original, JsonSharedOptions.RelaxedJsonEscaping);
+        Assert.NotNull(serialized);
+
+        var deserialized = JsonSerializer.Deserialize<CollectionDataItem>(serialized, JsonSharedOptions.RelaxedJsonEscaping);
+        Assert.NotNull(deserialized);
+
+        Assert.Equal(original.Data, deserialized.Data);
     }
 
     private T SerializeDeserialize<T>(T original)
@@ -97,5 +147,17 @@ public sealed class ByteSequenceJsonConverterTests
     {
         [JsonConverter(typeof(ByteSequenceJsonConverter))]
         public required ReadOnlyMemory<byte> Data { get; set; }
+    }
+
+    internal sealed class ListDataItem
+    {
+        [JsonConverter(typeof(ByteSequenceJsonConverter))]
+        public required List<byte> Data { get; set; }
+    }
+
+    internal sealed class CollectionDataItem
+    {
+        [JsonConverter(typeof(ByteSequenceJsonConverter))]
+        public required Collection<byte> Data { get; set; }
     }
 }
