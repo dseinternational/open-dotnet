@@ -30,4 +30,15 @@ public class MatrixIndexTests
         Assert.Equal(index, index2);
         Assert.Equal(index2D, index2D2);
     }
+
+    [Fact]
+    public void Deconstruct_returns_row_and_column()
+    {
+        var index = new MatrixIndex(3, 4);
+
+        var (row, column) = index;
+
+        Assert.Equal(3, row);
+        Assert.Equal(4, column);
+    }
 }

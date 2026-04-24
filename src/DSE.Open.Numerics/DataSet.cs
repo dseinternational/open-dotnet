@@ -37,7 +37,7 @@ public class DataSet : IList<DataFrame>
 
     public ReadOnlyDataSet AsReadOnly()
     {
-        return new ReadOnlyDataSet([.. _dataFrames.Select(df => df.AsReadOnly())]);
+        return new ReadOnlyDataSet([.. _dataFrames.Select(df => df.AsReadOnly())], Name);
     }
 
     public void Add(DataFrame item)

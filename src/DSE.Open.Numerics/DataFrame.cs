@@ -93,7 +93,7 @@ public sealed class DataFrame : IList<Series>, IReadOnlyDataFrame
 
     public ReadOnlyDataFrame AsReadOnly()
     {
-        return new ReadOnlyDataFrame([.. _columns.Select(v => v.AsReadOnly())]);
+        return new ReadOnlyDataFrame([.. _columns.Select(v => v.AsReadOnly())], Name);
     }
 
     public int IndexOf(Series item)

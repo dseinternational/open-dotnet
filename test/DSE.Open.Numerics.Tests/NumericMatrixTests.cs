@@ -57,4 +57,28 @@ public class NumericMatrixTests
         Assert.Equal(10, m3[2, 0]);
         Assert.Equal(12, m3[2, 1]);
     }
+
+    [Fact]
+    public void MatrixIndex_indexer_gets_and_sets_value()
+    {
+        var matrix = Matrix.Create([1, 2, 3, 4], 2, 2);
+        MatrixIndex index = (1, 0);
+
+        matrix[index] = 42;
+
+        Assert.Equal(42, matrix[1, 0]);
+        Assert.Equal(42, matrix[index]);
+    }
+
+    [Fact]
+    public void RowSpan_returns_mutable_row_view()
+    {
+        var matrix = Matrix.Create([1, 2, 3, 4], 2, 2);
+
+        var row = matrix.RowSpan(1);
+        row[0] = 42;
+
+        Assert.True(row.SequenceEqual([42, 4]));
+        Assert.Equal(42, matrix[1, 0]);
+    }
 }

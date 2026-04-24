@@ -80,6 +80,8 @@ public class DataFrameTests : LoggedTestsBase
 
         DataFrame frame = [series1, series2];
 
+        Assert.Equal(5, frame.Rows.Count);
+
         foreach (var row in frame.Rows)
         {
             Assert.Equal(2, row.Count);
@@ -95,6 +97,28 @@ public class DataFrameTests : LoggedTestsBase
         Assert.Equal(9.0, frame.Rows[3][1]);
         Assert.Equal(5, frame.Rows[4][0]);
         Assert.Equal(-10.0, frame.Rows[4][1]);
+    }
+
+    [Fact]
+    public void RowCollection_WithEmptyFrame_ShouldHaveZeroRows()
+    {
+        var frame = new DataFrame();
+
+        Assert.Empty(frame.Rows);
+    }
+
+    [Fact]
+    public void AsReadOnly_preserves_frame_name()
+    {
+        var frame = new DataFrame("frame-name")
+        {
+            Series.Create([1, 2, 3], "values"),
+        };
+
+        var readOnly = frame.AsReadOnly();
+
+        Assert.Equal("frame-name", readOnly.Name);
+        Assert.Equal("values", readOnly[0].Name);
     }
 
     [Fact]

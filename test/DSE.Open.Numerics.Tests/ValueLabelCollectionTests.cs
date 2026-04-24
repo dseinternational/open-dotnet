@@ -108,6 +108,54 @@ public class ValueLabelCollectionTests
         Assert.Equal("two", label2);
     }
 
+    [Fact]
+    public void Indexer_set_adds_new_label_and_duplicate_value_throws()
+    {
+        var collection = new ValueLabelCollection<int>();
+
+        collection[1] = "one";
+
+        Assert.Equal("one", collection[1]);
+        _ = Assert.Throws<ArgumentException>(() => collection[1] = "uno");
+    }
+
+    [Fact]
+    public void ExplicitCopyTo_copies_labels_at_requested_offset()
+    {
+        var collection = new ValueLabelCollection<int>
+        {
+            { 1, "one" },
+            { 2, "two" },
+        };
+        var destination = new ValueLabel<int>[3];
+
+        ((ICollection<ValueLabel<int>>)collection).CopyTo(destination, 1);
+
+        Assert.Equal(default, destination[0]);
+        Assert.Equal(new ValueLabel<int>(1, "one"), destination[1]);
+        Assert.Equal(new ValueLabel<int>(2, "two"), destination[2]);
+    }
+
+    [Fact]
+    public void ExplicitCopyTo_WithTooSmallDestination_ShouldThrowArgumentException()
+    {
+        var collection = new ValueLabelCollection<int>
+        {
+            { 1, "one" },
+            { 2, "two" },
+        };
+
+        _ = Assert.Throws<ArgumentException>(() => ((ICollection<ValueLabel<int>>)collection).CopyTo(new ValueLabel<int>[1], 0));
+    }
+
+    [Fact]
+    public void TryGetValue_WithNullLabel_ShouldThrowArgumentNullException()
+    {
+        var collection = new ValueLabelCollection<int>();
+
+        _ = Assert.Throws<ArgumentNullException>(() => collection.TryGetValue(null!, out _));
+    }
+
     private readonly struct CollidingKey : IEquatable<CollidingKey>
     {
         public CollidingKey(int value)

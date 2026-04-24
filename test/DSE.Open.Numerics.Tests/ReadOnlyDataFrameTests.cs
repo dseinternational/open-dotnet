@@ -34,6 +34,8 @@ public class ReadOnlyDataFrameTests : LoggedTestsBase
 
         ReadOnlyDataFrame frame = [series1, series2];
 
+        Assert.Equal(5, frame.Rows.Count);
+
         foreach (var row in frame.Rows)
         {
             Assert.Equal(2, row.Count);
@@ -49,6 +51,14 @@ public class ReadOnlyDataFrameTests : LoggedTestsBase
         Assert.Equal(9.0, frame.Rows[3][1]);
         Assert.Equal(5, frame.Rows[4][0]);
         Assert.Equal(-10.0, frame.Rows[4][1]);
+    }
+
+    [Fact]
+    public void RowCollection_WithEmptyFrame_ShouldHaveZeroRows()
+    {
+        var frame = ReadOnlyDataFrame.Empty;
+
+        Assert.Empty(frame.Rows);
     }
 
     [Fact]
