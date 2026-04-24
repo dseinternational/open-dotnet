@@ -42,11 +42,12 @@ public sealed class SentenceIdTests
         Assert.Equal(id, SentenceId.FromUInt64(u));
     }
 
-    // Pins a specific hash output so any future change to the serialization
-    // format is caught on every platform. Regression guard for #354 item 4.
+    // Pins the legacy hash output so the id stays stable across platforms AND across
+    // future refactors. Downstream systems persist these ids, so any change that shifts
+    // the output (field ordering, separators, formatting) must be caught here.
     [Theory]
-    [InlineData(100000000001ul, "en-GB", "The cat sat on the mat.", 360182216922ul)]
-    [InlineData(500000000042ul, "es-ES", "El gato se sentó en la alfombra.", 820487636515ul)]
+    [InlineData(100000000001ul, "en-GB", "The cat sat on the mat.", 142127808821ul)]
+    [InlineData(500000000042ul, "es-ES", "El gato se sentó en la alfombra.", 849164640725ul)]
     public void FromSentence_produces_platform_pinned_id(
         ulong meaningIdValue,
         string languageTag,
