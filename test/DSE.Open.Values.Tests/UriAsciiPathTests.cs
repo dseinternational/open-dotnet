@@ -94,6 +94,14 @@ public class UriAsciiPathTests
         Assert.True(UriAsciiPath.IsValidValue(path));
     }
 
+    [Fact]
+    public void IsValidValueString_WithByteStackallocBoundaryLength_ShouldReturnTrue()
+    {
+        var path = string.Create(MemoryThresholds.StackallocCharThreshold + 1, 'a', (span, value) => span.Fill(value));
+
+        Assert.True(UriAsciiPath.IsValidValue(path));
+    }
+
     [Theory]
     [InlineData("/")]
     [InlineData("/home")]

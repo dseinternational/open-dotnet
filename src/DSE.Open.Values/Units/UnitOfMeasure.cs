@@ -24,7 +24,7 @@ public abstract class UnitOfMeasure<T> : IUnitOfMeasure<T>, IEquatable<UnitOfMea
 
     public abstract UnitOfMeasure<T> BaseUnitOfMeasure { get; }
 
-    IUnitOfMeasure<T> IUnitOfMeasure<T>.BaseUnitOfMeasure => ((IUnitOfMeasure<T>)BaseUnitOfMeasure).BaseUnitOfMeasure;
+    IUnitOfMeasure<T> IUnitOfMeasure<T>.BaseUnitOfMeasure => BaseUnitOfMeasure;
 
     public override string ToString()
     {
@@ -43,8 +43,7 @@ public abstract class UnitOfMeasure<T> : IUnitOfMeasure<T>, IEquatable<UnitOfMea
 
     public bool Equals(UnitOfMeasure<T>? other)
     {
-        ArgumentNullException.ThrowIfNull(other);
-        return Equals(this, other);
+        return other is not null && Equals(this, other);
     }
 
     public override bool Equals(object? obj)
@@ -109,4 +108,3 @@ public abstract class UnitOfMeasure<T> : IUnitOfMeasure<T>, IEquatable<UnitOfMea
         return left.CompareTo(right) >= 0;
     }
 }
-

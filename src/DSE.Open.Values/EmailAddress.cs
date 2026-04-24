@@ -140,49 +140,59 @@ public readonly record struct EmailAddress
             return false;
         }
 
-        Span<Range> labels = stackalloc Range[10];
-        var labelCount = domain.Split(labels, '.');
         var anyAsciiLetters = false;
+        var labelCount = 0;
+        var remaining = domain;
+
+        while (true)
+        {
+            var dotIndex = remaining.IndexOf('.');
+            var label = dotIndex < 0 ? remaining : remaining[..dotIndex];
+
+            if (!IsValidDomainLabel(label, ref anyAsciiLetters))
+            {
+                return false;
+            }
+
+            labelCount++;
+
+            if (dotIndex < 0)
+            {
+                break;
+            }
+
+            remaining = remaining[(dotIndex + 1)..];
+        }
 
         // We don't support domains with less than two labels (e.g. `fred@example`).
-        if (labelCount < 2)
+        return labelCount >= 2 && anyAsciiLetters;
+    }
+
+    private static bool IsValidDomainLabel(ReadOnlySpan<char> label, ref bool anyAsciiLetters)
+    {
+        if (label.Length < 1)
         {
             return false;
         }
 
-        for (var i = 0; i < labelCount; i++)
+        if (label[0] == '-' || label[^1] == '-')
         {
-            var label = domain[labels[i]];
-
-            if (label.Length < 1)
-            {
-                return false;
-            }
-
-            if (label[0] == '-' || label[^1] == '-')
-            {
-                return false;
-            }
-
-            foreach (var @char in label)
-            {
-                if (char.IsAsciiLetter(@char))
-                {
-                    anyAsciiLetters = true;
-                    continue;
-                }
-
-                if (char.IsAsciiDigit(@char) || @char == '-')
-                {
-                    continue;
-                }
-
-                return false;
-            }
+            return false;
         }
 
-        if (!anyAsciiLetters)
+        foreach (var @char in label)
         {
+            if (char.IsAsciiLetter(@char))
+            {
+                anyAsciiLetters = true;
+                continue;
+            }
+
+            if (char.IsAsciiDigit(@char) || @char == '-')
+            {
+                continue;
+            }
+
             return false;
         }
 

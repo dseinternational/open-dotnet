@@ -39,6 +39,18 @@ public readonly record struct Volume : IQuantity<double, UnitOfVolume>, ICompara
 
     public UnitOfVolume Units { get; }
 
+    public double ConvertValueTo(UnitOfVolume unitOfVolume)
+    {
+        ArgumentNullException.ThrowIfNull(unitOfVolume);
+
+        if (unitOfVolume == Units)
+        {
+            return Amount;
+        }
+
+        return (Amount * Units.BaseUnits) / unitOfVolume.BaseUnits;
+    }
+
     public int CompareTo(Volume other)
     {
         return (Amount * Units.BaseUnits).CompareTo(other.Amount * other.Units.BaseUnits);
@@ -57,7 +69,7 @@ public readonly record struct Volume : IQuantity<double, UnitOfVolume>, ICompara
     public string ToString(string? format, IFormatProvider? formatProvider, UnitOfVolume unitOfMass)
     {
         ArgumentNullException.ThrowIfNull(unitOfMass);
-        return Amount.ToString(format, formatProvider) + " " + unitOfMass.Abbreviation;
+        return ConvertValueTo(unitOfMass).ToString(format, formatProvider) + " " + unitOfMass.Abbreviation;
     }
 
     public ulong GetRepeatableHashCode()

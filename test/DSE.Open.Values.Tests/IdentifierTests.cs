@@ -51,6 +51,27 @@ public class IdentifierTests
     }
 
     [Fact]
+    public void New_WithMaximumLength_ShouldReturnValidIdentifierOfRequestedLength()
+    {
+        var id = Identifier.New(Identifier.MaxIdLength);
+
+        Assert.Equal(Identifier.MaxIdLength, id.Length);
+        Assert.True(Identifier.IsValid(id.ToString()));
+    }
+
+    [Fact]
+    public void New_WithPrefix_ShouldReturnValidIdentifierWithExpectedLength()
+    {
+        const string prefix = "prefix";
+
+        var id = Identifier.New(Identifier.MinIdLength, prefix);
+
+        Assert.Equal(prefix.Length + 1 + Identifier.MinIdLength, id.Length);
+        Assert.True(id.StartsWith(prefix + Identifier.PrefixDelimiter));
+        Assert.True(Identifier.IsValid(id.ToString()));
+    }
+
+    [Fact]
     public void StartsWith()
     {
         for (var i = 0; i < 50; i++)
@@ -270,6 +291,22 @@ public class IdentifierTests
     {
         // Arrange
         var prefix = new string('a', Identifier.MinPrefixLength - 1);
+
+        // Act
+        void New()
+        {
+            _ = Identifier.New(Identifier.MaxIdLength, prefix);
+        }
+
+        // Assert
+        _ = Assert.Throws<ArgumentException>(New);
+    }
+
+    [Fact]
+    public void New_WithPrefixTooLong_ShouldThrowArgumentException()
+    {
+        // Arrange
+        var prefix = new string('a', Identifier.MaxPrefixLength + 1);
 
         // Act
         void New()

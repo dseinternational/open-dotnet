@@ -32,4 +32,20 @@ public class UnitOfLengthTests
         Assert.True(UnitOfLength.TryParse("km", out var unit));
         Assert.Equal(UnitOfLength.Kilometre, unit);
     }
+
+    [Fact]
+    public void InterfaceBaseUnitOfMeasure_returns_base_unit()
+    {
+        IUnitOfMeasure<double> unit = UnitOfLength.Metre;
+
+        Assert.Same(UnitOfLength.Millimetre, unit.BaseUnitOfMeasure);
+    }
+
+    [Fact]
+    public void Equals_WithNullUnit_ShouldReturnFalse()
+    {
+        UnitOfMeasure<double>? unit = null;
+
+        Assert.False(UnitOfLength.Metre.Equals(unit));
+    }
 }

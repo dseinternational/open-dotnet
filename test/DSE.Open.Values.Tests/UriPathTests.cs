@@ -32,6 +32,23 @@ public class UriPathTests
     }
 
     [Theory]
+    [InlineData("A")]
+    [InlineData("HOME")]
+    [InlineData("home/sub_dir")]
+    [InlineData("home.sub")]
+    [InlineData("home~sub")]
+    [InlineData("home+sub")]
+    [InlineData("home sub")]
+    [InlineData("über")]
+    public void TryParse_WithInvalidCharacters_ShouldReturnFalseWithDefaultResult(string value)
+    {
+        var actual = UriPath.TryParse(value, out var result);
+
+        Assert.False(actual);
+        Assert.Equal(default, result);
+    }
+
+    [Theory]
     [InlineData("", "", "")]
     [InlineData("home", "", "home")]
     [InlineData("home", "sub", "home/sub")]
@@ -117,9 +134,9 @@ public class UriPathTests
     }
 
     [Theory]
-    // [InlineData("%home")]
-    // [InlineData("HOME?")]
-    // [InlineData("home/+SUB.html")]
+    [InlineData("%home")]
+    [InlineData("HOME?")]
+    [InlineData("home/+SUB.html")]
     [InlineData("//home/sub/")]
     [InlineData("/home/sub//")]
     public void TryParseSanitisedWithInvalidPathShouldReturnFalse(string path)

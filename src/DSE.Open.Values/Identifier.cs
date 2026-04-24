@@ -172,6 +172,12 @@ public readonly partial struct Identifier : IEquatableValue<Identifier, AsciiStr
             return New(idLength, ReadOnlySpan<byte>.Empty);
         }
 
+        if (prefix.Length > MaxPrefixLength)
+        {
+            return ThrowHelper.ThrowArgumentException<Identifier>(nameof(prefix),
+                $"Invalid {nameof(Identifier)} prefix '{prefix.ToString()}'");
+        }
+
         Span<byte> utf8 = stackalloc byte[MaxPrefixLength];
 
         var status = Ascii.FromUtf16(prefix, utf8, out var bytesWritten);
@@ -214,15 +220,10 @@ public readonly partial struct Identifier : IEquatableValue<Identifier, AsciiStr
             id.Span[idStartIndex - 1] = (AsciiChar)'_';
         }
 
-        Span<byte> randomBuffer = stackalloc byte[MaxIdLength * 2];
-
-        RandomNumberGenerator.Fill(randomBuffer);
-
-        for (var i = 0; i < idLength * 2; i += 2)
+        for (var i = 0; i < idLength; i++)
         {
-            var f = BitConverter.ToUInt16(randomBuffer.Slice(i, 2));
-            var c = f % ValidIdBytes.Length;
-            id.Span[idStartIndex + (i / 2)] = (AsciiChar)ValidIdBytes[c];
+            var randomIndex = RandomNumberGenerator.GetInt32(ValidIdBytes.Length);
+            id.Span[idStartIndex + i] = (AsciiChar)ValidIdBytes[randomIndex];
         }
 
         return new(id);
