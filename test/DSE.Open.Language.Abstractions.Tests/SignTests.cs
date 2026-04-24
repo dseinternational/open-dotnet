@@ -30,4 +30,16 @@ public class SignTests
         var sign = Sign.Parse(signValue, CultureInfo.InvariantCulture);
         AssertJson.Roundtrip(sign);
     }
+
+    [Fact]
+    public void TryFormat_WhenDestinationTooSmall_ReturnsFalseAndResetsCharsWritten()
+    {
+        var sign = Sign.Parse("spoken:ball", CultureInfo.InvariantCulture);
+        Span<char> destination = stackalloc char["spoken:".Length];
+
+        var result = sign.TryFormat(destination, out var charsWritten);
+
+        Assert.False(result);
+        Assert.Equal(0, charsWritten);
+    }
 }

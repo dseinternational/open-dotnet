@@ -154,6 +154,7 @@ public readonly record struct Sign
         {
             if (charsWritten >= destination.Length)
             {
+                charsWritten = 0;
                 return false;
             }
 
@@ -166,6 +167,7 @@ public readonly record struct Sign
             }
         }
 
+        charsWritten = 0;
         return false;
     }
 }

@@ -132,6 +132,54 @@ public class TokenTests
     }
 
     [Fact]
+    public void FormatMultiwordToString_IncludesTokenAttributes()
+    {
+        var token = new Token
+        {
+            Text = (TokenText)"cat's",
+            Attributes = ReadOnlyAttributeValueCollection.ParseInvariant("SpaceAfter=No"),
+            Words =
+            [
+                new()
+                {
+                    Index = 1,
+                    Form = (TokenText)"cat",
+                    Lemma = (TokenText)"cat",
+                    Pos = UniversalPosTag.Noun,
+                    AltPos = TreebankPosTag.NounSingularOrMass,
+                    Features = [],
+                    HeadIndex = 0,
+                    Relation = UniversalRelationTag.PossessiveNominalModifier,
+                },
+                new()
+                {
+                    Index = 2,
+                    Form = (TokenText)"'s",
+                    Lemma = (TokenText)"'s",
+                    Pos = UniversalPosTag.Particle,
+                    AltPos = TreebankPosTag.PossessiveEnding,
+                    Features = [],
+                    HeadIndex = 0,
+                    Relation = UniversalRelationTag.CaseMarking,
+                }
+            ]
+        };
+
+        var str = token.ToString();
+
+        const string expected =
+            "1-2\tcat's\t_\t_\t_\t_\t_\t_\t_\tSpaceAfter=No\n" +
+            "1\tcat\tcat\tNOUN\tNN\t_\t0\tnmod:poss\t_\t_\n" +
+            "2\t's\t's\tPART\tPOS\t_\t0\tcase\t_\t_";
+
+        Assert.Equal(expected, str);
+
+        var parsed = Token.Parse(str, CultureInfo.InvariantCulture);
+
+        Assert.Equal(token, parsed);
+    }
+
+    [Fact]
     public void GetRepeatableHashCode_ReturnsExpectedValue()
     {
         var token = new Token

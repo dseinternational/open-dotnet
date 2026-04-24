@@ -82,4 +82,16 @@ public class AttributeValueSerializerTests
         var roundtrip = AttributeValueSerializer.SerializeToString(list);
         Assert.Equal(input, roundtrip);
     }
+
+    [Fact]
+    public void TryDeserialize_WithMoreThanThirtyTwoAttributes_ReturnsAllAttributes()
+    {
+        var input = string.Join('|', Enumerable.Range(0, 33).Select(i => $"F{i}=A"));
+
+        Assert.True(AttributeValueSerializer.TryDeserialize(input, out var parsed));
+
+        var list = parsed.ToList();
+        Assert.Equal(33, list.Count);
+        Assert.Equal(input, AttributeValueSerializer.SerializeToString(list));
+    }
 }

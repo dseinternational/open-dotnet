@@ -50,10 +50,30 @@ public class TokenIndexTests
     }
 
     [Fact]
+    public void ToString_WithLargeRange_DoesNotAssumeEightCharacterLimit()
+    {
+        var tokenId = new TokenIndex(int.MaxValue - 1, int.MaxValue);
+
+        var str = tokenId.ToString();
+
+        Assert.Equal("2147483646-2147483647", str);
+    }
+
+    [Fact]
     public void New_WithEndBeforeStart_ShouldThrowArgumentOutOfRangeException()
     {
         // Act
         static void Act() => _ = new TokenIndex(2, 1);
+
+        // Assert
+        Assert.Throws<ArgumentOutOfRangeException>(Act);
+    }
+
+    [Fact]
+    public void New_WithNegativeEmptyId_ShouldThrowArgumentOutOfRangeException()
+    {
+        // Act
+        static void Act() => _ = new TokenIndex(1, emptyId: -1);
 
         // Assert
         Assert.Throws<ArgumentOutOfRangeException>(Act);

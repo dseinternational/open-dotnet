@@ -1,12 +1,14 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Buffers;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 using DSE.Open.Collections.Generic;
 using DSE.Open.Hashing;
 using DSE.Open.Language.Annotations.Serialization;
+using DSE.Open.Runtime.Helpers;
 using DSE.Open.Values;
 
 namespace DSE.Open.Language.Annotations;
@@ -70,9 +72,30 @@ public sealed record AttributeValue
     [SkipLocalsInit]
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
-        Span<char> buffer = stackalloc char[MaxSerializedCharLength];
-        _ = TryFormat(buffer, out var charsWritten, format, formatProvider);
-        return buffer[..charsWritten].ToString();
+        var charCount = GetCharCount();
+        char[]? rented = null;
+
+        Span<char> buffer = MemoryThresholds.CanStackalloc<char>(charCount)
+            ? stackalloc char[charCount]
+            : (rented = ArrayPool<char>.Shared.Rent(charCount));
+
+        try
+        {
+            if (TryFormat(buffer, out var charsWritten, format, formatProvider))
+            {
+                return buffer[..charsWritten].ToString();
+            }
+
+            return ThrowHelper.ThrowFormatException<string>(
+                $"Could not format {nameof(AttributeValue)} to string.");
+        }
+        finally
+        {
+            if (rented is not null)
+            {
+                ArrayPool<char>.Shared.Return(rented);
+            }
+        }
     }
 
     public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider? provider)
@@ -160,25 +183,39 @@ public sealed record AttributeValue
                     }
                 }
 
-                Span<Range> ranges = stackalloc Range[16];
+                var values = new List<CharSequence>();
+                var remaining = valuesSpan;
 
-                var l = valuesSpan.Split(ranges, ',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-
-                var values = new CharSequence[l];
-
-                for (var r = 0; r < l; r++)
+                while (true)
                 {
-                    var v = valuesSpan[ranges[r].Start.Value..ranges[r].End.Value];
+                    var separatorIndex = remaining.IndexOf(',');
+                    var v = (separatorIndex < 0 ? remaining : remaining[..separatorIndex]).Trim();
 
-                    if (CharSequence.TryParse(v, provider, out var value))
+                    if (!v.IsEmpty)
                     {
-                        values[r] = value;
+                        if (CharSequence.TryParse(v, provider, out var value))
+                        {
+                            values.Add(value);
+                        }
+                        else
+                        {
+                            result = default;
+                            return false;
+                        }
                     }
-                    else
+
+                    if (separatorIndex < 0)
                     {
-                        result = default;
-                        return false;
+                        break;
                     }
+
+                    remaining = remaining[(separatorIndex + 1)..];
+                }
+
+                if (values.Count == 0)
+                {
+                    result = default;
+                    return false;
                 }
 
                 result = new(name, values);

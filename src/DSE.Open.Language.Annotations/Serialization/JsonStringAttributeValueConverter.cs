@@ -11,6 +11,7 @@ public class JsonStringAttributeValueConverter : SpanParsableCharWritingJsonConv
 
     protected override int GetMaxCharCountToWrite(AttributeValue value)
     {
-        return AttributeValue.MaxSerializedCharLength;
+        ArgumentNullException.ThrowIfNull(value);
+        return value.GetCharCount();
     }
 }

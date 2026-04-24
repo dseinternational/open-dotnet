@@ -26,6 +26,7 @@ public record Token
       IRepeatableHash64
 {
     private static readonly TokenIndex s_one = new(1);
+    private const string EmptyFields = "\t_\t_\t_\t_\t_\t_\t_\t";
 
     /// <summary>
     /// Index of the token in the sentence.
@@ -188,7 +189,7 @@ public record Token
                     return false;
                 }
 
-                if (TokenIndex.TryParse(s[fields[ConlluFieldIndex.Id]], provider, out var id))
+                if (TokenIndex.TryParse(line[fields[ConlluFieldIndex.Id]], provider, out var id))
                 {
                     tokenData.Index = id;
                 }
@@ -198,7 +199,7 @@ public record Token
                     return false;
                 }
 
-                if (TokenText.TryParse(s[fields[ConlluFieldIndex.Form]], provider, out var word))
+                if (TokenText.TryParse(line[fields[ConlluFieldIndex.Form]], provider, out var word))
                 {
                     tokenData.Text = word;
                 }
@@ -208,7 +209,7 @@ public record Token
                     return false;
                 }
 
-                var miscSpan = s[fields[ConlluFieldIndex.Misc]];
+                var miscSpan = line[fields[ConlluFieldIndex.Misc]];
 
                 if (miscSpan.Length == 1 && miscSpan[0] == '_')
                 {
@@ -302,12 +303,21 @@ public record Token
             return Words[0].GetCharCount();
         }
 
-        return Words.Sum(w => w.GetCharCount())
-            + 6                         // "10-11\t"
+        return Index.GetCharCount()
+            + 1                         // tab after ID
             + Text.Length
-            + 18                        // 9 x "\t_"
-            + (Attributes.Count * 16)
-            + 2;                        // "_\n"
+            + EmptyFields.Length
+            + GetFieldCharCount(Attributes)
+            + 1                         // newline after multiword row
+            + Words.Sum(w => w.GetCharCount())
+            + Math.Max(0, Words.Count - 1);
+    }
+
+    private static int GetFieldCharCount(ReadOnlyAttributeValueCollection values)
+    {
+        return values.Count == 0
+            ? 1
+            : values.Sum(v => v.GetCharCount()) + values.Count - 1;
     }
 
     [SkipLocalsInit]
@@ -404,8 +414,6 @@ public record Token
             return false;
         }
 
-        const string EmptyFields = "\t_\t_\t_\t_\t_\t_\t_\t";
-
         if (EmptyFields.TryCopyTo(destination[charsWritten..]))
         {
             charsWritten += EmptyFields.Length;
@@ -415,15 +423,27 @@ public record Token
             return false;
         }
 
-        // TODO: MISC
-
-        if (destination.Length > charsWritten)
+        if (Attributes.Count > 0)
         {
-            destination[charsWritten++] = '_';
+            if (Attributes.TryFormat(destination[charsWritten..], out var attributeChars, format, provider))
+            {
+                charsWritten += attributeChars;
+            }
+            else
+            {
+                return false;
+            }
         }
         else
         {
-            return false;
+            if (destination.Length > charsWritten)
+            {
+                destination[charsWritten++] = '_';
+            }
+            else
+            {
+                return false;
+            }
         }
 
         if (destination.Length > charsWritten)

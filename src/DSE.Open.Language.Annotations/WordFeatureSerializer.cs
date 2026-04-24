@@ -84,7 +84,10 @@ public static class WordFeatureSerializer
     {
         ArgumentNullException.ThrowIfNull(features);
 
-        var maxLength = features.Count() * 16;
+        var featureList = features as IReadOnlyList<WordFeature> ?? [.. features];
+        var maxLength = featureList.Count == 0
+            ? 0
+            : featureList.Sum(f => f.GetCharCount()) + featureList.Count - 1;
 
         char[]? rented = null;
 
@@ -94,7 +97,7 @@ public static class WordFeatureSerializer
 
         try
         {
-            if (TrySerialize(buffer, features, out var charsWritten))
+            if (TrySerialize(buffer, featureList, out var charsWritten))
             {
                 return buffer[..charsWritten].ToString();
             }
@@ -120,7 +123,6 @@ public static class WordFeatureSerializer
     /// is empty.</param>
     /// <returns><see langword="true"/> if parsing succeeded; otherwise
     /// <see langword="false"/>.</returns>
-    [SkipLocalsInit]
     public static bool TryDeserialize(ReadOnlySpan<char> values, out IEnumerable<WordFeature> features)
     {
         if (values.IsEmpty)
@@ -129,26 +131,33 @@ public static class WordFeatureSerializer
             return true;
         }
 
-        Span<Range> ranges = stackalloc Range[32];
+        var results = new List<WordFeature>();
+        var remaining = values;
 
-        var l = values.Split(ranges, '|',
-            StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-
-        var results = new WordFeature[l];
-
-        for (var r = 0; r < l; r++)
+        while (true)
         {
-            var v = values[ranges[r].Start.Value..ranges[r].End.Value];
+            var separatorIndex = remaining.IndexOf('|');
+            var v = (separatorIndex < 0 ? remaining : remaining[..separatorIndex]).Trim();
 
-            if (WordFeature.TryParse(v, CultureInfo.InvariantCulture, out var value))
+            if (!v.IsEmpty)
             {
-                results[r] = value;
+                if (WordFeature.TryParse(v, CultureInfo.InvariantCulture, out var value))
+                {
+                    results.Add(value);
+                }
+                else
+                {
+                    features = [];
+                    return false;
+                }
             }
-            else
+
+            if (separatorIndex < 0)
             {
-                features = [];
-                return false;
+                break;
             }
+
+            remaining = remaining[(separatorIndex + 1)..];
         }
 
         features = results;

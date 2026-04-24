@@ -32,6 +32,23 @@ public class SentenceTests
     }
 
     [Fact]
+    public void FormatSentence_WithLongText_DoesNotUseFixedBufferLimit()
+    {
+        var token = Token.ParseInvariant("1\tcat\tcat\tNOUN\tNN\tNumber=Sing\t0\troot\t_\t_");
+        var text = new string('a', 3000);
+        var sentence = new Sentence
+        {
+            Text = text,
+            Tokens = [token],
+            Comments = []
+        };
+
+        var formatted = sentence.ToString();
+
+        Assert.Contains("# text = " + text, formatted, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void GetRepeatableHashCode_ReturnsExpectedValue()
     {
         var tokens = TheCatIsDrinkingMilk

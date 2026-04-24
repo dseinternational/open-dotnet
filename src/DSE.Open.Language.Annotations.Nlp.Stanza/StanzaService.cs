@@ -33,6 +33,8 @@ public sealed class StanzaService : IDisposable
 
     public void Download(string lang = "en")
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(lang);
+
         _ = _stanza.Download(lang);
 
 #pragma warning disable CA1873 // Avoid potentially expensive logging
@@ -42,6 +44,8 @@ public sealed class StanzaService : IDisposable
 
     public Pipeline CreatePipeline(string lang = "en")
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(lang);
+
         return new Pipeline(_stanza.CreatePipeline(lang), _stanza);
     }
 

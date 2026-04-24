@@ -27,6 +27,18 @@ public class WordFeatureTests
         Assert.Equal(value1, f.Values[1].ToStringInvariant());
     }
 
+    [Fact]
+    public void ParseNameAndValues_WithMoreThanSixteenValues()
+    {
+        const string feature = "Long=A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q";
+
+        var f = WordFeature.ParseInvariant(feature);
+
+        Assert.Equal(17, f.Values.Count);
+        Assert.Equal(feature, f.ToStringInvariant());
+        Assert.Equal($"\"{feature}\"", System.Text.Json.JsonSerializer.Serialize(f));
+    }
+
     [Theory]
     [InlineData("Voice=Pass")]
     [InlineData("Gender=Masc")]

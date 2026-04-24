@@ -99,12 +99,10 @@ public readonly partial struct SentenceId
         return value.ToInt64();
     }
 
-#pragma warning disable CA5394 // Do not use insecure randomness
     public static SentenceId GetRandomId()
     {
-        return (SentenceId)(ulong)Random.Shared.NextInt64((long)LanguageIds.MinIdValue, (long)LanguageIds.MaxIdValue + 1);
+        return (SentenceId)LanguageIds.GetRandomIdValue();
     }
-#pragma warning restore CA5394 // Do not use insecure randomness
 
     /// <summary>
     /// A sentence is a locale/language-specific string that expresses a meaning

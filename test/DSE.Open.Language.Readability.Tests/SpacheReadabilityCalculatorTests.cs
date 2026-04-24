@@ -6,11 +6,11 @@ namespace DSE.Open.Language.Readability;
 public class SpacheReadabilityCalculatorTests
 {
     [Theory]
-    [InlineData(2, 30, 6, 4.114)]
-    [InlineData(2, 30, 0, 2.474)]
-    public void CalculateLevel(int sentenceCount, int wordCount, int unfamiliarWordCount, double expected)
+    [InlineData(15, 30, 6, 4.114)]
+    [InlineData(15, 30, 0, 2.474)]
+    public void CalculateLevel(double averageSentenceLength, int distinctWordCount, int unfamiliarWordCount, double expected)
     {
-        var result = SpacheReadabilityCalculator.CalculateLevel(sentenceCount, wordCount, unfamiliarWordCount);
+        var result = SpacheReadabilityCalculator.CalculateLevel(averageSentenceLength, distinctWordCount, unfamiliarWordCount);
         Assert.Equal(expected, result, 3);
     }
 
