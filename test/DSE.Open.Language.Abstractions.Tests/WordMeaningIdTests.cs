@@ -47,12 +47,13 @@ public sealed class WordMeaningIdTests
         _ = Assert.Throws<ArgumentOutOfRangeException>(() => WordMeaningId.FromUInt64(1ul));
     }
 
-    // Pins a specific hash output so any future change to the serialization
-    // format is caught on every platform. Regression guard for #354 item 4.
+    // Pins the legacy hash output so the id stays stable across platforms AND across
+    // future refactors. Downstream systems persist these ids, so any change that shifts
+    // the output (byte order, field ordering, separators, formatting) must be caught here.
     [Theory]
-    [InlineData("run", "VERB", "VB", 416664435337ul)]
-    [InlineData("run", "NOUN", "NN", 196937913916ul)]
-    [InlineData("run", "VERB", null, 747335625621ul)]
+    [InlineData("run", "VERB", "VB", 775513550752ul)]
+    [InlineData("run", "NOUN", "NN", 529049257577ul)]
+    [InlineData("run", "VERB", null, 334926270592ul)]
     public void FromWordMeaning_produces_platform_pinned_id(
         string label,
         string pos,
@@ -67,14 +68,17 @@ public sealed class WordMeaningIdTests
         Assert.Equal(expectedId, actual.ToUInt64());
     }
 
-    // With 0xFF separator bytes, distinct input tuples whose naive concatenations
-    // would align now produce different ids. Regression guard for #354 item 4.
+    // Legacy hash layout concatenates fields with no separator, so tuples whose
+    // concatenations align produce identical ids — a known limitation. Preserved
+    // intentionally: adding separators (as #446 did) would break ids persisted by
+    // prior builds. This test locks the legacy behaviour so any reintroduction of
+    // separators fails here.
     [Fact]
-    public void FromWordMeaning_tuples_with_aligned_concat_produce_distinct_ids()
+    public void FromWordMeaning_tuples_with_aligned_concat_produce_identical_ids()
     {
         // "ab" + "cd" vs "abc" + "d" — same concatenated bytes without a separator.
         var a = WordMeaningId.FromWordMeaning("ab".AsSpan(), (AsciiString)"cd", null);
         var b = WordMeaningId.FromWordMeaning("abc".AsSpan(), (AsciiString)"d", null);
-        Assert.NotEqual(a, b);
+        Assert.Equal(a, b);
     }
 }
