@@ -53,6 +53,10 @@ public readonly partial struct Identifier : IEquatableValue<Identifier, AsciiStr
 
     public const char PrefixDelimiter = '_';
 
+    private const int ValidIdByteCount = 62;
+
+    private const int RandomIdByteUpperBound = byte.MaxValue + 1 - ((byte.MaxValue + 1) % ValidIdByteCount);
+
     private static ReadOnlySpan<byte> ValidIdBytes => "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"u8;
 
     private static ReadOnlySpan<byte> ValidPrefixBytes => "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_"u8;
@@ -220,10 +224,30 @@ public readonly partial struct Identifier : IEquatableValue<Identifier, AsciiStr
             id.Span[idStartIndex - 1] = (AsciiChar)'_';
         }
 
-        for (var i = 0; i < idLength; i++)
+        Debug.Assert(ValidIdBytes.Length == ValidIdByteCount);
+
+        Span<byte> randomBuffer = stackalloc byte[MaxIdLength];
+        var charsWritten = 0;
+
+        while (charsWritten < idLength)
         {
-            var randomIndex = RandomNumberGenerator.GetInt32(ValidIdBytes.Length);
-            id.Span[idStartIndex + i] = (AsciiChar)ValidIdBytes[randomIndex];
+            RandomNumberGenerator.Fill(randomBuffer);
+
+            foreach (var randomByte in randomBuffer)
+            {
+                if (randomByte >= RandomIdByteUpperBound)
+                {
+                    continue;
+                }
+
+                id.Span[idStartIndex + charsWritten] = (AsciiChar)ValidIdBytes[randomByte % ValidIdByteCount];
+                charsWritten++;
+
+                if (charsWritten == idLength)
+                {
+                    break;
+                }
+            }
         }
 
         return new(id);

@@ -171,6 +171,22 @@ public class VolumeTests
     }
 
     [Fact]
+    public void ConvertValueTo_default_volume_throws_invalid_operation_exception()
+    {
+        var v = default(Volume);
+
+        Assert.Throws<InvalidOperationException>(() => v.ConvertValueTo(UnitOfVolume.Litre));
+    }
+
+    [Fact]
+    public void ToString_default_volume_throws_invalid_operation_exception()
+    {
+        var v = default(Volume);
+
+        Assert.Throws<InvalidOperationException>(() => v.ToString(null, null, UnitOfVolume.Litre));
+    }
+
+    [Fact]
     public void ToString_null_unit_throws()
     {
         var v = Volume.Litre(1);
