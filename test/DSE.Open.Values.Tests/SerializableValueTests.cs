@@ -25,4 +25,15 @@ public class SerializableValueTests
         var v2 = JsonSerializer.Deserialize<BinaryInt32Value>(json);
         Assert.Equal(v1, v2);
     }
+
+    [Fact]
+    public void Serialize_deserialize_uint16_value()
+    {
+        var v1 = (UInt16Value)ushort.MaxValue;
+        var json = JsonSerializer.Serialize(v1);
+        var v2 = JsonSerializer.Deserialize<UInt16Value>(json);
+
+        Assert.Equal("65535", json);
+        Assert.Equal(v1, v2);
+    }
 }

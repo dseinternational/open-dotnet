@@ -138,13 +138,11 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
         return UriPathStringPool.Shared.GetOrAdd(s);
     }
 
-    // TODO
     private static bool IsValidOuterChar(char c)
     {
-        return c != Separator;
+        return char.IsAsciiLetterLower(c) || char.IsAsciiDigit(c) || c == Dash;
     }
 
-    // TODO
     private static bool IsValidInnerChar(char c)
     {
         return IsValidOuterChar(c) || c == Separator;
@@ -169,7 +167,7 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
 
         if (value.Length == 1)
         {
-            return char.IsLetterOrDigit(value[0]);
+            return IsValidOuterChar(value[0]);
         }
 
         if (!(IsValidOuterChar(value[0]) || (ignoreLeadingTrailingSlashes && value[0] == Separator)))
@@ -206,7 +204,7 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
 
         if (value.Length == 1)
         {
-            return char.IsLetterOrDigit(value[0]);
+            return IsValidOuterChar(value[0]);
         }
 
         if (!(IsValidOuterChar(value[0]) || (ignoreLeadingTrailingSlashes && value[0] == Separator)))

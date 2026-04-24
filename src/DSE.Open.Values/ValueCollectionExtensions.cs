@@ -114,6 +114,11 @@ public static class ValueCollectionExtensions
         where T : struct, INumber<T>
         where TValue : struct, IAddableValue<TValue, T>
     {
+        if (span.IsEmpty)
+        {
+            ThrowHelper.ThrowInvalidOperationException();
+        }
+
         return T.CreateChecked(SumPrimitives<TValue, T>(span) / T.CreateChecked(span.Length));
     }
 

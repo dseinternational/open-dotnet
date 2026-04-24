@@ -159,7 +159,31 @@ public class VolumeTests
     {
         var v = Volume.Litre(2.5);
         var result = v.ToString(null, null, UnitOfVolume.Millilitre);
-        Assert.Equal("2.5 mL", result);
+        Assert.Equal("2500 mL", result);
+    }
+
+    [Fact]
+    public void ConvertValueTo_converts_between_units()
+    {
+        var v = Volume.CubicMetre(1);
+
+        Assert.Equal(1000, v.ConvertValueTo(UnitOfVolume.Litre));
+    }
+
+    [Fact]
+    public void ConvertValueTo_default_volume_throws_invalid_operation_exception()
+    {
+        var v = default(Volume);
+
+        Assert.Throws<InvalidOperationException>(() => v.ConvertValueTo(UnitOfVolume.Litre));
+    }
+
+    [Fact]
+    public void ToString_default_volume_throws_invalid_operation_exception()
+    {
+        var v = default(Volume);
+
+        Assert.Throws<InvalidOperationException>(() => v.ToString(null, null, UnitOfVolume.Litre));
     }
 
     [Fact]

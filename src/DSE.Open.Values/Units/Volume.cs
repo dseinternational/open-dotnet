@@ -39,31 +39,57 @@ public readonly record struct Volume : IQuantity<double, UnitOfVolume>, ICompara
 
     public UnitOfVolume Units { get; }
 
+    public double ConvertValueTo(UnitOfVolume unitOfVolume)
+    {
+        ArgumentNullException.ThrowIfNull(unitOfVolume);
+
+        var units = GetRequiredUnits();
+
+        if (unitOfVolume == units)
+        {
+            return Amount;
+        }
+
+        return (Amount * units.BaseUnits) / unitOfVolume.BaseUnits;
+    }
+
     public int CompareTo(Volume other)
     {
-        return (Amount * Units.BaseUnits).CompareTo(other.Amount * other.Units.BaseUnits);
+        return (Amount * GetRequiredUnits().BaseUnits).CompareTo(other.Amount * other.GetRequiredUnits().BaseUnits);
     }
 
     public override string ToString()
     {
-        return ToString(null, null, Units);
+        return ToString(null, null, GetRequiredUnits());
     }
 
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
-        return ToString(format, formatProvider, Units);
+        return ToString(format, formatProvider, GetRequiredUnits());
     }
 
     public string ToString(string? format, IFormatProvider? formatProvider, UnitOfVolume unitOfMass)
     {
         ArgumentNullException.ThrowIfNull(unitOfMass);
-        return Amount.ToString(format, formatProvider) + " " + unitOfMass.Abbreviation;
+        return ConvertValueTo(unitOfMass).ToString(format, formatProvider) + " " + unitOfMass.Abbreviation;
+    }
+
+    private UnitOfVolume GetRequiredUnits()
+    {
+        var units = Units;
+
+        if (ReferenceEquals(units, null))
+        {
+            throw new InvalidOperationException("Cannot convert or format a default Volume because units are not set.");
+        }
+
+        return units;
     }
 
     public ulong GetRepeatableHashCode()
     {
         var h0 = RepeatableHash64Provider.Default.GetRepeatableHashCode(Amount);
-        var h1 = Units.GetRepeatableHashCode();
+        var h1 = GetRequiredUnits().GetRepeatableHashCode();
         return RepeatableHash64Provider.Default.CombineHashCodes(h0, h1);
     }
 
