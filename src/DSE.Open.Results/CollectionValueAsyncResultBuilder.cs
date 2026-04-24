@@ -7,7 +7,7 @@ public abstract class CollectionValueAsyncResultBuilder<TResult, TValue>
     : ValueResultBuilder<TResult, IAsyncEnumerable<TValue>>
     where TResult : CollectionValueAsyncResult<TValue>
 {
-    public new IAsyncEnumerable<TValue>? Value
+    public override IAsyncEnumerable<TValue>? Value
     {
         get => base.Value ??= AsyncEnumerable.Empty<TValue>();
         set => base.Value = value ?? AsyncEnumerable.Empty<TValue>();

@@ -77,4 +77,22 @@ public class PaginationTests
 
         _ = p2.Should().BeEquivalentTo(p, config => config.ComparingByMembers<Pagination>());
     }
+
+    [Fact]
+    public void Serialize_deserialize_none()
+    {
+        var json = JsonSerializer.Serialize(Pagination.None);
+
+        Output.WriteLine(json);
+
+        var pagination = JsonSerializer.Deserialize<Pagination>(json);
+
+        Assert.Equal(Pagination.None, pagination);
+    }
+
+    [Fact]
+    public void Constructor_WithZeroPageSizeAndNonNonePage_ShouldThrow()
+    {
+        _ = Assert.Throws<ArgumentOutOfRangeException>(() => new Pagination(0, 0, 1));
+    }
 }
