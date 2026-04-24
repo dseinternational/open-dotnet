@@ -242,6 +242,7 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
         return other is not null &&
             Id == other.Id &&
             Time == other.Time &&
+            Recorded == other.Recorded &&
             MeasureId == other.MeasureId;
     }
 
@@ -252,7 +253,7 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(Id, Time, MeasureId);
+        return HashCode.Combine(Id, Time, Recorded, MeasureId);
     }
 
     public override string ToString()
@@ -376,9 +377,16 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
 
     public virtual ulong GetRepeatableHashCode()
     {
+        var recordedHash = Recorded.HasValue
+            ? RepeatableHash64Provider.Default.CombineHashCodes(
+                1ul,
+                RepeatableHash64Provider.Default.GetRepeatableHashCode(Recorded.Value))
+            : 0ul;
+
         return RepeatableHash64Provider.Default.CombineHashCodes(
             RepeatableHash64Provider.Default.GetRepeatableHashCode(Id),
             RepeatableHash64Provider.Default.GetRepeatableHashCode(Time),
+            recordedHash,
             RepeatableHash64Provider.Default.GetRepeatableHashCode(MeasureId));
     }
 }
