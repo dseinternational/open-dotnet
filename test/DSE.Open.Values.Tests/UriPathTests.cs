@@ -89,6 +89,70 @@ public class UriPathTests
     }
 
     [Theory]
+    [InlineData("", null)]
+    [InlineData("home", null)]
+    [InlineData("home/sub", "home")]
+    [InlineData("home/sub/child", "home/sub")]
+    public void GetParent_returns_parent_path(string path, string? expected)
+    {
+        var pathValue = (UriPath)path;
+        var parent = pathValue.GetParent();
+
+        Assert.Equal(expected, parent?.ToString());
+    }
+
+    [Theory]
+    [InlineData("", 0)]
+    [InlineData("home", 1)]
+    [InlineData("home/sub", 2)]
+    [InlineData("home/sub/child", 3)]
+    public void GetSegmentCount_returns_number_of_path_segments(string path, int expected)
+    {
+        var pathValue = (UriPath)path;
+
+        Assert.Equal(expected, pathValue.GetSegmentCount());
+    }
+
+    [Theory]
+    [InlineData("home/sub/child", 0, "home/sub/child")]
+    [InlineData("home/sub/child", 4, "sub/child")]
+    [InlineData("home/sub/child", 5, "sub/child")]
+    [InlineData("home/sub/child", 8, "child")]
+    [InlineData("home/sub/child", 9, "child")]
+    public void Subpath_removes_leading_separator_from_result(string path, int startIndex, string expected)
+    {
+        var pathValue = (UriPath)path;
+
+        Assert.Equal(expected, pathValue.Subpath(startIndex).ToString());
+        Assert.Equal(expected, pathValue.Substring(startIndex));
+    }
+
+    [Fact]
+    public void StartsWith_and_EndsWith_return_expected_results()
+    {
+        var path = (UriPath)"home/sub";
+
+        Assert.True(path.StartsWith("home".AsSpan()));
+        Assert.True(path.StartsWith((UriPath)"home"));
+        Assert.True(path.StartsWith('h'));
+        Assert.False(path.StartsWith('s'));
+        Assert.True(path.EndsWith("sub".AsSpan()));
+        Assert.True(path.EndsWith((UriPath)"sub"));
+        Assert.True(path.EndsWith('b'));
+        Assert.False(path.EndsWith('h'));
+    }
+
+    [Fact]
+    public void FromUriAsciiPath_WithValidLowercasePath_ShouldCreateEquivalentUriPath()
+    {
+        var asciiPath = (UriAsciiPath)"home/sub";
+
+        var path = UriPath.FromUriAsciiPath(asciiPath);
+
+        Assert.Equal((UriPath)"home/sub", path);
+    }
+
+    [Theory]
     [InlineData("home", "/home/")]
     [InlineData("home/sub", "/home/sub/")]
     public void ToAbsolutePath_ShouldCorrectlyFormat(string value, string expected)

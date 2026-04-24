@@ -1,6 +1,7 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
+using System.Text;
 using System.Text.Json;
 using DSE.Open.Text.Json;
 
@@ -172,12 +173,43 @@ public class TagTests
         "a-a",
         "1-1",
         "1:1",
+        "tag(one)1",
         "a-longer-tag/divided-with-slash:and-colon",
         "reading/rr-reading-session-plan",
         "reading/r5-letter-sound-cards",
         "reading/r8-high-frequency-word-cards-first-100",
         "reading/r17-high-frequency-words-record-form-first-100"
     ];
+
+    [Theory]
+    [InlineData("-tag")]
+    [InlineData("tag-")]
+    [InlineData(":tag")]
+    [InlineData("tag:")]
+    [InlineData("/tag")]
+    [InlineData("tag/")]
+    [InlineData("(tag")]
+    [InlineData("tag)")]
+    public void TryParse_WithNonAlphanumericOuterCharacter_ShouldReturnFalse(string value)
+    {
+        var success = Tag.TryParse(value, CultureInfo.InvariantCulture, out var result);
+
+        Assert.False(success);
+        Assert.Equal(Tag.Empty, result);
+    }
+
+    [Fact]
+    public void StartsWith_EndsWith_and_Contains_ShouldSearchAsciiValue()
+    {
+        var tag = Tag.ParseInvariant("reading/r5-letter-sound-cards");
+        var containsBytes = Encoding.ASCII.GetBytes("/r5-");
+
+        Assert.True(tag.StartsWith("reading".AsSpan()));
+        Assert.True(tag.EndsWith("cards".AsSpan()));
+        Assert.True(tag.Contains(containsBytes));
+        Assert.False(tag.StartsWith("writing".AsSpan()));
+        Assert.False(tag.EndsWith("card".AsSpan()));
+    }
 
     [Fact]
     public void SerializeDeserializeAsPropertyName()

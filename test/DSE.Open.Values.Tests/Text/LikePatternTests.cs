@@ -63,6 +63,22 @@ public class LikePatternTests
         Assert.False(new LikePattern(pattern).IsMatch(value, StringComparison.Ordinal));
     }
 
+    [Fact]
+    public void IsMatch_WithIgnoreCaseComparison_ShouldApplyComparisonToSets()
+    {
+        Assert.True(new LikePattern("file[abc].txt").IsMatch("fileB.txt", StringComparison.OrdinalIgnoreCase));
+    }
+
+    [Theory]
+    [InlineData("[z-a]")]
+    [InlineData("[^z-a]")]
+    [InlineData("[a-é]")]
+    [InlineData("[^a-é]")]
+    public void IsMatch_WithInvalidRange_ShouldThrowFormatException(string pattern)
+    {
+        _ = Assert.Throws<FormatException>(() => new LikePattern(pattern).IsMatch("z", StringComparison.Ordinal));
+    }
+
     [Theory]
     [InlineData("", "")]
     [InlineData("*", "%")]
@@ -78,6 +94,9 @@ public class LikePatternTests
     [InlineData(@"\?", "?")]
     [InlineData("[a-z]", "[a-z]")]
     [InlineData("[^a-z]", "[^a-z]")]
+    [InlineData("100%_complete", "100[%][_]complete")]
+    [InlineData(@"\%", "[%]")]
+    [InlineData(@"\_", "[_]")]
     public void ToSqlLikePattern_returns_expected_pattern(string pattern, string sqlLikePattern)
     {
         // Arrange
@@ -88,6 +107,31 @@ public class LikePatternTests
 
         // Assert
         Assert.Equal(sqlLikePattern, result);
+    }
+
+    [Fact]
+    public void TryFormat_WithExactBuffer_ShouldWritePattern()
+    {
+        var pattern = new LikePattern("abc*");
+        Span<char> buffer = stackalloc char[4];
+
+        var success = pattern.TryFormat(buffer, out var charsWritten, default, default);
+
+        Assert.True(success);
+        Assert.Equal(4, charsWritten);
+        Assert.Equal("abc*", buffer.ToString());
+    }
+
+    [Fact]
+    public void TryFormat_WithShortBuffer_ShouldReturnFalse()
+    {
+        var pattern = new LikePattern("abc*");
+        Span<char> buffer = stackalloc char[3];
+
+        var success = pattern.TryFormat(buffer, out var charsWritten, default, default);
+
+        Assert.False(success);
+        Assert.Equal(0, charsWritten);
     }
 
     [Fact]

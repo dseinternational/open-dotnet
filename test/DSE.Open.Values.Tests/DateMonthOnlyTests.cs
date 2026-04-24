@@ -6,6 +6,16 @@ namespace DSE.Open.Values;
 public class DateMonthOnlyTests
 {
     [Fact]
+    public void Constructor_normalizes_date_to_start_of_month()
+    {
+        var month = new DateMonthOnly(new DateOnly(2024, 2, 29));
+
+        Assert.Equal(new DateOnly(2024, 2, 1), month.StartOfMonth);
+        Assert.Equal(2024, month.Year);
+        Assert.Equal(2, month.Month);
+    }
+
+    [Fact]
     public void Parse_empty_span_fails()
     {
         Assert.Throws<FormatException>(() => DateMonthOnly.Parse([], null));
@@ -54,5 +64,61 @@ public class DateMonthOnlyTests
     {
         var value = DateMonthOnly.Parse(a, CultureInfo.InvariantCulture) - DateMonthOnly.Parse(b, CultureInfo.InvariantCulture);
         Assert.Equal(expectedDif, value.TotalMonths);
+    }
+
+    [Fact]
+    public void Deconstruct_returns_year_and_month()
+    {
+        var month = DateMonthOnly.Parse("2024-02", CultureInfo.InvariantCulture);
+
+        var (year, monthNumber) = month;
+
+        Assert.Equal(2024, year);
+        Assert.Equal(2, monthNumber);
+    }
+
+    [Fact]
+    public void FromDateTimeOffset_uses_offset_date_year_and_month()
+    {
+        var date = new DateTimeOffset(2024, 12, 31, 23, 30, 0, TimeSpan.FromHours(-8));
+
+        var month = DateMonthOnly.FromDateTimeOffset(date);
+
+        Assert.Equal(new DateOnly(2024, 12, 1), month.StartOfMonth);
+    }
+
+    [Fact]
+    public void AddMonths_and_AddYears_return_normalized_months()
+    {
+        var month = DateMonthOnly.Parse("2024-01", CultureInfo.InvariantCulture);
+
+        Assert.Equal("2024-03", month.AddMonths(2).ToString());
+        Assert.Equal("2025-01", month.AddYears(1).ToString());
+    }
+
+    [Fact]
+    public void Comparison_operators_compare_start_of_month()
+    {
+        var earlier = DateMonthOnly.Parse("2024-01", CultureInfo.InvariantCulture);
+        var later = DateMonthOnly.Parse("2024-02", CultureInfo.InvariantCulture);
+
+        Assert.True(earlier < later);
+        Assert.True(earlier <= later);
+        Assert.True(later > earlier);
+        Assert.True(later >= earlier);
+        Assert.True(earlier <= DateMonthOnly.Parse("2024-01", CultureInfo.InvariantCulture));
+        Assert.True(later >= DateMonthOnly.Parse("2024-02", CultureInfo.InvariantCulture));
+    }
+
+    [Fact]
+    public void TryFormat_WithShortBuffer_ShouldReturnFalse()
+    {
+        var month = DateMonthOnly.Parse("2024-02", CultureInfo.InvariantCulture);
+        Span<char> buffer = stackalloc char[6];
+
+        var success = month.TryFormat(buffer, out var charsWritten);
+
+        Assert.False(success);
+        Assert.Equal(0, charsWritten);
     }
 }
