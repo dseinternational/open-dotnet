@@ -35,10 +35,13 @@ public readonly partial record struct BinaryValue
 
     public static BinaryValue FromEncodedString(string value, BinaryStringEncoding encoding)
     {
+        ArgumentNullException.ThrowIfNull(value);
+
         return encoding switch
         {
             BinaryStringEncoding.Base64 => new(Convert.FromBase64String(value), true),
-            BinaryStringEncoding.HexLower or BinaryStringEncoding.HexUpper => new(Convert.FromHexString(value), true),
+            BinaryStringEncoding.HexLower => FromLowerHex(value),
+            BinaryStringEncoding.HexUpper => FromUpperHex(value),
             BinaryStringEncoding.Base62 => new(Base62Converter.FromBase62(value), true),
             _ => ThrowHelper.ThrowFormatException<BinaryValue>("Invalid encoding provided."),
         };
@@ -81,7 +84,8 @@ public readonly partial record struct BinaryValue
             BinaryStringEncoding.Base62 => TryDecodeFromBase62(value, out binaryValue),
             BinaryStringEncoding.HexLower => TryDecodeFromLowerHex(value, out binaryValue),
             BinaryStringEncoding.HexUpper => TryDecodeFromUpperHex(value, out binaryValue),
-            _ => TryDecodeFromBase64(value, out binaryValue)
+            BinaryStringEncoding.Base64 => TryDecodeFromBase64(value, out binaryValue),
+            _ => throw new ArgumentOutOfRangeException(nameof(encoding), encoding, null)
         };
     }
 
@@ -90,9 +94,10 @@ public readonly partial record struct BinaryValue
         return encoding switch
         {
             BinaryStringEncoding.Base62 => TryDecodeFromBase62(Encoding.UTF8.GetString(value), out binaryValue),
-            BinaryStringEncoding.HexLower => TryDecodeFromHex(value, out binaryValue),
-            BinaryStringEncoding.HexUpper => TryDecodeFromHex(value, out binaryValue),
-            _ => TryDecodeFromBase64(value, out binaryValue)
+            BinaryStringEncoding.HexLower => TryDecodeFromLowerHex(value, out binaryValue),
+            BinaryStringEncoding.HexUpper => TryDecodeFromUpperHex(value, out binaryValue),
+            BinaryStringEncoding.Base64 => TryDecodeFromBase64(value, out binaryValue),
+            _ => throw new ArgumentOutOfRangeException(nameof(encoding), encoding, null)
         };
     }
 
@@ -151,7 +156,7 @@ public readonly partial record struct BinaryValue
 
     private static bool TryDecodeFromUpperHex(ReadOnlySpan<char> hex, out BinaryValue binaryValue)
     {
-        if (HexConverter.IsValidUpperHex(hex))
+        if (hex.Length % 2 == 0 && HexConverter.IsValidUpperHex(hex))
         {
             binaryValue = new(Convert.FromHexString(hex), noCopy: true);
             return true;
@@ -161,12 +166,34 @@ public readonly partial record struct BinaryValue
         return false;
     }
 
+    private static bool TryDecodeFromUpperHex(ReadOnlySpan<byte> hex, out BinaryValue binaryValue)
+    {
+        if (HexConverter.IsValidUpperHex(hex))
+        {
+            return TryDecodeFromHex(hex, out binaryValue);
+        }
+
+        binaryValue = default;
+        return false;
+    }
+
     private static bool TryDecodeFromLowerHex(ReadOnlySpan<char> hex, out BinaryValue binaryValue)
     {
-        if (HexConverter.IsValidLowerHex(hex))
+        if (hex.Length % 2 == 0 && HexConverter.IsValidLowerHex(hex))
         {
             binaryValue = new(Convert.FromHexString(hex), noCopy: true);
             return true;
+        }
+
+        binaryValue = default;
+        return false;
+    }
+
+    private static bool TryDecodeFromLowerHex(ReadOnlySpan<byte> hex, out BinaryValue binaryValue)
+    {
+        if (HexConverter.IsValidLowerHex(hex))
+        {
+            return TryDecodeFromHex(hex, out binaryValue);
         }
 
         binaryValue = default;
@@ -205,5 +232,25 @@ public readonly partial record struct BinaryValue
 
         binaryValue = default;
         return false;
+    }
+
+    private static BinaryValue FromLowerHex(string value)
+    {
+        if (HexConverter.IsValidLowerHex(value))
+        {
+            return new(Convert.FromHexString(value), true);
+        }
+
+        return ThrowHelper.ThrowFormatException<BinaryValue>("Invalid lower-case hex value.");
+    }
+
+    private static BinaryValue FromUpperHex(string value)
+    {
+        if (HexConverter.IsValidUpperHex(value))
+        {
+            return new(Convert.FromHexString(value), true);
+        }
+
+        return ThrowHelper.ThrowFormatException<BinaryValue>("Invalid upper-case hex value.");
     }
 }

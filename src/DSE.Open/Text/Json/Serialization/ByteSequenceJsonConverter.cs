@@ -4,6 +4,7 @@
 using System.Collections.Frozen;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using DSE.Open.Collections.Generic;
 using DSE.Open.Memory;
 
 namespace DSE.Open.Text.Json.Serialization;
@@ -18,6 +19,8 @@ namespace DSE.Open.Text.Json.Serialization;
 /// <item><see cref="ReadOnlyMemory{Byte}"/></item>
 /// <item><see cref="Memory{Byte}"/></item>
 /// <item><see cref="byte"/> array</item>
+/// <item><see cref="List{Byte}"/></item>
+/// <item><see cref="Collection{Byte}"/></item>
 /// <item><see cref="IEnumerable{Byte}"/></item>
 /// </list>
 /// </remarks>
@@ -27,14 +30,15 @@ public sealed class ByteSequenceJsonConverter : JsonConverterFactory
         typeof(ReadOnlyMemory<byte>),
         typeof(Memory<byte>),
         typeof(byte[]),
+        typeof(List<byte>),
+        typeof(Collection<byte>),
         typeof(IEnumerable<byte>)
     );
 
     public override bool CanConvert(Type typeToConvert)
     {
         ArgumentNullException.ThrowIfNull(typeToConvert);
-        return s_supportedTypes.Contains(typeToConvert)
-            || typeToConvert.IsAssignableTo(typeof(IEnumerable<byte>));
+        return s_supportedTypes.Contains(typeToConvert);
     }
 
     public override JsonConverter? CreateConverter(Type typeToConvert, JsonSerializerOptions options)
@@ -56,7 +60,17 @@ public sealed class ByteSequenceJsonConverter : JsonConverterFactory
             return new ByteArrayConverter();
         }
 
-        if (typeToConvert == typeof(IEnumerable<byte>) || typeToConvert.IsAssignableTo(typeof(IEnumerable<byte>)))
+        if (typeToConvert == typeof(List<byte>))
+        {
+            return new ByteListConverter();
+        }
+
+        if (typeToConvert == typeof(Collection<byte>))
+        {
+            return new ByteCollectionConverter();
+        }
+
+        if (typeToConvert == typeof(IEnumerable<byte>))
         {
             return new ByteEnumerableConverter();
         }
@@ -155,11 +169,47 @@ public sealed class ByteSequenceJsonConverter : JsonConverterFactory
         }
     }
 
+    private sealed class ByteListConverter : ByteMemoryJsonConverterBase<List<byte>>
+    {
+        protected override ReadOnlyMemory<byte> GetMemory(List<byte> value)
+        {
+            return value.ToArray();
+        }
+
+        protected override List<byte> GetValue(Memory<byte> memory)
+        {
+            return new(memory.ToArray());
+        }
+
+        public override void Write(Utf8JsonWriter writer, List<byte> value, JsonSerializerOptions options)
+        {
+            WriteEnumerable(writer, value);
+        }
+    }
+
+    private sealed class ByteCollectionConverter : ByteMemoryJsonConverterBase<Collection<byte>>
+    {
+        protected override ReadOnlyMemory<byte> GetMemory(Collection<byte> value)
+        {
+            return value.AsSpan().ToArray();
+        }
+
+        protected override Collection<byte> GetValue(Memory<byte> memory)
+        {
+            return new(memory.ToArray());
+        }
+
+        public override void Write(Utf8JsonWriter writer, Collection<byte> value, JsonSerializerOptions options)
+        {
+            WriteEnumerable(writer, value);
+        }
+    }
+
     private sealed class ByteEnumerableConverter : ByteMemoryJsonConverterBase<IEnumerable<byte>>
     {
         protected override ReadOnlyMemory<byte> GetMemory(IEnumerable<byte> value)
         {
-            throw new NotImplementedException("This method should not be called for IEnumerable<byte>.");
+            return value.ToArray();
         }
 
         protected override IEnumerable<byte> GetValue(Memory<byte> memory)
@@ -169,16 +219,21 @@ public sealed class ByteSequenceJsonConverter : JsonConverterFactory
 
         public override void Write(Utf8JsonWriter writer, IEnumerable<byte> value, JsonSerializerOptions options)
         {
-            ArgumentNullException.ThrowIfNull(writer);
-
-            writer.WriteStartArray();
-
-            foreach (var b in value)
-            {
-                writer.WriteNumberValue(b);
-            }
-
-            writer.WriteEndArray();
+            WriteEnumerable(writer, value);
         }
+    }
+
+    private static void WriteEnumerable(Utf8JsonWriter writer, IEnumerable<byte> value)
+    {
+        ArgumentNullException.ThrowIfNull(writer);
+
+        writer.WriteStartArray();
+
+        foreach (var b in value)
+        {
+            writer.WriteNumberValue(b);
+        }
+
+        writer.WriteEndArray();
     }
 }

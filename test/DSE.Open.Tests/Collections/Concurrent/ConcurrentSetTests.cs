@@ -53,4 +53,17 @@ public class ConcurrentSetTests
 
         Assert.Equal(1000, set.Count);
     }
+
+    [Fact]
+    public void Add_WhenSetGrows_ShouldNotReleaseWrongLockArray()
+    {
+        var set = new ConcurrentSet<int>();
+
+        for (var i = 0; i < 5000; i++)
+        {
+            Assert.True(set.Add(i));
+        }
+
+        Assert.Equal(5000, set.Count);
+    }
 }

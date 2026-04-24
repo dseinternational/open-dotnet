@@ -125,7 +125,7 @@ public readonly record struct DateTime64 : IBinaryInteger<DateTime64>, IMinMaxVa
 
     static bool INumberBase<DateTime64>.IsNormal(DateTime64 value)
     {
-        throw new NotImplementedException();
+        return value.TotalMilliseconds != 0L;
     }
 
     static bool INumberBase<DateTime64>.IsOddInteger(DateTime64 value)
@@ -476,22 +476,38 @@ public readonly record struct DateTime64 : IBinaryInteger<DateTime64>, IMinMaxVa
 
     static bool IBinaryInteger<DateTime64>.TryReadBigEndian(ReadOnlySpan<byte> source, bool isUnsigned, out DateTime64 value)
     {
-        throw new NotImplementedException();
+        if (TryReadBigEndian(source, isUnsigned, out long milliseconds)
+            && milliseconds is >= MinMilliseconds and <= MaxMilliseconds)
+        {
+            value = new DateTime64(milliseconds);
+            return true;
+        }
+
+        value = default;
+        return false;
     }
 
     static bool IBinaryInteger<DateTime64>.TryReadLittleEndian(ReadOnlySpan<byte> source, bool isUnsigned, out DateTime64 value)
     {
-        throw new NotImplementedException();
+        if (TryReadLittleEndian(source, isUnsigned, out long milliseconds)
+            && milliseconds is >= MinMilliseconds and <= MaxMilliseconds)
+        {
+            value = new DateTime64(milliseconds);
+            return true;
+        }
+
+        value = default;
+        return false;
     }
 
     bool IBinaryInteger<DateTime64>.TryWriteBigEndian(Span<byte> destination, out int bytesWritten)
     {
-        throw new NotImplementedException();
+        return TryWriteBigEndian(TotalMilliseconds, destination, out bytesWritten);
     }
 
     bool IBinaryInteger<DateTime64>.TryWriteLittleEndian(Span<byte> destination, out int bytesWritten)
     {
-        throw new NotImplementedException();
+        return TryWriteLittleEndian(TotalMilliseconds, destination, out bytesWritten);
     }
 
     static bool IBinaryNumber<DateTime64>.IsPow2(DateTime64 value)
@@ -506,36 +522,60 @@ public readonly record struct DateTime64 : IBinaryInteger<DateTime64>, IMinMaxVa
 
     static DateTime64 IBitwiseOperators<DateTime64, DateTime64, DateTime64>.operator &(DateTime64 left, DateTime64 right)
     {
-        throw new NotImplementedException();
+        return new DateTime64(left.TotalMilliseconds & right.TotalMilliseconds);
     }
 
     static DateTime64 IBitwiseOperators<DateTime64, DateTime64, DateTime64>.operator |(DateTime64 left, DateTime64 right)
     {
-        throw new NotImplementedException();
+        return new DateTime64(left.TotalMilliseconds | right.TotalMilliseconds);
     }
 
     static DateTime64 IBitwiseOperators<DateTime64, DateTime64, DateTime64>.operator ^(DateTime64 left, DateTime64 right)
     {
-        throw new NotImplementedException();
+        return new DateTime64(left.TotalMilliseconds ^ right.TotalMilliseconds);
     }
 
     static DateTime64 IBitwiseOperators<DateTime64, DateTime64, DateTime64>.operator ~(DateTime64 value)
     {
-        throw new NotImplementedException();
+        return new DateTime64(~value.TotalMilliseconds);
     }
 
     static DateTime64 IShiftOperators<DateTime64, int, DateTime64>.operator <<(DateTime64 value, int shiftAmount)
     {
-        throw new NotImplementedException();
+        return new DateTime64(value.TotalMilliseconds << shiftAmount);
     }
 
     static DateTime64 IShiftOperators<DateTime64, int, DateTime64>.operator >>(DateTime64 value, int shiftAmount)
     {
-        throw new NotImplementedException();
+        return new DateTime64(value.TotalMilliseconds >> shiftAmount);
     }
 
     static DateTime64 IShiftOperators<DateTime64, int, DateTime64>.operator >>>(DateTime64 value, int shiftAmount)
     {
-        throw new NotImplementedException();
+        return new DateTime64(value.TotalMilliseconds >>> shiftAmount);
+    }
+
+    private static bool TryReadBigEndian<T>(ReadOnlySpan<byte> source, bool isUnsigned, out T value)
+        where T : IBinaryInteger<T>
+    {
+        return T.TryReadBigEndian(source, isUnsigned, out value);
+    }
+
+    private static bool TryReadLittleEndian<T>(ReadOnlySpan<byte> source, bool isUnsigned, out T value)
+        where T : IBinaryInteger<T>
+    {
+        return T.TryReadLittleEndian(source, isUnsigned, out value);
+    }
+
+    private static bool TryWriteBigEndian<T>(T value, Span<byte> destination, out int bytesWritten)
+        where T : IBinaryInteger<T>
+    {
+        return value.TryWriteBigEndian(destination, out bytesWritten);
+    }
+
+    private static bool TryWriteLittleEndian<T>(T value, Span<byte> destination, out int bytesWritten)
+        where T : IBinaryInteger<T>
+    {
+        return value.TryWriteLittleEndian(destination, out bytesWritten);
     }
 }

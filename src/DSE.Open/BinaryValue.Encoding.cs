@@ -75,12 +75,20 @@ public readonly partial record struct BinaryValue
 
     internal static int GetRequiredBufferSize(int inputLength, BinaryStringEncoding encoding)
     {
+        ArgumentOutOfRangeException.ThrowIfNegative(inputLength);
+
         return encoding switch
         {
-            BinaryStringEncoding.Base64 or BinaryStringEncoding.Base62 => (int)((uint)inputLength + 2) / 3 * 4,
-            BinaryStringEncoding.HexLower or BinaryStringEncoding.HexUpper => (int)(uint)inputLength * 2,
+            BinaryStringEncoding.Base64 => GetBase64EncodedLength(inputLength),
+            BinaryStringEncoding.Base62 => Base62Converter.GetMaxEncodedLength(inputLength),
+            BinaryStringEncoding.HexLower or BinaryStringEncoding.HexUpper => checked(inputLength * 2),
             _ => throw new ArgumentOutOfRangeException(nameof(encoding), encoding, null)
         };
+    }
+
+    private static int GetBase64EncodedLength(int inputLength)
+    {
+        return checked((inputLength / 3 * 4) + (inputLength % 3 == 0 ? 0 : 4));
     }
 
     /// <summary>

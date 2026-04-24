@@ -38,14 +38,13 @@ public class JsonValueObjectConverter : JsonConverter<object>
             JsonTokenType.Number => reader.GetDouble(),
             JsonTokenType.String when reader.TryGetDateTime(out var datetime) => datetime,
             JsonTokenType.String => reader.GetString()!,
-            JsonTokenType.None => throw new NotImplementedException(),
-            JsonTokenType.StartObject => throw new NotImplementedException(),
-            JsonTokenType.EndObject => throw new NotImplementedException(),
-            JsonTokenType.StartArray => throw new NotImplementedException(),
-            JsonTokenType.EndArray => throw new NotImplementedException(),
-            JsonTokenType.PropertyName => throw new NotImplementedException(),
-            JsonTokenType.Comment => throw new NotImplementedException(),
-            JsonTokenType.Null => throw new NotImplementedException(),
+            JsonTokenType.Null => null!,
+            JsonTokenType.StartObject or JsonTokenType.StartArray => JsonDocument.ParseValue(ref reader).RootElement.Clone(),
+            JsonTokenType.None
+                or JsonTokenType.EndObject
+                or JsonTokenType.EndArray
+                or JsonTokenType.PropertyName
+                or JsonTokenType.Comment => throw new JsonException($"Unexpected JSON token: {reader.TokenType}."),
             _ => JsonDocument.ParseValue(ref reader).RootElement.Clone()
         };
     }

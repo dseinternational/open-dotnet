@@ -65,6 +65,19 @@ public static class Base62Converter
         return builder.ToString();
     }
 
+    internal static int GetMaxEncodedLength(int byteCount)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegative(byteCount);
+
+        if (byteCount == 0)
+        {
+            return 0;
+        }
+
+        // 11/8 is a small integer upper bound for log_62(256), so this never underestimates.
+        return checked((int)(((long)byteCount * 11 + 7) / 8));
+    }
+
     /// <summary>
     /// Converts a base 62 string to a byte array.
     /// </summary>

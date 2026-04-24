@@ -39,18 +39,11 @@ public readonly record struct SecureToken : ISpanParsable<SecureToken>, ISpanFor
             throw new ArgumentOutOfRangeException(nameof(length));
         }
 
-        Span<byte> data = stackalloc byte[MaxTokenLength * 2];
-        data = data[..(length * 2)];
-
-        RandomNumberGenerator.Fill(data);
-
         Span<char> id = stackalloc char[MaxTokenLength];
 
-        for (var i = 0; i < length * 2; i += 2)
+        for (var i = 0; i < length; i++)
         {
-            var f = MemoryMarshal.Read<ushort>(data.Slice(i, 2));
-            var c = f % TokenChars.Length;
-            id[i / 2] = TokenChars.Span[c];
+            id[i] = TokenChars.Span[RandomNumberGenerator.GetInt32(TokenChars.Length)];
         }
 
         return new(id[..length].ToArray());
@@ -63,7 +56,9 @@ public readonly record struct SecureToken : ISpanParsable<SecureToken>, ISpanFor
 
     public bool Equals(SecureToken other)
     {
-        return _token is null ? other._token is null : other._token is not null && _token.SequenceEqual(other._token);
+        return CryptographicOperations.FixedTimeEquals(
+            MemoryMarshal.AsBytes(_token.AsSpan()),
+            MemoryMarshal.AsBytes(other._token.AsSpan()));
     }
 
     public override int GetHashCode()

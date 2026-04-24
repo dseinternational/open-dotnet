@@ -69,6 +69,26 @@ public class DictionaryEqualityComparerTests
     }
 
     [Fact]
+    public void GetHashCode_SameEntriesDifferentOrder_ReturnsSameHash()
+    {
+        IDictionary<string, int> a = new Dictionary<string, int> { ["a"] = 1, ["b"] = 2 };
+        IDictionary<string, int> b = new Dictionary<string, int> { ["b"] = 2, ["a"] = 1 };
+
+        Assert.True(s_comparer.Equals(a, b));
+        Assert.Equal(s_comparer.GetHashCode(a), s_comparer.GetHashCode(b));
+    }
+
+    [Fact]
+    public void GetHashCode_ReadOnlyDictionarySameEntriesDifferentOrder_ReturnsSameHash()
+    {
+        IReadOnlyDictionary<string, int> a = new Dictionary<string, int> { ["a"] = 1, ["b"] = 2 };
+        IReadOnlyDictionary<string, int> b = new Dictionary<string, int> { ["b"] = 2, ["a"] = 1 };
+
+        Assert.True(s_comparer.Equals(a, b));
+        Assert.Equal(s_comparer.GetHashCode(a), s_comparer.GetHashCode(b));
+    }
+
+    [Fact]
     public void GetHashCode_NullThrows()
     {
         _ = Assert.Throws<ArgumentNullException>(() => s_comparer.GetHashCode((IDictionary<string, int>)null!));
