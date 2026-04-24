@@ -45,6 +45,49 @@ public class MassTests
         Assert.Equal(expected, parsed);
     }
 
+    [Theory]
+    [InlineData("16oz", 453.59237)]
+    [InlineData("1lb", 453.59237)]
+    [InlineData("1000mg", 1)]
+    public void TryParse_WithSupportedNonDefaultUnits_ShouldConvertToGrams(string value, double massInGrams)
+    {
+        Assert.True(Mass.TryParse(value, NumberStyles.Number, CultureInfo.InvariantCulture, out var parsed));
+
+        Assert.Equal(massInGrams, parsed.Grams, 5);
+    }
+
+    [Fact]
+    public void TryParse_WithCustomFormatProvider_ShouldRespectDecimalSeparator()
+    {
+        var culture = CultureInfo.GetCultureInfo("fr-FR");
+
+        Assert.True(Mass.TryParse("1,5 kg", NumberStyles.Number, culture, out var parsed));
+
+        Assert.Equal(1500, parsed.Grams);
+    }
+
+    [Fact]
+    public void Parse_WithInvalidValue_ShouldThrowFormatException()
+    {
+        _ = Assert.Throws<FormatException>(() => Mass.Parse("not-a-mass"));
+    }
+
+    [Fact]
+    public void ToString_WithTargetUnit_ShouldFormatConvertedValue()
+    {
+        var mass = Mass.FromGrams(1000);
+
+        Assert.Equal("1kg", mass.ToString(null, CultureInfo.InvariantCulture, UnitOfMass.Kilogram));
+    }
+
+    [Fact]
+    public void ToString_WithNullUnit_ShouldThrowArgumentNullException()
+    {
+        var mass = Mass.FromGrams(1000);
+
+        _ = Assert.Throws<ArgumentNullException>(() => mass.ToString(null, CultureInfo.InvariantCulture, null!));
+    }
+
     public static TheoryData<string, double> ParseData => new()
     {
         { "48615.256 g", 48615.256 },

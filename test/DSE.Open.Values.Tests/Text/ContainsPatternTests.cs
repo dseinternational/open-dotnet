@@ -16,6 +16,43 @@ public class ContainsPatternTests
     }
 
     [Fact]
+    public void Parse_WithMaximumLengthValue_ShouldSucceed()
+    {
+        var value = new string('a', ContainsPattern.MaxSerializedCharLength);
+
+        var pattern = ContainsPattern.Parse(value, CultureInfo.InvariantCulture);
+
+        Assert.Equal(value, pattern.ToString());
+    }
+
+    [Fact]
+    public void Parse_WithValueLongerThanMaximumLength_ShouldThrowFormatException()
+    {
+        var value = new string('a', ContainsPattern.MaxSerializedCharLength + 1);
+
+        _ = Assert.Throws<FormatException>(() => ContainsPattern.Parse(value, CultureInfo.InvariantCulture));
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("name:value")]
+    [InlineData("name/value")]
+    [InlineData("name+value")]
+    public void Parse_WithInvalidValue_ShouldThrowFormatException(string value)
+    {
+        _ = Assert.Throws<FormatException>(() => ContainsPattern.Parse(value, CultureInfo.InvariantCulture));
+    }
+
+    [Fact]
+    public void TryParse_WithNullString_ShouldReturnFalseAndDefaultResult()
+    {
+        var success = ContainsPattern.TryParse(null, CultureInfo.InvariantCulture, out var result);
+
+        Assert.False(success);
+        Assert.Equal(default, result);
+    }
+
+    [Fact]
     public void Serializes_to_string_value()
     {
         var pattern = ContainsPattern.Parse("flower* AND petal*", CultureInfo.InvariantCulture);
@@ -48,6 +85,9 @@ public class ContainsPatternTests
                 "bat &! ball",
                 "bat NEAR ball",
                 "bat NEAR ball*",
+                "bat (ball OR glove)",
+                "\"exact phrase\"",
+                "élève*",
                 "      bat NEAR ball",
                 "      bat NEAR ball          ",
             };

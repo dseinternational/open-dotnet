@@ -156,6 +156,63 @@ public class UriAsciiPathTests
     }
 
     [Theory]
+    [InlineData("", 0)]
+    [InlineData("home", 1)]
+    [InlineData("home/sub", 2)]
+    [InlineData("home/sub/child", 3)]
+    public void GetSegmentCount_returns_number_of_path_segments(string path, int expected)
+    {
+        var pathValue = (UriAsciiPath)path;
+
+        Assert.Equal(expected, pathValue.GetSegmentCount());
+    }
+
+    [Theory]
+    [InlineData("home/sub/child", 0, "home/sub/child")]
+    [InlineData("home/sub/child", 4, "sub/child")]
+    [InlineData("home/sub/child", 5, "sub/child")]
+    [InlineData("home/sub/child", 8, "child")]
+    [InlineData("home/sub/child", 9, "child")]
+    public void Subpath_removes_leading_separator_from_result(string path, int startIndex, string expected)
+    {
+        var pathValue = (UriAsciiPath)path;
+
+        Assert.Equal(expected, pathValue.Subpath(startIndex).ToString());
+        Assert.Equal(expected, pathValue.Substring(startIndex));
+    }
+
+    [Fact]
+    public void StartsWith_and_EndsWith_return_expected_results()
+    {
+        var path = (UriAsciiPath)"Home/Sub-Dir_1~x.y";
+        var homeBytes = Encoding.ASCII.GetBytes("Home");
+        var suffixBytes = Encoding.ASCII.GetBytes("x.y");
+
+        Assert.True(path.StartsWith("Home"));
+        Assert.True(path.StartsWith("Home".AsSpan()));
+        Assert.True(path.StartsWith(homeBytes));
+        Assert.True(path.StartsWith((UriAsciiPath)"Home"));
+        Assert.True(path.EndsWith("x.y"));
+        Assert.True(path.EndsWith("x.y".AsSpan()));
+        Assert.True(path.EndsWith(suffixBytes));
+        Assert.True(path.EndsWith((UriAsciiPath)"x.y"));
+        Assert.False(path.StartsWith("home"));
+        Assert.False(path.EndsWith("X.Y"));
+    }
+
+    [Fact]
+    public void Case_conversion_methods_return_expected_values()
+    {
+        var path = (UriAsciiPath)"Home/Sub-Dir_1~x.y";
+
+        Assert.Equal("home/sub-dir_1~x.y", path.ToLower().ToString());
+        Assert.Equal("HOME/SUB-DIR_1~X.Y", path.ToUpper().ToString());
+        Assert.Equal("home/sub-dir_1~x.y", path.ToStringLower());
+        Assert.Equal("HOME/SUB-DIR_1~X.Y", path.ToStringUpper());
+        Assert.True(path.EqualsIgnoreCase((UriAsciiPath)"home/sub-dir_1~X.Y"));
+    }
+
+    [Theory]
     [InlineData("", "")]
     [InlineData("/", "")]
     [InlineData("//", "")]
@@ -307,6 +364,33 @@ public class UriAsciiPathTests
         // Assert
         Assert.False(success);
         Assert.Equal(0, bytesWritten);
+    }
+
+    [Fact]
+    public void TryFormatUtf8_WithExactBuffer_ShouldWriteAsciiBytes()
+    {
+        // Arrange
+        var path = UriAsciiPath.Parse("home", CultureInfo.InvariantCulture);
+        Span<byte> buffer = stackalloc byte[4];
+
+        // Act
+        var success = path.TryFormat(buffer, out var bytesWritten, default, default);
+
+        // Assert
+        Assert.True(success);
+        Assert.Equal(4, bytesWritten);
+        Assert.True(buffer.SequenceEqual(Encoding.ASCII.GetBytes("home")));
+    }
+
+    [Fact]
+    public void TryParseUtf8_WithNonAsciiBytes_ShouldReturnFalse()
+    {
+        byte[] bytes = [(byte)'h', (byte)'o', 0xC3, 0xBC];
+
+        var success = UriAsciiPath.TryParse(bytes, CultureInfo.InvariantCulture, out var result);
+
+        Assert.False(success);
+        Assert.Equal(default, result);
     }
 
     [Fact]

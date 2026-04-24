@@ -88,4 +88,92 @@ public class EmailAddressTests
     {
         Assert.Equal("dseinternational.org", EmailAddress.Parse("hello@dseinternational.org", CultureInfo.InvariantCulture).DomainPart());
     }
+
+    [Fact]
+    public void Parse_WithSurroundingWhitespace_ShouldTrimValue()
+    {
+        var address = EmailAddress.Parse("  hello@dseinternational.org  ", CultureInfo.InvariantCulture);
+
+        Assert.Equal("hello@dseinternational.org", address.ToString());
+    }
+
+    [Fact]
+    public void TryParse_WithEmptySpan_ShouldReturnTrueAndDefaultResult()
+    {
+        var success = EmailAddress.TryParse(ReadOnlySpan<char>.Empty, CultureInfo.InvariantCulture, out var result);
+
+        Assert.True(success);
+        Assert.Equal(EmailAddress.Empty, result);
+    }
+
+    [Fact]
+    public void TryParse_WithNullString_ShouldReturnFalseAndDefaultResult()
+    {
+        var success = EmailAddress.TryParse(null, CultureInfo.InvariantCulture, out var result);
+
+        Assert.False(success);
+        Assert.Equal(EmailAddress.Empty, result);
+    }
+
+    [Fact]
+    public void TryFormat_WithExactBuffer_ShouldWriteValue()
+    {
+        var address = EmailAddress.Parse("hello@dseinternational.org", CultureInfo.InvariantCulture);
+        Span<char> buffer = stackalloc char[address.Length];
+
+        var success = address.TryFormat(buffer, out var charsWritten);
+
+        Assert.True(success);
+        Assert.Equal(address.Length, charsWritten);
+        Assert.Equal(address.ToString(), buffer.ToString());
+    }
+
+    [Fact]
+    public void TryFormat_WithShortBuffer_ShouldReturnFalse()
+    {
+        var address = EmailAddress.Parse("hello@dseinternational.org", CultureInfo.InvariantCulture);
+        Span<char> buffer = stackalloc char[address.Length - 1];
+
+        var success = address.TryFormat(buffer, out var charsWritten);
+
+        Assert.False(success);
+        Assert.Equal(0, charsWritten);
+    }
+
+    [Fact]
+    public void Contains_DefaultComparison_ShouldIgnoreCase()
+    {
+        var address = EmailAddress.Parse("Hello@DseInternational.Org", CultureInfo.InvariantCulture);
+
+#pragma warning disable CA1307 // Intentionally verifies the default comparison used by this overload.
+        Assert.True(address.Contains("dseinternational.org"));
+#pragma warning restore CA1307
+    }
+
+    [Fact]
+    public void Contains_WithOrdinalComparison_ShouldBeCaseSensitive()
+    {
+        var address = EmailAddress.Parse("Hello@DseInternational.Org", CultureInfo.InvariantCulture);
+
+        Assert.False(address.Contains("dseinternational.org", StringComparison.Ordinal));
+        Assert.True(address.Contains("DseInternational".AsSpan(), StringComparison.Ordinal));
+    }
+
+    [Fact]
+    public void Contains_WithNullString_ShouldThrowArgumentNullException()
+    {
+        var address = EmailAddress.Parse("hello@dseinternational.org", CultureInfo.InvariantCulture);
+
+        _ = Assert.Throws<ArgumentNullException>(() => address.Contains(null!, StringComparison.Ordinal));
+    }
+
+    [Fact]
+    public void Equals_StringAndMemoryOverloads_ShouldUseOrdinalComparison()
+    {
+        var address = EmailAddress.Parse("hello@dseinternational.org", CultureInfo.InvariantCulture);
+
+        Assert.True(address.Equals("hello@dseinternational.org"));
+        Assert.True(address.Equals("hello@dseinternational.org".AsMemory()));
+        Assert.False(address.Equals("HELLO@DSEINTERNATIONAL.ORG"));
+    }
 }
