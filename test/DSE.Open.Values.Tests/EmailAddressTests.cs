@@ -28,6 +28,7 @@ public class EmailAddressTests
     [InlineData("$A12345@example.com")]
     [InlineData("!def!xyz%abc@example.com")]
     [InlineData("_somename@example.com")]
+    [InlineData("email@a.b.c.d.e.f.g.h.i.j.k.example.com")]
     public void TryParse_WithValidEmailAddress_ReturnsTrue(string address)
     {
         Assert.True(EmailAddress.TryParse(address, out _));

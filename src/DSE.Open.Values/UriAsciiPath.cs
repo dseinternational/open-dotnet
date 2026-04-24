@@ -262,7 +262,7 @@ public readonly partial struct UriAsciiPath
         var rented = SpanOwner<byte>.Empty;
 
         Span<byte> buffer = MemoryThresholds.CanStackalloc<byte>(value.Length)
-            ? stackalloc byte[MemoryThresholds.StackallocCharThreshold]
+            ? stackalloc byte[value.Length]
             : (rented = SpanOwner<byte>.Allocate(value.Length)).Span;
 
         using (rented)

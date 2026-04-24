@@ -53,6 +53,10 @@ public readonly partial struct Identifier : IEquatableValue<Identifier, AsciiStr
 
     public const char PrefixDelimiter = '_';
 
+    private const int ValidIdByteCount = 62;
+
+    private const int RandomIdByteUpperBound = byte.MaxValue + 1 - ((byte.MaxValue + 1) % ValidIdByteCount);
+
     private static ReadOnlySpan<byte> ValidIdBytes => "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"u8;
 
     private static ReadOnlySpan<byte> ValidPrefixBytes => "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_"u8;
@@ -172,6 +176,12 @@ public readonly partial struct Identifier : IEquatableValue<Identifier, AsciiStr
             return New(idLength, ReadOnlySpan<byte>.Empty);
         }
 
+        if (prefix.Length > MaxPrefixLength)
+        {
+            return ThrowHelper.ThrowArgumentException<Identifier>(nameof(prefix),
+                $"Invalid {nameof(Identifier)} prefix '{prefix.ToString()}'");
+        }
+
         Span<byte> utf8 = stackalloc byte[MaxPrefixLength];
 
         var status = Ascii.FromUtf16(prefix, utf8, out var bytesWritten);
@@ -214,15 +224,30 @@ public readonly partial struct Identifier : IEquatableValue<Identifier, AsciiStr
             id.Span[idStartIndex - 1] = (AsciiChar)'_';
         }
 
-        Span<byte> randomBuffer = stackalloc byte[MaxIdLength * 2];
+        Debug.Assert(ValidIdBytes.Length == ValidIdByteCount);
 
-        RandomNumberGenerator.Fill(randomBuffer);
+        Span<byte> randomBuffer = stackalloc byte[MaxIdLength];
+        var charsWritten = 0;
 
-        for (var i = 0; i < idLength * 2; i += 2)
+        while (charsWritten < idLength)
         {
-            var f = BitConverter.ToUInt16(randomBuffer.Slice(i, 2));
-            var c = f % ValidIdBytes.Length;
-            id.Span[idStartIndex + (i / 2)] = (AsciiChar)ValidIdBytes[c];
+            RandomNumberGenerator.Fill(randomBuffer);
+
+            foreach (var randomByte in randomBuffer)
+            {
+                if (randomByte >= RandomIdByteUpperBound)
+                {
+                    continue;
+                }
+
+                id.Span[idStartIndex + charsWritten] = (AsciiChar)ValidIdBytes[randomByte % ValidIdByteCount];
+                charsWritten++;
+
+                if (charsWritten == idLength)
+                {
+                    break;
+                }
+            }
         }
 
         return new(id);
