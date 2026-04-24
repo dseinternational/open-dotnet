@@ -15,6 +15,11 @@ public readonly record struct Pagination
     [JsonConstructor]
     public Pagination(int totalItems, int pageSize, int currentPage)
     {
+        if (totalItems == 0 && pageSize == 0 && currentPage == 0)
+        {
+            return;
+        }
+
         Guard.IsGreaterThanOrEqualTo(totalItems, 0);
         Guard.IsGreaterThanOrEqualTo(pageSize, 1);
 

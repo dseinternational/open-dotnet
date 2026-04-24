@@ -10,7 +10,13 @@ public abstract class PaginatedCollectionValueAsyncResultBuilder<TResult, TValue
 {
     public Pagination Pagination { get; set; }
 
-    public new IAsyncEnumerable<TValue>? Value { get; set; }
+    public override void MergeNotificationsAndValue(TResult valueResult)
+    {
+        ArgumentNullException.ThrowIfNull(valueResult);
+
+        base.MergeNotificationsAndValue(valueResult);
+        Pagination = valueResult.Pagination;
+    }
 }
 
 public class PaginatedCollectionValueAsyncResultBuilder<TValue> : PaginatedCollectionValueAsyncResultBuilder<PaginatedCollectionValueAsyncResult<TValue>, TValue>

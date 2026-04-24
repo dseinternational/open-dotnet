@@ -21,6 +21,24 @@ public class RequestIdTests
     }
 
     [Fact]
+    public void Ctor_NullValue_Throws()
+    {
+        _ = Assert.Throws<ArgumentNullException>(() => new RequestId(null!));
+    }
+
+    [Fact]
+    public void Ctor_WhitespaceValue_Throws()
+    {
+        _ = Assert.Throws<ArgumentOutOfRangeException>(() => new RequestId("   "));
+    }
+
+    [Fact]
+    public void Ctor_ControlCharacters_Throws()
+    {
+        _ = Assert.Throws<ArgumentOutOfRangeException>(() => new RequestId("abc\r\n123"));
+    }
+
+    [Fact]
     public void Ctor_MaxLength_Succeeds()
     {
         var value = new string('x', RequestId.MaxSerializedCharLength);
@@ -39,6 +57,15 @@ public class RequestIdTests
     public void IsValidValue_Empty_ReturnsFalse()
     {
         Assert.False(RequestId.IsValidValue(default));
+    }
+
+    [Theory]
+    [InlineData("   ")]
+    [InlineData("abc\t123")]
+    [InlineData("abc\r\n123")]
+    public void IsValidValue_InvalidText_ReturnsFalse(string value)
+    {
+        Assert.False(RequestId.IsValidValue(value));
     }
 
     [Fact]

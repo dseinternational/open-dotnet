@@ -29,22 +29,41 @@ public readonly partial struct RequestId : IEquatableValue<RequestId, CharSequen
     /// <exception cref="ArgumentOutOfRangeException"><paramref name="value"/> is empty or too long.</exception>
     public RequestId(string value)
     {
+        ArgumentNullException.ThrowIfNull(value);
+
         if (!IsValidValue(value))
         {
             throw new ArgumentOutOfRangeException(nameof(value),
-                $"Value must be a non-empty string with a maximum length of {Length} characters.");
+                $"Value must be a non-whitespace string with no control characters and a maximum length of {Length} characters.");
         }
 
         _value = value;
     }
 
     /// <summary>
-    /// Validates a candidate value — non-empty and no longer than
-    /// <see cref="MaxSerializedCharLength"/>.
+    /// Validates a candidate value: non-whitespace, no control characters, and no longer
+    /// than <see cref="MaxSerializedCharLength"/>.
     /// </summary>
     public static bool IsValidValue(CharSequence value)
     {
-        return value.Length > 0 && value.Length <= Length;
+        if (value.Length is 0 or > Length)
+        {
+            return false;
+        }
+
+        var hasNonWhiteSpace = false;
+
+        foreach (var c in value.Span)
+        {
+            if (char.IsControl(c))
+            {
+                return false;
+            }
+
+            hasNonWhiteSpace |= !char.IsWhiteSpace(c);
+        }
+
+        return hasNonWhiteSpace;
     }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
