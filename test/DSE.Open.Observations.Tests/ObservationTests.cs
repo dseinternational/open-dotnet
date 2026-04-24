@@ -412,6 +412,30 @@ public sealed class ObservationTests
     }
 
     [Fact]
+    public void Equals_RecordedDiffers_NotEqual()
+    {
+        var id = ObservationId.Parse("3840829473618409", CultureInfo.InvariantCulture);
+        var time = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero);
+
+        var obs1 = new Observation<Binary>(
+            id,
+            time,
+            time,
+            TestMeasures.BinaryMeasure.Id,
+            true);
+        var obs2 = new Observation<Binary>(
+            id,
+            time,
+            time.AddMinutes(1),
+            TestMeasures.BinaryMeasure.Id,
+            true);
+
+        Assert.NotEqual(obs1, obs2);
+        Assert.NotEqual(obs1.GetHashCode(), obs2.GetHashCode());
+        Assert.NotEqual(obs1.GetRepeatableHashCode(), obs2.GetRepeatableHashCode());
+    }
+
+    [Fact]
     public void Deserialize_TimeFarInFutureOfMachineClock_Succeeds()
     {
         // Simulates a sender whose clock is ahead of the receiver (or future-dated payload).
@@ -526,7 +550,7 @@ public sealed class ObservationTests
 
         foreach (var observation in observations)
         {
-            Assert.NotNull(observation.Recorded);
+            Assert.True(observation.Recorded.HasValue);
             AssertJson.Roundtrip(observation, JsonContext.Default.Observation);
         }
     }
