@@ -33,15 +33,23 @@ public static class SyllableCount
         textWord = textWord.Replace("'s", string.Empty, StringComparison.Ordinal);
         textWord = textWord.Replace("’s", string.Empty, StringComparison.Ordinal);
 
-        if (s_counts is null)
+        var counts = s_counts;
+
+        if (counts is null)
         {
             lock (s_countsLock)
             {
-                s_counts = ReadCounts();
+                counts = s_counts;
+
+                if (counts is null)
+                {
+                    counts = ReadCounts();
+                    s_counts = counts;
+                }
             }
         }
 
-        return s_counts.GetValueOrDefault(textWord, -1);
+        return counts.GetValueOrDefault(textWord, -1);
     }
 
     private static FrozenDictionary<string, int> ReadCounts()
@@ -57,7 +65,7 @@ public static class SyllableCount
             var line = reader.ReadLine();
             if (line is not null)
             {
-                var parts = line.Split(' ');
+                var parts = line.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
                 if (parts.Length == 2 && int.TryParse(parts[1], out var count))
                 {

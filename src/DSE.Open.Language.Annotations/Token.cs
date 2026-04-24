@@ -26,6 +26,7 @@ public record Token
       IRepeatableHash64
 {
     private static readonly TokenIndex s_one = new(1);
+    private const string EmptyFields = "\t_\t_\t_\t_\t_\t_\t_\t";
 
     /// <summary>
     /// Index of the token in the sentence.
@@ -188,7 +189,7 @@ public record Token
                     return false;
                 }
 
-                if (TokenIndex.TryParse(s[fields[ConlluFieldIndex.Id]], provider, out var id))
+                if (TokenIndex.TryParse(line[fields[ConlluFieldIndex.Id]], provider, out var id))
                 {
                     tokenData.Index = id;
                 }
@@ -198,7 +199,7 @@ public record Token
                     return false;
                 }
 
-                if (TokenText.TryParse(s[fields[ConlluFieldIndex.Form]], provider, out var word))
+                if (TokenText.TryParse(line[fields[ConlluFieldIndex.Form]], provider, out var word))
                 {
                     tokenData.Text = word;
                 }
@@ -208,7 +209,7 @@ public record Token
                     return false;
                 }
 
-                var miscSpan = s[fields[ConlluFieldIndex.Misc]];
+                var miscSpan = line[fields[ConlluFieldIndex.Misc]];
 
                 if (miscSpan.Length == 1 && miscSpan[0] == '_')
                 {
@@ -302,12 +303,21 @@ public record Token
             return Words[0].GetCharCount();
         }
 
-        return Words.Sum(w => w.GetCharCount())
-            + 6                         // "10-11\t"
+        return Index.GetCharCount()
+            + 1                         // tab after ID
             + Text.Length
-            + 18                        // 9 x "\t_"
-            + (Attributes.Count * 16)
-            + 2;                        // "_\n"
+            + EmptyFields.Length
+            + GetFieldCharCount(Attributes)
+            + 1                         // newline after multiword row
+            + Words.Sum(w => w.GetCharCount())
+            + Math.Max(0, Words.Count - 1);
+    }
+
+    private static int GetFieldCharCount(ReadOnlyAttributeValueCollection values)
+    {
+        return values.Count == 0
+            ? 1
+            : values.Sum(v => v.GetCharCount()) + values.Count - 1;
     }
 
     [SkipLocalsInit]
@@ -355,15 +365,13 @@ public record Token
 
         if (Words.Count == 1)
         {
-            if (Words[0].TryFormat(destination, out var wordChars, format, provider))
+            if (!Words[0].TryFormat(destination, out var wordChars, format, provider))
             {
-                charsWritten += wordChars;
-            }
-            else
-            {
+                charsWritten = 0;
                 return false;
             }
 
+            charsWritten = wordChars;
             return true;
         }
 
@@ -377,87 +385,88 @@ public record Token
         // an underscore in all the remaining fields except MISC (because the token represents multiple
         // words, each with its own lemma, part-of-speech tag, syntactic head, and so on).
 
-        if (Index.TryFormat(destination, out var indexChars, default, default))
+        if (!Index.TryFormat(destination, out var indexChars, default, default))
         {
-            charsWritten += indexChars;
-        }
-        else
-        {
+            charsWritten = 0;
             return false;
         }
 
-        if (destination.Length > charsWritten)
+        charsWritten = indexChars;
+
+        if (destination.Length <= charsWritten)
         {
-            destination[charsWritten++] = '\t';
-        }
-        else
-        {
+            charsWritten = 0;
             return false;
         }
 
-        if (Text.TryFormat(destination[charsWritten..], out var textChars, format, provider))
+        destination[charsWritten++] = '\t';
+
+        if (!Text.TryFormat(destination[charsWritten..], out var textChars, format, provider))
         {
-            charsWritten += textChars;
-        }
-        else
-        {
+            charsWritten = 0;
             return false;
         }
 
-        const string EmptyFields = "\t_\t_\t_\t_\t_\t_\t_\t";
+        charsWritten += textChars;
 
-        if (EmptyFields.TryCopyTo(destination[charsWritten..]))
+        if (!EmptyFields.TryCopyTo(destination[charsWritten..]))
         {
-            charsWritten += EmptyFields.Length;
-        }
-        else
-        {
+            charsWritten = 0;
             return false;
         }
 
-        // TODO: MISC
+        charsWritten += EmptyFields.Length;
 
-        if (destination.Length > charsWritten)
+        if (Attributes.Count > 0)
         {
+            if (!Attributes.TryFormat(destination[charsWritten..], out var attributeChars, format, provider))
+            {
+                charsWritten = 0;
+                return false;
+            }
+
+            charsWritten += attributeChars;
+        }
+        else
+        {
+            if (destination.Length <= charsWritten)
+            {
+                charsWritten = 0;
+                return false;
+            }
+
             destination[charsWritten++] = '_';
         }
-        else
+
+        if (destination.Length <= charsWritten)
         {
+            charsWritten = 0;
             return false;
         }
 
-        if (destination.Length > charsWritten)
-        {
-            destination[charsWritten++] = '\n';
-        }
-        else
-        {
-            return false;
-        }
+        destination[charsWritten++] = '\n';
 
         for (var i = 0; i < Words.Count; i++)
         {
             var word = Words[i];
 
-            if (word.TryFormat(destination[charsWritten..], out var wordChars, format, provider))
+            if (!word.TryFormat(destination[charsWritten..], out var wordChars2, format, provider))
             {
-                charsWritten += wordChars;
-
-                if (i < Words.Count - 1)
-                {
-                    if (destination.Length > charsWritten)
-                    {
-                        destination[charsWritten++] = '\n';
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-            }
-            else
-            {
+                charsWritten = 0;
                 return false;
+            }
+
+            charsWritten += wordChars2;
+
+            if (i < Words.Count - 1)
+            {
+                if (destination.Length <= charsWritten)
+                {
+                    charsWritten = 0;
+                    return false;
+                }
+
+                destination[charsWritten++] = '\n';
             }
         }
 

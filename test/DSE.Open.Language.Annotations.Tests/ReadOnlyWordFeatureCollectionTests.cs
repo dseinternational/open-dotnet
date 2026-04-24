@@ -29,4 +29,13 @@ public class ReadOnlyWordFeatureCollectionTests
         Assert.Equal(count, col.Count);
         AssertJson.Roundtrip(col);
     }
+
+    [Fact]
+    public void JsonSerialize_WithLongFeatureCollection_DoesNotAssumeFixedItemWidth()
+    {
+        var feature = string.Join('|', Enumerable.Range(0, 33).Select(i => $"F{i}=A"));
+        var col = ReadOnlyWordFeatureCollection.ParseInvariant(feature);
+
+        AssertJson.Roundtrip(col);
+    }
 }

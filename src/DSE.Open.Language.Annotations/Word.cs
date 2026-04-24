@@ -78,20 +78,40 @@ public record Word : ISpanFormattable, ISpanParsable<Word>, IRepeatableHash64
 
     internal int GetCharCount()
     {
-        var features = Features.Sum(f => f.GetCharCount() + 1);
-        var attributes = Attributes.Sum(a => a.GetCharCount() + 1);
-
         var count = 9 // tabs
+            + GetInvariantCharCount(Index)
             + Form.Length
             + (Lemma?.Length ?? 1)
             + Pos.Length
             + (AltPos?.Length ?? 1)
-            + features
-            + 3 // at most
+            + GetFieldCharCount(Features)
+            + (HeadIndex is null ? 1 : GetInvariantCharCount(HeadIndex.Value))
             + (Relation?.Length ?? 1)
-            + attributes;
+            + 1 // DEPS
+            + GetFieldCharCount(Attributes);
 
         return count;
+    }
+
+    private static int GetFieldCharCount(ReadOnlyWordFeatureValueCollection values)
+    {
+        return values.Count == 0
+            ? 1
+            : values.Sum(v => v.GetCharCount()) + values.Count - 1;
+    }
+
+    private static int GetFieldCharCount(ReadOnlyAttributeValueCollection values)
+    {
+        return values.Count == 0
+            ? 1
+            : values.Sum(v => v.GetCharCount()) + values.Count - 1;
+    }
+
+    private static int GetInvariantCharCount(int value)
+    {
+        Span<char> buffer = stackalloc char[11];
+        _ = value.TryFormat(buffer, out var charsWritten, default, CultureInfo.InvariantCulture);
+        return charsWritten;
     }
 
     public static Word Parse(ReadOnlySpan<char> s)
@@ -142,6 +162,7 @@ public record Word : ISpanFormattable, ISpanParsable<Word>, IRepeatableHash64
         }
 
         if (!(int.TryParse(s[fields[ConlluFieldIndex.Id]], provider, out var index)
+            && index > 0
             && TokenText.TryParse(s[fields[ConlluFieldIndex.Form]], provider, out var word)))
         {
             return Fail(out result);
@@ -225,7 +246,8 @@ public record Word : ISpanFormattable, ISpanParsable<Word>, IRepeatableHash64
         }
         else
         {
-            if (int.TryParse(headSpan, provider, out var headValue))
+            if (int.TryParse(headSpan, provider, out var headValue)
+                && headValue >= 0)
             {
                 head = headValue;
             }

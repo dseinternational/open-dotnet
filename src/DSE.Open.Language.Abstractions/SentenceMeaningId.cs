@@ -98,12 +98,10 @@ public readonly partial struct SentenceMeaningId
         return value.ToInt64();
     }
 
-#pragma warning disable CA5394 // Do not use insecure randomness
     public static SentenceMeaningId GetRandomId()
     {
-        return (SentenceMeaningId)(ulong)Random.Shared.NextInt64((long)LanguageIds.MinIdValue, (long)LanguageIds.MaxIdValue + 1);
+        return (SentenceMeaningId)LanguageIds.GetRandomIdValue();
     }
-#pragma warning restore CA5394 // Do not use insecure randomness
 
     /// <summary>
     /// A sentence meaning is a unique string (in English using Oxford Spelling) that

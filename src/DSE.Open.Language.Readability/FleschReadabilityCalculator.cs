@@ -62,14 +62,7 @@ public static class FleschReadabilityCalculator
             throw new ArgumentException("Must contain at least one word.", nameof(sentences));
         }
 
-        var unknown = words.FirstOrDefault(w => SyllableCount.GetSyllableCount(w.Form.ToString()) < 1);
-
-        if (unknown != null)
-        {
-            throw new InvalidOperationException("Cannot determine syllable count for " + unknown.Form);
-        }
-
-        var syllableCount = words.Select(w => SyllableCount.GetSyllableCount(w.Form.ToString())).Sum();
+        var syllableCount = GetSyllableCount(words);
 
         return CalculateReadingEase(words.Length, sentences.Count, syllableCount);
     }
@@ -116,14 +109,7 @@ public static class FleschReadabilityCalculator
             throw new ArgumentException("Must contain at least one word.", nameof(sentences));
         }
 
-        var unknown = words.FirstOrDefault(w => SyllableCount.GetSyllableCount(w.Form.ToString()) < 1);
-
-        if (unknown != null)
-        {
-            throw new InvalidOperationException("Cannot determine syllable count for " + unknown.Form);
-        }
-
-        var syllableCount = words.Select(w => SyllableCount.GetSyllableCount(w.Form.ToString())).Sum();
+        var syllableCount = GetSyllableCount(words);
 
         return CalculateReadingGrade(words.Length, sentences.Count, syllableCount);
     }
@@ -144,5 +130,24 @@ public static class FleschReadabilityCalculator
         return (GradeSentenceWeight * ((double)wordCount / sentenceCount)) +
             (GradeWordWeight * ((double)syllableCount / wordCount)) +
             GradeBaseScore;
+    }
+
+    private static int GetSyllableCount(IEnumerable<Word> words)
+    {
+        var syllableCount = 0;
+
+        foreach (var word in words)
+        {
+            var wordSyllables = SyllableCount.GetSyllableCount(word.Form.ToString());
+
+            if (wordSyllables < 1)
+            {
+                throw new InvalidOperationException("Cannot determine syllable count for " + word.Form);
+            }
+
+            syllableCount += wordSyllables;
+        }
+
+        return syllableCount;
     }
 }

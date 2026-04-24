@@ -82,4 +82,16 @@ public class WordFeatureSerializerTests
         var roundtrip = WordFeatureSerializer.SerializeToString(list);
         Assert.Equal(input, roundtrip);
     }
+
+    [Fact]
+    public void TryDeserialize_WithMoreThanThirtyTwoFeatures_ReturnsAllFeatures()
+    {
+        var input = string.Join('|', Enumerable.Range(0, 33).Select(i => $"F{i}=A"));
+
+        Assert.True(WordFeatureSerializer.TryDeserialize(input, out var parsed));
+
+        var list = parsed.ToList();
+        Assert.Equal(33, list.Count);
+        Assert.Equal(input, WordFeatureSerializer.SerializeToString(list));
+    }
 }

@@ -59,6 +59,14 @@ public class SentenceTransformer : PyObjectWrapper
             return new ReadOnlyTensorSpan<float>();
         }
 
+        for (var i = 0; i < sentences.Count; i++)
+        {
+            if (sentences[i] is null)
+            {
+                throw new ArgumentException("Sentence entries cannot be null.", nameof(sentences));
+            }
+        }
+
         var result = _service.EncodeSentenceCollection(InnerObject, sentences, prompt);
 
         // todo: avoid copy - this is a workaround an issue in CSnakes

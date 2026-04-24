@@ -26,6 +26,7 @@ public class BookSourceMarkdownTextReader
     public async Task<BookSource> ReadAsync(StreamReader reader, string id)
     {
         ArgumentNullException.ThrowIfNull(reader);
+        ArgumentException.ThrowIfNullOrWhiteSpace(id);
 
         string? title = null;
         var pages = new List<PageSource>();
@@ -63,7 +64,10 @@ public class BookSourceMarkdownTextReader
             pages.Add(new(paragraphs));
         }
 
-        return new(LanguageTag.EnglishUk, title ?? string.Empty, pages);
+        return new(LanguageTag.EnglishUk, title ?? string.Empty, pages)
+        {
+            Id = id
+        };
     }
 
     private static bool LineIsHeading1(string line)

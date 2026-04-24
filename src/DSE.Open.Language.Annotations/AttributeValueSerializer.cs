@@ -84,7 +84,10 @@ public static class AttributeValueSerializer
     {
         ArgumentNullException.ThrowIfNull(features);
 
-        var maxLength = features.Count() * 16;
+        var featureList = features as IReadOnlyList<AttributeValue> ?? [.. features];
+        var maxLength = featureList.Count == 0
+            ? 0
+            : featureList.Sum(f => f.GetCharCount()) + featureList.Count - 1;
 
         char[]? rented = null;
 
@@ -94,7 +97,7 @@ public static class AttributeValueSerializer
 
         try
         {
-            if (TrySerialize(buffer, features, out var charsWritten))
+            if (TrySerialize(buffer, featureList, out var charsWritten))
             {
                 return buffer[..charsWritten].ToString();
             }
@@ -128,26 +131,33 @@ public static class AttributeValueSerializer
             return true;
         }
 
-        Span<Range> ranges = stackalloc Range[32];
+        var results = new List<AttributeValue>();
+        var remaining = values;
 
-        var l = values.Split(ranges, '|',
-            StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-
-        var results = new AttributeValue[l];
-
-        for (var r = 0; r < l; r++)
+        while (true)
         {
-            var v = values[ranges[r].Start.Value..ranges[r].End.Value];
+            var separatorIndex = remaining.IndexOf('|');
+            var v = (separatorIndex < 0 ? remaining : remaining[..separatorIndex]).Trim();
 
-            if (AttributeValue.TryParse(v, CultureInfo.InvariantCulture, out var value))
+            if (!v.IsEmpty)
             {
-                results[r] = value;
+                if (AttributeValue.TryParse(v, CultureInfo.InvariantCulture, out var value))
+                {
+                    results.Add(value);
+                }
+                else
+                {
+                    features = [];
+                    return false;
+                }
             }
-            else
+
+            if (separatorIndex < 0)
             {
-                features = [];
-                return false;
+                break;
             }
+
+            remaining = remaining[(separatorIndex + 1)..];
         }
 
         features = results;

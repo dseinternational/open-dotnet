@@ -101,9 +101,7 @@ public readonly partial struct WordId
 
     public static WordId GetRandomId()
     {
-#pragma warning disable CA5394 // Do not use insecure randomness
-        return (WordId)(ulong)Random.Shared.NextInt64((long)LanguageIds.MinIdValue, (long)LanguageIds.MaxIdValue + 1);
-#pragma warning restore CA5394 // Do not use insecure randomness
+        return (WordId)LanguageIds.GetRandomIdValue();
     }
 
     /// <summary>

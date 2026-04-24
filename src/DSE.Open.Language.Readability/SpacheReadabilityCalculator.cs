@@ -34,20 +34,29 @@ public static class SpacheReadabilityCalculator
 
         var allSentences = allParas.SelectMany(p => p.Sentences).ToArray();
 
-        var averageSentenceLength = ((double)allSentences.Select(s => s.Words.Count).Sum()) / allSentences.Length;
+        if (allSentences.Length == 0)
+        {
+            throw new ArgumentException("Must contain at least one sentence.", nameof(book));
+        }
 
         var allWords = allParas.SelectMany(para => para.Words).ToArray();
 
-        var distinctWordCount = allWords.Distinct().Count();
+        if (allWords.Length == 0)
+        {
+            throw new ArgumentException("Must contain at least one word.", nameof(book));
+        }
 
-        var unfamiliarWords = allWords.Where(w => IsUnfamiliarWord(w.Form.ToString())).Distinct();
+        var averageSentenceLength = (double)allWords.Length / allSentences.Length;
+        var distinctWords = allWords
+            .Select(w => w.Form.ToString())
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToArray();
 
-        var unfamiliarWordCount = unfamiliarWords.Count();
+        var unfamiliarWords = distinctWords.Where(IsUnfamiliarWord).ToArray();
 
-        var level = CalculateLevel(averageSentenceLength, distinctWordCount, unfamiliarWordCount);
+        var level = CalculateLevel(averageSentenceLength, distinctWords.Length, unfamiliarWords.Length);
 
-        return new(level, averageSentenceLength, distinctWordCount,
-            unfamiliarWords.Select(w => w.Form.ToString()));
+        return new(level, averageSentenceLength, distinctWords.Length, unfamiliarWords);
     }
 
     /// <summary>
@@ -58,8 +67,14 @@ public static class SpacheReadabilityCalculator
     /// <param name="unfamiliarWordCount">The count of distinct unfamiliar words.</param>
     public static double CalculateLevel(double averageSentenceLength, int distinctWordCount, int unfamiliarWordCount)
     {
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(averageSentenceLength);
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(distinctWordCount);
+        ArgumentOutOfRangeException.ThrowIfNegative(unfamiliarWordCount);
+
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(unfamiliarWordCount, distinctWordCount);
+
         return BaseFactor +
-            (SentenceCountWeight * distinctWordCount / averageSentenceLength) +
+            (SentenceCountWeight * averageSentenceLength) +
             (WordCountWeight * unfamiliarWordCount / distinctWordCount * 100d);
     }
 
@@ -87,9 +102,9 @@ public static class SpacheReadabilityCalculator
     {
         ArgumentNullException.ThrowIfNull(word);
 
-        word = word.ToLower(CultureInfo.CurrentCulture).Trim();
+        word = word.ToLowerInvariant().Trim();
 
-        if (Array.BinarySearch(s_familiarWords, word, StringComparer.CurrentCulture) >= 0)
+        if (Array.BinarySearch(s_familiarWords, word, StringComparer.Ordinal) >= 0)
         {
             return true;
         }

@@ -98,12 +98,10 @@ public readonly partial struct WordMeaningId
         return value.ToInt64();
     }
 
-#pragma warning disable CA5394 // Do not use insecure randomness
     public static WordMeaningId GetRandomId()
     {
-        return (WordMeaningId)(ulong)Random.Shared.NextInt64((long)LanguageIds.MinIdValue, (long)LanguageIds.MaxIdValue + 1);
+        return (WordMeaningId)LanguageIds.GetRandomIdValue();
     }
-#pragma warning restore CA5394 // Do not use insecure randomness
 
     /// <summary>
     /// Gets an id for a word meaning specified by the given label, universal POS tag and treebank POS tag.

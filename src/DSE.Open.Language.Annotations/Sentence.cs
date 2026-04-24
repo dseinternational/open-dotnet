@@ -44,7 +44,7 @@ public record Sentence : ISpanFormattable, IRepeatableHash64
 
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
-        var buffer = ArrayPool<char>.Shared.Rent(2048);
+        var buffer = ArrayPool<char>.Shared.Rent(GetCharCount());
 
         try
         {
@@ -62,6 +62,38 @@ public record Sentence : ISpanFormattable, IRepeatableHash64
         {
             ArrayPool<char>.Shared.Return(buffer);
         }
+    }
+
+    internal int GetCharCount()
+    {
+        var count = SentIdPrefix.Length
+            + (Id?.Length ?? GetInvariantCharCount(Index))
+            + 1
+            + TextPrefix.Length
+            + Text.Length
+            + 1
+            + 1;
+
+        if (Language is not null)
+        {
+            count += LangPrefix.Length
+                + Language.Value.Length
+                + 1;
+        }
+
+        foreach (var token in Tokens)
+        {
+            count += token.GetCharCount() + 1;
+        }
+
+        return count;
+    }
+
+    private static int GetInvariantCharCount(int value)
+    {
+        Span<char> buffer = stackalloc char[11];
+        _ = value.TryFormat(buffer, out var charsWritten, default, CultureInfo.InvariantCulture);
+        return charsWritten;
     }
 
     private const string SentIdPrefix = "# sent_id = ";

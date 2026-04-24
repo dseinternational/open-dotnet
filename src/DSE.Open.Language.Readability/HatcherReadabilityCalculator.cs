@@ -37,12 +37,24 @@ public static class HatcherReadabilityCalculator
         int syntaxComplexity = 0)
     {
         ArgumentNullException.ThrowIfNull(book);
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(maxLinesOnPage);
+        ArgumentOutOfRangeException.ThrowIfNegative(syntaxComplexity);
 
         var pageCount = book.Pages.Count;
+
+        if (pageCount == 0)
+        {
+            throw new ArgumentException("Must contain at least one page.", nameof(book));
+        }
 
         var allSentences = book.Sentences;
 
         var allWords = allSentences.SelectMany(s => s.Words).ToArray();
+
+        if (allWords.Length == 0)
+        {
+            throw new ArgumentException("Must contain at least one word.", nameof(book));
+        }
 
         var allDistinctWords = allWords.Distinct().ToArray();
 
@@ -86,6 +98,14 @@ public static class HatcherReadabilityCalculator
     public static double CalculateLevel(int pageCount, int wordCount, int maxLinesOnPage,
         int maxSentenceLength, int syntaxComplexityScore, int wordsLonger5Count, int words5Count)
     {
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(pageCount);
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(wordCount);
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(maxLinesOnPage);
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(maxSentenceLength);
+        ArgumentOutOfRangeException.ThrowIfNegative(syntaxComplexityScore);
+        ArgumentOutOfRangeException.ThrowIfNegative(wordsLonger5Count);
+        ArgumentOutOfRangeException.ThrowIfNegative(words5Count);
+
         var level = (maxLinesOnPage * MaxLinesWeight)
             + (pageCount * NumberOfPagesWeight)
             + (maxSentenceLength * MaxSentenceLengthWeight)

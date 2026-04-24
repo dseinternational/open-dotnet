@@ -24,11 +24,14 @@ public sealed class SentenceEmbeddingGenerator : IEmbeddingGenerator<string, Emb
 
         return Task.Run(() =>
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             string? prompt = null;
 
             _ = options?.AdditionalProperties?.TryGetValue("prompt", out prompt);
 
-            var tensor = _sentenceTransformer.GetEmbeddings([.. values], prompt: prompt);
+            var inputs = values as IReadOnlyList<string> ?? [.. values];
+            var tensor = _sentenceTransformer.GetEmbeddings(inputs, prompt: prompt);
 
             // expect 2d tensor with shape [values.Count, embedding_length]
 
@@ -41,6 +44,7 @@ public sealed class SentenceEmbeddingGenerator : IEmbeddingGenerator<string, Emb
             var embeddingLength = (int)tensor.Lengths[1];
 
             var embeddings = new Embedding<float>[embeddingCount];
+            var createdAt = DateTimeOffset.UtcNow;
 
             for (var i = 0; i < embeddingCount; i++)
             {
@@ -49,7 +53,7 @@ public sealed class SentenceEmbeddingGenerator : IEmbeddingGenerator<string, Emb
                 embeddings[i] = new Embedding<float>(data)
                 {
                     ModelId = _sentenceTransformer.ModelName,
-                    CreatedAt = DateTimeOffset.Now
+                    CreatedAt = createdAt
                 };
             }
 

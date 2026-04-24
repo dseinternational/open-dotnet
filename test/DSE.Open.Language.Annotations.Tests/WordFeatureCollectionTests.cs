@@ -40,6 +40,19 @@ public class WordFeatureCollectionTests
     }
 
     [Fact]
+    public void JsonSerialize_WithLongFeatureCollection_DoesNotAssumeFixedItemWidth()
+    {
+        var feature = string.Join('|', Enumerable.Range(0, 33).Select(i => $"F{i}=A"));
+        var col = WordFeatureCollection.ParseInvariant(feature);
+
+        var json = JsonSerializer.Serialize(col);
+        var deserialized = JsonSerializer.Deserialize<WordFeatureCollection>(json);
+
+        Assert.NotNull(deserialized);
+        Assert.Equal(feature, deserialized.ToStringInvariant());
+    }
+
+    [Fact]
     public void Add_DuplicateFeatureName_Throws()
     {
         var col = WordFeatureCollection.ParseInvariant("Voice=Pass");

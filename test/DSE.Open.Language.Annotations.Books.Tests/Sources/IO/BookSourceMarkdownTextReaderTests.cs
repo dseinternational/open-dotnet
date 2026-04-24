@@ -14,6 +14,7 @@ public class BookSourceMarkdownTextReaderTests
     {
         var book = await ReadAsync("# My Book\n");
 
+        Assert.Equal("test-id", book.Id);
         Assert.Equal(LanguageTag.EnglishUk, book.Language);
         Assert.Equal("My Book", book.Title);
         var page = Assert.Single(book.Pages);

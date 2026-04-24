@@ -11,6 +11,7 @@ public class JsonStringWordFeatureConverter : SpanParsableCharWritingJsonConvert
 
     protected override int GetMaxCharCountToWrite(WordFeature value)
     {
-        return WordFeature.MaxSerializedCharLength;
+        ArgumentNullException.ThrowIfNull(value);
+        return value.GetCharCount();
     }
 }

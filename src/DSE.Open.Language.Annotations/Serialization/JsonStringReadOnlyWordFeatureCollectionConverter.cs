@@ -8,11 +8,13 @@ namespace DSE.Open.Language.Annotations.Serialization;
 public class JsonStringReadOnlyWordFeatureCollectionConverter
     : SpanParsableCharWritingJsonConverter<ReadOnlyWordFeatureCollection>
 {
-    public static readonly JsonStringWordFeatureCollectionConverter Default = new();
+    public static readonly JsonStringReadOnlyWordFeatureCollectionConverter Default = new();
 
     protected override int GetMaxCharCountToWrite(ReadOnlyWordFeatureCollection value)
     {
         ArgumentNullException.ThrowIfNull(value);
-        return value.Count * 16;
+        return value.Count == 0
+            ? 0
+            : value.Sum(v => v.GetCharCount()) + value.Count - 1;
     }
 }

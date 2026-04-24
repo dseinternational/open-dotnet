@@ -19,7 +19,7 @@ public readonly struct TokenIndex
       ISpanParsable<TokenIndex>,
       IRepeatableHash64
 {
-    public const int MaxSerializedCharLength = 8;
+    public const int MaxSerializedCharLength = 21;
 
     private const char RangeSeparator = '-';
     private const char SpanSeparator = '.';
@@ -37,6 +37,11 @@ public readonly struct TokenIndex
         {
             ThrowHelper.ThrowArgumentException(
                 "Cannot have both a range and an emptyId", nameof(end));
+        }
+
+        if (emptyId is not null)
+        {
+            Guard.IsGreaterThan(emptyId.Value, 0);
         }
 
         Start = start;
@@ -178,6 +183,9 @@ public readonly struct TokenIndex
                             charsWritten += cwSpanId;
                             return true;
                         }
+
+                        charsWritten = 0;
+                        return false;
                     }
                 }
                 else if (IsEmptyNode)
@@ -192,6 +200,9 @@ public readonly struct TokenIndex
                             charsWritten += cwSubId;
                             return true;
                         }
+
+                        charsWritten = 0;
+                        return false;
                     }
                 }
             }
@@ -201,7 +212,31 @@ public readonly struct TokenIndex
             }
         }
 
+        charsWritten = 0;
         return false;
+    }
+
+    internal int GetCharCount()
+    {
+        var count = GetInvariantCharCount(Start);
+
+        if (IsMultiwordIndex)
+        {
+            count += 1 + GetInvariantCharCount(End);
+        }
+        else if (IsEmptyNode)
+        {
+            count += 1 + GetInvariantCharCount(EmptyId!.Value);
+        }
+
+        return count;
+    }
+
+    private static int GetInvariantCharCount(int value)
+    {
+        Span<char> buffer = stackalloc char[11];
+        _ = value.TryFormat(buffer, out var charsWritten, default, CultureInfo.InvariantCulture);
+        return charsWritten;
     }
 
     public override string ToString()

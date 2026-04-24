@@ -11,7 +11,7 @@
 
   <ItemGroup>
     <AdditionalFiles Include="Modules\*.py">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>      
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </AdditionalFiles>
     <AdditionalFiles Include="Modules\*.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -19,25 +19,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="*.py">
+    <Content Include="Modules\*.py">
       <Pack>true</Pack>
-      <PackagePath>contentFiles/any/net10.0</PackagePath>
+      <PackagePath>contentFiles/any/net10.0/Modules/</PackagePath>
       <PackageCopyToOutput>true</PackageCopyToOutput>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="*.txt">
+    <Content Include="Modules\*.txt">
       <Pack>true</Pack>
-      <PackagePath>contentFiles/any/net10.0</PackagePath>
+      <PackagePath>contentFiles/any/net10.0/Modules/</PackagePath>
       <PackageCopyToOutput>true</PackageCopyToOutput>
-    </Content>
-    <Content Include="*.py">
-      <Pack>true</Pack>
-      <PackagePath>contentFiles/any/net10.0</PackagePath>
-      <PackageCopyToOutput>true</PackageCopyToOutput>
-    </Content>
-    <Content Include="*.txt">
-      <Pack>true</Pack>
-      <PackagePath>contentFiles/any/net10.0</PackagePath>
-      <PackageCopyToOutput>true</PackageCopyToOutput>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   

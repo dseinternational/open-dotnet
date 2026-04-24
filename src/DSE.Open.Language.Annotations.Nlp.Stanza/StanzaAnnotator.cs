@@ -13,6 +13,8 @@ public class StanzaAnnotator : IAnnotator
 {
     public StanzaAnnotator(StanzaService stanza)
     {
+        ArgumentNullException.ThrowIfNull(stanza);
+
         Context = stanza;
     }
 
@@ -23,6 +25,9 @@ public class StanzaAnnotator : IAnnotator
         string text,
         CancellationToken cancellationToken = default)
     {
+        ArgumentNullException.ThrowIfNull(text);
+        cancellationToken.ThrowIfCancellationRequested();
+
         var model = language.GetLanguagePart().ToStringLower();
 
         using var nlp = Context.CreatePipeline(model);
@@ -45,6 +50,8 @@ public class StanzaAnnotator : IAnnotator
             })]
         };
 
+        cancellationToken.ThrowIfCancellationRequested();
+
         return Task.FromResult(result);
     }
 
@@ -55,21 +62,35 @@ public class StanzaAnnotator : IAnnotator
             throw new StanzaException($"Failed to parse text '{w.Text}'");
         }
 
-        var lemma = !TokenText.TryParse(w.Lemma, out var lemmaValue)
-            ? throw new StanzaException($"Failed to parse lemma '{w.Lemma}'")
-            : (TokenText?)lemmaValue;
+        TokenText? lemma = null;
+
+        if (!string.IsNullOrWhiteSpace(w.Lemma) && w.Lemma != "_")
+        {
+            lemma = !TokenText.TryParse(w.Lemma, out var lemmaValue)
+                ? throw new StanzaException($"Failed to parse lemma '{w.Lemma}'")
+                : lemmaValue;
+        }
 
         if (!UniversalPosTag.TryParse(w.Pos, out var pos))
         {
             throw new StanzaException($"Failed to parse UPOS '{w.Pos}'");
         }
 
-        if (!PosTag.TryParse(w.AltPos, out var altPos))
+        PosTag? altPos = null;
+
+        if (!string.IsNullOrWhiteSpace(w.AltPos) && w.AltPos != "_")
         {
-            throw new StanzaException($"Failed to parse XPOS '{w.AltPos}'");
+            if (!PosTag.TryParse(w.AltPos, out var altPosValue))
+            {
+                throw new StanzaException($"Failed to parse XPOS '{w.AltPos}'");
+            }
+
+            altPos = altPosValue;
         }
 
-        if (!ReadOnlyWordFeatureValueCollection.TryParse(w.Features, default, out var features))
+        var featuresSource = w.Features == "_" ? null : w.Features;
+
+        if (!ReadOnlyWordFeatureValueCollection.TryParse(featuresSource, default, out var features))
         {
             throw new StanzaException($"Failed to parse features '{w.Features}'");
         }
@@ -79,7 +100,9 @@ public class StanzaAnnotator : IAnnotator
             throw new StanzaException($"Failed to parse relation '{w.Relation}'");
         }
 
-        if (!ReadOnlyAttributeValueCollection.TryParse(w.Attributes, default, out var attributes))
+        var attributesSource = w.Attributes == "_" ? null : w.Attributes;
+
+        if (!ReadOnlyAttributeValueCollection.TryParse(attributesSource, default, out var attributes))
         {
             throw new StanzaException($"Failed to parse attributes '{w.Attributes}'");
         }
