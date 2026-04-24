@@ -31,8 +31,10 @@ public class SeriesMetadataTests
     public void WithName_Preserves_Categories_And_ValueLabels_ByReference()
     {
         var categories = new CategorySet<int>([1, 2, 3]);
-        var labels = new ValueLabelCollection<int>();
-        labels.Add(1, "one");
+        var labels = new ValueLabelCollection<int>
+        {
+            { 1, "one" }
+        };
 
         var series = new Series<int>([1, 2, 3], name: "x", categories: categories, valueLabels: labels);
         var renamed = series.WithName("y");
@@ -79,8 +81,10 @@ public class SeriesMetadataTests
         var series = new Series<int>([1, 2, 3]);
         _ = series.Categories;
 
-        var labels = new ValueLabelCollection<int>();
-        labels.Add(1, "one");
+        var labels = new ValueLabelCollection<int>
+        {
+            { 1, "one" }
+        };
         var updated = series.WithValueLabels(labels); // must not throw
 
         Assert.Same(labels, updated.ValueLabels);
@@ -125,8 +129,10 @@ public class SeriesMetadataTests
     [Fact]
     public void WithCategories_Preserves_Name_And_ValueLabels_ByReference()
     {
-        var labels = new ValueLabelCollection<int>();
-        labels.Add(1, "one");
+        var labels = new ValueLabelCollection<int>
+        {
+            { 1, "one" }
+        };
         var series = new Series<int>([1, 2, 3], name: "x", valueLabels: labels);
 
         var categories = new CategorySet<int>([1, 2, 3]);
@@ -141,12 +147,16 @@ public class SeriesMetadataTests
     [Fact]
     public void WithValueLabels_Returns_NewInstance_With_UpdatedLabels()
     {
-        var original = new ValueLabelCollection<int>();
-        original.Add(1, "one");
+        var original = new ValueLabelCollection<int>
+        {
+            { 1, "one" }
+        };
         var series = new Series<int>([1, 2, 3], valueLabels: original);
 
-        var replacement = new ValueLabelCollection<int>();
-        replacement.Add(1, "uno");
+        var replacement = new ValueLabelCollection<int>
+        {
+            { 1, "uno" }
+        };
         var updated = series.WithValueLabels(replacement);
 
         Assert.Same(replacement, updated.ValueLabels);
@@ -156,8 +166,10 @@ public class SeriesMetadataTests
     [Fact]
     public void WithValueLabels_Null_Clears_Labels()
     {
-        var labels = new ValueLabelCollection<int>();
-        labels.Add(1, "one");
+        var labels = new ValueLabelCollection<int>
+        {
+            { 1, "one" }
+        };
         var series = new Series<int>([1, 2, 3], valueLabels: labels);
 
         var cleared = series.WithValueLabels(null);
@@ -171,8 +183,10 @@ public class SeriesMetadataTests
         var categories = new CategorySet<int>([1, 2, 3]);
         var series = new Series<int>([1, 2, 3], name: "x", categories: categories);
 
-        var labels = new ValueLabelCollection<int>();
-        labels.Add(1, "one");
+        var labels = new ValueLabelCollection<int>
+        {
+            { 1, "one" }
+        };
         var updated = series.WithValueLabels(labels);
 
         Assert.Equal("x", updated.Name);
@@ -196,8 +210,10 @@ public class SeriesMetadataTests
     public void ReadOnly_WithName_Preserves_Categories_And_ValueLabels_ByReference()
     {
         var categories = new CategorySet<int>([1, 2, 3]);
-        var labels = new ValueLabelCollection<int>();
-        labels.Add(1, "one");
+        var labels = new ValueLabelCollection<int>
+        {
+            { 1, "one" }
+        };
 
         var series = new Series<int>([1, 2, 3], name: "x", categories: categories, valueLabels: labels)
             .AsReadOnly();
@@ -230,8 +246,10 @@ public class SeriesMetadataTests
         var series = new ReadOnlySeries<int>([1, 2, 3]);
         _ = series.Categories;
 
-        var labels = new ValueLabelCollection<int>();
-        labels.Add(1, "one");
+        var labels = new ValueLabelCollection<int>
+        {
+            { 1, "one" }
+        };
         var updated = series.WithValueLabels(labels.AsReadOnly()); // must not throw
 
         Assert.Single(updated.ValueLabels);
@@ -267,8 +285,10 @@ public class SeriesMetadataTests
     [Fact]
     public void ReadOnly_WithValueLabels_Returns_NewInstance_With_UpdatedLabels()
     {
-        var labels = new ValueLabelCollection<int>();
-        labels.Add(1, "one");
+        var labels = new ValueLabelCollection<int>
+        {
+            { 1, "one" }
+        };
         var roLabels = labels.AsReadOnly();
 
         var series = new ReadOnlySeries<int>([1, 2, 3]);

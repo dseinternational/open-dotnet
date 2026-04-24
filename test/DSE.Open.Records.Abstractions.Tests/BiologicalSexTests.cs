@@ -27,9 +27,9 @@ public class BiologicalSexTests
         Assert.False(result);
     }
 
-    public static TheoryData<BiologicalSex> Values { get; } = new()
-    {
+    public static TheoryData<BiologicalSex> Values { get; } =
+    [
         BiologicalSex.Female,
         BiologicalSex.Male,
-    };
+    ];
 }

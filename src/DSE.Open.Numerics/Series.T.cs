@@ -342,8 +342,8 @@ public class Series<T>
         return new Series<T>(
             _vector.Slice(start, length),
             Name,
-            _categories is null ? null : new CategorySet<T>((IEnumerable<T>)_categories),
-            _valueLabels is null ? null : new ValueLabelCollection<T>(_valueLabels));
+            _categories is null ? null : new((IEnumerable<T>)_categories),
+            _valueLabels is null ? null : new(_valueLabels));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

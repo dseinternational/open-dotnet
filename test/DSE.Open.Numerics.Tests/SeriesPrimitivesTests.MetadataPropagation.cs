@@ -244,8 +244,10 @@ public partial class SeriesPrimitivesTests
     [Fact]
     public void Add_Drops_ValueLabels()
     {
-        var labels = new ValueLabelCollection<int>();
-        labels.Add(1, "one");
+        var labels = new ValueLabelCollection<int>
+        {
+            { 1, "one" }
+        };
         var x = new Series<int>([1, 2, 3], name: "x", valueLabels: labels);
 
         var result = x.Add(10);

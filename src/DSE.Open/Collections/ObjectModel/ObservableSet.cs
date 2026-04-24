@@ -37,7 +37,9 @@ public class ObservableSet<T> : IObservableSet<T>, IReadOnlyCollection<T>
     /// </param>
     public ObservableSet(IEqualityComparer<T> comparer)
     {
-        _set = new HashSet<T>(comparer);
+#pragma warning disable IDE0028 // Simplify collection initialization
+        _set = new(comparer);
+#pragma warning restore IDE0028 // Simplify collection initialization
     }
 
     /// <summary>

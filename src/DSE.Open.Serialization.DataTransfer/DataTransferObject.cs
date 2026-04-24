@@ -18,17 +18,21 @@ public abstract record DataTransferObject : IJsonSerializable, IExtensionData
     [JsonIgnore]
     public ValueDictionary<string, object> ExtensionData => ExtensionDataCore;
 
+#pragma warning disable IDE0028 // Simplify collection initialization
     IDictionary<string, object> IExtensionData.ExtensionData
         => _extensionData is not null
             ? new(_extensionData)
             : new Dictionary<string, object>();
+#pragma warning restore IDE0028 // Simplify collection initialization
 
     [JsonExtensionData]
     [JsonPropertyOrder(2100010010)]
     internal ValueDictionary<string, object> ExtensionDataCore
     {
         get => _extensionData ??= [];
+#pragma warning disable IDE0028 // Simplify collection initialization
         init => _extensionData = new(value);
+#pragma warning restore IDE0028 // Simplify collection initialization
     }
 
     [JsonIgnore]

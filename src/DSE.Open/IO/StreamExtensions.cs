@@ -6,8 +6,6 @@ using System.Text;
 
 namespace DSE.Open.IO;
 
-#pragma warning disable DSEOPEN001 // ArrayBuilder
-
 public static class StreamExtensions
 {
     public static byte[] ReadToEnd(this Stream stream)

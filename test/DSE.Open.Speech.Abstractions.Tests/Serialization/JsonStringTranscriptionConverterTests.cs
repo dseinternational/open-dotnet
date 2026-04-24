@@ -23,6 +23,8 @@ public class JsonStringTranscriptionConverterTests
         Assert.Equal(original, deserialized);
     }
 
+#pragma warning disable IDE0028 // Simplify collection initialization
     public static TheoryData<string> WordTranscriptions =>
         new(TranscriptionData.Transcriptions.Skip(800).Take(500).Select(t => $"[{t}]").ToArray());
+#pragma warning restore IDE0028 // Simplify collection initialization
 }

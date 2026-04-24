@@ -58,9 +58,7 @@ public abstract partial class Vector : VectorBase, IVector
     {
         if (span.IsEmpty)
         {
-#pragma warning disable IDE0301 // Simplify collection initialization
             return Vector<T>.Empty;
-#pragma warning restore IDE0301 // Simplify collection initialization
         }
 
         return new Vector<T>(span.ToArray().AsMemory());

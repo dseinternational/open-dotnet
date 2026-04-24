@@ -266,7 +266,10 @@ public sealed class ValueLabelCollection<T> : ValueLabelCollection, IValueLabelC
                 return _labelIndexLookup;
             }
 
-            _labelIndexLookup = new Dictionary<string, int>(_valueLabels.Count);
+#pragma warning disable IDE0028 // Simplify collection initialization
+            _labelIndexLookup = new(_valueLabels.Count);
+#pragma warning restore IDE0028 // Simplify collection initialization
+
 
             for (var i = 0; i < _valueLabels.Count; i++)
             {

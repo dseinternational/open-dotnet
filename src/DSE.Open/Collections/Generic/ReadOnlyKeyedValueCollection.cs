@@ -125,6 +125,8 @@ public abstract class ReadOnlyKeyedValueCollection<TKey, TValue>
     /// <returns></returns>
     public Dictionary<TKey, TValue> ToDictionary()
     {
+#pragma warning disable IDE0028 // Simplify collection initialization
         return new(_dictionary);
+#pragma warning restore IDE0028 // Simplify collection initialization
     }
 }

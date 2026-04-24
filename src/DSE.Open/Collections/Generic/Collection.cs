@@ -19,12 +19,20 @@ public class Collection<T> : IList<T>, IReadOnlyList<T>, IList
 
     public Collection(int count)
     {
+#pragma warning disable IDE0028 // Simplify collection initialization
         _items = new(count);
+#pragma warning restore IDE0028 // Simplify collection initialization
+
     }
 
     public Collection(IEnumerable<T> collection)
     {
+#pragma warning disable IDE0028 // Simplify collection initialization
+#pragma warning disable IDE0306 // Simplify collection initialization
         _items = new(collection);
+#pragma warning restore IDE0306 // Simplify collection initialization
+#pragma warning restore IDE0028 // Simplify collection initialization
+
     }
 
 #pragma warning disable CA1002 // Do not expose generic lists
@@ -174,7 +182,9 @@ public class Collection<T> : IList<T>, IReadOnlyList<T>, IList
 
     public Collection<T> FindAll(Predicate<T> match)
     {
+#pragma warning disable IDE0028 // Simplify collection initialization
         return new(_items.FindAll(match));
+#pragma warning restore IDE0028 // Simplify collection initialization
     }
 
     public void ForEach(Action<T> action)
@@ -262,7 +272,9 @@ public class Collection<T> : IList<T>, IReadOnlyList<T>, IList
 
     public Collection<T> Slice(int start, int length)
     {
+#pragma warning disable IDE0028 // Simplify collection initialization
         return new(_items.GetRange(start, length));
+#pragma warning restore IDE0028 // Simplify collection initialization
     }
 
     public void Sort()

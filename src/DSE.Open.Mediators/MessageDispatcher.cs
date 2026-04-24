@@ -94,10 +94,7 @@ public sealed partial class MessageDispatcher : IMessageDispatcher
                 await task.ConfigureAwait(false);
 
             }, cancellationToken).ConfigureAwait(false);
-
-#pragma warning disable CA1873 // Avoid potentially expensive logging
             Log.SentMessageToHandler(_logger, handler.GetType().Name);
-#pragma warning restore CA1873 // Avoid potentially expensive logging
         }
     }
 

@@ -58,9 +58,8 @@ public class ValueLabelCollectionTests
         var collection = new ValueLabelCollection<CollidingKey>
         {
             { new CollidingKey(1), "one" },
+            { new CollidingKey(2), "two" }
         };
-
-        collection.Add(new CollidingKey(2), "two");
 
         Assert.Equal(2, collection.Count);
     }

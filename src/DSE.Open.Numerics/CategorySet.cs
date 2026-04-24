@@ -11,17 +11,13 @@ public static class CategorySet
     public static CategorySet<T> Create<T>(ISet<T> set)
         where T : IEquatable<T>
     {
-#pragma warning disable IDE0028 // Simplify collection initialization
         return new CategorySet<T>(set);
-#pragma warning restore IDE0028 // Simplify collection initialization
     }
 
     public static CategorySet<T> Create<T>(ReadOnlySpan<T> span)
         where T : IEquatable<T>
     {
-#pragma warning disable IDE0028 // Simplify collection initialization
         return new CategorySet<T>(span.ToArray());
-#pragma warning restore IDE0028 // Simplify collection initialization
     }
 }
 

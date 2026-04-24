@@ -7,8 +7,6 @@ using System.Text.Json.Serialization;
 
 namespace DSE.Open.Numerics.Serialization;
 
-#pragma warning disable CA2225 // Operator overloads have named alternates
-
 public static class JsonSerializerOptionsExtensions
 {
     public static void AddDataPointArrayJsonConverter<T>(this IList<JsonConverter> converters)

@@ -8,15 +8,15 @@ namespace DSE.Open.Observations;
 
 public sealed class BehaviorFrequencyTests
 {
-    public static TheoryData<byte> ValidOrdinals { get; } = new() { 0, 10, 50, 90 };
+    public static TheoryData<byte> ValidOrdinals { get; } = [0, 10, 50, 90];
 
-    public static TheoryData<BehaviorFrequency> AllValues { get; } = new()
-    {
+    public static TheoryData<BehaviorFrequency> AllValues { get; } =
+    [
         BehaviorFrequency.Never,
         BehaviorFrequency.Emerging,
         BehaviorFrequency.Developing,
         BehaviorFrequency.Achieved,
-    };
+    ];
 
     [Theory]
     [MemberData(nameof(ValidOrdinals))]

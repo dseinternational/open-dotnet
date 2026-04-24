@@ -567,10 +567,10 @@ public class LanguageTagTests
         }
     }
 
-    public static TheoryData<string> InvalidLanguageTags { get; } = new()
-    {
+    public static TheoryData<string> InvalidLanguageTags { get; } =
+    [
         "de-DE-1901-1901",
-    };
+    ];
 
     // ---------------------------
 

@@ -25,12 +25,12 @@ public class HearingDiagnosisCodeTests
         Assert.Equal(77507001, HearingDiagnosisCode.ConductiveAndSensorineuralHearingLoss);
     }
 
-    public static TheoryData<HearingDiagnosisCode> Values { get; } = new()
-    {
+    public static TheoryData<HearingDiagnosisCode> Values { get; } =
+    [
         HearingDiagnosisCode.HearingLoss,
         HearingDiagnosisCode.SensorineuralHearingLoss,
         HearingDiagnosisCode.ConductiveAndSensorineuralHearingLoss,
         HearingDiagnosisCode.OtitisMediaWithEffusion
-    };
+    ];
 
 }

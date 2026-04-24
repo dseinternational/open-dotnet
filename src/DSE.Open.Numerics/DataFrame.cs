@@ -158,9 +158,7 @@ public sealed class DataFrame : IList<Series>, IReadOnlyDataFrame
     [OverloadResolutionPriority(1)]
     public static DataFrame Create(Collection<Series> columns)
     {
-#pragma warning disable IDE0028 // Simplify collection initialization
         return new DataFrame(columns);
-#pragma warning restore IDE0028 // Simplify collection initialization
     }
 
     public static DataFrame Create(Collection<Series> columns, string? name)

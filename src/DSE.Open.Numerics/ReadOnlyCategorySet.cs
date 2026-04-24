@@ -20,9 +20,7 @@ public static class ReadOnlyCategorySet
 
         if (set.Count == 0)
         {
-#pragma warning disable IDE0301 // Simplify collection initialization
             return ReadOnlyCategorySet<T>.Empty;
-#pragma warning restore IDE0301 // Simplify collection initialization
         }
 
         return new ReadOnlyCategorySet<T>(set);
@@ -32,9 +30,7 @@ public static class ReadOnlyCategorySet
     {
         if (span.Length == 0)
         {
-#pragma warning disable IDE0301 // Simplify collection initialization
             return ReadOnlyCategorySet<T>.Empty;
-#pragma warning restore IDE0301 // Simplify collection initialization
         }
 
         return new ReadOnlyCategorySet<T>(span.ToArray());
@@ -64,6 +60,8 @@ public sealed class ReadOnlyCategorySet<T> : ReadOnlySet<T>, IReadOnlyCategorySe
     /// </summary>
     public CategorySet<T> ToCategorySet()
     {
-        return new CategorySet<T>(this);
+#pragma warning disable IDE0028 // Simplify collection initialization
+        return new(this);
+#pragma warning restore IDE0028 // Simplify collection initialization
     }
 }

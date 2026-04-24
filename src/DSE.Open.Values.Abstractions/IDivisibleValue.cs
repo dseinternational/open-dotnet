@@ -13,7 +13,6 @@ namespace DSE.Open.Values;
 /// </summary>
 /// <typeparam name="TSelf">The type that implements the interface.</typeparam>
 /// <typeparam name="T">The underlying value type being wrapped.</typeparam>
-[SuppressMessage("Design", "CA1000:Do not declare static members on generic types", Justification = "Required for static interface methods")]
 public interface IDivisibleValue<TSelf, T>
     : IAddableValue<TSelf, T>,
       IDivisionOperators<TSelf, TSelf, TSelf>,

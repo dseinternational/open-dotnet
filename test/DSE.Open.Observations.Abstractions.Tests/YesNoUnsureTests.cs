@@ -16,5 +16,5 @@ public class YesNoUnsureTests
         Assert.Equal(value, deserialized);
     }
 
-    public static TheoryData<YesNoUnsure> Values { get; } = new() { YesNoUnsure.No, YesNoUnsure.Yes, YesNoUnsure.Unsure, };
+    public static TheoryData<YesNoUnsure> Values { get; } = [YesNoUnsure.No, YesNoUnsure.Yes, YesNoUnsure.Unsure,];
 }

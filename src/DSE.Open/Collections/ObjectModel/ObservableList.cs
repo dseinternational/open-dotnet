@@ -19,11 +19,9 @@ namespace DSE.Open.Collections.ObjectModel;
 /// <typeparam name="T"></typeparam>
 [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
 [DebuggerDisplay("Count = {Count}")]
-#pragma warning disable CA1001 // Types that own disposable fields should be disposable
 #pragma warning disable CA1710 // Identifiers should have correct suffix
 public class ObservableList<T> : IObservableList<T>, IReadOnlyObservableList<T>, IReadOnlyCollection<T>, IList
 #pragma warning restore CA1710 // Identifiers should have correct suffix
-#pragma warning restore CA1001 // Types that own disposable fields should be disposable
 {
     private static readonly PropertyChangedEventArgs s_countPropertyChangedEventArgs = new(nameof(Count));
     private static readonly PropertyChangedEventArgs s_indexerPropertyChangedEventArgs = new("Item[]");
@@ -44,7 +42,9 @@ public class ObservableList<T> : IObservableList<T>, IReadOnlyObservableList<T>,
     {
         Guard.IsGreaterThanOrEqualTo(capacity, 0);
 
+#pragma warning disable IDE0028 // Simplify collection initialization
         _observedItems = new(capacity);
+#pragma warning restore IDE0028 // Simplify collection initialization
     }
 
     public ObservableList(IEnumerable<T> items)

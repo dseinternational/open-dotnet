@@ -14,9 +14,7 @@ public static class ReadOnlySet
 
         if (set.Count == 0)
         {
-#pragma warning disable IDE0301 // Simplify collection initialization
             return ReadOnlySet<T>.Empty;
-#pragma warning restore IDE0301 // Simplify collection initialization
         }
 
         return new ReadOnlySet<T>(set);
@@ -27,9 +25,7 @@ public static class ReadOnlySet
     {
         if (span.Length == 0)
         {
-#pragma warning disable IDE0301 // Simplify collection initialization
             return ReadOnlySet<T>.Empty;
-#pragma warning restore IDE0301 // Simplify collection initialization
         }
 
         var set = new HashSet<T>(span.Length);
@@ -39,9 +35,7 @@ public static class ReadOnlySet
             _ = set.Add(span[i]);
         }
 
-#pragma warning disable IDE0028 // Simplify collection initialization
         return new ReadOnlySet<T>(set);
-#pragma warning restore IDE0028 // Simplify collection initialization
     }
 }
 

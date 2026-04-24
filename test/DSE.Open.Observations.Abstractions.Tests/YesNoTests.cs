@@ -30,5 +30,5 @@ public class YesNoTests
         Assert.Equal(YesNo.No, YesNo.FromBoolean(false));
     }
 
-    public static TheoryData<YesNo> Values { get; } = new() { YesNo.No, YesNo.Yes, };
+    public static TheoryData<YesNo> Values { get; } = [YesNo.No, YesNo.Yes,];
 }

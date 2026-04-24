@@ -5,8 +5,6 @@ using BenchmarkDotNet.Attributes;
 
 namespace DSE.Open.Benchmarks.Values;
 
-#pragma warning disable CA1822 // Mark members as static
-
 [MemoryDiagnoser(displayGenColumns: false)]
 [ExecutionValidator(true)]
 public class BinaryValueFromEncodedBytesBenchmarks

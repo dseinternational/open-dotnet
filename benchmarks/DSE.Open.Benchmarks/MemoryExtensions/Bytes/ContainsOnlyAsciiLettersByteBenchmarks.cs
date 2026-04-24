@@ -5,8 +5,6 @@ using BenchmarkDotNet.Attributes;
 
 namespace DSE.Open.Benchmarks.MemoryExtensions.Bytes;
 
-#pragma warning disable CA1822 // Mark members as static
-
 [MemoryDiagnoser]
 public class ContainsOnlyAsciiLettersByteBenchmarks
 {

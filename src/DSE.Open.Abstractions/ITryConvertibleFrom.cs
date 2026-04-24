@@ -10,7 +10,6 @@ namespace DSE.Open;
 /// </summary>
 /// <typeparam name="TSelf"></typeparam>
 /// <typeparam name="TFrom"></typeparam>
-[SuppressMessage("Design", "CA1000:Do not declare static members on generic types", Justification = "Required for static interface methods")]
 [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates", Justification = "Cannot name from type parameter")]
 public interface ITryConvertibleFrom<TSelf, TFrom>
     where TSelf : ITryConvertibleFrom<TSelf, TFrom>

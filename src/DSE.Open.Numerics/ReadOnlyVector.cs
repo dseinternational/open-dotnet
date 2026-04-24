@@ -26,9 +26,7 @@ public abstract class ReadOnlyVector : VectorBase, IReadOnlyVector
 
         if (array.Length == 0)
         {
-#pragma warning disable IDE0301 // Simplify collection initialization
             return ReadOnlyVector<T>.Empty;
-#pragma warning restore IDE0301 // Simplify collection initialization
         }
 
         return new ReadOnlyVector<T>(array);
@@ -39,9 +37,7 @@ public abstract class ReadOnlyVector : VectorBase, IReadOnlyVector
     {
         if (memory.IsEmpty)
         {
-#pragma warning disable IDE0301 // Simplify collection initialization
             return ReadOnlyVector<T>.Empty;
-#pragma warning restore IDE0301 // Simplify collection initialization
         }
 
         return new ReadOnlyVector<T>(memory);
@@ -52,9 +48,7 @@ public abstract class ReadOnlyVector : VectorBase, IReadOnlyVector
     {
         if (span.IsEmpty)
         {
-#pragma warning disable IDE0301 // Simplify collection initialization
             return ReadOnlyVector<T>.Empty;
-#pragma warning restore IDE0301 // Simplify collection initialization
         }
 
         return new ReadOnlyVector<T>(span.ToArray().AsMemory());

@@ -32,9 +32,7 @@ public abstract class ReadOnlyValueLabelCollection : IReadOnlyValueLabelCollecti
     {
         if (span.Length == 0)
         {
-#pragma warning disable IDE0301 // Simplify collection initialization
             return ReadOnlyValueLabelCollection<T>.Empty;
-#pragma warning restore IDE0301 // Simplify collection initialization
         }
 
         var labels = new ValueLabel<T>[span.Length];
@@ -222,6 +220,11 @@ public sealed class ReadOnlyValueLabelCollection<T>
     /// </summary>
     public ValueLabelCollection<T> ToValueLabelCollection()
     {
-        return new ValueLabelCollection<T>(this);
+#pragma warning disable IDE0028 // Simplify collection initialization
+#pragma warning disable IDE0306 // Simplify collection initialization
+        return new(this);
+#pragma warning restore IDE0306 // Simplify collection initialization
+#pragma warning restore IDE0028 // Simplify collection initialization
+
     }
 }

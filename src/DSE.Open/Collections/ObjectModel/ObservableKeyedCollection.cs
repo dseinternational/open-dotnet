@@ -21,7 +21,7 @@ public abstract class ObservableKeyedCollection<TKey, TItem> : ObservableCollect
     protected ObservableKeyedCollection(IEqualityComparer<TKey>? comparer)
     {
         comparer ??= EqualityComparer<TKey>.Default;
-        _dictionary = new();
+        _dictionary = [];
         Comparer = comparer;
     }
 

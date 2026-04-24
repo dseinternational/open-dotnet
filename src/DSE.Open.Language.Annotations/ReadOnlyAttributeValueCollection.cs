@@ -40,10 +40,7 @@ public sealed class ReadOnlyAttributeValueCollection
         var list = new List<AttributeValue>(items.Length);
 
         list.AddRange(items);
-
-#pragma warning disable IDE0306 // Simplify collection initialization
         return new(list);
-#pragma warning restore IDE0306 // Simplify collection initialization
     }
 
     public static ReadOnlyAttributeValueCollection Create(Span<AttributeValue> items)

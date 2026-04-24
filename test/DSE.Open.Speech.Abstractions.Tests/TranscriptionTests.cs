@@ -47,6 +47,11 @@ public class TranscriptionTests
         Assert.Equal(example, formatted);
     }
 
+#pragma warning disable IDE0028 // Simplify collection initialization
+
     public static TheoryData<string> WordTranscriptions =>
         new(TranscriptionData.Transcriptions.Select(t => $"[{t}]").ToArray());
+
+#pragma warning restore IDE0028 // Simplify collection initialization
+
 }

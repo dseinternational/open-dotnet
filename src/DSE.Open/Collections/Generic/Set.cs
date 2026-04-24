@@ -13,9 +13,7 @@ public static class Set
     public static Set<T> Create<T>(ISet<T> set)
         where T : IEquatable<T>
     {
-#pragma warning disable IDE0028 // Simplify collection initialization
         return new Set<T>(set);
-#pragma warning restore IDE0028 // Simplify collection initialization
     }
 
     public static Set<T> Create<T>(ReadOnlySpan<T> span)
@@ -27,9 +25,8 @@ public static class Set
         {
             _ = set.Add(span[i]);
         }
-#pragma warning disable IDE0028 // Simplify collection initialization
+
         return new Set<T>(set);
-#pragma warning restore IDE0028 // Simplify collection initialization
     }
 }
 

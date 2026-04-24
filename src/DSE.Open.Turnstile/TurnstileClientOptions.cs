@@ -5,7 +5,7 @@ namespace DSE.Open.Turnstile;
 
 public sealed class TurnstileClientOptions
 {
-    static readonly Uri s_defaultEndpoint = new("https://challenges.cloudflare.com/turnstile/v0/siteverify");
+    private static readonly Uri s_defaultEndpoint = new("https://challenges.cloudflare.com/turnstile/v0/siteverify");
 
     public Uri Endpoint { get; set; } = s_defaultEndpoint;
 
@@ -20,4 +20,3 @@ public sealed class TurnstileClientOptions
     /// </summary>
     public string SecretKey { get; set; } = string.Empty;
 }
-

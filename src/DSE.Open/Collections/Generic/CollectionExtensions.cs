@@ -541,7 +541,9 @@ public static partial class CollectionExtensions
 
     public static ObservableCollection<T> ToObservableCollection<T>(this List<T> list)
     {
+#pragma warning disable IDE0028 // Simplify collection initialization
         return new(list);
+#pragma warning restore IDE0028 // Simplify collection initialization
     }
 
     public static ReadOnlyValueCollection<T> ToReadOnlyValueCollection<T>(this IEnumerable<T> collection)

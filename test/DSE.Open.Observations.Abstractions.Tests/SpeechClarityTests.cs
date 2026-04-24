@@ -8,14 +8,14 @@ namespace DSE.Open.Observations;
 
 public sealed class SpeechClarityTests
 {
-    public static TheoryData<byte> ValidOrdinals { get; } = new() { 10, 50, 90 };
+    public static TheoryData<byte> ValidOrdinals { get; } = [10, 50, 90];
 
-    public static TheoryData<SpeechClarity> AllValues { get; } = new()
-    {
+    public static TheoryData<SpeechClarity> AllValues { get; } =
+    [
         SpeechClarity.Unclear,
         SpeechClarity.Developing,
         SpeechClarity.Clear,
-    };
+    ];
 
     [Fact]
     public void SerializesToNumber()

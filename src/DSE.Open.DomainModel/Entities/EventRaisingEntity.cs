@@ -20,7 +20,7 @@ namespace DSE.Open.DomainModel.Entities;
 public abstract class EventRaisingEntity<TId> : Entity<TId>, IEventRaisingEntity<TId>
     where TId : struct, IEquatable<TId>
 {
-    private readonly Lazy<List<IDomainEvent>> _events = new(() => new());
+    private readonly Lazy<List<IDomainEvent>> _events = new(() => []);
 
     /// <summary>
     /// Initializes a new entity with an unset <see cref="Entity{TId}.Id"/> and

@@ -5,8 +5,6 @@ using System.Numerics.Tensors;
 
 namespace DSE.Open.Numerics;
 
-#pragma warning disable SYSLIB5001 // Type is for evaluation purposes only and is subject to change or removal in future updates.
-
 public static partial class VectorExtensions
 {
     public static ReadOnlyTensorSpan<T> AsReadOnlyTensorSpan<T>(this IReadOnlyVector<T>? vector)

@@ -56,9 +56,7 @@ public abstract class ReadOnlySeries : SeriesBase, IReadOnlySeries
 
         if (vector.Length == 0)
         {
-#pragma warning disable IDE0301 // Simplify collection initialization
             return ReadOnlySeries<T>.Empty;
-#pragma warning restore IDE0301 // Simplify collection initialization
         }
 
         return new ReadOnlySeries<T>(vector, name, categories, valueLabels);
@@ -73,9 +71,7 @@ public abstract class ReadOnlySeries : SeriesBase, IReadOnlySeries
     {
         if (vector.Length == 0)
         {
-#pragma warning disable IDE0301 // Simplify collection initialization
             return ReadOnlySeries<T>.Empty;
-#pragma warning restore IDE0301 // Simplify collection initialization
         }
 
         return new ReadOnlySeries<T>(vector, name, categories, valueLabels);
@@ -92,9 +88,7 @@ public abstract class ReadOnlySeries : SeriesBase, IReadOnlySeries
 
         if (vector.Length == 0)
         {
-#pragma warning disable IDE0301 // Simplify collection initialization
             return ReadOnlySeries<T>.Empty;
-#pragma warning restore IDE0301 // Simplify collection initialization
         }
 
         return new ReadOnlySeries<T>(vector);
@@ -106,9 +100,7 @@ public abstract class ReadOnlySeries : SeriesBase, IReadOnlySeries
     {
         if (vector.Length == 0)
         {
-#pragma warning disable IDE0301 // Simplify collection initialization
             return ReadOnlySeries<T>.Empty;
-#pragma warning restore IDE0301 // Simplify collection initialization
         }
 
         return Create(vector.ToArray());
@@ -123,9 +115,7 @@ public abstract class ReadOnlySeries : SeriesBase, IReadOnlySeries
     {
         if (vector.Length == 0)
         {
-#pragma warning disable IDE0301 // Simplify collection initialization
             return ReadOnlySeries<T>.Empty;
-#pragma warning restore IDE0301 // Simplify collection initialization
         }
 
         return Create(vector.ToArray(), name, categories, valueLabels);

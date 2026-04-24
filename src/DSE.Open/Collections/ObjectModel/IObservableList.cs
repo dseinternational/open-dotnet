@@ -8,5 +8,5 @@ namespace DSE.Open.Collections.ObjectModel;
 
 public interface IObservableList<T> : IList<T>, INotifyCollectionChanged, INotifyPropertyChanged
 {
-    public void SetRange(IEnumerable<T> items);
+    void SetRange(IEnumerable<T> items);
 }

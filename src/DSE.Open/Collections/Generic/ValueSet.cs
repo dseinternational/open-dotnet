@@ -23,9 +23,7 @@ public static class ValueSet
     {
         if (items.IsEmpty)
         {
-#pragma warning disable IDE0301 // Simplify collection initialization
             return ValueSet<T>.Empty;
-#pragma warning restore IDE0301 // Simplify collection initialization
         }
 
         var set = new HashSet<T>(items.Length);
@@ -35,9 +33,7 @@ public static class ValueSet
             _ = set.Add(item);
         }
 
-#pragma warning disable IDE0028 // Simplify collection initialization
         return new(set);
-#pragma warning restore IDE0028 // Simplify collection initialization
     }
 }
 

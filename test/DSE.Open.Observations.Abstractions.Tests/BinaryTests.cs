@@ -8,7 +8,7 @@ namespace DSE.Open.Observations;
 
 public sealed class BinaryTests
 {
-    public static TheoryData<Binary> AllValues { get; } = new() { Binary.False, Binary.True };
+    public static TheoryData<Binary> AllValues { get; } = [Binary.False, Binary.True];
 
     [Theory]
     [MemberData(nameof(AllValues))]

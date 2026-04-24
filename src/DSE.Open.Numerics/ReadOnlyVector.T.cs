@@ -34,9 +34,7 @@ public sealed class ReadOnlyVector<T> : ReadOnlyVector, IReadOnlyVector<T>
         _memory = memory;
     }
 
-#pragma warning disable CA1033 // Interface methods should be callable by child types
     int IReadOnlyCollection<T>.Count => Length;
-#pragma warning restore CA1033 // Interface methods should be callable by child types
 
     public T this[int index]
     {

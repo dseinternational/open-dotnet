@@ -27,14 +27,17 @@ public sealed class ValueDictionary<TKey, TValue>
 
     public ValueDictionary(IEnumerable<KeyValuePair<TKey, TValue>> collection)
     {
-#pragma warning disable IDE0306 // Simplify collection initialization
+#pragma warning disable IDE0028 // Simplify collection initialization
         _inner = new(collection);
-#pragma warning restore IDE0306 // Simplify collection initialization
+#pragma warning restore IDE0028 // Simplify collection initialization
     }
 
     public ValueDictionary(IDictionary<TKey, TValue> source)
     {
+#pragma warning disable IDE0028 // Simplify collection initialization
         _inner = new(source);
+#pragma warning restore IDE0028 // Simplify collection initialization
+
     }
 
     public TValue this[TKey key]

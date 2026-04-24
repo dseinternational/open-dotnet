@@ -7,11 +7,11 @@ namespace DSE.Open.Observations;
 
 public interface IObservationParameter
 {
-    public const ulong MinIntegerId = 0u;
-    public const ulong MaxIntegerId = 9007199254740991u;
+    const ulong MinIntegerId = 0u;
+    const ulong MaxIntegerId = 9007199254740991u;
 
-    public const int MinTextLength = 1;
-    public const int MaxTextLength = 16;
+    const int MinTextLength = 1;
+    const int MaxTextLength = 16;
 
     MeasurementParameterType ParameterType { get; }
 
@@ -31,7 +31,7 @@ public interface IObservationParameter
     ReadOnlySpan<char> GetTextId();
 
     [DoesNotReturn]
-    public static T ThrowParameterMismatchException<T>()
+    static T ThrowParameterMismatchException<T>()
     {
         throw new ParameterTypeMismatchException(
             "The observation parameter does not support the requested parameter type.");

@@ -52,7 +52,7 @@ public sealed class CountryCallingCodeInfo
         }
     }
 
-    private static readonly Dictionary<uint, CountryCallingCodeInfo[]> s_cachedLookups = new();
+    private static readonly Dictionary<uint, CountryCallingCodeInfo[]> s_cachedLookups = [];
     private static readonly object s_cacheLock = new();
 
     // internal for testing

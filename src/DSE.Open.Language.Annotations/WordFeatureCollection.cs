@@ -36,10 +36,7 @@ public sealed class WordFeatureCollection
         var list = new List<WordFeature>(items.Length);
 
         list.AddRange(items);
-
-#pragma warning disable IDE0028 // Simplify collection initialization
         return new(list);
-#pragma warning restore IDE0028 // Simplify collection initialization
     }
 
     public static WordFeatureCollection Create(Span<WordFeature> items)

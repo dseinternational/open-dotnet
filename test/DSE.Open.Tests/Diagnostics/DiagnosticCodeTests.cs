@@ -9,8 +9,8 @@ namespace DSE.Open.Diagnostics;
 
 public sealed class DiagnosticCodeTests
 {
-    public static TheoryData<string> ValidCodes { get; } = new()
-    {
+    public static TheoryData<string> ValidCodes { get; } =
+    [
         "ABC123456",
         "ABC1234567",
         "ABC12345678",
@@ -20,10 +20,10 @@ public sealed class DiagnosticCodeTests
         "ZZZ000000",
         "XYX1111111",
         "WWWW11111111",
-    };
+    ];
 
-    public static TheoryData<string> InvalidCodes { get; } = new()
-    {
+    public static TheoryData<string> InvalidCodes { get; } =
+    [
         "AB123456",
         "AB1234567",
         "AB12345678",
@@ -33,7 +33,7 @@ public sealed class DiagnosticCodeTests
         "zzz000000",
         "xxx1111111",
         "WWWW11111!1",
-    };
+    ];
 
     [Theory]
     [MemberData(nameof(ValidCodes))]

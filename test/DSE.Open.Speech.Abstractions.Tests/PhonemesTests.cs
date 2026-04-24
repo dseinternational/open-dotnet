@@ -87,8 +87,7 @@ public class PhonemesTests
         Assert.Contains(English.All, p => p.Abstraction == initialSound || p.Allophones.Contains(initialSound));
     }
 
-#pragma warning disable CA5394 // Do not use insecure randomness
+#pragma warning disable IDE0028 // Simplify collection initialization
     public static TheoryData<string> WordTranscriptions => new((string[])[.. TranscriptionData.Transcriptions]);
-#pragma warning restore CA5394 // Do not use insecure randomness
-
+#pragma warning restore IDE0028 // Simplify collection initialization
 }

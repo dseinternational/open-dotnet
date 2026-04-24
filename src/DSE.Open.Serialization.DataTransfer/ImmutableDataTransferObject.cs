@@ -17,10 +17,12 @@ public abstract record ImmutableDataTransferObject : IJsonSerializable, IExtensi
     [JsonIgnore]
     public IReadOnlyDictionary<string, object> ExtensionData => ExtensionDataCore;
 
+#pragma warning disable IDE0028 // Simplify collection initialization
     IDictionary<string, object> IExtensionData.ExtensionData
         => _extensionData is not null
             ? new(_extensionData)
             : new Dictionary<string, object>();
+#pragma warning restore IDE0028 // Simplify collection initialization
 
     [JsonExtensionData]
     [JsonPropertyOrder(2100010010)]

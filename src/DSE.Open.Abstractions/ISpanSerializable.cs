@@ -9,7 +9,6 @@ namespace DSE.Open;
 /// Indicates that a type can be written to and read from a span of characters.
 /// </summary>
 /// <typeparam name="TSelf">The type that implements this interface.</typeparam>
-[SuppressMessage("Design", "CA1000:Do not declare static members on generic types", Justification = "Required for static interface methods")]
 public interface ISpanSerializable<TSelf> : ISpanParsable<TSelf>, ISpanFormattable
     where TSelf : ISpanSerializable<TSelf>
 {

@@ -130,7 +130,6 @@ public static class LocalizedCollectionExtensions
     /// <returns></returns>
     /// <exception cref="InvalidOperationException"><paramref name="tag"/> is
     /// not a valid <see cref="LanguageTag"/>.</exception>
-    [SuppressMessage("Performance", "CA1851:Possible multiple enumerations of 'IEnumerable' collection", Justification = "<Pending>")]
     public static T GetLocalizedOrFallback<T>(
         this IEnumerable<KeyValuePair<string, T>> localizedCollection,
         LanguageTag tag,
@@ -326,7 +325,6 @@ public static class LocalizedCollectionExtensions
     /// <param name="fallbacks"></param>
     /// <returns></returns>
     /// <exception cref="InvalidOperationException"></exception>
-    [SuppressMessage("Performance", "CA1851:Possible multiple enumerations of 'IEnumerable' collection", Justification = "<Pending>")]
     public static T GetLocalizedOrFallback<T>(
         this IEnumerable<KeyValuePair<LanguageTag, T>> localizedCollection,
         LanguageTag tag,

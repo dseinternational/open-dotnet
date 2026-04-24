@@ -40,18 +40,17 @@ public class SpeechSymbolTests
         Assert.True(SpeechSymbol.IsStrictIpaSymbol(symbol));
     }
 
-    public static TheoryData<char> Consonants =>
-        new(SpeechSymbol.Consonants.Select(c => (char)c).ToArray());
+#pragma warning disable IDE0028 // Simplify collection initialization
 
-    public static TheoryData<char> Vowels =>
-        new(SpeechSymbol.Vowels.Select(c => (char)c).ToArray());
+    public static TheoryData<char> Consonants => new(SpeechSymbol.Consonants.Select(c => (char)c));
 
-    public static TheoryData<char> Diacritics =>
-        new(SpeechSymbol.Diacritics.Select(c => (char)c).ToArray());
+    public static TheoryData<char> Vowels => new(SpeechSymbol.Vowels.Select(c => (char)c));
 
-    public static TheoryData<char> Suprasegmentals =>
-        new(SpeechSymbol.Suprasegmentals.Select(c => (char)c).ToArray());
+    public static TheoryData<char> Diacritics => new(SpeechSymbol.Diacritics.Select(c => (char)c));
 
-    public static TheoryData<char> OtherSymbols =>
-        new(SpeechSymbol.OtherSymbols.Select(c => (char)c).ToArray());
+    public static TheoryData<char> Suprasegmentals => new(SpeechSymbol.Suprasegmentals.Select(c => (char)c));
+
+    public static TheoryData<char> OtherSymbols => new(SpeechSymbol.OtherSymbols.Select(c => (char)c));
+
+#pragma warning restore IDE0028 // Simplify collection initialization
 }

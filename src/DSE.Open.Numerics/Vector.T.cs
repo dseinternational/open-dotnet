@@ -45,9 +45,7 @@ public sealed class Vector<T>
         _memory = memory;
     }
 
-#pragma warning disable CA1033 // Interface methods should be callable by child types
     int IReadOnlyCollection<T>.Count => Length;
-#pragma warning restore CA1033 // Interface methods should be callable by child types
 
     public T this[int index]
     {
@@ -71,9 +69,7 @@ public sealed class Vector<T>
         return _memory.Span;
     }
 
-#pragma warning disable CA1033 // Interface methods should be callable by child types
     ReadOnlySpan<T> IReadOnlyVector<T>.AsSpan()
-#pragma warning restore CA1033 // Interface methods should be callable by child types
     {
         return AsSpan();
     }

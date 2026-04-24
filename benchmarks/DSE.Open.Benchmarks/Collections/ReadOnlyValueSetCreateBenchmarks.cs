@@ -14,7 +14,11 @@ public class ReadOnlyValueSetCreateBenchmarks
 {
     public const int N = 100;
 
+#pragma warning disable IDE0028 // Simplify collection initialization
+
     private static readonly List<int> s_items = new(N);
+
+#pragma warning restore IDE0028 // Simplify collection initialization
 
     [GlobalSetup]
     public void Setup()

@@ -25,10 +25,8 @@ public sealed class SpeechTranscriptionListToJsonStringConverter : ValueConverte
         return JsonSerializer.Serialize(value, JsonSharedOptions.RelaxedJsonEscaping);
     }
 
-#pragma warning disable CA1859 // Use concrete types when possible for improved performance
     // public for EF Core model compilation
     public static IList<SpeechTranscription> ConvertFrom(string value)
-#pragma warning restore CA1859 // Use concrete types when possible for improved performance
     {
         return JsonSerializer.Deserialize<List<SpeechTranscription>>(value, JsonSharedOptions.RelaxedJsonEscaping)!;
     }

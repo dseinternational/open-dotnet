@@ -20,9 +20,7 @@ public static class ReadOnlyValueCollection
     {
         if (items.IsEmpty)
         {
-#pragma warning disable IDE0301 // Simplify collection initialization
             return ReadOnlyValueCollection<T>.Empty;
-#pragma warning restore IDE0301 // Simplify collection initialization
         }
 
         var list = new List<T>(items.Length);

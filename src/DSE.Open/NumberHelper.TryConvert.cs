@@ -5,9 +5,6 @@ using System.Numerics;
 
 namespace DSE.Open;
 
-#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
-#pragma warning disable CS8605 // Unboxing a possibly null value.
-
 public static partial class NumberHelper
 {
     /// <summary>

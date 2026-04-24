@@ -7,8 +7,6 @@ using System.Text.Json.Serialization;
 
 namespace DSE.Open.Numerics.Serialization;
 
-#pragma warning disable DSEOPEN001 // ArrayBuilder ref struct warning
-
 public class SeriesJsonConverter : JsonConverter<Series>
 {
     public static SeriesJsonConverter Default { get; } = new();

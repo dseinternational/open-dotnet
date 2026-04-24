@@ -237,9 +237,13 @@ public class SpeechSymbolSequenceTests
         Assert.Equal(3774544766252701229u, value.GetRepeatableHashCode());
     }
 
+#pragma warning disable IDE0028 // Simplify collection initialization
+
     public static TheoryData<string> TwentyWordTranscriptions => new((string[])[.. TranscriptionData.Transcriptions.RandomSelection(20)]);
 
     public static TheoryData<string> WordTranscriptions => new((string[])[.. TranscriptionData.Transcriptions]);
+
+#pragma warning restore IDE0028 // Simplify collection initialization
 
     public static TheoryData<string, string> WordTranscriptionPairs
     {

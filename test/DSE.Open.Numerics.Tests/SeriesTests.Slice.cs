@@ -32,9 +32,11 @@ public partial class SeriesTests
     [Fact]
     public void Slice_Preserves_ValueLabels_ByReference()
     {
-        var labels = new ValueLabelCollection<int>();
-        labels.Add(1, "one");
-        labels.Add(2, "two");
+        var labels = new ValueLabelCollection<int>
+        {
+            { 1, "one" },
+            { 2, "two" }
+        };
         var series = new Series<int>([1, 2, 1, 2, 1], name: "x", valueLabels: labels);
 
         var slice = series.Slice(1, 3);
@@ -73,8 +75,10 @@ public partial class SeriesTests
     [Fact]
     public void Slice_WithCopyTrue_Copies_ValueLabels()
     {
-        var labels = new ValueLabelCollection<int>();
-        labels.Add(1, "one");
+        var labels = new ValueLabelCollection<int>
+        {
+            { 1, "one" }
+        };
         var series = new Series<int>([1, 1, 1], name: "x", valueLabels: labels);
 
         var slice = series.Slice(0, 2, copy: true);
@@ -179,10 +183,12 @@ public partial class SeriesTests
     [Fact]
     public void ReadOnlySlice_Preserves_ValueLabels_ByReference()
     {
-        var labels = new ValueLabelCollection<int>();
-        labels.Add(1, "one");
-        labels.Add(2, "two");
-        labels.Add(3, "three");
+        var labels = new ValueLabelCollection<int>
+        {
+            { 1, "one" },
+            { 2, "two" },
+            { 3, "three" }
+        };
         var roLabels = labels.AsReadOnly();
         var series = new ReadOnlySeries<int>([1, 2, 3, 2, 1], name: "x", valueLabels: roLabels);
 
@@ -194,10 +200,12 @@ public partial class SeriesTests
     [Fact]
     public void ReadOnlySlice_WithCopyTrue_Copies_ValueLabels_AndPreservesContents()
     {
-        var labels = new ValueLabelCollection<int>();
-        labels.Add(1, "one");
-        labels.Add(2, "two");
-        labels.Add(3, "three");
+        var labels = new ValueLabelCollection<int>
+        {
+            { 1, "one" },
+            { 2, "two" },
+            { 3, "three" }
+        };
         var roLabels = labels.AsReadOnly();
         var series = new ReadOnlySeries<int>([1, 2, 3, 2, 1], name: "x", valueLabels: roLabels);
 

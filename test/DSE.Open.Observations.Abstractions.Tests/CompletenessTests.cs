@@ -8,14 +8,14 @@ namespace DSE.Open.Observations;
 
 public sealed class CompletenessTests
 {
-    public static TheoryData<byte> ValidOrdinals { get; } = new() { 10, 50, 90 };
+    public static TheoryData<byte> ValidOrdinals { get; } = [10, 50, 90];
 
-    public static TheoryData<Completeness> AllValues { get; } = new()
-    {
+    public static TheoryData<Completeness> AllValues { get; } =
+    [
         Completeness.Partial,
         Completeness.Developing,
         Completeness.Complete,
-    };
+    ];
 
     [Fact]
     public void SerializesToNumber()

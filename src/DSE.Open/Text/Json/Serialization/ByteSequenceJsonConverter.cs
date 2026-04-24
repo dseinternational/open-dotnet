@@ -178,7 +178,10 @@ public sealed class ByteSequenceJsonConverter : JsonConverterFactory
 
         protected override List<byte> GetValue(Memory<byte> memory)
         {
+#pragma warning disable IDE0028 // Simplify collection initialization
+#pragma warning disable IDE0306 // Simplify collection initialization
             return new(memory.ToArray());
+#pragma warning restore IDE0028 // Simplify collection initialization
         }
 
         public override void Write(Utf8JsonWriter writer, List<byte> value, JsonSerializerOptions options)
@@ -196,7 +199,11 @@ public sealed class ByteSequenceJsonConverter : JsonConverterFactory
 
         protected override Collection<byte> GetValue(Memory<byte> memory)
         {
+#pragma warning disable IDE0028 // Simplify collection initialization
+#pragma warning disable IDE0306 // Simplify collection initialization
             return new(memory.ToArray());
+#pragma warning restore IDE0306 // Simplify collection initialization
+#pragma warning restore IDE0028 // Simplify collection initialization
         }
 
         public override void Write(Utf8JsonWriter writer, Collection<byte> value, JsonSerializerOptions options)

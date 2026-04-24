@@ -14,10 +14,10 @@ public class GenderTests
         AssertJson.Roundtrip(value);
     }
 
-    public static TheoryData<Gender> Values { get; } = new()
-    {
+    public static TheoryData<Gender> Values { get; } =
+    [
         Gender.Female,
         Gender.Male,
         Gender.Other,
-    };
+    ];
 }

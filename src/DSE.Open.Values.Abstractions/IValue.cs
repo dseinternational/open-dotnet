@@ -12,7 +12,6 @@ namespace DSE.Open.Values;
 /// </summary>
 /// <typeparam name="TSelf">The type that implements the interface.</typeparam>
 /// <typeparam name="T">The type that the value that can be converted to.</typeparam>
-[SuppressMessage("Design", "CA1000:Do not declare static members on generic types", Justification = "Required for static interface methods")]
 public interface IValue<TSelf, T>
     : IConvertibleTo<TSelf, T>,
         ITryConvertibleFrom<TSelf, T>,

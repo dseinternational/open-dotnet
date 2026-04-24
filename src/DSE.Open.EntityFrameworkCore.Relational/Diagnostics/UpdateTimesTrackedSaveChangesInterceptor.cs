@@ -47,10 +47,7 @@ public sealed partial class UpdateTimesTrackedSaveChangesInterceptor : SaveChang
             return ValueTask.FromResult(result);
         }
 
-#pragma warning disable CA1873 // Avoid potentially expensive logging
         Log.InterceptedSaveChanges(_logger, eventData.Context.GetType().Name);
-#pragma warning restore CA1873 // Avoid potentially expensive logging
-
         var persistedEntityEntries = eventData.Context.ChangeTracker.Entries<IUpdateTimesTracked>().ToArray();
 
         if (SetCreatedTimestamp)
@@ -75,9 +72,7 @@ public sealed partial class UpdateTimesTrackedSaveChangesInterceptor : SaveChang
                         $"and id '{(added as IIdentified)?.Id}'", ex);
                 }
 
-#pragma warning disable CA1873 // Avoid potentially expensive logging
                 Log.SetCreatedTime(_logger, added.GetType().Name, (added as IIdentified)?.Id);
-#pragma warning restore CA1873 // Avoid potentially expensive logging
             }
         }
 
@@ -101,9 +96,7 @@ public sealed partial class UpdateTimesTrackedSaveChangesInterceptor : SaveChang
                     $"and id '{(updated as IIdentified)?.Id}'", ex);
             }
 
-#pragma warning disable CA1873 // Avoid potentially expensive logging
             Log.SetUpdatedTime(_logger, updated.GetType().Name, (updated as IIdentified)?.Id);
-#pragma warning restore CA1873 // Avoid potentially expensive logging
         }
 
         return ValueTask.FromResult(result);

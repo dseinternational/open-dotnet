@@ -16,10 +16,10 @@ public class ClinicalConceptCodeTests
         Assert.Equal(value, deserialized);
     }
 
-    public static TheoryData<ClinicalConceptCode> Values { get; } = new()
-    {
+    public static TheoryData<ClinicalConceptCode> Values { get; } =
+    [
         (ClinicalConceptCode)41040004,
         (ClinicalConceptCode)35919005,
         (ClinicalConceptCode)229746007,
-    };
+    ];
 }

@@ -259,8 +259,6 @@ public record Word : ISpanFormattable, ISpanParsable<Word>, IRepeatableHash64
 
         UniversalRelationTag? relation;
         var relationSpan = s[fields[ConlluFieldIndex.Relation]];
-
-#pragma warning disable IDE0078 // Use pattern matching
         if (relationSpan.Length == 1 && relationSpan[0] == '_')
         {
             relation = null;
@@ -280,7 +278,6 @@ public record Word : ISpanFormattable, ISpanParsable<Word>, IRepeatableHash64
                 return Fail(out result);
             }
         }
-#pragma warning restore IDE0078 // Use pattern matching
 
         // TODO: DEPS
 

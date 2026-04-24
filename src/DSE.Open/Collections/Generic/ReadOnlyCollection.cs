@@ -15,9 +15,7 @@ public static class ReadOnlyCollection
     {
         if (items.IsEmpty)
         {
-#pragma warning disable IDE0301 // Simplify collection initialization
             return ReadOnlyCollection<T>.Empty;
-#pragma warning restore IDE0301 // Simplify collection initialization
         }
 
         var list = new List<T>(items.Length);

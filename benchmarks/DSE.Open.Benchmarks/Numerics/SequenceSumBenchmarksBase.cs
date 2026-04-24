@@ -26,9 +26,13 @@ public abstract class SequenceSumBenchmarksBase<T>
     [GlobalSetup]
     public void Setup()
     {
+#pragma warning disable IDE0028 // Simplify collection initialization
+
         ValuesArray = GetValuesArray(Count);
         ValuesCollection = new(GetValuesList(Count));
         ValuesEnumerable = GetValuesEnumerable(Count);
+
+#pragma warning restore IDE0028 // Simplify collection initialization
     }
     protected T[] GetValuesArray(int count)
     {
@@ -46,7 +50,9 @@ public abstract class SequenceSumBenchmarksBase<T>
 
     protected IEnumerable<T> GetValuesCollection(int count)
     {
+#pragma warning disable IDE0028 // Simplify collection initialization
         return new Collection<T>(GetValuesList(count));
+#pragma warning restore IDE0028 // Simplify collection initialization
     }
 
     protected IEnumerable<T> GetValuesEnumerable(int count)

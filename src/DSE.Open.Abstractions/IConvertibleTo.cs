@@ -10,7 +10,6 @@ namespace DSE.Open;
 /// </summary>
 /// <typeparam name="TFrom">The type that can be converted.</typeparam>
 /// <typeparam name="TTo">The type that <typeparamref name="TFrom"/> can be converted to.</typeparam>
-[SuppressMessage("Design", "CA1000:Do not declare static members on generic types", Justification = "Required for static interface methods")]
 [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates", Justification = "Cannot name from type parameter")]
 public interface IConvertibleTo<TFrom, TTo>
     where TFrom : IConvertibleTo<TFrom, TTo>
