@@ -1,10 +1,6 @@
 // Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
-
-// Copyright (c) Down Syndrome Education International and Contributors. All Rights Reserved.
-// Down Syndrome Education International and Contributors licence this file to you under the MIT license.
-
 using DSE.Open.Runtime.Helpers;
 
 namespace DSE.Open.Values;
@@ -29,6 +25,24 @@ public class UriPathTests
         // Assert
         Assert.False(actual);
         Assert.Equal(expected, result);
+    }
+
+    [Theory]
+    [InlineData("a")]
+    [InlineData("z")]
+    [InlineData("0")]
+    [InlineData("9")]
+    [InlineData("abc")]
+    [InlineData("abc123")]
+    [InlineData("abc-def")]
+    [InlineData("abc/def")]
+    [InlineData("abc-123/def-456")]
+    public void TryParse_WithValidCharacters_ShouldReturnTrueWithParsedValue(string value)
+    {
+        var actual = UriPath.TryParse(value, out var result);
+
+        Assert.True(actual);
+        Assert.Equal(value, result.ToString());
     }
 
     [Theory]
