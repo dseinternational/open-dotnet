@@ -236,7 +236,7 @@ public readonly partial record struct BinaryValue
 
     private static BinaryValue FromLowerHex(string value)
     {
-        if (HexConverter.IsValidLowerHex(value))
+        if (value.Length % 2 == 0 && HexConverter.IsValidLowerHex(value))
         {
             return new(Convert.FromHexString(value), true);
         }
@@ -246,7 +246,7 @@ public readonly partial record struct BinaryValue
 
     private static BinaryValue FromUpperHex(string value)
     {
-        if (HexConverter.IsValidUpperHex(value))
+        if (value.Length % 2 == 0 && HexConverter.IsValidUpperHex(value))
         {
             return new(Convert.FromHexString(value), true);
         }
