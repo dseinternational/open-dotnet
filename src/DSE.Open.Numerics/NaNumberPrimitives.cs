@@ -7,8 +7,22 @@ using System.Runtime.InteropServices;
 
 namespace DSE.Open.Numerics;
 
+/// <summary>
+/// SIMD-friendly element-wise primitives over <see cref="NaInt{T}"/> spans. Operations
+/// reinterpret the spans as raw underlying values via
+/// <see cref="MemoryMarshal.Cast{TFrom, TTo}(ReadOnlySpan{TFrom})"/> so that the
+/// underlying <see cref="System.Numerics.Tensors.TensorPrimitives"/> kernels run
+/// unchanged, then re-mask any positions whose inputs were the NA sentinel
+/// (<see cref="NaInt{T}.Sentinel"/>).
+/// </summary>
 public static class NaNumberPrimitives
 {
+    /// <summary>
+    /// Computes element-wise <paramref name="x"/> + <paramref name="y"/> into
+    /// <paramref name="destination"/>. Positions where either input is NA produce NA.
+    /// </summary>
+    /// <typeparam name="T">The underlying integer type.</typeparam>
+    /// <exception cref="NumericsArgumentException">The three spans don't share the same length.</exception>
     public static void Add<T>(ReadOnlySpan<NaInt<T>> x, ReadOnlySpan<NaInt<T>> y, Span<NaInt<T>> destination)
         where T : struct, IBinaryInteger<T>, IMinMaxValue<T>
     {
@@ -32,6 +46,10 @@ public static class NaNumberPrimitives
         }
     }
 
+    /// <summary>
+    /// Returns the sum of <paramref name="sequence"/>. If any element is NA, the
+    /// result is NA; if the sequence is empty, the result is zero.
+    /// </summary>
     public static NaInt<T> Sum<T>(ReadOnlySpan<NaInt<T>> sequence)
         where T : struct, IBinaryInteger<T>, IMinMaxValue<T>
     {

@@ -17,6 +17,7 @@ public interface ITriNullable
     /// </summary>
     bool HasValue { get; }
 
+    /// <summary>Gets <see langword="true"/> when the value is missing — the inverse of <see cref="HasValue"/>.</summary>
     bool IsMissing => !HasValue;
 
     /// <summary>
@@ -65,11 +66,13 @@ public interface IMissingNullable<TSelf, T>
 
     object ITriNullable.Value => Value;
 
+    /// <summary>Returns <see langword="true"/> only when both values are present and equal.</summary>
     static virtual bool Equals(TSelf v1, TSelf v2)
     {
         return v1.HasValue && v2.HasValue && v1.Value.Equals(v2.Value);
     }
 
+    /// <summary>Returns <see langword="true"/> when both values are missing, or both are present and equal.</summary>
     static virtual bool EqualOrMissing(TSelf v1, TSelf v2)
     {
         return v1.HasValue
@@ -77,11 +80,13 @@ public interface IMissingNullable<TSelf, T>
             : !v2.HasValue;
     }
 
+    /// <summary>Equality operator; delegates to <see cref="Equals(TSelf, TSelf)"/>.</summary>
     static virtual bool operator ==(TSelf left, TSelf right)
     {
         return TSelf.Equals(left, right);
     }
 
+    /// <summary>Inequality operator.</summary>
     static virtual bool operator !=(TSelf left, TSelf right)
     {
         return !TSelf.Equals(left, right);
