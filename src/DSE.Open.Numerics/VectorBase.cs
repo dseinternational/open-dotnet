@@ -5,8 +5,24 @@ using System.Diagnostics;
 
 namespace DSE.Open.Numerics;
 
+/// <summary>
+/// Common base for <see cref="Vector"/> and <see cref="ReadOnlyVector"/>:
+/// carries the type-erased metadata (<see cref="DataType"/>,
+/// <see cref="ItemType"/>, <see cref="Length"/>) shared by every vector,
+/// independent of element type or read/write capability.
+/// </summary>
 public abstract class VectorBase
 {
+    /// <summary>
+    /// Initializes the vector base with the supplied dtype, runtime element
+    /// type, length, and read-only flag.
+    /// </summary>
+    /// <param name="dataType">The <see cref="VectorDataType"/> tag for the element type.</param>
+    /// <param name="itemType">The runtime <see cref="Type"/> of the element.</param>
+    /// <param name="length">The number of elements in the vector. Must be non-negative.</param>
+    /// <param name="isReadOnly">Whether the vector is read-only.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="itemType"/> is <see langword="null"/>.</exception>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="length"/> is negative.</exception>
     protected internal VectorBase(
         VectorDataType dataType,
         Type itemType,
@@ -40,6 +56,9 @@ public abstract class VectorBase
     /// </summary>
     public int Length { get; }
 
+    /// <summary>
+    /// Gets <see langword="true"/> when this vector contains no elements.
+    /// </summary>
     public bool IsEmpty { get; }
 
     /// <summary>
@@ -47,6 +66,12 @@ public abstract class VectorBase
     /// </summary>
     public bool IsNumeric { get; }
 
+    /// <summary>
+    /// Gets <see langword="true"/> when the element type can carry an NA value
+    /// (i.e., it is one of the <c>Na*</c> <see cref="VectorDataType"/> variants
+    /// such as <see cref="VectorDataType.NaFloat64"/> or
+    /// <see cref="VectorDataType.NaInt32"/>).
+    /// </summary>
     public bool IsNullable { get; }
 
     /// <summary>
@@ -59,5 +84,9 @@ public abstract class VectorBase
     /// </summary>
     public VectorDataType DataType { get; }
 
+    /// <summary>
+    /// Gets <see langword="true"/> when this vector exposes only read access
+    /// (the underlying storage may itself still be mutable through other views).
+    /// </summary>
     public bool IsReadOnly { get; }
 }

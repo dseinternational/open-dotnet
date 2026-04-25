@@ -8,12 +8,16 @@ namespace DSE.Open.Numerics;
 ///. Optionally named, labelled or categorised for use with
 /// a <see cref="IReadOnlyDataFrame"/>.
 /// </summary>
+/// <typeparam name="T">The element type.</typeparam>
 public interface IReadOnlySeries<T>
     : IReadOnlySeries,
       IReadOnlyList<T>,
       IEquatable<IReadOnlySeries<T>?>
     where T : IEquatable<T>
 {
+    /// <summary>
+    /// Gets the strongly-typed read-only view of the underlying vector.
+    /// </summary>
     new ReadOnlyVector<T> Vector { get; }
 
     /// <summary>
@@ -21,6 +25,13 @@ public interface IReadOnlySeries<T>
     /// </summary>
     ReadOnlySpan<T> AsReadOnlySpan();
 
+    /// <summary>
+    /// Returns a slice of this series sharing the underlying storage and
+    /// metadata. See <see cref="ReadOnlySeries{T}.Slice(int, int, bool)"/> for
+    /// the variant that copies metadata.
+    /// </summary>
+    /// <param name="start">Zero-based start index of the slice.</param>
+    /// <param name="length">Number of elements in the slice.</param>
     IReadOnlySeries<T> Slice(int start, int length);
 
     /// <summary>
