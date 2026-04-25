@@ -15,7 +15,7 @@ namespace DSE.Open.Numerics;
 /// <summary>
 /// A serializable, fixed-length, contiguous sequence of values of type <typeparamref name="T"/>.
 /// </summary>
-/// <typeparam name="T"></typeparam>
+/// <typeparam name="T">The element type. Must implement <see cref="IEquatable{T}"/>.</typeparam>
 [CollectionBuilder(typeof(Vector), nameof(Create))]
 [JsonConverter(typeof(VectorJsonConverter))]
 public sealed class Vector<T>
@@ -32,14 +32,28 @@ public sealed class Vector<T>
 
     private readonly Memory<T> _memory;
 
+    /// <summary>
+    /// Creates a new vector of the given <paramref name="length"/> backed by a
+    /// freshly-allocated <typeparamref name="T"/>[] with all elements at
+    /// <c>default(T)</c>.
+    /// </summary>
     public Vector(int length) : this(new T[length])
     {
     }
 
+    /// <summary>
+    /// Creates a new vector that wraps <paramref name="array"/> by reference;
+    /// no copy is made and writes through the vector are visible to the array
+    /// (and vice versa).
+    /// </summary>
     public Vector(T[] array) : this(array.AsMemory())
     {
     }
 
+    /// <summary>
+    /// Creates a new vector that wraps <paramref name="memory"/> by reference;
+    /// the vector and the underlying memory share storage.
+    /// </summary>
     public Vector(Memory<T> memory) : base(GetDataType<T>(), typeof(T), memory.Length)
     {
         _memory = memory;
@@ -47,6 +61,12 @@ public sealed class Vector<T>
 
     int IReadOnlyCollection<T>.Count => Length;
 
+    /// <summary>
+    /// Gets or sets the element at <paramref name="index"/>.
+    /// </summary>
+    /// <param name="index">Zero-based index of the element.</param>
+    /// <exception cref="IndexOutOfRangeException">Thrown when
+    /// <paramref name="index"/> is outside <c>[0, Length)</c>.</exception>
     public T this[int index]
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -55,6 +75,7 @@ public sealed class Vector<T>
         set => _memory.Span[index] = value;
     }
 
+    /// <inheritdoc />
     public override VectorValue GetVectorValue(int index)
     {
         return VectorValue.FromValue(this[index]);
@@ -74,11 +95,17 @@ public sealed class Vector<T>
         return AsSpan();
     }
 
+    /// <inheritdoc />
     public override bool Equals(object? obj)
     {
         return obj is Vector<T> vector && Equals(vector);
     }
 
+    /// <summary>
+    /// Returns a hash code for this vector. Two vectors that compare equal via
+    /// <see cref="Equals(Vector{T})"/> produce the same hash code; the hash is
+    /// derived from the entire element sequence and is therefore O(N).
+    /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public override int GetHashCode()
     {
@@ -135,11 +162,16 @@ public sealed class Vector<T>
         return hash.ToHashCode();
     }
 
+    /// <summary>
+    /// Returns a read-only view of this vector. The view shares the underlying
+    /// memory; mutations made through the source vector are observable.
+    /// </summary>
     public new ReadOnlyVector<T> AsReadOnly()
     {
         return new ReadOnlyVector<T>(_memory);
     }
 
+    /// <inheritdoc />
     protected override ReadOnlyVector CreateReadOnly()
     {
         return AsReadOnly();
@@ -181,6 +213,11 @@ public sealed class Vector<T>
         return VectorPrimitives.SequenceEqual(this, other);
     }
 
+    /// <summary>
+    /// Returns a struct enumerator over the elements of the vector. <c>foreach</c>
+    /// resolves to this overload via duck-typing and avoids the per-iteration
+    /// heap allocation of an interface-based enumerator.
+    /// </summary>
     public MemoryEnumerator<T> GetEnumerator()
     {
         return _memory.GetEnumerator();
@@ -196,12 +233,23 @@ public sealed class Vector<T>
         return ((IEnumerable<T>)this).GetEnumerator();
     }
 
+    /// <summary>
+    /// Returns a slice of this vector starting at <paramref name="start"/>.
+    /// The slice shares the underlying storage; no copy is made.
+    /// </summary>
+    /// <param name="start">Zero-based start index of the slice.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Vector<T> Slice(int start)
     {
         return _memory[start..];
     }
 
+    /// <summary>
+    /// Returns a slice of this vector. The slice shares the underlying storage;
+    /// no copy is made.
+    /// </summary>
+    /// <param name="start">Zero-based start index of the slice.</param>
+    /// <param name="length">Number of elements in the slice.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Vector<T> Slice(int start, int length)
     {
@@ -228,6 +276,10 @@ public sealed class Vector<T>
         return _memory.ToArray();
     }
 
+    /// <summary>
+    /// Wraps a <see cref="Memory{T}"/> as a <see cref="Vector{T}"/> by reference;
+    /// no copy is made.
+    /// </summary>
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",
         Justification = "By design")]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -236,6 +288,12 @@ public sealed class Vector<T>
         return new(vector);
     }
 
+    /// <summary>
+    /// Copies the contents of <paramref name="vector"/> into a new
+    /// <see cref="Vector{T}"/>. To wrap an array by reference, use
+    /// <see cref="Vector.Create{T}(T[])"/> instead.
+    /// </summary>
+    /// <exception cref="ArgumentNullException"><paramref name="vector"/> is <see langword="null"/>.</exception>
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",
         Justification = "By design")]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -245,6 +303,10 @@ public sealed class Vector<T>
         return [.. vector];
     }
 
+    /// <summary>
+    /// Returns the underlying <see cref="Memory{T}"/> of <paramref name="vector"/>,
+    /// or <c>default</c> when <paramref name="vector"/> is <see langword="null"/>.
+    /// </summary>
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",
         Justification = "By design")]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -253,6 +315,12 @@ public sealed class Vector<T>
         return vector is not null ? vector._memory : default;
     }
 
+    /// <summary>
+    /// Returns a read-only view of <paramref name="vector"/> via
+    /// <see cref="AsReadOnly"/>, or the shared empty
+    /// <see cref="ReadOnlyVector{T}"/> when <paramref name="vector"/> is
+    /// <see langword="null"/>.
+    /// </summary>
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",
         Justification = "By design")]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

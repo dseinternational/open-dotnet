@@ -16,6 +16,12 @@ public interface IVector : IReadOnlyVector
 public interface IVector<T> : IVector, IReadOnlyVector<T>
     where T : IEquatable<T>
 {
+    /// <summary>
+    /// Gets or sets the element at <paramref name="index"/>.
+    /// </summary>
+    /// <param name="index">Zero-based index of the element.</param>
+    /// <exception cref="IndexOutOfRangeException">Thrown when
+    /// <paramref name="index"/> is outside <c>[0, Length)</c>.</exception>
     new T this[int index] { get; set; }
 
     /// <summary>
@@ -23,5 +29,15 @@ public interface IVector<T> : IVector, IReadOnlyVector<T>
     /// </summary>
     new Span<T> AsSpan();
 
+    /// <summary>
+    /// Returns a mutable slice of this vector starting at <paramref name="start"/>
+    /// with the given <paramref name="length"/>. The slice shares the underlying
+    /// storage with the source — writes through either view are visible to the other.
+    /// </summary>
+    /// <param name="start">Zero-based start index of the slice.</param>
+    /// <param name="length">Number of elements in the slice.</param>
+    /// <exception cref="ArgumentOutOfRangeException">Thrown when
+    /// <paramref name="start"/> or <paramref name="length"/> is negative, or
+    /// when <c>start + length</c> exceeds <see cref="IReadOnlyVector.Length"/>.</exception>
     new IVector<T> Slice(int start, int length);
 }

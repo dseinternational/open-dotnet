@@ -9,6 +9,9 @@ namespace DSE.Open.Numerics;
 /// </summary>
 public interface ISeries : IReadOnlySeries
 {
+    /// <summary>
+    /// Gets or sets the optional name of the series.
+    /// </summary>
     new string? Name { get; set; }
 
     /// <summary>

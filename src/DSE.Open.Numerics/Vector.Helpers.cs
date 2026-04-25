@@ -126,21 +126,44 @@ public partial class Vector
 
     }.ToFrozenSet();
 
+    /// <summary>
+    /// Returns the string label that identifies <paramref name="dataType"/> in
+    /// JSON serialization (e.g. <c>"Float64"</c> for <see cref="VectorDataType.Float64"/>).
+    /// </summary>
     public static string GetDataTypeLabel(VectorDataType dataType)
     {
         return s_labelLookup[dataType];
     }
 
+    /// <summary>
+    /// Returns the <see cref="VectorDataType"/> identified by the JSON
+    /// <paramref name="label"/> (case-insensitive ordinal match).
+    /// </summary>
+    /// <exception cref="KeyNotFoundException">Thrown when <paramref name="label"/>
+    /// does not match a known data-type label.</exception>
     public static VectorDataType GetDataType(string label)
     {
         return s_vectorDataTypeLookup[label];
     }
 
+    /// <summary>
+    /// Returns the <see cref="VectorDataType"/> for element type
+    /// <typeparamref name="T"/>.
+    /// </summary>
+    /// <exception cref="ArgumentException"><typeparamref name="T"/> is not a
+    /// supported element type. See <see cref="TryGetDataType(Type, out VectorDataType)"/>
+    /// for a non-throwing variant.</exception>
     public static VectorDataType GetDataType<T>()
     {
         return GetDataType(typeof(T));
     }
 
+    /// <summary>
+    /// Returns the <see cref="VectorDataType"/> for runtime element type
+    /// <paramref name="type"/>.
+    /// </summary>
+    /// <exception cref="ArgumentException"><paramref name="type"/> is not a
+    /// supported element type.</exception>
     public static VectorDataType GetDataType(Type type)
     {
         if (TryGetDataType(type, out var vectorDataType))
@@ -151,6 +174,12 @@ public partial class Vector
         throw new ArgumentException($"Type {type} is not a supported data type.");
     }
 
+    /// <summary>
+    /// Returns the runtime element <see cref="Type"/> for the given
+    /// <paramref name="vectorDataType"/>.
+    /// </summary>
+    /// <exception cref="ArgumentException"><paramref name="vectorDataType"/>
+    /// has no corresponding runtime type.</exception>
     public static Type GetType(VectorDataType vectorDataType)
     {
         if (TryGetType(vectorDataType, out var type))
@@ -161,26 +190,60 @@ public partial class Vector
         throw new ArgumentException($"VectorDataType {vectorDataType} is not a supported data type.");
     }
 
+    /// <summary>
+    /// Attempts to map <paramref name="vectorDataType"/> to its runtime
+    /// element <see cref="Type"/>.
+    /// </summary>
+    /// <param name="vectorDataType">The data-type tag.</param>
+    /// <param name="type">When the method returns, the matching <see cref="Type"/>
+    /// or <see langword="null"/> if no mapping was found.</param>
+    /// <returns><see langword="true"/> when a mapping exists, otherwise <see langword="false"/>.</returns>
     public static bool TryGetType(VectorDataType vectorDataType, [NotNullWhen(true)] out Type? type)
     {
         return s_typeLookup.TryGetValue(vectorDataType, out type);
     }
 
+    /// <summary>
+    /// Attempts to map runtime <paramref name="type"/> to its
+    /// <see cref="VectorDataType"/>.
+    /// </summary>
+    /// <param name="type">The runtime element type.</param>
+    /// <param name="vectorDataType">When the method returns, the matching
+    /// <see cref="VectorDataType"/>; otherwise the default value.</param>
+    /// <returns><see langword="true"/> when a mapping exists, otherwise <see langword="false"/>.</returns>
     public static bool TryGetDataType(Type type, out VectorDataType vectorDataType)
     {
         return s_vectorTypeLookup.TryGetValue(type, out vectorDataType);
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> when <paramref name="vectorDataType"/>
+    /// represents a numeric element type (integer, floating-point, or the
+    /// corresponding NA-aware variant).
+    /// </summary>
     public static bool IsNumericType(VectorDataType vectorDataType)
     {
         return s_numericTypes.Contains(vectorDataType);
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> when <paramref name="type"/> represents a
+    /// numeric element type (integer, floating-point, or the corresponding
+    /// NA-aware wrapper).
+    /// </summary>
+    /// <exception cref="ArgumentException"><paramref name="type"/> is not a
+    /// supported element type.</exception>
     public static bool IsNumericType(Type type)
     {
         return IsNumericType(GetDataType(type));
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> when <typeparamref name="T"/> represents
+    /// a numeric element type.
+    /// </summary>
+    /// <exception cref="ArgumentException"><typeparamref name="T"/> is not a
+    /// supported element type.</exception>
     public static bool IsNumericType<T>()
     {
         return IsNumericType(typeof(T));
