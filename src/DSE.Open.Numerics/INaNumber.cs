@@ -32,5 +32,8 @@ public interface INaNumber<TSelf, T>
     where T : struct, INumber<T>, IMinMaxValue<T>
     where TSelf : struct, INaNumber<TSelf, T>
 {
+    /// <summary>
+    /// Creates an instance of <typeparamref name="TSelf"/> wrapping <paramref name="value"/>.
+    /// </summary>
     static abstract TSelf FromValue(T value);
 }
