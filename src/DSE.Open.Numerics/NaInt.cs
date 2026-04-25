@@ -567,12 +567,25 @@ public readonly struct NaInt<T>
         ReadOnlySpan<char> format,
         IFormatProvider? provider)
     {
+        if (IsNa)
+        {
+            if (destination.Length < NaValue.NaValueLabel.Length)
+            {
+                charsWritten = 0;
+                return false;
+            }
+
+            NaValue.NaValueLabel.AsSpan().CopyTo(destination);
+            charsWritten = NaValue.NaValueLabel.Length;
+            return true;
+        }
+
         return _value.TryFormat(destination, out charsWritten, format, provider);
     }
 
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
-        return _value.ToString(format, formatProvider);
+        return IsNa ? NaValue.NaValueLabel : _value.ToString(format, formatProvider);
     }
 
     public static NaInt<T> Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
@@ -620,6 +633,11 @@ public readonly struct NaInt<T>
 
     static NaInt<T> IBinaryInteger<NaInt<T>>.PopCount(NaInt<T> value)
     {
+        if (value.IsNa)
+        {
+            return Na;
+        }
+
         return new(T.PopCount(value._value), true);
     }
 
@@ -711,7 +729,9 @@ public readonly struct NaInt<T>
 
     public static NaInt<T> operator %(NaInt<T> left, NaInt<T> right)
     {
-        return left % right;
+        return left.IsNa | right.IsNa | (right._value == T.Zero)
+            ? Na
+            : new(left._value % right._value, true);
     }
 
     public static NaInt<T> operator --(NaInt<T> value)

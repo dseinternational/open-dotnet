@@ -117,7 +117,12 @@ public class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
 
     public override bool Equals(object? obj)
     {
-        return obj is Series<T> vector && Equals(vector);
+        return obj switch
+        {
+            ReadOnlySeries<T> ros => Equals(ros),
+            Series<T> series => Equals(series.AsSpan()),
+            _ => false,
+        };
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]

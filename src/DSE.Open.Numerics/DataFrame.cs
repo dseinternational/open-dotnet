@@ -57,10 +57,12 @@ public sealed class DataFrame : IList<Series>, IReadOnlyDataFrame
 
             if (index < 0)
             {
-                _columns.Add(value);
+                Add(value);
+                value.Name = name;
             }
             else
             {
+                EnsureLengthMatchesOtherColumns(value, replacingIndex: index);
                 _columns[index] = value;
                 value.Name ??= index.ToStringInvariant();
             }
@@ -70,7 +72,12 @@ public sealed class DataFrame : IList<Series>, IReadOnlyDataFrame
     public Series this[int index]
     {
         get => _columns[index];
-        set => _columns[index] = value;
+        set
+        {
+            ArgumentNullException.ThrowIfNull(value);
+            EnsureLengthMatchesOtherColumns(value, replacingIndex: index);
+            _columns[index] = value;
+        }
     }
 
     IReadOnlySeries? IReadOnlyDataFrame.this[string name] => this[name];
@@ -104,6 +111,7 @@ public sealed class DataFrame : IList<Series>, IReadOnlyDataFrame
     public void Insert(int index, Series item)
     {
         ArgumentNullException.ThrowIfNull(item);
+        EnsureCompatibleColumnLength(item, requireMatch: _columns.Count > 0);
         _columns.Insert(index, item);
         item.Name ??= index.ToStringInvariant();
     }
@@ -116,8 +124,56 @@ public sealed class DataFrame : IList<Series>, IReadOnlyDataFrame
     public void Add(Series item)
     {
         ArgumentNullException.ThrowIfNull(item);
+        EnsureCompatibleColumnLength(item, requireMatch: _columns.Count > 0);
         _columns.Add(item);
         item.Name ??= (_columns.Count - 1).ToStringInvariant();
+    }
+
+    /// <summary>
+    /// Verifies that <paramref name="candidate"/>'s length matches the length of the existing columns.
+    /// </summary>
+    /// <remarks>
+    /// When the frame is empty, the candidate becomes the length-defining column and any length is
+    /// accepted. When the frame already has columns, the candidate must match their length; otherwise
+    /// row-level access (e.g. <see cref="Rows"/>) would be inconsistent.
+    /// </remarks>
+    private void EnsureCompatibleColumnLength(Series candidate, bool requireMatch)
+    {
+        if (!requireMatch || _columns.Count == 0)
+        {
+            return;
+        }
+
+        var expected = _columns[0].Length;
+
+        if (candidate.Length != expected)
+        {
+            NumericsArgumentException.Throw(
+                $"Column length {candidate.Length} does not match the data frame's column length of {expected}.");
+        }
+    }
+
+    /// <summary>
+    /// Verifies that <paramref name="candidate"/>'s length matches the length of any column other
+    /// than the one at <paramref name="replacingIndex"/>. Used by indexer-set replacement, where
+    /// the column being replaced does not constrain the new value's length.
+    /// </summary>
+    private void EnsureLengthMatchesOtherColumns(Series candidate, int replacingIndex)
+    {
+        if (_columns.Count <= 1)
+        {
+            // No other columns to constrain length against.
+            return;
+        }
+
+        var referenceIndex = replacingIndex == 0 ? 1 : 0;
+        var expected = _columns[referenceIndex].Length;
+
+        if (candidate.Length != expected)
+        {
+            NumericsArgumentException.Throw(
+                $"Column length {candidate.Length} does not match the data frame's column length of {expected}.");
+        }
     }
 
     public void Clear()
