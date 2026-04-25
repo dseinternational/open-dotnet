@@ -110,17 +110,28 @@ public readonly struct NaValue<T> :
 
     public Trilean TernaryEquals(NaValue<T> other)
     {
-        throw new NotImplementedException();
+        if (IsNa || other.IsNa)
+        {
+            return Trilean.Na;
+        }
+
+        return _value.Equals(other._value) ? Trilean.True : Trilean.False;
+    }
+
+    public bool EqualAndNotNa(NaValue<T> other)
+    {
+        return NaValue.EqualAndNotNa(this, other);
     }
 
     public bool EqualOrBothNa(NaValue<T> other)
     {
-        throw new NotImplementedException();
+        return (IsNa && other.IsNa)
+            || (!IsNa && !other.IsNa && _value.Equals(other._value));
     }
 
     public bool EqualOrEitherNa(NaValue<T> other)
     {
-        throw new NotImplementedException();
+        return IsNa || other.IsNa || _value.Equals(other._value);
     }
 
     public int CompareTo(NaValue<T> other)
@@ -199,11 +210,18 @@ public readonly struct NaValue<T> :
 
     public static NaValue<T> Parse(string s, IFormatProvider? provider)
     {
-        throw new NotImplementedException();
+        ArgumentNullException.ThrowIfNull(s);
+        return Parse(s.AsSpan(), provider);
     }
 
     public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, [MaybeNullWhen(false)] out NaValue<T> result)
     {
-        throw new NotImplementedException();
+        if (s is null)
+        {
+            result = default;
+            return false;
+        }
+
+        return TryParse(s.AsSpan(), provider, out result);
     }
 }

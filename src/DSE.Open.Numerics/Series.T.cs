@@ -169,7 +169,12 @@ public class Series<T>
 
     public override bool Equals(object? obj)
     {
-        return obj is Series<T> vector && Equals(vector);
+        return obj switch
+        {
+            Series<T> series => Equals(series),
+            ReadOnlySeries<T> ros => Equals(ros),
+            _ => false,
+        };
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]

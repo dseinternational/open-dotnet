@@ -11,16 +11,28 @@ public readonly struct VectorValue
     : IEquatable<VectorValue>,
       IEquatable<double>
 {
+    /// <summary>
+    /// Singleton reference used to mark an Na <see cref="VectorValue"/> independently of
+    /// the value bits. Required because the natural sentinels of the typed Na wrappers
+    /// (e.g. <see cref="NaInt{T}"/>'s <c>T.MaxValue</c>, <see cref="NaFloat{T}"/>'s
+    /// <c>NaN</c>) cannot all be represented and round-tripped through the public typed
+    /// constructors of those wrappers — and because <c>NaBool</c>/<c>NaChar</c>/
+    /// <c>NaDateTime</c>/<c>NaDateTimeOffset</c> have no in-band sentinel at all.
+    /// </summary>
+    private static readonly object s_naSentinel = new();
+
     private readonly ulong _bits;
     private readonly object? _ref;
     private readonly VectorDataType _kind;
 
-    private VectorValue(ulong bits, string? str, VectorDataType kind)
+    private VectorValue(ulong bits, object? @ref, VectorDataType kind)
     {
         _bits = bits;
-        _ref = str;
+        _ref = @ref;
         _kind = kind;
     }
+
+    private bool IsNaSentinel => ReferenceEquals(_ref, s_naSentinel);
 
     public VectorDataType DataType => _kind;
 
@@ -111,172 +123,123 @@ public readonly struct VectorValue
 
     public static VectorValue FromNaInt8(NaInt<sbyte> value)
     {
-        if (value.IsNa)
-        {
-            return new(0, null, VectorDataType.NaInt8);
-        }
-
-        return new((ulong)(sbyte)value, null, VectorDataType.NaInt8);
+        return value.IsNa
+            ? new(0, s_naSentinel, VectorDataType.NaInt8)
+            : new((ulong)(sbyte)value, null, VectorDataType.NaInt8);
     }
 
     public static VectorValue FromNaInt16(NaInt<short> value)
     {
-        if (value.IsNa)
-        {
-            return new(0, null, VectorDataType.NaInt16);
-        }
-
-        return new((ulong)(short)value, null, VectorDataType.NaInt16);
+        return value.IsNa
+            ? new(0, s_naSentinel, VectorDataType.NaInt16)
+            : new((ulong)(short)value, null, VectorDataType.NaInt16);
     }
 
     public static VectorValue FromNaInt32(NaInt<int> value)
     {
-        if (value.IsNa)
-        {
-            return new(0, null, VectorDataType.NaInt32);
-        }
-
-        return new((ulong)(int)value, null, VectorDataType.NaInt32);
+        return value.IsNa
+            ? new(0, s_naSentinel, VectorDataType.NaInt32)
+            : new((ulong)(int)value, null, VectorDataType.NaInt32);
     }
 
     public static VectorValue FromNaInt64(NaInt<long> value)
     {
-        if (value.IsNa)
-        {
-            return new(0, null, VectorDataType.NaInt64);
-        }
-
-        return new((ulong)(long)value, null, VectorDataType.NaInt64);
+        return value.IsNa
+            ? new(0, s_naSentinel, VectorDataType.NaInt64)
+            : new((ulong)(long)value, null, VectorDataType.NaInt64);
     }
 
     public static VectorValue FromNaUInt8(NaInt<byte> value)
     {
-        if (value.IsNa)
-        {
-            return new(0, null, VectorDataType.NaUInt8);
-        }
-
-        return new((byte)value, null, VectorDataType.NaUInt8);
+        return value.IsNa
+            ? new(0, s_naSentinel, VectorDataType.NaUInt8)
+            : new((byte)value, null, VectorDataType.NaUInt8);
     }
 
     public static VectorValue FromNaUInt16(NaInt<ushort> value)
     {
-        if (value.IsNa)
-        {
-            return new(0, null, VectorDataType.NaUInt16);
-        }
-
-        return new((ushort)value, null, VectorDataType.NaUInt16);
+        return value.IsNa
+            ? new(0, s_naSentinel, VectorDataType.NaUInt16)
+            : new((ushort)value, null, VectorDataType.NaUInt16);
     }
 
     public static VectorValue FromNaUInt32(NaInt<uint> value)
     {
-        if (value.IsNa)
-        {
-            return new(0, null, VectorDataType.NaUInt32);
-        }
-
-        return new((uint)value, null, VectorDataType.NaUInt32);
+        return value.IsNa
+            ? new(0, s_naSentinel, VectorDataType.NaUInt32)
+            : new((uint)value, null, VectorDataType.NaUInt32);
     }
 
     public static VectorValue FromNaUInt64(NaInt<ulong> value)
     {
-        if (value.IsNa)
-        {
-            return new(0, null, VectorDataType.NaUInt64);
-        }
-
-        return new((ulong)value, null, VectorDataType.NaUInt64);
+        return value.IsNa
+            ? new(0, s_naSentinel, VectorDataType.NaUInt64)
+            : new((ulong)value, null, VectorDataType.NaUInt64);
     }
 
     public static VectorValue FromNaFloat32(NaFloat<float> value)
     {
-        if (value.IsNa)
-        {
-            return new(0, null, VectorDataType.NaFloat32);
-        }
-
-        return new(BitConverter.SingleToUInt32Bits((float)value), null, VectorDataType.NaFloat32);
+        return value.IsNa
+            ? new(0, s_naSentinel, VectorDataType.NaFloat32)
+            : new(BitConverter.SingleToUInt32Bits((float)value), null, VectorDataType.NaFloat32);
     }
 
     public static VectorValue FromNaFloat16(NaFloat<Half> value)
     {
-        if (value.IsNa)
-        {
-            return new(0, null, VectorDataType.NaFloat16);
-        }
-
-        return new(BitConverter.HalfToUInt16Bits((Half)value), null, VectorDataType.NaFloat16);
+        return value.IsNa
+            ? new(0, s_naSentinel, VectorDataType.NaFloat16)
+            : new(BitConverter.HalfToUInt16Bits((Half)value), null, VectorDataType.NaFloat16);
     }
 
     public static VectorValue FromNaFloat64(NaFloat<double> value)
     {
-        if (value.IsNa)
-        {
-            return new(0, null, VectorDataType.NaFloat64);
-        }
-
-        return new(BitConverter.DoubleToUInt64Bits((double)value), null, VectorDataType.NaFloat64);
+        return value.IsNa
+            ? new(0, s_naSentinel, VectorDataType.NaFloat64)
+            : new(BitConverter.DoubleToUInt64Bits((double)value), null, VectorDataType.NaFloat64);
     }
 
     public static VectorValue FromNaString(NaValue<string> value)
     {
-        if (value.IsNa)
-        {
-            return new(0, null, VectorDataType.NaString);
-        }
-
-        return new(0, (string)value, VectorDataType.NaString);
+        // For NaString the existing convention is to encode Na as _ref==null and a
+        // present value as _ref==<the string>; preserved here.
+        return value.IsNa
+            ? new(0, null, VectorDataType.NaString)
+            : new(0, (string)value, VectorDataType.NaString);
     }
 
     public static VectorValue FromNaChar(NaValue<char> value)
     {
-        if (value.IsNa)
-        {
-            return new(0, null, VectorDataType.NaChar);
-        }
-
-        return new((char)value, null, VectorDataType.NaChar);
+        return value.IsNa
+            ? new(0, s_naSentinel, VectorDataType.NaChar)
+            : new((char)value, null, VectorDataType.NaChar);
     }
 
     public static VectorValue FromNaBoolean(NaValue<bool> value)
     {
-        if (value.IsNa)
-        {
-            return new(0, null, VectorDataType.NaBool);
-        }
-
-        return new(((bool)value) ? (ulong)1 : 0, null, VectorDataType.NaBool);
+        return value.IsNa
+            ? new(0, s_naSentinel, VectorDataType.NaBool)
+            : new(((bool)value) ? (ulong)1 : 0, null, VectorDataType.NaBool);
     }
 
     public static VectorValue FromNaDateTime64(NaInt<DateTime64> value)
     {
-        if (value.IsNa)
-        {
-            return new(0, null, VectorDataType.NaDateTime64);
-        }
-
-        return new((ulong)((DateTime64)value).TotalMilliseconds, null, VectorDataType.NaDateTime64);
+        return value.IsNa
+            ? new(0, s_naSentinel, VectorDataType.NaDateTime64)
+            : new((ulong)((DateTime64)value).TotalMilliseconds, null, VectorDataType.NaDateTime64);
     }
 
     public static VectorValue FromNaDateTime(NaValue<DateTime> value)
     {
-        if (value.IsNa)
-        {
-            return new(0, null, VectorDataType.NaDateTime);
-        }
-
-        return new((ulong)((DateTime)value).Ticks, null, VectorDataType.NaDateTime);
+        return value.IsNa
+            ? new(0, s_naSentinel, VectorDataType.NaDateTime)
+            : new((ulong)((DateTime)value).Ticks, null, VectorDataType.NaDateTime);
     }
 
     public static VectorValue FromNaDateTimeOffset(NaValue<DateTimeOffset> value)
     {
-        if (value.IsNa)
-        {
-            return new(0, null, VectorDataType.NaDateTimeOffset);
-        }
-
-        return new((ulong)((DateTimeOffset)value).Ticks, null, VectorDataType.NaDateTimeOffset);
+        return value.IsNa
+            ? new(0, s_naSentinel, VectorDataType.NaDateTimeOffset)
+            : new((ulong)((DateTimeOffset)value).Ticks, null, VectorDataType.NaDateTimeOffset);
     }
 
     public static VectorValue FromValue<T>(T value)
@@ -528,7 +491,7 @@ public readonly struct VectorValue
             throw new InvalidOperationException($"Cannot convert to NaInt8 from {_kind}.");
         }
 
-        return (sbyte)_bits;
+        return IsNaSentinel ? NaInt<sbyte>.Na : (sbyte)_bits;
     }
 
     public NaInt<short> ToNaInt16()
@@ -538,7 +501,7 @@ public readonly struct VectorValue
             throw new InvalidOperationException($"Cannot convert to NaInt16 from {_kind}.");
         }
 
-        return (short)_bits;
+        return IsNaSentinel ? NaInt<short>.Na : (short)_bits;
     }
 
     public NaInt<int> ToNaInt32()
@@ -548,7 +511,7 @@ public readonly struct VectorValue
             throw new InvalidOperationException($"Cannot convert to NaInt32 from {_kind}.");
         }
 
-        return (int)_bits;
+        return IsNaSentinel ? NaInt<int>.Na : (int)_bits;
     }
 
     public NaInt<long> ToNaInt64()
@@ -558,7 +521,7 @@ public readonly struct VectorValue
             throw new InvalidOperationException($"Cannot convert to NaInt64 from {_kind}.");
         }
 
-        return (long)_bits;
+        return IsNaSentinel ? NaInt<long>.Na : (long)_bits;
     }
 
     public NaInt<byte> ToNaUInt8()
@@ -568,7 +531,7 @@ public readonly struct VectorValue
             throw new InvalidOperationException($"Cannot convert to NaUInt8 from {_kind}.");
         }
 
-        return (byte)_bits;
+        return IsNaSentinel ? NaInt<byte>.Na : (byte)_bits;
     }
 
     public NaInt<ushort> ToNaUInt16()
@@ -578,7 +541,7 @@ public readonly struct VectorValue
             throw new InvalidOperationException($"Cannot convert to NaUInt16 from {_kind}.");
         }
 
-        return (ushort)_bits;
+        return IsNaSentinel ? NaInt<ushort>.Na : (ushort)_bits;
     }
 
     public NaInt<uint> ToNaUInt32()
@@ -588,7 +551,7 @@ public readonly struct VectorValue
             throw new InvalidOperationException($"Cannot convert to NaUInt32 from {_kind}.");
         }
 
-        return (uint)_bits;
+        return IsNaSentinel ? NaInt<uint>.Na : (uint)_bits;
     }
 
     public NaInt<ulong> ToNaUInt64()
@@ -598,7 +561,7 @@ public readonly struct VectorValue
             throw new InvalidOperationException($"Cannot convert to NaUInt64 from {_kind}.");
         }
 
-        return _bits;
+        return IsNaSentinel ? NaInt<ulong>.Na : _bits;
     }
 
     public NaFloat<float> ToNaFloat32()
@@ -608,7 +571,7 @@ public readonly struct VectorValue
             throw new InvalidOperationException($"Cannot convert to NaFloat32 from {_kind}.");
         }
 
-        return BitConverter.UInt32BitsToSingle((uint)_bits);
+        return IsNaSentinel ? NaFloat<float>.Na : BitConverter.UInt32BitsToSingle((uint)_bits);
     }
 
     public NaFloat<Half> ToNaFloat16()
@@ -618,7 +581,7 @@ public readonly struct VectorValue
             throw new InvalidOperationException($"Cannot convert to NaFloat16 from {_kind}.");
         }
 
-        return BitConverter.UInt16BitsToHalf((ushort)_bits);
+        return IsNaSentinel ? NaFloat<Half>.Na : BitConverter.UInt16BitsToHalf((ushort)_bits);
     }
 
     public NaFloat<double> ToNaFloat64()
@@ -628,7 +591,7 @@ public readonly struct VectorValue
             throw new InvalidOperationException($"Cannot convert to NaFloat64 from {_kind}.");
         }
 
-        return BitConverter.UInt64BitsToDouble(_bits);
+        return IsNaSentinel ? NaFloat<double>.Na : BitConverter.UInt64BitsToDouble(_bits);
     }
 
     public NaValue<string> ToNaString()
@@ -638,7 +601,9 @@ public readonly struct VectorValue
             throw new InvalidOperationException($"Cannot convert to NaString from {_kind}.");
         }
 
-        return (string?)_ref ?? string.Empty;
+        // _ref==null encodes Na for NaString; the implicit operator NaValue<string>(string?)
+        // returns the Na default for null and wraps non-null strings.
+        return (string?)_ref;
     }
 
     public NaValue<char> ToNaChar()
@@ -648,7 +613,10 @@ public readonly struct VectorValue
             throw new InvalidOperationException($"Cannot convert to NaChar from {_kind}.");
         }
 
-        return (char)_bits;
+        // Important: explicit `default(NaValue<char>)` — using bare `default` here
+        // would let the conditional infer `char` (from the other branch) and bind
+        // the result to NaValue<char>('\0') via the implicit operator.
+        return IsNaSentinel ? default(NaValue<char>) : (char)_bits;
     }
 
     public NaValue<bool> ToNaBoolean()
@@ -658,7 +626,7 @@ public readonly struct VectorValue
             throw new InvalidOperationException($"Cannot convert to NaBool from {_kind}.");
         }
 
-        return _bits != 0;
+        return IsNaSentinel ? default(NaValue<bool>) : _bits != 0;
     }
 
     public NaValue<DateTime> ToNaDateTime()
@@ -668,7 +636,7 @@ public readonly struct VectorValue
             throw new InvalidOperationException($"Cannot convert to NaDateTime from {_kind}.");
         }
 
-        return new DateTime((long)_bits, DateTimeKind.Utc);
+        return IsNaSentinel ? default(NaValue<DateTime>) : new DateTime((long)_bits, DateTimeKind.Utc);
     }
 
     public NaValue<DateTimeOffset> ToNaDateTimeOffset()
@@ -678,7 +646,7 @@ public readonly struct VectorValue
             throw new InvalidOperationException($"Cannot convert to NaDateTimeOffset from {_kind}.");
         }
 
-        return new DateTimeOffset((long)_bits, TimeSpan.Zero);
+        return IsNaSentinel ? default(NaValue<DateTimeOffset>) : new DateTimeOffset((long)_bits, TimeSpan.Zero);
     }
 
     public NaInt<DateTime64> ToNaDateTime64()
@@ -688,12 +656,11 @@ public readonly struct VectorValue
             throw new InvalidOperationException($"Cannot convert to NaDateTime64 from {_kind}.");
         }
 
-        return new DateTime64((long)_bits);
+        return IsNaSentinel ? NaInt<DateTime64>.Na : new DateTime64((long)_bits);
     }
 
     public override string ToString()
     {
-#pragma warning disable CA1065 // Do not raise exceptions in unexpected locations
         return _kind switch
         {
             VectorDataType.Bool => ToBoolean().ToString(),
@@ -713,26 +680,33 @@ public readonly struct VectorValue
             VectorDataType.UInt32 => ToUInt32().ToString(CultureInfo.InvariantCulture),
             VectorDataType.UInt64 => ToUInt64().ToString(CultureInfo.InvariantCulture),
             VectorDataType.UInt8 => ToUInt8().ToString(CultureInfo.InvariantCulture),
-            VectorDataType.NaBool => throw new NotImplementedException(),
-            VectorDataType.NaChar => throw new NotImplementedException(),
-            VectorDataType.NaDateTime => throw new NotImplementedException(),
-            VectorDataType.NaDateTime64 => throw new NotImplementedException(),
-            VectorDataType.NaDateTimeOffset => throw new NotImplementedException(),
-            VectorDataType.NaFloat16 => throw new NotImplementedException(),
-            VectorDataType.NaFloat32 => throw new NotImplementedException(),
-            VectorDataType.NaFloat64 => throw new NotImplementedException(),
-            VectorDataType.NaInt16 => throw new NotImplementedException(),
-            VectorDataType.NaInt32 => throw new NotImplementedException(),
-            VectorDataType.NaInt64 => throw new NotImplementedException(),
-            VectorDataType.NaInt8 => throw new NotImplementedException(),
-            VectorDataType.NaString => throw new NotImplementedException(),
-            VectorDataType.NaUInt16 => throw new NotImplementedException(),
-            VectorDataType.NaUInt32 => throw new NotImplementedException(),
-            VectorDataType.NaUInt64 => throw new NotImplementedException(),
-            VectorDataType.NaUInt8 => throw new NotImplementedException(),
+            // Na* numeric branches mirror their non-Na siblings by formatting with
+            // CultureInfo.InvariantCulture; NaInt<T>.ToString(format, provider) and
+            // NaFloat<T>.ToString(format, provider) honour IsNa internally and emit
+            // NaValue.NaValueLabel themselves.
+            VectorDataType.NaBool => ToNaBoolean().ToString(),
+            VectorDataType.NaChar => ToNaChar().ToString(),
+            VectorDataType.NaDateTime => ToNaDateTime().IsNa
+                ? NaValue.NaValueLabel
+                : ToNaDateTime().Value.ToString(CultureInfo.InvariantCulture),
+            VectorDataType.NaDateTime64 => ToNaDateTime64().ToString() ?? NaValue.NaValueLabel,
+            VectorDataType.NaDateTimeOffset => ToNaDateTimeOffset().IsNa
+                ? NaValue.NaValueLabel
+                : ToNaDateTimeOffset().Value.ToString(CultureInfo.InvariantCulture),
+            VectorDataType.NaFloat16 => ToNaFloat16().ToString("G", CultureInfo.InvariantCulture),
+            VectorDataType.NaFloat32 => ToNaFloat32().ToString("G", CultureInfo.InvariantCulture),
+            VectorDataType.NaFloat64 => ToNaFloat64().ToString("G", CultureInfo.InvariantCulture),
+            VectorDataType.NaInt16 => ToNaInt16().ToString("G", CultureInfo.InvariantCulture),
+            VectorDataType.NaInt32 => ToNaInt32().ToString("G", CultureInfo.InvariantCulture),
+            VectorDataType.NaInt64 => ToNaInt64().ToString("G", CultureInfo.InvariantCulture),
+            VectorDataType.NaInt8 => ToNaInt8().ToString("G", CultureInfo.InvariantCulture),
+            VectorDataType.NaString => ToNaString().ToString(),
+            VectorDataType.NaUInt16 => ToNaUInt16().ToString("G", CultureInfo.InvariantCulture),
+            VectorDataType.NaUInt32 => ToNaUInt32().ToString("G", CultureInfo.InvariantCulture),
+            VectorDataType.NaUInt64 => ToNaUInt64().ToString("G", CultureInfo.InvariantCulture),
+            VectorDataType.NaUInt8 => ToNaUInt8().ToString("G", CultureInfo.InvariantCulture),
             _ => _bits.ToString(CultureInfo.InvariantCulture),
         };
-#pragma warning restore CA1065 // Do not raise exceptions in unexpected locations
     }
 
     public bool Equals(VectorValue other)

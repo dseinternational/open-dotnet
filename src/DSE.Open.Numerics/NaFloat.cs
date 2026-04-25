@@ -489,6 +489,19 @@ public readonly struct NaFloat<T>
 
     public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider? provider)
     {
+        if (IsNa)
+        {
+            if (destination.Length < NaValue.NaValueLabel.Length)
+            {
+                charsWritten = 0;
+                return false;
+            }
+
+            NaValue.NaValueLabel.AsSpan().CopyTo(destination);
+            charsWritten = NaValue.NaValueLabel.Length;
+            return true;
+        }
+
         if (_value.TryFormat(destination, out charsWritten, format, provider))
         {
             return true;
@@ -500,7 +513,12 @@ public readonly struct NaFloat<T>
 
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
-        return _value.ToString(format, formatProvider);
+        return IsNa ? NaValue.NaValueLabel : _value.ToString(format, formatProvider);
+    }
+
+    public override string ToString()
+    {
+        return IsNa ? NaValue.NaValueLabel : _value.ToString() ?? string.Empty;
     }
 
     public static NaFloat<T> Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
