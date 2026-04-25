@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DSE.Open.Numerics;
 
@@ -18,16 +19,88 @@ public readonly record struct DataFrameRowCollection : IReadOnlyList<DataFrameRo
 
     public int Count => _df.Count == 0 ? 0 : _df[0].Length;
 
-    public IEnumerator<DataFrameRow> GetEnumerator()
+    /// <summary>
+    /// Returns a struct enumerator over the rows of the data frame. Iterating with
+    /// <c>foreach</c> binds to this overload (resolved by duck-typing) and avoids
+    /// the per-iteration heap allocation that the previous <c>yield return</c>-based
+    /// implementation incurred from the compiler-generated state machine.
+    /// </summary>
+    public Enumerator GetEnumerator()
     {
-        for (var i = 0; i < Count; i++)
-        {
-            yield return this[i];
-        }
+        return new(this);
+    }
+
+    IEnumerator<DataFrameRow> IEnumerable<DataFrameRow>.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()
     {
         return GetEnumerator();
+    }
+
+    public struct Enumerator : IEnumerator<DataFrameRow>
+    {
+        private readonly DataFrameRowCollection _rows;
+        private int _index;
+
+        internal Enumerator(DataFrameRowCollection rows)
+        {
+            _rows = rows;
+            _index = -1;
+        }
+
+        /// <summary>
+        /// Gets the row at the enumerator's current position. Throws
+        /// <see cref="InvalidOperationException"/> when accessed before
+        /// the first <see cref="MoveNext"/> or after enumeration ends —
+        /// clearer than producing a <see cref="DataFrameRow"/> backed by
+        /// an out-of-range row index that fails later when its cells are
+        /// read.
+        /// </summary>
+        public readonly DataFrameRow Current
+        {
+            get
+            {
+                if ((uint)_index >= (uint)_rows.Count)
+                {
+                    ThrowEnumeratorInvalid();
+                }
+
+                return _rows[_index];
+            }
+        }
+
+        readonly object? IEnumerator.Current => Current;
+
+        public bool MoveNext()
+        {
+            var next = _index + 1;
+            if (next < _rows.Count)
+            {
+                _index = next;
+                return true;
+            }
+
+            _index = _rows.Count;
+            return false;
+        }
+
+        void IEnumerator.Reset()
+        {
+            throw new NotSupportedException();
+        }
+
+        public readonly void Dispose()
+        {
+        }
+
+        [DoesNotReturn]
+        private static void ThrowEnumeratorInvalid()
+        {
+            throw new InvalidOperationException(
+                "Enumeration has not started or has already finished.");
+        }
     }
 }
