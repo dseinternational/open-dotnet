@@ -680,23 +680,31 @@ public readonly struct VectorValue
             VectorDataType.UInt32 => ToUInt32().ToString(CultureInfo.InvariantCulture),
             VectorDataType.UInt64 => ToUInt64().ToString(CultureInfo.InvariantCulture),
             VectorDataType.UInt8 => ToUInt8().ToString(CultureInfo.InvariantCulture),
+            // Na* numeric branches mirror their non-Na siblings by formatting with
+            // CultureInfo.InvariantCulture; NaInt<T>.ToString(format, provider) and
+            // NaFloat<T>.ToString(format, provider) honour IsNa internally and emit
+            // NaValue.NaValueLabel themselves.
             VectorDataType.NaBool => ToNaBoolean().ToString(),
             VectorDataType.NaChar => ToNaChar().ToString(),
-            VectorDataType.NaDateTime => ToNaDateTime().ToString(),
+            VectorDataType.NaDateTime => ToNaDateTime().IsNa
+                ? NaValue.NaValueLabel
+                : ToNaDateTime().Value.ToString(CultureInfo.InvariantCulture),
             VectorDataType.NaDateTime64 => ToNaDateTime64().ToString() ?? NaValue.NaValueLabel,
-            VectorDataType.NaDateTimeOffset => ToNaDateTimeOffset().ToString(),
-            VectorDataType.NaFloat16 => ToNaFloat16().ToString() ?? NaValue.NaValueLabel,
-            VectorDataType.NaFloat32 => ToNaFloat32().ToString() ?? NaValue.NaValueLabel,
-            VectorDataType.NaFloat64 => ToNaFloat64().ToString() ?? NaValue.NaValueLabel,
-            VectorDataType.NaInt16 => ToNaInt16().ToString() ?? NaValue.NaValueLabel,
-            VectorDataType.NaInt32 => ToNaInt32().ToString() ?? NaValue.NaValueLabel,
-            VectorDataType.NaInt64 => ToNaInt64().ToString() ?? NaValue.NaValueLabel,
-            VectorDataType.NaInt8 => ToNaInt8().ToString() ?? NaValue.NaValueLabel,
+            VectorDataType.NaDateTimeOffset => ToNaDateTimeOffset().IsNa
+                ? NaValue.NaValueLabel
+                : ToNaDateTimeOffset().Value.ToString(CultureInfo.InvariantCulture),
+            VectorDataType.NaFloat16 => ToNaFloat16().ToString("G", CultureInfo.InvariantCulture),
+            VectorDataType.NaFloat32 => ToNaFloat32().ToString("G", CultureInfo.InvariantCulture),
+            VectorDataType.NaFloat64 => ToNaFloat64().ToString("G", CultureInfo.InvariantCulture),
+            VectorDataType.NaInt16 => ToNaInt16().ToString("G", CultureInfo.InvariantCulture),
+            VectorDataType.NaInt32 => ToNaInt32().ToString("G", CultureInfo.InvariantCulture),
+            VectorDataType.NaInt64 => ToNaInt64().ToString("G", CultureInfo.InvariantCulture),
+            VectorDataType.NaInt8 => ToNaInt8().ToString("G", CultureInfo.InvariantCulture),
             VectorDataType.NaString => ToNaString().ToString(),
-            VectorDataType.NaUInt16 => ToNaUInt16().ToString() ?? NaValue.NaValueLabel,
-            VectorDataType.NaUInt32 => ToNaUInt32().ToString() ?? NaValue.NaValueLabel,
-            VectorDataType.NaUInt64 => ToNaUInt64().ToString() ?? NaValue.NaValueLabel,
-            VectorDataType.NaUInt8 => ToNaUInt8().ToString() ?? NaValue.NaValueLabel,
+            VectorDataType.NaUInt16 => ToNaUInt16().ToString("G", CultureInfo.InvariantCulture),
+            VectorDataType.NaUInt32 => ToNaUInt32().ToString("G", CultureInfo.InvariantCulture),
+            VectorDataType.NaUInt64 => ToNaUInt64().ToString("G", CultureInfo.InvariantCulture),
+            VectorDataType.NaUInt8 => ToNaUInt8().ToString("G", CultureInfo.InvariantCulture),
             _ => _bits.ToString(CultureInfo.InvariantCulture),
         };
     }

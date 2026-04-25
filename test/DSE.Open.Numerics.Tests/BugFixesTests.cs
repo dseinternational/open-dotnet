@@ -49,17 +49,11 @@ public class BugFixesTests
         Assert.True(result.IsNa);
     }
 
-    [Fact]
-    public async Task NaInt_Modulo_DoesNotRecurseInfinitely()
-    {
-        // If the previous infinite-recursion bug regresses, this would
-        // StackOverflowException and crash the test host. Run it via a worker
-        // thread so a regression turns into an out-of-band crash rather than a
-        // synchronous test failure.
-        var task = Task.Run(() => (NaInt<int>)17 % (NaInt<int>)5);
-        var result = await task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
-        Assert.Equal(2, (int)result);
-    }
+    // (Earlier revisions had a `DoesNotRecurseInfinitely` test that ran the
+    // operator on a worker thread to "bound" a regression. StackOverflowException
+    // terminates the entire process regardless of thread, so the wrapper provided
+    // no actual safety; the four `NaInt_Modulo_*` tests above already exercise
+    // the operator and would crash the test host if the recursion regressed.)
 
     // ─────────────────────────────────────────────────────────────────────
     // Bug #2: NaInt<T>.ToString(format)/TryFormat ignored IsNa.
@@ -162,6 +156,49 @@ public class BugFixesTests
     {
         var v = VectorValue.FromNaFloat64((NaFloat<double>)1.5);
         Assert.Equal("1.5", v.ToString());
+    }
+
+    [Fact]
+    public void VectorValue_ToString_NaFloat64Value_IsCultureInvariant()
+    {
+        // Pin the formatting culture to one that uses ',' as the decimal separator
+        // to confirm Na* float branches honour InvariantCulture (matching the
+        // non-Na branches), not the ambient culture.
+        var previous = CultureInfo.CurrentCulture;
+        try
+        {
+            CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("de-DE");
+
+            Assert.Equal("1.5", VectorValue.FromFloat64(1.5).ToString());
+            Assert.Equal("1.5", VectorValue.FromNaFloat64((NaFloat<double>)1.5).ToString());
+        }
+        finally
+        {
+            CultureInfo.CurrentCulture = previous;
+        }
+    }
+
+    [Fact]
+    public void VectorValue_ToString_NaDateTimeValue_IsCultureInvariant()
+    {
+        var dt = new DateTime(2026, 1, 15, 9, 30, 0, DateTimeKind.Utc);
+
+        var previous = CultureInfo.CurrentCulture;
+        try
+        {
+            CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("de-DE");
+
+            // The Na branch must format the DateTime with InvariantCulture, so it
+            // produces the same string as the non-Na DateTime branch — not the
+            // ambient culture's date format.
+            Assert.Equal(
+                VectorValue.FromDateTime(dt).ToString(),
+                VectorValue.FromNaDateTime((NaValue<DateTime>)dt).ToString());
+        }
+        finally
+        {
+            CultureInfo.CurrentCulture = previous;
+        }
     }
 
     [Fact]
