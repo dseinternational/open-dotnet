@@ -2,6 +2,7 @@
 // Down Syndrome Education International and Contributors licence this file to you under the MIT license.
 
 using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DSE.Open.Numerics;
 
@@ -52,7 +53,28 @@ public readonly record struct DataFrameRow : IReadOnlyList<VectorValue>
             _index = -1;
         }
 
-        public readonly VectorValue Current => _row[_index];
+        /// <summary>
+        /// Gets the cell at the enumerator's current position. Throws
+        /// <see cref="InvalidOperationException"/> when accessed before
+        /// the first <see cref="MoveNext"/> or after the enumerator has
+        /// run past the end — clearer than letting the row indexer surface
+        /// an <see cref="IndexOutOfRangeException"/> from inside the
+        /// underlying column.
+        /// </summary>
+        public readonly VectorValue Current
+        {
+            get
+            {
+                // Single unsigned compare: _index == -1 wraps to a value
+                // greater than any positive Count.
+                if ((uint)_index >= (uint)_row.Count)
+                {
+                    ThrowEnumeratorInvalid();
+                }
+
+                return _row[_index];
+            }
+        }
 
         readonly object? IEnumerator.Current => Current;
 
@@ -76,6 +98,13 @@ public readonly record struct DataFrameRow : IReadOnlyList<VectorValue>
 
         public readonly void Dispose()
         {
+        }
+
+        [DoesNotReturn]
+        private static void ThrowEnumeratorInvalid()
+        {
+            throw new InvalidOperationException(
+                "Enumeration has not started or has already finished.");
         }
     }
 }

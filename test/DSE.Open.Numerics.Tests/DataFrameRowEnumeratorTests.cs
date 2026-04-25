@@ -107,6 +107,32 @@ public class DataFrameRowEnumeratorTests
         Assert.False(enumerator.MoveNext());
     }
 
+    [Fact]
+    public void RowCollection_Enumerator_CurrentBeforeMoveNext_Throws()
+    {
+        var frame = BuildSampleFrame();
+        var enumerator = frame.Rows.GetEnumerator();
+
+        // Surfaces enumerator misuse with a clear InvalidOperationException
+        // rather than letting the underlying indexer surface a less specific
+        // out-of-range exception from inside a column read.
+        Assert.Throws<InvalidOperationException>(() => enumerator.Current);
+    }
+
+    [Fact]
+    public void RowCollection_Enumerator_CurrentAfterEnd_Throws()
+    {
+        var frame = BuildSampleFrame();
+        var enumerator = frame.Rows.GetEnumerator();
+
+        while (enumerator.MoveNext())
+        {
+            // exhaust
+        }
+
+        Assert.Throws<InvalidOperationException>(() => enumerator.Current);
+    }
+
     // ─────────────────────────────────────────────────────────────────────
     // DataFrameRow
     // ─────────────────────────────────────────────────────────────────────
@@ -138,6 +164,28 @@ public class DataFrameRowEnumeratorTests
         Assert.IsType<DataFrameRow.Enumerator>(enumerator);
     }
 
+    [Fact]
+    public void DataFrameRow_Enumerator_CurrentBeforeMoveNext_Throws()
+    {
+        var frame = BuildSampleFrame();
+        var enumerator = frame.Rows[0].GetEnumerator();
+        Assert.Throws<InvalidOperationException>(() => enumerator.Current);
+    }
+
+    [Fact]
+    public void DataFrameRow_Enumerator_CurrentAfterEnd_Throws()
+    {
+        var frame = BuildSampleFrame();
+        var enumerator = frame.Rows[0].GetEnumerator();
+
+        while (enumerator.MoveNext())
+        {
+            // exhaust
+        }
+
+        Assert.Throws<InvalidOperationException>(() => enumerator.Current);
+    }
+
     // ─────────────────────────────────────────────────────────────────────
     // ReadOnlyDataFrameRowCollection / ReadOnlyDataFrameRow
     // ─────────────────────────────────────────────────────────────────────
@@ -167,12 +215,28 @@ public class DataFrameRowEnumeratorTests
     }
 
     [Fact]
+    public void ReadOnlyRowCollection_Enumerator_CurrentBeforeMoveNext_Throws()
+    {
+        var frame = BuildSampleFrame().AsReadOnly();
+        var enumerator = frame.Rows.GetEnumerator();
+        Assert.Throws<InvalidOperationException>(() => enumerator.Current);
+    }
+
+    [Fact]
     public void ReadOnlyRow_GetEnumerator_ReturnsStructEnumerator()
     {
         var frame = BuildSampleFrame().AsReadOnly();
         var enumerator = frame.Rows[0].GetEnumerator();
 
         Assert.IsType<ReadOnlyDataFrameRow.Enumerator>(enumerator);
+    }
+
+    [Fact]
+    public void ReadOnlyRow_Enumerator_CurrentBeforeMoveNext_Throws()
+    {
+        var frame = BuildSampleFrame().AsReadOnly();
+        var enumerator = frame.Rows[0].GetEnumerator();
+        Assert.Throws<InvalidOperationException>(() => enumerator.Current);
     }
 
     [Fact]
