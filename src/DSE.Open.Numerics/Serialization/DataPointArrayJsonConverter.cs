@@ -8,9 +8,15 @@ using DSE.Open.Text.Json;
 
 namespace DSE.Open.Numerics.Serialization;
 
+/// <summary>
+/// JSON converter that serialises a <see cref="DataPoint{T}"/> as a two-element
+/// array <c>[x, y]</c>.
+/// </summary>
+/// <typeparam name="T">The coordinate value type.</typeparam>
 public class DataPointArrayJsonConverter<T> : JsonConverter<DataPoint<T>>
     where T : struct, INumber<T>
 {
+    /// <inheritdoc />
     public override DataPoint<T> Read(
         ref Utf8JsonReader reader,
         Type typeToConvert,
@@ -45,6 +51,7 @@ public class DataPointArrayJsonConverter<T> : JsonConverter<DataPoint<T>>
         return new DataPoint<T>(x, y);
     }
 
+    /// <inheritdoc />
     public override void Write(Utf8JsonWriter writer, DataPoint<T> value, JsonSerializerOptions options)
     {
         ArgumentNullException.ThrowIfNull(writer);

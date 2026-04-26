@@ -158,6 +158,7 @@ public static class VectorJsonWriter
         }
     }
 
+    /// <summary>Writes a strongly-typed <see cref="IReadOnlyVector{T}"/> to <paramref name="writer"/>.</summary>
     public static void WriteVector<T>(Utf8JsonWriter writer, IReadOnlyVector<T> vector, JsonSerializerOptions options)
         where T : IEquatable<T>
     {

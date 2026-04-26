@@ -8,16 +8,25 @@ using DSE.Open.Collections.Generic;
 
 namespace DSE.Open.Numerics.Serialization;
 
+/// <summary>
+/// JSON converter for <see cref="DataFrame"/>. Reads frames as
+/// <c>{ "name": ..., "columns": [ Series, Series, ... ] }</c> using
+/// <see cref="SeriesJsonConverter"/> for each column; writes via
+/// <see cref="DataFrameJsonWriter"/>.
+/// </summary>
 public class DataFrameJsonConverter : JsonConverter<DataFrame>
 {
+    /// <summary>The default instance used by the source-generated JSON pipeline.</summary>
     public static readonly DataFrameJsonConverter Default = new();
 
+    /// <inheritdoc />
     public override bool CanConvert(Type typeToConvert)
     {
         Debug.Assert(typeToConvert is not null);
         return typeToConvert.IsAssignableTo(typeof(DataFrame));
     }
 
+    /// <inheritdoc />
     public override DataFrame Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         if (reader.TokenType != JsonTokenType.StartObject)
@@ -78,6 +87,7 @@ public class DataFrameJsonConverter : JsonConverter<DataFrame>
         return new DataFrame(columns, name);
     }
 
+    /// <inheritdoc />
     public override void Write(Utf8JsonWriter writer, DataFrame value, JsonSerializerOptions options)
     {
         DataFrameJsonWriter.Write(writer, value, options);

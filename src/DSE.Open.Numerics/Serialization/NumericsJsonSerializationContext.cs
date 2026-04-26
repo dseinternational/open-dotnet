@@ -5,6 +5,11 @@ using System.Text.Json.Serialization;
 
 namespace DSE.Open.Numerics.Serialization;
 
+/// <summary>
+/// Source-generated <see cref="JsonSerializerContext"/> for the Numerics public
+/// types. Add entries here (and rebuild) to expose new types through the
+/// AOT-safe serialization path used by <see cref="NumericsJsonSharedOptions.SourceGenerated"/>.
+/// </summary>
 [JsonSourceGenerationOptions(
     UseStringEnumConverter = true,
     NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,

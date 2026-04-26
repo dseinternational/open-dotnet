@@ -8,9 +8,15 @@ using DSE.Open.Text.Json;
 
 namespace DSE.Open.Numerics.Serialization;
 
+/// <summary>
+/// JSON converter that serialises a <see cref="DataPoint3D{T}"/> as a three-element
+/// array <c>[x, y, z]</c>.
+/// </summary>
+/// <typeparam name="T">The coordinate value type.</typeparam>
 public class DataPoint3DArrayJsonConverter<T> : JsonConverter<DataPoint3D<T>>
     where T : struct, INumber<T>
 {
+    /// <inheritdoc />
     public override DataPoint3D<T> Read(
         ref Utf8JsonReader reader,
         Type typeToConvert,
@@ -52,6 +58,7 @@ public class DataPoint3DArrayJsonConverter<T> : JsonConverter<DataPoint3D<T>>
         return new DataPoint3D<T>(x, y, z);
     }
 
+    /// <inheritdoc />
     public override void Write(Utf8JsonWriter writer, DataPoint3D<T> value, JsonSerializerOptions options)
     {
         ArgumentNullException.ThrowIfNull(writer);
