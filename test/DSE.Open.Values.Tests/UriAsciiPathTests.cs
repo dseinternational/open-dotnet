@@ -279,6 +279,7 @@ public class UriAsciiPathTests
         Assert.Equal(expected, appended.ToString());
     }
 
+#pragma warning disable CS0618 // Type or member is obsolete — UriPath is being phased out in favour of UriSlug
     [Fact]
     public void ToUriPath_WithEmpty_ShouldReturnEmptyUriPath()
     {
@@ -305,6 +306,35 @@ public class UriAsciiPathTests
 
         // Assert
         Assert.Equal(UriPath.Parse(value, CultureInfo.InvariantCulture), uriPath);
+    }
+#pragma warning restore CS0618 // Type or member is obsolete
+
+    [Fact]
+    public void ToUriSlug_WithEmpty_ShouldReturnEmptyUriSlug()
+    {
+        // Arrange
+        var path = UriAsciiPath.Empty;
+
+        // Act
+        var slug = path.ToUriSlug();
+
+        // Assert
+        Assert.Equal(UriSlug.Empty, slug);
+    }
+
+    [Theory]
+    [InlineData("home")]
+    [InlineData("home/sub")]
+    public void ToUriSlug_WithValue_ShouldReturnUriSlugWithValue(string value)
+    {
+        // Arrange
+        var path = UriAsciiPath.Parse(value, CultureInfo.InvariantCulture);
+
+        // Act
+        var slug = path.ToUriSlug();
+
+        // Assert
+        Assert.Equal(UriSlug.Parse(value, CultureInfo.InvariantCulture), slug);
     }
 
     [Theory]

@@ -14,36 +14,29 @@ namespace DSE.Open.Values;
 /// A path containing only lowercase ASCII letters and digits, hyphens ('-') and
 /// forward slashes ('/') at locations other than the first and last character.
 /// </summary>
-/// <remarks>
-/// This type has been renamed to <see cref="UriSlug"/>. The two types are
-/// behaviourally identical; <see cref="UriPath"/> is retained as an obsolete
-/// alias to avoid breaking existing consumers and will be removed in a future
-/// release.
-/// </remarks>
-[Obsolete("UriPath has been renamed to UriSlug. Use UriSlug instead.")]
 [ComparableValue]
-[JsonConverter(typeof(JsonSpanSerializableValueConverter<UriPath, CharSequence>))]
+[JsonConverter(typeof(JsonSpanSerializableValueConverter<UriSlug, CharSequence>))]
 [StructLayout(LayoutKind.Sequential)]
-public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
+public readonly partial struct UriSlug : IComparableValue<UriSlug, CharSequence>
 {
     public const char Separator = '/';
     public const char Dash = '-';
 
-    public static readonly UriPath Empty = new(default, true);
+    public static readonly UriSlug Empty = new(default, true);
 
     public const int MaxLength = 512;
 
     public static int MaxSerializedCharLength => MaxLength;
 
-    public UriPath(CharSequence path) : this(path, false)
+    public UriSlug(CharSequence path) : this(path, false)
     {
     }
 
-    public UriPath(string path) : this(CharSequence.Parse(path, CultureInfo.InvariantCulture), false)
+    public UriSlug(string path) : this(CharSequence.Parse(path, CultureInfo.InvariantCulture), false)
     {
     }
 
-    public UriPath(ReadOnlyMemory<char> path) : this(new(path), false)
+    public UriSlug(ReadOnlyMemory<char> path) : this(new(path), false)
     {
     }
 
@@ -65,7 +58,7 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
         return _value.EndsWith(value, StringComparison.Ordinal);
     }
 
-    public bool EndsWith(UriPath value)
+    public bool EndsWith(UriSlug value)
     {
         return _value.EndsWith(value._value, StringComparison.Ordinal);
     }
@@ -100,7 +93,7 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
         return _value.LastIndexOf(c);
     }
 
-    public UriPath? GetParent()
+    public UriSlug? GetParent()
     {
         if (!_value.IsEmpty)
         {
@@ -108,7 +101,7 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
 
             if (lastSlashIndex > 0)
             {
-                return new UriPath(_value.Span[..lastSlashIndex].ToArray());
+                return new UriSlug(_value.Span[..lastSlashIndex].ToArray());
             }
         }
 
@@ -125,7 +118,7 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
         return _value.StartsWith(value, StringComparison.Ordinal);
     }
 
-    public bool StartsWith(UriPath value)
+    public bool StartsWith(UriSlug value)
     {
         return _value.StartsWith(value._value, StringComparison.Ordinal);
     }
@@ -235,7 +228,7 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
     }
 
     [SkipLocalsInit]
-    public static bool TryParseSanitised(ReadOnlySpan<char> s, out UriPath value)
+    public static bool TryParseSanitised(ReadOnlySpan<char> s, out UriSlug value)
     {
         if (s.IsEmpty)
         {
@@ -274,17 +267,17 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
         return false;
     }
 
-    public static bool TryParseSanitised(string? s, out UriPath value)
+    public static bool TryParseSanitised(string? s, out UriSlug value)
     {
         return TryParseSanitised(s.AsSpan(), out value);
     }
 
     /// <summary>
-    /// Creates a new <see cref="UriPath"/> by appending the <paramref name="path"/> to the current path.
+    /// Creates a new <see cref="UriSlug"/> by appending the <paramref name="path"/> to the current path.
     /// A <see cref="Separator"/> is placed between the two paths.
     /// </summary>
     /// <param name="path"></param>
-    public UriPath Append(UriPath path)
+    public UriSlug Append(UriSlug path)
     {
         if (_value.IsEmpty)
         {
@@ -305,7 +298,7 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
         return new(combined);
     }
 
-    public UriPath Append(UriPath path1, UriPath path2)
+    public UriSlug Append(UriSlug path1, UriSlug path2)
     {
         if (_value.IsEmpty)
         {
@@ -333,7 +326,7 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
         return new(combined);
     }
 
-    public UriPath Append(UriPath path1, UriPath path2, UriPath path3)
+    public UriSlug Append(UriSlug path1, UriSlug path2, UriSlug path3)
     {
         if (_value.IsEmpty)
         {
@@ -368,7 +361,7 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
         return new(combined);
     }
 
-    public UriPath AppendSegment(string path)
+    public UriSlug AppendSegment(string path)
     {
         return Append(new(path));
     }
@@ -379,7 +372,7 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
     /// </summary>
     /// <param name="startIndex"></param>
     /// <returns></returns>
-    public UriPath Subpath(int startIndex)
+    public UriSlug Subpath(int startIndex)
     {
         if (_value.IsEmpty)
         {
@@ -438,7 +431,7 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
-    public static explicit operator UriPath(string value)
+    public static explicit operator UriSlug(string value)
     {
         return Parse(value, null);
     }
@@ -446,11 +439,11 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
 #pragma warning restore CA2225 // Operator overloads have named alternates
 
     /// <summary>
-    /// Converts the <paramref name="uriAsciiPath"/> to a <see cref="UriPath"/>.
+    /// Converts the <paramref name="uriAsciiPath"/> to a <see cref="UriSlug"/>.
     /// </summary>
     /// <param name="uriAsciiPath"></param>
     /// <returns></returns>
-    public static UriPath FromUriAsciiPath(UriAsciiPath uriAsciiPath)
+    public static UriSlug FromUriAsciiPath(UriAsciiPath uriAsciiPath)
     {
         return new(CharSequence.FromAsciiString((AsciiString)uriAsciiPath), skipValidation: true);
     }

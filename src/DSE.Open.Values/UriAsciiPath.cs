@@ -565,8 +565,20 @@ public readonly partial struct UriAsciiPath
     /// Creates a new <see cref="UriPath"/> from this <see cref="UriAsciiPath"/>.
     /// </summary>
     /// <returns></returns>
+    [Obsolete("UriPath has been renamed to UriSlug. Use ToUriSlug instead.")]
+#pragma warning disable CS0618 // Type or member is obsolete
     public UriPath ToUriPath()
     {
         return UriPath.FromUriAsciiPath(this);
+    }
+#pragma warning restore CS0618 // Type or member is obsolete
+
+    /// <summary>
+    /// Creates a new <see cref="UriSlug"/> from this <see cref="UriAsciiPath"/>.
+    /// </summary>
+    /// <returns></returns>
+    public UriSlug ToUriSlug()
+    {
+        return UriSlug.FromUriAsciiPath(this);
     }
 }
