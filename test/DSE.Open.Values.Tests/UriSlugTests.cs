@@ -148,12 +148,12 @@ public class UriSlugTests
 
         Assert.True(path.StartsWith("home".AsSpan()));
         Assert.True(path.StartsWith((UriSlug)"home"));
-        Assert.True(path.StartsWith('h'));
-        Assert.False(path.StartsWith('s'));
+        Assert.True(path.StartsWith((AsciiChar)'h'));
+        Assert.False(path.StartsWith((AsciiChar)'s'));
         Assert.True(path.EndsWith("sub".AsSpan()));
         Assert.True(path.EndsWith((UriSlug)"sub"));
-        Assert.True(path.EndsWith('b'));
-        Assert.False(path.EndsWith('h'));
+        Assert.True(path.EndsWith((AsciiChar)'b'));
+        Assert.False(path.EndsWith((AsciiChar)'h'));
     }
 
     [Fact]
