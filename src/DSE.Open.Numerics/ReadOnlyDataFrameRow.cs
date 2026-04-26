@@ -6,6 +6,11 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace DSE.Open.Numerics;
 
+/// <summary>
+/// A view over a single row of a <see cref="ReadOnlyDataFrame"/>. Each cell is
+/// exposed as a type-erased <see cref="VectorValue"/>. Constructed via
+/// <see cref="ReadOnlyDataFrame.Rows"/>.
+/// </summary>
 public readonly record struct ReadOnlyDataFrameRow : IReadOnlyList<VectorValue>
 {
     private readonly ReadOnlyDataFrame _df;
@@ -17,8 +22,10 @@ public readonly record struct ReadOnlyDataFrameRow : IReadOnlyList<VectorValue>
         _rowIndex = rowIndex;
     }
 
+    /// <summary>Gets the cell at the given column <paramref name="index"/>.</summary>
     public VectorValue this[int index] => _df[index].GetVectorValue(_rowIndex);
 
+    /// <summary>Gets the number of cells (columns) in the row.</summary>
     public int Count => _df.Count;
 
     /// <summary>
@@ -42,6 +49,7 @@ public readonly record struct ReadOnlyDataFrameRow : IReadOnlyList<VectorValue>
         return GetEnumerator();
     }
 
+    /// <summary>Zero-allocation struct enumerator over a row's cells.</summary>
     public struct Enumerator : IEnumerator<VectorValue>
     {
         private readonly ReadOnlyDataFrameRow _row;
@@ -76,6 +84,7 @@ public readonly record struct ReadOnlyDataFrameRow : IReadOnlyList<VectorValue>
 
         readonly object? IEnumerator.Current => Current;
 
+        /// <summary>Advances the enumerator to the next cell.</summary>
         public bool MoveNext()
         {
             var next = _index + 1;
@@ -94,6 +103,7 @@ public readonly record struct ReadOnlyDataFrameRow : IReadOnlyList<VectorValue>
             throw new NotSupportedException();
         }
 
+        /// <summary>No-op.</summary>
         public readonly void Dispose()
         {
         }

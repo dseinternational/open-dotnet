@@ -16,12 +16,18 @@ public static partial class Matrix
     /// <param name="rows"></param>
     /// <param name="columns"></param>
     /// <returns></returns>
+    /// <summary>Creates a matrix by copying <paramref name="source"/> into the specified shape.</summary>
     public static NumericMatrix<T> Create<T>(Span<T> source, int rows, int columns)
         where T : struct, INumber<T>
     {
         return Create((ReadOnlySpan<T>)source, rows, columns);
     }
 
+    /// <summary>
+    /// Creates a matrix by copying <paramref name="source"/> into the specified
+    /// shape. <paramref name="source"/> must contain at most <c>rows*columns</c> elements.
+    /// </summary>
+    /// <exception cref="ArgumentException"><paramref name="source"/> is too long.</exception>
     public static NumericMatrix<T> Create<T>(ReadOnlySpan<T> source, int rows, int columns)
         where T : struct, INumber<T>
     {
@@ -50,6 +56,12 @@ public static partial class Matrix
         return result;
     }
 
+    /// <summary>
+    /// Creates a matrix from a row-of-rows. The first row determines the column
+    /// count; subsequent rows that are shorter leave their trailing columns at
+    /// <c>default(T)</c>.
+    /// </summary>
+    /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
     public static NumericMatrix<T> Create<T>(IReadOnlyList<IReadOnlyList<T>> source)
         where T : struct, INumber<T>
     {

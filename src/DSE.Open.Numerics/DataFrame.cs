@@ -32,18 +32,30 @@ public sealed class DataFrame : IList<Series>, IReadOnlyDataFrame
     /// </remarks>
     private Dictionary<string, int>? _nameIndex;
 
+    /// <summary>Creates an empty, unnamed data frame.</summary>
     public DataFrame() : this([], null)
     {
     }
 
+    /// <summary>Creates an empty data frame with the given <paramref name="name"/>.</summary>
     public DataFrame(string name) : this([], name)
     {
     }
 
+    /// <summary>Creates an unnamed data frame from the supplied <paramref name="columns"/>.</summary>
+    /// <exception cref="ArgumentNullException"><paramref name="columns"/> is <see langword="null"/>.</exception>
+    /// <exception cref="NumericsArgumentException">The columns are not all of equal length.</exception>
     public DataFrame(Collection<Series> columns) : this(columns, null)
     {
     }
 
+    /// <summary>
+    /// Creates a data frame from the supplied <paramref name="columns"/> with the given
+    /// <paramref name="name"/>. Each column without a <see cref="Series.Name"/> receives
+    /// a positional default ("0", "1", …).
+    /// </summary>
+    /// <exception cref="ArgumentNullException"><paramref name="columns"/> is <see langword="null"/>.</exception>
+    /// <exception cref="NumericsArgumentException">The columns are not all of equal length.</exception>
     public DataFrame(Collection<Series> columns, string? name)
     {
         ArgumentNullException.ThrowIfNull(columns);
@@ -59,6 +71,15 @@ public sealed class DataFrame : IList<Series>, IReadOnlyDataFrame
         }
     }
 
+    /// <summary>
+    /// Gets or sets the column with the given <paramref name="name"/>. Get returns
+    /// <see langword="null"/> when no column has that name; set replaces an existing
+    /// column with the given name (preserving the column order) or appends a new
+    /// column when no match exists. Lookup is O(1) via a lazy name index; see
+    /// <see cref="this[int]"/> for index-based access.
+    /// </summary>
+    /// <exception cref="ArgumentNullException"><paramref name="name"/> or the assigned value is <see langword="null"/>.</exception>
+    /// <exception cref="NumericsArgumentException">The assigned value's length does not match the frame's other columns.</exception>
     public Series? this[string name]
     {
         get
@@ -90,6 +111,13 @@ public sealed class DataFrame : IList<Series>, IReadOnlyDataFrame
         }
     }
 
+    /// <summary>
+    /// Gets or sets the column at <paramref name="index"/>. Setting requires the new
+    /// column's length to match the frame's other columns.
+    /// </summary>
+    /// <exception cref="ArgumentNullException">The assigned value is <see langword="null"/>.</exception>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is outside <c>[0, Count)</c>.</exception>
+    /// <exception cref="NumericsArgumentException">The assigned value's length does not match the frame's other columns.</exception>
     public Series this[int index]
     {
         get => _columns[index];
@@ -116,20 +144,33 @@ public sealed class DataFrame : IList<Series>, IReadOnlyDataFrame
     /// </summary>
     public int Count => _columns.Count;
 
+    /// <summary>
+    /// Returns a row-wise view of the frame. <c>frame.Rows[i]</c> exposes the
+    /// <c>i</c>-th row across all columns; iteration uses zero-allocation struct
+    /// enumerators.
+    /// </summary>
     public DataFrameRowCollection Rows => new(this);
 
     bool ICollection<Series>.IsReadOnly => _columns.IsReadOnly;
 
+    /// <summary>Returns a read-only snapshot of this frame; columns are individually converted to read-only.</summary>
     public ReadOnlyDataFrame AsReadOnly()
     {
         return new ReadOnlyDataFrame([.. _columns.Select(v => v.AsReadOnly())], Name);
     }
 
+    /// <summary>Returns the index of <paramref name="item"/> within the column collection, or <c>-1</c> when not present.</summary>
     public int IndexOf(Series item)
     {
         return _columns.IndexOf(item);
     }
 
+    /// <summary>
+    /// Inserts <paramref name="item"/> at the given <paramref name="index"/>. The
+    /// new column's length must match the existing columns' length.
+    /// </summary>
+    /// <exception cref="ArgumentNullException"><paramref name="item"/> is <see langword="null"/>.</exception>
+    /// <exception cref="NumericsArgumentException"><paramref name="item"/>'s length does not match the frame.</exception>
     public void Insert(int index, Series item)
     {
         ArgumentNullException.ThrowIfNull(item);
@@ -139,12 +180,21 @@ public sealed class DataFrame : IList<Series>, IReadOnlyDataFrame
         InvalidateNameIndex();
     }
 
+    /// <summary>Removes the column at <paramref name="index"/>.</summary>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is outside <c>[0, Count)</c>.</exception>
     public void RemoveAt(int index)
     {
         _columns.RemoveAt(index);
         InvalidateNameIndex();
     }
 
+    /// <summary>
+    /// Appends <paramref name="item"/> to the frame. The new column's length must
+    /// match the existing columns' length; if the column has no <see cref="Series.Name"/>,
+    /// it receives a positional default ("0", "1", …).
+    /// </summary>
+    /// <exception cref="ArgumentNullException"><paramref name="item"/> is <see langword="null"/>.</exception>
+    /// <exception cref="NumericsArgumentException"><paramref name="item"/>'s length does not match the frame.</exception>
     public void Add(Series item)
     {
         ArgumentNullException.ThrowIfNull(item);
@@ -201,22 +251,29 @@ public sealed class DataFrame : IList<Series>, IReadOnlyDataFrame
         }
     }
 
+    /// <summary>Removes all columns.</summary>
     public void Clear()
     {
         _columns.Clear();
         InvalidateNameIndex();
     }
 
+    /// <summary>Returns <see langword="true"/> if <paramref name="item"/> is one of the frame's columns (reference equality).</summary>
     public bool Contains(Series item)
     {
         return _columns.Contains(item);
     }
 
+    /// <summary>Copies the frame's columns into <paramref name="array"/> starting at <paramref name="arrayIndex"/>.</summary>
     public void CopyTo(Series[] array, int arrayIndex)
     {
         _columns.CopyTo(array, arrayIndex);
     }
 
+    /// <summary>
+    /// Removes <paramref name="item"/> from the frame. Returns <see langword="true"/>
+    /// when the column was found and removed.
+    /// </summary>
     public bool Remove(Series item)
     {
         var removed = _columns.Remove(item);
@@ -228,6 +285,7 @@ public sealed class DataFrame : IList<Series>, IReadOnlyDataFrame
         return removed;
     }
 
+    /// <summary>Returns an enumerator over the frame's columns.</summary>
     public IEnumerator<Series> GetEnumerator()
     {
         return _columns.GetEnumerator();
@@ -321,17 +379,23 @@ public sealed class DataFrame : IList<Series>, IReadOnlyDataFrame
         _nameIndex = null;
     }
 
+    /// <summary>Creates an unnamed data frame wrapping <paramref name="columns"/>.</summary>
     [OverloadResolutionPriority(1)]
     public static DataFrame Create(Collection<Series> columns)
     {
         return new DataFrame(columns);
     }
 
+    /// <summary>Creates a data frame wrapping <paramref name="columns"/> with the given <paramref name="name"/>.</summary>
     public static DataFrame Create(Collection<Series> columns, string? name)
     {
         return new DataFrame(columns, name);
     }
 
+    /// <summary>
+    /// Collection-initializer-friendly factory; copies <paramref name="columns"/>
+    /// into a fresh internal collection.
+    /// </summary>
     public static DataFrame Create(ReadOnlySpan<Series> columns)
     {
         return new DataFrame([.. columns.ToArray()]);

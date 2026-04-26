@@ -7,8 +7,15 @@ using CommunityToolkit.HighPerformance;
 
 namespace DSE.Open.Numerics;
 
+/// <summary>
+/// Element-wise primitive operations over <see cref="ReadOnlySpan2D{T}"/> and
+/// <see cref="Span2D{T}"/>. Where the underlying spans are contiguous the
+/// operation runs as a single <see cref="System.Numerics.Tensors.TensorPrimitives"/>
+/// call; otherwise it falls back to a row-by-row loop.
+/// </summary>
 public static partial class NumericMatrixPrimitives
 {
+    /// <summary>Adds the scalar <paramref name="y"/> to every element of <paramref name="x"/>, writing into <paramref name="destination"/>.</summary>
     public static void Add<T>(ReadOnlySpan2D<T> x, T y, Span2D<T> destination)
         where T : IAdditionOperators<T, T, T>, IAdditiveIdentity<T, T>
     {
@@ -30,6 +37,7 @@ public static partial class NumericMatrixPrimitives
         }
     }
 
+    /// <summary>Element-wise <paramref name="x"/> + <paramref name="y"/>, written to <paramref name="destination"/>.</summary>
     public static void Add<T>(ReadOnlySpan2D<T> x, ReadOnlySpan2D<T> y, Span2D<T> destination)
         where T : IAdditionOperators<T, T, T>, IAdditiveIdentity<T, T>
     {
@@ -53,6 +61,7 @@ public static partial class NumericMatrixPrimitives
         }
     }
 
+    /// <summary>Adds the scalar <paramref name="y"/> to every element of <paramref name="x"/> in place.</summary>
     public static void AddInPlace<T>(Span2D<T> x, T y)
         where T : struct, INumber<T>
     {
@@ -70,6 +79,7 @@ public static partial class NumericMatrixPrimitives
         }
     }
 
+    /// <summary>Element-wise <paramref name="x"/> += <paramref name="y"/> in place.</summary>
     public static void AddInPlace<T>(Span2D<T> x, ReadOnlySpan2D<T> y)
         where T : struct, INumber<T>
     {

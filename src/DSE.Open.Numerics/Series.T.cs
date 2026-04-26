@@ -35,10 +35,17 @@ public class Series<T>
     private CategorySet<T>? _categories;
     private ValueLabelCollection<T>? _valueLabels;
 
+    /// <summary>Creates a new series of the given <paramref name="length"/> backed by a fresh <see cref="Vector{T}"/>.</summary>
     public Series(int length) : this(new Vector<T>(length))
     {
     }
 
+    /// <summary>
+    /// Creates a series wrapping <paramref name="vector"/>, with optional name,
+    /// category set and value-label collection.
+    /// </summary>
+    /// <exception cref="ArgumentNullException"><paramref name="vector"/> is <see langword="null"/>.</exception>
+    /// <exception cref="NumericsArgumentException">Any element of <paramref name="vector"/> is not in <paramref name="categories"/>.</exception>
     public Series(
         [NotNull] Vector<T> vector,
         string? name = null,
@@ -79,6 +86,13 @@ public class Series<T>
         _ = skipCategoryValidation;
     }
 
+    /// <summary>
+    /// Gets or sets the element at <paramref name="index"/>. When the series is
+    /// categorical (<see cref="SeriesBase.IsCategorical"/>), the assigned value must
+    /// be a member of <see cref="Categories"/>; otherwise the assignment throws.
+    /// </summary>
+    /// <exception cref="IndexOutOfRangeException"><paramref name="index"/> is outside <c>[0, Length)</c>.</exception>
+    /// <exception cref="NumericsArgumentException">The series is categorical and the value is not in the category set.</exception>
     public T this[int index]
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -99,8 +113,10 @@ public class Series<T>
     int IReadOnlyCollection<T>.Count => Length;
 #pragma warning restore CA1033 // Interface methods should be callable by child types
 
+    /// <summary>Gets a read-only view of the backing vector.</summary>
     public new ReadOnlyVector<T> Vector => _vector;
 
+    /// <inheritdoc />
     [MemberNotNullWhen(true, nameof(_categories))]
     public override bool IsCategorical => _categories is not null && !_categories.IsEmpty;
 
@@ -128,6 +144,7 @@ public class Series<T>
     /// </remarks>
     public ValueLabelCollection<T> ValueLabels => _valueLabels ??= [];
 
+    /// <inheritdoc />
     public override bool HasValueLabels => _valueLabels is not null && _valueLabels.Count > 0;
 
     IValueLabelCollection<T> ISeries<T>.ValueLabels => ValueLabels;
@@ -136,16 +153,19 @@ public class Series<T>
 
     IReadOnlyValueLabelCollection IReadOnlySeries.ValueLabels => ValueLabels;
 
+    /// <inheritdoc />
     protected override IReadOnlyCategorySet GetReadOnlyCategorySet()
     {
         return Categories;
     }
 
+    /// <inheritdoc />
     protected override IReadOnlyValueLabelCollection GetReadOnlyValueLabelCollection()
     {
         return ValueLabels;
     }
 
+    /// <inheritdoc />
     public override VectorValue GetVectorValue(int index)
     {
         return VectorValue.FromValue(this[index]);
@@ -167,6 +187,7 @@ public class Series<T>
         return AsSpan();
     }
 
+    /// <inheritdoc />
     public override bool Equals(object? obj)
     {
         return obj switch
@@ -177,6 +198,11 @@ public class Series<T>
         };
     }
 
+    /// <summary>
+    /// Returns a hash code derived from the entire element sequence. O(N) in
+    /// <see cref="SeriesBase.Length"/>; not suitable for hash-based collections
+    /// over large series.
+    /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public override int GetHashCode()
     {
@@ -190,6 +216,11 @@ public class Series<T>
         return hash.ToHashCode();
     }
 
+    /// <summary>
+    /// Returns a read-only view of this series. The returned view shares the
+    /// underlying vector storage and snapshots the category and value-label
+    /// collections via their <c>AsReadOnly</c> wrappers.
+    /// </summary>
     public new ReadOnlySeries<T> AsReadOnly()
     {
         return new ReadOnlySeries<T>(_vector, Name, _categories?.AsReadOnly(), _valueLabels?.AsReadOnly());
@@ -253,16 +284,19 @@ public class Series<T>
         return AsReadOnly();
     }
 
+    /// <inheritdoc />
     protected override ReadOnlySeries CreateReadOnly()
     {
         return AsReadOnly();
     }
 
+    /// <summary>Returns <see langword="true"/> when the names and elements of the two series match.</summary>
     public bool Equals(Series<T>? other)
     {
         return other is not null && Name == other.Name && AsSpan().SequenceEqual(other.AsSpan());
     }
 
+    /// <summary>Returns <see langword="true"/> when the names and elements of the two series match.</summary>
     public bool Equals(ReadOnlySeries<T>? other)
     {
         return other is not null && Name == other.Name && AsSpan().SequenceEqual(other.AsReadOnlySpan());
@@ -273,11 +307,17 @@ public class Series<T>
         return other is not null && Name == other.Name && AsSpan().SequenceEqual(other.AsReadOnlySpan());
     }
 
+    /// <summary>Returns <see langword="true"/> when this series' elements match the contents of <paramref name="other"/>.</summary>
     public bool SequenceEqual(ReadOnlySpan<T> other)
     {
         return AsSpan().SequenceEqual(other);
     }
 
+    /// <summary>
+    /// Returns a struct enumerator over the series' elements. <c>foreach</c> binds
+    /// to this overload via duck-typing, avoiding the per-iteration allocation of
+    /// an interface-based enumerator.
+    /// </summary>
     public MemoryEnumerator<T> GetEnumerator()
     {
         return _vector.GetEnumerator();
@@ -374,6 +414,7 @@ public class Series<T>
 #pragma warning restore IDE0305 // Simplify collection initialization
     }
 
+    /// <summary>Wraps a <see cref="Vector{T}"/> as an unnamed series via <see cref="Series.Create{T}(Vector{T}, string?, CategorySet{T}?, ValueLabelCollection{T}?)"/>.</summary>
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",
         Justification = "By design")]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -382,6 +423,7 @@ public class Series<T>
         return Create(vector);
     }
 
+    /// <summary>Wraps a <see cref="Memory{T}"/> as an unnamed series.</summary>
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",
         Justification = "By design")]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -390,6 +432,7 @@ public class Series<T>
         return Create(vector);
     }
 
+    /// <summary>Wraps an array as an unnamed series.</summary>
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",
         Justification = "By design")]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -398,6 +441,7 @@ public class Series<T>
         return Create(vector);
     }
 
+    /// <summary>Returns the underlying <see cref="Memory{T}"/>, or <c>default</c> when <paramref name="vector"/> is <see langword="null"/>.</summary>
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",
         Justification = "By design")]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -406,6 +450,7 @@ public class Series<T>
         return vector is not null ? vector._vector : default;
     }
 
+    /// <summary>Returns a read-only view via <see cref="AsReadOnly"/>, or the shared empty series when <paramref name="vector"/> is <see langword="null"/>.</summary>
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",
         Justification = "By design")]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

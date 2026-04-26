@@ -9,10 +9,14 @@ using DSE.Open.Numerics.Serialization;
 
 namespace DSE.Open.Numerics;
 
+/// <summary>
+/// A read-only set of <see cref="ReadOnlyDataFrame"/> instances.
+/// </summary>
 [JsonConverter(typeof(ReadOnlyDataSetJsonConverter))]
 [CollectionBuilder(typeof(ReadOnlyDataSet), nameof(Create))]
 public class ReadOnlyDataSet : IReadOnlyList<ReadOnlyDataFrame>
 {
+    /// <summary>The shared empty data set.</summary>
     public static readonly ReadOnlyDataSet Empty = new();
 
     private readonly ReadOnlyCollection<ReadOnlyDataFrame> _dataFrames;
@@ -21,6 +25,8 @@ public class ReadOnlyDataSet : IReadOnlyList<ReadOnlyDataFrame>
     {
     }
 
+    /// <summary>Creates a read-only data set wrapping <paramref name="dataFrames"/>.</summary>
+    /// <exception cref="ArgumentNullException"><paramref name="dataFrames"/> is <see langword="null"/>.</exception>
     public ReadOnlyDataSet(ReadOnlyCollection<ReadOnlyDataFrame> dataFrames, string? name = null)
     {
         ArgumentNullException.ThrowIfNull(dataFrames);
@@ -28,12 +34,16 @@ public class ReadOnlyDataSet : IReadOnlyList<ReadOnlyDataFrame>
         Name = name;
     }
 
+    /// <summary>Gets the data frame at <paramref name="index"/>.</summary>
     public ReadOnlyDataFrame this[int index] => _dataFrames[index];
 
+    /// <summary>Gets the optional set name.</summary>
     public string? Name { get; }
 
+    /// <summary>Gets the number of data frames in the set.</summary>
     public int Count => _dataFrames.Count;
 
+    /// <summary>Returns an enumerator over the data frames.</summary>
     public IEnumerator<ReadOnlyDataFrame> GetEnumerator()
     {
         return _dataFrames.GetEnumerator();
@@ -44,6 +54,10 @@ public class ReadOnlyDataSet : IReadOnlyList<ReadOnlyDataFrame>
         return ((IEnumerable)_dataFrames).GetEnumerator();
     }
 
+    /// <summary>
+    /// Collection-initializer-friendly factory; copies <paramref name="dataFrames"/>
+    /// into a fresh internal collection.
+    /// </summary>
     public static ReadOnlyDataSet Create(ReadOnlySpan<ReadOnlyDataFrame> dataFrames)
     {
         return new ReadOnlyDataSet([.. dataFrames.ToArray()]);

@@ -5,6 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace DSE.Open.Numerics;
 
+/// <summary>Static factories for <see cref="ValueLabel{T}"/>.</summary>
 public static class ValueLabel
 {
     /// <summary>
@@ -31,6 +32,7 @@ public readonly record struct ValueLabel<T> : IValueLabel<T>
     // note: we may want to support vectors of nullable types in the future
     // so T is not constrained to notnull
 
+    /// <summary>Creates a value-label pair.</summary>
     [JsonConstructor]
     public ValueLabel(T value, string label)
     {
@@ -38,9 +40,11 @@ public readonly record struct ValueLabel<T> : IValueLabel<T>
         Label = label;
     }
 
+    /// <summary>Gets the data value.</summary>
     [JsonPropertyName("value")]
     public T Value { get; }
 
+    /// <summary>Gets the label associated with the value.</summary>
     [JsonPropertyName("label")]
     public string Label { get; }
 
@@ -59,11 +63,13 @@ public readonly record struct ValueLabel<T> : IValueLabel<T>
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
+    /// <summary>Implicitly creates a <see cref="ValueLabel{T}"/> from a <c>(value, label)</c> tuple.</summary>
     public static implicit operator ValueLabel<T>((T value, string label) tuple)
     {
         return new(tuple.value, tuple.label);
     }
 
+    /// <summary>Implicitly converts a <see cref="ValueLabel{T}"/> to a <c>(value, label)</c> tuple.</summary>
     public static implicit operator (T value, string label)(ValueLabel<T> valueLabel)
     {
         return (valueLabel.Value, valueLabel.Label);

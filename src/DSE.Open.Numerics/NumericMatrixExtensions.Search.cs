@@ -9,6 +9,7 @@ using DSE.Open.Memory;
 
 namespace DSE.Open.Numerics;
 
+/// <summary>Extension methods over <see cref="NumericMatrix{T}"/> and <see cref="ReadOnlyNumericMatrix{T}"/>.</summary>
 public static partial class MatrixExtensions
 {
     /// <summary>

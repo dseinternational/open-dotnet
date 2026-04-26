@@ -5,6 +5,7 @@ using System.Numerics;
 
 namespace DSE.Open.Numerics;
 
+/// <summary>Extension methods over <see cref="ReadOnlyDataFrame"/>.</summary>
 public static class ReadOnlyDataFrameExtensions
 {
     /// <summary>

@@ -23,12 +23,19 @@ namespace DSE.Open.Numerics;
 public class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
     where T : IEquatable<T>
 {
+    /// <summary>The shared empty series.</summary>
     public static readonly ReadOnlySeries<T> Empty = new([]);
 
     private readonly ReadOnlyVector<T> _vector;
     private ReadOnlyCategorySet<T>? _categories;
     private ReadOnlyValueLabelCollection<T>? _valueLabels;
 
+    /// <summary>
+    /// Creates a read-only series wrapping <paramref name="vector"/>, with optional
+    /// name, category set and value-label collection.
+    /// </summary>
+    /// <exception cref="ArgumentNullException"><paramref name="vector"/> is <see langword="null"/>.</exception>
+    /// <exception cref="NumericsArgumentException">An element of <paramref name="vector"/> is not in <paramref name="categories"/>.</exception>
     public ReadOnlySeries(
         [NotNull] ReadOnlyVector<T> vector,
         string? name = null,
@@ -69,6 +76,8 @@ public class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
         _ = skipCategoryValidation;
     }
 
+    /// <summary>Gets the element at <paramref name="index"/>.</summary>
+    /// <exception cref="IndexOutOfRangeException"><paramref name="index"/> is outside <c>[0, Length)</c>.</exception>
     public T this[int index]
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -79,42 +88,52 @@ public class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
     int IReadOnlyCollection<T>.Count => Length;
 #pragma warning restore CA1033 // Interface methods should be callable by child types
 
+    /// <summary>Gets the read-only backing vector.</summary>
     public new ReadOnlyVector<T> Vector => _vector;
 
+    /// <inheritdoc />
     [MemberNotNullWhen(true, nameof(_categories))]
     public override bool IsCategorical => _categories is not null && !_categories.IsEmpty;
 
+    /// <summary>Gets the (lazily-initialized) read-only set of allowed values for this series.</summary>
     public ReadOnlyCategorySet<T> Categories => _categories ??= [];
 
+    /// <summary>Gets the (lazily-initialized) read-only collection of value labels for this series.</summary>
     public ReadOnlyValueLabelCollection<T> ValueLabels => _valueLabels ??= [];
 
+    /// <inheritdoc />
     public override bool HasValueLabels => _valueLabels is not null && _valueLabels.Count > 0;
 
     IReadOnlyValueLabelCollection<T> IReadOnlySeries<T>.ValueLabels => ValueLabels;
 
     IReadOnlyValueLabelCollection IReadOnlySeries.ValueLabels => ValueLabels;
 
+    /// <inheritdoc />
     protected override IReadOnlyCategorySet GetReadOnlyCategorySet()
     {
         return Categories;
     }
 
+    /// <inheritdoc />
     protected override IReadOnlyValueLabelCollection GetReadOnlyValueLabelCollection()
     {
         return ValueLabels;
     }
 
+    /// <inheritdoc />
     public override VectorValue GetVectorValue(int index)
     {
         return VectorValue.FromValue(this[index]);
     }
 
+    /// <summary>Returns a read-only span over the series' elements.</summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ReadOnlySpan<T> AsReadOnlySpan()
     {
         return _vector.AsSpan();
     }
 
+    /// <inheritdoc />
     public override bool Equals(object? obj)
     {
         return obj switch
@@ -125,6 +144,11 @@ public class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
         };
     }
 
+    /// <summary>
+    /// Returns a hash code derived from the entire element sequence. O(N) in
+    /// <see cref="SeriesBase.Length"/>; not suitable for hash-based collections
+    /// over large series.
+    /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public override int GetHashCode()
     {
@@ -138,21 +162,29 @@ public class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
         return hash.ToHashCode();
     }
 
+    /// <summary>Returns <see langword="true"/> when <paramref name="other"/>'s elements match this series.</summary>
     public bool Equals(ReadOnlySeries<T>? other)
     {
         return other is not null && Equals(other.AsReadOnlySpan());
     }
 
+    /// <summary>Returns <see langword="true"/> when <paramref name="other"/>'s elements match this series.</summary>
     public bool Equals(IReadOnlySeries<T>? other)
     {
         return other is not null && Equals(other.AsReadOnlySpan());
     }
 
+    /// <summary>Returns <see langword="true"/> when <paramref name="other"/> matches this series' elements.</summary>
     public bool Equals(ReadOnlySpan<T> other)
     {
         return AsReadOnlySpan().SequenceEqual(other);
     }
 
+    /// <summary>
+    /// Returns a struct enumerator over the series' elements. <c>foreach</c> binds
+    /// to this overload via duck-typing, avoiding the per-iteration allocation of
+    /// an interface-based enumerator.
+    /// </summary>
     public ReadOnlyMemoryEnumerator<T> GetEnumerator()
     {
         return _vector.GetEnumerator();
@@ -283,11 +315,17 @@ public class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
         return Slice(start, length);
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> when <paramref name="left"/> is non-null and
+    /// equals <paramref name="right"/> by value (sequence equality). <see langword="null"/>
+    /// on the left always compares unequal.
+    /// </summary>
     public static bool operator ==(ReadOnlySeries<T>? left, ReadOnlySeries<T>? right)
     {
         return left is not null && (right is null || left.Equals(right));
     }
 
+    /// <summary>Negation of <see cref="op_Equality(ReadOnlySeries{T}?, ReadOnlySeries{T}?)"/>.</summary>
     public static bool operator !=(ReadOnlySeries<T>? left, ReadOnlySeries<T>? right)
     {
         return !(left == right);
@@ -305,6 +343,7 @@ public class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
             ValueLabels.ToValueLabelCollection());
     }
 
+    /// <summary>Wraps a <see cref="ReadOnlyMemory{T}"/> as an unnamed read-only series.</summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",
         Justification = "By design")]
@@ -313,6 +352,8 @@ public class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
         return new(vector);
     }
 
+    /// <summary>Wraps an array as an unnamed read-only series. The caller must not mutate the array while the series is in use.</summary>
+    /// <exception cref="ArgumentNullException"><paramref name="vector"/> is <see langword="null"/>.</exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",
         Justification = "By design")]
@@ -322,6 +363,7 @@ public class ReadOnlySeries<T> : ReadOnlySeries, IReadOnlySeries<T>
         return new(vector);
     }
 
+    /// <summary>Returns the underlying <see cref="ReadOnlyMemory{T}"/>, or <c>default</c> when <paramref name="vector"/> is <see langword="null"/>.</summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates",
         Justification = "By design")]

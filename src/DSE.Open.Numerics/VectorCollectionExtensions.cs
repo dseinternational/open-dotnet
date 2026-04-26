@@ -3,6 +3,11 @@
 
 namespace DSE.Open.Numerics;
 
+/// <summary>
+/// Extension methods over <see cref="ICollection{T}"/> of <see cref="Series"/>;
+/// reserved for future column-collection helpers (currently the file has no
+/// active members).
+/// </summary>
 public static class VectorCollectionExtensions
 {
     // public static void Add<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(

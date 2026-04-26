@@ -6,6 +6,12 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace DSE.Open.Numerics;
 
+/// <summary>
+/// A row-wise view over a <see cref="ReadOnlyDataFrame"/>. Constructed via
+/// <see cref="ReadOnlyDataFrame.Rows"/>; iterating yields
+/// <see cref="ReadOnlyDataFrameRow"/> instances zero-allocation via the public
+/// struct enumerator.
+/// </summary>
 public readonly record struct ReadOnlyDataFrameRowCollection : IReadOnlyList<ReadOnlyDataFrameRow>
 {
     private readonly ReadOnlyDataFrame _df;
@@ -15,8 +21,10 @@ public readonly record struct ReadOnlyDataFrameRowCollection : IReadOnlyList<Rea
         _df = df;
     }
 
+    /// <summary>Gets the row at <paramref name="index"/>.</summary>
     public ReadOnlyDataFrameRow this[int index] => new(_df, index);
 
+    /// <summary>Gets the number of rows in the frame.</summary>
     public int Count => _df.Count == 0 ? 0 : _df[0].Length;
 
     /// <summary>
@@ -40,6 +48,7 @@ public readonly record struct ReadOnlyDataFrameRowCollection : IReadOnlyList<Rea
         return GetEnumerator();
     }
 
+    /// <summary>Zero-allocation struct enumerator over the rows of a read-only frame.</summary>
     public struct Enumerator : IEnumerator<ReadOnlyDataFrameRow>
     {
         private readonly ReadOnlyDataFrameRowCollection _rows;
@@ -74,6 +83,7 @@ public readonly record struct ReadOnlyDataFrameRowCollection : IReadOnlyList<Rea
 
         readonly object? IEnumerator.Current => Current;
 
+        /// <summary>Advances the enumerator to the next row.</summary>
         public bool MoveNext()
         {
             var next = _index + 1;
@@ -92,6 +102,7 @@ public readonly record struct ReadOnlyDataFrameRowCollection : IReadOnlyList<Rea
             throw new NotSupportedException();
         }
 
+        /// <summary>No-op.</summary>
         public readonly void Dispose()
         {
         }

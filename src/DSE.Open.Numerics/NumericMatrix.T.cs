@@ -25,26 +25,32 @@ public readonly struct NumericMatrix<T> : IEquatable<NumericMatrix<T>>
 {
     private readonly Memory2D<T> _data;
 
+    /// <summary>The shared empty matrix.</summary>
     public static readonly NumericMatrix<T> Empty;
 
+    /// <summary>Creates a matrix of the given dimensions backed by a fresh <c>T[rows*columns]</c>, zero-initialised.</summary>
     public NumericMatrix(int rows, int columns) : this(new Memory2D<T>(new T[rows * columns], rows, columns))
     {
     }
 
+    /// <summary>Wraps a 2-D array as a matrix; no copy is made.</summary>
     public NumericMatrix(T[,] data) : this(new Memory2D<T>(data))
     {
     }
 
+    /// <summary>Wraps a flat row-major <paramref name="data"/> array of <c>rows*columns</c> elements as a matrix.</summary>
     public NumericMatrix(T[] data, int rows, int columns)
         : this(new Memory2D<T>(data, rows, columns))
     {
     }
 
+    /// <summary>Builds a matrix by copying a jagged <paramref name="data"/> array into a 2-D array.</summary>
     public NumericMatrix(T[][] data)
         : this(new Memory2D<T>(data.ToArray2D()))
     {
     }
 
+    /// <summary>Wraps a <see cref="Memory2D{T}"/> as a matrix.</summary>
     public NumericMatrix(Memory2D<T> values)
     {
         _data = values;
@@ -66,6 +72,7 @@ public readonly struct NumericMatrix<T> : IEquatable<NumericMatrix<T>>
         set => _data.Span[row, column] = value;
     }
 
+    /// <summary>Gets or sets the element at <paramref name="index"/>.</summary>
 #pragma warning disable CA1043 // Use Integral Or String Argument For Indexers
     public T this[MatrixIndex index]
 #pragma warning restore CA1043 // Use Integral Or String Argument For Indexers
@@ -76,8 +83,10 @@ public readonly struct NumericMatrix<T> : IEquatable<NumericMatrix<T>>
         set => _data.Span[index.Row, index.Column] = value;
     }
 
+    /// <summary>Gets the number of rows.</summary>
     public int RowCount => _data.Height;
 
+    /// <summary>Gets the number of columns.</summary>
     public int ColumnCount => _data.Width;
 
     /// <summary>
@@ -103,16 +112,19 @@ public readonly struct NumericMatrix<T> : IEquatable<NumericMatrix<T>>
         return destination;
     }
 
+    /// <summary>Returns <see langword="true"/> when the underlying <see cref="Memory2D{T}"/> instances refer to the same data and shape.</summary>
     public bool Equals(NumericMatrix<T> other)
     {
         return _data.Equals(other._data);
     }
 
+    /// <inheritdoc />
     public override bool Equals(object? obj)
     {
         return obj is NumericMatrix<T> matrix && Equals(matrix);
     }
 
+    /// <inheritdoc />
     public override int GetHashCode()
     {
         return _data.GetHashCode();
@@ -127,16 +139,19 @@ public readonly struct NumericMatrix<T> : IEquatable<NumericMatrix<T>>
         return _data.ToArray();
     }
 
+    /// <summary>Equality operator. See <see cref="Equals(NumericMatrix{T})"/>.</summary>
     public static bool operator ==(NumericMatrix<T> left, NumericMatrix<T> right)
     {
         return left.Equals(right);
     }
 
+    /// <summary>Inequality operator. See <see cref="Equals(NumericMatrix{T})"/>.</summary>
     public static bool operator !=(NumericMatrix<T> left, NumericMatrix<T> right)
     {
         return !(left == right);
     }
 
+    /// <summary>Implicitly returns a read-only view of <paramref name="matrix"/>.</summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator ReadOnlyNumericMatrix<T>(NumericMatrix<T> matrix)
     {

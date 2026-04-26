@@ -7,6 +7,11 @@ using System.Runtime.CompilerServices;
 
 namespace DSE.Open.Numerics;
 
+/// <summary>
+/// Type-classification helpers used internally by <c>DSE.Open.Numerics</c> to
+/// dispatch on numeric / floating-point / NA-aware element types without
+/// resorting to reflection (which is incompatible with AOT/trimming).
+/// </summary>
 public static partial class NumericsNumberHelper
 {
     private static readonly FrozenSet<Type> s_knownNumberTypes = FrozenSet.Create(
@@ -64,6 +69,8 @@ public static partial class NumericsNumberHelper
         return IsKnownNumberType(typeof(T));
     }
 
+    /// <summary>Returns <see langword="true"/> when <paramref name="type"/> is one of the recognised floating-point types (IEEE 754 plus <see cref="decimal"/>).</summary>
+    /// <exception cref="ArgumentNullException"><paramref name="type"/> is <see langword="null"/>.</exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsKnownFloatingPointType(Type type)
     {
@@ -71,12 +78,15 @@ public static partial class NumericsNumberHelper
         return IsKnownFloatingPointIeee754Type(type) || type == typeof(decimal);
     }
 
+    /// <summary>Generic-arg overload of <see cref="IsKnownFloatingPointType(Type)"/>.</summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsKnownFloatingPointType<T>()
     {
         return IsKnownFloatingPointType(typeof(T));
     }
 
+    /// <summary>Returns <see langword="true"/> when <paramref name="type"/> is <see cref="float"/>, <see cref="double"/>, or <see cref="Half"/>.</summary>
+    /// <exception cref="ArgumentNullException"><paramref name="type"/> is <see langword="null"/>.</exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsKnownFloatingPointIeee754Type(Type type)
     {
@@ -84,6 +94,7 @@ public static partial class NumericsNumberHelper
         return type == typeof(float) || type == typeof(double) || type == typeof(Half);
     }
 
+    /// <summary>Generic-arg overload of <see cref="IsKnownFloatingPointIeee754Type(Type)"/>.</summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsKnownFloatingPointIeee754Type<T>()
     {
