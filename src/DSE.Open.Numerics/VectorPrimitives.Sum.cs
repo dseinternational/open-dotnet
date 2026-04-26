@@ -89,11 +89,15 @@ public static partial class VectorPrimitives
         return result;
     }
 
+    /// <summary>Returns the overflow-checked sum of all elements.</summary>
+
     public static T SumChecked<T>(ReadOnlySpan<T> span)
         where T : struct, INumberBase<T>
     {
         return SumChecked<T, T>(span);
     }
+
+    /// <summary>Returns the overflow-checked sum of all elements.</summary>
 
     public static TResult SumChecked<T, TResult>(this IReadOnlyVector<T> vector)
         where T : struct, INumberBase<T>
@@ -103,12 +107,16 @@ public static partial class VectorPrimitives
         return SumChecked<T, TResult>(vector.AsSpan());
     }
 
+    /// <summary>Returns the overflow-checked sum of all elements.</summary>
+
     public static T SumChecked<T>(this IReadOnlyVector<T> vector)
         where T : struct, INumberBase<T>
     {
         ArgumentNullException.ThrowIfNull(vector);
         return SumChecked<T, T>(vector.AsSpan());
     }
+
+    /// <summary>Returns the overflow-checked sum of all elements.</summary>
 
     public static T SumChecked<T>(
         ReadOnlySpan<T> span,
@@ -117,6 +125,8 @@ public static partial class VectorPrimitives
     {
         return SumChecked<T, T>(span, summation);
     }
+
+    /// <summary>Returns the overflow-checked sum of all elements.</summary>
 
     public static TResult SumChecked<T, TResult>(
         ReadOnlySpan<T> span,
@@ -159,6 +169,8 @@ public static partial class VectorPrimitives
 
         return result;
     }
+
+    /// <summary>Returns the overflow-checked sum of all elements.</summary>
 
     public static TResult SumChecked<T, TResult>(
         this IReadOnlyVector<T> vector,

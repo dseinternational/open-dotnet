@@ -32,6 +32,8 @@ public static partial class SeriesPrimitives
         return series.Vector.Sum();
     }
 
+    /// <summary>Returns the overflow-checked sum of all elements.</summary>
+
     public static TResult SumChecked<T, TResult>(this IReadOnlySeries<T> series)
         where T : struct, INumberBase<T>
         where TResult : struct, INumberBase<TResult>
@@ -40,12 +42,16 @@ public static partial class SeriesPrimitives
         return series.Vector.SumChecked<T, TResult>();
     }
 
+    /// <summary>Returns the overflow-checked sum of all elements.</summary>
+
     public static T SumChecked<T>(this IReadOnlySeries<T> series)
         where T : struct, INumberBase<T>
     {
         ArgumentNullException.ThrowIfNull(series);
         return series.Vector.SumChecked();
     }
+
+    /// <summary>Returns the overflow-checked sum of all elements.</summary>
 
     public static TResult SumChecked<T, TResult>(
         this IReadOnlySeries<T> series,

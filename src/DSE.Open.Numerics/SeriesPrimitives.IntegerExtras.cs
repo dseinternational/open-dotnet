@@ -7,6 +7,7 @@ namespace DSE.Open.Numerics;
 
 public static partial class SeriesPrimitives
 {
+    /// <summary>Element-wise <c>(x / y, x % y)</c>.</summary>
     public static void DivRem<T>(
         this IReadOnlySeries<T> left,
         IReadOnlySeries<T> right,
@@ -20,6 +21,8 @@ public static partial class SeriesPrimitives
             left.Vector.AsSpan(), right.Vector.AsSpan(), quotientDestination, remainderDestination);
     }
 
+    /// <summary>Element-wise <c>(x / y, x % y)</c>.</summary>
+
     public static void DivRem<T>(
         this IReadOnlySeries<T> left,
         T right,
@@ -32,6 +35,8 @@ public static partial class SeriesPrimitives
             left.Vector.AsSpan(), right, quotientDestination, remainderDestination);
     }
 
+    /// <summary>Element-wise <c>x % y</c>.</summary>
+
     public static void Remainder<T>(
         this IReadOnlySeries<T> x,
         IReadOnlySeries<T> y,
@@ -43,12 +48,16 @@ public static partial class SeriesPrimitives
         VectorPrimitives.Remainder(x.Vector.AsSpan(), y.Vector.AsSpan(), destination);
     }
 
+    /// <summary>Element-wise <c>x % y</c>.</summary>
+
     public static void Remainder<T>(this IReadOnlySeries<T> x, T y, Span<T> destination)
         where T : struct, IModulusOperators<T, T, T>, IEquatable<T>
     {
         ArgumentNullException.ThrowIfNull(x);
         VectorPrimitives.Remainder(x.Vector.AsSpan(), y, destination);
     }
+
+    /// <summary>Element-wise IEEE 754 remainder.</summary>
 
     public static void Ieee754Remainder<T>(
         this IReadOnlySeries<T> x,
@@ -61,12 +70,16 @@ public static partial class SeriesPrimitives
         VectorPrimitives.Ieee754Remainder(x.Vector.AsSpan(), y.Vector.AsSpan(), destination);
     }
 
+    /// <summary>Element-wise IEEE 754 remainder.</summary>
+
     public static void Ieee754Remainder<T>(this IReadOnlySeries<T> x, T y, Span<T> destination)
         where T : struct, IFloatingPointIeee754<T>
     {
         ArgumentNullException.ThrowIfNull(x);
         VectorPrimitives.Ieee754Remainder(x.Vector.AsSpan(), y, destination);
     }
+
+    /// <summary>Element-wise <c>x + 1</c>.</summary>
 
     public static void Increment<T>(this IReadOnlySeries<T> x, Span<T> destination)
         where T : struct, IIncrementOperators<T>, IEquatable<T>
@@ -75,12 +88,16 @@ public static partial class SeriesPrimitives
         VectorPrimitives.Increment(x.Vector.AsSpan(), destination);
     }
 
+    /// <summary>Element-wise <c>x - 1</c>.</summary>
+
     public static void Decrement<T>(this IReadOnlySeries<T> x, Span<T> destination)
         where T : struct, IDecrementOperators<T>, IEquatable<T>
     {
         ArgumentNullException.ThrowIfNull(x);
         VectorPrimitives.Decrement(x.Vector.AsSpan(), destination);
     }
+
+    /// <summary>Element-wise <c>BitDecrement</c> (next-down floating-point value).</summary>
 
     public static void BitDecrement<T>(this IReadOnlySeries<T> x, Span<T> destination)
         where T : struct, IFloatingPointIeee754<T>
@@ -89,6 +106,8 @@ public static partial class SeriesPrimitives
         VectorPrimitives.BitDecrement(x.Vector.AsSpan(), destination);
     }
 
+    /// <summary>Element-wise <c>BitIncrement</c> (next-up floating-point value).</summary>
+
     public static void BitIncrement<T>(this IReadOnlySeries<T> x, Span<T> destination)
         where T : struct, IFloatingPointIeee754<T>
     {
@@ -96,12 +115,16 @@ public static partial class SeriesPrimitives
         VectorPrimitives.BitIncrement(x.Vector.AsSpan(), destination);
     }
 
+    /// <summary>Element-wise <c>x * 2^n</c>.</summary>
+
     public static void ScaleB<T>(this IReadOnlySeries<T> x, int n, Span<T> destination)
         where T : struct, IFloatingPointIeee754<T>
     {
         ArgumentNullException.ThrowIfNull(x);
         VectorPrimitives.ScaleB(x.Vector.AsSpan(), n, destination);
     }
+
+    /// <summary>Element-wise integer base-2 logarithm.</summary>
 
     public static void ILogB<T>(this IReadOnlySeries<T> x, Span<int> destination)
         where T : struct, IFloatingPointIeee754<T>

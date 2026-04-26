@@ -15,6 +15,8 @@ public static partial class SeriesPrimitives
 {
     // -------- IsFinite --------
 
+    /// <summary>Element-wise <c>IsFinite</c> predicate.</summary>
+
     public static void IsFinite<T>(this IReadOnlySeries<T> x, Span<bool> destination)
         where T : INumberBase<T>, IEquatable<T>
     {
@@ -23,6 +25,8 @@ public static partial class SeriesPrimitives
         VectorPrimitives.IsFinite(in span, destination);
     }
 
+    /// <summary>Returns <see langword="true"/> when every element is finite.</summary>
+
     public static bool IsFiniteAll<T>(this IReadOnlySeries<T> x)
         where T : INumberBase<T>, IEquatable<T>
     {
@@ -30,6 +34,8 @@ public static partial class SeriesPrimitives
         var span = x.Vector.AsSpan();
         return VectorPrimitives.IsFiniteAll(in span);
     }
+
+    /// <summary>Returns <see langword="true"/> when any element is finite.</summary>
 
     public static bool IsFiniteAny<T>(this IReadOnlySeries<T> x)
         where T : INumberBase<T>, IEquatable<T>
@@ -41,6 +47,8 @@ public static partial class SeriesPrimitives
 
     // -------- IsInfinity --------
 
+    /// <summary>Element-wise <c>IsInfinity</c> predicate.</summary>
+
     public static void IsInfinity<T>(this IReadOnlySeries<T> x, Span<bool> destination)
         where T : INumberBase<T>, IEquatable<T>
     {
@@ -49,6 +57,8 @@ public static partial class SeriesPrimitives
         VectorPrimitives.IsInfinity(in span, destination);
     }
 
+    /// <summary>Returns <see langword="true"/> when every element is infinity.</summary>
+
     public static bool IsInfinityAll<T>(this IReadOnlySeries<T> x)
         where T : INumberBase<T>, IEquatable<T>
     {
@@ -56,6 +66,8 @@ public static partial class SeriesPrimitives
         var span = x.Vector.AsSpan();
         return VectorPrimitives.IsInfinityAll(in span);
     }
+
+    /// <summary>Returns <see langword="true"/> when any element is infinity.</summary>
 
     public static bool IsInfinityAny<T>(this IReadOnlySeries<T> x)
         where T : INumberBase<T>, IEquatable<T>
@@ -67,6 +79,8 @@ public static partial class SeriesPrimitives
 
     // -------- IsZero / IsPositive / IsNegative --------
 
+    /// <summary>Element-wise <c>IsZero</c> predicate.</summary>
+
     public static void IsZero<T>(this IReadOnlySeries<T> x, Span<bool> destination)
         where T : INumberBase<T>, IEquatable<T>
     {
@@ -74,6 +88,8 @@ public static partial class SeriesPrimitives
         var span = x.Vector.AsSpan();
         VectorPrimitives.IsZero(in span, destination);
     }
+
+    /// <summary>Returns <see langword="true"/> when every element is zero.</summary>
 
     public static bool IsZeroAll<T>(this IReadOnlySeries<T> x)
         where T : INumberBase<T>, IEquatable<T>
@@ -83,6 +99,8 @@ public static partial class SeriesPrimitives
         return VectorPrimitives.IsZeroAll(in span);
     }
 
+    /// <summary>Returns <see langword="true"/> when any element is zero.</summary>
+
     public static bool IsZeroAny<T>(this IReadOnlySeries<T> x)
         where T : INumberBase<T>, IEquatable<T>
     {
@@ -91,6 +109,8 @@ public static partial class SeriesPrimitives
         return VectorPrimitives.IsZeroAny(in span);
     }
 
+    /// <summary>Element-wise <c>IsPositive</c> predicate.</summary>
+
     public static void IsPositive<T>(this IReadOnlySeries<T> x, Span<bool> destination)
         where T : INumberBase<T>, IEquatable<T>
     {
@@ -98,6 +118,8 @@ public static partial class SeriesPrimitives
         var span = x.Vector.AsSpan();
         VectorPrimitives.IsPositive(in span, destination);
     }
+
+    /// <summary>Element-wise <c>IsNegative</c> predicate.</summary>
 
     public static void IsNegative<T>(this IReadOnlySeries<T> x, Span<bool> destination)
         where T : INumberBase<T>, IEquatable<T>
@@ -109,6 +131,8 @@ public static partial class SeriesPrimitives
 
     // -------- IsInteger / IsEvenInteger / IsOddInteger --------
 
+    /// <summary>Element-wise <c>IsInteger</c> predicate.</summary>
+
     public static void IsInteger<T>(this IReadOnlySeries<T> x, Span<bool> destination)
         where T : INumberBase<T>, IEquatable<T>
     {
@@ -117,6 +141,8 @@ public static partial class SeriesPrimitives
         VectorPrimitives.IsInteger(in span, destination);
     }
 
+    /// <summary>Element-wise <c>IsEvenInteger</c> predicate.</summary>
+
     public static void IsEvenInteger<T>(this IReadOnlySeries<T> x, Span<bool> destination)
         where T : INumberBase<T>, IEquatable<T>
     {
@@ -124,6 +150,8 @@ public static partial class SeriesPrimitives
         var span = x.Vector.AsSpan();
         VectorPrimitives.IsEvenInteger(in span, destination);
     }
+
+    /// <summary>Element-wise <c>IsOddInteger</c> predicate.</summary>
 
     public static void IsOddInteger<T>(this IReadOnlySeries<T> x, Span<bool> destination)
         where T : INumberBase<T>, IEquatable<T>
@@ -135,6 +163,8 @@ public static partial class SeriesPrimitives
 
     // -------- IsNormal / IsSubnormal --------
 
+    /// <summary>Element-wise <c>IsNormal</c> predicate.</summary>
+
     public static void IsNormal<T>(this IReadOnlySeries<T> x, Span<bool> destination)
         where T : INumberBase<T>, IEquatable<T>
     {
@@ -142,6 +172,8 @@ public static partial class SeriesPrimitives
         var span = x.Vector.AsSpan();
         VectorPrimitives.IsNormal(in span, destination);
     }
+
+    /// <summary>Element-wise <c>IsSubnormal</c> predicate.</summary>
 
     public static void IsSubnormal<T>(this IReadOnlySeries<T> x, Span<bool> destination)
         where T : INumberBase<T>, IEquatable<T>

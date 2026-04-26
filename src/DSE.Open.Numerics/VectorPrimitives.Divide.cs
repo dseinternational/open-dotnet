@@ -8,6 +8,7 @@ namespace DSE.Open.Numerics;
 
 public static partial class VectorPrimitives
 {
+    /// <summary>Element-wise <c>x / y</c>.</summary>
     public static void Divide<T>(this IReadOnlyVector<T> x, ReadOnlySpan<T> y, in Span<T> destination)
         where T : struct, INumber<T>
     {
@@ -16,6 +17,8 @@ public static partial class VectorPrimitives
         TensorPrimitives.Divide(x.AsSpan(), y, destination);
     }
 
+    /// <summary>Element-wise <c>x / y</c>.</summary>
+
     public static void Divide<T>(this IReadOnlyVector<T> x, IReadOnlyVector<T> y, in Span<T> destination)
         where T : struct, INumber<T>
     {
@@ -23,12 +26,16 @@ public static partial class VectorPrimitives
         Divide(x, y.AsSpan(), destination);
     }
 
+    /// <summary>Element-wise <c>x / y</c>.</summary>
+
     public static void Divide<T>(this IReadOnlyVector<T> x, IReadOnlyVector<T> y, IVector<T> destination)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(destination);
         Divide(x, y, destination.AsSpan());
     }
+
+    /// <summary>Element-wise <c>x / y</c>.</summary>
 
     public static Vector<T> Divide<T>(this IReadOnlyVector<T> x, ReadOnlySpan<T> y)
         where T : struct, INumber<T>
@@ -40,12 +47,16 @@ public static partial class VectorPrimitives
         return Vector.Create(destination);
     }
 
+    /// <summary>Element-wise <c>x / y</c>.</summary>
+
     public static Vector<T> Divide<T>(this IReadOnlyVector<T> x, IReadOnlyVector<T> y)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(y);
         return Divide(x, y.AsSpan());
     }
+
+    /// <summary>Element-wise <c>x / y</c>.</summary>
 
     public static void Divide<T>(this IReadOnlyVector<T> x, T y, in Span<T> destination)
         where T : struct, INumber<T>
@@ -55,12 +66,16 @@ public static partial class VectorPrimitives
         TensorPrimitives.Divide(x.AsSpan(), y, destination);
     }
 
+    /// <summary>Element-wise <c>x / y</c>.</summary>
+
     public static void Divide<T>(this IReadOnlyVector<T> x, T y, IVector<T> destination)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(destination);
         Divide(x, y, destination.AsSpan());
     }
+
+    /// <summary>Element-wise <c>x / y</c>.</summary>
 
     public static Vector<T> Divide<T>(this IReadOnlyVector<T> x, T y)
         where T : struct, INumber<T>
@@ -71,6 +86,8 @@ public static partial class VectorPrimitives
         return Vector.Create(destination);
     }
 
+    /// <summary>Element-wise <c>x /= y</c> in place.</summary>
+
     public static void DivideInPlace<T>(this IVector<T> x, ReadOnlySpan<T> y)
         where T : struct, INumber<T>
     {
@@ -78,12 +95,16 @@ public static partial class VectorPrimitives
         Divide(x, y, x.AsSpan());
     }
 
+    /// <summary>Element-wise <c>x /= y</c> in place.</summary>
+
     public static void DivideInPlace<T>(this IVector<T> x, IReadOnlyVector<T> y)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(y);
         DivideInPlace(x, y.AsSpan());
     }
+
+    /// <summary>Element-wise <c>x /= y</c> in place.</summary>
 
     public static void DivideInPlace<T>(this IVector<T> x, T y)
         where T : struct, INumber<T>

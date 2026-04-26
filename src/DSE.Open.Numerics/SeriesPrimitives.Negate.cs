@@ -7,12 +7,15 @@ namespace DSE.Open.Numerics;
 
 public static partial class SeriesPrimitives
 {
+    /// <summary>Element-wise unary negation.</summary>
     public static void Negate<T>(this IReadOnlySeries<T> x, Span<T> destination)
         where T : struct, INumberBase<T>
     {
         ArgumentNullException.ThrowIfNull(x);
         VectorPrimitives.Negate(x.Vector.AsSpan(), destination);
     }
+
+    /// <summary>Element-wise unary negation.</summary>
 
     public static void Negate<T>(this IReadOnlySeries<T> x, ISeries<T> destination)
         where T : struct, INumberBase<T>
@@ -21,12 +24,16 @@ public static partial class SeriesPrimitives
         Negate(x, destination.AsSpan());
     }
 
+    /// <summary>Element-wise unary negation.</summary>
+
     public static Series<T> Negate<T>(this IReadOnlySeries<T> x)
         where T : struct, INumberBase<T>
     {
         ArgumentNullException.ThrowIfNull(x);
         return WrapUnary(x.Vector.Negate(), x);
     }
+
+    /// <summary>Element-wise unary negation (in place).</summary>
 
     public static void NegateInPlace<T>(this ISeries<T> x)
         where T : struct, INumberBase<T>

@@ -8,12 +8,15 @@ namespace DSE.Open.Numerics;
 
 public static partial class VectorPrimitives
 {
+    /// <summary>Element-wise <c>n</c>-th root.</summary>
     public static void RootN<T>(ReadOnlySpan<T> x, int n, in Span<T> destination)
         where T : struct, IRootFunctions<T>
     {
         NumericsArgumentException.ThrowIfNot(x.Length == destination.Length);
         TensorPrimitives.RootN(x, n, destination);
     }
+
+    /// <summary>Element-wise <c>sqrt(x*x + y*y)</c>.</summary>
 
     public static void Hypot<T>(ReadOnlySpan<T> x, ReadOnlySpan<T> y, in Span<T> destination)
         where T : struct, IRootFunctions<T>
@@ -22,12 +25,16 @@ public static partial class VectorPrimitives
         TensorPrimitives.Hypot(x, y, destination);
     }
 
+    /// <summary>Element-wise <c>1 / sqrt(x)</c>.</summary>
+
     public static void ReciprocalSqrt<T>(ReadOnlySpan<T> x, in Span<T> destination)
         where T : struct, IFloatingPointIeee754<T>
     {
         NumericsArgumentException.ThrowIfNot(x.Length == destination.Length);
         TensorPrimitives.ReciprocalSqrt(x, destination);
     }
+
+    /// <summary>Element-wise approximate reciprocal of the square root (<c>1/sqrt(x)</c>).</summary>
 
     public static void ReciprocalSqrtEstimate<T>(ReadOnlySpan<T> x, in Span<T> destination)
         where T : struct, IFloatingPointIeee754<T>
@@ -36,6 +43,8 @@ public static partial class VectorPrimitives
         TensorPrimitives.ReciprocalSqrtEstimate(x, destination);
     }
 
+    /// <summary>Element-wise <c>1 / x</c>.</summary>
+
     public static void Reciprocal<T>(ReadOnlySpan<T> x, in Span<T> destination)
         where T : struct, IFloatingPoint<T>
     {
@@ -43,12 +52,16 @@ public static partial class VectorPrimitives
         TensorPrimitives.Reciprocal(x, destination);
     }
 
+    /// <summary>Element-wise approximate reciprocal (<c>1/x</c>).</summary>
+
     public static void ReciprocalEstimate<T>(ReadOnlySpan<T> x, in Span<T> destination)
         where T : struct, IFloatingPointIeee754<T>
     {
         NumericsArgumentException.ThrowIfNot(x.Length == destination.Length);
         TensorPrimitives.ReciprocalEstimate(x, destination);
     }
+
+    /// <summary>Element-wise approximate <c>(x * y) + addend</c>.</summary>
 
     public static void MultiplyAddEstimate<T>(
         ReadOnlySpan<T> x,
@@ -62,6 +75,8 @@ public static partial class VectorPrimitives
         TensorPrimitives.MultiplyAddEstimate(x, y, addend, destination);
     }
 
+    /// <summary>Element-wise approximate <c>(x * y) + addend</c>.</summary>
+
     public static void MultiplyAddEstimate<T>(
         ReadOnlySpan<T> x,
         ReadOnlySpan<T> y,
@@ -72,6 +87,8 @@ public static partial class VectorPrimitives
         NumericsArgumentException.ThrowIfNot(x.Length == y.Length && y.Length == destination.Length);
         TensorPrimitives.MultiplyAddEstimate(x, y, addend, destination);
     }
+
+    /// <summary>Element-wise approximate <c>(x * y) + addend</c>.</summary>
 
     public static void MultiplyAddEstimate<T>(
         ReadOnlySpan<T> x,

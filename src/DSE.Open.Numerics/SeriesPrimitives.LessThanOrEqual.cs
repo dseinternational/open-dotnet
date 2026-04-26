@@ -7,6 +7,7 @@ namespace DSE.Open.Numerics;
 
 public static partial class SeriesPrimitives
 {
+    /// <summary>Element-wise <c>x &lt;= y</c> comparison.</summary>
     public static Series<bool> LessThanOrEqual<T>(this IReadOnlySeries<T> x, IReadOnlySeries<T> y)
         where T : IComparisonOperators<T, T, bool>, IEquatable<T>
     {
@@ -14,6 +15,8 @@ public static partial class SeriesPrimitives
         ArgumentNullException.ThrowIfNull(y);
         return WrapTypeChange<T, bool>(x.Vector.LessThanOrEqual(y.Vector), x);
     }
+
+    /// <summary>Element-wise <c>x &lt;= y</c> comparison.</summary>
 
     public static void LessThanOrEqual<T>(this IReadOnlySeries<T> x, ReadOnlySpan<T> y, Span<bool> destination)
         where T : IComparisonOperators<T, T, bool>, IEquatable<T>
@@ -23,12 +26,16 @@ public static partial class SeriesPrimitives
         _ = VectorPrimitives.LessThanOrEqual(x.Vector.AsSpan(), y, destination);
     }
 
+    /// <summary>Element-wise <c>x &lt;= y</c> comparison.</summary>
+
     public static void LessThanOrEqual<T>(this IReadOnlySeries<T> x, IReadOnlySeries<T> y, Span<bool> destination)
         where T : IComparisonOperators<T, T, bool>, IEquatable<T>
     {
         ArgumentNullException.ThrowIfNull(y);
         LessThanOrEqual(x, y.Vector.AsSpan(), destination);
     }
+
+    /// <summary>Element-wise <c>x &lt;= y</c> comparison.</summary>
 
     public static void LessThanOrEqual<T>(this IReadOnlySeries<T> x, IReadOnlySeries<T> y, ISeries<bool> destination)
         where T : IComparisonOperators<T, T, bool>, IEquatable<T>
@@ -37,12 +44,16 @@ public static partial class SeriesPrimitives
         LessThanOrEqual(x, y, destination.AsSpan());
     }
 
+    /// <summary>Element-wise <c>x &lt;= y</c> comparison.</summary>
+
     public static Series<bool> LessThanOrEqual<T>(this IReadOnlySeries<T> x, T y)
         where T : IComparisonOperators<T, T, bool>, IEquatable<T>
     {
         ArgumentNullException.ThrowIfNull(x);
         return WrapTypeChange<T, bool>(x.Vector.LessThanOrEqual(y), x);
     }
+
+    /// <summary>Element-wise <c>x &lt;= y</c> comparison.</summary>
 
     public static void LessThanOrEqual<T>(this IReadOnlySeries<T> x, T y, Span<bool> destination)
         where T : IComparisonOperators<T, T, bool>, IEquatable<T>
@@ -52,12 +63,16 @@ public static partial class SeriesPrimitives
         _ = VectorPrimitives.LessThanOrEqual(x.Vector.AsSpan(), y, destination);
     }
 
+    /// <summary>Element-wise <c>x &lt;= y</c> comparison.</summary>
+
     public static void LessThanOrEqual<T>(this IReadOnlySeries<T> x, T y, ISeries<bool> destination)
         where T : IComparisonOperators<T, T, bool>, IEquatable<T>
     {
         ArgumentNullException.ThrowIfNull(destination);
         LessThanOrEqual(x, y, destination.AsSpan());
     }
+
+    /// <summary>Element-wise <c>x &lt;= y</c> comparison.</summary>
 
     public static Series<bool> LessThanOrEqual<T>(this T x, IReadOnlySeries<T> y)
         where T : IComparisonOperators<T, T, bool>, IEquatable<T>
@@ -66,6 +81,8 @@ public static partial class SeriesPrimitives
         return WrapTypeChange<T, bool>(x.LessThanOrEqual(y.Vector), y);
     }
 
+    /// <summary>Element-wise <c>x &lt;= y</c> comparison.</summary>
+
     public static void LessThanOrEqual<T>(this T x, IReadOnlySeries<T> y, Span<bool> destination)
         where T : IComparisonOperators<T, T, bool>, IEquatable<T>
     {
@@ -73,6 +90,8 @@ public static partial class SeriesPrimitives
         NumericsArgumentException.ThrowIfNot(y.Length == destination.Length);
         _ = VectorPrimitives.LessThanOrEqual(x, y.Vector.AsSpan(), destination);
     }
+
+    /// <summary>Element-wise <c>x &lt;= y</c> comparison.</summary>
 
     public static void LessThanOrEqual<T>(this T x, IReadOnlySeries<T> y, ISeries<bool> destination)
         where T : IComparisonOperators<T, T, bool>, IEquatable<T>

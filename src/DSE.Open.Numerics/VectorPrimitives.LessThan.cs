@@ -9,6 +9,7 @@ namespace DSE.Open.Numerics;
 
 public static partial class VectorPrimitives
 {
+    /// <summary>Element-wise <c>x &lt; y</c> comparison.</summary>
     public static Vector<bool> LessThan<T>(
         this IReadOnlyVector<T> x,
         IReadOnlyVector<T> y)
@@ -19,6 +20,8 @@ public static partial class VectorPrimitives
         return Vector.Create(LessThan(x.AsSpan(), y.AsSpan()));
     }
 
+    /// <summary>Element-wise <c>x &lt; y</c> comparison.</summary>
+
     public static Span<bool> LessThan<T>(in ReadOnlySpan<T> x, in ReadOnlySpan<T> y)
         where T : IComparisonOperators<T, T, bool>
     {
@@ -27,6 +30,8 @@ public static partial class VectorPrimitives
         _ = LessThan(x, y, destination);
         return destination;
     }
+
+    /// <summary>Element-wise <c>x &lt; y</c> comparison.</summary>
 
     public static Vector<bool> LessThan<T>(
         this IReadOnlyVector<T> x,
@@ -39,6 +44,8 @@ public static partial class VectorPrimitives
         ArgumentNullException.ThrowIfNull(destination);
         return Vector.Create(LessThan(x.AsSpan(), y.AsSpan(), destination.AsSpan()));
     }
+
+    /// <summary>Element-wise <c>x &lt; y</c> comparison.</summary>
 
     public static ref readonly Span<bool> LessThan<T>(
         scoped in ReadOnlySpan<T> x,
@@ -56,12 +63,16 @@ public static partial class VectorPrimitives
         return ref destination;
     }
 
+    /// <summary>Element-wise <c>x &lt; y</c> comparison.</summary>
+
     public static Vector<bool> LessThan<T>(this IReadOnlyVector<T> x, in T y)
         where T : IComparisonOperators<T, T, bool>, IEquatable<T>
     {
         ArgumentNullException.ThrowIfNull(x);
         return Vector.Create(LessThan(x.AsSpan(), y));
     }
+
+    /// <summary>Element-wise <c>x &lt; y</c> comparison.</summary>
 
     public static Span<bool> LessThan<T>(in ReadOnlySpan<T> x, in T y)
         where T : IComparisonOperators<T, T, bool>
@@ -70,6 +81,8 @@ public static partial class VectorPrimitives
         _ = LessThan(x, y, destination);
         return destination;
     }
+
+    /// <summary>Element-wise <c>x &lt; y</c> comparison.</summary>
 
     public static Vector<bool> LessThan<T>(
         this IReadOnlyVector<T> x,
@@ -82,6 +95,8 @@ public static partial class VectorPrimitives
         _ = LessThan(x.AsSpan(), y, destination.AsSpan());
         return destination;
     }
+
+    /// <summary>Element-wise <c>x &lt; y</c> comparison.</summary>
 
     public static ref readonly Span<bool> LessThan<T>(
         scoped in ReadOnlySpan<T> x,
@@ -99,12 +114,16 @@ public static partial class VectorPrimitives
         return ref destination;
     }
 
+    /// <summary>Element-wise <c>x &lt; y</c> comparison.</summary>
+
     public static Vector<bool> LessThan<T>(this T x, IReadOnlyVector<T> y)
         where T : IComparisonOperators<T, T, bool>, IEquatable<T>
     {
         ArgumentNullException.ThrowIfNull(y);
         return Vector.Create(LessThan(x, y.AsSpan()));
     }
+
+    /// <summary>Element-wise <c>x &lt; y</c> comparison.</summary>
 
     public static Span<bool> LessThan<T>(this T x, in ReadOnlySpan<T> y)
         where T : IComparisonOperators<T, T, bool>
@@ -113,6 +132,8 @@ public static partial class VectorPrimitives
         _ = LessThan(x, y, destination);
         return destination;
     }
+
+    /// <summary>Element-wise <c>x &lt; y</c> comparison.</summary>
 
     public static Vector<bool> LessThan<T>(
         this T x,
@@ -125,6 +146,8 @@ public static partial class VectorPrimitives
         _ = LessThan(x, y.AsSpan(), destination.AsSpan());
         return destination;
     }
+
+    /// <summary>Element-wise <c>x &lt; y</c> comparison.</summary>
 
     public static ref readonly Span<bool> LessThan<T>(
         this T x,

@@ -9,12 +9,16 @@ public static partial class SeriesPrimitives
 {
     // -------- MaxMagnitude / MinMagnitude --------
 
+    /// <summary>Element-wise maximum by magnitude.</summary>
+
     public static T MaxMagnitude<T>(this IReadOnlySeries<T> x)
         where T : struct, INumberBase<T>
     {
         ArgumentNullException.ThrowIfNull(x);
         return VectorPrimitives.MaxMagnitude(x.Vector.AsSpan());
     }
+
+    /// <summary>Element-wise maximum by magnitude.</summary>
 
     public static void MaxMagnitude<T>(
         this IReadOnlySeries<T> x,
@@ -27,12 +31,16 @@ public static partial class SeriesPrimitives
         VectorPrimitives.MaxMagnitude(x.Vector.AsSpan(), y.Vector.AsSpan(), destination);
     }
 
+    /// <summary>Element-wise minimum by magnitude.</summary>
+
     public static T MinMagnitude<T>(this IReadOnlySeries<T> x)
         where T : struct, INumberBase<T>
     {
         ArgumentNullException.ThrowIfNull(x);
         return VectorPrimitives.MinMagnitude(x.Vector.AsSpan());
     }
+
+    /// <summary>Element-wise minimum by magnitude.</summary>
 
     public static void MinMagnitude<T>(
         this IReadOnlySeries<T> x,
@@ -47,12 +55,16 @@ public static partial class SeriesPrimitives
 
     // -------- MaxNumber / MinNumber --------
 
+    /// <summary>Element-wise maximum (NaN-aware).</summary>
+
     public static T MaxNumber<T>(this IReadOnlySeries<T> x)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(x);
         return VectorPrimitives.MaxNumber(x.Vector.AsSpan());
     }
+
+    /// <summary>Element-wise minimum (NaN-aware).</summary>
 
     public static T MinNumber<T>(this IReadOnlySeries<T> x)
         where T : struct, INumber<T>
@@ -61,12 +73,16 @@ public static partial class SeriesPrimitives
         return VectorPrimitives.MinNumber(x.Vector.AsSpan());
     }
 
+    /// <summary>Element-wise maximum by magnitude (NaN-aware).</summary>
+
     public static T MaxMagnitudeNumber<T>(this IReadOnlySeries<T> x)
         where T : struct, INumberBase<T>
     {
         ArgumentNullException.ThrowIfNull(x);
         return VectorPrimitives.MaxMagnitudeNumber(x.Vector.AsSpan());
     }
+
+    /// <summary>Element-wise minimum by magnitude (NaN-aware).</summary>
 
     public static T MinMagnitudeNumber<T>(this IReadOnlySeries<T> x)
         where T : struct, INumberBase<T>
@@ -77,12 +93,16 @@ public static partial class SeriesPrimitives
 
     // -------- IndexOfMaxMagnitude / IndexOfMinMagnitude --------
 
+    /// <summary>Returns the index of the element with the largest magnitude.</summary>
+
     public static int IndexOfMaxMagnitude<T>(this IReadOnlySeries<T> x)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(x);
         return VectorPrimitives.IndexOfMaxMagnitude(x.Vector.AsSpan());
     }
+
+    /// <summary>Returns the index of the element with the smallest magnitude.</summary>
 
     public static int IndexOfMinMagnitude<T>(this IReadOnlySeries<T> x)
         where T : struct, INumber<T>

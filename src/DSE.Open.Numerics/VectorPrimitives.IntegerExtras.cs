@@ -10,6 +10,8 @@ public static partial class VectorPrimitives
 {
     // -------- DivRem --------
 
+    /// <summary>Element-wise <c>(x / y, x % y)</c>.</summary>
+
     public static void DivRem<T>(
         ReadOnlySpan<T> left,
         ReadOnlySpan<T> right,
@@ -24,6 +26,8 @@ public static partial class VectorPrimitives
         TensorPrimitives.DivRem(left, right, quotientDestination, remainderDestination);
     }
 
+    /// <summary>Element-wise <c>(x / y, x % y)</c>.</summary>
+
     public static void DivRem<T>(
         ReadOnlySpan<T> left,
         T right,
@@ -36,6 +40,8 @@ public static partial class VectorPrimitives
             && quotientDestination.Length == remainderDestination.Length);
         TensorPrimitives.DivRem(left, right, quotientDestination, remainderDestination);
     }
+
+    /// <summary>Element-wise <c>(x / y, x % y)</c>.</summary>
 
     public static void DivRem<T>(
         T left,
@@ -52,12 +58,16 @@ public static partial class VectorPrimitives
 
     // -------- Remainder --------
 
+    /// <summary>Element-wise <c>x % y</c>.</summary>
+
     public static void Remainder<T>(ReadOnlySpan<T> x, ReadOnlySpan<T> y, in Span<T> destination)
         where T : struct, IModulusOperators<T, T, T>
     {
         NumericsArgumentException.ThrowIfNot(x.Length == y.Length && y.Length == destination.Length);
         TensorPrimitives.Remainder(x, y, destination);
     }
+
+    /// <summary>Element-wise <c>x % y</c>.</summary>
 
     public static void Remainder<T>(ReadOnlySpan<T> x, T y, in Span<T> destination)
         where T : struct, IModulusOperators<T, T, T>
@@ -66,12 +76,16 @@ public static partial class VectorPrimitives
         TensorPrimitives.Remainder(x, y, destination);
     }
 
+    /// <summary>Element-wise <c>x % y</c>.</summary>
+
     public static void Remainder<T>(T x, ReadOnlySpan<T> y, in Span<T> destination)
         where T : struct, IModulusOperators<T, T, T>
     {
         NumericsArgumentException.ThrowIfNot(y.Length == destination.Length);
         TensorPrimitives.Remainder(x, y, destination);
     }
+
+    /// <summary>Element-wise IEEE 754 remainder.</summary>
 
     public static void Ieee754Remainder<T>(ReadOnlySpan<T> x, ReadOnlySpan<T> y, in Span<T> destination)
         where T : struct, IFloatingPointIeee754<T>
@@ -80,12 +94,16 @@ public static partial class VectorPrimitives
         TensorPrimitives.Ieee754Remainder(x, y, destination);
     }
 
+    /// <summary>Element-wise IEEE 754 remainder.</summary>
+
     public static void Ieee754Remainder<T>(ReadOnlySpan<T> x, T y, in Span<T> destination)
         where T : struct, IFloatingPointIeee754<T>
     {
         NumericsArgumentException.ThrowIfNot(x.Length == destination.Length);
         TensorPrimitives.Ieee754Remainder(x, y, destination);
     }
+
+    /// <summary>Element-wise IEEE 754 remainder.</summary>
 
     public static void Ieee754Remainder<T>(T x, ReadOnlySpan<T> y, in Span<T> destination)
         where T : struct, IFloatingPointIeee754<T>
@@ -96,12 +114,16 @@ public static partial class VectorPrimitives
 
     // -------- Increment / Decrement --------
 
+    /// <summary>Element-wise <c>x + 1</c>.</summary>
+
     public static void Increment<T>(ReadOnlySpan<T> x, in Span<T> destination)
         where T : struct, IIncrementOperators<T>
     {
         NumericsArgumentException.ThrowIfNot(x.Length == destination.Length);
         TensorPrimitives.Increment(x, destination);
     }
+
+    /// <summary>Element-wise <c>x - 1</c>.</summary>
 
     public static void Decrement<T>(ReadOnlySpan<T> x, in Span<T> destination)
         where T : struct, IDecrementOperators<T>
@@ -112,12 +134,16 @@ public static partial class VectorPrimitives
 
     // -------- IEEE helpers: BitDecrement, BitIncrement, ScaleB, ILogB --------
 
+    /// <summary>Element-wise <c>BitDecrement</c> (next-down floating-point value).</summary>
+
     public static void BitDecrement<T>(ReadOnlySpan<T> x, in Span<T> destination)
         where T : struct, IFloatingPointIeee754<T>
     {
         NumericsArgumentException.ThrowIfNot(x.Length == destination.Length);
         TensorPrimitives.BitDecrement(x, destination);
     }
+
+    /// <summary>Element-wise <c>BitIncrement</c> (next-up floating-point value).</summary>
 
     public static void BitIncrement<T>(ReadOnlySpan<T> x, in Span<T> destination)
         where T : struct, IFloatingPointIeee754<T>
@@ -126,12 +152,16 @@ public static partial class VectorPrimitives
         TensorPrimitives.BitIncrement(x, destination);
     }
 
+    /// <summary>Element-wise <c>x * 2^n</c>.</summary>
+
     public static void ScaleB<T>(ReadOnlySpan<T> x, int n, in Span<T> destination)
         where T : struct, IFloatingPointIeee754<T>
     {
         NumericsArgumentException.ThrowIfNot(x.Length == destination.Length);
         TensorPrimitives.ScaleB(x, n, destination);
     }
+
+    /// <summary>Element-wise integer base-2 logarithm.</summary>
 
     public static void ILogB<T>(ReadOnlySpan<T> x, in Span<int> destination)
         where T : struct, IFloatingPointIeee754<T>

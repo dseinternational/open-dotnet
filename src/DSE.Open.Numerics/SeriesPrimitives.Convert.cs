@@ -7,6 +7,7 @@ namespace DSE.Open.Numerics;
 
 public static partial class SeriesPrimitives
 {
+    /// <summary>Element-wise conversion to <typeparamref name="TTo"/> with overflow checking.</summary>
     public static void ConvertChecked<TFrom, TTo>(this IReadOnlySeries<TFrom> source, Span<TTo> destination)
         where TFrom : struct, INumberBase<TFrom>
         where TTo : struct, INumberBase<TTo>
@@ -14,6 +15,8 @@ public static partial class SeriesPrimitives
         ArgumentNullException.ThrowIfNull(source);
         VectorPrimitives.ConvertChecked<TFrom, TTo>(source.Vector.AsSpan(), destination);
     }
+
+    /// <summary>Element-wise conversion to <typeparamref name="TTo"/>, saturating on overflow.</summary>
 
     public static void ConvertSaturating<TFrom, TTo>(this IReadOnlySeries<TFrom> source, Span<TTo> destination)
         where TFrom : struct, INumberBase<TFrom>
@@ -23,6 +26,8 @@ public static partial class SeriesPrimitives
         VectorPrimitives.ConvertSaturating<TFrom, TTo>(source.Vector.AsSpan(), destination);
     }
 
+    /// <summary>Element-wise conversion to <typeparamref name="TTo"/>, truncating on overflow.</summary>
+
     public static void ConvertTruncating<TFrom, TTo>(this IReadOnlySeries<TFrom> source, Span<TTo> destination)
         where TFrom : struct, INumberBase<TFrom>
         where TTo : struct, INumberBase<TTo>
@@ -30,6 +35,8 @@ public static partial class SeriesPrimitives
         ArgumentNullException.ThrowIfNull(source);
         VectorPrimitives.ConvertTruncating<TFrom, TTo>(source.Vector.AsSpan(), destination);
     }
+
+    /// <summary>Element-wise conversion to <typeparamref name="TTo"/> with rounding.</summary>
 
     public static void ConvertToInteger<TFrom, TTo>(this IReadOnlySeries<TFrom> source, Span<TTo> destination)
         where TFrom : struct, IFloatingPoint<TFrom>
@@ -39,6 +46,8 @@ public static partial class SeriesPrimitives
         VectorPrimitives.ConvertToInteger<TFrom, TTo>(source.Vector.AsSpan(), destination);
     }
 
+    /// <summary>Element-wise conversion to <typeparamref name="TTo"/> using native rounding.</summary>
+
     public static void ConvertToIntegerNative<TFrom, TTo>(this IReadOnlySeries<TFrom> source, Span<TTo> destination)
         where TFrom : struct, IFloatingPoint<TFrom>
         where TTo : struct, IBinaryInteger<TTo>
@@ -47,11 +56,15 @@ public static partial class SeriesPrimitives
         VectorPrimitives.ConvertToIntegerNative<TFrom, TTo>(source.Vector.AsSpan(), destination);
     }
 
+    /// <summary>Element-wise conversion to <see cref="Half"/>.</summary>
+
     public static void ConvertToHalf(this IReadOnlySeries<float> source, Span<Half> destination)
     {
         ArgumentNullException.ThrowIfNull(source);
         VectorPrimitives.ConvertToHalf(source.Vector.AsSpan(), destination);
     }
+
+    /// <summary>Element-wise conversion to <see cref="float"/>.</summary>
 
     public static void ConvertToSingle(this IReadOnlySeries<Half> source, Span<float> destination)
     {

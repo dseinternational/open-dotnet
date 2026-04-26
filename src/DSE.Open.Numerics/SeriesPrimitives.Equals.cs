@@ -10,12 +10,15 @@ namespace DSE.Open.Numerics;
 // VectorPrimitives.Equals (see VectorPrimitives.Equals for details).
 public static partial class SeriesPrimitives
 {
+    /// <summary>Reserved — call the typed <c>Equals</c> overloads instead.</summary>
     [Obsolete("Not supported", error: true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static new bool Equals(object? a, object? b)
     {
         throw new NotSupportedException();
     }
+
+    /// <summary>Element-wise <c>x == y</c> comparison.</summary>
 
     public static Series<bool> Equals<T>(IReadOnlySeries<T> x, IReadOnlySeries<T> y)
         where T : IEquatable<T>, IEqualityOperators<T, T, bool>
@@ -25,6 +28,8 @@ public static partial class SeriesPrimitives
         return WrapTypeChange<T, bool>(VectorPrimitives.Equals(x.Vector, y.Vector), x);
     }
 
+    /// <summary>Element-wise <c>x == y</c> comparison.</summary>
+
     public static Series<bool> Equals<T>(IReadOnlySeries<T> x, T y)
         where T : IEquatable<T>, IEqualityOperators<T, T, bool>
     {
@@ -32,6 +37,8 @@ public static partial class SeriesPrimitives
         var span = x.Vector.AsSpan();
         return WrapTypeChange<T, bool>(VectorPrimitives.Equals(in span, in y), x);
     }
+
+    /// <summary>Element-wise <c>x == y</c> comparison.</summary>
 
     public static void Equals<T>(
         IReadOnlySeries<T> x,
@@ -47,6 +54,8 @@ public static partial class SeriesPrimitives
         _ = VectorPrimitives.Equals(in xSpan, in ySpan, destination);
     }
 
+    /// <summary>Element-wise <c>x == y</c> comparison.</summary>
+
     public static void Equals<T>(
         IReadOnlySeries<T> x,
         IReadOnlySeries<T> y,
@@ -57,6 +66,8 @@ public static partial class SeriesPrimitives
         Equals(x, y, destination.AsSpan());
     }
 
+    /// <summary>Element-wise <c>x == y</c> comparison.</summary>
+
     public static void Equals<T>(IReadOnlySeries<T> x, T y, Span<bool> destination)
         where T : IEquatable<T>, IEqualityOperators<T, T, bool>
     {
@@ -66,12 +77,16 @@ public static partial class SeriesPrimitives
         _ = VectorPrimitives.Equals(in xSpan, in y, destination);
     }
 
+    /// <summary>Element-wise <c>x == y</c> comparison.</summary>
+
     public static void Equals<T>(IReadOnlySeries<T> x, T y, ISeries<bool> destination)
         where T : IEquatable<T>, IEqualityOperators<T, T, bool>
     {
         ArgumentNullException.ThrowIfNull(destination);
         Equals(x, y, destination.AsSpan());
     }
+
+    /// <summary>Returns <see langword="true"/> when every element equals the corresponding element of the other sequence (or scalar).</summary>
 
     public static bool EqualsAll<T>(this IReadOnlySeries<T> x, IReadOnlySeries<T> y)
         where T : IEquatable<T>, IEqualityOperators<T, T, bool>
@@ -84,6 +99,8 @@ public static partial class SeriesPrimitives
         return VectorPrimitives.EqualsAll(in xSpan, in ySpan);
     }
 
+    /// <summary>Returns <see langword="true"/> when every element equals the corresponding element of the other sequence (or scalar).</summary>
+
     public static bool EqualsAll<T>(this IReadOnlySeries<T> x, T y)
         where T : IEquatable<T>, IEqualityOperators<T, T, bool>
     {
@@ -91,6 +108,8 @@ public static partial class SeriesPrimitives
         var xSpan = x.Vector.AsSpan();
         return VectorPrimitives.EqualsAll(in xSpan, in y);
     }
+
+    /// <summary>Returns <see langword="true"/> when any element equals the corresponding element of the other sequence (or scalar).</summary>
 
     public static bool EqualsAny<T>(this IReadOnlySeries<T> x, IReadOnlySeries<T> y)
         where T : IEquatable<T>, IEqualityOperators<T, T, bool>
@@ -102,6 +121,8 @@ public static partial class SeriesPrimitives
         var ySpan = y.Vector.AsSpan();
         return VectorPrimitives.EqualsAny(in xSpan, in ySpan);
     }
+
+    /// <summary>Returns <see langword="true"/> when any element equals the corresponding element of the other sequence (or scalar).</summary>
 
     public static bool EqualsAny<T>(this IReadOnlySeries<T> x, T y)
         where T : IEquatable<T>, IEqualityOperators<T, T, bool>
