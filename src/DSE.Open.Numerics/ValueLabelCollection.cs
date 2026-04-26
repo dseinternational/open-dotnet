@@ -8,9 +8,15 @@ using DSE.Open.Numerics.Serialization;
 
 namespace DSE.Open.Numerics;
 
+/// <summary>
+/// Type-erased base for <see cref="ValueLabelCollection{T}"/>. Most callers
+/// should work with the generic form; the non-generic base exists primarily
+/// for serialization.
+/// </summary>
 [JsonConverter(typeof(ValueLabelCollectionJsonConverter))]
 public abstract class ValueLabelCollection : IReadOnlyValueLabelCollection
 {
+    /// <summary>Initializes the base class.</summary>
     protected internal ValueLabelCollection()
     {
     }
@@ -38,10 +44,12 @@ public sealed class ValueLabelCollection<T> : ValueLabelCollection, IValueLabelC
     private Dictionary<string, int>? _labelIndexLookup;
     private readonly Collection<ValueLabel<T>> _valueLabels;
 
+    /// <summary>Creates an empty collection.</summary>
     public ValueLabelCollection() : this([])
     {
     }
 
+    /// <summary>Creates a collection seeded from <paramref name="dataLabels"/>.</summary>
     public ValueLabelCollection(IEnumerable<ValueLabel<T>> dataLabels) : this([.. dataLabels])
     {
     }
@@ -52,6 +60,13 @@ public sealed class ValueLabelCollection<T> : ValueLabelCollection, IValueLabelC
         _valueLabels = valueLabels;
     }
 
+    /// <summary>
+    /// Gets or sets the label for <paramref name="data"/>. Get throws when no label
+    /// is registered for the value; set adds a new label (cannot rename an existing
+    /// label — use <see cref="Remove(ValueLabel{T})"/> first to replace).
+    /// </summary>
+    /// <exception cref="KeyNotFoundException">No label is registered for <paramref name="data"/> on get.</exception>
+    /// <exception cref="ArgumentException">A label is already registered for the value on set.</exception>
     public string this[T data]
     {
         get
@@ -66,10 +81,13 @@ public sealed class ValueLabelCollection<T> : ValueLabelCollection, IValueLabelC
         set => Add(new ValueLabel<T>(data, value));
     }
 
+    /// <summary>Gets the number of value-label pairs in the collection.</summary>
     public int Count => _valueLabels.Count;
 
     bool ICollection<ValueLabel<T>>.IsReadOnly => false;
 
+    /// <summary>Adds <paramref name="label"/> to the collection.</summary>
+    /// <exception cref="ArgumentException">A label is already registered for <c>label.Value</c>.</exception>
     public void Add(ValueLabel<T> label)
     {
         if (ValueIndexLookup.ContainsKey(label.Value))
@@ -83,17 +101,22 @@ public sealed class ValueLabelCollection<T> : ValueLabelCollection, IValueLabelC
         _valueLabels.Add(label);
     }
 
+    /// <summary>Adds <paramref name="data"/> with the given <paramref name="label"/>.</summary>
+    /// <exception cref="ArgumentNullException"><paramref name="label"/> is <see langword="null"/>.</exception>
+    /// <exception cref="ArgumentException">A label is already registered for <paramref name="data"/>.</exception>
     public void Add(T data, string label)
     {
         ArgumentNullException.ThrowIfNull(label);
         Add((data, label));
     }
 
+    /// <summary>Returns a read-only snapshot of this collection.</summary>
     public ReadOnlyValueLabelCollection<T> AsReadOnly()
     {
         return new ReadOnlyValueLabelCollection<T>(_valueLabels.AsReadOnly());
     }
 
+    /// <summary>Removes all value-label pairs.</summary>
     public void Clear()
     {
         _valueLabels.Clear();
@@ -101,6 +124,7 @@ public sealed class ValueLabelCollection<T> : ValueLabelCollection, IValueLabelC
         _labelIndexLookup?.Clear();
     }
 
+    /// <summary>Returns <see langword="true"/> when <paramref name="item"/> matches a registered value-label pair.</summary>
     public bool Contains(ValueLabel<T> item)
     {
         if (_valueLabels.Count == 0)
@@ -116,6 +140,8 @@ public sealed class ValueLabelCollection<T> : ValueLabelCollection, IValueLabelC
         return _valueLabels[index].Equals(item);
     }
 
+    /// <summary>Returns <see langword="true"/> when <paramref name="label"/> is registered for any value.</summary>
+    /// <exception cref="ArgumentNullException"><paramref name="label"/> is <see langword="null"/>.</exception>
     public bool ContainsLabel(string label)
     {
         ArgumentNullException.ThrowIfNull(label);
@@ -128,6 +154,7 @@ public sealed class ValueLabelCollection<T> : ValueLabelCollection, IValueLabelC
         return LabelIndexLookup.ContainsKey(label);
     }
 
+    /// <summary>Returns <see langword="true"/> when <paramref name="value"/> has any registered label.</summary>
     public bool ContainsValue(T value)
     {
         if (_valueLabels.Count == 0)
@@ -138,6 +165,7 @@ public sealed class ValueLabelCollection<T> : ValueLabelCollection, IValueLabelC
         return ValueIndexLookup.ContainsKey(value);
     }
 
+    /// <summary>Returns an enumerator over the value-label pairs.</summary>
     public IEnumerator<ValueLabel<T>> GetEnumerator()
     {
         for (var i = 0; i < _valueLabels.Count; i++)
@@ -168,6 +196,7 @@ public sealed class ValueLabelCollection<T> : ValueLabelCollection, IValueLabelC
         }
     }
 
+    /// <summary>Removes <paramref name="item"/>; returns <see langword="true"/> when it was found and removed.</summary>
     public bool Remove(ValueLabel<T> item)
     {
         if (_valueLabels.Count == 0)
@@ -199,6 +228,12 @@ public sealed class ValueLabelCollection<T> : ValueLabelCollection, IValueLabelC
         return true;
     }
 
+    /// <summary>
+    /// Tries to find the label registered for <paramref name="value"/>. Returns
+    /// <see langword="true"/> on hit (with <paramref name="label"/> set to the
+    /// label) and <see langword="false"/> on miss (with <paramref name="label"/>
+    /// set to <see cref="string.Empty"/>).
+    /// </summary>
     public bool TryGetLabel(T value, out string label)
     {
         if (_valueLabels.Count == 0)
@@ -217,6 +252,12 @@ public sealed class ValueLabelCollection<T> : ValueLabelCollection, IValueLabelC
         return false;
     }
 
+    /// <summary>
+    /// Tries to find the value registered with <paramref name="label"/>. Returns
+    /// <see langword="true"/> on hit (with <paramref name="value"/> set to the
+    /// value) and <see langword="false"/> on miss.
+    /// </summary>
+    /// <exception cref="ArgumentNullException"><paramref name="label"/> is <see langword="null"/>.</exception>
     public bool TryGetValue(string label, out T value)
     {
         ArgumentNullException.ThrowIfNull(label);

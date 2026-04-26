@@ -8,6 +8,7 @@ namespace DSE.Open.Numerics;
 
 public static partial class Sequence
 {
+    /// <summary>Reserved — sample standard deviation is not yet implemented.</summary>
     [Obsolete("Not yet implemented", error: true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static T StandardDeviation<T>(IEnumerable<T> sequence)
@@ -16,6 +17,7 @@ public static partial class Sequence
         throw new NotImplementedException();
     }
 
+    /// <summary>Reserved — sample standard deviation is not yet implemented.</summary>
     [Obsolete("Not yet implemented", error: true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static TResult StandardDeviation<T, TResult>(IEnumerable<T> sequence)

@@ -10,8 +10,15 @@ namespace DSE.Open.Numerics;
 #pragma warning disable DSEOPEN001 // ArrayBuilder ref struct
 
 
+/// <summary>
+/// Extensions for materialising sequences of <see cref="DataPoint{T}"/> values
+/// into <see cref="Memory{T}"/>, <see cref="TensorSpan{T}"/>, or <see cref="Tensor{T}"/>
+/// for downstream processing.
+/// </summary>
 public static class DataPointCollectionExtensions
 {
+    /// <summary>Materialises <paramref name="source"/> into a <see cref="Memory{T}"/> of <see cref="DataPoint{T}"/>.</summary>
+    /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
     public static Memory<DataPoint<T>> ToMemory<T>(
         this IEnumerable<DataPoint<T>> source)
         where T : struct, INumber<T>
@@ -28,6 +35,11 @@ public static class DataPointCollectionExtensions
         return builder.ToMemory();
     }
 
+    /// <summary>
+    /// Materialises <paramref name="source"/> into an <c>[N, 2]</c> tensor span:
+    /// the first column holds X values, the second holds Y values.
+    /// </summary>
+    /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
     public static TensorSpan<T> ToTensorSpan<T>(
         this IEnumerable<DataPoint<T>> source)
         where T : struct, INumber<T>
@@ -56,6 +68,11 @@ public static class DataPointCollectionExtensions
         return new TensorSpan<T>(builder.ToMemory().Span, [length, 2], []);
     }
 
+    /// <summary>
+    /// Materialises <paramref name="source"/> into an <c>[N, 2]</c> <see cref="Tensor{T}"/>:
+    /// the first column holds X values, the second holds Y values.
+    /// </summary>
+    /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
     public static Tensor<T> ToTensor<T>(
         this IEnumerable<DataPoint<T>> source)
         where T : struct, INumber<T>

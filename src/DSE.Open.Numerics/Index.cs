@@ -8,6 +8,7 @@ namespace DSE.Open.Numerics;
 /// </summary>
 public abstract class Index
 {
+    /// <summary>Initializes the placeholder base class.</summary>
     protected internal Index()
     {
     }

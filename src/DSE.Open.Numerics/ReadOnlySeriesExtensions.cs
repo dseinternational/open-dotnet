@@ -3,6 +3,7 @@
 
 namespace DSE.Open.Numerics;
 
+/// <summary>Extension methods over <see cref="ReadOnlySeries"/>.</summary>
 public static class ReadOnlySeriesExtensions
 {
     /// <summary>

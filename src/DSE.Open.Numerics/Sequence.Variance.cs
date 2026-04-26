@@ -9,6 +9,11 @@ namespace DSE.Open.Numerics;
 
 public static partial class Sequence
 {
+    /// <summary>
+    /// Returns the sample variance of <paramref name="sequence"/>. When
+    /// <paramref name="mean"/> is supplied the centring pass is skipped.
+    /// Currently implemented only for sequences that expose a span.
+    /// </summary>
     public static T Variance<T>(IEnumerable<T> sequence, T? mean = default)
         where T : struct, INumberBase<T>
     {
@@ -20,6 +25,7 @@ public static partial class Sequence
         throw new NotImplementedException();
     }
 
+    /// <summary>Reserved — accumulating sample variance is not yet implemented.</summary>
     [Obsolete("Not yet implemented", error: true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static TResult Variance<T, TResult>(IEnumerable<T> sequence, T? mean = default)

@@ -10,6 +10,10 @@ namespace DSE.Open.Numerics;
 
 public static partial class NumericMatrixPrimitives
 {
+    /// <summary>
+    /// Element-wise (Hadamard) multiply <paramref name="x"/> * <paramref name="y"/>,
+    /// writing into <paramref name="destination"/>. (This is not matrix multiplication.)
+    /// </summary>
     public static void Multiply<T>(ReadOnlySpan2D<T> x, ReadOnlySpan2D<T> y, Span2D<T> destination)
         where T : struct, INumber<T>
     {

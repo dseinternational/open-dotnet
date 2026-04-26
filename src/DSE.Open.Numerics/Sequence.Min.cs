@@ -8,6 +8,9 @@ namespace DSE.Open.Numerics;
 
 public static partial class Sequence
 {
+    /// <summary>Returns the minimum value in <paramref name="values"/> using the type's natural ordering.</summary>
+    /// <exception cref="ArgumentNullException"><paramref name="values"/> is <see langword="null"/>.</exception>
+    /// <exception cref="InvalidOperationException"><paramref name="values"/> is empty.</exception>
     public static T Min<T>(IEnumerable<T> values)
         where T : struct, INumber<T>
     {
@@ -43,6 +46,12 @@ public static partial class Sequence
         return result;
     }
 
+    /// <summary>
+    /// Returns the minimum value in <paramref name="values"/>, propagating NaN
+    /// to the result when any element is NaN. Returns <see cref="IFloatingPointIeee754{TSelf}.NaN"/>
+    /// when the sequence is empty.
+    /// </summary>
+    /// <exception cref="ArgumentNullException"><paramref name="values"/> is <see langword="null"/>.</exception>
     public static T MinFloatingPoint<T>(this IEnumerable<T> values)
         where T : struct, IFloatingPointIeee754<T>
     {

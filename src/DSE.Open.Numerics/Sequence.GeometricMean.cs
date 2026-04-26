@@ -6,8 +6,13 @@ using System.Numerics;
 
 namespace DSE.Open.Numerics;
 
+/// <summary>
+/// LINQ-friendly numeric reductions over <see cref="IEnumerable{T}"/> sequences.
+/// The corresponding span-based primitives live on <see cref="VectorPrimitives"/>.
+/// </summary>
 public static partial class Sequence
 {
+    /// <summary>Reserved — geometric mean is not yet implemented.</summary>
     [Obsolete("Not yet implemented", error: true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static T GeometricMean<T>(IEnumerable<T> sequence)
@@ -16,6 +21,7 @@ public static partial class Sequence
         throw new NotImplementedException();
     }
 
+    /// <summary>Reserved — geometric mean is not yet implemented.</summary>
     [Obsolete("Not yet implemented", error: true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static TResult GeometricMean<T, TResult>(IEnumerable<T> sequence)

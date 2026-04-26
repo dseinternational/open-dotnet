@@ -18,46 +18,62 @@ public class NumericsArgumentException : ArgumentException
 {
     private const string DefaultMessage = "Numerics argument error.";
 
+    /// <summary>Creates a new exception with the default message.</summary>
     public NumericsArgumentException()
         : base(DefaultMessage)
     {
     }
 
+    /// <summary>Creates a new exception with the given <paramref name="message"/>.</summary>
     public NumericsArgumentException(string? message)
         : this(message, null, null)
     {
     }
 
+    /// <summary>Creates a new exception with the given <paramref name="message"/> and <paramref name="innerException"/>.</summary>
     public NumericsArgumentException(string? message, Exception? innerException)
         : this(message, null, innerException)
     {
     }
 
+    /// <summary>Creates a new exception with the given <paramref name="message"/> and <paramref name="paramName"/>.</summary>
     public NumericsArgumentException(string? message, string? paramName)
         : this(message, paramName, null)
     {
     }
 
+    /// <summary>Creates a new exception with full context.</summary>
     public NumericsArgumentException(string? message, string? paramName, Exception? innerException)
         : base(message ?? DefaultMessage, paramName, innerException)
     {
     }
 
+    /// <summary>Throws a new <see cref="NumericsArgumentException"/> with the default message.</summary>
+    [DoesNotReturn]
     public static void Throw()
     {
         throw new NumericsArgumentException(DefaultMessage);
     }
 
+    /// <summary>Throws a new <see cref="NumericsArgumentException"/> with the given <paramref name="message"/>.</summary>
+    [DoesNotReturn]
     public static void Throw(string message)
     {
         throw new NumericsArgumentException(message);
     }
 
+    /// <summary>Throws a new <see cref="NumericsArgumentException"/> with the given <paramref name="message"/> and <paramref name="innerException"/>.</summary>
+    [DoesNotReturn]
     public static void Throw(string message, Exception innerException)
     {
         throw new NumericsArgumentException(message, innerException);
     }
 
+    /// <summary>
+    /// Throws <see cref="NumericsArgumentException"/> if <paramref name="condition"/>
+    /// is <see langword="false"/>; otherwise no-op. The default message is the source
+    /// expression of <paramref name="condition"/>.
+    /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void ThrowIfNot(
         [DoesNotReturnIf(false)] bool condition,
@@ -69,6 +85,8 @@ public class NumericsArgumentException : ArgumentException
         }
     }
 
+    /// <summary>Throws when the series in <paramref name="collection"/> are not all of equal <see cref="IReadOnlySeries.Length"/>.</summary>
+    /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
     public static void ThrowIfNotEqualLength(IReadOnlyCollection<IReadOnlySeries> collection)
     {
         ArgumentNullException.ThrowIfNull(collection);
@@ -89,6 +107,8 @@ public class NumericsArgumentException : ArgumentException
         }
     }
 
+    /// <summary>Throws when the collections in <paramref name="collection"/> are not all of equal count.</summary>
+    /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
     public static void ThrowIfNotEqualLength<T>(IReadOnlyCollection<IReadOnlyCollection<T>> collection)
     {
         ArgumentNullException.ThrowIfNull(collection);
@@ -109,6 +129,8 @@ public class NumericsArgumentException : ArgumentException
         }
     }
 
+    /// <summary>Throws when any element of <paramref name="values"/> is not a member of <paramref name="set"/>.</summary>
+    /// <exception cref="ArgumentNullException"><paramref name="values"/> or <paramref name="set"/> is <see langword="null"/>.</exception>
     public static void ThrowIfNotInSet<T>(IReadOnlyCollection<T> values, IReadOnlySet<T> set)
     {
         ArgumentNullException.ThrowIfNull(values);
@@ -128,6 +150,8 @@ public class NumericsArgumentException : ArgumentException
         }
     }
 
+    /// <summary>Throws when <paramref name="value"/> is not a member of <paramref name="set"/>.</summary>
+    /// <exception cref="ArgumentNullException"><paramref name="set"/> is <see langword="null"/>.</exception>
     public static void ThrowIfNotInSet<T>(T value, IReadOnlySet<T> set)
     {
         ArgumentNullException.ThrowIfNull(set);
@@ -138,6 +162,7 @@ public class NumericsArgumentException : ArgumentException
         }
     }
 
+    /// <summary>Throws when <paramref name="x"/> and <paramref name="y"/> are not of equal count.</summary>
     [Obsolete("Use ThrowIfNot(x.Count == y.Count)")]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void ThrowIfNotEqualLength<T>(
@@ -153,6 +178,7 @@ public class NumericsArgumentException : ArgumentException
         }
     }
 
+    /// <summary>Throws when <paramref name="x"/> and <paramref name="y"/> are not of equal count.</summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void ThrowIfNotEqualLength<T>(
         [NotNull] IReadOnlyCollection<T> x,
@@ -167,6 +193,7 @@ public class NumericsArgumentException : ArgumentException
         }
     }
 
+    /// <summary>Throws when <paramref name="x"/> and <paramref name="y"/> are not of equal length.</summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void ThrowIfNotEqualLength<T>(in ReadOnlySpan<T> x, in ReadOnlySpan<T> y)
     {
@@ -176,6 +203,7 @@ public class NumericsArgumentException : ArgumentException
         }
     }
 
+    /// <summary>Throws when <paramref name="x"/>'s count and <paramref name="y"/>'s length differ.</summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void ThrowIfNotEqualLength<T>(
         [NotNull] ICollection<T> x,
@@ -189,6 +217,7 @@ public class NumericsArgumentException : ArgumentException
         }
     }
 
+    /// <summary>Throws when <paramref name="x"/>'s count and <paramref name="y"/>'s length differ.</summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void ThrowIfNotEqualLength<T>(
         [NotNull] IReadOnlyCollection<T> x,
@@ -202,6 +231,7 @@ public class NumericsArgumentException : ArgumentException
         }
     }
 
+    /// <summary>Throws when <paramref name="x"/>, <paramref name="y"/> and <paramref name="z"/> are not all of equal count.</summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void ThrowIfNotEqualLength<T>(
         [NotNull] ICollection<T> x,
@@ -218,6 +248,7 @@ public class NumericsArgumentException : ArgumentException
         }
     }
 
+    /// <summary>Throws when <paramref name="x"/>, <paramref name="y"/> and <paramref name="z"/> are not all of equal count.</summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void ThrowIfNotEqualLength<T>(
         [NotNull] IReadOnlyCollection<T> x,
@@ -234,6 +265,7 @@ public class NumericsArgumentException : ArgumentException
         }
     }
 
+    /// <summary>Throws when <paramref name="x"/>, <paramref name="y"/> and <paramref name="z"/> are not all of equal length.</summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void ThrowIfNotEqualLength<T>(
         in ReadOnlySpan<T> x,
@@ -246,6 +278,7 @@ public class NumericsArgumentException : ArgumentException
         }
     }
 
+    /// <summary>Throws when <paramref name="x"/>, <paramref name="y"/> and <paramref name="z"/> are not all of equal count/length.</summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void ThrowIfNotEqualLength<T>(
         [NotNull] ICollection<T> x,
@@ -261,6 +294,7 @@ public class NumericsArgumentException : ArgumentException
         }
     }
 
+    /// <summary>Throws when <paramref name="x"/>, <paramref name="y"/> and <paramref name="z"/> are not all of equal count/length.</summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void ThrowIfNotEqualLength<T>(
         [NotNull] IReadOnlyCollection<T> x,

@@ -6,14 +6,17 @@ using DSE.Open.Collections.Generic;
 
 namespace DSE.Open.Numerics;
 
+/// <summary>Static factories for <see cref="CategorySet{T}"/>.</summary>
 public static class CategorySet
 {
+    /// <summary>Creates a category set wrapping <paramref name="set"/>.</summary>
     public static CategorySet<T> Create<T>(ISet<T> set)
         where T : IEquatable<T>
     {
         return new CategorySet<T>(set);
     }
 
+    /// <summary>Collection-initializer-friendly factory; copies <paramref name="span"/> into a fresh array.</summary>
     public static CategorySet<T> Create<T>(ReadOnlySpan<T> span)
         where T : IEquatable<T>
     {
@@ -38,18 +41,22 @@ public static class CategorySet
 public sealed class CategorySet<T> : Set<T>, ICategorySet<T>
     where T : IEquatable<T>
 {
+    /// <summary>Creates an empty category set.</summary>
     public CategorySet()
     {
     }
 
+    /// <summary>Creates a category set seeded with the elements of <paramref name="set"/> (deduplicated).</summary>
     public CategorySet(IEnumerable<T> set) : base(set)
     {
     }
 
+    /// <summary>Creates a category set wrapping the elements of <paramref name="set"/>.</summary>
     public CategorySet(ISet<T> set) : base(set)
     {
     }
 
+    /// <summary>Returns a read-only snapshot of this category set.</summary>
     public new ReadOnlyCategorySet<T> AsReadOnly()
     {
         return new ReadOnlyCategorySet<T>(this);

@@ -20,6 +20,11 @@ public static partial class Sequence
         return Mean<T, T>(sequence);
     }
 
+    /// <summary>
+    /// Returns the sample arithmetic mean of <paramref name="sequence"/>,
+    /// accumulated in a <typeparamref name="TResult"/> value. Throws
+    /// <see cref="EmptySequenceException"/> when the sequence is empty.
+    /// </summary>
     public static TResult Mean<T, TResult>(IEnumerable<T> sequence)
         where T : struct, INumberBase<T>
         where TResult : struct, INumberBase<TResult>

@@ -6,10 +6,18 @@ using System.Numerics.Tensors;
 
 namespace DSE.Open.Numerics;
 
+/// <summary>
+/// Time-series resampling utilities. <see cref="Resample{T}(ReadOnlySpan{DateTimeOffset}, ReadOnlySpan{T}, ResamplingFrequency, ResamplingMethod)"/>
+/// and friends bin a sequence of timestamped values to a coarser
+/// <see cref="ResamplingFrequency"/> using a chosen aggregation
+/// <see cref="ResamplingMethod"/>.
+/// </summary>
 public static class Resampler
 {
+    /// <summary>The series name assigned to the period column of the resampled data frame ("period").</summary>
     public const string PeriodSeriesName = "period";
 
+    /// <summary>The series name assigned to the value column of the resampled data frame ("value").</summary>
     public const string ValueSeriesName = "value";
 
     /// <summary>
