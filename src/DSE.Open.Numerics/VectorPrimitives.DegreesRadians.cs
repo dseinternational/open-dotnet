@@ -8,12 +8,15 @@ namespace DSE.Open.Numerics;
 
 public static partial class VectorPrimitives
 {
+    /// <summary>Element-wise conversion from degrees to radians.</summary>
     public static void DegreesToRadians<T>(ReadOnlySpan<T> x, in Span<T> destination)
         where T : struct, ITrigonometricFunctions<T>
     {
         NumericsArgumentException.ThrowIfNot(x.Length == destination.Length);
         TensorPrimitives.DegreesToRadians(x, destination);
     }
+
+    /// <summary>Element-wise conversion from degrees to radians.</summary>
 
     public static Vector<T> DegreesToRadians<T>(this IReadOnlyVector<T> x)
         where T : struct, ITrigonometricFunctions<T>
@@ -24,12 +27,16 @@ public static partial class VectorPrimitives
         return destination;
     }
 
+    /// <summary>Element-wise conversion from radians to degrees.</summary>
+
     public static void RadiansToDegrees<T>(ReadOnlySpan<T> x, in Span<T> destination)
         where T : struct, ITrigonometricFunctions<T>
     {
         NumericsArgumentException.ThrowIfNot(x.Length == destination.Length);
         TensorPrimitives.RadiansToDegrees(x, destination);
     }
+
+    /// <summary>Element-wise conversion from radians to degrees.</summary>
 
     public static Vector<T> RadiansToDegrees<T>(this IReadOnlyVector<T> x)
         where T : struct, ITrigonometricFunctions<T>

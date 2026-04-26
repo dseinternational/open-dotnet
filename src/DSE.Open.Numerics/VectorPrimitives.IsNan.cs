@@ -8,11 +8,14 @@ namespace DSE.Open.Numerics;
 
 public static partial class VectorPrimitives
 {
+    /// <summary>Element-wise <c>IsNaN</c> predicate.</summary>
     public static void IsNaN<T>(in ReadOnlySpan<T> x, Span<bool> destination)
         where T : INumberBase<T>
     {
         TensorPrimitives.IsNaN(x, destination);
     }
+
+    /// <summary>Element-wise <c>IsNaN</c> predicate.</summary>
 
     public static void IsNaN<T>(this IReadOnlyVector<T> x, Span<bool> destination)
         where T : INumberBase<T>
@@ -21,6 +24,8 @@ public static partial class VectorPrimitives
         IsNaN(x.AsSpan(), destination);
     }
 
+    /// <summary>Element-wise <c>IsNaN</c> predicate.</summary>
+
     public static void IsNaN<T>(this IReadOnlyVector<T> x, IVector<bool> destination)
         where T : INumberBase<T>
     {
@@ -28,11 +33,15 @@ public static partial class VectorPrimitives
         IsNaN(x, destination.AsSpan());
     }
 
+    /// <summary>Returns <see langword="true"/> when every element is NaN.</summary>
+
     public static bool IsNaNAll<T>(in ReadOnlySpan<T> x)
         where T : INumberBase<T>
     {
         return TensorPrimitives.IsNaNAll(x);
     }
+
+    /// <summary>Returns <see langword="true"/> when every element is NaN.</summary>
 
     public static bool IsNaNAll<T>(this IReadOnlyVector<T> x)
         where T : INumberBase<T>
@@ -41,11 +50,15 @@ public static partial class VectorPrimitives
         return IsNaNAll(x.AsSpan());
     }
 
+    /// <summary>Returns <see langword="true"/> when any element is NaN.</summary>
+
     public static bool IsNaNAny<T>(in ReadOnlySpan<T> x)
         where T : INumberBase<T>
     {
         return TensorPrimitives.IsNaNAny(x);
     }
+
+    /// <summary>Returns <see langword="true"/> when any element is NaN.</summary>
 
     public static bool IsNaNAny<T>(this IReadOnlyVector<T> x)
         where T : INumberBase<T>

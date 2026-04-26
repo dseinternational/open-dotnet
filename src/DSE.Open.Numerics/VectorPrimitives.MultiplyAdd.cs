@@ -8,6 +8,7 @@ namespace DSE.Open.Numerics;
 
 public static partial class VectorPrimitives
 {
+    /// <summary>Element-wise <c>(x * y) + addend</c>.</summary>
     public static void MultiplyAdd<T>(ReadOnlySpan<T> x, ReadOnlySpan<T> y, ReadOnlySpan<T> addend, in Span<T> destination)
         where T : struct, INumber<T>
     {
@@ -16,6 +17,8 @@ public static partial class VectorPrimitives
         TensorPrimitives.MultiplyAdd(x, y, addend, destination);
     }
 
+    /// <summary>Element-wise <c>(x * y) + addend</c>.</summary>
+
     public static void MultiplyAdd<T>(ReadOnlySpan<T> x, ReadOnlySpan<T> y, T addend, in Span<T> destination)
         where T : struct, INumber<T>
     {
@@ -23,12 +26,16 @@ public static partial class VectorPrimitives
         TensorPrimitives.MultiplyAdd(x, y, addend, destination);
     }
 
+    /// <summary>Element-wise <c>(x * y) + addend</c>.</summary>
+
     public static void MultiplyAdd<T>(ReadOnlySpan<T> x, T y, ReadOnlySpan<T> addend, in Span<T> destination)
         where T : struct, INumber<T>
     {
         NumericsArgumentException.ThrowIfNot(x.Length == addend.Length && addend.Length == destination.Length);
         TensorPrimitives.MultiplyAdd(x, y, addend, destination);
     }
+
+    /// <summary>Element-wise fused multiply-add: <c>(x * y) + addend</c>.</summary>
 
     public static void FusedMultiplyAdd<T>(ReadOnlySpan<T> x, ReadOnlySpan<T> y, ReadOnlySpan<T> addend, in Span<T> destination)
         where T : struct, IFloatingPointIeee754<T>
@@ -38,6 +45,8 @@ public static partial class VectorPrimitives
         TensorPrimitives.FusedMultiplyAdd(x, y, addend, destination);
     }
 
+    /// <summary>Element-wise fused multiply-add: <c>(x * y) + addend</c>.</summary>
+
     public static void FusedMultiplyAdd<T>(ReadOnlySpan<T> x, ReadOnlySpan<T> y, T addend, in Span<T> destination)
         where T : struct, IFloatingPointIeee754<T>
     {
@@ -45,12 +54,16 @@ public static partial class VectorPrimitives
         TensorPrimitives.FusedMultiplyAdd(x, y, addend, destination);
     }
 
+    /// <summary>Element-wise fused multiply-add: <c>(x * y) + addend</c>.</summary>
+
     public static void FusedMultiplyAdd<T>(ReadOnlySpan<T> x, T y, ReadOnlySpan<T> addend, in Span<T> destination)
         where T : struct, IFloatingPointIeee754<T>
     {
         NumericsArgumentException.ThrowIfNot(x.Length == addend.Length && addend.Length == destination.Length);
         TensorPrimitives.FusedMultiplyAdd(x, y, addend, destination);
     }
+
+    /// <summary>Element-wise linear interpolation.</summary>
 
     public static void Lerp<T>(ReadOnlySpan<T> x, ReadOnlySpan<T> y, ReadOnlySpan<T> amount, in Span<T> destination)
         where T : struct, IFloatingPointIeee754<T>
@@ -60,6 +73,8 @@ public static partial class VectorPrimitives
         TensorPrimitives.Lerp(x, y, amount, destination);
     }
 
+    /// <summary>Element-wise linear interpolation.</summary>
+
     public static void Lerp<T>(ReadOnlySpan<T> x, ReadOnlySpan<T> y, T amount, in Span<T> destination)
         where T : struct, IFloatingPointIeee754<T>
     {
@@ -67,12 +82,16 @@ public static partial class VectorPrimitives
         TensorPrimitives.Lerp(x, y, amount, destination);
     }
 
+    /// <summary>Element-wise linear interpolation.</summary>
+
     public static void Lerp<T>(ReadOnlySpan<T> x, T y, ReadOnlySpan<T> amount, in Span<T> destination)
         where T : struct, IFloatingPointIeee754<T>
     {
         NumericsArgumentException.ThrowIfNot(x.Length == amount.Length && amount.Length == destination.Length);
         TensorPrimitives.Lerp(x, y, amount, destination);
     }
+
+    /// <summary>Element-wise <c>(x + y) * z</c>.</summary>
 
     public static void AddMultiply<T>(ReadOnlySpan<T> x, ReadOnlySpan<T> y, ReadOnlySpan<T> multiplier, in Span<T> destination)
         where T : struct, INumber<T>
@@ -82,12 +101,16 @@ public static partial class VectorPrimitives
         TensorPrimitives.AddMultiply(x, y, multiplier, destination);
     }
 
+    /// <summary>Element-wise <c>(x + y) * z</c>.</summary>
+
     public static void AddMultiply<T>(ReadOnlySpan<T> x, ReadOnlySpan<T> y, T multiplier, in Span<T> destination)
         where T : struct, INumber<T>
     {
         NumericsArgumentException.ThrowIfNot(x.Length == y.Length && y.Length == destination.Length);
         TensorPrimitives.AddMultiply(x, y, multiplier, destination);
     }
+
+    /// <summary>Element-wise <c>(x + y) * z</c>.</summary>
 
     public static void AddMultiply<T>(ReadOnlySpan<T> x, T y, ReadOnlySpan<T> multiplier, in Span<T> destination)
         where T : struct, INumber<T>

@@ -7,6 +7,7 @@ namespace DSE.Open.Numerics;
 
 public static partial class SeriesPrimitives
 {
+    /// <summary>Element-wise <c>(x * y) + addend</c>.</summary>
     public static void MultiplyAdd<T>(
         this IReadOnlySeries<T> x,
         IReadOnlySeries<T> y,
@@ -20,6 +21,8 @@ public static partial class SeriesPrimitives
         VectorPrimitives.MultiplyAdd(x.Vector.AsSpan(), y.Vector.AsSpan(), addend.Vector.AsSpan(), destination);
     }
 
+    /// <summary>Element-wise <c>(x * y) + addend</c>.</summary>
+
     public static void MultiplyAdd<T>(
         this IReadOnlySeries<T> x,
         IReadOnlySeries<T> y,
@@ -31,6 +34,8 @@ public static partial class SeriesPrimitives
         ArgumentNullException.ThrowIfNull(y);
         VectorPrimitives.MultiplyAdd(x.Vector.AsSpan(), y.Vector.AsSpan(), addend, destination);
     }
+
+    /// <summary>Element-wise fused multiply-add: <c>(x * y) + addend</c>.</summary>
 
     public static void FusedMultiplyAdd<T>(
         this IReadOnlySeries<T> x,
@@ -46,6 +51,8 @@ public static partial class SeriesPrimitives
             x.Vector.AsSpan(), y.Vector.AsSpan(), addend.Vector.AsSpan(), destination);
     }
 
+    /// <summary>Element-wise linear interpolation.</summary>
+
     public static void Lerp<T>(
         this IReadOnlySeries<T> x,
         IReadOnlySeries<T> y,
@@ -57,6 +64,8 @@ public static partial class SeriesPrimitives
         ArgumentNullException.ThrowIfNull(y);
         VectorPrimitives.Lerp(x.Vector.AsSpan(), y.Vector.AsSpan(), amount, destination);
     }
+
+    /// <summary>Element-wise linear interpolation.</summary>
 
     public static void Lerp<T>(
         this IReadOnlySeries<T> x,
@@ -71,6 +80,8 @@ public static partial class SeriesPrimitives
         VectorPrimitives.Lerp(x.Vector.AsSpan(), y.Vector.AsSpan(), amount.Vector.AsSpan(), destination);
     }
 
+    /// <summary>Element-wise <c>(x + y) * z</c>.</summary>
+
     public static void AddMultiply<T>(
         this IReadOnlySeries<T> x,
         IReadOnlySeries<T> y,
@@ -83,6 +94,8 @@ public static partial class SeriesPrimitives
         ArgumentNullException.ThrowIfNull(multiplier);
         VectorPrimitives.AddMultiply(x.Vector.AsSpan(), y.Vector.AsSpan(), multiplier.Vector.AsSpan(), destination);
     }
+
+    /// <summary>Element-wise <c>(x + y) * z</c>.</summary>
 
     public static void AddMultiply<T>(
         this IReadOnlySeries<T> x,

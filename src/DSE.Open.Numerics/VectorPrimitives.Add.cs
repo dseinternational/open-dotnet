@@ -8,6 +8,9 @@ namespace DSE.Open.Numerics;
 
 public static partial class VectorPrimitives
 {
+    /// <summary>Element-wise <paramref name="x"/> + <paramref name="y"/>, written to <paramref name="destination"/>.</summary>
+    /// <exception cref="ArgumentNullException"><paramref name="x"/> is <see langword="null"/>.</exception>
+    /// <exception cref="NumericsArgumentException">The lengths of <paramref name="x"/>, <paramref name="y"/> and <paramref name="destination"/> differ.</exception>
     public static void Add<T>(this IReadOnlyVector<T> x, ReadOnlySpan<T> y, in Span<T> destination)
         where T : struct, INumber<T>
     {
@@ -16,6 +19,8 @@ public static partial class VectorPrimitives
         TensorPrimitives.Add(x.AsSpan(), y, destination);
     }
 
+    /// <summary>Element-wise <paramref name="x"/> + <paramref name="y"/>, written to <paramref name="destination"/>.</summary>
+    /// <exception cref="ArgumentNullException"><paramref name="y"/> is <see langword="null"/>.</exception>
     public static void Add<T>(this IReadOnlyVector<T> x, IReadOnlyVector<T> y, in Span<T> destination)
         where T : struct, INumber<T>
     {
@@ -23,6 +28,8 @@ public static partial class VectorPrimitives
         Add(x, y.AsSpan(), destination);
     }
 
+    /// <summary>Element-wise <paramref name="x"/> + <paramref name="y"/>, written to <paramref name="destination"/>.</summary>
+    /// <exception cref="ArgumentNullException"><paramref name="destination"/> is <see langword="null"/>.</exception>
     public static void Add<T>(this IReadOnlyVector<T> x, IReadOnlyVector<T> y, IVector<T> destination)
         where T : struct, INumber<T>
     {
@@ -30,6 +37,7 @@ public static partial class VectorPrimitives
         Add(x, y, destination.AsSpan());
     }
 
+    /// <summary>Returns a new vector containing the element-wise sum of <paramref name="x"/> and <paramref name="y"/>.</summary>
     public static Vector<T> Add<T>(this IReadOnlyVector<T> x, ReadOnlySpan<T> y)
         where T : struct, INumber<T>
     {
@@ -40,6 +48,7 @@ public static partial class VectorPrimitives
         return destination;
     }
 
+    /// <summary>Returns a new vector containing the element-wise sum of <paramref name="x"/> and <paramref name="y"/>.</summary>
     public static Vector<T> Add<T>(this IReadOnlyVector<T> x, IReadOnlyVector<T> y)
         where T : struct, INumber<T>
     {
@@ -47,6 +56,7 @@ public static partial class VectorPrimitives
         return Add(x, y.AsSpan());
     }
 
+    /// <summary>Adds the scalar <paramref name="y"/> to every element of <paramref name="x"/>, written to <paramref name="destination"/>.</summary>
     public static void Add<T>(this IReadOnlyVector<T> x, T y, in Span<T> destination)
         where T : struct, INumber<T>
     {
@@ -55,6 +65,7 @@ public static partial class VectorPrimitives
         TensorPrimitives.Add(x.AsSpan(), y, destination);
     }
 
+    /// <summary>Adds the scalar <paramref name="y"/> to every element of <paramref name="x"/>, written to <paramref name="destination"/>.</summary>
     public static void Add<T>(this IReadOnlyVector<T> x, T y, IVector<T> destination)
         where T : struct, INumber<T>
     {
@@ -62,6 +73,7 @@ public static partial class VectorPrimitives
         Add(x, y, destination.AsSpan());
     }
 
+    /// <summary>Returns a new vector with the scalar <paramref name="y"/> added to every element of <paramref name="x"/>.</summary>
     public static Vector<T> Add<T>(this IReadOnlyVector<T> x, T y)
         where T : struct, INumber<T>
     {
@@ -71,6 +83,7 @@ public static partial class VectorPrimitives
         return destination;
     }
 
+    /// <summary>Element-wise <paramref name="x"/> += <paramref name="y"/> in place.</summary>
     public static void AddInPlace<T>(this IVector<T> x, ReadOnlySpan<T> y)
         where T : struct, INumber<T>
     {
@@ -78,6 +91,7 @@ public static partial class VectorPrimitives
         Add(x, y, x.AsSpan());
     }
 
+    /// <summary>Element-wise <paramref name="x"/> += <paramref name="y"/> in place.</summary>
     public static void AddInPlace<T>(this IVector<T> x, IReadOnlyVector<T> y)
         where T : struct, INumber<T>
     {
@@ -85,6 +99,7 @@ public static partial class VectorPrimitives
         AddInPlace(x, y.AsSpan());
     }
 
+    /// <summary>Adds the scalar <paramref name="y"/> to every element of <paramref name="x"/> in place.</summary>
     public static void AddInPlace<T>(this IVector<T> x, T y)
         where T : struct, INumber<T>
     {

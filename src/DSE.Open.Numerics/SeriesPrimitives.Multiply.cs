@@ -7,6 +7,7 @@ namespace DSE.Open.Numerics;
 
 public static partial class SeriesPrimitives
 {
+    /// <summary>Element-wise <c>x * y</c>.</summary>
     public static void Multiply<T>(this IReadOnlySeries<T> x, ReadOnlySpan<T> y, Span<T> destination)
         where T : struct, INumber<T>
     {
@@ -15,6 +16,8 @@ public static partial class SeriesPrimitives
         VectorPrimitives.Multiply(x.Vector, y, destination);
     }
 
+    /// <summary>Element-wise <c>x * y</c>.</summary>
+
     public static void Multiply<T>(this IReadOnlySeries<T> x, IReadOnlySeries<T> y, Span<T> destination)
         where T : struct, INumber<T>
     {
@@ -22,12 +25,16 @@ public static partial class SeriesPrimitives
         Multiply(x, y.Vector.AsSpan(), destination);
     }
 
+    /// <summary>Element-wise <c>x * y</c>.</summary>
+
     public static void Multiply<T>(this IReadOnlySeries<T> x, IReadOnlySeries<T> y, ISeries<T> destination)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(destination);
         Multiply(x, y, destination.AsSpan());
     }
+
+    /// <summary>Element-wise <c>x * y</c>.</summary>
 
     public static Series<T> Multiply<T>(this IReadOnlySeries<T> x, IReadOnlySeries<T> y)
         where T : struct, INumber<T>
@@ -37,6 +44,8 @@ public static partial class SeriesPrimitives
         return WrapBinary(x.Vector.Multiply(y.Vector), x, y);
     }
 
+    /// <summary>Element-wise <c>x * y</c>.</summary>
+
     public static void Multiply<T>(this IReadOnlySeries<T> x, T y, Span<T> destination)
         where T : struct, INumber<T>
     {
@@ -45,12 +54,16 @@ public static partial class SeriesPrimitives
         VectorPrimitives.Multiply(x.Vector, y, destination);
     }
 
+    /// <summary>Element-wise <c>x * y</c>.</summary>
+
     public static void Multiply<T>(this IReadOnlySeries<T> x, T y, ISeries<T> destination)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(destination);
         Multiply(x, y, destination.AsSpan());
     }
+
+    /// <summary>Element-wise <c>x * y</c>.</summary>
 
     public static Series<T> Multiply<T>(this IReadOnlySeries<T> x, T y)
         where T : struct, INumber<T>
@@ -59,6 +72,8 @@ public static partial class SeriesPrimitives
         return WrapUnary(x.Vector.Multiply(y), x);
     }
 
+    /// <summary>Element-wise <c>x *= y</c> in place.</summary>
+
     public static void MultiplyInPlace<T>(this ISeries<T> x, ReadOnlySpan<T> y)
         where T : struct, INumber<T>
     {
@@ -66,12 +81,16 @@ public static partial class SeriesPrimitives
         Multiply(x, y, x.AsSpan());
     }
 
+    /// <summary>Element-wise <c>x *= y</c> in place.</summary>
+
     public static void MultiplyInPlace<T>(this ISeries<T> x, IReadOnlySeries<T> y)
         where T : struct, INumber<T>
     {
         ArgumentNullException.ThrowIfNull(y);
         MultiplyInPlace(x, y.Vector.AsSpan());
     }
+
+    /// <summary>Element-wise <c>x *= y</c> in place.</summary>
 
     public static void MultiplyInPlace<T>(this ISeries<T> x, T y)
         where T : struct, INumber<T>

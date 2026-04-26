@@ -12,6 +12,7 @@ namespace DSE.Open.Numerics;
 
 public static partial class VectorPrimitives
 {
+    /// <summary>Reserved — call the typed <c>Equals</c> overloads instead.</summary>
     [Obsolete("Not supported", error: true)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static new bool Equals(object? a, object? b)

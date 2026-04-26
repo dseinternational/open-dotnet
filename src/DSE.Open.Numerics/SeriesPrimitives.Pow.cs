@@ -7,6 +7,7 @@ namespace DSE.Open.Numerics;
 
 public static partial class SeriesPrimitives
 {
+    /// <summary>Element-wise <c>x^y</c>.</summary>
     public static void Pow<T>(this IReadOnlySeries<T> x, IReadOnlySeries<T> y, Span<T> destination)
         where T : struct, IPowerFunctions<T>
     {
@@ -14,6 +15,8 @@ public static partial class SeriesPrimitives
         ArgumentNullException.ThrowIfNull(y);
         VectorPrimitives.Pow(x.Vector.AsSpan(), y.Vector.AsSpan(), destination);
     }
+
+    /// <summary>Element-wise <c>x^y</c>.</summary>
 
     public static Series<T> Pow<T>(this IReadOnlySeries<T> x, IReadOnlySeries<T> y)
         where T : struct, IPowerFunctions<T>
@@ -23,12 +26,16 @@ public static partial class SeriesPrimitives
         return WrapBinary(x.Vector.Pow(y.Vector), x, y);
     }
 
+    /// <summary>Element-wise <c>x^y</c>.</summary>
+
     public static void Pow<T>(this IReadOnlySeries<T> x, T y, Span<T> destination)
         where T : struct, IPowerFunctions<T>
     {
         ArgumentNullException.ThrowIfNull(x);
         VectorPrimitives.Pow(x.Vector.AsSpan(), y, destination);
     }
+
+    /// <summary>Element-wise <c>x^y</c>.</summary>
 
     public static Series<T> Pow<T>(this IReadOnlySeries<T> x, T y)
         where T : struct, IPowerFunctions<T>
@@ -37,6 +44,8 @@ public static partial class SeriesPrimitives
         return WrapUnary(x.Vector.Pow(y), x);
     }
 
+    /// <summary>Element-wise <c>x^y</c> (in place).</summary>
+
     public static void PowInPlace<T>(this ISeries<T> x, IReadOnlySeries<T> y)
         where T : struct, IPowerFunctions<T>
     {
@@ -44,6 +53,8 @@ public static partial class SeriesPrimitives
         ArgumentNullException.ThrowIfNull(y);
         VectorPrimitives.Pow(x.AsSpan(), y.Vector.AsSpan(), x.AsSpan());
     }
+
+    /// <summary>Element-wise <c>x^y</c> (in place).</summary>
 
     public static void PowInPlace<T>(this ISeries<T> x, T y)
         where T : struct, IPowerFunctions<T>

@@ -8,12 +8,15 @@ namespace DSE.Open.Numerics;
 
 public static partial class VectorPrimitives
 {
+    /// <summary>Returns <see langword="true"/> when the two sequences contain the same elements in order.</summary>
     public static bool SequenceEqual<T>(this IReadOnlyVector<T> x, scoped in ReadOnlySpan<T> y)
         where T : IEquatable<T>
     {
         ArgumentNullException.ThrowIfNull(x);
         return x.AsSpan().SequenceEqual(y);
     }
+
+    /// <summary>Returns <see langword="true"/> when the two sequences contain the same elements in order.</summary>
 
     public static bool SequenceEqual<T>(this IReadOnlyVector<T> x, IReadOnlyVector<T> y)
         where T : IEquatable<T>

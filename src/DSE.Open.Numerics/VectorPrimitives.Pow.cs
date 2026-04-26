@@ -8,12 +8,15 @@ namespace DSE.Open.Numerics;
 
 public static partial class VectorPrimitives
 {
+    /// <summary>Element-wise <c>x^y</c>.</summary>
     public static void Pow<T>(ReadOnlySpan<T> x, ReadOnlySpan<T> y, in Span<T> destination)
         where T : struct, IPowerFunctions<T>
     {
         NumericsArgumentException.ThrowIfNot(x.Length == y.Length && y.Length == destination.Length);
         TensorPrimitives.Pow(x, y, destination);
     }
+
+    /// <summary>Element-wise <c>x^y</c>.</summary>
 
     public static void Pow<T>(ReadOnlySpan<T> x, T y, in Span<T> destination)
         where T : struct, IPowerFunctions<T>
@@ -22,12 +25,16 @@ public static partial class VectorPrimitives
         TensorPrimitives.Pow(x, y, destination);
     }
 
+    /// <summary>Element-wise <c>x^y</c>.</summary>
+
     public static void Pow<T>(T x, ReadOnlySpan<T> y, in Span<T> destination)
         where T : struct, IPowerFunctions<T>
     {
         NumericsArgumentException.ThrowIfNot(y.Length == destination.Length);
         TensorPrimitives.Pow(x, y, destination);
     }
+
+    /// <summary>Element-wise <c>x^y</c>.</summary>
 
     public static void Pow<T>(this IReadOnlyVector<T> x, IReadOnlyVector<T> y, in Span<T> destination)
         where T : struct, IPowerFunctions<T>
@@ -37,12 +44,16 @@ public static partial class VectorPrimitives
         Pow(x.AsSpan(), y.AsSpan(), destination);
     }
 
+    /// <summary>Element-wise <c>x^y</c>.</summary>
+
     public static void Pow<T>(this IReadOnlyVector<T> x, IReadOnlyVector<T> y, IVector<T> destination)
         where T : struct, IPowerFunctions<T>
     {
         ArgumentNullException.ThrowIfNull(destination);
         Pow(x, y, destination.AsSpan());
     }
+
+    /// <summary>Element-wise <c>x^y</c>.</summary>
 
     public static Vector<T> Pow<T>(this IReadOnlyVector<T> x, IReadOnlyVector<T> y)
         where T : struct, IPowerFunctions<T>
@@ -54,6 +65,8 @@ public static partial class VectorPrimitives
         return destination;
     }
 
+    /// <summary>Element-wise <c>x^y</c>.</summary>
+
     public static void Pow<T>(this IReadOnlyVector<T> x, T y, in Span<T> destination)
         where T : struct, IPowerFunctions<T>
     {
@@ -61,12 +74,16 @@ public static partial class VectorPrimitives
         Pow(x.AsSpan(), y, destination);
     }
 
+    /// <summary>Element-wise <c>x^y</c>.</summary>
+
     public static void Pow<T>(this IReadOnlyVector<T> x, T y, IVector<T> destination)
         where T : struct, IPowerFunctions<T>
     {
         ArgumentNullException.ThrowIfNull(destination);
         Pow(x, y, destination.AsSpan());
     }
+
+    /// <summary>Element-wise <c>x^y</c>.</summary>
 
     public static Vector<T> Pow<T>(this IReadOnlyVector<T> x, T y)
         where T : struct, IPowerFunctions<T>
@@ -77,6 +94,8 @@ public static partial class VectorPrimitives
         return destination;
     }
 
+    /// <summary>Element-wise <c>x^y</c> (in place).</summary>
+
     public static void PowInPlace<T>(this IVector<T> x, ReadOnlySpan<T> y)
         where T : struct, IPowerFunctions<T>
     {
@@ -84,12 +103,16 @@ public static partial class VectorPrimitives
         Pow(x.AsSpan(), y, x.AsSpan());
     }
 
+    /// <summary>Element-wise <c>x^y</c> (in place).</summary>
+
     public static void PowInPlace<T>(this IVector<T> x, IReadOnlyVector<T> y)
         where T : struct, IPowerFunctions<T>
     {
         ArgumentNullException.ThrowIfNull(y);
         PowInPlace(x, y.AsSpan());
     }
+
+    /// <summary>Element-wise <c>x^y</c> (in place).</summary>
 
     public static void PowInPlace<T>(this IVector<T> x, T y)
         where T : struct, IPowerFunctions<T>
