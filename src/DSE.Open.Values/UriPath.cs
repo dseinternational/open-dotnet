@@ -11,8 +11,9 @@ using DSE.Open.Values.Text.Json.Serialization;
 namespace DSE.Open.Values;
 
 /// <summary>
-/// A path containing only lowercase ASCII letters and digits, hyphens ('-') and
-/// forward slashes ('/') at locations other than the first and last character.
+/// A path containing only lowercase ASCII letters and digits, hyphens ('-'),
+/// underscores ('_') and forward slashes ('/'). Forward slashes may only occur
+/// at locations other than the first and last character.
 /// </summary>
 [ComparableValue]
 [JsonConverter(typeof(JsonSpanSerializableValueConverter<UriPath, CharSequence>))]
@@ -21,6 +22,7 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
 {
     public const char Separator = '/';
     public const char Dash = '-';
+    public const char Underscore = '_';
 
     public static readonly UriPath Empty = new(default, true);
 
@@ -140,7 +142,7 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
 
     private static bool IsValidOuterChar(char c)
     {
-        return char.IsAsciiLetterLower(c) || char.IsAsciiDigit(c) || c == Dash;
+        return char.IsAsciiLetterLower(c) || char.IsAsciiDigit(c) || c == Dash || c == Underscore;
     }
 
     private static bool IsValidInnerChar(char c)

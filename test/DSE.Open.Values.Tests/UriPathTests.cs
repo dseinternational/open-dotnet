@@ -32,11 +32,22 @@ public class UriPathTests
     [InlineData("z")]
     [InlineData("0")]
     [InlineData("9")]
+    [InlineData("_")]
     [InlineData("abc")]
     [InlineData("abc123")]
     [InlineData("abc-def")]
     [InlineData("abc/def")]
     [InlineData("abc-123/def-456")]
+    [InlineData("abc_def")]
+    [InlineData("_abc")]
+    [InlineData("abc_")]
+    [InlineData("a_b_c")]
+    [InlineData("__")]
+    [InlineData("home/sub_dir")]
+    [InlineData("home_dir/sub")]
+    [InlineData("home_dir/sub_dir")]
+    [InlineData("dse_sub_req_nltb2ncipfzaqc38onlsffdi6ledlomni")]
+    [InlineData("en-gb/rli-online/subscribe/completed/dse_sub_req_nltb2ncipfzaqc38onlsffdi6ledlomni")]
     public void TryParse_WithValidCharacters_ShouldReturnTrueWithParsedValue(string value)
     {
         var actual = UriPath.TryParse(value, out var result);
@@ -48,18 +59,39 @@ public class UriPathTests
     [Theory]
     [InlineData("A")]
     [InlineData("HOME")]
-    [InlineData("home/sub_dir")]
     [InlineData("home.sub")]
     [InlineData("home~sub")]
     [InlineData("home+sub")]
     [InlineData("home sub")]
     [InlineData("über")]
+    [InlineData("home%20sub")]
+    [InlineData("home/sub?")]
     public void TryParse_WithInvalidCharacters_ShouldReturnFalseWithDefaultResult(string value)
     {
         var actual = UriPath.TryParse(value, out var result);
 
         Assert.False(actual);
         Assert.Equal(default, result);
+    }
+
+    [Theory]
+    [InlineData("_")]
+    [InlineData("a_b")]
+    [InlineData("_abc")]
+    [InlineData("abc_")]
+    [InlineData("home_dir/sub_dir")]
+    [InlineData("dse_sub_req_nltb2ncipfzaqc38onlsffdi6ledlomni")]
+    public void IsValidValue_WithUnderscores_ReturnsTrue(string value)
+    {
+        Assert.True(UriPath.IsValidValue(value));
+    }
+
+    [Theory]
+    [InlineData("DSE_SUB_REQ")]
+    [InlineData("home_DIR")]
+    public void IsValidValue_WithUppercaseAndUnderscores_ReturnsFalse(string value)
+    {
+        Assert.False(UriPath.IsValidValue(value));
     }
 
     [Theory]
@@ -205,6 +237,11 @@ public class UriPathTests
     [InlineData("/HOME/sub", "home/sub")]
     [InlineData("/home/SUB/", "home/sub")]
     [InlineData("home/sub/", "home/sub")]
+    [InlineData("home_dir", "home_dir")]
+    [InlineData("/HOME_DIR/SUB_DIR/", "home_dir/sub_dir")]
+    [InlineData(
+        "/en-gb/rli-online/subscribe/completed/dse_sub_req_NLtb2NcIpFzaqc38oNLsffDi6LEdLoMNi",
+        "en-gb/rli-online/subscribe/completed/dse_sub_req_nltb2ncipfzaqc38onlsffdi6ledlomni")]
     public void TryParseSanitised_WithHandleablePath_ShouldReturnTrue(string path, string expected)
     {
         Assert.True(UriPath.TryParseSanitised(path, out var result));
