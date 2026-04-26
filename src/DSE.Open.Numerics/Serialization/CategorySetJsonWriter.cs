@@ -7,8 +7,15 @@ using DSE.Open.Text.Json;
 
 namespace DSE.Open.Numerics.Serialization;
 
+/// <summary>
+/// JSON serialization helpers for <see cref="IReadOnlyCategorySet"/>. The
+/// type-erased entry point dispatches to the appropriate strongly-typed
+/// writer by element type.
+/// </summary>
 public static class CategorySetJsonWriter
 {
+    /// <summary>Writes <paramref name="categorySet"/> to <paramref name="writer"/> using a type-aware dispatch.</summary>
+    /// <exception cref="ArgumentNullException"><paramref name="categorySet"/> is <see langword="null"/>.</exception>
     public static void WriteCategorySet(
         Utf8JsonWriter writer,
         IReadOnlyCategorySet categorySet,
@@ -74,6 +81,7 @@ public static class CategorySetJsonWriter
         }
     }
 
+    /// <summary>Writes a strongly-typed numeric category set of <typeparamref name="T"/> to <paramref name="writer"/>.</summary>
     public static void WriteCategorySet<T>(Utf8JsonWriter writer, IReadOnlyCategorySet<T> categorySet, JsonSerializerOptions options)
         where T : struct, IBinaryNumber<T>
     {

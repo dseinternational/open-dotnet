@@ -3,6 +3,13 @@
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <IsAotCompatible>true</IsAotCompatible>
+    <!--
+      Override the inherited NoWarn (`NU5104;CS1591` from src/Directory.Build.props)
+      to drop the CS1591 suppression now that the project is fully documented.
+      Any new public member without an XML doc comment will be a build-time error
+      (combined with the inherited `<TreatWarningsAsErrors>true</TreatWarningsAsErrors>`).
+    -->
+    <NoWarn>NU5104</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

@@ -11,8 +11,15 @@ namespace DSE.Open.Numerics.Serialization;
 
 #pragma warning disable DSEOPEN001 // ArrayBuilder ref struct warning
 
+/// <summary>
+/// JSON deserialization helpers for <see cref="Vector"/> / <see cref="Vector{T}"/>.
+/// The top-level <see cref="ReadVector(ref Utf8JsonReader, VectorJsonFormat)"/>
+/// reads the data-type tag from the JSON object and dispatches to the
+/// appropriate strongly-typed reader.
+/// </summary>
 public static class VectorJsonReader
 {
+    /// <summary>Reads a vector from <paramref name="reader"/>, dispatching on the embedded data-type tag.</summary>
     public static Vector? ReadVector(ref Utf8JsonReader reader, VectorJsonFormat format)
     {
         if (reader.TokenType != JsonTokenType.StartObject)
@@ -178,6 +185,7 @@ public static class VectorJsonReader
         throw new JsonException("Expected end of array");
     }
 
+    /// <summary>Reads a non-NA numeric vector of <typeparamref name="T"/> from <paramref name="reader"/>.</summary>
     public static Vector<T> ReadNumberVector<T>(
         ref Utf8JsonReader reader,
         int length,
@@ -200,6 +208,7 @@ public static class VectorJsonReader
         });
     }
 
+    /// <summary>Reads an NA-aware numeric vector of <typeparamref name="TSelf"/> over <typeparamref name="T"/> from <paramref name="reader"/>.</summary>
     public static Vector<TSelf> ReadNaNumberVector<TSelf, T>(
         ref Utf8JsonReader reader,
         int length,
@@ -244,6 +253,7 @@ public static class VectorJsonReader
         });
     }
 
+    /// <summary>Reads a vector of <see cref="string"/> from <paramref name="reader"/>.</summary>
     public static Vector<string> ReadStringVector(
         ref Utf8JsonReader reader,
         int length,
@@ -252,6 +262,7 @@ public static class VectorJsonReader
         return ReadVector(ref reader, length, format, (ref r) => r.GetString() ?? throw new JsonException());
     }
 
+    /// <summary>Reads an NA-aware vector of <see cref="NaValue{T}"/> over <see cref="string"/> from <paramref name="reader"/>.</summary>
     public static Vector<NaValue<string>> ReadNaStringVector(
         ref Utf8JsonReader reader,
         int length,
@@ -260,6 +271,7 @@ public static class VectorJsonReader
         return ReadVector(ref reader, length, format, (ref r) => (NaValue<string>)r.GetString());
     }
 
+    /// <summary>Reads a vector of <see cref="DateTime"/> from <paramref name="reader"/>.</summary>
     public static Vector<DateTime> ReadDateTimeVector(
         ref Utf8JsonReader reader,
         int length,
@@ -268,6 +280,7 @@ public static class VectorJsonReader
         return ReadVector(ref reader, length, format, (ref r) => r.GetDateTime());
     }
 
+    /// <summary>Reads an NA-aware vector of <see cref="NaValue{T}"/> over <see cref="DateTime"/> from <paramref name="reader"/>.</summary>
     public static Vector<NaValue<DateTime>> ReadNaDateTimeVector(
         ref Utf8JsonReader reader,
         int length,
@@ -284,6 +297,7 @@ public static class VectorJsonReader
         });
     }
 
+    /// <summary>Reads a vector of <see cref="DateTimeOffset"/> from <paramref name="reader"/>.</summary>
     public static Vector<DateTimeOffset> ReadDateTimeOffsetVector(
         ref Utf8JsonReader reader,
         int length,
@@ -292,6 +306,7 @@ public static class VectorJsonReader
         return ReadVector(ref reader, length, format, (ref r) => r.GetDateTimeOffset());
     }
 
+    /// <summary>Reads an NA-aware vector of <see cref="NaValue{T}"/> over <see cref="DateTimeOffset"/>.</summary>
     public static Vector<NaValue<DateTimeOffset>> ReadNaDateTimeOffsetVector(
         ref Utf8JsonReader reader,
         int length,
@@ -308,6 +323,7 @@ public static class VectorJsonReader
         });
     }
 
+    /// <summary>Reads a vector of <see cref="char"/> from <paramref name="reader"/>.</summary>
     public static Vector<char> ReadCharVector(
         ref Utf8JsonReader reader,
         int length,
@@ -326,6 +342,7 @@ public static class VectorJsonReader
         });
     }
 
+    /// <summary>Reads an NA-aware vector of <see cref="NaValue{T}"/> over <see cref="char"/>.</summary>
     public static Vector<NaValue<char>> ReadNaCharVector(
         ref Utf8JsonReader reader,
         int length,
@@ -349,6 +366,7 @@ public static class VectorJsonReader
         });
     }
 
+    /// <summary>Reads a vector of <see cref="bool"/> from <paramref name="reader"/>.</summary>
     public static Vector<bool> ReadBooleanVector(
         ref Utf8JsonReader reader,
         int length,
@@ -370,6 +388,7 @@ public static class VectorJsonReader
         });
     }
 
+    /// <summary>Reads an NA-aware vector of <see cref="NaValue{T}"/> over <see cref="bool"/>.</summary>
     public static Vector<NaValue<bool>> ReadNaBooleanVector(
         ref Utf8JsonReader reader,
         int length,

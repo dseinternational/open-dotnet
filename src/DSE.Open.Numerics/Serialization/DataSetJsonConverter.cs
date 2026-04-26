@@ -8,16 +8,24 @@ using DSE.Open.Collections.Generic;
 
 namespace DSE.Open.Numerics.Serialization;
 
+/// <summary>
+/// JSON converter for <see cref="DataSet"/>. Reads/writes as
+/// <c>{ "name": ..., "frames": [ DataFrame, DataFrame, ... ] }</c> using
+/// <see cref="DataFrameJsonConverter"/> for each frame.
+/// </summary>
 public class DataSetJsonConverter : JsonConverter<DataSet>
 {
+    /// <summary>The default instance used by the source-generated JSON pipeline.</summary>
     public static readonly DataSetJsonConverter Default = new();
 
+    /// <inheritdoc />
     public override bool CanConvert(Type typeToConvert)
     {
         Debug.Assert(typeToConvert is not null);
         return typeToConvert.IsAssignableTo(typeof(DataSet));
     }
 
+    /// <inheritdoc />
     public override DataSet Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         if (reader.TokenType != JsonTokenType.StartObject)
@@ -78,6 +86,7 @@ public class DataSetJsonConverter : JsonConverter<DataSet>
         return new DataSet(dataFrames, name);
     }
 
+    /// <inheritdoc />
     public override void Write(Utf8JsonWriter writer, DataSet value, JsonSerializerOptions options)
     {
         ArgumentNullException.ThrowIfNull(writer);

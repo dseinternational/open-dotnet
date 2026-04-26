@@ -7,8 +7,14 @@ using DSE.Open.Text.Json;
 
 namespace DSE.Open.Numerics.Serialization;
 
+/// <summary>
+/// JSON deserialization helpers for <see cref="ICategorySet"/> /
+/// <see cref="CategorySet{T}"/>. Reads the data-type tag from the JSON object
+/// and dispatches to the appropriate strongly-typed reader.
+/// </summary>
 public static class CategorySetJsonReader
 {
+    /// <summary>Reads a category set from <paramref name="reader"/>; returns <see langword="null"/> when the input lacks values.</summary>
     public static ICategorySet? Read(ref Utf8JsonReader reader)
     {
         if (reader.TokenType != JsonTokenType.StartObject)
@@ -129,6 +135,7 @@ public static class CategorySetJsonReader
         return categorySet;
     }
 
+    /// <summary>Reads a strongly-typed numeric category set of <typeparamref name="T"/> from <paramref name="reader"/>.</summary>
     public static CategorySet<T>? Read<T>(ref Utf8JsonReader reader)
         where T : struct, IBinaryNumber<T>
     {

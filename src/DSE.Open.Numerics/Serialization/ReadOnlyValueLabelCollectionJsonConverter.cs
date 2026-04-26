@@ -6,13 +6,21 @@ using System.Text.Json.Serialization;
 
 namespace DSE.Open.Numerics.Serialization;
 
+/// <summary>
+/// JSON converter for the type-erased <see cref="ReadOnlyValueLabelCollection"/>.
+/// Read is currently not supported; write delegates to
+/// <see cref="ValueLabelCollectionJsonWriter"/>.
+/// </summary>
 public class ReadOnlyValueLabelCollectionJsonConverter : JsonConverter<ReadOnlyValueLabelCollection>
 {
+    /// <inheritdoc />
+    /// <exception cref="NotImplementedException">Always — read of the type-erased base is not supported.</exception>
     public override ReadOnlyValueLabelCollection Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         throw new NotImplementedException("Deserialization not implemented.");
     }
 
+    /// <inheritdoc />
     public override void Write(Utf8JsonWriter writer, ReadOnlyValueLabelCollection value, JsonSerializerOptions options)
     {
         ArgumentNullException.ThrowIfNull(writer);
