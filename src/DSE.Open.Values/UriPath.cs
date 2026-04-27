@@ -14,6 +14,13 @@ namespace DSE.Open.Values;
 /// A path containing only lowercase ASCII letters and digits, hyphens ('-') and
 /// forward slashes ('/') at locations other than the first and last character.
 /// </summary>
+/// <remarks>
+/// This type has been renamed to <see cref="UriSlug"/>. The two types are
+/// behaviourally identical; <see cref="UriPath"/> is retained as an obsolete
+/// alias to avoid breaking existing consumers and will be removed in a future
+/// release.
+/// </remarks>
+[Obsolete("UriPath has been renamed to UriSlug. Use UriSlug instead.")]
 [ComparableValue]
 [JsonConverter(typeof(JsonSpanSerializableValueConverter<UriPath, CharSequence>))]
 [StructLayout(LayoutKind.Sequential)]

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Routing.Matching;
 
 namespace DSE.Open.Web.Routing;
 
+#pragma warning disable CS0618 // Type or member is obsolete — UriPath is being phased out in favour of UriSlug
 public class UriPathRouteConstraint : IRouteConstraint, IParameterLiteralNodeMatchingPolicy
 {
     /// <inheritdoc />
@@ -45,3 +46,4 @@ public class UriPathRouteConstraint : IRouteConstraint, IParameterLiteralNodeMat
         return CheckConstraintCore(literal);
     }
 }
+#pragma warning restore CS0618 // Type or member is obsolete
