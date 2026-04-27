@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DSE.Open.DomainModel.Abstractions\DSE.Open.DomainModel.Abstractions.csproj" />
+    <ProjectReference Include="..\DSE.Open.Values\DSE.Open.Values.csproj" />
   </ItemGroup>
 
 </Project>
