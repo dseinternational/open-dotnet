@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DSE.Open.EntityFrameworkCore\DSE.Open.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\DSE.Open.Records.Abstractions\DSE.Open.Records.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>

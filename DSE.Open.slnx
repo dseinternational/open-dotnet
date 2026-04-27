@@ -30,6 +30,7 @@
     <Project Path="src/DSE.Open.Drawing/DSE.Open.Drawing.csproj" />
     <Project Path="src/DSE.Open.EntityFrameworkCore.Models.Language/DSE.Open.EntityFrameworkCore.Models.Language.csproj" />
     <Project Path="src/DSE.Open.EntityFrameworkCore.Models.Observations/DSE.Open.EntityFrameworkCore.Models.Observations.csproj" />
+    <Project Path="src/DSE.Open.EntityFrameworkCore.Models.Records/DSE.Open.EntityFrameworkCore.Models.Records.csproj" />
     <Project Path="src/DSE.Open.EntityFrameworkCore.Models.Speech/DSE.Open.EntityFrameworkCore.Models.Speech.csproj" />
     <Project Path="src/DSE.Open.EntityFrameworkCore.Relational/DSE.Open.EntityFrameworkCore.Relational.csproj" />
     <Project Path="src/DSE.Open.EntityFrameworkCore.Sqlite/DSE.Open.EntityFrameworkCore.Sqlite.csproj" />
@@ -78,6 +79,7 @@
     <Project Path="test/DSE.Open.Api.Metadata.Tests/DSE.Open.Api.Metadata.Tests.csproj" />
     <Project Path="test/DSE.Open.DomainModel.Tests/DSE.Open.DomainModel.Tests.csproj" />
     <Project Path="test/DSE.Open.Drawing.Tests/DSE.Open.Drawing.Tests.csproj" />
+    <Project Path="test/DSE.Open.EntityFrameworkCore.Models.Records.Tests/DSE.Open.EntityFrameworkCore.Models.Records.Tests.csproj" />
     <Project Path="test/DSE.Open.EntityFrameworkCore.Relational.Tests/DSE.Open.EntityFrameworkCore.Relational.Tests.csproj" />
     <Project Path="test/DSE.Open.EntityFrameworkCore.Tests/DSE.Open.EntityFrameworkCore.Tests.csproj" />
     <Project Path="test/DSE.Open.Globalization.Tests/DSE.Open.Globalization.Tests.csproj" />
