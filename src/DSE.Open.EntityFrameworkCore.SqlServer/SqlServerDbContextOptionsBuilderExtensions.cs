@@ -6,6 +6,9 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace DSE.Open.EntityFrameworkCore.SqlServer;
 
+/// <summary>
+/// Provides extension methods for <see cref="SqlServerDbContextOptionsBuilder"/>.
+/// </summary>
 public static class SqlServerDbContextOptionsBuilderExtensions
 {
     /// <summary>

@@ -42,19 +42,40 @@ public sealed partial class SqlServerNonBufferingRetryingExecutionStrategy : Exe
 
     // 5 + 1 + 2 + 4 + 8 + 16 = 36 seconds (+ actual time retrying)
 
+    /// <summary>
+    /// The default maximum number of retry attempts.
+    /// </summary>
     public static new readonly int DefaultMaxRetryCount = 6;
 
+    /// <summary>
+    /// The default delay before the first retry attempt.
+    /// </summary>
     public static readonly TimeSpan DefaultFirstRetryDelay = TimeSpan.FromMilliseconds(5000);
+
+    /// <summary>
+    /// The default median delay used to compute subsequent retry delays.
+    /// </summary>
     public static readonly TimeSpan DefaultMedianRetryDelay = TimeSpan.FromMilliseconds(1000);
 
     private readonly TimeSpan[] _retryDelays;
     private readonly ILogger _logger;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SqlServerNonBufferingRetryingExecutionStrategy"/>
+    /// class with default retry settings.
+    /// </summary>
+    /// <param name="context">The context on which the operations will be invoked.</param>
     public SqlServerNonBufferingRetryingExecutionStrategy(DbContext context)
         : this(context, DefaultMaxRetryCount, DefaultMedianRetryDelay)
     {
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SqlServerNonBufferingRetryingExecutionStrategy"/> class.
+    /// </summary>
+    /// <param name="context">The context on which the operations will be invoked.</param>
+    /// <param name="maxRetryCount">The maximum number of retry attempts.</param>
+    /// <param name="medianRetryDelay">The median delay used to compute subsequent retry delays.</param>
     public SqlServerNonBufferingRetryingExecutionStrategy(DbContext context, int maxRetryCount, TimeSpan medianRetryDelay)
         : base(context ?? throw new ArgumentNullException(nameof(context)), maxRetryCount, DefaultMaxDelay)
     {
@@ -63,11 +84,22 @@ public sealed partial class SqlServerNonBufferingRetryingExecutionStrategy : Exe
         _retryDelays = GetRetryDelays(maxRetryCount, DefaultFirstRetryDelay, medianRetryDelay);
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SqlServerNonBufferingRetryingExecutionStrategy"/>
+    /// class with default retry settings.
+    /// </summary>
+    /// <param name="dependencies">Parameter object containing service dependencies.</param>
     public SqlServerNonBufferingRetryingExecutionStrategy(ExecutionStrategyDependencies dependencies)
         : this(dependencies, DefaultMaxRetryCount, DefaultMedianRetryDelay)
     {
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SqlServerNonBufferingRetryingExecutionStrategy"/> class.
+    /// </summary>
+    /// <param name="dependencies">Parameter object containing service dependencies.</param>
+    /// <param name="maxRetryCount">The maximum number of retry attempts.</param>
+    /// <param name="medianRetryDelay">The median delay used to compute subsequent retry delays.</param>
     public SqlServerNonBufferingRetryingExecutionStrategy(
         ExecutionStrategyDependencies dependencies,
         int maxRetryCount,
@@ -102,6 +134,11 @@ public sealed partial class SqlServerNonBufferingRetryingExecutionStrategy : Exe
         return delays;
     }
 
+    /// <summary>
+    /// Gets or sets a value indicating whether buffering is enabled. When <see langword="false"/>,
+    /// <see cref="RetriesOnFailure"/> reports <see langword="false"/> in order to disable EF's
+    /// buffering of results during retrying execution.
+    /// </summary>
     public bool IsBuffering { get; set; }
 
     /// <summary>
@@ -126,12 +163,14 @@ public sealed partial class SqlServerNonBufferingRetryingExecutionStrategy : Exe
         }
     }
 
+    /// <inheritdoc/>
     protected override TimeSpan? GetNextDelay(Exception lastException)
     {
         var currentRetryCount = ExceptionsEncountered.Count - 1;
         return currentRetryCount < MaxRetryCount ? _retryDelays[currentRetryCount] : null;
     }
 
+    /// <inheritdoc/>
     protected override void OnFirstExecution()
     {
         if (RetriesOnFailureForReal
@@ -155,6 +194,7 @@ public sealed partial class SqlServerNonBufferingRetryingExecutionStrategy : Exe
         ExceptionsEncountered.Clear();
     }
 
+    /// <inheritdoc/>
     protected override bool ShouldRetryOn(Exception exception)
     {
         ArgumentNullException.ThrowIfNull(exception);
