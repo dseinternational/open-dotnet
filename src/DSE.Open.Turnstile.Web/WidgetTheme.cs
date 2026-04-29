@@ -3,9 +3,21 @@
 
 namespace DSE.Open.Turnstile.Web;
 
+/// <summary>
+/// The colour theme used by the Turnstile widget.
+/// </summary>
 public enum WidgetTheme
 {
+    /// <summary>
+    /// Use the visitor's preferred theme (default).
+    /// </summary>
     Auto,
+    /// <summary>
+    /// Force the light theme.
+    /// </summary>
     Light,
+    /// <summary>
+    /// Force the dark theme.
+    /// </summary>
     Dark
 }

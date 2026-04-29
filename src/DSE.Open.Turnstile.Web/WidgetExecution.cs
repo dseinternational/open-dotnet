@@ -3,8 +3,17 @@
 
 namespace DSE.Open.Turnstile.Web;
 
+/// <summary>
+/// Controls when the Turnstile widget obtains a token.
+/// </summary>
 public enum WidgetExecution
 {
+    /// <summary>
+    /// The token is obtained when the widget is rendered (default).
+    /// </summary>
     Render,
+    /// <summary>
+    /// The token is obtained when execution is explicitly triggered.
+    /// </summary>
     Execute
 }

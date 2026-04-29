@@ -7,8 +7,19 @@ using System.Net;
 
 namespace DSE.Open.Turnstile.Web;
 
+/// <summary>
+/// Provides extension methods for <see cref="ITurnstileClient"/> that integrate with ASP.NET Core.
+/// </summary>
 public static class TurnstileClientExtensions
 {
+    /// <summary>
+    /// Validates the Turnstile response token submitted with the current
+    /// <see cref="HttpContext"/>'s form, using the request's remote IP address.
+    /// </summary>
+    /// <param name="client">The Turnstile client used to perform validation.</param>
+    /// <param name="httpContext">The HTTP context containing the submitted form and connection details.</param>
+    /// <param name="cancellationToken">A token to cancel the asynchronous operation.</param>
+    /// <returns>The <see cref="ValidationResponse"/> returned by the Turnstile service.</returns>
     [RequiresDynamicCode(WarningMessages.RequiresDynamicCode)]
     [RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]
     public static Task<ValidationResponse> ValidateAsync(
