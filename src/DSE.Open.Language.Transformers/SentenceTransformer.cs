@@ -9,6 +9,9 @@ using DSE.Open.Interop.Python;
 namespace DSE.Open.Language.Transformers;
 
 
+/// <summary>
+/// A managed wrapper over a Python sentence-transformers model that produces sentence embeddings.
+/// </summary>
 public class SentenceTransformer : PyObjectWrapper
 {
     private readonly ISentenceTransformersService _service;
@@ -24,6 +27,9 @@ public class SentenceTransformer : PyObjectWrapper
     /// </summary>
     public string DeviceType => _service.GetDeviceType(InnerObject);
 
+    /// <summary>
+    /// Gets the name (or path) of the loaded sentence-transformers model.
+    /// </summary>
     public string ModelName { get; }
 
     /// <summary>
@@ -77,6 +83,15 @@ public class SentenceTransformer : PyObjectWrapper
         // return result.AsTensorSpan<float>();
     }
 
+    /// <summary>
+    /// Loads the named sentence-transformers model from the supplied Python environment.
+    /// </summary>
+    /// <param name="pythonEnvironment">The Python environment hosting the sentence-transformers package.</param>
+    /// <param name="modelName">The model name or path passed to sentence-transformers.</param>
+    /// <param name="trustExternalCode">
+    /// When <see langword="true"/>, allows the model to execute remote code (passed as
+    /// <c>trust_remote_code</c>). Defaults to <see langword="false"/>.
+    /// </param>
     public static SentenceTransformer Create(
         IPythonEnvironment pythonEnvironment,
         string modelName,

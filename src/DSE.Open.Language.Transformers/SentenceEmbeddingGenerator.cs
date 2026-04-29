@@ -5,16 +5,27 @@ using Microsoft.Extensions.AI;
 
 namespace DSE.Open.Language.Transformers;
 
+/// <summary>
+/// An <see cref="IEmbeddingGenerator{TInput, TEmbedding}"/> implementation that produces
+/// <see cref="Embedding{T}"/> vectors for input strings using a <see cref="SentenceTransformer"/>.
+/// </summary>
 public sealed class SentenceEmbeddingGenerator : IEmbeddingGenerator<string, Embedding<float>>
 {
     private readonly SentenceTransformer _sentenceTransformer;
 
+    /// <summary>
+    /// Initializes a new instance backed by the specified <see cref="SentenceTransformer"/>.
+    /// </summary>
     public SentenceEmbeddingGenerator(SentenceTransformer sentenceTransformer)
     {
         ArgumentNullException.ThrowIfNull(sentenceTransformer);
         _sentenceTransformer = sentenceTransformer;
     }
 
+    /// <summary>
+    /// Computes embeddings for the supplied values. If <paramref name="options"/> contains an
+    /// additional property named "prompt", its value is passed to the underlying transformer.
+    /// </summary>
     public Task<GeneratedEmbeddings<Embedding<float>>> GenerateAsync(
         IEnumerable<string> values,
         EmbeddingGenerationOptions? options = null,
@@ -61,6 +72,10 @@ public sealed class SentenceEmbeddingGenerator : IEmbeddingGenerator<string, Emb
         }, cancellationToken);
     }
 
+    /// <summary>
+    /// Returns this instance when the requested type is assignable from it and no service key is
+    /// supplied; otherwise returns <see langword="null"/>.
+    /// </summary>
     public object? GetService(Type serviceType, object? serviceKey = null)
     {
         return serviceType is null ? throw new ArgumentNullException(nameof(serviceType)) :
@@ -70,6 +85,9 @@ public sealed class SentenceEmbeddingGenerator : IEmbeddingGenerator<string, Emb
         null;
     }
 
+    /// <summary>
+    /// Disposes the underlying <see cref="SentenceTransformer"/>.
+    /// </summary>
     public void Dispose()
     {
         _sentenceTransformer.Dispose();
