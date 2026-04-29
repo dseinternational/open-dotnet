@@ -23,14 +23,21 @@ public readonly partial struct ClinicalConceptCode
       IClinicalConceptCode<ClinicalConceptCode>,
       IUtf8SpanSerializable<ClinicalConceptCode>
 {
+    /// <inheritdoc/>
     public static int MaxSerializedCharLength => 18;
 
+    /// <inheritdoc/>
     public static int MaxSerializedByteLength => 18;
 
+    /// <summary>
+    /// Initializes a new <see cref="ClinicalConceptCode"/> from the specified SNOMED CT Concept ID.
+    /// </summary>
+    /// <param name="code">The SNOMED CT Concept ID.</param>
     public ClinicalConceptCode(long code) : this(code, false)
     {
     }
 
+    /// <inheritdoc/>
     public static bool IsValidValue(long value)
     {
         return value is >= 100000 and <= 999999999999999999;

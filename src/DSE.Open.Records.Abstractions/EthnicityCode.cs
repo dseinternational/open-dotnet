@@ -9,12 +9,16 @@ using DSE.Open.Values.Text.Json.Serialization;
 
 namespace DSE.Open.Records;
 
+/// <summary>
+/// Identifies a recorded ethnicity using a numeric code.
+/// </summary>
 [StructLayout(LayoutKind.Sequential)]
 [JsonConverter(typeof(JsonSpanSerializableValueConverter<EthnicityCode, short>))]
 [EquatableValue]
 public readonly partial struct EthnicityCode : IEquatableValue<EthnicityCode, short>,
     ISpanSerializableValue<EthnicityCode, short>
 {
+    /// <inheritdoc/>
     public static int MaxSerializedCharLength => 64; // Some overhead.
 
     private EthnicityCode(short code)
@@ -22,16 +26,19 @@ public readonly partial struct EthnicityCode : IEquatableValue<EthnicityCode, sh
         _value = code;
     }
 
+    /// <inheritdoc/>
     public static bool IsValidValue(short value)
     {
         return value is > 100 and < 1000 && s_validCodes.ContainsKey(value);
     }
 
+    /// <inheritdoc/>
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
         return s_labelLookup[this];
     }
 
+    /// <inheritdoc/>
     public bool TryFormat(
         Span<char> destination,
         out int charsWritten,
@@ -50,6 +57,7 @@ public readonly partial struct EthnicityCode : IEquatableValue<EthnicityCode, sh
         return false;
     }
 
+    /// <inheritdoc/>
     public static bool TryParse(
         ReadOnlySpan<char> s,
         IFormatProvider? provider,
@@ -68,46 +76,126 @@ public readonly partial struct EthnicityCode : IEquatableValue<EthnicityCode, sh
         return false;
     }
 
+    /// <summary>
+    /// The default, uninitialized <see cref="EthnicityCode"/> value.
+    /// </summary>
     public static readonly EthnicityCode Empty;
 
+    /// <summary>American native (North America).</summary>
     public static readonly EthnicityCode AmericanNativeNorthAmerica = new(105);
+
+    /// <summary>American native (South America).</summary>
     public static readonly EthnicityCode AmericanNativeSouthAmerica = new(110);
+
+    /// <summary>American native (other).</summary>
     public static readonly EthnicityCode AmericanNativeOther = new(199);
+
+    /// <summary>Asian Bangladeshi.</summary>
     public static readonly EthnicityCode AsianBangladeshi = new(205);
+
+    /// <summary>Asian Chinese.</summary>
     public static readonly EthnicityCode AsianChinese = new(210);
+
+    /// <summary>Asian Indian.</summary>
     public static readonly EthnicityCode AsianIndian = new(215);
+
+    /// <summary>Asian Japanese.</summary>
     public static readonly EthnicityCode AsianJapanese = new(220);
+
+    /// <summary>Asian Malaysian.</summary>
     public static readonly EthnicityCode AsianMalaysia = new(225);
+
+    /// <summary>Asian Pakistani.</summary>
     public static readonly EthnicityCode AsianPakistani = new(230);
+
+    /// <summary>Asian Filipino.</summary>
     public static readonly EthnicityCode AsianPhilippines = new(235);
+
+    /// <summary>Asian Thai.</summary>
     public static readonly EthnicityCode AsianThailand = new(240);
+
+    /// <summary>Asian Vietnamese.</summary>
     public static readonly EthnicityCode AsianVietnamese = new(245);
+
+    /// <summary>Asian (other).</summary>
     public static readonly EthnicityCode AsianOther = new(299);
+
+    /// <summary>Black African.</summary>
     public static readonly EthnicityCode BlackAfrican = new(305);
+
+    /// <summary>Black African American.</summary>
     public static readonly EthnicityCode BlackAfricanAmerican = new(310);
+
+    /// <summary>Black Caribbean.</summary>
     public static readonly EthnicityCode BlackCaribbean = new(315);
+
+    /// <summary>Black (other).</summary>
     public static readonly EthnicityCode BlackOther = new(399);
+
+    /// <summary>Hispanic (Central America).</summary>
     public static readonly EthnicityCode HispanicCentralAmerica = new(405);
+
+    /// <summary>Hispanic (North America).</summary>
     public static readonly EthnicityCode HispanicNorthAmerica = new(410);
+
+    /// <summary>Hispanic (South America).</summary>
     public static readonly EthnicityCode HispanicSouthAmerica = new(415);
+
+    /// <summary>Hispanic or Latino.</summary>
     public static readonly EthnicityCode HispanicOrLatino = new(420);
+
+    /// <summary>Hispanic (other).</summary>
     public static readonly EthnicityCode HispanicOther = new(499);
+
+    /// <summary>Australian Aboriginal (Oceania and Pacific).</summary>
     public static readonly EthnicityCode OceaniaAndPacificAustralianAboriginal = new(505);
+
+    /// <summary>Native Hawaiian (Oceania and Pacific).</summary>
     public static readonly EthnicityCode OceaniaAndPacificHawaii = new(510);
+
+    /// <summary>New Zealand Māori (Oceania and Pacific).</summary>
     public static readonly EthnicityCode OceaniaAndPacificNewZealandMāori = new(515);
+
+    /// <summary>Polynesian (Oceania and Pacific).</summary>
     public static readonly EthnicityCode OceaniaAndPacificPolynesian = new(520);
+
+    /// <summary>Other Oceania and Pacific.</summary>
     public static readonly EthnicityCode OceaniaAndPacificOther = new(599);
+
+    /// <summary>White Middle Eastern.</summary>
     public static readonly EthnicityCode WhiteMiddleEast = new(605);
+
+    /// <summary>White North American.</summary>
     public static readonly EthnicityCode WhiteNorthAmerican = new(610);
+
+    /// <summary>White Northern European.</summary>
     public static readonly EthnicityCode WhiteNorthEuropean = new(615);
+
+    /// <summary>White Southern European.</summary>
     public static readonly EthnicityCode WhiteSouthEuropean = new(620);
+
+    /// <summary>White Australian.</summary>
     public static readonly EthnicityCode WhiteAustralian = new(625);
+
+    /// <summary>White New Zealander.</summary>
     public static readonly EthnicityCode WhiteNewZealander = new(630);
+
+    /// <summary>White (other).</summary>
     public static readonly EthnicityCode WhiteOther = new(699);
+
+    /// <summary>Mixed White and Asian.</summary>
     public static readonly EthnicityCode MixedWhiteAndAsian = new(805);
+
+    /// <summary>Mixed White and Black African.</summary>
     public static readonly EthnicityCode MixedWhiteAndBlackAfrican = new(810);
+
+    /// <summary>Mixed White and Black Caribbean.</summary>
     public static readonly EthnicityCode MixedWhiteAndBlackCaribbean = new(815);
+
+    /// <summary>Any other mixed background.</summary>
     public static readonly EthnicityCode MixedAnyOtherMixedBackground = new(899);
+
+    /// <summary>Any other ethnic background.</summary>
     public static readonly EthnicityCode OtherAnyOtherEthnicBackground = new(999);
 
     private static readonly FrozenDictionary<short, EthnicityCode> s_validCodes = new Dictionary<short, EthnicityCode>
