@@ -3,6 +3,9 @@
 
 namespace DSE.Open.Turnstile;
 
+/// <summary>
+/// Error codes returned by the Cloudflare Turnstile siteverify endpoint.
+/// </summary>
 public static class TurnstileErrorCodes
 {
     /// <summary>
