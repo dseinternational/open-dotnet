@@ -9,39 +9,68 @@ using DSE.Open.Hashing;
 
 namespace DSE.Open.Language.Annotations;
 
+/// <summary>
+/// A linguistically-annotated sentence, composed of one or more <see cref="Token"/>s.
+/// </summary>
 public record Sentence : ISpanFormattable, IRepeatableHash64
 {
     private ReadOnlyValueCollection<Word>? _words;
 
+    /// <summary>
+    /// The 1-based index of the sentence within its document.
+    /// </summary>
     [JsonPropertyName("index")]
     public int Index { get; init; } = 1;
 
+    /// <summary>
+    /// The optional identifier of the sentence.
+    /// </summary>
     [JsonPropertyName("sent_id")]
     public string? Id { get; init; }
 
+    /// <summary>
+    /// The optional identifier of the containing document.
+    /// </summary>
     [JsonPropertyName("doc_id")]
     public string? DocumentId { get; init; }
 
+    /// <summary>
+    /// The optional language of the sentence.
+    /// </summary>
     [JsonPropertyName("language")]
     public LanguageTag? Language { get; init; }
 
+    /// <summary>
+    /// The text of the sentence.
+    /// </summary>
     [JsonPropertyName("text")]
     public required string Text { get; init; }
 
+    /// <summary>
+    /// The tokens that make up the sentence.
+    /// </summary>
     [JsonPropertyName("tokens")]
     public required ReadOnlyValueCollection<Token> Tokens { get; init; } = [];
 
+    /// <summary>
+    /// The flattened sequence of <see cref="Word"/>s drawn from <see cref="Tokens"/>.
+    /// </summary>
     [JsonIgnore]
     public ReadOnlyValueCollection<Word> Words => _words ??= [.. Tokens.SelectMany(t => t.Words)];
 
+    /// <summary>
+    /// Comment lines associated with the sentence (CoNLL-U <c>#</c> lines).
+    /// </summary>
     [JsonPropertyName("comments")]
     public required ReadOnlyValueCollection<string> Comments { get; init; } = [];
 
+    /// <inheritdoc/>
     public override string ToString()
     {
         return ToString(default, default);
     }
 
+    /// <inheritdoc/>
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
         var buffer = ArrayPool<char>.Shared.Rent(GetCharCount());
@@ -101,6 +130,7 @@ public record Sentence : ISpanFormattable, IRepeatableHash64
     private const string TextPrefix = "# text = ";
     private const char NewLine = '\n';
 
+    /// <inheritdoc/>
     public bool TryFormat(
         Span<char> destination,
         out int charsWritten,
@@ -240,6 +270,7 @@ public record Sentence : ISpanFormattable, IRepeatableHash64
         return true;
     }
 
+    /// <inheritdoc/>
     public ulong GetRepeatableHashCode()
     {
         var hash = RepeatableHash64Provider.Default.CombineHashCodes(
@@ -260,12 +291,18 @@ public record Sentence : ISpanFormattable, IRepeatableHash64
         return hash;
     }
 
+    /// <summary>
+    /// Parses a <see cref="Sentence"/> from a CoNLL-U formatted string.
+    /// </summary>
     [Obsolete("Use FromConllu instead.")]
     public static Sentence ReadConllu(string conlluDefintion)
     {
         return FromConllu(conlluDefintion);
     }
 
+    /// <summary>
+    /// Parses a <see cref="Sentence"/> from a CoNLL-U formatted string.
+    /// </summary>
     public static Sentence FromConllu(string conlluDefintion)
     {
         ArgumentNullException.ThrowIfNull(conlluDefintion);

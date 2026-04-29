@@ -13,6 +13,10 @@ using DSE.Open.Values;
 
 namespace DSE.Open.Language.Annotations;
 
+/// <summary>
+/// A name/value attribute pair used for the CoNLL-U <c>MISC</c> column. The value
+/// part may consist of one or more comma-separated character sequences.
+/// </summary>
 [JsonConverter(typeof(JsonStringAttributeValueConverter))]
 public sealed record AttributeValue
     : ISpanFormattable,
@@ -20,15 +24,24 @@ public sealed record AttributeValue
       ISpanSerializable<AttributeValue>,
       IRepeatableHash64
 {
+    /// <summary>
+    /// The maximum number of characters used to serialize an <see cref="AttributeValue"/>.
+    /// </summary>
     public static int MaxSerializedCharLength { get; } = 512;
 
     private readonly ReadOnlyValueCollection<CharSequence> _values;
 
+    /// <summary>
+    /// Initializes a new <see cref="AttributeValue"/> with the specified name and values.
+    /// </summary>
     public AttributeValue(AlphaNumericCode name, IEnumerable<CharSequence> values)
         : this(name, [.. values])
     {
     }
 
+    /// <summary>
+    /// Initializes a new <see cref="AttributeValue"/> with the specified name and values.
+    /// </summary>
     public AttributeValue(AlphaNumericCode name, ReadOnlyValueCollection<CharSequence> values)
     {
         ArgumentNullException.ThrowIfNull(values);
@@ -64,11 +77,13 @@ public sealed record AttributeValue
         return Name.Length + _values.Sum(v => v.Length + 1); // no -1 to accommodate = sign
     }
 
+    /// <inheritdoc/>
     public override string ToString()
     {
         return ToString(null, CultureInfo.InvariantCulture);
     }
 
+    /// <inheritdoc/>
     [SkipLocalsInit]
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
@@ -98,6 +113,7 @@ public sealed record AttributeValue
         }
     }
 
+    /// <inheritdoc/>
     public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider? provider)
     {
         var charCount = GetCharCount();
@@ -130,11 +146,15 @@ public sealed record AttributeValue
         return false;
     }
 
+    /// <summary>
+    /// Parses an <see cref="AttributeValue"/> from the specified character span using the invariant culture.
+    /// </summary>
     public static AttributeValue Parse(ReadOnlySpan<char> s)
     {
         return Parse(s, CultureInfo.InvariantCulture);
     }
 
+    /// <inheritdoc/>
     public static AttributeValue Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
     {
         if (TryParse(s, provider, out var value))
@@ -145,6 +165,9 @@ public sealed record AttributeValue
         return ThrowHelper.ThrowFormatException<AttributeValue>($"Cannot parse '{s}' as {nameof(AttributeValue)}.");
     }
 
+    /// <summary>
+    /// Tries to parse an <see cref="AttributeValue"/> from the specified character span using the invariant culture.
+    /// </summary>
     public static bool TryParse(
         ReadOnlySpan<char> s,
         [MaybeNullWhen(false)] out AttributeValue result)
@@ -152,6 +175,7 @@ public sealed record AttributeValue
         return TryParse(s, CultureInfo.InvariantCulture, out result);
     }
 
+    /// <inheritdoc/>
     [SkipLocalsInit]
     public static bool TryParse(
         ReadOnlySpan<char> s,
@@ -227,22 +251,30 @@ public sealed record AttributeValue
         return false;
     }
 
+    /// <summary>
+    /// Parses an <see cref="AttributeValue"/> from the specified string using the invariant culture.
+    /// </summary>
     public static AttributeValue Parse(string s)
     {
         return Parse(s, CultureInfo.InvariantCulture);
     }
 
+    /// <summary>
+    /// Parses an <see cref="AttributeValue"/> from the specified string using the invariant culture.
+    /// </summary>
     public static AttributeValue ParseInvariant(string s)
     {
         return Parse(s, CultureInfo.InvariantCulture);
     }
 
+    /// <inheritdoc/>
     public static AttributeValue Parse(string s, IFormatProvider? provider)
     {
         ArgumentNullException.ThrowIfNull(s);
         return Parse(s.AsSpan(), provider);
     }
 
+    /// <inheritdoc/>
     public static bool TryParse(
         [NotNullWhen(true)] string? s,
         IFormatProvider? provider,
@@ -251,6 +283,7 @@ public sealed record AttributeValue
         return TryParse(s.AsSpan(), provider, out result);
     }
 
+    /// <inheritdoc/>
     public ulong GetRepeatableHashCode()
     {
         var hash = Name.GetRepeatableHashCode();

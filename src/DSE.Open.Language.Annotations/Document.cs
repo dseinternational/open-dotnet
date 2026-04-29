@@ -33,6 +33,7 @@ public record Document : IRepeatableHash64
     [JsonPropertyName("sentences")]
     public required ReadOnlyValueCollection<Sentence> Sentences { get; init; } = [];
 
+    /// <inheritdoc/>
     public ulong GetRepeatableHashCode()
     {
         var hash = RepeatableHash64Provider.Default.CombineHashCodes(
