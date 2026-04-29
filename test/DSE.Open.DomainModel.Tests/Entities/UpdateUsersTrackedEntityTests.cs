@@ -107,6 +107,42 @@ public class UpdateUsersTrackedEntityTests
         Assert.IsAssignableFrom<IUpdateUsersTracked>(new Fake());
     }
 
+    [Fact]
+    public void SetTimestamp_AssignsTimestamp_OnNewEntity()
+    {
+        var entity = new Fake();
+
+        Assert.Null(entity.Timestamp);
+        entity.AssignTimestamp(s_sampleTimestamp);
+
+        Assert.Equal(s_sampleTimestamp, entity.Timestamp);
+    }
+
+    [Fact]
+    public void SetTimestamp_OverwritesMaterializedTimestamp()
+    {
+        var entity = new Fake(
+            Guid.NewGuid(),
+            DateTimeOffset.UtcNow,
+            "alice",
+            DateTimeOffset.UtcNow,
+            "bob",
+            s_sampleTimestamp);
+
+        var replacement = new Timestamp([9, 8, 7, 6, 5, 4, 3, 2]);
+        entity.AssignTimestamp(replacement);
+
+        Assert.Equal(replacement, entity.Timestamp);
+    }
+
+    [Fact]
+    public void SetTimestamp_DefaultValue_Throws()
+    {
+        var entity = new Fake();
+
+        _ = Assert.Throws<EntityDataInitializationException>(() => entity.AssignTimestamp(default));
+    }
+
     private sealed class Fake : UpdateUsersTrackedEntity<Guid>
     {
         public Fake()
@@ -130,5 +166,6 @@ public class UpdateUsersTrackedEntityTests
 
         public void SetCreatedUserPublic(string user) => SetCreatedUser(user);
         public void SetUpdatedUserPublic(string user) => SetUpdatedUser(user);
+        public void AssignTimestamp(Timestamp value) => SetTimestamp(value);
     }
 }
