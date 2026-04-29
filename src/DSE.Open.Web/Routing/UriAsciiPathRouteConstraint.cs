@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Routing.Matching;
 
 namespace DSE.Open.Web.Routing;
 
+/// <summary>
+/// A route constraint that matches route values that are valid <see cref="UriAsciiPath"/> values.
+/// </summary>
 public class UriAsciiPathRouteConstraint : IRouteConstraint, IParameterLiteralNodeMatchingPolicy
 {
     /// <inheritdoc />
@@ -40,6 +43,7 @@ public class UriAsciiPathRouteConstraint : IRouteConstraint, IParameterLiteralNo
         return string.IsNullOrEmpty(valueString) || UriAsciiPath.IsValidValue(valueString);
     }
 
+    /// <inheritdoc />
     public bool MatchesLiteral(string parameterName, string literal)
     {
         return CheckConstraintCore(literal);
