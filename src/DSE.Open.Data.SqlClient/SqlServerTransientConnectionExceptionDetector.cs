@@ -19,6 +19,10 @@ public static class SqlServerTransientConnectionExceptionDetector
         "Please retry the connection later"
     ];
 
+    /// <summary>
+    /// Returns <see langword="true"/> if the specified exception represents a transient SQL Server
+    /// failure that should be retried; otherwise, <see langword="false"/>.
+    /// </summary>
     public static bool ShouldRetryOn(Exception? ex)
     {
         if (ex is SqlException sqlException)
