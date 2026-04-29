@@ -9,8 +9,15 @@ using OpenWord = DSE.Open.Language.Annotations.Word;
 
 namespace DSE.Open.Language.Annotations.Nlp.Stanza;
 
+/// <summary>
+/// An <see cref="IAnnotator"/> implementation that uses a Stanza pipeline to annotate text.
+/// </summary>
 public class StanzaAnnotator : IAnnotator
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="StanzaAnnotator"/> class.
+    /// </summary>
+    /// <param name="stanza">The <see cref="StanzaService"/> used to create pipelines.</param>
     public StanzaAnnotator(StanzaService stanza)
     {
         ArgumentNullException.ThrowIfNull(stanza);
@@ -18,8 +25,12 @@ public class StanzaAnnotator : IAnnotator
         Context = stanza;
     }
 
+    /// <summary>
+    /// Gets the <see cref="StanzaService"/> used by this annotator.
+    /// </summary>
     public StanzaService Context { get; }
 
+    /// <inheritdoc/>
     public Task<OpenDocument> AnnotateTextAsync(
         LanguageTag language,
         string text,

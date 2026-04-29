@@ -7,6 +7,9 @@ using DSE.Open.Interop.Python;
 
 namespace DSE.Open.Language.Annotations.Nlp.Stanza;
 
+/// <summary>
+/// Represents a syntactic word within a Stanza-processed <see cref="Token"/>.
+/// </summary>
 public class Word : StanzaObject
 {
     internal Word(PyObject pyWord, IStanzaService stanza) : base(pyWord, stanza)
@@ -28,6 +31,9 @@ public class Word : StanzaObject
     /// </summary>
     public int Index { get; }
 
+    /// <summary>
+    /// Gets the index of the syntactic head of this word, or <see langword="null"/> if not set.
+    /// </summary>
     public int? Head { get; }
 
     /// <summary>
@@ -40,16 +46,32 @@ public class Word : StanzaObject
     /// </summary>
     public string? Lemma { get; }
 
+    /// <summary>
+    /// Gets the universal part-of-speech tag (UPOS) of this word.
+    /// </summary>
     public string Pos { get; }
 
+    /// <summary>
+    /// Gets the language-specific part-of-speech tag (XPOS) of this word, if any.
+    /// </summary>
     public string? AltPos { get; }
 
+    /// <summary>
+    /// Gets the morphological features of this word, if any.
+    /// </summary>
     public string? Features { get; }
 
+    /// <summary>
+    /// Gets the universal dependency relation of this word to its head.
+    /// </summary>
     public string Relation { get; }
 
+    /// <summary>
+    /// Gets miscellaneous attributes associated with this word, if any.
+    /// </summary>
     public string? Attributes { get; }
 
+    /// <inheritdoc/>
     public override string ToString()
     {
         return $"{Index} {Pos} {AltPos} {Text}";
