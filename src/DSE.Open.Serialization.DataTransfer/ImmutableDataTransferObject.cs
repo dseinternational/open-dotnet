@@ -14,6 +14,10 @@ public abstract record ImmutableDataTransferObject : IJsonSerializable, IExtensi
 {
     private ReadOnlyValueDictionary<string, object>? _extensionData;
 
+    /// <summary>
+    /// Gets the read-only dictionary of additional data captured during deserialization that
+    /// does not match any declared property on this object.
+    /// </summary>
     [JsonIgnore]
     public IReadOnlyDictionary<string, object> ExtensionData => ExtensionDataCore;
 
@@ -32,6 +36,9 @@ public abstract record ImmutableDataTransferObject : IJsonSerializable, IExtensi
         init => _extensionData = value;
     }
 
+    /// <summary>
+    /// Gets a value indicating whether any extension data has been captured.
+    /// </summary>
     [JsonIgnore]
     public bool HasExtensionData => _extensionData is not null && _extensionData.Count > 0;
 }

@@ -15,6 +15,10 @@ public abstract record DataTransferObject : IJsonSerializable, IExtensionData
 {
     private ValueDictionary<string, object>? _extensionData;
 
+    /// <summary>
+    /// Gets the dictionary of additional data captured during deserialization that does not
+    /// match any declared property on this object.
+    /// </summary>
     [JsonIgnore]
     public ValueDictionary<string, object> ExtensionData => ExtensionDataCore;
 
@@ -35,6 +39,9 @@ public abstract record DataTransferObject : IJsonSerializable, IExtensionData
 #pragma warning restore IDE0028 // Simplify collection initialization
     }
 
+    /// <summary>
+    /// Gets a value indicating whether any extension data has been captured.
+    /// </summary>
     [JsonIgnore]
     public bool HasExtensionData => _extensionData is not null && _extensionData.Count > 0;
 }
