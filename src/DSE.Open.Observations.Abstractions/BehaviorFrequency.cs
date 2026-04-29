@@ -26,17 +26,22 @@ public readonly partial struct BehaviorFrequency
     private const byte DevelopingValue = 50;
     private const byte AchievedValue = 90;
 
+    /// <inheritdoc/>
     public static int MaxSerializedCharLength => 2;
 
+    /// <inheritdoc/>
     public static int MaxSerializedByteLength => 2;
 
+    /// <inheritdoc/>
     public MeasurementValueType ValueType => MeasurementValueType.Ordinal;
 
+    /// <inheritdoc/>
     public static bool IsValidValue(byte value)
     {
         return value is NeverValue or EmergingValue or DevelopingValue or AchievedValue;
     }
 
+    /// <inheritdoc/>
     public ulong GetRepeatableHashCode()
     {
         return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);
@@ -47,6 +52,7 @@ public readonly partial struct BehaviorFrequency
         return IObservationValue.ThrowValueMismatchException<bool>();
     }
 
+    /// <inheritdoc/>
     public byte GetOrdinal()
     {
         return _value;

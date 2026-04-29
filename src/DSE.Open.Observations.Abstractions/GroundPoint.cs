@@ -17,6 +17,14 @@ namespace DSE.Open.Observations;
 [StructLayout(LayoutKind.Sequential)]
 public readonly record struct GroundPoint : IRepeatableHash64
 {
+    /// <summary>
+    /// Initializes a new <see cref="GroundPoint"/> with the specified coordinates and accuracy.
+    /// </summary>
+    /// <param name="latitude">The latitude in degrees, in the inclusive range -90 to 90.</param>
+    /// <param name="longitude">The longitude in degrees, in the inclusive range -180 to 180.</param>
+    /// <param name="accuracy">The accuracy of the location.</param>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="latitude"/> or
+    /// <paramref name="longitude"/> is not finite or is outside the permitted range.</exception>
     public GroundPoint(double latitude, double longitude, Length accuracy)
     {
         if (!double.IsFinite(latitude) || latitude is < -90 or > 90)
@@ -36,15 +44,25 @@ public readonly record struct GroundPoint : IRepeatableHash64
         Accuracy = accuracy;
     }
 
+    /// <summary>
+    /// Gets the latitude in degrees.
+    /// </summary>
     [JsonPropertyName("latitude")]
     public double Latitude { get; }
 
+    /// <summary>
+    /// Gets the longitude in degrees.
+    /// </summary>
     [JsonPropertyName("longitude")]
     public double Longitude { get; }
 
+    /// <summary>
+    /// Gets the accuracy of the location.
+    /// </summary>
     [JsonPropertyName("accuracy")]
     public Length Accuracy { get; }
 
+    /// <inheritdoc/>
     public ulong GetRepeatableHashCode()
     {
         var h0 = RepeatableHash64Provider.Default.GetRepeatableHashCode(Latitude);
