@@ -9,23 +9,38 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DSE.Open.EntityFrameworkCore.Models.Language.Storage.ValueConversion;
 
+/// <summary>
+/// EF Core value converter that maps <see cref="Sentence"/> values to and from a JSON <see cref="string"/>.
+/// </summary>
 [RequiresDynamicCode(WarningMessages.RequiresDynamicCode)]
 [RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]
 public sealed class SentenceToJsonStringConverter : ValueConverter<Sentence, string>
 {
+    /// <summary>
+    /// Gets the default <see cref="SentenceToJsonStringConverter"/> instance.
+    /// </summary>
     public static readonly SentenceToJsonStringConverter Default = new();
 
+    /// <summary>
+    /// Initialises a new instance of the <see cref="SentenceToJsonStringConverter"/> class.
+    /// </summary>
     public SentenceToJsonStringConverter() : base(v => ConvertTo(v), v => ConvertFrom(v))
     {
     }
 
-    // public for EF Core model compilation
+    /// <summary>
+    /// Serialises a <see cref="Sentence"/> to a JSON string.
+    /// </summary>
+    /// <remarks>Public for EF Core model compilation.</remarks>
     public static string ConvertTo(Sentence value)
     {
         return JsonSerializer.Serialize(value, JsonSharedOptions.RelaxedJsonEscaping);
     }
 
-    // public for EF Core model compilation
+    /// <summary>
+    /// Deserialises a <see cref="Sentence"/> from a JSON string.
+    /// </summary>
+    /// <remarks>Public for EF Core model compilation.</remarks>
     public static Sentence ConvertFrom(string value)
     {
         return JsonSerializer.Deserialize<Sentence>(value, JsonSharedOptions.RelaxedJsonEscaping)!;

@@ -6,21 +6,36 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DSE.Open.EntityFrameworkCore.Models.Language.Storage.ValueConversion;
 
+/// <summary>
+/// EF Core value converter that maps <see cref="TokenIndex"/> values to and from <see cref="string"/>.
+/// </summary>
 public sealed class TokenIndexToStringConverter : ValueConverter<TokenIndex, string>
 {
+    /// <summary>
+    /// Gets the default <see cref="TokenIndexToStringConverter"/> instance.
+    /// </summary>
     public static readonly TokenIndexToStringConverter Default = new();
 
+    /// <summary>
+    /// Initialises a new instance of the <see cref="TokenIndexToStringConverter"/> class.
+    /// </summary>
     public TokenIndexToStringConverter() : base(v => ConvertTo(v), v => ConvertFrom(v))
     {
     }
 
-    // public for EF Core model compilation
+    /// <summary>
+    /// Converts a <see cref="TokenIndex"/> to its string representation.
+    /// </summary>
+    /// <remarks>Public for EF Core model compilation.</remarks>
     public static string ConvertTo(TokenIndex value)
     {
         return value.ToString();
     }
 
-    // public for EF Core model compilation
+    /// <summary>
+    /// Converts a string to a <see cref="TokenIndex"/> using invariant culture.
+    /// </summary>
+    /// <remarks>Public for EF Core model compilation.</remarks>
     public static TokenIndex ConvertFrom(string value)
     {
         return TokenIndex.ParseInvariant(value);
