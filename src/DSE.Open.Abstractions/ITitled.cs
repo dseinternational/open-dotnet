@@ -8,5 +8,8 @@ namespace DSE.Open;
 /// </summary>
 public interface ITitled
 {
+    /// <summary>
+    /// Gets the title of the object.
+    /// </summary>
     string Title { get; }
 }

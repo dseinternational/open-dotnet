@@ -31,6 +31,14 @@ public interface ITryConvertibleFrom<TSelf, TFrom>
     /// by <paramref name="value"/>.</param>
     static abstract explicit operator TSelf(TFrom value);
 
+    /// <summary>
+    /// Converts a value of type <typeparamref name="TFrom"/> to a value of type <typeparamref name="TSelf"/>,
+    /// throwing an <see cref="InvalidCastException"/> if the conversion fails.
+    /// </summary>
+    /// <param name="value">The value to convert.</param>
+    /// <returns>The converted value.</returns>
+    /// <exception cref="InvalidCastException">Thrown when <paramref name="value"/> cannot be converted
+    /// to a valid <typeparamref name="TSelf"/>.</exception>
     static virtual TSelf FromValue(TFrom value)
     {
         return !TSelf.TryFromValue(value, out var result)

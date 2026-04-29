@@ -8,5 +8,8 @@ namespace DSE.Open;
 /// </summary>
 public interface INamed
 {
+    /// <summary>
+    /// Gets the name of the object.
+    /// </summary>
     string Name { get; }
 }
