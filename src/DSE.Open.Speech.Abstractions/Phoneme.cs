@@ -36,17 +36,27 @@ public sealed class Phoneme : IEquatable<Phoneme>, IRepeatableHash64
     [JsonPropertyName("allophones")]
     public ReadOnlyValueSet<SpeechSound> Allophones { get; init; } = [];
 
+    /// <summary>
+    /// Gets a value indicating whether the phoneme's <see cref="Abstraction"/> is
+    /// classified as a consonant.
+    /// </summary>
     [JsonIgnore]
     public bool IsConsonant => SpeechSound.IsConsonant(Abstraction);
 
+    /// <summary>
+    /// Gets a value indicating whether the phoneme's <see cref="Abstraction"/> is
+    /// classified as a vowel.
+    /// </summary>
     [JsonIgnore]
     public bool IsVowel => SpeechSound.IsVowel(Abstraction);
 
+    /// <inheritdoc/>
     public override bool Equals(object? obj)
     {
         return obj is Phoneme phoneme && Equals(phoneme);
     }
 
+    /// <inheritdoc/>
     public bool Equals(Phoneme? other)
     {
         return other is not null
@@ -55,6 +65,7 @@ public sealed class Phoneme : IEquatable<Phoneme>, IRepeatableHash64
             && Allophones.SetEquals(other.Allophones);
     }
 
+    /// <inheritdoc/>
     public override int GetHashCode()
     {
         return HashCode.Combine(Language, Abstraction, Allophones);
@@ -99,11 +110,19 @@ public sealed class Phoneme : IEquatable<Phoneme>, IRepeatableHash64
         return Abstraction.ToString();
     }
 
+    /// <summary>
+    /// Returns a phonemic <see cref="SpeechTranscription"/> for this phoneme's
+    /// <see cref="Abstraction"/>.
+    /// </summary>
     public SpeechTranscription ToTranscription()
     {
         return new(Abstraction, TranscriptionNotation.Phonemic);
     }
 
+    /// <summary>
+    /// Determines whether two <see cref="Phoneme"/> instances are equal, treating
+    /// <see langword="null"/> arguments as equal to each other but not to non-null values.
+    /// </summary>
     public static bool Equals(Phoneme? left, Phoneme? right)
     {
         if (left is null)
@@ -119,6 +138,7 @@ public sealed class Phoneme : IEquatable<Phoneme>, IRepeatableHash64
         return left.Equals(right);
     }
 
+    /// <inheritdoc/>
     public ulong GetRepeatableHashCode()
     {
         var hash = RepeatableHash64Provider.Default.CombineHashCodes(
@@ -133,11 +153,17 @@ public sealed class Phoneme : IEquatable<Phoneme>, IRepeatableHash64
         return hash;
     }
 
+    /// <summary>
+    /// Determines whether two <see cref="Phoneme"/> instances are equal.
+    /// </summary>
     public static bool operator ==(Phoneme? left, Phoneme? right)
     {
         return Equals(left, right);
     }
 
+    /// <summary>
+    /// Determines whether two <see cref="Phoneme"/> instances are not equal.
+    /// </summary>
     public static bool operator !=(Phoneme? left, Phoneme? right)
     {
         return !(left == right);

@@ -3,6 +3,9 @@
 
 namespace DSE.Open.Speech;
 
+/// <summary>
+/// Identifies the broad category of a speech sound.
+/// </summary>
 public enum SpeechSoundType
 {
     /// <summary>

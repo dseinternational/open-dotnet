@@ -3,6 +3,9 @@
 
 namespace DSE.Open.Speech;
 
+/// <summary>
+/// Identifies a scheme used to label a <see cref="Phoneme"/>.
+/// </summary>
 public enum PhonemeLabelScheme
 {
     /// <summary>

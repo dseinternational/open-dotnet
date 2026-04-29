@@ -721,6 +721,9 @@ public static class Phonemes
 
         // ---------------------------------------------------------------------
 
+        /// <summary>
+        /// The set of English consonant phonemes defined in <see cref="Phonemes.English"/>.
+        /// </summary>
         public static readonly FrozenSet<Phoneme> Consonants = FrozenSet.ToFrozenSet(
         [
             b,
@@ -751,6 +754,9 @@ public static class Phonemes
             zh,
         ]);
 
+        /// <summary>
+        /// The set of English vowel phonemes defined in <see cref="Phonemes.English"/>.
+        /// </summary>
         public static readonly FrozenSet<Phoneme> Vowels = FrozenSet.ToFrozenSet(
         [
             a,
@@ -779,6 +785,9 @@ public static class Phonemes
             yoo,
         ]);
 
+        /// <summary>
+        /// The set of all English phonemes (the union of <see cref="Consonants"/> and <see cref="Vowels"/>).
+        /// </summary>
         public static readonly FrozenSet<Phoneme> All = FrozenSet.ToFrozenSet(Consonants.Union(Vowels));
     }
 }
