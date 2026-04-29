@@ -23,97 +23,172 @@ public readonly partial struct UriSlug
     : IComparableValue<UriSlug, AsciiString>,
       IUtf8SpanSerializable<UriSlug>
 {
+    /// <summary>The path-segment separator ('/').</summary>
     public static readonly AsciiChar Separator = (AsciiChar)'/';
+    /// <summary>The dash character ('-').</summary>
     public static readonly AsciiChar Dash = (AsciiChar)'-';
 
+    /// <summary>
+    /// An empty <see cref="UriSlug"/>.
+    /// </summary>
     public static readonly UriSlug Empty = new(default, true);
 
+    /// <summary>
+    /// The maximum length, in characters, of a <see cref="UriSlug"/>.
+    /// </summary>
     public const int MaxLength = 512;
 
+    /// <summary>
+    /// Gets the maximum number of bytes required when serializing a <see cref="UriSlug"/> as UTF-8.
+    /// </summary>
     public static int MaxSerializedByteLength => MaxLength;
 
+    /// <summary>
+    /// Gets the maximum number of characters required when serializing a <see cref="UriSlug"/> as text.
+    /// </summary>
     public static int MaxSerializedCharLength => MaxLength;
 
+    /// <summary>
+    /// Initialises a new <see cref="UriSlug"/> from the supplied <see cref="AsciiString"/>, validating its contents.
+    /// </summary>
     public UriSlug(AsciiString path) : this(path, false)
     {
     }
 
+    /// <summary>
+    /// Initialises a new <see cref="UriSlug"/> by parsing the supplied string as ASCII.
+    /// </summary>
     public UriSlug(string path) : this(AsciiString.Parse(path, null), false)
     {
     }
 
+    /// <summary>
+    /// Initialises a new <see cref="UriSlug"/> from the supplied ASCII memory region, validating its contents.
+    /// </summary>
     public UriSlug(ReadOnlyMemory<AsciiChar> path) : this(new(path), false)
     {
     }
 
+    /// <summary>
+    /// Gets the <see cref="AsciiChar"/> at the specified index in the slug.
+    /// </summary>
     public AsciiChar this[int index] => _value[index];
 
+    /// <summary>
+    /// Returns a sub-range of the underlying value as an <see cref="AsciiString"/>.
+    /// </summary>
     public AsciiString Slice(int start, int length)
     {
         return _value.Slice(start, length);
     }
 
+    /// <summary>
+    /// Gets a read-only span over the underlying ASCII characters.
+    /// </summary>
     public ReadOnlySpan<AsciiChar> Span => _value.AsSpan();
 
+    /// <summary>
+    /// Gets a value indicating whether the slug is empty.
+    /// </summary>
     public bool IsEmpty => _value.IsEmpty;
 
+    /// <summary>
+    /// Gets the length of the slug, in characters.
+    /// </summary>
     public int Length => _value.Length;
 
+    /// <summary>
+    /// Determines whether this slug ends with <paramref name="value"/>.
+    /// </summary>
     public bool EndsWith(ReadOnlySpan<char> value)
     {
         return _value.EndsWith(value);
     }
 
+    /// <summary>
+    /// Determines whether this slug ends with <paramref name="value"/>.
+    /// </summary>
     public bool EndsWith(string value)
     {
         return _value.EndsWith(value);
     }
 
+    /// <summary>
+    /// Determines whether this slug ends with <paramref name="value"/>.
+    /// </summary>
     public bool EndsWith(UriSlug value)
     {
         return _value.EndsWith(value._value);
     }
 
+    /// <summary>
+    /// Determines whether this slug ends with <paramref name="value"/>.
+    /// </summary>
     public bool EndsWith(AsciiString value)
     {
         return _value.EndsWith(value);
     }
 
+    /// <summary>
+    /// Determines whether this slug ends with <paramref name="value"/>.
+    /// </summary>
     public bool EndsWith(ReadOnlySpan<byte> value)
     {
         return _value.EndsWith(value);
     }
 
+    /// <summary>
+    /// Determines whether this slug ends with the specified character.
+    /// </summary>
     public bool EndsWith(AsciiChar value)
     {
         return !_value.IsEmpty && _value[_value.Length - 1] == value;
     }
 
+    /// <summary>
+    /// Determines whether this slug is equal to the supplied string using an ordinal comparison.
+    /// </summary>
     public bool Equals(string value)
     {
         return _value.Equals(value);
     }
 
+    /// <summary>
+    /// Determines whether this slug is equal to the supplied character span using an ordinal comparison.
+    /// </summary>
     public bool Equals(ReadOnlySpan<char> value)
     {
         return _value.Equals(value);
     }
 
+    /// <summary>
+    /// Determines whether this slug is equal to the supplied ASCII span using an ordinal comparison.
+    /// </summary>
     public bool Equals(ReadOnlySpan<AsciiChar> value)
     {
         return _value.Equals(value);
     }
 
+    /// <summary>
+    /// Returns the zero-based index of the first occurrence of <paramref name="c"/>, or -1 if not found.
+    /// </summary>
     public int IndexOf(AsciiChar c)
     {
         return _value.IndexOf(c);
     }
 
+    /// <summary>
+    /// Returns the zero-based index of the last occurrence of <paramref name="c"/>, or -1 if not found.
+    /// </summary>
     public int LastIndexOf(AsciiChar c)
     {
         return _value.LastIndexOf(c);
     }
 
+    /// <summary>
+    /// Returns the parent slug (the portion before the last <see cref="Separator"/>),
+    /// or <see langword="null"/> if there is no parent.
+    /// </summary>
     public UriSlug? GetParent()
     {
         if (!_value.IsEmpty)
@@ -129,36 +204,57 @@ public readonly partial struct UriSlug
         return null;
     }
 
+    /// <summary>
+    /// Returns the number of segments in the slug (segments are separated by <see cref="Separator"/>).
+    /// </summary>
     public int GetSegmentCount()
     {
         return Length == 0 ? 0 : _value.AsSpan().Count((AsciiChar)'/') + 1;
     }
 
+    /// <summary>
+    /// Determines whether this slug begins with <paramref name="value"/>.
+    /// </summary>
     public bool StartsWith(ReadOnlySpan<char> value)
     {
         return _value.StartsWith(value);
     }
 
+    /// <summary>
+    /// Determines whether this slug begins with <paramref name="value"/>.
+    /// </summary>
     public bool StartsWith(string value)
     {
         return _value.StartsWith(value);
     }
 
+    /// <summary>
+    /// Determines whether this slug begins with <paramref name="value"/>.
+    /// </summary>
     public bool StartsWith(UriSlug value)
     {
         return _value.StartsWith(value._value);
     }
 
+    /// <summary>
+    /// Determines whether this slug begins with <paramref name="value"/>.
+    /// </summary>
     public bool StartsWith(AsciiString value)
     {
         return _value.StartsWith(value);
     }
 
+    /// <summary>
+    /// Determines whether this slug begins with <paramref name="value"/>.
+    /// </summary>
     public bool StartsWith(ReadOnlySpan<byte> value)
     {
         return _value.StartsWith(value);
     }
 
+    /// <summary>
+    /// Determines whether this slug begins with the specified character.
+    /// </summary>
     public bool StartsWith(AsciiChar value)
     {
         return !_value.IsEmpty && _value[0] == value;
@@ -189,16 +285,26 @@ public readonly partial struct UriSlug
         return IsValidOuterChar(c) || c == Separator;
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if <paramref name="value"/> is a valid <see cref="UriSlug"/>.
+    /// </summary>
     public static bool IsValidValue(AsciiString value)
     {
         return IsValidValue(value.AsSpan(), false);
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if <paramref name="value"/> is a valid <see cref="UriSlug"/>.
+    /// </summary>
     public static bool IsValidValue(ReadOnlySpan<AsciiChar> value)
     {
         return IsValidValue(value, false);
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if <paramref name="value"/> is a valid <see cref="UriSlug"/>,
+    /// optionally permitting leading or trailing <see cref="Separator"/> characters.
+    /// </summary>
     public static bool IsValidValue(ReadOnlySpan<AsciiChar> value, bool ignoreLeadingTrailingSlashes)
     {
         if (value.IsEmpty)
@@ -231,12 +337,19 @@ public readonly partial struct UriSlug
         return inner.All(IsValidInnerChar);
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if <paramref name="value"/> is a valid <see cref="UriSlug"/>.
+    /// </summary>
     [SkipLocalsInit]
     public static bool IsValidValue(ReadOnlySpan<char> value)
     {
         return IsValidValue(value, false);
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if <paramref name="value"/> is a valid <see cref="UriSlug"/>,
+    /// optionally permitting leading or trailing <see cref="Separator"/> characters.
+    /// </summary>
     [SkipLocalsInit]
     public static bool IsValidValue(ReadOnlySpan<char> value, bool ignoreLeadingTrailingSlashes)
     {
@@ -277,11 +390,18 @@ public readonly partial struct UriSlug
         return true;
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if <paramref name="value"/> is a valid <see cref="UriSlug"/>.
+    /// </summary>
     public static bool IsValidValue(string value)
     {
         return IsValidValue(value.AsSpan());
     }
 
+    /// <summary>
+    /// Attempts to parse the supplied character span as a <see cref="UriSlug"/>, lower-casing the
+    /// input and trimming a single leading or trailing '/'.
+    /// </summary>
     [SkipLocalsInit]
     public static bool TryParseSanitised(ReadOnlySpan<char> s, out UriSlug value)
     {
@@ -322,6 +442,10 @@ public readonly partial struct UriSlug
         return false;
     }
 
+    /// <summary>
+    /// Attempts to parse the supplied string as a <see cref="UriSlug"/>, lower-casing the
+    /// input and trimming a single leading or trailing '/'.
+    /// </summary>
     public static bool TryParseSanitised(string? s, out UriSlug value)
     {
         return TryParseSanitised(s.AsSpan(), out value);
@@ -353,6 +477,10 @@ public readonly partial struct UriSlug
         return new(combined);
     }
 
+    /// <summary>
+    /// Creates a new <see cref="UriSlug"/> by appending <paramref name="path1"/> and <paramref name="path2"/>
+    /// to the current slug, separated by <see cref="Separator"/>.
+    /// </summary>
     public UriSlug Append(UriSlug path1, UriSlug path2)
     {
         if (_value.IsEmpty)
@@ -381,6 +509,10 @@ public readonly partial struct UriSlug
         return new(combined);
     }
 
+    /// <summary>
+    /// Creates a new <see cref="UriSlug"/> by appending <paramref name="path1"/>, <paramref name="path2"/>
+    /// and <paramref name="path3"/> to the current slug, separated by <see cref="Separator"/>.
+    /// </summary>
     public UriSlug Append(UriSlug path1, UriSlug path2, UriSlug path3)
     {
         if (_value.IsEmpty)
@@ -416,6 +548,9 @@ public readonly partial struct UriSlug
         return new(combined);
     }
 
+    /// <summary>
+    /// Creates a new <see cref="UriSlug"/> by appending the supplied segment string, separated by <see cref="Separator"/>.
+    /// </summary>
     public UriSlug AppendSegment(string path)
     {
         return Append(new(path));
@@ -486,6 +621,9 @@ public readonly partial struct UriSlug
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
+    /// <summary>
+    /// Explicitly converts a string to a <see cref="UriSlug"/> by parsing it with the invariant culture.
+    /// </summary>
     public static explicit operator UriSlug(string value)
     {
         return Parse(value, CultureInfo.InvariantCulture);
@@ -507,6 +645,7 @@ public readonly partial struct UriSlug
         return new((AsciiString)uriAsciiPath, skipValidation: true);
     }
 
+    /// <inheritdoc/>
     public bool TryFormat(
         Span<byte> utf8Destination,
         out int bytesWritten,
@@ -525,6 +664,7 @@ public readonly partial struct UriSlug
         return false;
     }
 
+    /// <inheritdoc/>
     public static UriSlug Parse(ReadOnlySpan<byte> utf8Text, IFormatProvider? provider)
     {
         if (TryParse(utf8Text, provider, out var result))
@@ -536,6 +676,7 @@ public readonly partial struct UriSlug
         return default; // unreachable
     }
 
+    /// <inheritdoc/>
     public static bool TryParse(ReadOnlySpan<byte> utf8Text, IFormatProvider? provider, out UriSlug result)
     {
         if (!IsValidValue(ValuesMarshal.AsAsciiChars(utf8Text)))

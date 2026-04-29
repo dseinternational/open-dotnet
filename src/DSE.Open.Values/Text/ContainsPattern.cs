@@ -17,8 +17,16 @@ public readonly partial struct ContainsPattern : IEquatableValue<ContainsPattern
     private static readonly SearchValues<char> s_validSymbols =
         SearchValues.Create(['*', '(', ')', '"', '&', '!', '|']);
 
+    /// <summary>
+    /// The maximum number of characters in a serialized <see cref="ContainsPattern"/>.
+    /// </summary>
     public static int MaxSerializedCharLength => 128;
 
+    /// <summary>
+    /// Indicates whether the specified value is a valid <see cref="ContainsPattern"/> — non-empty,
+    /// no longer than <see cref="MaxSerializedCharLength"/>, and consisting only of letters, digits,
+    /// whitespace, or the symbols <c>* ( ) " &amp; ! |</c>.
+    /// </summary>
     public static bool IsValidValue(CharSequence value)
     {
         if (value.IsEmpty || value.Length > MaxSerializedCharLength)
@@ -39,6 +47,7 @@ public readonly partial struct ContainsPattern : IEquatableValue<ContainsPattern
         return true;
     }
 
+    /// <inheritdoc/>
     public override string ToString()
     {
         return _value.ToString();

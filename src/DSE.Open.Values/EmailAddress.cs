@@ -33,15 +33,30 @@ public readonly record struct EmailAddress
     // https://datatracker.ietf.org/doc/html/rfc5322#section-3.2.3
     private const string ATextSymbolChars = "!#$%&'*+-/=?^_`{|}~";
 
+    /// <summary>
+    /// The maximum length, in characters, of the local part of an email address.
+    /// </summary>
     public const int MaxLocalPartLength = 64;
 
+    /// <summary>
+    /// The maximum length, in characters, of the domain part of an email address.
+    /// </summary>
     public const int MaxDomainPartLength = MaxLength - MaxLocalPartLength - 1;
 
+    /// <summary>
+    /// The character that separates the local part from the domain part of an email address.
+    /// </summary>
     public const char AtChar = '@';
 
     // https://stackoverflow.com/questions/386294/what-is-the-maximum-length-of-a-valid-email-address
+    /// <summary>
+    /// The maximum length, in characters, of an email address.
+    /// </summary>
     public const int MaxLength = 254;
 
+    /// <summary>
+    /// An empty <see cref="EmailAddress"/>.
+    /// </summary>
     public static readonly EmailAddress Empty;
 
     private readonly string? _value; // null if empty
@@ -57,10 +72,19 @@ public readonly record struct EmailAddress
         _splitIndex = splitIndex;
     }
 
+    /// <summary>
+    /// Initialises a new <see cref="EmailAddress"/> by parsing the supplied character span.
+    /// </summary>
+    /// <exception cref="FormatException">The span does not contain a valid email address.</exception>
     public EmailAddress(ReadOnlySpan<char> email) : this(email.ToString())
     {
     }
 
+    /// <summary>
+    /// Initialises a new <see cref="EmailAddress"/> by parsing the supplied string after trimming whitespace.
+    /// </summary>
+    /// <exception cref="ArgumentException"><paramref name="email"/> is <see langword="null"/>, empty, or whitespace.</exception>
+    /// <exception cref="FormatException"><paramref name="email"/> is not a valid email address.</exception>
     public EmailAddress(string email)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(email);
@@ -76,23 +100,41 @@ public readonly record struct EmailAddress
         _splitIndex = splitIndex;
     }
 
+    /// <summary>
+    /// Gets the length of the email address, in characters.
+    /// </summary>
     public int Length => _value?.Length ?? 0;
 
+    /// <summary>
+    /// Returns a read-only span over the local part (the portion preceding <see cref="AtChar"/>) of this email address.
+    /// </summary>
     public ReadOnlySpan<char> LocalPart()
     {
         return _value.AsSpan(0, _splitIndex);
     }
 
+    /// <summary>
+    /// Returns a read-only span over the domain part (the portion following <see cref="AtChar"/>) of this email address.
+    /// </summary>
     public ReadOnlySpan<char> DomainPart()
     {
         return _value.AsSpan(_splitIndex + 1);
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if the supplied character span is a valid email address according to the rules documented on <see cref="EmailAddress"/>.
+    /// </summary>
     public static bool IsValid(ReadOnlySpan<char> email)
     {
         return IsValid(email, out _);
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if the supplied character span is a valid email address according to the rules documented on <see cref="EmailAddress"/>,
+    /// also outputting the index of the <see cref="AtChar"/> separator.
+    /// </summary>
+    /// <param name="email">The candidate email address.</param>
+    /// <param name="splitIndex">When the email is valid, the index of the <see cref="AtChar"/> separator; otherwise unspecified.</param>
     public static bool IsValid(ReadOnlySpan<char> email, out int splitIndex)
     {
         if (email.Length > MaxLength)
@@ -235,11 +277,15 @@ public readonly record struct EmailAddress
         return true;
     }
 
+    /// <summary>
+    /// Returns a read-only span over the email address's characters.
+    /// </summary>
     public ReadOnlySpan<char> AsSpan()
     {
         return _value.AsSpan();
     }
 
+    /// <inheritdoc/>
     public int CompareTo(EmailAddress other)
     {
         return string.CompareOrdinal(_value, other._value);
@@ -292,47 +338,62 @@ public readonly record struct EmailAddress
         return _value.AsSpan().Contains(value, comparisonType);
     }
 
+    /// <inheritdoc/>
     public bool Equals(EmailAddress other)
     {
         return Equals(other._value.AsSpan());
     }
 
+    /// <inheritdoc/>
     public bool Equals(string? other)
     {
         return Equals(other.AsSpan());
     }
 
+    /// <inheritdoc/>
     public bool Equals(ReadOnlyMemory<char> other)
     {
         return Equals(other.Span);
     }
 
+    /// <summary>
+    /// Determines whether this email address is equal to the supplied character span using ordinal comparison.
+    /// </summary>
     public bool Equals(ReadOnlySpan<char> other)
     {
         return _value.AsSpan().SequenceEqual(other);
     }
 
+    /// <inheritdoc/>
     public override int GetHashCode()
     {
         return string.GetHashCode(_value, StringComparison.Ordinal);
     }
 
+    /// <summary>
+    /// Parses the supplied string as an <see cref="EmailAddress"/>.
+    /// </summary>
     public static EmailAddress Parse(string s)
     {
         return Parse(s, null);
     }
 
+    /// <inheritdoc/>
     public static EmailAddress Parse(string s, IFormatProvider? provider)
     {
         ArgumentNullException.ThrowIfNull(s);
         return Parse(s.AsSpan(), provider);
     }
 
+    /// <summary>
+    /// Parses the supplied character span as an <see cref="EmailAddress"/>.
+    /// </summary>
     public static EmailAddress Parse(ReadOnlySpan<char> s)
     {
         return Parse(s, null);
     }
 
+    /// <inheritdoc/>
     public static EmailAddress Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
     {
         return TryParse(s, provider, out var result)
@@ -340,11 +401,17 @@ public readonly record struct EmailAddress
             : ThrowHelper.ThrowFormatException<EmailAddress>($"Failed to parse {nameof(EmailAddress)}: '{s}'");
     }
 
+    /// <summary>
+    /// Parses the supplied character span as an <see cref="EmailAddress"/> using the invariant culture.
+    /// </summary>
     public static EmailAddress ParseInvariant(ReadOnlySpan<char> s)
     {
         return Parse(s, CultureInfo.InvariantCulture);
     }
 
+    /// <summary>
+    /// Attempts to parse the supplied string as an <see cref="EmailAddress"/>.
+    /// </summary>
     public static bool TryParse(
         [NotNullWhen(true)] string? s,
         out EmailAddress result)
@@ -352,6 +419,7 @@ public readonly record struct EmailAddress
         return TryParse(s, null, out result);
     }
 
+    /// <inheritdoc/>
     public static bool TryParse(
         [NotNullWhen(true)] string? s,
         IFormatProvider? provider,
@@ -366,11 +434,15 @@ public readonly record struct EmailAddress
         return TryParse(s.AsSpan(), provider, out result);
     }
 
+    /// <summary>
+    /// Attempts to parse the supplied character span as an <see cref="EmailAddress"/>.
+    /// </summary>
     public static bool TryParse(ReadOnlySpan<char> s, out EmailAddress result)
     {
         return TryParse(s, null, out result);
     }
 
+    /// <inheritdoc/>
     public static bool TryParse(
         ReadOnlySpan<char> s,
         IFormatProvider? provider,
@@ -394,21 +466,27 @@ public readonly record struct EmailAddress
         return false;
     }
 
+    /// <inheritdoc/>
     public override string ToString()
     {
         return ToString(null, null);
     }
 
+    /// <inheritdoc/>
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
         return _value ?? string.Empty;
     }
 
+    /// <summary>
+    /// Attempts to copy the email address into the destination span.
+    /// </summary>
     public bool TryFormat(Span<char> destination, out int charsWritten)
     {
         return TryFormat(destination, out charsWritten, default, default);
     }
 
+    /// <inheritdoc/>
     public bool TryFormat(
         Span<char> destination,
         out int charsWritten,
@@ -432,48 +510,73 @@ public readonly record struct EmailAddress
         return false;
     }
 
+    /// <inheritdoc/>
     public ulong GetRepeatableHashCode()
     {
         return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value.AsSpan());
     }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates - explicit conversion operators
+    /// <summary>
+    /// Explicitly converts a string to an <see cref="EmailAddress"/>.
+    /// </summary>
     public static explicit operator EmailAddress(string value)
     {
         return new(value);
     }
 
+    /// <summary>
+    /// Explicitly converts an <see cref="EmailAddress"/> to its string representation.
+    /// </summary>
     public static explicit operator string(EmailAddress value)
     {
         return value.ToString();
     }
 
+    /// <summary>
+    /// Explicitly converts an <see cref="EmailAddress"/> to a <see cref="ReadOnlySpan{T}"/> over its characters.
+    /// </summary>
     public static explicit operator ReadOnlySpan<char>(EmailAddress value)
     {
         return value._value;
     }
 
+    /// <summary>
+    /// Explicitly converts an <see cref="EmailAddress"/> to a <see cref="ReadOnlyMemory{T}"/> over its characters.
+    /// </summary>
     public static explicit operator ReadOnlyMemory<char>(EmailAddress value)
     {
         return value._value.AsMemory();
     }
 #pragma warning restore CA2225 // Operator overloads have named alternates
 
+    /// <summary>
+    /// Returns <see langword="true"/> if <paramref name="left"/> sorts before <paramref name="right"/> using ordinal comparison.
+    /// </summary>
     public static bool operator <(EmailAddress left, EmailAddress right)
     {
         return left.CompareTo(right) < 0;
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if <paramref name="left"/> sorts before or equals <paramref name="right"/> using ordinal comparison.
+    /// </summary>
     public static bool operator <=(EmailAddress left, EmailAddress right)
     {
         return left.CompareTo(right) <= 0;
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if <paramref name="left"/> sorts after <paramref name="right"/> using ordinal comparison.
+    /// </summary>
     public static bool operator >(EmailAddress left, EmailAddress right)
     {
         return left.CompareTo(right) > 0;
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if <paramref name="left"/> sorts after or equals <paramref name="right"/> using ordinal comparison.
+    /// </summary>
     public static bool operator >=(EmailAddress left, EmailAddress right)
     {
         return left.CompareTo(right) >= 0;

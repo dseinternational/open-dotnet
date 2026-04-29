@@ -6,10 +6,18 @@ using System.Text.Json.Serialization;
 
 namespace DSE.Open.Values.Text.Json.Serialization;
 
+/// <summary>
+/// A <see cref="JsonConverter{T}"/> that reads and writes <see cref="YearDate"/>. Year-only values
+/// are serialized as JSON numbers; full year-month-day values are serialized as invariant-culture strings.
+/// </summary>
 public class JsonStringYearDateConverter : JsonConverter<YearDate>
 {
+    /// <summary>
+    /// A shared default instance of the converter.
+    /// </summary>
     public static readonly JsonStringYearDateConverter Default = new();
 
+    /// <inheritdoc/>
     public override YearDate Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         if (reader.TokenType == JsonTokenType.Number)
@@ -35,6 +43,7 @@ public class JsonStringYearDateConverter : JsonConverter<YearDate>
         throw new JsonException($"Invalid {nameof(YearDate)} value.");
     }
 
+    /// <inheritdoc/>
     public override void Write(Utf8JsonWriter writer, YearDate value, JsonSerializerOptions options)
     {
         ArgumentNullException.ThrowIfNull(writer);

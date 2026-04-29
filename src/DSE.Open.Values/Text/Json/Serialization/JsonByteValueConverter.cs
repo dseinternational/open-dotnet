@@ -6,14 +6,20 @@ using System.Text.Json.Serialization;
 
 namespace DSE.Open.Values.Text.Json.Serialization;
 
+/// <summary>
+/// A <see cref="JsonConverter{T}"/> that reads and writes <typeparamref name="TValue"/> as a JSON number
+/// using its underlying <see cref="byte"/> representation.
+/// </summary>
 public class JsonByteValueConverter<TValue> : JsonConverter<TValue>
     where TValue : struct, IValue<TValue, byte>
 {
+    /// <inheritdoc/>
     public override TValue Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         return (TValue)reader.GetByte();
     }
 
+    /// <inheritdoc/>
     public override void Write(Utf8JsonWriter writer, TValue value, JsonSerializerOptions options)
     {
         ArgumentNullException.ThrowIfNull(writer);

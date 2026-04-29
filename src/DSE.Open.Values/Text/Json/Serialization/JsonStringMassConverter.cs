@@ -7,10 +7,18 @@ using DSE.Open.Values.Units;
 
 namespace DSE.Open.Values.Text.Json.Serialization;
 
+/// <summary>
+/// A <see cref="JsonConverter{T}"/> that reads and writes <see cref="Mass"/> as a JSON string
+/// using its parse/invariant string format.
+/// </summary>
 public class JsonStringMassConverter : JsonConverter<Mass>
 {
+    /// <summary>
+    /// A shared default instance of the converter.
+    /// </summary>
     public static readonly JsonStringMassConverter Default = new();
 
+    /// <inheritdoc/>
     public override Mass Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         if (reader.TokenType == JsonTokenType.String)
@@ -26,6 +34,7 @@ public class JsonStringMassConverter : JsonConverter<Mass>
         throw new JsonException();
     }
 
+    /// <inheritdoc/>
     public override void Write(Utf8JsonWriter writer, Mass value, JsonSerializerOptions options)
     {
         ArgumentNullException.ThrowIfNull(writer);

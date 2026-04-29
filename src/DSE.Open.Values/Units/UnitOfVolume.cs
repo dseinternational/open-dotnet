@@ -11,19 +11,42 @@ namespace DSE.Open.Values.Units;
 /// </summary>
 public sealed class UnitOfVolume : UnitOfMeasure<double>, IRepeatableHash64
 {
+    /// <summary>The cubic metre, equal to 1,000,000,000 microlitres.</summary>
     public static readonly UnitOfVolume CubicMetre = new(1000000000.000000, "cubic metre", "m³");
+
+    /// <summary>The cubic centimetre, equal to 1,000 microlitres.</summary>
     public static readonly UnitOfVolume CubicCentimetre = new(1000.000000, "cubic centimetre", "cm³");
+
+    /// <summary>The cubic millimetre, equal to 1 microlitre.</summary>
     public static readonly UnitOfVolume CubicMillimetre = new(1.000000, "cubic millimetre", "mm³");
+
+    /// <summary>The litre, equal to 1,000,000 microlitres.</summary>
     public static readonly UnitOfVolume Litre = new(1000000.000000, "litre", "L");
+
+    /// <summary>The millilitre, equal to 1,000 microlitres.</summary>
     public static readonly UnitOfVolume Millilitre = new(1000.000000, "millilitre", "mL");
+
+    /// <summary>The microlitre, the base unit used for volume values.</summary>
     public static readonly UnitOfVolume Microlitre = new(1.000000, "microlitre", "μL");
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UnitOfVolume"/> class.
+    /// </summary>
+    /// <param name="units">The number of microlitres represented by one of these units.</param>
+    /// <param name="name">The full name of the unit.</param>
+    /// <param name="abbreviation">The abbreviation for the unit.</param>
     public UnitOfVolume(double units, string name, string abbreviation) : base(units, name, abbreviation)
     {
     }
 
+    /// <inheritdoc/>
     public override UnitOfMeasure<double> BaseUnitOfMeasure => Microlitre;
 
+    /// <summary>
+    /// Parses the name or abbreviation of a unit of volume (for example, "L", "mL",
+    /// "cm³", "m³" or any of the recognised English-language names and aliases).
+    /// </summary>
+    /// <exception cref="ArgumentOutOfRangeException">The value is not a recognised unit.</exception>
     public static UnitOfVolume Parse(string nameOrAbbreviation)
     {
         ArgumentException.ThrowIfNullOrEmpty(nameOrAbbreviation);
@@ -38,6 +61,7 @@ public sealed class UnitOfVolume : UnitOfMeasure<double>, IRepeatableHash64
         };
     }
 
+    /// <inheritdoc/>
     public ulong GetRepeatableHashCode()
     {
         var h0 = RepeatableHash64Provider.Default.GetRepeatableHashCode(BaseUnits);

@@ -5,8 +5,15 @@ using System.Text;
 
 namespace DSE.Open.Values;
 
+/// <summary>
+/// Helpers for parsing <see cref="IValue{TValue, T}"/> instances from text.
+/// </summary>
 public static class ValueParser
 {
+    /// <summary>
+    /// Attempts to parse a <typeparamref name="TValue"/> from the specified character span
+    /// using the invariant format provider.
+    /// </summary>
     public static bool TryParse<TValue, T>(
         ReadOnlySpan<char> s,
         out TValue result)
@@ -16,6 +23,10 @@ public static class ValueParser
         return TryParse<TValue, T>(s, null, out result);
     }
 
+    /// <summary>
+    /// Parses a <typeparamref name="TValue"/> from the specified character span,
+    /// throwing a <see cref="FormatException"/> if the input cannot be parsed.
+    /// </summary>
     public static TValue Parse<TValue, T>(ReadOnlySpan<char> s, IFormatProvider? provider)
         where T : IEquatable<T>, ISpanParsable<T>
         where TValue : struct, IValue<TValue, T>
@@ -28,6 +39,10 @@ public static class ValueParser
         return ThrowHelper.ThrowFormatException<TValue>($"Cannot parse '{s}' as {typeof(TValue).Name}.");
     }
 
+    /// <summary>
+    /// Attempts to parse a <typeparamref name="TValue"/> from the specified character span
+    /// using the supplied format provider.
+    /// </summary>
     public static bool TryParse<TValue, T>(
         ReadOnlySpan<char> s,
         IFormatProvider? provider,
@@ -44,6 +59,11 @@ public static class ValueParser
         return false;
     }
 
+    /// <summary>
+    /// Parses a <typeparamref name="TValue"/> from the specified string,
+    /// throwing a <see cref="FormatException"/> if the input cannot be parsed.
+    /// </summary>
+    /// <exception cref="ArgumentNullException"><paramref name="s"/> is <see langword="null"/>.</exception>
     public static TValue Parse<TValue, T>(string s, IFormatProvider? provider)
         where T : IEquatable<T>, IParsable<T>
         where TValue : struct, IValue<TValue, T>
@@ -58,6 +78,9 @@ public static class ValueParser
         return ThrowHelper.ThrowFormatException<TValue>($"Cannot parse '{s}' as {typeof(TValue).Name}.");
     }
 
+    /// <summary>
+    /// Attempts to parse a <typeparamref name="TValue"/> from the specified UTF-8 byte span.
+    /// </summary>
     public static bool TryParse<TValue, T>(
         ReadOnlySpan<byte> utf8Text,
         IFormatProvider? provider,
@@ -74,6 +97,10 @@ public static class ValueParser
         return false;
     }
 
+    /// <summary>
+    /// Parses a <typeparamref name="TValue"/> from the specified UTF-8 byte span,
+    /// throwing a <see cref="FormatException"/> if the input cannot be parsed.
+    /// </summary>
     public static TValue Parse<TValue, T>(
         ReadOnlySpan<byte> utf8Text,
         IFormatProvider? provider)

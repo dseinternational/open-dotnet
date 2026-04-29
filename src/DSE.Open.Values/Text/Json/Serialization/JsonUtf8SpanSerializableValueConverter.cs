@@ -10,10 +10,17 @@ using DSE.Open.Runtime.Helpers;
 
 namespace DSE.Open.Values.Text.Json.Serialization;
 
+/// <summary>
+/// A <see cref="JsonConverter{T}"/> that reads and writes <typeparamref name="TValue"/> as a JSON string,
+/// using <see cref="IUtf8SpanParsable{TSelf}"/> and <see cref="IUtf8SpanFormattable"/> on the value to
+/// parse and format UTF-8 bytes within stack- or pool-allocated buffers up to
+/// <see cref="IUtf8SpanSerializable{TSelf}.MaxSerializedByteLength"/>. Also supports use as a JSON property name.
+/// </summary>
 public sealed class JsonUtf8SpanSerializableValueConverter<TValue, T> : JsonConverter<TValue>
     where T : IEquatable<T>, IUtf8SpanParsable<T>, IUtf8SpanFormattable
     where TValue : struct, IValue<TValue, T>, IUtf8SpanSerializable<TValue>
 {
+    /// <inheritdoc/>
     public override TValue Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         var valueLength = reader.HasValueSequence
@@ -48,16 +55,19 @@ public sealed class JsonUtf8SpanSerializableValueConverter<TValue, T> : JsonConv
         }
     }
 
+    /// <inheritdoc/>
     public override TValue ReadAsPropertyName(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         return Read(ref reader, typeToConvert, options);
     }
 
+    /// <inheritdoc/>
     public override void Write(Utf8JsonWriter writer, TValue value, JsonSerializerOptions options)
     {
         Write(writer, value, options, false);
     }
 
+    /// <inheritdoc/>
     public override void WriteAsPropertyName(Utf8JsonWriter writer, [DisallowNull] TValue value, JsonSerializerOptions options)
     {
         Write(writer, value, options, true);
