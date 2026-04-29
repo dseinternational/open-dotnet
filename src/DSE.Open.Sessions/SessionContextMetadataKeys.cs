@@ -3,7 +3,13 @@
 
 namespace DSE.Open.Sessions;
 
+/// <summary>
+/// Metadata keys used to associate a <see cref="SessionContext"/> with request and result metadata.
+/// </summary>
 public static class SessionContextMetadataKeys
 {
+    /// <summary>
+    /// The metadata key used to store a <see cref="SessionContext"/>.
+    /// </summary>
     public const string SessionContext = "DSE-Session-Context";
 }
