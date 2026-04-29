@@ -5,6 +5,10 @@ using Polly.Contrib.WaitAndRetry;
 
 namespace DSE.Open.Retries;
 
+/// <summary>
+/// Provides sequences of <see cref="TimeSpan"/> values suitable for use as sleep durations
+/// in wait-and-retry policies.
+/// </summary>
 public static class Delays
 {
     /// <summary>
