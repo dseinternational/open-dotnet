@@ -7,21 +7,36 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DSE.Open.EntityFrameworkCore.Models.Observations.Storage.ValueConversion;
 
+/// <summary>
+/// Converts <see cref="Count"/> values to and from <see cref="long"/> for storage.
+/// </summary>
 public sealed class CountToInt64Converter : ValueConverter<Count, long>
 {
+    /// <summary>
+    /// Gets a default, shared instance of <see cref="CountToInt64Converter"/>.
+    /// </summary>
     public static readonly CountToInt64Converter Default = new();
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CountToInt64Converter"/> class.
+    /// </summary>
     public CountToInt64Converter() : base(c => ConvertTo(c), s => ConvertFrom(s))
     {
     }
 
-    // keep public for EF Core compiled models
+    /// <summary>
+    /// Converts a <see cref="Count"/> to a <see cref="long"/> for storage.
+    /// </summary>
+    /// <remarks>Kept public for EF Core compiled models.</remarks>
     public static long ConvertTo(Count value)
     {
         return value;
     }
 
-    // keep public for EF Core compiled models
+    /// <summary>
+    /// Converts a stored <see cref="long"/> back to a <see cref="Count"/>.
+    /// </summary>
+    /// <remarks>Kept public for EF Core compiled models.</remarks>
     public static Count ConvertFrom(long value)
     {
         if (Count.TryFromValue(value, out var result))
