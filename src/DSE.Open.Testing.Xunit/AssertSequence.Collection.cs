@@ -5,6 +5,9 @@ using System.Runtime.CompilerServices;
 
 namespace DSE.Open.Testing.Xunit;
 
+/// <summary>
+/// Provides assertions over sequences of elements.
+/// </summary>
 public static partial class AssertSequence
 {
     /// <summary>
