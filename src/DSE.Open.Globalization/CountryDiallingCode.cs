@@ -5,10 +5,16 @@ using System.Diagnostics;
 
 namespace DSE.Open.Globalization;
 
+/// <summary>
+/// Represents an international country dialling code and the territory it identifies.
+/// </summary>
 public readonly struct CountryDiallingCode : IEquatable<CountryDiallingCode>
 {
     private static readonly Dictionary<short, CountryDiallingCode> s_codeLookup = CreateCodeLookup();
 
+    /// <summary>
+    /// An unknown / default <see cref="CountryDiallingCode"/>.
+    /// </summary>
     public static readonly CountryDiallingCode Unknown;
 
     private CountryDiallingCode(short code, string name)
@@ -20,14 +26,27 @@ public readonly struct CountryDiallingCode : IEquatable<CountryDiallingCode>
         Name = name;
     }
 
+    /// <summary>
+    /// Gets the numeric country dialling code.
+    /// </summary>
     public short Code { get; }
 
+    /// <summary>
+    /// Gets all known country dialling codes.
+    /// </summary>
     public static IEnumerable<CountryDiallingCode> Codes => s_codeLookup.Values;
 
+    /// <summary>
+    /// Gets the table of known country dialling codes keyed by code value.
+    /// </summary>
     public static IReadOnlyDictionary<short, CountryDiallingCode> CodeTable => s_codeLookup;
 
+    /// <summary>
+    /// Gets the name of the territory associated with this country dialling code.
+    /// </summary>
     public string Name { get; }
 
+    /// <inheritdoc/>
     public bool Equals(CountryDiallingCode other)
     {
         return Equals(this, other);
@@ -248,16 +267,27 @@ public readonly struct CountryDiallingCode : IEquatable<CountryDiallingCode>
         return codeLookup;
     }
 
+    /// <inheritdoc/>
     public override bool Equals(object? obj)
     {
         return obj is CountryDiallingCode code && Equals(code);
     }
 
+    /// <summary>
+    /// Returns a value indicating whether two <see cref="CountryDiallingCode"/> values are equal.
+    /// </summary>
+    /// <param name="c1">The first value to compare.</param>
+    /// <param name="c2">The second value to compare.</param>
     public static bool Equals(CountryDiallingCode c1, CountryDiallingCode c2)
     {
         return c1.Code == c2.Code;
     }
 
+    /// <summary>
+    /// Gets the <see cref="CountryDiallingCode"/> for the specified numeric code.
+    /// </summary>
+    /// <param name="code">The numeric country dialling code.</param>
+    /// <exception cref="ArgumentOutOfRangeException">The code is not a valid country dialling code.</exception>
     public static CountryDiallingCode FromCode(short code)
     {
         return IsValidCountryDiallingCode(code)
@@ -265,26 +295,43 @@ public readonly struct CountryDiallingCode : IEquatable<CountryDiallingCode>
             : throw new ArgumentOutOfRangeException(nameof(code), "Invalid dialling code.");
     }
 
+    /// <inheritdoc/>
     public override int GetHashCode()
     {
         return Code.GetHashCode();
     }
 
+    /// <summary>
+    /// Returns a value indicating whether the specified numeric code is a recognised
+    /// country dialling code.
+    /// </summary>
+    /// <param name="code">The numeric code to check.</param>
     public static bool IsValidCountryDiallingCode(short code)
     {
         return s_codeLookup.ContainsKey(code);
     }
 
+    /// <inheritdoc/>
     public override string ToString()
     {
         return "+" + Code.ToStringInvariant();
     }
 
+    /// <summary>
+    /// Returns a value indicating whether two <see cref="CountryDiallingCode"/> values are equal.
+    /// </summary>
+    /// <param name="c1">The first value to compare.</param>
+    /// <param name="c2">The second value to compare.</param>
     public static bool operator ==(CountryDiallingCode c1, CountryDiallingCode c2)
     {
         return Equals(c1, c2);
     }
 
+    /// <summary>
+    /// Returns a value indicating whether two <see cref="CountryDiallingCode"/> values are not equal.
+    /// </summary>
+    /// <param name="c1">The first value to compare.</param>
+    /// <param name="c2">The second value to compare.</param>
     public static bool operator !=(CountryDiallingCode c1, CountryDiallingCode c2)
     {
         return !Equals(c1, c2);

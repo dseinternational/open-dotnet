@@ -5,6 +5,9 @@ using System.Collections.Frozen;
 
 namespace DSE.Open.Globalization;
 
+/// <summary>
+/// Provides sets of ISO 3166-1 country codes.
+/// </summary>
 public static class IsoCountryCodes
 {
     /// <summary>
@@ -580,9 +583,15 @@ public static class IsoCountryCodes
 
         }.ToFrozenSet(AsciiChar3Comparer.IgnoreCase);
 
+    /// <summary>
+    /// Gets the set of officially assigned ISO 3166-1 alpha-2 country codes as <see cref="CountryCode"/> values.
+    /// </summary>
     public static readonly FrozenSet<CountryCode> OfficiallyAssignedAlpha2
         = OfficiallyAssignedAlpha2Ascii.Select(CountryCode.FromValue).ToFrozenSet();
 
+    /// <summary>
+    /// Gets the set of officially assigned ISO 3166-1 alpha-3 country codes as <see cref="CountryCode3"/> values.
+    /// </summary>
     public static readonly FrozenSet<CountryCode3> OfficiallyAssignedAlpha3
         = OfficiallyAssignedAlpha3Ascii.Select(CountryCode3.FromValue).ToFrozenSet();
 }

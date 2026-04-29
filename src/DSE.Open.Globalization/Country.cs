@@ -35,39 +35,86 @@ public sealed record Country
             isUsOverseasTerritory == 1, isGdprTerritory == 1);
     }
 
+    /// <summary>
+    /// Gets the ISO 3166-1 alpha-2 code for the country.
+    /// </summary>
     public CountryCode Code { get; }
 
+    /// <summary>
+    /// Gets the ISO 3166-1 numeric code for the country.
+    /// </summary>
     public int NumericCode { get; }
 
+    /// <summary>
+    /// Gets the ISO 3166-1 alpha-3 code for the country.
+    /// </summary>
     public string ThreeLetterCode { get; }
 
+    /// <summary>
+    /// Gets the English name of the country.
+    /// </summary>
     public string Name { get; }
 
+    /// <summary>
+    /// Gets a value indicating whether the country is a member state of the European Union.
+    /// </summary>
     public bool IsEuMemberState { get; }
 
+    /// <summary>
+    /// Gets a value indicating whether the country is an EU special territory.
+    /// </summary>
     public bool IsEuSpecialTerritory { get; }
 
+    /// <summary>
+    /// Gets a value indicating whether the country is an EU outermost region.
+    /// </summary>
     public bool IsEuOutermostRegion { get; }
 
+    /// <summary>
+    /// Gets a value indicating whether the country is a U.S. overseas territory.
+    /// </summary>
     public bool IsUsOverseasTerritory { get; }
 
+    /// <summary>
+    /// Gets a value indicating whether the country is a territory in which GDPR applies.
+    /// </summary>
     public bool IsGdprTerritory { get; }
 
+    /// <summary>
+    /// Gets the <see cref="Country"/> with the specified ISO 3166-1 alpha-2 code, or
+    /// <see langword="null"/> if no matching country is found.
+    /// </summary>
+    /// <param name="code">The ISO 3166-1 alpha-2 country code.</param>
     public static Country? FromCountryCode(CountryCode code)
     {
         return s_twoLetterCodeLookup.Value.GetValueOrDefault(code.ToStringInvariant().ToUpperInvariant());
     }
 
+    /// <summary>
+    /// Gets the <see cref="Country"/> with the specified ISO 3166-1 alpha-2 code, or
+    /// <see langword="null"/> if no matching country is found.
+    /// </summary>
+    /// <param name="code">The two-letter country code.</param>
     public static Country? FromTwoLetterCode(string code)
     {
         return s_twoLetterCodeLookup.Value.GetValueOrDefault(code);
     }
 
+    /// <summary>
+    /// Gets the <see cref="Country"/> with the specified ISO 3166-1 alpha-3 code, or
+    /// <see langword="null"/> if no matching country is found.
+    /// </summary>
+    /// <param name="code">The three-letter country code.</param>
     public static Country? FromThreeLetterCode(string code)
     {
         return s_threeLetterCodeLookup.Value.GetValueOrDefault(code);
     }
 
+    /// <summary>
+    /// Gets the <see cref="Country"/> with the specified ISO 3166-1 numeric code, or
+    /// <see langword="null"/> if no matching country is found.
+    /// </summary>
+    /// <param name="code">The numeric country code.</param>
     public static Country? FromNumericCode(int code)
     {
         return s_numericCodeLookup.Value.GetValueOrDefault(code);
@@ -87,6 +134,9 @@ public sealed record Country
         return s_countryData.ToFrozenDictionary(ci => ci.NumericCode);
     }
 
+    /// <summary>
+    /// Gets all known countries.
+    /// </summary>
 #pragma warning disable CA1024 // Use properties where appropriate
     public static IReadOnlyList<Country> GetAllCountries()
 #pragma warning restore CA1024 // Use properties where appropriate
@@ -94,6 +144,9 @@ public sealed record Country
         return [.. s_countryData];
     }
 
+    /// <summary>
+    /// Gets all known countries that are member states of the European Union.
+    /// </summary>
     public static IReadOnlyList<Country> GetEuMemberCountries()
     {
         return s_countryData.Where(ci => ci.IsEuMemberState).ToImmutableList();
