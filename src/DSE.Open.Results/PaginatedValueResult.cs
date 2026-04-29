@@ -5,8 +5,15 @@ using System.Text.Json.Serialization;
 
 namespace DSE.Open.Results;
 
+/// <summary>
+/// A <see cref="ValueResult{T}"/> that includes <see cref="Pagination"/> information.
+/// </summary>
+/// <typeparam name="T">The type of the carried value.</typeparam>
 public record PaginatedValueResult<T> : ValueResult<T>
 {
+    /// <summary>
+    /// Gets the pagination information for this result.
+    /// </summary>
     [JsonPropertyName("pagination")]
     public Pagination Pagination { get; init; }
 }

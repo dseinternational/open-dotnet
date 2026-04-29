@@ -5,8 +5,14 @@ using DSE.Open.Collections.Generic;
 
 namespace DSE.Open.Results;
 
+/// <summary>
+/// Extension methods for <see cref="ValueResultBuilder{TResult, TValue}"/> and its derivatives.
+/// </summary>
 public static class ValueResultBuilderExtensions
 {
+    /// <summary>
+    /// Sets <paramref name="value"/> on <paramref name="builder"/> and builds the result.
+    /// </summary>
     public static TResult BuildWithValue<TResult, TValue>(
         this ValueResultBuilder<TResult, TValue> builder,
         TValue value)
@@ -18,6 +24,9 @@ public static class ValueResultBuilderExtensions
         return builder.Build();
     }
 
+    /// <summary>
+    /// Sets <paramref name="value"/> on <paramref name="builder"/> and builds the result.
+    /// </summary>
     public static ValueResult<TValue> BuildWithValue<TValue>(
         this ValueResultBuilder<TValue> builder,
         TValue value)
@@ -25,6 +34,9 @@ public static class ValueResultBuilderExtensions
         return builder.BuildWithValue<ValueResult<TValue>, TValue>(value);
     }
 
+    /// <summary>
+    /// Sets <paramref name="value"/> on <paramref name="builder"/> and builds the result.
+    /// </summary>
     public static CollectionValueResult<TValue> BuildWithValue<TValue>(
         this CollectionValueResultBuilder<TValue> builder,
         ReadOnlyValueCollection<TValue> value)
@@ -32,6 +44,9 @@ public static class ValueResultBuilderExtensions
         return builder.BuildWithValue<CollectionValueResult<TValue>, ReadOnlyValueCollection<TValue>>(value);
     }
 
+    /// <summary>
+    /// Sets <paramref name="value"/> on <paramref name="builder"/> and builds the result.
+    /// </summary>
     public static CollectionValueAsyncResult<TValue> BuildWithValue<TValue>(
         this CollectionValueAsyncResultBuilder<TValue> builder,
         IAsyncEnumerable<TValue> value)

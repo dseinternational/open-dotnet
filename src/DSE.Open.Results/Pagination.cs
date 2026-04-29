@@ -10,8 +10,20 @@ namespace DSE.Open.Results;
 /// </summary>
 public readonly record struct Pagination
 {
+    /// <summary>
+    /// A default <see cref="Pagination"/> indicating no pagination has been specified.
+    /// </summary>
     public static readonly Pagination None;
 
+    /// <summary>
+    /// Initializes a new <see cref="Pagination"/> instance.
+    /// </summary>
+    /// <param name="totalItems">The total number of items in the result set.</param>
+    /// <param name="pageSize">The number of items requested in each page.</param>
+    /// <param name="currentPage">The current 1-based page number.</param>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown when arguments are out of valid range.
+    /// </exception>
     [JsonConstructor]
     public Pagination(int totalItems, int pageSize, int currentPage)
     {

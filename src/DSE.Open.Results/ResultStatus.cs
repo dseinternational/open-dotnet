@@ -3,8 +3,14 @@
 
 namespace DSE.Open.Results;
 
+/// <summary>
+/// Identifies the outcome of an operation represented by a <see cref="Result"/>.
+/// </summary>
 public enum ResultStatus
 {
+    /// <summary>
+    /// No status was specified.
+    /// </summary>
     Unspecified,
 
     /// <summary>

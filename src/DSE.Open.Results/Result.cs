@@ -12,16 +12,29 @@ namespace DSE.Open.Results;
 /// </summary>
 public record Result
 {
+    /// <summary>
+    /// An empty <see cref="Result"/> with default <see cref="Status"/> and no notifications.
+    /// </summary>
     public static readonly Result Empty = new();
 
+    /// <summary>
+    /// A <see langword="null"/> <see cref="Result"/> reference.
+    /// </summary>
     public static readonly Result? Null;
 
     private Guid? _resultId;
     private ReadOnlyValueCollection<Notification>? _notifications;
 
+    /// <summary>
+    /// Gets the status of the operation that produced this result.
+    /// </summary>
     [JsonPropertyName("status")]
     public ResultStatus Status { get; init; }
 
+    /// <summary>
+    /// Gets the unique identifier of this result. A new identifier is generated on first access
+    /// if one has not been explicitly set.
+    /// </summary>
     [JsonPropertyName("result_id")]
     public Guid ResultId
     {
@@ -39,9 +52,15 @@ public record Result
         init => _notifications = value;
     }
 
+    /// <summary>
+    /// Gets a value indicating whether this result carries any notifications.
+    /// </summary>
     [JsonIgnore]
     public bool HasNotifications => Notifications.Count != 0;
 
+    /// <summary>
+    /// Returns <see langword="true"/> if this result carries any error-level notifications.
+    /// </summary>
     public bool HasAnyErrorNotifications()
     {
         return HasNotifications && Notifications.AnyErrors();
