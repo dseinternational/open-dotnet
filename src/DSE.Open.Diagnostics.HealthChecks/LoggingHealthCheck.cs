@@ -6,16 +6,32 @@ using Microsoft.Extensions.Logging;
 
 namespace DSE.Open.Diagnostics.HealthChecks;
 
+/// <summary>
+/// Base class for <see cref="IHealthCheck"/> implementations that log the outcome
+/// of each health check execution and convert unhandled exceptions into the
+/// registered failure status.
+/// </summary>
 public abstract partial class LoggingHealthCheck : IHealthCheck
 {
+    /// <summary>
+    /// Initializes a new instance with the logger used to record health check outcomes.
+    /// </summary>
+    /// <exception cref="ArgumentNullException"><paramref name="logger"/> is <see langword="null"/>.</exception>
     protected LoggingHealthCheck(ILogger logger)
     {
         ArgumentNullException.ThrowIfNull(logger);
         Logger = logger;
     }
 
+    /// <summary>
+    /// Gets the logger used to record health check outcomes and errors.
+    /// </summary>
     protected ILogger Logger { get; }
 
+    /// <summary>
+    /// Runs <see cref="CheckHealthCoreAsync"/>, logs the resulting status, and
+    /// converts any thrown exception into a result with the registration's failure status.
+    /// </summary>
     public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(context);
@@ -50,6 +66,11 @@ public abstract partial class LoggingHealthCheck : IHealthCheck
 #pragma warning restore CA1031 // Do not catch general exception types
     }
 
+    /// <summary>
+    /// When implemented in a derived class, performs the health check logic and
+    /// returns its result. Exceptions are caught and logged by the calling
+    /// <see cref="CheckHealthAsync"/> method.
+    /// </summary>
     protected abstract Task<HealthCheckResult> CheckHealthCoreAsync(HealthCheckContext context, CancellationToken cancellationToken);
 
     private static partial class Log
