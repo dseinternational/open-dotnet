@@ -6,8 +6,14 @@ using System.Text.Json;
 
 namespace DSE.Open.Serialization;
 
+/// <summary>
+/// Provides extension methods for <see cref="IJsonSerializable"/> instances.
+/// </summary>
 public static class JsonSerializableExtensions
 {
+    /// <summary>
+    /// Serializes the specified object to a JSON string using its runtime type.
+    /// </summary>
     [RequiresDynamicCode(WarningMessages.RequiresDynamicCode)]
     [RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]
     [Obsolete("Removing")]
