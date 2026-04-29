@@ -8,11 +8,21 @@ using Microsoft.Extensions.Logging;
 
 namespace DSE.Open.EntityFrameworkCore.Diagnostics;
 
+/// <summary>
+/// A <see cref="SaveChangesInterceptor"/> that maintains <see cref="IUpdateTimesTracked.Created"/>
+/// and <see cref="IUpdateTimesTracked.Updated"/> timestamps on tracked entities during
+/// <c>SaveChanges</c>, using the supplied <see cref="TimeProvider"/>.
+/// </summary>
 public sealed partial class UpdateTimesTrackedSaveChangesInterceptor : SaveChangesInterceptor
 {
     private readonly TimeProvider _timeProvider;
     private readonly ILogger<UpdateTimesTrackedSaveChangesInterceptor> _logger;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UpdateTimesTrackedSaveChangesInterceptor"/> class.
+    /// </summary>
+    /// <param name="timeProvider">The <see cref="TimeProvider"/> used to obtain timestamps.</param>
+    /// <param name="logger">The logger used to record interceptor activity.</param>
     public UpdateTimesTrackedSaveChangesInterceptor(
         TimeProvider timeProvider,
         ILogger<UpdateTimesTrackedSaveChangesInterceptor> logger)
@@ -30,11 +40,14 @@ public sealed partial class UpdateTimesTrackedSaveChangesInterceptor : SaveChang
     /// </summary>
     public bool SetCreatedTimestamp { get; set; } = true;
 
+    /// <inheritdoc/>
+    /// <remarks>Synchronous save operations are not supported; throws <see cref="NotImplementedException"/>.</remarks>
     public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
     {
         throw new NotImplementedException("Only async database operations are supported.");
     }
 
+    /// <inheritdoc/>
     public override ValueTask<InterceptionResult<int>> SavingChangesAsync(
         DbContextEventData eventData,
         InterceptionResult<int> result,
