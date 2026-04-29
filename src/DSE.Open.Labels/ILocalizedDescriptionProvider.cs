@@ -9,6 +9,10 @@ namespace DSE.Open.Labels;
 /// <typeparam name="T"></typeparam>
 public interface ILocalizedDescriptionProvider<T> : IDescriptionProvider<T>
 {
+    /// <summary>
+    /// Returns the description for the specified <paramref name="value"/> in the given <paramref name="culture"/>,
+    /// or <see langword="null"/> if none is available.
+    /// </summary>
     string? GetDescription(T value, CultureInfo? culture);
 }
 

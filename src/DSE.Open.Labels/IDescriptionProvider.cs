@@ -9,6 +9,9 @@ namespace DSE.Open.Labels;
 /// <typeparam name="T"></typeparam>
 public interface IDescriptionProvider<T>
 {
+    /// <summary>
+    /// Returns the description for the specified <paramref name="value"/>, or <see langword="null"/> if none is available.
+    /// </summary>
     string? GetDescription(T value);
 }
 

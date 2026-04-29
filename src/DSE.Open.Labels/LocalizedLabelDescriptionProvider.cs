@@ -9,11 +9,18 @@ namespace DSE.Open.Labels;
 /// <typeparam name="T"></typeparam>
 public abstract class LocalizedLabelDescriptionProvider<T> : LocalizedLabelProvider<T>, ILocalizedDescriptionProvider<T>
 {
+    /// <summary>
+    /// Returns the description for the specified <paramref name="value"/> using <see cref="CultureInfo.CurrentUICulture"/>.
+    /// </summary>
     public virtual string? GetDescription(T value)
     {
         return GetDescription(value, CultureInfo.CurrentUICulture);
     }
 
+    /// <summary>
+    /// When overridden in a derived class, returns the description for the specified <paramref name="value"/>
+    /// in the given <paramref name="culture"/>.
+    /// </summary>
     public abstract string? GetDescription(T value, CultureInfo? culture);
 }
 
