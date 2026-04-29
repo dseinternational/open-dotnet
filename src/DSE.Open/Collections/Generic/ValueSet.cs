@@ -45,10 +45,16 @@ public static class ValueSet
 [CollectionBuilder(typeof(ValueSet), nameof(ValueSet.Create))]
 public class ValueSet<T> : ISet<T>, IEquatable<ValueSet<T>>, ICollection<T>
 {
+    /// <summary>
+    /// An empty <see cref="ValueSet{T}"/>.
+    /// </summary>
     public static readonly ValueSet<T> Empty = [.. Enumerable.Empty<T>()];
 
     private readonly HashSet<T> _set;
 
+    /// <summary>
+    /// Initializes a new, empty <see cref="ValueSet{T}"/>.
+    /// </summary>
     public ValueSet()
     {
         _set = [];
@@ -71,6 +77,9 @@ public class ValueSet<T> : ISet<T>, IEquatable<ValueSet<T>>, ICollection<T>
         _set = set;
     }
 
+    /// <summary>
+    /// Initializes a new <see cref="ValueSet{T}"/> containing the distinct elements of <paramref name="set"/>.
+    /// </summary>
     public ValueSet(IEnumerable<T> set)
     {
         ArgumentNullException.ThrowIfNull(set);
@@ -85,12 +94,14 @@ public class ValueSet<T> : ISet<T>, IEquatable<ValueSet<T>>, ICollection<T>
         }
     }
 
+    /// <inheritdoc/>
     public int Count => _set.Count;
 
 #pragma warning disable CA1033 // Interface methods should be callable by child types
     bool ICollection<T>.IsReadOnly => false;
 #pragma warning restore CA1033 // Interface methods should be callable by child types
 
+    /// <inheritdoc/>
     public bool Add(T item)
     {
         return _set.Add(item);
@@ -101,86 +112,103 @@ public class ValueSet<T> : ISet<T>, IEquatable<ValueSet<T>>, ICollection<T>
         _ = _set.Add(item);
     }
 
+    /// <inheritdoc/>
     public void Clear()
     {
         _set.Clear();
     }
 
+    /// <inheritdoc/>
     public bool Remove(T item)
     {
         return _set.Remove(item);
     }
 
+    /// <inheritdoc/>
     public bool Contains(T item)
     {
         return _set.Contains(item);
     }
 
+    /// <inheritdoc/>
     public void CopyTo(T[] array, int arrayIndex)
     {
         _set.CopyTo(array, arrayIndex);
     }
 
+    /// <inheritdoc/>
     public IEnumerator<T> GetEnumerator()
     {
         return _set.GetEnumerator();
     }
 
+    /// <inheritdoc/>
     public bool IsProperSubsetOf(IEnumerable<T> other)
     {
         return _set.IsProperSubsetOf(other);
     }
 
+    /// <inheritdoc/>
     public bool IsProperSupersetOf(IEnumerable<T> other)
     {
         return _set.IsProperSupersetOf(other);
     }
 
+    /// <inheritdoc/>
     public bool IsSubsetOf(IEnumerable<T> other)
     {
         return _set.IsSubsetOf(other);
     }
 
+    /// <inheritdoc/>
     public bool IsSupersetOf(IEnumerable<T> other)
     {
         return _set.IsSupersetOf(other);
     }
 
+    /// <inheritdoc/>
     public bool Overlaps(IEnumerable<T> other)
     {
         return _set.Overlaps(other);
     }
 
+    /// <inheritdoc/>
     public bool SetEquals(IEnumerable<T> other)
     {
         return _set.SetEquals(other);
     }
 
+    /// <inheritdoc/>
     public void ExceptWith(IEnumerable<T> other)
     {
         _set.ExceptWith(other);
     }
 
+    /// <inheritdoc/>
     public void IntersectWith(IEnumerable<T> other)
     {
         _set.IntersectWith(other);
     }
 
+    /// <inheritdoc/>
     public void SymmetricExceptWith(IEnumerable<T> other)
     {
         _set.SymmetricExceptWith(other);
     }
 
+    /// <inheritdoc/>
     public void UnionWith(IEnumerable<T> other)
     {
         _set.UnionWith(other);
     }
 
+    /// <inheritdoc/>
     public override bool Equals(object? obj)
     {
         return obj is ValueSet<T> readOnlyValueSet && Equals(readOnlyValueSet);
     }
 
+    /// <inheritdoc/>
     public override int GetHashCode()
     {
         var hash = new HashCode();
@@ -193,6 +221,7 @@ public class ValueSet<T> : ISet<T>, IEquatable<ValueSet<T>>, ICollection<T>
         return hash.ToHashCode();
     }
 
+    /// <inheritdoc/>
     public virtual bool Equals(ValueSet<T>? other)
     {
         return other is not null && SetEquals(other);

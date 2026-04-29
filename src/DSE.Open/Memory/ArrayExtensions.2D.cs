@@ -5,6 +5,9 @@ namespace DSE.Open.Memory;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
+/// <summary>
+/// Extension methods for arrays.
+/// </summary>
 public static partial class ArrayExtensions
 {
     /// <summary>

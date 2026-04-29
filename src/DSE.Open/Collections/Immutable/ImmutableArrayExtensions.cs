@@ -6,6 +6,9 @@ using System.Runtime.CompilerServices;
 
 namespace DSE.Open.Collections.Immutable;
 
+/// <summary>
+/// Provides extension methods for <see cref="ImmutableArray{T}"/> that operate on its underlying span.
+/// </summary>
 public static class ImmutableArrayExtensions
 {
     /// <summary>
@@ -23,6 +26,9 @@ public static class ImmutableArrayExtensions
         return array.AsSpan().Contains(value);
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if the array contains any of the specified values.
+    /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool ContainsAnyValues<T>(this ImmutableArray<T> array, ReadOnlySpan<T> values)
         where T : struct, IEquatable<T>
@@ -30,6 +36,9 @@ public static class ImmutableArrayExtensions
         return array.AsSpan().ContainsAny(values);
     }
 
+    /// <summary>
+    /// Returns the zero-based index of the first occurrence of <paramref name="value"/>, or -1 if not found.
+    /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int IndexOfValue<T>(this ImmutableArray<T> array, T value)
         where T : struct, IEquatable<T>
@@ -37,6 +46,9 @@ public static class ImmutableArrayExtensions
         return array.AsSpan().IndexOf(value);
     }
 
+    /// <summary>
+    /// Returns the zero-based index of the last occurrence of <paramref name="value"/>, or -1 if not found.
+    /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int LastIndexOfValue<T>(this ImmutableArray<T> array, T value)
         where T : struct, IEquatable<T>
@@ -44,6 +56,9 @@ public static class ImmutableArrayExtensions
         return array.AsSpan().LastIndexOf(value);
     }
 
+    /// <summary>
+    /// Returns the zero-based index of the first element that matches any of the specified values, or -1 if none match.
+    /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int IndexOfAnyValues<T>(this ImmutableArray<T> array, ReadOnlySpan<T> values)
         where T : struct, IEquatable<T>
@@ -51,6 +66,9 @@ public static class ImmutableArrayExtensions
         return array.AsSpan().IndexOfAny(values);
     }
 
+    /// <summary>
+    /// Returns the zero-based index of the last element that matches any of the specified values, or -1 if none match.
+    /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int LastIndexOfAnyValues<T>(this ImmutableArray<T> array, ReadOnlySpan<T> values)
         where T : struct, IEquatable<T>

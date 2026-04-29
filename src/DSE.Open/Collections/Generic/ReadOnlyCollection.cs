@@ -3,6 +3,9 @@
 
 namespace DSE.Open.Collections.Generic;
 
+/// <summary>
+/// Provides factory methods for creating <see cref="ReadOnlyCollection{T}"/> instances.
+/// </summary>
 public static class ReadOnlyCollection
 {
     /// <summary>

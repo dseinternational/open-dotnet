@@ -7,10 +7,17 @@ using DSE.Open.Time;
 
 namespace DSE.Open.Text.Json.Serialization;
 
+/// <summary>
+/// A <see cref="JsonConverter{T}"/> that reads and writes <see cref="TimePeriod"/> values as JSON strings.
+/// </summary>
 public class JsonStringTimePeriodConverter : JsonConverter<TimePeriod>
 {
+    /// <summary>
+    /// The default instance of the converter.
+    /// </summary>
     public static readonly JsonStringTimePeriodConverter Default = new();
 
+    /// <inheritdoc/>
     public override TimePeriod Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         if (reader.TokenType == JsonTokenType.String)
@@ -23,6 +30,7 @@ public class JsonStringTimePeriodConverter : JsonConverter<TimePeriod>
         throw new JsonException("Invalid TimePeriod value.");
     }
 
+    /// <inheritdoc/>
     public override void Write(Utf8JsonWriter writer, TimePeriod value, JsonSerializerOptions options)
     {
         ArgumentNullException.ThrowIfNull(writer);

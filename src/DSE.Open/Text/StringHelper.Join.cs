@@ -176,6 +176,15 @@ public static partial class StringHelper
         }
     }
 
+    /// <summary>
+    /// Joins the formatted representations of <paramref name="values"/> using <paramref name="separator"/>
+    /// between consecutive items and <paramref name="finalSeparator"/> before the last item.
+    /// </summary>
+    /// <param name="separator">The separator placed between items.</param>
+    /// <param name="finalSeparator">The separator placed before the final item; if empty, <paramref name="separator"/> is used.</param>
+    /// <param name="values">The values to join.</param>
+    /// <param name="format">An optional format string applied to each value.</param>
+    /// <param name="provider">An optional format provider applied to each value.</param>
     [SkipLocalsInit]
     public static string Join<T>(
         ReadOnlySpan<char> separator,

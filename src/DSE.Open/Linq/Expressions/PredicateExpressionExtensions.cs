@@ -5,8 +5,14 @@ using System.Linq.Expressions;
 
 namespace DSE.Open.Linq.Expressions;
 
+/// <summary>
+/// Provides extension methods for combining boolean predicate expressions.
+/// </summary>
 public static class PredicateExpressionExtensions
 {
+    /// <summary>
+    /// Creates an expression that represents a bitwise AND operation of the two predicates.
+    /// </summary>
     public static Expression<Func<T, bool>> And<T>(this Expression<Func<T, bool>> left, Expression<Func<T, bool>> right)
     {
         return Combine(left, right, Expression.And);
@@ -25,6 +31,10 @@ public static class PredicateExpressionExtensions
         return Combine(left, right, Expression.AndAlso);
     }
 
+    /// <summary>
+    /// Returns <paramref name="left"/> unchanged when <paramref name="right"/> is <see langword="null"/>;
+    /// otherwise combines them with a conditional AND (<c>AndAlso</c>).
+    /// </summary>
     public static Expression<Func<T, bool>> AndAlsoIfNotNull<T>(
         this Expression<Func<T, bool>> left,
         Expression<Func<T, bool>>? right)
@@ -38,11 +48,18 @@ public static class PredicateExpressionExtensions
         };
     }
 
+    /// <summary>
+    /// Creates an expression that represents a bitwise OR operation of the two predicates.
+    /// </summary>
     public static Expression<Func<T, bool>> Or<T>(this Expression<Func<T, bool>> left, Expression<Func<T, bool>> right)
     {
         return Combine(left, right, Expression.Or);
     }
 
+    /// <summary>
+    /// Combines two predicate expressions into a single predicate over the parameter of <paramref name="left"/>,
+    /// using <paramref name="combineOperator"/> to join their bodies.
+    /// </summary>
     public static Expression<Func<T, bool>> Combine<T>(
         Expression<Func<T, bool>> left,
         Expression<Func<T, bool>> right,

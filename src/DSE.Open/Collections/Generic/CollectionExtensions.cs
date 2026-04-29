@@ -7,11 +7,19 @@ using System.Collections.ObjectModel;
 
 namespace DSE.Open.Collections.Generic;
 
+/// <summary>
+/// Provides extension methods for working with collections, lists and arrays.
+/// </summary>
 public static partial class CollectionExtensions
 {
     private static readonly ThreadLocal<Random> s_random =
         new(() => new(unchecked((Environment.TickCount * 31) + Environment.CurrentManagedThreadId)));
 
+    /// <summary>
+    /// Adds the elements of <paramref name="values"/> to <paramref name="collection"/>.
+    /// </summary>
+    /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
+    /// <exception cref="NotSupportedException"><paramref name="collection"/> is read-only.</exception>
     public static void AddRange<T>(this ICollection<T> collection, IEnumerable<T>? values)
     {
         ArgumentNullException.ThrowIfNull(collection);
@@ -38,11 +46,17 @@ public static partial class CollectionExtensions
         }
     }
 
+    /// <summary>
+    /// Returns the zero-based index of the first element in the array that matches the specified predicate, or -1 if no match is found.
+    /// </summary>
     public static int FindIndex<T>(this T[] collection, Predicate<T> match)
     {
         return collection.FindIndex(0, match);
     }
 
+    /// <summary>
+    /// Returns the zero-based index of the first element in the array that matches the specified predicate, starting at <paramref name="startIndex"/>, or -1 if no match is found.
+    /// </summary>
     public static int FindIndex<T>(this T[] collection, int startIndex, Predicate<T> match)
     {
         ArgumentNullException.ThrowIfNull(collection);
@@ -84,11 +98,17 @@ public static partial class CollectionExtensions
         return -1;
     }
 
+    /// <summary>
+    /// Returns the zero-based index of the first element in the list that matches the specified predicate, or -1 if no match is found.
+    /// </summary>
     public static int FindIndex<T>(this IList<T> collection, Predicate<T> match)
     {
         return collection.FindIndex(0, match);
     }
 
+    /// <summary>
+    /// Returns the zero-based index of the first element in the list that matches the specified predicate, starting at <paramref name="startIndex"/>, or -1 if no match is found.
+    /// </summary>
     public static int FindIndex<T>(this IList<T> collection, int startIndex, Predicate<T> match)
     {
         ArgumentNullException.ThrowIfNull(collection);
@@ -132,11 +152,17 @@ public static partial class CollectionExtensions
         return -1;
     }
 
+    /// <summary>
+    /// Returns the zero-based index of the first element in the read-only list that matches the specified predicate, or -1 if no match is found.
+    /// </summary>
     public static int FindIndex<T>(this IReadOnlyList<T> collection, Predicate<T> match)
     {
         return collection.FindIndex(0, match);
     }
 
+    /// <summary>
+    /// Returns the zero-based index of the first element in the read-only list that matches the specified predicate, starting at <paramref name="startIndex"/>, or -1 if no match is found.
+    /// </summary>
     public static int FindIndex<T>(this IReadOnlyList<T> collection, int startIndex, Predicate<T> match)
     {
         ArgumentNullException.ThrowIfNull(collection);
@@ -252,6 +278,9 @@ public static partial class CollectionExtensions
         return default;
     }
 
+    /// <summary>
+    /// Returns the zero-based index of the last element in the array that matches the specified predicate, or -1 if no match is found.
+    /// </summary>
     public static int FindLastIndex<T>(this T[] collection, Predicate<T> match)
     {
         ArgumentNullException.ThrowIfNull(collection);
@@ -260,6 +289,9 @@ public static partial class CollectionExtensions
         return collection.FindLastIndex(collection.Length - 1, match);
     }
 
+    /// <summary>
+    /// Returns the zero-based index of the last element in the array that matches the specified predicate, searching backwards from <paramref name="startIndex"/>.
+    /// </summary>
     public static int FindLastIndex<T>(this T[] collection, int startIndex, Predicate<T> match)
     {
         ArgumentNullException.ThrowIfNull(collection);
@@ -269,6 +301,9 @@ public static partial class CollectionExtensions
         return collection.FindLastIndex(startIndex, startIndex + 1, match);
     }
 
+    /// <summary>
+    /// Returns the zero-based index of the last element in the array that matches the specified predicate, searching backwards from <paramref name="startIndex"/> for up to <paramref name="count"/> elements.
+    /// </summary>
     public static int FindLastIndex<T>(this T[] collection, int startIndex, int count, Predicate<T> match)
     {
         ArgumentNullException.ThrowIfNull(collection);
@@ -291,6 +326,9 @@ public static partial class CollectionExtensions
         return -1;
     }
 
+    /// <summary>
+    /// Returns the zero-based index of the last element in the list that matches the specified predicate, or -1 if no match is found.
+    /// </summary>
     public static int FindLastIndex<T>(this IList<T> collection, Predicate<T> match)
     {
         ArgumentNullException.ThrowIfNull(collection);
@@ -299,6 +337,9 @@ public static partial class CollectionExtensions
         return collection.FindLastIndex(collection.Count - 1, match);
     }
 
+    /// <summary>
+    /// Returns the zero-based index of the last element in the list that matches the specified predicate, searching backwards from <paramref name="startIndex"/>.
+    /// </summary>
     public static int FindLastIndex<T>(this IList<T> collection, int startIndex, Predicate<T> match)
     {
         ArgumentNullException.ThrowIfNull(collection);
@@ -308,6 +349,9 @@ public static partial class CollectionExtensions
         return collection.FindLastIndex(startIndex, startIndex + 1, match);
     }
 
+    /// <summary>
+    /// Returns the zero-based index of the last element in the list that matches the specified predicate, searching backwards from <paramref name="startIndex"/> for up to <paramref name="count"/> elements.
+    /// </summary>
     public static int FindLastIndex<T>(this IList<T> collection, int startIndex, int count, Predicate<T> match)
     {
         ArgumentNullException.ThrowIfNull(collection);
@@ -330,6 +374,9 @@ public static partial class CollectionExtensions
         return -1;
     }
 
+    /// <summary>
+    /// Returns the zero-based index of the last element in the read-only list that matches the specified predicate, or -1 if no match is found.
+    /// </summary>
     public static int FindLastIndex<T>(this IReadOnlyList<T> collection, Predicate<T> match)
     {
         ArgumentNullException.ThrowIfNull(collection);
@@ -338,6 +385,9 @@ public static partial class CollectionExtensions
         return collection.FindLastIndex(collection.Count - 1, match);
     }
 
+    /// <summary>
+    /// Returns the zero-based index of the last element in the read-only list that matches the specified predicate, searching backwards from <paramref name="startIndex"/>.
+    /// </summary>
     public static int FindLastIndex<T>(this IReadOnlyList<T> collection, int startIndex, Predicate<T> match)
     {
         ArgumentNullException.ThrowIfNull(collection);
@@ -347,6 +397,9 @@ public static partial class CollectionExtensions
         return collection.FindLastIndex(startIndex, startIndex + 1, match);
     }
 
+    /// <summary>
+    /// Returns the zero-based index of the last element in the read-only list that matches the specified predicate, searching backwards from <paramref name="startIndex"/> for up to <paramref name="count"/> elements.
+    /// </summary>
     public static int FindLastIndex<T>(this IReadOnlyList<T> collection, int startIndex, int count, Predicate<T> match)
     {
         ArgumentNullException.ThrowIfNull(collection);
@@ -369,6 +422,9 @@ public static partial class CollectionExtensions
         return -1;
     }
 
+    /// <summary>
+    /// Invokes <paramref name="action"/> on each element of the sequence.
+    /// </summary>
     public static void ForEach<T>(this IEnumerable<T> collection, Action<T> action)
     {
         ArgumentNullException.ThrowIfNull(collection);
@@ -380,6 +436,9 @@ public static partial class CollectionExtensions
         }
     }
 
+    /// <summary>
+    /// Invokes <paramref name="action"/> on each element of the memory region.
+    /// </summary>
     public static void ForEach<T>(this ReadOnlyMemory<T> collection, Action<T> action)
     {
         ArgumentNullException.ThrowIfNull(action);
@@ -392,6 +451,9 @@ public static partial class CollectionExtensions
         }
     }
 
+    /// <summary>
+    /// Invokes <paramref name="action"/> on each element of the array.
+    /// </summary>
     public static void ForEach<T>(this T[] array, Action<T> action)
     {
         ArgumentNullException.ThrowIfNull(array);
@@ -403,6 +465,9 @@ public static partial class CollectionExtensions
         }
     }
 
+    /// <summary>
+    /// Invokes <paramref name="action"/> on each element of the immutable array.
+    /// </summary>
     public static void ForEach<T>(this ImmutableArray<T> collection, Action<T> action)
     {
         ArgumentNullException.ThrowIfNull(action);
@@ -413,6 +478,9 @@ public static partial class CollectionExtensions
         }
     }
 
+    /// <summary>
+    /// Invokes <paramref name="action"/> on each element of the immutable hash set.
+    /// </summary>
     public static void ForEach<T>(this ImmutableHashSet<T> collection, Action<T> action)
     {
         ArgumentNullException.ThrowIfNull(collection);
@@ -424,6 +492,9 @@ public static partial class CollectionExtensions
         }
     }
 
+    /// <summary>
+    /// Invokes <paramref name="action"/> on each element of the frozen set.
+    /// </summary>
     public static void ForEach<T>(this FrozenSet<T> collection, Action<T> action)
     {
         ArgumentNullException.ThrowIfNull(collection);
@@ -435,6 +506,9 @@ public static partial class CollectionExtensions
         }
     }
 
+    /// <summary>
+    /// Invokes <paramref name="action"/> on each element of the list.
+    /// </summary>
     public static void ForEach<T>(this IList<T> collection, Action<T> action)
     {
         ArgumentNullException.ThrowIfNull(collection);
@@ -446,6 +520,9 @@ public static partial class CollectionExtensions
         }
     }
 
+    /// <summary>
+    /// Invokes <paramref name="action"/> on each element of the read-only list.
+    /// </summary>
     public static void ForEach<T>(this IReadOnlyList<T> collection, Action<T> action)
     {
         ArgumentNullException.ThrowIfNull(collection);
@@ -457,6 +534,9 @@ public static partial class CollectionExtensions
         }
     }
 
+    /// <summary>
+    /// Returns a random selection of up to <paramref name="count"/> elements drawn from the sequence in random order.
+    /// </summary>
     public static IEnumerable<T> RandomSelection<T>(this IEnumerable<T> collection, int count)
     {
         ArgumentNullException.ThrowIfNull(collection);
@@ -478,6 +558,9 @@ public static partial class CollectionExtensions
         return randomSortTable.OrderBy(p => p.Key).Take(count).Select(p => p.Value);
     }
 
+    /// <summary>
+    /// Removes all elements from <paramref name="collection"/> that match the specified predicate and returns the number of elements removed.
+    /// </summary>
     public static int RemoveAll<T>(this IList<T> collection, Predicate<T> match)
     {
         ArgumentNullException.ThrowIfNull(collection);
@@ -527,18 +610,27 @@ public static partial class CollectionExtensions
         }
     }
 
+    /// <summary>
+    /// Creates a new <see cref="Collection{T}"/> containing the elements of <paramref name="collection"/>.
+    /// </summary>
     public static Collection<T> ToCollection<T>(this IEnumerable<T> collection)
     {
         ArgumentNullException.ThrowIfNull(collection);
         return [.. collection];
     }
 
+    /// <summary>
+    /// Creates a new <see cref="ObservableCollection{T}"/> containing the elements of <paramref name="collection"/>.
+    /// </summary>
     public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> collection)
     {
         ArgumentNullException.ThrowIfNull(collection);
         return [.. collection];
     }
 
+    /// <summary>
+    /// Creates a new <see cref="ObservableCollection{T}"/> containing the elements of <paramref name="list"/>.
+    /// </summary>
     public static ObservableCollection<T> ToObservableCollection<T>(this List<T> list)
     {
 #pragma warning disable IDE0028 // Simplify collection initialization
@@ -546,11 +638,17 @@ public static partial class CollectionExtensions
 #pragma warning restore IDE0028 // Simplify collection initialization
     }
 
+    /// <summary>
+    /// Creates a new <see cref="ReadOnlyValueCollection{T}"/> containing the elements of <paramref name="collection"/>.
+    /// </summary>
     public static ReadOnlyValueCollection<T> ToReadOnlyValueCollection<T>(this IEnumerable<T> collection)
     {
         return [.. collection];
     }
 
+    /// <summary>
+    /// Creates a new <see cref="ReadOnlyValueDictionary{TKey, TValue}"/> containing the entries of <paramref name="collection"/>.
+    /// </summary>
     public static ReadOnlyValueDictionary<TKey, TValue> ToReadOnlyValueDictionary<TKey, TValue>(
         this IEnumerable<KeyValuePair<TKey, TValue>> collection)
         where TKey : notnull
@@ -558,16 +656,25 @@ public static partial class CollectionExtensions
         return new(collection);
     }
 
+    /// <summary>
+    /// Creates a new <see cref="ReadOnlyValueSet{T}"/> containing the distinct elements of <paramref name="collection"/>.
+    /// </summary>
     public static ReadOnlyValueSet<T> ToReadOnlyValueSet<T>(this IEnumerable<T> collection)
     {
         return [.. collection];
     }
 
+    /// <summary>
+    /// Creates a new <see cref="ValueCollection{T}"/> containing the elements of <paramref name="collection"/>.
+    /// </summary>
     public static ValueCollection<T> ToValueCollection<T>(this IEnumerable<T> collection)
     {
         return [.. collection];
     }
 
+    /// <summary>
+    /// Returns the number of elements in <paramref name="sequence"/> as a <see cref="uint"/>, throwing if the count overflows.
+    /// </summary>
     public static uint CountUnsigned<T>(this IEnumerable<T> sequence)
     {
         if (sequence is ICollection<T> collection)
@@ -595,6 +702,9 @@ public static partial class CollectionExtensions
         return count;
     }
 
+    /// <summary>
+    /// Returns the number of elements in <paramref name="sequence"/> as a <see cref="uint"/>, without overflow checking.
+    /// </summary>
     public static uint CountUnsignedUnchecked<T>(this IEnumerable<T> sequence)
     {
         if (sequence is ICollection<T> collection)
@@ -619,6 +729,9 @@ public static partial class CollectionExtensions
         return count;
     }
 
+    /// <summary>
+    /// Returns the number of elements in <paramref name="sequence"/> for which <paramref name="predicate"/> returns <see langword="false"/>, as a <see cref="uint"/>, with overflow checking.
+    /// </summary>
     public static uint CountUnsigned<T>(this IEnumerable<T> sequence, Func<T, bool> predicate)
     {
         ArgumentNullException.ThrowIfNull(sequence);
@@ -640,6 +753,9 @@ public static partial class CollectionExtensions
         return count;
     }
 
+    /// <summary>
+    /// Returns the number of elements in <paramref name="sequence"/> for which <paramref name="predicate"/> returns <see langword="false"/>, as a <see cref="uint"/>, without overflow checking.
+    /// </summary>
     public static uint CountUnsignedUnchecked<T>(this IEnumerable<T> sequence, Func<T, bool> predicate)
     {
         ArgumentNullException.ThrowIfNull(sequence);

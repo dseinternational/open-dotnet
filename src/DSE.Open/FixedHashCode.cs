@@ -3,6 +3,9 @@
 
 namespace DSE.Open;
 
+/// <summary>
+/// Provides a deterministic, platform-stable hash code for spans of characters.
+/// </summary>
 public static class FixedHashCode
 {
     /// <summary>

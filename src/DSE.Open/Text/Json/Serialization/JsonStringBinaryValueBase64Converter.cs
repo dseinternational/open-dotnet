@@ -6,10 +6,18 @@ using System.Text.Json.Serialization;
 
 namespace DSE.Open.Text.Json.Serialization;
 
+/// <summary>
+/// A <see cref="JsonConverter{T}"/> that reads and writes <see cref="BinaryValue"/> instances
+/// as Base64-encoded JSON strings.
+/// </summary>
 public sealed class JsonStringBinaryValueBase64Converter : JsonConverter<BinaryValue>
 {
+    /// <summary>
+    /// The default instance of the converter.
+    /// </summary>
     public static readonly JsonStringBinaryValueBase64Converter Default = new();
 
+    /// <inheritdoc/>
     public override BinaryValue Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         if (reader.TokenType != JsonTokenType.String)
@@ -30,6 +38,7 @@ public sealed class JsonStringBinaryValueBase64Converter : JsonConverter<BinaryV
         return BinaryValue.CreateUnsafe(bytes);
     }
 
+    /// <inheritdoc/>
     public override void Write(Utf8JsonWriter writer, BinaryValue value, JsonSerializerOptions options)
     {
         ArgumentNullException.ThrowIfNull(writer);

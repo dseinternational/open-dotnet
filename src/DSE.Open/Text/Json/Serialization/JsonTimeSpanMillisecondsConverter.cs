@@ -12,6 +12,7 @@ namespace DSE.Open.Text.Json.Serialization;
 /// </summary>
 public class JsonTimeSpanMillisecondsConverter : JsonConverter<TimeSpan>
 {
+    /// <inheritdoc/>
     public override TimeSpan Read(
         ref Utf8JsonReader reader,
         Type typeToConvert,
@@ -20,6 +21,7 @@ public class JsonTimeSpanMillisecondsConverter : JsonConverter<TimeSpan>
         return TimeSpan.FromMilliseconds(reader.GetInt64());
     }
 
+    /// <inheritdoc/>
     public override void Write(
         Utf8JsonWriter writer,
         TimeSpan value,

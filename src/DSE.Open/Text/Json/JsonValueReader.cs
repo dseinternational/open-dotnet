@@ -5,4 +5,8 @@ using System.Text.Json;
 
 namespace DSE.Open.Text.Json;
 
+/// <summary>
+/// Encapsulates a method that reads a value of type <typeparamref name="T"/> from a
+/// <see cref="Utf8JsonReader"/>.
+/// </summary>
 public delegate T JsonValueReader<T>(ref Utf8JsonReader reader);

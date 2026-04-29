@@ -10,31 +10,51 @@ namespace DSE.Open.Text;
 
 public static partial class StringHelper
 {
+    /// <summary>
+    /// Returns <paramref name="value"/> with <paramref name="wrapper"/> placed before and after it.
+    /// </summary>
     public static string Wrap(ReadOnlySpan<char> wrapper, ReadOnlySpan<char> value)
     {
         return Wrap(wrapper, wrapper, value);
     }
 
+    /// <summary>
+    /// Returns <paramref name="value"/> with <paramref name="before"/> prepended and <paramref name="after"/> appended.
+    /// </summary>
     public static string Wrap(ReadOnlySpan<char> before, ReadOnlySpan<char> after, ReadOnlySpan<char> value)
     {
         return $"{before}{value}{after}";
     }
 
+    /// <summary>
+    /// Returns <paramref name="value"/> with <paramref name="wrapper"/> placed before and after it.
+    /// </summary>
     public static string Wrap(string wrapper, string value)
     {
         return Wrap(wrapper, wrapper, value);
     }
 
+    /// <summary>
+    /// Returns <paramref name="value"/> with <paramref name="before"/> prepended and <paramref name="after"/> appended.
+    /// </summary>
     public static string Wrap(string before, string after, string value)
     {
         return $"{before}{value}{after}";
     }
 
+    /// <summary>
+    /// Formats <paramref name="value"/> and returns the result with <paramref name="wrapper"/>
+    /// placed before and after it.
+    /// </summary>
     public static string Wrap<T>(char wrapper, T value, ReadOnlySpan<char> format = default, IFormatProvider? provider = default)
     {
         return Wrap(wrapper, wrapper, value, format, provider);
     }
 
+    /// <summary>
+    /// Formats <paramref name="value"/> and returns the result with <paramref name="before"/>
+    /// prepended and <paramref name="after"/> appended.
+    /// </summary>
     [SkipLocalsInit]
     public static string Wrap<T>(char before, char after, T value, ReadOnlySpan<char> format = default, IFormatProvider? provider = default)
     {
@@ -45,11 +65,19 @@ public static partial class StringHelper
         return sh.ToStringAndClear();
     }
 
+    /// <summary>
+    /// Formats <paramref name="value"/> and returns the result with <paramref name="wrapper"/>
+    /// placed before and after it.
+    /// </summary>
     public static string Wrap<T>(string wrapper, T value, string? format = default, IFormatProvider? provider = default)
     {
         return Wrap(wrapper, wrapper, value, format, provider);
     }
 
+    /// <summary>
+    /// Formats <paramref name="value"/> and returns the result with <paramref name="before"/>
+    /// prepended and <paramref name="after"/> appended.
+    /// </summary>
     [SkipLocalsInit]
     public static string Wrap<T>(string before, string after, T value, string? format = default, IFormatProvider? provider = default)
     {
@@ -63,6 +91,10 @@ public static partial class StringHelper
         return sh.ToStringAndClear();
     }
 
+    /// <summary>
+    /// Formats <paramref name="value"/> and returns the result with <paramref name="wrapper"/>
+    /// placed before and after it.
+    /// </summary>
     public static string Wrap<T>(
         ReadOnlySpan<char> wrapper,
         T value,
@@ -73,6 +105,10 @@ public static partial class StringHelper
         return Wrap(wrapper, wrapper, value, format, provider);
     }
 
+    /// <summary>
+    /// Formats <paramref name="value"/> and returns the result with <paramref name="before"/>
+    /// prepended and <paramref name="after"/> appended.
+    /// </summary>
     [SkipLocalsInit]
     public static string Wrap<T>(
         ReadOnlySpan<char> before,
@@ -90,6 +126,10 @@ public static partial class StringHelper
         return sh.ToStringAndClear();
     }
 
+    /// <summary>
+    /// Wraps each string in <paramref name="values"/> with <paramref name="before"/> and
+    /// <paramref name="after"/>.
+    /// </summary>
     public static IEnumerable<string> WrapRange(
         ReadOnlySpan<char> before,
         ReadOnlySpan<char> after,
@@ -120,6 +160,10 @@ public static partial class StringHelper
         return results;
     }
 
+    /// <summary>
+    /// Wraps the formatted representation of each value in <paramref name="values"/> with the
+    /// <paramref name="before"/> and <paramref name="after"/> characters.
+    /// </summary>
     public static IEnumerable<string> WrapRange<T>(
         char before,
         char after,
@@ -148,6 +192,10 @@ public static partial class StringHelper
         return results;
     }
 
+    /// <summary>
+    /// Wraps the formatted representation of each value in <paramref name="values"/> with the
+    /// <paramref name="before"/> and <paramref name="after"/> spans.
+    /// </summary>
     public static IEnumerable<string> WrapRange<T>(
         ReadOnlySpan<char> before,
         ReadOnlySpan<char> after,
@@ -176,6 +224,10 @@ public static partial class StringHelper
         return results;
     }
 
+    /// <summary>
+    /// Wraps the formatted representation of each value in <paramref name="values"/> with the
+    /// <paramref name="before"/> and <paramref name="after"/> characters.
+    /// </summary>
     public static IEnumerable<string> WrapRange<T>(
         char before,
         char after,
@@ -199,6 +251,10 @@ public static partial class StringHelper
         return results;
     }
 
+    /// <summary>
+    /// Wraps the formatted representation of each value in <paramref name="values"/> with the
+    /// <paramref name="before"/> and <paramref name="after"/> spans.
+    /// </summary>
     public static IEnumerable<string> WrapRange<T>(
         ReadOnlySpan<char> before,
         ReadOnlySpan<char> after,

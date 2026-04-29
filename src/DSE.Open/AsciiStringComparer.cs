@@ -31,10 +31,13 @@ public abstract class AsciiStringComparer : IComparer<AsciiString>, IEqualityCom
     {
     }
 
+    /// <inheritdoc/>
     public abstract int Compare(AsciiString x, AsciiString y);
 
+    /// <inheritdoc/>
     public abstract bool Equals(AsciiString x, AsciiString y);
 
+    /// <inheritdoc/>
     public abstract int GetHashCode(AsciiString obj);
 
     private sealed class AsciiCharSequenceComparerCaseSensitive : AsciiStringComparer

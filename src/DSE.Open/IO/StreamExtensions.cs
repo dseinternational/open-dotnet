@@ -6,13 +6,24 @@ using System.Text;
 
 namespace DSE.Open.IO;
 
+/// <summary>
+/// Provides extension methods for <see cref="Stream"/>.
+/// </summary>
 public static class StreamExtensions
 {
+    /// <summary>
+    /// Reads the stream to its end and returns the bytes read as a new array.
+    /// </summary>
     public static byte[] ReadToEnd(this Stream stream)
     {
         return ReadToEnd(stream, 0);
     }
 
+    /// <summary>
+    /// Reads the stream to its end and returns the bytes read as a new array,
+    /// using the specified initial buffer length (a default size is used when
+    /// <paramref name="initialLength"/> is less than 1).
+    /// </summary>
     public static byte[] ReadToEnd(this Stream stream, int initialLength = 0)
     {
         ArgumentNullException.ThrowIfNull(stream);
@@ -53,6 +64,9 @@ public static class StreamExtensions
         return result;
     }
 
+    /// <summary>
+    /// Asynchronously reads the stream to its end and returns the bytes read as a new array.
+    /// </summary>
     public static Task<byte[]> ReadToEndAsync(
         this Stream stream,
         CancellationToken cancellationToken = default)
@@ -60,6 +74,11 @@ public static class StreamExtensions
         return ReadToEndAsync(stream, 0, cancellationToken);
     }
 
+    /// <summary>
+    /// Asynchronously reads the stream to its end and returns the bytes read as a new array,
+    /// using the specified initial buffer length (a default size is used when
+    /// <paramref name="initialLength"/> is less than 1).
+    /// </summary>
     public static async Task<byte[]> ReadToEndAsync(
         this Stream stream,
         int initialLength,
@@ -114,29 +133,47 @@ public static class StreamExtensions
         }
     }
 
+    /// <summary>
+    /// Reads the stream to its end and returns the result decoded as a string,
+    /// detecting the encoding from byte order marks where present.
+    /// </summary>
     public static string ReadToEndAsString(this Stream stream)
     {
         using var reader = new StreamReader(stream);
         return reader.ReadToEnd();
     }
 
+    /// <summary>
+    /// Reads the stream to its end and returns the result decoded as a string
+    /// using the specified <paramref name="encoding"/>.
+    /// </summary>
     public static string ReadToEndAsString(this Stream stream, Encoding encoding)
     {
         using var reader = new StreamReader(stream, encoding);
         return reader.ReadToEnd();
     }
 
+    /// <summary>
+    /// Asynchronously reads the stream to its end and returns the result decoded as a UTF-8 string.
+    /// </summary>
     public static Task<string> ReadToEndAsStringAsync(this Stream stream)
     {
         return ReadToEndAsStringAsync(stream, Encoding.UTF8);
     }
 
+    /// <summary>
+    /// Asynchronously reads the stream to its end and returns the result decoded as a string
+    /// using the specified <paramref name="encoding"/>.
+    /// </summary>
     public static async Task<string> ReadToEndAsStringAsync(this Stream stream, Encoding encoding)
     {
         using var reader = new StreamReader(stream, encoding);
         return await reader.ReadToEndAsync().ConfigureAwait(false);
     }
 
+    /// <summary>
+    /// Writes the contents of the supplied <see cref="ReadOnlySequence{T}"/> to the stream.
+    /// </summary>
     public static void Write(this Stream stream, in ReadOnlySequence<byte> sequence)
     {
         ArgumentNullException.ThrowIfNull(stream);
@@ -153,6 +190,9 @@ public static class StreamExtensions
         }
     }
 
+    /// <summary>
+    /// Asynchronously writes the contents of the supplied <see cref="ReadOnlySequence{T}"/> to the stream.
+    /// </summary>
     public static async ValueTask WriteAsync(
         this Stream stream,
         ReadOnlySequence<byte> sequence,

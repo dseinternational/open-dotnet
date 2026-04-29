@@ -5,6 +5,11 @@ using System.Collections.ObjectModel;
 
 namespace DSE.Open.Collections.ObjectModel;
 
+/// <summary>
+/// An observable collection of items sharing a group key, raising change notifications when the group or contents change.
+/// </summary>
+/// <typeparam name="TGroup">The type of the group key.</typeparam>
+/// <typeparam name="TItem">The type of the items in the group.</typeparam>
 public class ObservableGrouping<TGroup, TItem> : ObservableCollection<TItem>, IObservableGrouping<TGroup, TItem>
 {
     private TGroup _group;

@@ -26,10 +26,13 @@ public abstract class AsciiChar3Comparer : IComparer<AsciiChar3>, IEqualityCompa
     {
     }
 
+    /// <inheritdoc/>
     public abstract int Compare(AsciiChar3 x, AsciiChar3 y);
 
+    /// <inheritdoc/>
     public abstract bool Equals(AsciiChar3 x, AsciiChar3 y);
 
+    /// <inheritdoc/>
     public abstract int GetHashCode(AsciiChar3 obj);
 
     private sealed class AsciiCharSequenceComparerCaseSensitive : AsciiChar3Comparer

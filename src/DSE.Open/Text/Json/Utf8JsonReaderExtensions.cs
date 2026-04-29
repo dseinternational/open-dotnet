@@ -9,8 +9,18 @@ namespace DSE.Open.Text.Json;
 
 #pragma warning disable DSEOPEN001 // ArrayBuilder ref struct warning
 
+/// <summary>
+/// Extension methods for <see cref="Utf8JsonReader"/>.
+/// </summary>
 public static class Utf8JsonReaderExtensions
 {
+    /// <summary>
+    /// Attempts to read the current JSON number token as a value of type <typeparamref name="T"/>.
+    /// </summary>
+    /// <returns>
+    /// <see langword="true"/> if the current token is a number that can be converted to
+    /// <typeparamref name="T"/>; otherwise, <see langword="false"/>.
+    /// </returns>
     public static bool TryGetNumber<T>(this ref Utf8JsonReader reader, out T value)
         where T : struct, INumber<T>
     {
@@ -141,6 +151,12 @@ public static class Utf8JsonReaderExtensions
         throw new JsonException("Expected end of array");
     }
 
+    /// <summary>
+    /// Reads the contents of a JSON array of numbers into a new array of <typeparamref name="T"/>.
+    /// Starting location is expected to be <see cref="JsonTokenType.StartArray"/>.
+    /// </summary>
+    /// <param name="reader">The reader.</param>
+    /// <param name="length">The length of the array, if known. A negative value if unknown.</param>
     public static T[] ReadNumberArray<T>(
         this ref Utf8JsonReader reader,
         int length)
@@ -159,6 +175,12 @@ public static class Utf8JsonReaderExtensions
         });
     }
 
+    /// <summary>
+    /// Reads the contents of a JSON array of numbers into a <see cref="Memory{T}"/>.
+    /// Starting location is expected to be <see cref="JsonTokenType.StartArray"/>.
+    /// </summary>
+    /// <param name="reader">The reader.</param>
+    /// <param name="length">The length of the array, if known. A negative value if unknown.</param>
     public static Memory<T> ReadNumberArrayAsMemory<T>(
         this ref Utf8JsonReader reader,
         int length)

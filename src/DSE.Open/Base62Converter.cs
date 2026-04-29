@@ -5,6 +5,9 @@ using System.Text;
 
 namespace DSE.Open;
 
+/// <summary>
+/// Encodes byte sequences to base 62 strings (digits, uppercase letters, lowercase letters) and decodes them back.
+/// </summary>
 public static class Base62Converter
 {
     private const string CharacterSet =
@@ -39,6 +42,9 @@ public static class Base62Converter
         return value >= 0;
     }
 
+    /// <summary>
+    /// Returns the base 62 string representation of the specified byte sequence.
+    /// </summary>
     public static string ToBase62String(ReadOnlySpan<byte> data)
     {
         if (data.IsEmpty)
@@ -136,6 +142,10 @@ public static class Base62Converter
         }
     }
 
+    /// <summary>
+    /// Attempts to decode a base 62 string into a byte array. Returns <see langword="false"/> if the
+    /// input contains an invalid character.
+    /// </summary>
     public static bool TryFromBase62(string base62, out byte[] data)
     {
         ArgumentNullException.ThrowIfNull(base62);
@@ -179,6 +189,10 @@ public static class Base62Converter
         return [.. result];
     }
 
+    /// <summary>
+    /// Attempts to encode <paramref name="bytes"/> as base 62 characters into <paramref name="destination"/>.
+    /// Returns <see langword="false"/> if <paramref name="destination"/> is too small.
+    /// </summary>
     public static bool TryEncodeToBase62(ReadOnlySpan<byte> bytes, Span<char> destination, out int charsWritten)
     {
         if (bytes.IsEmpty)

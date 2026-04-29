@@ -5,8 +5,16 @@ using System.Linq.Expressions;
 
 namespace DSE.Open.Linq.Expressions;
 
+/// <summary>
+/// Provides factory methods for predicate expressions.
+/// </summary>
 public static class Predicates
 {
+    /// <summary>
+    /// Creates a predicate expression that tests whether a value falls within the supplied
+    /// <see cref="UnboundedRange{T}"/>, or returns <see langword="null"/> when the range
+    /// has neither a start nor an end bound.
+    /// </summary>
     public static Expression<Func<T, bool>>? CreateRange<T>(UnboundedRange<T> range)
         where T : struct, IEquatable<T>, IComparable<T>
     {

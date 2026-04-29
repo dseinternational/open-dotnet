@@ -6,8 +6,21 @@ using System.Text.Json;
 
 namespace DSE.Open.Text.Json;
 
+/// <summary>
+/// Extension methods for <see cref="Utf8JsonWriter"/>.
+/// </summary>
 public static class Utf8JsonWriterExtensions
 {
+    /// <summary>
+    /// Writes the specified <typeparamref name="T"/> value as a JSON number, dispatching to the
+    /// appropriate <see cref="Utf8JsonWriter"/> overload for the underlying numeric type.
+    /// </summary>
+    /// <param name="writer">The writer.</param>
+    /// <param name="value">The value to write.</param>
+    /// <param name="allowNamedFloatingPointLiterals">
+    /// When <see langword="true"/>, NaN and infinity values for floating-point types are written as JSON
+    /// strings using their named representations.
+    /// </param>
     public static void WriteNumberValue<T>(
         this Utf8JsonWriter writer,
         T value,
@@ -108,6 +121,17 @@ public static class Utf8JsonWriterExtensions
         }
     }
 
+    /// <summary>
+    /// Writes the specified <see cref="INaValue{TSelf, T}"/> value, emitting a JSON null when the
+    /// value represents N/A and otherwise dispatching to the appropriate JSON token for the
+    /// underlying value type.
+    /// </summary>
+    /// <param name="writer">The writer.</param>
+    /// <param name="value">The value to write.</param>
+    /// <param name="allowNamedFloatingPointLiterals">
+    /// When <see langword="true"/>, NaN and infinity values for floating-point types are written as JSON
+    /// strings using their named representations.
+    /// </param>
     public static void WriteNullableValue<TSelf, T>(
         this Utf8JsonWriter writer,
         TSelf value,
@@ -199,6 +223,16 @@ public static class Utf8JsonWriterExtensions
         }
     }
 
+    /// <summary>
+    /// Writes the specified <see cref="INaValue{TSelf, T}"/> numeric value, emitting a JSON null when
+    /// the value represents N/A and otherwise dispatching to the appropriate numeric writer overload.
+    /// </summary>
+    /// <param name="writer">The writer.</param>
+    /// <param name="value">The value to write.</param>
+    /// <param name="allowNamedFloatingPointLiterals">
+    /// When <see langword="true"/>, NaN and infinity values for floating-point types are written as JSON
+    /// strings using their named representations.
+    /// </param>
     public static void WriteNullableNumberValue<TSelf, T>(
         this Utf8JsonWriter writer,
         TSelf value,

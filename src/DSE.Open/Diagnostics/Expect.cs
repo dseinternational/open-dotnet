@@ -7,6 +7,10 @@ using System.Runtime.CompilerServices;
 
 namespace DSE.Open.Diagnostics;
 
+/// <summary>
+/// Helpers that throw an <see cref="UnexpectedConditionException"/> when an internal expectation
+/// is violated. Distinct from argument validation, these guard against unexpected runtime state.
+/// </summary>
 public static class Expect
 {
     /// <summary>
@@ -66,6 +70,12 @@ public static class Expect
         UnexpectedConditionException.ThrowIfNull(value, valueName);
     }
 
+    /// <summary>
+    /// Throws an <see cref="UnexpectedConditionException"/> if <paramref name="value"/> is null
+    /// or equal to the default value of <typeparamref name="T"/>.
+    /// </summary>
+    /// <param name="value">The value to check.</param>
+    /// <param name="valueName">The name of the value to include in the exception.</param>
     public static void NotNullOrDefault<T>([NotNull] T? value, [CallerArgumentExpression(nameof(value))] string? valueName = null)
         where T : struct
     {
@@ -105,6 +115,11 @@ public static class Expect
         UnexpectedConditionException.ThrowIfEmpty(collection, collectionName);
     }
 
+    /// <summary>
+    /// Throws an <see cref="UnreachableException"/> to indicate that a code path believed to be
+    /// unreachable was reached.
+    /// </summary>
+    /// <param name="message">An optional message included in the exception.</param>
     [DoesNotReturn]
     public static void Unreachable(string? message = null)
     {

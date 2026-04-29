@@ -3,13 +3,23 @@
 
 namespace DSE.Open.Threading.Tasks;
 
+/// <summary>
+/// Provides extension methods for wrapping values in completed <see cref="Task{TResult}"/> instances.
+/// </summary>
 public static class TaskExtensions
 {
+    /// <summary>
+    /// Returns a cached completed task with the supplied <see cref="bool"/> result.
+    /// </summary>
     public static Task<bool> ToTask(this bool value)
     {
         return value ? CachedTasks.True : CachedTasks.False;
     }
 
+    /// <summary>
+    /// Returns a completed task whose result is <paramref name="value"/>, returning a
+    /// shared cached task when <paramref name="value"/> is a recognised empty sequence.
+    /// </summary>
     public static Task<IEnumerable<T>> ToTask<T>(this IEnumerable<T> value)
     {
         if (ReferenceEquals(value, Array.Empty<T>()))
@@ -25,6 +35,9 @@ public static class TaskExtensions
         return Task.FromResult(value);
     }
 
+    /// <summary>
+    /// Returns a completed task whose result is <paramref name="value"/>.
+    /// </summary>
     public static Task<T> ToTask<T>(this T value)
     {
         return Task.FromResult(value);

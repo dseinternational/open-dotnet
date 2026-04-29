@@ -6,10 +6,18 @@ using System.Text.Json.Serialization;
 
 namespace DSE.Open.Text.Json.Serialization;
 
+/// <summary>
+/// A <see cref="JsonConverter{T}"/> that reads and writes <see cref="Variant"/> values, mapping
+/// JSON null, boolean, number and string tokens to the appropriate variant kind.
+/// </summary>
 public class JsonVariantConverter : JsonConverter<Variant>
 {
+    /// <summary>
+    /// The default instance of the converter.
+    /// </summary>
     public static readonly JsonVariantConverter Default = new();
 
+    /// <inheritdoc/>
     public override Variant Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         if (reader.TokenType == JsonTokenType.Null)
@@ -45,6 +53,7 @@ public class JsonVariantConverter : JsonConverter<Variant>
         throw new JsonException("Unable to read Variant value.");
     }
 
+    /// <inheritdoc/>
     public override void Write(Utf8JsonWriter writer, Variant value, JsonSerializerOptions options)
     {
         ArgumentNullException.ThrowIfNull(writer);

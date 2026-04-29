@@ -5,6 +5,11 @@ using System.Collections;
 
 namespace DSE.Open.Collections.Generic;
 
+/// <summary>
+/// Represents a list of items that can also be retrieved by an associated key.
+/// </summary>
+/// <typeparam name="TKey">The key type.</typeparam>
+/// <typeparam name="TItem">The item type.</typeparam>
 public interface IKeyedCollection<TKey, TItem>
     : IList<TItem>, IList, IReadOnlyList<TItem>, IReadOnlyKeyedCollection<TKey, TItem>
     where TKey : notnull

@@ -17,12 +17,22 @@ namespace DSE.Open.Text.Json.Serialization;
 /// <typeparam name="TValue"></typeparam>
 public abstract class CharWritingJsonConverter<TValue> : JsonConverter<TValue>
 {
+    /// <summary>
+    /// Returns the maximum number of characters required to format <paramref name="value"/>.
+    /// </summary>
     protected abstract int GetMaxCharCountToWrite(TValue value);
 
+    /// <summary>
+    /// Attempts to parse a <typeparamref name="TValue"/> from the supplied character data.
+    /// </summary>
     protected abstract bool TryParse(ReadOnlySpan<char> data, [MaybeNullWhen(false)] out TValue value);
 
+    /// <summary>
+    /// Attempts to format <paramref name="value"/> as characters into <paramref name="data"/>.
+    /// </summary>
     protected abstract bool TryFormat(TValue value, Span<char> data, out int charsWritten);
 
+    /// <inheritdoc/>
     [SkipLocalsInit]
     public override TValue Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
@@ -50,6 +60,7 @@ public abstract class CharWritingJsonConverter<TValue> : JsonConverter<TValue>
         }
     }
 
+    /// <inheritdoc/>
     [SkipLocalsInit]
     public override void Write(Utf8JsonWriter writer, TValue value, JsonSerializerOptions options)
     {

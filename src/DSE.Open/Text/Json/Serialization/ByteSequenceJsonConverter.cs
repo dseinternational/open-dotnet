@@ -35,12 +35,14 @@ public sealed class ByteSequenceJsonConverter : JsonConverterFactory
         typeof(IEnumerable<byte>)
     );
 
+    /// <inheritdoc/>
     public override bool CanConvert(Type typeToConvert)
     {
         ArgumentNullException.ThrowIfNull(typeToConvert);
         return s_supportedTypes.Contains(typeToConvert);
     }
 
+    /// <inheritdoc/>
     public override JsonConverter? CreateConverter(Type typeToConvert, JsonSerializerOptions options)
     {
         ArgumentNullException.ThrowIfNull(typeToConvert);

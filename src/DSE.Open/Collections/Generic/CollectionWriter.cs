@@ -5,13 +5,22 @@ using DSE.Open.Text;
 
 namespace DSE.Open.Collections.Generic;
 
+/// <summary>
+/// Provides helpers that render collections and key/value sequences to a JSON-like string.
+/// </summary>
 public static class CollectionWriter
 {
+    /// <summary>
+    /// Renders the elements of <paramref name="collection"/> as a bracketed comma-separated string using <see cref="CollectionOutputOptions.Default"/>.
+    /// </summary>
     public static string WriteToString<T>(IEnumerable<T> collection)
     {
         return WriteToString(collection, CollectionOutputOptions.Default);
     }
 
+    /// <summary>
+    /// Renders the elements of <paramref name="collection"/> as a bracketed comma-separated string using the specified options.
+    /// </summary>
     public static string WriteToString<T>(IEnumerable<T> collection, CollectionOutputOptions options)
     {
         ArgumentNullException.ThrowIfNull(collection);
@@ -66,11 +75,17 @@ public static class CollectionWriter
         return sb.ToString();
     }
 
+    /// <summary>
+    /// Renders the entries of <paramref name="collection"/> as a bracketed comma-separated key:value string using <see cref="CollectionOutputOptions.Default"/>.
+    /// </summary>
     public static string WriteToString<TKey, TValue>(IEnumerable<KeyValuePair<TKey, TValue>> collection)
     {
         return WriteToString(collection, CollectionOutputOptions.Default);
     }
 
+    /// <summary>
+    /// Renders the entries of <paramref name="collection"/> as a bracketed comma-separated key:value string using the specified options.
+    /// </summary>
     public static string WriteToString<TKey, TValue>(
         IEnumerable<KeyValuePair<TKey, TValue>> collection,
         CollectionOutputOptions options)

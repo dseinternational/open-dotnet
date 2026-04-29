@@ -3,6 +3,9 @@
 
 namespace DSE.Open.Collections.Generic;
 
+/// <summary>
+/// Provides extension methods for <see cref="IKeyedCollection{TKey, TItem}"/>.
+/// </summary>
 public static class KeyedCollectionExtensions
 {
     /// <summary>

@@ -5,8 +5,12 @@ using System.IO.Hashing;
 
 namespace DSE.Open.Hashing;
 
+/// <summary>
+/// A <see cref="RepeatableHash64Provider"/> that produces 64-bit hashes using the XxHash64 algorithm.
+/// </summary>
 public class XxHash64RepeatableHash64Provider : RepeatableHash64Provider
 {
+    /// <inheritdoc/>
     protected override ulong GetRepeatableHashCodeCore(ReadOnlySpan<byte> value)
     {
         return XxHash64.HashToUInt64(value);

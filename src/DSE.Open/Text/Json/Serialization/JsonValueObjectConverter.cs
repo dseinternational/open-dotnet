@@ -22,6 +22,9 @@ namespace DSE.Open.Text.Json.Serialization;
 [RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]
 public class JsonValueObjectConverter : JsonConverter<object>
 {
+    /// <summary>
+    /// The default instance of the converter.
+    /// </summary>
     public static readonly JsonValueObjectConverter Default = new();
 
     /// <inheritdoc/>

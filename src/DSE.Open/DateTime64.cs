@@ -16,52 +16,72 @@ public readonly record struct DateTime64 : IBinaryInteger<DateTime64>, IMinMaxVa
     internal const long MinMilliseconds = -62135596800000L;
     internal const long MaxMilliseconds = 253402300799999L;
 
+    /// <summary>Gets the minimum representable <see cref="DateTime64"/> value (year 0001 UTC).</summary>
     public static DateTime64 MinValue { get; } = new(MinMilliseconds);
 
+    /// <summary>Gets the maximum representable <see cref="DateTime64"/> value (year 9999 UTC).</summary>
     public static DateTime64 MaxValue { get; } = new(MaxMilliseconds);
 
+    /// <summary>
+    /// Initializes a new <see cref="DateTime64"/> from the specified number of milliseconds since the Unix epoch.
+    /// </summary>
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if the value is outside the supported range.</exception>
     public DateTime64(long millisecondsSinceUnixEpoch)
     {
         Guard.IsInRange(millisecondsSinceUnixEpoch, MinMilliseconds, MaxMilliseconds + 1, nameof(millisecondsSinceUnixEpoch));
         TotalMilliseconds = millisecondsSinceUnixEpoch;
     }
 
+    /// <summary>
+    /// Initializes a new <see cref="DateTime64"/> from the specified <see cref="DateTimeOffset"/>.
+    /// </summary>
     public DateTime64(DateTimeOffset dateTime)
     {
         TotalMilliseconds = dateTime.ToUnixTimeMilliseconds();
     }
 
+    /// <summary>Gets the date component (in UTC) of this value.</summary>
     public DateTime Date => DateTimeOffset.FromUnixTimeMilliseconds(TotalMilliseconds).Date;
 
+    /// <summary>Gets the local <see cref="System.DateTime"/> representation of this value.</summary>
     public DateTime DateTime => DateTimeOffset.FromUnixTimeMilliseconds(TotalMilliseconds).DateTime;
 
+    /// <summary>Gets the UTC <see cref="System.DateTime"/> representation of this value.</summary>
     public DateTime UtcDateTime => DateTimeOffset.FromUnixTimeMilliseconds(TotalMilliseconds).UtcDateTime;
 
+    /// <summary>Gets the total number of milliseconds since the Unix epoch (1970-01-01T00:00:00Z).</summary>
     public long TotalMilliseconds { get; }
 
+    /// <summary>Returns the <see cref="DateTimeOffset"/> representation of this value.</summary>
     public DateTimeOffset ToDateTimeOffset()
     {
         return DateTimeOffset.FromUnixTimeMilliseconds(TotalMilliseconds);
     }
 
+    /// <summary>Gets a <see cref="DateTime64"/> representing the current local time.</summary>
     public static DateTime64 Now => DateTimeOffset.Now;
 
+    /// <summary>Gets a <see cref="DateTime64"/> representing the current UTC time.</summary>
     public static DateTime64 UtcNow => DateTimeOffset.UtcNow;
 
+    /// <summary>Creates a <see cref="DateTime64"/> from the specified number of milliseconds since the Unix epoch.</summary>
     public static DateTime64 FromUnixTimeMilliseconds(long milliseconds)
     {
         return new(milliseconds);
     }
 
+    /// <summary>Creates a <see cref="DateTime64"/> from the specified number of seconds since the Unix epoch.</summary>
     public static DateTime64 FromUnixTimeSeconds(long seconds)
     {
         return new(seconds * 1000);
     }
 
+    /// <summary>Gets the value 1 (1 millisecond after the Unix epoch).</summary>
     public static DateTime64 One { get; } = new(1L);
 
     static int INumberBase<DateTime64>.Radix { get; } = 2;
 
+    /// <summary>Gets the value 0 (the Unix epoch).</summary>
     public static DateTime64 Zero { get; } = new(0L);
 
     static DateTime64 IAdditiveIdentity<DateTime64, DateTime64>.AdditiveIdentity => Zero;
@@ -178,21 +198,25 @@ public readonly record struct DateTime64 : IBinaryInteger<DateTime64>, IMinMaxVa
         return new(long.MinMagnitude(x.TotalMilliseconds, y.TotalMilliseconds));
     }
 
+    /// <summary>Parses the specified character span as the millisecond count for a <see cref="DateTime64"/>.</summary>
     public static DateTime64 Parse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider)
     {
         return new DateTime64(long.Parse(s, style, provider));
     }
 
+    /// <summary>Parses the specified string as the millisecond count for a <see cref="DateTime64"/>.</summary>
     public static DateTime64 Parse(string s, NumberStyles style, IFormatProvider? provider)
     {
         return new DateTime64(long.Parse(s, style, provider));
     }
 
+    /// <inheritdoc/>
     public static DateTime64 Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
     {
         return new DateTime64(long.Parse(s, provider));
     }
 
+    /// <inheritdoc/>
     public static DateTime64 Parse(string s, IFormatProvider? provider)
     {
         return new DateTime64(long.Parse(s, provider));
@@ -249,6 +273,7 @@ public readonly record struct DateTime64 : IBinaryInteger<DateTime64>, IMinMaxVa
         return TOther.TryConvertFromTruncating(value.TotalMilliseconds, out result!);
     }
 
+    /// <summary>Attempts to parse the specified character span as the millisecond count for a <see cref="DateTime64"/>.</summary>
     public static bool TryParse(
         ReadOnlySpan<char> s,
         NumberStyles style,
@@ -265,6 +290,7 @@ public readonly record struct DateTime64 : IBinaryInteger<DateTime64>, IMinMaxVa
         return false;
     }
 
+    /// <summary>Attempts to parse the specified string as the millisecond count for a <see cref="DateTime64"/>.</summary>
     public static bool TryParse(
         string? s,
         NumberStyles style,
@@ -281,6 +307,7 @@ public readonly record struct DateTime64 : IBinaryInteger<DateTime64>, IMinMaxVa
         return false;
     }
 
+    /// <inheritdoc/>
     public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out DateTime64 result)
     {
         if (long.TryParse(s, NumberStyles.Integer, provider, out var ms))
@@ -293,6 +320,7 @@ public readonly record struct DateTime64 : IBinaryInteger<DateTime64>, IMinMaxVa
         return false;
     }
 
+    /// <inheritdoc/>
     public static bool TryParse(string? s, IFormatProvider? provider, out DateTime64 result)
     {
         if (long.TryParse(s, NumberStyles.Integer, provider, out var ms))
@@ -305,21 +333,25 @@ public readonly record struct DateTime64 : IBinaryInteger<DateTime64>, IMinMaxVa
         return false;
     }
 
+    /// <inheritdoc/>
     public bool Equals(DateTime64 other)
     {
         return TotalMilliseconds == other.TotalMilliseconds;
     }
 
+    /// <inheritdoc/>
     public override int GetHashCode()
     {
         return HashCode.Combine(TotalMilliseconds);
     }
 
+    /// <inheritdoc/>
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
         return TotalMilliseconds.ToString(format, formatProvider);
     }
 
+    /// <inheritdoc/>
     public bool TryFormat(
         Span<char> destination,
         out int charsWritten,
@@ -329,16 +361,19 @@ public readonly record struct DateTime64 : IBinaryInteger<DateTime64>, IMinMaxVa
         return TotalMilliseconds.TryFormat(destination, out charsWritten, format, provider);
     }
 
+    /// <inheritdoc/>
     public int CompareTo(object? obj)
     {
         return TotalMilliseconds.CompareTo(obj);
     }
 
+    /// <inheritdoc/>
     public int CompareTo(DateTime64 other)
     {
         return TotalMilliseconds.CompareTo(other.TotalMilliseconds);
     }
 
+    /// <summary>Returns a new value that is the sum of this value and <paramref name="value"/>.</summary>
     public DateTime64 Add(DateTime64 value)
     {
         return new(TotalMilliseconds + value.TotalMilliseconds);
@@ -409,46 +444,55 @@ public readonly record struct DateTime64 : IBinaryInteger<DateTime64>, IMinMaxVa
         return left.TotalMilliseconds != right.TotalMilliseconds;
     }
 
+    /// <summary>Determines whether one <see cref="DateTime64"/> is later than another.</summary>
     public static bool operator >(DateTime64 left, DateTime64 right)
     {
         return left.TotalMilliseconds > right.TotalMilliseconds;
     }
 
+    /// <summary>Determines whether one <see cref="DateTime64"/> is later than or equal to another.</summary>
     public static bool operator >=(DateTime64 left, DateTime64 right)
     {
         return left.TotalMilliseconds >= right.TotalMilliseconds;
     }
 
+    /// <summary>Determines whether one <see cref="DateTime64"/> is earlier than another.</summary>
     public static bool operator <(DateTime64 left, DateTime64 right)
     {
         return left.TotalMilliseconds < right.TotalMilliseconds;
     }
 
+    /// <summary>Determines whether one <see cref="DateTime64"/> is earlier than or equal to another.</summary>
     public static bool operator <=(DateTime64 left, DateTime64 right)
     {
         return left.TotalMilliseconds <= right.TotalMilliseconds;
     }
 
+    /// <summary>Returns the remainder when dividing one <see cref="DateTime64"/>'s milliseconds by another's.</summary>
     public static DateTime64 operator %(DateTime64 left, DateTime64 right)
     {
         return Remainder(left, right);
     }
 
+    /// <summary>Returns the remainder when dividing one <see cref="DateTime64"/>'s milliseconds by another's.</summary>
     public static DateTime64 Remainder(DateTime64 left, DateTime64 right)
     {
         return new DateTime64(left.TotalMilliseconds % right.TotalMilliseconds);
     }
 
+    /// <summary>Converts a <see cref="DateTime64"/> to a <see cref="DateTimeOffset"/>.</summary>
     public static implicit operator DateTimeOffset(DateTime64 value)
     {
         return value.ToDateTimeOffset();
     }
 
+    /// <summary>Converts a <see cref="DateTimeOffset"/> to a <see cref="DateTime64"/>.</summary>
     public static implicit operator DateTime64(DateTimeOffset value)
     {
         return FromDateTimeOffset(value);
     }
 
+    /// <summary>Creates a <see cref="DateTime64"/> from the specified <see cref="DateTimeOffset"/>.</summary>
     public static DateTime64 FromDateTimeOffset(DateTimeOffset value)
     {
         return new(value);

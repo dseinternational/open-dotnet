@@ -21,31 +21,55 @@ public static partial class MemoryExtensions
             SearchValues.Create("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
     }
 
+    /// <summary>
+    /// Determines if the sequence of characters contains only ASCII decimal digits, or is empty when
+    /// <paramref name="allowEmpty"/> is <see langword="true"/>.
+    /// </summary>
     public static bool ContainsOnlyAsciiDigits(this Span<char> value, bool allowEmpty = true)
     {
         return ContainsOnlyAsciiDigits((ReadOnlySpan<char>)value, allowEmpty);
     }
 
+    /// <summary>
+    /// Determines if the sequence of characters contains only ASCII letters, or is empty when
+    /// <paramref name="allowEmpty"/> is <see langword="true"/>.
+    /// </summary>
     public static bool ContainsOnlyAsciiLetters(this Span<char> value, bool allowEmpty = true)
     {
         return ContainsOnlyAsciiLetters((ReadOnlySpan<char>)value, allowEmpty);
     }
 
+    /// <summary>
+    /// Determines if the sequence of characters contains only ASCII letters or digits, or is empty when
+    /// <paramref name="allowEmpty"/> is <see langword="true"/>.
+    /// </summary>
     public static bool ContainsOnlyAsciiLettersOrDigits(this Span<char> value, bool allowEmpty = true)
     {
         return ContainsOnlyAsciiLettersOrDigits((ReadOnlySpan<char>)value, allowEmpty);
     }
 
+    /// <summary>
+    /// Determines if the sequence of characters contains only upper-case ASCII letters or digits, or is
+    /// empty when <paramref name="allowEmpty"/> is <see langword="true"/>.
+    /// </summary>
     public static bool ContainsOnlyAsciiUpperLettersOrDigits(this Span<char> value, bool allowEmpty = true)
     {
         return ContainsOnlyAsciiUpperLettersOrDigits((ReadOnlySpan<char>)value, allowEmpty);
     }
 
+    /// <summary>
+    /// Determines if the sequence of characters contains only lower-case ASCII letters, or is empty
+    /// when <paramref name="allowEmpty"/> is <see langword="true"/>.
+    /// </summary>
     public static bool ContainsOnlyAsciiLettersLower(this Span<char> value, bool allowEmpty = true)
     {
         return ContainsOnlyAsciiLettersLower((ReadOnlySpan<char>)value, allowEmpty);
     }
 
+    /// <summary>
+    /// Determines if the sequence of characters contains only upper-case ASCII letters, or is empty
+    /// when <paramref name="allowEmpty"/> is <see langword="true"/>.
+    /// </summary>
     public static bool ContainsOnlyAsciiLettersUpper(this Span<char> value, bool allowEmpty = true)
     {
         return ContainsOnlyAsciiLettersUpper((ReadOnlySpan<char>)value, allowEmpty);
@@ -270,21 +294,36 @@ public static partial class MemoryExtensions
         return true;
     }
 
+    /// <summary>
+    /// Returns a deterministic, platform-stable 64-bit hash code for <paramref name="value"/>.
+    /// </summary>
     public static ulong GetRepeatableHashCode(this ReadOnlySpan<char> value)
     {
         return RepeatableHash64Provider.Default.GetRepeatableHashCode(value);
     }
 
+    /// <summary>
+    /// Copies non-whitespace characters from <paramref name="span"/> into <paramref name="buffer"/>.
+    /// Returns <see langword="false"/> if <paramref name="buffer"/> is too small.
+    /// </summary>
     public static bool TryCopyWhereNotWhitespace(this Span<char> span, Span<char> buffer, out int charsWritten)
     {
         return TryCopyWhereNotWhitespace((ReadOnlySpan<char>)span, buffer, out charsWritten);
     }
 
+    /// <summary>
+    /// Copies characters from <paramref name="span"/> into <paramref name="buffer"/>, excluding punctuation.
+    /// Returns <see langword="false"/> if <paramref name="buffer"/> is too small.
+    /// </summary>
     public static bool TryCopyWhereNotPunctuation(this Span<char> span, Span<char> buffer, out int charsWritten)
     {
         return TryCopyWhereNotPunctuation((ReadOnlySpan<char>)span, buffer, out charsWritten);
     }
 
+    /// <summary>
+    /// Copies characters from <paramref name="span"/> into <paramref name="buffer"/>, excluding punctuation
+    /// and whitespace. Returns <see langword="false"/> if <paramref name="buffer"/> is too small.
+    /// </summary>
     public static bool TryCopyWhereNotPunctuationOrWhitespace(
         this Span<char> span,
         Span<char> buffer,
@@ -293,16 +332,28 @@ public static partial class MemoryExtensions
         return TryCopyWhereNotPunctuationOrWhitespace((ReadOnlySpan<char>)span, buffer, out charsWritten);
     }
 
+    /// <summary>
+    /// Copies non-whitespace characters from <paramref name="span"/> into <paramref name="buffer"/>.
+    /// Returns <see langword="false"/> if <paramref name="buffer"/> is too small.
+    /// </summary>
     public static bool TryCopyWhereNotWhitespace(this ReadOnlySpan<char> span, Span<char> buffer, out int charsWritten)
     {
         return TryCopyWhere(span, buffer, v => !char.IsWhiteSpace(v), out charsWritten);
     }
 
+    /// <summary>
+    /// Copies characters from <paramref name="span"/> into <paramref name="buffer"/>, excluding punctuation.
+    /// Returns <see langword="false"/> if <paramref name="buffer"/> is too small.
+    /// </summary>
     public static bool TryCopyWhereNotPunctuation(this ReadOnlySpan<char> span, Span<char> buffer, out int charsWritten)
     {
         return TryCopyWhere(span, buffer, v => !char.IsPunctuation(v), out charsWritten);
     }
 
+    /// <summary>
+    /// Copies characters from <paramref name="span"/> into <paramref name="buffer"/>, excluding punctuation
+    /// and whitespace. Returns <see langword="false"/> if <paramref name="buffer"/> is too small.
+    /// </summary>
     public static bool TryCopyWhereNotPunctuationOrWhitespace(
         this ReadOnlySpan<char> span,
         Span<char> buffer,
@@ -311,46 +362,79 @@ public static partial class MemoryExtensions
         return TryCopyWhere(span, buffer, v => !(char.IsPunctuation(v) || char.IsWhiteSpace(v)), out charsWritten);
     }
 
+    /// <summary>
+    /// Copies characters from <paramref name="span"/> into <paramref name="buffer"/>, excluding punctuation.
+    /// Returns the number of characters copied.
+    /// </summary>
     public static int CopyExcludingPunctuation(this ReadOnlySpan<char> span, Span<char> buffer)
     {
         return CopyWhere(span, buffer, v => !char.IsPunctuation(v));
     }
 
+    /// <summary>
+    /// Copies non-whitespace characters from <paramref name="span"/> into <paramref name="buffer"/>.
+    /// Returns the number of characters copied.
+    /// </summary>
     public static int CopyExcludingWhitespace(this ReadOnlySpan<char> span, Span<char> buffer)
     {
         return CopyWhere(span, buffer, v => !char.IsWhiteSpace(v));
     }
 
+    /// <summary>
+    /// Copies characters from <paramref name="span"/> into <paramref name="buffer"/>, excluding punctuation
+    /// and whitespace. Returns the number of characters copied.
+    /// </summary>
     public static int CopyExcludingPunctuationAndWhitespace(this ReadOnlySpan<char> span, Span<char> buffer)
     {
         return CopyWhere(span, buffer, v => !(char.IsWhiteSpace(v) || char.IsPunctuation(v)));
     }
 
+    /// <summary>
+    /// Removes whitespace characters from <paramref name="span"/> in place and returns a span over the result.
+    /// </summary>
     public static Span<char> RemoveWhitespace(this Span<char> span)
     {
         return Remove(span, char.IsWhiteSpace);
     }
 
+    /// <summary>
+    /// Removes punctuation characters from <paramref name="span"/> in place and returns a span over the result.
+    /// </summary>
     public static Span<char> RemovePunctuation(this Span<char> span)
     {
         return Remove(span, char.IsPunctuation);
     }
 
+    /// <summary>
+    /// Removes punctuation and whitespace characters from <paramref name="span"/> in place and returns
+    /// a span over the result.
+    /// </summary>
     public static Span<char> RemovePunctuationAndWhitespace(this Span<char> span)
     {
         return Remove(span, v => char.IsWhiteSpace(v) || char.IsPunctuation(v));
     }
 
+    /// <summary>
+    /// Removes characters that are not Unicode letters or digits from <paramref name="span"/> in place
+    /// and returns a span over the result.
+    /// </summary>
     public static Span<char> RemoveNonLetterOrDigit(this Span<char> span)
     {
         return Remove(span, v => !char.IsLetterOrDigit(v));
     }
 
+    /// <summary>
+    /// Removes characters that are not ASCII letters or digits from <paramref name="span"/> in place
+    /// and returns a span over the result.
+    /// </summary>
     public static Span<char> RemoveNonAsciiLetterOrDigit(this Span<char> span)
     {
         return Remove(span, v => !char.IsAsciiLetterOrDigit(v));
     }
 
+    /// <summary>
+    /// Converts each character in <paramref name="span"/> to lower case in place using the current culture.
+    /// </summary>
     public static void ToLower(this Span<char> span)
     {
         if (span.IsEmpty)
@@ -364,6 +448,9 @@ public static partial class MemoryExtensions
         }
     }
 
+    /// <summary>
+    /// Converts each character in <paramref name="span"/> to lower case in place using the invariant culture.
+    /// </summary>
     public static void ToLowerInvariant(this Span<char> span)
     {
         if (span.IsEmpty)
@@ -377,6 +464,9 @@ public static partial class MemoryExtensions
         }
     }
 
+    /// <summary>
+    /// Converts each character in <paramref name="span"/> to upper case in place using the current culture.
+    /// </summary>
     public static void ToUpper(this Span<char> span)
     {
         if (span.IsEmpty)
@@ -390,6 +480,9 @@ public static partial class MemoryExtensions
         }
     }
 
+    /// <summary>
+    /// Converts each character in <paramref name="span"/> to upper case in place using the invariant culture.
+    /// </summary>
     public static void ToUpperInvariant(this Span<char> span)
     {
         if (span.IsEmpty)

@@ -32,6 +32,9 @@ public ref partial struct ValueStringBuilder
     private Span<char> _chars;
     private int _pos;
 
+    /// <summary>
+    /// Initializes the builder with the supplied initial buffer (typically stack-allocated).
+    /// </summary>
     public ValueStringBuilder(Span<char> initialBuffer)
     {
         _arrayToReturnToPool = null;
@@ -39,6 +42,10 @@ public ref partial struct ValueStringBuilder
         _pos = 0;
     }
 
+    /// <summary>
+    /// Initializes the builder with a buffer rented from <see cref="ArrayPool{T}.Shared"/> with at
+    /// least the requested initial capacity.
+    /// </summary>
     public ValueStringBuilder(int initialCapacity)
     {
         _arrayToReturnToPool = ArrayPool<char>.Shared.Rent(initialCapacity);
@@ -46,6 +53,9 @@ public ref partial struct ValueStringBuilder
         _pos = 0;
     }
 
+    /// <summary>
+    /// Gets or sets the number of characters currently written to the builder.
+    /// </summary>
     public int Length
     {
         readonly get => _pos;
@@ -57,8 +67,14 @@ public ref partial struct ValueStringBuilder
         }
     }
 
+    /// <summary>
+    /// Gets the total size of the underlying buffer.
+    /// </summary>
     public readonly int Capacity => _chars.Length;
 
+    /// <summary>
+    /// Ensures the underlying buffer is at least the specified capacity, growing it if necessary.
+    /// </summary>
     public void EnsureCapacity(int capacity)
     {
         // This is not expected to be called this with negative capacity
@@ -97,6 +113,9 @@ public ref partial struct ValueStringBuilder
         return ref MemoryMarshal.GetReference(_chars);
     }
 
+    /// <summary>
+    /// Gets a reference to the character at the specified index in the buffer.
+    /// </summary>
     public ref char this[int index]
     {
         get
@@ -106,6 +125,9 @@ public ref partial struct ValueStringBuilder
         }
     }
 
+    /// <summary>
+    /// Returns the buffer contents as a string and disposes the builder.
+    /// </summary>
     public override string ToString()
     {
         var s = _chars[.._pos].ToString();
@@ -131,21 +153,35 @@ public ref partial struct ValueStringBuilder
         return _chars[.._pos];
     }
 
+    /// <summary>
+    /// Returns a read-only span over the contents of the builder.
+    /// </summary>
     public readonly ReadOnlySpan<char> AsSpan()
     {
         return _chars[.._pos];
     }
 
+    /// <summary>
+    /// Returns a read-only span over the contents of the builder starting at the specified position.
+    /// </summary>
     public readonly ReadOnlySpan<char> AsSpan(int start)
     {
         return _chars[start.._pos];
     }
 
+    /// <summary>
+    /// Returns a read-only span over the contents of the builder beginning at <paramref name="start"/>
+    /// and of the specified <paramref name="length"/>.
+    /// </summary>
     public readonly ReadOnlySpan<char> AsSpan(int start, int length)
     {
         return _chars.Slice(start, length);
     }
 
+    /// <summary>
+    /// Copies the contents of the builder to <paramref name="destination"/> and disposes the builder.
+    /// Returns <see langword="false"/> if the destination is not large enough.
+    /// </summary>
     public bool TryCopyTo(Span<char> destination, out int charsWritten)
     {
         if (_chars[.._pos].TryCopyTo(destination))
@@ -162,6 +198,9 @@ public ref partial struct ValueStringBuilder
         }
     }
 
+    /// <summary>
+    /// Inserts <paramref name="count"/> copies of <paramref name="value"/> at the specified index.
+    /// </summary>
     public void Insert(int index, char value, int count)
     {
         if (_pos > _chars.Length - count)
@@ -175,6 +214,9 @@ public ref partial struct ValueStringBuilder
         _pos += count;
     }
 
+    /// <summary>
+    /// Inserts the specified string at the specified index. A null string is ignored.
+    /// </summary>
     public void Insert(int index, string? s)
     {
         if (s == null)
@@ -195,6 +237,9 @@ public ref partial struct ValueStringBuilder
         _pos += count;
     }
 
+    /// <summary>
+    /// Appends a single character to the builder.
+    /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Append(char c)
     {
@@ -211,6 +256,9 @@ public ref partial struct ValueStringBuilder
         }
     }
 
+    /// <summary>
+    /// Appends the specified string to the builder. A null string is ignored.
+    /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Append(string? s)
     {
@@ -245,6 +293,9 @@ public ref partial struct ValueStringBuilder
         _pos += s.Length;
     }
 
+    /// <summary>
+    /// Appends <paramref name="count"/> copies of <paramref name="c"/> to the builder.
+    /// </summary>
     public void Append(char c, int count)
     {
         if (_pos > _chars.Length - count)
@@ -262,6 +313,9 @@ public ref partial struct ValueStringBuilder
         _pos += count;
     }
 
+    /// <summary>
+    /// Appends <paramref name="length"/> characters starting at the specified pointer to the builder.
+    /// </summary>
     public unsafe void Append(char* value, int length)
     {
         var pos = _pos;
@@ -281,6 +335,9 @@ public ref partial struct ValueStringBuilder
         _pos += length;
     }
 
+    /// <summary>
+    /// Appends the contents of the specified span to the builder.
+    /// </summary>
     public void Append(scoped ReadOnlySpan<char> value)
     {
         var pos = _pos;
@@ -293,6 +350,10 @@ public ref partial struct ValueStringBuilder
         _pos += value.Length;
     }
 
+    /// <summary>
+    /// Reserves <paramref name="length"/> characters of space at the current position and returns a
+    /// writable span that the caller can fill directly.
+    /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Span<char> AppendSpan(int length)
     {
@@ -349,6 +410,9 @@ public ref partial struct ValueStringBuilder
         }
     }
 
+    /// <summary>
+    /// Returns any pooled buffer to <see cref="ArrayPool{T}.Shared"/> and resets the builder.
+    /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Dispose()
     {

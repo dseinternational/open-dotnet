@@ -18,12 +18,22 @@ namespace DSE.Open.Text.Json.Serialization;
 public abstract class ByteWritingJsonConverter<TValue> : JsonConverter<TValue>
     where TValue : IUtf8SpanFormattable, IUtf8SpanParsable<TValue>
 {
+    /// <summary>
+    /// Returns the maximum number of UTF-8 bytes required to format <paramref name="value"/>.
+    /// </summary>
     protected abstract int GetMaxByteCountToWrite(TValue value);
 
+    /// <summary>
+    /// Attempts to parse a <typeparamref name="TValue"/> from the supplied UTF-8 data.
+    /// </summary>
     protected abstract bool TryParse(ReadOnlySpan<byte> data, [MaybeNullWhen(false)] out TValue value);
 
+    /// <summary>
+    /// Attempts to format <paramref name="value"/> as UTF-8 into <paramref name="data"/>.
+    /// </summary>
     protected abstract bool TryFormat(TValue value, Span<byte> data, out int bytesWritten);
 
+    /// <inheritdoc/>
     public override TValue Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         if (reader.ValueIsEscaped)
@@ -76,6 +86,7 @@ public abstract class ByteWritingJsonConverter<TValue> : JsonConverter<TValue>
         }
     }
 
+    /// <inheritdoc/>
     [SkipLocalsInit]
     public override void Write(Utf8JsonWriter writer, TValue value, JsonSerializerOptions options)
     {

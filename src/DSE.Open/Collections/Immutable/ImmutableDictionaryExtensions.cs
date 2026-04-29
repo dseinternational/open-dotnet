@@ -6,6 +6,9 @@ using DSE.Open.Collections.Generic;
 
 namespace DSE.Open.Collections.Immutable;
 
+/// <summary>
+/// Provides extension methods for <see cref="IImmutableDictionary{TKey, TValue}"/>.
+/// </summary>
 public static class ImmutableDictionaryExtensions
 {
     /// <summary>

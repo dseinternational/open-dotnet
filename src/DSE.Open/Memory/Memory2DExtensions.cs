@@ -8,6 +8,9 @@ using CommunityToolkit.HighPerformance;
 
 namespace DSE.Open.Memory;
 
+/// <summary>
+/// Extension methods for 2D memory and span types.
+/// </summary>
 public static partial class Memory2DExtensions
 {
     /// <summary>

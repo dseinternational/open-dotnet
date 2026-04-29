@@ -30,6 +30,9 @@ public class DictionaryEqualityComparer<TKey, TValue>
     /// </summary>
     public IEqualityComparer<TValue> ValueComparer { get; }
 
+    /// <summary>
+    /// Determines whether two <see cref="ReadOnlyValueDictionary{TKey, TValue}"/> instances contain the same key/value entries.
+    /// </summary>
     public bool Equals(ReadOnlyValueDictionary<TKey, TValue>? x, ReadOnlyValueDictionary<TKey, TValue>? y)
     {
         if (x is null)
@@ -63,6 +66,9 @@ public class DictionaryEqualityComparer<TKey, TValue>
         return true;
     }
 
+    /// <summary>
+    /// Determines whether two <see cref="ReadOnlySortedValueDictionary{TKey, TValue}"/> instances contain the same key/value entries.
+    /// </summary>
     public bool Equals(ReadOnlySortedValueDictionary<TKey, TValue>? x, ReadOnlySortedValueDictionary<TKey, TValue>? y)
     {
         if (x is null)
@@ -96,6 +102,7 @@ public class DictionaryEqualityComparer<TKey, TValue>
         return true;
     }
 
+    /// <inheritdoc/>
     public bool Equals(IReadOnlyDictionary<TKey, TValue>? x, IReadOnlyDictionary<TKey, TValue>? y)
     {
         if (x is null)
@@ -129,6 +136,7 @@ public class DictionaryEqualityComparer<TKey, TValue>
         return true;
     }
 
+    /// <inheritdoc/>
     public bool Equals(IDictionary<TKey, TValue>? x, IDictionary<TKey, TValue>? y)
     {
         if (x is null)
@@ -162,24 +170,32 @@ public class DictionaryEqualityComparer<TKey, TValue>
         return true;
     }
 
+    /// <summary>
+    /// Returns a hash code for the specified <see cref="ReadOnlyValueDictionary{TKey, TValue}"/> based on its entries.
+    /// </summary>
     public int GetHashCode(ReadOnlyValueDictionary<TKey, TValue> obj)
     {
         ArgumentNullException.ThrowIfNull(obj);
         return GetHashCodeCore(obj, obj.Count);
     }
 
+    /// <summary>
+    /// Returns a hash code for the specified <see cref="ReadOnlySortedValueDictionary{TKey, TValue}"/> based on its entries.
+    /// </summary>
     public int GetHashCode(ReadOnlySortedValueDictionary<TKey, TValue> obj)
     {
         ArgumentNullException.ThrowIfNull(obj);
         return GetHashCodeCore(obj, obj.Count);
     }
 
+    /// <inheritdoc/>
     public int GetHashCode(IReadOnlyDictionary<TKey, TValue> obj)
     {
         ArgumentNullException.ThrowIfNull(obj);
         return GetHashCodeCore(obj, obj.Count);
     }
 
+    /// <inheritdoc/>
     public int GetHashCode(IDictionary<TKey, TValue> obj)
     {
         ArgumentNullException.ThrowIfNull(obj);

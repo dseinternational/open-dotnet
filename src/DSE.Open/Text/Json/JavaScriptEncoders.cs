@@ -6,6 +6,9 @@ using System.Text.Unicode;
 
 namespace DSE.Open.Text.Json;
 
+/// <summary>
+/// Provides preconfigured <see cref="JavaScriptEncoder"/> instances for use with JSON serialization.
+/// </summary>
 public static class JavaScriptEncoders
 {
     /// <summary>

@@ -18,6 +18,9 @@ public static class JsonBinarySerializer
 {
     private static readonly JsonSerializerOptions s_jsonSerializerOptions = JsonSharedOptions.RelaxedJsonEscaping;
 
+    /// <summary>
+    /// Serializes <paramref name="value"/> to UTF-8 encoded JSON bytes.
+    /// </summary>
     [RequiresDynamicCode(WarningMessages.RequiresDynamicCode)]
     [RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]
     public static ReadOnlyMemory<byte> SerializeToUtf8Json<T>(T value, JsonSerializerOptions? jsonSerializerOptions = null)
@@ -26,6 +29,9 @@ public static class JsonBinarySerializer
         return JsonSerializer.SerializeToUtf8Bytes(value, jsonSerializerOptions);
     }
 
+    /// <summary>
+    /// Deserializes a value of type <typeparamref name="T"/> from a UTF-8 encoded JSON byte sequence.
+    /// </summary>
     [RequiresDynamicCode(WarningMessages.RequiresDynamicCode)]
     [RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]
     public static T? DeserializeFromUtf8Json<T>(ReadOnlySpan<byte> json, JsonSerializerOptions? jsonSerializerOptions = null)
@@ -34,6 +40,10 @@ public static class JsonBinarySerializer
         return JsonSerializer.Deserialize<T>(json, jsonSerializerOptions);
     }
 
+    /// <summary>
+    /// Attempts to deserialize a value of type <typeparamref name="T"/> from a UTF-8 encoded JSON byte sequence.
+    /// </summary>
+    /// <returns><see langword="true"/> if deserialization succeeded; otherwise, <see langword="false"/>.</returns>
     [RequiresDynamicCode(WarningMessages.RequiresDynamicCode)]
     [RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]
     public static bool TryDeserializeFromUtf8Json<T>(ReadOnlySpan<byte> json, out T? value)
@@ -41,6 +51,11 @@ public static class JsonBinarySerializer
         return TryDeserializeFromUtf8Json(json, null, out value);
     }
 
+    /// <summary>
+    /// Attempts to deserialize a value of type <typeparamref name="T"/> from a UTF-8 encoded JSON byte sequence
+    /// using the specified <see cref="JsonSerializerOptions"/>.
+    /// </summary>
+    /// <returns><see langword="true"/> if deserialization succeeded; otherwise, <see langword="false"/>.</returns>
     [RequiresDynamicCode(WarningMessages.RequiresDynamicCode)]
     [RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]
     public static bool TryDeserializeFromUtf8Json<T>(ReadOnlySpan<byte> json, JsonSerializerOptions? jsonSerializerOptions, out T? value)
@@ -59,6 +74,9 @@ public static class JsonBinarySerializer
         }
     }
 
+    /// <summary>
+    /// Serializes <paramref name="value"/> to JSON and returns the result as a Base64-encoded string of the UTF-8 bytes.
+    /// </summary>
     [RequiresDynamicCode(WarningMessages.RequiresDynamicCode)]
     [RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]
     public static string SerializeToBase64Utf8Json<T>(T value, JsonSerializerOptions? jsonSerializerOptions = null)
@@ -67,6 +85,9 @@ public static class JsonBinarySerializer
         return Convert.ToBase64String(SerializeToUtf8Json(value, jsonSerializerOptions).Span);
     }
 
+    /// <summary>
+    /// Deserializes a value of type <typeparamref name="T"/> from a Base64-encoded UTF-8 JSON string.
+    /// </summary>
     [RequiresDynamicCode(WarningMessages.RequiresDynamicCode)]
     [RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]
     public static T? DeserializeFromBase64Utf8Json<T>(string base64, JsonSerializerOptions? jsonSerializerOptions = null)
@@ -76,6 +97,10 @@ public static class JsonBinarySerializer
         return DeserializeFromUtf8Json<T>(Convert.FromBase64String(base64), jsonSerializerOptions);
     }
 
+    /// <summary>
+    /// Attempts to deserialize a value of type <typeparamref name="T"/> from a Base64-encoded UTF-8 JSON string.
+    /// </summary>
+    /// <returns><see langword="true"/> if deserialization succeeded; otherwise, <see langword="false"/>.</returns>
     [RequiresDynamicCode(WarningMessages.RequiresDynamicCode)]
     [RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]
     public static bool TryDeserializeFromBase64Utf8Json<T>(string base64, out T? value)
@@ -83,6 +108,11 @@ public static class JsonBinarySerializer
         return TryDeserializeFromBase64Utf8Json(base64, null, out value);
     }
 
+    /// <summary>
+    /// Attempts to deserialize a value of type <typeparamref name="T"/> from a Base64-encoded UTF-8 JSON string
+    /// using the specified <see cref="JsonSerializerOptions"/>.
+    /// </summary>
+    /// <returns><see langword="true"/> if deserialization succeeded; otherwise, <see langword="false"/>.</returns>
     [RequiresDynamicCode(WarningMessages.RequiresDynamicCode)]
     [RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]
     [SkipLocalsInit]

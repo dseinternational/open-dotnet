@@ -7,6 +7,9 @@ using DSE.Open.Collections.Generic;
 
 namespace DSE.Open.Linq;
 
+/// <summary>
+/// Provides LINQ-style extension methods for <see cref="IEnumerable{T}"/>.
+/// </summary>
 public static class EnumerableExtensions
 {
     // From: https://github.com/dotnet/runtime/blob/21b4a8585362c1bc12d545b63e62a0d9dd4e8673/src/libraries/System.Linq/src/System/Linq/Enumerable.cs#L27C18-L27C18

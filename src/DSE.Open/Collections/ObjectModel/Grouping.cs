@@ -5,6 +5,11 @@ using System.Collections.ObjectModel;
 
 namespace DSE.Open.Collections.ObjectModel;
 
+/// <summary>
+/// A collection of items sharing a common group key, implementing <see cref="IGrouping{TKey, TElement}"/>.
+/// </summary>
+/// <typeparam name="TGroup">The type of the group key.</typeparam>
+/// <typeparam name="TItem">The type of the items in the group.</typeparam>
 public class Grouping<TGroup, TItem> : Collection<TItem>, IGrouping<TGroup, TItem>
 {
     /// <summary>

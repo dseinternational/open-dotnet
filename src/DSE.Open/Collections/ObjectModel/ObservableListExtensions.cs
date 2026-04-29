@@ -3,6 +3,9 @@
 
 namespace DSE.Open.Collections.ObjectModel;
 
+/// <summary>
+/// Provides extension methods for <see cref="IObservableList{T}"/>.
+/// </summary>
 public static class ObservableListExtensions
 {
     /// <summary>

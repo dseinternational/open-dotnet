@@ -30,11 +30,14 @@ public readonly struct AsciiChar3
       IRepeatableHash64
 {
     private const int CharCount = 3;
+
+    /// <summary>Gets the number of bytes used by the UTF-8 serialized form of an <see cref="AsciiChar3"/>.</summary>
     public static int MaxSerializedByteLength => 3;
 
     // internal for AsciiChar3Comparer
     internal readonly InlineArray3<AsciiChar> _chars;
 
+    /// <summary>Initializes a new <see cref="AsciiChar3"/> from three ASCII characters.</summary>
     public AsciiChar3(AsciiChar c0, AsciiChar c1, AsciiChar c2)
     {
         _chars[0] = c0;
@@ -42,18 +45,25 @@ public readonly struct AsciiChar3
         _chars[2] = c2;
     }
 
+    /// <summary>Initializes a new <see cref="AsciiChar3"/> from three characters in the ASCII range.</summary>
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if any value is not an ASCII character.</exception>
     public AsciiChar3(char c0, char c1, char c2) : this((AsciiChar)c0, (AsciiChar)c1, (AsciiChar)c2)
     {
     }
 
+    /// <summary>Initializes a new <see cref="AsciiChar3"/> from a tuple of three ASCII characters.</summary>
     public AsciiChar3((AsciiChar c0, AsciiChar c1, AsciiChar c2) value) : this(value.c0, value.c1, value.c2)
     {
     }
 
+    /// <summary>Initializes a new <see cref="AsciiChar3"/> from a tuple of three characters in the ASCII range.</summary>
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if any value is not an ASCII character.</exception>
     public AsciiChar3((char c0, char c1, char c2) value) : this(value.c0, value.c1, value.c2)
     {
     }
 
+    /// <summary>Initializes a new <see cref="AsciiChar3"/> from a span of exactly three ASCII characters.</summary>
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="span"/> is not exactly 3 elements long.</exception>
     public AsciiChar3(ReadOnlySpan<AsciiChar> span)
     {
         if (span.Length != CharCount)
@@ -64,6 +74,8 @@ public readonly struct AsciiChar3
         _chars = Unsafe.As<AsciiChar, InlineArray3<AsciiChar>>(ref MemoryMarshal.GetReference(span));
     }
 
+    /// <summary>Initializes a new <see cref="AsciiChar3"/> from a span of exactly three characters in the ASCII range.</summary>
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="span"/> is not exactly 3 elements or contains non-ASCII characters.</exception>
     public AsciiChar3(ReadOnlySpan<char> span)
     {
         if (span.Length != CharCount)
@@ -75,6 +87,7 @@ public readonly struct AsciiChar3
         this = new((AsciiChar)span[0], (AsciiChar)span[1], (AsciiChar)span[2]);
     }
 
+    /// <summary>Deconstructs the value into its three component <see cref="AsciiChar"/> values.</summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public void Deconstruct(out AsciiChar c0, out AsciiChar c1, out AsciiChar c2)
     {
@@ -83,44 +96,52 @@ public readonly struct AsciiChar3
         c2 = _chars[2];
     }
 
+    /// <inheritdoc/>
     public bool Equals(AsciiChar3 other)
     {
         return _chars[0] == other._chars[0] && _chars[1] == other._chars[1] && _chars[2] == other._chars[2];
     }
 
+    /// <summary>Determines whether the value equals the specified string (compared as ASCII).</summary>
     public bool Equals(string other)
     {
         ArgumentNullException.ThrowIfNull(other);
         return Equals(other.AsSpan());
     }
 
+    /// <summary>Determines whether the value equals the specified string ignoring ASCII case.</summary>
     public bool EqualsIgnoreCase(string other)
     {
         ArgumentNullException.ThrowIfNull(other);
         return EqualsIgnoreCase(other.AsSpan());
     }
 
+    /// <summary>Determines whether the value equals the specified character memory.</summary>
     public bool Equals(ReadOnlyMemory<char> other)
     {
         return Equals(other.Span);
     }
 
+    /// <summary>Determines whether the value equals the specified character span.</summary>
     public bool Equals(ReadOnlySpan<char> other)
     {
         return other.Length == CharCount && other[0] == _chars[0] && other[1] == _chars[1] && other[2] == _chars[2];
     }
 
+    /// <summary>Determines whether the value equals the specified character span ignoring ASCII case.</summary>
     public bool EqualsIgnoreCase(ReadOnlySpan<char> other)
     {
         return other.Length == CharCount
             && Ascii.EqualsIgnoreCase([_chars[0].ToChar(), _chars[1].ToChar(), _chars[2].ToChar()], other);
     }
 
+    /// <inheritdoc/>
     public override bool Equals(object? obj)
     {
         return obj is AsciiChar3 other && Equals(other);
     }
 
+    /// <summary>Determines whether two <see cref="AsciiChar3"/> values are equal ignoring ASCII case.</summary>
     public bool EqualsIgnoreCase(AsciiChar3 other)
     {
         return AsciiChar.EqualsIgnoreCase(_chars[0], other._chars[0])
@@ -128,6 +149,7 @@ public readonly struct AsciiChar3
                && AsciiChar.EqualsIgnoreCase(_chars[2], other._chars[2]);
     }
 
+    /// <summary>Compares this instance to another <see cref="AsciiChar3"/> ignoring ASCII case.</summary>
     public int CompareToIgnoreCase(AsciiChar3 other)
     {
         var c = AsciiChar.CompareToIgnoreCase(_chars[0], other._chars[0]);
@@ -142,6 +164,7 @@ public readonly struct AsciiChar3
         return c != 0 ? c : AsciiChar.CompareToIgnoreCase(_chars[2], other._chars[2]);
     }
 
+    /// <inheritdoc/>
     public int CompareTo(AsciiChar3 other)
     {
         var c = _chars[0].CompareTo(other._chars[0]);
@@ -156,81 +179,98 @@ public readonly struct AsciiChar3
         return c != 0 ? c : _chars[2].CompareTo(other._chars[2]);
     }
 
+    /// <inheritdoc/>
     public override int GetHashCode()
     {
         return HashCode.Combine(_chars[0], _chars[1], _chars[2]);
     }
 
+    /// <inheritdoc/>
     public override string ToString()
     {
         return ToString(null, null);
     }
 
+    /// <inheritdoc/>
     public int GetCharCount(ReadOnlySpan<char> format, IFormatProvider? provider)
     {
         return MaxSerializedByteLength;
     }
 
+    /// <inheritdoc/>
     public int GetCharCount(string? format, IFormatProvider? formatProvider)
     {
         return MaxSerializedByteLength;
     }
 
+    /// <summary>Converts this value to a <see cref="Char3"/>.</summary>
     public Char3 ToChar3()
     {
         return new((char)_chars[0], (char)_chars[1], (char)_chars[2]);
     }
 
+    /// <summary>Returns a new array containing the three characters as UTF-16 <see cref="char"/> values.</summary>
     public char[] ToCharArray()
     {
         return [_chars[0], _chars[1], _chars[2]];
     }
 
+    /// <summary>Creates an <see cref="AsciiChar3"/> from a three-character string.</summary>
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="value"/> is not exactly 3 ASCII characters.</exception>
     public static AsciiChar3 FromString(string value)
     {
         return new(value.AsSpan());
     }
 
+    /// <summary>Creates an <see cref="AsciiChar3"/> from a span of exactly three ASCII characters.</summary>
     public static AsciiChar3 FromSpan(ReadOnlySpan<AsciiChar> span)
     {
         return new(span);
     }
 
+    /// <summary>Determines whether two <see cref="AsciiChar3"/> values are equal.</summary>
     public static bool operator ==(AsciiChar3 left, AsciiChar3 right)
     {
         return left.Equals(right);
     }
 
+    /// <summary>Determines whether two <see cref="AsciiChar3"/> values are not equal.</summary>
     public static bool operator !=(AsciiChar3 left, AsciiChar3 right)
     {
         return !left.Equals(right);
     }
 
+    /// <summary>Returns the three-character string representation of the value.</summary>
     public static implicit operator string(AsciiChar3 value)
     {
         return value.ToString();
     }
 
+    /// <summary>Converts an <see cref="AsciiChar3"/> to a <see cref="Char3"/>.</summary>
     public static implicit operator Char3(AsciiChar3 value)
     {
         return value.ToChar3();
     }
 
+    /// <summary>Parses a three-character string into an <see cref="AsciiChar3"/>.</summary>
     public static explicit operator AsciiChar3(string value)
     {
         return FromString(value);
     }
 
+    /// <summary>Returns a new value with all three characters uppercased. Non-letters are unchanged.</summary>
     public AsciiChar3 ToUpper()
     {
         return new(_chars[0].ToUpper(), _chars[1].ToUpper(), _chars[2].ToUpper());
     }
 
+    /// <summary>Returns a new value with all three characters lowercased. Non-letters are unchanged.</summary>
     public AsciiChar3 ToLower()
     {
         return new(_chars[0].ToLower(), _chars[1].ToLower(), _chars[2].ToLower());
     }
 
+    /// <inheritdoc/>
     public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider? provider)
     {
         if (destination.Length >= CharCount)
@@ -246,6 +286,12 @@ public readonly struct AsciiChar3
         return false;
     }
 
+    /// <summary>
+    /// Returns a string representation of the value using the specified format and culture-specific format information.
+    /// </summary>
+    /// <remarks>
+    /// The <paramref name="format"/> can be unspecified or either 'L' or 'U' to convert the value to lower or upper case respectively.
+    /// </remarks>
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
         return string.Create(CharCount, (this, format, formatProvider), (span, state) =>
@@ -255,16 +301,19 @@ public readonly struct AsciiChar3
         });
     }
 
+    /// <summary>Returns the string representation with all letters lowercased.</summary>
     public string ToStringLower()
     {
         return ToString("L", null);
     }
 
+    /// <summary>Returns the string representation with all letters uppercased.</summary>
     public string ToStringUpper()
     {
         return ToString("U", null);
     }
 
+    /// <inheritdoc/>
     public static AsciiChar3 Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
     {
         if (TryParse(s, provider, out var result))
@@ -276,6 +325,7 @@ public readonly struct AsciiChar3
         return default; // unreachable
     }
 
+    /// <inheritdoc/>
     public static bool TryParse(
         ReadOnlySpan<char> s,
         IFormatProvider? provider,
@@ -292,12 +342,14 @@ public readonly struct AsciiChar3
         return false;
     }
 
+    /// <inheritdoc/>
     public static AsciiChar3 Parse(string s, IFormatProvider? provider)
     {
         ArgumentNullException.ThrowIfNull(s);
         return Parse(s.AsSpan(), provider);
     }
 
+    /// <inheritdoc/>
     public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, out AsciiChar3 result)
     {
         return TryParse(s.AsSpan(), provider, out result);
@@ -313,6 +365,7 @@ public readonly struct AsciiChar3
         return TryParse(value, null, out result);
     }
 
+    /// <inheritdoc/>
     public static AsciiChar3 Parse(ReadOnlySpan<byte> utf8Text, IFormatProvider? provider)
     {
         if (TryParse(utf8Text, provider, out var result))
@@ -324,6 +377,7 @@ public readonly struct AsciiChar3
         return default; // unreachable
     }
 
+    /// <inheritdoc/>
     public static bool TryParse(
         ReadOnlySpan<byte> utf8Text,
         IFormatProvider? provider,
@@ -342,6 +396,7 @@ public readonly struct AsciiChar3
         return true;
     }
 
+    /// <inheritdoc/>
     public bool TryFormat(
         Span<byte> utf8Destination,
         out int bytesWritten,
@@ -369,26 +424,31 @@ public readonly struct AsciiChar3
             CharCount);
     }
 
+    /// <inheritdoc/>
     public ulong GetRepeatableHashCode()
     {
         return RepeatableHash64Provider.Default.GetRepeatableHashCode(AsSpan());
     }
 
+    /// <summary>Determines whether one <see cref="AsciiChar3"/> precedes another.</summary>
     public static bool operator <(AsciiChar3 left, AsciiChar3 right)
     {
         return left.CompareTo(right) < 0;
     }
 
+    /// <summary>Determines whether one <see cref="AsciiChar3"/> precedes or equals another.</summary>
     public static bool operator <=(AsciiChar3 left, AsciiChar3 right)
     {
         return left.CompareTo(right) <= 0;
     }
 
+    /// <summary>Determines whether one <see cref="AsciiChar3"/> follows another.</summary>
     public static bool operator >(AsciiChar3 left, AsciiChar3 right)
     {
         return left.CompareTo(right) > 0;
     }
 
+    /// <summary>Determines whether one <see cref="AsciiChar3"/> follows or equals another.</summary>
     public static bool operator >=(AsciiChar3 left, AsciiChar3 right)
     {
         return left.CompareTo(right) >= 0;

@@ -7,16 +7,32 @@ using System.Runtime.CompilerServices;
 
 namespace DSE.Open.Diagnostics;
 
+/// <summary>
+/// The exception that is thrown when code encounters an unexpected runtime condition that
+/// indicates a defect rather than invalid input.
+/// </summary>
 public class UnexpectedConditionException : Exception
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UnexpectedConditionException"/> class with
+    /// a default message.
+    /// </summary>
     public UnexpectedConditionException() : base(EnsureMessage(null))
     {
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UnexpectedConditionException"/> class with
+    /// the specified message, falling back to a default message if <paramref name="message"/> is null.
+    /// </summary>
     public UnexpectedConditionException(string? message) : base(EnsureMessage(message))
     {
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UnexpectedConditionException"/> class with
+    /// the specified message and inner exception.
+    /// </summary>
     public UnexpectedConditionException(string message, Exception innerException) : base(EnsureMessage(message), innerException)
     {
     }
@@ -26,6 +42,9 @@ public class UnexpectedConditionException : Exception
         return message ?? "Encountered an unexpected condition.";
     }
 
+    /// <summary>
+    /// Throws an <see cref="UnexpectedConditionException"/> if <paramref name="condition"/> is true.
+    /// </summary>
     public static void ThrowIf([DoesNotReturnIf(true)] bool condition, [CallerArgumentExpression(nameof(condition))] string? message = null)
     {
         if (condition)
@@ -34,6 +53,10 @@ public class UnexpectedConditionException : Exception
         }
     }
 
+    /// <summary>
+    /// Throws an <see cref="UnexpectedConditionException"/> if <paramref name="value"/> is the
+    /// default value of <typeparamref name="T"/>.
+    /// </summary>
     public static void ThrowIfDefault<T>([NotNull] T value, [CallerArgumentExpression(nameof(value))] string? valueName = null)
         where T : struct
     {
@@ -43,6 +66,9 @@ public class UnexpectedConditionException : Exception
         }
     }
 
+    /// <summary>
+    /// Throws an <see cref="UnexpectedConditionException"/> if <paramref name="value"/> is null.
+    /// </summary>
     public static void ThrowIfNull([NotNull] object? value, [CallerArgumentExpression(nameof(value))] string? valueName = null)
     {
         if (value is null)
@@ -51,6 +77,9 @@ public class UnexpectedConditionException : Exception
         }
     }
 
+    /// <summary>
+    /// Throws an <see cref="UnexpectedConditionException"/> if <paramref name="value"/> is null.
+    /// </summary>
     public static void ThrowIfNull<T>([NotNull] T? value, [CallerArgumentExpression(nameof(value))] string? valueName = null)
         where T : struct
     {
@@ -60,6 +89,10 @@ public class UnexpectedConditionException : Exception
         }
     }
 
+    /// <summary>
+    /// Throws an <see cref="UnexpectedConditionException"/> if <paramref name="value"/> is null
+    /// or equal to the default value of <typeparamref name="T"/>.
+    /// </summary>
     public static void ThrowIfNullOrDefault<T>([NotNull] T? value, [CallerArgumentExpression(nameof(value))] string? valueName = null)
         where T : struct
     {
@@ -67,6 +100,9 @@ public class UnexpectedConditionException : Exception
         ThrowIfDefault(value.Value, valueName);
     }
 
+    /// <summary>
+    /// Throws an <see cref="UnexpectedConditionException"/> if <paramref name="value"/> is null or empty.
+    /// </summary>
     public static void ThrowIfNullOrEmpty([NotNull] string? value, [CallerArgumentExpression(nameof(value))] string? valueName = null)
     {
         if (string.IsNullOrEmpty(value))
@@ -75,6 +111,10 @@ public class UnexpectedConditionException : Exception
         }
     }
 
+    /// <summary>
+    /// Throws an <see cref="UnexpectedConditionException"/> if <paramref name="collection"/> contains no elements.
+    /// </summary>
+    /// <exception cref="ArgumentNullException">Thrown if <paramref name="collection"/> is null.</exception>
     public static void ThrowIfEmpty<T>(ICollection<T> collection, [CallerArgumentExpression(nameof(collection))] string? collectionName = null)
     {
         ArgumentNullException.ThrowIfNull(collection);
@@ -85,6 +125,10 @@ public class UnexpectedConditionException : Exception
         }
     }
 
+    /// <summary>
+    /// Throws an <see cref="UnexpectedConditionException"/> if <paramref name="collection"/> contains no elements.
+    /// </summary>
+    /// <exception cref="ArgumentNullException">Thrown if <paramref name="collection"/> is null.</exception>
     public static void ThrowIfEmpty<T>(IEnumerable<T> collection, [CallerArgumentExpression(nameof(collection))] string? collectionName = null)
     {
         ArgumentNullException.ThrowIfNull(collection);

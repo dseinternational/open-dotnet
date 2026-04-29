@@ -8,10 +8,18 @@ using System.Text.Json.Serialization;
 
 namespace DSE.Open.Text.Json.Serialization;
 
+/// <summary>
+/// A <see cref="JsonConverter{T}"/> that reads <see cref="int"/> values from JSON strings or numbers
+/// and writes them as JSON strings using invariant culture.
+/// </summary>
 public class JsonStringInt32Converter : JsonConverter<int>
 {
+    /// <summary>
+    /// The default instance of the converter.
+    /// </summary>
     public static readonly JsonStringInt32Converter Default = new();
 
+    /// <inheritdoc/>
     public override int Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         if (reader.TokenType == JsonTokenType.String)
@@ -32,6 +40,7 @@ public class JsonStringInt32Converter : JsonConverter<int>
         return reader.GetInt32();
     }
 
+    /// <inheritdoc/>
     public override void Write(Utf8JsonWriter writer, int value, JsonSerializerOptions options)
     {
         ArgumentNullException.ThrowIfNull(writer);

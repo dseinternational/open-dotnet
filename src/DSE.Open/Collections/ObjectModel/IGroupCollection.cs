@@ -16,5 +16,10 @@ public interface IGroupCollection<out TGroup, out TItem, TGrouping>
     : IList<TGrouping>
     where TGrouping : IGrouping<TGroup, TItem>;
 
+/// <summary>
+/// Represents a list of <see cref="IGrouping{TKey, TElement}"/> values grouping items of type <typeparamref name="TItem"/> by a key of type <typeparamref name="TGroup"/>.
+/// </summary>
+/// <typeparam name="TGroup">The type of the group key.</typeparam>
+/// <typeparam name="TItem">The type of the grouped items.</typeparam>
 public interface IGroupCollection<TGroup, TItem>
     : IList<IGrouping<TGroup, TItem>>;
