@@ -3,9 +3,23 @@
 
 namespace DSE.Open.Api.Metadata;
 
+/// <summary>
+/// Identifies the storage medium used to convey metadata.
+/// </summary>
 public enum MetadataStorage
 {
+    /// <summary>
+    /// Metadata is conveyed via HTTP headers.
+    /// </summary>
     HttpHeader,
+
+    /// <summary>
+    /// Metadata is conveyed via HTTP cookies.
+    /// </summary>
     Cookie,
+
+    /// <summary>
+    /// Metadata is conveyed via message headers.
+    /// </summary>
     MessageHeader,
 }

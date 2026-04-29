@@ -6,6 +6,10 @@ using DSE.Open.Results;
 
 namespace DSE.Open.Api.Metadata;
 
+/// <summary>
+/// Reads metadata into <see cref="RequestMetadata"/> and <see cref="ResultMetadata"/>
+/// from a <see cref="MetadataStorageContext"/>.
+/// </summary>
 public interface IMetadataReader
 {
     /// <summary>
