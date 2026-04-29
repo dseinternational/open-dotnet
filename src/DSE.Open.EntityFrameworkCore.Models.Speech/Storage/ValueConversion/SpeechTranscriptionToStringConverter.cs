@@ -6,10 +6,20 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DSE.Open.EntityFrameworkCore.Models.Speech.Storage.ValueConversion;
 
+/// <summary>
+/// Converts a <see cref="SpeechTranscription"/> to and from its <see cref="string"/> representation
+/// for storage by Entity Framework Core.
+/// </summary>
 public sealed class SpeechTranscriptionToStringConverter : ValueConverter<SpeechTranscription, string>
 {
+    /// <summary>
+    /// A default, shared instance of <see cref="SpeechTranscriptionToStringConverter"/>.
+    /// </summary>
     public static readonly SpeechTranscriptionToStringConverter Default = new();
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SpeechTranscriptionToStringConverter"/> class.
+    /// </summary>
     public SpeechTranscriptionToStringConverter() : base(v => ConvertTo(v), v => ConvertFrom(v))
     {
     }
