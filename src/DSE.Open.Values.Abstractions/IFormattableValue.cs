@@ -14,6 +14,7 @@ public interface IFormattableValue<TSelf, T> : IValue<TSelf, T>, IFormattable
     where T : IEquatable<T>, IFormattable
     where TSelf : struct, IFormattableValue<TSelf, T>
 {
+    /// <inheritdoc/>
     new virtual string ToString(string? format, IFormatProvider? formatProvider)
     {
         return ((T)this).ToString(format, formatProvider);

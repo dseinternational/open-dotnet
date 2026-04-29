@@ -3,6 +3,10 @@
 
 namespace DSE.Open.Values;
 
+/// <summary>
+/// Base class for attributes that mark a type as a value type for source generation,
+/// providing options that control the generated members.
+/// </summary>
 public abstract class ValueAttribute : Attribute
 {
     /// <summary>
