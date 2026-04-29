@@ -13,6 +13,11 @@ public sealed partial class DbContextProvider : IDbContextProvider
     private readonly IServiceProvider _serviceProvider;
     private readonly ILogger _logger;
 
+    /// <summary>
+    /// Initializes a new instance.
+    /// </summary>
+    /// <param name="serviceProvider">The service provider used to resolve <see cref="DbContext"/> instances.</param>
+    /// <param name="logger">The logger.</param>
     public DbContextProvider(IServiceProvider serviceProvider, ILogger<DbContextProvider> logger)
     {
         ArgumentNullException.ThrowIfNull(serviceProvider);
@@ -41,8 +46,15 @@ public sealed partial class DbContextProvider : IDbContextProvider
         public static partial void DbContextRequested(ILogger logger, string contextType, string? config);
     }
 }
+/// <summary>
+/// Extension methods for <see cref="DbContext"/>.
+/// </summary>
 public static class DbContextExtensions
 {
+    /// <summary>
+    /// Calls <see cref="DbContext.SaveChanges()"/> and routes any
+    /// <see cref="DbUpdateConcurrencyException"/> through the supplied handler.
+    /// </summary>
     public static int SaveChanges<T>(
         this T dataContext,
         Func<T, DbUpdateConcurrencyException, int> concurrencyExceptionHandler)
@@ -63,6 +75,10 @@ public static class DbContextExtensions
         return result;
     }
 
+    /// <summary>
+    /// Calls <see cref="DbContext.SaveChangesAsync(CancellationToken)"/> and routes any
+    /// <see cref="DbUpdateConcurrencyException"/> through the supplied handler.
+    /// </summary>
     public static async Task<int> SaveChangesAsync<T>(
         this T dataContext,
         Func<T, DbUpdateConcurrencyException, CancellationToken, Task<int>> concurrencyExceptionHandler,
@@ -84,8 +100,12 @@ public static class DbContextExtensions
         return result;
     }
 }
+/// <summary>
+/// LINQ extensions for querying <see cref="IIdentified{TId}"/> entities by id.
+/// </summary>
 public static class QueryableExtensions
 {
+    /// <summary>Returns whether any entity in the query has the specified id.</summary>
     public static bool AnyWithId<T, TId>(this IQueryable<T> query, TId id)
         where T : class, IIdentified<TId>
         where TId : struct, IEquatable<TId>
@@ -94,6 +114,7 @@ public static class QueryableExtensions
         return query.WhereIdEquals(id).Any();
     }
 
+    /// <summary>Filters the query to entities whose id equals the specified value.</summary>
     public static IQueryable<T> WhereIdEquals<T, TId>(this IQueryable<T> query, TId id)
         where T : class, IIdentified<TId>
         where TId : struct, IEquatable<TId>
@@ -102,6 +123,7 @@ public static class QueryableExtensions
         return query.Where(e => e.Id.Equals(id));
     }
 
+    /// <summary>Returns the single entity with the specified id, or throws if not found.</summary>
     public static T SingleWithId<T, TId>(this IQueryable<T> query, TId id)
         where T : class, IIdentified<TId>
         where TId : struct, IEquatable<TId>
@@ -109,6 +131,7 @@ public static class QueryableExtensions
         return query.WhereIdEquals(id).Single();
     }
 
+    /// <summary>Returns the single entity with the specified id, or <see langword="null"/> if not found.</summary>
     public static T? SingleOrDefaultWithId<T, TId>(this IQueryable<T> query, TId id)
         where T : class, IIdentified<TId>
         where TId : struct, IEquatable<TId>
@@ -131,6 +154,7 @@ public static class QueryableExtensions
         return result;
     }
 
+    /// <summary>Asynchronously returns whether any entity in the query has the specified id.</summary>
     public static Task<bool> AnyWithIdAsync<T, TId>(
         this IQueryable<T> query,
         TId id,
@@ -142,6 +166,7 @@ public static class QueryableExtensions
         return query.WhereIdEquals(id).AnyAsync(cancellationToken);
     }
 
+    /// <summary>Asynchronously returns the single entity with the specified id, or throws if not found.</summary>
     public static Task<T> SingleWithIdAsync<T, TId>(
         this IQueryable<T> query,
         TId id,
@@ -152,6 +177,10 @@ public static class QueryableExtensions
         return query.SingleWithIdAsync(id, false, cancellationToken);
     }
 
+    /// <summary>
+    /// Asynchronously returns the single entity with the specified id, or throws if not found,
+    /// optionally disabling change tracking.
+    /// </summary>
     public static Task<T> SingleWithIdAsync<T, TId>(
         this IQueryable<T> query,
         TId id,
@@ -164,6 +193,10 @@ public static class QueryableExtensions
         return query.WhereIdEquals(id).SingleAsync(cancellationToken);
     }
 
+    /// <summary>
+    /// Asynchronously returns the single entity with the specified id, or <see langword="null"/>
+    /// if not found, optionally disabling change tracking.
+    /// </summary>
     public static Task<TEntity?> SingleOrDefaultWithIdAsync<TEntity, TId>(
         this IQueryable<TEntity> query,
         TId id,

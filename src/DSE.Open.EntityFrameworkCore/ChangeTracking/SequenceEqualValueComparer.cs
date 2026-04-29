@@ -7,6 +7,10 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace DSE.Open.EntityFrameworkCore.ChangeTracking;
 
+/// <summary>
+/// A <see cref="ValueComparer{T}"/> that compares two enumerable collections by sequence equality
+/// of their elements.
+/// </summary>
 public class SequenceEqualValueComparer<
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods
         | DynamicallyAccessedMemberTypes.NonPublicMethods
@@ -19,6 +23,10 @@ TCollection>
     : ValueComparer<TCollection>
     where TCollection : IEnumerable<TItem>
 {
+    /// <summary>
+    /// Initializes a new instance using the specified snapshot expression.
+    /// </summary>
+    /// <param name="snapshotExpression">An expression that produces a snapshot of the collection.</param>
     public SequenceEqualValueComparer(Expression<Func<TCollection, TCollection>> snapshotExpression)
         : base((c1, c2) => CompareEquality(c1, c2), c => GenerateHash(c), snapshotExpression)
     {
@@ -36,6 +44,10 @@ TCollection>
     }
 }
 
+/// <summary>
+/// A <see cref="ValueComparer{T}"/> that compares two <see cref="IEnumerable{T}"/> instances
+/// by sequence equality of their elements.
+/// </summary>
 public sealed class SequenceEqualValueComparer<
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods
         | DynamicallyAccessedMemberTypes.NonPublicMethods
@@ -43,8 +55,10 @@ public sealed class SequenceEqualValueComparer<
 T>
     : SequenceEqualValueComparer<T, IEnumerable<T>>
 {
+    /// <summary>Gets a shared default instance.</summary>
     public static readonly SequenceEqualValueComparer<T> Default = new();
 
+    /// <summary>Initializes a new instance.</summary>
     public SequenceEqualValueComparer() : base(c => GenerateSnapshot(c))
     {
     }

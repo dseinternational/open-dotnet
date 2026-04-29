@@ -6,15 +6,32 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DSE.Open.EntityFrameworkCore.Storage.ValueConversion;
 
+/// <summary>
+/// Converts a <see cref="TimePeriod"/> to a <see cref="char"/> for storage.
+/// </summary>
 public sealed class TimePeriodToCharConverter : ValueConverter<TimePeriod, char>
 {
+    /// <summary>
+    /// A shared default instance.
+    /// </summary>
     public static readonly TimePeriodToCharConverter Default = new();
 
+    /// <summary>
+    /// Initializes a new instance of <see cref="TimePeriodToCharConverter"/>.
+    /// </summary>
     public TimePeriodToCharConverter()
         : base(c => ConvertToChar(c), s => ConvertFromChar(s))
     {
     }
 
+    /// <summary>
+    /// Converts a <see cref="TimePeriod"/> to its single-character storage form
+    /// (<c>'N'</c> none, <c>'M'</c> month, <c>'Y'</c> year, <c>'W'</c> week,
+    /// <c>'D'</c> day, <c>'H'</c> hour, <c>'I'</c> minute).
+    /// </summary>
+    /// <param name="value">The value to convert.</param>
+    /// <returns>The corresponding character.</returns>
+    /// <exception cref="InvalidOperationException">Thrown when <paramref name="value"/> is not a recognized period.</exception>
     // keep public for EF Core compiled models
     public static char ConvertToChar(TimePeriod value)
     {
@@ -53,6 +70,12 @@ public sealed class TimePeriodToCharConverter : ValueConverter<TimePeriod, char>
             : throw new InvalidOperationException("Invalid TimePeriod value: " + value);
     }
 
+    /// <summary>
+    /// Converts a single-character storage value back to a <see cref="TimePeriod"/>.
+    /// </summary>
+    /// <param name="value">The stored character.</param>
+    /// <returns>The corresponding <see cref="TimePeriod"/>.</returns>
+    /// <exception cref="InvalidOperationException">Thrown when <paramref name="value"/> is not a recognized period character.</exception>
     // keep public for EF Core compiled models
     public static TimePeriod ConvertFromChar(char value)
     {

@@ -5,6 +5,10 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace DSE.Open.EntityFrameworkCore.ChangeTracking;
 
+/// <summary>
+/// A <see cref="SequenceEqualValueComparer{TItem, TCollection}"/> for <see cref="ICollection{T}"/>
+/// values that compares by sequence equality and snapshots to a list.
+/// </summary>
 public sealed class CollectionSequenceEqualValueComparer<
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods
         | DynamicallyAccessedMemberTypes.NonPublicMethods
@@ -12,8 +16,10 @@ public sealed class CollectionSequenceEqualValueComparer<
 T>
     : SequenceEqualValueComparer<T, ICollection<T>>
 {
+    /// <summary>Gets a shared default instance.</summary>
     public static readonly CollectionSequenceEqualValueComparer<T> Default = new();
 
+    /// <summary>Initializes a new instance.</summary>
     public CollectionSequenceEqualValueComparer() : base(c => GenerateSnapshot(c))
     {
     }

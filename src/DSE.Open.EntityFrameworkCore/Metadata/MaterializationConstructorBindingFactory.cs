@@ -17,6 +17,11 @@ namespace DSE.Open.EntityFrameworkCore.Metadata;
 /// </summary>
 public class MaterializationConstructorBindingFactory : ConstructorBindingFactoryBase
 {
+    /// <summary>
+    /// Initializes a new instance.
+    /// </summary>
+    /// <param name="propertyFactory">The factory used to bind constructor parameters to properties.</param>
+    /// <param name="factories">The factories used to bind constructor parameters to services.</param>
     public MaterializationConstructorBindingFactory(
         IPropertyParameterBindingFactory propertyFactory,
         IParameterBindingFactories factories)
@@ -24,6 +29,7 @@ public class MaterializationConstructorBindingFactory : ConstructorBindingFactor
     {
     }
 
+    /// <inheritdoc />
     protected override void GetBindings<T>(
         T type,
         Func<IPropertyParameterBindingFactory, T, Type, string, ParameterBinding?> bindToProperty,

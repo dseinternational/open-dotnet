@@ -7,6 +7,10 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace DSE.Open.EntityFrameworkCore.ChangeTracking;
 
+/// <summary>
+/// A <see cref="ValueComparer{T}"/> that compares two <see cref="IReadOnlySet{T}"/> instances
+/// using <see cref="IReadOnlySet{T}.SetEquals"/> semantics.
+/// </summary>
 public class ReadOnlySetEqualsValueComparer<
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods
         | DynamicallyAccessedMemberTypes.NonPublicMethods
@@ -19,6 +23,10 @@ TCollection>
     : ValueComparer<TCollection>
     where TCollection : IReadOnlySet<TItem>
 {
+    /// <summary>
+    /// Initializes a new instance using the specified snapshot expression.
+    /// </summary>
+    /// <param name="snapshotExpression">An expression that produces a snapshot of the set.</param>
     public ReadOnlySetEqualsValueComparer(Expression<Func<TCollection, TCollection>> snapshotExpression)
         : base((c1, c2) => CompareEquality(c1, c2), c => GenerateHash(c), snapshotExpression)
     {
@@ -47,6 +55,10 @@ TCollection>
     }
 }
 
+/// <summary>
+/// A <see cref="ValueComparer{T}"/> that compares two <see cref="IReadOnlySet{T}"/> instances
+/// using <see cref="IReadOnlySet{T}.SetEquals"/> semantics.
+/// </summary>
 public sealed class ReadOnlySetEqualsValueComparer<
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods
         | DynamicallyAccessedMemberTypes.NonPublicMethods
@@ -54,8 +66,10 @@ public sealed class ReadOnlySetEqualsValueComparer<
 T>
     : ReadOnlySetEqualsValueComparer<T, IReadOnlySet<T>>
 {
+    /// <summary>Gets a shared default instance.</summary>
     public static readonly ReadOnlySetEqualsValueComparer<T> Default = new();
 
+    /// <summary>Initializes a new instance.</summary>
     public ReadOnlySetEqualsValueComparer() : base(c => GenerateSnapshot(c))
     {
     }

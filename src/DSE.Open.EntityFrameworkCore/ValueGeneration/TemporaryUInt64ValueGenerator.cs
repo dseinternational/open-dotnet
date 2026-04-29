@@ -14,8 +14,10 @@ public sealed class TemporaryUInt64ValueGenerator : ValueGenerator<ulong>
 {
     private ulong _next = long.MaxValue;
 
+    /// <inheritdoc/>
     public override bool GeneratesTemporaryValues => true;
 
+    /// <inheritdoc/>
     public override ulong Next([NotNull] EntityEntry entry)
     {
         return Interlocked.Decrement(ref _next);
