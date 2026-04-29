@@ -20,11 +20,23 @@ public readonly record struct Sign
     : ISpanFormattable,
       ISpanParsable<Sign>
 {
+    /// <summary>
+    /// The maximum number of characters used to serialize a <see cref="Sign"/>
+    /// value (modality, separator, word).
+    /// </summary>
     public static readonly int MaxSerializedCharLength
         = SignModality.MaxSerializedCharLength + 1 + WordText.MaxSerializedCharLength;
 
+    /// <summary>
+    /// An empty <see cref="Sign"/>.
+    /// </summary>
     public static readonly Sign Empty;
 
+    /// <summary>
+    /// Initializes a new <see cref="Sign"/> with the specified modality and word.
+    /// </summary>
+    /// <param name="modality">The modality of the sign.</param>
+    /// <param name="word">The word that identifies the sign.</param>
     public Sign(SignModality modality, WordText word)
     {
         Modality = modality;
@@ -41,11 +53,18 @@ public readonly record struct Sign
     /// </summary>
     public WordText Word { get; init; }
 
+    /// <summary>
+    /// Parses a <see cref="Sign"/> from the given character span.
+    /// </summary>
+    /// <param name="s">The characters to parse.</param>
+    /// <returns>The parsed <see cref="Sign"/>.</returns>
+    /// <exception cref="FormatException">The input is not in the expected format.</exception>
     public static Sign Parse(ReadOnlySpan<char> s)
     {
         return Parse(s, null);
     }
 
+    /// <inheritdoc cref="ISpanParsable{TSelf}.Parse(ReadOnlySpan{char}, IFormatProvider?)"/>
     public static Sign Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
     {
         if (!TryParse(s, provider, out var result))
@@ -56,11 +75,19 @@ public readonly record struct Sign
         return result;
     }
 
+    /// <summary>
+    /// Parses a <see cref="Sign"/> from the given string.
+    /// </summary>
+    /// <param name="s">The string to parse.</param>
+    /// <returns>The parsed <see cref="Sign"/>.</returns>
+    /// <exception cref="ArgumentNullException"><paramref name="s"/> is <see langword="null"/>.</exception>
+    /// <exception cref="FormatException">The input is not in the expected format.</exception>
     public static Sign Parse(string s)
     {
         return Parse(s, null);
     }
 
+    /// <inheritdoc cref="IParsable{TSelf}.Parse(string, IFormatProvider?)"/>
     public static Sign Parse(string s, IFormatProvider? provider)
     {
         ArgumentNullException.ThrowIfNull(s);
@@ -73,6 +100,13 @@ public readonly record struct Sign
         return result;
     }
 
+    /// <summary>
+    /// Attempts to parse a <see cref="Sign"/> from the given character span.
+    /// </summary>
+    /// <param name="s">The characters to parse.</param>
+    /// <param name="result">When this method returns, contains the parsed
+    /// <see cref="Sign"/> if successful; otherwise the default value.</param>
+    /// <returns><see langword="true"/> if parsing succeeded; otherwise <see langword="false"/>.</returns>
     public static bool TryParse(
         ReadOnlySpan<char> s,
         out Sign result)
@@ -80,6 +114,7 @@ public readonly record struct Sign
         return TryParse(s, null, out result);
     }
 
+    /// <inheritdoc cref="ISpanParsable{TSelf}.TryParse(ReadOnlySpan{char}, IFormatProvider?, out TSelf)"/>
     public static bool TryParse(
         ReadOnlySpan<char> s,
         IFormatProvider? provider,
@@ -103,6 +138,13 @@ public readonly record struct Sign
         return false;
     }
 
+    /// <summary>
+    /// Attempts to parse a <see cref="Sign"/> from the given string.
+    /// </summary>
+    /// <param name="s">The string to parse.</param>
+    /// <param name="result">When this method returns, contains the parsed
+    /// <see cref="Sign"/> if successful; otherwise the default value.</param>
+    /// <returns><see langword="true"/> if parsing succeeded; otherwise <see langword="false"/>.</returns>
     public static bool TryParse(
         [NotNullWhen(true)] string? s,
         out Sign result)
@@ -110,6 +152,7 @@ public readonly record struct Sign
         return TryParse(s, null, out result);
     }
 
+    /// <inheritdoc cref="IParsable{TSelf}.TryParse(string?, IFormatProvider?, out TSelf)"/>
     public static bool TryParse(
         [NotNullWhen(true)] string? s,
         IFormatProvider? provider,
@@ -118,11 +161,13 @@ public readonly record struct Sign
         return TryParse(s.AsSpan(), provider, out result);
     }
 
+    /// <inheritdoc/>
     public override string ToString()
     {
         return ToString(null, null);
     }
 
+    /// <inheritdoc/>
     [SkipLocalsInit]
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
@@ -137,6 +182,14 @@ public readonly record struct Sign
         return string.Empty; // unreachable
     }
 
+    /// <summary>
+    /// Attempts to format the value of this <see cref="Sign"/> into the
+    /// provided character span.
+    /// </summary>
+    /// <param name="destination">The span to write the formatted characters to.</param>
+    /// <param name="charsWritten">When this method returns, contains the number
+    /// of characters written to <paramref name="destination"/>.</param>
+    /// <returns><see langword="true"/> if the formatting was successful; otherwise <see langword="false"/>.</returns>
     public bool TryFormat(
         Span<char> destination,
         out int charsWritten)
@@ -144,6 +197,7 @@ public readonly record struct Sign
         return TryFormat(destination, out charsWritten, null, null);
     }
 
+    /// <inheritdoc/>
     public bool TryFormat(
         Span<char> destination,
         out int charsWritten,

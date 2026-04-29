@@ -32,6 +32,10 @@ public readonly partial struct SentenceStructure
     /// </summary>
     public static int MaxSerializedByteLength => 32;
 
+    /// <summary>
+    /// Initializes a new <see cref="SentenceStructure"/> from a <see cref="string"/>.
+    /// </summary>
+    /// <param name="value">The sentence structure label.</param>
     public SentenceStructure(string value) : this((AsciiString)value)
     {
     }
@@ -40,6 +44,10 @@ public readonly partial struct SentenceStructure
     {
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if <paramref name="value"/> is a defined
+    /// <see cref="SentenceStructure"/> label.
+    /// </summary>
     public static bool IsValidValue(AsciiString value)
     {
         return !value.IsEmpty
@@ -48,6 +56,9 @@ public readonly partial struct SentenceStructure
     }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates - Parse
+    /// <summary>
+    /// Converts a <see cref="string"/> to a <see cref="SentenceStructure"/>.
+    /// </summary>
     public static explicit operator SentenceStructure(string value)
 #pragma warning restore CA2225 // Operator overloads have named alternates
     {
