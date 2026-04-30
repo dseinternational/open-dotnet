@@ -10,16 +10,44 @@ namespace DSE.Open.Observations;
 /// </summary>
 public interface IObservationValue
 {
+    /// <summary>
+    /// The minimum value of a count.
+    /// </summary>
     const ulong MinCount = 0u;
+
+    /// <summary>
+    /// The maximum value of a count.
+    /// </summary>
     const ulong MaxCount = 9007199254740991u;
 
+    /// <summary>
+    /// The minimum value of an amount.
+    /// </summary>
     const decimal MinAmount = 0.0000000000000000m;
+
+    /// <summary>
+    /// The maximum value of an amount.
+    /// </summary>
     const decimal MaxAmount = 999999999999.9999999999999999m;
 
+    /// <summary>
+    /// The minimum value of a ratio.
+    /// </summary>
     const decimal MinRatio = -1.000000000000000000m;
+
+    /// <summary>
+    /// The maximum value of a ratio.
+    /// </summary>
     const decimal MaxRatio = 1.000000000000000000m;
 
+    /// <summary>
+    /// The minimum value of a frequency.
+    /// </summary>
     const decimal MinFrequency = 0.0000000000000000m;
+
+    /// <summary>
+    /// The maximum value of a frequency.
+    /// </summary>
     const decimal MaxFrequency = 100.0000000000000000m;
 
     /// <summary>
@@ -89,6 +117,11 @@ public interface IObservationValue
     /// <see cref="MeasurementValueType.Frequency"/>.</exception>
     decimal GetFrequency();
 
+    /// <summary>
+    /// Throws a <see cref="ValueTypeMismatchException"/> indicating that the observation
+    /// value does not support the requested value type.
+    /// </summary>
+    /// <typeparam name="T">The return type expected by the caller (never returned).</typeparam>
     [DoesNotReturn]
     static T ThrowValueMismatchException<T>()
     {

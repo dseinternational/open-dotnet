@@ -21,36 +21,63 @@ public readonly partial struct Ratio
       IRepeatableHash64,
       IObservationValue
 {
+    /// <summary>
+    /// Gets the maximum length, in characters, of the serialized representation of a <see cref="Ratio"/>.
+    /// </summary>
     public static int MaxSerializedCharLength => 32;
 
+    /// <summary>
+    /// Gets the maximum length, in bytes, of the serialized representation of a <see cref="Ratio"/>.
+    /// </summary>
     public static int MaxSerializedByteLength => 32;
 
+    /// <summary>
+    /// Gets a <see cref="Ratio"/> representing zero.
+    /// </summary>
     public static Ratio Zero { get; } = new(0);
 
+    /// <inheritdoc/>
     public MeasurementValueType ValueType => Observations.MeasurementValueType.Ratio;
 
+    /// <summary>
+    /// Initializes a new <see cref="Ratio"/> from the specified value.
+    /// </summary>
+    /// <param name="value">The underlying value, in the inclusive range -1 to 1.</param>
     public Ratio(decimal value) : this(value, false) { }
 
+    /// <summary>
+    /// Determines whether the specified value is a valid <see cref="Ratio"/> value.
+    /// </summary>
     public static bool IsValidValue(decimal value)
     {
         return value is >= -1m and <= 1m;
     }
 
+    /// <summary>
+    /// Returns this ratio expressed as a <see cref="Percent"/>.
+    /// </summary>
     public Percent ToPercent()
     {
         return (Percent)(_value * 100m);
     }
 
+    /// <summary>
+    /// Converts a <see cref="Percent"/> to a <see cref="Ratio"/>.
+    /// </summary>
     public static explicit operator Ratio(Percent value)
     {
         return FromPercent(value);
     }
 
+    /// <summary>
+    /// Returns the specified <see cref="Percent"/> expressed as a <see cref="Ratio"/>.
+    /// </summary>
     public static Ratio FromPercent(Percent value)
     {
         return new((decimal)value / 100m);
     }
 
+    /// <inheritdoc/>
     public ulong GetRepeatableHashCode()
     {
         return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);
@@ -76,6 +103,7 @@ public readonly partial struct Ratio
         return IObservationValue.ThrowValueMismatchException<decimal>();
     }
 
+    /// <inheritdoc/>
     public decimal GetRatio()
     {
         return _value;

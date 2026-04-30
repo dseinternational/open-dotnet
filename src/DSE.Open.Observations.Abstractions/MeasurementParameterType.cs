@@ -3,6 +3,9 @@
 
 namespace DSE.Open.Observations;
 
+/// <summary>
+/// Identifies the type of identifier provided by an observation parameter.
+/// </summary>
 public enum MeasurementParameterType
 {
     /// <summary>
