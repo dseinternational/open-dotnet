@@ -169,36 +169,64 @@ public readonly partial struct WordText
         return true;
     }
 
+    /// <summary>
+    /// Indicates whether this word equals another <see cref="WordText"/>,
+    /// using the specified <see cref="StringComparison"/>.
+    /// </summary>
     public bool Equals(WordText other, StringComparison stringComparison)
     {
         return Equals(other._value, stringComparison);
     }
 
+    /// <summary>
+    /// Indicates whether this word equals the specified <see cref="TokenText"/>
+    /// using ordinal comparison.
+    /// </summary>
     public bool Equals(TokenText other)
     {
         return Equals(other, StringComparison.Ordinal);
     }
 
+    /// <summary>
+    /// Indicates whether this word equals the specified <see cref="TokenText"/>
+    /// using the given <see cref="StringComparison"/>.
+    /// </summary>
     public bool Equals(TokenText other, StringComparison stringComparison)
     {
         return Equals(other.Value, stringComparison);
     }
 
+    /// <summary>
+    /// Indicates whether this word equals the specified <see cref="CharSequence"/>
+    /// using ordinal comparison.
+    /// </summary>
     public bool Equals(CharSequence other)
     {
         return Equals(other, StringComparison.Ordinal);
     }
 
+    /// <summary>
+    /// Indicates whether this word equals the specified <see cref="CharSequence"/>
+    /// using the given <see cref="StringComparison"/>.
+    /// </summary>
     public bool Equals(CharSequence other, StringComparison stringComparison)
     {
         return _value.Equals(other, stringComparison);
     }
 
+    /// <summary>
+    /// Indicates whether this word equals the specified <see cref="string"/>
+    /// using ordinal comparison.
+    /// </summary>
     public bool Equals(string other)
     {
         return Equals(other, StringComparison.Ordinal);
     }
 
+    /// <summary>
+    /// Indicates whether this word equals the specified <see cref="string"/>
+    /// using the given <see cref="StringComparison"/>.
+    /// </summary>
     public bool Equals(string other, StringComparison stringComparison)
     {
         return _value.Equals(other, stringComparison);
@@ -206,41 +234,71 @@ public readonly partial struct WordText
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
+    /// <summary>
+    /// Converts a <see cref="string"/> to a <see cref="WordText"/>.
+    /// </summary>
     public static explicit operator WordText(string word)
     {
         return new(word);
     }
 
+    /// <summary>
+    /// Converts a <see cref="TokenText"/> to a <see cref="WordText"/>.
+    /// </summary>
     public static explicit operator WordText(TokenText word)
     {
         return new((CharSequence)word);
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if the <see cref="WordText"/> is equal
+    /// to the specified <see cref="TokenText"/> using ordinal comparison.
+    /// </summary>
     public static bool operator ==(WordText left, TokenText right)
     {
         return left.Equals(right, StringComparison.Ordinal);
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if the <see cref="WordText"/> is not
+    /// equal to the specified <see cref="TokenText"/> using ordinal comparison.
+    /// </summary>
     public static bool operator !=(WordText left, TokenText right)
     {
         return !left.Equals(right, StringComparison.Ordinal);
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if the <see cref="WordText"/> is equal
+    /// to the specified <see cref="CharSequence"/> using ordinal comparison.
+    /// </summary>
     public static bool operator ==(WordText left, CharSequence right)
     {
         return left.Equals(right, StringComparison.Ordinal);
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if the <see cref="WordText"/> is not
+    /// equal to the specified <see cref="CharSequence"/> using ordinal comparison.
+    /// </summary>
     public static bool operator !=(WordText left, CharSequence right)
     {
         return !left.Equals(right, StringComparison.Ordinal);
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if the <see cref="WordText"/> is equal
+    /// to the specified <see cref="string"/> using ordinal comparison.
+    /// </summary>
     public static bool operator ==(WordText left, string right)
     {
         return right is not null && left.Equals(right, StringComparison.Ordinal);
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if the <see cref="WordText"/> is not
+    /// equal to the specified <see cref="string"/> using ordinal comparison.
+    /// </summary>
     public static bool operator !=(WordText left, string right)
     {
         return !(right is not null && left.Equals(right, StringComparison.Ordinal));
@@ -248,11 +306,17 @@ public readonly partial struct WordText
 
 #pragma warning restore CA2225 // Operator overloads have named alternates
 
+    /// <summary>
+    /// Returns a <see cref="WordId"/> derived from the specified
+    /// <see cref="WordMeaningId"/>, this <see cref="WordText"/> and the
+    /// specified <see cref="LanguageTag"/>.
+    /// </summary>
     public WordId GetId(WordMeaningId meaningId, LanguageTag language)
     {
         return WordId.FromWord(meaningId, this, language);
     }
 
+    /// <inheritdoc/>
     public ulong GetRepeatableHashCode()
     {
         return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);
