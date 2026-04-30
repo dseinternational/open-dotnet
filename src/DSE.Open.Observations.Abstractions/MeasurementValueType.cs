@@ -3,6 +3,9 @@
 
 namespace DSE.Open.Observations;
 
+/// <summary>
+/// Identifies the type of underlying value provided by an observation value.
+/// </summary>
 public enum MeasurementValueType
 {
     /// <summary>

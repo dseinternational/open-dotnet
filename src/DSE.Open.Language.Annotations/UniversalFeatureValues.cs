@@ -5,6 +5,10 @@ using DSE.Open.Values;
 
 namespace DSE.Open.Language.Annotations;
 
+/// <summary>
+/// Provides standard values for universal morphological features
+/// (<see href="https://universaldependencies.org/u/feat/index.html"/>).
+/// </summary>
 public static class UniversalFeatureValues
 {
     /// <summary>

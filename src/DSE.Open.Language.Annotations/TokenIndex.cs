@@ -11,6 +11,10 @@ namespace DSE.Open.Language.Annotations;
 
 // Builds on: https://github.com/ArthurDevNL/CoNLL-U/blob/main/Conllu/Conllu/TokenIdentifier.cs
 
+/// <summary>
+/// Identifies the position of a token in a sentence. Supports single tokens, multi-word
+/// token ranges (e.g. <c>1-2</c>) and empty nodes (e.g. <c>1.2</c>).
+/// </summary>
 [JsonConverter(typeof(JsonStringTokenIdentifierConverter))]
 public readonly struct TokenIndex
     : IComparable<TokenIndex>,
@@ -19,11 +23,20 @@ public readonly struct TokenIndex
       ISpanParsable<TokenIndex>,
       IRepeatableHash64
 {
+    /// <summary>
+    /// The maximum number of characters required to format a value as a string.
+    /// </summary>
     public const int MaxSerializedCharLength = 21;
 
     private const char RangeSeparator = '-';
     private const char SpanSeparator = '.';
 
+    /// <summary>
+    /// Initializes a new <see cref="TokenIndex"/>.
+    /// </summary>
+    /// <param name="start">The index, starting at 1, of the token (or the start of a multi-word range).</param>
+    /// <param name="end">The end of a multi-word range; equal to <paramref name="start"/> for single tokens.</param>
+    /// <param name="emptyId">For empty nodes, the second number in the ID.</param>
     public TokenIndex(int start, int? end = null, int? emptyId = null)
     {
         Guard.IsGreaterThan(start, 0);
@@ -66,8 +79,14 @@ public readonly struct TokenIndex
     /// </summary>
     public int? EmptyId { get; init; }
 
+    /// <summary>
+    /// <see langword="true"/> if this is a multi-word token index (i.e. <see cref="End"/> is greater than <see cref="Start"/>).
+    /// </summary>
     public bool IsMultiwordIndex => End > Start;
 
+    /// <summary>
+    /// <see langword="true"/> if this index identifies an empty node.
+    /// </summary>
     public bool IsEmptyNode => EmptyId is not null;
 
     /// <summary>
@@ -94,46 +113,55 @@ public readonly struct TokenIndex
         return 0;
     }
 
+    /// <inheritdoc/>
     public override bool Equals(object? obj)
     {
         return obj is TokenIndex ti && Equals(ti);
     }
 
+    /// <inheritdoc/>
     public bool Equals(TokenIndex other)
     {
         return CompareTo(other) == 0;
     }
 
+    /// <inheritdoc/>
     public override int GetHashCode()
     {
         return HashCode.Combine(Start, End, EmptyId);
     }
 
+    /// <summary>Returns <see langword="true"/> if <paramref name="li"/> is greater than <paramref name="ri"/>.</summary>
     public static bool operator >(TokenIndex li, TokenIndex ri)
     {
         return li.CompareTo(ri) > 0;
     }
 
+    /// <summary>Returns <see langword="true"/> if <paramref name="li"/> is less than <paramref name="ri"/>.</summary>
     public static bool operator <(TokenIndex li, TokenIndex ri)
     {
         return li.CompareTo(ri) < 0;
     }
 
+    /// <summary>Returns <see langword="true"/> if <paramref name="li"/> is greater than or equal to <paramref name="ri"/>.</summary>
     public static bool operator >=(TokenIndex li, TokenIndex ri)
     {
         return li.CompareTo(ri) >= 0;
     }
 
+    /// <summary>Returns <see langword="true"/> if <paramref name="li"/> is less than or equal to <paramref name="ri"/>.</summary>
     public static bool operator <=(TokenIndex li, TokenIndex ri)
     {
         return li.CompareTo(ri) <= 0;
     }
 
+    /// <summary>Returns <see langword="true"/> if the two values are equal.</summary>
     public static bool operator ==(TokenIndex li, TokenIndex ri)
     {
         return li.CompareTo(ri) == 0;
     }
 
+    /// <summary>Returns <see langword="true"/> if the two values are not equal.</summary>
     public static bool operator !=(TokenIndex li, TokenIndex ri)
     {
         return li.CompareTo(ri) != 0;
@@ -154,6 +182,9 @@ public readonly struct TokenIndex
         return index >= Start && index <= End;
     }
 
+    /// <summary>
+    /// Tries to format the value into the provided destination buffer.
+    /// </summary>
     public bool TryFormat(
         Span<char> destination,
         out int charsWritten)
@@ -161,6 +192,7 @@ public readonly struct TokenIndex
         return TryFormat(destination, out charsWritten, default, default);
     }
 
+    /// <inheritdoc/>
     public bool TryFormat(
         Span<char> destination,
         out int charsWritten,
@@ -239,11 +271,13 @@ public readonly struct TokenIndex
         return charsWritten;
     }
 
+    /// <inheritdoc/>
     public override string ToString()
     {
         return ToString(default, default);
     }
 
+    /// <inheritdoc/>
     [SkipLocalsInit]
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
@@ -258,11 +292,15 @@ public readonly struct TokenIndex
             "Could not format token identifier to string.");
     }
 
+    /// <summary>
+    /// Parses a <see cref="TokenIndex"/> from the specified character span.
+    /// </summary>
     public static TokenIndex Parse(ReadOnlySpan<char> s)
     {
         return Parse(s, default);
     }
 
+    /// <inheritdoc/>
     public static TokenIndex Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
     {
         if (TryParse(s, provider, out var result))
@@ -274,6 +312,7 @@ public readonly struct TokenIndex
             $"Cannot parse '{s}' as {nameof(TokenIndex)}.");
     }
 
+    /// <inheritdoc/>
     [SkipLocalsInit]
     public static bool TryParse(
         ReadOnlySpan<char> s,
@@ -330,16 +369,23 @@ public readonly struct TokenIndex
         return false;
     }
 
+    /// <summary>
+    /// Parses a <see cref="TokenIndex"/> from the specified string.
+    /// </summary>
     public static TokenIndex Parse(string s)
     {
         return Parse(s, default);
     }
 
+    /// <summary>
+    /// Parses a <see cref="TokenIndex"/> from the specified string using the invariant culture.
+    /// </summary>
     public static TokenIndex ParseInvariant(string s)
     {
         return Parse(s, CultureInfo.InvariantCulture);
     }
 
+    /// <inheritdoc/>
     public static TokenIndex Parse(string s, IFormatProvider? provider)
     {
         ArgumentNullException.ThrowIfNull(s);
@@ -353,6 +399,7 @@ public readonly struct TokenIndex
             $"Cannot parse '{s}' as {nameof(TokenIndex)}.");
     }
 
+    /// <inheritdoc/>
     public static bool TryParse(
         [NotNullWhen(true)] string? s,
         IFormatProvider? provider,
@@ -367,11 +414,15 @@ public readonly struct TokenIndex
         return TryParse(s.AsSpan(), provider, out result);
     }
 
+    /// <summary>
+    /// Creates a <see cref="TokenIndex"/> for a single token at the specified position.
+    /// </summary>
     public static TokenIndex FromInt32(int index)
     {
         return new(index);
     }
 
+    /// <inheritdoc/>
     public ulong GetRepeatableHashCode()
     {
         var h0 = RepeatableHash64Provider.Default.GetRepeatableHashCode(Start);
@@ -380,6 +431,9 @@ public readonly struct TokenIndex
         return RepeatableHash64Provider.Default.CombineHashCodes(h0, h1, h2);
     }
 
+    /// <summary>
+    /// Explicitly converts an <see cref="int"/> to a <see cref="TokenIndex"/>.
+    /// </summary>
     public static explicit operator TokenIndex(int index)
     {
         return FromInt32(index);

@@ -5,11 +5,18 @@ using DSE.Open.Text.Json.Serialization;
 
 namespace DSE.Open.Language.Annotations.Serialization;
 
+/// <summary>
+/// JSON converter that serializes <see cref="ReadOnlyWordFeatureCollection"/> values as their parsable string representation.
+/// </summary>
 public class JsonStringReadOnlyWordFeatureCollectionConverter
     : SpanParsableCharWritingJsonConverter<ReadOnlyWordFeatureCollection>
 {
+    /// <summary>
+    /// A shared default instance of the converter.
+    /// </summary>
     public static readonly JsonStringReadOnlyWordFeatureCollectionConverter Default = new();
 
+    /// <inheritdoc/>
     protected override int GetMaxCharCountToWrite(ReadOnlyWordFeatureCollection value)
     {
         ArgumentNullException.ThrowIfNull(value);

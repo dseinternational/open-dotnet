@@ -25,17 +25,28 @@ public readonly partial struct SpeechClarity
     private const byte DevelopingValue = 50;
     private const byte ClearValue = 90;
 
+    /// <summary>
+    /// Gets the maximum length, in characters, of the serialized representation of a <see cref="SpeechClarity"/>.
+    /// </summary>
     public static int MaxSerializedCharLength => 2;
 
+    /// <summary>
+    /// Gets the maximum length, in bytes, of the serialized representation of a <see cref="SpeechClarity"/>.
+    /// </summary>
     public static int MaxSerializedByteLength => 2;
 
+    /// <inheritdoc/>
     public MeasurementValueType ValueType => MeasurementValueType.Ordinal;
 
+    /// <summary>
+    /// Determines whether the specified value is a valid <see cref="SpeechClarity"/> value.
+    /// </summary>
     public static bool IsValidValue(byte value)
     {
         return value is UnclearValue or DevelopingValue or ClearValue;
     }
 
+    /// <inheritdoc/>
     public ulong GetRepeatableHashCode()
     {
         return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);
@@ -46,6 +57,7 @@ public readonly partial struct SpeechClarity
         return IObservationValue.ThrowValueMismatchException<bool>();
     }
 
+    /// <inheritdoc/>
     public byte GetOrdinal()
     {
         return _value;

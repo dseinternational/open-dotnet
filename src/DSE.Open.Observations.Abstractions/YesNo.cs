@@ -21,36 +21,61 @@ public readonly partial struct YesNo
       IRepeatableHash64,
       IObservationValue
 {
+    /// <summary>
+    /// Gets the maximum length, in characters, of the serialized representation of a <see cref="YesNo"/>.
+    /// </summary>
     public static int MaxSerializedCharLength => 3;
 
+    /// <summary>
+    /// Gets the maximum length, in bytes, of the serialized representation of a <see cref="YesNo"/>.
+    /// </summary>
     public static int MaxSerializedByteLength => 3;
 
+    /// <inheritdoc/>
     public MeasurementValueType ValueType => MeasurementValueType.Binary;
 
+    /// <summary>
+    /// Determines whether the specified value is a valid <see cref="YesNo"/> value.
+    /// </summary>
     public static bool IsValidValue(AsciiString value)
     {
         return value == Yes._value || value == No._value;
     }
 
+    /// <summary>
+    /// Represents the "Yes" choice.
+    /// </summary>
     public static readonly YesNo Yes = new((AsciiString)"yes", true);
 
+    /// <summary>
+    /// Represents the "No" choice.
+    /// </summary>
     public static readonly YesNo No = new((AsciiString)"no", true);
 
+    /// <summary>
+    /// Returns the <see cref="bool"/> equivalent of this value, where <see cref="Yes"/> is
+    /// <see langword="true"/> and <see cref="No"/> is <see langword="false"/>.
+    /// </summary>
     public bool ToBoolean()
     {
         return this == Yes;
     }
 
+    /// <summary>
+    /// Returns the <see cref="YesNo"/> equivalent of the specified <see cref="bool"/> value.
+    /// </summary>
     public static YesNo FromBoolean(bool value)
     {
         return value ? Yes : No;
     }
 
+    /// <inheritdoc/>
     public ulong GetRepeatableHashCode()
     {
         return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);
     }
 
+    /// <inheritdoc/>
     public bool GetBinary()
     {
         return ToBoolean();
@@ -81,11 +106,17 @@ public readonly partial struct YesNo
         return IObservationValue.ThrowValueMismatchException<decimal>();
     }
 
+    /// <summary>
+    /// Converts a <see cref="YesNo"/> to a <see cref="bool"/>.
+    /// </summary>
     public static implicit operator bool(YesNo value)
     {
         return value.ToBoolean();
     }
 
+    /// <summary>
+    /// Converts a <see cref="bool"/> to a <see cref="YesNo"/>.
+    /// </summary>
     public static implicit operator YesNo(bool value)
     {
         return FromBoolean(value);

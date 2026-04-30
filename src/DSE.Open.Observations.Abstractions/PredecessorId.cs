@@ -24,28 +24,58 @@ public readonly partial struct PredecessorId
       IUtf8SpanSerializable<PredecessorId>,
       IRepeatableHash64
 {
+    /// <summary>
+    /// The minimum value of a <see cref="PredecessorId"/>.
+    /// </summary>
     public const ulong MinIdValue = 100000000001;
+
+    /// <summary>
+    /// The maximum value of a <see cref="PredecessorId"/>.
+    /// </summary>
     public const ulong MaxIdValue = 999999999999;
     private const ulong MaxRange = MaxIdValue - MinIdValue;
 
+    /// <summary>
+    /// Gets the maximum length, in characters, of the serialized representation of a <see cref="PredecessorId"/>.
+    /// </summary>
     public static int MaxSerializedCharLength => 16;
 
+    /// <summary>
+    /// Gets the maximum length, in bytes, of the serialized representation of a <see cref="PredecessorId"/>.
+    /// </summary>
     public static int MaxSerializedByteLength => 16;
 
+    /// <summary>
+    /// Initializes a new <see cref="PredecessorId"/> from the specified value.
+    /// </summary>
+    /// <param name="value">The underlying identifier value.</param>
     public PredecessorId(ulong value) : this(value, false)
     {
     }
 
+    /// <summary>
+    /// Determines whether the specified value is a valid <see cref="PredecessorId"/> value.
+    /// </summary>
     public static bool IsValidValue(ulong value)
     {
         return value is <= MaxIdValue and >= MinIdValue;
     }
 
+    /// <summary>
+    /// Determines whether the specified value is a valid <see cref="PredecessorId"/> value.
+    /// </summary>
     public static bool IsValidValue(long value)
     {
         return value is <= ((long)MaxIdValue) and >= ((long)MinIdValue);
     }
 
+    /// <summary>
+    /// Attempts to create a <see cref="PredecessorId"/> from the specified <see cref="long"/> value.
+    /// </summary>
+    /// <param name="value">The value to convert.</param>
+    /// <param name="id">When this method returns, contains the resulting <see cref="PredecessorId"/>
+    /// if conversion succeeded, or the default value otherwise.</param>
+    /// <returns><see langword="true"/> if conversion succeeded; otherwise, <see langword="false"/>.</returns>
     public static bool TryFromInt64(long value, out PredecessorId id)
     {
         if (IsValidValue(value))
@@ -60,6 +90,10 @@ public readonly partial struct PredecessorId
         }
     }
 
+    /// <summary>
+    /// Creates a <see cref="PredecessorId"/> from the specified <see cref="long"/> value.
+    /// </summary>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="value"/> is not a valid value.</exception>
     public static PredecessorId FromInt64(long value)
     {
         if (!IsValidValue(value))
@@ -70,11 +104,17 @@ public readonly partial struct PredecessorId
         return new PredecessorId((ulong)value);
     }
 
+    /// <summary>
+    /// Converts a <see cref="long"/> value to a <see cref="PredecessorId"/>.
+    /// </summary>
     public static explicit operator PredecessorId(long value)
     {
         return FromInt64(value);
     }
 
+    /// <summary>
+    /// Returns the underlying value as a <see cref="long"/>.
+    /// </summary>
     public long ToInt64()
     {
         unchecked
@@ -83,29 +123,47 @@ public readonly partial struct PredecessorId
         }
     }
 
+    /// <summary>
+    /// Returns the underlying value as a <see cref="ulong"/>.
+    /// </summary>
     public ulong ToUInt64()
     {
         return _value;
     }
 
+    /// <summary>
+    /// Converts a <see cref="PredecessorId"/> to a <see cref="long"/>.
+    /// </summary>
     public static implicit operator long(PredecessorId value)
     {
         return (long)value._value;
     }
 
 #pragma warning disable CA5394 // Do not use insecure randomness
+    /// <summary>
+    /// Returns a randomly generated <see cref="PredecessorId"/> in the inclusive range
+    /// <see cref="MinIdValue"/> to <see cref="MaxIdValue"/>.
+    /// </summary>
     public static PredecessorId GetRandomId()
     {
         return (PredecessorId)(ulong)Random.Shared.NextInt64((long)MinIdValue, (long)MaxIdValue + 1);
     }
 #pragma warning restore CA5394 // Do not use insecure randomness
 
+    /// <summary>
+    /// Derives a <see cref="PredecessorId"/> from the specified URI.
+    /// </summary>
+    /// <param name="urn">The URI from which to derive the identifier.</param>
     public static PredecessorId FromUri(Uri urn)
     {
         ArgumentNullException.ThrowIfNull(urn);
         return FromUri(urn.ToString());
     }
 
+    /// <summary>
+    /// Derives a <see cref="PredecessorId"/> from the specified URI.
+    /// </summary>
+    /// <param name="urn">The URI from which to derive the identifier.</param>
     public static PredecessorId FromUri(ReadOnlySpan<char> urn)
     {
         var c = Encoding.UTF8.GetByteCount(urn);
@@ -129,11 +187,19 @@ public readonly partial struct PredecessorId
         }
     }
 
+    /// <summary>
+    /// Derives a <see cref="PredecessorId"/> for a directed link from the measure identified by
+    /// <paramref name="head"/> to the measure identified by <paramref name="tail"/>.
+    /// </summary>
     public static PredecessorId FromMeasures(Uri head, Uri tail)
     {
         return FromMeasures(MeasureId.FromUri(head), MeasureId.FromUri(tail));
     }
 
+    /// <summary>
+    /// Derives a <see cref="PredecessorId"/> for a directed link from the measure identified by
+    /// <paramref name="head"/> to the measure identified by <paramref name="tail"/>.
+    /// </summary>
     public static PredecessorId FromMeasures(MeasureId head, MeasureId tail)
     {
         Span<byte> b = stackalloc byte[16];
@@ -142,6 +208,7 @@ public readonly partial struct PredecessorId
         return (PredecessorId)(MinIdValue + (ulong)(XxHash3.HashToUInt64(b) / (decimal)ulong.MaxValue * MaxRange));
     }
 
+    /// <inheritdoc/>
     public ulong GetRepeatableHashCode()
     {
         return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);

@@ -30,21 +30,46 @@ public readonly partial struct SpeechSymbol
       IUtf8SpanSerializable<SpeechSymbol>,
       IRepeatableHash64
 {
+    /// <summary>
+    /// Gets the maximum number of <see cref="char"/> values required to serialize a
+    /// <see cref="SpeechSymbol"/>.
+    /// </summary>
     public static int MaxSerializedCharLength => 1;
 
+    /// <summary>
+    /// Gets the maximum number of <see cref="byte"/> values required to serialize a
+    /// <see cref="SpeechSymbol"/> as UTF-8.
+    /// </summary>
     public static int MaxSerializedByteLength => 2;
 
+    /// <summary>
+    /// Initializes a new <see cref="SpeechSymbol"/> from the specified character.
+    /// </summary>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// <paramref name="value"/> is not a valid IPA symbol.
+    /// </exception>
     public SpeechSymbol(char value) : this(value, false)
     {
     }
 
+    /// <summary>
+    /// Gets the underlying character value of this <see cref="SpeechSymbol"/>.
+    /// </summary>
     public char Value => _value;
 
+    /// <summary>
+    /// Attempts to create a <see cref="SpeechSymbol"/> from the specified character
+    /// using <see cref="SpeechSymbolComparison.Exact"/> matching.
+    /// </summary>
     public static bool TryCreate(char value, out SpeechSymbol symbol)
     {
         return TryCreate(value, SpeechSymbolComparison.Exact, out symbol);
     }
 
+    /// <summary>
+    /// Attempts to create a <see cref="SpeechSymbol"/> from the specified character
+    /// using the specified <paramref name="comparison"/> mode.
+    /// </summary>
     public static bool TryCreate(char value, SpeechSymbolComparison comparison, out SpeechSymbol symbol)
     {
         if (IsValidValue(value))
@@ -77,6 +102,10 @@ public readonly partial struct SpeechSymbol
     }
     .ToFrozenDictionary();
 
+    /// <summary>
+    /// Determines whether the specified character is a valid <see cref="SpeechSymbol"/> value
+    /// (a strict-IPA character).
+    /// </summary>
     public static bool IsValidValue(char value)
     {
         return IsStrictIpaSymbol(value);
@@ -140,6 +169,10 @@ public readonly partial struct SpeechSymbol
         return true;
     }
 
+    /// <summary>
+    /// Determines whether all of the characters in <paramref name="chars"/> are 'valid' IPA
+    /// characters. Returns <see langword="true"/> if the sequence is empty.
+    /// </summary>
     public static bool AllValidIpa(ReadOnlySpan<char> chars)
     {
         foreach (var c in chars)
@@ -153,6 +186,10 @@ public readonly partial struct SpeechSymbol
         return true;
     }
 
+    /// <summary>
+    /// Determines whether every <see cref="SpeechSymbol"/> in <paramref name="chars"/> is a
+    /// consonant or a vowel. Returns <see langword="true"/> if the sequence is empty.
+    /// </summary>
     public static bool AllConsonantOrVowel(ReadOnlySpan<SpeechSymbol> chars)
     {
         foreach (var c in chars)
@@ -166,6 +203,10 @@ public readonly partial struct SpeechSymbol
         return true;
     }
 
+    /// <summary>
+    /// Determines whether every character in <paramref name="chars"/> is a consonant or a
+    /// vowel IPA symbol. Returns <see langword="true"/> if the sequence is empty.
+    /// </summary>
     public static bool AllConsonantOrVowel(ReadOnlySpan<char> chars)
     {
         foreach (var c in chars)
@@ -179,6 +220,10 @@ public readonly partial struct SpeechSymbol
         return true;
     }
 
+    /// <summary>
+    /// Determines whether none of the <see cref="SpeechSymbol"/> values in <paramref name="chars"/>
+    /// is a consonant or a vowel. Returns <see langword="true"/> if the sequence is empty.
+    /// </summary>
     public static bool NoneConsonantOrVowel(ReadOnlySpan<SpeechSymbol> chars)
     {
         foreach (var c in chars)
@@ -192,6 +237,10 @@ public readonly partial struct SpeechSymbol
         return true;
     }
 
+    /// <summary>
+    /// Determines whether none of the characters in <paramref name="chars"/> is a consonant
+    /// or a vowel IPA symbol. Returns <see langword="true"/> if the sequence is empty.
+    /// </summary>
     public static bool NoneConsonantOrVowel(ReadOnlySpan<char> chars)
     {
         foreach (var c in chars)
@@ -205,6 +254,10 @@ public readonly partial struct SpeechSymbol
         return true;
     }
 
+    /// <summary>
+    /// Determines whether this <see cref="SpeechSymbol"/> is equal to <paramref name="c"/>
+    /// using the specified <paramref name="comparison"/> mode.
+    /// </summary>
     public bool Equals(char c, SpeechSymbolComparison comparison = SpeechSymbolComparison.Exact)
     {
         if (_value == c)
@@ -220,51 +273,88 @@ public readonly partial struct SpeechSymbol
         return s_equivalenceMappings.TryGetValue(c, out var symbol) && symbol._value == _value;
     }
 
+    /// <summary>
+    /// Determines whether the specified <see cref="SpeechSymbol"/> represents a consonant.
+    /// </summary>
     public static bool IsConsonant(SpeechSymbol symbol)
     {
         return Consonants.Contains(symbol._value);
     }
 
+    /// <summary>
+    /// Determines whether the specified <see cref="SpeechSymbol"/> represents a diacritic.
+    /// </summary>
     public static bool IsDiacritic(SpeechSymbol symbol)
     {
         return Diacritics.Contains(symbol._value);
     }
 
+    /// <summary>
+    /// Determines whether the specified <see cref="SpeechSymbol"/> represents a
+    /// suprasegmental marker.
+    /// </summary>
     public static bool IsSuprasegmental(SpeechSymbol symbol)
     {
         return Suprasegmentals.Contains(symbol._value);
     }
 
+    /// <summary>
+    /// Determines whether the specified <see cref="SpeechSymbol"/> represents a vowel.
+    /// </summary>
     public static bool IsVowel(SpeechSymbol symbol)
     {
         return Vowels.Contains(symbol._value);
     }
 
+    /// <summary>
+    /// Determines whether the specified <see cref="SpeechSymbol"/> represents either a
+    /// consonant or a vowel.
+    /// </summary>
     public static bool IsConsonantOrVowel(SpeechSymbol symbol)
     {
         return ConsonantsAndVowels.Contains(symbol._value);
     }
 
+    /// <summary>
+    /// Determines whether the specified character represents a consonant IPA symbol,
+    /// using the specified <paramref name="comparison"/> mode.
+    /// </summary>
     public static bool IsConsonant(char symbol, SpeechSymbolComparison comparison = SpeechSymbolComparison.Exact)
     {
         return Contains(Consonants, symbol, comparison);
     }
 
+    /// <summary>
+    /// Determines whether the specified character represents a diacritic IPA symbol,
+    /// using the specified <paramref name="comparison"/> mode.
+    /// </summary>
     public static bool IsDiacritic(char symbol, SpeechSymbolComparison comparison = SpeechSymbolComparison.Exact)
     {
         return Contains(Diacritics, symbol, comparison);
     }
 
+    /// <summary>
+    /// Determines whether the specified character represents a suprasegmental IPA symbol,
+    /// using the specified <paramref name="comparison"/> mode.
+    /// </summary>
     public static bool IsSuprasegmental(char symbol, SpeechSymbolComparison comparison = SpeechSymbolComparison.Exact)
     {
         return Contains(Suprasegmentals, symbol, comparison);
     }
 
+    /// <summary>
+    /// Determines whether the specified character represents a vowel IPA symbol,
+    /// using the specified <paramref name="comparison"/> mode.
+    /// </summary>
     public static bool IsVowel(char symbol, SpeechSymbolComparison comparison = SpeechSymbolComparison.Exact)
     {
         return Contains(Vowels, symbol, comparison);
     }
 
+    /// <summary>
+    /// Determines whether the specified character represents either a consonant or a vowel
+    /// IPA symbol, using the specified <paramref name="comparison"/> mode.
+    /// </summary>
     public static bool IsConsonantOrVowel(char symbol, SpeechSymbolComparison comparison = SpeechSymbolComparison.Exact)
     {
         return Contains(ConsonantsAndVowels, symbol, comparison);
@@ -280,12 +370,17 @@ public readonly partial struct SpeechSymbol
         return s_equivalenceMappings.TryGetValue(c, out var symbol) && symbols.Contains(symbol._value);
     }
 
+    /// <inheritdoc/>
     public ulong GetRepeatableHashCode()
     {
         return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);
     }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
+    /// <summary>
+    /// Converts a <see cref="SpeechSymbol"/> to its underlying Unicode code point as an
+    /// <see cref="int"/>.
+    /// </summary>
     public static implicit operator int(SpeechSymbol value)
 #pragma warning restore CA2225 // Operator overloads have named alternates
     {
@@ -293,6 +388,10 @@ public readonly partial struct SpeechSymbol
     }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
+    /// <summary>
+    /// Converts a <see cref="SpeechSymbol"/> to its underlying Unicode code point as a
+    /// <see cref="uint"/>.
+    /// </summary>
     public static implicit operator uint(SpeechSymbol value)
 #pragma warning restore CA2225 // Operator overloads have named alternates
     {
@@ -375,108 +474,264 @@ public readonly partial struct SpeechSymbol
     /// </summary>
     public static readonly SpeechSymbol VoicedRetroflexPlosive = new((char)0x0256, true);
 
+    /// <summary>
+    /// The Unicode 'latin small letter d with hook' <c>ɗ</c> character, used to represent voiced dental/alveolar implosive.
+    /// </summary>
     public static readonly SpeechSymbol VoicedDentalAlveolarImplosive = new((char)0x0257, true);  // ɗ,latin small letter d with hook,voiced dental/alveolar implosive
 
+    /// <summary>
+    /// The Unicode 'latin small letter e' <c>e</c> character, used to represent close-mid front unrounded.
+    /// </summary>
     public static readonly SpeechSymbol CloseMidFrontUnrounded = new((char)0x0065, true);  // e,latin small letter e,close-mid front unrounded
 
+    /// <summary>
+    /// The Unicode 'latin small letter schwa' <c>ə</c> character, used to represent mid-central schwa.
+    /// </summary>
     public static readonly SpeechSymbol MidCentralSchwa = new((char)0x0259, true);  // ə,latin small letter schwa,mid-central schwa
 
+    /// <summary>
+    /// The Unicode 'latin small letter open e' <c>ɛ</c> character, used to represent open-mid front unrounded.
+    /// </summary>
     public static readonly SpeechSymbol OpenMidFrontUnrounded = new((char)0x025B, true);  // ɛ,latin small letter open e,open-mid front unrounded
 
+    /// <summary>
+    /// The Unicode 'latin small letter reversed e' <c>ɘ</c> character, used to represent close-mid central unrounded.
+    /// </summary>
     public static readonly SpeechSymbol CloseMidCentralUnrounded = new((char)0x0258, true);  // ɘ,latin small letter reversed e,close-mid central unrounded
 
+    /// <summary>
+    /// The Unicode 'latin small letter reversed open e' <c>ɜ</c> character, used to represent open-mid central unrounded.
+    /// </summary>
     public static readonly SpeechSymbol OpenMidCentralUnrounded = new((char)0x025C, true);  // ɜ,latin small letter reversed open e,open-mid central unrounded
 
+    /// <summary>
+    /// The Unicode 'latin small letter closed reversed open e' <c>ɞ</c> character, used to represent open-mid central rounded.
+    /// </summary>
     public static readonly SpeechSymbol OpenMidCentralRounded = new((char)0x025E, true);  // ɞ,latin small letter closed reversed open e,open-mid central rounded
 
+    /// <summary>
+    /// The Unicode 'latin small letter f' <c>f</c> character, used to represent voiceless labiodental fricative.
+    /// </summary>
     public static readonly SpeechSymbol VoicelessLabiodentalFricative = new((char)0x0066, true);  // f,latin small letter f,voiceless labiodental fricative
 
+    /// <summary>
+    /// The Unicode 'latin small letter script g' <c>ɡ</c> character, used to represent voiced velar plosive.
+    /// </summary>
     public static readonly SpeechSymbol VoicedVelarPlosive = new((char)0x0261, true);  // ɡ,latin small letter script g,voiced velar plosive
 
+    /// <summary>
+    /// The Unicode 'latin letter small capital g' <c>ɢ</c> character, used to represent voiced uvular plosive.
+    /// </summary>
     public static readonly SpeechSymbol VoicedUvularPlosive = new((char)0x0262, true);  // ɢ,latin letter small capital g,voiced uvular plosive
 
+    /// <summary>
+    /// The Unicode 'latin small letter g with hook' <c>ɠ</c> character, used to represent voiced velar implosive.
+    /// </summary>
     public static readonly SpeechSymbol VoicedVelarImplosive = new((char)0x0260, true);  // ɠ,latin small letter g with hook,voiced velar implosive
 
+    /// <summary>
+    /// The Unicode 'latin letter small capital g with hook' <c>ʛ</c> character, used to represent voiced uvular implosive.
+    /// </summary>
     public static readonly SpeechSymbol VoicedUvularImplosive = new((char)0x029B, true);  // ʛ,latin letter small capital g with hook,voiced uvular implosive
 
+    /// <summary>
+    /// The Unicode 'latin small letter rams horn' <c>ɤ</c> character, used to represent close-mid back unrounded.
+    /// </summary>
     public static readonly SpeechSymbol CloseMidBackUnrounded = new((char)0x0264, true);  // ɤ,latin small letter rams horn,close-mid back unrounded
 
+    /// <summary>
+    /// The Unicode 'latin small letter gamma' <c>ɣ</c> character, used to represent voiced velar fricative.
+    /// </summary>
     public static readonly SpeechSymbol VoicedVelarFricative = new((char)0x0263, true);  // ɣ,latin small letter gamma,voiced velar fricative
 
+    /// <summary>
+    /// The Unicode 'latin small letter h' <c>h</c> character, used to represent voiceless glottal fricative.
+    /// </summary>
     public static readonly SpeechSymbol VoicelessGlottalFricative = new((char)0x0068, true);  // h,latin small letter h,voiceless glottal fricative
 
+    /// <summary>
+    /// The Unicode 'latin small letter h with stroke' <c>ħ</c> character, used to represent voiceless pharyngeal fricative.
+    /// </summary>
     public static readonly SpeechSymbol VoicelessPharyngealFricative = new((char)0x0127, true);  // ħ,latin small letter h with stroke,voiceless pharyngeal fricative
 
+    /// <summary>
+    /// The Unicode 'latin letter small capital h' <c>ʜ</c> character, used to represent voiceless epiglottal fricative.
+    /// </summary>
     public static readonly SpeechSymbol VoicelessEpiglottalFricative = new((char)0x029C, true);  // ʜ,latin letter small capital h,voiceless epiglottal fricative
 
+    /// <summary>
+    /// The Unicode 'latin small letter h with hook' <c>ɦ</c> character, used to represent voiced glottal fricative.
+    /// </summary>
     public static readonly SpeechSymbol VoicedGlottalFricative = new((char)0x0266, true);  // ɦ,latin small letter h with hook,voiced glottal fricative
 
+    /// <summary>
+    /// The Unicode 'latin small letter heng with hook' <c>ɧ</c> character, used to represent simultaneous voiceless postalveolar+velar fricative.
+    /// </summary>
     public static readonly SpeechSymbol SimultaneousVoicelessPostalveolarVelarFricative = new((char)0x0267, true);  // ɧ,latin small letter heng with hook,simultaneous voiceless postalveolar+velar fricative
 
+    /// <summary>
+    /// The Unicode 'latin small letter turned h' <c>ɥ</c> character, used to represent voiced labial-palatal approximant.
+    /// </summary>
     public static readonly SpeechSymbol VoicedLabialPalatalApproximant = new((char)0x0265, true);  // ɥ,latin small letter turned h,voiced labial-palatal approximant
 
+    /// <summary>
+    /// The Unicode 'latin small letter i' <c>i</c> character, used to represent close front unrounded.
+    /// </summary>
     public static readonly SpeechSymbol CloseFrontUnrounded = new((char)0x0069, true);  // i,latin small letter i,close front unrounded
 
+    /// <summary>
+    /// The Unicode 'latin letter small capital i' <c>ɪ</c> character, used to represent lax close front unrounded.
+    /// </summary>
     public static readonly SpeechSymbol LaxCloseFrontUnrounded = new((char)0x026A, true);  // ɪ,latin letter small capital i,lax close front unrounded
 
+    /// <summary>
+    /// The Unicode 'latin small letter i with stroke' <c>ɨ</c> character, used to represent close central unrounded.
+    /// </summary>
     public static readonly SpeechSymbol CloseCentralUnrounded = new((char)0x0268, true);  // ɨ,latin small letter i with stroke,close central unrounded
 
+    /// <summary>
+    /// The Unicode 'latin small letter j' <c>j</c> character, used to represent voiced palatal approximant.
+    /// </summary>
     public static readonly SpeechSymbol VoicedPalatalApproximant = new((char)0x006A, true);  // j,latin small letter j,voiced palatal approximant
 
+    /// <summary>
+    /// The Unicode 'latin small letter j with crossed tail' <c>ʝ</c> character, used to represent voiced palatal fricative.
+    /// </summary>
     public static readonly SpeechSymbol VoicedPalatalFricative = new((char)0x029D, true);  // ʝ,latin small letter j with crossed tail,voiced palatal fricative
 
+    /// <summary>
+    /// The Unicode 'latin small letter dotless j with stroke' <c>ɟ</c> character, used to represent voiced palatal plosive.
+    /// </summary>
     public static readonly SpeechSymbol VoicedPalatalPlosive = new((char)0x025F, true);  // ɟ,latin small letter dotless j with stroke,voiced palatal plosive
 
+    /// <summary>
+    /// The Unicode 'latin small letter dotless j with stroke and hook' <c>ʄ</c> character, used to represent voiced palatal implosive.
+    /// </summary>
     public static readonly SpeechSymbol VoicedPalatalImplosive = new((char)0x0284, true);  // ʄ,latin small letter dotless j with stroke and hook,voiced palatal implosive
 
+    /// <summary>
+    /// The Unicode 'latin small letter k' <c>k</c> character, used to represent voiceless velar plosive.
+    /// </summary>
     public static readonly SpeechSymbol VoicelessVelarPlosive = new((char)0x006B, true);  // k,latin small letter k,voiceless velar plosive
 
+    /// <summary>
+    /// The Unicode 'latin small letter l' <c>l</c> character, used to represent voiced alveolar lateral approximant.
+    /// </summary>
     public static readonly SpeechSymbol VoicedAlveolarLateralApproximant = new((char)0x006C, true);  // l,latin small letter l,voiced alveolar lateral approximant
 
+    /// <summary>
+    /// The Unicode 'latin letter small capital l' <c>ʟ</c> character, used to represent voiced velar lateral approximant.
+    /// </summary>
     public static readonly SpeechSymbol VoicedVelarLateralApproximant = new((char)0x029F, true);  // ʟ,latin letter small capital l,voiced velar lateral approximant
 
+    /// <summary>
+    /// The Unicode 'latin small letter l with belt' <c>ɬ</c> character, used to represent voiceless alveolar lateral fricative.
+    /// </summary>
     public static readonly SpeechSymbol VoicelessAlveolarLateralFricative = new((char)0x026C, true);  // ɬ,latin small letter l with belt,voiceless alveolar lateral fricative
 
+    /// <summary>
+    /// The Unicode 'latin small letter l with retroflex hook' <c>ɭ</c> character, used to represent voiced retroflex lateral approximant.
+    /// </summary>
     public static readonly SpeechSymbol VoicedRetroflexLateralApproximant = new((char)0x026D, true);  // ɭ,latin small letter l with retroflex hook,voiced retroflex lateral approximant
 
+    /// <summary>
+    /// The Unicode 'latin small letter lezh' <c>ɮ</c> character, used to represent voiced alveolar lateral fricative.
+    /// </summary>
     public static readonly SpeechSymbol VoicedAlveolarLateralFricative = new((char)0x026E, true);  // ɮ,latin small letter lezh,voiced alveolar lateral fricative
 
+    /// <summary>
+    /// The Unicode 'latin small letter turned y' <c>ʎ</c> character, used to represent voiced palatal lateral approximant.
+    /// </summary>
     public static readonly SpeechSymbol VoicedPalatalLateralApproximant = new((char)0x028E, true);  // ʎ,latin small letter turned y,voiced palatal lateral approximant
 
+    /// <summary>
+    /// The Unicode 'latin small letter m' <c>m</c> character, used to represent voiced bilabial nasal.
+    /// </summary>
     public static readonly SpeechSymbol VoicedBilabialNasal = new((char)0x006D, true);  // m,latin small letter m,voiced bilabial nasal
 
+    /// <summary>
+    /// The Unicode 'latin small letter m with hook' <c>ɱ</c> character, used to represent voiced labiodental nasal.
+    /// </summary>
     public static readonly SpeechSymbol VoicedLabiodentalNasal = new((char)0x0271, true);  // ɱ,latin small letter m with hook,voiced labiodental nasal
 
+    /// <summary>
+    /// The Unicode 'latin small letter n' <c>n</c> character, used to represent voiced alveolar nasal.
+    /// </summary>
     public static readonly SpeechSymbol VoicedAlveolarNasal = new((char)0x006E, true);  // n,latin small letter n,voiced alveolar nasal
 
+    /// <summary>
+    /// The Unicode 'latin letter small capital n' <c>ɴ</c> character, used to represent voiced uvular nasal.
+    /// </summary>
     public static readonly SpeechSymbol VoicedUvularNasal = new((char)0x0274, true);  // ɴ,latin letter small capital n,voiced uvular nasal
 
+    /// <summary>
+    /// The Unicode 'latin small letter n with left hook' <c>ɲ</c> character, used to represent voiced palatal nasal.
+    /// </summary>
     public static readonly SpeechSymbol VoicedPalatalNasal = new((char)0x0272, true);  // ɲ,latin small letter n with left hook,voiced palatal nasal
 
+    /// <summary>
+    /// The Unicode 'latin small letter n with retroflex hook' <c>ɳ</c> character, used to represent voiced retroflex nasal.
+    /// </summary>
     public static readonly SpeechSymbol VoicedRetroflexNasal = new((char)0x0273, true);  // ɳ,latin small letter n with retroflex hook,voiced retroflex nasal
 
+    /// <summary>
+    /// The Unicode 'latin small letter eng' <c>ŋ</c> character, used to represent voiced velar nasal.
+    /// </summary>
     public static readonly SpeechSymbol VoicedVelarNasal = new((char)0x014B, true);  // ŋ,latin small letter eng,voiced velar nasal
 
+    /// <summary>
+    /// The Unicode 'latin small letter o' <c>o</c> character, used to represent close-mid back rounded.
+    /// </summary>
     public static readonly SpeechSymbol CloseMidBackRounded = new((char)0x006F, true);  // o,latin small letter o,close-mid back rounded
 
+    /// <summary>
+    /// The Unicode 'latin small letter o with stroke' <c>ø</c> character, used to represent close-mid front rounded.
+    /// </summary>
     public static readonly SpeechSymbol CloseMidFrontRounded = new((char)0x00F8, true);  // ø,latin small letter o with stroke,close-mid front rounded
 
+    /// <summary>
+    /// The Unicode 'latin small ligature oe' <c>œ</c> character, used to represent open-mid front rounded.
+    /// </summary>
     public static readonly SpeechSymbol OpenMidFrontRounded = new((char)0x0153, true);  // œ,latin small ligature oe,open-mid front rounded
 
+    /// <summary>
+    /// The Unicode 'latin letter small capital oe' <c>ɶ</c> character, used to represent open front rounded.
+    /// </summary>
     public static readonly SpeechSymbol OpenFrontRounded = new((char)0x0276, true);  // ɶ,latin letter small capital oe,open front rounded
 
+    /// <summary>
+    /// The Unicode 'latin small letter open o' <c>ɔ</c> character, used to represent open-mid back rounded.
+    /// </summary>
     public static readonly SpeechSymbol OpenMidBackRounded = new((char)0x0254, true);  // ɔ,latin small letter open o,open-mid back rounded
 
+    /// <summary>
+    /// The Unicode 'latin small letter barred o' <c>ɵ</c> character, used to represent close-mid central rounded.
+    /// </summary>
     public static readonly SpeechSymbol CloseMidCentralRounded = new((char)0x0275, true);  // ɵ,latin small letter barred o,close-mid central rounded
 
+    /// <summary>
+    /// The Unicode 'latin small letter p' <c>p</c> character, used to represent voiceless bilabial plosive.
+    /// </summary>
     public static readonly SpeechSymbol VoicelessBilabialPlosive = new((char)0x0070, true);  // p,latin small letter p,voiceless bilabial plosive
 
+    /// <summary>
+    /// The Unicode 'latin small letter phi' <c>ɸ</c> character, used to represent voiceless bilabial fricative.
+    /// </summary>
     public static readonly SpeechSymbol VoicelessBilabialFricative = new((char)0x0278, true);  // ɸ,latin small letter phi,voiceless bilabial fricative
 
+    /// <summary>
+    /// The Unicode 'latin small letter q' <c>q</c> character, used to represent voiceless uvular plosive.
+    /// </summary>
     public static readonly SpeechSymbol VoicelessUvularPlosive = new((char)0x0071, true);  // q,latin small letter q,voiceless uvular plosive
 
+    /// <summary>
+    /// The Unicode 'latin small letter r' <c>r</c> character, used to represent voiced alveolar trill.
+    /// </summary>
     public static readonly SpeechSymbol VoicedAlveolarTrill = new((char)0x0072, true);  // r,latin small letter r,voiced alveolar trill
 
+    /// <summary>
+    /// The Unicode 'latin letter small capital r' <c>ʀ</c> character, used to represent voiced uvular trill.
+    /// </summary>
     public static readonly SpeechSymbol VoicedUvularTrill = new((char)0x0280, true);  // ʀ,latin letter small capital r,voiced uvular trill
 
     /// <summary>
@@ -485,8 +740,14 @@ public readonly partial struct SpeechSymbol
     /// </summary>
     public static readonly SpeechSymbol VoicedAlveolarApproximant = new((char)0x0279, true);
 
+    /// <summary>
+    /// The Unicode 'latin small letter turned r with long leg' <c>ɺ</c> character, used to represent voiced alveolar lateral flap.
+    /// </summary>
     public static readonly SpeechSymbol VoicedAlveolarLateralFlap = new((char)0x027A, true);  // ɺ,latin small letter turned r with long leg,voiced alveolar lateral flap
 
+    /// <summary>
+    /// The Unicode 'latin small letter turned r with hook' <c>ɻ</c> character, used to represent voiced retroflex approximant.
+    /// </summary>
     public static readonly SpeechSymbol VoicedRetroflexApproximant = new((char)0x027B, true);  // ɻ,latin small letter turned r with hook,voiced retroflex approximant
 
     /// <summary>
@@ -495,12 +756,24 @@ public readonly partial struct SpeechSymbol
     /// </summary>
     public static readonly SpeechSymbol VoicedRetroflexTap = new((char)0x027D, true);
 
+    /// <summary>
+    /// The Unicode 'latin small letter r with fishhook' <c>ɾ</c> character, used to represent voiced alveolar tap.
+    /// </summary>
     public static readonly SpeechSymbol VoicedAlveolarTap = new((char)0x027E, true);  // ɾ,latin small letter r with fishhook,voiced alveolar tap
 
+    /// <summary>
+    /// The Unicode 'latin letter small capital inverted r' <c>ʁ</c> character, used to represent voiced uvular fricative.
+    /// </summary>
     public static readonly SpeechSymbol VoicedUvularFricative = new((char)0x0281, true);  // ʁ,latin letter small capital inverted r,voiced uvular fricative
 
+    /// <summary>
+    /// The Unicode 'latin small letter s' <c>s</c> character, used to represent voiceless alveolar fricative.
+    /// </summary>
     public static readonly SpeechSymbol VoicelessAlveolarFricative = new((char)0x0073, true);  // s,latin small letter s,voiceless alveolar fricative
 
+    /// <summary>
+    /// The Unicode 'latin small letter s with hook' <c>ʂ</c> character, used to represent voiceless retroflex fricative.
+    /// </summary>
     public static readonly SpeechSymbol VoicelessRetroflexFricative = new((char)0x0282, true);  // ʂ,latin small letter s with hook,voiceless retroflex fricative
 
     /// <summary>
@@ -515,20 +788,44 @@ public readonly partial struct SpeechSymbol
     /// </summary>
     public static readonly SpeechSymbol VoicelessAlveolarPlosive = new((char)0x0074, true);
 
+    /// <summary>
+    /// The Unicode 'latin small letter t with retroflex hook' <c>ʈ</c> character, used to represent voiceless retroflex plosive.
+    /// </summary>
     public static readonly SpeechSymbol VoicelessRetroflexPlosive = new((char)0x0288, true);  // ʈ,latin small letter t with retroflex hook,voiceless retroflex plosive
 
+    /// <summary>
+    /// The Unicode 'latin small letter u' <c>u</c> character, used to represent close back rounded.
+    /// </summary>
     public static readonly SpeechSymbol CloseBackRounded = new((char)0x0075, true);  // u,latin small letter u,close back rounded
 
+    /// <summary>
+    /// The Unicode 'latin small letter u bar' <c>ʉ</c> character, used to represent close central rounded.
+    /// </summary>
     public static readonly SpeechSymbol CloseCentralRounded = new((char)0x0289, true);  // ʉ,latin small letter u bar,close central rounded
 
+    /// <summary>
+    /// The Unicode 'latin small letter turned m' <c>ɯ</c> character, used to represent close back unrounded.
+    /// </summary>
     public static readonly SpeechSymbol CloseBackUnrounded = new((char)0x026F, true);  // ɯ,latin small letter turned m,close back unrounded
 
+    /// <summary>
+    /// The Unicode 'latin small letter turned m with long leg' <c>ɰ</c> character, used to represent voiced velar approximant.
+    /// </summary>
     public static readonly SpeechSymbol VoicedVelarApproximant = new((char)0x0270, true);  // ɰ,latin small letter turned m with long leg,voiced velar approximant
 
+    /// <summary>
+    /// The Unicode 'latin small letter upsilon' <c>ʊ</c> character, used to represent lax close back rounded.
+    /// </summary>
     public static readonly SpeechSymbol LaxCloseBackRounded = new((char)0x028A, true);  // ʊ,latin small letter upsilon,lax close back rounded
 
+    /// <summary>
+    /// The Unicode 'latin small letter v' <c>v</c> character, used to represent voiced labiodental fricative.
+    /// </summary>
     public static readonly SpeechSymbol VoicedLabiodentalFricative = new((char)0x0076, true);  // v,latin small letter v,voiced labiodental fricative
 
+    /// <summary>
+    /// The Unicode 'latin small letter v with hook' <c>ʋ</c> character, used to represent voiced labiodental approximant.
+    /// </summary>
     public static readonly SpeechSymbol VoicedLabiodentalApproximant = new((char)0x028B, true);  // ʋ,latin small letter v with hook,voiced labiodental approximant
 
     /// <summary>
@@ -541,22 +838,49 @@ public readonly partial struct SpeechSymbol
     /// </remarks>
     public static readonly SpeechSymbol VoicedLabiodentalFlap = new((char)0x2C71, true);  // ⱱ,latin small letter v with right hook,voiced labiodental tap
 
+    /// <summary>
+    /// The Unicode 'latin small letter turned v' <c>ʌ</c> character, used to represent open-mid back unrounded.
+    /// </summary>
     public static readonly SpeechSymbol OpenMidBackUnrounded = new((char)0x028C, true);  // ʌ,latin small letter turned v,open-mid back unrounded
 
+    /// <summary>
+    /// The Unicode 'latin small letter w' <c>w</c> character, used to represent voiced labial-velar approximant.
+    /// </summary>
     public static readonly SpeechSymbol VoicedLabialVelarApproximant = new((char)0x0077, true);  // w,latin small letter w,voiced labial-velar approximant
 
+    /// <summary>
+    /// The Unicode 'latin small letter turned w' <c>ʍ</c> character, used to represent voiceless labial-velar fricative.
+    /// </summary>
     public static readonly SpeechSymbol VoicelessLabialVelarFricative = new((char)0x028D, true);  // ʍ,latin small letter turned w,voiceless labial-velar fricative
 
+    /// <summary>
+    /// The Unicode 'latin small letter x' <c>x</c> character, used to represent voiceless velar fricative.
+    /// </summary>
     public static readonly SpeechSymbol VoicelessVelarFricative = new((char)0x0078, true);  // x,latin small letter x,voiceless velar fricative
 
+    /// <summary>
+    /// The Unicode 'latin small letter y' <c>y</c> character, used to represent close front rounded.
+    /// </summary>
     public static readonly SpeechSymbol CloseFrontRounded = new((char)0x0079, true);  // y,latin small letter y,close front rounded
 
+    /// <summary>
+    /// The Unicode 'latin letter small capital y' <c>ʏ</c> character, used to represent lax close front rounded.
+    /// </summary>
     public static readonly SpeechSymbol LaxCloseFrontRounded = new((char)0x028F, true);  // ʏ,latin letter small capital y,lax close front rounded
 
+    /// <summary>
+    /// The Unicode 'latin small letter z' <c>z</c> character, used to represent voiced alveolar fricative.
+    /// </summary>
     public static readonly SpeechSymbol VoicedAlveolarFricative = new((char)0x007A, true);  // z,latin small letter z,voiced alveolar fricative
 
+    /// <summary>
+    /// The Unicode 'latin small letter z with retroflex hook' <c>ʐ</c> character, used to represent voiced retroflex fricative.
+    /// </summary>
     public static readonly SpeechSymbol VoicedRetroflexFricative = new((char)0x0290, true);  // ʐ,latin small letter z with retroflex hook,voiced retroflex fricative
 
+    /// <summary>
+    /// The Unicode 'latin small letter z with curl' <c>ʑ</c> character, used to represent voiced alveolo-palatal fricative.
+    /// </summary>
     public static readonly SpeechSymbol VoicedAlveoloPalatalFricative = new((char)0x0291, true);  // ʑ,latin small letter z with curl,voiced alveolo-palatal fricative
 
     /// <summary>
@@ -565,40 +889,94 @@ public readonly partial struct SpeechSymbol
     /// </summary>
     public static readonly SpeechSymbol VoicedPostalveolarFricative = new((char)0x0292, true);  // ʒ,latin small letter ezh,voiced postalveolar fricative
 
+    /// <summary>
+    /// The Unicode 'latin letter glottal stop' <c>ʔ</c> character, used to represent voiceless glottal plosive.
+    /// </summary>
     public static readonly SpeechSymbol VoicelessGlottalPlosive = new((char)0x0294, true);  // ʔ,latin letter glottal stop,voiceless glottal plosive
 
+    /// <summary>
+    /// The Unicode 'latin letter pharyngeal voiced fricative' <c>ʕ</c> character, used to represent voiced pharyngeal fricative.
+    /// </summary>
     public static readonly SpeechSymbol VoicedPharyngealFricative = new((char)0x0295, true);  // ʕ,latin letter pharyngeal voiced fricative,voiced pharyngeal fricative
 
+    /// <summary>
+    /// The Unicode 'latin letter glottal stop with stroke' <c>ʡ</c> character, used to represent epiglottal plosive.
+    /// </summary>
     public static readonly SpeechSymbol EpiglottalPlosive = new((char)0x02A1, true);  // ʡ,latin letter glottal stop with stroke,epiglottal plosive
 
+    /// <summary>
+    /// The Unicode 'latin letter reversed glottal stop with stroke' <c>ʢ</c> character, used to represent voiced epiglottal fricative.
+    /// </summary>
     public static readonly SpeechSymbol VoicedEpiglottalFricative = new((char)0x02A2, true);  // ʢ,latin letter reversed glottal stop with stroke,voiced epiglottal fricative
 
+    /// <summary>
+    /// The Unicode 'latin letter dental click' <c>ǀ</c> character, used to represent voiceless dental click.
+    /// </summary>
     public static readonly SpeechSymbol VoicelessDentalClick = new((char)0x01C0, true);  // ǀ,latin letter dental click,voiceless dental click
 
+    /// <summary>
+    /// The Unicode 'latin letter lateral click' <c>ǁ</c> character, used to represent voiceless alveolar lateral click.
+    /// </summary>
     public static readonly SpeechSymbol VoicelessAlveolarLateralClick = new((char)0x01C1, true);  // ǁ,latin letter lateral click,voiceless alveolar lateral click
 
+    /// <summary>
+    /// The Unicode 'latin letter alveolar click' <c>ǂ</c> character, used to represent voiceless palatoalveolar click.
+    /// </summary>
     public static readonly SpeechSymbol VoicelessPalatoalveolarClick = new((char)0x01C2, true);  // ǂ,latin letter alveolar click,voiceless palatoalveolar click
 
+    /// <summary>
+    /// The Unicode 'latin letter retroflex click' <c>ǃ</c> character, used to represent voiceless (post)alveolar click.
+    /// </summary>
     public static readonly SpeechSymbol VoicelessPostalveolarClick = new((char)0x01C3, true);  // ǃ,latin letter retroflex click,voiceless (post)alveolar click
 
+    /// <summary>
+    /// The Unicode 'latin letter bilabial click' <c>ʘ</c> character, used to represent voiceless bilabial click.
+    /// </summary>
     public static readonly SpeechSymbol VoicelessBilabialClick = new((char)0x0298, true);  // ʘ,latin letter bilabial click,voiceless bilabial click
 
+    /// <summary>
+    /// The Unicode 'greek small letter beta' <c>β</c> character, used to represent voiced bilabial fricative.
+    /// </summary>
     public static readonly SpeechSymbol VoicedBilabialFricative = new((char)0x03B2, true);  // β,greek small letter beta,voiced bilabial fricative
 
+    /// <summary>
+    /// The Unicode 'greek small letter theta' <c>θ</c> character, used to represent voiceless dental fricative.
+    /// </summary>
     public static readonly SpeechSymbol VoicelessDentalFricative = new((char)0x03B8, true);  // θ,greek small letter theta,voiceless dental fricative
 
+    /// <summary>
+    /// The Unicode 'greek small letter chi' <c>χ</c> character, used to represent voiceless uvular fricative.
+    /// </summary>
     public static readonly SpeechSymbol VoicelessUvularFricative = new((char)0x03C7, true);  // χ,greek small letter chi,voiceless uvular fricative
 
+    /// <summary>
+    /// The Unicode 'combining tilde overlay' <c>◌̴</c> character, used to represent velarized or pharyngealized.
+    /// </summary>
     public static readonly SpeechSymbol VelarizedOrPharyngealized = new((char)0x0334, true);  // ◌̴,combining tilde overlay,velarized or pharyngealized
 
+    /// <summary>
+    /// The Unicode 'combining seagull below' <c>◌̼</c> character, used to represent linguolabial.
+    /// </summary>
     public static readonly SpeechSymbol Linguolabial = new((char)0x033C, true);  // ◌̼,combining seagull below,linguolabial
 
+    /// <summary>
+    /// The Unicode 'combining bridge below' <c>◌̪</c> character, used to represent dental.
+    /// </summary>
     public static readonly SpeechSymbol Dental = new((char)0x032A, true);  // ◌̪,combining bridge below,dental
 
+    /// <summary>
+    /// The Unicode 'combining square below' <c>◌̻</c> character, used to represent laminal.
+    /// </summary>
     public static readonly SpeechSymbol Laminal = new((char)0x033B, true);  // ◌̻,combining square below,laminal
 
+    /// <summary>
+    /// The Unicode 'combining inverted bridge below' <c>◌̺</c> character, used to represent apical.
+    /// </summary>
     public static readonly SpeechSymbol Apical = new((char)0x033A, true);  // ◌̺,combining inverted bridge below,apical
 
+    /// <summary>
+    /// The Unicode 'combining plus sign below' <c>◌̟</c> character, used to represent advanced.
+    /// </summary>
     public static readonly SpeechSymbol Advanced = new((char)0x031F, true);  // ◌̟,combining plus sign below,advanced
 
     /// <summary>
@@ -606,56 +984,134 @@ public readonly partial struct SpeechSymbol
     /// </summary>
     public static readonly SpeechSymbol Retracted = new((char)0x0320, true);  // ◌̠,combining minus sign below,retracted
 
+    /// <summary>
+    /// The Unicode 'combining up tack below' <c>◌̝</c> character, used to represent raised.
+    /// </summary>
     public static readonly SpeechSymbol Raised = new((char)0x031D, true);  // ◌̝,combining up tack below,raised
 
+    /// <summary>
+    /// The Unicode 'combining down tack below' <c>◌̞</c> character, used to represent lowered.
+    /// </summary>
     public static readonly SpeechSymbol Lowered = new((char)0x031E, true);  // ◌̞,combining down tack below,lowered
 
+    /// <summary>
+    /// The Unicode 'combining left tack below' <c>◌̘</c> character, used to represent advanced tongue root.
+    /// </summary>
     public static readonly SpeechSymbol AdvancedTongueRoot = new((char)0x0318, true);  // ◌̘,combining left tack below,advanced tongue root
 
+    /// <summary>
+    /// The Unicode 'combining right tack below' <c>◌̙</c> character, used to represent retracted tongue root.
+    /// </summary>
     public static readonly SpeechSymbol RetractedTongueRoot = new((char)0x0319, true);  // ◌̙,combining right tack below,retracted tongue root
 
+    /// <summary>
+    /// The Unicode 'combining left half ring below' <c>◌̜</c> character, used to represent less rounded.
+    /// </summary>
     public static readonly SpeechSymbol LessRounded = new((char)0x031C, true);  // ◌̜,combining left half ring below,less rounded
 
+    /// <summary>
+    /// The Unicode 'combining right half ring below' <c>◌̹</c> character, used to represent more rounded.
+    /// </summary>
     public static readonly SpeechSymbol MoreRounded = new((char)0x0339, true);  // ◌̹,combining right half ring below,more rounded
 
+    /// <summary>
+    /// The Unicode 'combining caron below' <c>◌̬</c> character, used to represent voiced.
+    /// </summary>
     public static readonly SpeechSymbol Voiced = new((char)0x032C, true);  // ◌̬,combining caron below,voiced
 
+    /// <summary>
+    /// The Unicode 'combining ring below' <c>◌̥</c> character, used to represent voiceless.
+    /// </summary>
     public static readonly SpeechSymbol Voiceless = new((char)0x0325, true);  // ◌̥,combining ring below,voiceless
 
+    /// <summary>
+    /// The Unicode 'combining tilde below' <c>◌̰</c> character, used to represent creaky voiced.
+    /// </summary>
     public static readonly SpeechSymbol CreakyVoiced = new((char)0x0330, true);  // ◌̰,combining tilde below,creaky voiced
 
+    /// <summary>
+    /// The Unicode 'combining diaeresis below' <c>◌̤</c> character, used to represent breathy voiced.
+    /// </summary>
     public static readonly SpeechSymbol BreathyVoiced = new((char)0x0324, true);  // ◌̤,combining diaeresis below,breathy voiced
 
+    /// <summary>
+    /// The Unicode 'combining vertical line below' <c>◌̩</c> character, used to represent syllabic.
+    /// </summary>
     public static readonly SpeechSymbol Syllabic = new((char)0x0329, true);  // ◌̩,combining vertical line below,syllabic
 
+    /// <summary>
+    /// The Unicode 'combining inverted breve below' <c>◌̯</c> character, used to represent non-syllabic.
+    /// </summary>
     public static readonly SpeechSymbol NonSyllabic = new((char)0x032F, true);  // ◌̯,combining inverted breve below,non-syllabic
 
+    /// <summary>
+    /// The Unicode 'combining tilde' <c>◌̃</c> character, used to represent nasalized.
+    /// </summary>
     public static readonly SpeechSymbol Nasalized = new((char)0x0303, true);  // ◌̃,combining tilde,nasalized
 
+    /// <summary>
+    /// The Unicode 'combining diaeresis' <c>◌̈</c> character, used to represent centralized.
+    /// </summary>
     public static readonly SpeechSymbol Centralized = new((char)0x0308, true);  // ◌̈,combining diaeresis,centralized
 
+    /// <summary>
+    /// The Unicode 'combining x above' <c>◌̽</c> character, used to represent mid-centralized.
+    /// </summary>
     public static readonly SpeechSymbol MidCentralized = new((char)0x033D, true);  // ◌̽,combining x above,mid-centralized
 
+    /// <summary>
+    /// The Unicode 'combining breve' <c>◌̆</c> character, used to represent extra-short.
+    /// </summary>
     public static readonly SpeechSymbol ExtraShort = new((char)0x0306, true);  // ◌̆,combining breve,extra-short
 
+    /// <summary>
+    /// The Unicode 'combining left angle above' <c>◌̚</c> character, used to represent no audible release.
+    /// </summary>
     public static readonly SpeechSymbol NoAudibleRelease = new((char)0x031A, true);  // ◌̚,combining left angle above,no audible release
 
+    /// <summary>
+    /// The Unicode 'modifier letter rhotic hook' <c>◌˞</c> character, used to represent rhotacized.
+    /// </summary>
     public static readonly SpeechSymbol Rhotacized = new((char)0x02DE, true);  // ◌˞,modifier letter rhotic hook,rhotacized
 
+    /// <summary>
+    /// The Unicode 'modifier letter small l' <c>ˡ</c> character, used to represent lateral release.
+    /// </summary>
     public static readonly SpeechSymbol LateralRelease = new((char)0x02E1, true);  // ˡ,modifier letter small l,lateral release
 
+    /// <summary>
+    /// The Unicode 'superscript latin small letter n' <c>ⁿ</c> character, used to represent nasal release.
+    /// </summary>
     public static readonly SpeechSymbol NasalRelease = new((char)0x207F, true);  // ⁿ,superscript latin small letter n,nasal release
 
+    /// <summary>
+    /// The Unicode 'modifier letter small w' <c>ʷ</c> character, used to represent labialized.
+    /// </summary>
     public static readonly SpeechSymbol Labialized = new((char)0x02B7, true);  // ʷ,modifier letter small w,labialized
 
+    /// <summary>
+    /// The Unicode 'modifier letter small j' <c>ʲ</c> character, used to represent palatalized.
+    /// </summary>
     public static readonly SpeechSymbol Palatalized = new((char)0x02B2, true);  // ʲ,modifier letter small j,palatalized
 
+    /// <summary>
+    /// The Unicode 'modifier letter small gamma' <c>ˠ</c> character, used to represent velarized.
+    /// </summary>
     public static readonly SpeechSymbol Velarized = new((char)0x02E0, true);  // ˠ,modifier letter small gamma,velarized
 
+    /// <summary>
+    /// The Unicode 'modifier letter small reversed glottal stop' <c>ˤ</c> character, used to represent pharyngealized.
+    /// </summary>
     public static readonly SpeechSymbol Pharyngealized = new((char)0x02E4, true);  // ˤ,modifier letter small reversed glottal stop,pharyngealized
 
+    /// <summary>
+    /// The Unicode 'modifier letter small h' <c>ʰ</c> character, used to represent aspirated.
+    /// </summary>
     public static readonly SpeechSymbol Aspirated = new((char)0x02B0, true);  // ʰ,modifier letter small h,aspirated
 
+    /// <summary>
+    /// The Unicode 'modifier letter apostrophe' <c>ʼ</c> character, used to represent ejective.
+    /// </summary>
     public static readonly SpeechSymbol Ejective = new((char)0x02BC, true);  // ʼ,modifier letter apostrophe,ejective
 
     /// <summary>
@@ -675,40 +1131,94 @@ public readonly partial struct SpeechSymbol
     /// </summary>
     public static readonly SpeechSymbol TieBar = new((char)0x0361, true);
 
+    /// <summary>
+    /// The Unicode 'modifier letter vertical line' <c>ˈ</c> character, used to represent primary stress.
+    /// </summary>
     public static readonly SpeechSymbol PrimaryStress = new((char)0x02C8, true);  // ˈ,modifier letter vertical line,primary stress
 
+    /// <summary>
+    /// The Unicode 'modifier letter low vertical line' <c>ˌ</c> character, used to represent secondary stress.
+    /// </summary>
     public static readonly SpeechSymbol SecondaryStress = new((char)0x02CC, true);  // ˌ,modifier letter low vertical line,secondary stress
 
+    /// <summary>
+    /// The Unicode 'modifier letter extra-high tone bar' <c>˥</c> character, used to represent extra high tone.
+    /// </summary>
     public static readonly SpeechSymbol ExtraHighTone = new((char)0x02E5, true);  // ˥,modifier letter extra-high tone bar,extra high tone
 
+    /// <summary>
+    /// The Unicode 'modifier letter high tone bar' <c>˦</c> character, used to represent high tone.
+    /// </summary>
     public static readonly SpeechSymbol HighTone = new((char)0x02E6, true);  // ˦,modifier letter high tone bar,high tone
 
+    /// <summary>
+    /// The Unicode 'modifier letter mid tone bar' <c>˧</c> character, used to represent mid tone.
+    /// </summary>
     public static readonly SpeechSymbol MidTone = new((char)0x02E7, true);  // ˧,modifier letter mid tone bar,mid tone
 
+    /// <summary>
+    /// The Unicode 'modifier letter low tone bar' <c>˨</c> character, used to represent low tone.
+    /// </summary>
     public static readonly SpeechSymbol LowTone = new((char)0x02E8, true);  // ˨,modifier letter low tone bar,low tone
 
+    /// <summary>
+    /// The Unicode 'modifier letter extra-low tone bar' <c>˩</c> character, used to represent extra low tone.
+    /// </summary>
     public static readonly SpeechSymbol ExtraLowTone = new((char)0x02E9, true);  // ˩,modifier letter extra-low tone bar,extra low tone
 
+    /// <summary>
+    /// The Unicode 'modifier letter raised up arrow' <c>ꜛ</c> character, used to represent upstep.
+    /// </summary>
     public static readonly SpeechSymbol Upstep = new((char)0xA71B, true);  // ꜛ,modifier letter raised up arrow,upstep
 
+    /// <summary>
+    /// The Unicode 'modifier letter raised down arrow' <c>ꜜ</c> character, used to represent downstep.
+    /// </summary>
     public static readonly SpeechSymbol Downstep = new((char)0xA71C, true);  // ꜜ,modifier letter raised down arrow,downstep
 
+    /// <summary>
+    /// The Unicode 'upwards arrow' <c>↑</c> character, used to represent global rise.
+    /// </summary>
     public static readonly SpeechSymbol GlobalRiseUp = new((char)0x2191, true);  // ↑,upwards arrow,global rise
 
+    /// <summary>
+    /// The Unicode 'downwards arrow' <c>↓</c> character, used to represent global fall.
+    /// </summary>
     public static readonly SpeechSymbol GlobalFallDown = new((char)0x2193, true);  // ↓,downwards arrow,global fall
 
+    /// <summary>
+    /// The Unicode 'north east arrow' <c>↗</c> character, used to represent global rise.
+    /// </summary>
     public static readonly SpeechSymbol GlobalRiseUpRight = new((char)0x2197, true);  // ↗,north east arrow,global rise
 
+    /// <summary>
+    /// The Unicode 'south east arrow' <c>↘</c> character, used to represent global fall.
+    /// </summary>
     public static readonly SpeechSymbol GlobalFallDownRight = new((char)0x2198, true);  // ↘,south east arrow,global fall
 
+    /// <summary>
+    /// The Unicode 'space' <c></c> character, used to represent word break.
+    /// </summary>
     public static readonly SpeechSymbol WordBreak = new((char)0x0020, true);  // ,space,word break
 
+    /// <summary>
+    /// The Unicode 'full stop' <c></c> character, used to represent syllable break.
+    /// </summary>
     public static readonly SpeechSymbol SyllableBreak = new((char)0x002E, true);  // ,full stop,syllable break
 
+    /// <summary>
+    /// The Unicode 'vertical line' <c>|</c> character, used to represent minor group break (foot).
+    /// </summary>
     public static readonly SpeechSymbol MinorGroupBreakFoot = new((char)0x007C, true);  // |,vertical line,minor group break (foot)
 
+    /// <summary>
+    /// The Unicode 'double vertical line' <c>‖</c> character, used to represent major group break (intonation).
+    /// </summary>
     public static readonly SpeechSymbol MajorGroupBreakIntonation = new((char)0x2016, true);  // ‖,double vertical line,major group break (intonation)
 
+    /// <summary>
+    /// The Unicode 'undertie' <c>‿</c> character, used to represent linking (absence of a break).
+    /// </summary>
     public static readonly SpeechSymbol LinkingAbsenceOfABreak = new((char)0x203F, true);  // ‿,undertie,linking (absence of a break)
 
     // --------------------------------------------------------------------------------------------
@@ -729,54 +1239,123 @@ public readonly partial struct SpeechSymbol
     /// </summary>
     public static readonly SpeechSymbol ExtraHighToneAlt = new((char)0x030B, true);  // ◌̋,combining double acute accent,extra high tone
 
+    /// <summary>
+    /// The Unicode 'combining acute accent' <c>◌́</c> character, used to represent high tone.
+    /// </summary>
     public static readonly SpeechSymbol HighToneAlt = new((char)0x0301, true);  // ◌́,combining acute accent,high tone
 
+    /// <summary>
+    /// The Unicode 'combining macron' <c>◌̄</c> character, used to represent mid tone.
+    /// </summary>
     public static readonly SpeechSymbol MidToneAlt = new((char)0x0304, true);  // ◌̄,combining macron,mid tone
 
+    /// <summary>
+    /// The Unicode 'combining grave accent' <c>◌̀</c> character, used to represent low tone.
+    /// </summary>
     public static readonly SpeechSymbol LowToneAlt = new((char)0x0300, true);  // ◌̀,combining grave accent,low tone
 
+    /// <summary>
+    /// The Unicode 'combining double grave accent' <c>◌̏</c> character, used to represent extra low tone.
+    /// </summary>
     public static readonly SpeechSymbol ExtraLowToneAlt = new((char)0x030F, true);  // ◌̏,combining double grave accent,extra low tone
 
+    /// <summary>
+    /// The Unicode 'combining circumflex accent' <c>◌̂</c> character, used to represent falling.
+    /// </summary>
     public static readonly SpeechSymbol Falling = new((char)0x0302, true);  // ◌̂,combining circumflex accent,falling
 
+    /// <summary>
+    /// The Unicode 'combining caron' <c>◌̌</c> character, used to represent rising.
+    /// </summary>
     public static readonly SpeechSymbol Rising = new((char)0x030C, true);  // ◌̌,combining caron,rising
 
+    /// <summary>
+    /// The Unicode 'combining macron-acute' <c>◌᷄</c> character, used to represent high rising.
+    /// </summary>
     public static readonly SpeechSymbol HighRising = new((char)0x1DC4, true);  // ◌᷄,combining macron-acute,high rising
 
+    /// <summary>
+    /// The Unicode 'combining grave-macron' <c>◌᷅</c> character, used to represent low rising.
+    /// </summary>
     public static readonly SpeechSymbol LowRising = new((char)0x1DC5, true);  // ◌᷅,combining grave-macron,low rising
 
+    /// <summary>
+    /// The Unicode 'combining macron-grave' <c>◌᷆</c> character, used to represent low falling.
+    /// </summary>
     public static readonly SpeechSymbol LowFalling = new((char)0x1DC6, true);  // ◌᷆,combining macron-grave,low falling
 
+    /// <summary>
+    /// The Unicode 'combining acute-macron' <c>◌᷇</c> character, used to represent high falling.
+    /// </summary>
     public static readonly SpeechSymbol HighFalling = new((char)0x1DC7, true);  // ◌᷇,combining acute-macron,high falling
 
+    /// <summary>
+    /// The Unicode 'combining grave-acute-grave' <c>◌᷈</c> character, used to represent rising-falling.
+    /// </summary>
     public static readonly SpeechSymbol RisingFalling = new((char)0x1DC8, true);  // ◌᷈,combining grave-acute-grave,rising-falling
 
+    /// <summary>
+    /// The Unicode 'combining acute-grave-acute' <c>◌᷉</c> character, used to represent falling-rising.
+    /// </summary>
     public static readonly SpeechSymbol FallingRising = new((char)0x1DC9, true);  // ◌᷉,combining acute-grave-acute,falling-rising
 
+    /// <summary>
+    /// The Unicode 'combining double breve below' <c>◌͜</c> character, used to represent tie bar (below).
+    /// </summary>
     public static readonly SpeechSymbol TieBarBelow = new((char)0x035C, true);  // ◌͜,combining double breve below,tie bar (below)
 
     /*
     // --------------------------------------------------------------------------------------------
     // Additions to widened-IPA with Unicode encodings
 
+    /// <summary>
+    /// The Unicode 'double exclamation mark' <c>‼</c> character, used to represent retroflex click.
+    /// </summary>
     public static readonly SpeechSymbol RetroflexClick = new((char)0x203C, true);  // ‼,double exclamation mark,retroflex click
 
+    /// <summary>
+    /// The Unicode 'latin small letter d with hook and tail' <c>ᶑ</c> character, used to represent voiced retroflex implosive.
+    /// </summary>
     public static readonly SpeechSymbol VoicedRetroflexImplosive = new((char)0x1D91, true);  // ᶑ,latin small letter d with hook and tail,voiced retroflex implosive
 
+    /// <summary>
+    /// The Unicode 'combining double vertical line below' <c>◌͈</c> character, used to represent fortis.
+    /// </summary>
     public static readonly SpeechSymbol Fortis = new((char)0x0348, true);  // ◌͈,combining double vertical line below,fortis
 
+    /// <summary>
+    /// The Unicode 'combining left angle below' <c>◌͉</c> character, used to represent lenis.
+    /// </summary>
     public static readonly SpeechSymbol Lenis = new((char)0x0349, true);  // ◌͉,combining left angle below,lenis
 
+    /// <summary>
+    /// The Unicode 'combining x below' <c>◌͓</c> character, used to represent frictionalized.
+    /// </summary>
     public static readonly SpeechSymbol Frictionalized = new((char)0x0353, true);  // ◌͓,combining x below,frictionalized
 
+    /// <summary>
+    /// The Unicode 'combining breve below' <c>◌̮</c> character, used to represent derhoticized.
+    /// </summary>
     public static readonly SpeechSymbol Derhoticized = new((char)0x032E, true);  // ◌̮,combining breve below,derhoticized
 
+    /// <summary>
+    /// The Unicode 'combining equals sign below' <c>◌͇</c> character, used to represent non-sibilant.
+    /// </summary>
     public static readonly SpeechSymbol NonSibilant = new((char)0x0347, true);  // ◌͇,combining equals sign below,non-sibilant
 
+    /// <summary>
+    /// The Unicode 'modifier letter glottal stop' <c>◌ˀ</c> character, used to represent glottalized.
+    /// </summary>
     public static readonly SpeechSymbol Glottalized = new((char)0x02C0, true);  // ◌ˀ,modifier letter glottal stop,glottalized
 
+    /// <summary>
+    /// The Unicode 'modifier letter small h with hook' <c>ʱ◌</c> character, used to represent voiced pre-aspirated.
+    /// </summary>
     public static readonly SpeechSymbol VoicedPreAspirated = new((char)0x02B1, true);  // ʱ◌,modifier letter small h with hook,voiced pre-aspirated
 
+    /// <summary>
+    /// The Unicode 'modifier letter capital e' <c>◌ᴱ</c> character, used to represent epilaryngeal phonation.
+    /// </summary>
     public static readonly SpeechSymbol EpilaryngealPhonation = new((char)0x1D31, true);  // ◌ᴱ,modifier letter capital e,epilaryngeal phonation
     
     */
@@ -1320,28 +1899,65 @@ public readonly partial struct SpeechSymbol
 
     private static readonly Lazy<FrozenSet<uint>> s_otherSymbolsSet = new(() => s_otherSymbols.ToFrozenSet());
 
+    /// <summary>
+    /// Gets a set of Unicode values for all strict-IPA characters.
+    /// </summary>
     public static FrozenSet<uint> StrictIpa { get; } = s_strictIpaSet.Value;
 
+    /// <summary>
+    /// Gets a set of Unicode values for additional characters allowed by valid-IPA
+    /// (beyond the strict-IPA set).
+    /// </summary>
     public static FrozenSet<uint> ValidIpa { get; } = s_validIpaSet.Value;
 
+    /// <summary>
+    /// Gets a set of Unicode values for the bilabial consonant symbols in the IPA.
+    /// </summary>
     public static FrozenSet<uint> BilabialConsonants { get; } = s_bilabialConsonantsSet.Value;
 
+    /// <summary>
+    /// Gets a set of Unicode values for the labiodental consonant symbols in the IPA.
+    /// </summary>
     public static FrozenSet<uint> LabiodentalConsonants { get; } = s_labiodentalConsonantsSet.Value;
 
+    /// <summary>
+    /// Gets a set of Unicode values for the dental consonant symbols in the IPA.
+    /// </summary>
     public static FrozenSet<uint> DentalConsonants { get; } = s_dentalConsonantsSet.Value;
 
+    /// <summary>
+    /// Gets a set of Unicode values for the alveolar consonant symbols in the IPA.
+    /// </summary>
     public static FrozenSet<uint> AlveolarConsonants { get; } = s_alveolarConsonantsSet.Value;
 
+    /// <summary>
+    /// Gets a set of Unicode values for the postalveolar consonant symbols in the IPA.
+    /// </summary>
     public static FrozenSet<uint> PostalveolarConsonants { get; } = s_postalveolarConsonantsSet.Value;
 
+    /// <summary>
+    /// Gets a set of Unicode values for the retroflex consonant symbols in the IPA.
+    /// </summary>
     public static FrozenSet<uint> RetroflexConsonants { get; } = s_retroflexConsonantsSet.Value;
 
+    /// <summary>
+    /// Gets a set of Unicode values for the palatal consonant symbols in the IPA.
+    /// </summary>
     public static FrozenSet<uint> PalatalConsonants { get; } = s_palatalConsonantsSet.Value;
 
+    /// <summary>
+    /// Gets a set of Unicode values for the velar consonant symbols in the IPA.
+    /// </summary>
     public static FrozenSet<uint> VelarConsonants { get; } = s_velarConsonantsSet.Value;
 
+    /// <summary>
+    /// Gets a set of Unicode values for the uvular consonant symbols in the IPA.
+    /// </summary>
     public static FrozenSet<uint> UvularConsonants { get; } = s_uvularConsonantsSet.Value;
 
+    /// <summary>
+    /// Gets a set of Unicode values for the pharyngeal consonant symbols in the IPA.
+    /// </summary>
     public static FrozenSet<uint> PharyngealConsonants { get; } = s_pharyngealConsonantsSet.Value;
 
     /// <summary>
@@ -1356,8 +1972,14 @@ public readonly partial struct SpeechSymbol
     /// </summary>
     public static FrozenSet<uint> PulmonicConsonants { get; } = s_pulmonicConsonantsSet.Value;
 
+    /// <summary>
+    /// Gets a set of Unicode values for the click consonant symbols in the IPA.
+    /// </summary>
     public static FrozenSet<uint> ClicksConsonants { get; } = s_clicksConsonantsSet.Value;
 
+    /// <summary>
+    /// Gets a set of Unicode values for the voiced implosive consonant symbols in the IPA.
+    /// </summary>
     public static FrozenSet<uint> VoicedImplosivesConsonants { get; } = s_voicedImplosivesConsonantsSet.Value;
 
     /// <summary>
@@ -1386,19 +2008,44 @@ public readonly partial struct SpeechSymbol
     /// </summary>
     public static FrozenSet<uint> NonPulmonicConsonants { get; } = s_nonPulmonicConsonantsSet.Value;
 
+    /// <summary>
+    /// Gets a set of Unicode values for the front vowel symbols in the IPA.
+    /// </summary>
     public static FrozenSet<uint> FrontVowels { get; } = s_frontVowelsSet.Value;
 
+    /// <summary>
+    /// Gets a set of Unicode values for the central vowel symbols in the IPA.
+    /// </summary>
     public static FrozenSet<uint> CentralVowels { get; } = s_centralVowelsSet.Value;
 
+    /// <summary>
+    /// Gets a set of Unicode values for the back vowel symbols in the IPA.
+    /// </summary>
     public static FrozenSet<uint> BackVowels { get; } = s_backVowelsSet.Value;
 
+    /// <summary>
+    /// Gets a set of Unicode values for all vowel symbols in the IPA.
+    /// </summary>
     public static FrozenSet<uint> Vowels { get; } = s_vowelsSet.Value;
 
+    /// <summary>
+    /// Gets a set of Unicode values for all consonant and vowel symbols in the IPA.
+    /// </summary>
     public static FrozenSet<uint> ConsonantsAndVowels { get; } = s_consonantsAndVowelsSet.Value;
 
+    /// <summary>
+    /// Gets a set of Unicode values for the diacritic symbols in the IPA.
+    /// </summary>
     public static FrozenSet<uint> Diacritics { get; } = s_diacriticsSet.Value;
 
+    /// <summary>
+    /// Gets a set of Unicode values for the suprasegmental symbols in the IPA.
+    /// </summary>
     public static FrozenSet<uint> Suprasegmentals { get; } = s_suprasegmantalsSet.Value;
 
+    /// <summary>
+    /// Gets a set of Unicode values for the IPA 'other symbols' category (symbols that
+    /// are not consonants, vowels, diacritics or suprasegmentals).
+    /// </summary>
     public static FrozenSet<uint> OtherSymbols { get; } = s_otherSymbolsSet.Value;
 }

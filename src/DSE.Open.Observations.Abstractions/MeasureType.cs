@@ -13,6 +13,9 @@ namespace DSE.Open.Observations;
 [JsonConverter(typeof(JsonStringEnumConverter<MeasureType>))]
 public enum MeasureType
 {
+    /// <summary>
+    /// An unknown or unspecified measure type.
+    /// </summary>
     [JsonStringEnumMemberName("unknown")]
     Unknown,
 

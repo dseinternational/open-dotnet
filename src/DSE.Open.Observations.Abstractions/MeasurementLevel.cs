@@ -9,6 +9,9 @@ using DSE.Open.Values.Text.Json.Serialization;
 
 namespace DSE.Open.Observations;
 
+/// <summary>
+/// Identifies the level of measurement (or scale of measure) used by a measure.
+/// </summary>
 [EquatableValue]
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<MeasurementLevel, AsciiString>))]
 [StructLayout(LayoutKind.Sequential)]
@@ -17,15 +20,25 @@ public readonly partial struct MeasurementLevel
       IUtf8SpanSerializable<MeasurementLevel>,
       IRepeatableHash64
 {
+    /// <summary>
+    /// Gets the maximum length, in characters, of the serialized representation of a <see cref="MeasurementLevel"/>.
+    /// </summary>
     public static int MaxSerializedCharLength => 32;
 
+    /// <summary>
+    /// Gets the maximum length, in bytes, of the serialized representation of a <see cref="MeasurementLevel"/>.
+    /// </summary>
     public static int MaxSerializedByteLength => MaxSerializedCharLength;
 
+    /// <summary>
+    /// Determines whether the specified value is a valid <see cref="MeasurementLevel"/> value.
+    /// </summary>
     public static bool IsValidValue(AsciiString value)
     {
         return value.Length is > 1 and <= 17 && Lookup.ContainsKey(value);
     }
 
+    /// <inheritdoc/>
     public ulong GetRepeatableHashCode()
     {
         return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);
@@ -107,6 +120,9 @@ public readonly partial struct MeasurementLevel
     /// </summary>
     public static readonly MeasurementLevel Absolute = new((AsciiString)"absolute", true);
 
+    /// <summary>
+    /// Gets all defined <see cref="MeasurementLevel"/> values.
+    /// </summary>
     public static readonly IReadOnlyCollection<MeasurementLevel> All =
     [
         Binary,
@@ -123,5 +139,8 @@ public readonly partial struct MeasurementLevel
         Absolute
     ];
 
+    /// <summary>
+    /// A lookup of all defined <see cref="MeasurementLevel"/> values keyed by their underlying value.
+    /// </summary>
     public static readonly IReadOnlyDictionary<AsciiString, MeasurementLevel> Lookup = All.ToDictionary(r => r._value);
 }

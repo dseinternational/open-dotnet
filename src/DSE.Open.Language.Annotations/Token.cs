@@ -111,16 +111,23 @@ public record Token
         return null; // unreachable
     }
 
+    /// <summary>
+    /// Parses a <see cref="Token"/> from the specified string.
+    /// </summary>
     public static Token Parse(string s)
     {
         return Parse(s, default);
     }
 
+    /// <summary>
+    /// Parses a <see cref="Token"/> from the specified string using the invariant culture.
+    /// </summary>
     public static Token ParseInvariant(string s)
     {
         return Parse(s, CultureInfo.InvariantCulture);
     }
 
+    /// <inheritdoc/>
     public static Token Parse(string s, IFormatProvider? provider)
     {
         ArgumentNullException.ThrowIfNull(s);
@@ -134,6 +141,7 @@ public record Token
         return null; // unreachable
     }
 
+    /// <inheritdoc/>
     public static bool TryParse(
         ReadOnlySpan<char> s,
         IFormatProvider? provider,
@@ -297,6 +305,7 @@ public record Token
         return false;
     }
 
+    /// <inheritdoc/>
     public static bool TryParse(
         [NotNullWhen(true)] string? s,
         IFormatProvider? provider,
@@ -305,11 +314,15 @@ public record Token
         return TryParse(s.AsSpan(), provider, out result);
     }
 
+    /// <inheritdoc/>
     public override string ToString()
     {
         return ToString(default, default);
     }
 
+    /// <summary>
+    /// Returns a string representation of this <see cref="Token"/> using the invariant culture.
+    /// </summary>
     public string ToStringInvariant()
     {
         return ToString(default, CultureInfo.InvariantCulture);
@@ -339,6 +352,7 @@ public record Token
             : values.Sum(v => v.GetCharCount()) + values.Count - 1;
     }
 
+    /// <inheritdoc/>
     [SkipLocalsInit]
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
@@ -369,11 +383,15 @@ public record Token
         return null!; // unreachable
     }
 
+    /// <summary>
+    /// Tries to format this <see cref="Token"/> into the provided destination buffer.
+    /// </summary>
     public bool TryFormat(Span<char> destination, out int charsWritten)
     {
         return TryFormat(destination, out charsWritten, default, default);
     }
 
+    /// <inheritdoc/>
     public bool TryFormat(
         Span<char> destination,
         out int charsWritten,
@@ -492,6 +510,7 @@ public record Token
         return true;
     }
 
+    /// <inheritdoc/>
     public ulong GetRepeatableHashCode()
     {
         var h0 = Text.GetRepeatableHashCode();

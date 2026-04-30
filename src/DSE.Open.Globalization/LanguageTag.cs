@@ -189,11 +189,17 @@ public readonly partial struct LanguageTag
         return _value.EqualsIgnoreCase(other);
     }
 
+    /// <summary>
+    /// Compares this language tag with another. Comparisons are
+    /// <see href="https://datatracker.ietf.org/doc/html/rfc5646#section-2.1.1">case insensitive</see>.
+    /// </summary>
+    /// <param name="other">The language tag to compare with this instance.</param>
     public int CompareTo(LanguageTag other)
     {
         return _value.CompareToIgnoreCase(other._value);
     }
 
+    /// <inheritdoc/>
     public override int GetHashCode()
     {
         return AsciiStringComparer.IgnoreCase.GetHashCode(_value);
@@ -205,11 +211,19 @@ public readonly partial struct LanguageTag
         return LanguageTagStringPool.Shared.GetOrAdd(s);
     }
 
+    /// <summary>
+    /// Determines whether the language part (the primary language subtag) of this language tag
+    /// matches the language part of <paramref name="otherLangPart"/>.
+    /// </summary>
+    /// <param name="otherLangPart">The other language tag to compare against.</param>
     public bool LanguagePartEquals(LanguageTag otherLangPart)
     {
         return LanguagePartEquals(otherLangPart._value.AsSpan());
     }
 
+    /// <summary>
+    /// Gets the <see cref="AsciiString"/> representation of this <see cref="LanguageTag"/>.
+    /// </summary>
     [Obsolete($"Renamed to {nameof(AsAsciiString)}")]
     public AsciiString ToAsciiString()
     {
@@ -224,6 +238,9 @@ public readonly partial struct LanguageTag
         return _value;
     }
 
+    /// <summary>
+    /// Returns the language tag as an array of characters.
+    /// </summary>
     public char[] ToCharArray()
     {
         return _value.ToCharArray();
@@ -247,16 +264,23 @@ public readonly partial struct LanguageTag
         return ToString("N", CultureInfo.InvariantCulture);
     }
 
+    /// <summary>
+    /// Returns the language tag as a string, with all characters converted to lowercase.
+    /// </summary>
     public string ToStringLower()
     {
         return _value.ToStringLower();
     }
 
+    /// <summary>
+    /// Returns the language tag as a string, with all characters converted to uppercase.
+    /// </summary>
     public string ToStringUpper()
     {
         return _value.ToStringUpper();
     }
 
+    /// <inheritdoc/>
     public bool TryFormat(
         Span<char> destination,
         out int charsWritten,
@@ -421,6 +445,11 @@ public readonly partial struct LanguageTag
     /// </summary>
     public static LanguageTag CurrentUICulture => FromCultureInfo(CultureInfo.CurrentUICulture);
 
+    /// <summary>
+    /// Determines whether the language part (the primary language subtag) of this language tag
+    /// matches <paramref name="otherLangPart"/>.
+    /// </summary>
+    /// <param name="otherLangPart">The language part to compare against, as ASCII characters.</param>
     public bool LanguagePartEquals(ReadOnlySpan<AsciiChar> otherLangPart)
     {
         if (_value.IsEmpty)
@@ -436,6 +465,10 @@ public readonly partial struct LanguageTag
             && langPart.SequenceEqualsIgnoreCase(otherLangPart);
     }
 
+    /// <summary>
+    /// Gets the language part (the primary language subtag) of this language tag as a span of
+    /// ASCII characters.
+    /// </summary>
     public ReadOnlySpan<AsciiChar> GetLanguagePartSpan()
     {
         if (_value.IsEmpty)
@@ -448,6 +481,10 @@ public readonly partial struct LanguageTag
         return index < 0 ? span : span[..index];
     }
 
+    /// <summary>
+    /// Gets the language part (the primary language subtag) of this language tag as a new
+    /// <see cref="LanguageTag"/>.
+    /// </summary>
     public LanguageTag GetLanguagePart()
     {
         return new(new(GetLanguagePartSpan().ToArray()));
@@ -468,24 +505,38 @@ public readonly partial struct LanguageTag
         public static readonly StringPool Shared = new(128);
     }
 
+    /// <summary>The language tag <c>en</c> (English).</summary>
     public static readonly LanguageTag English = FromValue((AsciiString)"en");
 
+    /// <summary>The language tag <c>en-GB</c> (English, United Kingdom).</summary>
     public static readonly LanguageTag EnglishUk = FromValue((AsciiString)"en-GB");
 
+    /// <summary>The language tag <c>en-US</c> (English, United States).</summary>
     public static readonly LanguageTag EnglishUs = FromValue((AsciiString)"en-US");
 
+    /// <summary>The language tag <c>en-AU</c> (English, Australia).</summary>
     public static readonly LanguageTag EnglishAustralia = FromValue((AsciiString)"en-AU");
 
+    /// <summary>The language tag <c>en-CA</c> (English, Canada).</summary>
     public static readonly LanguageTag EnglishCanada = FromValue((AsciiString)"en-CA");
 
+    /// <summary>The language tag <c>en-IN</c> (English, India).</summary>
     public static readonly LanguageTag EnglishIndia = FromValue((AsciiString)"en-IN");
 
+    /// <summary>The language tag <c>en-IE</c> (English, Ireland).</summary>
     public static readonly LanguageTag EnglishIreland = FromValue((AsciiString)"en-IE");
 
+    /// <summary>The language tag <c>en-NZ</c> (English, New Zealand).</summary>
     public static readonly LanguageTag EnglishNewZealand = FromValue((AsciiString)"en-NZ");
 
+    /// <summary>The language tag <c>en-ZA</c> (English, South Africa).</summary>
     public static readonly LanguageTag EnglishSouthAfrica = FromValue((AsciiString)"en-ZA");
 
+    /// <summary>
+    /// Gets the default <see cref="LanguageTag"/> for the specified country, falling back to
+    /// <see cref="EnglishUs"/> if no specific match is found.
+    /// </summary>
+    /// <param name="countryCode">The country to look up.</param>
     public static LanguageTag GetDefaultForCountry(CountryCode countryCode)
     {
         if (s_languageLookup.TryGetValue(countryCode, out var language))
@@ -499,6 +550,7 @@ public readonly partial struct LanguageTag
         return match is not null ? FromCultureInfo(match) : EnglishUs;
     }
 
+    /// <inheritdoc/>
     public ulong GetRepeatableHashCode()
     {
         return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);
