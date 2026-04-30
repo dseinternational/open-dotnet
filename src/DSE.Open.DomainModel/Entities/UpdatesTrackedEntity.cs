@@ -20,7 +20,7 @@ public abstract class UpdatesTrackedEntity<TId> : Entity<TId>, IUpdatesTracked
 {
     private DateTimeOffset? _created;
     private DateTimeOffset? _updated;
-    private readonly Timestamp? _timestamp;
+    private Timestamp? _timestamp;
 
     /// <summary>
     /// Initializes a newly created entity with an unset <see cref="Entity{TId}.Id"/>,
@@ -95,4 +95,17 @@ public abstract class UpdatesTrackedEntity<TId> : Entity<TId>, IUpdatesTracked
         _updated = timeProvider?.GetLocalNow() ?? DateTimeOffset.Now;
     }
 #pragma warning restore CA1033 // Interface methods should be callable by child types
+
+    /// <summary>
+    /// Sets the concurrency <see cref="Timestamp"/>. Intended for the persistence layer
+    /// to call after a successful insert or update on data stores that do not auto-populate
+    /// a row-version column (for example SQLite without rowversion support).
+    /// </summary>
+    /// <param name="value">The timestamp to assign. Must not be the default
+    /// <see cref="Timestamp"/>.</param>
+    protected void SetTimestamp(Timestamp value)
+    {
+        EntityDataInitializationException.ThrowIf(value == default);
+        _timestamp = value;
+    }
 }

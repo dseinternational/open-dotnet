@@ -23,7 +23,7 @@ public abstract class UpdateUsersTrackedEntity<TId> : Entity<TId>, IUpdateUsersT
     private DateTimeOffset? _updated;
     private string? _createdUser;
     private string? _updatedUser;
-    private readonly Timestamp? _timestamp;
+    private Timestamp? _timestamp;
 
     /// <summary>
     /// Initializes a newly created entity with an unset <see cref="Entity{TId}.Id"/>,
@@ -149,5 +149,18 @@ public abstract class UpdateUsersTrackedEntity<TId> : Entity<TId>, IUpdateUsersT
         }
 
         _updatedUser = user;
+    }
+
+    /// <summary>
+    /// Sets the concurrency <see cref="Timestamp"/>. Intended for the persistence layer
+    /// to call after a successful insert or update on data stores that do not auto-populate
+    /// a row-version column (for example SQLite without rowversion support).
+    /// </summary>
+    /// <param name="value">The timestamp to assign. Must not be the default
+    /// <see cref="Timestamp"/>.</param>
+    protected void SetTimestamp(Timestamp value)
+    {
+        EntityDataInitializationException.ThrowIf(value == default);
+        _timestamp = value;
     }
 }

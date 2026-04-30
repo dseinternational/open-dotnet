@@ -88,6 +88,40 @@ public class UpdatesTrackedEntityTests
         Assert.False(((ITimestamped)new UpdatesTrackedFake()).IsPersisted());
     }
 
+    [Fact]
+    public void SetTimestamp_AssignsTimestamp_OnNewEntity()
+    {
+        var entity = new UpdatesTrackedFake();
+
+        Assert.Null(entity.Timestamp);
+        entity.AssignTimestamp(s_sampleTimestamp);
+
+        Assert.Equal(s_sampleTimestamp, entity.Timestamp);
+    }
+
+    [Fact]
+    public void SetTimestamp_OverwritesMaterializedTimestamp()
+    {
+        var entity = new UpdatesTrackedFake(
+            Guid.NewGuid(),
+            DateTimeOffset.UtcNow,
+            DateTimeOffset.UtcNow,
+            s_sampleTimestamp);
+
+        var replacement = new Timestamp([9, 8, 7, 6, 5, 4, 3, 2]);
+        entity.AssignTimestamp(replacement);
+
+        Assert.Equal(replacement, entity.Timestamp);
+    }
+
+    [Fact]
+    public void SetTimestamp_DefaultValue_Throws()
+    {
+        var entity = new UpdatesTrackedFake();
+
+        _ = Assert.Throws<EntityDataInitializationException>(() => entity.AssignTimestamp(default));
+    }
+
     private sealed class UpdatesTrackedFake : UpdatesTrackedEntity<Guid>
     {
         public UpdatesTrackedFake()
@@ -98,5 +132,7 @@ public class UpdatesTrackedEntityTests
             : base(id, created, updated, timestamp)
         {
         }
+
+        public void AssignTimestamp(Timestamp value) => SetTimestamp(value);
     }
 }

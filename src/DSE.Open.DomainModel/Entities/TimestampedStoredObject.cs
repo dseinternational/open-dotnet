@@ -14,7 +14,7 @@ namespace DSE.Open.DomainModel.Entities;
 /// </remarks>
 public abstract class TimestampedStoredObject : StoredObject, ITimestamped
 {
-    private readonly Timestamp? _timestamp;
+    private Timestamp? _timestamp;
 
     /// <summary>
     /// Initializes a newly created stored object — <see cref="Timestamp"/> is unset
@@ -43,4 +43,17 @@ public abstract class TimestampedStoredObject : StoredObject, ITimestamped
 
     /// <inheritdoc />
     public Timestamp? Timestamp => _timestamp;
+
+    /// <summary>
+    /// Sets the concurrency <see cref="Timestamp"/>. Intended for the persistence layer
+    /// to call after a successful insert or update on data stores that do not auto-populate
+    /// a row-version column (for example SQLite without rowversion support).
+    /// </summary>
+    /// <param name="value">The timestamp to assign. Must not be the default
+    /// <see cref="Timestamp"/>.</param>
+    protected void SetTimestamp(Timestamp value)
+    {
+        EntityDataInitializationException.ThrowIf(value == default);
+        _timestamp = value;
+    }
 }
