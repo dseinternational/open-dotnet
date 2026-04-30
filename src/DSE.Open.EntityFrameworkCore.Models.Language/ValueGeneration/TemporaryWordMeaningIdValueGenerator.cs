@@ -15,8 +15,10 @@ public sealed class TemporaryWordMeaningIdValueGenerator : ValueGenerator<WordMe
 {
     private ulong _next = LanguageIds.MaxIdValue;
 
+    /// <inheritdoc/>
     public override bool GeneratesTemporaryValues => true;
 
+    /// <inheritdoc/>
     public override WordMeaningId Next([NotNull] EntityEntry entry)
     {
         return new(Interlocked.Decrement(ref _next));

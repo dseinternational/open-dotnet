@@ -8,9 +8,18 @@ namespace DSE.Open.Drawing;
 /// </summary>
 public enum Orientation
 {
+    /// <summary>
+    /// The shape has equal width and height.
+    /// </summary>
     Square,
 
+    /// <summary>
+    /// The shape's width exceeds its height.
+    /// </summary>
     Landscape,
 
+    /// <summary>
+    /// The shape's height exceeds its width.
+    /// </summary>
     Portrait
 }

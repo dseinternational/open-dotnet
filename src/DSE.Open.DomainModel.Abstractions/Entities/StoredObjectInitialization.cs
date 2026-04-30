@@ -3,6 +3,9 @@
 
 namespace DSE.Open.DomainModel.Entities;
 
+/// <summary>
+/// Identifies how an <see cref="IStoredObject"/> instance was initialized.
+/// </summary>
 public enum StoredObjectInitialization
 {
     /// <summary>

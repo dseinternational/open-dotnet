@@ -23,5 +23,9 @@ public interface IConvertibleTo<TFrom, TTo>
         return TFrom.ConvertTo(value);
     }
 
+    /// <summary>
+    /// Converts a <typeparamref name="TFrom"/> value to a <typeparamref name="TTo"/> value.
+    /// </summary>
+    /// <param name="value">The value to convert.</param>
     static abstract TTo ConvertTo(TFrom value);
 }

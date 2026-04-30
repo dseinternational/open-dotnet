@@ -3,8 +3,17 @@
 
 namespace DSE.Open.Records;
 
+/// <summary>
+/// Extension methods for condition diagnosis code values.
+/// </summary>
 public static class ConditionCodeExtensions
 {
+    /// <summary>
+    /// Gets the localized label for the specified <see cref="ConditionDiagnosisCode"/>, falling back to the
+    /// value's string representation when no label is available.
+    /// </summary>
+    /// <param name="value">The diagnosis code to look up.</param>
+    /// <returns>The label associated with <paramref name="value"/>, or its string representation.</returns>
     public static string GetLabel(this ConditionDiagnosisCode value)
     {
         return ConditionDiagnosisCodeDescriptions.Default.GetLabel(value, null) ?? value.ToString();

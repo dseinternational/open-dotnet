@@ -8,46 +8,60 @@ namespace DSE.Open;
 
 public partial struct AsciiChar
 {
+    /// <summary>Indicates whether the specified byte represents an ASCII character.</summary>
     public static bool IsAscii(byte b)
     {
         return b <= 127;
     }
 
+    /// <summary>Indicates whether the specified signed byte represents an ASCII character.</summary>
     public static bool IsAscii(sbyte b)
     {
         return b is >= 0;
     }
 
+    /// <summary>Indicates whether the specified value is a valid ASCII code point (0-127).</summary>
     public static bool IsAscii(int b)
     {
         return b is >= 0 and <= 127;
     }
 
+    /// <summary>Indicates whether the specified value is a valid ASCII code point (0-127).</summary>
     public static bool IsAscii(uint b)
     {
         return b <= 127;
     }
 
+    /// <summary>Indicates whether the specified character is in the ASCII range.</summary>
     public static bool IsAscii(char c)
     {
         return c <= 127;
     }
 
+    /// <summary>Indicates whether the specified <see cref="AsciiChar"/> is a lowercase ASCII letter.</summary>
     public static bool IsLower(AsciiChar asciiChar)
     {
         return IsLower(asciiChar._asciiByte);
     }
 
+    /// <summary>Indicates whether the specified <see cref="AsciiChar"/> is an uppercase ASCII letter.</summary>
     public static bool IsUpper(AsciiChar asciiChar)
     {
         return IsUpper(asciiChar._asciiByte);
     }
 
+    /// <summary>
+    /// Determines whether two ASCII bytes are equal ignoring case (using bitwise OR with 0x20).
+    /// </summary>
     public static bool EqualsIgnoreCase(byte asciiByte1, byte asciiByte2)
     {
         return (asciiByte1 | 0x20) == (asciiByte2 | 0x20);
     }
 
+    /// <summary>
+    /// Compares two ASCII bytes ignoring case (using bitwise OR with 0x20).
+    /// </summary>
+    /// <returns>A signed integer indicating the relative order of the two values, ignoring case.</returns>
     public static int CompareToIgnoreCase(byte asciiByte1, byte asciiByte2)
     {
         return (asciiByte1 | 0x20).CompareTo(asciiByte2 | 0x20);
@@ -79,6 +93,7 @@ public partial struct AsciiChar
         return IsBetween(asciiByte, (byte)'0', (byte)'9');
     }
 
+    /// <summary>Indicates whether the specified <see cref="AsciiChar"/> is an ASCII digit ('0'-'9').</summary>
     public static bool IsDigit(AsciiChar asciiChar)
     {
         return IsDigit(asciiChar._asciiByte);
@@ -96,6 +111,7 @@ public partial struct AsciiChar
         return (uint)((asciiByte | 0x20) - 'a') <= 'z' - 'a';
     }
 
+    /// <summary>Indicates whether the specified <see cref="AsciiChar"/> is an ASCII letter ('A'-'Z' or 'a'-'z').</summary>
     public static bool IsLetter(AsciiChar asciiChar)
     {
         return IsLetter(asciiChar._asciiByte);
@@ -112,11 +128,13 @@ public partial struct AsciiChar
         return IsBetween(asciiByte, (byte)'a', (byte)'z');
     }
 
+    /// <summary>Indicates whether the specified <see cref="AsciiChar"/> is a lowercase ASCII letter ('a'-'z').</summary>
     public static bool IsLetterLower(AsciiChar c)
     {
         return IsLetterLower(c._asciiByte);
     }
 
+    /// <summary>Indicates whether the specified character is a lowercase ASCII letter ('a'-'z').</summary>
     public static bool IsLetterLower(char c)
     {
         return IsAscii(c) && IsLetterLower((byte)c);
@@ -133,11 +151,13 @@ public partial struct AsciiChar
         return IsBetween(asciiByte, (byte)'A', (byte)'Z');
     }
 
+    /// <summary>Indicates whether the specified <see cref="AsciiChar"/> is an uppercase ASCII letter ('A'-'Z').</summary>
     public static bool IsLetterUpper(AsciiChar asciiChar)
     {
         return IsLetterUpper(asciiChar._asciiByte);
     }
 
+    /// <summary>Indicates whether the specified character is an uppercase ASCII letter ('A'-'Z').</summary>
     public static bool IsLetterUpper(char c)
     {
         return IsAscii(c) && IsLetterUpper((byte)c);
@@ -155,11 +175,13 @@ public partial struct AsciiChar
         return IsLetter(asciiByte) || IsBetween(asciiByte, (byte)'0', (byte)'9');
     }
 
+    /// <summary>Indicates whether the specified <see cref="AsciiChar"/> is an ASCII letter or digit.</summary>
     public static bool IsLetterOrDigit(AsciiChar asciiChar)
     {
         return IsLetterOrDigit(asciiChar._asciiByte);
     }
 
+    /// <summary>Indicates whether the specified character is an ASCII letter or digit.</summary>
     public static bool IsLetterOrDigit(char c)
     {
         return IsAscii(c) && IsLetterOrDigit((byte)c);
@@ -247,6 +269,10 @@ public partial struct AsciiChar
     // https://developer.mozilla.org/en-US/docs/Glossary/Whitespace
     // though: https://infra.spec.whatwg.org/#ascii-whitespace
 
+    /// <summary>
+    /// Indicates whether the specified ASCII byte is a whitespace character
+    /// (space, tab, line feed, vertical tab, form feed or carriage return).
+    /// </summary>
     public static bool IsWhiteSpace(byte asciiByte)
     {
         return asciiByte
@@ -258,6 +284,10 @@ public partial struct AsciiChar
 
     // https://en.cppreference.com/w/cpp/string/byte/ispunct
 
+    /// <summary>
+    /// Indicates whether the specified ASCII byte is a punctuation character
+    /// (any printable ASCII character that is not a letter, digit or whitespace).
+    /// </summary>
     public static bool IsPunctuation(byte asciiByte)
     {
         return IsBetween(asciiByte, 0x21, 0x2F)
@@ -266,6 +296,9 @@ public partial struct AsciiChar
                || IsBetween(asciiByte, 0x7B, 0x7E);
     }
 
+    /// <summary>
+    /// Returns the lowercase equivalent of an ASCII byte. Non-letters are returned unchanged.
+    /// </summary>
     public static byte ToLower(byte asciiByte)
     {
         if (IsUpper(asciiByte))
@@ -276,6 +309,9 @@ public partial struct AsciiChar
         return asciiByte;
     }
 
+    /// <summary>
+    /// Returns the lowercase equivalent of an ASCII character. Non-letters are returned unchanged.
+    /// </summary>
     public static char ToLower(char asciiChar)
     {
         if (IsUpper(asciiChar))
@@ -286,6 +322,9 @@ public partial struct AsciiChar
         return asciiChar;
     }
 
+    /// <summary>
+    /// Returns the uppercase equivalent of an ASCII byte. Non-letters are returned unchanged.
+    /// </summary>
     public static byte ToUpper(byte asciiByte)
     {
         if (IsLower(asciiByte))
@@ -296,6 +335,9 @@ public partial struct AsciiChar
         return asciiByte;
     }
 
+    /// <summary>
+    /// Returns the uppercase equivalent of an ASCII character. Non-letters are returned unchanged.
+    /// </summary>
     public static char ToUpper(char asciiChar)
     {
         if (IsLower(asciiChar))

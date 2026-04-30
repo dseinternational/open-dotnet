@@ -9,8 +9,13 @@ using System.Text.Json.Serialization;
 
 namespace DSE.Open.Text.Json.Serialization;
 
+/// <summary>
+/// A <see cref="JsonConverter{T}"/> for fixed-size ASCII character struct types that implement
+/// <see cref="IUtf8SpanSerializable{T}"/>, reading and writing values as JSON strings.
+/// </summary>
 public sealed class JsonStringAsciiCharNConverter<T> : JsonConverter<T> where T : struct, IUtf8SpanSerializable<T>
 {
+    /// <inheritdoc/>
     public override T Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         Debug.Assert(T.MaxSerializedByteLength <= 8);
@@ -28,6 +33,7 @@ public sealed class JsonStringAsciiCharNConverter<T> : JsonConverter<T> where T 
         return default; // unreachable
     }
 
+    /// <inheritdoc/>
     [SkipLocalsInit]
     public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
     {

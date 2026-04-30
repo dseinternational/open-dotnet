@@ -42,8 +42,14 @@ namespace DSE.Open.Values.Text;
 [JsonConverter(typeof(JsonStringLikePatternConverter))]
 public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<LikePattern>, ISpanFormattable
 {
+    /// <summary>
+    /// The maximum number of characters allowed in a <see cref="LikePattern"/>.
+    /// </summary>
     public const int MaxLength = MemoryThresholds.StackallocCharThreshold;
 
+    /// <summary>
+    /// An empty <see cref="LikePattern"/>.
+    /// </summary>
     public static readonly LikePattern Empty;
 
     /// <remarks>
@@ -51,6 +57,13 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
     /// </remarks>
     private readonly string? _pattern;
 
+    /// <summary>
+    /// Initializes a new <see cref="LikePattern"/> from the specified pattern string,
+    /// validating that it is no longer than <see cref="MaxLength"/>.
+    /// </summary>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown when <paramref name="pattern"/> is invalid.
+    /// </exception>
     public LikePattern(string pattern) : this(pattern, true)
     {
     }
@@ -67,6 +80,13 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
         _pattern = pattern;
     }
 
+    /// <summary>
+    /// Initializes a new <see cref="LikePattern"/> from the specified pattern characters,
+    /// validating that the span is no longer than <see cref="MaxLength"/>.
+    /// </summary>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown when <paramref name="pattern"/> is invalid.
+    /// </exception>
     public LikePattern(ReadOnlySpan<char> pattern) : this(pattern, true)
     {
     }
@@ -83,6 +103,12 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
         _pattern = pattern.ToString();
     }
 
+    /// <summary>
+    /// Throws if <paramref name="pattern"/> is not a valid <see cref="LikePattern"/>.
+    /// </summary>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown when <paramref name="pattern"/> is invalid.
+    /// </exception>
     public static void EnsureIsValid(ReadOnlySpan<char> pattern)
     {
         if (!IsValid(pattern))
@@ -91,27 +117,42 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
         }
     }
 
+    /// <summary>
+    /// Indicates whether the specified characters represent a valid <see cref="LikePattern"/> —
+    /// that is, no longer than <see cref="MaxLength"/>.
+    /// </summary>
     public static bool IsValid(ReadOnlySpan<char> pattern)
     {
         return pattern.Length <= MaxLength;
     }
 
+    /// <summary>
+    /// Indicates whether the underlying pattern string is equal to <paramref name="other"/> using ordinal comparison.
+    /// </summary>
     public bool Equals(string? other)
     {
         return Equals(other, StringComparison.Ordinal);
     }
 
+    /// <summary>
+    /// Indicates whether the underlying pattern string is equal to <paramref name="other"/> using
+    /// the specified <paramref name="comparison"/>.
+    /// </summary>
     public bool Equals(string? other, StringComparison comparison)
     {
         return other is not null &&
             ((_pattern is null && other.Length == 0) || string.Equals(_pattern, other, comparison));
     }
 
+    /// <summary>
+    /// Attempts to parse the specified characters as a <see cref="LikePattern"/>.
+    /// </summary>
     public static bool TryParse(ReadOnlySpan<char> s, out LikePattern result)
     {
         return TryParse(s, null, out result);
     }
 
+    /// <inheritdoc/>
     public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out LikePattern result)
     {
         if (s.IsEmpty)
@@ -130,11 +171,16 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
         return true;
     }
 
+    /// <summary>
+    /// Parses the specified characters as a <see cref="LikePattern"/>.
+    /// </summary>
+    /// <exception cref="FormatException">Thrown when <paramref name="s"/> is not a valid <see cref="LikePattern"/>.</exception>
     public static LikePattern Parse(ReadOnlySpan<char> s)
     {
         return Parse(s, null);
     }
 
+    /// <inheritdoc/>
     public static LikePattern Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
     {
         return TryParse(s, provider, out var result)
@@ -142,11 +188,15 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
             : ThrowHelper.ThrowFormatException<LikePattern>($"Could not parse {nameof(LikePattern)} with value: {s}");
     }
 
+    /// <summary>
+    /// Attempts to parse the specified string as a <see cref="LikePattern"/>.
+    /// </summary>
     public static bool TryParse(string? s, out LikePattern result)
     {
         return TryParse(s, null, out result);
     }
 
+    /// <inheritdoc/>
     public static bool TryParse(string? s, IFormatProvider? provider, out LikePattern result)
     {
         if (s is null)
@@ -158,17 +208,24 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
         return TryParse(s.AsSpan(), provider, out result);
     }
 
+    /// <summary>
+    /// Parses the specified string as a <see cref="LikePattern"/>.
+    /// </summary>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="s"/> is <see langword="null"/>.</exception>
+    /// <exception cref="FormatException">Thrown when <paramref name="s"/> is not a valid <see cref="LikePattern"/>.</exception>
     public static LikePattern Parse(string s)
     {
         return Parse(s, null);
     }
 
+    /// <inheritdoc/>
     public static LikePattern Parse(string s, IFormatProvider? provider)
     {
         ArgumentNullException.ThrowIfNull(s);
         return Parse(s.AsSpan(), provider);
     }
 
+    /// <inheritdoc/>
     public bool TryFormat(
         Span<char> destination,
         out int charsWritten,
@@ -189,11 +246,13 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
         return true;
     }
 
+    /// <inheritdoc/>
     public override string ToString()
     {
         return ToString(null, null);
     }
 
+    /// <inheritdoc/>
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
         return _pattern ?? string.Empty;
@@ -538,6 +597,11 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
         return false;
     }
 
+    /// <summary>
+    /// Returns the equivalent SQL <c>LIKE</c> pattern, mapping <c>*</c> to <c>%</c>, <c>?</c> to <c>_</c>,
+    /// escaping the SQL wildcards <c>%</c> and <c>_</c> as character classes, and translating escape sequences
+    /// (<c>\*</c>, <c>\?</c>) to their literal characters or character classes as appropriate.
+    /// </summary>
     public string ToSqlLikePattern()
     {
         if (_pattern is null)
@@ -584,6 +648,9 @@ public readonly record struct LikePattern : IEquatable<string>, ISpanParsable<Li
         return c is '%' or '_' or '[';
     }
 
+    /// <summary>
+    /// Returns the underlying pattern string.
+    /// </summary>
     public static explicit operator string(LikePattern pattern)
     {
         return pattern.ToString();

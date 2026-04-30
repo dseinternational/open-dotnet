@@ -7,22 +7,37 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DSE.Open.EntityFrameworkCore.Models.Language.Storage.ValueConversion;
 
+/// <summary>
+/// EF Core value converter that maps <see cref="SentenceFunction"/> values to and from <see cref="string"/>.
+/// </summary>
 public sealed class SentenceFunctionToStringConverter : ValueConverter<SentenceFunction, string>
 {
+    /// <summary>
+    /// Gets the default <see cref="SentenceFunctionToStringConverter"/> instance.
+    /// </summary>
     public static readonly SentenceFunctionToStringConverter Default = new();
 
+    /// <summary>
+    /// Initialises a new instance of the <see cref="SentenceFunctionToStringConverter"/> class.
+    /// </summary>
     public SentenceFunctionToStringConverter()
         : base(c => ConvertToString(c), s => ConvertFromString(s))
     {
     }
 
-    // public for EF Core model compilation
+    /// <summary>
+    /// Converts a <see cref="SentenceFunction"/> to its string representation.
+    /// </summary>
+    /// <remarks>Public for EF Core model compilation.</remarks>
     public static string ConvertToString(SentenceFunction code)
     {
         return code.ToString();
     }
 
-    // public for EF Core model compilation
+    /// <summary>
+    /// Converts a string to a <see cref="SentenceFunction"/>.
+    /// </summary>
+    /// <remarks>Public for EF Core model compilation.</remarks>
     public static SentenceFunction ConvertFromString(string code)
     {
         if (SentenceFunction.TryParse(code, out var alphaCode))

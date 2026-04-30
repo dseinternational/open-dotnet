@@ -15,6 +15,9 @@ public readonly record struct Discriminated<TValue, TDiscriminator>
     where TValue : struct, IEquatable<TValue>
     where TDiscriminator : IEquatable<TDiscriminator>
 {
+    /// <summary>
+    /// An empty discriminated value (default value and discriminator).
+    /// </summary>
     public static readonly Discriminated<TValue, TDiscriminator> Empty;
 
     /// <summary>
@@ -41,6 +44,9 @@ public readonly record struct Discriminated<TValue, TDiscriminator>
     [JsonPropertyName("d")]
     public TDiscriminator Discriminator { get; }
 
+    /// <summary>
+    /// Deconstructs this instance into its value and discriminator.
+    /// </summary>
     public void Deconstruct(out TValue Value, out TDiscriminator Discriminator)
     {
         Value = this.Value;

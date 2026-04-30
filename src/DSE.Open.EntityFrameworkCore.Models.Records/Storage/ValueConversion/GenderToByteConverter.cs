@@ -12,17 +12,35 @@ namespace DSE.Open.EntityFrameworkCore.Models.Records.Storage.ValueConversion;
 /// </summary>
 public sealed class GenderToByteConverter : ValueConverter<Gender, byte>
 {
+    /// <summary>
+    /// The default shared instance of the converter.
+    /// </summary>
     public static readonly GenderToByteConverter Default = new();
 
+    /// <summary>The byte value used to represent an unknown gender.</summary>
     public const byte Unknown = 0;
+
+    /// <summary>The byte value used to represent <see cref="Gender.Female"/>.</summary>
     public const byte Female = 1;
+
+    /// <summary>The byte value used to represent <see cref="Gender.Male"/>.</summary>
     public const byte Male = 2;
+
+    /// <summary>The byte value used to represent <see cref="Gender.Other"/>.</summary>
     public const byte Other = 3;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GenderToByteConverter"/> class.
+    /// </summary>
     public GenderToByteConverter() : base(c => ConvertTo(c), s => ConvertFrom(s))
     {
     }
 
+    /// <summary>
+    /// Converts a <see cref="Gender"/> value to its <see cref="byte"/> representation.
+    /// </summary>
+    /// <param name="code">The <see cref="Gender"/> value to convert.</param>
+    /// <returns>The <see cref="byte"/> value representing <paramref name="code"/>.</returns>
     // keep public for EF Core compiled models
     public static byte ConvertTo(Gender code)
     {
@@ -45,6 +63,11 @@ public sealed class GenderToByteConverter : ValueConverter<Gender, byte>
         return default; // unreachable
     }
 
+    /// <summary>
+    /// Converts a <see cref="byte"/> value to its <see cref="Gender"/> representation.
+    /// </summary>
+    /// <param name="code">The <see cref="byte"/> value to convert.</param>
+    /// <returns>The <see cref="Gender"/> value represented by <paramref name="code"/>.</returns>
     // keep public for EF Core compiled models
     public static Gender ConvertFrom(byte code)
     {

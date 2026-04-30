@@ -8,6 +8,9 @@ using System.Runtime.CompilerServices;
 
 namespace DSE.Open.Memory;
 
+/// <summary>
+/// Provides default capacities used by <see cref="ArrayBuilder{T}"/>.
+/// </summary>
 public static class ArrayBuilder
 {
     internal const int DefaultOwnedCapacity = 256;
@@ -29,8 +32,16 @@ public ref struct ArrayBuilder<T>
     private int _count;
     private bool _rentFromPool;
 
+    /// <summary>
+    /// Initializes a new <see cref="ArrayBuilder{T}"/> with the default owned capacity.
+    /// </summary>
     public ArrayBuilder() : this(false) { }
 
+    /// <summary>
+    /// Initializes a new <see cref="ArrayBuilder{T}"/> with a default capacity, optionally renting
+    /// the backing buffer from <see cref="ArrayPool{T}.Shared"/>.
+    /// </summary>
+    /// <param name="rentFromPool">Whether the buffer should be rented from the shared <see cref="ArrayPool{T}"/>.</param>
     public ArrayBuilder(bool rentFromPool)
         : this(rentFromPool ? ArrayBuilder.DefaultRentedCapacity : ArrayBuilder.DefaultOwnedCapacity, rentFromPool) { }
 
@@ -58,6 +69,10 @@ public ref struct ArrayBuilder<T>
         _rentFromPool = rentFromPool;
     }
 
+    /// <summary>
+    /// Initializes the <see cref="ArrayBuilder{T}"/> with a specified initial buffer.
+    /// </summary>
+    /// <param name="initialBuffer">The initial buffer used to back the builder.</param>
     public ArrayBuilder(Span<T> initialBuffer) : this(initialBuffer, false) { }
 
     /// <summary>
@@ -76,6 +91,9 @@ public ref struct ArrayBuilder<T>
     /// </summary>
     public readonly int Capacity => _buffer.Length;
 
+    /// <summary>
+    /// Gets the number of items currently stored in the builder.
+    /// </summary>
     public readonly int Count => _count;
 
     /// <summary>
@@ -113,6 +131,10 @@ public ref struct ArrayBuilder<T>
         UncheckedAdd(item);
     }
 
+    /// <summary>
+    /// Adds each item in <paramref name="items"/> to the backing array, resizing it as necessary.
+    /// </summary>
+    /// <exception cref="ArgumentNullException">Thrown if <paramref name="items"/> is null.</exception>
     public void AddRange(IEnumerable<T> items)
     {
         ArgumentNullException.ThrowIfNull(items);
@@ -229,8 +251,14 @@ public ref struct ArrayBuilder<T>
         }
     }
 
+    /// <summary>
+    /// Gets a read-only span over the current backing buffer (including unused capacity beyond <see cref="Count"/>).
+    /// </summary>
     public readonly ReadOnlySpan<T> Buffer => _buffer;
 
+    /// <summary>
+    /// Returns any pooled buffer to <see cref="ArrayPool{T}.Shared"/> and resets the builder.
+    /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Dispose()
     {

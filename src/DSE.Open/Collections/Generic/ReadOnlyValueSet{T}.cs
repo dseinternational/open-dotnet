@@ -16,9 +16,15 @@ namespace DSE.Open.Collections.Generic;
 [CollectionBuilder(typeof(ReadOnlyValueSet), nameof(ReadOnlyValueSet.Create))]
 public class ReadOnlyValueSet<T> : IReadOnlySet<T>, IEquatable<ReadOnlyValueSet<T>>, ICollection<T>
 {
+    /// <summary>
+    /// An empty <see cref="ReadOnlyValueSet{T}"/>.
+    /// </summary>
     public static readonly ReadOnlyValueSet<T> Empty = new(Enumerable.Empty<T>());
     private readonly HashSet<T> _set;
 
+    /// <summary>
+    /// Initializes a new, empty <see cref="ReadOnlyValueSet{T}"/>.
+    /// </summary>
     public ReadOnlyValueSet() : this([])
     {
     }
@@ -41,6 +47,9 @@ public class ReadOnlyValueSet<T> : IReadOnlySet<T>, IEquatable<ReadOnlyValueSet<
         _set = set;
     }
 
+    /// <summary>
+    /// Initializes a new <see cref="ReadOnlyValueSet{T}"/> containing the distinct elements of <paramref name="set"/>.
+    /// </summary>
     public ReadOnlyValueSet(IEnumerable<T> set)
     {
         ArgumentNullException.ThrowIfNull(set);
@@ -55,6 +64,7 @@ public class ReadOnlyValueSet<T> : IReadOnlySet<T>, IEquatable<ReadOnlyValueSet<
         }
     }
 
+    /// <inheritdoc/>
     public int Count => _set.Count;
 
 #pragma warning disable CA1033 // Interface methods should be callable by child types
@@ -79,56 +89,67 @@ public class ReadOnlyValueSet<T> : IReadOnlySet<T>, IEquatable<ReadOnlyValueSet<
 
 #pragma warning restore CA1033 // Interface methods should be callable by child types
 
+    /// <inheritdoc/>
     public bool Contains(T item)
     {
         return _set.Contains(item);
     }
 
+    /// <inheritdoc/>
     public void CopyTo(T[] array, int arrayIndex)
     {
         _set.CopyTo(array, arrayIndex);
     }
 
+    /// <inheritdoc/>
     public IEnumerator<T> GetEnumerator()
     {
         return _set.GetEnumerator();
     }
 
+    /// <inheritdoc/>
     public bool IsProperSubsetOf(IEnumerable<T> other)
     {
         return _set.IsProperSubsetOf(other);
     }
 
+    /// <inheritdoc/>
     public bool IsProperSupersetOf(IEnumerable<T> other)
     {
         return _set.IsProperSupersetOf(other);
     }
 
+    /// <inheritdoc/>
     public bool IsSubsetOf(IEnumerable<T> other)
     {
         return _set.IsSubsetOf(other);
     }
 
+    /// <inheritdoc/>
     public bool IsSupersetOf(IEnumerable<T> other)
     {
         return _set.IsSupersetOf(other);
     }
 
+    /// <inheritdoc/>
     public bool Overlaps(IEnumerable<T> other)
     {
         return _set.Overlaps(other);
     }
 
+    /// <inheritdoc/>
     public bool SetEquals(IEnumerable<T> other)
     {
         return _set.SetEquals(other);
     }
 
+    /// <inheritdoc/>
     public override bool Equals(object? obj)
     {
         return obj is ReadOnlyValueSet<T> readOnlyValueSet && Equals(readOnlyValueSet);
     }
 
+    /// <inheritdoc/>
     public override int GetHashCode()
     {
         var hash = new HashCode();
@@ -141,11 +162,15 @@ public class ReadOnlyValueSet<T> : IReadOnlySet<T>, IEquatable<ReadOnlyValueSet<
         return hash.ToHashCode();
     }
 
+    /// <inheritdoc/>
     public virtual bool Equals(ReadOnlyValueSet<T>? other)
     {
         return other is not null && SetEquals(other);
     }
 
+    /// <summary>
+    /// Returns a string representation of the set produced by <see cref="CollectionWriter"/>.
+    /// </summary>
     public override string ToString()
     {
         return CollectionWriter.WriteToString(this);
@@ -158,31 +183,49 @@ public class ReadOnlyValueSet<T> : IReadOnlySet<T>, IEquatable<ReadOnlyValueSet<
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
+    /// <summary>
+    /// Creates a <see cref="ReadOnlyValueSet{T}"/> containing the distinct elements of the specified array.
+    /// </summary>
     public static explicit operator ReadOnlyValueSet<T>(T[] collection)
     {
         return [.. collection];
     }
 
+    /// <summary>
+    /// Creates a <see cref="ReadOnlyValueSet{T}"/> containing the distinct elements of the specified collection.
+    /// </summary>
     public static explicit operator ReadOnlyValueSet<T>(ReadOnlyCollection<T> collection)
     {
         return [.. collection];
     }
 
+    /// <summary>
+    /// Creates a <see cref="ReadOnlyValueSet{T}"/> containing the distinct elements of the specified collection.
+    /// </summary>
     public static explicit operator ReadOnlyValueSet<T>(Collection<T> collection)
     {
         return [.. collection];
     }
 
+    /// <summary>
+    /// Creates a <see cref="ReadOnlyValueSet{T}"/> containing the distinct elements of the specified collection.
+    /// </summary>
     public static explicit operator ReadOnlyValueSet<T>(System.Collections.ObjectModel.ReadOnlyCollection<T> collection)
     {
         return [.. collection];
     }
 
+    /// <summary>
+    /// Creates a <see cref="ReadOnlyValueSet{T}"/> containing the distinct elements of the specified collection.
+    /// </summary>
     public static explicit operator ReadOnlyValueSet<T>(System.Collections.ObjectModel.Collection<T> collection)
     {
         return [.. collection];
     }
 
+    /// <summary>
+    /// Creates a <see cref="ReadOnlyValueSet{T}"/> containing the elements of the specified hash set.
+    /// </summary>
     public static explicit operator ReadOnlyValueSet<T>(HashSet<T> collection)
     {
         return [.. (IEnumerable<T>)collection];

@@ -493,6 +493,7 @@ public class ConcurrentSet<T> : IReadOnlyCollection<T>, ICollection<T>
             _state = StateUninitialized;
         }
 
+        /// <inheritdoc/>
         public readonly void Dispose() { }
 
         /// <summary>
@@ -548,10 +549,21 @@ public class ConcurrentSet<T> : IReadOnlyCollection<T>, ICollection<T>
         _ = Add(item);
     }
 
+    /// <summary>
+    /// Gets a value indicating whether the set is read-only. Always <see langword="false"/> for the default implementation.
+    /// </summary>
     protected virtual bool IsReadOnly => false;
 
     bool ICollection<T>.IsReadOnly => IsReadOnly;
 
+    /// <summary>
+    /// Copies the elements of the <see cref="ConcurrentSet{T}"/> to a one-dimensional array, starting at the specified index.
+    /// </summary>
+    /// <param name="array">The destination array.</param>
+    /// <param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="array"/> is <see langword="null"/>.</exception>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="arrayIndex"/> is negative.</exception>
+    /// <exception cref="ArgumentException">The destination array does not have enough space.</exception>
     protected virtual void CopyTo(T[] array, int arrayIndex)
     {
         ArgumentNullException.ThrowIfNull(array);
@@ -590,6 +602,11 @@ public class ConcurrentSet<T> : IReadOnlyCollection<T>, ICollection<T>
         CopyTo(array, arrayIndex);
     }
 
+    /// <summary>
+    /// Removes the specified item from the <see cref="ConcurrentSet{T}"/>.
+    /// </summary>
+    /// <param name="item">The item to remove.</param>
+    /// <returns><see langword="true"/> if the item was removed; otherwise, <see langword="false"/>.</returns>
     protected virtual bool Remove(T item)
     {
         return TryRemove(item);

@@ -9,6 +9,9 @@ namespace DSE.Open.Labels;
 /// <typeparam name="T"></typeparam>
 public interface ILabelProvider<T>
 {
+    /// <summary>
+    /// Returns the label for the specified <paramref name="value"/>, or <see langword="null"/> if none is available.
+    /// </summary>
     string? GetLabel(T value);
 }
 

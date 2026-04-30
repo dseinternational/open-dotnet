@@ -3,6 +3,9 @@
 
 namespace DSE.Open.Data.SqlClient;
 
+/// <summary>
+/// Provides helper methods for working with Transact-SQL identifiers.
+/// </summary>
 public static class SqlHelper
 {
     /// <summary>

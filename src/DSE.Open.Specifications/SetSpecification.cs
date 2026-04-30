@@ -37,10 +37,23 @@ public class SetSpecification<TValue> : ICollectionSpecification<TValue>
         Set = set;
     }
 
+    /// <summary>
+    /// Gets the set of values against which candidates are compared.
+    /// </summary>
     public IReadOnlySet<TValue> Set { get; }
 
+    /// <summary>
+    /// Gets the comparison applied between the candidate and <see cref="Set"/>.
+    /// </summary>
     public SetComparison SetComparison { get; }
 
+    /// <summary>
+    /// Determines if the specified candidate sequence satisfies the configured
+    /// <see cref="SetComparison"/> against <see cref="Set"/>.
+    /// </summary>
+    /// <param name="candidate">The values to evaluate.</param>
+    /// <returns><see langword="true"/> if the candidate satisfies the specification,
+    /// otherwise <see langword="false"/>.</returns>
     public bool IsSatisfiedBy(IEnumerable<TValue> candidate)
     {
         if (candidate is FrozenSet<TValue> frozenSet)

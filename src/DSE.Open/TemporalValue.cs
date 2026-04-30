@@ -13,6 +13,9 @@ namespace DSE.Open;
 /// <typeparam name="T"></typeparam>
 public readonly record struct TemporalValue<T>
 {
+    /// <summary>
+    /// Initialises a new <see cref="TemporalValue{T}"/> with the specified <paramref name="time"/> and <paramref name="value"/>.
+    /// </summary>
     [SetsRequiredMembers]
     public TemporalValue(DateTimeOffset time, T value)
     {
@@ -34,24 +37,39 @@ public readonly record struct TemporalValue<T>
     public required T Value { get; init; }
 }
 
+/// <summary>
+/// Helpers for creating <see cref="TemporalValue{T}"/> instances.
+/// </summary>
 public static class TemporalValue
 {
+    /// <summary>
+    /// Creates a <see cref="TemporalValue{T}"/> at the current UTC time using <see cref="TimeProvider.System"/>.
+    /// </summary>
     public static TemporalValue<T> ForUtcNow<T>(T value)
     {
         return ForUtcNow(value, TimeProvider.System);
     }
 
+    /// <summary>
+    /// Creates a <see cref="TemporalValue{T}"/> at the current UTC time obtained from <paramref name="timeProvider"/>.
+    /// </summary>
     public static TemporalValue<T> ForUtcNow<T>(T value, TimeProvider timeProvider)
     {
         ArgumentNullException.ThrowIfNull(timeProvider);
         return new TemporalValue<T>(timeProvider.GetUtcNow(), value);
     }
 
+    /// <summary>
+    /// Creates a <see cref="TemporalValue{T}"/> at the current local time using <see cref="TimeProvider.System"/>.
+    /// </summary>
     public static TemporalValue<T> ForLocalNow<T>(T value)
     {
         return ForLocalNow(value, TimeProvider.System);
     }
 
+    /// <summary>
+    /// Creates a <see cref="TemporalValue{T}"/> at the current local time obtained from <paramref name="timeProvider"/>.
+    /// </summary>
     public static TemporalValue<T> ForLocalNow<T>(T value, TimeProvider timeProvider)
     {
         ArgumentNullException.ThrowIfNull(timeProvider);

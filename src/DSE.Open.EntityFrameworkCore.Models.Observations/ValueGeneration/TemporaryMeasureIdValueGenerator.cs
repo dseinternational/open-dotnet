@@ -15,8 +15,10 @@ public sealed class TemporaryMeasureIdValueGenerator : ValueGenerator<MeasureId>
 {
     private ulong _next = MeasureId.MaxIdValue;
 
+    /// <inheritdoc/>
     public override bool GeneratesTemporaryValues => true;
 
+    /// <inheritdoc/>
     public override MeasureId Next([NotNull] EntityEntry entry)
     {
         return new(Interlocked.Decrement(ref _next));

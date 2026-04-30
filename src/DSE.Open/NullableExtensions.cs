@@ -5,8 +5,15 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace DSE.Open;
 
+/// <summary>
+/// Extensions for working with nullable value types.
+/// </summary>
 public static class NullableExtensions
 {
+    /// <summary>
+    /// Returns <see langword="true"/> if <paramref name="nullable"/> is <see langword="null"/> or
+    /// equals <c>default(T)</c>.
+    /// </summary>
     public static bool IsNullOrDefault<T>([NotNullWhen(false)] this T? nullable)
         where T : struct, IEquatable<T>
     {

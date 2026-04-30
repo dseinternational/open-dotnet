@@ -9,7 +9,13 @@ namespace DSE.Open.Serialization;
 [Obsolete("Removing")]
 public interface IExtensionData
 {
+    /// <summary>
+    /// Gets a value indicating whether any extension data is present.
+    /// </summary>
     bool HasExtensionData { get; }
 
+    /// <summary>
+    /// Gets the dictionary of additional data attached to the object, keyed by name.
+    /// </summary>
     IDictionary<string, object> ExtensionData { get; }
 }

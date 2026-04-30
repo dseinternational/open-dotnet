@@ -5,6 +5,9 @@ namespace DSE.Open.Collections.Generic;
 
 public static partial class CollectionExtensions
 {
+    /// <summary>
+    /// Returns the single element of a list, or throws if the list is empty or contains more than one element.
+    /// </summary>
     public static TSource Single<TSource>(this IReadOnlyList<TSource> source)
     {
         var single = source.TryGetSingle(out var found);
@@ -17,6 +20,9 @@ public static partial class CollectionExtensions
         return single!;
     }
 
+    /// <summary>
+    /// Returns the single element of a list, the default value if the list is empty, or throws if it contains more than one element.
+    /// </summary>
     public static TSource? SingleOrDefault<TSource>(this IReadOnlyList<TSource> list)
     {
         var single = list.TryGetSingle(out var found);

@@ -7,14 +7,24 @@ using Microsoft.Extensions.Logging;
 
 namespace DSE.Open.EntityFrameworkCore.HealthChecks;
 
+/// <summary>
+/// Base class for a health check that exercises a <see cref="DbContext"/> of type <typeparamref name="TContext"/>.
+/// </summary>
+/// <typeparam name="TContext">The <see cref="DbContext"/> type.</typeparam>
 public abstract class DbContextHealthCheck<TContext> : LoggingHealthCheck
     where TContext : DbContext
 {
+    /// <summary>
+    /// Initializes a new instance.
+    /// </summary>
+    /// <param name="dbContext">The <see cref="DbContext"/> to check.</param>
+    /// <param name="logger">The logger.</param>
     protected DbContextHealthCheck(TContext dbContext, ILogger logger) : base(logger)
     {
         ArgumentNullException.ThrowIfNull(dbContext);
         DbContext = dbContext;
     }
 
+    /// <summary>Gets the <see cref="DbContext"/> being checked.</summary>
     protected TContext DbContext { get; }
 }

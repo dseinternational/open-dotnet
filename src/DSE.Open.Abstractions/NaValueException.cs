@@ -16,19 +16,36 @@ public class NaValueException : InvalidOperationException
 {
     private const string DefaultMessage = "Cannot access value as the value is unknown.";
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="NaValueException"/> class with a default message.
+    /// </summary>
     public NaValueException() : base(DefaultMessage)
     {
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="NaValueException"/> class with the specified message,
+    /// or a default message when <paramref name="message"/> is <see langword="null"/>.
+    /// </summary>
     public NaValueException(string? message) : base(message ?? DefaultMessage)
     {
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="NaValueException"/> class with the specified
+    /// message and inner exception. A default message is used when <paramref name="message"/> is
+    /// <see langword="null"/>.
+    /// </summary>
     public NaValueException(string? message, Exception? innerException)
         : base(message ?? DefaultMessage, innerException)
     {
     }
 
+    /// <summary>
+    /// Throws a <see cref="NaValueException"/> if <paramref name="value"/> does not have a value.
+    /// </summary>
+    /// <exception cref="ArgumentNullException"><paramref name="value"/> is <see langword="null"/>.</exception>
+    /// <exception cref="NaValueException"><paramref name="value"/> has no value.</exception>
     public static void ThrowIfNa(INaValue value, string? message = null)
     {
         ArgumentNullException.ThrowIfNull(value);
@@ -39,6 +56,10 @@ public class NaValueException : InvalidOperationException
         }
     }
 
+    /// <summary>
+    /// Throws a <see cref="NaValueException"/> if <paramref name="value"/> is <see cref="Trilean.Na"/>.
+    /// </summary>
+    /// <exception cref="NaValueException"><paramref name="value"/> is <see cref="Trilean.Na"/>.</exception>
     public static void ThrowIfUnknown(Trilean value, string? message = null)
     {
         if (value.IsNa)

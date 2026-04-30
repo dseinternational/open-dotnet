@@ -15,8 +15,15 @@ namespace DSE.Open.Text;
 /// </summary>
 public static partial class StringHelper
 {
+    /// <summary>
+    /// The set of punctuation characters considered valid as part of a word.
+    /// </summary>
     public static readonly IReadOnlyList<char> ValidWordPunctuationCharacters = ['’', '\'', '-', ' '];
 
+    /// <summary>
+    /// Adjusts the capitalization of <paramref name="text"/> according to the specified
+    /// <see cref="CapitalizationStyle"/> using <see cref="CultureInfo.InvariantCulture"/>.
+    /// </summary>
     public static string? CapitalizeInvariant(string? text, CapitalizationStyle style)
     {
         return Capitalize(text, style, CultureInfo.InvariantCulture);
@@ -134,6 +141,10 @@ public static partial class StringHelper
         }
     }
 
+    /// <summary>
+    /// Returns a string containing only the letters from <paramref name="text"/>, replacing each
+    /// run of whitespace with a single dash.
+    /// </summary>
     [SkipLocalsInit]
     [return: NotNullIfNotNull("text")]
     public static string? ExtractLettersWithDashesForWhitespace(string? text)
@@ -169,6 +180,10 @@ public static partial class StringHelper
         }
     }
 
+    /// <summary>
+    /// Splits <paramref name="text"/> on whitespace and returns the words with surrounding
+    /// punctuation removed (apostrophes, dashes and spaces are preserved within words).
+    /// </summary>
     public static IEnumerable<string> ExtractWords(string? text)
     {
         if (string.IsNullOrEmpty(text))
@@ -409,6 +424,9 @@ public static partial class StringHelper
         return new(result, 0, index);
     }
 
+    /// <summary>
+    /// Splits <paramref name="text"/> on whitespace, removing empty entries.
+    /// </summary>
     public static IEnumerable<string> SplitOnWhitespace(string? text)
     {
         return string.IsNullOrEmpty(text)
@@ -416,6 +434,10 @@ public static partial class StringHelper
             : text.Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries);
     }
 
+    /// <summary>
+    /// Converts <paramref name="text"/> to camelCase by lower-casing the first character.
+    /// If <paramref name="text"/> is entirely uppercase the whole string is first lower-cased.
+    /// </summary>
     [return: NotNullIfNotNull("text")]
     public static string? ToCamelCase(string? text, CultureInfo? cultureInfo = null)
     {
@@ -435,6 +457,10 @@ public static partial class StringHelper
         return char.IsUpper(text, 0) ? char.ToLower(text[0], ci) + text.Remove(0, 1) : text;
     }
 
+    /// <summary>
+    /// Converts <paramref name="text"/> to PascalCase by upper-casing the first character.
+    /// If <paramref name="text"/> is entirely uppercase the whole string is first lower-cased.
+    /// </summary>
     [return: NotNullIfNotNull("text")]
     public static string? ToPascalCase(string? text, CultureInfo? cultureInfo = null)
     {
@@ -462,12 +488,18 @@ public static partial class StringHelper
         NewWord
     }
 
+    /// <summary>
+    /// Converts <paramref name="name"/> to slug-case (lowercase, words separated by '-').
+    /// </summary>
     [return: NotNullIfNotNull("name")]
     public static string? ToSlugCase(string? name)
     {
         return ToSeparatedCase(name, '-');
     }
 
+    /// <summary>
+    /// Converts <paramref name="name"/> to snake_case (lowercase, words separated by '_').
+    /// </summary>
     [return: NotNullIfNotNull("name")]
     public static string? ToSnakeCase(string? name)
     {

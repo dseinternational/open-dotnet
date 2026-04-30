@@ -12,6 +12,7 @@ public interface ISpanFormattableValue<TSelf, T> : IFormattableValue<TSelf, T>, 
     where T : IEquatable<T>, ISpanFormattable
     where TSelf : struct, ISpanFormattableValue<TSelf, T>
 {
+    /// <inheritdoc/>
     new bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider? provider)
     {
         return ((T)this).TryFormat(destination, out charsWritten, format, provider);

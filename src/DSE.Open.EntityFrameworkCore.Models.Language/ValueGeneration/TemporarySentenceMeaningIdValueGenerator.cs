@@ -15,8 +15,10 @@ public sealed class TemporarySentenceMeaningIdValueGenerator : ValueGenerator<Se
 {
     private ulong _next = LanguageIds.MaxIdValue;
 
+    /// <inheritdoc/>
     public override bool GeneratesTemporaryValues => true;
 
+    /// <inheritdoc/>
     public override SentenceMeaningId Next([NotNull] EntityEntry entry)
     {
         return new(Interlocked.Decrement(ref _next));

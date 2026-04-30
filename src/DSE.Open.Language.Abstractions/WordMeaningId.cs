@@ -23,24 +23,51 @@ public readonly partial struct WordMeaningId
       IUtf8SpanSerializable<WordMeaningId>,
       IRepeatableHash64
 {
+    /// <summary>
+    /// The maximum number of characters used to serialize a
+    /// <see cref="WordMeaningId"/> value.
+    /// </summary>
     public static int MaxSerializedCharLength => 16;
 
+    /// <summary>
+    /// The maximum number of bytes used to serialize a
+    /// <see cref="WordMeaningId"/> value in UTF-8.
+    /// </summary>
     public static int MaxSerializedByteLength => 16;
 
+    /// <summary>
+    /// Initializes a new <see cref="WordMeaningId"/> from the given <see cref="ulong"/>.
+    /// </summary>
+    /// <param name="value">The id value.</param>
     public WordMeaningId(ulong value) : this(value, false)
     {
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if <paramref name="value"/> is within the
+    /// range of valid <see cref="WordMeaningId"/> values.
+    /// </summary>
     public static bool IsValidValue(ulong value)
     {
         return value is <= LanguageIds.MaxIdValue and >= LanguageIds.MinIdValue;
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if <paramref name="value"/> is within the
+    /// range of valid <see cref="WordMeaningId"/> values.
+    /// </summary>
     public static bool IsValidValue(long value)
     {
         return value is <= ((long)LanguageIds.MaxIdValue) and >= ((long)LanguageIds.MinIdValue);
     }
 
+    /// <summary>
+    /// Attempts to create a <see cref="WordMeaningId"/> from a <see cref="long"/>.
+    /// </summary>
+    /// <param name="value">The id value.</param>
+    /// <param name="id">When this method returns, contains the resulting
+    /// <see cref="WordMeaningId"/> if the conversion succeeded; otherwise the default value.</param>
+    /// <returns><see langword="true"/> if the value was within the valid range; otherwise <see langword="false"/>.</returns>
     public static bool TryFromInt64(long value, out WordMeaningId id)
     {
         if (IsValidValue(value))
@@ -55,6 +82,12 @@ public readonly partial struct WordMeaningId
         }
     }
 
+    /// <summary>
+    /// Creates a <see cref="WordMeaningId"/> from a <see cref="long"/>.
+    /// </summary>
+    /// <param name="value">The id value.</param>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="value"/> is
+    /// outside the range of valid <see cref="WordMeaningId"/> values.</exception>
     public static WordMeaningId FromInt64(long value)
     {
         if (!IsValidValue(value))
@@ -65,6 +98,12 @@ public readonly partial struct WordMeaningId
         return new WordMeaningId((ulong)value);
     }
 
+    /// <summary>
+    /// Creates a <see cref="WordMeaningId"/> from a <see cref="ulong"/>.
+    /// </summary>
+    /// <param name="value">The id value.</param>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="value"/> is
+    /// outside the range of valid <see cref="WordMeaningId"/> values.</exception>
     public static WordMeaningId FromUInt64(ulong value)
     {
         if (!IsValidValue(value))
@@ -75,11 +114,17 @@ public readonly partial struct WordMeaningId
         return new WordMeaningId(value);
     }
 
+    /// <summary>
+    /// Converts a <see cref="long"/> to a <see cref="WordMeaningId"/>.
+    /// </summary>
     public static explicit operator WordMeaningId(long value)
     {
         return FromInt64(value);
     }
 
+    /// <summary>
+    /// Returns the <see cref="long"/> representation of this id.
+    /// </summary>
     public long ToInt64()
     {
         unchecked
@@ -88,16 +133,25 @@ public readonly partial struct WordMeaningId
         }
     }
 
+    /// <summary>
+    /// Returns the <see cref="ulong"/> representation of this id.
+    /// </summary>
     public ulong ToUInt64()
     {
         return _value;
     }
 
+    /// <summary>
+    /// Converts a <see cref="WordMeaningId"/> to a <see cref="long"/>.
+    /// </summary>
     public static implicit operator long(WordMeaningId value)
     {
         return value.ToInt64();
     }
 
+    /// <summary>
+    /// Returns a randomly-generated <see cref="WordMeaningId"/>.
+    /// </summary>
     public static WordMeaningId GetRandomId()
     {
         return (WordMeaningId)LanguageIds.GetRandomIdValue();
@@ -151,6 +205,7 @@ public readonly partial struct WordMeaningId
         }
     }
 
+    /// <inheritdoc/>
     public ulong GetRepeatableHashCode()
     {
         return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);

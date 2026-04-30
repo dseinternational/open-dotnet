@@ -38,6 +38,10 @@ public sealed class SessionContext
         _storageTokens = new(StringComparer.InvariantCultureIgnoreCase);
     }
 
+    /// <summary>
+    /// Initialises a new instance with the specified <paramref name="id"/>,
+    /// <paramref name="created"/> timestamp and <paramref name="storageTokens"/>.
+    /// </summary>
     [JsonConstructor]
     public SessionContext(
         Identifier id,
@@ -59,6 +63,10 @@ public sealed class SessionContext
     [JsonPropertyName("id")]
     public Identifier Id { get; }
 
+    /// <summary>
+    /// Tokens that can be used to ensure consistent access to persistent storage,
+    /// keyed by storage identifier (case-insensitive).
+    /// </summary>
     [JsonPropertyName("storage_tokens")]
     public ConcurrentDictionary<string, string> StorageTokens => _storageTokens;
 
@@ -91,6 +99,7 @@ public sealed class SessionContext
         }
     }
 
+    /// <inheritdoc/>
     public override string ToString()
     {
         return $$"""SessionContext { Id = {{Id}}, Created = {{Created}}, StorageTokens.Count = {{_storageTokens.Count}} }""";

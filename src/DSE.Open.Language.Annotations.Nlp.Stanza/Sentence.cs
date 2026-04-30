@@ -6,6 +6,9 @@ using CSnakes.Runtime.Python;
 
 namespace DSE.Open.Language.Annotations.Nlp.Stanza;
 
+/// <summary>
+/// Represents a sentence within a Stanza-processed <see cref="Document"/>.
+/// </summary>
 public class Sentence : StanzaObject
 {
     internal Sentence(PyObject pySentence, IStanzaService stanza) : base(pySentence, stanza)
@@ -16,11 +19,23 @@ public class Sentence : StanzaObject
         Comments = [.. pySentence.GetAttr("comments").As<IReadOnlyList<string>>()];
     }
 
+    /// <summary>
+    /// Gets the sentence identifier, if one was assigned.
+    /// </summary>
     public string? Id { get; }
 
+    /// <summary>
+    /// Gets the text of the sentence.
+    /// </summary>
     public string Text { get; }
 
+    /// <summary>
+    /// Gets the tokens contained in the sentence.
+    /// </summary>
     public IReadOnlyList<Token> Tokens { get; }
 
+    /// <summary>
+    /// Gets the comments associated with the sentence.
+    /// </summary>
     public IReadOnlyList<string> Comments { get; }
 }

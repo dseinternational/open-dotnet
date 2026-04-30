@@ -15,8 +15,10 @@ public sealed class TemporaryWordIdValueGenerator : ValueGenerator<WordId>
 {
     private ulong _next = LanguageIds.MaxIdValue;
 
+    /// <inheritdoc/>
     public override bool GeneratesTemporaryValues => true;
 
+    /// <inheritdoc/>
     public override WordId Next([NotNull] EntityEntry entry)
     {
         return new(Interlocked.Decrement(ref _next));

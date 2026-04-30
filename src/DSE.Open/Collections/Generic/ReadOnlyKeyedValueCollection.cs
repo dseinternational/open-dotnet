@@ -19,11 +19,17 @@ public abstract class ReadOnlyKeyedValueCollection<TKey, TValue>
 {
     private readonly Dictionary<TKey, TValue> _dictionary;
 
+    /// <summary>
+    /// Initializes a new, empty <see cref="ReadOnlyKeyedValueCollection{TKey, TValue}"/>.
+    /// </summary>
     protected ReadOnlyKeyedValueCollection()
     {
         _dictionary = [];
     }
 
+    /// <summary>
+    /// Initializes a new <see cref="ReadOnlyKeyedValueCollection{TKey, TValue}"/> containing the elements of <paramref name="list"/>, keyed by <see cref="GetKeyForItem"/>.
+    /// </summary>
     protected ReadOnlyKeyedValueCollection(IEnumerable<TValue> list)
     {
         ArgumentNullException.ThrowIfNull(list);
@@ -33,14 +39,27 @@ public abstract class ReadOnlyKeyedValueCollection<TKey, TValue>
             : list.ToDictionary(GetKeyForItem);
     }
 
+    /// <inheritdoc/>
     public int Count => _dictionary.Count;
 
+    /// <summary>
+    /// Gets the value associated with the specified key.
+    /// </summary>
     public TValue this[TKey key] => _dictionary[key];
 
+    /// <summary>
+    /// Gets a read-only collection of the keys for items in this collection.
+    /// </summary>
     public IReadOnlyCollection<TKey> Keys => _dictionary.Keys;
 
+    /// <summary>
+    /// When implemented in a derived class, returns the key for the specified item.
+    /// </summary>
     protected abstract TKey GetKeyForItem(TValue item);
 
+    /// <summary>
+    /// Attempts to get the item associated with the specified key.
+    /// </summary>
     public bool TryGetValue(TKey key, [MaybeNullWhen(false)] out TValue item)
     {
         ArgumentNullException.ThrowIfNull(key);
@@ -69,22 +88,28 @@ public abstract class ReadOnlyKeyedValueCollection<TKey, TValue>
 
 #pragma warning restore CA1033 // Interface methods should be callable by child types
 
+    /// <inheritdoc/>
     public bool Contains(TValue item)
     {
         return ContainsKey(GetKeyForItem(item));
     }
 
+    /// <summary>
+    /// Determines whether the collection contains an item with the specified key.
+    /// </summary>
     public bool ContainsKey(TKey key)
     {
         ArgumentNullException.ThrowIfNull(key);
         return _dictionary.ContainsKey(key);
     }
 
+    /// <inheritdoc/>
     public void CopyTo(TValue[] array, int arrayIndex)
     {
         _dictionary.Values.CopyTo(array, arrayIndex);
     }
 
+    /// <inheritdoc/>
     public virtual bool Equals(ReadOnlyKeyedValueCollection<TKey, TValue>? other)
     {
         return other is not null
@@ -92,11 +117,13 @@ public abstract class ReadOnlyKeyedValueCollection<TKey, TValue>
                 || (Count == other.Count && this.SequenceEqual(other)));
     }
 
+    /// <inheritdoc/>
     public override bool Equals(object? obj)
     {
         return Equals(obj as ReadOnlyKeyedValueCollection<TKey, TValue>);
     }
 
+    /// <inheritdoc/>
     public override int GetHashCode()
     {
         var hash = new HashCode();
@@ -109,6 +136,7 @@ public abstract class ReadOnlyKeyedValueCollection<TKey, TValue>
         return hash.ToHashCode();
     }
 
+    /// <inheritdoc/>
     public IEnumerator<TValue> GetEnumerator()
     {
         return _dictionary.Values.GetEnumerator();

@@ -6,6 +6,9 @@ using CSnakes.Runtime.Python;
 
 namespace DSE.Open.Language.Annotations.Nlp.Stanza;
 
+/// <summary>
+/// Represents a document processed by a Stanza pipeline.
+/// </summary>
 public class Document : StanzaObject
 {
     internal Document(PyObject pyDocument, IStanzaService stanza) : base(pyDocument, stanza)
@@ -14,7 +17,13 @@ public class Document : StanzaObject
         Sentences = [.. pyDocument.GetAttr("sentences").As<IReadOnlyList<PyObject>>().Select(s => new Sentence(s, stanza))];
     }
 
+    /// <summary>
+    /// Gets the text of the document.
+    /// </summary>
     public string Text { get; }
 
+    /// <summary>
+    /// Gets the sentences contained in the document.
+    /// </summary>
     public IReadOnlyList<Sentence> Sentences { get; }
 }

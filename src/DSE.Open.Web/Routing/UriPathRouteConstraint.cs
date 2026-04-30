@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.Routing.Matching;
 namespace DSE.Open.Web.Routing;
 
 #pragma warning disable CS0618 // Type or member is obsolete — UriPath is being phased out in favour of UriSlug
+/// <summary>
+/// A route constraint that matches route values that are valid <see cref="UriPath"/> values.
+/// </summary>
 public class UriPathRouteConstraint : IRouteConstraint, IParameterLiteralNodeMatchingPolicy
 {
     /// <inheritdoc />
@@ -41,6 +44,7 @@ public class UriPathRouteConstraint : IRouteConstraint, IParameterLiteralNodeMat
         return string.IsNullOrEmpty(valueString) || UriPath.IsValidValue(valueString.AsSpan(), true);
     }
 
+    /// <inheritdoc />
     public bool MatchesLiteral(string parameterName, string literal)
     {
         return CheckConstraintCore(literal);

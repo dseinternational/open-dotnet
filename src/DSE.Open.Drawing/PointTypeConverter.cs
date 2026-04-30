@@ -11,16 +11,19 @@ namespace DSE.Open.Drawing;
 /// </summary>
 public class PointTypeConverter : TypeConverter
 {
+    /// <inheritdoc/>
     public override bool CanConvertFrom(ITypeDescriptorContext? context, Type sourceType)
     {
         return sourceType == typeof(string);
     }
 
+    /// <inheritdoc/>
     public override bool CanConvertTo(ITypeDescriptorContext? context, Type? destinationType)
     {
         return destinationType == typeof(string);
     }
 
+    /// <inheritdoc/>
     public override object ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object value)
     {
         if (Point.TryParse(value?.ToString(), out var p))
@@ -31,6 +34,7 @@ public class PointTypeConverter : TypeConverter
         throw new InvalidOperationException($"Cannot convert \"{value}\" into {nameof(Point)}");
     }
 
+    /// <inheritdoc/>
     public override object ConvertTo(ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
     {
         if (value is not Point p)

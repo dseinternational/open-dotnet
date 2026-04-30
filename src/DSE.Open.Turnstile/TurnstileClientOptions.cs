@@ -3,10 +3,16 @@
 
 namespace DSE.Open.Turnstile;
 
+/// <summary>
+/// Options used to configure a <see cref="TurnstileClient"/>.
+/// </summary>
 public sealed class TurnstileClientOptions
 {
     private static readonly Uri s_defaultEndpoint = new("https://challenges.cloudflare.com/turnstile/v0/siteverify");
 
+    /// <summary>
+    /// The Turnstile siteverify endpoint that validation requests are posted to.
+    /// </summary>
     public Uri Endpoint { get; set; } = s_defaultEndpoint;
 
     /// <summary>

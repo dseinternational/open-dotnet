@@ -5,8 +5,14 @@ using System.Collections.Immutable;
 
 namespace DSE.Open.Collections.Generic;
 
+/// <summary>
+/// Provides extension methods for working with dictionaries.
+/// </summary>
 public static class DictionaryExtensions
 {
+    /// <summary>
+    /// Creates a new <see cref="ImmutableDictionary{TKey, TValue}"/> containing the entries of <paramref name="dictionary"/>.
+    /// </summary>
     public static ImmutableDictionary<TKey, TValue> AsImmutable<TKey, TValue>(
         this IEnumerable<KeyValuePair<TKey, TValue>> dictionary)
         where TKey : notnull
@@ -15,6 +21,9 @@ public static class DictionaryExtensions
         return ImmutableDictionary.CreateRange(dictionary);
     }
 
+    /// <summary>
+    /// Creates a new <see cref="ReadOnlyValueDictionary{TKey, TValue}"/> containing the entries of <paramref name="dictionary"/>.
+    /// </summary>
     public static ReadOnlyValueDictionary<TKey, TValue> AsReadOnlyValueDictionary<TKey, TValue>(
         this IEnumerable<KeyValuePair<TKey, TValue>> dictionary)
         where TKey : IEquatable<TKey>
@@ -23,6 +32,9 @@ public static class DictionaryExtensions
         return new(dictionary);
     }
 
+    /// <summary>
+    /// Creates a new <see cref="ValueDictionary{TKey, TValue}"/> containing the entries of <paramref name="dictionary"/>.
+    /// </summary>
     public static ValueDictionary<TKey, TValue> AsValueDictionary<TKey, TValue>(
         this IEnumerable<KeyValuePair<TKey, TValue>> dictionary)
         where TKey : IEquatable<TKey>
@@ -34,6 +46,9 @@ public static class DictionaryExtensions
 
     }
 
+    /// <summary>
+    /// Sets the value of the specified key, replacing any existing entry.
+    /// </summary>
     public static void AddOrSet<TKey, TValue>(
         this IDictionary<TKey, TValue> dictionary,
         KeyValuePair<TKey, TValue> keyValuePair)
@@ -43,6 +58,9 @@ public static class DictionaryExtensions
         dictionary.AddOrSet(keyValuePair.Key, keyValuePair.Value);
     }
 
+    /// <summary>
+    /// Sets the value of <paramref name="key"/> to <paramref name="value"/>, replacing any existing entry.
+    /// </summary>
     public static void AddOrSet<TKey, TValue>(
         this IDictionary<TKey, TValue> dictionary,
         TKey key,
@@ -53,6 +71,9 @@ public static class DictionaryExtensions
         dictionary[key] = value;
     }
 
+    /// <summary>
+    /// Sets the value of each entry in <paramref name="keyValuePairs"/> on <paramref name="dictionary"/>, replacing any existing entries.
+    /// </summary>
     public static void AddOrSetRange<TKey, TValue>(
         this IDictionary<TKey, TValue> dictionary,
         IEnumerable<KeyValuePair<TKey, TValue>> keyValuePairs)

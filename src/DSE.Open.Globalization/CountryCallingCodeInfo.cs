@@ -5,9 +5,15 @@ using System.Runtime.InteropServices;
 
 namespace DSE.Open.Globalization;
 
+/// <summary>
+/// Represents information about an ITU-T country calling code and the territory it is assigned to.
+/// </summary>
 [StructLayout(LayoutKind.Sequential)]
 public sealed class CountryCallingCodeInfo
 {
+    /// <summary>
+    /// An empty (unassigned) <see cref="CountryCallingCodeInfo"/>.
+    /// </summary>
     public static readonly CountryCallingCodeInfo? Empty;
 
     private CountryCallingCodeInfo(uint code, string name)
@@ -16,20 +22,38 @@ public sealed class CountryCallingCodeInfo
         Name = name;
     }
 
+    /// <summary>
+    /// Gets the country calling code.
+    /// </summary>
     public uint Code { get; }
 
+    /// <summary>
+    /// Gets the name of the territory associated with the calling code.
+    /// </summary>
     public string Name { get; }
 
+    /// <summary>
+    /// Returns a value indicating whether the specified value is an assigned country calling code.
+    /// </summary>
+    /// <param name="code">The country calling code to check.</param>
     public static bool IsAssignedCode(uint code)
     {
         return code <= 999u && Array.BinarySearch(AssignedCodes, code) > -1;
     }
 
+    /// <summary>
+    /// Gets all known country calling code information entries.
+    /// </summary>
     public static IEnumerable<CountryCallingCodeInfo> GetInfo()
     {
         return CachedInfo;
     }
 
+    /// <summary>
+    /// Gets all <see cref="CountryCallingCodeInfo"/> entries that match the specified
+    /// country calling code.
+    /// </summary>
+    /// <param name="code">The country calling code.</param>
     public static IEnumerable<CountryCallingCodeInfo> GetInfo(uint code)
     {
         if (s_cachedLookups.TryGetValue(code, out var cached))

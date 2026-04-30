@@ -26,80 +26,143 @@ namespace DSE.Open.Values;
 [StructLayout(LayoutKind.Sequential)]
 public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
 {
+    /// <summary>The path-segment separator ('/').</summary>
     public const char Separator = '/';
+    /// <summary>The dash character ('-').</summary>
     public const char Dash = '-';
 
+    /// <summary>
+    /// An empty <see cref="UriPath"/>.
+    /// </summary>
     public static readonly UriPath Empty = new(default, true);
 
+    /// <summary>
+    /// The maximum length, in characters, of a <see cref="UriPath"/>.
+    /// </summary>
     public const int MaxLength = 512;
 
+    /// <summary>
+    /// Gets the maximum number of characters required when serializing a <see cref="UriPath"/> as text.
+    /// </summary>
     public static int MaxSerializedCharLength => MaxLength;
 
+    /// <summary>
+    /// Initialises a new <see cref="UriPath"/> from the supplied <see cref="CharSequence"/>, validating its contents.
+    /// </summary>
     public UriPath(CharSequence path) : this(path, false)
     {
     }
 
+    /// <summary>
+    /// Initialises a new <see cref="UriPath"/> by parsing the supplied string with the invariant culture.
+    /// </summary>
     public UriPath(string path) : this(CharSequence.Parse(path, CultureInfo.InvariantCulture), false)
     {
     }
 
+    /// <summary>
+    /// Initialises a new <see cref="UriPath"/> from the supplied character memory region, validating its contents.
+    /// </summary>
     public UriPath(ReadOnlyMemory<char> path) : this(new(path), false)
     {
     }
 
+    /// <summary>
+    /// Gets the character at the specified index in the path.
+    /// </summary>
     public char this[int index] => _value[index];
 
+    /// <summary>
+    /// Returns a sub-range of the underlying value as a <see cref="CharSequence"/>.
+    /// </summary>
     public CharSequence Slice(int start, int length)
     {
         return _value.Slice(start, length);
     }
 
+    /// <summary>
+    /// Gets a read-only span over the path's characters.
+    /// </summary>
     public ReadOnlySpan<char> Span => _value.Span;
 
+    /// <summary>
+    /// Gets a value indicating whether the path is empty.
+    /// </summary>
     public bool IsEmpty => _value.IsEmpty;
 
+    /// <summary>
+    /// Gets the length of the path, in characters.
+    /// </summary>
     public int Length => _value.Length;
 
+    /// <summary>
+    /// Determines whether this path ends with <paramref name="value"/>.
+    /// </summary>
     public bool EndsWith(ReadOnlySpan<char> value)
     {
         return _value.EndsWith(value, StringComparison.Ordinal);
     }
 
+    /// <summary>
+    /// Determines whether this path ends with <paramref name="value"/>.
+    /// </summary>
     public bool EndsWith(UriPath value)
     {
         return _value.EndsWith(value._value, StringComparison.Ordinal);
     }
 
+    /// <summary>
+    /// Determines whether this path ends with <paramref name="value"/>.
+    /// </summary>
     public bool EndsWith(CharSequence value)
     {
         return _value.EndsWith(value, StringComparison.Ordinal);
     }
 
+    /// <summary>
+    /// Determines whether this path ends with the specified character.
+    /// </summary>
     public bool EndsWith(char value)
     {
         return _value.EndsWith(value);
     }
 
+    /// <summary>
+    /// Determines whether this path is equal to the supplied string using an ordinal comparison.
+    /// </summary>
     public bool Equals(string value)
     {
         return _value.Equals(value, StringComparison.Ordinal);
     }
 
+    /// <summary>
+    /// Determines whether this path is equal to the supplied character span using an ordinal comparison.
+    /// </summary>
     public bool Equals(ReadOnlySpan<char> value)
     {
         return _value.Equals(value, StringComparison.Ordinal);
     }
 
+    /// <summary>
+    /// Returns the zero-based index of the first occurrence of <paramref name="c"/>, or -1 if not found.
+    /// </summary>
     public int IndexOf(char c)
     {
         return _value.IndexOf(c);
     }
 
+    /// <summary>
+    /// Returns the zero-based index of the last occurrence of <paramref name="c"/>, or -1 if not found.
+    /// </summary>
     public int LastIndexOf(char c)
     {
         return _value.LastIndexOf(c);
     }
 
+    /// <summary>
+    /// Returns the parent path (the portion before the last <see cref="Separator"/>),
+    /// or <see langword="null"/> if there is no parent.
+    /// </summary>
     public UriPath? GetParent()
     {
         if (!_value.IsEmpty)
@@ -115,26 +178,41 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
         return null;
     }
 
+    /// <summary>
+    /// Returns the number of segments in the path (segments are separated by <see cref="Separator"/>).
+    /// </summary>
     public int GetSegmentCount()
     {
         return Length == 0 ? 0 : _value.Span.Count('/') + 1;
     }
 
+    /// <summary>
+    /// Determines whether this path begins with <paramref name="value"/>.
+    /// </summary>
     public bool StartsWith(ReadOnlySpan<char> value)
     {
         return _value.StartsWith(value, StringComparison.Ordinal);
     }
 
+    /// <summary>
+    /// Determines whether this path begins with <paramref name="value"/>.
+    /// </summary>
     public bool StartsWith(UriPath value)
     {
         return _value.StartsWith(value._value, StringComparison.Ordinal);
     }
 
+    /// <summary>
+    /// Determines whether this path begins with <paramref name="value"/>.
+    /// </summary>
     public bool StartsWith(CharSequence value)
     {
         return _value.StartsWith(value, StringComparison.Ordinal);
     }
 
+    /// <summary>
+    /// Determines whether this path begins with the specified character.
+    /// </summary>
     public bool StartsWith(char value)
     {
         return !_value.IsEmpty && _value[0] == value;
@@ -155,11 +233,18 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
         return IsValidOuterChar(c) || c == Separator;
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if <paramref name="value"/> is a valid <see cref="UriPath"/>.
+    /// </summary>
     public static bool IsValidValue(CharSequence value)
     {
         return IsValidValue(value, false);
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if <paramref name="value"/> is a valid <see cref="UriPath"/>,
+    /// optionally permitting leading or trailing <see cref="Separator"/> characters.
+    /// </summary>
     public static bool IsValidValue(CharSequence value, bool ignoreLeadingTrailingSlashes)
     {
         if (value.IsEmpty)
@@ -192,11 +277,18 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
         return inner.Span.All(IsValidInnerChar);
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if <paramref name="value"/> is a valid <see cref="UriPath"/>.
+    /// </summary>
     public static bool IsValidValue(ReadOnlySpan<char> value)
     {
         return IsValidValue(value, false);
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if <paramref name="value"/> is a valid <see cref="UriPath"/>,
+    /// optionally permitting leading or trailing <see cref="Separator"/> characters.
+    /// </summary>
     public static bool IsValidValue(ReadOnlySpan<char> value, bool ignoreLeadingTrailingSlashes)
     {
         if (value.IsEmpty)
@@ -229,11 +321,18 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
         return inner.All(IsValidInnerChar);
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if <paramref name="value"/> is a valid <see cref="UriPath"/>.
+    /// </summary>
     public static bool IsValidValue(string value)
     {
         return IsValidValue(value.AsSpan());
     }
 
+    /// <summary>
+    /// Attempts to parse the supplied character span as a <see cref="UriPath"/>, lower-casing the
+    /// input and trimming a single leading or trailing '/'.
+    /// </summary>
     [SkipLocalsInit]
     public static bool TryParseSanitised(ReadOnlySpan<char> s, out UriPath value)
     {
@@ -274,6 +373,10 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
         return false;
     }
 
+    /// <summary>
+    /// Attempts to parse the supplied string as a <see cref="UriPath"/>, lower-casing the
+    /// input and trimming a single leading or trailing '/'.
+    /// </summary>
     public static bool TryParseSanitised(string? s, out UriPath value)
     {
         return TryParseSanitised(s.AsSpan(), out value);
@@ -305,6 +408,10 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
         return new(combined);
     }
 
+    /// <summary>
+    /// Creates a new <see cref="UriPath"/> by appending <paramref name="path1"/> and <paramref name="path2"/>
+    /// to the current path, separated by <see cref="Separator"/>.
+    /// </summary>
     public UriPath Append(UriPath path1, UriPath path2)
     {
         if (_value.IsEmpty)
@@ -333,6 +440,10 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
         return new(combined);
     }
 
+    /// <summary>
+    /// Creates a new <see cref="UriPath"/> by appending <paramref name="path1"/>, <paramref name="path2"/>
+    /// and <paramref name="path3"/> to the current path, separated by <see cref="Separator"/>.
+    /// </summary>
     public UriPath Append(UriPath path1, UriPath path2, UriPath path3)
     {
         if (_value.IsEmpty)
@@ -368,6 +479,9 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
         return new(combined);
     }
 
+    /// <summary>
+    /// Creates a new <see cref="UriPath"/> by appending the supplied segment string, separated by <see cref="Separator"/>.
+    /// </summary>
     public UriPath AppendSegment(string path)
     {
         return Append(new(path));
@@ -438,6 +552,9 @@ public readonly partial struct UriPath : IComparableValue<UriPath, CharSequence>
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
+    /// <summary>
+    /// Explicitly converts a string to a <see cref="UriPath"/>.
+    /// </summary>
     public static explicit operator UriPath(string value)
     {
         return Parse(value, null);

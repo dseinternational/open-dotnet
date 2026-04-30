@@ -34,12 +34,17 @@ public sealed partial class SessionContextMetadataReaderWriter : IMetadataReader
 {
     private readonly ILogger<SessionContextMetadataReaderWriter> _logger;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SessionContextMetadataReaderWriter"/> class.
+    /// </summary>
+    /// <param name="logger">The logger used to record reader/writer activity.</param>
     public SessionContextMetadataReaderWriter(ILogger<SessionContextMetadataReaderWriter> logger)
     {
         ArgumentNullException.ThrowIfNull(logger);
         _logger = logger;
     }
 
+    /// <inheritdoc/>
     public ValueTask ReadRequestMetadataAsync(
         RequestMetadata request,
         ResultMetadata result,
@@ -84,6 +89,7 @@ public sealed partial class SessionContextMetadataReaderWriter : IMetadataReader
         return ValueTask.CompletedTask;
     }
 
+    /// <inheritdoc/>
     public ValueTask ReadResultMetadataAsync(
         RequestMetadata request,
         ResultMetadata result,
@@ -121,6 +127,7 @@ public sealed partial class SessionContextMetadataReaderWriter : IMetadataReader
         return ValueTask.CompletedTask;
     }
 
+    /// <inheritdoc/>
     public ValueTask WriteRequestMetadataAsync(
         RequestMetadata request,
         ResultMetadata result,
@@ -146,6 +153,7 @@ public sealed partial class SessionContextMetadataReaderWriter : IMetadataReader
         return ValueTask.CompletedTask;
     }
 
+    /// <inheritdoc/>
     public ValueTask WriteResultMetadataAsync(
         RequestMetadata request,
         ResultMetadata result,

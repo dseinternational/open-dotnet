@@ -10,21 +10,33 @@ namespace DSE.Open.Drawing;
 /// </summary>
 public static class SizeFExtensions
 {
+    /// <summary>
+    /// Returns the <see cref="Orientation"/> of the size based on the ratio of width to height.
+    /// </summary>
     public static Orientation GetOrientation(this SizeF size)
     {
         return size.Width > size.Height ? Orientation.Landscape : size.Height > size.Width ? Orientation.Portrait : Orientation.Square;
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if the size's width is greater than its height.
+    /// </summary>
     public static bool IsLandscape(this SizeF size)
     {
         return size.GetOrientation() == Orientation.Landscape;
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if the size's height is greater than its width.
+    /// </summary>
     public static bool IsPortrait(this SizeF size)
     {
         return size.GetOrientation() == Orientation.Portrait;
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if the size's width is equal to its height.
+    /// </summary>
     public static bool IsSquare(this SizeF size)
     {
         return size.GetOrientation() == Orientation.Square;

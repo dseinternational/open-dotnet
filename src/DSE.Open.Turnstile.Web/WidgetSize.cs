@@ -3,8 +3,17 @@
 
 namespace DSE.Open.Turnstile.Web;
 
+/// <summary>
+/// The display size of the Turnstile widget.
+/// </summary>
 public enum WidgetSize
 {
+    /// <summary>
+    /// The standard widget size.
+    /// </summary>
     Normal,
+    /// <summary>
+    /// A compact widget size.
+    /// </summary>
     Compact
 }

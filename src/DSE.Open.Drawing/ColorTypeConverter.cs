@@ -11,12 +11,14 @@ namespace DSE.Open.Drawing;
 /// </summary>
 public class ColorTypeConverter : TypeConverter
 {
+    /// <inheritdoc/>
     public override object ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object value)
     {
         return Color.Parse(value?.ToString()!, culture);
         // Parse will throw on null
     }
 
+    /// <inheritdoc/>
     public override object ConvertTo(ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
     {
         return value is not Color color
@@ -24,6 +26,7 @@ public class ColorTypeConverter : TypeConverter
             : color.ToString();
     }
 
+    /// <inheritdoc/>
     public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext? context)
     {
         return new(new[]
@@ -179,21 +182,25 @@ public class ColorTypeConverter : TypeConverter
         });
     }
 
+    /// <inheritdoc/>
     public override bool GetStandardValuesExclusive(ITypeDescriptorContext? context)
     {
         return false;
     }
 
+    /// <inheritdoc/>
     public override bool GetStandardValuesSupported(ITypeDescriptorContext? context)
     {
         return true;
     }
 
+    /// <inheritdoc/>
     public override bool CanConvertFrom(ITypeDescriptorContext? context, Type sourceType)
     {
         return sourceType == typeof(string);
     }
 
+    /// <inheritdoc/>
     public override bool CanConvertTo(ITypeDescriptorContext? context, Type? destinationType)
     {
         return destinationType == typeof(string);

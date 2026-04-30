@@ -15,8 +15,10 @@ public sealed class TemporaryObservationIdValueGenerator : ValueGenerator<Observ
 {
     private ulong _next = ObservationId.MaxIdValue;
 
+    /// <inheritdoc/>
     public override bool GeneratesTemporaryValues => true;
 
+    /// <inheritdoc/>
     public override ObservationId Next([NotNull] EntityEntry entry)
     {
         return new(Interlocked.Decrement(ref _next));

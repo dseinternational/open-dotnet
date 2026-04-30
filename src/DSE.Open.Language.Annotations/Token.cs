@@ -53,6 +53,9 @@ public record Token
         }
     }
 
+    /// <summary>
+    /// The text of the token as it appears in the sentence.
+    /// </summary>
     [JsonPropertyName("text")]
     public required TokenText Text { get; init; }
 
@@ -62,25 +65,41 @@ public record Token
     [JsonPropertyName("misc")]
     public ReadOnlyAttributeValueCollection Attributes { get; init; } = [];
 
+    /// <summary>
+    /// <see langword="true"/> if the token is a multiword token (its <see cref="Index"/> is a range).
+    /// </summary>
     [JsonIgnore]
     public bool IsMultiwordToken => Index.IsMultiwordIndex;
 
+    /// <summary>
+    /// <see langword="true"/> if the token represents an empty node.
+    /// </summary>
     [JsonIgnore]
     public bool IsEmptyNode => Index.IsEmptyNode;
 
+    /// <summary>
+    /// The syntactic words that comprise this token.
+    /// </summary>
     [JsonPropertyName("words")]
     public ReadOnlyValueCollection<Word> Words { get; init; } = [];
 
+    /// <summary>
+    /// Parses a <see cref="Token"/> from the specified character span.
+    /// </summary>
     public static Token Parse(ReadOnlySpan<char> s)
     {
         return Parse(s, default);
     }
 
+    /// <summary>
+    /// Parses a <see cref="Token"/> from the specified character span using the invariant culture.
+    /// </summary>
     public static Token ParseInvariant(ReadOnlySpan<char> s)
     {
         return Parse(s, CultureInfo.InvariantCulture);
     }
 
+    /// <inheritdoc/>
     public static Token Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
     {
         if (TryParse(s, provider, out var token))

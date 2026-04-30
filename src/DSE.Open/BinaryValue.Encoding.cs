@@ -189,6 +189,9 @@ public readonly partial record struct BinaryValue
         };
     }
 
+    /// <summary>
+    /// Returns a string representation of the value using the specified <paramref name="format"/>.
+    /// </summary>
     public string ToString(BinaryStringEncoding format)
     {
         if (_value.Length == 0)
@@ -213,26 +216,41 @@ public readonly partial record struct BinaryValue
         };
     }
 
+    /// <summary>
+    /// Returns a base 62 encoded string representation of the value.
+    /// </summary>
     public string ToBase62EncodedString()
     {
         return ToString(BinaryStringEncoding.Base62);
     }
 
+    /// <summary>
+    /// Returns a base 64 encoded string representation of the value.
+    /// </summary>
     public string ToBase64EncodedString()
     {
         return ToString(BinaryStringEncoding.Base64);
     }
 
+    /// <summary>
+    /// Returns an upper-case hexadecimal string representation of the value.
+    /// </summary>
     public string ToHexStringUpper()
     {
         return ToString(BinaryStringEncoding.HexUpper);
     }
 
+    /// <summary>
+    /// Returns a lower-case hexadecimal string representation of the value.
+    /// </summary>
     public string ToHexStringLower()
     {
         return ToString(BinaryStringEncoding.HexLower);
     }
 
+    /// <summary>
+    /// Returns a base 64 encoded string representation of the value.
+    /// </summary>
     public string ToBase64String()
     {
         return ToString(BinaryStringEncoding.Base64);

@@ -3,6 +3,9 @@
 
 namespace DSE.Open.Sessions;
 
+/// <summary>
+/// Provides access to the current <see cref="SessionContext"/>.
+/// </summary>
 public interface ISessionContextAccessor
 {
     /// <summary>

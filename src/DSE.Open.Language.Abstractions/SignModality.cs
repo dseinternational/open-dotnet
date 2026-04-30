@@ -31,6 +31,10 @@ public readonly partial struct SignModality
     /// </summary>
     public static int MaxSerializedByteLength => 16;
 
+    /// <summary>
+    /// Returns <see langword="true"/> if <paramref name="value"/> is a defined
+    /// <see cref="SignModality"/> label.
+    /// </summary>
     public static bool IsValidValue(AsciiString value)
     {
         return !value.IsEmpty
@@ -38,6 +42,10 @@ public readonly partial struct SignModality
             && s_validValues.Contains(value);
     }
 
+    /// <summary>
+    /// Initializes a new <see cref="SignModality"/> from a <see cref="string"/>.
+    /// </summary>
+    /// <param name="value">The sign modality label.</param>
     public SignModality(string value) : this((AsciiString)value)
     {
     }
@@ -46,6 +54,7 @@ public readonly partial struct SignModality
     {
     }
 
+    /// <inheritdoc/>
     public ulong GetRepeatableHashCode()
     {
         return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);

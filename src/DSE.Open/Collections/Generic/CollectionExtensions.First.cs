@@ -3,6 +3,9 @@
 
 namespace DSE.Open.Collections.Generic;
 
+/// <summary>
+/// Provides extension methods for retrieving the first element of read-only lists.
+/// </summary>
 public static partial class CollectionExtensionsFirst
 {
     /// <summary>

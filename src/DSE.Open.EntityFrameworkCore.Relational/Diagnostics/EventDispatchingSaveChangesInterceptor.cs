@@ -9,11 +9,21 @@ using Microsoft.Extensions.Logging;
 
 namespace DSE.Open.EntityFrameworkCore.Diagnostics;
 
+/// <summary>
+/// A <see cref="SaveChangesInterceptor"/> that dispatches domain events for entities
+/// implementing <see cref="IEventRaisingEntity"/>. Before-save events are published
+/// prior to persistence, and post-save events are published after changes are saved.
+/// </summary>
 [RequiresDynamicCode("May break functionality when AOT compiling")]
 public sealed partial class EventDispatchingSaveChangesInterceptor : SaveChangesInterceptor
 {
     private readonly ILogger _logger;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="EventDispatchingSaveChangesInterceptor"/> class.
+    /// </summary>
+    /// <param name="eventDispatcher">The dispatcher used to publish domain events.</param>
+    /// <param name="logger">The logger used to record interceptor activity.</param>
     public EventDispatchingSaveChangesInterceptor(
         IDomainEventDispatcher eventDispatcher,
         ILogger<EventDispatchingSaveChangesInterceptor> logger)
@@ -25,8 +35,13 @@ public sealed partial class EventDispatchingSaveChangesInterceptor : SaveChanges
         _logger = logger;
     }
 
+    /// <summary>
+    /// Gets the <see cref="IDomainEventDispatcher"/> used to publish domain events.
+    /// </summary>
     public IDomainEventDispatcher EventDispatcher { get; }
 
+    /// <inheritdoc/>
+    /// <remarks>Synchronous save operations are not supported; throws <see cref="NotImplementedException"/>.</remarks>
     public override InterceptionResult<int> SavingChanges(
         DbContextEventData eventData,
         InterceptionResult<int> result)
@@ -34,6 +49,7 @@ public sealed partial class EventDispatchingSaveChangesInterceptor : SaveChanges
         throw new NotImplementedException("Only async database operations are supported.");
     }
 
+    /// <inheritdoc/>
     public override async ValueTask<InterceptionResult<int>> SavingChangesAsync(
         DbContextEventData eventData,
         InterceptionResult<int> result,
@@ -66,11 +82,14 @@ public sealed partial class EventDispatchingSaveChangesInterceptor : SaveChanges
         return result;
     }
 
+    /// <inheritdoc/>
+    /// <remarks>Synchronous save operations are not supported; throws <see cref="NotImplementedException"/>.</remarks>
     public override int SavedChanges(SaveChangesCompletedEventData eventData, int result)
     {
         throw new NotImplementedException("Only async database operations are supported.");
     }
 
+    /// <inheritdoc/>
     public override async ValueTask<int> SavedChangesAsync(
         SaveChangesCompletedEventData eventData,
         int result,

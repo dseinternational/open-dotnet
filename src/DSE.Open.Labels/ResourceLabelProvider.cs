@@ -12,10 +12,21 @@ namespace DSE.Open.Labels;
 /// <typeparam name="T"></typeparam>
 public abstract class ResourceLabelProvider<T> : LocalizedLabelProvider<T>, IStringLocalizer
 {
+    /// <summary>
+    /// Gets the <see cref="System.Resources.ResourceManager"/> used to resolve label strings.
+    /// </summary>
     public abstract ResourceManager ResourceManager { get; }
 
+    /// <summary>
+    /// When overridden in a derived class, returns the resource key used to look up the label for the
+    /// specified <paramref name="value"/>.
+    /// </summary>
     public abstract string GetLabelKey(T value);
 
+    /// <summary>
+    /// Returns the label for the specified <paramref name="value"/> from the underlying
+    /// <see cref="ResourceManager"/> in the given <paramref name="culture"/>.
+    /// </summary>
     public override string? GetLabel(T value, CultureInfo? culture)
     {
         return ResourceManager.GetString(GetLabelKey(value), culture);

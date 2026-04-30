@@ -7,11 +7,19 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DSE.Open.EntityFrameworkCore.Storage;
 
+/// <summary>
+/// A base entity type configuration for entities that derive from
+/// <see cref="UpdateTimesTrackedEntity{TId}"/>, configuring the id key and the
+/// <c>Created</c> and <c>Updated</c> timestamp properties.
+/// </summary>
+/// <typeparam name="TEntity">The entity type.</typeparam>
+/// <typeparam name="TId">The id type.</typeparam>
 public abstract class UpdateTimesTrackedEntityTypeConfiguration<[DynamicallyAccessedMembers(TrimmingHelper.EntityDynamicallyAccessedMemberTypes)] TEntity, TId>
     : EntityTypeConfiguration<TEntity, TId>
     where TEntity : UpdateTimesTrackedEntity<TId>
     where TId : struct, IEquatable<TId>
 {
+    /// <inheritdoc/>
     public override void Configure(EntityTypeBuilder<TEntity> builder)
     {
         ArgumentNullException.ThrowIfNull(builder);

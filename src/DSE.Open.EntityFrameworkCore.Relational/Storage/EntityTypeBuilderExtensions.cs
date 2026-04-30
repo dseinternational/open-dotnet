@@ -9,8 +9,18 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DSE.Open.EntityFrameworkCore.Storage;
 
+/// <summary>
+/// Provides extension methods for <see cref="EntityTypeBuilder{TEntity}"/>.
+/// </summary>
 public static class EntityTypeBuilderExtensions
 {
+    /// <summary>
+    /// Configures the <see cref="IUpdateTimesTracked.Created"/> and
+    /// <see cref="IUpdateTimesTracked.Updated"/> properties on the entity.
+    /// </summary>
+    /// <typeparam name="TEntity">The entity type.</typeparam>
+    /// <param name="builder">The entity type builder.</param>
+    /// <returns>The same <paramref name="builder"/> instance for chaining.</returns>
     public static EntityTypeBuilder<TEntity> HasUpdateTimes<[DynamicallyAccessedMembers(TrimmingHelper.EntityDynamicallyAccessedMemberTypes)] TEntity>(
         this EntityTypeBuilder<TEntity> builder)
         where TEntity : class, IUpdateTimesTracked
@@ -23,6 +33,15 @@ public static class EntityTypeBuilderExtensions
         return builder;
     }
 
+    /// <summary>
+    /// Configures the <see cref="ITimestamped.Timestamp"/> property on the entity,
+    /// applying the supplied <paramref name="valueConverter"/> or, if not provided,
+    /// <see cref="TimestampToByteArrayConverter.Default"/>.
+    /// </summary>
+    /// <typeparam name="TEntity">The entity type.</typeparam>
+    /// <param name="builder">The entity type builder.</param>
+    /// <param name="valueConverter">An optional value converter for the timestamp property.</param>
+    /// <returns>The same <paramref name="builder"/> instance for chaining.</returns>
     public static EntityTypeBuilder<TEntity> HasTimestamp<[DynamicallyAccessedMembers(TrimmingHelper.EntityDynamicallyAccessedMemberTypes)] TEntity>(
         this EntityTypeBuilder<TEntity> builder,
         ValueConverter? valueConverter = null)

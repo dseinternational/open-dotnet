@@ -9,12 +9,21 @@ using DSE.Open.Runtime.Helpers;
 
 namespace DSE.Open.Values.Text.Json.Serialization;
 
+/// <summary>
+/// A <see cref="JsonConverter{T}"/> that reads and writes <typeparamref name="TValue"/> as a JSON string,
+/// using <see cref="ISpanParsable{TSelf}"/> and <see cref="ISpanFormattable"/> on the value to parse and
+/// format characters within stack- or pool-allocated buffers up to <see cref="ISpanSerializable{TSelf}.MaxSerializedCharLength"/>.
+/// </summary>
 public sealed class JsonSpanSerializableValueConverter<TValue, T> : JsonConverter<TValue>
     where T : IEquatable<T>, ISpanParsable<T>, ISpanFormattable
     where TValue : struct, IValue<TValue, T>, ISpanSerializable<TValue>
 {
+    /// <summary>
+    /// A shared default instance of the converter.
+    /// </summary>
     public static readonly JsonSpanSerializableValueConverter<TValue, T> Default = new();
 
+    /// <inheritdoc/>
     [SkipLocalsInit]
     public override TValue Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
@@ -52,6 +61,7 @@ public sealed class JsonSpanSerializableValueConverter<TValue, T> : JsonConverte
         }
     }
 
+    /// <inheritdoc/>
     [SkipLocalsInit]
     public override void Write(Utf8JsonWriter writer, TValue value, JsonSerializerOptions options)
     {

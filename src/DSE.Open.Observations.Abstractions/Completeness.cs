@@ -25,17 +25,22 @@ public readonly partial struct Completeness
     private const byte DevelopingValue = 50;
     private const byte CompleteValue = 90;
 
+    /// <inheritdoc/>
     public static int MaxSerializedCharLength => 2;
 
+    /// <inheritdoc/>
     public static int MaxSerializedByteLength => 2;
 
+    /// <inheritdoc/>
     public MeasurementValueType ValueType => MeasurementValueType.Ordinal;
 
+    /// <inheritdoc/>
     public static bool IsValidValue(byte value)
     {
         return value is PartialValue or DevelopingValue or CompleteValue;
     }
 
+    /// <inheritdoc/>
     public ulong GetRepeatableHashCode()
     {
         return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);
@@ -46,6 +51,7 @@ public readonly partial struct Completeness
         return IObservationValue.ThrowValueMismatchException<bool>();
     }
 
+    /// <inheritdoc/>
     public byte GetOrdinal()
     {
         return _value;
@@ -71,9 +77,18 @@ public readonly partial struct Completeness
         return IObservationValue.ThrowValueMismatchException<decimal>();
     }
 
+    /// <summary>
+    /// Indicates that the subject is partially complete.
+    /// </summary>
     public static Completeness Partial => new(PartialValue);
 
+    /// <summary>
+    /// Indicates that the subject is developing toward completeness.
+    /// </summary>
     public static Completeness Developing => new(DevelopingValue);
 
+    /// <summary>
+    /// Indicates that the subject is complete.
+    /// </summary>
     public static Completeness Complete => new(CompleteValue);
 }

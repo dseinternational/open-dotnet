@@ -3,6 +3,9 @@
 
 namespace DSE.Open.Data.SqlClient;
 
+/// <summary>
+/// Provides constants for selected SQL Server error numbers.
+/// </summary>
 public static class SqlServerErrorCodes
 {
     // https://learn.microsoft.com/en-us/sql/relational-databases/errors-events/database-engine-events-and-errors-3000-to-3999?view=sql-server-ver16

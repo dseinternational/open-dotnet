@@ -40,9 +40,15 @@ namespace DSE.Open.Observations;
 [JsonDerivedType(typeof(Observation<Completeness, SentenceId>), (int)MeasureType.CompletenessSentence)]
 public abstract class Observation : IObservation, IEquatable<Observation>, IRepeatableHash64
 {
+    /// <summary>
+    /// The earliest permitted value of <see cref="Time"/> for any observation.
+    /// </summary>
     public static readonly DateTimeOffset MinimumObservationTime =
         new(2000, 1, 1, 0, 0, 0, TimeSpan.Zero);
 
+    /// <summary>
+    /// The earliest permitted value of <see cref="Recorded"/> for any observation.
+    /// </summary>
     public static readonly DateTimeOffset MinimumRecordedTime =
         new(2025, 1, 1, 0, 0, 0, TimeSpan.Zero);
 
@@ -209,14 +215,28 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
 
 #pragma warning restore CA1033 // Interface methods should be callable by child types
 
+    /// <summary>
+    /// When overridden in a derived class, returns the boxed observation value used to implement
+    /// <see cref="IObservation.Value"/>.
+    /// </summary>
     protected abstract object GetValueCore();
 
+    /// <summary>
+    /// When overridden in a derived class, returns the boxed first parameter used to implement
+    /// <see cref="IObservation.Parameter"/>, or <see langword="null"/> if the observation has no parameter.
+    /// </summary>
     protected abstract object? GetParameterCore();
 
+    /// <summary>
+    /// When overridden in a derived class, returns the boxed second parameter used to implement
+    /// <see cref="IObservation.Parameter2"/>, or <see langword="null"/> if the observation has no second parameter.
+    /// </summary>
     protected abstract object? GetParameter2Core();
 
+    /// <inheritdoc/>
     public abstract double ConvertValueToDouble();
 
+    /// <inheritdoc/>
     public abstract decimal ConvertValueToDecimal();
 
     /// <summary>
@@ -232,11 +252,17 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
         return _measurementHashCode ??= GetMeasurementHashCodeCore();
     }
 
+    /// <summary>
+    /// When overridden in a derived class, computes the value returned by <see cref="GetMeasurementHashCode"/>.
+    /// The default implementation hashes only the <see cref="MeasureId"/>.
+    /// </summary>
+    /// <returns>A hash code that identifies the measurement (measure plus any parameters).</returns>
     protected virtual int GetMeasurementHashCodeCore()
     {
         return HashCode.Combine(MeasureId);
     }
 
+    /// <inheritdoc/>
     public virtual bool Equals([NotNullWhen(true)] Observation? other)
     {
         return other is not null &&
@@ -246,16 +272,19 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
             MeasureId == other.MeasureId;
     }
 
+    /// <inheritdoc/>
     public override bool Equals([NotNullWhen(true)] object? obj)
     {
         return Equals(obj as Observation);
     }
 
+    /// <inheritdoc/>
     public override int GetHashCode()
     {
         return HashCode.Combine(Id, Time, Recorded, MeasureId);
     }
 
+    /// <inheritdoc/>
     public override string ToString()
     {
         return $"{{ id: {Id}, time: {Time:u}, measure: {MeasureId} }}";
@@ -293,6 +322,15 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
         return new Observation<TValue>(measure, value, timeProvider);
     }
 
+    /// <summary>
+    /// Creates an observation with a single measurement value recorded at a historical
+    /// <paramref name="time"/>; the <see cref="Recorded"/> timestamp is set from
+    /// <see cref="TimeProvider.System"/>.
+    /// </summary>
+    /// <typeparam name="TValue">The type of the observed value.</typeparam>
+    /// <param name="measure">The measure the observation is for.</param>
+    /// <param name="value">The observed value.</param>
+    /// <param name="time">The time at which the observation was originally made.</param>
     public static Observation<TValue> CreateHistorical<TValue>(
         IMeasure<TValue> measure,
         TValue value,
@@ -302,6 +340,16 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
         return CreateHistorical(measure, value, time, TimeProvider.System);
     }
 
+    /// <summary>
+    /// Creates an observation with a single measurement value recorded at a historical
+    /// <paramref name="time"/>; the <see cref="Recorded"/> timestamp is obtained from
+    /// <paramref name="timeProvider"/>.
+    /// </summary>
+    /// <typeparam name="TValue">The type of the observed value.</typeparam>
+    /// <param name="measure">The measure the observation is for.</param>
+    /// <param name="value">The observed value.</param>
+    /// <param name="time">The time at which the observation was originally made.</param>
+    /// <param name="timeProvider">The time provider used to obtain the recorded time.</param>
     public static Observation<TValue> CreateHistorical<TValue>(
         IMeasure<TValue> measure,
         TValue value,
@@ -352,6 +400,17 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
         return new Observation<TValue, TParam>(measure, parameter, value, timeProvider);
     }
 
+    /// <summary>
+    /// Creates an observation with a single measurement value and a single parameter, recorded
+    /// at a historical <paramref name="time"/>; the <see cref="Recorded"/> timestamp is set from
+    /// <see cref="TimeProvider.System"/>.
+    /// </summary>
+    /// <typeparam name="TValue">The type of the observed value.</typeparam>
+    /// <typeparam name="TParam">The type of the parameter.</typeparam>
+    /// <param name="measure">The measure the observation is for.</param>
+    /// <param name="parameter">The parameter qualifying the observation.</param>
+    /// <param name="value">The observed value.</param>
+    /// <param name="time">The time at which the observation was originally made.</param>
     public static Observation<TValue, TParam> CreateHistorical<TValue, TParam>(
         IMeasure<TValue, TParam> measure,
         TParam parameter,
@@ -363,6 +422,18 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
         return CreateHistorical(measure, parameter, value, time, TimeProvider.System);
     }
 
+    /// <summary>
+    /// Creates an observation with a single measurement value and a single parameter, recorded
+    /// at a historical <paramref name="time"/>; the <see cref="Recorded"/> timestamp is obtained
+    /// from <paramref name="timeProvider"/>.
+    /// </summary>
+    /// <typeparam name="TValue">The type of the observed value.</typeparam>
+    /// <typeparam name="TParam">The type of the parameter.</typeparam>
+    /// <param name="measure">The measure the observation is for.</param>
+    /// <param name="parameter">The parameter qualifying the observation.</param>
+    /// <param name="value">The observed value.</param>
+    /// <param name="time">The time at which the observation was originally made.</param>
+    /// <param name="timeProvider">The time provider used to obtain the recorded time.</param>
     public static Observation<TValue, TParam> CreateHistorical<TValue, TParam>(
         IMeasure<TValue, TParam> measure,
         TParam parameter,
@@ -375,6 +446,11 @@ public abstract class Observation : IObservation, IEquatable<Observation>, IRepe
         return new Observation<TValue, TParam>(measure, parameter, value, time, timeProvider);
     }
 
+    /// <summary>
+    /// Returns a repeatable 64-bit hash that incorporates <see cref="Id"/>, <see cref="Time"/>,
+    /// <see cref="Recorded"/> and <see cref="MeasureId"/>. Derived types extend this to also
+    /// include the value and any parameters.
+    /// </summary>
     public virtual ulong GetRepeatableHashCode()
     {
         var recordedHash = Recorded.HasValue
@@ -405,12 +481,28 @@ public sealed class Observation<TValue>
       IEquatable<Observation<TValue>>
     where TValue : struct, IEquatable<TValue>, IObservationValue
 {
+    /// <summary>
+    /// Initializes a new <see cref="Observation{TValue}"/> with a value and a timestamp obtained
+    /// from <paramref name="timeProvider"/>.
+    /// </summary>
+    /// <param name="measure">The measure the observation is for.</param>
+    /// <param name="value">The observed value.</param>
+    /// <param name="timeProvider">The time provider used to obtain the observation time.</param>
     public Observation(IMeasure measure, TValue value, TimeProvider timeProvider)
         : base(measure, timeProvider)
     {
         Value = value;
     }
 
+    /// <summary>
+    /// Initializes a new <see cref="Observation{TValue}"/> with a value and an explicit historical
+    /// <paramref name="time"/>; the <see cref="Observation.Recorded"/> timestamp is obtained from
+    /// <paramref name="timeProvider"/>.
+    /// </summary>
+    /// <param name="measure">The measure the observation is for.</param>
+    /// <param name="value">The observed value.</param>
+    /// <param name="time">The time at which the observation was originally made.</param>
+    /// <param name="timeProvider">The time provider used to obtain the recorded time.</param>
     public Observation(IMeasure measure, TValue value, DateTimeOffset time, TimeProvider timeProvider)
         : base(measure, time, timeProvider)
     {
@@ -460,20 +552,24 @@ public sealed class Observation<TValue>
         Value = value;
     }
 
+    /// <inheritdoc/>
     [JsonPropertyName("v")]
     [JsonPropertyOrder(-1)]
     public TValue Value { get; }
 
+    /// <inheritdoc/>
     public override bool Equals([NotNullWhen(true)] object? obj)
     {
         return Equals(obj as Observation<TValue>);
     }
 
+    /// <inheritdoc/>
     public override bool Equals([NotNullWhen(true)] Observation? other)
     {
         return Equals(other as Observation<TValue>);
     }
 
+    /// <inheritdoc/>
     public bool Equals([NotNullWhen(true)] Observation<TValue>? other)
     {
         return other is not null &&
@@ -481,11 +577,13 @@ public sealed class Observation<TValue>
                base.Equals(other);
     }
 
+    /// <inheritdoc/>
     public override int GetHashCode()
     {
         return HashCode.Combine(Value, base.GetHashCode());
     }
 
+    /// <inheritdoc/>
     public override ulong GetRepeatableHashCode()
     {
         if (!RepeatableHash64Provider.Default.TryGetRepeatableHashCode(Value, out var valueHash))
@@ -500,31 +598,37 @@ public sealed class Observation<TValue>
             valueHash);
     }
 
+    /// <inheritdoc/>
     public override string ToString()
     {
         return $"{{ id: {Id}, time: {Time:u}, measure: {MeasureId}, value: {Value} }}";
     }
 
+    /// <inheritdoc/>
     protected override object GetValueCore()
     {
         return Value;
     }
 
+    /// <inheritdoc/>
     protected override object? GetParameterCore()
     {
         return null;
     }
 
+    /// <inheritdoc/>
     protected override object? GetParameter2Core()
     {
         return null;
     }
 
+    /// <inheritdoc/>
     public override double ConvertValueToDouble()
     {
         return Value.ConvertToDouble();
     }
 
+    /// <inheritdoc/>
     public override decimal ConvertValueToDecimal()
     {
         return Value.ConvertToDecimal();
@@ -548,6 +652,14 @@ public sealed class Observation<TValue, TParam>
     where TValue : struct, IEquatable<TValue>, IObservationValue
     where TParam : struct, IEquatable<TParam>
 {
+    /// <summary>
+    /// Initializes a new <see cref="Observation{TValue, TParam}"/> with a parameter and value, and a
+    /// timestamp obtained from <paramref name="timeProvider"/>.
+    /// </summary>
+    /// <param name="measure">The measure the observation is for.</param>
+    /// <param name="parameter">The parameter qualifying the observation.</param>
+    /// <param name="value">The observed value.</param>
+    /// <param name="timeProvider">The time provider used to obtain the observation time.</param>
     public Observation(
         IMeasure measure,
         TParam parameter,
@@ -559,6 +671,16 @@ public sealed class Observation<TValue, TParam>
         Value = value;
     }
 
+    /// <summary>
+    /// Initializes a new <see cref="Observation{TValue, TParam}"/> with a parameter, value and an
+    /// explicit historical <paramref name="time"/>; the <see cref="Observation.Recorded"/> timestamp
+    /// is obtained from <paramref name="timeProvider"/>.
+    /// </summary>
+    /// <param name="measure">The measure the observation is for.</param>
+    /// <param name="parameter">The parameter qualifying the observation.</param>
+    /// <param name="value">The observed value.</param>
+    /// <param name="time">The time at which the observation was originally made.</param>
+    /// <param name="timeProvider">The time provider used to obtain the recorded time.</param>
     public Observation(
         IMeasure measure,
         TParam parameter,
@@ -595,6 +717,17 @@ public sealed class Observation<TValue, TParam>
         Value = value;
     }
 
+    /// <summary>
+    /// Initializes a new <see cref="Observation{TValue, TParam}"/> from previously recorded data with
+    /// no explicit recorded timestamp. The <paramref name="time"/> is validated against the receiver's
+    /// wall clock supplied by <paramref name="timeProvider"/>.
+    /// </summary>
+    /// <param name="id">The identifier of the observation.</param>
+    /// <param name="time">The time at which the observation was made.</param>
+    /// <param name="measureId">The identifier of the measure.</param>
+    /// <param name="parameter">The parameter qualifying the observation.</param>
+    /// <param name="value">The observed value.</param>
+    /// <param name="timeProvider">The time provider used to validate <paramref name="time"/>.</param>
     public Observation(
         ObservationId id,
         DateTimeOffset time,
@@ -606,6 +739,18 @@ public sealed class Observation<TValue, TParam>
     {
     }
 
+    /// <summary>
+    /// Initializes a new <see cref="Observation{TValue, TParam}"/> from previously recorded data with
+    /// an explicit <paramref name="recorded"/> timestamp. The <paramref name="time"/> is validated
+    /// against the receiver's wall clock supplied by <paramref name="timeProvider"/>.
+    /// </summary>
+    /// <param name="id">The identifier of the observation.</param>
+    /// <param name="time">The time at which the observation was made.</param>
+    /// <param name="recorded">The time at which the observation was recorded, if different from <paramref name="time"/>.</param>
+    /// <param name="measureId">The identifier of the measure.</param>
+    /// <param name="parameter">The parameter qualifying the observation.</param>
+    /// <param name="value">The observed value.</param>
+    /// <param name="timeProvider">The time provider used to validate <paramref name="time"/>.</param>
     public Observation(
         ObservationId id,
         DateTimeOffset time,
@@ -620,24 +765,29 @@ public sealed class Observation<TValue, TParam>
         Value = value;
     }
 
+    /// <inheritdoc/>
     [JsonPropertyName("p")]
     [JsonPropertyOrder(-100)]
     public TParam Parameter { get; }
 
+    /// <inheritdoc/>
     [JsonPropertyName("v")]
     [JsonPropertyOrder(-1)]
     public TValue Value { get; }
 
+    /// <inheritdoc/>
     public override bool Equals([NotNullWhen(true)] object? obj)
     {
         return Equals(obj as Observation<TValue, TParam>);
     }
 
+    /// <inheritdoc/>
     public override bool Equals([NotNullWhen(true)] Observation? other)
     {
         return Equals(other as Observation<TValue, TParam>);
     }
 
+    /// <inheritdoc/>
     public bool Equals([NotNullWhen(true)] Observation<TValue, TParam>? other)
     {
         return other is not null &&
@@ -646,11 +796,13 @@ public sealed class Observation<TValue, TParam>
             base.Equals(other);
     }
 
+    /// <inheritdoc/>
     public override int GetHashCode()
     {
         return HashCode.Combine(Parameter, Value, base.GetHashCode());
     }
 
+    /// <inheritdoc/>
     public override ulong GetRepeatableHashCode()
     {
         if (!RepeatableHash64Provider.Default.TryGetRepeatableHashCode(Parameter, out var paramHash))
@@ -673,6 +825,7 @@ public sealed class Observation<TValue, TParam>
             valueHash);
     }
 
+    /// <inheritdoc/>
     public override string ToString()
     {
         return $"{{ id: {Id}, time: {Time:u}, measure: {MeasureId}, parameter: {Parameter}, value: {Value} }}";
@@ -684,26 +837,31 @@ public sealed class Observation<TValue, TParam>
         return HashCode.Combine(base.GetMeasurementHashCodeCore(), Parameter);
     }
 
+    /// <inheritdoc/>
     protected override object GetValueCore()
     {
         return Value;
     }
 
+    /// <inheritdoc/>
     protected override object? GetParameterCore()
     {
         return Parameter;
     }
 
+    /// <inheritdoc/>
     protected override object? GetParameter2Core()
     {
         return null;
     }
 
+    /// <inheritdoc/>
     public override double ConvertValueToDouble()
     {
         return Value.ConvertToDouble();
     }
 
+    /// <inheritdoc/>
     public override decimal ConvertValueToDecimal()
     {
         return Value.ConvertToDecimal();

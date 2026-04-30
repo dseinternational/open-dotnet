@@ -13,26 +13,42 @@ namespace DSE.Open;
 
 public readonly partial record struct BinaryValue
 {
+    /// <summary>
+    /// Decodes a base 62 encoded string into a <see cref="BinaryValue"/>.
+    /// </summary>
     public static BinaryValue FromBase62(string value)
     {
         return FromEncodedString(value, BinaryStringEncoding.Base62);
     }
 
+    /// <summary>
+    /// Decodes a base 64 encoded string into a <see cref="BinaryValue"/>.
+    /// </summary>
     public static BinaryValue FromBase64(string value)
     {
         return FromEncodedString(value, BinaryStringEncoding.Base64);
     }
 
+    /// <summary>
+    /// Decodes a lower-case hexadecimal string into a <see cref="BinaryValue"/>.
+    /// </summary>
     public static BinaryValue FromHexLower(string value)
     {
         return FromEncodedString(value, BinaryStringEncoding.HexLower);
     }
 
+    /// <summary>
+    /// Decodes an upper-case hexadecimal string into a <see cref="BinaryValue"/>.
+    /// </summary>
     public static BinaryValue FromHexUpper(string value)
     {
         return FromEncodedString(value, BinaryStringEncoding.HexUpper);
     }
 
+    /// <summary>
+    /// Decodes a string into a <see cref="BinaryValue"/> using the specified <paramref name="encoding"/>.
+    /// </summary>
+    /// <exception cref="FormatException"><paramref name="value"/> is not valid for the specified encoding.</exception>
     public static BinaryValue FromEncodedString(string value, BinaryStringEncoding encoding)
     {
         ArgumentNullException.ThrowIfNull(value);
@@ -59,24 +75,36 @@ public readonly partial record struct BinaryValue
         return new(encoding.GetBytes(value), true);
     }
 
+    /// <summary>
+    /// Attempts to decode a base 62 encoded string into a <see cref="BinaryValue"/>.
+    /// </summary>
     public static bool TryFromBase62EncodedString(string value, out BinaryValue binaryValue)
     {
         ArgumentNullException.ThrowIfNull(value);
         return TryFromEncodedString(value, BinaryStringEncoding.Base62, out binaryValue);
     }
 
+    /// <summary>
+    /// Attempts to decode a base 64 encoded string into a <see cref="BinaryValue"/>.
+    /// </summary>
     public static bool TryFromBase64EncodedString(string value, out BinaryValue binaryValue)
     {
         ArgumentNullException.ThrowIfNull(value);
         return TryFromEncodedString(value, BinaryStringEncoding.Base64, out binaryValue);
     }
 
+    /// <summary>
+    /// Attempts to decode <paramref name="value"/> into a <see cref="BinaryValue"/> using the specified <paramref name="encoding"/>.
+    /// </summary>
     public static bool TryFromEncodedString(string value, BinaryStringEncoding encoding, out BinaryValue binaryValue)
     {
         ArgumentNullException.ThrowIfNull(value);
         return TryFromEncodedChars(value.AsSpan(), encoding, out binaryValue);
     }
 
+    /// <summary>
+    /// Attempts to decode the supplied characters into a <see cref="BinaryValue"/> using the specified <paramref name="encoding"/>.
+    /// </summary>
     public static bool TryFromEncodedChars(ReadOnlySpan<char> value, BinaryStringEncoding encoding, out BinaryValue binaryValue)
     {
         return encoding switch
@@ -89,6 +117,9 @@ public readonly partial record struct BinaryValue
         };
     }
 
+    /// <summary>
+    /// Attempts to decode the supplied UTF-8 bytes into a <see cref="BinaryValue"/> using the specified <paramref name="encoding"/>.
+    /// </summary>
     public static bool TryFromEncodedBytes(ReadOnlySpan<byte> value, BinaryStringEncoding encoding, out BinaryValue binaryValue)
     {
         return encoding switch

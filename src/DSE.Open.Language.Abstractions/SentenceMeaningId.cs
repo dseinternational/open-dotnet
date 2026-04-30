@@ -23,24 +23,51 @@ public readonly partial struct SentenceMeaningId
       IUtf8SpanSerializable<SentenceMeaningId>,
       IRepeatableHash64
 {
+    /// <summary>
+    /// The maximum number of characters used to serialize a
+    /// <see cref="SentenceMeaningId"/> value.
+    /// </summary>
     public static int MaxSerializedCharLength => 16;
 
+    /// <summary>
+    /// The maximum number of bytes used to serialize a
+    /// <see cref="SentenceMeaningId"/> value in UTF-8.
+    /// </summary>
     public static int MaxSerializedByteLength => 16;
 
+    /// <summary>
+    /// Initializes a new <see cref="SentenceMeaningId"/> from the given <see cref="ulong"/>.
+    /// </summary>
+    /// <param name="value">The id value.</param>
     public SentenceMeaningId(ulong value) : this(value, false)
     {
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if <paramref name="value"/> is within the
+    /// range of valid <see cref="SentenceMeaningId"/> values.
+    /// </summary>
     public static bool IsValidValue(ulong value)
     {
         return value is <= LanguageIds.MaxIdValue and >= LanguageIds.MinIdValue;
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if <paramref name="value"/> is within the
+    /// range of valid <see cref="SentenceMeaningId"/> values.
+    /// </summary>
     public static bool IsValidValue(long value)
     {
         return value is <= ((long)LanguageIds.MaxIdValue) and >= ((long)LanguageIds.MinIdValue);
     }
 
+    /// <summary>
+    /// Attempts to create a <see cref="SentenceMeaningId"/> from a <see cref="long"/>.
+    /// </summary>
+    /// <param name="value">The id value.</param>
+    /// <param name="id">When this method returns, contains the resulting
+    /// <see cref="SentenceMeaningId"/> if the conversion succeeded; otherwise the default value.</param>
+    /// <returns><see langword="true"/> if the value was within the valid range; otherwise <see langword="false"/>.</returns>
     public static bool TryFromInt64(long value, out SentenceMeaningId id)
     {
         if (IsValidValue(value))
@@ -55,6 +82,12 @@ public readonly partial struct SentenceMeaningId
         }
     }
 
+    /// <summary>
+    /// Creates a <see cref="SentenceMeaningId"/> from a <see cref="long"/>.
+    /// </summary>
+    /// <param name="value">The id value.</param>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="value"/> is
+    /// outside the range of valid <see cref="SentenceMeaningId"/> values.</exception>
     public static SentenceMeaningId FromInt64(long value)
     {
         if (!IsValidValue(value))
@@ -65,6 +98,12 @@ public readonly partial struct SentenceMeaningId
         return new SentenceMeaningId((ulong)value);
     }
 
+    /// <summary>
+    /// Creates a <see cref="SentenceMeaningId"/> from a <see cref="ulong"/>.
+    /// </summary>
+    /// <param name="value">The id value.</param>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="value"/> is
+    /// outside the range of valid <see cref="SentenceMeaningId"/> values.</exception>
     public static SentenceMeaningId FromUInt64(ulong value)
     {
         if (!IsValidValue(value))
@@ -75,11 +114,17 @@ public readonly partial struct SentenceMeaningId
         return new SentenceMeaningId(value);
     }
 
+    /// <summary>
+    /// Converts a <see cref="long"/> to a <see cref="SentenceMeaningId"/>.
+    /// </summary>
     public static explicit operator SentenceMeaningId(long value)
     {
         return FromInt64(value);
     }
 
+    /// <summary>
+    /// Returns the <see cref="long"/> representation of this id.
+    /// </summary>
     public long ToInt64()
     {
         unchecked
@@ -88,16 +133,25 @@ public readonly partial struct SentenceMeaningId
         }
     }
 
+    /// <summary>
+    /// Returns the <see cref="ulong"/> representation of this id.
+    /// </summary>
     public ulong ToUInt64()
     {
         return _value;
     }
 
+    /// <summary>
+    /// Converts a <see cref="SentenceMeaningId"/> to a <see cref="long"/>.
+    /// </summary>
     public static implicit operator long(SentenceMeaningId value)
     {
         return value.ToInt64();
     }
 
+    /// <summary>
+    /// Returns a randomly-generated <see cref="SentenceMeaningId"/>.
+    /// </summary>
     public static SentenceMeaningId GetRandomId()
     {
         return (SentenceMeaningId)LanguageIds.GetRandomIdValue();
@@ -141,6 +195,7 @@ public readonly partial struct SentenceMeaningId
         }
     }
 
+    /// <inheritdoc/>
     public ulong GetRepeatableHashCode()
     {
         return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);

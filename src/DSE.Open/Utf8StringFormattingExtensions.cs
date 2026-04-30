@@ -8,8 +8,14 @@ using DSE.Open.Diagnostics;
 
 namespace DSE.Open;
 
+/// <summary>
+/// Extensions that format primitive values directly to a <see cref="Utf8String"/>.
+/// </summary>
 public static class Utf8StringFormattingExtensions
 {
+    /// <summary>
+    /// Formats <paramref name="value"/> as UTF-8 and returns it as a <see cref="Utf8String"/>.
+    /// </summary>
     [SkipLocalsInit]
     public static Utf8String ToUtf8String(this DateTime value, StandardFormat format = default)
     {
@@ -24,6 +30,9 @@ public static class Utf8StringFormattingExtensions
         return default; // unreachable
     }
 
+    /// <summary>
+    /// Formats <paramref name="value"/> as UTF-8 and returns it as a <see cref="Utf8String"/>.
+    /// </summary>
     [SkipLocalsInit]
     public static Utf8String ToUtf8String(this DateTimeOffset value, StandardFormat format = default)
     {
@@ -38,6 +47,9 @@ public static class Utf8StringFormattingExtensions
         return default; // unreachable
     }
 
+    /// <summary>
+    /// Formats <paramref name="value"/> as UTF-8 and returns it as a <see cref="Utf8String"/>.
+    /// </summary>
     [SkipLocalsInit]
     public static Utf8String ToUtf8String(this short value, StandardFormat format = default)
     {
@@ -52,6 +64,9 @@ public static class Utf8StringFormattingExtensions
         return default; // unreachable
     }
 
+    /// <summary>
+    /// Formats <paramref name="value"/> as UTF-8 and returns it as a <see cref="Utf8String"/>.
+    /// </summary>
     [SkipLocalsInit]
     public static Utf8String ToUtf8String(this int value, StandardFormat format = default)
     {
@@ -66,6 +81,9 @@ public static class Utf8StringFormattingExtensions
         return default; // unreachable
     }
 
+    /// <summary>
+    /// Formats <paramref name="value"/> as UTF-8 and returns it as a <see cref="Utf8String"/>.
+    /// </summary>
     [SkipLocalsInit]
     public static Utf8String ToUtf8String(this long value, StandardFormat format = default)
     {

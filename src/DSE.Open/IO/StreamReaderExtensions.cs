@@ -3,6 +3,9 @@
 
 namespace DSE.Open.IO;
 
+/// <summary>
+/// Provides extension methods for <see cref="StreamReader"/>.
+/// </summary>
 public static class StreamReaderExtensions
 {
     /// <summary>

@@ -5,8 +5,14 @@ using System.Data.SqlTypes;
 
 namespace DSE.Open.Data.SqlClient;
 
+/// <summary>
+/// Provides helper methods for throwing SQL-related exceptions.
+/// </summary>
 public static class SqlExceptionHelper
 {
+    /// <summary>
+    /// Throws a <see cref="SqlNullValueException"/> with the supplied message and inner exception.
+    /// </summary>
     public static void ThrowSqlNullValueException(string? message = null, Exception? exception = null)
     {
         throw new SqlNullValueException(message, exception);

@@ -99,6 +99,10 @@ public static partial class NumberHelper
         }
     }
 
+    /// <summary>
+    /// Tries to convert a <typeparamref name="TOther"/> value to a <see cref="long"/>, saturating values
+    /// outside the representable range to <see cref="long.MinValue"/> or <see cref="long.MaxValue"/>.
+    /// </summary>
     public static bool TryConvertToInt64Saturating<TOther>(TOther value, out long result)
         where TOther : INumberBase<TOther>
     {
@@ -164,6 +168,10 @@ public static partial class NumberHelper
         }
     }
 
+    /// <summary>
+    /// Tries to convert a <typeparamref name="TOther"/> value to a <see cref="long"/>, truncating values
+    /// outside the representable range.
+    /// </summary>
     public static bool TryConvertToInt64Truncating<TOther>(TOther value, out long result)
         where TOther : INumberBase<TOther>
     {

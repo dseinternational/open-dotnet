@@ -14,6 +14,9 @@ using DSE.Open.Values.Text.Json.Serialization;
 
 namespace DSE.Open.Values;
 
+/// <summary>
+/// An ASCII identifier, optionally prefixed by a short tag separated with <see cref="PrefixDelimiter"/>.
+/// </summary>
 [EquatableValue]
 [JsonConverter(typeof(JsonUtf8SpanSerializableValueConverter<Identifier, AsciiString>))]
 [StructLayout(LayoutKind.Sequential)]
@@ -23,6 +26,9 @@ public readonly partial struct Identifier : IEquatableValue<Identifier, AsciiStr
     IUtf8SpanSerializable<Identifier>,
     IRepeatableHash64
 {
+    /// <summary>
+    /// The default length used for newly generated identifiers, excluding any prefix.
+    /// </summary>
     public const int DefaultLength = 48;
 
     /// <summary>
@@ -45,12 +51,24 @@ public readonly partial struct Identifier : IEquatableValue<Identifier, AsciiStr
     /// </summary>
     public const int MaxPrefixLength = 23;
 
+    /// <summary>
+    /// The maximum total length of an identifier, including any prefix and delimiter.
+    /// </summary>
     public const int MaxLength = MaxPrefixLength + MaxIdLength;
 
+    /// <summary>
+    /// Gets the maximum number of characters required when serializing an <see cref="Identifier"/> as text.
+    /// </summary>
     public static int MaxSerializedCharLength => MaxLength;
 
+    /// <summary>
+    /// Gets the maximum number of bytes required when serializing an <see cref="Identifier"/> as UTF-8.
+    /// </summary>
     public static int MaxSerializedByteLength => MaxLength;
 
+    /// <summary>
+    /// The character used to separate the prefix from the identifier value.
+    /// </summary>
     public const char PrefixDelimiter = '_';
 
     private const int ValidIdByteCount = 62;
@@ -63,6 +81,9 @@ public readonly partial struct Identifier : IEquatableValue<Identifier, AsciiStr
 
     private static readonly SearchValues<byte> s_validPrefixBytes = SearchValues.Create(ValidPrefixBytes);
 
+    /// <summary>
+    /// An empty <see cref="Identifier"/>.
+    /// </summary>
     public static readonly Identifier Empty;
 
     private Identifier(ReadOnlyMemory<AsciiChar> value)
@@ -70,8 +91,14 @@ public readonly partial struct Identifier : IEquatableValue<Identifier, AsciiStr
         _value = new(value);
     }
 
+    /// <summary>
+    /// Gets the total number of ASCII characters in the identifier, including any prefix.
+    /// </summary>
     public int Length => _value.Length;
 
+    /// <summary>
+    /// Returns <see langword="true"/> if <paramref name="value"/> satisfies the prefix and identifier length and character rules for an <see cref="Identifier"/>.
+    /// </summary>
     public static bool IsValidValue(AsciiString value)
     {
         if (value.Length is < MinIdLength or > MaxLength)
@@ -102,6 +129,9 @@ public readonly partial struct Identifier : IEquatableValue<Identifier, AsciiStr
                && id.ContainsOnlyAsciiLettersOrDigits();
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if the supplied character span is a valid <see cref="Identifier"/>.
+    /// </summary>
     public static bool IsValid(ReadOnlySpan<char> id)
     {
         if (!AsciiString.TryParse(id, out var value))
@@ -112,6 +142,10 @@ public readonly partial struct Identifier : IEquatableValue<Identifier, AsciiStr
         return IsValidValue(value);
     }
 
+    /// <summary>
+    /// Splits the supplied identifier into its prefix and identifier portions on the last <see cref="PrefixDelimiter"/>;
+    /// when no delimiter is present the prefix is empty and the entire input is treated as the id.
+    /// </summary>
     public static (ReadOnlyMemory<char> prefix, ReadOnlyMemory<char> id) Split(ReadOnlyMemory<char> uid)
     {
         if (uid.IsEmpty)
@@ -311,16 +345,21 @@ public readonly partial struct Identifier : IEquatableValue<Identifier, AsciiStr
         return _value.Equals(other);
     }
 
+    /// <inheritdoc/>
     public bool Equals(string? other)
     {
         return other is not null && Equals(other.AsSpan());
     }
 
+    /// <summary>
+    /// Returns a read-only span over the underlying ASCII bytes of the identifier.
+    /// </summary>
     public ReadOnlySpan<byte> AsBytes()
     {
         return ValuesMarshal.AsBytes(_value.AsSpan());
     }
 
+    /// <inheritdoc/>
     public ulong GetRepeatableHashCode()
     {
         return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);

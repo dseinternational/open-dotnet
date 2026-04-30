@@ -3,6 +3,9 @@
 
 namespace DSE.Open;
 
+/// <summary>
+/// Helpers for arithmetic over <see cref="DateTime"/>, <see cref="DateTimeOffset"/> and <see cref="TimeSpan"/>.
+/// </summary>
 public static class TimeMath
 {
     /// <summary>

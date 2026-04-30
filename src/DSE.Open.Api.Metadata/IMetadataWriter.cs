@@ -6,6 +6,10 @@ using DSE.Open.Results;
 
 namespace DSE.Open.Api.Metadata;
 
+/// <summary>
+/// Writes metadata from <see cref="RequestMetadata"/> and <see cref="ResultMetadata"/>
+/// into a <see cref="MetadataStorageContext"/>.
+/// </summary>
 public interface IMetadataWriter
 {
     /// <summary>

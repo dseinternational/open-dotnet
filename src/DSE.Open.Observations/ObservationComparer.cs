@@ -3,8 +3,15 @@
 
 namespace DSE.Open.Observations;
 
+/// <summary>
+/// Provides <see cref="IComparer{T}"/> implementations for <see cref="IObservation"/>.
+/// </summary>
 public abstract class ObservationComparer : Comparer<IObservation>
 {
+    /// <summary>
+    /// A comparer that orders observations by measurement: first by <see cref="IObservation.MeasureId"/>,
+    /// then by <see cref="IObservation.Parameter"/>, then by <see cref="IObservation.Parameter2"/>.
+    /// </summary>
     public static ObservationComparer Measurement { get; } = new MeasurementComparer();
 
     private class MeasurementComparer : ObservationComparer

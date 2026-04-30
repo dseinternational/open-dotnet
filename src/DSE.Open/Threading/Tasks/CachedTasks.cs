@@ -3,14 +3,30 @@
 
 namespace DSE.Open.Threading.Tasks;
 
+/// <summary>
+/// Provides cached, completed <see cref="Task"/> and <see cref="Task{TResult}"/> instances
+/// for common values to avoid unnecessary allocations.
+/// </summary>
 public static class CachedTasks
 {
+    /// <summary>
+    /// A completed task with no result value.
+    /// </summary>
     public static readonly Task Empty = EmptyTasks<object>.Default;
 
+    /// <summary>
+    /// A completed task with a result of <see langword="false"/>.
+    /// </summary>
     public static readonly Task<bool> False = Task.FromResult(false);
 
+    /// <summary>
+    /// A completed task with a result of <see langword="true"/>.
+    /// </summary>
     public static readonly Task<bool> True = Task.FromResult(true);
 
+    /// <summary>
+    /// Returns a completed task whose result is the default value of <typeparamref name="T"/>.
+    /// </summary>
     public static Task<T> Default<T>()
     {
         return EmptyTasks<T>.Default;
@@ -26,16 +42,25 @@ public static class CachedTasks
         return EmptyTasks<T>.EmptyArrayEnumerable;
     }
 
+    /// <summary>
+    /// Returns a completed task whose result is an empty <see cref="IEnumerable{T}"/>.
+    /// </summary>
     public static Task<IEnumerable<T>> EmptyEnumerable<T>()
     {
         return EmptyTasks<T>.EmptyEnumerable;
     }
 
+    /// <summary>
+    /// Returns a completed task whose result is an empty <see cref="IReadOnlyCollection{T}"/>.
+    /// </summary>
     public static Task<IReadOnlyCollection<T>> EmptyReadOnlyCollection<T>()
     {
         return EmptyTasks<T>.EmptyReadOnlyCollection;
     }
 
+    /// <summary>
+    /// Returns a completed task whose result is an empty <see cref="IReadOnlyList{T}"/>.
+    /// </summary>
     public static Task<IReadOnlyList<T>> EmptyReadOnlyList<T>()
     {
         return EmptyTasks<T>.EmptyReadOnlyList;

@@ -3,6 +3,9 @@
 
 namespace DSE.Open.Collections.Generic;
 
+/// <summary>
+/// Provides extension methods for retrieving the last element of read-only lists.
+/// </summary>
 public static partial class CollectionExtensionsLast
 {
     /// <summary>

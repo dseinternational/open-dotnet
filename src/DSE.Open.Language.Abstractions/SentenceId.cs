@@ -24,24 +24,51 @@ public readonly partial struct SentenceId
       IUtf8SpanSerializable<SentenceId>,
       IRepeatableHash64
 {
+    /// <summary>
+    /// The maximum number of characters used to serialize a
+    /// <see cref="SentenceId"/> value.
+    /// </summary>
     public static int MaxSerializedCharLength => 16;
 
+    /// <summary>
+    /// The maximum number of bytes used to serialize a
+    /// <see cref="SentenceId"/> value in UTF-8.
+    /// </summary>
     public static int MaxSerializedByteLength => 16;
 
+    /// <summary>
+    /// Initializes a new <see cref="SentenceId"/> from the given <see cref="ulong"/>.
+    /// </summary>
+    /// <param name="value">The id value.</param>
     public SentenceId(ulong value) : this(value, false)
     {
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if <paramref name="value"/> is within the
+    /// range of valid <see cref="SentenceId"/> values.
+    /// </summary>
     public static bool IsValidValue(ulong value)
     {
         return value is <= LanguageIds.MaxIdValue and >= LanguageIds.MinIdValue;
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if <paramref name="value"/> is within the
+    /// range of valid <see cref="SentenceId"/> values.
+    /// </summary>
     public static bool IsValidValue(long value)
     {
         return value is <= ((long)LanguageIds.MaxIdValue) and >= ((long)LanguageIds.MinIdValue);
     }
 
+    /// <summary>
+    /// Attempts to create a <see cref="SentenceId"/> from a <see cref="long"/>.
+    /// </summary>
+    /// <param name="value">The id value.</param>
+    /// <param name="id">When this method returns, contains the resulting
+    /// <see cref="SentenceId"/> if the conversion succeeded; otherwise the default value.</param>
+    /// <returns><see langword="true"/> if the value was within the valid range; otherwise <see langword="false"/>.</returns>
     public static bool TryFromInt64(long value, out SentenceId id)
     {
         if (IsValidValue(value))
@@ -56,6 +83,12 @@ public readonly partial struct SentenceId
         }
     }
 
+    /// <summary>
+    /// Creates a <see cref="SentenceId"/> from a <see cref="long"/>.
+    /// </summary>
+    /// <param name="value">The id value.</param>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="value"/> is
+    /// outside the range of valid <see cref="SentenceId"/> values.</exception>
     public static SentenceId FromInt64(long value)
     {
         if (!IsValidValue(value))
@@ -66,6 +99,12 @@ public readonly partial struct SentenceId
         return new SentenceId((ulong)value);
     }
 
+    /// <summary>
+    /// Creates a <see cref="SentenceId"/> from a <see cref="ulong"/>.
+    /// </summary>
+    /// <param name="value">The id value.</param>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="value"/> is
+    /// outside the range of valid <see cref="SentenceId"/> values.</exception>
     public static SentenceId FromUInt64(ulong value)
     {
         if (!IsValidValue(value))
@@ -76,11 +115,17 @@ public readonly partial struct SentenceId
         return new SentenceId(value);
     }
 
+    /// <summary>
+    /// Converts a <see cref="long"/> to a <see cref="SentenceId"/>.
+    /// </summary>
     public static explicit operator SentenceId(long value)
     {
         return FromInt64(value);
     }
 
+    /// <summary>
+    /// Returns the <see cref="long"/> representation of this id.
+    /// </summary>
     public long ToInt64()
     {
         unchecked
@@ -89,16 +134,25 @@ public readonly partial struct SentenceId
         }
     }
 
+    /// <summary>
+    /// Returns the <see cref="ulong"/> representation of this id.
+    /// </summary>
     public ulong ToUInt64()
     {
         return _value;
     }
 
+    /// <summary>
+    /// Converts a <see cref="SentenceId"/> to a <see cref="long"/>.
+    /// </summary>
     public static implicit operator long(SentenceId value)
     {
         return value.ToInt64();
     }
 
+    /// <summary>
+    /// Returns a randomly-generated <see cref="SentenceId"/>.
+    /// </summary>
     public static SentenceId GetRandomId()
     {
         return (SentenceId)LanguageIds.GetRandomIdValue();
@@ -154,6 +208,7 @@ public readonly partial struct SentenceId
         }
     }
 
+    /// <inheritdoc/>
     public ulong GetRepeatableHashCode()
     {
         return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);

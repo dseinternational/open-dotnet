@@ -5,8 +5,14 @@ using System.Text.Json.Serialization;
 
 namespace DSE.Open.Text.Json.Serialization;
 
+/// <summary>
+/// Extension methods for registering DSE.Open <see cref="JsonConverter"/> instances on a collection.
+/// </summary>
 public static class JsonConverterCollectionExtensions
 {
+    /// <summary>
+    /// Adds the default set of DSE.Open core <see cref="JsonConverter"/> instances to the supplied collection.
+    /// </summary>
     public static void AddDseOpenCoreJsonConverters(this ICollection<JsonConverter> converters)
     {
         ArgumentNullException.ThrowIfNull(converters);

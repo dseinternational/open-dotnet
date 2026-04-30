@@ -31,12 +31,21 @@ public static class Ensure
         return value.Value;
     }
 
+    /// <summary>
+    /// Ensures the value is not equal to <c>default(T)</c> and returns the validated value.
+    /// </summary>
+    /// <exception cref="ArgumentNullException"><paramref name="value"/> equals the default of <typeparamref name="T"/>.</exception>
     public static T NotDefault<T>(T value)
         where T : struct
     {
         return NotDefault(value, EqualityComparer<T>.Default);
     }
 
+    /// <summary>
+    /// Ensures the value is not equal to <c>default(T)</c> as determined by <paramref name="comparer"/>
+    /// and returns the validated value.
+    /// </summary>
+    /// <exception cref="ArgumentNullException"><paramref name="value"/> equals the default of <typeparamref name="T"/>.</exception>
     public static T NotDefault<T>(T value, IEqualityComparer<T> comparer)
         where T : struct
     {

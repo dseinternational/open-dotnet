@@ -3,6 +3,9 @@
 
 namespace DSE.Open.Specifications;
 
+/// <summary>
+/// Provides extension methods for combining collections of <see cref="IAsyncSpecification{T}"/> instances.
+/// </summary>
 public static class AsyncSpecificationCollectionExtensions
 {
     /// <summary>

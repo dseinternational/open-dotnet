@@ -21,5 +21,9 @@ public interface IValue<TSelf, T>
     where T : IEquatable<T>
     where TSelf : struct, IValue<TSelf, T>
 {
+    /// <summary>
+    /// Returns <see langword="true"/> if <paramref name="value"/> is permitted as the
+    /// underlying value of an instance of <typeparamref name="TSelf"/>.
+    /// </summary>
     static abstract bool IsValidValue(T value);
 }

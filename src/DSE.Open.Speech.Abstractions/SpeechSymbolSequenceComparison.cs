@@ -3,6 +3,9 @@
 
 namespace DSE.Open.Speech;
 
+/// <summary>
+/// Specifies how <see cref="SpeechSymbolSequence"/> values are compared.
+/// </summary>
 public enum SpeechSymbolSequenceComparison
 {
     /// <summary>

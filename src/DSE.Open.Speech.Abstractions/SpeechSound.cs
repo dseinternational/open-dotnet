@@ -25,10 +25,24 @@ public readonly struct SpeechSound
 {
     private readonly SpeechSymbolSequence _value;
 
+    /// <summary>
+    /// The maximum number of <see cref="SpeechSymbol"/> values that a
+    /// <see cref="SpeechSound"/> may contain.
+    /// </summary>
     public static int MaxLength => 8;
 
+    /// <summary>
+    /// An empty <see cref="SpeechSound"/>.
+    /// </summary>
     public static readonly SpeechSound Empty;
 
+    /// <summary>
+    /// Initializes a new <see cref="SpeechSound"/> from the specified
+    /// <see cref="SpeechSymbolSequence"/>.
+    /// </summary>
+    /// <param name="value">The sequence of symbols that represents the sound.</param>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="value"/> is not a
+    /// valid <see cref="SpeechSound"/> value.</exception>
     public SpeechSound(SpeechSymbolSequence value) : this(value, false)
     {
     }
@@ -43,6 +57,10 @@ public readonly struct SpeechSound
         _value = symbols;
     }
 
+    /// <summary>
+    /// Determines whether the specified <see cref="SpeechSymbolSequence"/> is a valid
+    /// <see cref="SpeechSound"/> value (non-empty and no longer than <see cref="MaxLength"/>).
+    /// </summary>
     public static bool IsValidValue(SpeechSymbolSequence value)
     {
         return value.Length > 0
@@ -58,37 +76,59 @@ public readonly struct SpeechSound
         }
     }
 
+    /// <summary>
+    /// Gets the <see cref="SpeechSymbol"/> at the specified index in the sound.
+    /// </summary>
+    /// <param name="index">The zero-based index of the symbol to return.</param>
     public SpeechSymbol this[int index] => _value[index];
 
+    /// <summary>
+    /// Returns an enumerator that iterates over the <see cref="SpeechSymbol"/>
+    /// values that make up this sound.
+    /// </summary>
     public SpeechSymbolSequence.Enumerator GetEnumerator()
     {
         return _value.GetEnumerator();
     }
 
+    /// <summary>
+    /// Gets a value indicating whether this <see cref="SpeechSound"/> contains no symbols.
+    /// </summary>
     public bool IsEmpty => _value.IsEmpty;
 
+    /// <summary>
+    /// Gets the number of <see cref="SpeechSymbol"/> values in this sound.
+    /// </summary>
     public int Length => _value.Length;
 
+    /// <summary>
+    /// Returns a read-only view of this sound's underlying symbols as a span of
+    /// <see cref="char"/>.
+    /// </summary>
     public ReadOnlySpan<char> AsCharSpan()
     {
         return _value.AsCharSpan();
     }
 
+    /// <inheritdoc/>
     public override bool Equals(object? obj)
     {
         return obj is SpeechSound ph && Equals(ph);
     }
 
+    /// <inheritdoc/>
     public bool Equals(SpeechSound other)
     {
         return _value.Equals(other._value);
     }
 
+    /// <inheritdoc/>
     public override int GetHashCode()
     {
         return _value.GetHashCode();
     }
 
+    /// <inheritdoc/>
     public bool TryFormat(
         Span<char> destination,
         out int charsWritten,
@@ -98,6 +138,7 @@ public readonly struct SpeechSound
         return _value.TryFormat(destination, out charsWritten, format, provider);
     }
 
+    /// <inheritdoc/>
     public bool TryFormat(
         Span<byte> destination,
         out int charsWritten,
@@ -107,16 +148,22 @@ public readonly struct SpeechSound
         return _value.TryFormat(destination, out charsWritten, format, provider);
     }
 
+    /// <inheritdoc/>
     public override string ToString()
     {
         return ToString(null, null);
     }
 
+    /// <summary>
+    /// Returns a string representation of this <see cref="SpeechSound"/> using the
+    /// invariant culture.
+    /// </summary>
     public string ToStringInvariant()
     {
         return ToString(null, null);
     }
 
+    /// <inheritdoc/>
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
         return _value.IsEmpty
@@ -124,6 +171,7 @@ public readonly struct SpeechSound
             : _value.ToString(format, formatProvider);
     }
 
+    /// <inheritdoc/>
     public static SpeechSound Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
     {
         return TryParse(s, provider, out var result)
@@ -131,6 +179,7 @@ public readonly struct SpeechSound
             : ThrowHelper.ThrowFormatException<SpeechSound>($"Could not parse {nameof(SpeechSound)}");
     }
 
+    /// <inheritdoc/>
     public static bool TryParse(
         ReadOnlySpan<char> s,
         IFormatProvider? provider,
@@ -147,17 +196,25 @@ public readonly struct SpeechSound
         return false;
     }
 
+    /// <summary>
+    /// Parses the specified string into a <see cref="SpeechSound"/> using the
+    /// invariant culture.
+    /// </summary>
+    /// <param name="s">The string to parse.</param>
+    /// <exception cref="FormatException"><paramref name="s"/> is not in the correct format.</exception>
     public static SpeechSound ParseInvariant(string s)
     {
         return Parse(s, CultureInfo.InvariantCulture);
     }
 
+    /// <inheritdoc/>
     public static SpeechSound Parse(string s, IFormatProvider? provider)
     {
         ArgumentNullException.ThrowIfNull(s);
         return Parse(s.AsSpan(), provider);
     }
 
+    /// <inheritdoc/>
     public static bool TryParse(
         [NotNullWhen(true)] string? s,
         IFormatProvider? provider,
@@ -172,11 +229,17 @@ public readonly struct SpeechSound
         return TryParse(s.AsSpan(), provider, out result);
     }
 
+    /// <summary>
+    /// Determines whether two <see cref="SpeechSound"/> values are equal.
+    /// </summary>
     public static bool operator ==(SpeechSound left, SpeechSound right)
     {
         return left.Equals(right);
     }
 
+    /// <summary>
+    /// Determines whether two <see cref="SpeechSound"/> values are not equal.
+    /// </summary>
     public static bool operator !=(SpeechSound left, SpeechSound right)
     {
         return !(left == right);
@@ -244,6 +307,7 @@ public readonly struct SpeechSound
             && IsVowel(result);
     }
 
+    /// <inheritdoc/>
     public ulong GetRepeatableHashCode()
     {
         return _value.GetRepeatableHashCode();
@@ -251,11 +315,19 @@ public readonly struct SpeechSound
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
+    /// <summary>
+    /// Implicitly converts a single <see cref="SpeechSymbol"/> to a
+    /// <see cref="SpeechSound"/>.
+    /// </summary>
     public static implicit operator SpeechSound(SpeechSymbol value)
     {
         return new(new([value]), true);
     }
 
+    /// <summary>
+    /// Implicitly converts a <see cref="SpeechSound"/> to its underlying
+    /// <see cref="SpeechSymbolSequence"/>.
+    /// </summary>
     public static implicit operator SpeechSymbolSequence(SpeechSound value)
     {
         return value._value;
@@ -363,6 +435,10 @@ public readonly struct SpeechSound
     public static readonly SpeechSound VoicedAlveolarNasal =
         SpeechSymbol.VoicedAlveolarNasal;
 
+    /// <summary>
+    /// The voiced alveolar trill, a type of consonantal sound
+    /// represented in the IPA by the symbol <c>⟨r⟩</c>.
+    /// </summary>
     public static readonly SpeechSound VoicedAlveolarTrill =
         SpeechSymbol.VoicedAlveolarTrill;
 
@@ -453,6 +529,10 @@ public readonly struct SpeechSound
         ],
         true);
 
+    /// <summary>
+    /// The voiced palato-alveolar sibilant affricate, a type of consonantal sound,
+    /// represented in the IPA by the symbol <c>dʒ</c>.
+    /// </summary>
     public static readonly SpeechSound VoicedPostalveolarAffricate = new(
         [
             SpeechSymbol.VoicedAlveolarPlosive,
@@ -461,9 +541,17 @@ public readonly struct SpeechSound
         ],
         true);
 
+    /// <summary>
+    /// The voiceless alveolar lateral fricative, a type of consonantal sound,
+    /// represented in the IPA by the symbol <c>⟨ɬ⟩</c>.
+    /// </summary>
     public static readonly SpeechSound VoicelessAlveolarLateralFricative =
         SpeechSymbol.VoicelessAlveolarLateralFricative;
 
+    /// <summary>
+    /// The voiced alveolar lateral fricative, a type of consonantal sound,
+    /// represented in the IPA by the symbol <c>⟨ɮ⟩</c>.
+    /// </summary>
     public static readonly SpeechSound VoicedAlveolarLateralFricative =
         SpeechSymbol.VoicedAlveolarLateralFricative;
 
@@ -497,6 +585,10 @@ public readonly struct SpeechSound
     public static readonly SpeechSound VoicedRetroflexPlosive =
         SpeechSymbol.VoicedRetroflexPlosive;
 
+    /// <summary>
+    /// The voiced retroflex nasal, a type of consonantal sound,
+    /// represented in the IPA by the symbol <c>⟨ɳ⟩</c>.
+    /// </summary>
     public static readonly SpeechSound VoicedRetroflexNasal =
         SpeechSymbol.VoicedRetroflexNasal;
 
@@ -507,9 +599,17 @@ public readonly struct SpeechSound
     public static readonly SpeechSound VoicedRetroflexTap =
         SpeechSymbol.VoicedRetroflexTap;
 
+    /// <summary>
+    /// The voiceless retroflex fricative, a type of consonantal sound,
+    /// represented in the IPA by the symbol <c>⟨ʂ⟩</c>.
+    /// </summary>
     public static readonly SpeechSound VoicelessRetroflexFricative =
         SpeechSymbol.VoicelessRetroflexFricative;
 
+    /// <summary>
+    /// The voiced retroflex fricative, a type of consonantal sound,
+    /// represented in the IPA by the symbol <c>⟨ʐ⟩</c>.
+    /// </summary>
     public static readonly SpeechSound VoicedRetroflexFricative =
         SpeechSymbol.VoicedRetroflexFricative;
 
@@ -521,21 +621,45 @@ public readonly struct SpeechSound
     public static readonly SpeechSound VoicedRetroflexApproximant =
         SpeechSymbol.VoicedRetroflexApproximant;
 
+    /// <summary>
+    /// The voiced retroflex lateral approximant, a type of consonantal sound,
+    /// represented in the IPA by the symbol <c>⟨ɭ⟩</c>.
+    /// </summary>
     public static readonly SpeechSound VoicedRetroflexLateralApproximant =
         SpeechSymbol.VoicedRetroflexLateralApproximant;
 
+    /// <summary>
+    /// The voiceless palatal plosive, a type of consonantal sound,
+    /// represented in the IPA by the symbol <c>⟨c⟩</c>.
+    /// </summary>
     public static readonly SpeechSound VoicelessPalatalPlosive =
         SpeechSymbol.VoicelessPalatalPlosive;
 
+    /// <summary>
+    /// The voiced palatal plosive, a type of consonantal sound,
+    /// represented in the IPA by the symbol <c>⟨ɟ⟩</c>.
+    /// </summary>
     public static readonly SpeechSound VoicedPalatalPlosive =
         SpeechSymbol.VoicedPalatalPlosive;
 
+    /// <summary>
+    /// The voiced palatal nasal, a type of consonantal sound,
+    /// represented in the IPA by the symbol <c>⟨ɲ⟩</c>.
+    /// </summary>
     public static readonly SpeechSound VoicedPalatalNasal =
         SpeechSymbol.VoicedPalatalNasal;
 
+    /// <summary>
+    /// The voiceless palatal fricative, a type of consonantal sound,
+    /// represented in the IPA by the symbol <c>⟨ç⟩</c>.
+    /// </summary>
     public static readonly SpeechSound VoicelessPalatalFricative =
         SpeechSymbol.VoicelessPalatalFricative;
 
+    /// <summary>
+    /// The voiced palatal fricative, a type of consonantal sound,
+    /// represented in the IPA by the symbol <c>⟨ʝ⟩</c>.
+    /// </summary>
     public static readonly SpeechSound VoicedPalatalFricative =
         SpeechSymbol.VoicedPalatalFricative;
 
@@ -547,6 +671,10 @@ public readonly struct SpeechSound
     public static readonly SpeechSound VoicedPalatalApproximant =
         SpeechSymbol.VoicedPalatalApproximant;
 
+    /// <summary>
+    /// The voiced palatal lateral approximant, a type of consonantal sound,
+    /// represented in the IPA by the symbol <c>⟨ʎ⟩</c>.
+    /// </summary>
     public static readonly SpeechSound VoicedPalatalLateralApproximant =
         SpeechSymbol.VoicedPalatalLateralApproximant;
 
@@ -558,6 +686,10 @@ public readonly struct SpeechSound
     public static readonly SpeechSound VoicelessVelarPlosive =
         SpeechSymbol.VoicelessVelarPlosive;
 
+    /// <summary>
+    /// The voiced velar plosive, a type of consonantal sound,
+    /// represented in the IPA by the symbol <c>⟨ɡ⟩</c>.
+    /// </summary>
     public static readonly SpeechSound VoicedVelarPlosive =
         SpeechSymbol.VoicedVelarPlosive;
 
@@ -576,6 +708,10 @@ public readonly struct SpeechSound
     public static readonly SpeechSound VoicelessVelarFricative =
         SpeechSymbol.VoicelessVelarFricative;
 
+    /// <summary>
+    /// The voiced velar fricative, a type of consonantal sound,
+    /// represented in the IPA by the symbol <c>⟨ɣ⟩</c>.
+    /// </summary>
     public static readonly SpeechSound VoicedVelarFricative =
         SpeechSymbol.VoicedVelarFricative;
 
@@ -595,24 +731,52 @@ public readonly struct SpeechSound
     public static readonly SpeechSound VoicelessLabialVelarFricative =
         SpeechSymbol.VoicelessLabialVelarFricative;
 
+    /// <summary>
+    /// The voiced velar approximant, a type of consonantal sound,
+    /// represented in the IPA by the symbol <c>⟨ɰ⟩</c>.
+    /// </summary>
     public static readonly SpeechSound VoicedVelarApproximant =
         SpeechSymbol.VoicedVelarApproximant;
 
+    /// <summary>
+    /// The voiced velar lateral approximant, a type of consonantal sound,
+    /// represented in the IPA by the symbol <c>⟨ʟ⟩</c>.
+    /// </summary>
     public static readonly SpeechSound VoicedVelarLateralApproximant =
         SpeechSymbol.VoicedVelarLateralApproximant;
 
+    /// <summary>
+    /// The voiceless uvular plosive, a type of consonantal sound,
+    /// represented in the IPA by the symbol <c>⟨q⟩</c>.
+    /// </summary>
     public static readonly SpeechSound VoicelessUvularPlosive =
         SpeechSymbol.VoicelessUvularPlosive;
 
+    /// <summary>
+    /// The voiced uvular plosive, a type of consonantal sound,
+    /// represented in the IPA by the symbol <c>⟨ɢ⟩</c>.
+    /// </summary>
     public static readonly SpeechSound VoicedUvularPlosive =
         SpeechSymbol.VoicedUvularPlosive;
 
+    /// <summary>
+    /// The voiced uvular nasal, a type of consonantal sound,
+    /// represented in the IPA by the symbol <c>⟨ɴ⟩</c>.
+    /// </summary>
     public static readonly SpeechSound VoicedUvularNasal =
         SpeechSymbol.VoicedUvularNasal;
 
+    /// <summary>
+    /// The voiced uvular trill, a type of consonantal sound,
+    /// represented in the IPA by the symbol <c>⟨ʀ⟩</c>.
+    /// </summary>
     public static readonly SpeechSound VoicedUvularTrill =
         SpeechSymbol.VoicedUvularTrill;
 
+    /// <summary>
+    /// The voiceless uvular fricative, a type of consonantal sound,
+    /// represented in the IPA by the symbol <c>⟨χ⟩</c>.
+    /// </summary>
     public static readonly SpeechSound VoicelessUvularFricative =
         SpeechSymbol.VoicelessUvularFricative;
 
@@ -624,12 +788,24 @@ public readonly struct SpeechSound
     public static readonly SpeechSound VoicedUvularFricative =
         SpeechSymbol.VoicedUvularFricative;
 
+    /// <summary>
+    /// The voiceless pharyngeal fricative, a type of consonantal sound,
+    /// represented in the IPA by the symbol <c>⟨ħ⟩</c>.
+    /// </summary>
     public static readonly SpeechSound VoicelessPharyngealFricative =
         SpeechSymbol.VoicelessPharyngealFricative;
 
+    /// <summary>
+    /// The voiced pharyngeal fricative, a type of consonantal sound,
+    /// represented in the IPA by the symbol <c>⟨ʕ⟩</c>.
+    /// </summary>
     public static readonly SpeechSound VoicedPharyngealFricative =
         SpeechSymbol.VoicedPharyngealFricative;
 
+    /// <summary>
+    /// The voiceless glottal plosive (glottal stop), a type of consonantal sound,
+    /// represented in the IPA by the symbol <c>⟨ʔ⟩</c>.
+    /// </summary>
     public static readonly SpeechSound VoicelessGlottalPlosive =
         SpeechSymbol.VoicelessGlottalPlosive;
 
@@ -643,6 +819,10 @@ public readonly struct SpeechSound
     public static readonly SpeechSound VoicelessGlottalFricative =
         SpeechSymbol.VoicelessGlottalFricative;
 
+    /// <summary>
+    /// The voiced glottal fricative, a type of consonantal sound,
+    /// represented in the IPA by the symbol <c>⟨ɦ⟩</c>.
+    /// </summary>
     public static readonly SpeechSound VoicedGlottalFricative =
         SpeechSymbol.VoicedGlottalFricative;
 
@@ -654,6 +834,10 @@ public readonly struct SpeechSound
     public static readonly SpeechSound CloseFrontUnroundedVowel =
         SpeechSymbol.CloseFrontUnrounded;
 
+    /// <summary>
+    /// The close front rounded vowel, or high front rounded vowel,
+    /// represented in the IPA by the symbol <c>⟨y⟩</c>.
+    /// </summary>
     public static readonly SpeechSound CloseFrontRoundedVowel =
         SpeechSymbol.CloseFrontRounded;
 
@@ -665,12 +849,24 @@ public readonly struct SpeechSound
     public static readonly SpeechSound NearCloseNearFrontUnrounded =
         SpeechSymbol.LaxCloseFrontUnrounded;
 
+    /// <summary>
+    /// The near-close near-front rounded vowel,
+    /// represented in the IPA by the symbol <c>⟨ʏ⟩</c>.
+    /// </summary>
     public static readonly SpeechSound NearCloseNearFrontRounded =
         SpeechSymbol.LaxCloseFrontRounded;
 
+    /// <summary>
+    /// The close-mid front unrounded vowel, or high-mid front unrounded vowel,
+    /// represented in the IPA by the symbol <c>⟨e⟩</c>.
+    /// </summary>
     public static readonly SpeechSound CloseMidFrontUnroundedVowel =
         SpeechSymbol.CloseMidFrontUnrounded;
 
+    /// <summary>
+    /// The close-mid front rounded vowel, or high-mid front rounded vowel,
+    /// represented in the IPA by the symbol <c>⟨ø⟩</c>.
+    /// </summary>
     public static readonly SpeechSound CloseMidFrontRoundedVowel =
         SpeechSymbol.CloseMidFrontRounded;
 
@@ -682,6 +878,10 @@ public readonly struct SpeechSound
     public static readonly SpeechSound OpenMidFrontUnroundedVowel =
         SpeechSymbol.OpenMidFrontUnrounded;
 
+    /// <summary>
+    /// The open-mid front rounded vowel, or low-mid front rounded vowel,
+    /// represented in the IPA by the symbol <c>⟨œ⟩</c>.
+    /// </summary>
     public static readonly SpeechSound OpenMidFrontRoundedVowel =
         SpeechSymbol.OpenMidFrontRounded;
 
@@ -699,18 +899,38 @@ public readonly struct SpeechSound
     public static readonly SpeechSound OpenFrontUnroundedVowel =
         SpeechSymbol.OpenFrontUnrounded;
 
+    /// <summary>
+    /// The open front rounded vowel, or low front rounded vowel,
+    /// represented in the IPA by the symbol <c>⟨ɶ⟩</c>.
+    /// </summary>
     public static readonly SpeechSound OpenFrontRoundedVowel =
         SpeechSymbol.OpenFrontRounded;
 
+    /// <summary>
+    /// The close central unrounded vowel, or high central unrounded vowel,
+    /// represented in the IPA by the symbol <c>⟨ɨ⟩</c>.
+    /// </summary>
     public static readonly SpeechSound CloseCentralUnroundedVowel =
         SpeechSymbol.CloseCentralUnrounded;
 
+    /// <summary>
+    /// The close central rounded vowel, or high central rounded vowel,
+    /// represented in the IPA by the symbol <c>⟨ʉ⟩</c>.
+    /// </summary>
     public static readonly SpeechSound CloseCentralRoundedVowel =
         SpeechSymbol.CloseCentralRounded;
 
+    /// <summary>
+    /// The close-mid central unrounded vowel, or high-mid central unrounded vowel,
+    /// represented in the IPA by the symbol <c>⟨ɘ⟩</c>.
+    /// </summary>
     public static readonly SpeechSound CloseMidCentralUnroundedVowel =
         SpeechSymbol.CloseMidCentralUnrounded;
 
+    /// <summary>
+    /// The close-mid central rounded vowel, or high-mid central rounded vowel,
+    /// represented in the IPA by the symbol <c>⟨ɵ⟩</c>.
+    /// </summary>
     public static readonly SpeechSound CloseMidCentralRoundedVowel =
         SpeechSymbol.CloseMidCentralRounded;
 
@@ -730,6 +950,10 @@ public readonly struct SpeechSound
     public static readonly SpeechSound OpenMidCentralUnroundedVowel =
         SpeechSymbol.OpenMidCentralUnrounded;
 
+    /// <summary>
+    /// The open-mid central rounded vowel, or low-mid central rounded vowel,
+    /// represented in the IPA by the symbol <c>⟨ɞ⟩</c>.
+    /// </summary>
     public static readonly SpeechSound OpenMidCentralRoundedVowel =
         SpeechSymbol.OpenMidCentralRounded;
 
@@ -824,6 +1048,9 @@ public readonly struct SpeechSound
     public static readonly SpeechSound OpenBackRoundedVowel =
         SpeechSymbol.OpenBackRounded;
 
+    /// <summary>
+    /// The set of close (high) vowel sounds.
+    /// </summary>
     public static readonly FrozenSet<SpeechSound> CloseVowels = FrozenSet.ToFrozenSet(
     [
         CloseFrontUnroundedVowel,
@@ -834,6 +1061,9 @@ public readonly struct SpeechSound
         CloseBackRoundedVowel,
     ]);
 
+    /// <summary>
+    /// The set of near-close (near-high) vowel sounds.
+    /// </summary>
     public static readonly FrozenSet<SpeechSound> NearCloseVowels = FrozenSet.ToFrozenSet(
     [
         NearCloseNearFrontUnrounded,
@@ -841,6 +1071,9 @@ public readonly struct SpeechSound
         NearCloseNearBackRoundedVowel,
     ]);
 
+    /// <summary>
+    /// The set of close-mid (high-mid) vowel sounds.
+    /// </summary>
     public static readonly FrozenSet<SpeechSound> CloseMidVowels = FrozenSet.ToFrozenSet(
     [
         CloseMidFrontUnroundedVowel,
@@ -851,11 +1084,17 @@ public readonly struct SpeechSound
         CloseMidBackRoundedVowel,
     ]);
 
+    /// <summary>
+    /// The set of mid vowel sounds.
+    /// </summary>
     public static readonly FrozenSet<SpeechSound> MidVowels = FrozenSet.ToFrozenSet(
     [
         MidCentralVowel,
     ]);
 
+    /// <summary>
+    /// The set of open-mid (low-mid) vowel sounds.
+    /// </summary>
     public static readonly FrozenSet<SpeechSound> OpenMidVowels = FrozenSet.ToFrozenSet(
     [
         OpenMidFrontUnroundedVowel,
@@ -866,12 +1105,18 @@ public readonly struct SpeechSound
         OpenMidBackRoundedVowel,
     ]);
 
+    /// <summary>
+    /// The set of near-open (near-low) vowel sounds.
+    /// </summary>
     public static readonly FrozenSet<SpeechSound> NearOpenVowels = FrozenSet.ToFrozenSet(
     [
         NearOpenFrontUnroundedVowel,
         NearOpenCentralUnroundedVowel,
     ]);
 
+    /// <summary>
+    /// The set of open (low) vowel sounds.
+    /// </summary>
     public static readonly FrozenSet<SpeechSound> OpenVowels = FrozenSet.ToFrozenSet(
     [
         OpenFrontUnroundedVowel,
@@ -881,6 +1126,9 @@ public readonly struct SpeechSound
         OpenBackRoundedVowel,
     ]);
 
+    /// <summary>
+    /// The set of common English diphthongs.
+    /// </summary>
     public static readonly FrozenSet<SpeechSound> Diphthongs = FrozenSet.ToFrozenSet(
     [
         ParseInvariant("aɪ"),
@@ -893,6 +1141,10 @@ public readonly struct SpeechSound
         ParseInvariant("ʊə"),
     ]);
 
+    /// <summary>
+    /// The set of vowel sounds, including monophthongs and the diphthongs in
+    /// <see cref="Diphthongs"/>.
+    /// </summary>
     public static readonly FrozenSet<SpeechSound> Vowels = FrozenSet.ToFrozenSet(
     [
         .. CloseVowels,
@@ -907,6 +1159,9 @@ public readonly struct SpeechSound
 
     // https://en.wikipedia.org/wiki/Consonant
 
+    /// <summary>
+    /// The set of bilabial consonant sounds.
+    /// </summary>
     public static readonly FrozenSet<SpeechSound> Bilabials = FrozenSet.ToFrozenSet(
     [
         VoicelessBilabialPlosive,        // [p]
@@ -917,6 +1172,9 @@ public readonly struct SpeechSound
         VoicedBilabialFricative,         // [β]
     ]);
 
+    /// <summary>
+    /// The set of labiodental consonant sounds.
+    /// </summary>
     public static readonly FrozenSet<SpeechSound> Labiodentals = FrozenSet.ToFrozenSet(
     [
         VoicelessLabiodentalFricative,   // [f]
@@ -926,12 +1184,18 @@ public readonly struct SpeechSound
         VoicedLabiodentalApproximant,    // [ʋ]
     ]);
 
+    /// <summary>
+    /// The set of dental consonant sounds.
+    /// </summary>
     public static readonly FrozenSet<SpeechSound> Dentals = FrozenSet.ToFrozenSet(
     [
         VoicelessDentalFricative,        // [θ]
         VoicedDentalFricative,           // [ð]
     ]);
 
+    /// <summary>
+    /// The set of alveolar consonant sounds.
+    /// </summary>
     public static readonly FrozenSet<SpeechSound> Alveolars = FrozenSet.ToFrozenSet(
     [
         VoicelessAlveolarPlosive,            // [t]
@@ -947,6 +1211,9 @@ public readonly struct SpeechSound
         VoicedAlveolarLateralApproximant,    // [l]
     ]);
 
+    /// <summary>
+    /// The set of postalveolar (and retroflex) consonant sounds.
+    /// </summary>
     public static readonly FrozenSet<SpeechSound> PostAlveolars = FrozenSet.ToFrozenSet(
     [
         VoicelessPostalveolarFricative,     // [ʃ]
@@ -966,6 +1233,9 @@ public readonly struct SpeechSound
         VoicedPostalveolarAffricate,        // [dʒ]
     ]);
 
+    /// <summary>
+    /// The set of palatal consonant sounds.
+    /// </summary>
     public static readonly FrozenSet<SpeechSound> Palatals = FrozenSet.ToFrozenSet(
     [
         VoicelessPalatalPlosive,        // [c]
@@ -977,6 +1247,9 @@ public readonly struct SpeechSound
         VoicedPalatalLateralApproximant // [ʎ]
     ]);
 
+    /// <summary>
+    /// The set of velar consonant sounds.
+    /// </summary>
     public static readonly FrozenSet<SpeechSound> Velars = FrozenSet.ToFrozenSet(
     [
         VoicelessVelarPlosive,      // [k]
@@ -987,6 +1260,9 @@ public readonly struct SpeechSound
         VoicedVelarApproximant,     // [ɰ]
     ]);
 
+    /// <summary>
+    /// The set of uvular consonant sounds.
+    /// </summary>
     public static readonly FrozenSet<SpeechSound> Uvulars = FrozenSet.ToFrozenSet(
     [
         VoicelessUvularPlosive,     // [q]
@@ -997,12 +1273,18 @@ public readonly struct SpeechSound
         VoicedUvularTrill,          // [ʀ]
     ]);
 
+    /// <summary>
+    /// The set of pharyngeal consonant sounds.
+    /// </summary>
     public static readonly FrozenSet<SpeechSound> Pharyngeals = FrozenSet.ToFrozenSet(
     [
         VoicelessPharyngealFricative, // [ħ]
         VoicedPharyngealFricative,    // [ʕ]
     ]);
 
+    /// <summary>
+    /// The set of glottal consonant sounds.
+    /// </summary>
     public static readonly FrozenSet<SpeechSound> Glottals = FrozenSet.ToFrozenSet(
     [
         VoicelessGlottalPlosive, // [ʔ]
@@ -1010,12 +1292,22 @@ public readonly struct SpeechSound
         VoicedGlottalFricative, // [ɦ]
     ]);
 
+    /// <summary>
+    /// The set of coarticulated consonant sounds.
+    /// </summary>
     public static readonly FrozenSet<SpeechSound> Coarticulated = FrozenSet.ToFrozenSet(
     [
         VoicelessLabialVelarFricative,       // [ʍ]
         VoicedLabialVelarApproximant,        // [w]
     ]);
 
+    /// <summary>
+    /// The set of consonant sounds (the union of <see cref="Bilabials"/>,
+    /// <see cref="Labiodentals"/>, <see cref="Dentals"/>, <see cref="Alveolars"/>,
+    /// <see cref="PostAlveolars"/>, <see cref="Palatals"/>, <see cref="Velars"/>,
+    /// <see cref="Uvulars"/>, <see cref="Pharyngeals"/>, <see cref="Glottals"/>
+    /// and <see cref="Coarticulated"/>).
+    /// </summary>
     public static readonly FrozenSet<SpeechSound> Consonants = FrozenSet.ToFrozenSet(
     [
         .. Bilabials,

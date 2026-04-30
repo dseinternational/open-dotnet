@@ -13,18 +13,34 @@ namespace DSE.Open.EntityFrameworkCore.Models.Records.Storage.ValueConversion;
 /// </summary>
 public sealed class GenderToInt32Converter : ValueConverter<Gender, int>
 {
+    /// <summary>
+    /// The default shared instance of the converter.
+    /// </summary>
     public static readonly GenderToInt32Converter Default = new();
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GenderToInt32Converter"/> class.
+    /// </summary>
     public GenderToInt32Converter() : base(c => ConvertTo(c), s => ConvertFrom(s))
     {
     }
 
+    /// <summary>
+    /// Converts a <see cref="Gender"/> value to its <see cref="int"/> representation.
+    /// </summary>
+    /// <param name="code">The <see cref="Gender"/> value to convert.</param>
+    /// <returns>The <see cref="int"/> value representing <paramref name="code"/>.</returns>
     // keep public for EF Core compiled models
     public static int ConvertTo(Gender code)
     {
         return GenderToByteConverter.ConvertTo(code);
     }
 
+    /// <summary>
+    /// Converts an <see cref="int"/> value to its <see cref="Gender"/> representation.
+    /// </summary>
+    /// <param name="code">The <see cref="int"/> value to convert.</param>
+    /// <returns>The <see cref="Gender"/> value represented by <paramref name="code"/>.</returns>
     // keep public for EF Core compiled models
     public static Gender ConvertFrom(int code)
     {

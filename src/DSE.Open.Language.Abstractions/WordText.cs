@@ -31,24 +31,54 @@ public readonly partial struct WordText
       ISpanSerializableValue<WordText, CharSequence>,
       IRepeatableHash64
 {
+    /// <summary>
+    /// The maximum number of characters used to serialize a
+    /// <see cref="WordText"/> value.
+    /// </summary>
     public static int MaxSerializedCharLength => 32;
 
+    /// <summary>
+    /// Initializes a new <see cref="WordText"/> from a <see cref="string"/>.
+    /// </summary>
+    /// <param name="word">The characters of the word.</param>
     public WordText(string word) : this((CharSequence)word)
     {
     }
 
+    /// <summary>
+    /// Initializes a new <see cref="WordText"/> from a
+    /// <see cref="ReadOnlyMemory{T}"/> of <see cref="char"/>.
+    /// </summary>
+    /// <param name="word">The characters of the word.</param>
     public WordText(ReadOnlyMemory<char> word) : this(new CharSequence(word))
     {
     }
 
+    /// <summary>
+    /// The number of characters in the word.
+    /// </summary>
     public int Length => _value.Length;
 
+    /// <summary>
+    /// The underlying <see cref="CharSequence"/> holding the characters of the word.
+    /// </summary>
     public CharSequence Value => _value;
 
+    /// <summary>
+    /// Returns <see langword="true"/> if this <see cref="WordText"/> is a
+    /// template (a value enclosed in <c>{{</c> and <c>}}</c>).
+    /// </summary>
     public bool IsTemplate => !_value.IsEmpty && _value[0] == '{';
 
+    /// <summary>
+    /// A <see cref="ReadOnlySpan{T}"/> over the characters of the word.
+    /// </summary>
     public ReadOnlySpan<char> Span => _value.Span;
 
+    /// <summary>
+    /// Returns <see langword="true"/> if <paramref name="value"/> is a valid
+    /// <see cref="WordText"/> value (a word or a template, see remarks on the type).
+    /// </summary>
     public static bool IsValidValue(CharSequence value)
     {
         if (value.IsEmpty || value.Length > MaxSerializedCharLength)

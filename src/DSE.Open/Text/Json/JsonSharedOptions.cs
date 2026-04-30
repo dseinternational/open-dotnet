@@ -10,6 +10,10 @@ using NodaTime.Serialization.SystemTextJson;
 
 namespace DSE.Open.Text.Json;
 
+/// <summary>
+/// Provides shared <see cref="JsonSerializerOptions"/> instances and helpers for configuring
+/// <see cref="JsonSerializerOptions"/> for use with DSE.Open types.
+/// </summary>
 public static class JsonSharedOptions
 {
     private static readonly JsonNamingPolicy s_defaultNamingPolicy = JsonNamingPolicy.SnakeCaseLower;
@@ -27,6 +31,10 @@ public static class JsonSharedOptions
     /// </summary>
     public static readonly JsonSerializerOptions RelaxedJsonEscaping = Create(encoder: JavaScriptEncoders.RelaxedJsonEscaping);
 
+    /// <summary>
+    /// Creates a new <see cref="JsonSerializerOptions"/> instance configured for DSE.Open types
+    /// with a snake casing naming policy.
+    /// </summary>
     public static JsonSerializerOptions Create(
         bool writeIndented = false,
         bool addDefaultConverters = true,
@@ -45,6 +53,10 @@ public static class JsonSharedOptions
         return options;
     }
 
+    /// <summary>
+    /// Creates a new <see cref="JsonSerializerOptions"/> instance configured for DSE.Open types
+    /// with a snake casing naming policy, optionally including the <see cref="JsonValueObjectConverter"/>.
+    /// </summary>
     public static JsonSerializerOptions Create(
         bool writeIndented,
         bool addDefaultConverters,
@@ -63,6 +75,10 @@ public static class JsonSharedOptions
         return options;
     }
 
+    /// <summary>
+    /// Configures the specified <see cref="JsonSerializerOptions"/> for DSE.Open types
+    /// using a snake casing naming policy.
+    /// </summary>
     public static void ConfigureJsonOptions(
         JsonSerializerOptions options,
         bool writeIndented = false,
@@ -71,6 +87,10 @@ public static class JsonSharedOptions
         ConfigureJsonOptions(options, s_defaultNamingPolicy, writeIndented, addDefaultConverters);
     }
 
+    /// <summary>
+    /// Configures the specified <see cref="JsonSerializerOptions"/> for DSE.Open types
+    /// using the supplied naming policy.
+    /// </summary>
     public static void ConfigureJsonOptions(
         JsonSerializerOptions options,
         JsonNamingPolicy commonNamingPolicy,
@@ -86,6 +106,11 @@ public static class JsonSharedOptions
             null);
     }
 
+    /// <summary>
+    /// Configures the specified <see cref="JsonSerializerOptions"/> for DSE.Open types
+    /// with full control over naming policy, default converters, the
+    /// <see cref="JsonValueObjectConverter"/>, and the JavaScript encoder.
+    /// </summary>
     public static void ConfigureJsonOptions(
         JsonSerializerOptions options,
         JsonNamingPolicy commonNamingPolicy,

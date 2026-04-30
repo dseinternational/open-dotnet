@@ -11,12 +11,30 @@ namespace DSE.Open.Values;
 public interface IValueSet<TValue, T> : ISet<TValue>
     where T : IEquatable<T>
     where TValue : struct, IValue<TValue, T>;
+
+/// <summary>
+/// Represents a finite, read-only set of values.
+/// </summary>
+/// <typeparam name="TValue">The type of the value.</typeparam>
+/// <typeparam name="T">The type of the converted/constrained values.</typeparam>
 public interface IReadOnlyValueSet<TValue, T> : IReadOnlySet<TValue>
     where T : IEquatable<T>
     where TValue : struct, IValue<TValue, T>;
+
+/// <summary>
+/// Represents a collection of values.
+/// </summary>
+/// <typeparam name="TValue">The type of the value.</typeparam>
+/// <typeparam name="T">The type of the converted/constrained values.</typeparam>
 public interface IValueCollection<TValue, T> : ICollection<TValue>
     where T : IEquatable<T>
     where TValue : struct, IValue<TValue, T>;
+
+/// <summary>
+/// Represents a read-only collection of values.
+/// </summary>
+/// <typeparam name="TValue">The type of the value.</typeparam>
+/// <typeparam name="T">The type of the converted/constrained values.</typeparam>
 public interface IReadOnlyValueCollection<TValue, T> : IReadOnlyCollection<TValue>
     where T : IEquatable<T>
     where TValue : struct, IValue<TValue, T>;

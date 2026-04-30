@@ -20,25 +20,40 @@ namespace DSE.Open.Records;
 [StructLayout(LayoutKind.Sequential)]
 public readonly partial struct ConditionDiagnosisCode : IEquatableValue<ConditionDiagnosisCode, ClinicalConceptCode>, IUtf8SpanSerializable<ConditionDiagnosisCode>
 {
+    /// <inheritdoc/>
     public static int MaxSerializedCharLength => ClinicalConceptCode.MaxSerializedCharLength;
 
+    /// <inheritdoc/>
     public static int MaxSerializedByteLength => ClinicalConceptCode.MaxSerializedByteLength;
 
+    /// <inheritdoc/>
     public static bool IsValidValue(ClinicalConceptCode value)
     {
         return Lookup.ContainsKey(value);
     }
 
+    /// <summary>
+    /// Implicitly converts a <see cref="long"/> SNOMED CT Concept ID to a <see cref="ConditionDiagnosisCode"/>.
+    /// </summary>
+    /// <param name="code">The SNOMED CT Concept ID.</param>
     public static implicit operator ConditionDiagnosisCode(long code)
     {
         return FromInt64(code);
     }
 
+    /// <summary>
+    /// Creates a <see cref="ConditionDiagnosisCode"/> from a 32-bit SNOMED CT Concept ID.
+    /// </summary>
+    /// <param name="code">The SNOMED CT Concept ID.</param>
     public static ConditionDiagnosisCode FromInt32(int code)
     {
         return FromInt64(code);
     }
 
+    /// <summary>
+    /// Creates a <see cref="ConditionDiagnosisCode"/> from a 64-bit SNOMED CT Concept ID.
+    /// </summary>
+    /// <param name="code">The SNOMED CT Concept ID.</param>
     public static ConditionDiagnosisCode FromInt64(long code)
     {
         return new(new(code));
@@ -90,6 +105,9 @@ public readonly partial struct ConditionDiagnosisCode : IEquatableValue<Conditio
     /// </summary>
     public static readonly ConditionDiagnosisCode SpecificLanguageImpairment = new((ClinicalConceptCode)229746007, true);
 
+    /// <summary>
+    /// Gets all defined <see cref="ConditionDiagnosisCode"/> values.
+    /// </summary>
     public static readonly IReadOnlyCollection<ConditionDiagnosisCode> All =
     [
         DownSyndrome,
@@ -103,5 +121,9 @@ public readonly partial struct ConditionDiagnosisCode : IEquatableValue<Conditio
         SpecificLanguageImpairment,
     ];
 
+    /// <summary>
+    /// Gets a lookup of defined <see cref="ConditionDiagnosisCode"/> values keyed by their underlying
+    /// <see cref="ClinicalConceptCode"/>.
+    /// </summary>
     public static readonly IReadOnlyDictionary<ClinicalConceptCode, ConditionDiagnosisCode> Lookup = All.ToDictionary(r => r._value);
 }

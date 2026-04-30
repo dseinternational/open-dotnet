@@ -31,18 +31,39 @@ public class StandardTimeZoneInfo
         IanaId = ianaId;
     }
 
+    /// <summary>
+    /// The Windows time zone identifier (for example, <c>"GMT Standard Time"</c>).
+    /// </summary>
     public string WindowsId { get; }
 
+    /// <summary>
+    /// The IANA time zone identifier corresponding to <see cref="WindowsId"/>.
+    /// </summary>
     public string IanaId { get; }
 
+    /// <summary>
+    /// The localised display name shown for the time zone (for example, <c>"(UTC+00:00) Dublin, Edinburgh, Lisbon, London"</c>).
+    /// </summary>
     public string DisplayName { get; }
 
+    /// <summary>
+    /// The standard-time name of the time zone.
+    /// </summary>
     public string StandardName { get; }
 
+    /// <summary>
+    /// The daylight-saving (summer) name of the time zone.
+    /// </summary>
     public string DaylightName { get; }
 
+    /// <summary>
+    /// The base offset from UTC in <c>HH:mm:ss</c> format (excluding any daylight-saving adjustment).
+    /// </summary>
     public string BaseUtcOffset { get; }
 
+    /// <summary>
+    /// <see langword="true"/> if the time zone observes daylight-saving time.
+    /// </summary>
     public bool SupportsDaylightSavingTime { get; }
 
     /// <summary>
@@ -54,6 +75,9 @@ public class StandardTimeZoneInfo
         return TimeZoneInfo.FindSystemTimeZoneById(WindowsId);
     }
 
+    /// <summary>
+    /// Returns the full list of known standard time zones.
+    /// </summary>
 #pragma warning disable CA1024 // Use properties where appropriate
     public static IEnumerable<StandardTimeZoneInfo> GetAll()
     {

@@ -9,6 +9,10 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace DSE.Open.EntityFrameworkCore.Metadata;
 
+/// <summary>
+/// Base class for an <see cref="IConstructorBindingFactory"/> implementation that locates and
+/// binds entity and complex type constructors using the supplied parameter binding factories.
+/// </summary>
 [UnconditionalSuppressMessage("Trimming",
     "IL2026:Members annotated with 'RequiresUnreferencedCodeAttribute' require dynamic access otherwise can break functionality when trimming application code",
     Justification = "<Pending>")]
@@ -22,6 +26,11 @@ public abstract class ConstructorBindingFactoryBase : IConstructorBindingFactory
         typeof(Activator).GetMethod(nameof(Activator.CreateInstance), BindingFlags.Public | BindingFlags.Static, [typeof(Type)])!;
 #pragma warning restore IL2111 // Method with parameters or return value with `DynamicallyAccessedMembersAttribute` is accessed via reflection. Trimmer can't guarantee availability of the requirements of the method.
 
+    /// <summary>
+    /// Initializes a new instance.
+    /// </summary>
+    /// <param name="propertyFactory">The factory used to bind constructor parameters to properties.</param>
+    /// <param name="factories">The factories used to bind constructor parameters to services.</param>
     protected ConstructorBindingFactoryBase(IPropertyParameterBindingFactory propertyFactory, IParameterBindingFactories factories)
     {
         _propertyFactory = propertyFactory;
@@ -87,6 +96,7 @@ public abstract class ConstructorBindingFactoryBase : IConstructorBindingFactory
             out serviceOnlyBinding);
     }
 
+    /// <inheritdoc />
     public virtual void GetBindings(
         IReadOnlyComplexType complexType,
         out InstantiationBinding constructorBinding,
@@ -100,6 +110,11 @@ public abstract class ConstructorBindingFactoryBase : IConstructorBindingFactory
             out serviceOnlyBinding);
     }
 
+    /// <summary>
+    /// Selects the best matching constructor binding for the specified type using the supplied
+    /// parameter binding delegates and emits both the chosen constructor binding and an optional
+    /// service-only binding.
+    /// </summary>
     protected virtual void GetBindings<T>(
         T type,
         Func<IPropertyParameterBindingFactory, T, Type, string, ParameterBinding?> bindToProperty,
@@ -214,6 +229,7 @@ public abstract class ConstructorBindingFactoryBase : IConstructorBindingFactory
         }
     }
 
+    /// <inheritdoc />
     public virtual bool TryBindConstructor(
         IMutableEntityType entityType,
         ConstructorInfo constructor,
@@ -229,6 +245,7 @@ public abstract class ConstructorBindingFactoryBase : IConstructorBindingFactory
             out unboundParameters);
     }
 
+    /// <inheritdoc />
     public virtual bool TryBindConstructor(
         IConventionEntityType entityType,
         ConstructorInfo constructor,
@@ -244,6 +261,11 @@ public abstract class ConstructorBindingFactoryBase : IConstructorBindingFactory
             out unboundParameters);
     }
 
+    /// <summary>
+    /// Attempts to bind every parameter of <paramref name="constructor"/> using the supplied
+    /// binding delegates. Returns <see langword="true"/> when all parameters are bound;
+    /// otherwise returns <see langword="false"/> and emits the unbound parameters.
+    /// </summary>
     protected bool TryBindConstructor<T>(
         T entityType,
         ConstructorInfo constructor,
@@ -287,6 +309,9 @@ public abstract class ConstructorBindingFactoryBase : IConstructorBindingFactory
         return true;
     }
 
+    /// <summary>
+    /// Attempts to bind a single constructor parameter, first as a property and then as a service.
+    /// </summary>
     protected ParameterBinding? BindParameter<T>(
         T entityType,
         Func<IPropertyParameterBindingFactory, T, Type, string, ParameterBinding?> bindToProperty,
@@ -304,6 +329,9 @@ public abstract class ConstructorBindingFactoryBase : IConstructorBindingFactory
                     ?? bind(_factories.FindFactory(p.ParameterType, p.Name), entityType, p.ParameterType, p.Name);
     }
 
+    /// <summary>
+    /// Formats a constructor signature for display in error messages.
+    /// </summary>
     protected static string FormatConstructorString<T>(T entityType, InstantiationBinding binding)
         where T : IReadOnlyTypeBase
     {

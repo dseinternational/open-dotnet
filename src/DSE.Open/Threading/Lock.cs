@@ -14,18 +14,31 @@ public sealed class Lock : IDisposable
     private readonly SemaphoreSlim _semaphore = new(1, 1);
     private readonly Task<IDisposable?> _releaser;
 
+    /// <summary>
+    /// Initializes a new <see cref="Lock"/> instance in the released state.
+    /// </summary>
     public Lock()
     {
         _releaser = Task.FromResult((IDisposable?)new Releaser(this));
     }
 
+    /// <summary>
+    /// Gets a value indicating whether the lock is currently held.
+    /// </summary>
     public bool IsAcquired => _semaphore.CurrentCount == 0;
 
+    /// <summary>
+    /// Synchronously acquires the lock, blocking until it becomes available.
+    /// </summary>
     public void Acquire()
     {
         AcquireAsync().Wait();
     }
 
+    /// <summary>
+    /// Asynchronously acquires the lock, returning an <see cref="IDisposable"/> whose
+    /// disposal releases the lock.
+    /// </summary>
     public Task<IDisposable?> AcquireAsync()
     {
         var wait = _semaphore.WaitAsync();
@@ -50,6 +63,7 @@ public sealed class Lock : IDisposable
         }
     }
 
+    /// <inheritdoc/>
     public void Dispose()
     {
         _semaphore.Dispose();

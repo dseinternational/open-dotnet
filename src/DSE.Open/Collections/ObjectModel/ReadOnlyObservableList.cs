@@ -6,8 +6,14 @@ using System.ComponentModel;
 
 namespace DSE.Open.Collections.ObjectModel;
 
+/// <summary>
+/// Provides factory methods for <see cref="ReadOnlyObservableList{T}"/>.
+/// </summary>
 public static class ReadOnlyObservableList
 {
+    /// <summary>
+    /// Returns a cached empty <see cref="ReadOnlyObservableList{T}"/>.
+    /// </summary>
     public static ReadOnlyObservableList<T> Empty<T>()
     {
         return EmptyReadOnlyObservableList<T>.s_value;
@@ -31,33 +37,44 @@ public class ReadOnlyObservableList<T> : IReadOnlyObservableList<T>
     {
     }
 
+    /// <summary>
+    /// Initializes a new <see cref="ReadOnlyObservableList{T}"/> wrapping a new <see cref="ObservableList{T}"/> populated from <paramref name="collection"/>.
+    /// </summary>
     public ReadOnlyObservableList(IEnumerable<T> collection)
         : this(new ObservableList<T>(collection))
     {
     }
 
+    /// <summary>
+    /// Initializes a new <see cref="ReadOnlyObservableList{T}"/> wrapping the specified observable list.
+    /// </summary>
     public ReadOnlyObservableList(IObservableList<T> collection)
     {
         ArgumentNullException.ThrowIfNull(collection);
         _inner = collection;
     }
 
+    /// <inheritdoc/>
     public T this[int index] => _inner[index];
 
+    /// <inheritdoc/>
     public int Count => _inner.Count;
 
+    /// <inheritdoc/>
     public event NotifyCollectionChangedEventHandler? CollectionChanged
     {
         add => _inner.CollectionChanged += value;
         remove => _inner.CollectionChanged -= value;
     }
 
+    /// <inheritdoc/>
     public event PropertyChangedEventHandler? PropertyChanged
     {
         add => _inner.PropertyChanged += value;
         remove => _inner.PropertyChanged -= value;
     }
 
+    /// <inheritdoc/>
     public IEnumerator<T> GetEnumerator()
     {
         return _inner.GetEnumerator();

@@ -8,10 +8,17 @@ namespace DSE.Open.Turnstile;
 /// </summary>
 public sealed class ValidationException : Exception
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ValidationException"/> class with the specified message.
+    /// </summary>
     public ValidationException(string message) : base(message)
     {
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ValidationException"/> class with the specified message
+    /// and inner exception.
+    /// </summary>
     public ValidationException(string message, Exception innerException) : base(message, innerException)
     {
     }

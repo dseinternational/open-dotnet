@@ -7,21 +7,36 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DSE.Open.EntityFrameworkCore.Models.Language.Storage.ValueConversion;
 
+/// <summary>
+/// EF Core value converter that maps <see cref="SentenceMeaningId"/> values to and from <see cref="long"/>.
+/// </summary>
 public sealed class SentenceMeaningIdToInt64Converter : ValueConverter<SentenceMeaningId, long>
 {
+    /// <summary>
+    /// Gets the default <see cref="SentenceMeaningIdToInt64Converter"/> instance.
+    /// </summary>
     public static readonly SentenceMeaningIdToInt64Converter Default = new();
 
+    /// <summary>
+    /// Initialises a new instance of the <see cref="SentenceMeaningIdToInt64Converter"/> class.
+    /// </summary>
     public SentenceMeaningIdToInt64Converter() : base(c => ConvertTo(c), s => ConvertFrom(s))
     {
     }
 
-    // public for EF Core model compilation
+    /// <summary>
+    /// Converts a <see cref="SentenceMeaningId"/> to <see cref="long"/>.
+    /// </summary>
+    /// <remarks>Public for EF Core model compilation.</remarks>
     public static long ConvertTo(SentenceMeaningId value)
     {
         return (long)value;
     }
 
-    // public for EF Core model compilation
+    /// <summary>
+    /// Converts a <see cref="long"/> to a <see cref="SentenceMeaningId"/>.
+    /// </summary>
+    /// <remarks>Public for EF Core model compilation.</remarks>
     public static SentenceMeaningId ConvertFrom(long value)
     {
         if (SentenceMeaningId.TryFromInt64(value, out var id))

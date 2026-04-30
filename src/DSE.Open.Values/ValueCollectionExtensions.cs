@@ -7,8 +7,15 @@ using System.Runtime.InteropServices;
 
 namespace DSE.Open.Values;
 
+/// <summary>
+/// Extension methods over collections of <see cref="IValue{TValue, T}"/> instances.
+/// </summary>
 public static class ValueCollectionExtensions
 {
+    /// <summary>
+    /// Projects each <typeparamref name="TValue"/> in the source to its underlying
+    /// primitive of type <typeparamref name="T"/> and returns the result as an array.
+    /// </summary>
     public static T[] ToPrimitiveArray<TValue, T>(this IEnumerable<TValue> collection)
         where T : IEquatable<T>
         where TValue : struct, IValue<TValue, T>
@@ -17,6 +24,10 @@ public static class ValueCollectionExtensions
     }
 
 #pragma warning disable CA1002 // Do not expose generic lists
+    /// <summary>
+    /// Projects each <typeparamref name="TValue"/> in the source to its underlying
+    /// primitive of type <typeparamref name="T"/> and returns the result as a <see cref="List{T}"/>.
+    /// </summary>
     public static List<T> ToPrimitiveList<TValue, T>(this IEnumerable<TValue> collection)
 #pragma warning restore CA1002 // Do not expose generic lists
         where T : IEquatable<T>
@@ -25,6 +36,9 @@ public static class ValueCollectionExtensions
 
     // any value can be counted
 
+    /// <summary>
+    /// Returns the number of elements in the source collection.
+    /// </summary>
     public static int Count<TValue, T>(this IEnumerable<TValue> collection)
         where T : IEquatable<T>
         where TValue : struct, IValue<TValue, T>
@@ -36,6 +50,10 @@ public static class ValueCollectionExtensions
 
     // interval values can be summed
 
+    /// <summary>
+    /// Computes the sum of the underlying primitives in the source and returns the result
+    /// as a <typeparamref name="TValue"/>.
+    /// </summary>
     public static TValue Sum<TValue, T>(this IEnumerable<TValue> source)
         where T : struct, INumber<T>
         where TValue : struct, IAddableValue<TValue, T>
@@ -43,6 +61,10 @@ public static class ValueCollectionExtensions
         return TValue.FromValue(source.SumPrimitives<TValue, T>());
     }
 
+    /// <summary>
+    /// Computes the sum of the underlying primitives in the span and returns the result
+    /// as a <typeparamref name="TValue"/>.
+    /// </summary>
     public static TValue Sum<TValue, T>(ReadOnlySpan<TValue> span)
         where T : struct, INumber<T>
         where TValue : struct, IAddableValue<TValue, T>
@@ -50,6 +72,9 @@ public static class ValueCollectionExtensions
         return TValue.FromValue(SumPrimitives<TValue, T>(span));
     }
 
+    /// <summary>
+    /// Computes the sum of the underlying primitives in the source.
+    /// </summary>
     public static T SumPrimitives<TValue, T>(this IEnumerable<TValue> source)
         where T : struct, INumber<T>
         where TValue : struct, IAddableValue<TValue, T>
@@ -57,6 +82,9 @@ public static class ValueCollectionExtensions
         return source.Select(TValue.ConvertTo).SumCore<T, T>();
     }
 
+    /// <summary>
+    /// Computes the sum of the underlying primitives in the span.
+    /// </summary>
     public static T SumPrimitives<TValue, T>(ReadOnlySpan<TValue> span)
         where T : struct, INumber<T>
         where TValue : struct, IAddableValue<TValue, T>
@@ -74,6 +102,11 @@ public static class ValueCollectionExtensions
         return sum;
     }
 
+    /// <summary>
+    /// Computes the average of the underlying primitives in the source, accumulating
+    /// the running total in <typeparamref name="TAccumulator"/> to limit overflow risk.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">The source is empty.</exception>
     public static T AveragePrimitives<TValue, T, TAccumulator>(this IEnumerable<TValue> source)
         where T : struct, INumber<T>
         where TValue : struct, IAddableValue<TValue, T>
@@ -110,6 +143,10 @@ public static class ValueCollectionExtensions
         }
     }
 
+    /// <summary>
+    /// Computes the average of the underlying primitives in the span.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">The span is empty.</exception>
     public static T AveragePrimitives<TValue, T>(ReadOnlySpan<TValue> span)
         where T : struct, INumber<T>
         where TValue : struct, IAddableValue<TValue, T>

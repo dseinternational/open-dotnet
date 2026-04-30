@@ -4,6 +4,9 @@
 namespace DSE.Open.Memory;
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
+/// <summary>
+/// Extension methods for spans and memory.
+/// </summary>
 public static partial class MemoryExtensions
 {
     /// <summary>
@@ -44,11 +47,21 @@ public static partial class MemoryExtensions
         return result;
     }
 
+    /// <summary>
+    /// Copies the elements of <paramref name="data"/> into the supplied 2-dimensional array,
+    /// laid out in row-major order.
+    /// </summary>
     public static void CopyToArray2D<T>(this Span<T> data, T[,] destination)
     {
         ((ReadOnlySpan<T>)data).CopyToArray2D(destination);
     }
 
+    /// <summary>
+    /// Copies the elements of <paramref name="data"/> into the supplied 2-dimensional array,
+    /// laid out in row-major order.
+    /// </summary>
+    /// <exception cref="ArgumentNullException">Thrown if <paramref name="destination"/> is null.</exception>
+    /// <exception cref="ArgumentException">Thrown if <paramref name="destination"/> is too small to hold <paramref name="data"/>.</exception>
     public static void CopyToArray2D<T>(this ReadOnlySpan<T> data, T[,] destination)
     {
         ArgumentNullException.ThrowIfNull(destination);

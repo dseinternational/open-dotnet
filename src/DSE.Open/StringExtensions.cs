@@ -3,6 +3,9 @@
 
 namespace DSE.Open;
 
+/// <summary>
+/// Extension methods over <see cref="string"/>.
+/// </summary>
 public static class StringExtensions
 {
     /// <summary>

@@ -38,46 +38,79 @@ public readonly partial struct LanguageTag
     /// </remarks>
     public const int MaxLength = 35;
 
+    /// <inheritdoc/>
     public static int MaxSerializedCharLength => MaxLength;
 
+    /// <inheritdoc/>
     public static int MaxSerializedByteLength => MaxLength;
 
     private static readonly Regex s_regex = GetValidationRegex();
 
+    /// <summary>
+    /// Returns a value indicating whether the specified value is a valid language tag.
+    /// </summary>
+    /// <param name="value">The value to check.</param>
     public static bool IsValidValue(AsciiString value)
     {
         return IsValidValue(value.AsSpan());
     }
 
+    /// <summary>
+    /// Gets the length of the underlying value, in characters.
+    /// </summary>
     public int Length => _value.Length;
 
+    /// <summary>
+    /// Creates a <see cref="LanguageTag"/> from the name of the specified <see cref="CultureInfo"/>.
+    /// </summary>
+    /// <param name="cultureInfo">The culture from which to take the language tag.</param>
     public static LanguageTag FromCultureInfo(CultureInfo cultureInfo)
     {
         ArgumentNullException.ThrowIfNull(cultureInfo);
         return FromString(cultureInfo.Name);
     }
 
+    /// <summary>
+    /// Creates a <see cref="LanguageTag"/> from the specified string.
+    /// </summary>
+    /// <param name="languageTag">The language tag string.</param>
     public static LanguageTag FromString(string languageTag)
     {
         ArgumentNullException.ThrowIfNull(languageTag);
         return new(AsciiString.Parse(languageTag, CultureInfo.InvariantCulture));
     }
 
+    /// <summary>
+    /// Creates a <see cref="LanguageTag"/> from the specified UTF-8 byte span.
+    /// </summary>
+    /// <param name="languageTag">The language tag bytes.</param>
     public static LanguageTag FromByteSpan(ReadOnlySpan<byte> languageTag)
     {
         return new(AsciiString.Parse(languageTag, null));
     }
 
+    /// <summary>
+    /// Creates a <see cref="LanguageTag"/> from the specified character span.
+    /// </summary>
+    /// <param name="languageTag">The language tag characters.</param>
     public static LanguageTag FromCharSpan(ReadOnlySpan<char> languageTag)
     {
         return new(AsciiString.Parse(languageTag, CultureInfo.InvariantCulture));
     }
 
+    /// <summary>
+    /// Returns a value indicating whether the specified value is a valid language tag.
+    /// </summary>
+    /// <param name="value">The value to check.</param>
     public static bool IsValidValue(ReadOnlySpan<AsciiChar> value)
     {
         return IsValidValue(ValuesMarshal.AsBytes(value));
     }
 
+    /// <summary>
+    /// Returns a value indicating whether the specified value is a valid language tag.
+    /// </summary>
+    /// <param name="value">The value to check, as UTF-8 bytes.</param>
     [SkipLocalsInit]
     public static bool IsValidValue(ReadOnlySpan<byte> value)
     {

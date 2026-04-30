@@ -12,7 +12,7 @@ namespace DSE.Open.Collections.Generic;
 /// <summary>
 ///     A <see cref="IReadOnlyCollection{T}"/> that defines equality based on the equality of the items it contains.
 /// </summary>
-/// <typeparam name="T"></typeparam>
+/// <typeparam name="T">The type of element stored in the collection.</typeparam>
 /// <remarks>
 ///     <see cref="ICollection{T}"/> is implemented explicitly to support deserialization and <see cref="IList"/>
 ///     is implemented to support certain data-binding scenarios.
@@ -24,16 +24,26 @@ public class ReadOnlyValueCollection<T>
       IList,
       IEquatable<ReadOnlyValueCollection<T>>
 {
+    /// <summary>
+    /// An empty <see cref="ReadOnlyValueCollection{T}"/>.
+    /// </summary>
     // Cannot use collection expression because this is the empty used by the builder when supplied with no items.
     public static readonly ReadOnlyValueCollection<T> Empty = new();
 
     internal readonly List<T> _items;
 
+    /// <summary>
+    /// Initializes a new, empty <see cref="ReadOnlyValueCollection{T}"/>.
+    /// </summary>
     public ReadOnlyValueCollection()
     {
         _items = [];
     }
 
+    /// <summary>
+    /// Initializes a new <see cref="ReadOnlyValueCollection{T}"/> containing the elements of <paramref name="list"/>.
+    /// If <paramref name="list"/> is itself a <see cref="ReadOnlyValueCollection{T}"/>, its backing store is shared.
+    /// </summary>
     public ReadOnlyValueCollection(IEnumerable<T> list)
     {
         _items = list is ReadOnlyValueCollection<T> rovc ? rovc._items : [.. list];
@@ -62,10 +72,15 @@ public class ReadOnlyValueCollection<T>
     }
 #pragma warning restore CA1002 // Do not expose generic lists
 
+    /// <inheritdoc/>
     public int Count => _items.Count;
 
+    /// <inheritdoc/>
     public T this[int index] => _items[index];
 
+    /// <summary>
+    /// Returns the zero-based index of the first occurrence of <paramref name="item"/>, or -1 if not found.
+    /// </summary>
     public int IndexOf(T item)
     {
         return _items.IndexOf(item);
@@ -85,6 +100,9 @@ public class ReadOnlyValueCollection<T>
 
     object? IList.this[int index] { get => this[index]; set => throw new InvalidOperationException("Cannot change a read-only collection."); }
 
+    /// <summary>
+    /// Returns a <see cref="ReadOnlySpan{T}"/> over the underlying storage of the collection.
+    /// </summary>
     public ReadOnlySpan<T> AsSpan()
     {
         return CollectionsMarshal.AsSpan(_items);
@@ -108,16 +126,19 @@ public class ReadOnlyValueCollection<T>
 
 #pragma warning restore CA1033 // Interface methods should be callable by child types
 
+    /// <inheritdoc/>
     public bool Contains(T item)
     {
         return _items.Contains(item);
     }
 
+    /// <inheritdoc/>
     public void CopyTo(T[] array, int arrayIndex)
     {
         _items.CopyTo(array, arrayIndex);
     }
 
+    /// <inheritdoc/>
     public virtual bool Equals(ReadOnlyValueCollection<T>? other)
     {
         return other is not null
@@ -126,11 +147,13 @@ public class ReadOnlyValueCollection<T>
                     && CollectionsMarshal.AsSpan(_items).SequenceEqual(CollectionsMarshal.AsSpan(other._items))));
     }
 
+    /// <inheritdoc/>
     public override bool Equals(object? obj)
     {
         return Equals(obj as ReadOnlyValueCollection<T>);
     }
 
+    /// <inheritdoc/>
     public override int GetHashCode()
     {
         var hash = new HashCode();
@@ -143,11 +166,17 @@ public class ReadOnlyValueCollection<T>
         return hash.ToHashCode();
     }
 
+    /// <summary>
+    /// Returns an enumerator that iterates through the collection.
+    /// </summary>
     public Enumerator GetEnumerator()
     {
         return new(this);
     }
 
+    /// <summary>
+    /// Returns a string representation of the collection produced by <see cref="CollectionWriter"/>.
+    /// </summary>
     public override string ToString()
     {
         return CollectionWriter.WriteToString(this);
@@ -215,47 +244,72 @@ public class ReadOnlyValueCollection<T>
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
+    /// <summary>
+    /// Creates a <see cref="ReadOnlyValueCollection{T}"/> containing a copy of the specified array.
+    /// </summary>
     public static explicit operator ReadOnlyValueCollection<T>(T[] collection)
     {
         return [.. collection];
     }
 
+    /// <summary>
+    /// Creates a <see cref="ReadOnlyValueCollection{T}"/> containing a copy of the specified collection.
+    /// </summary>
     public static explicit operator ReadOnlyValueCollection<T>(ReadOnlyCollection<T> collection)
     {
         return [.. collection];
     }
 
+    /// <summary>
+    /// Creates a <see cref="ReadOnlyValueCollection{T}"/> containing a copy of the specified collection.
+    /// </summary>
     public static explicit operator ReadOnlyValueCollection<T>(Collection<T> collection)
     {
         return [.. collection];
     }
 
+    /// <summary>
+    /// Creates a <see cref="ReadOnlyValueCollection{T}"/> containing a copy of the specified collection.
+    /// </summary>
     public static explicit operator ReadOnlyValueCollection<T>(System.Collections.ObjectModel.ReadOnlyCollection<T> collection)
     {
         return [.. collection];
     }
 
+    /// <summary>
+    /// Creates a <see cref="ReadOnlyValueCollection{T}"/> containing a copy of the specified collection.
+    /// </summary>
     public static explicit operator ReadOnlyValueCollection<T>(System.Collections.ObjectModel.Collection<T> collection)
     {
         return [.. collection];
     }
 
+    /// <summary>
+    /// Creates a <see cref="ReadOnlyValueCollection{T}"/> containing a copy of the specified hash set.
+    /// </summary>
     public static explicit operator ReadOnlyValueCollection<T>(HashSet<T> collection)
     {
         return [.. collection];
     }
 #pragma warning restore CA2225 // Operator overloads have named alternates
 
+    /// <summary>
+    /// An enumerator over a <see cref="ReadOnlyValueCollection{T}"/>.
+    /// </summary>
     public struct Enumerator : IEnumerator<T>
     {
         private List<T>.Enumerator _inner;
 
+        /// <summary>
+        /// Initializes a new enumerator that iterates the specified collection.
+        /// </summary>
         public Enumerator(ReadOnlyValueCollection<T> collection)
         {
             ArgumentNullException.ThrowIfNull(collection);
             _inner = collection._items.GetEnumerator();
         }
 
+        /// <inheritdoc/>
         public bool MoveNext()
         {
             return _inner.MoveNext();
@@ -266,10 +320,12 @@ public class ReadOnlyValueCollection<T>
             throw new NotSupportedException();
         }
 
+        /// <inheritdoc/>
         public T Current => _inner.Current;
 
         object? IEnumerator.Current => _inner.Current;
 
+        /// <inheritdoc/>
         public void Dispose()
         {
             _inner.Dispose();

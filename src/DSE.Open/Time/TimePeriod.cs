@@ -17,12 +17,39 @@ public readonly record struct TimePeriod : IComparable<TimePeriod>
 {
     private readonly byte _value;
 
+    /// <summary>
+    /// The default, unspecified time period.
+    /// </summary>
     public static readonly TimePeriod None;
+
+    /// <summary>
+    /// One minute.
+    /// </summary>
     public static readonly TimePeriod Minute = new(MinuteValue);
+
+    /// <summary>
+    /// One hour.
+    /// </summary>
     public static readonly TimePeriod Hour = new(HourValue);
+
+    /// <summary>
+    /// One day.
+    /// </summary>
     public static readonly TimePeriod Day = new(DayValue);
+
+    /// <summary>
+    /// One week.
+    /// </summary>
     public static readonly TimePeriod Week = new(WeekValue);
+
+    /// <summary>
+    /// One month.
+    /// </summary>
     public static readonly TimePeriod Month = new(MonthValue);
+
+    /// <summary>
+    /// One year.
+    /// </summary>
     public static readonly TimePeriod Year = new(YearValue);
 
     private const byte MinuteValue = 1;
@@ -45,31 +72,47 @@ public readonly record struct TimePeriod : IComparable<TimePeriod>
         _value = value;
     }
 
+    /// <inheritdoc/>
     public int CompareTo(TimePeriod other)
     {
         return _value.CompareTo(other._value);
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if <paramref name="left"/> represents a shorter period than <paramref name="right"/>.
+    /// </summary>
     public static bool operator <(TimePeriod left, TimePeriod right)
     {
         return left.CompareTo(right) < 0;
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if <paramref name="left"/> represents a shorter or equal period to <paramref name="right"/>.
+    /// </summary>
     public static bool operator <=(TimePeriod left, TimePeriod right)
     {
         return left.CompareTo(right) <= 0;
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if <paramref name="left"/> represents a longer period than <paramref name="right"/>.
+    /// </summary>
     public static bool operator >(TimePeriod left, TimePeriod right)
     {
         return left.CompareTo(right) > 0;
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if <paramref name="left"/> represents a longer or equal period to <paramref name="right"/>.
+    /// </summary>
     public static bool operator >=(TimePeriod left, TimePeriod right)
     {
         return left.CompareTo(right) >= 0;
     }
 
+    /// <summary>
+    /// Returns the lower-case label for this period (for example, <c>"minute"</c>, <c>"hour"</c>, <c>"none"</c>).
+    /// </summary>
     public override string ToString()
     {
         return _value switch
@@ -84,6 +127,11 @@ public readonly record struct TimePeriod : IComparable<TimePeriod>
         };
     }
 
+    /// <summary>
+    /// Parses one of the recognised period labels (case-insensitive).
+    /// </summary>
+    /// <exception cref="ArgumentNullException"><paramref name="value"/> is <see langword="null"/>.</exception>
+    /// <exception cref="FormatException"><paramref name="value"/> is not a recognised label.</exception>
     public static TimePeriod Parse(string value)
     {
         ArgumentNullException.ThrowIfNull(value);
@@ -91,6 +139,10 @@ public readonly record struct TimePeriod : IComparable<TimePeriod>
         return TryParse(value, out var result) ? result : throw new FormatException("Invalid TimePeriod.");
     }
 
+    /// <summary>
+    /// Attempts to parse one of the recognised period labels (case-insensitive). Returns <see langword="false"/>
+    /// when <paramref name="value"/> is <see langword="null"/>, empty, or unrecognised.
+    /// </summary>
     public static bool TryParse([NotNullWhen(true)] string? value, out TimePeriod timePeriod)
     {
         if (!string.IsNullOrEmpty(value))

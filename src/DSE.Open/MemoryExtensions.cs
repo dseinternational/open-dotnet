@@ -8,13 +8,25 @@ using System.Runtime.Intrinsics;
 
 namespace DSE.Open;
 
+/// <summary>
+/// Extensions for working with <see cref="Span{T}"/>, <see cref="ReadOnlySpan{T}"/>,
+/// <see cref="Memory{T}"/> and <see cref="ReadOnlyMemory{T}"/>.
+/// </summary>
 public static partial class MemoryExtensions
 {
+    /// <summary>
+    /// Returns <see langword="true"/> if every element of <paramref name="value"/> satisfies <paramref name="predicate"/>.
+    /// Returns <see langword="false"/> when the span is empty.
+    /// </summary>
     public static bool ContainsOnly<T>(this Span<T> value, Func<T, bool> predicate)
     {
         return ContainsOnly((ReadOnlySpan<T>)value, predicate);
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if every element of <paramref name="values"/> satisfies <paramref name="predicate"/>.
+    /// Returns <see langword="false"/> when the span is empty.
+    /// </summary>
     public static bool ContainsOnly<T>(this ReadOnlySpan<T> values, Func<T, bool> predicate)
     {
         ArgumentNullException.ThrowIfNull(predicate);
@@ -127,6 +139,10 @@ public static partial class MemoryExtensions
         return result;
     }
 
+    /// <summary>
+    /// Tries to copy values matching the specified predicate from <paramref name="span"/> to <paramref name="buffer"/>.
+    /// Returns <see langword="false"/> if <paramref name="buffer"/> is too small.
+    /// </summary>
     public static bool TryCopyWhere<T>(this Span<T> span, Span<T> buffer, Func<T, bool> predicate, out int itemsCopied)
     {
         return TryCopyWhere((ReadOnlySpan<T>)span, buffer, predicate, out itemsCopied);
@@ -169,6 +185,11 @@ public static partial class MemoryExtensions
         return true;
     }
 
+    /// <summary>
+    /// Copies values matching the specified predicate from <paramref name="span"/> to <paramref name="buffer"/>
+    /// and returns the number of items copied.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">Thrown if the buffer is too small to hold all of the values.</exception>
     public static int CopyWhere<T>(this Span<T> span, Span<T> buffer, Func<T, bool> predicate)
     {
         return CopyWhere((ReadOnlySpan<T>)span, buffer, predicate);
@@ -195,6 +216,11 @@ public static partial class MemoryExtensions
         return charsWritten; // unreachable
     }
 
+    /// <summary>
+    /// Copies all of the values from <paramref name="span"/> to <paramref name="buffer"/>, excluding any
+    /// element equal to <paramref name="value"/>. Returns the number of items copied.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">Thrown if the buffer is too small to hold all of the values.</exception>
     public static int CopyExcluding<T>(this Span<T> span, Span<T> buffer, T value)
         where T : IEquatable<T>
     {
@@ -300,6 +326,10 @@ public static partial class MemoryExtensions
         return span[..(span.Length + offset)];
     }
 
+    /// <summary>
+    /// Replaces every element of <paramref name="span"/> matching <paramref name="predicate"/>
+    /// with <paramref name="replacement"/> in place. Returns the number of replacements made.
+    /// </summary>
     public static int Replace<T>(this Span<T> span, Func<T, bool> predicate, T replacement)
         where T : IEquatable<T>
     {

@@ -7,8 +7,16 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace DSE.Open.EntityFrameworkCore;
 
+/// <summary>
+/// Provides extension methods for <see cref="ModelBuilder"/>.
+/// </summary>
 public static class ModelBuilderExtensions
 {
+    /// <summary>
+    /// Converts table, column, key, foreign key, and index names in the model
+    /// to <c>snake_case</c>.
+    /// </summary>
+    /// <param name="builder">The <see cref="ModelBuilder"/> to apply the convention to.</param>
     public static void ApplySnakeCaseConvention(this ModelBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);

@@ -6,10 +6,20 @@ using DSE.Open.Collections.Generic;
 
 namespace DSE.Open.Results;
 
+/// <summary>
+/// A <see cref="ValueResult{T}"/> that carries a <see cref="ReadOnlyValueCollection{T}"/>.
+/// </summary>
+/// <typeparam name="T">The element type of the carried collection.</typeparam>
 public record CollectionValueResult<T> : ValueResult<ReadOnlyValueCollection<T>>
 {
+    /// <summary>
+    /// An empty <see cref="CollectionValueResult{T}"/> with no items.
+    /// </summary>
     public static new readonly CollectionValueResult<T> Empty = new() { Value = [] };
 
+    /// <summary>
+    /// Gets the collection of items carried by this result. Never returns <see langword="null"/>.
+    /// </summary>
     [JsonPropertyName("value")]
     public override required ReadOnlyValueCollection<T> Value
     {

@@ -17,6 +17,9 @@ public readonly partial record struct BinaryValue : ISpanFormattable, IUtf8SpanF
 {
     private readonly ReadOnlyMemory<byte> _value;
 
+    /// <summary>
+    /// An empty <see cref="BinaryValue"/> (zero-length).
+    /// </summary>
     public static readonly BinaryValue Empty;
 
     /// <summary>
@@ -52,11 +55,17 @@ public readonly partial record struct BinaryValue : ISpanFormattable, IUtf8SpanF
     /// </summary>
     public int BitLength => Length * 8;
 
+    /// <summary>
+    /// Returns a <see cref="ReadOnlyMemory{T}"/> view over the underlying bytes.
+    /// </summary>
     public ReadOnlyMemory<byte> AsMemory()
     {
         return _value;
     }
 
+    /// <summary>
+    /// Returns a <see cref="ReadOnlySpan{T}"/> view over the underlying bytes.
+    /// </summary>
     public ReadOnlySpan<byte> AsSpan()
     {
         return _value.Span;
@@ -70,11 +79,15 @@ public readonly partial record struct BinaryValue : ISpanFormattable, IUtf8SpanF
         return _value.ToArray();
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if the byte sequences are equal.
+    /// </summary>
     public bool Equals(BinaryValue other)
     {
         return _value.Span.SequenceEqual(other._value.Span);
     }
 
+    /// <inheritdoc/>
     public override int GetHashCode()
     {
         var span = _value.Span;
@@ -116,11 +129,17 @@ public readonly partial record struct BinaryValue : ISpanFormattable, IUtf8SpanF
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
+    /// <summary>
+    /// Returns a <see cref="ReadOnlyMemory{T}"/> view over the underlying bytes.
+    /// </summary>
     public static explicit operator ReadOnlyMemory<byte>(BinaryValue value)
     {
         return value.AsMemory();
     }
 
+    /// <summary>
+    /// Returns a <see cref="ReadOnlySpan{T}"/> view over the underlying bytes.
+    /// </summary>
     public static explicit operator ReadOnlySpan<byte>(BinaryValue value)
     {
         return value.AsSpan();
@@ -140,6 +159,7 @@ public readonly partial record struct BinaryValue : ISpanFormattable, IUtf8SpanF
         return new(bytes, noCopy: true);
     }
 
+    /// <inheritdoc/>
     public ulong GetRepeatableHashCode()
     {
         return RepeatableHash64Provider.Default.GetRepeatableHashCode(this);

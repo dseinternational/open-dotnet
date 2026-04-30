@@ -17,10 +17,16 @@ public class ObservableGroupCollection<TGroup, TItem, TGrouping>
     : ObservableCollection<TGrouping>, IGroupCollection<TGroup, TItem, TGrouping>
     where TGrouping : IGrouping<TGroup, TItem>
 {
+    /// <summary>
+    /// Initializes a new, empty <see cref="ObservableGroupCollection{TGroup, TItem, TGrouping}"/>.
+    /// </summary>
     public ObservableGroupCollection()
     {
     }
 
+    /// <summary>
+    /// Initializes a new <see cref="ObservableGroupCollection{TGroup, TItem, TGrouping}"/> containing the specified groupings.
+    /// </summary>
     public ObservableGroupCollection(IEnumerable<TGrouping> collection) : base(collection)
     {
     }

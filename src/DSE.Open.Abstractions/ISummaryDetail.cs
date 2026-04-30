@@ -8,5 +8,8 @@ namespace DSE.Open;
 /// </summary>
 public interface ISummaryDetail : ISummarized
 {
+    /// <summary>
+    /// Gets the detail text for the object.
+    /// </summary>
     string Detail { get; }
 }

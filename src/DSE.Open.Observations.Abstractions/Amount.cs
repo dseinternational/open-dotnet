@@ -21,23 +21,39 @@ public readonly partial struct Amount
       IRepeatableHash64,
       IObservationValue
 {
+    /// <inheritdoc/>
     public static int MaxSerializedCharLength => 32;
 
+    /// <inheritdoc/>
     public static int MaxSerializedByteLength => 32;
 
+    /// <summary>
+    /// An <see cref="Amount"/> with the value zero.
+    /// </summary>
     public static Amount Zero { get; } = new(decimal.Zero);
 
+    /// <summary>
+    /// Initializes a new <see cref="Amount"/> with the specified value.
+    /// </summary>
+    /// <param name="value">The amount value.</param>
     public Amount(decimal value) : this(value, false) { }
 
+    /// <summary>
+    /// Initializes a new <see cref="Amount"/> from the specified <see cref="Half"/> value.
+    /// </summary>
+    /// <param name="value">The amount value.</param>
     public Amount(Half value) : this((decimal)value) { }
 
+    /// <inheritdoc/>
     public MeasurementValueType ValueType => Observations.MeasurementValueType.Amount;
 
+    /// <inheritdoc/>
     public static bool IsValidValue(decimal value)
     {
         return value >= Zero._value && value <= IObservationValue.MaxAmount;
     }
 
+    /// <inheritdoc/>
     public ulong GetRepeatableHashCode()
     {
         return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);
@@ -58,6 +74,7 @@ public readonly partial struct Amount
         return IObservationValue.ThrowValueMismatchException<ulong>();
     }
 
+    /// <inheritdoc/>
     public decimal GetAmount()
     {
         return _value;

@@ -8,10 +8,18 @@ using System.Text.Json.Serialization;
 
 namespace DSE.Open.Text.Json.Serialization;
 
+/// <summary>
+/// A <see cref="JsonConverter{T}"/> that reads <see cref="decimal"/> values from JSON strings or numbers
+/// and writes them as JSON strings using invariant culture.
+/// </summary>
 public class JsonStringDecimalConverter : JsonConverter<decimal>
 {
+    /// <summary>
+    /// The default instance of the converter.
+    /// </summary>
     public static readonly JsonStringDecimalConverter Default = new();
 
+    /// <inheritdoc/>
     public override decimal Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         if (reader.TokenType == JsonTokenType.String)
@@ -32,6 +40,7 @@ public class JsonStringDecimalConverter : JsonConverter<decimal>
         return reader.GetDecimal();
     }
 
+    /// <inheritdoc/>
     public override void Write(Utf8JsonWriter writer, decimal value, JsonSerializerOptions options)
     {
         ArgumentNullException.ThrowIfNull(writer);

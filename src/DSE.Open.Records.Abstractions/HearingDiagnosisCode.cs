@@ -20,25 +20,40 @@ namespace DSE.Open.Records;
 [StructLayout(LayoutKind.Sequential)]
 public readonly partial struct HearingDiagnosisCode : IEquatableValue<HearingDiagnosisCode, ClinicalConceptCode>, IUtf8SpanSerializable<HearingDiagnosisCode>
 {
+    /// <inheritdoc/>
     public static int MaxSerializedCharLength => ClinicalConceptCode.MaxSerializedCharLength;
 
+    /// <inheritdoc/>
     public static int MaxSerializedByteLength => ClinicalConceptCode.MaxSerializedByteLength;
 
+    /// <inheritdoc/>
     public static bool IsValidValue(ClinicalConceptCode value)
     {
         return Lookup.ContainsKey(value);
     }
 
+    /// <summary>
+    /// Implicitly converts a <see cref="long"/> SNOMED CT Concept ID to a <see cref="HearingDiagnosisCode"/>.
+    /// </summary>
+    /// <param name="code">The SNOMED CT Concept ID.</param>
     public static implicit operator HearingDiagnosisCode(long code)
     {
         return FromInt64(code);
     }
 
+    /// <summary>
+    /// Creates a <see cref="HearingDiagnosisCode"/> from a 32-bit SNOMED CT Concept ID.
+    /// </summary>
+    /// <param name="code">The SNOMED CT Concept ID.</param>
     public static HearingDiagnosisCode FromInt32(int code)
     {
         return FromInt64(code);
     }
 
+    /// <summary>
+    /// Creates a <see cref="HearingDiagnosisCode"/> from a 64-bit SNOMED CT Concept ID.
+    /// </summary>
+    /// <param name="code">The SNOMED CT Concept ID.</param>
     public static HearingDiagnosisCode FromInt64(long code)
     {
         return new(new(code));
@@ -70,6 +85,9 @@ public readonly partial struct HearingDiagnosisCode : IEquatableValue<HearingDia
     public static readonly HearingDiagnosisCode SensorineuralHearingLoss = new((ClinicalConceptCode)60700002, true);
 
 
+    /// <summary>
+    /// Gets all defined <see cref="HearingDiagnosisCode"/> values.
+    /// </summary>
     public static readonly IReadOnlyCollection<HearingDiagnosisCode> All =
     [
         HearingLoss,
@@ -79,5 +97,9 @@ public readonly partial struct HearingDiagnosisCode : IEquatableValue<HearingDia
         SensorineuralHearingLoss,
     ];
 
+    /// <summary>
+    /// Gets a lookup of defined <see cref="HearingDiagnosisCode"/> values keyed by their underlying
+    /// <see cref="ClinicalConceptCode"/>.
+    /// </summary>
     public static readonly IReadOnlyDictionary<ClinicalConceptCode, HearingDiagnosisCode> Lookup = All.ToDictionary(r => r._value);
 }

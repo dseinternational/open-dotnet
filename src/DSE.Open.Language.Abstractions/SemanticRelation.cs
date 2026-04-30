@@ -38,6 +38,10 @@ public readonly partial struct SemanticRelation
     /// </summary>
     public static int MaxSerializedByteLength => 32;
 
+    /// <summary>
+    /// Initializes a new <see cref="SemanticRelation"/> from a <see cref="string"/>.
+    /// </summary>
+    /// <param name="value">The semantic relation label.</param>
     public SemanticRelation(string value) : this((AsciiString)value)
     {
     }
@@ -46,6 +50,10 @@ public readonly partial struct SemanticRelation
     {
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if <paramref name="value"/> is a defined
+    /// <see cref="SemanticRelation"/> label.
+    /// </summary>
     public static bool IsValidValue(AsciiString value)
     {
         return !value.IsEmpty
@@ -54,6 +62,9 @@ public readonly partial struct SemanticRelation
     }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates - Parse
+    /// <summary>
+    /// Converts a <see cref="string"/> to a <see cref="SemanticRelation"/>.
+    /// </summary>
     public static explicit operator SemanticRelation(string value)
 #pragma warning restore CA2225 // Operator overloads have named alternates
     {

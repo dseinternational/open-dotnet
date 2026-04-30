@@ -76,11 +76,18 @@ public readonly struct Trilean
             $"Cannot access value as the {nameof(Trilean)} value is Na."),
     };
 
+    /// <summary>
+    /// Deconstructs the value into a nullable <see cref="bool"/>, where <see cref="Na"/> maps to
+    /// <see langword="null"/>.
+    /// </summary>
     public void Deconstruct(out bool? value)
     {
         value = ToNullableBoolean();
     }
 
+    /// <summary>
+    /// Returns the three-valued (ternary) equality result for this value compared to <paramref name="other"/>.
+    /// </summary>
     public Trilean TernaryEquals(Trilean other)
     {
         return TernaryEquals(this, other);
@@ -101,26 +108,40 @@ public readonly struct Trilean
         return TernaryEquals(other).IsTrue;
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if this value equals <paramref name="other"/>, including when
+    /// both values are <see cref="Na"/>.
+    /// </summary>
     public bool EqualOrBothNa(Trilean other)
     {
         return Ternary.EqualOrBothNa(this, other);
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if this value equals <paramref name="other"/> or either value
+    /// is <see cref="Na"/>.
+    /// </summary>
     public bool EqualOrEitherNa(Trilean other)
     {
         return Ternary.EqualOrEitherNa(this, other);
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if this value equals <paramref name="other"/> and neither
+    /// value is <see cref="Na"/>.
+    /// </summary>
     public bool EqualAndNotNa(Trilean other)
     {
         return Ternary.EqualAndNeitherNa(this, other);
     }
 
+    /// <inheritdoc/>
     public override bool Equals(object? obj)
     {
         return obj is Trilean t && EqualOrBothNa(t);
     }
 
+    /// <inheritdoc/>
     public override int GetHashCode()
     {
         return _value.GetHashCode();
@@ -177,6 +198,11 @@ public readonly struct Trilean
         return ToSignedNumber<sbyte>();
     }
 
+    /// <summary>
+    /// Converts the current value to a <see cref="bool"/>.
+    /// </summary>
+    /// <returns><see langword="true"/> if <see cref="IsTrue"/>, <see langword="false"/> if <see cref="IsFalse"/>.</returns>
+    /// <exception cref="NaValueException">The value is <see cref="Na"/>.</exception>
     public bool ToBoolean()
     {
         return _value switch
@@ -188,6 +214,10 @@ public readonly struct Trilean
         };
     }
 
+    /// <summary>
+    /// Converts the current value to a <see cref="SqlBoolean"/>, mapping <see cref="Na"/> to
+    /// <see cref="SqlBoolean.Null"/>.
+    /// </summary>
     public SqlBoolean ToSqlBoolean()
     {
         return _value switch
@@ -213,6 +243,9 @@ public readonly struct Trilean
         };
     }
 
+    /// <summary>
+    /// Attempts to write the textual representation of the current value to <paramref name="destination"/>.
+    /// </summary>
     public bool TryFormat(
         Span<char> destination,
         out int charsWritten)
@@ -220,6 +253,7 @@ public readonly struct Trilean
         return TryFormat(destination, out charsWritten, default, null);
     }
 
+    /// <inheritdoc/>
     public bool TryFormat(
         Span<char> destination,
         out int charsWritten,
@@ -243,6 +277,7 @@ public readonly struct Trilean
         return false;
     }
 
+    /// <inheritdoc/>
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
         return _value switch
@@ -253,16 +288,26 @@ public readonly struct Trilean
         };
     }
 
+    /// <inheritdoc/>
     public override string ToString()
     {
         return ToString(null, null);
     }
 
+    /// <summary>
+    /// Returns <see cref="True"/> when <paramref name="value"/> is <see langword="true"/> and
+    /// <see cref="False"/> when <paramref name="value"/> is <see langword="false"/>.
+    /// </summary>
     public static Trilean FromBoolean(bool value)
     {
         return new(value);
     }
 
+    /// <summary>
+    /// Maps a signed number to a <see cref="Trilean"/>: <c>1</c> to <see cref="True"/>,
+    /// <c>0</c> to <see cref="False"/>, and <c>-1</c> to <see cref="Na"/>.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">The value is not <c>1</c>, <c>0</c>, or <c>-1</c>.</exception>
     public static Trilean FromSignedNumber<T>(T value)
         where T : struct, ISignedNumber<T>
     {
@@ -275,6 +320,11 @@ public readonly struct Trilean
         };
     }
 
+    /// <summary>
+    /// Maps an unsigned number to a <see cref="Trilean"/>: <c>1</c> to <see cref="True"/>,
+    /// <c>0</c> to <see cref="False"/>, and <c>2</c> to <see cref="Na"/>.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">The value is not <c>0</c>, <c>1</c>, or <c>2</c>.</exception>
     public static Trilean FromUnsignedNumber<T>(T value)
         where T : struct, IUnsignedNumber<T>
     {
@@ -287,48 +337,79 @@ public readonly struct Trilean
         };
     }
 
+    /// <summary>
+    /// Maps a <see cref="short"/> to a <see cref="Trilean"/> using <see cref="FromSignedNumber{T}(T)"/>.
+    /// </summary>
     public static Trilean FromInt16(short value)
     {
         return FromSignedNumber(value);
     }
 
+    /// <summary>
+    /// Maps an <see cref="int"/> to a <see cref="Trilean"/> using <see cref="FromSignedNumber{T}(T)"/>.
+    /// </summary>
     public static Trilean FromInt32(int value)
     {
         return FromSignedNumber(value);
     }
 
+    /// <summary>
+    /// Maps a <see cref="long"/> to a <see cref="Trilean"/> using <see cref="FromSignedNumber{T}(T)"/>.
+    /// </summary>
     public static Trilean FromInt64(long value)
     {
         return FromSignedNumber(value);
     }
 
+    /// <summary>
+    /// Maps an <see cref="sbyte"/> to a <see cref="Trilean"/> using <see cref="FromSignedNumber{T}(T)"/>.
+    /// </summary>
     public static Trilean FromInteger(sbyte value)
     {
         return FromSignedNumber(value);
     }
 
+    /// <summary>
+    /// Maps a nullable <see cref="bool"/> to a <see cref="Trilean"/>, where <see langword="null"/>
+    /// becomes <see cref="Na"/>.
+    /// </summary>
     public static Trilean FromBoolean(bool? value)
     {
         return value.HasValue ? FromBoolean(value.Value) : Na;
     }
 
+    /// <summary>
+    /// Maps a nullable signed number to a <see cref="Trilean"/>, where <see langword="null"/> becomes
+    /// <see cref="Na"/>.
+    /// </summary>
     public static Trilean FromSignedNumber<T>(T? value)
         where T : struct, ISignedNumber<T>
     {
         return value.HasValue ? FromSignedNumber(value.Value) : Na;
     }
 
+    /// <summary>
+    /// Maps a nullable unsigned number to a <see cref="Trilean"/>, where <see langword="null"/>
+    /// becomes <see cref="Na"/>.
+    /// </summary>
     public static Trilean FromUnsignedNumber<T>(T? value)
         where T : struct, IUnsignedNumber<T>
     {
         return value.HasValue ? FromUnsignedNumber(value.Value) : Na;
     }
 
+    /// <summary>
+    /// Explicitly converts a <see cref="Trilean"/> to a <see cref="bool"/>; throws when the value is <see cref="Na"/>.
+    /// </summary>
     public static explicit operator bool(Trilean t)
     {
         return t.ToBoolean();
     }
 
+    /// <summary>
+    /// Implicitly converts a <see cref="Trilean"/> to a nullable <see cref="bool"/>, mapping
+    /// <see cref="Na"/> to <see langword="null"/>.
+    /// </summary>
 #pragma warning disable CA2225 // Operator overloads have named alternates
     public static implicit operator bool?(Trilean t)
 #pragma warning restore CA2225 // Operator overloads have named alternates
@@ -336,11 +417,17 @@ public readonly struct Trilean
         return t.ToNullableBoolean();
     }
 
+    /// <summary>
+    /// Implicitly converts a <see cref="Trilean"/> to a <see cref="SqlBoolean"/>.
+    /// </summary>
     public static implicit operator SqlBoolean(Trilean t)
     {
         return t.ToSqlBoolean();
     }
 
+    /// <summary>
+    /// Implicitly converts a <see cref="bool"/> to a <see cref="Trilean"/>.
+    /// </summary>
     public static implicit operator Trilean(bool b)
     {
         return FromBoolean(b);
@@ -391,36 +478,65 @@ public readonly struct Trilean
         return left._value == right._value;
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if <paramref name="left"/> and <paramref name="right"/> are not the
+    /// same value. Two <see cref="Na"/> values are considered equal under this operator.
+    /// </summary>
     public static bool operator !=(Trilean left, Trilean right)
     {
         return left._value != right._value;
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if <paramref name="left"/> represents the same value as the
+    /// <see cref="bool"/> <paramref name="right"/>. <see cref="Na"/> never equals a <see cref="bool"/>.
+    /// </summary>
     public static bool Equals(Trilean left, bool right)
     {
         return left._value == (right ? TrueValue : FalseValue);
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if <paramref name="left"/> represents the same value as
+    /// <paramref name="right"/>.
+    /// </summary>
     public static bool operator ==(Trilean left, bool right)
     {
         return Equals(left, right);
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if <paramref name="right"/> represents the same value as
+    /// <paramref name="left"/>.
+    /// </summary>
     public static bool operator ==(bool left, Trilean right)
     {
         return right == left;
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if <paramref name="left"/> does not represent the same value as
+    /// <paramref name="right"/>.
+    /// </summary>
     public static bool operator !=(Trilean left, bool right)
     {
         return !Equals(left, right);
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> if <paramref name="right"/> does not represent the same value as
+    /// <paramref name="left"/>.
+    /// </summary>
     public static bool operator !=(bool left, Trilean right)
     {
         return !Equals(right, left);
     }
 
+    /// <summary>
+    /// Returns the three-valued logical negation of <paramref name="value"/>: <see cref="True"/> becomes
+    /// <see cref="False"/>, <see cref="False"/> becomes <see cref="True"/>, and <see cref="Na"/> remains
+    /// <see cref="Na"/>.
+    /// </summary>
     public static Trilean LogicalNot(Trilean value)
     {
         return value._value switch
@@ -431,11 +547,19 @@ public readonly struct Trilean
         };
     }
 
+    /// <summary>
+    /// Returns the three-valued logical negation of <paramref name="value"/> via <see cref="LogicalNot(Trilean)"/>.
+    /// </summary>
     public static Trilean operator !(Trilean value)
     {
         return LogicalNot(value);
     }
 
+    /// <summary>
+    /// Returns the three-valued logical AND of <paramref name="left"/> and <paramref name="right"/>:
+    /// <see cref="False"/> if either operand is <see cref="False"/>, <see cref="True"/> if both are
+    /// <see cref="True"/>, otherwise <see cref="Na"/>.
+    /// </summary>
     public static Trilean LogicalAnd(Trilean left, Trilean right)
     {
         if (left._value == FalseValue || right._value == FalseValue)
@@ -451,6 +575,10 @@ public readonly struct Trilean
         return Na;
     }
 
+    /// <summary>
+    /// Returns the three-valued logical AND of <paramref name="left"/> and <paramref name="right"/>
+    /// via <see cref="LogicalAnd(Trilean, Trilean)"/>.
+    /// </summary>
 #pragma warning disable CA2225 // Operator overloads have named alternates - LogicalAnd
     public static Trilean operator &(Trilean left, Trilean right)
 #pragma warning restore CA2225 // Operator overloads have named alternates
@@ -458,6 +586,11 @@ public readonly struct Trilean
         return LogicalAnd(left, right);
     }
 
+    /// <summary>
+    /// Returns the three-valued logical OR of <paramref name="left"/> and <paramref name="right"/>:
+    /// <see cref="True"/> if either operand is <see cref="True"/>, <see cref="False"/> if both are
+    /// <see cref="False"/>, otherwise <see cref="Na"/>.
+    /// </summary>
     public static Trilean LogicalOr(Trilean left, Trilean right)
     {
         if (left._value == TrueValue || right._value == TrueValue)
@@ -473,6 +606,10 @@ public readonly struct Trilean
         return Na;
     }
 
+    /// <summary>
+    /// Returns the three-valued logical OR of <paramref name="left"/> and <paramref name="right"/>
+    /// via <see cref="LogicalOr(Trilean, Trilean)"/>.
+    /// </summary>
 #pragma warning disable CA2225 // Operator overloads have named alternates - LogicalOr
     public static Trilean operator |(Trilean left, Trilean right)
 #pragma warning restore CA2225 // Operator overloads have named alternates
@@ -480,6 +617,11 @@ public readonly struct Trilean
         return LogicalOr(left, right);
     }
 
+    /// <summary>
+    /// Returns the three-valued logical XOR of <paramref name="left"/> and <paramref name="right"/>:
+    /// <see cref="Na"/> if either operand is <see cref="Na"/>, otherwise <see cref="True"/> when
+    /// exactly one operand is <see cref="True"/> and <see cref="False"/> otherwise.
+    /// </summary>
     public static Trilean LogicalXor(Trilean left, Trilean right)
     {
         if (left._value == UnknownValue || right._value == UnknownValue)
@@ -490,6 +632,10 @@ public readonly struct Trilean
         return (left._value == TrueValue ^ right._value == TrueValue) ? True : False;
     }
 
+    /// <summary>
+    /// Returns the three-valued logical XOR of <paramref name="left"/> and <paramref name="right"/>
+    /// via <see cref="LogicalXor(Trilean, Trilean)"/>.
+    /// </summary>
 #pragma warning disable CA2225 // Operator overloads have named alternates - LogicalXor
     public static Trilean operator ^(Trilean left, Trilean right)
 #pragma warning restore CA2225 // Operator overloads have named alternates
@@ -583,6 +729,12 @@ public readonly struct Trilean
         return false;
     }
 
+    /// <summary>
+    /// Parses a <see cref="Trilean"/> from the given string, using the same accepted inputs as
+    /// <see cref="Parse(ReadOnlySpan{char}, IFormatProvider?)"/>.
+    /// </summary>
+    /// <exception cref="ArgumentNullException"><paramref name="s"/> is <see langword="null"/>.</exception>
+    /// <exception cref="FormatException"><paramref name="s"/> is not a recognised value.</exception>
     public static Trilean Parse(string s, IFormatProvider? provider)
     {
         ArgumentNullException.ThrowIfNull(s);
@@ -596,6 +748,11 @@ public readonly struct Trilean
         return default; // unreachable
     }
 
+    /// <summary>
+    /// Attempts to parse a <see cref="Trilean"/> from the given string, using the same accepted
+    /// inputs as <see cref="TryParse(ReadOnlySpan{char}, IFormatProvider?, out Trilean)"/>. Returns
+    /// <see langword="false"/> when <paramref name="s"/> is <see langword="null"/>.
+    /// </summary>
     public static bool TryParse(
         [NotNullWhen(true)] string? s,
         IFormatProvider? provider,

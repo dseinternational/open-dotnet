@@ -70,6 +70,9 @@ public readonly partial struct PosTag
     /// </summary>
     public bool IsValidTreebankTag => TreebankPosTag.IsValidValue(_value);
 
+    /// <summary>
+    /// Returns <see langword="true"/> if <paramref name="value"/> is a valid <see cref="PosTag"/> value.
+    /// </summary>
     public static bool IsValidValue(AsciiString value)
     {
         return !value.IsEmpty
@@ -96,11 +99,15 @@ public readonly partial struct PosTag
         return new(_value);
     }
 
+    /// <inheritdoc/>
     public ulong GetRepeatableHashCode()
     {
         return RepeatableHash64Provider.Default.GetRepeatableHashCode(_value);
     }
 
+    /// <summary>
+    /// Explicitly converts a <see cref="string"/> to a <see cref="PosTag"/>.
+    /// </summary>
 #pragma warning disable CA2225 // Operator overloads have named alternates - Parse
     public static explicit operator PosTag(string value)
 #pragma warning restore CA2225 // Operator overloads have named alternates

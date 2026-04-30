@@ -9,6 +9,10 @@ namespace DSE.Open.Labels;
 /// <typeparam name="T"></typeparam>
 public interface ILocalizedLabelProvider<T> : ILabelProvider<T>
 {
+    /// <summary>
+    /// Returns the label for the specified <paramref name="value"/> in the given <paramref name="culture"/>,
+    /// or <see langword="null"/> if none is available.
+    /// </summary>
     string? GetLabel(T value, CultureInfo? culture);
 }
 

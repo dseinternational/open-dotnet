@@ -11,8 +11,12 @@ namespace DSE.Open.Drawing.Text.Json.Serialization;
 /// </summary>
 public class JsonStringColorConverter : SpanParsableCharWritingJsonConverter<Color>
 {
+    /// <summary>
+    /// The default shared instance of the converter.
+    /// </summary>
     public static readonly JsonStringColorConverter Default = new();
 
+    /// <inheritdoc/>
     protected override int GetMaxCharCountToWrite(Color value)
     {
         return Color.MaxFormatLength;

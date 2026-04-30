@@ -18,6 +18,9 @@ public readonly record struct YearDate : IComparable<YearDate>, ISpanParsable<Ye
     private readonly DateOnly _date;
     private readonly bool _hasDayAndMonth;
 
+    /// <summary>
+    /// The default empty <see cref="YearDate"/>.
+    /// </summary>
     public static readonly YearDate Empty;
 
     /// <summary>
@@ -67,42 +70,75 @@ public readonly record struct YearDate : IComparable<YearDate>, ISpanParsable<Ye
         _hasDayAndMonth = true;
     }
 
+    /// <summary>
+    /// Gets a value indicating whether the value carries a full date (day and month) in addition to the year.
+    /// </summary>
     public bool HasDayAndMonth => _hasDayAndMonth;
 
+    /// <summary>
+    /// Gets a value indicating whether the value carries only a year (no day or month).
+    /// </summary>
     public bool HasYearOnly => !HasDayAndMonth;
 
+    /// <summary>
+    /// Gets the year component.
+    /// </summary>
     public int Year => _date.Year;
 
+    /// <summary>
+    /// Gets the month component, or <see langword="null"/> if the value carries only a year.
+    /// </summary>
     public int? Month => HasDayAndMonth ? _date.Month : null;
 
+    /// <summary>
+    /// Gets the day component, or <see langword="null"/> if the value carries only a year.
+    /// </summary>
     public int? Day => HasDayAndMonth ? _date.Day : null;
 
+    /// <summary>
+    /// Gets the day number (days since 0001-01-01), or <see langword="null"/> if the value carries only a year.
+    /// </summary>
     public int? DayNumber => HasDayAndMonth ? _date.DayNumber : null;
 
+    /// <summary>
+    /// Gets the day of the week, or <see langword="null"/> if the value carries only a year.
+    /// </summary>
     public DayOfWeek? DayOfWeek => HasDayAndMonth ? _date.DayOfWeek : null;
 
+    /// <summary>
+    /// Gets the day of the year, or <see langword="null"/> if the value carries only a year.
+    /// </summary>
     public int? DayOfYear => HasDayAndMonth ? _date.DayOfYear : null;
 
+    /// <inheritdoc/>
     public int CompareTo(YearDate other)
     {
         return _date.CompareTo(other._date);
     }
 
+    /// <inheritdoc/>
     public override string ToString()
     {
         return ToString(null, null);
     }
 
+    /// <summary>
+    /// Returns the underlying date as a <see cref="DateOnly"/>. When the value has only a year, the day and month are <c>1</c>.
+    /// </summary>
     public DateOnly ToDateOnly()
     {
         return _date;
     }
 
+    /// <summary>
+    /// Returns the underlying date as a <see cref="DateTime"/> at midnight. When the value has only a year, the day and month are <c>1</c>.
+    /// </summary>
     public DateTime ToDateTime()
     {
         return _date.ToDateTime(TimeOnly.MinValue);
     }
 
+    /// <inheritdoc/>
     [SkipLocalsInit]
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
@@ -111,6 +147,7 @@ public readonly record struct YearDate : IComparable<YearDate>, ISpanParsable<Ye
         return buffer[..charsWritten].ToString();
     }
 
+    /// <inheritdoc/>
     public bool TryFormat(
         Span<char> destination,
         out int charsWritten,
@@ -127,17 +164,20 @@ public readonly record struct YearDate : IComparable<YearDate>, ISpanParsable<Ye
             : _date.Year.TryFormat(destination, out charsWritten, "0000", provider);
     }
 
+    /// <inheritdoc cref="Parse(string, IFormatProvider?)"/>
     public static YearDate Parse(string s)
     {
         return Parse(s, null);
     }
 
+    /// <inheritdoc/>
     public static YearDate Parse(string s, IFormatProvider? provider)
     {
         ArgumentNullException.ThrowIfNull(s);
         return Parse(s.AsSpan(), provider);
     }
 
+    /// <inheritdoc/>
     public static YearDate Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
     {
         if (TryParse(s, provider, out var result))
@@ -149,11 +189,13 @@ public readonly record struct YearDate : IComparable<YearDate>, ISpanParsable<Ye
         return default; // unreachable
     }
 
+    /// <inheritdoc cref="TryParse(string?, IFormatProvider?, out YearDate)"/>
     public static bool TryParse(string? s, out YearDate result)
     {
         return TryParse(s, null, out result);
     }
 
+    /// <inheritdoc/>
     public static bool TryParse(string? s, IFormatProvider? provider, out YearDate result)
     {
         if (s is null)
@@ -165,6 +207,7 @@ public readonly record struct YearDate : IComparable<YearDate>, ISpanParsable<Ye
         return TryParse(s.AsSpan(), provider, out result);
     }
 
+    /// <inheritdoc/>
     public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out YearDate result)
     {
         switch (s.Length)
@@ -192,21 +235,25 @@ public readonly record struct YearDate : IComparable<YearDate>, ISpanParsable<Ye
         return false;
     }
 
+    /// <inheritdoc/>
     public static bool operator <(YearDate left, YearDate right)
     {
         return left.CompareTo(right) < 0;
     }
 
+    /// <inheritdoc/>
     public static bool operator <=(YearDate left, YearDate right)
     {
         return left.CompareTo(right) <= 0;
     }
 
+    /// <inheritdoc/>
     public static bool operator >(YearDate left, YearDate right)
     {
         return left.CompareTo(right) > 0;
     }
 
+    /// <inheritdoc/>
     public static bool operator >=(YearDate left, YearDate right)
     {
         return left.CompareTo(right) >= 0;

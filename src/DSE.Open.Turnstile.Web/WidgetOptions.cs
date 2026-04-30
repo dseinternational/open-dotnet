@@ -5,8 +5,14 @@ using DSE.Open.Globalization;
 
 namespace DSE.Open.Turnstile.Web;
 
+/// <summary>
+/// Configuration options that control the rendering and behaviour of the Turnstile widget.
+/// </summary>
 public sealed class WidgetOptions
 {
+    /// <summary>
+    /// The default <see cref="WidgetOptions"/> instance.
+    /// </summary>
     public static readonly WidgetOptions Default = new();
 
     /// <summary>

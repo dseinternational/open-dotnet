@@ -7,8 +7,15 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace DSE.Open.EntityFrameworkCore.Diagnostics;
 
+/// <summary>
+/// A <see cref="DbCommandInterceptor"/> that prevents commands which would modify data
+/// from executing, throwing <see cref="UpdateInReadOnlyContextException"/> for write
+/// operations such as <c>SaveChanges</c>, <c>ExecuteUpdate</c>, or <c>ExecuteDelete</c>,
+/// or for raw SQL containing <c>INSERT</c>, <c>UPDATE</c>, or <c>DELETE</c> statements.
+/// </summary>
 public partial class ReadOnlyDbCommandInterceptor : DbCommandInterceptor
 {
+    /// <inheritdoc/>
     public override DbCommand CommandInitialized(CommandEndEventData eventData, DbCommand result)
     {
         ArgumentNullException.ThrowIfNull(eventData);

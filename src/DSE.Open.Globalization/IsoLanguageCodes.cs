@@ -5,8 +5,14 @@ using System.Collections.Frozen;
 
 namespace DSE.Open.Globalization;
 
+/// <summary>
+/// Provides sets of ISO 639-1 language codes.
+/// </summary>
 public static class IsoLanguageCodes
 {
+    /// <summary>
+    /// Gets the set of officially assigned ISO 639-1 alpha-2 language codes as <see cref="AsciiChar2"/> values.
+    /// </summary>
     public static readonly FrozenSet<AsciiChar2> OfficiallyAssignedAlpha2Ascii
         = new[]
     {
@@ -196,6 +202,9 @@ public static class IsoLanguageCodes
 
     }.ToFrozenSet(AsciiChar2Comparer.IgnoreCase);
 
+    /// <summary>
+    /// Gets the set of officially assigned ISO 639-1 alpha-2 language codes as <see cref="LanguageCode2"/> values.
+    /// </summary>
     public static readonly FrozenSet<LanguageCode2> OfficiallyAssignedAlpha2
         = OfficiallyAssignedAlpha2Ascii.Select(LanguageCode2.FromAsciiChar2).ToFrozenSet();
 }

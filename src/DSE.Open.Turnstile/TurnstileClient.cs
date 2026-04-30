@@ -12,12 +12,19 @@ using Microsoft.Extensions.Options;
 
 namespace DSE.Open.Turnstile;
 
+/// <summary>
+/// An <see cref="ITurnstileClient"/> implementation that calls the Cloudflare Turnstile siteverify endpoint via <see cref="HttpClient"/>.
+/// </summary>
 public sealed partial class TurnstileClient : ITurnstileClient
 {
     private readonly HttpClient _httpClient;
     private readonly ILogger<TurnstileClient> _logger;
     private readonly TurnstileClientOptions _options;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TurnstileClient"/> class using options resolved
+    /// from <see cref="IOptions{TOptions}"/>.
+    /// </summary>
     public TurnstileClient(
         HttpClient httpClient,
         IOptions<TurnstileClientOptions> options,
@@ -33,6 +40,9 @@ public sealed partial class TurnstileClient : ITurnstileClient
         _logger = logger;
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TurnstileClient"/> class with the supplied options and logger.
+    /// </summary>
     public TurnstileClient(
         HttpClient httpClient,
         TurnstileClientOptions options,
@@ -47,6 +57,10 @@ public sealed partial class TurnstileClient : ITurnstileClient
         _logger = logger;
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TurnstileClient"/> class with the supplied options
+    /// and a <see cref="NullLogger{T}"/>.
+    /// </summary>
     public TurnstileClient(
         HttpClient httpClient,
         TurnstileClientOptions options)
@@ -59,6 +73,15 @@ public sealed partial class TurnstileClient : ITurnstileClient
         _logger = NullLogger<TurnstileClient>.Instance;
     }
 
+    /// <summary>
+    /// Posts a validation request to the configured Turnstile endpoint, retrying up to five times when the
+    /// service reports an internal error.
+    /// </summary>
+    /// <param name="clientResponse">The Turnstile response token produced by the client-side widget.</param>
+    /// <param name="clientIpAddress">The optional IP address of the visitor that produced the response.</param>
+    /// <param name="cancellationToken">A token that can be used to cancel the asynchronous operation.</param>
+    /// <returns>The <see cref="ValidationResponse"/> returned by the Turnstile service.</returns>
+    /// <exception cref="ValidationException">Thrown when no validation response could be obtained after retries.</exception>
     [RequiresDynamicCode(WarningMessages.RequiresDynamicCode)]
     [RequiresUnreferencedCode(WarningMessages.RequiresUnreferencedCode)]
     public async Task<ValidationResponse> ValidateAsync(

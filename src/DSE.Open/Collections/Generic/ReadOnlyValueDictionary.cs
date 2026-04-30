@@ -19,14 +19,23 @@ public class ReadOnlyValueDictionary<TKey, TValue>
       IEquatable<ReadOnlyValueDictionary<TKey, TValue>>
     where TKey : notnull
 {
+    /// <summary>
+    /// An empty <see cref="ReadOnlyValueDictionary{TKey, TValue}"/>.
+    /// </summary>
     public static readonly ReadOnlyValueDictionary<TKey, TValue> Empty = new();
 
     private readonly Dictionary<TKey, TValue> _inner;
 
+    /// <summary>
+    /// Initializes a new, empty <see cref="ReadOnlyValueDictionary{TKey, TValue}"/>.
+    /// </summary>
     public ReadOnlyValueDictionary() : this([])
     {
     }
 
+    /// <summary>
+    /// Initializes a new <see cref="ReadOnlyValueDictionary{TKey, TValue}"/> containing the entries of <paramref name="collection"/>.
+    /// </summary>
     public ReadOnlyValueDictionary(IEnumerable<KeyValuePair<TKey, TValue>> collection, IEqualityComparer<TKey>? comparer = null)
     {
         _inner = collection is ReadOnlyValueDictionary<TKey, TValue> other
@@ -35,6 +44,9 @@ public class ReadOnlyValueDictionary<TKey, TValue>
             : new(collection, comparer);
     }
 
+    /// <summary>
+    /// Initializes a new <see cref="ReadOnlyValueDictionary{TKey, TValue}"/> containing the entries of <paramref name="source"/>.
+    /// </summary>
     public ReadOnlyValueDictionary(IDictionary<TKey, TValue> source, IEqualityComparer<TKey>? comparer = null)
     {
         _inner = source is ReadOnlyValueDictionary<TKey, TValue> other
@@ -43,14 +55,18 @@ public class ReadOnlyValueDictionary<TKey, TValue>
             : new(source, comparer);
     }
 
+    /// <inheritdoc/>
     public TValue this[TKey key] => _inner[key];
 
     TValue IDictionary<TKey, TValue>.this[TKey key] { get => _inner[key]; set => _inner[key] = value; }
 
+    /// <inheritdoc/>
     public IEnumerable<TKey> Keys => _inner.Keys;
 
+    /// <inheritdoc/>
     public IEnumerable<TValue> Values => _inner.Values;
 
+    /// <inheritdoc/>
     public int Count => _inner.Count;
 
     ICollection<TKey> IDictionary<TKey, TValue>.Keys => _inner.Keys;
@@ -60,46 +76,61 @@ public class ReadOnlyValueDictionary<TKey, TValue>
     bool ICollection<KeyValuePair<TKey, TValue>>.IsReadOnly
         => ((ICollection<KeyValuePair<TKey, TValue>>)_inner).IsReadOnly;
 
+    /// <inheritdoc/>
     public bool ContainsKey(TKey key)
     {
         return _inner.ContainsKey(key);
     }
 
+    /// <inheritdoc/>
     public override bool Equals(object? obj)
     {
         return obj is ReadOnlyValueDictionary<TKey, TValue> d && Equals(this, d);
     }
 
+    /// <inheritdoc/>
     public virtual bool Equals(ReadOnlyValueDictionary<TKey, TValue>? other)
     {
         return DictionaryEqualityComparer<TKey, TValue>.Default.Equals(this, other);
     }
 
+    /// <summary>
+    /// Indicates whether the two dictionaries contain the same set of entries.
+    /// </summary>
     public static bool operator ==(ReadOnlyValueDictionary<TKey, TValue>? left, ReadOnlyValueDictionary<TKey, TValue>? right)
     {
         return DictionaryEqualityComparer<TKey, TValue>.Default.Equals(left, right);
     }
 
+    /// <summary>
+    /// Indicates whether the two dictionaries do not contain the same set of entries.
+    /// </summary>
     public static bool operator !=(ReadOnlyValueDictionary<TKey, TValue>? left, ReadOnlyValueDictionary<TKey, TValue>? right)
     {
         return !DictionaryEqualityComparer<TKey, TValue>.Default.Equals(left, right);
     }
 
+    /// <inheritdoc/>
     public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
     {
         return _inner.GetEnumerator();
     }
 
+    /// <inheritdoc/>
     public override int GetHashCode()
     {
         return DictionaryEqualityComparer<TKey, TValue>.Default.GetHashCode(this);
     }
 
+    /// <summary>
+    /// Returns a string representation of the dictionary produced by <see cref="CollectionWriter"/>.
+    /// </summary>
     public override string ToString()
     {
         return CollectionWriter.WriteToString(this);
     }
 
+    /// <inheritdoc/>
     public bool TryGetValue(TKey key, [MaybeNullWhen(false)] out TValue value)
     {
         return _inner.TryGetValue(key, out value);
@@ -147,21 +178,33 @@ public class ReadOnlyValueDictionary<TKey, TValue>
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
+    /// <summary>
+    /// Creates a <see cref="ReadOnlyValueDictionary{TKey, TValue}"/> containing the entries of the specified array.
+    /// </summary>
     public static explicit operator ReadOnlyValueDictionary<TKey, TValue>(KeyValuePair<TKey, TValue>[] value)
     {
         return new(value);
     }
 
+    /// <summary>
+    /// Creates a <see cref="ReadOnlyValueDictionary{TKey, TValue}"/> containing the entries of the specified collection.
+    /// </summary>
     public static explicit operator ReadOnlyValueDictionary<TKey, TValue>(Collection<KeyValuePair<TKey, TValue>> value)
     {
         return new(value);
     }
 
+    /// <summary>
+    /// Creates a <see cref="ReadOnlyValueDictionary{TKey, TValue}"/> containing the entries of the specified collection.
+    /// </summary>
     public static explicit operator ReadOnlyValueDictionary<TKey, TValue>(System.Collections.ObjectModel.Collection<KeyValuePair<TKey, TValue>> value)
     {
         return new(value);
     }
 
+    /// <summary>
+    /// Creates a <see cref="ReadOnlyValueDictionary{TKey, TValue}"/> containing the entries of the specified dictionary.
+    /// </summary>
     public static explicit operator ReadOnlyValueDictionary<TKey, TValue>(Dictionary<TKey, TValue> value)
     {
         return new(value);

@@ -7,5 +7,10 @@ using DSE.Open.Collections.Generic;
 
 namespace DSE.Open.Collections.ObjectModel;
 
+/// <summary>
+/// Represents an observable keyed collection that raises change notifications.
+/// </summary>
+/// <typeparam name="TKey">The key type.</typeparam>
+/// <typeparam name="TItem">The item type.</typeparam>
 public interface IObservableKeyedCollection<TKey, TItem> : IKeyedCollection<TKey, TItem>, INotifyCollectionChanged, INotifyPropertyChanged
     where TKey : notnull;

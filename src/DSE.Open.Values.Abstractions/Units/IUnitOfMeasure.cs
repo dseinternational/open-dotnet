@@ -3,6 +3,11 @@
 
 namespace DSE.Open.Values.Units;
 
+/// <summary>
+/// Defines a unit of measure that quantities of type <typeparamref name="T"/> can be
+/// expressed in, identified by name and abbreviation and convertible to a base unit.
+/// </summary>
+/// <typeparam name="T">The numeric type used to express amounts.</typeparam>
 public interface IUnitOfMeasure<T>
     where T : IEquatable<T>, IComparable<T>
 {

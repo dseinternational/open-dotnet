@@ -5,10 +5,19 @@ using DSE.Open.Text.Json.Serialization;
 
 namespace DSE.Open.Values.Text.Json.Serialization;
 
+/// <summary>
+/// A <see cref="System.Text.Json.Serialization.JsonConverter{T}"/> that reads and writes
+/// <see cref="AgeInMonths"/> as a JSON string using its <see cref="ISpanParsable{TSelf}"/>
+/// and <see cref="ISpanFormattable"/> implementations.
+/// </summary>
 public class JsonStringAgeInMonthsConverter : SpanParsableCharWritingJsonConverter<AgeInMonths>
 {
+    /// <summary>
+    /// A shared default instance of the converter.
+    /// </summary>
     public static readonly JsonStringAgeInMonthsConverter Default = new();
 
+    /// <inheritdoc/>
     protected override int GetMaxCharCountToWrite(AgeInMonths value)
     {
         return 12;

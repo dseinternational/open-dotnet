@@ -5,4 +5,8 @@ using System.Text.Json;
 
 namespace DSE.Open.Text.Json;
 
+/// <summary>
+/// Encapsulates a method that writes a value of type <typeparamref name="T"/> to a
+/// <see cref="Utf8JsonWriter"/>.
+/// </summary>
 public delegate void JsonValueWriter<T>(Utf8JsonWriter writer, T value);

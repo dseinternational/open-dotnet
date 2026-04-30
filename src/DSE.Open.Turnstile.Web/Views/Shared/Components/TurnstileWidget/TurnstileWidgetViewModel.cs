@@ -5,12 +5,26 @@ using DSE.Open.ViewModels;
 
 namespace DSE.Open.Turnstile.Web.Views.Shared.Components.TurnstileWidget;
 
+/// <summary>
+/// View model for the Turnstile widget view component.
+/// </summary>
 public sealed class TurnstileWidgetViewModel : UserInterfaceModel
 {
+    /// <summary>
+    /// The Turnstile site key associated with the widget.
+    /// </summary>
     public required string SiteKey { get; init; }
 
+    /// <summary>
+    /// The options that control the widget's behaviour and appearance.
+    /// </summary>
     public required WidgetOptions WidgetOptions { get; init; }
 
+    /// <summary>
+    /// Builds the sequence of HTML data-* attribute name/value pairs that should be
+    /// rendered on the widget element based on the configured <see cref="WidgetOptions"/>.
+    /// </summary>
+    /// <returns>The attribute name/value pairs to render.</returns>
     public IEnumerable<(string Name, string Value)> GetAttributes()
     {
         List<(string Name, string Value)> attributes = [];

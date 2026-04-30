@@ -18,6 +18,9 @@ namespace DSE.Open;
 public readonly record struct Range<T> : ISpanFormattable, ISpanParsable<Range<T>>
     where T : INumber<T>, IMinMaxValue<T>
 {
+    /// <summary>
+    /// The maximum length, in characters, of a formatted <see cref="Range{T}"/>.
+    /// </summary>
     public const int MaxLength = 64;
 
     /// <summary>
@@ -32,6 +35,10 @@ public readonly record struct Range<T> : ISpanFormattable, ISpanParsable<Range<T
     /// </summary>
     public static readonly Range<T> Unbounded = new(T.MinValue, T.MaxValue);
 
+    /// <summary>
+    /// Initialises a new <see cref="Range{T}"/> with the inclusive <paramref name="start"/> and inclusive <paramref name="end"/>.
+    /// </summary>
+    /// <exception cref="ArgumentException"><paramref name="start"/> is greater than <paramref name="end"/>.</exception>
     [JsonConstructor]
     public Range(T start, T end)
     {
@@ -51,6 +58,9 @@ public readonly record struct Range<T> : ISpanFormattable, ISpanParsable<Range<T
     /// </summary>
     public T End { get; }
 
+    /// <summary>
+    /// Gets the difference between <see cref="End"/> and <see cref="Start"/>.
+    /// </summary>
     public T Length => End - Start;
 
     /// <summary>
@@ -65,17 +75,22 @@ public readonly record struct Range<T> : ISpanFormattable, ISpanParsable<Range<T
         return Start.CompareTo(value) <= 0 && End.CompareTo(value) >= 0;
     }
 
+    /// <summary>
+    /// Deconstructs this range into its start and end values.
+    /// </summary>
     public void Deconstruct(out T start, out T end)
     {
         start = Start;
         end = End;
     }
 
+    /// <inheritdoc/>
     public override string ToString()
     {
         return ToString(null, null);
     }
 
+    /// <inheritdoc/>
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
         var buffer = new char[128];
@@ -84,16 +99,23 @@ public readonly record struct Range<T> : ISpanFormattable, ISpanParsable<Range<T
             : string.Empty;
     }
 
+    /// <summary>
+    /// Tries to format this range into <paramref name="destination"/>.
+    /// </summary>
     public bool TryFormat(Span<char> destination, out int charsWritten)
     {
         return TryFormat(destination, out charsWritten, default, default);
     }
 
+    /// <summary>
+    /// Tries to format this range into <paramref name="destination"/> using the specified <paramref name="format"/>.
+    /// </summary>
     public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format)
     {
         return TryFormat(destination, out charsWritten, format, null);
     }
 
+    /// <inheritdoc/>
     public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider? provider)
     {
         if (this == Empty)
@@ -120,6 +142,7 @@ public readonly record struct Range<T> : ISpanFormattable, ISpanParsable<Range<T
         return true;
     }
 
+    /// <inheritdoc/>
     public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out Range<T> result)
     {
         if (s.IsEmpty)
@@ -146,6 +169,7 @@ public readonly record struct Range<T> : ISpanFormattable, ISpanParsable<Range<T
         return true;
     }
 
+    /// <inheritdoc/>
     public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, out Range<T> result)
     {
         if (s is null)
@@ -157,6 +181,7 @@ public readonly record struct Range<T> : ISpanFormattable, ISpanParsable<Range<T
         return TryParse(s.AsSpan(), provider, out result);
     }
 
+    /// <inheritdoc/>
     public static Range<T> Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
     {
         return TryParse(s, provider, out var result)
@@ -164,6 +189,7 @@ public readonly record struct Range<T> : ISpanFormattable, ISpanParsable<Range<T
             : ThrowHelper.ThrowFormatException<Range<T>>($"Could not parse {nameof(Range)} from value: {s}");
     }
 
+    /// <inheritdoc/>
     public static Range<T> Parse(string s, IFormatProvider? provider)
     {
         ArgumentNullException.ThrowIfNull(s);
@@ -172,12 +198,18 @@ public readonly record struct Range<T> : ISpanFormattable, ISpanParsable<Range<T
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
 
+    /// <summary>
+    /// Implicitly converts a tuple of <c>(start, end)</c> to a <see cref="Range{T}"/>.
+    /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator Range<T>((T start, T end) valueTuple)
     {
         return new(valueTuple.start, valueTuple.end);
     }
 
+    /// <summary>
+    /// Implicitly converts a <see cref="Range{T}"/> to a tuple of <c>(start, end)</c>.
+    /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator (T start, T end)(Range<T> range)
     {

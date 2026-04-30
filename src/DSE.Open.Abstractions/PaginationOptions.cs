@@ -30,6 +30,11 @@ public readonly record struct PaginationOptions
     private readonly int _pageSize;
     private readonly int _pageNumber;
 
+    /// <summary>
+    /// Initializes a new <see cref="PaginationOptions"/> with the specified page size and page number.
+    /// </summary>
+    /// <param name="pageSize">The number of items in a single page. Must be greater than zero.</param>
+    /// <param name="pageNumber">The one-based page number. Must be greater than zero.</param>
     [JsonConstructor]
     public PaginationOptions(int pageSize, int pageNumber = DefaultPageNumber)
     {

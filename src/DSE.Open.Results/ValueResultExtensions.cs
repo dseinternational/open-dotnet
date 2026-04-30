@@ -3,8 +3,15 @@
 
 namespace DSE.Open.Results;
 
+/// <summary>
+/// Extension methods for <see cref="ValueResult{T}"/>.
+/// </summary>
 public static class ValueResultExtensions
 {
+    /// <summary>
+    /// Returns the value of <paramref name="result"/> if available; otherwise throws
+    /// <see cref="InvalidOperationException"/>.
+    /// </summary>
     [Obsolete("We have added RequiredValue() to ValueResult<T>.")]
     public static T GetRequiredValue<T>(this ValueResult<T> result)
     {

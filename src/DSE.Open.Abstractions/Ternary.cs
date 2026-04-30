@@ -86,12 +86,26 @@ public static class Ternary
         return left.Equals(right);
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> when both values have a value and are equal.
+    /// </summary>
+    /// <returns>
+    /// <see langword="true"/> if neither value is Na and the two values are equal,
+    /// otherwise <see langword="false"/>.
+    /// </returns>
     public static bool EqualAndNeitherNa<T>(T left, T right)
         where T : struct, INaValue, IEquatable<T>
     {
         return Equals(left, right).IsTrue;
     }
 
+    /// <summary>
+    /// Returns <see langword="true"/> when both nullable values have a value and are equal.
+    /// </summary>
+    /// <returns>
+    /// <see langword="true"/> if neither value is <see langword="null"/> and the two values are equal,
+    /// otherwise <see langword="false"/>.
+    /// </returns>
     public static bool EqualAndNeitherNa<T>(T? left, T? right)
         where T : struct, IEquatable<T>
     {

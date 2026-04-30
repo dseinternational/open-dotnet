@@ -12,6 +12,9 @@ namespace DSE.Open.EntityFrameworkCore.Models.Records.Storage.ValueConversion;
 /// </summary>
 public sealed class BiologicalSexToByteConverter : ValueConverter<BiologicalSex, byte>
 {
+    /// <summary>
+    /// The default shared instance of the converter.
+    /// </summary>
     public static readonly BiologicalSexToByteConverter Default = new();
 
     /// <summary>The byte value used to represent <see cref="BiologicalSex.Female"/>.</summary>
@@ -20,10 +23,18 @@ public sealed class BiologicalSexToByteConverter : ValueConverter<BiologicalSex,
     /// <summary>The byte value used to represent <see cref="BiologicalSex.Male"/>.</summary>
     public const byte Male = 2;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="BiologicalSexToByteConverter"/> class.
+    /// </summary>
     public BiologicalSexToByteConverter() : base(c => ConvertTo(c), s => ConvertFrom(s))
     {
     }
 
+    /// <summary>
+    /// Converts a <see cref="BiologicalSex"/> value to its <see cref="byte"/> representation.
+    /// </summary>
+    /// <param name="code">The <see cref="BiologicalSex"/> value to convert.</param>
+    /// <returns>The <see cref="byte"/> value representing <paramref name="code"/>.</returns>
     // keep public for EF Core compiled models
     public static byte ConvertTo(BiologicalSex code)
     {
@@ -41,6 +52,11 @@ public sealed class BiologicalSexToByteConverter : ValueConverter<BiologicalSex,
         return default; // unreachable
     }
 
+    /// <summary>
+    /// Converts a <see cref="byte"/> value to its <see cref="BiologicalSex"/> representation.
+    /// </summary>
+    /// <param name="code">The <see cref="byte"/> value to convert.</param>
+    /// <returns>The <see cref="BiologicalSex"/> value represented by <paramref name="code"/>.</returns>
     // keep public for EF Core compiled models
     public static BiologicalSex ConvertFrom(byte code)
     {
