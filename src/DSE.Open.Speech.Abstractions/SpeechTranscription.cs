@@ -27,20 +27,58 @@ public readonly record struct SpeechTranscription
     private readonly SpeechSymbolSequence _transcription;
     private readonly TranscriptionNotation _notation;
 
+    /// <summary>
+    /// An empty <see cref="SpeechTranscription"/> with no symbols and no notation.
+    /// </summary>
     public static readonly SpeechTranscription Empty;
 
+    /// <summary>
+    /// The left square bracket <c>[</c> character used to open a phonetic transcription.
+    /// </summary>
     public const char LeftSquareBracket = '[';
+
+    /// <summary>
+    /// The right square bracket <c>]</c> character used to close a phonetic transcription.
+    /// </summary>
     public const char RightSquareBracket = ']';
 
+    /// <summary>
+    /// The slash <c>/</c> character used to delimit a phonemic transcription.
+    /// </summary>
     public const char Slash = '/';
 
+    /// <summary>
+    /// The left brace <c>{</c> character used to open a prosodic transcription.
+    /// </summary>
     public const char LeftBrace = '{';
+
+    /// <summary>
+    /// The right brace <c>}</c> character used to close a prosodic transcription.
+    /// </summary>
     public const char RightBrace = '}';
 
+    /// <summary>
+    /// The left parenthesis <c>(</c> character used to open an indistinguishable or
+    /// silent articulation transcription.
+    /// </summary>
     public const char LeftParenthesis = '(';
+
+    /// <summary>
+    /// The right parenthesis <c>)</c> character used to close an indistinguishable or
+    /// silent articulation transcription.
+    /// </summary>
     public const char RightParenthesis = ')';
 
+    /// <summary>
+    /// The left double parenthesis <c>⸨</c> character used to open an obscured speech
+    /// or obscuring noise transcription.
+    /// </summary>
     public const char LeftDoubleParenthesis = '⸨';
+
+    /// <summary>
+    /// The right double parenthesis <c>⸩</c> character used to close an obscured speech
+    /// or obscuring noise transcription.
+    /// </summary>
     public const char RightDoubleParenthesis = '⸩';
 
     private readonly record struct DelimiterDefinition(
@@ -75,27 +113,43 @@ public readonly record struct SpeechTranscription
     private static readonly FrozenDictionary<TranscriptionNotation, DelimiterDefinition> s_delimitersLookup =
         s_delimiters.ToFrozenDictionary(d => d.Notation, d => d);
 
+    /// <summary>
+    /// Initializes a new <see cref="SpeechTranscription"/> from a single <see cref="SpeechSymbol"/>
+    /// and the specified <paramref name="notation"/>.
+    /// </summary>
     public SpeechTranscription(SpeechSymbol transcription, TranscriptionNotation notation)
     {
         _transcription = [transcription];
         _notation = notation;
     }
 
+    /// <summary>
+    /// Initializes a new <see cref="SpeechTranscription"/> from a <see cref="SpeechSymbolSequence"/>
+    /// and the specified <paramref name="notation"/>.
+    /// </summary>
     public SpeechTranscription(SpeechSymbolSequence transcription, TranscriptionNotation notation)
     {
         _transcription = transcription;
         _notation = notation;
     }
 
+    /// <summary>
+    /// Gets the <see cref="TranscriptionNotation"/> used by this transcription.
+    /// </summary>
     public TranscriptionNotation Notation => _notation;
 
+    /// <summary>
+    /// Gets the underlying <see cref="SpeechSymbolSequence"/> for this transcription.
+    /// </summary>
     public SpeechSymbolSequence Symbols => _transcription;
 
+    /// <inheritdoc/>
     public override string ToString()
     {
         return ToString(null, null);
     }
 
+    /// <inheritdoc/>
     public bool TryFormat(
         Span<char> destination,
         out int charsWritten,
@@ -135,6 +189,7 @@ public readonly record struct SpeechTranscription
         return false;
     }
 
+    /// <inheritdoc/>
     [SkipLocalsInit]
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
@@ -161,6 +216,7 @@ public readonly record struct SpeechTranscription
         }
     }
 
+    /// <inheritdoc/>
     public static SpeechTranscription Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
     {
         return TryParse(s, provider, out var result)
@@ -168,6 +224,7 @@ public readonly record struct SpeechTranscription
             : ThrowHelper.ThrowFormatException<SpeechTranscription>($"Could not parse {nameof(SpeechTranscription)}");
     }
 
+    /// <inheritdoc/>
     public static bool TryParse(
         ReadOnlySpan<char> s,
         IFormatProvider? provider,
@@ -219,12 +276,14 @@ public readonly record struct SpeechTranscription
         return false;
     }
 
+    /// <inheritdoc/>
     public static SpeechTranscription Parse(string s, IFormatProvider? provider)
     {
         ArgumentNullException.ThrowIfNull(s);
         return Parse(s.AsSpan(), provider);
     }
 
+    /// <inheritdoc/>
     public static bool TryParse(
         [NotNullWhen(true)] string? s,
         IFormatProvider? provider,
@@ -239,6 +298,15 @@ public readonly record struct SpeechTranscription
         return TryParse(s.AsSpan(), provider, out result);
     }
 
+    /// <summary>
+    /// Attempts to determine the <see cref="TranscriptionNotation"/> for the specified
+    /// <paramref name="value"/> by inspecting its leading and trailing delimiter characters.
+    /// </summary>
+    /// <param name="value">The candidate transcription characters.</param>
+    /// <param name="notation">When this method returns <see langword="true"/>, contains the
+    /// detected notation; otherwise <see cref="TranscriptionNotation.Undefined"/>.</param>
+    /// <returns><see langword="true"/> if a known delimiter pair was matched; otherwise
+    /// <see langword="false"/>.</returns>
     public static bool TryGetNotation(ReadOnlySpan<char> value, out TranscriptionNotation notation)
     {
         if (value.IsEmpty)

@@ -35,14 +35,26 @@ public readonly struct SpeechSymbolSequence
 {
     private readonly ReadOnlyMemory<SpeechSymbol> _value;
 
+    /// <summary>
+    /// Initializes a new <see cref="SpeechSymbolSequence"/> by copying the symbols
+    /// from <paramref name="value"/>.
+    /// </summary>
     public SpeechSymbolSequence(IEnumerable<SpeechSymbol> value) : this(value.ToArray(), false)
     {
     }
 
+    /// <summary>
+    /// Initializes a new <see cref="SpeechSymbolSequence"/> by copying the symbols
+    /// from <paramref name="value"/>.
+    /// </summary>
     public SpeechSymbolSequence(ReadOnlySpan<SpeechSymbol> value) : this(value.ToArray(), false)
     {
     }
 
+    /// <summary>
+    /// Initializes a new <see cref="SpeechSymbolSequence"/> by copying the symbols
+    /// from <paramref name="value"/>.
+    /// </summary>
     public SpeechSymbolSequence(ReadOnlyMemory<SpeechSymbol> value) : this(value, true)
     {
     }
@@ -52,6 +64,10 @@ public readonly struct SpeechSymbolSequence
         _value = copy ? value.ToArray() : value;
     }
 
+    /// <summary>
+    /// Creates a new <see cref="SpeechSymbolSequence"/> from the specified
+    /// <paramref name="value"/>. Used as the collection builder.
+    /// </summary>
     public static SpeechSymbolSequence Create(ReadOnlySpan<SpeechSymbol> value)
     {
         return new(value);
@@ -69,32 +85,58 @@ public readonly struct SpeechSymbolSequence
         return new(value, false);
     }
 
+    /// <summary>
+    /// Determines whether all of the characters in <paramref name="value"/> are valid
+    /// strict-IPA characters. Returns <see langword="true"/> if the span is empty.
+    /// </summary>
     public static bool IsValidValue(ReadOnlySpan<char> value)
     {
         return SpeechSymbol.AllStrictIpa(value);
     }
 
+    /// <summary>
+    /// Gets the <see cref="SpeechSymbol"/> at position <paramref name="i"/>.
+    /// </summary>
     public SpeechSymbol this[int i] => _value.Span[i];
 
+    /// <summary>
+    /// Returns a sub-sequence starting at the specified <paramref name="start"/> index
+    /// and containing <paramref name="length"/> symbols.
+    /// </summary>
     public SpeechSymbolSequence Slice(int start, int length)
     {
         return new(_value.Slice(start, length));
     }
 
+    /// <summary>
+    /// Gets a value indicating whether this sequence contains no symbols.
+    /// </summary>
     public bool IsEmpty => _value.IsEmpty;
 
+    /// <summary>
+    /// Gets the number of <see cref="SpeechSymbol"/> values in this sequence.
+    /// </summary>
     public int Length => _value.Length;
 
+    /// <summary>
+    /// Returns the underlying symbols as a <see cref="ReadOnlyMemory{T}"/>.
+    /// </summary>
     public ReadOnlyMemory<SpeechSymbol> AsMemory()
     {
         return _value;
     }
 
+    /// <summary>
+    /// Returns the underlying symbols as a <see cref="ReadOnlySpan{T}"/>.
+    /// </summary>
     public ReadOnlySpan<SpeechSymbol> AsSpan()
     {
         return _value.Span;
     }
 
+    /// <summary>
+    /// Returns the underlying symbols reinterpreted as a span of <see cref="char"/> values.
+    /// </summary>
     public ReadOnlySpan<char> AsCharSpan()
     {
         return MemoryMarshal.Cast<SpeechSymbol, char>(_value.Span);
@@ -212,26 +254,36 @@ public readonly struct SpeechSymbolSequence
         }
     }
 
+    /// <summary>
+    /// Returns a value indicating whether this sequence is equal to <paramref name="other"/>.
+    /// </summary>
     public bool Equals(ReadOnlySpan<SpeechSymbol> other)
     {
         return _value.Span.SequenceEqual(other);
     }
 
+    /// <inheritdoc/>
     public bool Equals(ReadOnlyMemory<SpeechSymbol> other)
     {
         return Equals(other.Span);
     }
 
+    /// <inheritdoc/>
     public bool Equals(SpeechSymbolSequence other)
     {
         return Equals(other._value.Span);
     }
 
+    /// <inheritdoc/>
     public override bool Equals(object? obj)
     {
         return obj is SpeechSymbolSequence other && Equals(other, StringComparison.Ordinal);
     }
 
+    /// <summary>
+    /// Returns a value indicating whether this sequence is equal to the characters of
+    /// <paramref name="value"/>, using the specified <paramref name="comparison"/>.
+    /// </summary>
     public bool Equals(
         string value,
         SpeechSymbolSequenceComparison comparison = SpeechSymbolSequenceComparison.Exact)
@@ -239,6 +291,10 @@ public readonly struct SpeechSymbolSequence
         return Equals(value.AsSpan(), comparison);
     }
 
+    /// <summary>
+    /// Returns a value indicating whether this sequence is equal to the characters of
+    /// <paramref name="chars"/>, using the specified <paramref name="comparison"/>.
+    /// </summary>
     public bool Equals(
         CharSequence chars,
         SpeechSymbolSequenceComparison comparison = SpeechSymbolSequenceComparison.Exact)
@@ -246,6 +302,10 @@ public readonly struct SpeechSymbolSequence
         return Equals(chars.Span, comparison);
     }
 
+    /// <summary>
+    /// Returns a value indicating whether this sequence is equal to the characters of
+    /// <paramref name="chars"/>, using the specified <paramref name="comparison"/>.
+    /// </summary>
     public bool Equals(
         ReadOnlySpan<char> chars,
         SpeechSymbolSequenceComparison comparison = SpeechSymbolSequenceComparison.Exact)
@@ -330,6 +390,10 @@ public readonly struct SpeechSymbolSequence
         return _value.Span.Contains(value);
     }
 
+    /// <summary>
+    /// Determines whether this sequence contains <paramref name="symbols"/> using the
+    /// specified <paramref name="comparison"/>.
+    /// </summary>
     public bool Contains(
         SpeechSymbolSequence symbols,
         SpeechSymbolSequenceComparison comparison = SpeechSymbolSequenceComparison.Exact)
@@ -337,6 +401,10 @@ public readonly struct SpeechSymbolSequence
         return IndexOf(symbols, comparison) > -1;
     }
 
+    /// <summary>
+    /// Determines whether this sequence contains the characters of <paramref name="chars"/>
+    /// using the specified <paramref name="comparison"/>.
+    /// </summary>
     public bool Contains(
         ReadOnlySpan<char> chars,
         SpeechSymbolSequenceComparison comparison = SpeechSymbolSequenceComparison.Exact)
@@ -344,11 +412,18 @@ public readonly struct SpeechSymbolSequence
         return IndexOf(chars, comparison) > -1;
     }
 
+    /// <summary>
+    /// Determines whether this sequence begins with the specified <paramref name="value"/>.
+    /// </summary>
     public bool StartsWith(SpeechSymbol value)
     {
         return !_value.Span.IsEmpty && _value.Span[0] == value;
     }
 
+    /// <summary>
+    /// Determines whether this sequence begins with <paramref name="chars"/> using the
+    /// specified <paramref name="comparison"/>.
+    /// </summary>
     public bool StartsWith(
         SpeechSymbolSequence chars,
         SpeechSymbolSequenceComparison comparison = SpeechSymbolSequenceComparison.Exact)
@@ -372,6 +447,10 @@ public readonly struct SpeechSymbolSequence
         }
     }
 
+    /// <summary>
+    /// Determines whether this sequence begins with the characters of <paramref name="chars"/>
+    /// using the specified <paramref name="comparison"/>.
+    /// </summary>
     public bool StartsWith(
         ReadOnlySpan<char> chars,
         SpeechSymbolSequenceComparison comparison = SpeechSymbolSequenceComparison.Exact)
@@ -395,6 +474,10 @@ public readonly struct SpeechSymbolSequence
         }
     }
 
+    /// <summary>
+    /// Returns the zero-based index of the first occurrence of <paramref name="symbols"/>
+    /// in this sequence, or -1 if not found, using the specified <paramref name="comparison"/>.
+    /// </summary>
     public int IndexOf(
         SpeechSymbolSequence symbols,
         SpeechSymbolSequenceComparison comparison = SpeechSymbolSequenceComparison.Exact)
@@ -477,6 +560,10 @@ public readonly struct SpeechSymbolSequence
         }
     }
 
+    /// <summary>
+    /// Returns the zero-based index of the first occurrence of <paramref name="chars"/>
+    /// in this sequence, or -1 if not found, using the specified <paramref name="comparison"/>.
+    /// </summary>
     public int IndexOf(
         ReadOnlySpan<char> chars,
         SpeechSymbolSequenceComparison comparison = SpeechSymbolSequenceComparison.Exact)
@@ -561,22 +648,30 @@ public readonly struct SpeechSymbolSequence
         }
     }
 
+    /// <inheritdoc/>
     public int GetCharCount(ReadOnlySpan<char> format, IFormatProvider? provider)
     {
         return _value.Length;
     }
 
+    /// <inheritdoc/>
     public int GetCharCount(string? format, IFormatProvider? formatProvider)
     {
         return _value.Length;
     }
 
+    /// <summary>
+    /// Returns an enumerator that iterates through the symbols in this sequence.
+    /// </summary>
     public Enumerator GetEnumerator()
     {
         return new(this);
     }
 
 #pragma warning disable CA1034 // Nested types should not be visible
+    /// <summary>
+    /// Enumerates the <see cref="SpeechSymbol"/> values of a <see cref="SpeechSymbolSequence"/>.
+    /// </summary>
     public ref struct Enumerator
 #pragma warning restore CA1034 // Nested types should not be visible
     {
@@ -590,6 +685,11 @@ public readonly struct SpeechSymbolSequence
             _index = -1;
         }
 
+        /// <summary>
+        /// Advances the enumerator to the next <see cref="SpeechSymbol"/>.
+        /// </summary>
+        /// <returns><see langword="true"/> if the enumerator advanced; <see langword="false"/>
+        /// if the end of the sequence has been reached.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool MoveNext()
         {
@@ -604,6 +704,9 @@ public readonly struct SpeechSymbolSequence
             return false;
         }
 
+        /// <summary>
+        /// Gets the <see cref="SpeechSymbol"/> at the current position of the enumerator.
+        /// </summary>
         public SpeechSymbol Current
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -611,11 +714,15 @@ public readonly struct SpeechSymbolSequence
         }
     }
 
+    /// <summary>
+    /// Parses the specified character sequence into a <see cref="SpeechSymbolSequence"/>.
+    /// </summary>
     public static SpeechSymbolSequence Parse(ReadOnlySpan<char> s)
     {
         return Parse(s, default);
     }
 
+    /// <inheritdoc/>
     public static SpeechSymbolSequence Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
     {
         if (TryParse(s, provider, out var result))
@@ -627,22 +734,33 @@ public readonly struct SpeechSymbolSequence
         return default; // unreachable
     }
 
+    /// <summary>
+    /// Parses the specified string into a <see cref="SpeechSymbolSequence"/>.
+    /// </summary>
     public static SpeechSymbolSequence Parse(string s)
     {
         return Parse(s, default);
     }
 
+    /// <summary>
+    /// Parses the specified string into a <see cref="SpeechSymbolSequence"/> using the
+    /// invariant culture.
+    /// </summary>
     public static SpeechSymbolSequence ParseInvariant(string s)
     {
         return Parse(s, CultureInfo.InvariantCulture);
     }
 
+    /// <inheritdoc/>
     public static SpeechSymbolSequence Parse(string s, IFormatProvider? provider)
     {
         ArgumentNullException.ThrowIfNull(s);
         return Parse(s.AsSpan(), provider);
     }
 
+    /// <summary>
+    /// Attempts to parse the specified character sequence into a <see cref="SpeechSymbolSequence"/>.
+    /// </summary>
     public static bool TryParse(
         ReadOnlySpan<char> s,
         out SpeechSymbolSequence result)
@@ -650,6 +768,7 @@ public readonly struct SpeechSymbolSequence
         return TryParse(s, default, out result);
     }
 
+    /// <inheritdoc/>
     public static bool TryParse(
         ReadOnlySpan<char> s,
         IFormatProvider? provider,
@@ -674,6 +793,9 @@ public readonly struct SpeechSymbolSequence
         return true;
     }
 
+    /// <summary>
+    /// Attempts to parse the specified string into a <see cref="SpeechSymbolSequence"/>.
+    /// </summary>
     public static bool TryParse(
         [NotNullWhen(true)] string? s,
         out SpeechSymbolSequence result)
@@ -681,6 +803,7 @@ public readonly struct SpeechSymbolSequence
         return TryParse(s, default, out result);
     }
 
+    /// <inheritdoc/>
     public static bool TryParse(
         [NotNullWhen(true)] string? s,
         IFormatProvider? provider,
@@ -695,26 +818,37 @@ public readonly struct SpeechSymbolSequence
         return TryParse(s.AsSpan(), provider, out result);
     }
 
+    /// <inheritdoc/>
     public override int GetHashCode()
     {
         return string.GetHashCode(MemoryMarshal.Cast<SpeechSymbol, char>(_value.Span), StringComparison.Ordinal);
     }
 
+    /// <summary>
+    /// Returns the zero-based index of the first occurrence of <paramref name="c"/>
+    /// in this sequence, or -1 if it is not found.
+    /// </summary>
     public int IndexOf(SpeechSymbol c)
     {
         return _value.Span.IndexOf(c);
     }
 
+    /// <summary>
+    /// Returns the zero-based index of the last occurrence of <paramref name="c"/>
+    /// in this sequence, or -1 if it is not found.
+    /// </summary>
     public int LastIndexOf(SpeechSymbol c)
     {
         return _value.Span.LastIndexOf(c);
     }
 
+    /// <inheritdoc/>
     public override string ToString()
     {
         return ToString(default, default);
     }
 
+    /// <inheritdoc/>
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
         return string.Create(_value.Length, (this, format, formatProvider), (span, state) =>
@@ -725,6 +859,7 @@ public readonly struct SpeechSymbolSequence
         });
     }
 
+    /// <inheritdoc/>
     public bool TryFormat(
         Span<char> destination,
         out int charsWritten,
@@ -743,6 +878,7 @@ public readonly struct SpeechSymbolSequence
         return false;
     }
 
+    /// <inheritdoc/>
     public bool TryFormat(
         Span<byte> utf8Destination,
         out int bytesWritten,
@@ -760,17 +896,26 @@ public readonly struct SpeechSymbolSequence
         return false;
     }
 
+    /// <summary>
+    /// Determines whether two <see cref="SpeechSymbolSequence"/> values are equal.
+    /// </summary>
     public static bool operator ==(SpeechSymbolSequence left, SpeechSymbolSequence right)
     {
         return left.Equals(right);
     }
 
+    /// <summary>
+    /// Determines whether two <see cref="SpeechSymbolSequence"/> values are not equal.
+    /// </summary>
     public static bool operator !=(SpeechSymbolSequence left, SpeechSymbolSequence right)
     {
         return !(left == right);
     }
 
 #pragma warning disable CA2225 // Operator overloads have named alternates
+    /// <summary>
+    /// Concatenates two <see cref="SpeechSymbolSequence"/> values into a new sequence.
+    /// </summary>
     public static SpeechSymbolSequence operator +(SpeechSymbolSequence left, SpeechSymbolSequence right)
 #pragma warning restore CA2225 // Operator overloads have named alternates
     {
@@ -782,16 +927,27 @@ public readonly struct SpeechSymbolSequence
 
 #pragma warning disable CA2225 // Operator overloads have named alternates (Parse)
 
+    /// <summary>
+    /// Converts a <see cref="string"/> to a <see cref="SpeechSymbolSequence"/> by parsing it.
+    /// </summary>
     public static explicit operator SpeechSymbolSequence(string value)
     {
         return Parse(value, null);
     }
 
+    /// <summary>
+    /// Converts a <see cref="Span{T}"/> of <see cref="SpeechSymbol"/> to a
+    /// <see cref="SpeechSymbolSequence"/>.
+    /// </summary>
     public static implicit operator SpeechSymbolSequence(Span<SpeechSymbol> symbols)
     {
         return new(symbols);
     }
 
+    /// <summary>
+    /// Converts a <see cref="ReadOnlySpan{T}"/> of <see cref="SpeechSymbol"/> to a
+    /// <see cref="SpeechSymbolSequence"/>.
+    /// </summary>
     public static implicit operator SpeechSymbolSequence(ReadOnlySpan<SpeechSymbol> symbols)
     {
         return new(symbols);
@@ -879,6 +1035,7 @@ public readonly struct SpeechSymbolSequence
         charsWritten = j;
     }
 
+    /// <inheritdoc/>
     public ulong GetRepeatableHashCode()
     {
         var chars = MemoryMarshal.Cast<SpeechSymbol, char>(_value.Span);
