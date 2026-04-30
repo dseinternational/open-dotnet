@@ -3,6 +3,10 @@
 
 namespace DSE.Open.Globalization;
 
+/// <summary>
+/// Provides global options used by the localized collection extensions, including the default
+/// fallback language tags applied when an exact match is not found.
+/// </summary>
 public static class LocalizedCollectionOptions
 {
     private static LanguageTag[] s_defaultFallbacks = [
@@ -11,8 +15,16 @@ public static class LocalizedCollectionOptions
         LanguageTag.English
     ];
 
+    /// <summary>
+    /// Gets the default fallback language tags, applied in order when a localized collection lookup
+    /// does not find an exact or language-part match.
+    /// </summary>
     public static IList<LanguageTag> DefaultFallbacks => s_defaultFallbacks;
 
+    /// <summary>
+    /// Sets the default fallback language tags returned by <see cref="DefaultFallbacks"/>.
+    /// </summary>
+    /// <param name="languageTags">The language tags to use as fallbacks. Must contain at least one item.</param>
     public static void SetDefaultFallbacks(ICollection<LanguageTag> languageTags)
     {
         ArgumentNullException.ThrowIfNull(languageTags);

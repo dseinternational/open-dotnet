@@ -5,6 +5,10 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace DSE.Open.Globalization;
 
+/// <summary>
+/// Provides extension methods for retrieving items from collections keyed by
+/// <see cref="LanguageTag"/> (or string language tags) with fallback behaviour.
+/// </summary>
 public static class LocalizedCollectionExtensions
 {
     /// <summary>
@@ -24,6 +28,15 @@ public static class LocalizedCollectionExtensions
         return GetLocalizedOrFallback(localizedCollection, tag, LocalizedCollectionOptions.DefaultFallbacks);
     }
 
+    /// <summary>
+    /// Gets the item specified by the <paramref name="tag"/> or the nearest fallback item.
+    /// </summary>
+    /// <typeparam name="T">The type of the values in the dictionary.</typeparam>
+    /// <param name="dictionary">The dictionary to search, keyed by language tag string.</param>
+    /// <param name="tag">The language tag to match.</param>
+    /// <param name="fallbacks">The fallback language tags to try, in order, if no match is found.</param>
+    /// <returns>The matched value, or the first available fallback.</returns>
+    /// <exception cref="InvalidOperationException">The dictionary is empty.</exception>
     public static T GetLocalizedOrFallback<T>(
         this Dictionary<string, T> dictionary,
         LanguageTag tag,
@@ -72,6 +85,15 @@ public static class LocalizedCollectionExtensions
         return dictionary.First().Value;
     }
 
+    /// <summary>
+    /// Gets the item specified by the <paramref name="tag"/> or the nearest fallback item.
+    /// </summary>
+    /// <typeparam name="T">The type of the values in the dictionary.</typeparam>
+    /// <param name="dictionary">The read-only dictionary to search, keyed by language tag string.</param>
+    /// <param name="tag">The language tag to match.</param>
+    /// <param name="fallbacks">The fallback language tags to try, in order, if no match is found.</param>
+    /// <returns>The matched value, or the first available fallback.</returns>
+    /// <exception cref="InvalidOperationException">The dictionary is empty.</exception>
     public static T GetLocalizedOrFallback<T>(
         this IReadOnlyDictionary<string, T> dictionary,
         LanguageTag tag,
@@ -211,6 +233,15 @@ public static class LocalizedCollectionExtensions
         return GetLocalizedOrFallback(localizedCollection, tag, LocalizedCollectionOptions.DefaultFallbacks);
     }
 
+    /// <summary>
+    /// Gets the item specified by the <paramref name="tag"/> or the nearest fallback item.
+    /// </summary>
+    /// <typeparam name="T">The type of the values in the dictionary.</typeparam>
+    /// <param name="dictionary">The dictionary to search, keyed by <see cref="LanguageTag"/>.</param>
+    /// <param name="tag">The language tag to match.</param>
+    /// <param name="fallbacks">The fallback language tags to try, in order, if no match is found.</param>
+    /// <returns>The matched value, or the first available fallback.</returns>
+    /// <exception cref="InvalidOperationException">The dictionary is empty.</exception>
     public static T GetLocalizedOrFallback<T>(
         this Dictionary<LanguageTag, T> dictionary,
         LanguageTag tag,
@@ -263,6 +294,15 @@ public static class LocalizedCollectionExtensions
         return dictionary.First().Value;
     }
 
+    /// <summary>
+    /// Gets the item specified by the <paramref name="tag"/> or the nearest fallback item.
+    /// </summary>
+    /// <typeparam name="T">The type of the values in the dictionary.</typeparam>
+    /// <param name="dictionary">The read-only dictionary to search, keyed by <see cref="LanguageTag"/>.</param>
+    /// <param name="tag">The language tag to match.</param>
+    /// <param name="fallbacks">The fallback language tags to try, in order, if no match is found.</param>
+    /// <returns>The matched value, or the first available fallback.</returns>
+    /// <exception cref="InvalidOperationException">The dictionary is empty.</exception>
     public static T GetLocalizedOrFallback<T>(
         this IReadOnlyDictionary<LanguageTag, T> dictionary,
         LanguageTag tag,
