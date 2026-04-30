@@ -68,7 +68,12 @@ public partial class ValueTypesGenerator
 
             if (spec.EmitMaxSerializedCharLength)
             {
-                writer.WriteBlock($"public static int MaxSerializedCharLength => {spec.MaxSerializedCharLength};");
+                writer.WriteBlock($$"""
+                                    /// <summary>
+                                    /// The maximum number of characters required to format a {{spec.ValueTypeName}} value as text.
+                                    /// </summary>
+                                    public static int MaxSerializedCharLength => {{spec.MaxSerializedCharLength}};
+                                    """);
             }
 
             if (spec.EmitValueField)
@@ -78,6 +83,14 @@ public partial class ValueTypesGenerator
 
             if (spec.EmitConstructor)
             {
+                writer.WriteBlock($$"""
+                                    /// <summary>
+                                    /// Initializes a new instance of <see cref="{{spec.ValueTypeName}}"/> from the underlying value.
+                                    /// </summary>
+                                    /// <param name="value">The underlying value.</param>
+                                    /// <param name="skipValidation">If <see langword="true"/>, skips the <c>IsValidValue</c> check; the caller must guarantee the value is valid.</param>
+                                    /// <exception cref="{{GlobalTypes.ArgumentOutOfRangeException}}"><paramref name="value"/> is not a valid <see cref="{{spec.ValueTypeName}}"/> value.</exception>
+                                    """);
                 writer.WriteLine(
                     $"{spec.ConstructorAccessibilityValue} {spec.ValueTypeName}({spec.ContainedValueTypeName} value, bool skipValidation = false)");
 
@@ -114,6 +127,12 @@ public partial class ValueTypesGenerator
             if (spec.EmitTryFromValueMethod)
             {
                 writer.WriteBlock($$"""
+                                    /// <summary>
+                                    /// Attempts to create a <see cref="{{spec.ValueTypeName}}"/> from the underlying value.
+                                    /// </summary>
+                                    /// <param name="value">The underlying value to wrap.</param>
+                                    /// <param name="result">When this method returns <see langword="true"/>, the resulting <see cref="{{spec.ValueTypeName}}"/>; otherwise <see langword="default"/>.</param>
+                                    /// <returns><see langword="true"/> if <paramref name="value"/> is a valid <see cref="{{spec.ValueTypeName}}"/> value; otherwise <see langword="false"/>.</returns>
                                     public static bool TryFromValue({{spec.ContainedValueTypeName}} value, out {{spec.ValueTypeName}} result)
                                     {
                                         if (IsValidValue(value))
@@ -131,6 +150,12 @@ public partial class ValueTypesGenerator
             if (spec.EmitFromValueMethod)
             {
                 writer.WriteBlock($$"""
+                                    /// <summary>
+                                    /// Creates a <see cref="{{spec.ValueTypeName}}"/> from the underlying value.
+                                    /// </summary>
+                                    /// <param name="value">The underlying value to wrap.</param>
+                                    /// <returns>A <see cref="{{spec.ValueTypeName}}"/> wrapping <paramref name="value"/>.</returns>
+                                    /// <exception cref="{{GlobalTypes.ArgumentOutOfRangeException}}"><paramref name="value"/> is not a valid <see cref="{{spec.ValueTypeName}}"/> value.</exception>
                                     public static {{spec.ValueTypeName}} FromValue({{spec.ContainedValueTypeName}} value)
                                     {
                                         EnsureIsValidValue(value);
@@ -141,8 +166,12 @@ public partial class ValueTypesGenerator
 
             if (spec.EmitExplicitConversionFromContainedTypeMethod)
             {
-                writer.WriteBlock($"""
-                                   public static explicit operator {spec.ValueTypeName}({spec.ContainedValueTypeName} value)
+                writer.WriteBlock($$"""
+                                   /// <summary>
+                                   /// Converts the underlying <see cref="{{spec.ContainedValueTypeName}}"/> value to a <see cref="{{spec.ValueTypeName}}"/>.
+                                   /// </summary>
+                                   /// <exception cref="{{GlobalTypes.ArgumentOutOfRangeException}}"><paramref name="value"/> is not a valid <see cref="{{spec.ValueTypeName}}"/> value.</exception>
+                                   public static explicit operator {{spec.ValueTypeName}}({{spec.ContainedValueTypeName}} value)
                                        => FromValue(value);
                                    """);
             }
@@ -158,6 +187,9 @@ public partial class ValueTypesGenerator
             if (spec.EmitImplicitConversionToContainedTypeMethod)
             {
                 writer.WriteBlock($$"""
+                                  /// <summary>
+                                  /// Returns the underlying <see cref="{{spec.ContainedValueTypeName}}"/> value of <paramref name="value"/>.
+                                  /// </summary>
                                   public static implicit operator {{spec.ContainedValueTypeName}}({{spec.ValueTypeName}} value)
                                   {
                                       return value._value;
@@ -167,6 +199,9 @@ public partial class ValueTypesGenerator
             else if (spec.EmitExplicitConversionToContainedType)
             {
                 writer.WriteBlock($$"""
+                                  /// <summary>
+                                  /// Returns the underlying <see cref="{{spec.ContainedValueTypeName}}"/> value of <paramref name="value"/>.
+                                  /// </summary>
                                   public static explicit operator {{spec.ContainedValueTypeName}}({{spec.ValueTypeName}} value)
                                   {
                                      return value._value;
@@ -178,18 +213,25 @@ public partial class ValueTypesGenerator
 
             if (spec.EmitEqualsMethod)
             {
-                writer.WriteBlock($"public bool Equals({spec.ValueTypeName} other) => _value.Equals(other._value);");
+                writer.WriteBlock($"""
+                                   /// <inheritdoc/>
+                                   public bool Equals({spec.ValueTypeName} other) => _value.Equals(other._value);
+                                   """);
             }
 
             if (spec.EmitEqualsObjectMethod)
             {
                 writer.WriteBlock(
-                    $"public override bool Equals(object? obj) => obj is {spec.ValueTypeName} other && Equals(other);");
+                    $"""
+                     /// <inheritdoc/>
+                     public override bool Equals(object? obj) => obj is {spec.ValueTypeName} other && Equals(other);
+                     """);
             }
 
             if (spec.EmitGetHashCodeMethod)
             {
                 writer.WriteBlock("""
+                                  /// <inheritdoc/>
                                   public override int GetHashCode()
                                   {
                                       return _value.GetHashCode();
@@ -202,8 +244,14 @@ public partial class ValueTypesGenerator
                 writer.WriteBlock($"// IEqualityOperators<{spec.ValueTypeName}, {spec.ValueTypeName}, bool>");
 
                 writer.WriteBlock($"""
+                                   /// <summary>
+                                   /// Returns <see langword="true"/> if the two <see cref="{spec.ValueTypeName}"/> values are equal.
+                                   /// </summary>
                                    public static bool operator ==({spec.ValueTypeName} left, {spec.ValueTypeName} right) => left.Equals(right);
 
+                                   /// <summary>
+                                   /// Returns <see langword="true"/> if the two <see cref="{spec.ValueTypeName}"/> values are not equal.
+                                   /// </summary>
                                    public static bool operator !=({spec.ValueTypeName} left, {spec.ValueTypeName} right) => !(left == right);
                                    """);
             }
@@ -213,6 +261,7 @@ public partial class ValueTypesGenerator
             if (spec.EmitTryFormatMethod)
             {
                 writer.WriteLine($$"""
+                                 /// <inheritdoc/>
                                  public bool TryFormat(
                                      {{GlobalTypes.Span}}<char> destination,
                                      out int charsWritten,
@@ -230,6 +279,9 @@ public partial class ValueTypesGenerator
             }
 
             writer.WriteBlock($"""
+                              /// <summary>
+                              /// Attempts to format the value into the provided span using default format and provider.
+                              /// </summary>
                               public bool TryFormat(
                                   {GlobalTypes.Span}<char> destination,
                                   out int charsWritten)
@@ -237,6 +289,9 @@ public partial class ValueTypesGenerator
                               """);
 
             writer.WriteBlock($"""
+                              /// <summary>
+                              /// Attempts to format the value into the provided span using the specified format and the invariant culture.
+                              /// </summary>
                               public bool TryFormatInvariant(
                                   {GlobalTypes.Span}<char> destination,
                                   out int charsWritten,
@@ -245,6 +300,9 @@ public partial class ValueTypesGenerator
                               """);
 
             writer.WriteBlock($"""
+                              /// <summary>
+                              /// Attempts to format the value into the provided span using the default format and the invariant culture.
+                              /// </summary>
                               public bool TryFormatInvariant(
                                   {GlobalTypes.Span}<char> destination,
                                   out int charsWritten)
@@ -318,6 +376,9 @@ public partial class ValueTypesGenerator
                 writer.WriteBlock("}");
 
                 writer.WriteBlock($$"""
+                                  /// <summary>
+                                  /// Returns the string representation using the specified format and the invariant culture.
+                                  /// </summary>
                                   public string ToStringInvariant(string? format)
                                   {
                                       return ToString(format, {{GlobalTypes.CultureInfoInvariantCulture}});
@@ -325,6 +386,9 @@ public partial class ValueTypesGenerator
                                   """);
 
                 writer.WriteBlock("""
+                                  /// <summary>
+                                  /// Returns the string representation using the default format and the invariant culture.
+                                  /// </summary>
                                   public string ToStringInvariant()
                                   {
                                       return ToStringInvariant(default);
@@ -356,11 +420,15 @@ public partial class ValueTypesGenerator
             if (spec.EmitParseSpanMethod)
             {
                 writer.WriteBlock($"""
+                                   /// <inheritdoc/>
                                    public static {spec.ValueTypeName} Parse({GlobalTypes.ReadOnlySpan}<char> s, {GlobalTypes.IFormatProvider}? provider)
                                        => {Namespaces.DseOpenValues}.ValueParser.Parse<{spec.ValueTypeName}, {spec.ContainedValueTypeName}>(s, provider);
                                    """);
 
                 writer.WriteBlock($"""
+                                   /// <summary>
+                                   /// Parses a span of characters into a <see cref="{spec.ValueTypeName}"/> using the invariant culture.
+                                   /// </summary>
                                    public static {spec.ValueTypeName} ParseInvariant({GlobalTypes.ReadOnlySpan}<char> s)
                                        => Parse(s, {GlobalTypes.CultureInfoInvariantCulture});
                                    """);
@@ -369,6 +437,7 @@ public partial class ValueTypesGenerator
             if (spec.EmitTryParseSpanMethod)
             {
                 writer.WriteBlock($"""
+                                   /// <inheritdoc/>
                                    public static bool TryParse(
                                        {GlobalTypes.ReadOnlySpan}<char> s,
                                        {GlobalTypes.IFormatProvider}? provider,
@@ -377,6 +446,9 @@ public partial class ValueTypesGenerator
                                    """);
 
                 writer.WriteBlock($"""
+                                   /// <summary>
+                                   /// Attempts to parse a span of characters into a <see cref="{spec.ValueTypeName}"/> using the default format provider.
+                                   /// </summary>
                                    public static bool TryParse(
                                        {GlobalTypes.ReadOnlySpan}<char> s,
                                        out {spec.ValueTypeName} result)
@@ -384,6 +456,9 @@ public partial class ValueTypesGenerator
                                    """);
 
                 writer.WriteBlock($"""
+                                   /// <summary>
+                                   /// Attempts to parse a span of characters into a <see cref="{spec.ValueTypeName}"/> using the invariant culture.
+                                   /// </summary>
                                    public static bool TryParseInvariant(
                                        {GlobalTypes.ReadOnlySpan}<char> s,
                                        out {spec.ValueTypeName} result)
@@ -399,16 +474,23 @@ public partial class ValueTypesGenerator
             if (spec.EmitParseStringMethod)
             {
                 writer.WriteBlock($"""
+                                   /// <inheritdoc/>
                                    public static {spec.ValueTypeName} Parse(string s, {GlobalTypes.IFormatProvider}? provider)
                                        => {Namespaces.DseOpenValues}.ValueParser.Parse<{spec.ValueTypeName}, {spec.ContainedValueTypeName}>(s, provider);
                                    """);
 
                 writer.WriteBlock($"""
+                                   /// <summary>
+                                   /// Parses a string into a <see cref="{spec.ValueTypeName}"/> using the default format provider.
+                                   /// </summary>
                                    public static {spec.ValueTypeName} Parse(string s)
                                        => Parse(s, default);
                                    """);
 
                 writer.WriteBlock($"""
+                                   /// <summary>
+                                   /// Parses a string into a <see cref="{spec.ValueTypeName}"/> using the invariant culture.
+                                   /// </summary>
                                    public static {spec.ValueTypeName} ParseInvariant(string s)
                                        => Parse(s, {GlobalTypes.CultureInfoInvariantCulture});
                                    """);
@@ -417,6 +499,7 @@ public partial class ValueTypesGenerator
             if (spec.EmitTryParseStringMethod)
             {
                 writer.WriteBlock($$"""
+                                    /// <inheritdoc/>
                                     public static bool TryParse(
                                         string? s,
                                         {{GlobalTypes.IFormatProvider}}? provider,
@@ -433,6 +516,9 @@ public partial class ValueTypesGenerator
                                     """);
 
                 writer.WriteBlock($"""
+                                   /// <summary>
+                                   /// Attempts to parse a string into a <see cref="{spec.ValueTypeName}"/> using the default format provider.
+                                   /// </summary>
                                    public static bool TryParse(
                                        string? s,
                                        out {spec.ValueTypeName} result)
@@ -440,6 +526,9 @@ public partial class ValueTypesGenerator
                                    """);
 
                 writer.WriteBlock($"""
+                                   /// <summary>
+                                   /// Attempts to parse a string into a <see cref="{spec.ValueTypeName}"/> using the invariant culture.
+                                   /// </summary>
                                    public static bool TryParseInvariant(
                                        string? s,
                                        out {spec.ValueTypeName} result)
@@ -450,6 +539,7 @@ public partial class ValueTypesGenerator
             if (spec.EmitTryParseSpanNumberStylesMethod)
             {
                 writer.WriteBlock($"""
+                                   /// <inheritdoc/>
                                    public static bool TryParse(
                                        {GlobalTypes.ReadOnlySpan}<char> s,
                                        {GlobalTypes.NumberStyles} style,
@@ -463,6 +553,7 @@ public partial class ValueTypesGenerator
             if (spec.EmitTryParseStringNumberStylesMethod)
             {
                 writer.WriteBlock($"""
+                                   /// <inheritdoc/>
                                    public static bool TryParse(
                                        string? s,
                                        {GlobalTypes.NumberStyles} style,
@@ -476,6 +567,7 @@ public partial class ValueTypesGenerator
             if (spec.EmitParseSpanNumberStylesMethod)
             {
                 writer.WriteBlock($"""
+                                   /// <inheritdoc/>
                                    public static {spec.ValueTypeName} Parse({GlobalTypes.ReadOnlySpan}<char> s, {GlobalTypes.NumberStyles} style, {GlobalTypes.IFormatProvider}? provider)
                                        => ({spec.ValueTypeName}){spec.ContainedValueTypeName}.Parse(s, style, provider); // TODO: NumberStyles
                                    """);
@@ -484,6 +576,7 @@ public partial class ValueTypesGenerator
             if (spec.EmitParseStringNumberStylesMethod)
             {
                 writer.WriteBlock($"""
+                                   /// <inheritdoc/>
                                    public static {spec.ValueTypeName} Parse(string s, {GlobalTypes.NumberStyles} style, {GlobalTypes.IFormatProvider}? provider)
                                        => ({spec.ValueTypeName}){spec.ContainedValueTypeName}.Parse(s, style, provider); // TODO: NumberStyles
                                    """);
@@ -494,6 +587,7 @@ public partial class ValueTypesGenerator
                 writer.WriteBlock("// IUtf8SpanFormattable");
 
                 writer.WriteBlock($"""
+                                  /// <inheritdoc/>
                                   public bool TryFormat(
                                       {GlobalTypes.Span}<byte> utf8Destination,
                                       out int bytesWritten,
@@ -511,6 +605,7 @@ public partial class ValueTypesGenerator
             if (spec.EmitParseUtf8Method)
             {
                 writer.WriteBlock($"""
+                                   /// <inheritdoc/>
                                    public static {spec.ValueTypeName} Parse(
                                        {GlobalTypes.ReadOnlySpan}<byte> utf8Source,
                                        {GlobalTypes.IFormatProvider}? provider)
@@ -521,6 +616,7 @@ public partial class ValueTypesGenerator
             if (spec.EmitTryParseUtf8Method)
             {
                 writer.WriteBlock($"""
+                                   /// <inheritdoc/>
                                    public static bool TryParse(
                                        {GlobalTypes.ReadOnlySpan}<byte> utf8Source,
                                        {GlobalTypes.IFormatProvider}? provider,
@@ -534,6 +630,7 @@ public partial class ValueTypesGenerator
                 if (ordinalSpec.EmitCompareToMethod)
                 {
                     writer.WriteBlock($$"""
+                                      /// <inheritdoc/>
                                       public int CompareTo({{spec.ValueTypeName}} other)
                                       {
                                           return _value.CompareTo(other._value);
@@ -556,12 +653,24 @@ public partial class ValueTypesGenerator
                     writer.WriteBlock($"// IComparisonOperators<{spec.ValueTypeName}, {spec.ValueTypeName}, bool>");
 
                     writer.WriteBlock($"""
+                                       /// <summary>
+                                       /// Returns <see langword="true"/> if <paramref name="left"/> is less than <paramref name="right"/>.
+                                       /// </summary>
                                        public static bool operator <({spec.ValueTypeName} left, {spec.ValueTypeName} right) => left.CompareTo(right) < 0;
 
+                                       /// <summary>
+                                       /// Returns <see langword="true"/> if <paramref name="left"/> is greater than <paramref name="right"/>.
+                                       /// </summary>
                                        public static bool operator >({spec.ValueTypeName} left, {spec.ValueTypeName} right) => left.CompareTo(right) > 0;
 
+                                       /// <summary>
+                                       /// Returns <see langword="true"/> if <paramref name="left"/> is less than or equal to <paramref name="right"/>.
+                                       /// </summary>
                                        public static bool operator <=({spec.ValueTypeName} left, {spec.ValueTypeName} right) => left.CompareTo(right) <= 0;
 
+                                       /// <summary>
+                                       /// Returns <see langword="true"/> if <paramref name="left"/> is greater than or equal to <paramref name="right"/>.
+                                       /// </summary>
                                        public static bool operator >=({spec.ValueTypeName} left, {spec.ValueTypeName} right) => left.CompareTo(right) >= 0;
                                        """);
                 }
@@ -575,25 +684,45 @@ public partial class ValueTypesGenerator
                         $"// IAdditionOperators<{spec.ValueTypeName}, {spec.ValueTypeName}, {spec.ValueTypeName}>");
 
                     writer.WriteBlock(
-                        $"public static {spec.ValueTypeName} operator +({spec.ValueTypeName} left, {spec.ValueTypeName} right) => ({spec.ValueTypeName})(left._value + right._value);");
+                        $"""
+                         /// <summary>
+                         /// Adds two <see cref="{spec.ValueTypeName}"/> values.
+                         /// </summary>
+                         public static {spec.ValueTypeName} operator +({spec.ValueTypeName} left, {spec.ValueTypeName} right) => ({spec.ValueTypeName})(left._value + right._value);
+                         """);
                 }
 
                 if (intervalSpec.EmitDecrementOperator)
                 {
                     writer.WriteBlock(
-                        $"public static {spec.ValueTypeName} operator --({spec.ValueTypeName} value) => ({spec.ValueTypeName})(value._value - 1);");
+                        $"""
+                         /// <summary>
+                         /// Decrements a <see cref="{spec.ValueTypeName}"/> by one.
+                         /// </summary>
+                         public static {spec.ValueTypeName} operator --({spec.ValueTypeName} value) => ({spec.ValueTypeName})(value._value - 1);
+                         """);
                 }
 
                 if (intervalSpec.EmitIncrementOperator)
                 {
                     writer.WriteBlock(
-                        $"public static {spec.ValueTypeName} operator ++({spec.ValueTypeName} value) => ({spec.ValueTypeName})(value._value + 1);");
+                        $"""
+                         /// <summary>
+                         /// Increments a <see cref="{spec.ValueTypeName}"/> by one.
+                         /// </summary>
+                         public static {spec.ValueTypeName} operator ++({spec.ValueTypeName} value) => ({spec.ValueTypeName})(value._value + 1);
+                         """);
                 }
 
                 if (intervalSpec.EmitSubtractionOperator)
                 {
                     writer.WriteBlock(
-                        $"public static {spec.ValueTypeName} operator -({spec.ValueTypeName} left, {spec.ValueTypeName} right) => ({spec.ValueTypeName})(left._value - right._value);");
+                        $"""
+                         /// <summary>
+                         /// Subtracts one <see cref="{spec.ValueTypeName}"/> from another.
+                         /// </summary>
+                         public static {spec.ValueTypeName} operator -({spec.ValueTypeName} left, {spec.ValueTypeName} right) => ({spec.ValueTypeName})(left._value - right._value);
+                         """);
 
                     // todo: not public if unsigned integer
                 }
@@ -601,7 +730,12 @@ public partial class ValueTypesGenerator
                 if (intervalSpec.EmitUnaryPlusOperator)
                 {
                     writer.WriteBlock(
-                        $"public static {spec.ValueTypeName} operator +({spec.ValueTypeName} value) => ({spec.ValueTypeName})(+value._value);");
+                        $"""
+                         /// <summary>
+                         /// Returns the value of <paramref name="value"/> unchanged.
+                         /// </summary>
+                         public static {spec.ValueTypeName} operator +({spec.ValueTypeName} value) => ({spec.ValueTypeName})(+value._value);
+                         """);
 
                     // todo: not public if unsigned integer
                 }
@@ -619,7 +753,12 @@ public partial class ValueTypesGenerator
                         // todo:
                         // for example: https://source.dot.net/#System.Private.CoreLib/src/libraries/System.Private.CoreLib/src/System/UInt64.cs,1217
                         writer.WriteBlock(
-                            $"public static {spec.ValueTypeName} operator -({spec.ValueTypeName} value) => throw new {GlobalTypes.NotImplementedException}();");
+                            $"""
+                             /// <summary>
+                             /// Not supported for this <see cref="{spec.ValueTypeName}"/>; always throws <see cref="{GlobalTypes.NotImplementedException}"/>.
+                             /// </summary>
+                             public static {spec.ValueTypeName} operator -({spec.ValueTypeName} value) => throw new {GlobalTypes.NotImplementedException}();
+                             """);
 
                     }
                 }
@@ -630,19 +769,34 @@ public partial class ValueTypesGenerator
                 if (ratioSpec.EmitMultiplicationOperator)
                 {
                     writer.WriteBlock(
-                        $"public static {spec.ValueTypeName} operator *({spec.ValueTypeName} left, {spec.ValueTypeName} right) => ({spec.ValueTypeName})(left._value * right._value);");
+                        $"""
+                         /// <summary>
+                         /// Multiplies two <see cref="{spec.ValueTypeName}"/> values.
+                         /// </summary>
+                         public static {spec.ValueTypeName} operator *({spec.ValueTypeName} left, {spec.ValueTypeName} right) => ({spec.ValueTypeName})(left._value * right._value);
+                         """);
                 }
 
                 if (ratioSpec.EmitDivisionOperator)
                 {
                     writer.WriteBlock(
-                        $"public static {spec.ValueTypeName} operator /({spec.ValueTypeName} left, {spec.ValueTypeName} right) => ({spec.ValueTypeName})(left._value / right._value);");
+                        $"""
+                         /// <summary>
+                         /// Divides one <see cref="{spec.ValueTypeName}"/> by another.
+                         /// </summary>
+                         public static {spec.ValueTypeName} operator /({spec.ValueTypeName} left, {spec.ValueTypeName} right) => ({spec.ValueTypeName})(left._value / right._value);
+                         """);
                 }
 
                 if (ratioSpec.EmitModulusOperator)
                 {
                     writer.WriteBlock(
-                        $"public static {spec.ValueTypeName} operator %({spec.ValueTypeName} left, {spec.ValueTypeName} right) => ({spec.ValueTypeName})(left._value % right._value);");
+                        $"""
+                         /// <summary>
+                         /// Returns the remainder of dividing <paramref name="left"/> by <paramref name="right"/>.
+                         /// </summary>
+                         public static {spec.ValueTypeName} operator %({spec.ValueTypeName} left, {spec.ValueTypeName} right) => ({spec.ValueTypeName})(left._value % right._value);
+                         """);
                 }
             }
 
