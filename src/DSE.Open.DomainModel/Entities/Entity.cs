@@ -44,9 +44,12 @@ public abstract class Entity<TId> : StoredObject, IEntity<TId>
     /// whose id is already known, and <see cref="StoredObjectInitialization.Materialized"/>
     /// when reconstituting an existing entity from the data store.
     /// </summary>
-    /// <param name="id">The entity identifier. Must not be <c>default(TId)</c> when
-    /// <paramref name="initialization"/> is
-    /// <see cref="StoredObjectInitialization.Materialized"/>.</param>
+    /// <param name="id">The entity identifier. <c>default(TId)</c> is permitted —
+    /// validation of the identifier value is the responsibility of the data layer
+    /// (insert/update path) rather than the constructor, because Entity Framework
+    /// Core can invoke a materialization constructor with <c>default(TId)</c> for
+    /// phantom rows in left-outer-joins where the principal entity is missing or
+    /// where a non-nullable foreign key is set to its default value.</param>
     /// <param name="initialization">The initialization state — see
     /// <see cref="StoredObject"/>.</param>
     /// <remarks>
@@ -57,11 +60,6 @@ public abstract class Entity<TId> : StoredObject, IEntity<TId>
     protected Entity(TId id, StoredObjectInitialization initialization = StoredObjectInitialization.Created)
         : base(initialization)
     {
-        if (initialization == StoredObjectInitialization.Materialized)
-        {
-            EntityDataInitializationException.ThrowIf(id.Equals(default));
-        }
-
         _id = id;
     }
 
