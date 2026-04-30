@@ -57,15 +57,24 @@ public sealed record WordFeature
       ISpanSerializable<WordFeature>,
       IRepeatableHash64
 {
+    /// <summary>
+    /// The maximum number of characters required to format a value as a string.
+    /// </summary>
     public static int MaxSerializedCharLength { get; } = (AlphaNumericCode.MaxSerializedCharLength * 2) + 1;
 
     private readonly ReadOnlyValueCollection<AlphaNumericCode> _values;
 
+    /// <summary>
+    /// Initializes a new <see cref="WordFeature"/> with the specified name and values.
+    /// </summary>
     public WordFeature(AlphaNumericCode name, IEnumerable<AlphaNumericCode> values)
         : this(name, [.. values])
     {
     }
 
+    /// <summary>
+    /// Initializes a new <see cref="WordFeature"/> with the specified name and values.
+    /// </summary>
     public WordFeature(AlphaNumericCode name, ReadOnlyValueCollection<AlphaNumericCode> values)
     {
         ArgumentNullException.ThrowIfNull(values);
@@ -101,11 +110,13 @@ public sealed record WordFeature
         return Name.Length + _values.Sum(v => v.Length + 1); // no -1 to accommodate = sign
     }
 
+    /// <inheritdoc/>
     public override string ToString()
     {
         return ToString(null, CultureInfo.InvariantCulture);
     }
 
+    /// <inheritdoc/>
     [SkipLocalsInit]
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
@@ -135,6 +146,7 @@ public sealed record WordFeature
         }
     }
 
+    /// <inheritdoc/>
     public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider? provider)
     {
         var charCount = GetCharCount();
@@ -167,11 +179,15 @@ public sealed record WordFeature
         return false;
     }
 
+    /// <summary>
+    /// Parses a <see cref="WordFeature"/> from the specified character span.
+    /// </summary>
     public static WordFeature Parse(ReadOnlySpan<char> s)
     {
         return Parse(s, CultureInfo.InvariantCulture);
     }
 
+    /// <inheritdoc/>
     public static WordFeature Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
     {
         if (TryParse(s, provider, out var value))
@@ -182,6 +198,7 @@ public sealed record WordFeature
         return ThrowHelper.ThrowFormatException<WordFeature>($"Cannot parse '{s}' as {nameof(WordFeature)}.");
     }
 
+    /// <inheritdoc/>
     public static bool TryParse(
         ReadOnlySpan<char> s,
         [MaybeNullWhen(false)] out WordFeature result)
@@ -189,6 +206,7 @@ public sealed record WordFeature
         return TryParse(s, CultureInfo.InvariantCulture, out result);
     }
 
+    /// <inheritdoc/>
     [SkipLocalsInit]
     public static bool TryParse(
         ReadOnlySpan<char> s,
@@ -264,22 +282,30 @@ public sealed record WordFeature
         return false;
     }
 
+    /// <summary>
+    /// Parses a <see cref="WordFeature"/> from the specified string.
+    /// </summary>
     public static WordFeature Parse(string s)
     {
         return Parse(s, CultureInfo.InvariantCulture);
     }
 
+    /// <summary>
+    /// Parses a <see cref="WordFeature"/> from the specified string using the invariant culture.
+    /// </summary>
     public static WordFeature ParseInvariant(string s)
     {
         return Parse(s, CultureInfo.InvariantCulture);
     }
 
+    /// <inheritdoc/>
     public static WordFeature Parse(string s, IFormatProvider? provider)
     {
         ArgumentNullException.ThrowIfNull(s);
         return Parse(s.AsSpan(), provider);
     }
 
+    /// <inheritdoc/>
     public static bool TryParse(
         [NotNullWhen(true)] string? s,
         IFormatProvider? provider,
@@ -288,6 +314,7 @@ public sealed record WordFeature
         return TryParse(s.AsSpan(), provider, out result);
     }
 
+    /// <inheritdoc/>
     public ulong GetRepeatableHashCode()
     {
         var hash = Name.GetRepeatableHashCode();

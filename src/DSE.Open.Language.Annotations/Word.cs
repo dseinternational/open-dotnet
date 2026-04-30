@@ -26,6 +26,9 @@ public record Word : ISpanFormattable, ISpanParsable<Word>, IRepeatableHash64
     [JsonPropertyName("id")]
     public required int Index { get; init; }
 
+    /// <summary>
+    /// The word form or punctuation symbol as it appears in the sentence.
+    /// </summary>
     [JsonPropertyName("form")]
     public required TokenText Form { get; init; }
 
@@ -114,11 +117,15 @@ public record Word : ISpanFormattable, ISpanParsable<Word>, IRepeatableHash64
         return charsWritten;
     }
 
+    /// <summary>
+    /// Parses a <see cref="Word"/> from the specified character span.
+    /// </summary>
     public static Word Parse(ReadOnlySpan<char> s)
     {
         return Parse(s, default);
     }
 
+    /// <inheritdoc/>
     public static Word Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
     {
         if (TryParse(s, provider, out var token))
@@ -130,17 +137,22 @@ public record Word : ISpanFormattable, ISpanParsable<Word>, IRepeatableHash64
             $"Failed to parse {s} as Word.");
     }
 
+    /// <summary>
+    /// Parses a <see cref="Word"/> from the specified string.
+    /// </summary>
     public static Word Parse(string s)
     {
         return Parse(s, default);
     }
 
+    /// <inheritdoc/>
     public static Word Parse(string s, IFormatProvider? provider)
     {
         ArgumentNullException.ThrowIfNull(s);
         return Parse(s.AsSpan(), provider);
     }
 
+    /// <inheritdoc/>
     [SkipLocalsInit]
     public static bool TryParse(
         ReadOnlySpan<char> s,
@@ -322,6 +334,7 @@ public record Word : ISpanFormattable, ISpanParsable<Word>, IRepeatableHash64
         }
     }
 
+    /// <inheritdoc/>
     public static bool TryParse(
         [NotNullWhen(true)] string? s,
         IFormatProvider? provider,
@@ -336,11 +349,13 @@ public record Word : ISpanFormattable, ISpanParsable<Word>, IRepeatableHash64
         return TryParse(s.AsSpan(), provider, out result);
     }
 
+    /// <inheritdoc/>
     public override string ToString()
     {
         return ToString(default, default);
     }
 
+    /// <inheritdoc/>
     [SkipLocalsInit]
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
@@ -371,6 +386,7 @@ public record Word : ISpanFormattable, ISpanParsable<Word>, IRepeatableHash64
         return null!; // unreachable
     }
 
+    /// <inheritdoc/>
     public bool TryFormat(
         Span<char> destination,
         out int charsWritten,
@@ -635,6 +651,7 @@ public record Word : ISpanFormattable, ISpanParsable<Word>, IRepeatableHash64
         return true;
     }
 
+    /// <inheritdoc/>
     public ulong GetRepeatableHashCode()
     {
         var hash = RepeatableHash64Provider.Default.CombineHashCodes(
