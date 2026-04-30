@@ -37,10 +37,16 @@ public class EntityTests
     }
 
     [Fact]
-    public void Materialized_Ctor_DefaultId_Throws()
+    public void Materialized_Ctor_DefaultId_DoesNotThrow()
     {
-        _ = Assert.Throws<EntityDataInitializationException>(() =>
-            new GuidEntityFake(default, StoredObjectInitialization.Materialized));
+        // Default id values are accepted at construction time so that EF Core can
+        // materialize phantom rows in left-outer-joins where a non-nullable foreign
+        // key is set to its default value. Validation of the identifier value is
+        // the responsibility of the data layer rather than the constructor.
+        var entity = new GuidEntityFake(default, StoredObjectInitialization.Materialized);
+
+        Assert.Equal(StoredObjectInitialization.Materialized, entity.Initialization);
+        Assert.Equal(default, entity.Id);
     }
 
     [Fact]
