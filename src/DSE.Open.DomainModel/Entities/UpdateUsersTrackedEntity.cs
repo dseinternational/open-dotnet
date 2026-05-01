@@ -111,6 +111,10 @@ public abstract class UpdateUsersTrackedEntity<TId> : Entity<TId>, IUpdateUsersT
         _updated = timeProvider?.GetLocalNow() ?? DateTimeOffset.Now;
     }
 
+    void IUpdateUsersTracked.SetCreatedUser(string user) => SetCreatedUser(user);
+
+    void IUpdateUsersTracked.SetUpdatedUser(string user) => SetUpdatedUser(user);
+
 #pragma warning restore CA1033 // Interface methods should be callable by child types
 
     /// <summary>

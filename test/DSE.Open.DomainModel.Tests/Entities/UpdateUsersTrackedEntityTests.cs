@@ -108,6 +108,45 @@ public class UpdateUsersTrackedEntityTests
     }
 
     [Fact]
+    public void IUpdateUsersTracked_SetCreatedUser_DelegatesToProtectedSetter()
+    {
+        var entity = new Fake();
+        ((IUpdateUsersTracked)entity).SetCreatedUser("alice");
+
+        Assert.Equal("alice", entity.CreatedUser);
+        Assert.Equal("alice", entity.UpdatedUser);
+    }
+
+    [Fact]
+    public void IUpdateUsersTracked_SetUpdatedUser_AfterCreated_DelegatesToProtectedSetter()
+    {
+        var entity = new Fake();
+        ((IUpdateUsersTracked)entity).SetCreatedUser("alice");
+        ((IUpdateUsersTracked)entity).SetUpdatedUser("bob");
+
+        Assert.Equal("alice", entity.CreatedUser);
+        Assert.Equal("bob", entity.UpdatedUser);
+    }
+
+    [Fact]
+    public void IUpdateUsersTracked_SetUpdatedUser_BeforeCreatedUser_Throws()
+    {
+        var entity = new Fake();
+        _ = Assert.Throws<InvalidOperationException>(() =>
+            ((IUpdateUsersTracked)entity).SetUpdatedUser("bob"));
+    }
+
+    [Fact]
+    public void IUpdateUsersTracked_SetCreatedUser_WhenAlreadySet_Throws()
+    {
+        var entity = new Fake();
+        ((IUpdateUsersTracked)entity).SetCreatedUser("alice");
+
+        _ = Assert.Throws<InvalidOperationException>(() =>
+            ((IUpdateUsersTracked)entity).SetCreatedUser("bob"));
+    }
+
+    [Fact]
     public void SetTimestamp_AssignsTimestamp_OnNewEntity()
     {
         var entity = new Fake();
