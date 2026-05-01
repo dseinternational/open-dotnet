@@ -34,6 +34,25 @@ public static class EntityTypeBuilderExtensions
     }
 
     /// <summary>
+    /// Configures the <see cref="IUpdateUsersTracked.CreatedUser"/> and
+    /// <see cref="IUpdateUsersTracked.UpdatedUser"/> properties on the entity.
+    /// </summary>
+    /// <typeparam name="TEntity">The entity type.</typeparam>
+    /// <param name="builder">The entity type builder.</param>
+    /// <returns>The same <paramref name="builder"/> instance for chaining.</returns>
+    public static EntityTypeBuilder<TEntity> HasUpdateUsers<[DynamicallyAccessedMembers(TrimmingHelper.EntityDynamicallyAccessedMemberTypes)] TEntity>(
+        this EntityTypeBuilder<TEntity> builder)
+        where TEntity : class, IUpdateUsersTracked
+    {
+        ArgumentNullException.ThrowIfNull(builder);
+
+        _ = builder.Property(e => e.CreatedUser);
+        _ = builder.Property(e => e.UpdatedUser);
+
+        return builder;
+    }
+
+    /// <summary>
     /// Configures the <see cref="ITimestamped.Timestamp"/> property on the entity,
     /// applying the supplied <paramref name="valueConverter"/> or, if not provided,
     /// <see cref="TimestampToByteArrayConverter.Default"/>.
