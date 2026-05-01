@@ -53,6 +53,25 @@ public static class EntityTypeBuilderExtensions
     }
 
     /// <summary>
+    /// Configures the <see cref="IUniquelyIdentified.UniqueId"/> property on the
+    /// entity. The property is required and a unique index is added.
+    /// </summary>
+    /// <typeparam name="TEntity">The entity type.</typeparam>
+    /// <param name="builder">The entity type builder.</param>
+    /// <returns>The same <paramref name="builder"/> instance for chaining.</returns>
+    public static EntityTypeBuilder<TEntity> HasUniqueId<[DynamicallyAccessedMembers(TrimmingHelper.EntityDynamicallyAccessedMemberTypes)] TEntity>(
+        this EntityTypeBuilder<TEntity> builder)
+        where TEntity : class, IUniquelyIdentified
+    {
+        ArgumentNullException.ThrowIfNull(builder);
+
+        _ = builder.Property(e => e.UniqueId).IsRequired();
+        _ = builder.HasIndex(e => e.UniqueId).IsUnique();
+
+        return builder;
+    }
+
+    /// <summary>
     /// Configures the <see cref="ITimestamped.Timestamp"/> property on the entity,
     /// applying the supplied <paramref name="valueConverter"/> or, if not provided,
     /// <see cref="TimestampToByteArrayConverter.Default"/>.
