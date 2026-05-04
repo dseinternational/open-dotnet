@@ -29,36 +29,52 @@ public class DomainEventTests
     [Fact]
     public async Task Id_IsStableAcrossConcurrentReads()
     {
-        const int threadCount = 64;
+        const int threadCount = 32;
         const int trials = 200;
+        var barrierTimeout = TimeSpan.FromSeconds(2);
 
         var ct = TestContext.Current.CancellationToken;
 
+        // LongRunning so each worker gets a dedicated thread rather than a pool
+        // thread - blocking on the barrier would otherwise gate on thread-pool
+        // injection. Workers are reused across trials so each trial only pays for
+        // two barrier crossings. SignalAndWait carries a timeout so that a worker
+        // exiting early (e.g. an assertion added inside the loop) fails loudly
+        // rather than hanging until test-host cancellation.
+        using var trialStart = new Barrier(threadCount + 1);
+        using var trialDone = new Barrier(threadCount + 1);
+
+        DomainEventFake current = null!;
+        var observed = new Identifier[threadCount];
+
+        var workers = new Task[threadCount];
+        for (var i = 0; i < threadCount; i++)
+        {
+            var index = i;
+            workers[i] = Task.Factory.StartNew(() =>
+            {
+                for (var t = 0; t < trials; t++)
+                {
+                    Assert.True(trialStart.SignalAndWait(barrierTimeout, ct));
+                    observed[index] = current.Id;
+                    Assert.True(trialDone.SignalAndWait(barrierTimeout, ct));
+                }
+            }, ct, TaskCreationOptions.LongRunning, TaskScheduler.Default);
+        }
+
         for (var t = 0; t < trials; t++)
         {
-            var ev = new DomainEventFake("Test");
+            current = new DomainEventFake("Test");
+            Assert.True(trialStart.SignalAndWait(barrierTimeout, ct));
+            Assert.True(trialDone.SignalAndWait(barrierTimeout, ct));
 
-            using var start = new Barrier(threadCount);
-            var ids = new Identifier[threadCount];
-
-            var tasks = new Task[threadCount];
-            for (var i = 0; i < threadCount; i++)
-            {
-                var index = i;
-                tasks[i] = Task.Run(() =>
-                {
-                    _ = start.SignalAndWait(TimeSpan.FromSeconds(5));
-                    ids[index] = ev.Id;
-                }, ct);
-            }
-
-            await Task.WhenAll(tasks).WaitAsync(ct);
-
-            var expected = ids[0];
+            var expected = observed[0];
             for (var i = 1; i < threadCount; i++)
             {
-                Assert.Equal(expected, ids[i]);
+                Assert.Equal(expected, observed[i]);
             }
         }
+
+        await Task.WhenAll(workers).WaitAsync(ct);
     }
 }
