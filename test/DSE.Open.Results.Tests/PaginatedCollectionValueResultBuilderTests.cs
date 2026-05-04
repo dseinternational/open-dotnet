@@ -39,4 +39,57 @@ public class PaginatedCollectionValueResultBuilderTests
             .ComparingByMembers<PaginatedCollectionValueResult<string>>()
             .Excluding(e => e.ResultId));
     }
+
+    [Fact]
+    public void Build_PaginationUnspecified_NoErrors_Throws()
+    {
+        var builder = new PaginatedCollectionValueResultBuilder<string>();
+        builder.Items.Add("Test1");
+
+        _ = Assert.Throws<InvalidOperationException>(() => builder.Build());
+    }
+
+    [Fact]
+    public void Build_PaginationUnspecified_HasErrors_DoesNotThrow()
+    {
+        var builder = new PaginatedCollectionValueResultBuilder<string>();
+        builder.Notifications.Add(Notification.Error("NTF123456", "Error"));
+
+        var result = builder.Build();
+
+        Assert.Equal(Pagination.None, result.Pagination);
+    }
+
+    [Fact]
+    public void Build_DerivedBuilder_CarriesPagination()
+    {
+        var builder = new TestListResultBuilder();
+        builder.Items.Add("a");
+        builder.Items.Add("b");
+        builder.Pagination = new(2, 10, 1);
+
+        var result = builder.Build();
+
+        Assert.Equal(new Pagination(2, 10, 1), result.Pagination);
+        Assert.Equal(["a", "b"], result.Value);
+    }
+
+    private sealed record TestListResult : PaginatedCollectionValueResult<string>;
+
+    private sealed class TestListResultBuilder
+        : PaginatedCollectionValueResultBuilder<TestListResult, string>
+    {
+        public override TestListResult Build()
+        {
+            ValidatePagination();
+
+            return new()
+            {
+                Status = Status,
+                Value = [.. Items],
+                Notifications = [.. Notifications],
+                Pagination = Pagination,
+            };
+        }
+    }
 }
