@@ -399,4 +399,13 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 .idea/
-/.claude
+
+# AGENTS
+
+# AI assistant local config
+.claude/settings.local.json
+CLAUDE.local.md
+AGENTS.override.md
+.codex/auth.json
+.codex/sessions/
+.codex/logs/
